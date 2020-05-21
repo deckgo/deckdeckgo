@@ -4,7 +4,13 @@ import Prism from 'prismjs';
 
 import {injectCSS} from '@deckdeckgo/utils';
 
-import {DeckdeckgoHighlightCodeAnchor} from '../declarations/deckdeckgo-highlight-code-anchor';
+import {loadTheme} from '../../utils/themes-loader.utils';
+
+import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
+
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
+import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
+import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
 @Component({
   tag: 'deckgo-highlight-code',
@@ -28,40 +34,11 @@ export class DeckdeckgoHighlightCode {
   @Prop({reflectToAttr: true}) highlightLines: string;
   @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
 
-  @Prop({reflectToAttr: true}) terminal: 'carbon' | 'ubuntu' | 'none' = 'carbon';
+  @Prop({reflectToAttr: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
   @Prop() editable: boolean = false;
 
-  @Prop() theme:
-    | '3024-night'
-    | 'a11y-dark'
-    | 'blackboard'
-    | 'base16-dark'
-    | 'base16-light'
-    | 'cobalt'
-    | 'dracula'
-    | 'duotone'
-    | 'hopscotch'
-    | 'lucario'
-    | 'material'
-    | 'monokai'
-    | 'night-owl'
-    | 'nord'
-    | 'oceanic-next'
-    | 'one-light'
-    | 'one-dark'
-    | 'panda'
-    | 'paraiso'
-    | 'seti'
-    | 'shades-of-purple'
-    | 'solarized-dark'
-    | 'solarized-light'
-    | 'synthwave'
-    | 'twilight'
-    | 'verminal'
-    | 'vscode'
-    | 'yeti'
-    | 'zenburn' = 'zenburn';
+  @Prop({reflectToAttr: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   @State() editing: boolean = false;
 
@@ -69,8 +46,13 @@ export class DeckdeckgoHighlightCode {
 
   private fetchOrParseAfterUpdate: boolean = false;
 
+  @State()
+  private themeStyle: string | undefined;
+
   async componentWillLoad() {
     await this.loadGoogleFonts();
+
+    await this.loadTheme();
   }
 
   async componentDidLoad() {
@@ -88,6 +70,17 @@ export class DeckdeckgoHighlightCode {
       await this.fetchOrParse();
       this.fetchOrParseAfterUpdate = false;
     }
+  }
+
+  @Watch('theme')
+  async loadTheme() {
+    if (this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON || !this.theme) {
+      this.themeStyle = undefined;
+      return;
+    }
+
+    const {theme} = await loadTheme(this.theme);
+    this.themeStyle = theme;
   }
 
   @Listen('prismLanguageLoaded', {target: 'document'})
@@ -183,7 +176,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private async loadGoogleFonts() {
-    if (this.terminal === 'ubuntu') {
+    if (this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU) {
       await injectCSS('google-fonts-ubuntu', 'https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono&display=swap');
     }
   }
@@ -561,42 +554,18 @@ export class DeckdeckgoHighlightCode {
   }
 
   render() {
+    const hostClass = {
+      'deckgo-highlight-code-edit': this.editing,
+      'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
+      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
+    };
+
+    if (this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON) {
+      hostClass[`deckgo-highlight-code-theme-${this.theme}`] = true;
+    }
+
     return (
-      <Host
-        class={{
-          'deckgo-highlight-code-edit': this.editing,
-          'deckgo-highlight-code-carbon': this.terminal === 'carbon',
-          'deckgo-highlight-code-ubuntu': this.terminal === 'ubuntu',
-          'theme-3024-night': this.terminal === 'carbon' && this.theme === '3024-night',
-          'theme-a11y-dark': this.terminal === 'carbon' && this.theme === 'a11y-dark',
-          'theme-blackboard': this.terminal === 'carbon' && this.theme === 'blackboard',
-          'theme-base16-dark': this.terminal === 'carbon' && this.theme === 'base16-dark',
-          'theme-base16-light': this.terminal === 'carbon' && this.theme === 'base16-light',
-          'theme-cobalt': this.terminal === 'carbon' && this.theme === 'cobalt',
-          'theme-dracula': this.terminal === 'carbon' && this.theme === 'dracula',
-          'theme-duotone': this.terminal === 'carbon' && this.theme === 'duotone',
-          'theme-hopscotch': this.terminal === 'carbon' && this.theme === 'hopscotch',
-          'theme-lucario': this.terminal === 'carbon' && this.theme === 'lucario',
-          'theme-material': this.terminal === 'carbon' && this.theme === 'material',
-          'theme-monokai': this.terminal === 'carbon' && this.theme === 'monokai',
-          'theme-night-owl': this.terminal === 'carbon' && this.theme === 'night-owl',
-          'theme-nord': this.terminal === 'carbon' && this.theme === 'nord',
-          'theme-oceanic-next': this.terminal === 'carbon' && this.theme === 'oceanic-next',
-          'theme-one-light': this.terminal === 'carbon' && this.theme === 'one-light',
-          'theme-one-dark': this.terminal === 'carbon' && this.theme === 'one-dark',
-          'theme-panda': this.terminal === 'carbon' && this.theme === 'panda',
-          'theme-paraiso': this.terminal === 'carbon' && this.theme === 'paraiso',
-          'theme-seti': this.terminal === 'carbon' && this.theme === 'seti',
-          'theme-shades-of-purple': this.terminal === 'carbon' && this.theme === 'shades-of-purple',
-          'theme-solarized-dark': this.terminal === 'carbon' && this.theme === 'solarized-dark',
-          'theme-solarized-light': this.terminal === 'carbon' && this.theme === 'solarized-light',
-          'theme-synthwave': this.terminal === 'carbon' && this.theme === 'synthwave',
-          'theme-twilight': this.terminal === 'carbon' && this.theme === 'twilight',
-          'theme-verminal': this.terminal === 'carbon' && this.theme === 'verminal',
-          'theme-vscode': this.terminal === 'carbon' && this.theme === 'vscode',
-          'theme-yeti': this.terminal === 'carbon' && this.theme === 'yeti',
-          'theme-zenburn': this.terminal === 'carbon' && this.theme === 'zenburn',
-        }}>
+      <Host class={hostClass}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
         <div class="deckgo-highlight-code-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
@@ -608,17 +577,18 @@ export class DeckdeckgoHighlightCode {
   }
 
   private renderCarbon() {
-    if (this.terminal !== 'carbon') {
+    if (this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON) {
       return undefined;
     }
 
-    return (
+    return [
+      <CarbonThemeStyle style={this.themeStyle} />,
       <div class="carbon">
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
         {this.renderCarbonCircle('green')}
-      </div>
-    );
+      </div>,
+    ];
   }
 
   private renderCarbonCircle(color: 'red' | 'yellow' | 'green') {
@@ -626,7 +596,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   private renderUbuntu() {
-    if (this.terminal !== 'ubuntu') {
+    if (this.terminal !== DeckdeckgoHighlightCodeTerminal.UBUNTU) {
       return undefined;
     }
 

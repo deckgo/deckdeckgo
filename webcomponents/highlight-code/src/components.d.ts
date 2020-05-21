@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoHighlightCodeAnchor, } from "./components/declarations/deckdeckgo-highlight-code-anchor";
+import { DeckdeckgoHighlightCodeTerminal, } from "./declarations/deckdeckgo-highlight-code-terminal";
+import { DeckdeckgoHighlightCodeCarbonTheme, } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
+import { DeckdeckgoHighlightCodeAnchor, } from "./declarations/deckdeckgo-highlight-code-anchor";
 export namespace Components {
     interface DeckgoHighlightCode {
         "anchor": string;
@@ -18,8 +20,8 @@ export namespace Components {
         "lineNumbers": boolean;
         "load": () => Promise<void>;
         "src": string;
-        "terminal": "carbon" | "ubuntu" | "none";
-        "theme": "3024-night" | "a11y-dark" | "blackboard" | "base16-dark" | "base16-light" | "cobalt" | "dracula" | "duotone" | "hopscotch" | "lucario" | "material" | "monokai" | "night-owl" | "nord" | "oceanic-next" | "one-light" | "one-dark" | "panda" | "paraiso" | "seti" | "shades-of-purple" | "solarized-dark" | "solarized-light" | "synthwave" | "twilight" | "verminal" | "vscode" | "yeti" | "zenburn";
+        "terminal": DeckdeckgoHighlightCodeTerminal;
+        "theme": DeckdeckgoHighlightCodeCarbonTheme;
         "zoomCode": (zoom: boolean) => Promise<void>;
     }
 }
@@ -46,8 +48,8 @@ declare namespace LocalJSX {
         "onCodeDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
         "src"?: string;
-        "terminal"?: "carbon" | "ubuntu" | "none";
-        "theme"?: "3024-night" | "a11y-dark" | "blackboard" | "base16-dark" | "base16-light" | "cobalt" | "dracula" | "duotone" | "hopscotch" | "lucario" | "material" | "monokai" | "night-owl" | "nord" | "oceanic-next" | "one-light" | "one-dark" | "panda" | "paraiso" | "seti" | "shades-of-purple" | "solarized-dark" | "solarized-light" | "synthwave" | "twilight" | "verminal" | "vscode" | "yeti" | "zenburn";
+        "terminal"?: DeckdeckgoHighlightCodeTerminal;
+        "theme"?: DeckdeckgoHighlightCodeCarbonTheme;
     }
     interface IntrinsicElements {
         "deckgo-highlight-code": DeckgoHighlightCode;
