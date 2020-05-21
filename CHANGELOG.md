@@ -16,6 +16,7 @@
 
 ### Others
 
+- gatsby-remark-highlight-code: v1.4.0 ([CHANGELOG](https://github.com/deckgo/gatsby-remark-highlight-code/blob/master/CHANGELOG.md))
 - starter kit: v2.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.2.0"></a>
