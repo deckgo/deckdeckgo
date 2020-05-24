@@ -19,6 +19,13 @@ import {AssetsService} from '../../../services/core/assets/assets.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
+enum ComposeTemplate {
+  TITLE,
+  CONTENT,
+  SPLIT_HORIZONTAL,
+  SPLIT_VERTICAL,
+}
+
 @Component({
   tag: 'app-create-slide',
   styleUrl: 'app-create-slide.scss',
@@ -39,7 +46,7 @@ export class AppCreateSlide {
   private navigatorOnline: boolean = navigator.onLine;
 
   @State()
-  private composeSlide: SlideTemplate.TITLE | undefined = undefined;
+  private composeTemplate: ComposeTemplate | undefined = undefined;
 
   @State()
   private elements: SlotType[] | undefined = undefined;
@@ -234,7 +241,17 @@ export class AppCreateSlide {
       this.elements.push(slotType);
       this.elements = [...this.elements];
 
-      await this.addSlide(SlideTemplate.TITLE);
+      // We've got all the elements, go we can create the slide
+      if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
+        await this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true});
+      } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
+        await this.addSlideSplit(SlideTemplate.SPLIT);
+      }
+      if (this.composeTemplate === ComposeTemplate.CONTENT) {
+        await this.addSlide(SlideTemplate.CONTENT);
+      } else {
+        await this.addSlide(SlideTemplate.TITLE);
+      }
     }
   }
 
@@ -246,7 +263,7 @@ export class AppCreateSlide {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <div class={`container ion-margin-bottom ion-padding-start ion-padding-end${this.composeSlide !== undefined ? ' compose' : ''}`}>
+      <div class={`container ion-margin-bottom ion-padding-start ion-padding-end${this.composeTemplate !== undefined ? ' compose' : ''}`}>
         {this.renderTemplates()}
         {this.renderCompose()}
       </div>,
@@ -254,7 +271,7 @@ export class AppCreateSlide {
   }
 
   private renderTemplates() {
-    if (this.composeSlide !== undefined) {
+    if (this.composeTemplate !== undefined) {
       return undefined;
     }
 
@@ -294,11 +311,23 @@ export class AppCreateSlide {
   }
 
   private renderCompose() {
-    if (this.composeSlide === undefined) {
+    if (this.composeTemplate === undefined) {
       return undefined;
     }
 
-    return [this.renderTitle(), this.renderSlotType()];
+    return [this.renderComposeSlide(), this.renderSlotType()];
+  }
+
+  private renderComposeSlide() {
+    if (this.composeTemplate === ComposeTemplate.CONTENT) {
+      return this.renderContent();
+    } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
+      return this.renderSplit();
+    } else if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
+      return this.renderVertical();
+    } else {
+      return this.renderTitle();
+    }
   }
 
   private renderSlotType() {
@@ -563,11 +592,11 @@ export class AppCreateSlide {
   }
 
   private renderTitle() {
-    const classTitle = this.composeSlide === SlideTemplate.TITLE && this.elements === undefined ? 'highlight' : undefined;
-    const classContent = this.composeSlide === SlideTemplate.TITLE && this.elements !== undefined ? 'highlight' : undefined;
+    const classTitle = this.composeTemplate === ComposeTemplate.TITLE && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeTemplate === ComposeTemplate.TITLE && this.elements !== undefined ? 'highlight' : undefined;
 
     return (
-      <div class="item" custom-tappable onClick={() => (this.composeSlide = SlideTemplate.TITLE)}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.TITLE)}>
         <deckgo-slide-title class="showcase">
           <p slot="title">
             <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
@@ -582,16 +611,19 @@ export class AppCreateSlide {
   }
 
   private renderContent() {
+    const classTitle = this.composeTemplate === ComposeTemplate.CONTENT && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeTemplate === ComposeTemplate.CONTENT && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.CONTENT)}>
         <deckgo-slide-content class="showcase">
           <p slot="title">
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
           </p>
           <p slot="content">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '82%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '64%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classContent}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '82%'}} class={classContent}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '64%'}} class={classContent}></ion-skeleton-text>
           </p>
         </deckgo-slide-content>
       </div>
@@ -599,18 +631,21 @@ export class AppCreateSlide {
   }
 
   private renderSplit() {
+    const classStart = this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL && this.elements === undefined ? 'highlight' : undefined;
+    const classEnd = this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT)}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.SPLIT_HORIZONTAL)}>
         <deckgo-slide-split class="showcase">
           <p slot="start">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
           </p>
           <p slot="end">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
           </p>
         </deckgo-slide-split>
       </div>
@@ -618,18 +653,21 @@ export class AppCreateSlide {
   }
 
   private renderVertical() {
+    const classStart = this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL && this.elements === undefined ? 'highlight' : undefined;
+    const classEnd = this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.SPLIT_VERTICAL)}>
         <deckgo-slide-split vertical={true} class="showcase">
           <p slot="start">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
           </p>
           <p slot="end">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
           </p>
         </deckgo-slide-split>
       </div>
