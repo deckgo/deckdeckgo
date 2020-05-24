@@ -41,6 +41,9 @@ import {
 import {
   ItemReorderEventDetail,
 } from '@ionic/core';
+import {
+  SlotType,
+} from './app/utils/editor/slot-type';
 
 export namespace Components {
   interface AppAbout {}
@@ -324,6 +327,9 @@ export namespace Components {
   }
   interface AppTeam {}
   interface AppTerms {}
+  interface AppTransform {
+    'selectedElement': HTMLElement;
+  }
   interface AppUserDelete {
     'username': string;
   }
@@ -915,6 +921,12 @@ declare global {
     new (): HTMLAppTermsElement;
   };
 
+  interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {}
+  var HTMLAppTransformElement: {
+    prototype: HTMLAppTransformElement;
+    new (): HTMLAppTransformElement;
+  };
+
   interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
   var HTMLAppUserDeleteElement: {
     prototype: HTMLAppUserDeleteElement;
@@ -1035,6 +1047,7 @@ declare global {
     'app-slot-type': HTMLAppSlotTypeElement;
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
+    'app-transform': HTMLAppTransformElement;
     'app-user-delete': HTMLAppUserDeleteElement;
     'app-user-info': HTMLAppUserInfoElement;
     'app-user-menu': HTMLAppUserMenuElement;
@@ -1370,10 +1383,14 @@ declare namespace LocalJSX {
     'onReorder'?: (event: CustomEvent<ItemReorderEventDetail>) => void;
   }
   interface AppSlotType {
+    'onSelectType'?: (event: CustomEvent<SlotType | null>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppTeam {}
   interface AppTerms {}
+  interface AppTransform {
+    'selectedElement'?: HTMLElement;
+  }
   interface AppUserDelete {
     'username'?: string;
   }
@@ -1482,6 +1499,7 @@ declare namespace LocalJSX {
     'app-slot-type': AppSlotType;
     'app-team': AppTeam;
     'app-terms': AppTerms;
+    'app-transform': AppTransform;
     'app-user-delete': AppUserDelete;
     'app-user-info': AppUserInfo;
     'app-user-menu': AppUserMenu;
@@ -1591,6 +1609,7 @@ declare module "@stencil/core" {
       'app-slot-type': LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
       'app-team': LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
       'app-terms': LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
+      'app-transform': LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
       'app-user-delete': LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
       'app-user-info': LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;
       'app-user-menu': LocalJSX.AppUserMenu & JSXBase.HTMLAttributes<HTMLAppUserMenuElement>;

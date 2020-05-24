@@ -11,6 +11,15 @@ app-create-slide {
 
     width: calc(100% - 20px);
 
+    transition: width 0.15s ease-in-out;
+
+    &.compose {
+      grid-template-columns: 100%;
+      grid-row-gap: 32px;
+
+      width: 100%;
+    }
+
     div.item {
       min-height: 7rem;
       height: fit-content;
@@ -234,6 +243,10 @@ app-create-slide {
         ion-skeleton-text {
           background: rgba(var(--ion-color-medium-rgb), 0.8);
 
+          &.highlight {
+            background: rgba(var(--ion-color-primary-rgb), 0.8);
+          }
+
           height: 12px;
           margin: 2px 0;
         }
@@ -246,8 +259,16 @@ app-create-slide {
           ion-skeleton-text {
             height: 6px;
 
+            &.highlight {
+              background: rgba(var(--ion-color-tertiary-rgb), 0.8);
+            }
+
             &:nth-child(2n) {
               background: rgba(var(--ion-color-medium-rgb), 0.6);
+
+              &.highlight {
+                background: rgba(var(--ion-color-tertiary-rgb), 0.6);
+              }
             }
           }
         }

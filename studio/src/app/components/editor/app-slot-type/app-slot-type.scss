@@ -1,8 +1,4 @@
 app-slot-type {
-  ion-toolbar {
-    padding: 16px;
-  }
-
   div {
     h2 {
       color: var(--ion-color-primary);
@@ -52,6 +48,7 @@ app-slot-type {
   a {
     color: inherit;
     cursor: pointer;
+    display: block;
 
     &.current {
       ion-item {
@@ -59,9 +56,11 @@ app-slot-type {
       }
     }
 
-    &:hover {
-      ion-item {
-        color: var(--ion-color-primary);
+    @media (hover: hover) {
+      &:hover {
+        ion-item {
+          color: var(--slot-type-hover-color, var(--ion-color-primary));
+        }
       }
     }
   }

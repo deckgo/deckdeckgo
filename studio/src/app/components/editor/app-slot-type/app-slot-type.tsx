@@ -1,4 +1,4 @@
-import {Component, Element, h, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {SlotType} from '../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
@@ -7,9 +7,7 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
   tag: 'app-slot-type',
   styleUrl: 'app-slot-type.scss',
 })
-export class AppSlideAdd {
-  @Element() el: HTMLElement;
-
+export class AppSlotType {
   @Prop()
   selectedElement: HTMLElement;
 
@@ -18,6 +16,8 @@ export class AppSlideAdd {
 
   @State()
   private onlyTextTypes: boolean = false;
+
+  @Event() private selectType: EventEmitter<SlotType | null>;
 
   async componentWillLoad() {
     if (this.selectedElement) {
@@ -66,29 +66,20 @@ export class AppSlideAdd {
     });
   }
 
-  private async closePopover(type?: SlotType) {
-    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      type: this.currentType !== type ? type : null,
-    });
+  private select(type: SlotType) {
+    this.selectType.emit(this.currentType !== type ? type : null);
   }
 
   render() {
-    return [
-      <ion-toolbar>
-        <h2>Transform element</h2>
-        <ion-router-link slot="end" onClick={() => this.closePopover()}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </ion-router-link>
-      </ion-toolbar>,
-
+    return (
       <ion-list>
-        <a onClick={() => this.closePopover(SlotType.H1)} class={this.currentType === SlotType.H1 ? 'current' : ''}>
+        <a onClick={() => this.select(SlotType.H1)} class={this.currentType === SlotType.H1 ? 'current' : ''}>
           <ion-item>
             <ion-icon name="text-outline" slot="start"></ion-icon>
             <h1>Huge title</h1>
           </ion-item>
         </a>
-        <a onClick={() => this.closePopover(SlotType.H2)} class={this.currentType === SlotType.H2 ? 'current' : ''}>
+        <a onClick={() => this.select(SlotType.H2)} class={this.currentType === SlotType.H2 ? 'current' : ''}>
           <ion-item>
             <span class="placeholder" slot="start">
               &nbsp;
@@ -96,7 +87,7 @@ export class AppSlideAdd {
             <h2>Large title</h2>
           </ion-item>
         </a>
-        <a onClick={() => this.closePopover(SlotType.H3)} class={this.currentType === SlotType.H3 ? 'current' : ''}>
+        <a onClick={() => this.select(SlotType.H3)} class={this.currentType === SlotType.H3 ? 'current' : ''}>
           <ion-item>
             <span class="placeholder" slot="start">
               &nbsp;
@@ -104,7 +95,7 @@ export class AppSlideAdd {
             <h3>Small title</h3>
           </ion-item>
         </a>
-        <a onClick={() => this.closePopover(SlotType.SECTION)} class={this.currentType === SlotType.SECTION ? 'current' : ''}>
+        <a onClick={() => this.select(SlotType.SECTION)} class={this.currentType === SlotType.SECTION ? 'current' : ''}>
           <ion-item>
             <span class="placeholder" slot="start">
               &nbsp;
@@ -113,8 +104,8 @@ export class AppSlideAdd {
           </ion-item>
         </a>
         {this.renderComplexTypes()}
-      </ion-list>,
-    ];
+      </ion-list>
+    );
   }
 
   private renderComplexTypes() {
@@ -123,25 +114,25 @@ export class AppSlideAdd {
     }
 
     return [
-      <a onClick={() => this.closePopover(SlotType.OL)} class={this.currentType === SlotType.OL ? 'current' : ''}>
+      <a onClick={() => this.select(SlotType.OL)} class={this.currentType === SlotType.OL ? 'current' : ''}>
         <ion-item>
           <ion-icon src="/assets/icons/ionicons/list.svg" slot="start"></ion-icon>
           <ion-label>List</ion-label>
         </ion-item>
       </a>,
-      <a onClick={() => this.closePopover(SlotType.IMG)} class={this.currentType === SlotType.IMG ? 'current' : ''}>
+      <a onClick={() => this.select(SlotType.IMG)} class={this.currentType === SlotType.IMG ? 'current' : ''}>
         <ion-item>
           <ion-icon src="/assets/icons/ionicons/images.svg" slot="start"></ion-icon>
           <ion-label>Image</ion-label>
         </ion-item>
       </a>,
-      <a onClick={() => this.closePopover(SlotType.CODE)} class={this.currentType === SlotType.CODE ? 'current' : ''}>
+      <a onClick={() => this.select(SlotType.CODE)} class={this.currentType === SlotType.CODE ? 'current' : ''}>
         <ion-item>
           <ion-icon src="/assets/icons/ionicons/code.svg" slot="start"></ion-icon>
           <ion-label>Code</ion-label>
         </ion-item>
       </a>,
-      <a onClick={() => this.closePopover(SlotType.MATH)} class={this.currentType === SlotType.MATH ? 'current' : ''}>
+      <a onClick={() => this.select(SlotType.MATH)} class={this.currentType === SlotType.MATH ? 'current' : ''}>
         <ion-item>
           <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>
           <ion-label>Math</ion-label>

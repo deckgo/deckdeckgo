@@ -1,11 +1,11 @@
-import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
+import {Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
-import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
+import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
@@ -44,7 +44,7 @@ import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 @Component({
   tag: 'app-editor',
-  styleUrl: 'app-editor.scss'
+  styleUrl: 'app-editor.scss',
 })
 export class AppEditor {
   @Element() el: HTMLElement;
@@ -240,7 +240,10 @@ export class AppEditor {
         return;
       }
 
-      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
+      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({
+        template: SlideTemplate.TITLE,
+        elements: [SlotType.H1, SlotType.SECTION],
+      });
 
       await this.concatSlide(slide);
 
@@ -392,7 +395,7 @@ export class AppEditor {
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
-      cssClass: 'fullscreen'
+      cssClass: 'fullscreen',
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -589,7 +592,7 @@ export class AppEditor {
   async signIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
@@ -709,7 +712,7 @@ export class AppEditor {
         img-anchor="deckgo-lazy-img"
         list={false}
         align={false}></deckgo-inline-editor>,
-      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>
+      <app-inactivity fullscreen={this.fullscreen} onMouseInactivity={($event: CustomEvent) => this.inactivity($event)}></app-inactivity>,
     ];
   }
 

@@ -9,6 +9,7 @@ import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
 
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -36,6 +37,12 @@ export class AppCreateSlide {
 
   @State()
   private navigatorOnline: boolean = navigator.onLine;
+
+  @State()
+  private composeSlide: SlideTemplate.TITLE | undefined = undefined;
+
+  @State()
+  private elements: SlotType[] | undefined = undefined;
 
   private user: User;
 
@@ -143,7 +150,7 @@ export class AppCreateSlide {
   }
 
   private async addSlide(template: SlideTemplate, deck?: Deck) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, this.user);
     await this.closePopover(template, slide);
   }
 
@@ -171,7 +178,7 @@ export class AppCreateSlide {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, null, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, this.user);
     await this.closePopover(template, slide);
   }
 
@@ -220,48 +227,84 @@ export class AppCreateSlide {
     });
   }
 
+  private async selectElement(slotType: SlotType) {
+    if (this.elements === undefined) {
+      this.elements = [slotType];
+    } else {
+      this.elements.push(slotType);
+      this.elements = [...this.elements];
+
+      await this.addSlide(SlideTemplate.TITLE);
+    }
+  }
+
   render() {
     return [
       <ion-toolbar>
-        <h2>Add a slide</h2>
+        <h2>{this.elements !== undefined ? 'Compose slide' : 'Add a slide'}</h2>
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
-        {this.renderTitle()}
-        {this.renderContent()}
-
-        {this.renderSplit()}
-        {this.renderVertical()}
-
-        {this.renderDemo()}
-        {this.renderYoutube()}
-
-        {this.renderShapes()}
-
-        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
-          <deckgo-slide-poll
-            class="showcase"
-            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
-            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
-            count-answers={3}
-            connectPollSocket={false}>
-            <p slot="question">Engage Your Audience / Poll</p>
-            <p slot="answer-1">Yes</p>
-            <p slot="answer-2">No</p>
-            <p slot="answer-3">Don't know</p>
-            <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
-          </deckgo-slide-poll>
-        </div>
-
-        {this.renderGif()}
-        {this.renderChart()}
-
-        {this.renderQRCode()}
-        {this.renderAuthor()}
+      <div class={`container ion-margin-bottom ion-padding-start ion-padding-end${this.composeSlide !== undefined ? ' compose' : ''}`}>
+        {this.renderTemplates()}
+        {this.renderCompose()}
       </div>,
     ];
+  }
+
+  private renderTemplates() {
+    if (this.composeSlide !== undefined) {
+      return undefined;
+    }
+
+    return [
+      this.renderTitle(),
+      this.renderContent(),
+
+      this.renderSplit(),
+      this.renderVertical(),
+
+      this.renderDemo(),
+      this.renderYoutube(),
+
+      this.renderShapes(),
+
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+        <deckgo-slide-poll
+          class="showcase"
+          poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
+          poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
+          count-answers={3}
+          connectPollSocket={false}>
+          <p slot="question">Engage Your Audience / Poll</p>
+          <p slot="answer-1">Yes</p>
+          <p slot="answer-2">No</p>
+          <p slot="answer-3">Don't know</p>
+          <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
+        </deckgo-slide-poll>
+      </div>,
+
+      this.renderGif(),
+      this.renderChart(),
+
+      this.renderQRCode(),
+      this.renderAuthor(),
+    ];
+  }
+
+  private renderCompose() {
+    if (this.composeSlide === undefined) {
+      return undefined;
+    }
+
+    return [this.renderTitle(), this.renderSlotType()];
+  }
+
+  private renderSlotType() {
+    const style = {'--slot-type-hover-color': `${this.elements !== undefined ? 'var(--ion-color-tertiary)' : 'var(--ion-color-primary)'}`};
+
+    return <app-slot-type style={style} onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
   }
 
   private renderChart() {
@@ -520,15 +563,18 @@ export class AppCreateSlide {
   }
 
   private renderTitle() {
+    const classTitle = this.composeSlide === SlideTemplate.TITLE && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeSlide === SlideTemplate.TITLE && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
+      <div class="item" custom-tappable onClick={() => (this.composeSlide = SlideTemplate.TITLE)}>
         <deckgo-slide-title class="showcase">
           <p slot="title">
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
           </p>
           <p slot="content">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classContent}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classContent}></ion-skeleton-text>
           </p>
         </deckgo-slide-title>
       </div>
