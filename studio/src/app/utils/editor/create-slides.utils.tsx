@@ -65,13 +65,10 @@ export class CreateSlidesUtils {
         return;
       }
 
-      const Title = elements[0].toString();
-      const Content = elements[1].toString();
-
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-title key={uuid()}>
-          <Title slot="title"></Title>
-          <Content slot="content"></Content>
+          {this.createElement(elements[0], 'title')}
+          {this.createElement(elements[1], 'content')}
         </deckgo-slide-title>
       );
 
@@ -91,13 +88,10 @@ export class CreateSlidesUtils {
         return;
       }
 
-      const Title = elements[0].toString();
-      const Content = elements[1].toString();
-
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-content key={uuid()}>
-          <Title slot="title"></Title>
-          <Content slot="content"></Content>
+          {this.createElement(elements[0], 'title')}
+          {this.createElement(elements[1], 'content')}
         </deckgo-slide-content>
       );
 
@@ -117,19 +111,22 @@ export class CreateSlidesUtils {
         return;
       }
 
-      const Start = elements[0].toString();
-      const End = elements[1].toString();
-
       // @ts-ignore
       // prettier-ignore
       const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()} {...attributes}>
-          <Start slot="start"></Start>
-          <End slot="end"></End>
+          {this.createElement(elements[0], 'start')}
+          {this.createElement(elements[1], 'end')}
         </deckgo-slide-split>
       );
 
       resolve(slide);
     });
+  }
+
+  private static createElement(slotType: SlotType, slotName: 'title' | 'content' | 'start' | 'end'): JSX.IntrinsicElements {
+    const Element = slotType.toString();
+
+    return <Element slot={slotName}>{slotType === SlotType.OL || slotType === SlotType.UL ? <li>{'\u200B'}</li> : undefined}</Element>;
   }
 
   static createSlideGif(src: string): Promise<JSX.IntrinsicElements> {
