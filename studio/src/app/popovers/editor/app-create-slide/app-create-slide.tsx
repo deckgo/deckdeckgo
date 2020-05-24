@@ -258,7 +258,7 @@ export class AppCreateSlide {
   render() {
     return [
       <ion-toolbar>
-        <h2>{this.elements !== undefined ? 'Compose slide' : 'Add a slide'}</h2>
+        <h2>{this.composeTemplate !== undefined ? 'Compose your slide' : 'Add a slide'}</h2>
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
