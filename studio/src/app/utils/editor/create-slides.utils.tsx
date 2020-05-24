@@ -29,9 +29,9 @@ export class CreateSlidesUtils {
       if (template.template === SlideTemplate.TITLE) {
         resolve(await this.createSlideTitle(template.elements));
       } else if (template.template === SlideTemplate.CONTENT) {
-        resolve(await this.createSlideContent());
+        resolve(await this.createSlideContent(template.elements));
       } else if (template.template === SlideTemplate.SPLIT) {
-        resolve(await this.createSlideSplit());
+        resolve(await this.createSlideSplit(template.elements));
       } else if (template.template === SlideTemplate.GIF) {
         resolve(await this.createSlideGif(undefined));
       } else if (template.template === SlideTemplate.AUTHOR) {
@@ -79,21 +79,25 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static createSlideContent(): Promise<JSX.IntrinsicElements> {
+  private static createSlideContent(elements: SlotType[]): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!document) {
         resolve();
         return;
       }
 
-      const title = <h1 slot="title"></h1>;
+      if (!elements || elements.length < 2) {
+        resolve();
+        return;
+      }
 
-      const content = <section slot="content"></section>;
+      const Title = elements[0].toString();
+      const Content = elements[1].toString();
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-content key={uuid()}>
-          {title}
-          {content}
+          <Title slot="title"></Title>
+          <Content slot="content"></Content>
         </deckgo-slide-content>
       );
 
@@ -101,22 +105,26 @@ export class CreateSlidesUtils {
     });
   }
 
-  static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
+  static createSlideSplit(elements: SlotType[], attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!document) {
         resolve();
         return;
       }
 
-      const start = <section slot="start"></section>;
+      if (!elements || elements.length < 2) {
+        resolve();
+        return;
+      }
 
-      const end = <section slot="end"></section>;
+      const Start = elements[0].toString();
+      const End = elements[1].toString();
 
       // @ts-ignore
       // prettier-ignore
       const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()} {...attributes}>
-          {start}
-          {end}
+          <Start slot="start"></Start>
+          <End slot="end"></End>
         </deckgo-slide-split>
       );
 

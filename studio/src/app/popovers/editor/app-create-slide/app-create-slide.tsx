@@ -162,7 +162,7 @@ export class AppCreateSlide {
   }
 
   private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(this.elements, attributes);
     await this.closePopover(template, slide);
   }
 
