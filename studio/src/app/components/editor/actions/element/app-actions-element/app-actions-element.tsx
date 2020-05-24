@@ -155,6 +155,10 @@ export class AppActionsElement {
       await this.unSelect();
       await this.select(element, autoOpen);
 
+      if (element) {
+        element.focus();
+      }
+
       resolve();
     });
   }
