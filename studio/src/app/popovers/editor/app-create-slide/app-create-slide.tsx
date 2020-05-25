@@ -381,9 +381,7 @@ export class AppCreateSlide {
   }
 
   private renderSlotType() {
-    const style = {'--slot-type-hover-color': `${this.elements !== undefined ? 'var(--ion-color-tertiary)' : 'var(--ion-color-primary)'}`};
-
-    return <app-slot-type style={style} onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
+    return <app-slot-type onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
   }
 
   private renderChart() {

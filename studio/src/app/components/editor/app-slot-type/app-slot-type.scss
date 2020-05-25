@@ -59,7 +59,7 @@ app-slot-type {
     @media (hover: hover) {
       &:hover {
         ion-item {
-          color: var(--slot-type-hover-color, var(--ion-color-primary));
+          color: var(--ion-color-primary);
         }
       }
     }

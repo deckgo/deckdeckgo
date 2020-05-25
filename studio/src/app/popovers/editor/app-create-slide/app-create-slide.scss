@@ -230,23 +230,14 @@ app-create-slide {
         }
 
         &[slot="title"],
-        &[slot="start"] {
+        &[slot="start"],
+        &[slot="content"],
+        &[slot="end"] {
           ion-skeleton-text.highlight {
             background: rgba(var(--ion-color-primary-rgb), 0.8);
 
             &:nth-child(2n) {
               background: rgba(var(--ion-color-primary-rgb), 0.6);
-            }
-          }
-        }
-
-        &[slot="content"],
-        &[slot="end"] {
-          ion-skeleton-text.highlight {
-            background: rgba(var(--ion-color-tertiary-rgb), 0.8);
-
-            &:nth-child(2n) {
-              background: rgba(var(--ion-color-tertiary-rgb), 0.6);
             }
           }
         }
