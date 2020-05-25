@@ -454,13 +454,13 @@ export class AppActionsElement {
     });
   }
 
-  private async openSlotType() {
+  private async openTransform() {
     if (this.slide) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-slot-type',
+      component: 'app-transform',
       componentProps: {
         selectedElement: this.selectedElement,
       },
@@ -471,7 +471,7 @@ export class AppActionsElement {
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data && detail.data.type) {
-        await this.toggleSlotType(detail.data.type);
+        await this.transformSlotType(detail.data.type);
       }
     });
 
@@ -713,7 +713,7 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private toggleSlotType(type: SlotType): Promise<void> {
+  private transformSlotType(type: SlotType): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || !this.selectedElement.parentElement) {
         resolve();
@@ -964,7 +964,7 @@ export class AppActionsElement {
       if (SlotUtils.isNodeRevealList(this.selectedElement)) {
         await this.updateRevealListAttribute(destinationListType);
       } else {
-        await this.toggleSlotType(destinationListType);
+        await this.transformSlotType(destinationListType);
       }
 
       resolve();
@@ -1166,7 +1166,7 @@ export class AppActionsElement {
         <ion-icon src="/assets/icons/ionicons/pencil.svg"></ion-icon>
         <ion-label>Options</ion-label>
       </ion-tab-button>,
-      <ion-tab-button onClick={() => this.openSlotType()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
+      <ion-tab-button onClick={() => this.openTransform()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
         <ion-icon src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
         <ion-label>Transform</ion-label>
       </ion-tab-button>,
