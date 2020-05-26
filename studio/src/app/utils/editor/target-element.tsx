@@ -4,11 +4,11 @@ export enum TargetElement {
   SLIDE = 'slide',
   SECTION = 'section',
   CODE = 'code',
-  COLOR = 'color',
+  TEXT = 'text',
   BACKGROUND = 'background',
   TRANSITION = 'transition',
   SIDES = 'sides',
   FONTS = 'fonts',
   SHAPES = 'shapes',
-  IMAGES = 'shape'
+  IMAGES = 'shape',
 }

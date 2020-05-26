@@ -1,0 +1,29 @@
+app-expansion-panel {
+  display: block;
+
+  article {
+    > div {
+      overflow: hidden;
+      transition: height 0.25s ease-in;
+    }
+
+    > ion-item {
+      font-size: var(--font-size-normal);
+
+      ion-icon {
+        margin: 12px 8px 12px 0;
+        color: black;
+
+        transition: transform 0.25s ease-in;
+      }
+    }
+
+    &.close {
+      > ion-item {
+        ion-icon {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+}

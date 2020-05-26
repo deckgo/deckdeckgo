@@ -546,6 +546,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement,
         slide: this.slide,
         imgDidChange: this.imgDidChange,
+        slideDidChange: this.slideDidChange,
       },
       mode: 'md',
       showBackdrop: false,

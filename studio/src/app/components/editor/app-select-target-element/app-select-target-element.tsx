@@ -4,7 +4,7 @@ import {TargetElement} from '../../../utils/editor/target-element';
 
 @Component({
   tag: 'app-select-target-element',
-  styleUrl: 'app-select-target-element.scss'
+  styleUrl: 'app-select-target-element.scss',
 })
 export class AppSelectTargetElement {
   @Prop()
@@ -24,7 +24,7 @@ export class AppSelectTargetElement {
 
   // color is a reserved prop word
   @Prop()
-  colorTarget: boolean = false;
+  textTarget: boolean = false;
 
   @Prop()
   background: boolean = false;
@@ -51,7 +51,7 @@ export class AppSelectTargetElement {
   }
 
   render() {
-    if (!this.colorTarget && !this.slide && !this.shapes) {
+    if (!this.textTarget && !this.slide && !this.shapes) {
       if (!this.code) {
         return undefined;
       }
@@ -67,8 +67,8 @@ export class AppSelectTargetElement {
         </ion-segment>
       );
     } else {
-      const selectedValue: TargetElement = this.colorTarget
-        ? TargetElement.COLOR
+      const selectedValue: TargetElement = this.textTarget
+        ? TargetElement.TEXT
         : this.sides
         ? TargetElement.SIDES
         : this.qrCode
@@ -87,7 +87,7 @@ export class AppSelectTargetElement {
           {this.renderChart()}
           {this.renderSides()}
           {this.renderSlide()}
-          {this.renderColor()}
+          {this.renderText()}
           {this.renderBackground()}
           {this.renderFonts()}
           {this.renderTransition()}
@@ -134,11 +134,11 @@ export class AppSelectTargetElement {
     }
   }
 
-  private renderColor() {
-    if (this.colorTarget) {
+  private renderText() {
+    if (this.textTarget) {
       return (
-        <ion-segment-button value={TargetElement.COLOR} mode="md">
-          <ion-label>Colors</ion-label>
+        <ion-segment-button value={TargetElement.TEXT} mode="md">
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {

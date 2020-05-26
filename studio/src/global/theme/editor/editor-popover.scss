@@ -55,6 +55,13 @@ ion-button.delete {
 
 ion-segment {
   ion-segment-button {
+    text-transform: none;
+    font-size: var(--font-size-normal);
+    font-weight: 400;
+
+    --indicator-color: black;
+    --color-checked: black;
+
     &:first-of-type {
       margin-left: 8px;
     }

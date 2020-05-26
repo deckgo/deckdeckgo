@@ -8,7 +8,7 @@ import {ImageHelper} from '../../../helpers/editor/image.helper';
 
 @Component({
   tag: 'app-deck-style',
-  styleUrl: 'app-deck-style.scss'
+  styleUrl: 'app-deck-style.scss',
 })
 export class AppDeck {
   @Element() el: HTMLElement;
@@ -23,7 +23,7 @@ export class AppDeck {
   deckDidChange: EventEmitter<HTMLElement>;
 
   @State()
-  private applyToTargetElement: TargetElement = TargetElement.COLOR;
+  private applyToTargetElement: TargetElement = TargetElement.TEXT;
 
   @State()
   private moreColors: boolean = true;
@@ -92,18 +92,18 @@ export class AppDeck {
         </ion-router-link>
       </ion-toolbar>,
       <app-select-target-element
-        colorTarget={true}
+        textTarget={true}
         background={true}
         transition={true}
         fonts={true}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
-      this.renderOptions()
+      this.renderOptions(),
     ];
   }
 
   private renderOptions() {
-    if (this.applyToTargetElement === TargetElement.COLOR) {
+    if (this.applyToTargetElement === TargetElement.TEXT) {
       return (
         <app-color-text-background
           selectedElement={this.deckElement}
@@ -112,13 +112,19 @@ export class AppDeck {
           onColorChange={() => this.onColorChange()}></app-color-text-background>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
-      return (
+      return [
+        <app-color-text-background
+          colorType={'background'}
+          selectedElement={this.deckElement}
+          moreColors={this.moreColors}
+          deck={true}
+          onColorChange={() => this.onColorChange()}></app-color-text-background>,
         <app-image
           selectedElement={this.deckElement}
           deck={true}
           onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
-          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
-      );
+          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>,
+      ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onTransitionChange()}></app-deck-transition>;
     } else if (this.applyToTargetElement === TargetElement.FONTS) {

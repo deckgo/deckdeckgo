@@ -127,6 +127,7 @@ export namespace Components {
     'template': 'split' | 'author';
   }
   interface AppColorTextBackground {
+    'colorType': 'text' | 'background';
     'deck': boolean;
     'initCurrentColors': () => Promise<void>;
     'moreColors': boolean;
@@ -186,6 +187,7 @@ export namespace Components {
   }
   interface AppElementDelete {}
   interface AppEmbed {}
+  interface AppExpansionPanel {}
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -220,6 +222,7 @@ export namespace Components {
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
+    'slideDidChange': EventEmitter<HTMLElement>;
   }
   interface AppInactivity {
     'fullscreen': boolean;
@@ -299,13 +302,13 @@ export namespace Components {
     'background': boolean;
     'chart': boolean;
     'code': boolean;
-    'colorTarget': boolean;
     'fonts': boolean;
     'images': boolean;
     'qrCode': boolean;
     'shapes': boolean;
     'sides': boolean;
     'slide': boolean;
+    'textTarget': boolean;
     'transition': boolean;
   }
   interface AppServices {}
@@ -571,6 +574,12 @@ declare global {
   var HTMLAppEmbedElement: {
     prototype: HTMLAppEmbedElement;
     new (): HTMLAppEmbedElement;
+  };
+
+  interface HTMLAppExpansionPanelElement extends Components.AppExpansionPanel, HTMLStencilElement {}
+  var HTMLAppExpansionPanelElement: {
+    prototype: HTMLAppExpansionPanelElement;
+    new (): HTMLAppExpansionPanelElement;
   };
 
   interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {}
@@ -989,6 +998,7 @@ declare global {
     'app-editor': HTMLAppEditorElement;
     'app-element-delete': HTMLAppElementDeleteElement;
     'app-embed': HTMLAppEmbedElement;
+    'app-expansion-panel': HTMLAppExpansionPanelElement;
     'app-faq': HTMLAppFaqElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
@@ -1160,6 +1170,7 @@ declare namespace LocalJSX {
     'template'?: 'split' | 'author';
   }
   interface AppColorTextBackground {
+    'colorType'?: 'text' | 'background';
     'deck'?: boolean;
     'moreColors'?: boolean;
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
@@ -1228,6 +1239,7 @@ declare namespace LocalJSX {
   }
   interface AppElementDelete {}
   interface AppEmbed {}
+  interface AppExpansionPanel {}
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -1272,6 +1284,7 @@ declare namespace LocalJSX {
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
+    'slideDidChange'?: EventEmitter<HTMLElement>;
   }
   interface AppInactivity {
     'fullscreen'?: boolean;
@@ -1356,7 +1369,6 @@ declare namespace LocalJSX {
     'background'?: boolean;
     'chart'?: boolean;
     'code'?: boolean;
-    'colorTarget'?: boolean;
     'fonts'?: boolean;
     'images'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
@@ -1364,6 +1376,7 @@ declare namespace LocalJSX {
     'shapes'?: boolean;
     'sides'?: boolean;
     'slide'?: boolean;
+    'textTarget'?: boolean;
     'transition'?: boolean;
   }
   interface AppServices {}
@@ -1441,6 +1454,7 @@ declare namespace LocalJSX {
     'app-editor': AppEditor;
     'app-element-delete': AppElementDelete;
     'app-embed': AppEmbed;
+    'app-expansion-panel': AppExpansionPanel;
     'app-faq': AppFaq;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
@@ -1551,6 +1565,7 @@ declare module "@stencil/core" {
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
       'app-embed': LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
+      'app-expansion-panel': LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;

@@ -231,26 +231,29 @@ export class AppImage {
 
   render() {
     return (
-      <ion-list>
-        {this.renderImageSize()}
-        {this.renderImageAlignment()}
+      <app-expansion-panel>
+        <ion-label slot="title">Image</ion-label>
+        <ion-list>
+          {this.renderImageSize()}
+          {this.renderImageAlignment()}
 
-        {this.renderStockPhotos()}
-        {this.renderGif()}
+          {this.renderStockPhotos()}
+          {this.renderGif()}
 
-        {this.renderCustom()}
+          {this.renderCustom()}
 
-        {this.renderDeleteAction()}
+          {this.renderDeleteAction()}
 
-        <ion-item-divider class="ion-padding-top ion-margin-top">
-          <ion-label>History</ion-label>
-          <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
-            <ion-icon name="help"></ion-icon>
-          </button>
-        </ion-item-divider>
+          <ion-item-divider class="ion-padding-top ion-margin-top">
+            <ion-label>History</ion-label>
+            <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
+              <ion-icon name="help"></ion-icon>
+            </button>
+          </ion-item-divider>
 
-        {this.renderImagesHistory()}
-      </ion-list>
+          {this.renderImagesHistory()}
+        </ion-list>
+      </app-expansion-panel>
     );
   }
 
@@ -301,7 +304,7 @@ export class AppImage {
       return (
         <ion-item class="action-button ion-margin-bottom">
           <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
-            <ion-label>Delete background</ion-label>
+            <ion-label>Reset image</ion-label>
           </ion-button>
         </ion-item>
       );
