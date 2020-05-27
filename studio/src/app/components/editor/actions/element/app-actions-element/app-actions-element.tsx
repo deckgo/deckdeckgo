@@ -1138,8 +1138,10 @@ export class AppActionsElement {
   }
 
   private renderStyle() {
+    const classNotImage: string | undefined = this.image ? 'hidden' : undefined;
+
     return (
-      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md">
+      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md" class={classNotImage}>
         <ion-icon src="/assets/icons/ionicons/brush.svg"></ion-icon>
         <ion-label>Style</ion-label>
       </ion-tab-button>
