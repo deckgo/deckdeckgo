@@ -1165,7 +1165,7 @@ export class AppActionsElement {
         aria-label="Edit slide options"
         mode="md"
         class={classSlide}>
-        <ion-icon src="/assets/icons/ionicons/pencil.svg"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label>Options</ion-label>
       </ion-tab-button>,
       <ion-tab-button onClick={() => this.openTransform()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
