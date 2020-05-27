@@ -13,6 +13,7 @@ app-expansion-panel {
       ion-icon {
         margin: 12px 8px 12px 0;
         color: black;
+        font-size: var(--font-size-small);
 
         transition: transform 0.25s ease-in;
       }

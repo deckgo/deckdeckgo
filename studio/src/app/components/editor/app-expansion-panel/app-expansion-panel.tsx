@@ -68,6 +68,9 @@ export class AppExpansionPanel {
             <slot name="title"></slot>
           </div>
           <ion-icon slot="start" src="/assets/icons/ionicons/chevron-down.svg"></ion-icon>
+          <div slot="end">
+            <slot name="info"></slot>
+          </div>
         </ion-item>
 
         <div ref={(el) => (this.container = el as HTMLDivElement)}>

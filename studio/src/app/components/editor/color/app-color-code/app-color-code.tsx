@@ -236,7 +236,9 @@ export class AppColorCode {
   }
 
   // prettier-ignore
-  private async presentHighlightInfo() {
+  private async presentHighlightInfo($event: UIEvent) {
+    $event.stopPropagation();
+
     const alert: HTMLIonAlertElement = await alertController.create({
             message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 1,2 7,7 13,15<br/><br/>Which would highlight lines 1 to 2, line 7 and lines 13 to 15.',
       buttons: ['Ok']
@@ -296,110 +298,118 @@ export class AppColorCode {
   }
 
   render() {
-    return [
-      <ion-list>
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>Apply color to</ion-label>
-        </ion-item-divider>
+    return [this.renderCategoryColor(), this.renderHighlightLinesColor()];
+  }
 
-        <ion-item class="select">
-          <ion-label>Apply color to</ion-label>
+  private renderCategoryColor() {
+    return (
+      <app-expansion-panel>
+        <ion-label slot="title">Colors</ion-label>
+        <ion-list>
+          <ion-item class="select">
+            <ion-label>Apply color to</ion-label>
 
-          <ion-select
-            value={this.codeColorType}
-            placeholder="Select a category"
-            onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
-            interface="popover"
-            mode="md"
-            class="ion-padding-start ion-padding-end">
-            <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
-            <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
-            <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
-            <ion-select-option value={CodeColorType.OPERATOR}>Operators</ion-select-option>
-            <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
-            <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
-            <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
-            <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
-            <ion-select-option value={CodeColorType.LINE_NUMBERS}>Line numbers</ion-select-option>
-          </ion-select>
-        </ion-item>
+            <ion-select
+              value={this.codeColorType}
+              placeholder="Select a category"
+              onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end">
+              <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
+              <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
+              <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
+              <ion-select-option value={CodeColorType.OPERATOR}>Operators</ion-select-option>
+              <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
+              <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
+              <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
+              <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
+              <ion-select-option value={CodeColorType.LINE_NUMBERS}>Line numbers</ion-select-option>
+            </ion-select>
+          </ion-item>
 
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>
-            Opacity <small>{this.codeColorOpacity}%</small>
-          </ion-label>
-        </ion-item-divider>
+          <ion-item-divider class="ion-padding-top">
+            <ion-label>
+              Opacity <small>{this.codeColorOpacity}%</small>
+            </ion-label>
+          </ion-item-divider>
 
-        <ion-item class="item-opacity">
-          <ion-range
-            color="primary"
-            min={0}
-            max={100}
-            disabled={!this.codeColor || this.codeColor === undefined || this.codeColorType === undefined}
-            value={this.codeColorOpacity}
-            mode="md"
-            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setCodeOpacity)}></ion-range>
-        </ion-item>
+          <ion-item class="item-opacity">
+            <ion-range
+              color="primary"
+              min={0}
+              max={100}
+              disabled={!this.codeColor || this.codeColor === undefined || this.codeColorType === undefined}
+              value={this.codeColorOpacity}
+              mode="md"
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setCodeOpacity)}></ion-range>
+          </ion-item>
 
-        <div class={this.codeColorType === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
-          <deckgo-color
-            class="ion-padding-bottom"
-            onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)}
-            color-rgb={this.codeColor}
-            more={this.moreColors}>
-            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-          </deckgo-color>
-        </div>
+          <div class={this.codeColorType === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
+            <deckgo-color
+              class="ion-padding-bottom"
+              onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)}
+              color-rgb={this.codeColor}
+              more={this.moreColors}>
+              <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
+            </deckgo-color>
+          </div>
 
-        <ion-item class="action-button ion-margin-bottom">
-          <ion-button shape="round" onClick={() => this.resetCodeColor()} fill="outline" class="delete">
-            <ion-label>Reset color</ion-label>
-          </ion-button>
-        </ion-item>
+          <ion-item class="action-button ion-margin-bottom">
+            <ion-button shape="round" onClick={() => this.resetCodeColor()} fill="outline" class="delete">
+              <ion-label>Reset color</ion-label>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </app-expansion-panel>
+    );
+  }
 
-        <ion-item-divider class="ion-padding-top ion-margin-top">
-          <ion-label>Highlight lines</ion-label>
-          <button slot="end" class="info" onClick={() => this.presentHighlightInfo()}>
-            <ion-icon name="help"></ion-icon>
-          </button>
-        </ion-item-divider>
+  private renderHighlightLinesColor() {
+    return (
+      <app-expansion-panel>
+        <ion-label slot="title">Highlight lines</ion-label>
+        <button slot="info" class="info" onClick={($event: UIEvent) => this.presentHighlightInfo($event)}>
+          <ion-icon name="help"></ion-icon>
+        </button>
+        <ion-list>
+          <ion-item class="with-padding">
+            <ion-input
+              value={this.highlightLines}
+              placeholder="List your lines here"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={() => this.highlightSelectedLines()}></ion-input>
+          </ion-item>
 
-        <ion-item class="with-padding">
-          <ion-input
-            value={this.highlightLines}
-            placeholder="List your lines here"
-            debounce={500}
-            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-            onIonChange={() => this.highlightSelectedLines()}></ion-input>
-        </ion-item>
+          <ion-item-divider class="ion-padding-top">
+            <ion-label>
+              Opacity <small>{this.highlightColorOpacity}%</small>
+            </ion-label>
+          </ion-item-divider>
 
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>
-            Opacity <small>{this.highlightColorOpacity}%</small>
-          </ion-label>
-        </ion-item-divider>
+          <ion-item class="item-opacity">
+            <ion-range
+              color="primary"
+              min={0}
+              max={100}
+              disabled={!this.highlightColor || this.highlightColor === undefined || !this.highlightLines || this.highlightLines === undefined}
+              value={this.highlightColorOpacity}
+              mode="md"
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setHighlightOpacity)}></ion-range>
+          </ion-item>
 
-        <ion-item class="item-opacity">
-          <ion-range
-            color="primary"
-            min={0}
-            max={100}
-            disabled={!this.highlightColor || this.highlightColor === undefined || !this.highlightLines || this.highlightLines === undefined}
-            value={this.highlightColorOpacity}
-            mode="md"
-            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setHighlightOpacity)}></ion-range>
-        </ion-item>
-
-        <div class={!this.highlightLines || this.highlightLines === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
-          <deckgo-color
-            class="ion-padding-bottom"
-            onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)}
-            color-rgb={this.highlightColor}
-            more={this.moreColors}>
-            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-          </deckgo-color>
-        </div>
-      </ion-list>,
-    ];
+          <div class={!this.highlightLines || this.highlightLines === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
+            <deckgo-color
+              class="ion-padding-bottom"
+              onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)}
+              color-rgb={this.highlightColor}
+              more={this.moreColors}>
+              <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
+            </deckgo-color>
+          </div>
+        </ion-list>
+      </app-expansion-panel>
+    );
   }
 }
