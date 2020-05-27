@@ -142,9 +142,11 @@ export class AppElementStyle {
   }
 
   private renderSelectTarget() {
+    const elementTarget: boolean = !this.slide && !this.code && !this.shape;
+
     return (
       <app-select-target-element
-        textTarget={!this.slide}
+        textTarget={elementTarget}
         slide={this.slide}
         background={true}
         qrCode={this.qrCode || this.poll}
