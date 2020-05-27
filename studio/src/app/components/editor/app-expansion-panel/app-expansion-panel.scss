@@ -10,19 +10,29 @@ app-expansion-panel {
     > ion-item {
       font-size: var(--font-size-normal);
 
-      ion-icon {
+      > ion-icon {
         margin: 12px 8px 12px 0;
         color: black;
         font-size: var(--font-size-small);
 
         transition: transform 0.25s ease-in;
       }
+
+      div[slot="end"] {
+        opacity: 1;
+
+        transition: opacity 0.25s ease-in;
+      }
     }
 
     &.close {
       > ion-item {
-        ion-icon {
+        > ion-icon {
           transform: rotate(-90deg);
+        }
+
+        div[slot="end"] {
+          opacity: 0;
         }
       }
     }
