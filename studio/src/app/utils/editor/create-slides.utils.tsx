@@ -126,7 +126,17 @@ export class CreateSlidesUtils {
   private static createElement(slotType: SlotType, slotName: 'title' | 'content' | 'start' | 'end'): JSX.IntrinsicElements {
     const Element = slotType.toString();
 
-    return <Element slot={slotName}>{slotType === SlotType.OL || slotType === SlotType.UL ? <li>{'\u200B'}</li> : undefined}</Element>;
+    return (
+      <Element slot={slotName}>
+        {slotType === SlotType.OL || slotType === SlotType.UL ? (
+          <li>{'\u200B'}</li>
+        ) : slotType === SlotType.CODE ? (
+          <code slot="code"></code>
+        ) : slotType === SlotType.MATH ? (
+          <code slot="math"></code>
+        ) : undefined}
+      </Element>
+    );
   }
 
   static createSlideGif(src: string): Promise<JSX.IntrinsicElements> {
