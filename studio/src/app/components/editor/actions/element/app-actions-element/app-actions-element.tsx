@@ -546,7 +546,6 @@ export class AppActionsElement {
         selectedElement: this.selectedElement,
         slide: this.slide,
         imgDidChange: this.imgDidChange,
-        slideDidChange: this.slideDidChange,
       },
       mode: 'md',
       showBackdrop: false,
@@ -765,8 +764,8 @@ export class AppActionsElement {
     });
   }
 
-  @Listen('colorDidChange', {target: 'document'})
-  async onColorDidChange(_$event: CustomEvent) {
+  @Listen('styleDidChange', {target: 'document'})
+  async onStyleDidChange(_$event: CustomEvent) {
     await this.emitChange();
   }
 
@@ -884,12 +883,14 @@ export class AppActionsElement {
     });
   }
 
-  private async openColor() {
+  private async openStyle() {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-color',
+      component: 'app-element-style',
       componentProps: {
         slide: this.slide,
         selectedElement: this.selectedElement,
+        imgDidChange: this.imgDidChange,
+        imageHelper: this.imageHelper,
       },
       mode: 'md',
       showBackdrop: false,
@@ -1080,7 +1081,7 @@ export class AppActionsElement {
         <ion-buttons slot="start">
           {this.renderEdit()}
           {this.renderShapes()}
-          {this.renderColor()}
+          {this.renderStyle()}
           {this.renderReveal()}
           {this.renderAlign()}
           {this.renderList()}
@@ -1136,11 +1137,11 @@ export class AppActionsElement {
     );
   }
 
-  private renderColor() {
+  private renderStyle() {
     return (
-      <ion-tab-button onClick={() => this.openColor()} aria-label="Color" color="primary" mode="md">
-        <ion-icon src="/assets/icons/ionicons/color-palette.svg"></ion-icon>
-        <ion-label>Color</ion-label>
+      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md">
+        <ion-icon src="/assets/icons/ionicons/brush.svg"></ion-icon>
+        <ion-label>Style</ion-label>
       </ion-tab-button>
     );
   }
@@ -1207,12 +1208,12 @@ export class AppActionsElement {
   }
 
   private renderImages() {
-    const classImage: string | undefined = this.image || this.slide ? undefined : 'hidden';
+    const classImage: string | undefined = this.image ? undefined : 'hidden';
 
     return (
-      <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md" class={classImage}>
+      <ion-tab-button onClick={() => this.openImage()} aria-label="Image" color="primary" mode="md" class={classImage}>
         <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
-        <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
+        <ion-label>Image</ion-label>
       </ion-tab-button>
     );
   }

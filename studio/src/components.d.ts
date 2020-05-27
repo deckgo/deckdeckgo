@@ -30,6 +30,9 @@ import {
   EditAction,
 } from './app/utils/editor/edit-action';
 import {
+  ImageHelper,
+} from './app/helpers/editor/image.helper';
+import {
   ImageAction,
 } from './app/utils/editor/image-action';
 import {
@@ -101,10 +104,6 @@ export namespace Components {
     'codeDidChange': EventEmitter<HTMLElement>;
     'currentLanguage': PrismLanguage | undefined;
     'selectedElement': HTMLElement;
-  }
-  interface AppColor {
-    'selectedElement': HTMLElement;
-    'slide': boolean;
   }
   interface AppColorChart {
     'initCurrentColors': () => Promise<void>;
@@ -186,6 +185,12 @@ export namespace Components {
     'deckId': string;
   }
   interface AppElementDelete {}
+  interface AppElementStyle {
+    'imageHelper': ImageHelper;
+    'imgDidChange': EventEmitter<HTMLElement>;
+    'selectedElement': HTMLElement;
+    'slide': boolean;
+  }
   interface AppEmbed {}
   interface AppExpansionPanel {}
   interface AppFaq {}
@@ -222,7 +227,6 @@ export namespace Components {
     'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
-    'slideDidChange': EventEmitter<HTMLElement>;
   }
   interface AppInactivity {
     'fullscreen': boolean;
@@ -420,12 +424,6 @@ declare global {
     new (): HTMLAppCodeLanguagesElement;
   };
 
-  interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {}
-  var HTMLAppColorElement: {
-    prototype: HTMLAppColorElement;
-    new (): HTMLAppColorElement;
-  };
-
   interface HTMLAppColorChartElement extends Components.AppColorChart, HTMLStencilElement {}
   var HTMLAppColorChartElement: {
     prototype: HTMLAppColorChartElement;
@@ -568,6 +566,12 @@ declare global {
   var HTMLAppElementDeleteElement: {
     prototype: HTMLAppElementDeleteElement;
     new (): HTMLAppElementDeleteElement;
+  };
+
+  interface HTMLAppElementStyleElement extends Components.AppElementStyle, HTMLStencilElement {}
+  var HTMLAppElementStyleElement: {
+    prototype: HTMLAppElementStyleElement;
+    new (): HTMLAppElementStyleElement;
   };
 
   interface HTMLAppEmbedElement extends Components.AppEmbed, HTMLStencilElement {}
@@ -972,7 +976,6 @@ declare global {
     'app-breadcrumbs': HTMLAppBreadcrumbsElement;
     'app-code': HTMLAppCodeElement;
     'app-code-languages': HTMLAppCodeLanguagesElement;
-    'app-color': HTMLAppColorElement;
     'app-color-chart': HTMLAppColorChartElement;
     'app-color-code': HTMLAppColorCodeElement;
     'app-color-qrcode': HTMLAppColorQrcodeElement;
@@ -997,6 +1000,7 @@ declare global {
     'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
     'app-element-delete': HTMLAppElementDeleteElement;
+    'app-element-style': HTMLAppElementStyleElement;
     'app-embed': HTMLAppEmbedElement;
     'app-expansion-panel': HTMLAppExpansionPanelElement;
     'app-faq': HTMLAppFaqElement;
@@ -1143,11 +1147,6 @@ declare namespace LocalJSX {
     'currentLanguage'?: PrismLanguage | undefined;
     'selectedElement'?: HTMLElement;
   }
-  interface AppColor {
-    'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
-    'selectedElement'?: HTMLElement;
-    'slide'?: boolean;
-  }
   interface AppColorChart {
     'moreColors'?: boolean;
     'onColorChange'?: (event: CustomEvent<boolean>) => void;
@@ -1238,6 +1237,13 @@ declare namespace LocalJSX {
     'deckId'?: string;
   }
   interface AppElementDelete {}
+  interface AppElementStyle {
+    'imageHelper'?: ImageHelper;
+    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'onStyleDidChange'?: (event: CustomEvent<boolean>) => void;
+    'selectedElement'?: HTMLElement;
+    'slide'?: boolean;
+  }
   interface AppEmbed {}
   interface AppExpansionPanel {}
   interface AppFaq {}
@@ -1284,7 +1290,6 @@ declare namespace LocalJSX {
     'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
-    'slideDidChange'?: EventEmitter<HTMLElement>;
   }
   interface AppInactivity {
     'fullscreen'?: boolean;
@@ -1428,7 +1433,6 @@ declare namespace LocalJSX {
     'app-breadcrumbs': AppBreadcrumbs;
     'app-code': AppCode;
     'app-code-languages': AppCodeLanguages;
-    'app-color': AppColor;
     'app-color-chart': AppColorChart;
     'app-color-code': AppColorCode;
     'app-color-qrcode': AppColorQrcode;
@@ -1453,6 +1457,7 @@ declare namespace LocalJSX {
     'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
     'app-element-delete': AppElementDelete;
+    'app-element-style': AppElementStyle;
     'app-embed': AppEmbed;
     'app-expansion-panel': AppExpansionPanel;
     'app-faq': AppFaq;
@@ -1539,7 +1544,6 @@ declare module "@stencil/core" {
       'app-breadcrumbs': LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
       'app-code-languages': LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
-      'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
       'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-code': LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
       'app-color-qrcode': LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
@@ -1564,6 +1568,7 @@ declare module "@stencil/core" {
       'app-edit-slide-qrcode': LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
+      'app-element-style': LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
       'app-embed': LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
       'app-expansion-panel': LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;

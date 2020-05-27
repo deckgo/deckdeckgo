@@ -2,14 +2,16 @@ import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/
 
 import {isIPad} from '@deckdeckgo/utils';
 
-import {TargetElement} from '../../../utils/editor/target-element';
-import {SlotType} from '../../../utils/editor/slot-type';
+import {TargetElement} from '../../../../utils/editor/target-element';
+import {SlotType} from '../../../../utils/editor/slot-type';
+import {ImageAction} from '../../../../utils/editor/image-action';
+import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
 @Component({
-  tag: 'app-color',
-  styleUrl: 'app-color.scss'
+  tag: 'app-element-style',
+  styleUrl: 'app-element-style.scss',
 })
-export class AppColor {
+export class AppElementStyle {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -18,7 +20,13 @@ export class AppColor {
   @Prop()
   selectedElement: HTMLElement;
 
-  @Event() colorDidChange: EventEmitter<boolean>;
+  @Prop()
+  imgDidChange: EventEmitter<HTMLElement>;
+
+  @Prop()
+  imageHelper: ImageHelper;
+
+  @Event() styleDidChange: EventEmitter<boolean>;
 
   @State()
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
@@ -93,32 +101,52 @@ export class AppColor {
 
   private colorChange($event: CustomEvent<boolean>) {
     if ($event) {
-      this.colorDidChange.emit($event.detail);
+      this.styleDidChange.emit($event.detail);
+    }
+  }
+
+  private async onImageAction($event: CustomEvent<ImageAction>) {
+    if (!this.slide) {
+      return;
+    }
+
+    if ($event && $event.detail) {
+      const popover = this.el.closest('ion-popover') as HTMLIonPopoverElement;
+
+      popover.onWillDismiss().then(async () => {
+        await this.imageHelper.imageAction(this.selectedElement, true, false, $event.detail);
+      });
+
+      await popover.dismiss();
+    }
+  }
+
+  private onImgDidChange($event: CustomEvent<HTMLElement>) {
+    if ($event && $event.detail) {
+      this.imgDidChange.emit($event.detail);
     }
   }
 
   render() {
     return [
       <ion-toolbar>
-        <h2>{this.slide ? 'Slide colors' : 'Colors'}</h2>
+        <h2>{this.slide ? 'Slide style' : 'Style'}</h2>
         <ion-router-link slot="end" onClick={() => this.closePopover()}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
       this.renderSelectTarget(),
 
-      this.renderColorOptions()
+      this.renderColorOptions(),
     ];
   }
 
   private renderSelectTarget() {
-    if (this.slide && !this.qrCode && !this.poll && !this.chart && !this.author && !this.split) {
-      return undefined;
-    }
-
     return (
       <app-select-target-element
+        textTarget={!this.slide}
         slide={this.slide}
+        background={true}
         qrCode={this.qrCode || this.poll}
         chart={this.chart || this.poll}
         code={this.code}
@@ -157,6 +185,15 @@ export class AppColor {
           onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
           moreColors={this.moreColors}></app-color-sides>
       );
+    } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
+      return [
+        <app-color-text-background
+          colorType={'background'}
+          selectedElement={this.selectedElement}
+          moreColors={this.moreColors}
+          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}></app-color-text-background>,
+        this.renderImage(),
+      ];
     } else {
       return (
         <app-color-text-background
@@ -167,5 +204,19 @@ export class AppColor {
           onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}></app-color-text-background>
       );
     }
+  }
+
+  private renderImage() {
+    if (!this.slide) {
+      return undefined;
+    }
+
+    return (
+      <app-image
+        selectedElement={this.selectedElement}
+        deck={true}
+        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
+        onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
+    );
   }
 }

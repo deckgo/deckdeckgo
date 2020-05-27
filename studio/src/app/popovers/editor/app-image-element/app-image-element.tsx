@@ -18,9 +18,6 @@ export class AppImageElement {
   @Prop()
   imgDidChange: EventEmitter<HTMLElement>;
 
-  @Prop()
-  slideDidChange: EventEmitter<HTMLElement>;
-
   private async closePopoverWithoutResults() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
@@ -37,10 +34,6 @@ export class AppImageElement {
     }
   }
 
-  private onColorChange() {
-    this.slideDidChange.emit(this.selectedElement);
-  }
-
   render() {
     return [
       <ion-toolbar>
@@ -49,27 +42,11 @@ export class AppImageElement {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      this.renderBackgroundColor(),
       <app-image
         selectedElement={this.selectedElement}
         slide={this.slide}
         onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}
         onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>,
     ];
-  }
-
-  private renderBackgroundColor() {
-    if (!this.slide) {
-      return undefined;
-    }
-
-    return (
-      <app-color-text-background
-        colorType={'background'}
-        selectedElement={this.selectedElement}
-        moreColors={true}
-        slide={this.slide}
-        onColorChange={() => this.onColorChange()}></app-color-text-background>
-    );
   }
 }
