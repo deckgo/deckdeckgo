@@ -247,8 +247,6 @@ export class AppElementStyle {
       return undefined;
     }
 
-    console.log(this.list);
-
     return <app-list selectedElement={this.selectedElement} onToggleList={() => this.closePopover()}></app-list>;
   }
 }

@@ -17,8 +17,6 @@ export class AppReveal {
 
   componentWillLoad() {
     this.reveal = SlotUtils.isNodeReveal(this.selectedElement) || SlotUtils.isNodeRevealList(this.selectedElement);
-
-    console.log(this.selectedElement, this.reveal);
   }
 
   private toggle() {
