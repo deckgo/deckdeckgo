@@ -10,6 +10,7 @@ enum FontSize {
 
 @Component({
   tag: 'app-font-size',
+  styleUrl: 'app-font-size.scss',
 })
 export class AppFontSize {
   @Prop()
