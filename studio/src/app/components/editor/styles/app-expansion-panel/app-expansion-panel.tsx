@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, h, State, Prop} from '@stencil/core';
 
 @Component({
   tag: 'app-expansion-panel',
@@ -6,6 +6,9 @@ import {Component, h, State} from '@stencil/core';
 })
 export class AppExpansionPanel {
   container!: HTMLDivElement;
+
+  @Prop()
+  expander: boolean = true;
 
   @State()
   private expanded: 'open' | 'close' = 'open';
@@ -63,7 +66,7 @@ export class AppExpansionPanel {
   render() {
     return (
       <article class={this.expanded}>
-        <ion-item button onClick={() => this.toggle()}>
+        <ion-item button onClick={() => this.toggle()} class={this.expander ? undefined : 'hidden'}>
           <div>
             <slot name="title"></slot>
           </div>

@@ -28,6 +28,9 @@ export class AppImage {
   @Prop()
   deck: boolean = false;
 
+  @Prop()
+  expander: boolean = true;
+
   private imageHistoryService: ImageHistoryService;
 
   @State()
@@ -99,7 +102,7 @@ export class AppImage {
 
   render() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel expander={this.expander}>
         <ion-label slot="title">Image</ion-label>
         <ion-list>
           {this.renderStockPhotos()}

@@ -204,6 +204,7 @@ export class AppElementStyle {
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return [
         <app-color-text-background
+          expander={this.slide}
           colorType={'background'}
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
@@ -221,6 +222,7 @@ export class AppElementStyle {
     } else {
       return [
         <app-color-text-background
+          expander={!this.slide && !this.code}
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
           slide={this.slide}

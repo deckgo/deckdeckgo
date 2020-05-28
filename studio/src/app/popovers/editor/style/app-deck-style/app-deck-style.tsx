@@ -98,6 +98,7 @@ export class AppDeck {
     if (this.applyToTargetElement === TargetElement.TEXT) {
       return (
         <app-color-text-background
+          expander={false}
           selectedElement={this.deckElement}
           moreColors={this.moreColors}
           deck={true}
@@ -106,6 +107,7 @@ export class AppDeck {
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return [
         <app-color-text-background
+          expander={true}
           colorType={'background'}
           selectedElement={this.deckElement}
           moreColors={this.moreColors}

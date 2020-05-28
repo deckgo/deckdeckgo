@@ -33,7 +33,11 @@ export class AppImageElement {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <app-image selectedElement={this.selectedElement} slide={this.slide} onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>,
+      <app-image
+        expander={false}
+        selectedElement={this.selectedElement}
+        slide={this.slide}
+        onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>,
     ];
   }
 }

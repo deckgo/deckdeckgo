@@ -5,14 +5,14 @@ app-expansion-panel {
     > div {
       overflow: hidden;
       transition: height 0.25s ease-in;
-
-      ion-list[class*="list"] {
-        padding: 0;
-      }
     }
 
     > ion-item {
       font-size: var(--font-size-normal);
+
+      &.hidden {
+        display: none;
+      }
 
       > ion-icon {
         margin: 12px 8px 12px 0;

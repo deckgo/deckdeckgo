@@ -27,7 +27,7 @@ export class AppList {
 
   render() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel class="ion-margin-top">
         <ion-label slot="title">List</ion-label>
         <ion-list>
           <ion-item onClick={() => this.selectList(SlotType.UL)} class={`list ${this.list == SlotType.UL ? 'active' : undefined}`}>

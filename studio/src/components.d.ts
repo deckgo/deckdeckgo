@@ -128,6 +128,7 @@ export namespace Components {
   interface AppColorTextBackground {
     'colorType': 'text' | 'background';
     'deck': boolean;
+    'expander': boolean;
     'initCurrentColors': () => Promise<void>;
     'moreColors': boolean;
     'selectedElement': HTMLElement;
@@ -196,7 +197,9 @@ export namespace Components {
     'slide': boolean;
   }
   interface AppEmbed {}
-  interface AppExpansionPanel {}
+  interface AppExpansionPanel {
+    'expander': boolean;
+  }
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -220,6 +223,7 @@ export namespace Components {
   interface AppImage {
     'deck': boolean;
     'deleteBackground': boolean;
+    'expander': boolean;
     'selectedElement': HTMLElement;
     'slide': boolean;
   }
@@ -1184,6 +1188,7 @@ declare namespace LocalJSX {
   interface AppColorTextBackground {
     'colorType'?: 'text' | 'background';
     'deck'?: boolean;
+    'expander'?: boolean;
     'moreColors'?: boolean;
     'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
@@ -1261,7 +1266,9 @@ declare namespace LocalJSX {
     'slide'?: boolean;
   }
   interface AppEmbed {}
-  interface AppExpansionPanel {}
+  interface AppExpansionPanel {
+    'expander'?: boolean;
+  }
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -1292,6 +1299,7 @@ declare namespace LocalJSX {
   interface AppImage {
     'deck'?: boolean;
     'deleteBackground'?: boolean;
+    'expander'?: boolean;
     'onAction'?: (event: CustomEvent<ImageAction>) => void;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
