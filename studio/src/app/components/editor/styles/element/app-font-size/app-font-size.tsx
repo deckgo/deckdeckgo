@@ -35,7 +35,7 @@ export class AppFontSize {
         return;
       }
 
-      const property: string = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-font-size');
+      const property: string = this.selectedElement.style.getPropertyValue(this.selector);
 
       if (property === '50%') {
         resolve(FontSize.VERY_SMALL);
@@ -65,16 +65,16 @@ export class AppFontSize {
         return;
       }
 
-      this.selectedElement.style.removeProperty('--deckgo-highlight-code-font-size');
+      this.selectedElement.style.removeProperty(this.selector);
 
       if (this.currentFontSize === FontSize.VERY_SMALL) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '50%');
+        this.selectedElement.style.setProperty(this.selector, '50%');
       } else if (this.currentFontSize === FontSize.SMALL) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '75%');
+        this.selectedElement.style.setProperty(this.selector, '75%');
       } else if (this.currentFontSize === FontSize.BIG) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '150%');
+        this.selectedElement.style.setProperty(this.selector, '150%');
       } else if (this.currentFontSize === FontSize.VERY_BIG) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '200%');
+        this.selectedElement.style.setProperty(this.selector, '200%');
       }
 
       this.codeDidChange.emit();
