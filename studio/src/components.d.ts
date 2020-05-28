@@ -228,9 +228,11 @@ export namespace Components {
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
   }
   interface AppImageElement {
-    'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
+  }
+  interface AppImageStyle {
+    'selectedElement': HTMLElement;
   }
   interface AppInactivity {
     'fullscreen': boolean;
@@ -310,6 +312,7 @@ export namespace Components {
     'chart': boolean;
     'code': boolean;
     'fonts': boolean;
+    'image': boolean;
     'images': boolean;
     'qrCode': boolean;
     'shapes': boolean;
@@ -673,6 +676,12 @@ declare global {
     new (): HTMLAppImageElementElement;
   };
 
+  interface HTMLAppImageStyleElement extends Components.AppImageStyle, HTMLStencilElement {}
+  var HTMLAppImageStyleElement: {
+    prototype: HTMLAppImageStyleElement;
+    new (): HTMLAppImageStyleElement;
+  };
+
   interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {}
   var HTMLAppInactivityElement: {
     prototype: HTMLAppInactivityElement;
@@ -1020,6 +1029,7 @@ declare global {
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-element': HTMLAppImageElementElement;
+    'app-image-style': HTMLAppImageStyleElement;
     'app-inactivity': HTMLAppInactivityElement;
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
@@ -1204,7 +1214,6 @@ declare namespace LocalJSX {
   interface AppDeckStyle {
     'blockSlide'?: EventEmitter<boolean>;
     'deckDidChange'?: EventEmitter<HTMLElement>;
-    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'signIn'?: EventEmitter<void>;
   }
   interface AppDeckTransition {
@@ -1285,7 +1294,6 @@ declare namespace LocalJSX {
     'deck'?: boolean;
     'deleteBackground'?: boolean;
     'onAction'?: (event: CustomEvent<ImageAction>) => void;
-    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
   }
@@ -1295,9 +1303,12 @@ declare namespace LocalJSX {
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
   interface AppImageElement {
-    'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
+  }
+  interface AppImageStyle {
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'selectedElement'?: HTMLElement;
   }
   interface AppInactivity {
     'fullscreen'?: boolean;
@@ -1383,6 +1394,7 @@ declare namespace LocalJSX {
     'chart'?: boolean;
     'code'?: boolean;
     'fonts'?: boolean;
+    'image'?: boolean;
     'images'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
@@ -1482,6 +1494,7 @@ declare namespace LocalJSX {
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-image-element': AppImageElement;
+    'app-image-style': AppImageStyle;
     'app-inactivity': AppInactivity;
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
@@ -1593,6 +1606,7 @@ declare module "@stencil/core" {
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-element': LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
+      'app-image-style': LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
       'app-inactivity': LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;

@@ -41,6 +41,9 @@ export class AppSelectTargetElement {
   @Prop()
   images: boolean = false;
 
+  @Prop()
+  image: boolean = false;
+
   @Event()
   applyTo: EventEmitter<TargetElement>;
 
@@ -53,6 +56,8 @@ export class AppSelectTargetElement {
   render() {
     const selectedValue: TargetElement = this.code
       ? TargetElement.CODE
+      : this.image
+      ? TargetElement.IMAGE
       : this.textTarget
       ? TargetElement.TEXT
       : this.sides
@@ -74,6 +79,7 @@ export class AppSelectTargetElement {
         {this.renderSides()}
         {this.renderSlide()}
         {this.renderCode()}
+        {this.renderImage()}
         {this.renderText()}
         {this.renderBackground()}
         {this.renderFonts()}
@@ -149,6 +155,18 @@ export class AppSelectTargetElement {
       return (
         <ion-segment-button value={TargetElement.CODE} mode="md">
           <ion-label>Code</ion-label>
+        </ion-segment-button>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderImage() {
+    if (this.image) {
+      return (
+        <ion-segment-button value={TargetElement.IMAGE} mode="md">
+          <ion-label>Image</ion-label>
         </ion-segment-button>
       );
     } else {

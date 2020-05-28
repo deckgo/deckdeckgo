@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {isIPad} from '@deckdeckgo/utils';
 
@@ -32,8 +32,6 @@ export class AppDeck {
   private deckElement: HTMLElement;
 
   private imageHelper: ImageHelper;
-
-  @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
   async componentWillLoad() {
     this.moreColors = !isIPad();
@@ -77,12 +75,6 @@ export class AppDeck {
     }
   }
 
-  private onImgDidChange($event: CustomEvent<HTMLElement>) {
-    if ($event && $event.detail) {
-      this.imgDidChange.emit($event.detail);
-    }
-  }
-
   render() {
     return [
       <ion-toolbar>
@@ -119,11 +111,7 @@ export class AppDeck {
           moreColors={this.moreColors}
           deck={true}
           onColorChange={() => this.onColorChange()}></app-color-text-background>,
-        <app-image
-          selectedElement={this.deckElement}
-          deck={true}
-          onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
-          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>,
+        <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>,
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onTransitionChange()}></app-deck-transition>;

@@ -10,5 +10,6 @@ export enum TargetElement {
   SIDES = 'sides',
   FONTS = 'fonts',
   SHAPES = 'shapes',
-  IMAGES = 'shape',
+  IMAGES = 'images',
+  IMAGE = 'image',
 }

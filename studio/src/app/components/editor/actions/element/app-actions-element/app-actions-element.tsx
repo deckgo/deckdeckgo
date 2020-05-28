@@ -541,7 +541,6 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         slide: this.slide,
-        imgDidChange: this.imgDidChange,
       },
       mode: 'md',
       showBackdrop: false,

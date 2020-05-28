@@ -76,8 +76,17 @@ export class AppElementStyle {
 
     this.demo = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DEMO;
 
-    // prettier-ignore
-    this.applyToTargetElement = this.code ? TargetElement.CODE : (this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : (this.author || this.split ? TargetElement.SIDES : TargetElement.SLIDE)));
+    this.applyToTargetElement = this.image
+      ? TargetElement.IMAGE
+      : this.code
+      ? TargetElement.CODE
+      : this.qrCode || this.poll
+      ? TargetElement.QR_CODE
+      : this.chart
+      ? TargetElement.CHART
+      : this.author || this.split
+      ? TargetElement.SIDES
+      : TargetElement.SLIDE;
 
     this.moreColors = !isIPad();
   }
@@ -160,6 +169,7 @@ export class AppElementStyle {
         qrCode={this.qrCode || this.poll}
         chart={this.chart || this.poll}
         code={this.code}
+        image={this.image}
         sides={this.author || this.split}
         transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
@@ -196,6 +206,12 @@ export class AppElementStyle {
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-reveal selectedElement={this.selectedElement} onToggleReveal={() => this.closePopover()}></app-reveal>;
+    } else if (this.applyToTargetElement === TargetElement.IMAGE) {
+      return (
+        <app-image-style
+          selectedElement={this.selectedElement}
+          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>
+      );
     } else {
       return [
         <app-color-text-background
@@ -215,11 +231,7 @@ export class AppElementStyle {
     }
 
     return (
-      <app-image
-        selectedElement={this.selectedElement}
-        deck={true}
-        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
-        onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
+      <app-image selectedElement={this.selectedElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>
     );
   }
 }

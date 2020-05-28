@@ -1,4 +1,4 @@
-import {Component, Element, Prop, h, EventEmitter} from '@stencil/core';
+import {Component, Element, Prop, h} from '@stencil/core';
 
 import {ImageAction} from '../../../utils/editor/image-action';
 
@@ -15,17 +15,8 @@ export class AppImageElement {
   @Prop()
   slide: boolean = false;
 
-  @Prop()
-  imgDidChange: EventEmitter<HTMLElement>;
-
   private async closePopoverWithoutResults() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
-  }
-
-  private onImgDidChange($event: CustomEvent<HTMLElement>) {
-    if ($event && $event.detail) {
-      this.imgDidChange.emit($event.detail);
-    }
   }
 
   private async onAction($event: CustomEvent<ImageAction>) {
@@ -42,11 +33,7 @@ export class AppImageElement {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <app-image
-        selectedElement={this.selectedElement}
-        slide={this.slide}
-        onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}
-        onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>,
+      <app-image selectedElement={this.selectedElement} slide={this.slide} onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>,
     ];
   }
 }
