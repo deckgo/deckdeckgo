@@ -5,6 +5,10 @@ app-expansion-panel {
     > div {
       overflow: hidden;
       transition: height 0.25s ease-in;
+
+      ion-list[class*="list"] {
+        padding: 0;
+      }
     }
 
     > ion-item {

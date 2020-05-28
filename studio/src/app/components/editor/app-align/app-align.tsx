@@ -49,7 +49,7 @@ export class AppAlign {
 
   private renderAlign(align: TextAlign, text: string) {
     return (
-      <ion-item onClick={() => this.updateAlign(align)} class={this.align == align ? 'active' : undefined}>
+      <ion-item onClick={() => this.updateAlign(align)} class={`align ${this.align == align ? 'active' : undefined}`}>
         <ion-icon slot="start" src={`/assets/icons/align-${align}.svg`} role="presentation"></ion-icon>
         <ion-label>{text}</ion-label>
       </ion-item>
