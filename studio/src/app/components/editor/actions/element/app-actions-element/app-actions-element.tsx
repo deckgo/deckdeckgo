@@ -1067,6 +1067,7 @@ export class AppActionsElement {
           {this.renderImages()}
           {this.renderCodeOptions()}
           {this.renderMathOptions()}
+          {this.renderTransform()}
         </ion-buttons>
 
         <ion-buttons slot="end">
@@ -1129,9 +1130,8 @@ export class AppActionsElement {
 
   private renderEdit() {
     const classSlide: string | undefined = this.slide && this.isSlideEditable() ? undefined : 'hidden';
-    const classToggle: string | undefined = !this.slide && !this.shape ? undefined : 'hidden';
 
-    return [
+    return (
       <ion-tab-button
         onClick={() =>
           this.slideNodeName === 'deckgo-slide-poll'
@@ -1148,12 +1148,19 @@ export class AppActionsElement {
         class={classSlide}>
         <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label>Options</ion-label>
-      </ion-tab-button>,
+      </ion-tab-button>
+    );
+  }
+
+  private renderTransform() {
+    const classToggle: string | undefined = !this.slide && !this.shape ? undefined : 'hidden';
+
+    return (
       <ion-tab-button onClick={() => this.openTransform()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
         <ion-icon src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
         <ion-label>Transform</ion-label>
-      </ion-tab-button>,
-    ];
+      </ion-tab-button>
+    );
   }
 
   private renderShapes() {
@@ -1172,8 +1179,8 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
-        <ion-icon src="/assets/icons/ionicons/code.svg"></ion-icon>
-        <ion-label>Attributes</ion-label>
+        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label>Options</ion-label>
       </ion-tab-button>
     );
   }
@@ -1182,8 +1189,8 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openMath()} aria-label="Math options" color="primary" mode="md" class={classSlideMath}>
-        <ion-icon src="/assets/icons/math.svg"></ion-icon>
-        <ion-label>Attributes</ion-label>
+        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label>Options</ion-label>
       </ion-tab-button>
     );
   }
