@@ -43,7 +43,7 @@ export class AppColorDeckSlide {
 
   private indexes: number[] = [...Array(99).keys()];
 
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   async componentWillLoad() {
     this.chartType = await ChartUtils.initSlideChartType(this.selectedElement);
@@ -129,7 +129,7 @@ export class AppColorDeckSlide {
         this.selectedElement.style.setProperty('--deckgo-chart-text-color', selectedColor);
       }
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });

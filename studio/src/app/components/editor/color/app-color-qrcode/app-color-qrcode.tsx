@@ -29,7 +29,7 @@ export class AppColorQRCode {
   @State()
   private applyColorType: ApplyColorType = ApplyColorType.QR_CODE;
 
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   async componentWillLoad() {
     await this.initCurrentColors();
@@ -93,7 +93,7 @@ export class AppColorQRCode {
       this.color = null;
       this.colorOpacity = 100;
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -114,7 +114,7 @@ export class AppColorQRCode {
         this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', selectedColor);
       }
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });

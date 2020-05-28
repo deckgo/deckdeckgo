@@ -33,7 +33,7 @@ export class AppColorTextBackground {
   @State()
   private colorOpacity: number = 100;
 
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   async componentWillLoad() {
     await this.initCurrentColors();
@@ -99,7 +99,7 @@ export class AppColorTextBackground {
       this.color = null;
       this.colorOpacity = 100;
 
-      this.colorChange.emit(this.deck);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -120,7 +120,7 @@ export class AppColorTextBackground {
         this.selectedElement.style.color = selectedColor;
       }
 
-      this.colorChange.emit(this.deck);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -141,7 +141,7 @@ export class AppColorTextBackground {
         this.selectedElement.style.background = selectedColor;
       }
 
-      this.colorChange.emit(this.deck);
+      this.colorChange.emit();
 
       resolve();
     });

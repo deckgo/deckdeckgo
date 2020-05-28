@@ -1128,6 +1128,7 @@ declare namespace LocalJSX {
     'slideCopy'?: EventEmitter;
   }
   interface AppAlign {
+    'onAlignChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppAvatar {
@@ -1149,22 +1150,22 @@ declare namespace LocalJSX {
   }
   interface AppColorChart {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorCode {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorQrcode {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorSides {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
     'template'?: 'split' | 'author';
   }
@@ -1172,7 +1173,7 @@ declare namespace LocalJSX {
     'colorType'?: 'text' | 'background';
     'deck'?: boolean;
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
     'shape'?: boolean;
     'slide'?: boolean;
@@ -1240,7 +1241,7 @@ declare namespace LocalJSX {
   interface AppElementStyle {
     'imageHelper'?: ImageHelper;
     'imgDidChange'?: EventEmitter<HTMLElement>;
-    'onStyleDidChange'?: (event: CustomEvent<boolean>) => void;
+    'onStyleDidChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
   }

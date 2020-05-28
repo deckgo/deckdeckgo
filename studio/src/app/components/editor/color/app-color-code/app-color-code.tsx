@@ -45,7 +45,7 @@ export class AppColorCode {
   @State()
   private highlightColorOpacity: number = 100;
 
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   async componentWillLoad() {
     await this.initColor();
@@ -248,7 +248,7 @@ export class AppColorCode {
   }
 
   private emitColorChange() {
-    this.colorChange.emit(false);
+    this.colorChange.emit();
   }
 
   private updateOpacity($event: CustomEvent<RangeChangeEventDetail>, opacityFunction: Function): Promise<void> {

@@ -5,6 +5,7 @@ import {isIPad} from '@deckdeckgo/utils';
 import {TargetElement} from '../../../../utils/editor/target-element';
 import {SlotType} from '../../../../utils/editor/slot-type';
 import {ImageAction} from '../../../../utils/editor/image-action';
+
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
 @Component({
@@ -26,7 +27,7 @@ export class AppElementStyle {
   @Prop()
   imageHelper: ImageHelper;
 
-  @Event() styleDidChange: EventEmitter<boolean>;
+  @Event() styleDidChange: EventEmitter<void>;
 
   @State()
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
@@ -99,10 +100,8 @@ export class AppElementStyle {
     }
   }
 
-  private colorChange($event: CustomEvent<boolean>) {
-    if ($event) {
-      this.styleDidChange.emit($event.detail);
-    }
+  private emitStyleChange() {
+    this.styleDidChange.emit();
   }
 
   private async onImageAction($event: CustomEvent<ImageAction>) {
@@ -137,7 +136,7 @@ export class AppElementStyle {
       </ion-toolbar>,
       this.renderSelectTarget(),
 
-      this.renderColorOptions(),
+      this.renderStyleOptions(),
     ];
   }
 
@@ -157,34 +156,23 @@ export class AppElementStyle {
     );
   }
 
-  private renderColorOptions() {
+  private renderStyleOptions() {
     if (this.applyToTargetElement === TargetElement.QR_CODE) {
       return (
-        <app-color-qrcode
-          selectedElement={this.selectedElement}
-          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
-          moreColors={this.moreColors}></app-color-qrcode>
+        <app-color-qrcode selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-qrcode>
       );
     } else if (this.applyToTargetElement === TargetElement.CHART) {
       return (
-        <app-color-chart
-          selectedElement={this.selectedElement}
-          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
-          moreColors={this.moreColors}></app-color-chart>
+        <app-color-chart selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-chart>
       );
     } else if (this.applyToTargetElement === TargetElement.CODE) {
-      return (
-        <app-color-code
-          selectedElement={this.selectedElement}
-          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
-          moreColors={this.moreColors}></app-color-code>
-      );
+      return <app-color-code selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-code>;
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (
         <app-color-sides
           selectedElement={this.selectedElement}
           template={this.author ? 'author' : 'split'}
-          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}
+          onColorChange={() => this.emitStyleChange()}
           moreColors={this.moreColors}></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
@@ -193,18 +181,19 @@ export class AppElementStyle {
           colorType={'background'}
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
-          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}></app-color-text-background>,
+          onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
         this.renderImage(),
       ];
     } else {
-      return (
+      return [
         <app-color-text-background
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
           slide={this.slide}
           shape={this.shape}
-          onColorChange={($event: CustomEvent<boolean>) => this.colorChange($event)}></app-color-text-background>
-      );
+          onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
+        <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
+      ];
     }
   }
 

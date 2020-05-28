@@ -32,7 +32,7 @@ export class AppColorSides {
   @State()
   private applyColorType: ApplyColorType = ApplyColorType.TEXT;
 
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   @State()
   private endSide: boolean = false;
@@ -99,7 +99,7 @@ export class AppColorSides {
       this.color = null;
       this.colorOpacity = 100;
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -120,7 +120,7 @@ export class AppColorSides {
         this.selectedElement.style.setProperty(`--slide-${this.template}-color-${this.endSide ? 'end' : 'start'}`, selectedColor);
       }
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });
