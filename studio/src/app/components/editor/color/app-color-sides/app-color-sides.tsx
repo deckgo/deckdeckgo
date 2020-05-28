@@ -155,27 +155,33 @@ export class AppColorSides {
     return [
       <ion-list>
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Selected side</ion-label>
+          <ion-label>Style which side of the slide?</ion-label>
         </ion-item-divider>
+
         <ion-item>
           <ion-label>{this.endSide ? 'End' : 'Start'}</ion-label>
           <ion-toggle slot="end" checked={this.endSide} mode="md" color="primary" onIonChange={() => this.toggleSide()}></ion-toggle>
         </ion-item>
-        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} class="ion-padding-top" value={ApplyColorType.TEXT}>
-          <ion-item-divider class="ion-padding-top">
-            <ion-label>Apply color to</ion-label>
-          </ion-item-divider>
 
-          <ion-item>
-            <ion-label>Text</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.TEXT} mode="md"></ion-radio>
-          </ion-item>
+        <ion-item-divider class="ion-padding-top">
+          <ion-label>Apply which color to this side?</ion-label>
+        </ion-item-divider>
 
-          <ion-item>
-            <ion-label>Background</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
+        <ion-item class="select">
+          <ion-label>Apply a color to</ion-label>
+
+          <ion-select
+            value={this.applyColorType}
+            placeholder="Apply a color to"
+            onIonChange={($event: CustomEvent) => this.selectApplyType($event)}
+            interface="popover"
+            mode="md"
+            class="ion-padding-start ion-padding-end">
+            <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>,
+            <ion-select-option value={ApplyColorType.BACKGROUND}>Background</ion-select-option>,
+          </ion-select>
+        </ion-item>
+
         <ion-item-divider class="ion-padding-top">
           <ion-label>
             Opacity <small>{this.colorOpacity}%</small>

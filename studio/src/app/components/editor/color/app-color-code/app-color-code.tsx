@@ -307,7 +307,7 @@ export class AppColorCode {
         <ion-label slot="title">Colors</ion-label>
         <ion-list>
           <ion-item class="select">
-            <ion-label>Apply color to</ion-label>
+            <ion-label>Apply a color to</ion-label>
 
             <ion-select
               value={this.codeColorType}

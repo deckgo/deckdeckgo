@@ -174,15 +174,15 @@ export class AppColorDeckSlide {
   render() {
     return [
       <ion-item-divider class="ion-padding-top">
-        <ion-label>Apply color to</ion-label>
+        <ion-label>Apply a color to</ion-label>
       </ion-item-divider>,
 
       <ion-item class="select">
-        <ion-label>Apply color to</ion-label>
+        <ion-label>Apply a color to</ion-label>
 
         <ion-select
           value={this.applyColorType}
-          placeholder="Apply color to"
+          placeholder="Apply a color to"
           onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
           interface="popover"
           mode="md"
