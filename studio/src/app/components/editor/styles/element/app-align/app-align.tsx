@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {AlignUtils, TextAlign} from '../../../utils/editor/align.utils';
+import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
 
 @Component({
   tag: 'app-align',

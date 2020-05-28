@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {SlotUtils} from '../../../utils/editor/slot.utils';
+import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-reveal',

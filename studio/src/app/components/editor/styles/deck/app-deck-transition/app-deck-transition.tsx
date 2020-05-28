@@ -4,7 +4,7 @@ import {interval, Subscription} from 'rxjs';
 
 @Component({
   tag: 'app-deck-transition',
-  styleUrl: 'app-deck-transition.scss'
+  styleUrl: 'app-deck-transition.scss',
 })
 export class AppDeckTransition {
   @Element() el: HTMLElement;
