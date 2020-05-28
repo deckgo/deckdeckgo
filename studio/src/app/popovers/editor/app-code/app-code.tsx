@@ -4,14 +4,6 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
-enum CodeFontSize {
-  VERY_SMALL,
-  SMALL,
-  NORMAL,
-  BIG,
-  VERY_BIG,
-}
-
 @Component({
   tag: 'app-code',
   styleUrl: 'app-code.scss',
@@ -27,9 +19,6 @@ export class AppCode {
 
   @State()
   private currentLanguage: PrismLanguage | undefined;
-
-  @State()
-  private currentFontSize: CodeFontSize = undefined;
 
   @State()
   private lineNumbers: boolean = false;
@@ -52,7 +41,6 @@ export class AppCode {
     return new Promise<void>(async (resolve) => {
       await this.initCurrentLanguage();
 
-      this.currentFontSize = await this.initFontSize();
       this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
 
       resolve();
@@ -67,61 +55,6 @@ export class AppCode {
 
   private emitCodeDidChange() {
     this.codeDidChange.emit(this.selectedElement);
-  }
-
-  private initFontSize(): Promise<CodeFontSize> {
-    return new Promise<CodeFontSize>((resolve) => {
-      if (!this.selectedElement || !this.selectedElement.style) {
-        resolve(null);
-        return;
-      }
-
-      const property: string = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-font-size');
-
-      if (property === '50%') {
-        resolve(CodeFontSize.VERY_SMALL);
-      } else if (property === '75%') {
-        resolve(CodeFontSize.SMALL);
-      } else if (property === '150%') {
-        resolve(CodeFontSize.BIG);
-      } else if (property === '200%') {
-        resolve(CodeFontSize.VERY_BIG);
-      } else {
-        resolve(CodeFontSize.NORMAL);
-      }
-    });
-  }
-
-  private toggleFontSize($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
-
-      this.currentFontSize = $event.detail.value;
-
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
-
-      this.selectedElement.style.removeProperty('--deckgo-highlight-code-font-size');
-
-      if (this.currentFontSize === CodeFontSize.VERY_SMALL) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '50%');
-      } else if (this.currentFontSize === CodeFontSize.SMALL) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '75%');
-      } else if (this.currentFontSize === CodeFontSize.BIG) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '150%');
-      } else if (this.currentFontSize === CodeFontSize.VERY_BIG) {
-        this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '200%');
-      }
-
-      this.emitCodeDidChange();
-
-      resolve();
-    });
   }
 
   private toggleLineNumbers($event: CustomEvent): Promise<void> {
@@ -184,28 +117,6 @@ export class AppCode {
               <div class="select-icon-inner"></div>
             </div>
           </div>
-        </ion-item>
-
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>Font size</ion-label>
-        </ion-item-divider>
-
-        <ion-item class="select">
-          <ion-label>Size</ion-label>
-
-          <ion-select
-            value={this.currentFontSize}
-            placeholder="Select a font size"
-            onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
-            interface="popover"
-            mode="md"
-            class="ion-padding-start ion-padding-end">
-            <ion-select-option value={CodeFontSize.VERY_SMALL}>Very small</ion-select-option>
-            <ion-select-option value={CodeFontSize.SMALL}>Small</ion-select-option>
-            <ion-select-option value={CodeFontSize.NORMAL}>Normal</ion-select-option>
-            <ion-select-option value={CodeFontSize.BIG}>Big</ion-select-option>
-            <ion-select-option value={CodeFontSize.VERY_BIG}>Very big</ion-select-option>
-          </ion-select>
         </ion-item>
 
         <ion-item>

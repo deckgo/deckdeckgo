@@ -223,8 +223,9 @@ export class AppElementStyle {
       );
     } else {
       return [
+        this.renderFontCode(),
         <app-color-text-background
-          expander={!this.slide && !this.code}
+          expander={!this.slide}
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
           slide={this.slide}
@@ -252,5 +253,13 @@ export class AppElementStyle {
     }
 
     return <app-list selectedElement={this.selectedElement} onToggleList={() => this.closePopover()}></app-list>;
+  }
+
+  private renderFontCode() {
+    if (!this.code) {
+      return undefined;
+    }
+
+    return <app-font-code selectedElement={this.selectedElement} onCodeDidChange={() => this.emitStyleChange()}></app-font-code>;
   }
 }

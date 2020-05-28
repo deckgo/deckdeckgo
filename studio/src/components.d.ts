@@ -212,6 +212,9 @@ export namespace Components {
     'editable': boolean;
     'tags': string[];
   }
+  interface AppFontCode {
+    'selectedElement': HTMLElement;
+  }
   interface AppFooter {
     'display': 'menu' | 'landing';
   }
@@ -620,6 +623,12 @@ declare global {
     new (): HTMLAppFeedCardTagsElement;
   };
 
+  interface HTMLAppFontCodeElement extends Components.AppFontCode, HTMLStencilElement {}
+  var HTMLAppFontCodeElement: {
+    prototype: HTMLAppFontCodeElement;
+    new (): HTMLAppFontCodeElement;
+  };
+
   interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
@@ -1023,6 +1032,7 @@ declare global {
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
+    'app-font-code': HTMLAppFontCodeElement;
     'app-footer': HTMLAppFooterElement;
     'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
@@ -1283,6 +1293,10 @@ declare namespace LocalJSX {
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];
   }
+  interface AppFontCode {
+    'onCodeDidChange'?: (event: CustomEvent<void>) => void;
+    'selectedElement'?: HTMLElement;
+  }
   interface AppFooter {
     'display'?: 'menu' | 'landing';
   }
@@ -1493,6 +1507,7 @@ declare namespace LocalJSX {
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
+    'app-font-code': AppFontCode;
     'app-footer': AppFooter;
     'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
@@ -1605,6 +1620,7 @@ declare module "@stencil/core" {
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;
       'app-feed-card-tags': LocalJSX.AppFeedCardTags & JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement>;
+      'app-font-code': LocalJSX.AppFontCode & JSXBase.HTMLAttributes<HTMLAppFontCodeElement>;
       'app-footer': LocalJSX.AppFooter & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
       'app-fullscreen-info': LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
       'app-get-help': LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;

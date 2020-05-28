@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {alertController, RangeChangeEventDetail} from '@ionic/core';
 
@@ -23,8 +23,6 @@ enum CodeColorType {
   styleUrl: 'app-color-code.scss',
 })
 export class AppColorCode {
-  @Element() el: HTMLElement;
-
   @Prop()
   selectedElement: HTMLElement;
 
@@ -353,7 +351,7 @@ export class AppColorCode {
   private renderCategoryColor() {
     return (
       <app-expansion-panel expanded={'close'}>
-        <ion-label slot="title">Colors</ion-label>
+        <ion-label slot="title">More colors</ion-label>
         <ion-list>
           <ion-item class="select">
             <ion-label>Apply a color to</ion-label>
