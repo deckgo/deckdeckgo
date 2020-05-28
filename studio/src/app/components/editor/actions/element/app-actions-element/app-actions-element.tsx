@@ -1079,9 +1079,9 @@ export class AppActionsElement {
     return (
       <ion-toolbar>
         <ion-buttons slot="start">
+          {this.renderStyle()}
           {this.renderEdit()}
           {this.renderShapes()}
-          {this.renderStyle()}
           {this.renderReveal()}
           {this.renderAlign()}
           {this.renderList()}
