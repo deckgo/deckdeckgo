@@ -1,3 +1,23 @@
+<a name="1.3.0"></a>
+
+# 1.3.0 (2020-05-28)
+
+### Features
+
+- theming for the carbon terminal to showcase your code ([#733](https://github.com/deckgo/deckdeckgo/issues/733))
+- select as popover for a quicker access ([#738](https://github.com/deckgo/deckdeckgo/pull/738))
+
+### UX
+
+- improve onboarding by adding a mini wizard to the create slide process ([#729](https://github.com/deckgo/deckdeckgo/pull/729))
+- bring all actions together in two distinct groups: style or options ([#742](https://github.com/deckgo/deckdeckgo/pull/742) and [#744](https://github.com/deckgo/deckdeckgo/pull/744))
+
+### Fix
+
+- support offline access to the editor directly with the browser's url ([#734](https://github.com/deckgo/deckdeckgo/pull/734))
+- handle background Firestore Field.delete when going offline ([#735](https://github.com/deckgo/deckdeckgo/pull/735))
+- Chrome requires two clicks to focus element if pseudo CSS is being used ([#739](https://github.com/deckgo/deckdeckgo/pull/739))
+
 <a name="1.2.0"></a>
 
 # 1.2.0 (2020-05-15)
