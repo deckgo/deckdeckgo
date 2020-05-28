@@ -142,7 +142,7 @@ export class AppElementStyle {
   }
 
   private renderSelectTarget() {
-    const elementTarget: boolean = !this.slide && !this.code && !this.shape;
+    const elementTarget: boolean = !this.slide && !this.shape;
 
     return (
       <app-select-target-element

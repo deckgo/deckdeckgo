@@ -51,51 +51,37 @@ export class AppSelectTargetElement {
   }
 
   render() {
-    if (!this.textTarget && !this.slide && !this.shapes) {
-      if (!this.code) {
-        return undefined;
-      }
+    const selectedValue: TargetElement = this.code
+      ? TargetElement.CODE
+      : this.textTarget
+      ? TargetElement.TEXT
+      : this.sides
+      ? TargetElement.SIDES
+      : this.qrCode
+      ? TargetElement.QR_CODE
+      : this.chart
+      ? TargetElement.CHART
+      : this.shapes
+      ? TargetElement.SHAPES
+      : this.images
+      ? TargetElement.IMAGES
+      : TargetElement.SLIDE;
 
-      return (
-        <ion-segment mode="md" class="ion-padding-bottom" value={TargetElement.CODE} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
-          <ion-segment-button value={TargetElement.CODE} mode="md">
-            <ion-label>Code</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value={TargetElement.SECTION} mode="md">
-            <ion-label>Section</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      );
-    } else {
-      const selectedValue: TargetElement = this.textTarget
-        ? TargetElement.TEXT
-        : this.sides
-        ? TargetElement.SIDES
-        : this.qrCode
-        ? TargetElement.QR_CODE
-        : this.chart
-        ? TargetElement.CHART
-        : this.shapes
-        ? TargetElement.SHAPES
-        : this.images
-        ? TargetElement.IMAGES
-        : TargetElement.SLIDE;
-
-      return (
-        <ion-segment mode="md" class="ion-padding-bottom" value={selectedValue} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
-          {this.renderQRCode()}
-          {this.renderChart()}
-          {this.renderSides()}
-          {this.renderSlide()}
-          {this.renderText()}
-          {this.renderBackground()}
-          {this.renderFonts()}
-          {this.renderTransition()}
-          {this.renderShapes()}
-          {this.renderImages()}
-        </ion-segment>
-      );
-    }
+    return (
+      <ion-segment mode="md" class="ion-padding-bottom" value={selectedValue} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+        {this.renderQRCode()}
+        {this.renderChart()}
+        {this.renderSides()}
+        {this.renderSlide()}
+        {this.renderCode()}
+        {this.renderText()}
+        {this.renderBackground()}
+        {this.renderFonts()}
+        {this.renderTransition()}
+        {this.renderShapes()}
+        {this.renderImages()}
+      </ion-segment>
+    );
   }
 
   private renderQRCode() {
@@ -151,6 +137,18 @@ export class AppSelectTargetElement {
       return (
         <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
           <ion-label>Background</ion-label>
+        </ion-segment-button>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderCode() {
+    if (this.code) {
+      return (
+        <ion-segment-button value={TargetElement.CODE} mode="md">
+          <ion-label>Code</ion-label>
         </ion-segment-button>
       );
     } else {
