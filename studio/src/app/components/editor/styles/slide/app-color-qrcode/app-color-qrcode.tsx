@@ -1,7 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
   QR_CODE,

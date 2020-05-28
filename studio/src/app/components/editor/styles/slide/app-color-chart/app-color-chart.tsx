@@ -1,10 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import {SlideChartType} from '../../../../models/data/slide';
+import {SlideChartType} from '../../../../../models/data/slide';
 
-import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
-import {ChartUtils} from '../../../../utils/editor/chart.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
+import {ChartUtils} from '../../../../../utils/editor/chart.utils';
 
 enum ApplyColorType {
   FILL,

@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import {alertController, RangeChangeEventDetail} from '@ionic/core';
-import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 enum CodeColorType {
   COMMENTS,
