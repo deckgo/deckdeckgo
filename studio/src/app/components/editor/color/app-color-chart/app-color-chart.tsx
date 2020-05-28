@@ -9,7 +9,7 @@ import {ChartUtils} from '../../../../utils/editor/chart.utils';
 enum ApplyColorType {
   FILL,
   STROKE,
-  TEXT,
+  FONT,
   AXIS,
   GRID,
 }
@@ -241,7 +241,7 @@ export class AppColorDeckSlide {
     const options = [
       <ion-select-option value={ApplyColorType.FILL}>Fill</ion-select-option>,
       <ion-select-option value={ApplyColorType.STROKE}>Stroke</ion-select-option>,
-      <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>,
+      <ion-select-option value={ApplyColorType.FONT}>Font</ion-select-option>,
     ];
 
     if (this.chartType != SlideChartType.PIE) {
