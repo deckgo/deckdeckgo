@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-enum CodeFontSize {
+enum FontSize {
   VERY_SMALL,
   SMALL,
   NORMAL,
@@ -9,14 +9,17 @@ enum CodeFontSize {
 }
 
 @Component({
-  tag: 'app-font-code',
+  tag: 'app-font-size',
 })
-export class AppColorCode {
+export class AppFontSize {
   @Prop()
   selectedElement: HTMLElement;
 
+  @Prop()
+  selector: '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size' = '--deckgo-highlight-code-font-size';
+
   @State()
-  private currentFontSize: CodeFontSize = undefined;
+  private currentFontSize: FontSize = undefined;
 
   @Event() codeDidChange: EventEmitter<void>;
 
@@ -24,8 +27,8 @@ export class AppColorCode {
     this.currentFontSize = await this.initFontSize();
   }
 
-  private initFontSize(): Promise<CodeFontSize> {
-    return new Promise<CodeFontSize>((resolve) => {
+  private initFontSize(): Promise<FontSize> {
+    return new Promise<FontSize>((resolve) => {
       if (!this.selectedElement || !this.selectedElement.style) {
         resolve(null);
         return;
@@ -34,15 +37,15 @@ export class AppColorCode {
       const property: string = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-font-size');
 
       if (property === '50%') {
-        resolve(CodeFontSize.VERY_SMALL);
+        resolve(FontSize.VERY_SMALL);
       } else if (property === '75%') {
-        resolve(CodeFontSize.SMALL);
+        resolve(FontSize.SMALL);
       } else if (property === '150%') {
-        resolve(CodeFontSize.BIG);
+        resolve(FontSize.BIG);
       } else if (property === '200%') {
-        resolve(CodeFontSize.VERY_BIG);
+        resolve(FontSize.VERY_BIG);
       } else {
-        resolve(CodeFontSize.NORMAL);
+        resolve(FontSize.NORMAL);
       }
     });
   }
@@ -63,13 +66,13 @@ export class AppColorCode {
 
       this.selectedElement.style.removeProperty('--deckgo-highlight-code-font-size');
 
-      if (this.currentFontSize === CodeFontSize.VERY_SMALL) {
+      if (this.currentFontSize === FontSize.VERY_SMALL) {
         this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '50%');
-      } else if (this.currentFontSize === CodeFontSize.SMALL) {
+      } else if (this.currentFontSize === FontSize.SMALL) {
         this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '75%');
-      } else if (this.currentFontSize === CodeFontSize.BIG) {
+      } else if (this.currentFontSize === FontSize.BIG) {
         this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '150%');
-      } else if (this.currentFontSize === CodeFontSize.VERY_BIG) {
+      } else if (this.currentFontSize === FontSize.VERY_BIG) {
         this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '200%');
       }
 
@@ -95,11 +98,11 @@ export class AppColorCode {
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={CodeFontSize.VERY_SMALL}>Very small</ion-select-option>
-              <ion-select-option value={CodeFontSize.SMALL}>Small</ion-select-option>
-              <ion-select-option value={CodeFontSize.NORMAL}>Normal</ion-select-option>
-              <ion-select-option value={CodeFontSize.BIG}>Big</ion-select-option>
-              <ion-select-option value={CodeFontSize.VERY_BIG}>Very big</ion-select-option>
+              <ion-select-option value={FontSize.VERY_SMALL}>Very small</ion-select-option>
+              <ion-select-option value={FontSize.SMALL}>Small</ion-select-option>
+              <ion-select-option value={FontSize.NORMAL}>Normal</ion-select-option>
+              <ion-select-option value={FontSize.BIG}>Big</ion-select-option>
+              <ion-select-option value={FontSize.VERY_BIG}>Very big</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>

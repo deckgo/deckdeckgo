@@ -223,7 +223,9 @@ export class AppElementStyle {
       );
     } else {
       return [
-        this.renderFontCode(),
+        this.renderFontSize(),
+        <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
+        this.renderList(),
         <app-color-text-background
           expander={!this.slide}
           selectedElement={this.selectedElement}
@@ -231,8 +233,6 @@ export class AppElementStyle {
           slide={this.slide}
           shape={this.shape}
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
-        <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
-        this.renderList(),
       ];
     }
   }
@@ -255,11 +255,16 @@ export class AppElementStyle {
     return <app-list selectedElement={this.selectedElement} onToggleList={() => this.closePopover()}></app-list>;
   }
 
-  private renderFontCode() {
-    if (!this.code) {
+  private renderFontSize() {
+    if (!this.code && !this.math) {
       return undefined;
     }
 
-    return <app-font-code selectedElement={this.selectedElement} onCodeDidChange={() => this.emitStyleChange()}></app-font-code>;
+    return (
+      <app-font-size
+        selectedElement={this.selectedElement}
+        selector={this.math ? '--deckgo-math-font-size' : '--deckgo-highlight-code-font-size'}
+        onCodeDidChange={() => this.emitStyleChange()}></app-font-size>
+    );
   }
 }
