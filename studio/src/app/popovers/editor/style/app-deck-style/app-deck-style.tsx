@@ -1,14 +1,14 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {isIPad} from '@deckdeckgo/utils';
 
-import {TargetElement} from '../../../utils/editor/target-element';
-import {ImageAction} from '../../../utils/editor/image-action';
-import {ImageHelper} from '../../../helpers/editor/image.helper';
+import {TargetElement} from '../../../../utils/editor/target-element';
+import {ImageAction} from '../../../../utils/editor/image-action';
+import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
 @Component({
   tag: 'app-deck-style',
-  styleUrl: 'app-deck-style.scss'
+  styleUrl: 'app-deck-style.scss',
 })
 export class AppDeck {
   @Element() el: HTMLElement;
@@ -23,7 +23,7 @@ export class AppDeck {
   deckDidChange: EventEmitter<HTMLElement>;
 
   @State()
-  private applyToTargetElement: TargetElement = TargetElement.COLOR;
+  private applyToTargetElement: TargetElement = TargetElement.TEXT;
 
   @State()
   private moreColors: boolean = true;
@@ -32,8 +32,6 @@ export class AppDeck {
   private deckElement: HTMLElement;
 
   private imageHelper: ImageHelper;
-
-  @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
   async componentWillLoad() {
     this.moreColors = !isIPad();
@@ -77,12 +75,6 @@ export class AppDeck {
     }
   }
 
-  private onImgDidChange($event: CustomEvent<HTMLElement>) {
-    if ($event && $event.detail) {
-      this.imgDidChange.emit($event.detail);
-    }
-  }
-
   render() {
     return [
       <ion-toolbar>
@@ -92,33 +84,37 @@ export class AppDeck {
         </ion-router-link>
       </ion-toolbar>,
       <app-select-target-element
-        colorTarget={true}
+        textTarget={true}
         background={true}
         transition={true}
         fonts={true}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
-      this.renderOptions()
+      this.renderOptions(),
     ];
   }
 
   private renderOptions() {
-    if (this.applyToTargetElement === TargetElement.COLOR) {
+    if (this.applyToTargetElement === TargetElement.TEXT) {
       return (
         <app-color-text-background
+          expander={false}
           selectedElement={this.deckElement}
           moreColors={this.moreColors}
           deck={true}
           onColorChange={() => this.onColorChange()}></app-color-text-background>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
-      return (
-        <app-image
+      return [
+        <app-color-text-background
+          expander={true}
+          colorType={'background'}
           selectedElement={this.deckElement}
+          moreColors={this.moreColors}
           deck={true}
-          onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}
-          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image>
-      );
+          onColorChange={() => this.onColorChange()}></app-color-text-background>,
+        <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>,
+      ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onTransitionChange()}></app-deck-transition>;
     } else if (this.applyToTargetElement === TargetElement.FONTS) {

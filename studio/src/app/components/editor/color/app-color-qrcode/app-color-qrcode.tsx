@@ -5,7 +5,7 @@ import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
   QR_CODE,
-  BACKGROUND,
+  BACKDROP,
 }
 
 @Component({
@@ -29,7 +29,7 @@ export class AppColorQRCode {
   @State()
   private applyColorType: ApplyColorType = ApplyColorType.QR_CODE;
 
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   async componentWillLoad() {
     await this.initCurrentColors();
@@ -49,7 +49,7 @@ export class AppColorQRCode {
 
     let styleColor: InitStyleColor;
 
-    if (this.applyColorType === ApplyColorType.BACKGROUND) {
+    if (this.applyColorType === ApplyColorType.BACKDROP) {
       styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--deckgo-qrcode-background-fill'));
     } else {
       styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--deckgo-qrcode-color-fill'));
@@ -84,7 +84,7 @@ export class AppColorQRCode {
         return;
       }
 
-      if (this.applyColorType === ApplyColorType.BACKGROUND) {
+      if (this.applyColorType === ApplyColorType.BACKDROP) {
         this.selectedElement.style.removeProperty('--deckgo-qrcode-background-fill');
       } else {
         this.selectedElement.style.removeProperty('--deckgo-qrcode-color-fill');
@@ -93,7 +93,7 @@ export class AppColorQRCode {
       this.color = null;
       this.colorOpacity = 100;
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -108,13 +108,13 @@ export class AppColorQRCode {
 
       const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
 
-      if (this.applyColorType === ApplyColorType.BACKGROUND) {
+      if (this.applyColorType === ApplyColorType.BACKDROP) {
         this.selectedElement.style.setProperty('--deckgo-qrcode-background-fill', selectedColor);
       } else {
         this.selectedElement.style.setProperty('--deckgo-qrcode-color-fill', selectedColor);
       }
 
-      this.colorChange.emit(false);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -141,22 +141,26 @@ export class AppColorQRCode {
 
   render() {
     return [
+      <ion-item-divider class="ion-padding-top">
+        <ion-label>Apply a color to</ion-label>
+      </ion-item-divider>,
+
       <ion-list>
-        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} value={ApplyColorType.QR_CODE}>
-          <ion-item-divider class="ion-padding-top">
-            <ion-label>Apply color to</ion-label>
-          </ion-item-divider>
+        <ion-item class="select">
+          <ion-label>Apply a color to</ion-label>
 
-          <ion-item>
-            <ion-label>Fill</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.QR_CODE} mode="md"></ion-radio>
-          </ion-item>
+          <ion-select
+            value={this.applyColorType}
+            placeholder="Apply a color to"
+            onIonChange={($event: CustomEvent) => this.selectApplyType($event)}
+            interface="popover"
+            mode="md"
+            class="ion-padding-start ion-padding-end">
+            <ion-select-option value={ApplyColorType.QR_CODE}>Fill</ion-select-option>,
+            <ion-select-option value={ApplyColorType.BACKDROP}>Backdrop</ion-select-option>,
+          </ion-select>
+        </ion-item>
 
-          <ion-item>
-            <ion-label>Background</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
         <ion-item-divider class="ion-padding-top">
           <ion-label>
             Opacity <small>{this.colorOpacity}%</small>

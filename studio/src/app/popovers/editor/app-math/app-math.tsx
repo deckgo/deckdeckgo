@@ -122,7 +122,7 @@ export class AppMath {
   render() {
     return [
       <ion-toolbar>
-        <h2>Math attributes</h2>
+        <h2>Math options</h2>
         <ion-router-link slot="end" onClick={() => this.closePopover()}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>

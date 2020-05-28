@@ -4,7 +4,7 @@ import {TargetElement} from '../../../utils/editor/target-element';
 
 @Component({
   tag: 'app-select-target-element',
-  styleUrl: 'app-select-target-element.scss'
+  styleUrl: 'app-select-target-element.scss',
 })
 export class AppSelectTargetElement {
   @Prop()
@@ -24,7 +24,7 @@ export class AppSelectTargetElement {
 
   // color is a reserved prop word
   @Prop()
-  colorTarget: boolean = false;
+  textTarget: boolean = false;
 
   @Prop()
   background: boolean = false;
@@ -41,6 +41,9 @@ export class AppSelectTargetElement {
   @Prop()
   images: boolean = false;
 
+  @Prop()
+  image: boolean = false;
+
   @Event()
   applyTo: EventEmitter<TargetElement>;
 
@@ -51,51 +54,40 @@ export class AppSelectTargetElement {
   }
 
   render() {
-    if (!this.colorTarget && !this.slide && !this.shapes) {
-      if (!this.code) {
-        return undefined;
-      }
+    const selectedValue: TargetElement = this.code
+      ? TargetElement.CODE
+      : this.image
+      ? TargetElement.IMAGE
+      : this.textTarget
+      ? TargetElement.TEXT
+      : this.sides
+      ? TargetElement.SIDES
+      : this.qrCode
+      ? TargetElement.QR_CODE
+      : this.chart
+      ? TargetElement.CHART
+      : this.shapes
+      ? TargetElement.SHAPES
+      : this.images
+      ? TargetElement.IMAGES
+      : TargetElement.SLIDE;
 
-      return (
-        <ion-segment mode="md" class="ion-padding-bottom" value={TargetElement.CODE} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
-          <ion-segment-button value={TargetElement.CODE} mode="md">
-            <ion-label>Code</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value={TargetElement.SECTION} mode="md">
-            <ion-label>Section</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      );
-    } else {
-      const selectedValue: TargetElement = this.colorTarget
-        ? TargetElement.COLOR
-        : this.sides
-        ? TargetElement.SIDES
-        : this.qrCode
-        ? TargetElement.QR_CODE
-        : this.chart
-        ? TargetElement.CHART
-        : this.shapes
-        ? TargetElement.SHAPES
-        : this.images
-        ? TargetElement.IMAGES
-        : TargetElement.SLIDE;
-
-      return (
-        <ion-segment mode="md" class="ion-padding-bottom" value={selectedValue} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
-          {this.renderQRCode()}
-          {this.renderChart()}
-          {this.renderSides()}
-          {this.renderSlide()}
-          {this.renderColor()}
-          {this.renderBackground()}
-          {this.renderFonts()}
-          {this.renderTransition()}
-          {this.renderShapes()}
-          {this.renderImages()}
-        </ion-segment>
-      );
-    }
+    return (
+      <ion-segment mode="md" class="ion-padding-bottom" value={selectedValue} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+        {this.renderQRCode()}
+        {this.renderChart()}
+        {this.renderSides()}
+        {this.renderSlide()}
+        {this.renderCode()}
+        {this.renderImage()}
+        {this.renderText()}
+        {this.renderBackground()}
+        {this.renderFonts()}
+        {this.renderTransition()}
+        {this.renderShapes()}
+        {this.renderImages()}
+      </ion-segment>
+    );
   }
 
   private renderQRCode() {
@@ -126,7 +118,7 @@ export class AppSelectTargetElement {
     if (this.slide) {
       return (
         <ion-segment-button value={TargetElement.SLIDE} mode="md">
-          <ion-label>Slide</ion-label>
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {
@@ -134,11 +126,11 @@ export class AppSelectTargetElement {
     }
   }
 
-  private renderColor() {
-    if (this.colorTarget) {
+  private renderText() {
+    if (this.textTarget) {
       return (
-        <ion-segment-button value={TargetElement.COLOR} mode="md">
-          <ion-label>Colors</ion-label>
+        <ion-segment-button value={TargetElement.TEXT} mode="md">
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {
@@ -151,6 +143,30 @@ export class AppSelectTargetElement {
       return (
         <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
           <ion-label>Background</ion-label>
+        </ion-segment-button>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderCode() {
+    if (this.code) {
+      return (
+        <ion-segment-button value={TargetElement.CODE} mode="md">
+          <ion-label>Code</ion-label>
+        </ion-segment-button>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderImage() {
+    if (this.image) {
+      return (
+        <ion-segment-button value={TargetElement.IMAGE} mode="md">
+          <ion-label>Image</ion-label>
         </ion-segment-button>
       );
     } else {

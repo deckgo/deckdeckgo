@@ -1,10 +1,10 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {FontsService} from '../../../services/editor/fonts/fonts.service';
+import {FontsService} from '../../../../../services/editor/fonts/fonts.service';
 
 @Component({
   tag: 'app-deck-fonts',
-  styleUrl: 'app-deck-fonts.scss'
+  styleUrl: 'app-deck-fonts.scss',
 })
 export class AppDeckFonts {
   @Prop()
@@ -38,10 +38,7 @@ export class AppDeckFonts {
         return;
       }
 
-      this.selectedFont = this.deckElement.style
-        .getPropertyValue('font-family')
-        .replace(/\'/g, '')
-        .replace(/"/g, '');
+      this.selectedFont = this.deckElement.style.getPropertyValue('font-family').replace(/\'/g, '').replace(/"/g, '');
 
       resolve();
     });

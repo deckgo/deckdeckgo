@@ -14,12 +14,6 @@ export class AppMoreElementActions {
   @Prop()
   copy: boolean = false;
 
-  @Prop()
-  reveal: boolean = false;
-
-  @Prop()
-  list: boolean = false;
-
   private async closePopover(action: MoreAction) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       action: action,
@@ -31,8 +25,6 @@ export class AppMoreElementActions {
       <div class="ion-padding">
         {this.renderNotes()}
         {this.renderCopy()}
-        {this.renderReveal()}
-        {this.renderList()}
         {this.renderDelete()}
       </div>
     );
@@ -58,30 +50,6 @@ export class AppMoreElementActions {
     return (
       <a onClick={() => this.closePopover(MoreAction.COPY)} aria-label="Copy">
         <p>Copy</p>
-      </a>
-    );
-  }
-
-  private renderList() {
-    if (!this.list) {
-      return undefined;
-    }
-
-    return (
-      <a onClick={() => this.closePopover(MoreAction.LIST)} aria-label="List">
-        <p>List</p>
-      </a>
-    );
-  }
-
-  private renderReveal() {
-    if (!this.reveal) {
-      return undefined;
-    }
-
-    return (
-      <a onClick={() => this.closePopover(MoreAction.REVEAL)} aria-label="Animation">
-        <p>Animation</p>
       </a>
     );
   }

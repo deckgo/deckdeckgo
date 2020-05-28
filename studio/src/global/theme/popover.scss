@@ -3,15 +3,18 @@ ion-popover {
     ion-router-link[slot="end"] {
       cursor: pointer;
       border-bottom-color: transparent;
+      color: black;
     }
   }
 }
 
 ion-popover.popover-menu {
   &.popover-menu-wide {
-    --width: 420px;
+    --width: 380px;
     --max-width: 100%;
   }
+
+  --width: 284px;
 
   div.popover-content {
     top: 0 !important;

@@ -1,7 +1,5 @@
 app-list {
-  @import "../../../../global/theme/editor/editor-popover";
-
-  ion-item {
+  ion-item.list {
     --background-activated: transparent;
     --background-focused: transparent;
     --background-hover: transparent;
@@ -11,6 +9,10 @@ app-list {
     &:hover,
     &.active {
       --color: var(--ion-color-primary);
+
+      ion-icon {
+        color: var(--ion-color-primary);
+      }
     }
   }
 }

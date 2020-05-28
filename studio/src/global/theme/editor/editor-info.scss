@@ -1,16 +1,23 @@
-ion-item-divider {
+ion-item-divider,
+app-expansion-panel {
   button.info {
     background: var(--ion-color-light);
     border: 1px solid #dedede;
     border-radius: 50%;
     height: 1.5rem;
     width: 1.5rem;
-    margin: 16px 16px 0;
     padding: 0;
     outline: 0;
 
     ion-icon {
       color: var(--ion-color-light-contrast);
+      margin: 0;
     }
+  }
+}
+
+ion-item-divider {
+  button.info {
+    margin: 16px 16px 0;
   }
 }

@@ -1,12 +1,7 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
-
-enum ApplyColorType {
-  TEXT,
-  BACKGROUND,
-}
 
 @Component({
   tag: 'app-color-text-background',
@@ -29,18 +24,26 @@ export class AppColorTextBackground {
   @Prop()
   shape: boolean = false;
 
+  @Prop()
+  colorType: 'text' | 'background' = 'text';
+
+  @Prop()
+  expander: boolean = true;
+
   @State()
   private color: string;
 
   @State()
   private colorOpacity: number = 100;
 
-  @State()
-  private applyColorType: ApplyColorType = ApplyColorType.TEXT;
-
-  @Event() colorChange: EventEmitter<boolean>;
+  @Event() colorChange: EventEmitter<void>;
 
   async componentWillLoad() {
+    await this.initCurrentColors();
+  }
+
+  @Watch('colorType')
+  async onColorTypeChange() {
     await this.initCurrentColors();
   }
 
@@ -53,7 +56,7 @@ export class AppColorTextBackground {
     let styleColor: InitStyleColor;
 
     // prettier-ignore
-    if (this.applyColorType === ApplyColorType.BACKGROUND) {
+    if (this.colorType === 'background') {
       styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--background') ? this.selectedElement.style.getPropertyValue('--background') : this.selectedElement.style.background);
     } else {
       styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color);
@@ -61,14 +64,6 @@ export class AppColorTextBackground {
 
     this.color = styleColor.rgb;
     this.colorOpacity = styleColor.opacity;
-  }
-
-  private async selectApplyType($event: CustomEvent) {
-    if ($event && $event.detail) {
-      this.applyColorType = $event.detail.value;
-
-      await this.initCurrentColors();
-    }
   }
 
   private async selectColor($event: CustomEvent) {
@@ -82,7 +77,7 @@ export class AppColorTextBackground {
   }
 
   private async applyColor() {
-    if (this.applyColorType === ApplyColorType.BACKGROUND) {
+    if (this.colorType === 'background') {
       await this.applyBackground();
     } else {
       await this.applyTextColor();
@@ -96,7 +91,7 @@ export class AppColorTextBackground {
         return;
       }
 
-      if (this.applyColorType === ApplyColorType.BACKGROUND) {
+      if (this.colorType === 'background') {
         this.selectedElement.style.removeProperty('--background');
         this.selectedElement.style.removeProperty('background');
       } else {
@@ -107,7 +102,7 @@ export class AppColorTextBackground {
       this.color = null;
       this.colorOpacity = 100;
 
-      this.colorChange.emit(this.deck);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -128,7 +123,7 @@ export class AppColorTextBackground {
         this.selectedElement.style.color = selectedColor;
       }
 
-      this.colorChange.emit(this.deck);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -149,7 +144,7 @@ export class AppColorTextBackground {
         this.selectedElement.style.background = selectedColor;
       }
 
-      this.colorChange.emit(this.deck);
+      this.colorChange.emit();
 
       resolve();
     });
@@ -175,59 +170,39 @@ export class AppColorTextBackground {
   }
 
   render() {
-    return [
-      <ion-list>
-        <ion-radio-group onIonChange={($event) => this.selectApplyType($event)} value={ApplyColorType.TEXT}>
+    return (
+      <app-expansion-panel expander={this.expander}>
+        <ion-label slot="title">Color</ion-label>
+        <ion-list class="ion-no-padding">
           <ion-item-divider class="ion-padding-top">
-            <ion-label>Apply color to</ion-label>
+            <ion-label>
+              Opacity <small>{this.colorOpacity}%</small>
+            </ion-label>
           </ion-item-divider>
-
-          <ion-item>
-            <ion-label>{this.shape ? 'Shape' : 'Text'}</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.TEXT} mode="md"></ion-radio>
+          <ion-item class="item-opacity">
+            <ion-range
+              color="primary"
+              min={0}
+              max={100}
+              disabled={!this.color || this.color === undefined}
+              value={this.colorOpacity}
+              mode="md"
+              onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
           </ion-item>
-
-          <ion-item>
-            <ion-label>Background</ion-label>
-            <ion-radio slot="start" value={ApplyColorType.BACKGROUND} mode="md"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>
-            Opacity <small>{this.colorOpacity}%</small>
-          </ion-label>
-        </ion-item-divider>
-        <ion-item class="item-opacity">
-          <ion-range
-            color="primary"
-            min={0}
-            max={100}
-            disabled={!this.color || this.color === undefined}
-            value={this.colorOpacity}
-            mode="md"
-            onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
+        </ion-list>
+        <deckgo-color
+          class="ion-padding-start ion-padding-end ion-padding-bottom"
+          more={this.moreColors}
+          onColorChange={($event: CustomEvent) => this.selectColor($event)}
+          color-rgb={this.color}>
+          <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
+        </deckgo-color>
+        <ion-item class="action-button ion-margin-bottom">
+          <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
+            <ion-label>Reset color</ion-label>
+          </ion-button>
         </ion-item>
-      </ion-list>,
-      <deckgo-color
-        class="ion-padding-start ion-padding-end ion-padding-bottom"
-        more={this.moreColors}
-        onColorChange={($event: CustomEvent) => this.selectColor($event)}
-        color-rgb={this.color}>
-        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-      </deckgo-color>,
-      <ion-item class="action-button ion-margin-bottom">
-        <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
-          <ion-label>{this.resetLabelContent()}</ion-label>
-        </ion-button>
-      </ion-item>,
-    ];
-  }
-
-  private resetLabelContent() {
-    if (this.applyColorType === ApplyColorType.BACKGROUND) {
-      return 'Reset background';
-    } else {
-      return 'Reset color';
-    }
+      </app-expansion-panel>
+    );
   }
 }

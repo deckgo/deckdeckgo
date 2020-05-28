@@ -15,8 +15,6 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
-import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
-import {ListUtils} from '../../../../../utils/editor/list.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -60,12 +58,6 @@ export class AppActionsElement {
 
   @State()
   private shape: boolean = false;
-
-  @State()
-  private align: TextAlign | undefined;
-
-  @State()
-  private list: SlotType.OL | SlotType.UL | undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -147,6 +139,36 @@ export class AppActionsElement {
     }
 
     await this.blurSelectedElement();
+  }
+
+  @Listen('pagerClick', {target: 'document'})
+  async onPagerClick() {
+    await this.reset();
+  }
+
+  @Listen('styleDidChange', {target: 'document'})
+  async onStyleDidChange() {
+    await this.emitChange();
+  }
+
+  @Listen('toggleReveal', {target: 'document'})
+  async onToggleReveal($event: CustomEvent<boolean>) {
+    if (!this.selectedElement || !this.selectedElement.parentElement || !$event) {
+      return;
+    }
+
+    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, $event.detail);
+
+    await this.replaceSlot(element);
+  }
+
+  @Listen('toggleList', {target: 'document'})
+  async onToggleList($event: CustomEvent<SlotType.OL | SlotType.UL>) {
+    if (!$event) {
+      return;
+    }
+
+    await this.toggleList($event.detail);
   }
 
   @Method()
@@ -348,11 +370,6 @@ export class AppActionsElement {
     });
   }
 
-  @Listen('pagerClick', {target: 'document'})
-  async onPagerClick() {
-    await this.reset();
-  }
-
   @Method()
   async reset() {
     await this.initSelectedElement(null);
@@ -545,7 +562,6 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         slide: this.slide,
-        imgDidChange: this.imgDidChange,
       },
       mode: 'md',
       showBackdrop: false,
@@ -575,34 +591,6 @@ export class AppActionsElement {
     this.blockSlide.emit(true);
 
     await modal.present();
-  }
-
-  private async openSingleAction($event: UIEvent, component: 'app-reveal' | 'app-align' | 'app-list') {
-    if (this.slide) {
-      return;
-    }
-
-    const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: component,
-      componentProps: {
-        selectedElement: this.selectedElement,
-      },
-      mode: 'ios',
-      event: $event,
-      cssClass: 'info',
-    });
-
-    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data && component === 'app-reveal') {
-        await this.toggleReveal(detail.data.reveal);
-      } else if (detail.data && component === 'app-align') {
-        await this.updateAlignAttribute(detail.data.align);
-      } else if (detail.data && component === 'app-list') {
-        await this.toggleList(detail.data.list);
-      }
-    });
-
-    await popover.present();
   }
 
   private async openCode() {
@@ -728,21 +716,6 @@ export class AppActionsElement {
     });
   }
 
-  private toggleReveal(reveal: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.parentElement) {
-        resolve();
-        return;
-      }
-
-      const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, reveal);
-
-      await this.replaceSlot(element);
-
-      resolve();
-    });
-  }
-
   private replaceSlot(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || !this.selectedElement.parentElement || !element) {
@@ -764,11 +737,6 @@ export class AppActionsElement {
     });
   }
 
-  @Listen('colorDidChange', {target: 'document'})
-  async onColorDidChange(_$event: CustomEvent) {
-    await this.emitChange();
-  }
-
   private emitChange(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -776,7 +744,7 @@ export class AppActionsElement {
         return;
       }
 
-      // If not deck or slide, then parent is the container slide
+      // If not slide, then parent is the container slide
       this.slideDidChange.emit(this.slide ? this.selectedElement : this.selectedElement.parentElement);
 
       resolve();
@@ -800,10 +768,6 @@ export class AppActionsElement {
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
-
-      this.align = await AlignUtils.getAlignment(element);
-
-      this.list = await ListUtils.isElementList(element);
 
       if (element) {
         element.addEventListener('paste', this.cleanOnPaste, false);
@@ -883,12 +847,18 @@ export class AppActionsElement {
     });
   }
 
-  private async openColor() {
+  private async openStyle() {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-color',
+      component: 'app-element-style',
       componentProps: {
         slide: this.slide,
         selectedElement: this.selectedElement,
+        imgDidChange: this.imgDidChange,
+        imageHelper: this.imageHelper,
+        code: this.code,
+        math: this.math,
+        shape: this.shape,
+        image: this.image,
       },
       mode: 'md',
       showBackdrop: false,
@@ -956,7 +926,7 @@ export class AppActionsElement {
 
   private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.list) {
+      if (!this.selectedElement) {
         resolve();
         return;
       }
@@ -986,18 +956,6 @@ export class AppActionsElement {
 
       resolve();
     });
-  }
-
-  private async updateAlignAttribute(align: TextAlign): Promise<void> {
-    if (!this.selectedElement) {
-      return;
-    }
-
-    this.selectedElement.style.textAlign = align;
-
-    await this.emitChange();
-
-    await this.reset();
   }
 
   private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
@@ -1043,8 +1001,6 @@ export class AppActionsElement {
       componentProps: {
         notes: this.slide,
         copy: this.slide || this.shape,
-        reveal: !this.hideReveal(),
-        list: this.list !== undefined,
       },
       event: $event,
       mode: 'ios',
@@ -1058,10 +1014,6 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
-        } else if (detail.data.action === MoreAction.REVEAL) {
-          await this.openSingleAction($event, 'app-reveal');
-        } else if (detail.data.action === MoreAction.LIST) {
-          await this.openSingleAction($event, 'app-list');
         }
       }
     });
@@ -1069,23 +1021,17 @@ export class AppActionsElement {
     await popover.present();
   }
 
-  private hideReveal(): boolean {
-    return this.slide || this.code || this.math || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
-  }
-
   render() {
     return (
       <ion-toolbar>
         <ion-buttons slot="start">
+          {this.renderStyle()}
           {this.renderEdit()}
           {this.renderShapes()}
-          {this.renderColor()}
-          {this.renderReveal()}
-          {this.renderAlign()}
-          {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
           {this.renderMathOptions()}
+          {this.renderTransform()}
         </ion-buttons>
 
         <ion-buttons slot="end">
@@ -1135,20 +1081,19 @@ export class AppActionsElement {
     );
   }
 
-  private renderColor() {
+  private renderStyle() {
     return (
-      <ion-tab-button onClick={() => this.openColor()} aria-label="Color" color="primary" mode="md">
-        <ion-icon src="/assets/icons/ionicons/color-palette.svg"></ion-icon>
-        <ion-label>Color</ion-label>
+      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md">
+        <ion-icon src="/assets/icons/ionicons/brush.svg"></ion-icon>
+        <ion-label>Style</ion-label>
       </ion-tab-button>
     );
   }
 
   private renderEdit() {
     const classSlide: string | undefined = this.slide && this.isSlideEditable() ? undefined : 'hidden';
-    const classToggle: string | undefined = !this.slide && !this.shape ? undefined : 'hidden';
 
-    return [
+    return (
       <ion-tab-button
         onClick={() =>
           this.slideNodeName === 'deckgo-slide-poll'
@@ -1163,14 +1108,21 @@ export class AppActionsElement {
         aria-label="Edit slide options"
         mode="md"
         class={classSlide}>
-        <ion-icon src="/assets/icons/ionicons/pencil.svg"></ion-icon>
+        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label>Options</ion-label>
-      </ion-tab-button>,
+      </ion-tab-button>
+    );
+  }
+
+  private renderTransform() {
+    const classToggle: string | undefined = !this.slide && !this.shape ? undefined : 'hidden';
+
+    return (
       <ion-tab-button onClick={() => this.openTransform()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
         <ion-icon src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
         <ion-label>Transform</ion-label>
-      </ion-tab-button>,
-    ];
+      </ion-tab-button>
+    );
   }
 
   private renderShapes() {
@@ -1189,8 +1141,8 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
-        <ion-icon src="/assets/icons/ionicons/code.svg"></ion-icon>
-        <ion-label>Attributes</ion-label>
+        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label>Options</ion-label>
       </ion-tab-button>
     );
   }
@@ -1199,71 +1151,19 @@ export class AppActionsElement {
 
     return (
       <ion-tab-button onClick={() => this.openMath()} aria-label="Math options" color="primary" mode="md" class={classSlideMath}>
-        <ion-icon src="/assets/icons/math.svg"></ion-icon>
-        <ion-label>Attributes</ion-label>
+        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label>Options</ion-label>
       </ion-tab-button>
     );
   }
 
   private renderImages() {
-    const classImage: string | undefined = this.image || this.slide ? undefined : 'hidden';
+    const classImage: string | undefined = this.image ? undefined : 'hidden';
 
     return (
-      <ion-tab-button onClick={() => this.openImage()} aria-label={this.slide ? 'Background' : 'Image'} color="primary" mode="md" class={classImage}>
+      <ion-tab-button onClick={() => this.openImage()} aria-label="Image" color="primary" mode="md" class={classImage}>
         <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
-        <ion-label>{this.slide ? 'Background' : 'Image'}</ion-label>
-      </ion-tab-button>
-    );
-  }
-
-  private renderReveal() {
-    const classReveal: string | undefined = this.hideReveal() ? 'hidden wider-devices' : 'wider-devices';
-
-    return (
-      <ion-tab-button
-        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-reveal')}
-        aria-label="Edit element animation"
-        color="primary"
-        mode="md"
-        class={classReveal}>
-        <ion-icon src="/assets/icons/album.svg"></ion-icon>
-        <ion-label>Animation</ion-label>
-      </ion-tab-button>
-    );
-  }
-
-  private renderAlign() {
-    const classAlign: string | undefined = this.align === undefined ? 'hidden' : undefined;
-
-    return (
-      <ion-tab-button
-        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-align')}
-        aria-label="Edit element alignment"
-        color="primary"
-        mode="md"
-        class={classAlign}>
-        {this.align !== undefined ? (
-          <ion-icon src={`/assets/icons/align-${this.align}.svg`}></ion-icon>
-        ) : (
-          <ion-icon src={`/assets/icons/align-left.svg`}></ion-icon>
-        )}
-        <ion-label>Alignment</ion-label>
-      </ion-tab-button>
-    );
-  }
-
-  private renderList() {
-    const classList: string | undefined = this.list === undefined ? 'hidden wider-devices' : 'wider-devices';
-
-    return (
-      <ion-tab-button
-        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-list')}
-        aria-label="Edit ordered or unordered list"
-        color="primary"
-        mode="md"
-        class={classList}>
-        <ion-icon src={this.list === SlotType.OL ? '/assets/icons/list-ol.svg' : '/assets/icons/ionicons/list.svg'}></ion-icon>
-        <ion-label>List</ion-label>
+        <ion-label>Image</ion-label>
       </ion-tab-button>
     );
   }

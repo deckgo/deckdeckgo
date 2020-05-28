@@ -229,17 +229,17 @@
     {"src": "/icons/ionicons/create.svg", "ariaLabel": "Notes"},
     {"src": "/icons/ionicons/copy.svg", "ariaLabel": "Copy"},
     {"src": "/icons/ionicons/color-palette.svg", "ariaLabel": "Color"},
-    {"src": "/icons/ionicons/pencil.svg", "ariaLabel": "Edit"},
     {"src": "/icons/ionicons/add.svg", "ariaLabel": "Add"},
     {"src": "/icons/ionicons/shapes.svg", "ariaLabel": "Shapes"},
     {"src": "/icons/ionicons/code.svg", "ariaLabel": "Code"},
     {"src": "/icons/ionicons/images.svg", "ariaLabel": "Images"},
-    {"src": "/icons/album.svg", "ariaLabel": "Animation"},
     {"src": "/icons/ionicons/checkmark.svg", "ariaLabel": "Check"},
     {"src": "/icons/align-center.svg", "ariaLabel": "Align center"},
     {"src": "/icons/align-left.svg", "ariaLabel": "Align left"},
     {"src": "/icons/align-right.svg", "ariaLabel": "Align right"},
     {"src": "/icons/math.svg", "ariaLabel": "Math"},
-    {"src": "/icons/ionicons/color-wand.svg", "ariaLabel": "Transform element"}
+    {"src": "/icons/ionicons/color-wand.svg", "ariaLabel": "Transform element"},
+    {"src": "/icons/ionicons/chevron-down.svg", "ariaLabel": "Chevron down"},
+    {"src": "/icons/ionicons/settings.svg", "ariaLabel": "Settings"}
   ]
 }
