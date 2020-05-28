@@ -27,6 +27,18 @@ export class AppElementStyle {
   @Prop()
   imageHelper: ImageHelper;
 
+  @Prop()
+  code: boolean = false;
+
+  @Prop()
+  math: boolean = false;
+
+  @Prop()
+  shape: boolean = false;
+
+  @Prop()
+  image: boolean = false;
+
   @Event() styleDidChange: EventEmitter<void>;
 
   @State()
@@ -45,16 +57,13 @@ export class AppElementStyle {
   private poll: boolean = false;
 
   @State()
-  private code: boolean = false;
-
-  @State()
-  private shape: boolean = false;
-
-  @State()
   private author: boolean = false;
 
   @State()
   private split: boolean = false;
+
+  @State()
+  private demo: boolean = false;
 
   async componentWillLoad() {
     if (this.slide) {
@@ -65,8 +74,7 @@ export class AppElementStyle {
       this.split = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-split'.toUpperCase();
     }
 
-    this.code = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.CODE;
-    this.shape = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
+    this.demo = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DEMO;
 
     // prettier-ignore
     this.applyToTargetElement = this.code ? TargetElement.CODE : (this.qrCode || this.poll ? TargetElement.QR_CODE : (this.chart ? TargetElement.CHART : (this.author || this.split ? TargetElement.SIDES : TargetElement.SLIDE)));
@@ -141,17 +149,19 @@ export class AppElementStyle {
   }
 
   private renderSelectTarget() {
-    const elementTarget: boolean = !this.slide && !this.shape;
+    const elementTarget: boolean = !this.slide && !this.shape && !this.image;
+    const transition: boolean = !this.slide && !this.code && !this.math && !this.shape && !this.demo;
 
     return (
       <app-select-target-element
         textTarget={elementTarget}
         slide={this.slide}
-        background={true}
+        background={!this.image}
         qrCode={this.qrCode || this.poll}
         chart={this.chart || this.poll}
         code={this.code}
         sides={this.author || this.split}
+        transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );
   }
@@ -184,6 +194,8 @@ export class AppElementStyle {
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
         this.renderImage(),
       ];
+    } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
+      return <app-reveal selectedElement={this.selectedElement} onToggleReveal={() => this.closePopover()}></app-reveal>;
     } else {
       return [
         <app-color-text-background

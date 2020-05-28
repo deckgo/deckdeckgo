@@ -186,9 +186,13 @@ export namespace Components {
   }
   interface AppElementDelete {}
   interface AppElementStyle {
+    'code': boolean;
+    'image': boolean;
     'imageHelper': ImageHelper;
     'imgDidChange': EventEmitter<HTMLElement>;
+    'math': boolean;
     'selectedElement': HTMLElement;
+    'shape': boolean;
     'slide': boolean;
   }
   interface AppEmbed {}
@@ -251,7 +255,6 @@ export namespace Components {
     'copy': boolean;
     'list': boolean;
     'notes': boolean;
-    'reveal': boolean;
   }
   interface AppMoreShareOptions {}
   interface AppNavigation {
@@ -1239,10 +1242,14 @@ declare namespace LocalJSX {
   }
   interface AppElementDelete {}
   interface AppElementStyle {
+    'code'?: boolean;
+    'image'?: boolean;
     'imageHelper'?: ImageHelper;
     'imgDidChange'?: EventEmitter<HTMLElement>;
+    'math'?: boolean;
     'onStyleDidChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
+    'shape'?: boolean;
     'slide'?: boolean;
   }
   interface AppEmbed {}
@@ -1316,7 +1323,6 @@ declare namespace LocalJSX {
     'copy'?: boolean;
     'list'?: boolean;
     'notes'?: boolean;
-    'reveal'?: boolean;
   }
   interface AppMoreShareOptions {}
   interface AppNavigation {
@@ -1368,6 +1374,7 @@ declare namespace LocalJSX {
   interface AppRemoteConnect {}
   interface AppRemoteRequest {}
   interface AppReveal {
+    'onToggleReveal'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppRoot {}

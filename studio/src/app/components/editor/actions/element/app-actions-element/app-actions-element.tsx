@@ -573,7 +573,7 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private async openSingleAction($event: UIEvent, component: 'app-reveal' | 'app-list') {
+  private async openSingleAction($event: UIEvent, component: 'app-list') {
     if (this.slide) {
       return;
     }
@@ -589,9 +589,7 @@ export class AppActionsElement {
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data && component === 'app-reveal') {
-        await this.toggleReveal(detail.data.reveal);
-      } else if (detail.data && component === 'app-list') {
+      if (detail.data && component === 'app-list') {
         await this.toggleList(detail.data.list);
       }
     });
@@ -722,21 +720,6 @@ export class AppActionsElement {
     });
   }
 
-  private toggleReveal(reveal: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.parentElement) {
-        resolve();
-        return;
-      }
-
-      const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, reveal);
-
-      await this.replaceSlot(element);
-
-      resolve();
-    });
-  }
-
   private replaceSlot(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || !this.selectedElement.parentElement || !element) {
@@ -761,6 +744,17 @@ export class AppActionsElement {
   @Listen('styleDidChange', {target: 'document'})
   async onStyleDidChange() {
     await this.emitChange();
+  }
+
+  @Listen('toggleReveal', {target: 'document'})
+  async onToggleReveal($event: CustomEvent<boolean>) {
+    if (!this.selectedElement || !this.selectedElement.parentElement || !$event) {
+      return;
+    }
+
+    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, $event.detail);
+
+    await this.replaceSlot(element);
   }
 
   private emitChange(): Promise<void> {
@@ -883,6 +877,10 @@ export class AppActionsElement {
         selectedElement: this.selectedElement,
         imgDidChange: this.imgDidChange,
         imageHelper: this.imageHelper,
+        code: this.code,
+        math: this.math,
+        shape: this.shape,
+        image: this.image,
       },
       mode: 'md',
       showBackdrop: false,
@@ -1025,7 +1023,6 @@ export class AppActionsElement {
       componentProps: {
         notes: this.slide,
         copy: this.slide || this.shape,
-        reveal: !this.hideReveal(),
         list: this.list !== undefined,
       },
       event: $event,
@@ -1040,8 +1037,6 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
-        } else if (detail.data.action === MoreAction.REVEAL) {
-          await this.openSingleAction($event, 'app-reveal');
         } else if (detail.data.action === MoreAction.LIST) {
           await this.openSingleAction($event, 'app-list');
         }
@@ -1051,10 +1046,6 @@ export class AppActionsElement {
     await popover.present();
   }
 
-  private hideReveal(): boolean {
-    return this.slide || this.code || this.math || this.shape || this.slideNodeName === 'deckgo-slide-youtube';
-  }
-
   render() {
     return (
       <ion-toolbar>
@@ -1062,7 +1053,6 @@ export class AppActionsElement {
           {this.renderStyle()}
           {this.renderEdit()}
           {this.renderShapes()}
-          {this.renderReveal()}
           {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
@@ -1118,10 +1108,8 @@ export class AppActionsElement {
   }
 
   private renderStyle() {
-    const classNotImage: string | undefined = this.image ? 'hidden' : undefined;
-
     return (
-      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md" class={classNotImage}>
+      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md">
         <ion-icon src="/assets/icons/ionicons/brush.svg"></ion-icon>
         <ion-label>Style</ion-label>
       </ion-tab-button>
@@ -1202,22 +1190,6 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openImage()} aria-label="Image" color="primary" mode="md" class={classImage}>
         <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label>Image</ion-label>
-      </ion-tab-button>
-    );
-  }
-
-  private renderReveal() {
-    const classReveal: string | undefined = this.hideReveal() ? 'hidden wider-devices' : 'wider-devices';
-
-    return (
-      <ion-tab-button
-        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-reveal')}
-        aria-label="Edit element animation"
-        color="primary"
-        mode="md"
-        class={classReveal}>
-        <ion-icon src="/assets/icons/album.svg"></ion-icon>
-        <ion-label>Animation</ion-label>
       </ion-tab-button>
     );
   }
