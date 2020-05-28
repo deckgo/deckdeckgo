@@ -1,21 +1,7 @@
 app-align {
-  ion-item.align {
-    --background-activated: transparent;
-    --background-focused: transparent;
-    --background-hover: transparent;
-
-    --color: rgba(0, 0, 0, 0.6);
-    font-size: var(--font-size-normal);
-
-    cursor: pointer;
-
-    &:hover,
-    &.active {
-      --color: black;
-
-      ion-icon {
-        color: black;
-      }
+  ion-list {
+    ion-item {
+      margin-bottom: 4px;
     }
   }
 }

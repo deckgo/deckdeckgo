@@ -20,24 +20,34 @@ export class AppList {
     this.list = await ListUtils.isElementList(this.selectedElement);
   }
 
-  private async selectList(list: SlotType.OL | SlotType.UL) {
-    this.list = list;
-    this.toggleList.emit(list);
+  private async selectList($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    this.list = $event.detail.value;
+    this.toggleList.emit($event.detail.value);
   }
 
   render() {
     return (
-      <app-expansion-panel class="ion-margin-top">
+      <app-expansion-panel>
         <ion-label slot="title">List</ion-label>
-        <ion-list>
-          <ion-item onClick={() => this.selectList(SlotType.UL)} class={`list ${this.list == SlotType.UL ? 'active' : undefined}`}>
-            <ion-icon slot="start" src="/assets/icons/ionicons/list.svg"></ion-icon>
-            <ion-label>Unordered list</ion-label>
-          </ion-item>
 
-          <ion-item onClick={() => this.selectList(SlotType.OL)} class={`list ${this.list == SlotType.OL ? 'active' : undefined}`}>
-            <ion-icon slot="start" src="/assets/icons/list-ol.svg"></ion-icon>
-            <ion-label>Ordered list</ion-label>
+        <ion-list>
+          <ion-item class="select">
+            <ion-label>List</ion-label>
+
+            <ion-select
+              value={this.list}
+              placeholder="Select a type of list"
+              onIonChange={($event: CustomEvent) => this.selectList($event)}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end">
+              <ion-select-option value={SlotType.UL}>Unordered</ion-select-option>
+              <ion-select-option value={SlotType.OL}>Ordered</ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

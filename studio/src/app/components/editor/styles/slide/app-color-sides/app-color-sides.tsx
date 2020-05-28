@@ -1,10 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
-  TEXT,
+  FONT,
   BACKGROUND,
 }
 
@@ -30,7 +30,7 @@ export class AppColorSides {
   private colorOpacity: number = 100;
 
   @State()
-  private applyColorType: ApplyColorType = ApplyColorType.TEXT;
+  private applyColorType: ApplyColorType = ApplyColorType.FONT;
 
   @Event() colorChange: EventEmitter<void>;
 
@@ -177,7 +177,7 @@ export class AppColorSides {
             interface="popover"
             mode="md"
             class="ion-padding-start ion-padding-end">
-            <ion-select-option value={ApplyColorType.TEXT}>Text</ion-select-option>,
+            <ion-select-option value={ApplyColorType.FONT}>Font</ion-select-option>,
             <ion-select-option value={ApplyColorType.BACKGROUND}>Background</ion-select-option>,
           </ion-select>
         </ion-item>
@@ -214,7 +214,7 @@ export class AppColorSides {
   }
 
   private resetLabelContent() {
-    if (this.applyColorType === ApplyColorType.TEXT) {
+    if (this.applyColorType === ApplyColorType.FONT) {
       return 'Reset text color';
     } else {
       return 'Reset background';

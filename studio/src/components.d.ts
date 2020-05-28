@@ -198,6 +198,7 @@ export namespace Components {
   }
   interface AppEmbed {}
   interface AppExpansionPanel {
+    'expanded': 'open' | 'close';
     'expander': boolean;
   }
   interface AppFaq {}
@@ -210,6 +211,10 @@ export namespace Components {
     'disableRemove': boolean;
     'editable': boolean;
     'tags': string[];
+  }
+  interface AppFontSize {
+    'selectedElement': HTMLElement;
+    'selector': '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
   }
   interface AppFooter {
     'display': 'menu' | 'landing';
@@ -619,6 +624,12 @@ declare global {
     new (): HTMLAppFeedCardTagsElement;
   };
 
+  interface HTMLAppFontSizeElement extends Components.AppFontSize, HTMLStencilElement {}
+  var HTMLAppFontSizeElement: {
+    prototype: HTMLAppFontSizeElement;
+    new (): HTMLAppFontSizeElement;
+  };
+
   interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
   var HTMLAppFooterElement: {
     prototype: HTMLAppFooterElement;
@@ -1022,6 +1033,7 @@ declare global {
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
+    'app-font-size': HTMLAppFontSizeElement;
     'app-footer': HTMLAppFooterElement;
     'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
@@ -1171,7 +1183,7 @@ declare namespace LocalJSX {
   }
   interface AppColorCode {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<void>) => void;
+    'onCodeDidChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorQrcode {
@@ -1267,6 +1279,7 @@ declare namespace LocalJSX {
   }
   interface AppEmbed {}
   interface AppExpansionPanel {
+    'expanded'?: 'open' | 'close';
     'expander'?: boolean;
   }
   interface AppFaq {}
@@ -1280,6 +1293,11 @@ declare namespace LocalJSX {
     'editable'?: boolean;
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];
+  }
+  interface AppFontSize {
+    'onCodeDidChange'?: (event: CustomEvent<void>) => void;
+    'selectedElement'?: HTMLElement;
+    'selector'?: '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
   }
   interface AppFooter {
     'display'?: 'menu' | 'landing';
@@ -1491,6 +1509,7 @@ declare namespace LocalJSX {
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
+    'app-font-size': AppFontSize;
     'app-footer': AppFooter;
     'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
@@ -1603,6 +1622,7 @@ declare module "@stencil/core" {
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;
       'app-feed-card-tags': LocalJSX.AppFeedCardTags & JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement>;
+      'app-font-size': LocalJSX.AppFontSize & JSXBase.HTMLAttributes<HTMLAppFontSizeElement>;
       'app-footer': LocalJSX.AppFooter & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
       'app-fullscreen-info': LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
       'app-get-help': LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;

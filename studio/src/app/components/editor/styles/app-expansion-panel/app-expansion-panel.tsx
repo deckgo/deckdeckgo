@@ -1,4 +1,4 @@
-import {Component, h, State, Prop} from '@stencil/core';
+import {Component, h, Prop} from '@stencil/core';
 
 @Component({
   tag: 'app-expansion-panel',
@@ -10,10 +10,16 @@ export class AppExpansionPanel {
   @Prop()
   expander: boolean = true;
 
-  @State()
-  private expanded: 'open' | 'close' = 'open';
+  @Prop({mutable: true})
+  expanded: 'open' | 'close' = 'open';
 
   // Source animation: https://css-tricks.com/using-css-transitions-auto-dimensions/
+
+  componentDidLoad() {
+    if (this.expanded === 'close') {
+      this.container.style.height = 0 + 'px';
+    }
+  }
 
   private toggle() {
     if (this.expanded === 'close') {
