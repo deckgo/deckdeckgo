@@ -5,6 +5,7 @@ import {isIPad} from '@deckdeckgo/utils';
 import {TargetElement} from '../../../../utils/editor/target-element';
 import {SlotType} from '../../../../utils/editor/slot-type';
 import {ImageAction} from '../../../../utils/editor/image-action';
+import {ListUtils} from '../../../../utils/editor/list.utils';
 
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
@@ -65,6 +66,9 @@ export class AppElementStyle {
   @State()
   private demo: boolean = false;
 
+  @State()
+  private list: SlotType.OL | SlotType.UL | undefined;
+
   async componentWillLoad() {
     if (this.slide) {
       this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
@@ -75,6 +79,8 @@ export class AppElementStyle {
     }
 
     this.demo = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DEMO;
+
+    this.list = await ListUtils.isElementList(this.selectedElement);
 
     this.applyToTargetElement = this.image
       ? TargetElement.IMAGE
@@ -221,6 +227,7 @@ export class AppElementStyle {
           shape={this.shape}
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
         <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
+        this.renderList(),
       ];
     }
   }
@@ -233,5 +240,15 @@ export class AppElementStyle {
     return (
       <app-image selectedElement={this.selectedElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>
     );
+  }
+
+  private renderList() {
+    if (!this.list) {
+      return undefined;
+    }
+
+    console.log(this.list);
+
+    return <app-list selectedElement={this.selectedElement} onToggleList={() => this.closePopover()}></app-list>;
   }
 }

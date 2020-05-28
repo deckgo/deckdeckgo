@@ -36,6 +36,9 @@ import {
   ImageAction,
 } from './app/utils/editor/image-action';
 import {
+  SlotType,
+} from './app/utils/editor/slot-type';
+import {
   TargetElement,
 } from './app/utils/editor/target-element';
 import {
@@ -44,9 +47,6 @@ import {
 import {
   ItemReorderEventDetail,
 } from '@ionic/core';
-import {
-  SlotType,
-} from './app/utils/editor/slot-type';
 
 export namespace Components {
   interface AppAbout {}
@@ -255,7 +255,6 @@ export namespace Components {
   }
   interface AppMoreElementActions {
     'copy': boolean;
-    'list': boolean;
     'notes': boolean;
   }
   interface AppMoreShareOptions {}
@@ -1319,6 +1318,7 @@ declare namespace LocalJSX {
   interface AppLandingDeck {}
   interface AppLandingFooter {}
   interface AppList {
+    'onToggleList'?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppLogo {}
@@ -1332,7 +1332,6 @@ declare namespace LocalJSX {
   }
   interface AppMoreElementActions {
     'copy'?: boolean;
-    'list'?: boolean;
     'notes'?: boolean;
   }
   interface AppMoreShareOptions {}

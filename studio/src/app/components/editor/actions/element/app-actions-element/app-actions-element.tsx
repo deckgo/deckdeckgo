@@ -15,7 +15,6 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
-import {ListUtils} from '../../../../../utils/editor/list.utils';
 
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -59,9 +58,6 @@ export class AppActionsElement {
 
   @State()
   private shape: boolean = false;
-
-  @State()
-  private list: SlotType.OL | SlotType.UL | undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -143,6 +139,36 @@ export class AppActionsElement {
     }
 
     await this.blurSelectedElement();
+  }
+
+  @Listen('pagerClick', {target: 'document'})
+  async onPagerClick() {
+    await this.reset();
+  }
+
+  @Listen('styleDidChange', {target: 'document'})
+  async onStyleDidChange() {
+    await this.emitChange();
+  }
+
+  @Listen('toggleReveal', {target: 'document'})
+  async onToggleReveal($event: CustomEvent<boolean>) {
+    if (!this.selectedElement || !this.selectedElement.parentElement || !$event) {
+      return;
+    }
+
+    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, $event.detail);
+
+    await this.replaceSlot(element);
+  }
+
+  @Listen('toggleList', {target: 'document'})
+  async onToggleList($event: CustomEvent<SlotType.OL | SlotType.UL>) {
+    if (!$event) {
+      return;
+    }
+
+    await this.toggleList($event.detail);
   }
 
   @Method()
@@ -342,11 +368,6 @@ export class AppActionsElement {
 
       resolve(selectedSelection);
     });
-  }
-
-  @Listen('pagerClick', {target: 'document'})
-  async onPagerClick() {
-    await this.reset();
   }
 
   @Method()
@@ -572,30 +593,6 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private async openSingleAction($event: UIEvent, component: 'app-list') {
-    if (this.slide) {
-      return;
-    }
-
-    const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: component,
-      componentProps: {
-        selectedElement: this.selectedElement,
-      },
-      mode: 'ios',
-      event: $event,
-      cssClass: 'info',
-    });
-
-    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data && component === 'app-list') {
-        await this.toggleList(detail.data.list);
-      }
-    });
-
-    await popover.present();
-  }
-
   private async openCode() {
     if (!this.code) {
       return;
@@ -740,22 +737,6 @@ export class AppActionsElement {
     });
   }
 
-  @Listen('styleDidChange', {target: 'document'})
-  async onStyleDidChange() {
-    await this.emitChange();
-  }
-
-  @Listen('toggleReveal', {target: 'document'})
-  async onToggleReveal($event: CustomEvent<boolean>) {
-    if (!this.selectedElement || !this.selectedElement.parentElement || !$event) {
-      return;
-    }
-
-    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, $event.detail);
-
-    await this.replaceSlot(element);
-  }
-
   private emitChange(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.selectedElement || !this.selectedElement.parentElement) {
@@ -787,8 +768,6 @@ export class AppActionsElement {
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
-
-      this.list = await ListUtils.isElementList(element);
 
       if (element) {
         element.addEventListener('paste', this.cleanOnPaste, false);
@@ -947,7 +926,7 @@ export class AppActionsElement {
 
   private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.list) {
+      if (!this.selectedElement) {
         resolve();
         return;
       }
@@ -1022,7 +1001,6 @@ export class AppActionsElement {
       componentProps: {
         notes: this.slide,
         copy: this.slide || this.shape,
-        list: this.list !== undefined,
       },
       event: $event,
       mode: 'ios',
@@ -1036,8 +1014,6 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
-        } else if (detail.data.action === MoreAction.LIST) {
-          await this.openSingleAction($event, 'app-list');
         }
       }
     });
@@ -1052,7 +1028,6 @@ export class AppActionsElement {
           {this.renderStyle()}
           {this.renderEdit()}
           {this.renderShapes()}
-          {this.renderList()}
           {this.renderImages()}
           {this.renderCodeOptions()}
           {this.renderMathOptions()}
@@ -1189,22 +1164,6 @@ export class AppActionsElement {
       <ion-tab-button onClick={() => this.openImage()} aria-label="Image" color="primary" mode="md" class={classImage}>
         <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label>Image</ion-label>
-      </ion-tab-button>
-    );
-  }
-
-  private renderList() {
-    const classList: string | undefined = this.list === undefined ? 'hidden wider-devices' : 'wider-devices';
-
-    return (
-      <ion-tab-button
-        onClick={($event: UIEvent) => this.openSingleAction($event, 'app-list')}
-        aria-label="Edit ordered or unordered list"
-        color="primary"
-        mode="md"
-        class={classList}>
-        <ion-icon src={this.list === SlotType.OL ? '/assets/icons/list-ol.svg' : '/assets/icons/ionicons/list.svg'}></ion-icon>
-        <ion-label>List</ion-label>
       </ion-tab-button>
     );
   }
