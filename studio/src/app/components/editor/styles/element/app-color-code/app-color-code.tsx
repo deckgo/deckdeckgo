@@ -1,5 +1,9 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+
 import {alertController, RangeChangeEventDetail} from '@ionic/core';
+
+import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
+
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 enum CodeColorType {
@@ -45,11 +49,18 @@ export class AppColorCode {
   @State()
   private highlightColorOpacity: number = 100;
 
-  @Event() colorChange: EventEmitter<void>;
+  @State()
+  private terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
+
+  @State()
+  private theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+
+  @Event() codeDidChange: EventEmitter<void>;
 
   async componentWillLoad() {
-    await this.initColor();
-    await this.initCurrentHiglight();
+    const promises: Promise<void>[] = [this.initColor(), this.initCurrentHiglight(), this.initTerminal()];
+
+    await Promise.all(promises);
   }
 
   // prettier-ignore
@@ -66,6 +77,18 @@ export class AppColorCode {
 
       resolve();
     });
+  }
+
+  private async initTerminal() {
+    this.terminal =
+      this.selectedElement && this.selectedElement.hasAttribute('terminal')
+        ? (this.selectedElement.getAttribute('terminal') as DeckdeckgoHighlightCodeTerminal)
+        : DeckdeckgoHighlightCodeTerminal.CARBON;
+
+    this.theme =
+      this.selectedElement && this.selectedElement.hasAttribute('theme')
+        ? (this.selectedElement.getAttribute('theme') as DeckdeckgoHighlightCodeCarbonTheme)
+        : DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
   }
 
   private selectColor($event: CustomEvent, colorFunction: Function): Promise<void> {
@@ -165,13 +188,13 @@ export class AppColorCode {
   }
 
   // prettier-ignore
-  private initColor(): Promise<string> {
-    return new Promise<string>(async (resolve) => {
+  private initColor(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || !this.selectedElement.style) {
         this.codeColor = undefined;
         this.codeColorOpacity = 100;
 
-        resolve(null);
+        resolve();
         return;
       }
 
@@ -248,7 +271,7 @@ export class AppColorCode {
   }
 
   private emitColorChange() {
-    this.colorChange.emit();
+    this.codeDidChange.emit();
   }
 
   private updateOpacity($event: CustomEvent<RangeChangeEventDetail>, opacityFunction: Function): Promise<void> {
@@ -297,13 +320,39 @@ export class AppColorCode {
     });
   }
 
+  private toggle($event: CustomEvent, attribute: 'terminal' | 'theme'): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      if (!$event || !$event.detail) {
+        resolve();
+        return;
+      }
+
+      if (!this.selectedElement) {
+        resolve();
+        return;
+      }
+
+      if (attribute === 'terminal') {
+        this.terminal = $event.detail.value;
+      } else if (attribute === 'theme') {
+        this.theme = $event.detail.value;
+      }
+
+      this.selectedElement.setAttribute(attribute, $event.detail.value);
+
+      this.codeDidChange.emit();
+
+      resolve();
+    });
+  }
+
   render() {
-    return [this.renderCategoryColor(), this.renderHighlightLinesColor()];
+    return [this.renderTerminal(), this.renderTheme(), this.renderCategoryColor(), this.renderHighlightLinesColor()];
   }
 
   private renderCategoryColor() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel expanded={'close'}>
         <ion-label slot="title">Colors</ion-label>
         <ion-list>
           <ion-item class="select">
@@ -365,9 +414,70 @@ export class AppColorCode {
     );
   }
 
-  private renderHighlightLinesColor() {
+  private renderTerminal() {
     return (
       <app-expansion-panel>
+        <ion-label slot="title">Terminal</ion-label>
+
+        <ion-list class="terminal">
+          <ion-item class="select">
+            <ion-label>Terminal</ion-label>
+
+            <ion-select
+              value={this.terminal}
+              placeholder="Select a terminal"
+              onIonChange={($event: CustomEvent) => this.toggle($event, 'terminal')}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end ion-text-capitalize">
+              {Object.keys(DeckdeckgoHighlightCodeTerminal).map((key: string) => {
+                return (
+                  <ion-select-option value={DeckdeckgoHighlightCodeTerminal[key]}>
+                    {DeckdeckgoHighlightCodeTerminal[key].replace(/^\w/, (c) => c.toUpperCase())}
+                  </ion-select-option>
+                );
+              })}
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </app-expansion-panel>
+    );
+  }
+
+  private renderTheme() {
+    return (
+      <app-expansion-panel>
+        <ion-label slot="title">Theme</ion-label>
+
+        <ion-list class="theme">
+          <ion-item class="select">
+            <ion-label>Theme</ion-label>
+
+            <ion-select
+              value={this.theme}
+              placeholder="Select a theme"
+              disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
+              onIonChange={($event: CustomEvent) => this.toggle($event, 'theme')}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end ion-text-capitalize">
+              {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: string) => {
+                return (
+                  <ion-select-option value={DeckdeckgoHighlightCodeCarbonTheme[key]}>
+                    {DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}
+                  </ion-select-option>
+                );
+              })}
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </app-expansion-panel>
+    );
+  }
+
+  private renderHighlightLinesColor() {
+    return (
+      <app-expansion-panel expanded={'close'}>
         <ion-label slot="title">Highlight lines</ion-label>
         <button slot="info" class="info" onClick={($event: UIEvent) => this.presentHighlightInfo($event)}>
           <ion-icon name="help"></ion-icon>

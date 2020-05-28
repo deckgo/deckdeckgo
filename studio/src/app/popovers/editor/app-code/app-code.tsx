@@ -2,8 +2,6 @@ import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
-import {DeckdeckgoHighlightCodeTerminal, DeckdeckgoHighlightCodeCarbonTheme} from '@deckdeckgo/highlight-code';
-
 import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
 
 enum CodeFontSize {
@@ -36,12 +34,6 @@ export class AppCode {
   @State()
   private lineNumbers: boolean = false;
 
-  @State()
-  private terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
-
-  @State()
-  private theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
-
   private prismService: PrismService;
 
   constructor() {
@@ -62,15 +54,6 @@ export class AppCode {
 
       this.currentFontSize = await this.initFontSize();
       this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
-      this.terminal =
-        this.selectedElement && this.selectedElement.hasAttribute('terminal')
-          ? (this.selectedElement.getAttribute('terminal') as DeckdeckgoHighlightCodeTerminal)
-          : DeckdeckgoHighlightCodeTerminal.CARBON;
-
-      this.theme =
-        this.selectedElement && this.selectedElement.hasAttribute('theme')
-          ? (this.selectedElement.getAttribute('theme') as DeckdeckgoHighlightCodeCarbonTheme)
-          : DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
       resolve();
     });
@@ -134,32 +117,6 @@ export class AppCode {
       } else if (this.currentFontSize === CodeFontSize.VERY_BIG) {
         this.selectedElement.style.setProperty('--deckgo-highlight-code-font-size', '200%');
       }
-
-      this.emitCodeDidChange();
-
-      resolve();
-    });
-  }
-
-  private toggle($event: CustomEvent, attribute: 'terminal' | 'theme'): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
-
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
-
-      if (attribute === 'terminal') {
-        this.terminal = $event.detail.value;
-      } else if (attribute === 'theme') {
-        this.theme = $event.detail.value;
-      }
-
-      this.selectedElement.setAttribute(attribute, $event.detail.value);
 
       this.emitCodeDidChange();
 
@@ -248,55 +205,6 @@ export class AppCode {
             <ion-select-option value={CodeFontSize.NORMAL}>Normal</ion-select-option>
             <ion-select-option value={CodeFontSize.BIG}>Big</ion-select-option>
             <ion-select-option value={CodeFontSize.VERY_BIG}>Very big</ion-select-option>
-          </ion-select>
-        </ion-item>
-
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>Terminal</ion-label>
-        </ion-item-divider>
-
-        <ion-item class="select">
-          <ion-label>Terminal</ion-label>
-
-          <ion-select
-            value={this.terminal}
-            placeholder="Select a terminal"
-            onIonChange={($event: CustomEvent) => this.toggle($event, 'terminal')}
-            interface="popover"
-            mode="md"
-            class="ion-padding-start ion-padding-end ion-text-capitalize">
-            {Object.keys(DeckdeckgoHighlightCodeTerminal).map((key: string) => {
-              return (
-                <ion-select-option value={DeckdeckgoHighlightCodeTerminal[key]}>
-                  {DeckdeckgoHighlightCodeTerminal[key].replace(/^\w/, (c) => c.toUpperCase())}
-                </ion-select-option>
-              );
-            })}
-          </ion-select>
-        </ion-item>
-
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>Theme</ion-label>
-        </ion-item-divider>
-
-        <ion-item class="select">
-          <ion-label>Theme</ion-label>
-
-          <ion-select
-            value={this.theme}
-            placeholder="Select a theme"
-            disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
-            onIonChange={($event: CustomEvent) => this.toggle($event, 'theme')}
-            interface="popover"
-            mode="md"
-            class="ion-padding-start ion-padding-end ion-text-capitalize">
-            {Object.keys(DeckdeckgoHighlightCodeCarbonTheme).map((key: string) => {
-              return (
-                <ion-select-option value={DeckdeckgoHighlightCodeCarbonTheme[key]}>
-                  {DeckdeckgoHighlightCodeCarbonTheme[key].replace(/^\w/, (c) => c.toUpperCase())}
-                </ion-select-option>
-              );
-            })}
           </ion-select>
         </ion-item>
 

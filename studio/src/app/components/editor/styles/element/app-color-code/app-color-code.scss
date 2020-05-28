@@ -8,4 +8,13 @@ app-color-code {
   ion-item.action-button {
     padding-bottom: 8px;
   }
+
+  ion-list {
+    &.terminal,
+    &.theme {
+      ion-item {
+        margin-bottom: 4px;
+      }
+    }
+  }
 }

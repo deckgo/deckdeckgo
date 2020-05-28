@@ -198,6 +198,7 @@ export namespace Components {
   }
   interface AppEmbed {}
   interface AppExpansionPanel {
+    'expanded': 'open' | 'close';
     'expander': boolean;
   }
   interface AppFaq {}
@@ -1171,7 +1172,7 @@ declare namespace LocalJSX {
   }
   interface AppColorCode {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<void>) => void;
+    'onCodeDidChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorQrcode {
@@ -1267,6 +1268,7 @@ declare namespace LocalJSX {
   }
   interface AppEmbed {}
   interface AppExpansionPanel {
+    'expanded'?: 'open' | 'close';
     'expander'?: boolean;
   }
   interface AppFaq {}

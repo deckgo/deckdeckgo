@@ -192,7 +192,9 @@ export class AppElementStyle {
         <app-color-chart selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-chart>
       );
     } else if (this.applyToTargetElement === TargetElement.CODE) {
-      return <app-color-code selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-code>;
+      return (
+        <app-color-code selectedElement={this.selectedElement} onCodeDidChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-code>
+      );
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (
         <app-color-sides
