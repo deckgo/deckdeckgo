@@ -1,8 +1,14 @@
+# 1.2.0 (2020-05-28)
+
+### Features
+
+- supports carbon code theming
+
 # 1.2.0 (2020-05-14)
 
 ### Features
 
-- new component `meth`
+- new component `math`
 
 # 1.1.0 (2020-05-07)
 

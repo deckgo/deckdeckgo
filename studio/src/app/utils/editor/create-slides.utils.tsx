@@ -11,35 +11,41 @@ import {User, UserSocial} from '../../models/data/user';
 import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
+import {SlotType} from './slot-type';
+
+export interface InitTemplate {
+  template: SlideTemplate;
+  elements?: SlotType[];
+}
 
 export class CreateSlidesUtils {
-  static createSlide(template: SlideTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
+  static createSlide(template: InitTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       if (!document) {
         resolve(null);
         return;
       }
 
-      if (template === SlideTemplate.TITLE) {
-        resolve(await this.createSlideTitle());
-      } else if (template === SlideTemplate.CONTENT) {
-        resolve(await this.createSlideContent());
-      } else if (template === SlideTemplate.SPLIT) {
-        resolve(await this.createSlideSplit());
-      } else if (template === SlideTemplate.GIF) {
+      if (template.template === SlideTemplate.TITLE) {
+        resolve(await this.createSlideTitle(template.elements));
+      } else if (template.template === SlideTemplate.CONTENT) {
+        resolve(await this.createSlideContent(template.elements));
+      } else if (template.template === SlideTemplate.SPLIT) {
+        resolve(await this.createSlideSplit(template.elements));
+      } else if (template.template === SlideTemplate.GIF) {
         resolve(await this.createSlideGif(undefined));
-      } else if (template === SlideTemplate.AUTHOR) {
+      } else if (template.template === SlideTemplate.AUTHOR) {
         resolve(await this.createSlideAuthor(user));
-      } else if (template === SlideTemplate.YOUTUBE) {
+      } else if (template.template === SlideTemplate.YOUTUBE) {
         resolve(await this.createSlideYoutube());
-      } else if (template === SlideTemplate.QRCODE) {
+      } else if (template.template === SlideTemplate.QRCODE) {
         resolve(await this.createSlideQRCode(deck));
-      } else if (template === SlideTemplate.CHART) {
+      } else if (template.template === SlideTemplate.CHART) {
         resolve(await this.createSlideChart());
         resolve(await this.createSlideQRCode(deck));
-      } else if (template === SlideTemplate.POLL) {
+      } else if (template.template === SlideTemplate.POLL) {
         resolve(await this.createSlidePoll());
-      } else if (template === SlideTemplate['ASPECT-RATIO']) {
+      } else if (template.template === SlideTemplate['ASPECT-RATIO']) {
         resolve(await this.createSlideAspectRatio());
       } else {
         resolve(null);
@@ -47,21 +53,22 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static createSlideTitle(): Promise<JSX.IntrinsicElements> {
+  private static createSlideTitle(elements: SlotType[]): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       if (!document) {
         resolve();
         return;
       }
 
-      const title = <h1 slot="title"></h1>;
-
-      const content = <section slot="content"></section>;
+      if (!elements || elements.length < 2) {
+        resolve();
+        return;
+      }
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-title key={uuid()}>
-          {title}
-          {content}
+          {this.createElement(elements[0], 'title')}
+          {this.createElement(elements[1], 'content')}
         </deckgo-slide-title>
       );
 
@@ -69,21 +76,22 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static createSlideContent(): Promise<JSX.IntrinsicElements> {
+  private static createSlideContent(elements: SlotType[]): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!document) {
         resolve();
         return;
       }
 
-      const title = <h1 slot="title"></h1>;
-
-      const content = <section slot="content"></section>;
+      if (!elements || elements.length < 2) {
+        resolve();
+        return;
+      }
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-content key={uuid()}>
-          {title}
-          {content}
+          {this.createElement(elements[0], 'title')}
+          {this.createElement(elements[1], 'content')}
         </deckgo-slide-content>
       );
 
@@ -91,27 +99,44 @@ export class CreateSlidesUtils {
     });
   }
 
-  static createSlideSplit(attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
+  static createSlideSplit(elements: SlotType[], attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!document) {
         resolve();
         return;
       }
 
-      const start = <section slot="start"></section>;
-
-      const end = <section slot="end"></section>;
+      if (!elements || elements.length < 2) {
+        resolve();
+        return;
+      }
 
       // @ts-ignore
       // prettier-ignore
       const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()} {...attributes}>
-          {start}
-          {end}
+          {this.createElement(elements[0], 'start')}
+          {this.createElement(elements[1], 'end')}
         </deckgo-slide-split>
       );
 
       resolve(slide);
     });
+  }
+
+  private static createElement(slotType: SlotType, slotName: 'title' | 'content' | 'start' | 'end'): JSX.IntrinsicElements {
+    const Element = slotType.toString();
+
+    return (
+      <Element slot={slotName}>
+        {slotType === SlotType.OL || slotType === SlotType.UL ? (
+          <li>{'\u200B'}</li>
+        ) : slotType === SlotType.CODE ? (
+          <code slot="code"></code>
+        ) : slotType === SlotType.MATH ? (
+          <code slot="math"></code>
+        ) : undefined}
+      </Element>
+    );
   }
 
   static createSlideGif(src: string): Promise<JSX.IntrinsicElements> {

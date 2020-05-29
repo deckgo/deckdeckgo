@@ -1,11 +1,11 @@
-import {Component, Element, Listen, Prop, State, h, JSX} from '@stencil/core';
+import {Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
-import {isFullscreen, isMobile, debounce, isIOS} from '@deckdeckgo/utils';
+import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
@@ -240,7 +240,10 @@ export class AppEditor {
         return;
       }
 
-      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(SlideTemplate.TITLE);
+      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({
+        template: SlideTemplate.TITLE,
+        elements: [SlotType.H1, SlotType.SECTION],
+      });
 
       await this.concatSlide(slide);
 

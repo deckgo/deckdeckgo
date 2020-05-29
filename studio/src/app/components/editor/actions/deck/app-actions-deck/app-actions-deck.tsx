@@ -433,7 +433,8 @@ export class AppActionsDeck {
         deckDidChange: this.deckDidChange,
       },
       mode: 'md',
-      cssClass: 'popover-menu popover-menu-wide',
+      showBackdrop: false,
+      cssClass: 'popover-menu',
     });
 
     await popover.present();

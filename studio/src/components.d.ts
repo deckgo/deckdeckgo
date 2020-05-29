@@ -30,8 +30,14 @@ import {
   EditAction,
 } from './app/utils/editor/edit-action';
 import {
+  ImageHelper,
+} from './app/helpers/editor/image.helper';
+import {
   ImageAction,
 } from './app/utils/editor/image-action';
+import {
+  SlotType,
+} from './app/utils/editor/slot-type';
 import {
   TargetElement,
 } from './app/utils/editor/target-element';
@@ -99,10 +105,6 @@ export namespace Components {
     'currentLanguage': PrismLanguage | undefined;
     'selectedElement': HTMLElement;
   }
-  interface AppColor {
-    'selectedElement': HTMLElement;
-    'slide': boolean;
-  }
   interface AppColorChart {
     'initCurrentColors': () => Promise<void>;
     'moreColors': boolean;
@@ -124,7 +126,9 @@ export namespace Components {
     'template': 'split' | 'author';
   }
   interface AppColorTextBackground {
+    'colorType': 'text' | 'background';
     'deck': boolean;
+    'expander': boolean;
     'initCurrentColors': () => Promise<void>;
     'moreColors': boolean;
     'selectedElement': HTMLElement;
@@ -145,6 +149,7 @@ export namespace Components {
   }
   interface AppDeckFonts {
     'deckElement': HTMLElement;
+    'moreColors': boolean;
   }
   interface AppDeckStyle {
     'blockSlide': EventEmitter<boolean>;
@@ -182,7 +187,21 @@ export namespace Components {
     'deckId': string;
   }
   interface AppElementDelete {}
+  interface AppElementStyle {
+    'code': boolean;
+    'image': boolean;
+    'imageHelper': ImageHelper;
+    'imgDidChange': EventEmitter<HTMLElement>;
+    'math': boolean;
+    'selectedElement': HTMLElement;
+    'shape': boolean;
+    'slide': boolean;
+  }
   interface AppEmbed {}
+  interface AppExpansionPanel {
+    'expanded': 'open' | 'close';
+    'expander': boolean;
+  }
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -193,6 +212,10 @@ export namespace Components {
     'disableRemove': boolean;
     'editable': boolean;
     'tags': string[];
+  }
+  interface AppFontSize {
+    'selectedElement': HTMLElement;
+    'selector': '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
   }
   interface AppFooter {
     'display': 'menu' | 'landing';
@@ -206,6 +229,7 @@ export namespace Components {
   interface AppImage {
     'deck': boolean;
     'deleteBackground': boolean;
+    'expander': boolean;
     'selectedElement': HTMLElement;
     'slide': boolean;
   }
@@ -214,9 +238,11 @@ export namespace Components {
     'imagesOdd': (UnsplashPhoto | TenorGif | StorageFile)[];
   }
   interface AppImageElement {
-    'imgDidChange': EventEmitter<HTMLElement>;
     'selectedElement': HTMLElement;
     'slide': boolean;
+  }
+  interface AppImageStyle {
+    'selectedElement': HTMLElement;
   }
   interface AppInactivity {
     'fullscreen': boolean;
@@ -239,9 +265,7 @@ export namespace Components {
   }
   interface AppMoreElementActions {
     'copy': boolean;
-    'list': boolean;
     'notes': boolean;
-    'reveal': boolean;
   }
   interface AppMoreShareOptions {}
   interface AppNavigation {
@@ -296,13 +320,14 @@ export namespace Components {
     'background': boolean;
     'chart': boolean;
     'code': boolean;
-    'colorTarget': boolean;
     'fonts': boolean;
+    'image': boolean;
     'images': boolean;
     'qrCode': boolean;
     'shapes': boolean;
     'sides': boolean;
     'slide': boolean;
+    'textTarget': boolean;
     'transition': boolean;
   }
   interface AppServices {}
@@ -324,6 +349,9 @@ export namespace Components {
   }
   interface AppTeam {}
   interface AppTerms {}
+  interface AppTransform {
+    'selectedElement': HTMLElement;
+  }
   interface AppUserDelete {
     'username': string;
   }
@@ -409,12 +437,6 @@ declare global {
   var HTMLAppCodeLanguagesElement: {
     prototype: HTMLAppCodeLanguagesElement;
     new (): HTMLAppCodeLanguagesElement;
-  };
-
-  interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {}
-  var HTMLAppColorElement: {
-    prototype: HTMLAppColorElement;
-    new (): HTMLAppColorElement;
   };
 
   interface HTMLAppColorChartElement extends Components.AppColorChart, HTMLStencilElement {}
@@ -561,10 +583,22 @@ declare global {
     new (): HTMLAppElementDeleteElement;
   };
 
+  interface HTMLAppElementStyleElement extends Components.AppElementStyle, HTMLStencilElement {}
+  var HTMLAppElementStyleElement: {
+    prototype: HTMLAppElementStyleElement;
+    new (): HTMLAppElementStyleElement;
+  };
+
   interface HTMLAppEmbedElement extends Components.AppEmbed, HTMLStencilElement {}
   var HTMLAppEmbedElement: {
     prototype: HTMLAppEmbedElement;
     new (): HTMLAppEmbedElement;
+  };
+
+  interface HTMLAppExpansionPanelElement extends Components.AppExpansionPanel, HTMLStencilElement {}
+  var HTMLAppExpansionPanelElement: {
+    prototype: HTMLAppExpansionPanelElement;
+    new (): HTMLAppExpansionPanelElement;
   };
 
   interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {}
@@ -589,6 +623,12 @@ declare global {
   var HTMLAppFeedCardTagsElement: {
     prototype: HTMLAppFeedCardTagsElement;
     new (): HTMLAppFeedCardTagsElement;
+  };
+
+  interface HTMLAppFontSizeElement extends Components.AppFontSize, HTMLStencilElement {}
+  var HTMLAppFontSizeElement: {
+    prototype: HTMLAppFontSizeElement;
+    new (): HTMLAppFontSizeElement;
   };
 
   interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {}
@@ -649,6 +689,12 @@ declare global {
   var HTMLAppImageElementElement: {
     prototype: HTMLAppImageElementElement;
     new (): HTMLAppImageElementElement;
+  };
+
+  interface HTMLAppImageStyleElement extends Components.AppImageStyle, HTMLStencilElement {}
+  var HTMLAppImageStyleElement: {
+    prototype: HTMLAppImageStyleElement;
+    new (): HTMLAppImageStyleElement;
   };
 
   interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {}
@@ -915,6 +961,12 @@ declare global {
     new (): HTMLAppTermsElement;
   };
 
+  interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {}
+  var HTMLAppTransformElement: {
+    prototype: HTMLAppTransformElement;
+    new (): HTMLAppTransformElement;
+  };
+
   interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {}
   var HTMLAppUserDeleteElement: {
     prototype: HTMLAppUserDeleteElement;
@@ -951,7 +1003,6 @@ declare global {
     'app-breadcrumbs': HTMLAppBreadcrumbsElement;
     'app-code': HTMLAppCodeElement;
     'app-code-languages': HTMLAppCodeLanguagesElement;
-    'app-color': HTMLAppColorElement;
     'app-color-chart': HTMLAppColorChartElement;
     'app-color-code': HTMLAppColorCodeElement;
     'app-color-qrcode': HTMLAppColorQrcodeElement;
@@ -976,11 +1027,14 @@ declare global {
     'app-edit-slide-qrcode': HTMLAppEditSlideQrcodeElement;
     'app-editor': HTMLAppEditorElement;
     'app-element-delete': HTMLAppElementDeleteElement;
+    'app-element-style': HTMLAppElementStyleElement;
     'app-embed': HTMLAppEmbedElement;
+    'app-expansion-panel': HTMLAppExpansionPanelElement;
     'app-faq': HTMLAppFaqElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
+    'app-font-size': HTMLAppFontSizeElement;
     'app-footer': HTMLAppFooterElement;
     'app-fullscreen-info': HTMLAppFullscreenInfoElement;
     'app-get-help': HTMLAppGetHelpElement;
@@ -991,6 +1045,7 @@ declare global {
     'app-image': HTMLAppImageElement;
     'app-image-columns': HTMLAppImageColumnsElement;
     'app-image-element': HTMLAppImageElementElement;
+    'app-image-style': HTMLAppImageStyleElement;
     'app-inactivity': HTMLAppInactivityElement;
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
@@ -1035,6 +1090,7 @@ declare global {
     'app-slot-type': HTMLAppSlotTypeElement;
     'app-team': HTMLAppTeamElement;
     'app-terms': HTMLAppTermsElement;
+    'app-transform': HTMLAppTransformElement;
     'app-user-delete': HTMLAppUserDeleteElement;
     'app-user-info': HTMLAppUserInfoElement;
     'app-user-menu': HTMLAppUserMenuElement;
@@ -1101,6 +1157,7 @@ declare namespace LocalJSX {
     'slideCopy'?: EventEmitter;
   }
   interface AppAlign {
+    'onAlignChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppAvatar {
@@ -1120,36 +1177,33 @@ declare namespace LocalJSX {
     'currentLanguage'?: PrismLanguage | undefined;
     'selectedElement'?: HTMLElement;
   }
-  interface AppColor {
-    'onColorDidChange'?: (event: CustomEvent<boolean>) => void;
-    'selectedElement'?: HTMLElement;
-    'slide'?: boolean;
-  }
   interface AppColorChart {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorCode {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onCodeDidChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorQrcode {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppColorSides {
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
     'template'?: 'split' | 'author';
   }
   interface AppColorTextBackground {
+    'colorType'?: 'text' | 'background';
     'deck'?: boolean;
+    'expander'?: boolean;
     'moreColors'?: boolean;
-    'onColorChange'?: (event: CustomEvent<boolean>) => void;
+    'onColorChange'?: (event: CustomEvent<void>) => void;
     'selectedElement'?: HTMLElement;
     'shape'?: boolean;
     'slide'?: boolean;
@@ -1172,12 +1226,12 @@ declare namespace LocalJSX {
   }
   interface AppDeckFonts {
     'deckElement'?: HTMLElement;
+    'moreColors'?: boolean;
     'onFontsChange'?: (event: CustomEvent<void>) => void;
   }
   interface AppDeckStyle {
     'blockSlide'?: EventEmitter<boolean>;
     'deckDidChange'?: EventEmitter<HTMLElement>;
-    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'signIn'?: EventEmitter<void>;
   }
   interface AppDeckTransition {
@@ -1214,7 +1268,22 @@ declare namespace LocalJSX {
     'deckId'?: string;
   }
   interface AppElementDelete {}
+  interface AppElementStyle {
+    'code'?: boolean;
+    'image'?: boolean;
+    'imageHelper'?: ImageHelper;
+    'imgDidChange'?: EventEmitter<HTMLElement>;
+    'math'?: boolean;
+    'onStyleDidChange'?: (event: CustomEvent<void>) => void;
+    'selectedElement'?: HTMLElement;
+    'shape'?: boolean;
+    'slide'?: boolean;
+  }
   interface AppEmbed {}
+  interface AppExpansionPanel {
+    'expanded'?: 'open' | 'close';
+    'expander'?: boolean;
+  }
   interface AppFaq {}
   interface AppFeed {}
   interface AppFeedCard {
@@ -1226,6 +1295,11 @@ declare namespace LocalJSX {
     'editable'?: boolean;
     'onRemoveTag'?: (event: CustomEvent<string>) => void;
     'tags'?: string[];
+  }
+  interface AppFontSize {
+    'onCodeDidChange'?: (event: CustomEvent<void>) => void;
+    'selectedElement'?: HTMLElement;
+    'selector'?: '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
   }
   interface AppFooter {
     'display'?: 'menu' | 'landing';
@@ -1245,8 +1319,8 @@ declare namespace LocalJSX {
   interface AppImage {
     'deck'?: boolean;
     'deleteBackground'?: boolean;
+    'expander'?: boolean;
     'onAction'?: (event: CustomEvent<ImageAction>) => void;
-    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
   }
@@ -1256,9 +1330,12 @@ declare namespace LocalJSX {
     'onSelectImage'?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
   }
   interface AppImageElement {
-    'imgDidChange'?: EventEmitter<HTMLElement>;
     'selectedElement'?: HTMLElement;
     'slide'?: boolean;
+  }
+  interface AppImageStyle {
+    'onImgDidChange'?: (event: CustomEvent<HTMLElement>) => void;
+    'selectedElement'?: HTMLElement;
   }
   interface AppInactivity {
     'fullscreen'?: boolean;
@@ -1269,6 +1346,7 @@ declare namespace LocalJSX {
   interface AppLandingDeck {}
   interface AppLandingFooter {}
   interface AppList {
+    'onToggleList'?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppLogo {}
@@ -1282,9 +1360,7 @@ declare namespace LocalJSX {
   }
   interface AppMoreElementActions {
     'copy'?: boolean;
-    'list'?: boolean;
     'notes'?: boolean;
-    'reveal'?: boolean;
   }
   interface AppMoreShareOptions {}
   interface AppNavigation {
@@ -1336,6 +1412,7 @@ declare namespace LocalJSX {
   interface AppRemoteConnect {}
   interface AppRemoteRequest {}
   interface AppReveal {
+    'onToggleReveal'?: (event: CustomEvent<boolean>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppRoot {}
@@ -1343,14 +1420,15 @@ declare namespace LocalJSX {
     'background'?: boolean;
     'chart'?: boolean;
     'code'?: boolean;
-    'colorTarget'?: boolean;
     'fonts'?: boolean;
+    'image'?: boolean;
     'images'?: boolean;
     'onApplyTo'?: (event: CustomEvent<TargetElement>) => void;
     'qrCode'?: boolean;
     'shapes'?: boolean;
     'sides'?: boolean;
     'slide'?: boolean;
+    'textTarget'?: boolean;
     'transition'?: boolean;
   }
   interface AppServices {}
@@ -1370,10 +1448,14 @@ declare namespace LocalJSX {
     'onReorder'?: (event: CustomEvent<ItemReorderEventDetail>) => void;
   }
   interface AppSlotType {
+    'onSelectType'?: (event: CustomEvent<SlotType | null>) => void;
     'selectedElement'?: HTMLElement;
   }
   interface AppTeam {}
   interface AppTerms {}
+  interface AppTransform {
+    'selectedElement'?: HTMLElement;
+  }
   interface AppUserDelete {
     'username'?: string;
   }
@@ -1398,7 +1480,6 @@ declare namespace LocalJSX {
     'app-breadcrumbs': AppBreadcrumbs;
     'app-code': AppCode;
     'app-code-languages': AppCodeLanguages;
-    'app-color': AppColor;
     'app-color-chart': AppColorChart;
     'app-color-code': AppColorCode;
     'app-color-qrcode': AppColorQrcode;
@@ -1423,11 +1504,14 @@ declare namespace LocalJSX {
     'app-edit-slide-qrcode': AppEditSlideQrcode;
     'app-editor': AppEditor;
     'app-element-delete': AppElementDelete;
+    'app-element-style': AppElementStyle;
     'app-embed': AppEmbed;
+    'app-expansion-panel': AppExpansionPanel;
     'app-faq': AppFaq;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
+    'app-font-size': AppFontSize;
     'app-footer': AppFooter;
     'app-fullscreen-info': AppFullscreenInfo;
     'app-get-help': AppGetHelp;
@@ -1438,6 +1522,7 @@ declare namespace LocalJSX {
     'app-image': AppImage;
     'app-image-columns': AppImageColumns;
     'app-image-element': AppImageElement;
+    'app-image-style': AppImageStyle;
     'app-inactivity': AppInactivity;
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
@@ -1482,6 +1567,7 @@ declare namespace LocalJSX {
     'app-slot-type': AppSlotType;
     'app-team': AppTeam;
     'app-terms': AppTerms;
+    'app-transform': AppTransform;
     'app-user-delete': AppUserDelete;
     'app-user-info': AppUserInfo;
     'app-user-menu': AppUserMenu;
@@ -1507,7 +1593,6 @@ declare module "@stencil/core" {
       'app-breadcrumbs': LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
       'app-code': LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
       'app-code-languages': LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
-      'app-color': LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
       'app-color-chart': LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
       'app-color-code': LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
       'app-color-qrcode': LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
@@ -1532,11 +1617,14 @@ declare module "@stencil/core" {
       'app-edit-slide-qrcode': LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
       'app-editor': LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
+      'app-element-style': LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
       'app-embed': LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
+      'app-expansion-panel': LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;
       'app-feed-card-tags': LocalJSX.AppFeedCardTags & JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement>;
+      'app-font-size': LocalJSX.AppFontSize & JSXBase.HTMLAttributes<HTMLAppFontSizeElement>;
       'app-footer': LocalJSX.AppFooter & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
       'app-fullscreen-info': LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
       'app-get-help': LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
@@ -1547,6 +1635,7 @@ declare module "@stencil/core" {
       'app-image': LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
       'app-image-columns': LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
       'app-image-element': LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
+      'app-image-style': LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
       'app-inactivity': LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
@@ -1591,6 +1680,7 @@ declare module "@stencil/core" {
       'app-slot-type': LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
       'app-team': LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
       'app-terms': LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
+      'app-transform': LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
       'app-user-delete': LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
       'app-user-info': LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;
       'app-user-menu': LocalJSX.AppUserMenu & JSXBase.HTMLAttributes<HTMLAppUserMenuElement>;

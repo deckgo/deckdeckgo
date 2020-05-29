@@ -9,6 +9,7 @@ import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
+import {SlotType} from '../../../utils/editor/slot-type';
 
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -17,6 +18,14 @@ import {AssetsService} from '../../../services/core/assets/assets.service';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
+
+enum ComposeTemplate {
+  TITLE,
+  CONTENT,
+  SPLIT_HORIZONTAL,
+  SPLIT_VERTICAL,
+  CHART,
+}
 
 @Component({
   tag: 'app-create-slide',
@@ -29,13 +38,16 @@ export class AppCreateSlide {
   private photoUrl: string;
 
   @State()
-  private chartsCollapsed: boolean = true;
-
-  @State()
   private assets: Assets | undefined = undefined;
 
   @State()
   private navigatorOnline: boolean = navigator.onLine;
+
+  @State()
+  private composeTemplate: ComposeTemplate | undefined = undefined;
+
+  @State()
+  private elements: SlotType[] | undefined = undefined;
 
   private user: User;
 
@@ -74,6 +86,10 @@ export class AppCreateSlide {
     await this.updatePollChart();
   }
 
+  async componentDidUpdate() {
+    await this.lazyLoadAllCharts();
+  }
+
   componentDidUnload() {
     this.unsubscribeTimer();
   }
@@ -89,12 +105,12 @@ export class AppCreateSlide {
       const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif.showcase');
       const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
       const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
-      const slidesChart: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
+      const slidesChart: HTMLElement = this.el.querySelector('deckgo-slide-chart.showcase');
       const slidesPoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
 
       const slides: HTMLElement[] = this.navigatorOnline
-        ? [slideGif, slideAuthor, slideQRCode, ...slidesChart, slidesPoll]
-        : [slideQRCode, ...slidesChart, slidesPoll];
+        ? [slideGif, slideAuthor, slideQRCode, slidesChart, slidesPoll]
+        : [slideQRCode, slidesChart, slidesPoll];
 
       if (!slides || slides.length <= 0) {
         resolve();
@@ -143,12 +159,12 @@ export class AppCreateSlide {
   }
 
   private async addSlide(template: SlideTemplate, deck?: Deck) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, deck, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, this.user);
     await this.closePopover(template, slide);
   }
 
   private async addSlideSplit(template: SlideTemplate, attributes: SlideAttributes = undefined) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(attributes);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(this.elements, attributes);
     await this.closePopover(template, slide);
   }
 
@@ -171,7 +187,7 @@ export class AppCreateSlide {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide(template, null, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, this.user);
     await this.closePopover(template, slide);
   }
 
@@ -200,14 +216,25 @@ export class AppCreateSlide {
     });
   }
 
-  private async selectUnselectCharts() {
-    this.chartsCollapsed = !this.chartsCollapsed;
+  private async lazyLoadAllCharts() {
+    const slidesCharts: HTMLElement[] = Array.from(this.el.querySelectorAll('deckgo-slide-chart.showcase'));
 
-    this.unsubscribeTimer();
-
-    if (this.chartsCollapsed) {
+    if (!slidesCharts || slidesCharts.length <= 0) {
       return;
     }
+
+    const promises = [];
+    Array.from(slidesCharts).forEach((slide: HTMLElement) => {
+      promises.push((slide as any).lazyLoadContent());
+    });
+
+    await Promise.all(promises);
+  }
+
+  private async selectUnselectCharts() {
+    this.composeTemplate = ComposeTemplate.CHART;
+
+    this.unsubscribeTimer();
 
     this.timerSubscription = interval(2000).subscribe(async (val: number) => {
       const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-slide-chart[animation]');
@@ -220,48 +247,141 @@ export class AppCreateSlide {
     });
   }
 
+  private async selectElement(slotType: SlotType) {
+    if (this.elements === undefined) {
+      this.elements = [slotType];
+    } else {
+      this.elements.push(slotType);
+      this.elements = [...this.elements];
+
+      // We've got all the elements, go we can create the slide
+      if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
+        await this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true});
+      } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
+        await this.addSlideSplit(SlideTemplate.SPLIT);
+      }
+      if (this.composeTemplate === ComposeTemplate.CONTENT) {
+        await this.addSlide(SlideTemplate.CONTENT);
+      } else {
+        await this.addSlide(SlideTemplate.TITLE);
+      }
+    }
+  }
+
+  private backCompose() {
+    if (this.elements === undefined) {
+      this.composeTemplate = undefined;
+    } else {
+      this.elements = undefined;
+    }
+  }
+
   render() {
     return [
       <ion-toolbar>
-        <h2>Add a slide</h2>
+        {this.renderToolbarTitle()}
+        {this.renderToolbarAction()}
+      </ion-toolbar>,
+      <div
+        class={`container ion-margin-bottom ion-padding-start ion-padding-end${
+          this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''
+        }`}>
+        {this.renderTemplates()}
+        {this.renderCompose()}
+      </div>,
+    ];
+  }
+
+  private renderToolbarTitle() {
+    if (this.composeTemplate == undefined) {
+      return <h2>Add a slide</h2>;
+    }
+
+    return <h2>{this.composeTemplate === ComposeTemplate.CHART ? 'Select a chart' : 'Compose your slide'}</h2>;
+  }
+
+  private renderToolbarAction() {
+    if (this.composeTemplate == undefined) {
+      return (
         <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
-      </ion-toolbar>,
-      <div class="container ion-margin-bottom ion-padding-start ion-padding-end">
-        {this.renderTitle()}
-        {this.renderContent()}
+      );
+    }
 
-        {this.renderSplit()}
-        {this.renderVertical()}
+    return (
+      <ion-router-link slot="end" onClick={() => this.backCompose()}>
+        <ion-icon aria-label="Back to all slides" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
+      </ion-router-link>
+    );
+  }
 
-        {this.renderDemo()}
-        {this.renderYoutube()}
+  private renderTemplates() {
+    if (this.composeTemplate !== undefined) {
+      return undefined;
+    }
 
-        {this.renderShapes()}
+    return [
+      this.renderTitle(),
+      this.renderContent(),
 
-        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
-          <deckgo-slide-poll
-            class="showcase"
-            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
-            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
-            count-answers={3}
-            connectPollSocket={false}>
-            <p slot="question">Engage Your Audience / Poll</p>
-            <p slot="answer-1">Yes</p>
-            <p slot="answer-2">No</p>
-            <p slot="answer-3">Don't know</p>
-            <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
-          </deckgo-slide-poll>
-        </div>
+      this.renderSplit(),
+      this.renderVertical(),
 
-        {this.renderGif()}
-        {this.renderChart()}
+      this.renderDemo(),
+      this.renderYoutube(),
 
-        {this.renderQRCode()}
-        {this.renderAuthor()}
+      this.renderShapes(),
+
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+        <deckgo-slide-poll
+          class="showcase"
+          poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
+          poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
+          count-answers={3}
+          connectPollSocket={false}>
+          <p slot="question">Engage Your Audience / Poll</p>
+          <p slot="answer-1">Yes</p>
+          <p slot="answer-2">No</p>
+          <p slot="answer-3">Don't know</p>
+          <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
+        </deckgo-slide-poll>
       </div>,
+
+      this.renderGif(),
+      this.renderChart(),
+
+      this.renderQRCode(),
+      this.renderAuthor(),
     ];
+  }
+
+  private renderCompose() {
+    if (this.composeTemplate === undefined) {
+      return undefined;
+    }
+
+    if (this.composeTemplate === ComposeTemplate.CHART) {
+      return this.renderCharts();
+    }
+
+    return [this.renderComposeSlide(), this.renderSlotType()];
+  }
+
+  private renderComposeSlide() {
+    if (this.composeTemplate === ComposeTemplate.CONTENT) {
+      return this.renderContent();
+    } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
+      return this.renderSplit();
+    } else if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
+      return this.renderVertical();
+    } else {
+      return this.renderTitle();
+    }
+  }
+
+  private renderSlotType() {
+    return <app-slot-type onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
   }
 
   private renderChart() {
@@ -286,214 +406,204 @@ export class AppCreateSlide {
           custom-loader={true}>
           <p slot="title">Charts</p>
         </deckgo-slide-chart>
-
-        {this.renderCharts()}
       </div>
     );
   }
 
   private renderCharts() {
-    const chartsClass: string = `expand-charts ${this.chartsCollapsed ? 'collapsed' : ''}`;
+    return [
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE})}>
+        {/* Pie */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="pie"
+          marginTop={8}
+          marginBottom={8}
+          marginLeft={8}
+          marginRight={8}
+          width={68}
+          height={68}
+          src={this.assets.chart.pieSrc}
+          custom-loader={true}>
+          <p slot="title">Pie</p>
+        </deckgo-slide-chart>
+      </div>,
 
-    return (
-      <div class={chartsClass}>
-        <div class="arrow"></div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, innerRadius: 100})}>
+        {/* Donut */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="pie"
+          marginTop={8}
+          marginBottom={8}
+          marginLeft={8}
+          marginRight={8}
+          width={68}
+          height={68}
+          inner-radius={16}
+          src={this.assets.chart.pieSrc}
+          custom-loader={true}>
+          <p slot="title">Donut</p>
+        </deckgo-slide-chart>
+      </div>,
 
-        <div class="list">
-          {/* Pie */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="pie"
-              marginTop={8}
-              marginBottom={8}
-              marginLeft={8}
-              marginRight={8}
-              width={68}
-              height={68}
-              src={this.assets.chart.pieSrc}
-              custom-loader={true}>
-              <p slot="title">Pie</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, animation: true})}>
+        {/* Animated Pie */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="pie"
+          animation={true}
+          marginTop={8}
+          marginBottom={8}
+          marginLeft={8}
+          marginRight={8}
+          width={68}
+          height={68}
+          src={this.assets.chart.barCompareSrc}
+          custom-loader={true}>
+          <p slot="title">Pie comparison</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Donut */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, innerRadius: 100})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="pie"
-              marginTop={8}
-              marginBottom={8}
-              marginLeft={8}
-              marginRight={8}
-              width={68}
-              height={68}
-              inner-radius={16}
-              src={this.assets.chart.pieSrc}
-              custom-loader={true}>
-              <p slot="title">Donut</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
+        {/* Area */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="line"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={68}
+          y-axis-domain="extent"
+          date-pattern="dd.MM.yyyy"
+          src={this.assets.chart.lineCompareSrc}
+          custom-loader={true}>
+          <p slot="title">Area</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Animated Pie */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.PIE, animation: true})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="pie"
-              animation={true}
-              marginTop={8}
-              marginBottom={8}
-              marginLeft={8}
-              marginRight={8}
-              width={68}
-              height={68}
-              src={this.assets.chart.barCompareSrc}
-              custom-loader={true}>
-              <p slot="title">Pie comparison</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, smooth: false})}>
+        {/* Sharp area */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="line"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={68}
+          y-axis-domain="extent"
+          date-pattern="dd.MM.yyyy"
+          smooth={'false'}
+          src={this.assets.chart.lineSrc}
+          custom-loader={true}>
+          <p slot="title">Sharp area</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Area */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="line"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={68}
-              y-axis-domain="extent"
-              date-pattern="dd.MM.yyyy"
-              src={this.assets.chart.lineCompareSrc}
-              custom-loader={true}>
-              <p slot="title">Area</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, area: false})}>
+        {/* Lines */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="line"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={68}
+          area={'false'}
+          src={this.assets.chart.lineNoDatesSrc}
+          custom-loader={true}>
+          <p slot="title">Lines</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Sharp area */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, smooth: false})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="line"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={68}
-              y-axis-domain="extent"
-              date-pattern="dd.MM.yyyy"
-              smooth={'false'}
-              src={this.assets.chart.lineSrc}
-              custom-loader={true}>
-              <p slot="title">Sharp area</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, animation: true})}>
+        {/* Animated area */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="line"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={53}
+          y-axis-domain="extent"
+          date-pattern="dd.MM.yyyy"
+          animation={true}
+          src={this.assets.chart.lineMultipleSrc}
+          custom-loader={true}>
+          <p slot="title">Line graph comparison</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Lines */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, area: false})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="line"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={68}
-              area={'false'}
-              src={this.assets.chart.lineNoDatesSrc}
-              custom-loader={true}>
-              <p slot="title">Lines</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
+        {/* Bar */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="bar"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={68}
+          src={this.assets.chart.pieSrc}
+          custom-loader={true}>
+          <p slot="title">Bar</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Animated area */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.LINE, animation: true})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="line"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={53}
-              y-axis-domain="extent"
-              date-pattern="dd.MM.yyyy"
-              animation={true}
-              src={this.assets.chart.lineMultipleSrc}
-              custom-loader={true}>
-              <p slot="title">Line graph comparison</p>
-            </deckgo-slide-chart>
-          </div>
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
+        {/* Grouped bars */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="bar"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={68}
+          src={this.assets.chart.barCompareSrc}
+          style={{
+            '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
+            '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
+            '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
+          }}
+          custom-loader={true}>
+          <p slot="title">Grouped bars</p>
+        </deckgo-slide-chart>
+      </div>,
 
-          {/* Bar */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="bar"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={68}
-              src={this.assets.chart.pieSrc}
-              custom-loader={true}>
-              <p slot="title">Bar</p>
-            </deckgo-slide-chart>
-          </div>
-
-          {/* Grouped bars */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="bar"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={68}
-              src={this.assets.chart.barCompareSrc}
-              style={{
-                '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
-                '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
-              }}
-              custom-loader={true}>
-              <p slot="title">Grouped bars</p>
-            </deckgo-slide-chart>
-          </div>
-
-          {/* Animation bars */}
-          <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR, animation: true})}>
-            <deckgo-slide-chart
-              class="showcase"
-              type="bar"
-              marginTop={0}
-              marginBottom={1}
-              marginLeft={0}
-              marginRight={0}
-              width={88}
-              height={68}
-              animation={true}
-              src={this.assets.chart.barCompareSrc}
-              style={{
-                '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
-                '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-                '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
-              }}
-              custom-loader={true}>
-              <p slot="title">Bar comparison</p>
-            </deckgo-slide-chart>
-          </div>
-        </div>
-      </div>
-    );
+      <div class="item" custom-tappable onClick={() => this.closePopoverRestricted(SlideTemplate.CHART, {type: SlideChartType.BAR, animation: true})}>
+        {/* Animation bars */}
+        <deckgo-slide-chart
+          class="showcase"
+          type="bar"
+          marginTop={0}
+          marginBottom={1}
+          marginLeft={0}
+          marginRight={0}
+          width={88}
+          height={68}
+          animation={true}
+          src={this.assets.chart.barCompareSrc}
+          style={{
+            '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
+            '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
+            '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
+          }}
+          custom-loader={true}>
+          <p slot="title">Bar comparison</p>
+        </deckgo-slide-chart>
+      </div>,
+    ];
   }
 
   private renderShapes() {
@@ -520,15 +630,18 @@ export class AppCreateSlide {
   }
 
   private renderTitle() {
+    const classTitle = this.composeTemplate === ComposeTemplate.TITLE && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeTemplate === ComposeTemplate.TITLE && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.TITLE)}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.TITLE)}>
         <deckgo-slide-title class="showcase">
           <p slot="title">
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
           </p>
           <p slot="content">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classContent}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classContent}></ion-skeleton-text>
           </p>
         </deckgo-slide-title>
       </div>
@@ -536,16 +649,19 @@ export class AppCreateSlide {
   }
 
   private renderContent() {
+    const classTitle = this.composeTemplate === ComposeTemplate.CONTENT && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeTemplate === ComposeTemplate.CONTENT && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlide(SlideTemplate.CONTENT)}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.CONTENT)}>
         <deckgo-slide-content class="showcase">
           <p slot="title">
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
           </p>
           <p slot="content">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '82%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '64%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classContent}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '82%'}} class={classContent}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '64%'}} class={classContent}></ion-skeleton-text>
           </p>
         </deckgo-slide-content>
       </div>
@@ -553,18 +669,21 @@ export class AppCreateSlide {
   }
 
   private renderSplit() {
+    const classStart = this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL && this.elements === undefined ? 'highlight' : undefined;
+    const classEnd = this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT)}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.SPLIT_HORIZONTAL)}>
         <deckgo-slide-split class="showcase">
           <p slot="start">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
           </p>
           <p slot="end">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
           </p>
         </deckgo-slide-split>
       </div>
@@ -572,18 +691,21 @@ export class AppCreateSlide {
   }
 
   private renderVertical() {
+    const classStart = this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL && this.elements === undefined ? 'highlight' : undefined;
+    const classEnd = this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL && this.elements !== undefined ? 'highlight' : undefined;
+
     return (
-      <div class="item" custom-tappable onClick={() => this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true})}>
+      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.SPLIT_VERTICAL)}>
         <deckgo-slide-split vertical={true} class="showcase">
           <p slot="start">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classStart}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
           </p>
           <p slot="end">
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
-            <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '60%'}} class={classEnd}></ion-skeleton-text>
+            <ion-skeleton-text style={{width: '80%'}} class={classEnd}></ion-skeleton-text>
           </p>
         </deckgo-slide-split>
       </div>

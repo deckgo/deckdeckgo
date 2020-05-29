@@ -1,0 +1,67 @@
+app-slot-type {
+  div {
+    h2 {
+      color: var(--ion-color-primary);
+    }
+  }
+
+  ion-list.list-ios {
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  ion-list {
+    ion-item {
+      h1,
+      h2 {
+        font-weight: 500;
+      }
+
+      h3 {
+        font-weight: 400;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      ion-icon {
+        color: var(--ion-color-dark);
+      }
+
+      span.placeholder {
+        width: 26px;
+        margin: 12px 32px 12px 0;
+      }
+    }
+  }
+
+  ion-item {
+    --border-width: 0;
+    --inner-border-width: 0;
+  }
+
+  a {
+    color: inherit;
+    cursor: pointer;
+    display: block;
+
+    &.current {
+      ion-item {
+        color: var(--ion-color-primary);
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        ion-item {
+          color: var(--ion-color-primary);
+        }
+      }
+    }
+  }
+}
