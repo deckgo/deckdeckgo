@@ -47,23 +47,20 @@ export class AppDeckFonts {
     });
   }
 
-  private selectFont(font: GoogleFont | null): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.deckElement) {
-        resolve();
-        return;
-      }
+  private async selectFont(font: GoogleFont | null) {
+    if (!this.deckElement) {
+      return;
+    }
 
-      if (!font) {
-        this.deckElement.style.removeProperty('font-family');
-      } else {
-        this.deckElement.style.setProperty('font-family', font.family);
-      }
+    if (!font) {
+      this.deckElement.style.removeProperty('font-family');
+    } else {
+      this.deckElement.style.setProperty('font-family', font.family);
+    }
 
-      this.fontsChange.emit();
+    this.fontsChange.emit();
 
-      resolve();
-    });
+    await this.initSelectedFont();
   }
 
   render() {
