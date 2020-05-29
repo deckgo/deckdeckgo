@@ -6,7 +6,7 @@ import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} 
 @Component({
   tag: 'deckgo-slide-qrcode',
   styleUrl: 'deckdeckgo-slide-qrcode.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
@@ -20,6 +20,9 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
 
   @Prop({reflectToAttr: true}) imgSrc: string;
   @Prop({reflectToAttr: true}) imgAlt: string;
+
+  private container!: HTMLDivElement;
+  private qrCode!: HTMLElement;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
@@ -53,23 +56,32 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
     }
   };
 
-  private initQRCodeSize(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-slide-qrcode');
+  private async initQRCodeSize() {
+    if (!this.container || !this.qrCode) {
+      return;
+    }
 
-      if (container) {
-        const width: number = container.clientWidth;
-        const height: number = container.clientHeight;
+    const title: HTMLElement = this.el.querySelector(':scope > [slot="title"]');
 
-        const qrCode: HTMLElement = container.querySelector('deckgo-qrcode');
+    if (!title) {
+      return;
+    }
 
-        if (qrCode && width > 0 && height > 0) {
-          qrCode.style.setProperty('--deckgo-qrcode-size', width > height ? height + 'px' : 'calc(' + width + 'px - 32px)');
-        }
-      }
+    const style: CSSStyleDeclaration = window.getComputedStyle(this.container);
 
-      resolve();
-    });
+    if (!style) {
+      return;
+    }
+
+    const qrCodeSafeAreaSize: number = 64;
+    const spacing: number = title.clientHeight + qrCodeSafeAreaSize;
+
+    const size: number =
+      (this.container.clientWidth < this.container.clientHeight
+        ? this.container.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
+        : this.container.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) - spacing;
+
+    this.qrCode.style.setProperty('--deckgo-qrcode-size', size + 'px');
   }
 
   @Method()
@@ -119,11 +131,13 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   render() {
     return (
       <Host class={{'deckgo-slide-container': true}}>
-        <div class="deckgo-slide">
+        <div class="deckgo-slide" ref={(el) => (this.container = el as HTMLDivElement)}>
           <slot name="title"></slot>
           <div class="deckgo-slide-qrcode">
             <slot name="content"></slot>
-            <deckgo-qrcode content={this.content}>{this.renderLogo()}</deckgo-qrcode>
+            <deckgo-qrcode content={this.content} ref={(el) => (this.qrCode = el as HTMLElement)}>
+              {this.renderLogo()}
+            </deckgo-qrcode>
           </div>
           <slot name="notes"></slot>
           <slot name="actions"></slot>
