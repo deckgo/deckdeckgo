@@ -9,7 +9,7 @@
 
 ### Web Components: Templates
 
-- slide-qrcode: v1.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
+- slide-qrcode: v1.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
 
 <a name="1.3.0"></a>
 

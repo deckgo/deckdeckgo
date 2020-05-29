@@ -1,3 +1,9 @@
+# 1.0.3 (2020-05-29)
+
+### Fix
+
+- QR code size calculation, again ([#743](https://github.com/deckgo/deckdeckgo/issues/743))
+
 # 1.0.2 (2020-05-29)
 
 ### Fix
