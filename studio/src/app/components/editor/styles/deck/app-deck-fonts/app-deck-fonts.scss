@@ -14,7 +14,7 @@ app-deck-fonts {
 
     div.item {
       border-radius: 8px;
-      border: 1px solid var(--ion-color-medium);
+      border: 2px solid var(--ion-color-light);
 
       font-size: var(--font-size-normal);
 
@@ -22,7 +22,7 @@ app-deck-fonts {
       height: 5rem;
 
       &.selected {
-        box-shadow: 0 0 8px 4px rgba(var(--ion-color-medium-rgb), 0.4);
+        box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
       }
 
       deckgo-slide-title {
