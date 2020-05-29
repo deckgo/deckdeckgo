@@ -73,13 +73,13 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
       return;
     }
 
-    const qrCodeSafeAreaSize: number = 64;
+    const qrCodeSafeAreaSize: number = 16;
     const spacing: number = title.clientHeight + qrCodeSafeAreaSize;
 
     const size: number =
-      (this.container.clientWidth < this.container.clientHeight
-        ? this.container.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
-        : this.container.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) - spacing;
+      (parseFloat(style.width) < parseFloat(style.height)
+        ? parseFloat(style.width) - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
+        : parseFloat(style.height) - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) - spacing;
 
     this.qrCode.style.setProperty('--deckgo-qrcode-size', size + 'px');
   }
