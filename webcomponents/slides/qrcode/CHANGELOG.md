@@ -1,6 +1,12 @@
+# 1.0.2 (2020-05-29)
+
+### Fix
+
+- QR code size calculation ([#743](https://github.com/deckgo/deckdeckgo/issues/743))
+
 # 1.0.1 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

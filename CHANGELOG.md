@@ -1,3 +1,16 @@
+<a name="1.4.0"></a>
+
+# [1.4.0](https://github.com/deckgo/deckdeckgo/compare/v1.3.0...v1.4.0) (In progress)
+
+### Applications
+
+- docs: v1.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- remote: v1.2.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+
+### Web Components: Templates
+
+- slide-qrcode: v1.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
+
 <a name="1.3.0"></a>
 
 # [1.3.0](https://github.com/deckgo/deckdeckgo/compare/v1.2.0...v1.3.0) (2020-05-28)

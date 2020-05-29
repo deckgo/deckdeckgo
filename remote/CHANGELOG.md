@@ -1,4 +1,10 @@
-# 1.2.0 (2020-05-28)
+# 1.2.2 (2020-05-29)
+
+### Fix
+
+- QR code slide size calculation
+
+# 1.2.0 and 1.2.1 (2020-05-28)
 
 ### Features
 
