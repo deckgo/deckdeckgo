@@ -149,6 +149,7 @@ export namespace Components {
   }
   interface AppDeckFonts {
     'deckElement': HTMLElement;
+    'moreColors': boolean;
   }
   interface AppDeckStyle {
     'blockSlide': EventEmitter<boolean>;
@@ -1225,6 +1226,7 @@ declare namespace LocalJSX {
   }
   interface AppDeckFonts {
     'deckElement'?: HTMLElement;
+    'moreColors'?: boolean;
     'onFontsChange'?: (event: CustomEvent<void>) => void;
   }
   interface AppDeckStyle {

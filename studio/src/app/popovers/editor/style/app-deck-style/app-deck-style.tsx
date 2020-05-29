@@ -51,11 +51,11 @@ export class AppDeck {
     }
   }
 
-  private onColorChange() {
+  private onDeckChange() {
     this.deckDidChange.emit(this.deckElement);
   }
 
-  private async onTransitionChange() {
+  private async onDeckChangeAndClose() {
     this.deckDidChange.emit(this.deckElement);
 
     const popover = this.el.closest('ion-popover') as HTMLIonPopoverElement;
@@ -96,14 +96,7 @@ export class AppDeck {
 
   private renderOptions() {
     if (this.applyToTargetElement === TargetElement.TEXT) {
-      return (
-        <app-color-text-background
-          expander={false}
-          selectedElement={this.deckElement}
-          moreColors={this.moreColors}
-          deck={true}
-          onColorChange={() => this.onColorChange()}></app-color-text-background>
-      );
+      return <app-deck-fonts deckElement={this.deckElement} moreColors={this.moreColors} onFontsChange={() => this.onDeckChange()}></app-deck-fonts>;
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return [
         <app-color-text-background
@@ -112,13 +105,11 @@ export class AppDeck {
           selectedElement={this.deckElement}
           moreColors={this.moreColors}
           deck={true}
-          onColorChange={() => this.onColorChange()}></app-color-text-background>,
+          onColorChange={() => this.onDeckChange()}></app-color-text-background>,
         <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>,
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
-      return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onTransitionChange()}></app-deck-transition>;
-    } else if (this.applyToTargetElement === TargetElement.FONTS) {
-      return <app-deck-fonts deckElement={this.deckElement} onFontsChange={() => this.onTransitionChange()}></app-deck-fonts>;
+      return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onDeckChangeAndClose()}></app-deck-transition>;
     } else {
       return undefined;
     }
