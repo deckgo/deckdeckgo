@@ -82,7 +82,6 @@ export class AppSelectTargetElement {
         {this.renderImage()}
         {this.renderText()}
         {this.renderBackground()}
-        {this.renderFonts()}
         {this.renderTransition()}
         {this.renderShapes()}
         {this.renderImages()}
@@ -191,18 +190,6 @@ export class AppSelectTargetElement {
       return (
         <ion-segment-button value={TargetElement.SIDES} mode="md">
           <ion-label>Sides</ion-label>
-        </ion-segment-button>
-      );
-    } else {
-      return undefined;
-    }
-  }
-
-  private renderFonts() {
-    if (this.fonts) {
-      return (
-        <ion-segment-button value={TargetElement.FONTS} mode="md">
-          <ion-label>Fonts</ion-label>
         </ion-segment-button>
       );
     } else {

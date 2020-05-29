@@ -10,6 +10,9 @@ export class AppDeckFonts {
   @Prop()
   deckElement: HTMLElement;
 
+  @Prop()
+  moreColors: boolean = true;
+
   @Event() fontsChange: EventEmitter<void>;
 
   @State()
@@ -44,35 +47,46 @@ export class AppDeckFonts {
     });
   }
 
-  private selectFont(font: GoogleFont | null): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.deckElement) {
-        resolve();
-        return;
-      }
+  private async selectFont(font: GoogleFont | null) {
+    if (!this.deckElement) {
+      return;
+    }
 
-      if (!font) {
-        this.deckElement.style.removeProperty('font-family');
-      } else {
-        this.deckElement.style.setProperty('font-family', font.family);
-      }
+    if (!font) {
+      this.deckElement.style.removeProperty('font-family');
+    } else {
+      this.deckElement.style.setProperty('font-family', font.family);
+    }
 
-      this.fontsChange.emit();
+    this.fontsChange.emit();
 
-      resolve();
-    });
+    await this.initSelectedFont();
   }
 
   render() {
-    return (
-      <div class="container ion-margin-bottom">
-        {this.renderDefaultFont(this.selectedFont === undefined)}
-        {this.renderFonts()}
-      </div>
-    );
+    return [
+      <app-color-text-background
+        selectedElement={this.deckElement}
+        moreColors={this.moreColors}
+        deck={true}
+        onColorChange={() => this.fontsChange.emit()}></app-color-text-background>,
+      this.renderFonts(),
+    ];
   }
 
   private renderFonts() {
+    return (
+      <app-expansion-panel>
+        <ion-label slot="title">Typography</ion-label>
+        <div class="container ion-margin-bottom">
+          {this.renderDefaultFont(this.selectedFont === undefined)}
+          {this.renderGoogleFonts()}
+        </div>
+      </app-expansion-panel>
+    );
+  }
+
+  private renderGoogleFonts() {
     if (this.fonts === undefined) {
       return undefined;
     }
