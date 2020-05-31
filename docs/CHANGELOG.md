@@ -1,3 +1,9 @@
+# 1.4.3 (2020-05-31)
+
+### Features
+
+- add strikethrough to `inline-editor`
+
 # 1.4.1 and 1.4.2 (2020-05-29)
 
 ### Fix
