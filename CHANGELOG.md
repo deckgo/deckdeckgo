@@ -17,6 +17,7 @@
 
 ### Others
 
+- cloud: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
 - starter kit: v2.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.3.0"></a>
