@@ -96,9 +96,7 @@ export class StyleActions {
           onAction={($event: CustomEvent<UIEvent>) => this.styleStrikeThrough($event.detail)}
           cssClass={this.strikethrough ? 'active' : undefined}
           class="strikethrough">
-          <span>
-            <strike>S</strike>
-          </span>
+          <span style={{'text-decoration': 'line-through'}}>S</span>
         </deckgo-ie-action-button>
       </Host>
     );

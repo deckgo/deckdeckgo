@@ -113,7 +113,7 @@ export class DeckdeckgoInlineEditorUtils {
         return;
       }
 
-      // Sometimes it generates font-style: italic;
+      // Sometimes it generates font-style: line-through;
       result = element.style.textDecoration === 'line-through';
       if (result) {
         resolve(result);

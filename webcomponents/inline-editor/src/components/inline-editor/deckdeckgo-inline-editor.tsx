@@ -839,6 +839,8 @@ export class DeckdeckgoInlineEditor {
         strikethrough={this.strikethrough}
         onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
 
+      this.renderSeparator(),
+
       this.renderFontSizeAction(),
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
