@@ -99,6 +99,43 @@ export class DeckdeckgoInlineEditorUtils {
     });
   }
 
+  static isStrikeThrough(element: HTMLElement): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      let result: boolean = await this.isTag(element, 'strike');
+
+      if (result) {
+        resolve(result);
+        return;
+      }
+
+      if (!element.hasChildNodes()) {
+        resolve(false);
+        return;
+      }
+
+      // Sometimes it generates font-style: italic;
+      result = element.style.textDecoration === 'line-through';
+      if (result) {
+        resolve(result);
+        return;
+      }
+
+      const children: HTMLCollection = element.children;
+      if (children && children.length > 0) {
+        const selectedChild: Element = Array.from(children).find((child: HTMLElement) => {
+          return child.style.textDecoration === 'line-through';
+        });
+
+        if (selectedChild) {
+          resolve(true);
+          return;
+        }
+      }
+
+      resolve(result);
+    });
+  }
+
   static isList(element: HTMLElement): Promise<ContentList | undefined> {
     return new Promise<ContentList | undefined>(async (resolve) => {
       if (!element) {
