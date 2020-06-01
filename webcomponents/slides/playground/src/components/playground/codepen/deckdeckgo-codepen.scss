@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+:host(.loaded) {
+  div.codepen-container {
+    opacity: var(--deckgo-codepen-opacity-loaded, 1);
+  }
+}
+
+div.codepen-container {
+  opacity: var(--deckgo-codepen-opacity-not-loaded, 0);
+  transition: var(--deckgo-codepen-transition, opacity 0.15s linear);
+}
