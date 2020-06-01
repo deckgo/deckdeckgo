@@ -3,6 +3,8 @@ import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} f
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, lazyLoadComponentContent, afterSwipe} from '@deckdeckgo/slide-utils';
 
+import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playground-theme';
+
 @Component({
   tag: 'deckgo-slide-playground',
   styleUrl: 'deckdeckgo-slide-playground.scss',
@@ -18,6 +20,8 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
   @Prop() height: number;
 
   @Prop() allowFullscreen: boolean = true;
+
+  @Prop() theme: DeckdeckgoPlaygroundTheme = DeckdeckgoPlaygroundTheme.DEFAULT;
 
   @State() videoWidth: number;
   @State() videoHeight: number;
@@ -153,6 +157,7 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
         width={this.videoWidth}
         height={this.videoHeight}
         frame-title={this.frameTitle}
+        theme={this.theme}
         allowFullscreen={this.allowFullscreen}></deckgo-codepen>
     );
   }

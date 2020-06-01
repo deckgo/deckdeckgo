@@ -1,7 +1,10 @@
 import {Component, Element, Method, Host, Prop, h, Watch, State} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+
 import {isMobile} from '@deckdeckgo/utils';
+
+import {DeckdeckgoPlaygroundTheme} from '../../../declarations/deckdeckgo-playground-theme';
 
 @Component({
   tag: 'deckgo-codepen',
@@ -21,6 +24,8 @@ export class DeckdeckgoCodepen implements DeckdeckgoComponent {
   @Prop() allowFullscreen: boolean = true;
 
   @Prop() instant: boolean = false;
+
+  @Prop() theme: DeckdeckgoPlaygroundTheme = DeckdeckgoPlaygroundTheme.DEFAULT;
 
   @State()
   private loading: boolean = false;
@@ -51,6 +56,11 @@ export class DeckdeckgoCodepen implements DeckdeckgoComponent {
 
   @Watch('src')
   async onSrcUpdate() {
+    await this.createIFrame();
+  }
+
+  @Watch('theme')
+  async onThemeUpdate() {
     await this.createIFrame();
   }
 
@@ -90,7 +100,7 @@ export class DeckdeckgoCodepen implements DeckdeckgoComponent {
       return;
     }
 
-    element.src = `${src}?default-tab=result&embed-version=2`;
+    element.src = src;
     element.width = '' + this.width;
     element.height = '' + this.height;
     element.frameBorder = '0';
@@ -120,6 +130,11 @@ export class DeckdeckgoCodepen implements DeckdeckgoComponent {
       return undefined;
     }
 
+    const src: string = await this.formatEmbedSrc();
+    return `${src}?default-tab=result&embed-version=2&theme-id=${this.theme.toLowerCase()}`;
+  }
+
+  private async formatEmbedSrc(): Promise<string> {
     // On mobile device, embed pens in a preview state where they need to be clicked to loaded
     if (isMobile()) {
       return this.src.replace('/pen/', '/embed/preview/');

@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { DeckdeckgoPlaygroundTheme, } from "./declarations/deckdeckgo-playground-theme";
 export namespace Components {
     interface DeckgoCodepen {
         "allowFullscreen": boolean;
@@ -13,6 +14,7 @@ export namespace Components {
         "instant": boolean;
         "lazyLoadContent": () => Promise<void>;
         "src": string;
+        "theme": DeckdeckgoPlaygroundTheme;
         "updateIFrame": (width: number, height: number) => Promise<void>;
         "width": number;
     }
@@ -28,6 +30,7 @@ export namespace Components {
         "resizeContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
         "src": string;
+        "theme": DeckdeckgoPlaygroundTheme;
         "width": number;
     }
 }
@@ -56,6 +59,7 @@ declare namespace LocalJSX {
         "height"?: number;
         "instant"?: boolean;
         "src"?: string;
+        "theme"?: DeckdeckgoPlaygroundTheme;
         "width"?: number;
     }
     interface DeckgoSlidePlayground {
@@ -65,6 +69,7 @@ declare namespace LocalJSX {
         "height"?: number;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "src"?: string;
+        "theme"?: DeckdeckgoPlaygroundTheme;
         "width"?: number;
     }
     interface IntrinsicElements {

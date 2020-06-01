@@ -44,9 +44,34 @@
           resolve();
         });
       }
+
+      function updateTheme() {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          const index = await deck.getActiveIndex();
+
+          const playgroundSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+          if (!playgroundSlideElement || playgroundSlideElement.tagName !== 'deckgo-slide-playground'.toUpperCase()) {
+            resolve();
+            return;
+          }
+
+          playgroundSlideElement.theme = playgroundSlideElement.theme === 'light' ? 'default' : 'light';
+
+          resolve();
+        });
+      }
     </script>
 
     <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+      <button onclick="updateTheme()">Update Theme</button>
       <button onclick="updatePenUrl()">Update Pen</button>
     </div>
   </body>
