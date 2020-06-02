@@ -2,16 +2,16 @@ import {Component, Element, Method, Host, Prop, h, Watch, State} from '@stencil/
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
-import {isMobile} from '@deckdeckgo/utils';
+import {formatPlaygroundSrc} from '../utils/deckdeckgo-playground.utils';
 
-import {DeckdeckgoPlaygroundTheme} from '../../../declarations/deckdeckgo-playground-theme';
+import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playground-theme';
 
 @Component({
-  tag: 'deckgo-codepen',
-  styleUrl: 'deckdeckgo-codepen.scss',
+  tag: 'deckgo-playground',
+  styleUrl: 'deckdeckgo-playground.scss',
   shadow: true,
 })
-export class DeckdeckgoCodepen implements DeckdeckgoComponent {
+export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
   @Prop() src: string;
@@ -94,7 +94,7 @@ export class DeckdeckgoCodepen implements DeckdeckgoComponent {
       this.setAttributeNode(element, allowFullScreen);
     }
 
-    const src: string = await this.formatSrc();
+    const src: string = await formatPlaygroundSrc(this.src, this.theme);
 
     if (!src) {
       return;
@@ -125,29 +125,11 @@ export class DeckdeckgoCodepen implements DeckdeckgoComponent {
     }
   }
 
-  private async formatSrc(): Promise<string | undefined> {
-    if (!this.src) {
-      return undefined;
-    }
-
-    const src: string = await this.formatEmbedSrc();
-    return `${src}?default-tab=result&embed-version=2&theme-id=${this.theme.toLowerCase()}`;
-  }
-
-  private async formatEmbedSrc(): Promise<string> {
-    // On mobile device, embed pens in a preview state where they need to be clicked to loaded
-    if (isMobile()) {
-      return this.src.replace('/pen/', '/embed/preview/');
-    } else {
-      return this.src.replace('/pen/', '/embed/');
-    }
-  }
-
   render() {
     const hostClass: string = this.loaded ? 'loaded' : '';
     return (
       <Host class={hostClass}>
-        <div class="codepen-container"></div>
+        <div class="playground-container"></div>
       </Host>
     );
   }

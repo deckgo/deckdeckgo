@@ -1,0 +1,35 @@
+import {isMobile} from '@deckdeckgo/utils';
+
+import {DeckdeckgoPlaygroundTheme} from '../..';
+
+export async function formatPlaygroundSrc(src: string | undefined, theme: DeckdeckgoPlaygroundTheme): Promise<string | undefined> {
+  if (!src) {
+    return undefined;
+  }
+
+  if (src.toLowerCase().indexOf('jsfiddle') > -1) {
+    return formatJSFiddleSrc(src, theme);
+  } else {
+    return formatCodepenSrc(src, theme);
+  }
+}
+
+async function formatCodepenSrc(src: string, theme: DeckdeckgoPlaygroundTheme): Promise<string | undefined> {
+  const embedSrc: string = await formatEmbedCodepenSrc(src);
+  return `${embedSrc}?default-tab=result&embed-version=2&theme-id=${theme.toLowerCase()}`;
+}
+
+async function formatJSFiddleSrc(src: string, theme: DeckdeckgoPlaygroundTheme): Promise<string | undefined> {
+  return `${src}embedded/js,html,css,result/${
+    theme !== DeckdeckgoPlaygroundTheme.DEFAULT ? theme.toLowerCase() : DeckdeckgoPlaygroundTheme.DARK.toLowerCase()
+  }`;
+}
+
+async function formatEmbedCodepenSrc(src: string): Promise<string> {
+  // On mobile device, embed pens in a preview state where they need to be clicked to loaded
+  if (isMobile()) {
+    return src.replace('/pen/', '/embed/preview/');
+  } else {
+    return src.replace('/pen/', '/embed/');
+  }
+}

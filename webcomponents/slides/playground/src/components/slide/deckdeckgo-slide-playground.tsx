@@ -152,13 +152,13 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
 
   private renderPlayground() {
     return (
-      <deckgo-codepen
+      <deckgo-playground
         src={this.src}
         width={this.videoWidth}
         height={this.videoHeight}
         frame-title={this.frameTitle}
         theme={this.theme}
-        allowFullscreen={this.allowFullscreen}></deckgo-codepen>
+        allowFullscreen={this.allowFullscreen}></deckgo-playground>
     );
   }
 }

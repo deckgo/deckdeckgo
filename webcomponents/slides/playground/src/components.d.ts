@@ -7,7 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DeckdeckgoPlaygroundTheme, } from "./declarations/deckdeckgo-playground-theme";
 export namespace Components {
-    interface DeckgoCodepen {
+    interface DeckgoPlayground {
         "allowFullscreen": boolean;
         "frameTitle": string;
         "height": number;
@@ -35,11 +35,11 @@ export namespace Components {
     }
 }
 declare global {
-    interface HTMLDeckgoCodepenElement extends Components.DeckgoCodepen, HTMLStencilElement {
+    interface HTMLDeckgoPlaygroundElement extends Components.DeckgoPlayground, HTMLStencilElement {
     }
-    var HTMLDeckgoCodepenElement: {
-        prototype: HTMLDeckgoCodepenElement;
-        new (): HTMLDeckgoCodepenElement;
+    var HTMLDeckgoPlaygroundElement: {
+        prototype: HTMLDeckgoPlaygroundElement;
+        new (): HTMLDeckgoPlaygroundElement;
     };
     interface HTMLDeckgoSlidePlaygroundElement extends Components.DeckgoSlidePlayground, HTMLStencilElement {
     }
@@ -48,12 +48,12 @@ declare global {
         new (): HTMLDeckgoSlidePlaygroundElement;
     };
     interface HTMLElementTagNameMap {
-        "deckgo-codepen": HTMLDeckgoCodepenElement;
+        "deckgo-playground": HTMLDeckgoPlaygroundElement;
         "deckgo-slide-playground": HTMLDeckgoSlidePlaygroundElement;
     }
 }
 declare namespace LocalJSX {
-    interface DeckgoCodepen {
+    interface DeckgoPlayground {
         "allowFullscreen"?: boolean;
         "frameTitle"?: string;
         "height"?: number;
@@ -73,7 +73,7 @@ declare namespace LocalJSX {
         "width"?: number;
     }
     interface IntrinsicElements {
-        "deckgo-codepen": DeckgoCodepen;
+        "deckgo-playground": DeckgoPlayground;
         "deckgo-slide-playground": DeckgoSlidePlayground;
     }
 }
@@ -81,7 +81,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "deckgo-codepen": LocalJSX.DeckgoCodepen & JSXBase.HTMLAttributes<HTMLDeckgoCodepenElement>;
+            "deckgo-playground": LocalJSX.DeckgoPlayground & JSXBase.HTMLAttributes<HTMLDeckgoPlaygroundElement>;
             "deckgo-slide-playground": LocalJSX.DeckgoSlidePlayground & JSXBase.HTMLAttributes<HTMLDeckgoSlidePlaygroundElement>;
         }
     }
