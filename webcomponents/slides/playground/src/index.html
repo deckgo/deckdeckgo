@@ -21,7 +21,7 @@
     </deckgo-deck>
 
     <script type="text/javascript">
-      function updatePenUrl() {
+      function updatePlaygroundUrl(src) {
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
@@ -39,7 +39,7 @@
             return;
           }
 
-          playgroundSlideElement.src = 'https://jsfiddle.net/peterpeterparker/5zjb39tn/';
+          playgroundSlideElement.src = src;
 
           resolve();
         });
@@ -72,7 +72,9 @@
 
     <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
       <button onclick="updateTheme()">Update Theme</button>
-      <button onclick="updatePenUrl()">Update Pen</button>
+      <button onclick="updatePlaygroundUrl('https://codepen.io/peterpeterparker/pen/dyGbOZm')">Switch Codepen</button>
+      <button onclick="updatePlaygroundUrl('https://jsfiddle.net/peterpeterparker/5zjb39tn/')">Switch jsfiddle</button>
+      <button onclick="updatePlaygroundUrl('https://webcomponents.dev/edit/f7ts2KKYnhLGdZKiusGr')">Switch WebComponents.dev</button>
     </div>
   </body>
 </html>

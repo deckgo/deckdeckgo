@@ -17,6 +17,8 @@ export async function formatPlaygroundSrc(src: string | undefined, theme: Deckde
     return formatCodepenSrc(src, theme);
   } else if (url.hostname.match(/jsfiddle\.[\s\S]*/)) {
     return formatJSFiddleSrc(src, theme);
+  } else if (url.hostname.match(/webcomponents\.[\s\S]*/)) {
+    return formatWebComponentsDevSrc(src);
   }
 
   return undefined;
@@ -40,4 +42,8 @@ async function formatEmbedCodepenSrc(src: string): Promise<string> {
   } else {
     return src.replace('/pen/', '/embed/');
   }
+}
+
+async function formatWebComponentsDevSrc(src: string): Promise<string | undefined> {
+  return `${src.replace('/preview/', '/v/')}?embed=1&sv=1&pm=1`;
 }
