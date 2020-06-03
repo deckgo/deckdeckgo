@@ -8,14 +8,18 @@ export async function formatPlaygroundSrc(src: string | undefined, theme: Deckde
   }
 
   const url: URL = new URL(src);
-  switch (url.hostname) {
-    case 'codepen.io':
-      return formatCodepenSrc(src, theme);
-    case 'jsfiddle.net':
-      return formatJSFiddleSrc(src, theme);
-    default:
-      return undefined;
+
+  if (!url.hostname) {
+    return undefined;
   }
+
+  if (url.hostname.match(/codepen\.[\s\S]*/)) {
+    return formatCodepenSrc(src, theme);
+  } else if (url.hostname.match(/jsfiddle\.[\s\S]*/)) {
+    return formatJSFiddleSrc(src, theme);
+  }
+
+  return undefined;
 }
 
 async function formatCodepenSrc(src: string, theme: DeckdeckgoPlaygroundTheme): Promise<string | undefined> {
