@@ -56,7 +56,7 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
   @Method()
   lazyLoadContent(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      await lazyLoadComponentContent(this.el, 'deckgo-codepen');
+      await lazyLoadComponentContent(this.el, 'deckgo-playground');
 
       await this.initSize();
       await this.resizePlaygroundContent();
