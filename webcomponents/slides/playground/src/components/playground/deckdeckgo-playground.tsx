@@ -108,17 +108,13 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
       return undefined;
     }
 
+    // prettier-ignore
     // @ts-ignore
-    return (
-      <iframe
-        src={this.formattedSrc}
-        allowfullscreen={this.allowFullscreen}
-        width={this.width}
-        height={this.height}
-        frameborder={0}
-        title={this.frameTitle}
-        onload={() => this.onFrameLoaded()}
-        ref={(el) => (this.iframe = el as HTMLIFrameElement)}></iframe>
-    );
+    return <iframe src={this.formattedSrc} allowfullscreen={this.allowFullscreen}
+                   width={this.width} height={this.height}
+                   frameborder={0} title={this.frameTitle}
+                   onload={() => this.onFrameLoaded()}
+                   ref={(el) => this.iframe = el as HTMLIFrameElement}>
+    </iframe>
   }
 }
