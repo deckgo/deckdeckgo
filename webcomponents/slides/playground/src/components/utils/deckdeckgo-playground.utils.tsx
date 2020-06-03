@@ -7,10 +7,14 @@ export async function formatPlaygroundSrc(src: string | undefined, theme: Deckde
     return undefined;
   }
 
-  if (src.toLowerCase().indexOf('jsfiddle') > -1) {
-    return formatJSFiddleSrc(src, theme);
-  } else {
-    return formatCodepenSrc(src, theme);
+  const url: URL = new URL(src);
+  switch (url.hostname) {
+    case 'codepen.io':
+      return formatCodepenSrc(src, theme);
+    case 'jsfiddle.net':
+      return formatJSFiddleSrc(src, theme);
+    default:
+      return undefined;
   }
 }
 
