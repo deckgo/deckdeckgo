@@ -33,6 +33,11 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   @State()
   private loaded: boolean = false;
 
+  @State()
+  private formattedSrc: string | undefined = undefined;
+
+  private iframe!: HTMLIFrameElement;
+
   async componentDidLoad() {
     if (this.instant) {
       await this.lazyLoadContent();
@@ -73,64 +78,47 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
       return;
     }
 
-    const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
-
-    if (iframe && !iframe.parentElement) {
-      return;
-    }
-
     this.loading = true;
     this.loaded = false;
 
-    if (iframe) {
-      iframe.parentElement.removeChild(iframe);
+    this.formattedSrc = await formatPlaygroundSrc(this.src, this.theme);
+
+    if (this.iframe) {
+      // Refresh iFrame
+      this.iframe.src = this.iframe.src;
     }
-
-    const element: HTMLIFrameElement = document.createElement('iframe');
-
-    if (this.allowFullscreen) {
-      const allowFullScreen: Attr = document.createAttribute('allowfullscreen');
-      allowFullScreen.value = '';
-      this.setAttributeNode(element, allowFullScreen);
-    }
-
-    const src: string = await formatPlaygroundSrc(this.src, this.theme);
-
-    if (!src) {
-      return;
-    }
-
-    element.src = src;
-    element.width = '' + this.width;
-    element.height = '' + this.height;
-    element.frameBorder = '0';
-    element.title = this.frameTitle;
-
-    const div: HTMLElement = this.el.shadowRoot.querySelector('div');
-
-    if (!div) {
-      return;
-    }
-
-    div.appendChild(element);
-
-    this.loading = false;
-    this.loaded = true;
   }
 
-  private setAttributeNode(element: HTMLIFrameElement, attr: Attr) {
-    // Stencil prerendering
-    if ((element as any).setAttributeNode === 'function') {
-      element.setAttributeNode(attr);
-    }
+  private onFrameLoaded() {
+    this.loading = false;
+    this.loaded = true;
   }
 
   render() {
     const hostClass: string = this.loaded ? 'loaded' : '';
     return (
       <Host class={hostClass}>
-        <div class="playground-container"></div>
+        <div class="playground-container">{this.renderFrame()}</div>
       </Host>
+    );
+  }
+
+  private renderFrame() {
+    if (!this.formattedSrc) {
+      return undefined;
+    }
+
+    // @ts-ignore
+    return (
+      <iframe
+        src={this.formattedSrc}
+        allowfullscreen={this.allowFullscreen}
+        width={this.width}
+        height={this.height}
+        frameborder={0}
+        title={this.frameTitle}
+        onload={() => this.onFrameLoaded()}
+        ref={(el) => (this.iframe = el as HTMLIFrameElement)}></iframe>
     );
   }
 }
