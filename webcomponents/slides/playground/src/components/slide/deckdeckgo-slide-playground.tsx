@@ -1,7 +1,7 @@
 import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
-import {DeckdeckgoSlideResize, hideLazyLoadImages, lazyLoadComponentContent, afterSwipe} from '@deckdeckgo/slide-utils';
+import {DeckdeckgoSlideResize, hideLazyLoadImages, lazyLoadComponentContent, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
 import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playground-theme';
 
@@ -56,6 +56,8 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
   @Method()
   lazyLoadContent(): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      await lazyLoadContent(this.el);
+
       await lazyLoadComponentContent(this.el, 'deckgo-playground');
 
       await this.initSize();
