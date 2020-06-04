@@ -61,7 +61,6 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
       await lazyLoadComponentContent(this.el, 'deckgo-playground');
 
       await this.initSize();
-      await this.resizePlaygroundContent();
 
       resolve();
     });
@@ -116,17 +115,7 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
 
   private onResizeContent = async () => {
     await this.initSize();
-
-    await this.resizePlaygroundContent();
   };
-
-  private async resizePlaygroundContent() {
-    const element: any = this.el.shadowRoot.querySelector('deckgo-codepen');
-
-    if (element) {
-      await element.updateIFrame(this.videoWidth, this.videoHeight);
-    }
-  }
 
   @Method()
   resizeContent(): Promise<void> {

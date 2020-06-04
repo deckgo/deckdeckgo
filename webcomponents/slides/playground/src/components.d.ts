@@ -15,7 +15,6 @@ export namespace Components {
         "lazyLoadContent": () => Promise<void>;
         "src": string;
         "theme": DeckdeckgoPlaygroundTheme;
-        "updateIFrame": (width: number, height: number) => Promise<void>;
         "width": number;
     }
     interface DeckgoSlidePlayground {
