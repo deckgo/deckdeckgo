@@ -30,6 +30,8 @@ export class AppPlayground {
         this.selectedElement && this.selectedElement.hasAttribute('theme')
           ? (this.selectedElement.getAttribute('theme') as DeckdeckgoPlaygroundTheme)
           : DeckdeckgoPlaygroundTheme.DEFAULT;
+
+      this.initSupportsTheme();
     }
   }
 
@@ -56,6 +58,10 @@ export class AppPlayground {
   private handleInput($event: CustomEvent<KeyboardEvent>) {
     this.playgroundSrc = ($event.target as InputTargetEvent).value;
 
+    this.initSupportsTheme();
+  }
+
+  private initSupportsTheme() {
     this.supportsTheme = this.playgroundSrc !== undefined && !this.playgroundSrc.match(/webcomponents\.[\s\S]*/);
   }
 
