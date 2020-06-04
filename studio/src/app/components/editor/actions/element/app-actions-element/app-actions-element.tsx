@@ -19,6 +19,7 @@ import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
 import {DemoAction} from '../../../../../utils/editor/demo-action';
+import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
 
 import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
@@ -630,7 +631,10 @@ export class AppActionsElement {
     await popover.present();
   }
 
-  private async openEditModalSlide(component: 'app-youtube' | 'app-demo' | 'app-playground', onDismiss: (result: string | DemoAction) => Promise<void>) {
+  private async openEditModalSlide(
+    component: 'app-youtube' | 'app-demo' | 'app-playground',
+    onDismiss: (result: string | DemoAction | PlaygroundAction) => Promise<void>
+  ) {
     const modal: HTMLIonModalElement = await modalController.create({
       component,
       componentProps: {
@@ -874,23 +878,28 @@ export class AppActionsElement {
     });
   };
 
-  private updatePlayground = (playgroundSrc: string): Promise<void> => {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || this.slideNodeName !== 'deckgo-slide-playground') {
-        resolve();
-        return;
-      }
+  private updatePlayground = async (playground: PlaygroundAction) => {
+    if (!this.selectedElement || this.slideNodeName !== 'deckgo-slide-playground') {
+      return;
+    }
 
-      if (!playgroundSrc || playgroundSrc === undefined || playgroundSrc === '') {
-        resolve();
-        return;
-      }
+    if (!playground) {
+      return;
+    }
 
-      this.selectedElement.setAttribute('src', playgroundSrc);
-      this.slideDidChange.emit(this.selectedElement);
+    if (!playground.src || playground.src === undefined || playground.src === '') {
+      return;
+    }
 
-      resolve();
-    });
+    this.selectedElement.setAttribute('src', playground.src);
+
+    if (playground.theme) {
+      this.selectedElement.setAttribute('theme', playground.theme);
+    } else {
+      this.selectedElement.removeAttribute('theme');
+    }
+
+    this.slideDidChange.emit(this.selectedElement);
   };
 
   private updateSlideDemo = async (demoAttr: DemoAction): Promise<void> => {

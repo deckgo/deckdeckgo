@@ -10,5 +10,13 @@ app-playground {
     ion-list {
       --ion-item-background: transparent;
     }
+
+    div.theme {
+      ion-select {
+        background: white;
+        border: 1px solid #dedede;
+        border-radius: 4px;
+      }
+    }
   }
 }
