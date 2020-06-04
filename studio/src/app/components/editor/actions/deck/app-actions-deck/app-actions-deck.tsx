@@ -139,6 +139,8 @@ export class AppActionsDeck {
           await this.openPoll();
         } else if (detail.data.template === SlideTemplate.SPLIT && detail.data.attributes && detail.data.attributes.type === SlideSplitType.DEMO) {
           await this.openDemo();
+        } else if (detail.data.template === SlideTemplate.PLAYGROUND) {
+          await this.openPlayground();
         }
 
         if (detail.data.slide) {
@@ -169,6 +171,22 @@ export class AppActionsDeck {
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       await this.addSlideYoutube(detail.data);
+
+      this.blockSlide.emit(false);
+    });
+
+    this.blockSlide.emit(true);
+
+    await modal.present();
+  }
+
+  private async openPlayground() {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-playground',
+    });
+
+    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      await this.addSlidePlayground(detail.data);
 
       this.blockSlide.emit(false);
     });
@@ -253,6 +271,16 @@ export class AppActionsDeck {
 
       resolve();
     });
+  }
+
+  private async addSlidePlayground(playgroundUrl: string) {
+    if (!playgroundUrl || playgroundUrl === undefined || playgroundUrl === '') {
+      return;
+    }
+
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlidePlayground(playgroundUrl);
+
+    this.addSlide.emit(slide);
   }
 
   private addSlideDemo(demo: DemoAction): Promise<void> {

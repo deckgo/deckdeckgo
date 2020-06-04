@@ -47,6 +47,8 @@ export class CreateSlidesUtils {
         resolve(await this.createSlidePoll());
       } else if (template.template === SlideTemplate['ASPECT-RATIO']) {
         resolve(await this.createSlideAspectRatio());
+      } else if (template.template === SlideTemplate.PLAYGROUND) {
+        resolve(await this.createSlidePlayground());
       } else {
         resolve(null);
       }
@@ -271,6 +273,25 @@ export class CreateSlidesUtils {
         <deckgo-slide-youtube key={uuid()} src={src}>
           {title}
         </deckgo-slide-youtube>
+      );
+
+      resolve(slide);
+    });
+  }
+
+  static createSlidePlayground(src: string = undefined): Promise<JSX.IntrinsicElements> {
+    return new Promise<JSX.IntrinsicElements>((resolve) => {
+      if (!document) {
+        resolve();
+        return;
+      }
+
+      const title = <h1 slot="title"></h1>;
+
+      const slide: JSX.IntrinsicElements = (
+        <deckgo-slide-playground key={uuid()} src={src}>
+          {title}
+        </deckgo-slide-playground>
       );
 
       resolve(slide);

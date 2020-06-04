@@ -1,0 +1,45 @@
+:host {
+  display: grid;
+
+  margin: 4px 0 0 4px;
+  width: calc(100% - 4px);
+  height: 100%;
+
+  grid-template-columns: repeat(3, calc(100% / 3));
+  grid-template-rows: 4px 40px 24px 4px;
+
+  background: #333642;
+  border: 1px solid #333642;
+  font-size: 0.4rem;
+  color: #aaaebc;
+}
+
+div.header {
+  grid-column-start: 1;
+  grid-column-end: 4;
+
+  background: #1e1f26;
+}
+
+div.column {
+  margin: 0 0 2px 2px;
+  background: #1d1e22;
+
+  > div:first-of-type {
+    background: black;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1px 1px 1px 4px;
+  }
+
+  > div:last-of-type {
+    padding: 2px;
+  }
+}
+
+div.row {
+  grid-column-start: 1;
+  grid-column-end: 4;
+
+  background: white;
+}
