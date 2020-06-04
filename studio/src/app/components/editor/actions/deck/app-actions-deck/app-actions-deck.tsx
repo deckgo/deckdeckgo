@@ -19,6 +19,7 @@ import {DemoAction} from '../../../../../utils/editor/demo-action';
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 import {OfflineService} from '../../../../../services/editor/offline/offline.service';
 import {RemoteService} from '../../../../../services/editor/remote/remote.service';
+import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
 
 @Component({
   tag: 'app-actions-deck',
@@ -273,12 +274,12 @@ export class AppActionsDeck {
     });
   }
 
-  private async addSlidePlayground(playgroundUrl: string) {
-    if (!playgroundUrl || playgroundUrl === undefined || playgroundUrl === '') {
+  private async addSlidePlayground(playground: PlaygroundAction) {
+    if (!playground || !playground.src || playground.src === undefined || playground.src === '') {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlidePlayground(playgroundUrl);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlidePlayground(playground.src);
 
     this.addSlide.emit(slide);
   }
