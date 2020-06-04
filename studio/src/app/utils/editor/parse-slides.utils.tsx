@@ -100,6 +100,10 @@ export class ParseSlidesUtils {
         attributes['editable'] = true;
       }
 
+      if (slide.data.template === SlideTemplate.PLAYGROUND) {
+        attributes['theme'] = slide.data.attributes && slide.data.attributes.theme ? slide.data.attributes.theme : undefined;
+      }
+
       const SlideElement: string = slideTag;
 
       const result: JSX.IntrinsicElements = (

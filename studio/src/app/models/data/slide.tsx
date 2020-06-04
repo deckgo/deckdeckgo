@@ -51,6 +51,8 @@ export interface SlideAttributes {
   imgMode?: string;
 
   customLoader?: boolean;
+
+  theme?: string;
 }
 
 export interface SlideData {
