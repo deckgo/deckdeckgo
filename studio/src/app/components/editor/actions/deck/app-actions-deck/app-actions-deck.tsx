@@ -279,7 +279,7 @@ export class AppActionsDeck {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlidePlayground(playground.src);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlidePlayground(playground.src, playground.theme);
 
     this.addSlide.emit(slide);
   }
