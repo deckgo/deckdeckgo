@@ -1,15 +1,15 @@
 :host {
   display: grid;
 
-  margin: 4px 0 0 4px;
+  margin: 8px 0 0 4px;
   width: calc(100% - 4px);
   height: 100%;
 
   grid-template-columns: repeat(3, calc(100% / 3));
-  grid-template-rows: 4px 40px 24px 4px;
+  grid-template-rows: 4px 36px 24px 4px;
 
   background: #333642;
-  border: 1px solid #333642;
+  outline: 1px solid #333642;
   font-size: 0.4rem;
   color: #aaaebc;
 }

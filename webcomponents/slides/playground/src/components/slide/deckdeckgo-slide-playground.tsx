@@ -109,7 +109,7 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', debounce(this.onResizeContent));
+      window.addEventListener('resize', debounce(this.onResizeContent, 500));
     }
   }
 
