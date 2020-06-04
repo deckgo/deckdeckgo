@@ -213,4 +213,14 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
   </deckgo-deck>
 </div>
 
+- Slide: [Playground](/slides/playground)
+
+<div class="container ion-margin">
+  <deckgo-deck embedded={true}>
+    <deckgo-slide-playground src="https://codepen.io/peterpeterparker/pen/dyGbOZm">
+      <h1 slot="title">Playground</h1>
+    </deckgo-slide-playground>
+  </deckgo-deck>
+</div>
+
 [deckdeckgo]: https://deckdeckgo.com
