@@ -28,9 +28,6 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   @Prop() theme: DeckdeckgoPlaygroundTheme = DeckdeckgoPlaygroundTheme.DEFAULT;
 
   @State()
-  private loading: boolean = false;
-
-  @State()
   private loaded: boolean = false;
 
   @State()
@@ -74,11 +71,6 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
       return;
     }
 
-    if (this.loading) {
-      return;
-    }
-
-    this.loading = true;
     this.loaded = false;
 
     this.formattedSrc = await formatPlaygroundSrc(this.src, this.theme);
@@ -90,7 +82,6 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   }
 
   private onFrameLoaded() {
-    this.loading = false;
     this.loaded = true;
   }
 
