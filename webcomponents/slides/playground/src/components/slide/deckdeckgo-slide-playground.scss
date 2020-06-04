@@ -10,7 +10,7 @@ div.deckgo-playground-container {
   width: calc(var(--slide-width) - var(--slide-padding-end, 64px) - var(--slide-padding-start, 64px));
   height: var(--slide-playground-height, calc(100% - 32px));
 
-  margin: var(--slide-playground-margin, 0 0 32px);
+  margin: var(--slide-playground-margin, 16px 0 48px);
   overflow: var(--slide-playground-overflow, auto);
 
   display: flex;
