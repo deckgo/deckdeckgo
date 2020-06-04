@@ -630,13 +630,9 @@ export class AppActionsElement {
     await popover.present();
   }
 
-  private async openEditYoutubeSlide() {
-    if (this.slideNodeName !== 'deckgo-slide-youtube') {
-      return;
-    }
-
+  private async openEditModalSlide(component: 'app-youtube' | 'app-demo' | 'app-playground', onDismiss: (result: string | DemoAction) => Promise<void>) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-youtube',
+      component,
       componentProps: {
         selectedElement: this.selectedElement,
       },
@@ -644,32 +640,7 @@ export class AppActionsElement {
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data && this.selectedElement) {
-        await this.updateYoutube(detail.data);
-      }
-
-      this.blockSlide.emit(false);
-    });
-
-    this.blockSlide.emit(true);
-
-    await modal.present();
-  }
-
-  private async openEditDemoSlide() {
-    if (!this.slideDemo) {
-      return;
-    }
-
-    const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-demo',
-      componentProps: {
-        selectedElement: this.selectedElement,
-      },
-    });
-
-    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data && this.selectedElement) {
-        await this.updateSlideDemo(detail.data);
+        await onDismiss(detail.data);
       }
 
       this.blockSlide.emit(false);
@@ -884,7 +855,7 @@ export class AppActionsElement {
     await this.imageHelper.deleteSlideAttributeImgSrc(this.selectedElement);
   }
 
-  private updateYoutube(youtubeUrl: string): Promise<void> {
+  private updateYoutube = (youtubeUrl: string): Promise<void> => {
     return new Promise<void>(async (resolve) => {
       if (!this.selectedElement || this.slideNodeName !== 'deckgo-slide-youtube') {
         resolve();
@@ -901,9 +872,28 @@ export class AppActionsElement {
 
       resolve();
     });
-  }
+  };
 
-  private async updateSlideDemo(demoAttr: DemoAction): Promise<void> {
+  private updatePlayground = (playgroundSrc: string): Promise<void> => {
+    return new Promise<void>(async (resolve) => {
+      if (!this.selectedElement || this.slideNodeName !== 'deckgo-slide-playground') {
+        resolve();
+        return;
+      }
+
+      if (!playgroundSrc || playgroundSrc === undefined || playgroundSrc === '') {
+        resolve();
+        return;
+      }
+
+      this.selectedElement.setAttribute('src', playgroundSrc);
+      this.slideDidChange.emit(this.selectedElement);
+
+      resolve();
+    });
+  };
+
+  private updateSlideDemo = async (demoAttr: DemoAction): Promise<void> => {
     if (!this.selectedElement || !this.slideDemo) {
       return;
     }
@@ -922,7 +912,7 @@ export class AppActionsElement {
     demo.setAttribute('mode', demoAttr.mode);
 
     this.slideDidChange.emit(this.selectedElement);
-  }
+  };
 
   private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -986,6 +976,7 @@ export class AppActionsElement {
       this.slideNodeName === 'deckgo-slide-chart' ||
       this.slideNodeName === 'deckgo-slide-poll' ||
       this.slideNodeName === 'deckgo-slide-youtube' ||
+      this.slideNodeName === 'deckgo-slide-playground' ||
       this.slideNodeName === 'deckgo-slide-author' ||
       this.slideDemo
     );
@@ -1099,9 +1090,11 @@ export class AppActionsElement {
           this.slideNodeName === 'deckgo-slide-poll'
             ? this.openEditPollSlide()
             : this.slideNodeName === 'deckgo-slide-youtube'
-            ? this.openEditYoutubeSlide()
+            ? this.openEditModalSlide('app-youtube', this.updateYoutube)
+            : this.slideNodeName === 'deckgo-slide-playground'
+            ? this.openEditModalSlide('app-playground', this.updatePlayground)
             : this.slideDemo
-            ? this.openEditDemoSlide()
+            ? this.openEditModalSlide('app-demo', this.updateSlideDemo)
             : this.openEditSlide()
         }
         color="primary"
