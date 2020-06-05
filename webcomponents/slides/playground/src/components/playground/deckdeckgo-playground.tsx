@@ -30,6 +30,8 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   @State()
   private loaded: boolean = false;
 
+  private loading: boolean = false;
+
   async componentDidLoad() {
     if (this.instant) {
       await this.lazyLoadContent();
@@ -75,6 +77,10 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
       return;
     }
 
+    if (this.loading) {
+      return;
+    }
+
     const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
 
     if (iframe) {
@@ -82,6 +88,7 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
     }
 
     this.loaded = false;
+    this.loading = true;
 
     if (iframe) {
       iframe.parentElement.removeChild(iframe);
@@ -114,6 +121,7 @@ export class DeckdeckgoPlayground implements DeckdeckgoComponent {
     div.appendChild(element);
 
     this.loaded = true;
+    this.loading = false;
   }
 
   private setAttributeNode(element: HTMLIFrameElement, attr: Attr) {
