@@ -67,6 +67,7 @@ export namespace Components {
   interface AppSlideContent {}
   interface AppSlideCountdown {}
   interface AppSlideGif {}
+  interface AppSlidePlayground {}
   interface AppSlidePoll {}
   interface AppSlideQrcode {}
   interface AppSlideSplit {}
@@ -386,6 +387,12 @@ declare global {
     new (): HTMLAppSlideGifElement;
   };
 
+  interface HTMLAppSlidePlaygroundElement extends Components.AppSlidePlayground, HTMLStencilElement {}
+  var HTMLAppSlidePlaygroundElement: {
+    prototype: HTMLAppSlidePlaygroundElement;
+    new (): HTMLAppSlidePlaygroundElement;
+  };
+
   interface HTMLAppSlidePollElement extends Components.AppSlidePoll, HTMLStencilElement {}
   var HTMLAppSlidePollElement: {
     prototype: HTMLAppSlidePollElement;
@@ -485,6 +492,7 @@ declare global {
     'app-slide-content': HTMLAppSlideContentElement;
     'app-slide-countdown': HTMLAppSlideCountdownElement;
     'app-slide-gif': HTMLAppSlideGifElement;
+    'app-slide-playground': HTMLAppSlidePlaygroundElement;
     'app-slide-poll': HTMLAppSlidePollElement;
     'app-slide-qrcode': HTMLAppSlideQrcodeElement;
     'app-slide-split': HTMLAppSlideSplitElement;
@@ -554,6 +562,7 @@ declare namespace LocalJSX {
   interface AppSlideContent {}
   interface AppSlideCountdown {}
   interface AppSlideGif {}
+  interface AppSlidePlayground {}
   interface AppSlidePoll {}
   interface AppSlideQrcode {}
   interface AppSlideSplit {}
@@ -615,6 +624,7 @@ declare namespace LocalJSX {
     'app-slide-content': AppSlideContent;
     'app-slide-countdown': AppSlideCountdown;
     'app-slide-gif': AppSlideGif;
+    'app-slide-playground': AppSlidePlayground;
     'app-slide-poll': AppSlidePoll;
     'app-slide-qrcode': AppSlideQrcode;
     'app-slide-split': AppSlideSplit;
@@ -683,6 +693,7 @@ declare module "@stencil/core" {
       'app-slide-content': LocalJSX.AppSlideContent & JSXBase.HTMLAttributes<HTMLAppSlideContentElement>;
       'app-slide-countdown': LocalJSX.AppSlideCountdown & JSXBase.HTMLAttributes<HTMLAppSlideCountdownElement>;
       'app-slide-gif': LocalJSX.AppSlideGif & JSXBase.HTMLAttributes<HTMLAppSlideGifElement>;
+      'app-slide-playground': LocalJSX.AppSlidePlayground & JSXBase.HTMLAttributes<HTMLAppSlidePlaygroundElement>;
       'app-slide-poll': LocalJSX.AppSlidePoll & JSXBase.HTMLAttributes<HTMLAppSlidePollElement>;
       'app-slide-qrcode': LocalJSX.AppSlideQrcode & JSXBase.HTMLAttributes<HTMLAppSlideQrcodeElement>;
       'app-slide-split': LocalJSX.AppSlideSplit & JSXBase.HTMLAttributes<HTMLAppSlideSplitElement>;

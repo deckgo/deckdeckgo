@@ -1,0 +1,69 @@
+{
+  "name": "@deckdeckgo/slide-playground",
+  "version": "1.0.1",
+  "description": "A template to embed playgrounds into your presentations",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/interface.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-slide-playground/deckdeckgo-slide-playground.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {
+    "@deckdeckgo/slide-utils": "^1.1.0",
+    "@deckdeckgo/utils": "^1.1.0"
+  },
+  "devDependencies": {
+    "@stencil/core": "^1.13.0",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.3.1",
+    "@stencil/utils": "0.0.5",
+    "@types/jest": "24.9.1",
+    "@types/puppeteer": "2.0.1",
+    "autoprefixer": "^9.7.6",
+    "husky": "^4.2.5",
+    "jest": "26.0.1",
+    "jest-cli": "26.0.1",
+    "prettier": "2.0.5",
+    "pretty-quick": "^2.0.1",
+    "puppeteer": "2.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

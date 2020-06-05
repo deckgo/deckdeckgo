@@ -1,3 +1,9 @@
+# 1.5.0 (2020-06-05)
+
+### Features
+
+- new template `playground`
+
 # 1.4.3 (2020-05-31)
 
 ### Features

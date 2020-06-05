@@ -317,6 +317,19 @@ export class AppSlidesConcept {
               </deckgo-slide-aspect-ratio>
             </deckgo-deck>
           </div>
+
+          <ul>
+            <li>
+              Slide: <a href="/slides/playground">Playground</a>
+            </li>
+          </ul>
+          <div class="container ion-margin">
+            <deckgo-deck embedded={true}>
+              <deckgo-slide-playground src="https://codepen.io/peterpeterparker/pen/dyGbOZm">
+                <h1 slot="title">Playground</h1>
+              </deckgo-slide-playground>
+            </deckgo-deck>
+          </div>
         </main>
 
         <app-footer></app-footer>

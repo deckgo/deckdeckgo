@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+:host(.loaded) {
+  div.playground-container {
+    opacity: var(--deckgo-playground-opacity-loaded, 1);
+  }
+}
+
+div.playground-container {
+  opacity: var(--deckgo-playground-opacity-not-loaded, 0);
+  transition: var(--deckgo-playground-transition, opacity 0.15s linear);
+}
+
+iframe {
+  width: var(--playground-width);
+  height: var(--playground-height);
+}

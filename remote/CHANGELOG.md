@@ -1,3 +1,9 @@
+# 1.3.0 (2020-06-05)
+
+### Features
+
+- new template `playground`
+
 # 1.2.2 and 1.2.3 (2020-05-29)
 
 ### Fix

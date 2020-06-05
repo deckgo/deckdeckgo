@@ -288,6 +288,10 @@ export namespace Components {
   }
   interface AppOpensource {}
   interface AppPhoto {}
+  interface AppPlayground {
+    'selectedElement': HTMLElement;
+  }
+  interface AppPlaygroundPlaceholder {}
   interface AppPoll {
     'pollKey': string;
   }
@@ -811,6 +815,18 @@ declare global {
     new (): HTMLAppPhotoElement;
   };
 
+  interface HTMLAppPlaygroundElement extends Components.AppPlayground, HTMLStencilElement {}
+  var HTMLAppPlaygroundElement: {
+    prototype: HTMLAppPlaygroundElement;
+    new (): HTMLAppPlaygroundElement;
+  };
+
+  interface HTMLAppPlaygroundPlaceholderElement extends Components.AppPlaygroundPlaceholder, HTMLStencilElement {}
+  var HTMLAppPlaygroundPlaceholderElement: {
+    prototype: HTMLAppPlaygroundPlaceholderElement;
+    new (): HTMLAppPlaygroundPlaceholderElement;
+  };
+
   interface HTMLAppPollElement extends Components.AppPoll, HTMLStencilElement {}
   var HTMLAppPollElement: {
     prototype: HTMLAppPollElement;
@@ -1065,6 +1081,8 @@ declare global {
     'app-offline': HTMLAppOfflineElement;
     'app-opensource': HTMLAppOpensourceElement;
     'app-photo': HTMLAppPhotoElement;
+    'app-playground': HTMLAppPlaygroundElement;
+    'app-playground-placeholder': HTMLAppPlaygroundPlaceholderElement;
     'app-poll': HTMLAppPollElement;
     'app-poll-options': HTMLAppPollOptionsElement;
     'app-popular': HTMLAppPopularElement;
@@ -1384,6 +1402,10 @@ declare namespace LocalJSX {
   }
   interface AppOpensource {}
   interface AppPhoto {}
+  interface AppPlayground {
+    'selectedElement'?: HTMLElement;
+  }
+  interface AppPlaygroundPlaceholder {}
   interface AppPoll {
     'pollKey'?: string;
   }
@@ -1542,6 +1564,8 @@ declare namespace LocalJSX {
     'app-offline': AppOffline;
     'app-opensource': AppOpensource;
     'app-photo': AppPhoto;
+    'app-playground': AppPlayground;
+    'app-playground-placeholder': AppPlaygroundPlaceholder;
     'app-poll': AppPoll;
     'app-poll-options': AppPollOptions;
     'app-popular': AppPopular;
@@ -1655,6 +1679,8 @@ declare module "@stencil/core" {
       'app-offline': LocalJSX.AppOffline & JSXBase.HTMLAttributes<HTMLAppOfflineElement>;
       'app-opensource': LocalJSX.AppOpensource & JSXBase.HTMLAttributes<HTMLAppOpensourceElement>;
       'app-photo': LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
+      'app-playground': LocalJSX.AppPlayground & JSXBase.HTMLAttributes<HTMLAppPlaygroundElement>;
+      'app-playground-placeholder': LocalJSX.AppPlaygroundPlaceholder & JSXBase.HTMLAttributes<HTMLAppPlaygroundPlaceholderElement>;
       'app-poll': LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
       'app-poll-options': LocalJSX.AppPollOptions & JSXBase.HTMLAttributes<HTMLAppPollOptionsElement>;
       'app-popular': LocalJSX.AppPopular & JSXBase.HTMLAttributes<HTMLAppPopularElement>;
