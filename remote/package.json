@@ -33,6 +33,7 @@
     "@deckdeckgo/slide-content": "^1.0.1",
     "@deckdeckgo/slide-countdown": "^1.0.1",
     "@deckdeckgo/slide-gif": "^1.0.1",
+    "@deckdeckgo/slide-playground": "^1.0.0",
     "@deckdeckgo/slide-poll": "^1.0.1",
     "@deckdeckgo/slide-qrcode": "^1.0.3",
     "@deckdeckgo/slide-split": "^1.1.4",
