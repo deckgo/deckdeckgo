@@ -2,7 +2,7 @@
 
 This project is the cloud functions of [DeckDeckGo].
 
-These are deployed and runs on [Google Firebase].
+These are deployed and runs on [Google Firebase](https://firebase.google.com/docs/functions).
 
 ## Table of contents
 
@@ -14,5 +14,4 @@ This project, respectively these functions of [DeckDeckGo], are released under t
 
 [DeckDeckGo] is developed by [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com).
 
-[DeckDeckGo]: https://deckdeckgo.com
-[Google Firebase]: https://firebase.google.com/docs/functions
+[deckdeckgo]: https://deckdeckgo.com

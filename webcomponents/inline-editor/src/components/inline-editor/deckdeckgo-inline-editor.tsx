@@ -30,6 +30,9 @@ export class DeckdeckgoInlineEditor {
   private underline: boolean = false;
 
   @State()
+  private strikethrough: boolean = false;
+
+  @State()
   private contentAlign: ContentAlign;
 
   @State()
@@ -455,6 +458,7 @@ export class DeckdeckgoInlineEditor {
         this.bold = false;
         this.italic = false;
         this.underline = false;
+        this.strikethrough = false;
         this.contentList = undefined;
         this.color = null;
         this.contentFontSize = undefined;
@@ -504,6 +508,7 @@ export class DeckdeckgoInlineEditor {
         this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
         this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
         this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
+        this.strikethrough = await DeckdeckgoInlineEditorUtils.isStrikeThrough(node as HTMLElement);
 
         if (this.contentList === undefined) {
           this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
@@ -831,7 +836,10 @@ export class DeckdeckgoInlineEditor {
         bold={this.bold}
         italic={this.italic}
         underline={this.underline}
+        strikethrough={this.strikethrough}
         onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
+
+      this.renderSeparator(),
 
       this.renderFontSizeAction(),
 

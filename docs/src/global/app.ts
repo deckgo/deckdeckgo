@@ -16,6 +16,7 @@ import '@deckdeckgo/slide-video';
 import '@deckdeckgo/slide-big-img';
 import '@deckdeckgo/slide-poll';
 import '@deckdeckgo/slide-aspect-ratio';
+import '@deckdeckgo/slide-playground';
 
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/charts';

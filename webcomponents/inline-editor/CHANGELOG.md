@@ -1,3 +1,9 @@
+# 1.4.0 (2020-05-31)
+
+### Features
+
+- add strikethrough ([#710](https://github.com/deckgo/deckdeckgo/issues/710))
+
 # 1.3.1 (2020-05-15)
 
 ### Fix

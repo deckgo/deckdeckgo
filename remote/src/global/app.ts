@@ -25,6 +25,7 @@ import '@deckdeckgo/slide-big-img';
 import '@deckdeckgo/slide-video';
 import '@deckdeckgo/slide-poll';
 import '@deckdeckgo/slide-aspect-ratio';
+import '@deckdeckgo/slide-playground';
 
 import {setupConfig} from '../app/services/environment/environment-config';
 

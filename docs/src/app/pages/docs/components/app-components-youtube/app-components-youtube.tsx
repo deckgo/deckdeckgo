@@ -9,7 +9,7 @@ export class AppComponentsYoutube {
   @Element() el: HTMLElement;
 
   async componentDidLoad() {
-    await DeckdeckgoDocsUtils.loadVideo(this.el);
+    await DeckdeckgoDocsUtils.lazyLoadElements(this.el, 'deckgo-youtube');
   }
 
   render() {

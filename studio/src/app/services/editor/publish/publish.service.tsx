@@ -158,7 +158,7 @@ export class PublishService {
           owner_id: deck.data.owner_id,
           attributes: deck.data.attributes,
           background: deck.data.background,
-          slides: apiSlides
+          slides: apiSlides,
         };
 
         const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
@@ -261,7 +261,7 @@ export class PublishService {
       const apiSlide: ApiSlide = {
         template: slide.data.template,
         content: slide.data.content,
-        attributes: attributes
+        attributes: attributes,
       };
 
       const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
@@ -300,7 +300,7 @@ export class PublishService {
         return;
       }
 
-      const result: string = content.replace(/<div slot="notes".*?>.*?<\/div>/gis, '');
+      const result: string = content.replace(/<div slot="notes".*?>(.|[\s\S])*?<\/div>/gi, '');
 
       resolve(result);
     });
@@ -323,7 +323,7 @@ export class PublishService {
       // If no attributes at all, we create an attribute "content" of the QR code with it's upcoming published url
       if (!apiSlide.attributes) {
         apiSlide.attributes = {
-          content: `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`
+          content: `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`,
         };
       }
 
@@ -407,7 +407,7 @@ export class PublishService {
                 published: true,
                 published_at: now,
                 feed: true,
-                updated_at: now
+                updated_at: now,
               };
             } else {
               deck.data.meta.title = deck.data.name;
@@ -430,7 +430,7 @@ export class PublishService {
             if (user && user.data && user.data.name) {
               if (!deck.data.meta.author) {
                 deck.data.meta.author = {
-                  name: user.data.name
+                  name: user.data.name,
                 };
               } else {
                 (deck.data.meta.author as DeckMetaAuthor).name = user.data.name;

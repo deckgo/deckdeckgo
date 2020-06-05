@@ -26,6 +26,9 @@ export class StyleActions {
   @Prop()
   underline: boolean;
 
+  @Prop()
+  strikethrough: boolean;
+
   @Event()
   private initStyle: EventEmitter;
 
@@ -49,6 +52,14 @@ export class StyleActions {
     $event.stopPropagation();
 
     await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'underline');
+
+    this.initStyle.emit();
+  }
+
+  private async styleStrikeThrough($event: UIEvent): Promise<void> {
+    $event.stopPropagation();
+
+    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'strikeThrough');
 
     this.initStyle.emit();
   }
@@ -79,6 +90,13 @@ export class StyleActions {
           cssClass={this.underline ? 'active' : undefined}
           class={this.underline ? 'active underline' : 'underline'}>
           <span>U</span>
+        </deckgo-ie-action-button>
+        <deckgo-ie-action-button
+          mobile={this.mobile}
+          onAction={($event: CustomEvent<UIEvent>) => this.styleStrikeThrough($event.detail)}
+          cssClass={this.strikethrough ? 'active' : undefined}
+          class="strikethrough">
+          <span style={{'text-decoration': 'line-through'}}>S</span>
         </deckgo-ie-action-button>
       </Host>
     );

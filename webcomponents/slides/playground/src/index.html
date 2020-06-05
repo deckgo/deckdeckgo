@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+
+    <title>DeckDeckGo - Slide Playground Template</title>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+
+    <script type="module" src="/build/deckdeckgo-slide-playground.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-slide-playground.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <deckgo-deck id="slider">
+      <deckgo-slide-playground src="https://codepen.io/peterpeterparker/pen/dyGbOZm">
+        <h1 slot="title">A code pen by David</h1>
+        <h2 slot="content">A subtitle or something</h2>
+      </deckgo-slide-playground>
+    </deckgo-deck>
+
+    <script type="text/javascript">
+      function updatePlaygroundUrl(src) {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          const index = await deck.getActiveIndex();
+
+          const playgroundSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+          if (!playgroundSlideElement || playgroundSlideElement.tagName !== 'deckgo-slide-playground'.toUpperCase()) {
+            resolve();
+            return;
+          }
+
+          playgroundSlideElement.src = src;
+
+          resolve();
+        });
+      }
+
+      function updateTheme() {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          const index = await deck.getActiveIndex();
+
+          const playgroundSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+          if (!playgroundSlideElement || playgroundSlideElement.tagName !== 'deckgo-slide-playground'.toUpperCase()) {
+            resolve();
+            return;
+          }
+
+          playgroundSlideElement.theme = playgroundSlideElement.theme === 'light' ? 'default' : 'light';
+
+          resolve();
+        });
+      }
+    </script>
+
+    <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+      <button onclick="updateTheme()">Update Theme</button>
+      <button onclick="updatePlaygroundUrl('https://codepen.io/peterpeterparker/pen/dyGbOZm')">Switch Codepen</button>
+      <button onclick="updatePlaygroundUrl('https://jsfiddle.net/peterpeterparker/5zjb39tn/')">Switch jsfiddle</button>
+      <button onclick="updatePlaygroundUrl('https://webcomponents.dev/edit/f7ts2KKYnhLGdZKiusGr')">Switch WebComponents.dev</button>
+    </div>
+  </body>
+</html>

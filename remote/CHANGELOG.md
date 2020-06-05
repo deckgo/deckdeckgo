@@ -1,4 +1,16 @@
-# 1.2.0 (2020-05-28)
+# 1.3.0 (2020-06-05)
+
+### Features
+
+- new template `playground`
+
+# 1.2.2 and 1.2.3 (2020-05-29)
+
+### Fix
+
+- QR code slide size calculation
+
+# 1.2.0 and 1.2.1 (2020-05-28)
 
 ### Features
 

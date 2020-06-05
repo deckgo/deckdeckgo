@@ -68,6 +68,7 @@ export namespace Components {
         "italic": boolean;
         "mobile": boolean;
         "selection": Selection;
+        "strikethrough": boolean;
         "underline": boolean;
     }
     interface DeckgoIeTriangle {
@@ -246,6 +247,7 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
         "onInitStyle"?: (event: CustomEvent<any>) => void;
         "selection"?: Selection;
+        "strikethrough"?: boolean;
         "underline"?: boolean;
     }
     interface DeckgoIeTriangle {

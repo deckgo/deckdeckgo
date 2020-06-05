@@ -1,3 +1,30 @@
+<a name="1.4.0"></a>
+
+# [1.4.0](https://github.com/deckgo/deckdeckgo/compare/v1.3.0...v1.4.0) (In progress)
+
+### Applications
+
+- demo: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
+- docs: v1.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- remote: v1.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+
+### Web Components: New Templates
+
+- slide-playground: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/playground/CHANGELOG.md))
+
+### Web Components
+
+- inline-editor: v1.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
+### Web Components: Templates
+
+- slide-qrcode: v1.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
+
+### Others
+
+- cloud: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
+- starter kit: v2.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+
 <a name="1.3.0"></a>
 
 # [1.3.0](https://github.com/deckgo/deckdeckgo/compare/v1.2.0...v1.3.0) (2020-05-28)

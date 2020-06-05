@@ -590,8 +590,9 @@ export class DeckEventsHandler {
       const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
       const splitAttributes: SlideAttributes = await this.getSlideAttributesSplit(slide, cleanFields);
       const authorAttributes: SlideAttributes = await this.getSlideAttributesAuthor(slide, cleanFields);
+      const playgroundAttributes: SlideAttributes = await this.getSlideAttributesPlayground(slide, cleanFields);
 
-      attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes, ...authorAttributes};
+      attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes, ...authorAttributes, ...playgroundAttributes};
 
       resolve(attributes);
     });
@@ -640,6 +641,23 @@ export class DeckEventsHandler {
 
       resolve(attributes);
     });
+  }
+
+  private async getSlideAttributesPlayground(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-playground') {
+      return {};
+    }
+
+    let attributes: SlideAttributes = {};
+
+    if (slide.hasAttribute('theme')) {
+      attributes.theme = slide.getAttribute('theme');
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.theme = firebase.firestore.FieldValue.delete();
+    }
+
+    return attributes;
   }
 
   private getSlideAttributesQRCode(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {

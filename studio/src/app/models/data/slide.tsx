@@ -9,6 +9,7 @@ export enum SlideTemplate {
   CHART = 'chart',
   POLL = 'poll',
   'ASPECT-RATIO' = 'aspect-ratio',
+  PLAYGROUND = 'playground',
 }
 
 export enum SlideChartType {
@@ -50,6 +51,8 @@ export interface SlideAttributes {
   imgMode?: string;
 
   customLoader?: boolean;
+
+  theme?: string;
 }
 
 export interface SlideData {

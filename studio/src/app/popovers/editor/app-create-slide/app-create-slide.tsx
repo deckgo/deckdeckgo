@@ -329,6 +329,8 @@ export class AppCreateSlide {
       this.renderVertical(),
 
       this.renderDemo(),
+      this.renderPlayground(),
+
       this.renderYoutube(),
 
       this.renderShapes(),
@@ -749,6 +751,22 @@ export class AppCreateSlide {
           <p slot="content">
             <ion-icon name="logo-youtube"></ion-icon>
           </p>
+        </deckgo-slide-content>
+      </div>
+    );
+  }
+
+  private renderPlayground() {
+    if (!this.navigatorOnline) {
+      // The youtube slide can't be use offline as we cannot browse youtube
+      return undefined;
+    }
+
+    return (
+      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.PLAYGROUND)}>
+        <deckgo-slide-content class="showcase gif">
+          <p slot="title">Playground</p>
+          <app-playground-placeholder slot="content"></app-playground-placeholder>
         </deckgo-slide-content>
       </div>
     );
