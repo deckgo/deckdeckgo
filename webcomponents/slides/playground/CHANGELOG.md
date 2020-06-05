@@ -1,5 +1,3 @@
-# X.Y.Z (2020-06-XX)
+# 1.0.0 (2020-06-05)
 
-### Features
-
-- coming soon...
+Hello World 👋
