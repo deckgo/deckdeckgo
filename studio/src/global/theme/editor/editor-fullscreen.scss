@@ -32,14 +32,7 @@
     --padding-bottom: 0;
   }
 
-  ion-footer {
-    position: absolute;
-    bottom: 0;
-
-    &.idle {
-      display: none;
-    }
-  }
+  @import "./editor-fullscreen-footer";
 
   main {
     max-width: 100%;
