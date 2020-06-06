@@ -1,17 +1,18 @@
 :host {
   display: grid;
 
-  margin: 8px 0 0 4px;
-  width: calc(100% - 4px);
+  margin: 12px 0 0 10px;
+  width: calc(100% - 16px);
   height: 100%;
 
   grid-template-columns: repeat(3, calc(100% / 3));
-  grid-template-rows: 4px 36px 24px 4px;
+  grid-template-rows: 4px 32px 16px 4px;
 
   background: #333642;
-  outline: 1px solid #333642;
   font-size: 0.4rem;
   color: #aaaebc;
+
+  box-shadow: 0 2px 8px rgba(2, 8, 20, 0.1), 0 8px 16px rgba(2, 8, 20, 0.08);
 }
 
 div.header {
