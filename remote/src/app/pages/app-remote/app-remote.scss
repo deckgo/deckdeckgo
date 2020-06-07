@@ -29,6 +29,10 @@ app-remote {
       height: calc(100% - 70px);
       grid-gap: 16px;
 
+      @media screen and (orientation: landscape) {
+        grid-template-rows: 4fr 2fr;
+      }
+
       .deck {
         grid-area: deck;
       }
