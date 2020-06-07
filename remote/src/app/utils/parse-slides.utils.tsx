@@ -113,7 +113,9 @@ export class ParseSlidesUtils {
         'deckgo-slide-youtube',
         'deckgo-slide-big-img',
         'deckgo-slide-video',
-        'deckgo-slide-poll'
+        'deckgo-slide-poll',
+        'deckgo-slide-aspect-ratio',
+        'deckgo-slide-playground',
       ].indexOf(slide.template) > -1
     );
   }
