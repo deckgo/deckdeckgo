@@ -2,29 +2,9 @@ app-remote {
   @import "../../../global/theme/button";
 
   main.connected {
-    display: grid;
-    grid-template-rows: calc((100% - 64px) / 2) calc((100% - 64px) / 2) 64px;
     height: 100%;
 
     max-width: inherit;
-
-    @media screen and (orientation: landscape) {
-      grid-template-rows: 50% 50%;
-      grid-template-columns: 50% 50%;
-
-      div.deck,
-      div.deck-navigation-buttons {
-        grid-column-start: 1;
-        grid-column-end: 2;
-      }
-
-      app-notes {
-        grid-column-start: 2;
-
-        grid-row-start: 1;
-        grid-row-end: 3;
-      }
-    }
 
     div.deck {
       position: relative;
@@ -32,52 +12,81 @@ app-remote {
       overflow: hidden;
 
       margin: 16px;
+      margin-bottom: 0px;
       border-radius: 10px;
       border: 1px solid var(--ion-color-light-shade);
       box-shadow: var(--remote-box-shadow);
     }
 
-    div.deck-navigation-buttons {
+    // deck grid layout
+    .deck-container {
       display: grid;
-      grid-template-columns: 50% 50%;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "deck deck"
+        "prev next";
+      height: calc(100% - 70px);
+      grid-gap: 16px;
 
-      position: relative;
+      @media screen and (orientation: landscape) {
+        grid-template-rows: 4fr 2fr;
+      }
 
-      div.deck-navigation-button-next,
-      div.deck-navigation-button-prev {
-        padding: 0 16px 16px;
+      .deck {
+        grid-area: deck;
+      }
+      .deck-navigation-button-prev {
+        grid-area: prev;
+        padding-left: 16px;
+      }
+      .deck-navigation-button-next {
+        grid-area: next;
+        padding-right: 16px;
+      }
+    }
 
-        ion-button {
-          border-radius: 10px;
-          --box-shadow: var(--remote-box-shadow);
+    .deck-navigation-button {
+      ion-button {
+        border-radius: 10px;
+        --box-shadow: var(--remote-box-shadow);
 
-          height: 100%;
-          width: 100%;
+        width: 100%;
+        // extra 8px space is required because animations might brake layout in FF
+        height: calc(100% - 8px);
 
-          --border-radius: 10px;
+        --border-radius: 10px;
 
-          --border-color: var(--ion-color-light-shade);
-          --border-width: 1px;
-          --border-style: solid;
+        --border-color: var(--ion-color-light-shade);
+        --border-width: 1px;
+        --border-style: solid;
 
-          ion-label {
-            text-transform: inherit;
-            font-size: var(--font-size-normal);
-            font-weight: 300;
-            white-space: pre-wrap;
+        ion-label {
+          text-transform: inherit;
+          font-size: var(--font-size-normal);
+          font-weight: 300;
+          white-space: pre-wrap;
 
-            position: absolute;
-            bottom: 16px;
-          }
+          position: absolute;
+          bottom: 16px;
         }
       }
+    }
 
-      div.deck-navigation-button-next {
-        padding-left: 4px;
+    @media screen and (orientation: landscape) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "deck notes";
+      .deck-container {
+        grid-area: deck;
+        height: 100%;
+      }
+      .deck-navigation-button {
+        padding-bottom: 16px;
       }
 
-      div.deck-navigation-button-prev {
-        padding-right: 4px;
+      app-notes {
+        grid-area: notes;
       }
     }
   }

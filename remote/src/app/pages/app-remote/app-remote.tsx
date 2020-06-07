@@ -624,14 +624,15 @@ export class AppRemote {
     if (this.connectionState === ConnectionState.CONNECTED) {
       return [
         <main class="connected">
-          {this.renderDeck()}
-          <div class="deck-navigation-buttons">
-            <div class="deck-navigation-button-prev">
+          <div class="deck-container">
+            {this.renderDeck()}
+
+            <div class="deck-navigation-button deck-navigation-button-prev">
               <ion-button color="secondary" onClick={() => this.prevNextSlide(true, true)}>
                 <ion-label>Previous</ion-label>
               </ion-button>
             </div>
-            <div class="deck-navigation-button-next">
+            <div class="deck-navigation-button deck-navigation-button-next">
               <ion-button color="primary" onClick={() => this.prevNextSlide(false, true)}>
                 <ion-label>Next</ion-label>
               </ion-button>
