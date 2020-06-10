@@ -27,11 +27,11 @@ app-notes {
 
   div.landscape-notes {
     border-radius: 10px;
-    height: calc(100% - 28px);
+    height: calc(100% - 36px);
     box-shadow: var(--remote-box-shadow);
     border: 1px solid var(--ion-color-light-shade);
     overflow: scroll;
-    margin: 16px 16px 0 4px;
+    margin: 16px 16px 16px 4px;
   }
 
   div.notes {

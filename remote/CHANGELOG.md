@@ -1,3 +1,10 @@
+# 1.3.1 (2020-06-07)
+
+### Fix
+
+- problem with remote control layout in Firefox mobile ([#752](https://github.com/deckgo/deckdeckgo/issues/752))
+- missing remote supported templates
+
 # 1.3.0 (2020-06-05)
 
 ### Features
