@@ -1,3 +1,11 @@
+<a name="2.3.1"></a>
+
+# 2.3.1 (2020-06-13)
+
+### Style
+
+- improve <li/> spacing, width and font size if reveal
+
 <a name="2.3.0"></a>
 
 # 2.3.0 (2020-05-14)
