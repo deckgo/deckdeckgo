@@ -14,6 +14,7 @@
 
 ### Web Components
 
+- highlight-code: v1.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 - inline-editor: v1.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 ### Web Components: Templates
@@ -24,7 +25,7 @@
 
 - deck-utils: v2.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 - cloud: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
-- starter kit: v2.5.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+- starter kit: v2.5.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.3.0"></a>
 
