@@ -1,5 +1,5 @@
 const theme: string = `{
-  --deckgo-highlight-code-carbon-background: rgba(0, 0, 0, 0.85);
+  --deckgo-highlight-code-carbon-background: #280604;
   --deckgo-highlight-code-carbon-color: #fff;
   --deckgo-highlight-code-token-atrule: #9ae1ff;
   --deckgo-highlight-code-token-comment: #5c6370;

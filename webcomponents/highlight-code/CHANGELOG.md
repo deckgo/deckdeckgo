@@ -2,6 +2,7 @@
 
 ### Style
 
+- line numbers color inherits code's comments color
 - when highlighting, highlight only code not line numbers
 
 # 1.1.0 (2020-05-21)

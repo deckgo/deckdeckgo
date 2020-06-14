@@ -39,7 +39,9 @@
     code {
       > div.deckgo-highlight-code-line-number {
         &:before {
-          background: var(--deckgo-highlight-code-carbon-background, #282a36);
+          background: var(--deckgo-highlight-code-carbon-background, transparent);
+          border-color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
+          color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
         }
       }
     }
@@ -128,8 +130,8 @@ div.deckgo-highlight-code-container {
         left: 0;
         width: 2.5em;
         background: var(--deckgo-highlight-code-background);
-        border-right: 1px solid var(--deckgo-highlight-code-line-numbers, #999);
-        color: var(--deckgo-highlight-code-line-numbers, #999);
+        border-right: 1px solid var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
+        color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
       }
     }
 
