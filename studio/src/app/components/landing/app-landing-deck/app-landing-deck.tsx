@@ -77,7 +77,7 @@ export class AppLandingDeck {
         transition={this.deckTransition}
         onSlideNextDidChange={() => this.updateDeckPosition()}
         onSlidePrevDidChange={() => this.updateDeckPosition()}>
-        <deckgo-slide-split style={{'--slide-split-align': 'center'}}>
+        <deckgo-slide-split>
           <div slot="start">
             <h1>Make more than presentations</h1>
             <h3 style={{'font-weight': '300'}}>Create, present and share apps. Interact with your audience.</h3>
@@ -88,7 +88,12 @@ export class AppLandingDeck {
           </div>
 
           <div slot="end">
-            <img loading="lazy" src={`/assets/img/landing/presentation.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3)'}} />
+            <img
+              loading="lazy"
+              src={`/assets/img/landing/illustrations/presentation.svg`}
+              role="presentation"
+              style={{width: 'calc(var(--slide-width) / 3)'}}
+            />
           </div>
 
           {this.renderSlideBackground('start')}
@@ -152,12 +157,22 @@ function Example() {
           {this.renderSlideBackground('start')}
         </deckgo-slide-title>
 
-        <deckgo-slide-title>
-          <h2 slot="title">Interact with your presentation with a remote control.</h2>
-          <ion-icon slot="content" lazy={true} class="ion-padding" style={{'font-size': '6.6rem'}} src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
+        <deckgo-slide-split style={{'--slide-split-align': 'center'}}>
+          <div slot="start">
+            <h2 style={{padding: '0 32px'}}>Interact with your presentation with a remote control.</h2>
+          </div>
+
+          <div slot="end">
+            <img
+              loading="lazy"
+              data-src={`/assets/img/landing/illustrations/progressive-app.svg`}
+              role="presentation"
+              style={{width: 'calc(var(--slide-width) / 3)'}}
+            />
+          </div>
 
           {this.renderSlideBackground('end')}
-        </deckgo-slide-title>
+        </deckgo-slide-split>
 
         <deckgo-slide-title style={{'--color': 'white'}}>
           <h2

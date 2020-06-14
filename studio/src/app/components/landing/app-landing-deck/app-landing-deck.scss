@@ -19,12 +19,20 @@ app-landing-deck {
     }
 
     deckgo-slide-split {
+      --slide-split-align: center;
+      --slide-split-padding-bottom: 0;
+      --slide-split-padding-top: 0;
+
       div[slot="end"] {
         display: inline-flex;
         justify-content: center;
+      }
 
-        @media (max-width: 576px) {
-          display: none;
+      @media (max-width: 576px) {
+        &:first-of-type {
+          div[slot="end"] {
+            display: none;
+          }
         }
       }
     }
