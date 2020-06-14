@@ -123,7 +123,9 @@ export class AppLandingDeck {
 
         <deckgo-slide-title>
           <h2 slot="title">Search Unsplash and Tenor GIFs.</h2>
-          <h3 slot="content">Integrate easily Youtube video.</h3>
+          <h3 slot="content" style={{'font-weight': '300'}}>
+            Integrate easily Youtube video.
+          </h3>
 
           {this.renderSlideBackground(
             'end',
@@ -163,12 +165,7 @@ function Example() {
           </div>
 
           <div slot="end">
-            <img
-              loading="lazy"
-              data-src={`/assets/img/landing/illustrations/progressive-app.svg`}
-              role="presentation"
-              style={{width: 'calc(var(--slide-width) / 3)'}}
-            />
+            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3)'}} />
           </div>
 
           {this.renderSlideBackground('end')}
@@ -194,24 +191,29 @@ function Example() {
           )}
         </deckgo-slide-title>
 
-        <deckgo-slide-title>
-          <h2 slot="title">Present and work offline.</h2>
-          <ion-icon slot="content" lazy={true} class="ion-padding" style={{'font-size': '6.6rem'}} src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
+        <deckgo-slide-split style={{'--slide-split-align': 'center'}}>
+          <div slot="start">
+            <h2 style={{padding: '0 32px'}}>Present and work offline.</h2>
+          </div>
+
+          <div slot="end">
+            <img data-src={`/assets/img/landing/illustrations/travel.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3)'}} />
+          </div>
 
           {this.renderSlideBackground('end')}
-        </deckgo-slide-title>
+        </deckgo-slide-split>
 
-        <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
+        <deckgo-slide-title>
           <h1 slot="title">And many more features</h1>
           <div slot="content" style={{'margin-bottom': '48px'}}>
-            <h3>Create your slides with DeckDeckGo now.</h3>
+            <h3 style={{'font-weight': '300'}}>Create your slides with DeckDeckGo now.</h3>
 
-            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="light">
+            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
               <ion-label style={{'text-transform': 'none'}}>Start a presentation</ion-label>
             </ion-button>
           </div>
 
-          {this.renderSlideBackground('end')}
+          {this.renderSlideBackground('start')}
         </deckgo-slide-title>
       </deckgo-deck>
     );
