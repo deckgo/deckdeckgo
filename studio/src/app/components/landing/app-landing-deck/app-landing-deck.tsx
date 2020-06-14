@@ -161,11 +161,11 @@ function Example() {
 
         <deckgo-slide-split style={{'--slide-split-align': 'center'}}>
           <div slot="start">
-            <h2 style={{padding: '0 32px'}}>Interact with your presentation with a remote control.</h2>
+            <h2>Interact with your presentation with a remote control.</h2>
           </div>
 
           <div slot="end">
-            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3)'}} />
+            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3.5)'}} />
           </div>
 
           {this.renderSlideBackground('end')}
@@ -193,7 +193,7 @@ function Example() {
 
         <deckgo-slide-split style={{'--slide-split-align': 'center'}}>
           <div slot="start">
-            <h2 style={{padding: '0 32px'}}>Present and work offline.</h2>
+            <h2>Present and work offline.</h2>
           </div>
 
           <div slot="end">
