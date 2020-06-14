@@ -18,6 +18,38 @@ app-landing-deck {
       margin-top: 4px;
     }
 
+    deckgo-slide-split {
+      --slide-split-align: center;
+      --slide-split-padding-bottom: 0;
+      --slide-split-padding-top: 0;
+
+      div[slot="start"] {
+        h2 {
+          padding: 0 32px;
+        }
+      }
+
+      div[slot="end"] {
+        display: inline-flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      @media (max-width: 576px) {
+        div[slot="start"] {
+          h2 {
+            padding: 0;
+          }
+        }
+
+        &:first-of-type {
+          div[slot="end"] {
+            display: none;
+          }
+        }
+      }
+    }
+
     *[slot]:not([slot="background"]) {
       z-index: 2;
     }
