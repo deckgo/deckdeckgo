@@ -14,6 +14,7 @@
 
 ### Web Components
 
+- highlight-code: v1.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 - inline-editor: v1.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
 ### Web Components: Templates
