@@ -18,6 +18,17 @@ app-landing-deck {
       margin-top: 4px;
     }
 
+    deckgo-slide-split {
+      div[slot="end"] {
+        display: inline-flex;
+        justify-content: center;
+
+        @media (max-width: 576px) {
+          display: none;
+        }
+      }
+    }
+
     *[slot]:not([slot="background"]) {
       z-index: 2;
     }

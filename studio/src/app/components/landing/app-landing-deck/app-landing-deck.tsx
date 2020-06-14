@@ -77,18 +77,22 @@ export class AppLandingDeck {
         transition={this.deckTransition}
         onSlideNextDidChange={() => this.updateDeckPosition()}
         onSlidePrevDidChange={() => this.updateDeckPosition()}>
-        <deckgo-slide-title style={{'--background': 'var(--ion-color-primary)', '--color': 'white'}}>
-          <h1 slot="title">Make more than presentations</h1>
-          <div slot="content" style={{'margin-bottom': '48px'}}>
-            <h3>Create, present and share apps. Interact with your audience.</h3>
+        <deckgo-slide-split style={{'--slide-split-align': 'center'}}>
+          <div slot="start">
+            <h1>Make more than presentations</h1>
+            <h3 style={{'font-weight': '300'}}>Create, present and share apps. Interact with your audience.</h3>
 
-            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="light">
+            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
               <ion-label style={{'text-transform': 'none'}}>Get started with DeckDeckGo</ion-label>
             </ion-button>
           </div>
 
+          <div slot="end">
+            <img loading="lazy" src={`/assets/img/landing/presentation.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3)'}} />
+          </div>
+
           {this.renderSlideBackground('start')}
-        </deckgo-slide-title>
+        </deckgo-slide-split>
 
         <deckgo-slide-title>
           <h2 slot="title">Edit your slides anywhere. Display them everywhere.</h2>
