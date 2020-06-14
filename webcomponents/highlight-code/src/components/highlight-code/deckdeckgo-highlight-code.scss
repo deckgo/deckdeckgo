@@ -35,6 +35,14 @@
 
   div.deckgo-highlight-code-container {
     margin: var(--deckgo-highlight-code-margin, 0 0 16px);
+
+    code {
+      > div.deckgo-highlight-code-line-number {
+        &:before {
+          background: var(--deckgo-highlight-code-carbon-background, #282a36);
+        }
+      }
+    }
   }
 }
 
@@ -47,7 +55,7 @@
   overflow: var(--deckgo-highlight-code-ubuntu-overflow, auto);
   border: var(--deckgo-highlight-code-ubuntu-border);
   border-radius: var(--deckgo-highlight-code-ubuntu-border-radius, 6px 6px 0 0);
-  background: var(--deckgo-highlight-code-ubuntu-background, rgba(56, 4, 40, 0.9));
+  background: var(--deckgo-highlight-code-ubuntu-background, #4c1e3d);
   color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
   box-shadow: var(--deckgo-highlight-code-ubuntu-box-shadow, 2px 4px 10px rgba(0, 0, 0, 0.5));
   margin: var(--deckgo-highlight-code-ubuntu-margin, 16px 0);
@@ -59,6 +67,12 @@
 
     code {
       font-family: var(--deckgo-highlight-code-font-family, "Ubuntu mono");
+
+      > div.deckgo-highlight-code-line-number {
+        &:before {
+          background: var(--deckgo-highlight-code-ubuntu-background, #4c1e3d);
+        }
+      }
     }
   }
 }
@@ -113,7 +127,7 @@ div.deckgo-highlight-code-container {
         bottom: 0;
         left: 0;
         width: 2.5em;
-        background: inherit;
+        background: var(--deckgo-highlight-code-background);
         border-right: 1px solid var(--deckgo-highlight-code-line-numbers, #999);
         color: var(--deckgo-highlight-code-line-numbers, #999);
       }
