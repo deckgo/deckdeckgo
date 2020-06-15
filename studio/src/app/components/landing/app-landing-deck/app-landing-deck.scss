@@ -24,8 +24,12 @@ app-landing-deck {
       --slide-split-padding-top: 0;
 
       div[slot="start"] {
-        h2 {
-          padding: 0 32px;
+        padding: 0 32px;
+      }
+
+      &:not(:first-of-type) {
+        div[slot="start"] {
+          text-align: center;
         }
       }
 
