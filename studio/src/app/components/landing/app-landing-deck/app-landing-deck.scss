@@ -27,9 +27,20 @@ app-landing-deck {
         padding: 0 32px;
       }
 
+      @media screen and (min-width: 1200px) {
+        div[slot="start"] {
+          padding: 0 32px 0 72px;
+        }
+
+        div[slot="end"] {
+          padding: 0 92px 0 0;
+        }
+      }
+
       &:not(:first-of-type) {
         div[slot="start"] {
           text-align: center;
+          width: 100%;
         }
       }
 
