@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+
+# 1.1.0 (2020-06-15)
+
+### Fix
+
+- social card image not always generated ([#659](https://github.com/deckgo/deckdeckgo/issues/659))
+
 <a name="1.0.1"></a>
 
 # 1.0.1 (2020-05-31)

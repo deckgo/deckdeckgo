@@ -18,6 +18,53 @@ app-landing-deck {
       margin-top: 4px;
     }
 
+    deckgo-slide-split {
+      --slide-split-align: center;
+      --slide-split-padding-bottom: 0;
+      --slide-split-padding-top: 0;
+
+      div[slot="start"] {
+        padding: 0 32px;
+      }
+
+      @media screen and (min-width: 1200px) {
+        div[slot="start"] {
+          padding: 0 32px 0 72px;
+        }
+
+        div[slot="end"] {
+          padding: 0 92px 0 0;
+        }
+      }
+
+      &:not(:first-of-type) {
+        div[slot="start"] {
+          text-align: center;
+          width: 100%;
+        }
+      }
+
+      div[slot="end"] {
+        display: inline-flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      @media (max-width: 576px) {
+        div[slot="start"] {
+          h2 {
+            padding: 0;
+          }
+        }
+
+        &:first-of-type {
+          div[slot="end"] {
+            display: none;
+          }
+        }
+      }
+    }
+
     *[slot]:not([slot="background"]) {
       z-index: 2;
     }
