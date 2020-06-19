@@ -1,3 +1,11 @@
+<a name="1.1.1"></a>
+
+# 1.1.1 (2020-06-19)
+
+### Fix
+
+- revert puppeteer supported by firestore cloud ([#767](https://github.com/deckgo/deckdeckgo/issues/767))
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-06-15)
