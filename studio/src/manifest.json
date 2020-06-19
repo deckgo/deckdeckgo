@@ -30,5 +30,21 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Write a presentation",
+      "short_name": "Write a presentation",
+      "description": "Start writing a new presentation",
+      "url": "/editor",
+      "icons": [{"src": "/assets/favicon/shortcut-editor-192x192.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Access your dashboard",
+      "url": "/dashboard",
+      "icons": [{"src": "/assets/favicon/shortcut-dashboard-192x192.png", "sizes": "192x192"}]
+    }
   ]
 }
