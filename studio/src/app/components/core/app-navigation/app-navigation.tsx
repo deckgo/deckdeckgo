@@ -10,7 +10,7 @@ import {OfflineService} from '../../../services/editor/offline/offline.service';
 @Component({
   tag: 'app-navigation',
   styleUrl: 'app-navigation.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppNavigation {
   @Prop() menuToggle: boolean = true;
@@ -80,13 +80,41 @@ export class AppNavigation {
 
     return (
       <div class={titleClass}>
-        <ion-router-link onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="home">
+        <ion-router-link onClick={() => this.closeMenu()} href="/home" routerDirection="forward" class="nav">
           {this.renderLogo()}
         </ion-router-link>
+
+        {this.renderFeed()}
+
+        {this.renderEnterprise()}
 
         <ion-label class="deck-name">{this.deckName}</ion-label>
       </div>
     );
+  }
+
+  private renderFeed() {
+    if (this.presentation || this.publish) {
+      return (
+        <ion-router-link href="/discover" routerDirection="forward" class="nav discover">
+          <ion-label>Discover</ion-label>
+        </ion-router-link>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderEnterprise() {
+    if (this.presentation || this.publish) {
+      return (
+        <ion-router-link href="/enterprise" routerDirection="forward" class="nav">
+          <ion-label>Enterprise</ion-label>
+        </ion-router-link>
+      );
+    } else {
+      return undefined;
+    }
   }
 
   private renderTitleOffline() {

@@ -14,7 +14,7 @@ import {OfflineService} from './services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.scss'
+  styleUrl: 'app-root.scss',
 })
 export class AppRoot {
   @Element() el: HTMLElement;
@@ -84,12 +84,12 @@ export class AppRoot {
       buttons: [
         {
           text: 'Close',
-          role: 'cancel'
-        }
+          role: 'cancel',
+        },
       ],
       position: 'top',
       color: 'danger',
-      duration: 6000
+      duration: 6000,
     });
 
     await popover.present();
@@ -134,9 +134,13 @@ export class AppRoot {
     return [
       <ion-app>
         <ion-router useHash={false}>
-          <ion-route url="/" component="app-home" />
+          <ion-route url="/" component="app-welcome" />
+
+          <ion-route url="/home" component="app-home" />
 
           <ion-route url="/discover" component="app-discover" />
+
+          <ion-route url="/enterprise" component="app-enterprise" />
 
           <ion-route url="/editor" component="app-editor" />
           <ion-route url="/editor/:deckId" component="app-editor" />
@@ -179,7 +183,7 @@ export class AppRoot {
         <ion-nav id="menu-content" />
 
         <app-share-deck></app-share-deck>
-      </ion-app>
+      </ion-app>,
     ];
   }
 }

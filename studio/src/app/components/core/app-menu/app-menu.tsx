@@ -12,7 +12,7 @@ import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 @Component({
   tag: 'app-menu',
   styleUrl: 'app-menu.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppMenu {
   @Element() el: HTMLElement;
@@ -45,7 +45,7 @@ export class AppMenu {
   private async signIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
@@ -54,7 +54,7 @@ export class AppMenu {
 
     this.navService.navigate({
       url: '/',
-      direction: NavDirection.ROOT
+      direction: NavDirection.ROOT,
     });
   }
 
@@ -65,6 +65,7 @@ export class AppMenu {
 
         {this.renderHome()}
         {this.renderDiscover()}
+        {this.renderEnterprise()}
         {this.renderDashboard()}
         {this.renderSettings()}
         {this.renderSignInOut()}
@@ -75,7 +76,7 @@ export class AppMenu {
   private renderUser() {
     if (Utils.isLoggedIn(this.authUser)) {
       return (
-        <ion-item class="user">
+        <ion-item class="user ion-margin-bottom">
           <app-user-info avatarColSize={3}></app-user-info>
         </ion-item>
       );
@@ -117,22 +118,27 @@ export class AppMenu {
 
   private renderHome() {
     return (
-      <ion-item button class="home" href="/" routerDirection="forward">
-        <ion-icon lazy={true} name="home-outline" slot="start"></ion-icon>
-        <ion-label>Home</ion-label>
+      <ion-item button class="home" href="/home" routerDirection="forward">
+        <app-logo slot="start"></app-logo>
+        <ion-label>DeckDeckGo</ion-label>
       </ion-item>
     );
   }
 
   private renderDiscover() {
-    if (Utils.isLoggedIn(this.authUser)) {
-      return undefined;
-    }
-
     return (
       <ion-item button class="home" href="/discover" routerDirection="forward">
         <ion-icon lazy={true} name="search-outline" slot="start"></ion-icon>
         <ion-label>Discover</ion-label>
+      </ion-item>
+    );
+  }
+
+  private renderEnterprise() {
+    return (
+      <ion-item button class="home" href="/enterprise" routerDirection="forward">
+        <ion-icon lazy={true} name="business-outline" slot="start"></ion-icon>
+        <ion-label>Enterprise</ion-label>
       </ion-item>
     );
   }

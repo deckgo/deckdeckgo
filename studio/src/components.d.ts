@@ -363,6 +363,7 @@ export namespace Components {
     'avatarColSize': number;
   }
   interface AppUserMenu {}
+  interface AppWelcome {}
   interface AppYoutube {
     'selectedElement': HTMLElement;
   }
@@ -1001,6 +1002,12 @@ declare global {
     new (): HTMLAppUserMenuElement;
   };
 
+  interface HTMLAppWelcomeElement extends Components.AppWelcome, HTMLStencilElement {}
+  var HTMLAppWelcomeElement: {
+    prototype: HTMLAppWelcomeElement;
+    new (): HTMLAppWelcomeElement;
+  };
+
   interface HTMLAppYoutubeElement extends Components.AppYoutube, HTMLStencilElement {}
   var HTMLAppYoutubeElement: {
     prototype: HTMLAppYoutubeElement;
@@ -1112,6 +1119,7 @@ declare global {
     'app-user-delete': HTMLAppUserDeleteElement;
     'app-user-info': HTMLAppUserInfoElement;
     'app-user-menu': HTMLAppUserMenuElement;
+    'app-welcome': HTMLAppWelcomeElement;
     'app-youtube': HTMLAppYoutubeElement;
   }
 }
@@ -1485,6 +1493,7 @@ declare namespace LocalJSX {
     'avatarColSize'?: number;
   }
   interface AppUserMenu {}
+  interface AppWelcome {}
   interface AppYoutube {
     'selectedElement'?: HTMLElement;
   }
@@ -1595,6 +1604,7 @@ declare namespace LocalJSX {
     'app-user-delete': AppUserDelete;
     'app-user-info': AppUserInfo;
     'app-user-menu': AppUserMenu;
+    'app-welcome': AppWelcome;
     'app-youtube': AppYoutube;
   }
 }
@@ -1710,6 +1720,7 @@ declare module "@stencil/core" {
       'app-user-delete': LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
       'app-user-info': LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;
       'app-user-menu': LocalJSX.AppUserMenu & JSXBase.HTMLAttributes<HTMLAppUserMenuElement>;
+      'app-welcome': LocalJSX.AppWelcome & JSXBase.HTMLAttributes<HTMLAppWelcomeElement>;
       'app-youtube': LocalJSX.AppYoutube & JSXBase.HTMLAttributes<HTMLAppYoutubeElement>;
     }
   }

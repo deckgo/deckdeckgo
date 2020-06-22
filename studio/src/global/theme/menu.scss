@@ -62,9 +62,14 @@ ion-menu {
           margin-bottom: 6px;
         }
 
-        ion-icon {
+        ion-icon,
+        app-logo {
           color: var(--ion-color-medium);
           margin: 8px 8px 8px 0;
+        }
+
+        app-logo {
+          --deckgo-logo-size: 1.4rem;
         }
 
         app-avatar {

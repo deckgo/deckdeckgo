@@ -11,7 +11,7 @@ import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
   tag: 'app-poll',
-  styleUrl: 'app-poll.scss'
+  styleUrl: 'app-poll.scss',
 })
 export class AppPoll {
   @Prop({mutable: true})
@@ -143,7 +143,7 @@ export class AppPoll {
           {this.renderJoinPoll()}
           {this.renderHasVoted()}
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 
@@ -164,7 +164,7 @@ export class AppPoll {
         </ion-list>
 
         {this.renderSubmitForm()}
-      </form>
+      </form>,
     ];
   }
 
@@ -198,7 +198,7 @@ export class AppPoll {
       this.renderJoinPollForm(),
       <h2 class="ion-padding-top">Live interactive audience participation</h2>,
       <p>Engage your audience or class in real time.</p>,
-      <p>Involve them to contribute to your presentations with their smartphones and show the results live.</p>
+      <p>Involve them to contribute to your presentations with their smartphones and show the results live.</p>,
     ];
   }
 
@@ -263,7 +263,7 @@ export class AppPoll {
 
         <div class="by-deckdeckgo">
           Created with{' '}
-          <ion-router-link href="/" routerDirection="forward">
+          <ion-router-link href="/home" routerDirection="forward">
             <div>
               <app-logo></app-logo> DeckDeckGo
             </div>

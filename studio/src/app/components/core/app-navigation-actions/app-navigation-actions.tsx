@@ -17,7 +17,7 @@ import {ThemeService} from '../../../services/theme/theme.service';
 @Component({
   tag: 'app-navigation-actions',
   styleUrl: 'app-navigation-actions.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppNavigationActions {
   @Prop() signIn: boolean = true;
@@ -89,7 +89,7 @@ export class AppNavigationActions {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-user-menu',
       event: $event,
-      mode: 'ios'
+      mode: 'ios',
     });
 
     await popover.present();
@@ -98,32 +98,19 @@ export class AppNavigationActions {
   private async navigateSignIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
   render() {
     return (
       <div>
-        {this.renderFeed()}
         {this.renderSignIn()}
         {this.renderPresentationButton()}
         {this.renderPublishButton()}
         {this.renderLoggedIn()}
       </div>
     );
-  }
-
-  private renderFeed() {
-    if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
-      return undefined;
-    } else if (this.presentation || this.publish) {
-      return (
-        <ion-router-link href="/discover" routerDirection="forward" class="wide-device ion-padding-start ion-padding-end">
-          <ion-label>Discover</ion-label>
-        </ion-router-link>
-      );
-    }
   }
 
   private renderSignIn() {
