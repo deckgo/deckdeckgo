@@ -36,7 +36,7 @@
     "@deckdeckgo/slide-playground": "^1.0.1",
     "@deckdeckgo/slide-poll": "^1.0.1",
     "@deckdeckgo/slide-qrcode": "^1.0.3",
-    "@deckdeckgo/slide-split": "^1.1.4",
+    "@deckdeckgo/slide-split": "^1.2.0",
     "@deckdeckgo/slide-title": "^1.0.1",
     "@deckdeckgo/slide-utils": "^1.1.0",
     "@deckdeckgo/slide-youtube": "^1.0.1",
