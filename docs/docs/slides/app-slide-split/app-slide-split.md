@@ -160,5 +160,7 @@ The following theming options will affect this component if set on its host or p
 | --slide-split-text-align           | inherit | Modify for example to center if you want to align the text in the middle                                         |
 | --slide-split-title-display        | none    | The `slot` title is per default hidden even if you provide it. If you wish to displays it, modify this attribute |
 | --zIndex                           | 1       | The z-index of the slide                                                                                         |
+| --slide-split-display-start        | flex    | Start side display property                                                                                      |
+| --slide-split-display-end          | flex    | End side display property                                                                                        |
 
 [deckdeckgo]: https://deckdeckgo.com
