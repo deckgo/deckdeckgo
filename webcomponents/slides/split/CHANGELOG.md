@@ -1,6 +1,12 @@
+# 1.2.0 (2020-06-23)
+
+### Style
+
+- split display in `start` and `end`
+
 # 1.1.4 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 
