@@ -63,9 +63,7 @@ export class AppEnterprise {
 
           <img class="separator intro" src={`/assets/img/landing/wave-introducing.svg`} role="presentation" />
 
-          <section class="features" ref={(el) => (this.featuresRef = el as HTMLElement)}>
-            Features TODO
-          </section>
+          <app-features ref={(el) => (this.featuresRef = el as HTMLElement)}></app-features>
         </main>
       </ion-content>,
     ];

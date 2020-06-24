@@ -204,6 +204,7 @@ export namespace Components {
     'expander': boolean;
   }
   interface AppFaq {}
+  interface AppFeatures {}
   interface AppFeed {}
   interface AppFeedCard {
     'compact': boolean;
@@ -617,6 +618,12 @@ declare global {
   var HTMLAppFaqElement: {
     prototype: HTMLAppFaqElement;
     new (): HTMLAppFaqElement;
+  };
+
+  interface HTMLAppFeaturesElement extends Components.AppFeatures, HTMLStencilElement {}
+  var HTMLAppFeaturesElement: {
+    prototype: HTMLAppFeaturesElement;
+    new (): HTMLAppFeaturesElement;
   };
 
   interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {}
@@ -1062,6 +1069,7 @@ declare global {
     'app-enterprise': HTMLAppEnterpriseElement;
     'app-expansion-panel': HTMLAppExpansionPanelElement;
     'app-faq': HTMLAppFaqElement;
+    'app-features': HTMLAppFeaturesElement;
     'app-feed': HTMLAppFeedElement;
     'app-feed-card': HTMLAppFeedCardElement;
     'app-feed-card-tags': HTMLAppFeedCardTagsElement;
@@ -1320,6 +1328,7 @@ declare namespace LocalJSX {
     'expander'?: boolean;
   }
   interface AppFaq {}
+  interface AppFeatures {}
   interface AppFeed {}
   interface AppFeedCard {
     'compact'?: boolean;
@@ -1549,6 +1558,7 @@ declare namespace LocalJSX {
     'app-enterprise': AppEnterprise;
     'app-expansion-panel': AppExpansionPanel;
     'app-faq': AppFaq;
+    'app-features': AppFeatures;
     'app-feed': AppFeed;
     'app-feed-card': AppFeedCard;
     'app-feed-card-tags': AppFeedCardTags;
@@ -1666,6 +1676,7 @@ declare module "@stencil/core" {
       'app-enterprise': LocalJSX.AppEnterprise & JSXBase.HTMLAttributes<HTMLAppEnterpriseElement>;
       'app-expansion-panel': LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
+      'app-features': LocalJSX.AppFeatures & JSXBase.HTMLAttributes<HTMLAppFeaturesElement>;
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
       'app-feed-card': LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;
       'app-feed-card-tags': LocalJSX.AppFeedCardTags & JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement>;
