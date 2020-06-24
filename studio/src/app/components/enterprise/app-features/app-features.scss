@@ -11,6 +11,8 @@ app-features {
     @media (max-width: 992px) {
       grid-template-columns: repeat(2, 50%);
       grid-row-gap: 0;
+      grid-column-gap: 16px;
+      width: calc(100% - 16px);
     }
 
     > h2,
