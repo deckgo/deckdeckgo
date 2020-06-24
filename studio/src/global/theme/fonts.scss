@@ -63,20 +63,3 @@ ion-router-link:hover,
 .app-button:hover {
   border-bottom-color: var(--ion-color-primary);
 }
-
-blockquote {
-  background: var(--ion-color-tertiary);
-  margin: 32px 0;
-  padding: 1px 18px 4px;
-  border-radius: 4px;
-}
-
-blockquote p {
-  color: white;
-  line-height: 1.6;
-  font-size: 14px;
-}
-
-blockquote a {
-  color: var(--ion-color-secondary);
-}

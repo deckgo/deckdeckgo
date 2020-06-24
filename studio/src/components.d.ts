@@ -198,6 +198,7 @@ export namespace Components {
     'slide': boolean;
   }
   interface AppEmbed {}
+  interface AppEnterprise {}
   interface AppExpansionPanel {
     'expanded': 'open' | 'close';
     'expander': boolean;
@@ -598,6 +599,12 @@ declare global {
   var HTMLAppEmbedElement: {
     prototype: HTMLAppEmbedElement;
     new (): HTMLAppEmbedElement;
+  };
+
+  interface HTMLAppEnterpriseElement extends Components.AppEnterprise, HTMLStencilElement {}
+  var HTMLAppEnterpriseElement: {
+    prototype: HTMLAppEnterpriseElement;
+    new (): HTMLAppEnterpriseElement;
   };
 
   interface HTMLAppExpansionPanelElement extends Components.AppExpansionPanel, HTMLStencilElement {}
@@ -1052,6 +1059,7 @@ declare global {
     'app-element-delete': HTMLAppElementDeleteElement;
     'app-element-style': HTMLAppElementStyleElement;
     'app-embed': HTMLAppEmbedElement;
+    'app-enterprise': HTMLAppEnterpriseElement;
     'app-expansion-panel': HTMLAppExpansionPanelElement;
     'app-faq': HTMLAppFaqElement;
     'app-feed': HTMLAppFeedElement;
@@ -1306,6 +1314,7 @@ declare namespace LocalJSX {
     'slide'?: boolean;
   }
   interface AppEmbed {}
+  interface AppEnterprise {}
   interface AppExpansionPanel {
     'expanded'?: 'open' | 'close';
     'expander'?: boolean;
@@ -1537,6 +1546,7 @@ declare namespace LocalJSX {
     'app-element-delete': AppElementDelete;
     'app-element-style': AppElementStyle;
     'app-embed': AppEmbed;
+    'app-enterprise': AppEnterprise;
     'app-expansion-panel': AppExpansionPanel;
     'app-faq': AppFaq;
     'app-feed': AppFeed;
@@ -1653,6 +1663,7 @@ declare module "@stencil/core" {
       'app-element-delete': LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
       'app-element-style': LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
       'app-embed': LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
+      'app-enterprise': LocalJSX.AppEnterprise & JSXBase.HTMLAttributes<HTMLAppEnterpriseElement>;
       'app-expansion-panel': LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
       'app-faq': LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
       'app-feed': LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
