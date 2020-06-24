@@ -1,4 +1,6 @@
 app-enterprise {
+  display: block;
+
   main {
     display: flex;
     flex-direction: column;
@@ -134,6 +136,10 @@ app-enterprise {
     img.separator {
       &.intro {
         background: white;
+      }
+
+      &.features {
+        background: var(--ion-color-light);
       }
     }
   }

@@ -61,9 +61,11 @@ export class AppEnterprise {
             </div>
           </section>
 
-          <img class="separator intro" src={`/assets/img/landing/wave-introducing.svg`} role="presentation" />
+          <img class="separator intro" src={`/assets/img/landing/wave-introducing.svg`} role="presentation" loading="lazy" />
 
           <app-features ref={(el) => (this.featuresRef = el as HTMLElement)}></app-features>
+
+          <img class="separator features" src={`/assets/img/landing/wave-audience.svg`} role="presentation" loading="lazy" />
         </main>
       </ion-content>,
     ];
