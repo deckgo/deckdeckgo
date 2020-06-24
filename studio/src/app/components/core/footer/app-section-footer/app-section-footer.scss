@@ -1,9 +1,13 @@
-app-landing-footer {
-  main {
+app-section-footer {
+  footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    section {
+      padding: 0;
+    }
 
     section.links {
       margin-top: 48px;

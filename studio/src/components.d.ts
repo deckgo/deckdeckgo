@@ -253,7 +253,6 @@ export namespace Components {
   interface AppLanding {}
   interface AppLandingContent {}
   interface AppLandingDeck {}
-  interface AppLandingFooter {}
   interface AppList {
     'selectedElement': HTMLElement;
   }
@@ -323,6 +322,9 @@ export namespace Components {
     'selectedElement': HTMLElement;
   }
   interface AppRoot {}
+  interface AppSectionFooter {
+    'action': boolean;
+  }
   interface AppSelectTargetElement {
     'background': boolean;
     'chart': boolean;
@@ -747,12 +749,6 @@ declare global {
     new (): HTMLAppLandingDeckElement;
   };
 
-  interface HTMLAppLandingFooterElement extends Components.AppLandingFooter, HTMLStencilElement {}
-  var HTMLAppLandingFooterElement: {
-    prototype: HTMLAppLandingFooterElement;
-    new (): HTMLAppLandingFooterElement;
-  };
-
   interface HTMLAppListElement extends Components.AppList, HTMLStencilElement {}
   var HTMLAppListElement: {
     prototype: HTMLAppListElement;
@@ -933,6 +929,12 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLAppSectionFooterElement extends Components.AppSectionFooter, HTMLStencilElement {}
+  var HTMLAppSectionFooterElement: {
+    prototype: HTMLAppSectionFooterElement;
+    new (): HTMLAppSectionFooterElement;
+  };
+
   interface HTMLAppSelectTargetElementElement extends Components.AppSelectTargetElement, HTMLStencilElement {}
   var HTMLAppSelectTargetElementElement: {
     prototype: HTMLAppSelectTargetElementElement;
@@ -1097,7 +1099,6 @@ declare global {
     'app-landing': HTMLAppLandingElement;
     'app-landing-content': HTMLAppLandingContentElement;
     'app-landing-deck': HTMLAppLandingDeckElement;
-    'app-landing-footer': HTMLAppLandingFooterElement;
     'app-list': HTMLAppListElement;
     'app-logo': HTMLAppLogoElement;
     'app-math': HTMLAppMathElement;
@@ -1128,6 +1129,7 @@ declare global {
     'app-remote-request': HTMLAppRemoteRequestElement;
     'app-reveal': HTMLAppRevealElement;
     'app-root': HTMLAppRootElement;
+    'app-section-footer': HTMLAppSectionFooterElement;
     'app-select-target-element': HTMLAppSelectTargetElementElement;
     'app-services': HTMLAppServicesElement;
     'app-settings': HTMLAppSettingsElement;
@@ -1397,7 +1399,6 @@ declare namespace LocalJSX {
   interface AppLanding {}
   interface AppLandingContent {}
   interface AppLandingDeck {}
-  interface AppLandingFooter {}
   interface AppList {
     'onToggleList'?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
     'selectedElement'?: HTMLElement;
@@ -1473,6 +1474,9 @@ declare namespace LocalJSX {
     'selectedElement'?: HTMLElement;
   }
   interface AppRoot {}
+  interface AppSectionFooter {
+    'action'?: boolean;
+  }
   interface AppSelectTargetElement {
     'background'?: boolean;
     'chart'?: boolean;
@@ -1588,7 +1592,6 @@ declare namespace LocalJSX {
     'app-landing': AppLanding;
     'app-landing-content': AppLandingContent;
     'app-landing-deck': AppLandingDeck;
-    'app-landing-footer': AppLandingFooter;
     'app-list': AppList;
     'app-logo': AppLogo;
     'app-math': AppMath;
@@ -1619,6 +1622,7 @@ declare namespace LocalJSX {
     'app-remote-request': AppRemoteRequest;
     'app-reveal': AppReveal;
     'app-root': AppRoot;
+    'app-section-footer': AppSectionFooter;
     'app-select-target-element': AppSelectTargetElement;
     'app-services': AppServices;
     'app-settings': AppSettings;
@@ -1707,7 +1711,6 @@ declare module "@stencil/core" {
       'app-landing': LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
       'app-landing-content': LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
       'app-landing-deck': LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
-      'app-landing-footer': LocalJSX.AppLandingFooter & JSXBase.HTMLAttributes<HTMLAppLandingFooterElement>;
       'app-list': LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
       'app-logo': LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
       'app-math': LocalJSX.AppMath & JSXBase.HTMLAttributes<HTMLAppMathElement>;
@@ -1738,6 +1741,7 @@ declare module "@stencil/core" {
       'app-remote-request': LocalJSX.AppRemoteRequest & JSXBase.HTMLAttributes<HTMLAppRemoteRequestElement>;
       'app-reveal': LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+      'app-section-footer': LocalJSX.AppSectionFooter & JSXBase.HTMLAttributes<HTMLAppSectionFooterElement>;
       'app-select-target-element': LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
       'app-services': LocalJSX.AppServices & JSXBase.HTMLAttributes<HTMLAppServicesElement>;
       'app-settings': LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;

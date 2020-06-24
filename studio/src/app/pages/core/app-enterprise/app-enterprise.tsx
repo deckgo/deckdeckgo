@@ -69,6 +69,8 @@ export class AppEnterprise {
           <img class="separator features" src={`/assets/img/landing/wave-audience.svg`} role="presentation" loading="lazy" />
 
           <app-contact-form ref={(el) => (this.formRef = el as HTMLElement)}></app-contact-form>
+
+          <app-section-footer action={false}></app-section-footer>
         </main>
       </ion-content>,
     ];

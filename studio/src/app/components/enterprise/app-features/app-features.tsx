@@ -207,6 +207,7 @@ export class AppFeatures {
             <a href="http://github.com/deckgo/deckdeckgo">
               <ion-icon name="logo-github" area-label="Github"></ion-icon> Github
             </a>
+            .
           </p>
         </article>
 
