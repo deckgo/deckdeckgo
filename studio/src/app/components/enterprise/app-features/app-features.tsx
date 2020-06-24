@@ -211,8 +211,7 @@ export class AppFeatures {
         </article>
 
         <p>
-          <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon> Available for organizations. Get in touch for a tailored discussion about
-          your needs and pricing.
+          <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon> are available for organizations.
         </p>
       </section>
     );

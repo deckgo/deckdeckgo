@@ -136,6 +136,7 @@ export namespace Components {
     'slide': boolean;
   }
   interface AppContact {}
+  interface AppContactForm {}
   interface AppCreateSlide {}
   interface AppCustomData {}
   interface AppCustomImages {}
@@ -480,6 +481,12 @@ declare global {
   var HTMLAppContactElement: {
     prototype: HTMLAppContactElement;
     new (): HTMLAppContactElement;
+  };
+
+  interface HTMLAppContactFormElement extends Components.AppContactForm, HTMLStencilElement {}
+  var HTMLAppContactFormElement: {
+    prototype: HTMLAppContactFormElement;
+    new (): HTMLAppContactFormElement;
   };
 
   interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {}
@@ -1046,6 +1053,7 @@ declare global {
     'app-color-sides': HTMLAppColorSidesElement;
     'app-color-text-background': HTMLAppColorTextBackgroundElement;
     'app-contact': HTMLAppContactElement;
+    'app-contact-form': HTMLAppContactFormElement;
     'app-create-slide': HTMLAppCreateSlideElement;
     'app-custom-data': HTMLAppCustomDataElement;
     'app-custom-images': HTMLAppCustomImagesElement;
@@ -1251,6 +1259,7 @@ declare namespace LocalJSX {
     'slide'?: boolean;
   }
   interface AppContact {}
+  interface AppContactForm {}
   interface AppCreateSlide {
     'onSignIn'?: (event: CustomEvent<void>) => void;
   }
@@ -1535,6 +1544,7 @@ declare namespace LocalJSX {
     'app-color-sides': AppColorSides;
     'app-color-text-background': AppColorTextBackground;
     'app-contact': AppContact;
+    'app-contact-form': AppContactForm;
     'app-create-slide': AppCreateSlide;
     'app-custom-data': AppCustomData;
     'app-custom-images': AppCustomImages;
@@ -1653,6 +1663,7 @@ declare module "@stencil/core" {
       'app-color-sides': LocalJSX.AppColorSides & JSXBase.HTMLAttributes<HTMLAppColorSidesElement>;
       'app-color-text-background': LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
       'app-contact': LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
+      'app-contact-form': LocalJSX.AppContactForm & JSXBase.HTMLAttributes<HTMLAppContactFormElement>;
       'app-create-slide': LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
       'app-custom-data': LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
       'app-custom-images': LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;

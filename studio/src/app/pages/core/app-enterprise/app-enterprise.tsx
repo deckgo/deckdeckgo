@@ -6,13 +6,14 @@ import {Component, h} from '@stencil/core';
 })
 export class AppEnterprise {
   private featuresRef!: HTMLElement;
+  private formRef!: HTMLElement;
 
-  private scrollToFeatures() {
-    if (!this.featuresRef) {
+  private scrollTo(ref: HTMLElement | undefined) {
+    if (!ref) {
       return;
     }
 
-    this.featuresRef.scrollIntoView({
+    ref.scrollIntoView({
       behavior: 'smooth',
     });
   }
@@ -27,7 +28,7 @@ export class AppEnterprise {
               <h1>The unbreakable slides for your corporate communication.</h1>
               <h3 style={{'font-weight': '300'}}>Distribute and keep up-to-date your corporate identity and design across all your company's presentations.</h3>
 
-              <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
+              <ion-button class="ion-margin-top" shape="round" onClick={() => this.scrollTo(this.formRef)} mode="md" color="tertiary">
                 <ion-label style={{'text-transform': 'none'}}>Get in touch</ion-label>
               </ion-button>
             </div>
@@ -55,7 +56,7 @@ export class AppEnterprise {
 
               <p>Moreover, rolling out new design and logo has never been so easy and DeckDeckGo can offer so much more.</p>
 
-              <button type="button" class="app-button" onClick={() => this.scrollToFeatures()}>
+              <button type="button" class="app-button" onClick={() => this.scrollTo(this.featuresRef)}>
                 Discover more features <ion-icon src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
               </button>
             </div>
@@ -66,6 +67,8 @@ export class AppEnterprise {
           <app-features ref={(el) => (this.featuresRef = el as HTMLElement)}></app-features>
 
           <img class="separator features" src={`/assets/img/landing/wave-audience.svg`} role="presentation" loading="lazy" />
+
+          <app-contact-form ref={(el) => (this.formRef = el as HTMLElement)}></app-contact-form>
         </main>
       </ion-content>,
     ];
