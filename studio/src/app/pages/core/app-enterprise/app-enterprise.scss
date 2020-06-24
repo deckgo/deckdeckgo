@@ -59,7 +59,7 @@ app-enterprise {
     section.hero {
       height: calc(100vh - 56px);
 
-      background: var(--ion-color-dark);
+      background: linear-gradient(45deg, var(--ion-color-dark) 5%, var(--ion-color-tertiary) 95%);
       color: var(--ion-color-dark-contrast);
 
       display: grid;
