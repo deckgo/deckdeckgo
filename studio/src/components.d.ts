@@ -5,19 +5,19 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EventEmitter, JSX, } from "@stencil/core";
-import { BreadcrumbsStep, } from "./app/utils/editor/breadcrumbs-type";
-import { PrismLanguage, } from "./app/services/editor/prism/prism.service";
-import { InitStyleColor, } from "./app/utils/editor/color.utils";
-import { Deck, } from "./app/models/data/deck";
-import { DeckDashboardCloneResult, } from "./app/services/dashboard/deck/deck-dashboard.service";
-import { EditAction, } from "./app/utils/editor/edit-action";
-import { ImageHelper, } from "./app/helpers/editor/image.helper";
-import { ImageAction, } from "./app/utils/editor/image-action";
-import { SlotType, } from "./app/utils/editor/slot-type";
-import { TargetElement, } from "./app/utils/editor/target-element";
-import { MoreAction, } from "./app/utils/editor/more-action";
-import { ItemReorderEventDetail, } from "@ionic/core";
+import { EventEmitter, JSX } from "@stencil/core";
+import { BreadcrumbsStep } from "./app/utils/editor/breadcrumbs-type";
+import { PrismLanguage } from "./app/services/editor/prism/prism.service";
+import { InitStyleColor } from "./app/utils/editor/color.utils";
+import { Deck } from "./app/models/data/deck";
+import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
+import { EditAction } from "./app/utils/editor/edit-action";
+import { ImageHelper } from "./app/helpers/editor/image.helper";
+import { ImageAction } from "./app/utils/editor/image-action";
+import { SlotType } from "./app/utils/editor/slot-type";
+import { TargetElement } from "./app/utils/editor/target-element";
+import { MoreAction } from "./app/utils/editor/more-action";
+import { ItemReorderEventDetail } from "@ionic/core";
 export namespace Components {
     interface AppAbout {
     }
@@ -95,10 +95,10 @@ export namespace Components {
         "initCurrentColors": () => Promise<void>;
         "moreColors": boolean;
         "selectedElement": HTMLElement;
-        "template": "split" | "author";
+        "template": 'split' | 'author';
     }
     interface AppColorTextBackground {
-        "colorType": "text" | "background";
+        "colorType": 'text' | 'background';
         "deck": boolean;
         "expander": boolean;
         "initCurrentColors": () => Promise<void>;
@@ -180,7 +180,7 @@ export namespace Components {
     interface AppEmbed {
     }
     interface AppExpansionPanel {
-        "expanded": "open" | "close";
+        "expanded": 'open' | 'close';
         "expander": boolean;
     }
     interface AppFaq {
@@ -198,10 +198,10 @@ export namespace Components {
     }
     interface AppFontSize {
         "selectedElement": HTMLElement;
-        "selector": "--deckgo-highlight-code-font-size" | "--deckgo-math-font-size";
+        "selector": '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
     }
     interface AppFooter {
-        "display": "menu" | "landing";
+        "display": 'menu' | 'landing';
     }
     interface AppFullscreenInfo {
     }
@@ -1227,10 +1227,10 @@ declare namespace LocalJSX {
         "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
-        "template"?: "split" | "author";
+        "template"?: 'split' | 'author';
     }
     interface AppColorTextBackground {
-        "colorType"?: "text" | "background";
+        "colorType"?: 'text' | 'background';
         "deck"?: boolean;
         "expander"?: boolean;
         "moreColors"?: boolean;
@@ -1320,7 +1320,7 @@ declare namespace LocalJSX {
     interface AppEmbed {
     }
     interface AppExpansionPanel {
-        "expanded"?: "open" | "close";
+        "expanded"?: 'open' | 'close';
         "expander"?: boolean;
     }
     interface AppFaq {
@@ -1340,10 +1340,10 @@ declare namespace LocalJSX {
     interface AppFontSize {
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
-        "selector"?: "--deckgo-highlight-code-font-size" | "--deckgo-math-font-size";
+        "selector"?: '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
     }
     interface AppFooter {
-        "display"?: "menu" | "landing";
+        "display"?: 'menu' | 'landing';
     }
     interface AppFullscreenInfo {
     }
