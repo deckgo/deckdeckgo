@@ -1,11 +1,11 @@
-import {Component, h, State} from '@stencil/core';
+import {Build, Component, h, State} from '@stencil/core';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
 import {AuthService} from '../../../services/auth/auth.service';
 
 @Component({
-  tag: 'app-home'
+  tag: 'app-home',
 })
 export class AppHome {
   private authService: AuthService;
@@ -18,7 +18,7 @@ export class AppHome {
   }
 
   async componentWillLoad() {
-    const localUser: AuthUser = await this.authService.getLocalAuthUser();
+    const localUser: AuthUser = Build.isBrowser ? await this.authService.getLocalAuthUser() : undefined;
     this.landing = localUser === undefined || localUser.anonymous;
   }
 

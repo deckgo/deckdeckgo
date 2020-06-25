@@ -1,3 +1,5 @@
+import {Build} from '@stencil/core';
+
 import {Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
@@ -438,6 +440,11 @@ export class RemoteEventsHandler {
       const deckgoRemoteElement: any = this.el.querySelector('deckgo-remote');
 
       if (!deckgoRemoteElement) {
+        resolve();
+        return;
+      }
+
+      if (Build.isServer) {
         resolve();
         return;
       }

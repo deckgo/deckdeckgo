@@ -1,5 +1,5 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../../models/data/deck';
 
@@ -22,10 +22,7 @@ export class DeckOnlineService {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       try {
-        const snapshot: firebase.firestore.DocumentSnapshot = await firestore
-          .collection('decks')
-          .doc(deckId)
-          .get();
+        const snapshot: firebase.firestore.DocumentSnapshot = await firestore.collection('decks').doc(deckId).get();
 
         if (!snapshot.exists) {
           reject('Deck not found');
@@ -36,7 +33,7 @@ export class DeckOnlineService {
 
         resolve({
           id: snapshot.id,
-          data: deck
+          data: deck,
         });
       } catch (err) {
         reject(err);
@@ -52,10 +49,7 @@ export class DeckOnlineService {
       deck.data.updated_at = now;
 
       try {
-        await firestore
-          .collection('decks')
-          .doc(deck.id)
-          .set(deck.data, {merge: true});
+        await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
 
         resolve(deck);
       } catch (err) {

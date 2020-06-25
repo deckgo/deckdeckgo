@@ -5,8 +5,8 @@ import {debounceTime, filter, take} from 'rxjs/operators';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {AuthUser} from '../../../../models/auth/auth.user';
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';

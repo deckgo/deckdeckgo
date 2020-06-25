@@ -1,4 +1,4 @@
-import {Build, Component, h} from '@stencil/core';
+import {Build, Component, h, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
@@ -8,7 +8,7 @@ import {ThemeService} from './services/theme/theme.service';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.scss'
+  styleUrl: 'app-root.scss',
 })
 export class AppRoot {
   private timerService: TimerService;
@@ -18,6 +18,9 @@ export class AppRoot {
   private themeService: ThemeService;
 
   private domBodyClassList: DOMTokenList = document.body.classList;
+
+  @State()
+  private loading: boolean = true;
 
   constructor() {
     this.timerService = TimerService.getInstance();
@@ -34,6 +37,8 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
+    this.loading = false;
+
     await this.timerService.restart();
 
     if (Build.isBrowser) {
@@ -55,7 +60,7 @@ export class AppRoot {
 
   render() {
     return (
-      <ion-app>
+      <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-remote"></ion-route>
           <ion-route url="/remote" component="app-remote"></ion-route>
