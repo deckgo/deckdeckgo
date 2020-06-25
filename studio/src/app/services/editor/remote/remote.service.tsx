@@ -1,3 +1,5 @@
+import {Build} from '@stencil/core';
+
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
@@ -36,6 +38,11 @@ export class RemoteService {
 
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
+      if (Build.isServer) {
+        resolve();
+        return;
+      }
+
       const remote: boolean = await get<boolean>('deckdeckgo_remote');
 
       this.watch()

@@ -1,4 +1,4 @@
-import {Component, h, State} from '@stencil/core';
+import {Build, Component, h, State} from '@stencil/core';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
@@ -18,8 +18,13 @@ export class AppWelcome {
   }
 
   async componentWillLoad() {
-    const localUser: AuthUser = await this.authService.getLocalAuthUser();
-    this.landing = localUser === undefined || localUser.anonymous;
+    if (Build.isBrowser) {
+      const localUser: AuthUser = await this.authService.getLocalAuthUser();
+      this.landing = localUser === undefined || localUser.anonymous;
+    } else {
+      // We want to prerender the landing here
+      this.landing = true;
+    }
   }
 
   render() {

@@ -23,6 +23,7 @@ export const config: Config = {
     {
       type: 'www',
       baseUrl: 'https://deckdeckgo.com',
+      prerenderConfig: './prerender.config.ts',
       serviceWorker: {
         swSrc: 'src/sw.js',
       },

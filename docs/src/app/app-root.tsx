@@ -1,4 +1,4 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, h, State} from '@stencil/core';
 
 @Component({
   tag: 'app-root',
@@ -7,9 +7,16 @@ import {Component, Element, h} from '@stencil/core';
 export class AppRoot {
   @Element() el: HTMLElement;
 
+  @State()
+  private loading: boolean = true;
+
+  componentDidLoad() {
+    this.loading = false;
+  }
+
   render() {
     return [
-      <ion-app>
+      <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-home" />
 

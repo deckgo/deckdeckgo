@@ -4,3 +4,12 @@
   --ion-item-background: #1a1b1e;
   --ion-item-background-activated: #313131;
 }
+
+ion-app.loading {
+  display: none;
+  color: transparent;
+
+  a {
+    color: transparent;
+  }
+}

@@ -5,6 +5,10 @@ app-feed-card {
     --background: white;
 
     ion-card-content {
+      &.ion-no-padding {
+        padding: 0;
+      }
+
       &.compact {
         p.content {
           display: none;

@@ -1,4 +1,4 @@
-import {Build, Component, Element, h, Listen} from '@stencil/core';
+import {Build, Component, Element, h, Listen, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
@@ -34,6 +34,9 @@ export class AppRoot {
 
   private domBodyClassList: DOMTokenList = document.body.classList;
 
+  @State()
+  private loading: boolean = true;
+
   constructor() {
     this.errorService = ErrorService.getInstance();
     this.authService = AuthService.getInstance();
@@ -51,6 +54,8 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
+    this.loading = false;
+
     this.errorSubscription = this.errorService.watch().subscribe(async (error: string) => {
       await this.toastError(error);
     });
@@ -132,7 +137,7 @@ export class AppRoot {
 
   render() {
     return [
-      <ion-app>
+      <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-welcome" />
 

@@ -12,5 +12,5 @@ export enum SlotType {
   REVEAL_LIST = 'deckgo-reveal-list',
   DRAG_RESIZE_ROTATE = 'deckgo-drr',
   DEMO = 'deckgo-demo',
-  MATH = 'deckgo-math'
+  MATH = 'deckgo-math',
 }

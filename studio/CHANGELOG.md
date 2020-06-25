@@ -1,3 +1,25 @@
+<a name="1.4.0"></a>
+
+# 1.4.0 (2020-06-25)
+
+### Features
+
+- support copepen, jsfiddle and webcomponents.dev ([#721](https://github.com/deckgo/deckdeckgo/issues/721))
+- refresh style of the actions in full screen mode ([#755](https://github.com/deckgo/deckdeckgo/pull/755))
+- group, improve fonts in deck style and keep popover open on editing ([#745](https://github.com/deckgo/deckdeckgo/pull/745))
+- add strikethrough option ([#710](https://github.com/deckgo/deckdeckgo/issues/710))
+- illustrations for the landing page ([#764](https://github.com/deckgo/deckdeckgo/pull/764))
+- highlight code line numbers background and color ([#763](https://github.com/deckgo/deckdeckgo/pull/763))
+- improve deck li style ([#761](https://github.com/deckgo/deckdeckgo/pull/761))
+
+### Fix
+
+- prerendering 🚀 ([#675](https://github.com/deckgo/deckdeckgo/issues/675))
+- share doesn't work in Firefox ([#751](https://github.com/deckgo/deckdeckgo/issues/751))
+- problem with remote control layout in Firefox Mobile ([#752](https://github.com/deckgo/deckdeckgo/issues/752))
+- QR code sizing/spacing ([#743](https://github.com/deckgo/deckdeckgo/issues/743))
+- social card image not generated ([#659](https://github.com/deckgo/deckdeckgo/issues/659))
+
 <a name="1.3.0"></a>
 
 # 1.3.0 (2020-05-28)
