@@ -321,6 +321,16 @@ export class AppSlideContent {
                 <td>1</td>
                 <td>The z-index of the slide</td>
               </tr>
+              <tr>
+                <td>--slide-split-display-start</td>
+                <td>flex</td>
+                <td>Start side display property</td>
+              </tr>
+              <tr>
+                <td>--slide-split-display-end</td>
+                <td>flex</td>
+                <td>End side display property</td>
+              </tr>
             </tbody>
           </table>
         </main>

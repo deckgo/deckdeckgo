@@ -50,7 +50,7 @@ app-landing-deck {
         width: 100%;
       }
 
-      @media (max-width: 576px) {
+      @media (max-width: 768px) {
         div[slot="start"] {
           h2 {
             padding: 0;
@@ -58,8 +58,10 @@ app-landing-deck {
         }
 
         &:first-of-type {
-          div[slot="end"] {
-            display: none;
+          --slide-split-display-end: none;
+
+          div[slot="start"] {
+            text-align: center;
           }
         }
       }

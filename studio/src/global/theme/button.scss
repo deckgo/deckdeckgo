@@ -4,8 +4,9 @@ ion-button {
 
 .app-button {
   color: var(--ion-color-primary);
+  background: transparent;
   font-size: 100%;
   font-family: inherit;
-  margin: 0;
+  margin: 0 4px 0 0;
   padding: 0;
 }
