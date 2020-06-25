@@ -1,4 +1,4 @@
-import {Build, Component, Element, h, Listen} from '@stencil/core';
+import {Build, Component, Element, h, Listen, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
@@ -14,7 +14,7 @@ import {OfflineService} from './services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.scss'
+  styleUrl: 'app-root.scss',
 })
 export class AppRoot {
   @Element() el: HTMLElement;
@@ -34,6 +34,9 @@ export class AppRoot {
 
   private domBodyClassList: DOMTokenList = document.body.classList;
 
+  @State()
+  private loading: boolean = true;
+
   constructor() {
     this.errorService = ErrorService.getInstance();
     this.authService = AuthService.getInstance();
@@ -51,6 +54,8 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
+    this.loading = false;
+
     this.errorSubscription = this.errorService.watch().subscribe(async (error: string) => {
       await this.toastError(error);
     });
@@ -84,12 +89,12 @@ export class AppRoot {
       buttons: [
         {
           text: 'Close',
-          role: 'cancel'
-        }
+          role: 'cancel',
+        },
       ],
       position: 'top',
       color: 'danger',
-      duration: 6000
+      duration: 6000,
     });
 
     await popover.present();
@@ -132,7 +137,7 @@ export class AppRoot {
 
   render() {
     return [
-      <ion-app>
+      <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-home" />
 
@@ -179,7 +184,7 @@ export class AppRoot {
         <ion-nav id="menu-content" />
 
         <app-share-deck></app-share-deck>
-      </ion-app>
+      </ion-app>,
     ];
   }
 }
