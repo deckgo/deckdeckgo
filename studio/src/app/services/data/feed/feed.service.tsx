@@ -1,5 +1,5 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -99,7 +99,7 @@ export class FeedService {
         const decks: Deck[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
           return {
             id: documentSnapshot.id,
-            data: documentSnapshot.data() as DeckData
+            data: documentSnapshot.data() as DeckData,
           };
         });
 
@@ -125,12 +125,7 @@ export class FeedService {
         .limit(this.queryLimit)
         .get();
     } else {
-      return firestore
-        .collection('decks')
-        .where('meta.feed', '==', true)
-        .orderBy('meta.published_at', 'desc')
-        .limit(this.queryLimit)
-        .get();
+      return firestore.collection('decks').where('meta.feed', '==', true).orderBy('meta.published_at', 'desc').limit(this.queryLimit).get();
     }
   }
 

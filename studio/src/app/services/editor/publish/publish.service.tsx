@@ -1,5 +1,5 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {Observable, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';

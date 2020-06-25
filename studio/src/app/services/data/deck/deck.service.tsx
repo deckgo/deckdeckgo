@@ -1,5 +1,5 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../../models/data/deck';
 
@@ -36,7 +36,7 @@ export class DeckService {
           async (doc: firebase.firestore.DocumentReference) => {
             resolve({
               id: doc.id,
-              data: deck
+              data: deck,
             });
           },
           (err) => {
@@ -80,7 +80,7 @@ export class DeckService {
         const decks: Deck[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
           return {
             id: documentSnapshot.id,
-            data: documentSnapshot.data() as DeckData
+            data: documentSnapshot.data() as DeckData,
           };
         });
 
@@ -122,10 +122,7 @@ export class DeckService {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-        await firestore
-          .collection('decks')
-          .doc(deckId)
-          .delete();
+        await firestore.collection('decks').doc(deckId).delete();
 
         resolve();
       } catch (err) {
