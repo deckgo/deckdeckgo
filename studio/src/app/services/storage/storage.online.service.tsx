@@ -1,4 +1,4 @@
-import {firebase} from '@firebase/app';
+import firebase from '@firebase/app';
 import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
