@@ -22,8 +22,8 @@ export class AppEnterprise {
     return [
       <app-navigation presentation={true}></app-navigation>,
       <ion-content>
-        <main>
-          <section class="hero">
+        <section class="hero">
+          <div class="content">
             <div>
               <h1>The unbreakable slides for your corporate communication.</h1>
               <h3 style={{'font-weight': '300'}}>Distribute and keep up-to-date your corporate identity and design across all your company's presentations.</h3>
@@ -32,11 +32,13 @@ export class AppEnterprise {
                 <ion-label style={{'text-transform': 'none'}}>Get in touch</ion-label>
               </ion-button>
             </div>
+          </div>
 
-            <img class="wave" src={`/assets/img/landing/wave-start.svg`} role="presentation" />
-          </section>
+          <img class="wave" src={`/assets/img/landing/wave-start.svg`} role="presentation" />
+        </section>
 
-          <section class="intro">
+        <section class="intro">
+          <div class="content">
             <blockquote>
               <span>❝</span>
               <p>Did you had a look to Bob's last presentation? He used our old logo and made it green, again.</p>
@@ -60,18 +62,22 @@ export class AppEnterprise {
                 Discover more features <ion-icon src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
               </button>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <img class="separator intro" src={`/assets/img/landing/wave-introducing.svg`} role="presentation" loading="lazy" />
+        <div class="separator intro">
+          <img src={`/assets/img/landing/wave-introducing.svg`} role="presentation" loading="lazy" />
+        </div>
 
-          <app-features ref={(el) => (this.featuresRef = el as HTMLElement)}></app-features>
+        <app-features ref={(el) => (this.featuresRef = el as HTMLElement)}></app-features>
 
-          <img class="separator features" src={`/assets/img/landing/wave-audience.svg`} role="presentation" loading="lazy" />
+        <div class="separator features">
+          <img src={`/assets/img/landing/wave-audience.svg`} role="presentation" loading="lazy" />
+        </div>
 
-          <app-contact-form ref={(el) => (this.formRef = el as HTMLElement)}></app-contact-form>
+        <app-contact-form ref={(el) => (this.formRef = el as HTMLElement)}></app-contact-form>
 
-          <app-section-footer action={false}></app-section-footer>
-        </main>
+        <app-section-footer action={false}></app-section-footer>
       </ion-content>,
     ];
   }

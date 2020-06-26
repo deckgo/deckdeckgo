@@ -1,24 +1,26 @@
 section.contact {
   background: white;
 
-  display: flex;
-  justify-content: center;
-
-  form {
-    width: 720px;
-    max-width: 100%;
-
+  div.content {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
 
-    ion-item {
-      margin: 4px 0;
-    }
+    form {
+      width: 720px;
+      max-width: 100%;
 
-    ion-button,
-    p {
-      width: fit-content;
-      align-self: center;
+      display: flex;
+      flex-direction: column;
+
+      ion-item {
+        margin: 4px 0;
+      }
+
+      ion-button,
+      p {
+        width: fit-content;
+        align-self: center;
+      }
     }
   }
 }

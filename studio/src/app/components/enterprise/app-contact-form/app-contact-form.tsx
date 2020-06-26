@@ -32,40 +32,42 @@ export class AppContactForm {
   render() {
     return (
       <section class="contact">
-        <form onSubmit={($event) => this.submitForm($event)} action="https://formspree.io/xjvaebzk" method="POST">
-          <p>Get in touch for a tailored discussion about your needs and pricing.</p>
+        <div class="content">
+          <form onSubmit={($event) => this.submitForm($event)} action="https://formspree.io/xjvaebzk" method="POST">
+            <p>Get in touch for a tailored discussion about your needs and pricing.</p>
 
-          <ion-list class="inputs-list">
-            <ion-item>
-              <ion-input required={true} input-mode="text" name="company" placeholder="Your company"></ion-input>
-            </ion-item>
+            <ion-list class="inputs-list">
+              <ion-item>
+                <ion-input required={true} input-mode="text" name="company" placeholder="Your company"></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input required={true} input-mode="text" name="name" placeholder="Your name"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input required={true} input-mode="text" name="name" placeholder="Your name"></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input required={true} input-mode="email" name="_replyto" placeholder="Your email"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input required={true} input-mode="email" name="_replyto" placeholder="Your email"></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input input-mode="tel" name="phone" placeholder="Your phone"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input input-mode="tel" name="phone" placeholder="Your phone"></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-textarea name="message" placeholder="Your message" rows={4}></ion-textarea>
-            </ion-item>
-          </ion-list>
+              <ion-item>
+                <ion-textarea name="message" placeholder="Your message" rows={4}></ion-textarea>
+              </ion-item>
+            </ion-list>
 
-          {this.status === 'SUCCESS' ? (
-            <p class="ion-margin-top">Thanks!</p>
-          ) : (
-            <ion-button type="submit" color="primary" shape="round" class="ion-margin-top">
-              Submit
-            </ion-button>
-          )}
-          {this.status === 'ERROR' && <p class="ion-margin-top">Ooops! There was an error.</p>}
-        </form>
+            {this.status === 'SUCCESS' ? (
+              <p class="ion-margin-top">Thanks!</p>
+            ) : (
+              <ion-button type="submit" color="primary" shape="round" class="ion-margin-top">
+                Submit
+              </ion-button>
+            )}
+            {this.status === 'ERROR' && <p class="ion-margin-top">Ooops! There was an error.</p>}
+          </form>
+        </div>
       </section>
     );
   }

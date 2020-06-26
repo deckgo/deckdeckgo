@@ -1,12 +1,18 @@
 app-enterprise {
   display: block;
 
-  main {
+  section {
+    width: 100%;
+
     display: flex;
     flex-direction: column;
 
-    section {
+    div.content {
       width: 100%;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+
       padding: 0 128px;
 
       position: relative;
@@ -48,22 +54,26 @@ app-enterprise {
         color: var(--ion-color-dark);
         margin-top: 0;
       }
-
-      img.wave {
-        position: absolute;
-        left: 0;
-        bottom: -1px;
-      }
     }
 
-    section.hero {
-      height: calc(100vh - 56px);
+    img.wave {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+    }
+  }
 
-      background: linear-gradient(45deg, var(--ion-color-dark) 5%, var(--ion-color-tertiary) 95%);
-      color: var(--ion-color-dark-contrast);
+  section.hero {
+    height: calc(100vh - 56px);
 
+    background: linear-gradient(45deg, var(--ion-color-dark) 5%, var(--ion-color-tertiary) 95%);
+    color: var(--ion-color-dark-contrast);
+
+    div.content {
       display: grid;
       grid-template-columns: repeat(2, 50%);
+
+      height: 100%;
 
       @media (max-width: 992px) {
         grid-template-columns: 100%;
@@ -76,10 +86,12 @@ app-enterprise {
         z-index: 2;
       }
     }
+  }
 
-    section.intro {
-      background: white;
+  section.intro {
+    background: white;
 
+    div.content {
       display: grid;
       grid-template-columns: repeat(2, 50%);
       grid-template-rows: auto;
@@ -132,13 +144,19 @@ app-enterprise {
         }
       }
     }
+  }
 
-    img.separator {
-      &.intro {
+  div.separator {
+    &.intro {
+      img {
         background: white;
       }
+    }
 
-      &.features {
+    &.features {
+      background: white;
+
+      img {
         background: var(--ion-color-light);
       }
     }
