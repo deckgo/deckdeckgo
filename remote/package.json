@@ -46,7 +46,6 @@
     "@ionic/core": "^5.2.2",
     "date-fns": "^2.14.0",
     "idb-keyval": "^3.2.0",
-    "ionicons": "^5.0.1",
     "remarkable": "^2.0.1",
     "rxjs": "^6.5.5",
     "socket.io-client": "^2.3.0",
