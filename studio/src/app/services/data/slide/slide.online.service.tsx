@@ -1,5 +1,5 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {Slide, SlideData} from '../../../models/data/slide';
 
@@ -32,7 +32,7 @@ export class SlideOnlineService {
           async (doc: firebase.firestore.DocumentReference) => {
             resolve({
               id: doc.id,
-              data: slide
+              data: slide,
             });
           },
           (err) => {
@@ -47,10 +47,7 @@ export class SlideOnlineService {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       try {
-        const snapshot: firebase.firestore.DocumentSnapshot = await firestore
-          .collection(`/decks/${deckId}/slides`)
-          .doc(slideId)
-          .get();
+        const snapshot: firebase.firestore.DocumentSnapshot = await firestore.collection(`/decks/${deckId}/slides`).doc(slideId).get();
 
         if (!snapshot.exists) {
           reject('Slide not found');
@@ -61,7 +58,7 @@ export class SlideOnlineService {
 
         resolve({
           id: snapshot.id,
-          data: slide
+          data: slide,
         });
       } catch (err) {
         reject(err);
@@ -77,10 +74,7 @@ export class SlideOnlineService {
       slide.data.updated_at = now;
 
       try {
-        await firestore
-          .collection(`/decks/${deckId}/slides`)
-          .doc(slide.id)
-          .set(slide.data, {merge: true});
+        await firestore.collection(`/decks/${deckId}/slides`).doc(slide.id).set(slide.data, {merge: true});
 
         resolve();
       } catch (err) {
@@ -94,10 +88,7 @@ export class SlideOnlineService {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-        await firestore
-          .collection(`/decks/${deckId}/slides`)
-          .doc(slideId)
-          .delete();
+        await firestore.collection(`/decks/${deckId}/slides`).doc(slideId).delete();
 
         resolve();
       } catch (err) {

@@ -1,5 +1,5 @@
-import {firebase} from '@firebase/app';
-import '@firebase/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {Observable, ReplaySubject} from 'rxjs';
 
@@ -32,10 +32,7 @@ export class UserService {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-        const snapshot: firebase.firestore.DocumentSnapshot = await firestore
-          .collection('users')
-          .doc(authUser.uid)
-          .get();
+        const snapshot: firebase.firestore.DocumentSnapshot = await firestore.collection('users').doc(authUser.uid).get();
 
         if (!snapshot.exists) {
           const user: User = await this.createUser(authUser);
@@ -48,7 +45,7 @@ export class UserService {
 
           this.userSubject.next({
             id: authUser.uid,
-            data: updatedUser
+            data: updatedUser,
           });
         }
 
@@ -70,7 +67,7 @@ export class UserService {
           anonymous: authUser.anonymous,
           newsletter: true,
           created_at: now,
-          updated_at: now
+          updated_at: now,
         };
 
         if (authUser.name) {
@@ -86,14 +83,11 @@ export class UserService {
           user.photo_url = authUser.photo_url;
         }
 
-        await firestore
-          .collection('users')
-          .doc(authUser.uid)
-          .set(user, {merge: true});
+        await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
 
         resolve({
           id: authUser.uid,
-          data: user
+          data: user,
         });
       } catch (err) {
         reject(err);
@@ -125,10 +119,7 @@ export class UserService {
 
           user.updated_at = firebase.firestore.Timestamp.now();
 
-          await firestore
-            .collection('users')
-            .doc(authUser.uid)
-            .set(user, {merge: true});
+          await firestore.collection('users').doc(authUser.uid).set(user, {merge: true});
         }
 
         resolve(user);
@@ -164,10 +155,7 @@ export class UserService {
       user.data.updated_at = now;
 
       try {
-        await firestore
-          .collection('users')
-          .doc(user.id)
-          .set(user.data, {merge: true});
+        await firestore.collection('users').doc(user.id).set(user.data, {merge: true});
 
         this.userSubject.next(user);
 
@@ -183,10 +171,7 @@ export class UserService {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-        await firestore
-          .collection('users')
-          .doc(userId)
-          .delete();
+        await firestore.collection('users').doc(userId).delete();
 
         this.userSubject.next(null);
 

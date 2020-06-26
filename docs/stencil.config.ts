@@ -5,23 +5,24 @@ import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
-  outputTargets: [{
-    type: 'www',
-    baseUrl: 'https://docs.deckdeckgo.com'
-  }],
+  outputTargets: [
+    {
+      type: 'www',
+      baseUrl: 'https://docs.deckdeckgo.com',
+      prerenderConfig: './prerender.config.ts',
+    },
+  ],
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.scss',
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()]
-    })
+      plugins: [autoprefixer()],
+    }),
   ],
   nodeResolve: {browser: true},
   devServer: {
-    openBrowser: false
+    openBrowser: false,
   },
-  copy: [
-    {src: 'robots.txt'}
-  ]
+  copy: [{src: 'robots.txt'}],
 };

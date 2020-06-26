@@ -1,4 +1,4 @@
-import {firebase} from '@firebase/app';
+import * as firebase from 'firebase/app';
 
 import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';

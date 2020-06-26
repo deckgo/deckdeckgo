@@ -1,3 +1,9 @@
+# 1.6.0 (2020-06-05)
+
+### Fix
+
+- prerendering 🚀 ([#675](https://github.com/deckgo/deckdeckgo/issues/675))
+
 # 1.5.0 (2020-06-05)
 
 ### Features

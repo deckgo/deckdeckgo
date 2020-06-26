@@ -13,7 +13,7 @@ const dev = process.argv && process.argv.indexOf('--dev') > -1;
 const staging = process.argv && process.argv.indexOf('--staging') > -1;
 
 function updateCSP(filename) {
-  fs.readFile(`${filename}`, 'utf8', function(err, data) {
+  fs.readFile(`${filename}`, 'utf8', function (err, data) {
     if (err) {
       return console.log(err);
     }
@@ -41,22 +41,19 @@ function updateCSP(filename) {
       result = result.replace(/<@PRELOADMODULE_LINKS@>/g, linksHash);
     }
 
-    fs.writeFile(`${filename}`, result, 'utf8', function(err) {
+    fs.writeFile(`${filename}`, result, 'utf8', function (err) {
       if (err) return console.log(err);
     });
   });
 }
 
 function findSWHash(data) {
-  const sw = /(<.?script data-build.*?>)([\s\S]*?)(<\/script>)/gm;
+  const sw = /(<.?script data-build[\s\S]*?>)([\s\S]*?)(<\/script>)/gm;
 
   let m;
   while ((m = sw.exec(data))) {
     if (m && m.length >= 3 && m[2].indexOf('serviceWorker') > -1) {
-      return `'sha256-${crypto
-        .createHash('sha256')
-        .update(m[2])
-        .digest('base64')}'`;
+      return `'sha256-${crypto.createHash('sha256').update(m[2]).digest('base64')}'`;
     }
   }
 
@@ -70,12 +67,7 @@ function findPreloadModuleLinksHash(data) {
 
   let m;
   while ((m = preload.exec(data))) {
-    shas.push(
-      `'sha256-${crypto
-        .createHash('sha256')
-        .update(m[0])
-        .digest('base64')}'`
-    );
+    shas.push(`'sha256-${crypto.createHash('sha256').update(m[0]).digest('base64')}'`);
   }
 
   return shas && shas.length > 0 ? shas.join(' ') : undefined;
