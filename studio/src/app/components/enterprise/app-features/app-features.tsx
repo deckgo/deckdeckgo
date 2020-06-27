@@ -204,16 +204,19 @@ export class AppFeatures {
             <h3>Open source</h3>
 
             <p>
-              DeckDeckGo is open source. The code of our applications and components are available on&nbsp;
+              DeckDeckGo is open source. All the code of our applications and components are available on&nbsp;
               <a href="http://github.com/deckgo/deckdeckgo">
                 <ion-icon name="logo-github" area-label="Github"></ion-icon> Github
               </a>
               .
             </p>
+
+            <p>We encourage enterprise to adopt this approach but we do understand if you rather like to keep your corporate templates private.</p>
           </article>
 
           <p>
-            <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon> are available upon request for organizations.
+            * Above features identified as <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon> are available upon request for
+            organizations.
           </p>
         </div>
       </section>
