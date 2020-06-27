@@ -38,19 +38,23 @@ export class AppContactForm {
 
             <ion-list class="inputs-list">
               <ion-item>
-                <ion-input required={true} input-mode="text" name="company" placeholder="Your company"></ion-input>
+                <ion-input required={true} input-mode="text" name="company" placeholder="Your company *"></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-input required={true} input-mode="text" name="name" placeholder="Your name"></ion-input>
+                <ion-input required={true} input-mode="text" name="name" placeholder="Your name *"></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-input required={true} input-mode="email" name="_replyto" placeholder="Your email"></ion-input>
+                <ion-input required={true} input-mode="email" name="_replyto" placeholder="Your email *"></ion-input>
               </ion-item>
 
               <ion-item>
                 <ion-input input-mode="tel" name="phone" placeholder="Your phone"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input input-mode="tel" name="employees" placeholder="Number of employees"></ion-input>
               </ion-item>
 
               <ion-item>
@@ -66,6 +70,10 @@ export class AppContactForm {
               </ion-button>
             )}
             {this.status === 'ERROR' && <p class="ion-margin-top">Ooops! There was an error.</p>}
+
+            <div>
+              <small>* required field</small>
+            </div>
           </form>
         </div>
       </section>

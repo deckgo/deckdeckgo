@@ -221,8 +221,8 @@ export class AppFeatures {
           </article>
 
           <p>
-            * Above features identified as <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon> are available upon request for
-            organizations.
+            <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon> Above features identified with an "enterprise" icon are available upon
+            request for organizations.
           </p>
         </div>
       </section>
