@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-newsletter',
-  styleUrl: 'app-newsletter.scss'
+  styleUrl: 'app-newsletter.scss',
 })
 export class AppNewsletter {
   render() {
@@ -30,7 +30,14 @@ export class AppNewsletter {
                   class="required email"
                   id="mce-EMAIL"
                   placeholder="Email"
-                  style={{width: '100%', padding: '8px 0', 'text-indent': '2%', border: '1px solid #ABB0B2', 'border-radius': '4px'}}
+                  style={{
+                    width: '100%',
+                    padding: '8px 0',
+                    'text-indent': '2%',
+                    background: 'var(--ion-color-light)',
+                    border: '1px solid #dedede',
+                    'border-radius': '4px',
+                  }}
                 />
               </div>
               <div id="mce-responses">
@@ -48,7 +55,7 @@ export class AppNewsletter {
             </div>
           </form>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
