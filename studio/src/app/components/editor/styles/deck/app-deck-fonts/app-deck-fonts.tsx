@@ -100,7 +100,9 @@ export class AppDeckFonts {
     return (
       <div class={`item ${selected ? 'selected' : ''}`} custom-tappable onClick={() => this.selectFont(null)}>
         <deckgo-slide-title class="showcase">
-          <p slot="title">Default</p>
+          <p slot="title" class="default">
+            Default
+          </p>
         </deckgo-slide-title>
       </div>
     );
