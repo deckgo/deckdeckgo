@@ -51,6 +51,14 @@ app-landing-deck {
       }
 
       @media (max-width: 768px) {
+        h1 {
+          font-size: 38px;
+        }
+
+        div[slot="start"] {
+          padding: 0;
+        }
+
         div[slot="start"] {
           h2 {
             padding: 0;
@@ -62,6 +70,7 @@ app-landing-deck {
 
           div[slot="start"] {
             text-align: center;
+            max-width: 100%;
           }
         }
       }

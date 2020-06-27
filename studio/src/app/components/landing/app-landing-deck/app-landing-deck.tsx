@@ -80,7 +80,7 @@ export class AppLandingDeck {
         <deckgo-slide-split>
           <div slot="start">
             <h1>Make more than presentations</h1>
-            <h3 style={{'font-weight': '300'}}>Create, present and share apps. Interact with your audience.</h3>
+            <h3 style={{'font-weight': '300', 'margin-top': '16px'}}>Create, present and share apps. Interact with your audience.</h3>
 
             <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
               <ion-label style={{'text-transform': 'none'}}>Get started with DeckDeckGo</ion-label>
