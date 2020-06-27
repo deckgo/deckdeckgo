@@ -136,6 +136,12 @@ export class AppFeatures {
             <p>Render math formula with Katex in your slides.</p>
           </article>
 
+          <article>
+            <h3>Charts</h3>
+
+            <p>Plot simple lines, area, bar, pie or donut charts.</p>
+          </article>
+
           <h2>Presenting</h2>
 
           <article>
