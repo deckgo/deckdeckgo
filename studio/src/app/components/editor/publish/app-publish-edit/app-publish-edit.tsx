@@ -5,6 +5,7 @@ import {debounceTime, filter, take} from 'rxjs/operators';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
+import feedStore from '../../../../stores/feed.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -14,7 +15,6 @@ import {DeckService} from '../../../../services/data/deck/deck.service';
 import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
-import {FeedService} from '../../../../services/data/feed/feed.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
 interface CustomInputEvent extends KeyboardEvent {
@@ -59,8 +59,6 @@ export class AppPublishEdit {
 
   private publishService: PublishService;
 
-  private feedService: FeedService;
-
   @State()
   private progress: number = 0;
 
@@ -72,8 +70,6 @@ export class AppPublishEdit {
     this.apiUserService = ApiUserFactoryService.getInstance();
 
     this.publishService = PublishService.getInstance();
-
-    this.feedService = FeedService.getInstance();
   }
 
   async componentWillLoad() {
@@ -200,7 +196,7 @@ export class AppPublishEdit {
         this.publishing = false;
 
         // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
-        await this.feedService.reset();
+        feedStore.reset();
 
         resolve();
       } catch (err) {

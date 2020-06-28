@@ -4,6 +4,8 @@ import {Subscription} from 'rxjs';
 
 import {isMobile} from '@deckdeckgo/utils';
 
+import store from '../../../stores/feed.store';
+
 import {Deck} from '../../../models/data/deck';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -14,19 +16,10 @@ import {OfflineService} from '../../../services/editor/offline/offline.service';
 @Component({
   tag: 'app-feed',
   styleUrl: 'app-feed.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppFeed {
   private feedService: FeedService;
-
-  @State()
-  private decks: Deck[] = [];
-
-  @State()
-  private lastPageReached: boolean = false;
-
-  @State()
-  private decksFetched: boolean = false;
 
   @State()
   private mobile: boolean = false;
@@ -35,9 +28,6 @@ export class AppFeed {
   private offline: OfflineDeck = undefined;
 
   private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
-
-  private subscription: Subscription;
-  private lastPageSubscription: Subscription;
 
   private offlineSubscription: Subscription;
   private offlineService: OfflineService;
@@ -48,16 +38,6 @@ export class AppFeed {
   }
 
   async componentWillLoad() {
-    this.subscription = this.feedService.watchDecks().subscribe((decks: Deck[]) => {
-      this.decks = decks;
-      this.decksFetched = true;
-    });
-
-    this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
-      this.lastPageReached = lastPageReached;
-      this.decksFetched = lastPageReached;
-    });
-
     this.offlineSubscription = this.offlineService.watchOffline().subscribe((offline: OfflineDeck | undefined) => {
       this.offline = navigator && !navigator.onLine && offline !== undefined ? offline : undefined;
     });
@@ -70,14 +50,6 @@ export class AppFeed {
   }
 
   async componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.lastPageSubscription) {
-      this.lastPageSubscription.unsubscribe();
-    }
-
     if (this.offlineSubscription) {
       this.offlineSubscription.unsubscribe();
     }
@@ -125,12 +97,12 @@ export class AppFeed {
       <div class="feed">
         {this.renderDecks()}
 
-        <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={this.lastPageReached}>
+        <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={store.state.lastPageReached}>
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </div>,
 
-      <app-popular help={true}></app-popular>
+      <app-popular help={true}></app-popular>,
     ];
   }
 
@@ -148,8 +120,8 @@ export class AppFeed {
   }
 
   private renderDecks() {
-    if (this.decks && this.decks.length > 0) {
-      return this.decks.map((deck: Deck, i: number) => {
+    if (store.state.decks && store.state.decks.length > 0) {
+      return store.state.decks.map((deck: Deck, i: number) => {
         return (
           <a href={this.presentationUrl + deck.data.meta.pathname} aria-label={deck.data.meta.title} target="_blank">
             <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
@@ -162,7 +134,7 @@ export class AppFeed {
   }
 
   private renderLoading() {
-    if (this.decksFetched) {
+    if (store.state.decks !== undefined) {
       return undefined;
     } else {
       return (
