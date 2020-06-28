@@ -5,13 +5,13 @@ import {User as FirebaseUser} from 'firebase';
 import {Observable, ReplaySubject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
+import errorStore from '../../stores/error.store';
+
 import {get, set, del} from 'idb-keyval';
 
 import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
 import {AuthUser} from '../../models/auth/auth.user';
-
-import {ErrorService} from '../core/error/error.service';
 
 import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
@@ -19,8 +19,6 @@ import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
 
 export class AuthService {
   private authUserSubject: ReplaySubject<AuthUser> = new ReplaySubject(1);
-
-  private errorService: ErrorService;
 
   private apiUserService: ApiUserService;
 
@@ -30,7 +28,6 @@ export class AuthService {
 
   private constructor() {
     // Private constructor, singleton
-    this.errorService = ErrorService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.firestoreUserService = UserService.getInstance();
   }
@@ -67,7 +64,7 @@ export class AuthService {
             name: firebaseUser.displayName,
             email: firebaseUser.email,
             email_verified: firebaseUser.emailVerified,
-            photo_url: firebaseUser.photoURL
+            photo_url: firebaseUser.photoURL,
           };
 
           // Update anonymous user
@@ -110,7 +107,7 @@ export class AuthService {
 
         resolve();
       } catch (err) {
-        this.errorService.error(err.message);
+        errorStore.state.error = err.message;
         resolve();
       }
     });

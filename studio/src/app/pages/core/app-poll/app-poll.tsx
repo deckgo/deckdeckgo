@@ -2,16 +2,17 @@ import {Component, h, Prop, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
+import store from '../../../stores/error.store';
+
 import {get, set} from 'idb-keyval';
 
 import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 
 import {PollService} from '../../../services/poll/poll.service';
-import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
   tag: 'app-poll',
-  styleUrl: 'app-poll.scss'
+  styleUrl: 'app-poll.scss',
 })
 export class AppPoll {
   @Prop({mutable: true})
@@ -35,13 +36,11 @@ export class AppPoll {
   private keywords: string[] = ['You did it', 'Applause', 'Thumbs up', 'Congratulations'];
 
   private pollService: PollService;
-  private errorService: ErrorService;
 
   private subscription: Subscription;
 
   constructor() {
     this.pollService = PollService.getInstance();
-    this.errorService = ErrorService.getInstance();
   }
 
   async componentWillLoad() {
@@ -49,7 +48,7 @@ export class AppPoll {
       this.poll = poll;
 
       if (this.pollKey && (!poll || poll === undefined)) {
-        this.errorService.error('Oopsie the poll was not found. Double check that the code is correct and try again.');
+        store.state.error = 'Oopsie the poll was not found. Double check that the code is correct and try again.';
       }
 
       this.connecting = false;
@@ -90,7 +89,7 @@ export class AppPoll {
 
       await set(`deckdeckgo_poll_${this.poll.key}`, new Date().getTime());
     } catch (err) {
-      this.errorService.error(err);
+      store.state.error = err;
     }
   }
 
@@ -143,7 +142,7 @@ export class AppPoll {
           {this.renderJoinPoll()}
           {this.renderHasVoted()}
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 
@@ -164,7 +163,7 @@ export class AppPoll {
         </ion-list>
 
         {this.renderSubmitForm()}
-      </form>
+      </form>,
     ];
   }
 
@@ -198,7 +197,7 @@ export class AppPoll {
       this.renderJoinPollForm(),
       <h2 class="ion-padding-top">Live interactive audience participation</h2>,
       <p>Engage your audience or class in real time.</p>,
-      <p>Involve them to contribute to your presentations with their smartphones and show the results live.</p>
+      <p>Involve them to contribute to your presentations with their smartphones and show the results live.</p>,
     ];
   }
 

@@ -3,7 +3,8 @@ import {ItemReorderEventDetail} from '@ionic/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
-import store from '../../../../stores/deck.store';
+import deckStore from '../../../../stores/deck.store';
+import errorStore from '../../../../stores/error.store';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
@@ -19,7 +20,6 @@ import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
-import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
 import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
@@ -28,7 +28,6 @@ import {SlideService} from '../../../../services/data/slide/slide.service';
 export class DeckEventsHandler {
   private el: HTMLElement;
 
-  private errorService: ErrorService;
   private busyService: BusyService;
 
   private authService: AuthService;
@@ -43,7 +42,6 @@ export class DeckEventsHandler {
   private slideService: SlideService;
 
   constructor() {
-    this.errorService = ErrorService.getInstance();
     this.busyService = BusyService.getInstance();
 
     this.authService = AuthService.getInstance();
@@ -208,22 +206,22 @@ export class DeckEventsHandler {
 
         this.busyService.deckBusy(true);
 
-        if (!store.state.deck) {
+        if (!deckStore.state.deck) {
           const persistedDeck: Deck = await this.createDeck();
-          store.state.deck = {...persistedDeck};
+          deckStore.state.deck = {...persistedDeck};
         }
 
-        const persistedSlide: Slide = await this.postSlide(store.state.deck, slide);
+        const persistedSlide: Slide = await this.postSlide(deckStore.state.deck, slide);
 
         // Because of the offline mode, is kind of handy to handle the list on the client side too.
         // But maybe in the future it is something which could be moved to the cloud.
-        await this.updateDeckSlideList(store.state.deck, persistedSlide);
+        await this.updateDeckSlideList(deckStore.state.deck, persistedSlide);
 
         this.busyService.deckBusy(false);
 
         resolve();
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve();
       }
@@ -282,7 +280,7 @@ export class DeckEventsHandler {
             }
 
             const persistedDeck: Deck = await this.deckService.create(deck);
-            store.state.deck = {...persistedDeck};
+            deckStore.state.deck = {...persistedDeck};
 
             await this.updateNavigation(persistedDeck);
 
@@ -314,7 +312,7 @@ export class DeckEventsHandler {
         deck.data.slides.push(slide.id);
 
         const updatedDeck: Deck = await this.deckService.update(deck);
-        store.state.deck = {...updatedDeck};
+        deckStore.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
@@ -346,7 +344,7 @@ export class DeckEventsHandler {
 
         this.busyService.deckBusy(true);
 
-        const currentDeck: Deck | null = store.state.deck;
+        const currentDeck: Deck | null = deckStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -363,13 +361,13 @@ export class DeckEventsHandler {
 
         const updatedDeck: Deck = await this.deckService.update(currentDeck);
 
-        store.state.deck = {...updatedDeck};
+        deckStore.state.deck = {...updatedDeck};
 
         this.busyService.deckBusy(false);
 
         resolve();
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve();
       }
@@ -386,7 +384,7 @@ export class DeckEventsHandler {
 
         this.busyService.deckBusy(true);
 
-        const currentDeck: Deck | null = store.state.deck;
+        const currentDeck: Deck | null = deckStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -402,13 +400,13 @@ export class DeckEventsHandler {
         currentDeck.data.name = title;
 
         const updatedDeck: Deck = await this.deckService.update(currentDeck);
-        store.state.deck = {...updatedDeck};
+        deckStore.state.deck = {...updatedDeck};
 
         this.busyService.deckBusy(false);
 
         resolve();
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve();
       }
@@ -424,7 +422,7 @@ export class DeckEventsHandler {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          this.errorService.error('Slide is not defined');
+          errorStore.state.error = 'Slide is not defined';
           resolve();
           return;
         }
@@ -450,15 +448,15 @@ export class DeckEventsHandler {
           slideUpdate.data.attributes = attributes;
         }
 
-        if (store.state.deck) {
-          await this.slideService.update(store.state.deck.id, slideUpdate);
+        if (deckStore.state.deck) {
+          await this.slideService.update(deckStore.state.deck.id, slideUpdate);
         }
 
         this.busyService.deckBusy(false);
 
         resolve();
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve();
       }
@@ -474,14 +472,14 @@ export class DeckEventsHandler {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          this.errorService.error('Slide is not defined');
+          errorStore.state.error = 'Slide is not defined';
           resolve();
           return;
         }
 
         const slideId: string = slide.getAttribute('slide_id');
 
-        const currentDeck: Deck | null = store.state.deck;
+        const currentDeck: Deck | null = deckStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
           const slide: Slide = await this.slideService.get(currentDeck.id, slideId);
@@ -498,7 +496,7 @@ export class DeckEventsHandler {
               currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
 
               const updatedDeck: Deck = await this.deckService.update(currentDeck);
-              store.state.deck = {...updatedDeck};
+              deckStore.state.deck = {...updatedDeck};
             }
           }
         }
@@ -509,7 +507,7 @@ export class DeckEventsHandler {
 
         resolve();
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve();
       }
@@ -887,13 +885,13 @@ export class DeckEventsHandler {
           return;
         }
 
-        const currentDeck: Deck | null = store.state.deck;
+        const currentDeck: Deck | null = deckStore.state.deck;
 
         if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
           currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
           const updatedDeck: Deck = await this.deckService.update(currentDeck);
-          store.state.deck = {...updatedDeck};
+          deckStore.state.deck = {...updatedDeck};
         }
 
         resolve();

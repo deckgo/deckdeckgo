@@ -4,9 +4,9 @@ import 'firebase/firestore';
 import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {Deck, DeckData} from '../../../models/data/deck';
+import store from '../../../stores/error.store';
 
-import {ErrorService} from '../../core/error/error.service';
+import {Deck, DeckData} from '../../../models/data/deck';
 
 export class FeedService {
   private static instance: FeedService;
@@ -14,18 +14,11 @@ export class FeedService {
   private decksSubject: ReplaySubject<Deck[]> = new ReplaySubject(1);
   private lastPageReached: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  private errorService: ErrorService;
-
   private nextQueryAfter: firebase.firestore.DocumentSnapshot;
 
   private queryLimit: number = 20;
 
   private decks: Deck[] = [];
-
-  private constructor() {
-    // Private constructor, singleton
-    this.errorService = ErrorService.getInstance();
-  }
 
   static getInstance() {
     if (!FeedService.instance) {
@@ -107,7 +100,7 @@ export class FeedService {
 
         resolve();
       } catch (err) {
-        this.errorService.error("Something weird happened, we couldn't fetch the decks.");
+        store.state.error = "Something weird happened, we couldn't fetch the decks.";
         resolve();
       }
     });

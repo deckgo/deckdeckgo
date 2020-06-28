@@ -2,11 +2,12 @@ import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
+import store from '../../../../stores/error.store';
+
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
-import {ErrorService} from '../../../../services/core/error/error.service';
 
 @Component({
-  tag: 'app-go-online'
+  tag: 'app-go-online',
 })
 export class AppGoOnline {
   @State()
@@ -25,13 +26,11 @@ export class AppGoOnline {
   private progress: number = 0;
 
   private offlineService: OfflineService;
-  private errorService: ErrorService;
 
   private progressSubscription: Subscription;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
-    this.errorService = ErrorService.getInstance();
   }
 
   componentWillLoad() {
@@ -60,7 +59,7 @@ export class AppGoOnline {
     } catch (err) {
       this.goingOnline = false;
       this.inProgress.emit(false);
-      this.errorService.error('Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!');
+      store.state.error = 'Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!';
     }
   }
 
@@ -95,7 +94,7 @@ export class AppGoOnline {
       <p>
         Please note that the upload of this deck will <strong>replace</strong> its previous online version.
       </p>,
-      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>
+      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>,
     ];
   }
 

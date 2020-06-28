@@ -1,19 +1,18 @@
 import {JSX} from '@stencil/core';
 
 import store from '../../stores/deck.store';
+import errorStore from '../../stores/error.store';
 
 import {Slide} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
-import {ErrorService} from '../../services/core/error/error.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
 import {DeckService} from '../../services/data/deck/deck.service';
 import {SlideService} from '../../services/data/slide/slide.service';
 
 export class EditorHelper {
-  private errorService: ErrorService;
   private busyService: BusyService;
 
   private slideService: SlideService;
@@ -22,7 +21,6 @@ export class EditorHelper {
   constructor() {
     this.slideService = SlideService.getInstance();
 
-    this.errorService = ErrorService.getInstance();
     this.busyService = BusyService.getInstance();
 
     this.deckService = DeckService.getInstance();
@@ -31,7 +29,7 @@ export class EditorHelper {
   loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
     return new Promise<any[]>(async (resolve) => {
       if (!deckId) {
-        this.errorService.error('Deck is not defined');
+        errorStore.state.error = 'Deck is not defined';
         resolve(null);
         return;
       }
@@ -42,7 +40,7 @@ export class EditorHelper {
         const deck: Deck = await this.deckService.get(deckId);
 
         if (!deck || !deck.data) {
-          this.errorService.error('No deck could be fetched');
+          errorStore.state.error = 'No deck could be fetched';
           resolve(null);
           return;
         }
@@ -73,7 +71,7 @@ export class EditorHelper {
 
         resolve(parsedSlides);
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve(null);
       }
@@ -88,7 +86,7 @@ export class EditorHelper {
 
         resolve(element);
       } catch (err) {
-        this.errorService.error('Something went wrong while loading and parsing a slide');
+        errorStore.state.error = 'Something went wrong while loading and parsing a slide';
         resolve(null);
       }
     });
@@ -103,7 +101,7 @@ export class EditorHelper {
         }
 
         if (!slide.getAttribute('slide_id')) {
-          this.errorService.error('Slide is not defined');
+          errorStore.state.error = 'Slide is not defined';
           resolve(null);
           return;
         }
@@ -121,7 +119,7 @@ export class EditorHelper {
 
         resolve(element);
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.busyService.deckBusy(false);
         resolve(null);
       }

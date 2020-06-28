@@ -2,18 +2,12 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 
 import {get, set} from 'idb-keyval';
 
-import {ErrorService} from '../../core/error/error.service';
+import store from '../../../stores/error.store';
+
 import {EnvironmentTenorConfig} from '../../core/environment/environment-config';
 
 export class GifService {
   private static instance: GifService;
-
-  private errorService: ErrorService;
-
-  private constructor() {
-    // Private constructor, singleton
-    this.errorService = ErrorService.getInstance();
-  }
 
   static getInstance() {
     if (!GifService.instance) {
@@ -36,13 +30,13 @@ export class GifService {
         const response: TenorCategoryResponse = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          this.errorService.error('Tenor trending could not be fetched');
+          store.state.error = 'Tenor trending could not be fetched';
           return;
         }
 
         resolve(response.tags);
       } catch (err) {
-        this.errorService.error(err.message);
+        store.state.error = err.message;
         resolve();
       }
     });
@@ -73,14 +67,14 @@ export class GifService {
         const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          this.errorService.error('Tenor trending could not be fetched');
+          store.state.error = 'Tenor trending could not be fetched';
           resolve();
           return;
         }
 
         resolve(response);
       } catch (err) {
-        this.errorService.error(err.message);
+        store.state.error = err.message;
         resolve();
       }
     });
@@ -101,7 +95,7 @@ export class GifService {
         const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          this.errorService.error('Tenor trending could not be fetched');
+          store.state.error = 'Tenor trending could not be fetched';
           resolve();
           return;
         }

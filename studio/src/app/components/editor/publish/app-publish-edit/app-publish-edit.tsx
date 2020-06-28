@@ -3,13 +3,13 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
-import store from '../../../../stores/deck.store';
+import deckStore from '../../../../stores/deck.store';
+import errorStore from '../../../../stores/error.store';
 
 import {Deck} from '../../../../models/data/deck';
 
 import {Resources} from '../../../../utils/core/resources';
 
-import {ErrorService} from '../../../../services/core/error/error.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
@@ -49,8 +49,6 @@ export class AppPublishEdit {
 
   private deckService: DeckService;
 
-  private errorService: ErrorService;
-
   private updateDeckSubscription: Subscription;
   private updateDeckSubject: Subject<void> = new Subject();
 
@@ -70,8 +68,6 @@ export class AppPublishEdit {
 
   constructor() {
     this.deckService = DeckService.getInstance();
-
-    this.errorService = ErrorService.getInstance();
 
     this.apiUserService = ApiUserFactoryService.getInstance();
 
@@ -110,16 +106,16 @@ export class AppPublishEdit {
   }
 
   private async init() {
-    if (!store.state.deck || !store.state.deck.data) {
+    if (!deckStore.state.deck || !deckStore.state.deck.data) {
       return;
     }
 
-    this.caption = store.state.deck.data.name;
+    this.caption = deckStore.state.deck.data.name;
     this.description =
-      store.state.deck.data.meta && store.state.deck.data.meta.description
-        ? (store.state.deck.data.meta.description as string)
+      deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.description
+        ? (deckStore.state.deck.data.meta.description as string)
         : await this.getFirstSlideContent();
-    this.tags = store.state.deck.data.meta && store.state.deck.data.meta.tags ? (store.state.deck.data.meta.tags as string[]) : [];
+    this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
   }
 
   componentDidUnload() {
@@ -165,21 +161,21 @@ export class AppPublishEdit {
       this.disablePublish = true;
 
       try {
-        if (!store.state.deck || !store.state.deck.data || !store.state.deck.id) {
+        if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.id) {
           this.disablePublish = false;
           resolve();
           return;
         }
 
-        store.state.deck.data.name = this.caption;
+        deckStore.state.deck.data.name = this.caption;
 
-        const updatedDeck: Deck = await this.deckService.update(store.state.deck);
-        store.state.deck = {...updatedDeck};
+        const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+        deckStore.state.deck = {...updatedDeck};
 
         this.disablePublish = false;
       } catch (err) {
         this.disablePublish = false;
-        this.errorService.error(err);
+        errorStore.state.error = err;
       }
 
       resolve();
@@ -209,7 +205,7 @@ export class AppPublishEdit {
         resolve();
       } catch (err) {
         this.publishing = false;
-        this.errorService.error(err);
+        errorStore.state.error = err;
         resolve();
       }
     });

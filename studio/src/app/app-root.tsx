@@ -2,9 +2,10 @@ import {Build, Component, Element, h, Listen, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
+import store from './stores/error.store';
+
 import {Subscription} from 'rxjs';
 
-import {ErrorService} from './services/core/error/error.service';
 import {AuthService} from './services/auth/auth.service';
 
 import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
@@ -19,9 +20,6 @@ import {OfflineService} from './services/editor/offline/offline.service';
 export class AppRoot {
   @Element() el: HTMLElement;
 
-  private errorSubscription: Subscription;
-  private errorService: ErrorService;
-
   private authService: AuthService;
 
   private navSubscription: Subscription;
@@ -35,7 +33,6 @@ export class AppRoot {
   private loading: boolean = true;
 
   constructor() {
-    this.errorService = ErrorService.getInstance();
     this.authService = AuthService.getInstance();
     this.navService = NavService.getInstance();
     this.themeService = ThemeService.getInstance();
@@ -53,8 +50,10 @@ export class AppRoot {
   async componentDidLoad() {
     this.loading = false;
 
-    this.errorSubscription = this.errorService.watch().subscribe(async (error: string) => {
-      await this.toastError(error);
+    store.onChange('error', (error: string | undefined) => {
+      if (error) {
+        this.toastError(error);
+      }
     });
 
     this.navSubscription = this.navService.watch().subscribe(async (params: NavParams) => {
@@ -63,10 +62,6 @@ export class AppRoot {
   }
 
   async componentDidUnload() {
-    if (this.errorSubscription) {
-      this.errorSubscription.unsubscribe();
-    }
-
     if (this.navSubscription) {
       this.navSubscription.unsubscribe();
     }

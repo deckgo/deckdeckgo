@@ -3,6 +3,8 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
+import store from '../../stores/error.store';
+
 import {take} from 'rxjs/operators';
 
 import {AuthUser} from '../../models/auth/auth.user';
@@ -10,16 +12,13 @@ import {AuthUser} from '../../models/auth/auth.user';
 import {Resources} from '../../utils/core/resources';
 
 import {AuthService} from '../auth/auth.service';
-import {ErrorService} from '../core/error/error.service';
 
 export class StorageOnlineService {
   private static instance: StorageOnlineService;
 
   private authService: AuthService;
-  private errorService: ErrorService;
 
   private constructor() {
-    this.errorService = ErrorService.getInstance();
     this.authService = AuthService.getInstance();
   }
 
@@ -38,19 +37,19 @@ export class StorageOnlineService {
           .pipe(take(1))
           .subscribe(async (authUser: AuthUser) => {
             if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
-              this.errorService.error('Not logged in.');
+              store.state.error = 'Not logged in.';
               resolve();
               return;
             }
 
             if (!data || !data.name) {
-              this.errorService.error('File not valid.');
+              store.state.error = 'File not valid.';
               resolve();
               return;
             }
 
             if (data.size > maxSize) {
-              this.errorService.error(`File is too big (max. ${maxSize / 1048576} Mb)`);
+              store.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
               resolve();
               return;
             }
@@ -66,7 +65,7 @@ export class StorageOnlineService {
             });
           });
       } catch (err) {
-        this.errorService.error(err.message);
+        store.state.error = err.message;
         resolve();
       }
     });
@@ -80,7 +79,7 @@ export class StorageOnlineService {
           .pipe(take(1))
           .subscribe(async (authUser: AuthUser) => {
             if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
-              this.errorService.error('Not logged in.');
+              store.state.error = 'Not logged in.';
               resolve(null);
               return;
             }

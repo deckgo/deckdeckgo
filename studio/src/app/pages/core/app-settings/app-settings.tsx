@@ -7,6 +7,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 
 import state from '../../../stores/theme.store';
+import errorStore from '../../../stores/error.store';
 
 import {ApiUser} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
@@ -17,7 +18,6 @@ import {UserUtils} from '../../../utils/core/user-utils';
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {StorageService} from '../../../services/storage/storage.service';
@@ -59,8 +59,6 @@ export class AppHome {
 
   private navService: NavService;
 
-  private errorService: ErrorService;
-
   private imageHistoryService: ImageHistoryService;
 
   private profilePicture: File;
@@ -91,7 +89,6 @@ export class AppHome {
     this.authService = AuthService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.navService = NavService.getInstance();
-    this.errorService = ErrorService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = UserService.getInstance();
     this.storageService = StorageService.getInstance();
@@ -245,7 +242,7 @@ export class AppHome {
 
         this.saving = false;
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.saving = false;
       }
 
@@ -369,7 +366,7 @@ export class AppHome {
 
         resolve();
       } catch (err) {
-        this.errorService.error("Your user couldn't be deleted, contact us per email");
+        errorStore.state.error = "Your user couldn't be deleted, contact us per email";
       }
     });
   }

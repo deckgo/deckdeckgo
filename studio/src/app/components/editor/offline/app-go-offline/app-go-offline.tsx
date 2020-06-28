@@ -1,12 +1,13 @@
 import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
+import store from '../../../../stores/error.store';
+
 import {Subscription} from 'rxjs';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
-import {ErrorService} from '../../../../services/core/error/error.service';
 
 @Component({
-  tag: 'app-go-offline'
+  tag: 'app-go-offline',
 })
 export class AppGoOffline {
   @State()
@@ -22,13 +23,11 @@ export class AppGoOffline {
   private progress: number = 0;
 
   private offlineService: OfflineService;
-  private errorService: ErrorService;
 
   private progressSubscription: Subscription;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
-    this.errorService = ErrorService.getInstance();
   }
 
   componentWillLoad() {
@@ -54,7 +53,7 @@ export class AppGoOffline {
     } catch (err) {
       this.goingOffline = false;
       this.inProgress.emit(false);
-      this.errorService.error('Apologies, something went wrong and app was unable to go offline.');
+      store.state.error = 'Apologies, something went wrong and app was unable to go offline.';
     }
   }
 
