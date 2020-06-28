@@ -27,12 +27,9 @@ export class AppRoot {
   private navSubscription: Subscription;
   private navService: NavService;
 
-  private themeSubscription: Subscription;
   private themeService: ThemeService;
 
   private offlineService: OfflineService;
-
-  private domBodyClassList: DOMTokenList = document.body.classList;
 
   @State()
   private loading: boolean = true;
@@ -63,10 +60,6 @@ export class AppRoot {
     this.navSubscription = this.navService.watch().subscribe(async (params: NavParams) => {
       await this.navigate(params);
     });
-
-    this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
-      this.updateDarkModePreferences(dark);
-    });
   }
 
   async componentDidUnload() {
@@ -76,10 +69,6 @@ export class AppRoot {
 
     if (this.navSubscription) {
       this.navSubscription.unsubscribe();
-    }
-
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -98,10 +87,6 @@ export class AppRoot {
     });
 
     await popover.present();
-  }
-
-  private updateDarkModePreferences(dark: boolean) {
-    dark ? this.domBodyClassList.add('dark') : this.domBodyClassList.remove('dark');
   }
 
   private async navigate(params: NavParams) {

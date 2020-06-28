@@ -4,6 +4,8 @@ import {popoverController} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
+import state from '../../../stores/theme.store';
+
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
@@ -12,12 +14,11 @@ import {Utils} from '../../../utils/core/utils';
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {UserService} from '../../../services/data/user/user.service';
-import {ThemeService} from '../../../services/theme/theme.service';
 
 @Component({
   tag: 'app-navigation-actions',
   styleUrl: 'app-navigation-actions.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppNavigationActions {
   @Prop() signIn: boolean = true;
@@ -32,9 +33,6 @@ export class AppNavigationActions {
   private userService: UserService;
   private userSubscription: Subscription;
 
-  private themeService: ThemeService;
-  private themeSubscription: Subscription;
-
   @State()
   private authUser: AuthUser;
 
@@ -44,16 +42,12 @@ export class AppNavigationActions {
   @State()
   private photoUrlLoaded: boolean = false;
 
-  @State()
-  private darkMode: boolean;
-
   @Event() private actionPublish: EventEmitter<void>;
 
   constructor() {
     this.authService = AuthService.getInstance();
     this.navService = NavService.getInstance();
     this.userService = UserService.getInstance();
-    this.themeService = ThemeService.getInstance();
   }
 
   componentWillLoad() {
@@ -65,10 +59,6 @@ export class AppNavigationActions {
       this.photoUrl = user && user.data ? user.data.photo_url : undefined;
       this.photoUrlLoaded = true;
     });
-
-    this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
-      this.darkMode = dark;
-    });
   }
 
   componentDidUnload() {
@@ -79,17 +69,13 @@ export class AppNavigationActions {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
-
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
   }
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-user-menu',
       event: $event,
-      mode: 'ios'
+      mode: 'ios',
     });
 
     await popover.present();
@@ -98,7 +84,7 @@ export class AppNavigationActions {
   private async navigateSignIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
@@ -153,7 +139,13 @@ export class AppNavigationActions {
   private renderPresentationButton() {
     if (this.presentation) {
       return (
-        <ion-button class="presentation ion-margin-end" shape="round" href="/editor" routerDirection="root" mode="md" color={this.darkMode ? 'light' : 'dark'}>
+        <ion-button
+          class="presentation ion-margin-end"
+          shape="round"
+          href="/editor"
+          routerDirection="root"
+          mode="md"
+          color={state.darkTheme ? 'light' : 'dark'}>
           <ion-label>Write a presentation</ion-label>
         </ion-button>
       );
@@ -165,7 +157,7 @@ export class AppNavigationActions {
   private renderPublishButton() {
     if (this.publish) {
       return (
-        <ion-button class="publish ion-margin-end" shape="round" onClick={() => this.actionPublish.emit()} mode="md" color={this.darkMode ? 'light' : 'dark'}>
+        <ion-button class="publish ion-margin-end" shape="round" onClick={() => this.actionPublish.emit()} mode="md" color={state.darkTheme ? 'light' : 'dark'}>
           <ion-label>Ready to share?</ion-label>
         </ion-button>
       );

@@ -6,6 +6,8 @@ import {filter, take} from 'rxjs/operators';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import state from '../../../stores/theme.store';
+
 import {ApiUser} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
@@ -24,7 +26,7 @@ import {ThemeService} from '../../../services/theme/theme.service';
 
 @Component({
   tag: 'app-settings',
-  styleUrl: 'app-settings.scss'
+  styleUrl: 'app-settings.scss',
 })
 export class AppHome {
   @Element() el: HTMLElement;
@@ -85,9 +87,6 @@ export class AppHome {
   @State()
   private custom: string = undefined;
 
-  @State()
-  private darkTheme: boolean;
-
   constructor() {
     this.authService = AuthService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
@@ -133,13 +132,6 @@ export class AppHome {
 
         await this.initSocial();
       });
-
-    this.themeService
-      .watch()
-      .pipe(take(1))
-      .subscribe((dark: boolean) => {
-        this.darkTheme = dark;
-      });
   }
 
   private initSocial(): Promise<void> {
@@ -161,7 +153,7 @@ export class AppHome {
   private async signIn() {
     this.navService.navigate({
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
+      direction: NavDirection.FORWARD,
     });
   }
 
@@ -332,8 +324,8 @@ export class AppHome {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser.username
-      }
+        username: this.apiUser.username,
+      },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -370,7 +362,7 @@ export class AppHome {
 
         this.navService.navigate({
           url: '/',
-          direction: NavDirection.ROOT
+          direction: NavDirection.ROOT,
         });
 
         await loading.dismiss();
@@ -407,7 +399,7 @@ export class AppHome {
           {this.renderDarkLightToggle()}
           {this.renderGuardedContent()}
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 
@@ -426,7 +418,7 @@ export class AppHome {
           Sign in
         </button>
         to access your profile and settings.
-      </p>
+      </p>,
     ];
   }
 
@@ -448,7 +440,7 @@ export class AppHome {
 
         {this.renderSubmitForm()}
       </form>,
-      <p class="info">Note that your update has no effect on the presentations you would have already published.</p>
+      <p class="info">Note that your update has no effect on the presentations you would have already published.</p>,
     ];
   }
 
@@ -468,7 +460,7 @@ export class AppHome {
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
           onIonChange={() => this.validateNameInput()}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -497,13 +489,12 @@ export class AppHome {
           checked={this.user && this.user.data ? this.user.data.newsletter : false}
           disabled={this.saving}
           onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
-      </div>
+      </div>,
     ];
   }
 
   async toggleTheme() {
-    this.darkTheme = !this.darkTheme;
-    await this.themeService.switch(this.darkTheme);
+    await this.themeService.switch(!state.darkTheme);
   }
 
   private renderDarkLightToggle() {
@@ -512,11 +503,11 @@ export class AppHome {
       <ion-list class="inputs-list dark-light-list">
         <ion-item>
           <ion-label>
-            {this.darkTheme ? 'Dark' : 'Light'} theme {this.darkTheme ? '🌑' : '☀️'}
+            {state.darkTheme ? 'Dark' : 'Light'} theme {state.darkTheme ? '🌑' : '☀️'}
           </ion-label>
-          <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
+          <ion-toggle slot="end" checked={state.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
         </ion-item>
-      </ion-list>
+      </ion-list>,
     ];
   }
 
@@ -536,7 +527,7 @@ export class AppHome {
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
           onIonChange={() => this.validateUsernameInput()}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -559,7 +550,7 @@ export class AppHome {
         onClick={() => this.presentConfirmDelete()}
         disabled={this.saving || !this.apiUser || !this.authUser}>
         <ion-label>Delete my user</ion-label>
-      </ion-button>
+      </ion-button>,
     ];
   }
 
@@ -639,7 +630,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -661,7 +652,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -683,7 +674,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -705,7 +696,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -727,7 +718,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -749,7 +740,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 }
