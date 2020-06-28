@@ -3,11 +3,12 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
+import store from '../../../../stores/deck.store';
+
 import {Deck} from '../../../../models/data/deck';
 
 import {Resources} from '../../../../utils/core/resources';
 
-import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {ApiUser} from '../../../../models/api/api.user';
@@ -22,7 +23,7 @@ interface CustomInputEvent extends KeyboardEvent {
 
 @Component({
   tag: 'app-publish-edit',
-  styleUrl: 'app-publish-edit.scss'
+  styleUrl: 'app-publish-edit.scss',
 })
 export class AppPublishEdit {
   @State()
@@ -46,7 +47,6 @@ export class AppPublishEdit {
   @State()
   private tags: string[] = [];
 
-  private deckEditorService: DeckEditorService;
   private deckService: DeckService;
 
   private errorService: ErrorService;
@@ -69,7 +69,6 @@ export class AppPublishEdit {
   private progressSubscription: Subscription;
 
   constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
     this.deckService = DeckService.getInstance();
 
     this.errorService = ErrorService.getInstance();
@@ -82,12 +81,7 @@ export class AppPublishEdit {
   }
 
   async componentWillLoad() {
-    this.deckEditorService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (deck: Deck) => {
-        await this.init(deck);
-      });
+    await this.init();
 
     this.progressSubscription = this.publishService.watchProgress().subscribe((progress: number) => {
       this.progress = progress;
@@ -115,19 +109,17 @@ export class AppPublishEdit {
     this.validateCaptionInput();
   }
 
-  private init(deck: Deck): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!deck || !deck.data) {
-        resolve();
-        return;
-      }
+  private async init() {
+    if (!store.state.deck || !store.state.deck.data) {
+      return;
+    }
 
-      this.caption = deck.data.name;
-      this.description = deck.data.meta && deck.data.meta.description ? (deck.data.meta.description as string) : await this.getFirstSlideContent();
-      this.tags = deck.data.meta && deck.data.meta.tags ? (deck.data.meta.tags as string[]) : [];
-
-      resolve();
-    });
+    this.caption = store.state.deck.data.name;
+    this.description =
+      store.state.deck.data.meta && store.state.deck.data.meta.description
+        ? (store.state.deck.data.meta.description as string)
+        : await this.getFirstSlideContent();
+    this.tags = store.state.deck.data.meta && store.state.deck.data.meta.tags ? (store.state.deck.data.meta.tags as string[]) : [];
   }
 
   componentDidUnload() {
@@ -173,23 +165,18 @@ export class AppPublishEdit {
       this.disablePublish = true;
 
       try {
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            if (!deck || !deck.data || !deck.id) {
-              this.disablePublish = false;
-              resolve();
-              return;
-            }
+        if (!store.state.deck || !store.state.deck.data || !store.state.deck.id) {
+          this.disablePublish = false;
+          resolve();
+          return;
+        }
 
-            deck.data.name = this.caption;
+        store.state.deck.data.name = this.caption;
 
-            const updatedDeck: Deck = await this.deckService.update(deck);
-            this.deckEditorService.next(updatedDeck);
+        const updatedDeck: Deck = await this.deckService.update(store.state.deck);
+        store.state.deck = {...updatedDeck};
 
-            this.disablePublish = false;
-          });
+        this.disablePublish = false;
       } catch (err) {
         this.disablePublish = false;
         this.errorService.error(err);

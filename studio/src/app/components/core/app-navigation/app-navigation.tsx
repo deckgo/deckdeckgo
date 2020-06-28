@@ -2,15 +2,14 @@ import {Component, Prop, h, State} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {Deck} from '../../../models/data/deck';
+import store from '../../../stores/deck.store';
 
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {OfflineService} from '../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-navigation',
   styleUrl: 'app-navigation.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppNavigation {
   @Prop() menuToggle: boolean = true;
@@ -20,38 +19,23 @@ export class AppNavigation {
   @Prop() presentation: boolean = false;
   @Prop() publish: boolean = false;
 
-  private subscription: Subscription;
-  private deckEditorService: DeckEditorService;
-
   private offlineSubscription: Subscription;
   private offlineService: OfflineService;
-
-  @State()
-  private deckName: string = null;
 
   @State()
   private offline: OfflineDeck = undefined;
 
   constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
     this.offlineService = OfflineService.getInstance();
   }
 
   componentWillLoad() {
-    this.subscription = this.deckEditorService.watch().subscribe((deck: Deck) => {
-      this.deckName = deck && deck.data && deck.data.name && deck.data.name !== '' ? deck.data.name : null;
-    });
-
     this.offlineSubscription = this.offlineService.watchOffline().subscribe((offline: OfflineDeck | undefined) => {
       this.offline = offline;
     });
   }
 
   componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
     if (this.offlineSubscription) {
       this.offlineSubscription.unsubscribe();
     }
@@ -76,7 +60,7 @@ export class AppNavigation {
       return undefined;
     }
 
-    const titleClass = this.deckName && this.deckName !== '' ? 'title deck-name-visible' : 'title';
+    const titleClass = store.state.name && store.state.name !== '' ? 'title deck-name-visible' : 'title';
 
     return (
       <div class={titleClass}>
@@ -84,7 +68,7 @@ export class AppNavigation {
           {this.renderLogo()}
         </ion-router-link>
 
-        <ion-label class="deck-name">{this.deckName}</ion-label>
+        <ion-label class="deck-name">{store.state.name}</ion-label>
       </div>
     );
   }

@@ -5,6 +5,8 @@ import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ioni
 import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
+import store from '../../../stores/deck.store';
+
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
@@ -13,7 +15,6 @@ import {generateRandomStyleColors} from '../../../utils/editor/random-palette';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
-import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
@@ -34,7 +35,6 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {BusyService} from '../../../services/editor/busy/busy.service';
 
 import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
@@ -82,8 +82,6 @@ export class AppEditor {
   private anonymousService: AnonymousService;
   private navService: NavService;
 
-  private deckEditorService: DeckEditorService;
-
   private busySubscription: Subscription;
   private busyService: BusyService;
 
@@ -110,7 +108,6 @@ export class AppEditor {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
     this.navService = NavService.getInstance();
-    this.deckEditorService = DeckEditorService.getInstance();
     this.busyService = BusyService.getInstance();
     this.offlineService = OfflineService.getInstance();
     this.fontsService = FontsService.getInstance();
@@ -193,7 +190,7 @@ export class AppEditor {
       this.busySubscription.unsubscribe();
     }
 
-    this.deckEditorService.next(null);
+    store.reset();
   }
 
   async componentDidLoad() {
@@ -276,30 +273,21 @@ export class AppEditor {
     this.style = await generateRandomStyleColors();
   }
 
-  private initDeckStyle(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.deckEditorService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (deck: Deck) => {
-          if (deck && deck.data && deck.data.attributes && deck.data.attributes.style) {
-            this.style = await convertStyle(deck.data.attributes.style);
-          } else {
-            this.style = undefined;
-          }
+  private async initDeckStyle() {
+    if (store.state.deck && store.state.deck.data && store.state.deck.data.attributes && store.state.deck.data.attributes.style) {
+      this.style = await convertStyle(store.state.deck.data.attributes.style);
+    } else {
+      this.style = undefined;
+    }
 
-          if (deck && deck.data && deck.data.attributes && deck.data.attributes.transition) {
-            this.transition = deck.data.attributes.transition;
-          }
+    if (store.state.deck && store.state.deck.data && store.state.deck.data.attributes && store.state.deck.data.attributes.transition) {
+      this.transition = store.state.deck.data.attributes.transition;
+    }
 
-          this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
+    this.background = await ParseBackgroundUtils.convertBackground(store.state.deck.data.background, true);
 
-          const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-          await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
-
-          resolve();
-        });
-    });
+    const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
+    await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
   }
 
   private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {

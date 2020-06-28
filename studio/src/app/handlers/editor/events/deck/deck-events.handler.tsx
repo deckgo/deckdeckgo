@@ -3,6 +3,8 @@ import {ItemReorderEventDetail} from '@ionic/core';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, take} from 'rxjs/operators';
 
+import store from '../../../../stores/deck.store';
+
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
 import * as firebase from 'firebase/app';
@@ -19,7 +21,6 @@ import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 import {ErrorService} from '../../../../services/core/error/error.service';
 import {BusyService} from '../../../../services/editor/busy/busy.service';
-import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
 import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
@@ -35,8 +36,6 @@ export class DeckEventsHandler {
   private updateSlideSubscription: Subscription;
   private updateSlideSubject: Subject<HTMLElement> = new Subject();
 
-  private deckEditorService: DeckEditorService;
-
   private updateDeckTitleSubscription: Subscription;
   private updateDeckTitleSubject: Subject<string> = new Subject();
 
@@ -48,8 +47,6 @@ export class DeckEventsHandler {
     this.busyService = BusyService.getInstance();
 
     this.authService = AuthService.getInstance();
-
-    this.deckEditorService = DeckEditorService.getInstance();
 
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
@@ -211,24 +208,20 @@ export class DeckEventsHandler {
 
         this.busyService.deckBusy(true);
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            if (!deck) {
-              deck = await this.createDeck();
-            }
+        if (!store.state.deck) {
+          const persistedDeck: Deck = await this.createDeck();
+          store.state.deck = {...persistedDeck};
+        }
 
-            const persistedSlide: Slide = await this.postSlide(deck, slide);
+        const persistedSlide: Slide = await this.postSlide(store.state.deck, slide);
 
-            // Because of the offline mode, is kind of handy to handle the list on the client side too.
-            // But maybe in the future it is something which could be moved to the cloud.
-            await this.updateDeckSlideList(deck, persistedSlide);
+        // Because of the offline mode, is kind of handy to handle the list on the client side too.
+        // But maybe in the future it is something which could be moved to the cloud.
+        await this.updateDeckSlideList(store.state.deck, persistedSlide);
 
-            this.busyService.deckBusy(false);
+        this.busyService.deckBusy(false);
 
-            resolve();
-          });
+        resolve();
       } catch (err) {
         this.errorService.error(err);
         this.busyService.deckBusy(false);
@@ -289,7 +282,7 @@ export class DeckEventsHandler {
             }
 
             const persistedDeck: Deck = await this.deckService.create(deck);
-            this.deckEditorService.next(persistedDeck);
+            store.state.deck = {...persistedDeck};
 
             await this.updateNavigation(persistedDeck);
 
@@ -321,7 +314,7 @@ export class DeckEventsHandler {
         deck.data.slides.push(slide.id);
 
         const updatedDeck: Deck = await this.deckService.update(deck);
-        this.deckEditorService.next(updatedDeck);
+        store.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
@@ -353,31 +346,28 @@ export class DeckEventsHandler {
 
         this.busyService.deckBusy(true);
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (currentDeck: Deck) => {
-            if (!currentDeck || !currentDeck.data) {
-              resolve();
-              return;
-            }
+        const currentDeck: Deck | null = store.state.deck;
 
-            const attributes: DeckAttributes = await this.getDeckAttributes(deck, true);
-            // @ts-ignore
-            currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
+        if (!currentDeck || !currentDeck.data) {
+          resolve();
+          return;
+        }
 
-            const background: string = await this.getDeckBackground(deck);
-            // @ts-ignore
-            currentDeck.data.background = background && background !== undefined && background !== '' ? background : firebase.firestore.FieldValue.delete();
+        const attributes: DeckAttributes = await this.getDeckAttributes(deck, true);
+        // @ts-ignore
+        currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
 
-            const updatedDeck: Deck = await this.deckService.update(currentDeck);
+        const background: string = await this.getDeckBackground(deck);
+        // @ts-ignore
+        currentDeck.data.background = background && background !== undefined && background !== '' ? background : firebase.firestore.FieldValue.delete();
 
-            this.deckEditorService.next(updatedDeck);
+        const updatedDeck: Deck = await this.deckService.update(currentDeck);
 
-            this.busyService.deckBusy(false);
+        store.state.deck = {...updatedDeck};
 
-            resolve();
-          });
+        this.busyService.deckBusy(false);
+
+        resolve();
       } catch (err) {
         this.errorService.error(err);
         this.busyService.deckBusy(false);
@@ -396,31 +386,27 @@ export class DeckEventsHandler {
 
         this.busyService.deckBusy(true);
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (currentDeck: Deck) => {
-            if (!currentDeck || !currentDeck.data) {
-              resolve();
-              return;
-            }
+        const currentDeck: Deck | null = store.state.deck;
 
-            // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
+        if (!currentDeck || !currentDeck.data) {
+          resolve();
+          return;
+        }
 
-            if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
-              title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
-            }
+        // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
 
-            currentDeck.data.name = title;
+        if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
+          title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+        }
 
-            const updatedDeck: Deck = await this.deckService.update(currentDeck);
+        currentDeck.data.name = title;
 
-            this.deckEditorService.next(updatedDeck);
+        const updatedDeck: Deck = await this.deckService.update(currentDeck);
+        store.state.deck = {...updatedDeck};
 
-            this.busyService.deckBusy(false);
+        this.busyService.deckBusy(false);
 
-            resolve();
-          });
+        resolve();
       } catch (err) {
         this.errorService.error(err);
         this.busyService.deckBusy(false);
@@ -464,18 +450,13 @@ export class DeckEventsHandler {
           slideUpdate.data.attributes = attributes;
         }
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            if (deck) {
-              await this.slideService.update(deck.id, slideUpdate);
-            }
+        if (store.state.deck) {
+          await this.slideService.update(store.state.deck.id, slideUpdate);
+        }
 
-            this.busyService.deckBusy(false);
+        this.busyService.deckBusy(false);
 
-            resolve();
-          });
+        resolve();
       } catch (err) {
         this.errorService.error(err);
         this.busyService.deckBusy(false);
@@ -500,36 +481,33 @@ export class DeckEventsHandler {
 
         const slideId: string = slide.getAttribute('slide_id');
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            if (deck && deck.data) {
-              const slide: Slide = await this.slideService.get(deck.id, slideId);
+        const currentDeck: Deck | null = store.state.deck;
 
-              if (slide && slide.data) {
-                // Because there is an offline mode, it is handy currently to proceed the following on the client side.
-                // But at some point, it might be interesting to move the logic to a cloud function.
+        if (currentDeck && currentDeck.data) {
+          const slide: Slide = await this.slideService.get(currentDeck.id, slideId);
 
-                // 1. Delete the slide in Firestore or locally
-                await this.slideService.delete(deck.id, slideId);
+          if (slide && slide.data) {
+            // Because there is an offline mode, it is handy currently to proceed the following on the client side.
+            // But at some point, it might be interesting to move the logic to a cloud function.
 
-                // 2. Update list of slide in the deck (in Firestore)
-                if (deck.data.slides && deck.data.slides.indexOf(slideId) > -1) {
-                  deck.data.slides.splice(deck.data.slides.indexOf(slideId), 1);
+            // 1. Delete the slide in Firestore or locally
+            await this.slideService.delete(currentDeck.id, slideId);
 
-                  const updatedDeck: Deck = await this.deckService.update(deck);
-                  this.deckEditorService.next(updatedDeck);
-                }
-              }
+            // 2. Update list of slide in the deck (in Firestore)
+            if (currentDeck.data.slides && currentDeck.data.slides.indexOf(slideId) > -1) {
+              currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
+
+              const updatedDeck: Deck = await this.deckService.update(currentDeck);
+              store.state.deck = {...updatedDeck};
             }
+          }
+        }
 
-            await this.deleteSlideElement();
+        await this.deleteSlideElement();
 
-            this.busyService.deckBusy(false);
+        this.busyService.deckBusy(false);
 
-            resolve();
-          });
+        resolve();
       } catch (err) {
         this.errorService.error(err);
         this.busyService.deckBusy(false);
@@ -909,19 +887,16 @@ export class DeckEventsHandler {
           return;
         }
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            if (deck && deck.data && deck.data.slides && detail.to < deck.data.slides.length) {
-              deck.data.slides.splice(detail.to, 0, ...deck.data.slides.splice(detail.from, 1));
+        const currentDeck: Deck | null = store.state.deck;
 
-              const updatedDeck: Deck = await this.deckService.update(deck);
-              this.deckEditorService.next(updatedDeck);
-            }
+        if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
+          currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
-            resolve();
-          });
+          const updatedDeck: Deck = await this.deckService.update(currentDeck);
+          store.state.deck = {...updatedDeck};
+        }
+
+        resolve();
       } catch (err) {
         reject(err);
       }

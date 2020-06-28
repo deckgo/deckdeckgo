@@ -1,42 +1,16 @@
-import {Component, Event, EventEmitter, h, Host, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Host} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
-import {Deck} from '../../../models/data/deck';
+import store from '../../../stores/deck.store';
 
 import {MoreAction} from '../../../utils/editor/more-action';
-
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 
 @Component({
   tag: 'app-share-options',
   styleUrl: 'app-share-options.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppMoreShareOptions {
   @Event() selectedOption: EventEmitter<MoreAction>;
-
-  @State()
-  private published: boolean = false;
-
-  private deckEditorService: DeckEditorService;
-  private subscription: Subscription;
-
-  constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
-  }
-
-  componentWillLoad() {
-    this.subscription = this.deckEditorService.watch().subscribe(async (deck: Deck) => {
-      this.published = deck && deck.data && deck.data.meta && deck.data.meta.published;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
 
   render() {
     return (
@@ -49,7 +23,7 @@ export class AppMoreShareOptions {
   }
 
   private renderUpdate() {
-    if (this.published) {
+    if (store.state.published) {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}>
           <p>Publish to update share</p>
@@ -61,7 +35,7 @@ export class AppMoreShareOptions {
   }
 
   private renderEmbed() {
-    if (this.published) {
+    if (store.state.published) {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.EMBED)}>
           <p>Embed</p>
@@ -73,7 +47,7 @@ export class AppMoreShareOptions {
   }
 
   private renderShareLink() {
-    if (this.published) {
+    if (store.state.published) {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.SHARE)}>
           <p>Share link</p>

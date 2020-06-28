@@ -1,5 +1,6 @@
 import {JSX} from '@stencil/core';
-import {take} from 'rxjs/operators';
+
+import store from '../../stores/deck.store';
 
 import {Slide} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
@@ -8,15 +9,12 @@ import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
 import {ErrorService} from '../../services/core/error/error.service';
 import {BusyService} from '../../services/editor/busy/busy.service';
-import {DeckEditorService} from '../../services/editor/deck/deck-editor.service';
 import {DeckService} from '../../services/data/deck/deck.service';
 import {SlideService} from '../../services/data/slide/slide.service';
 
 export class EditorHelper {
   private errorService: ErrorService;
   private busyService: BusyService;
-
-  private deckEditorService: DeckEditorService;
 
   private slideService: SlideService;
   private deckService: DeckService;
@@ -26,8 +24,6 @@ export class EditorHelper {
 
     this.errorService = ErrorService.getInstance();
     this.busyService = BusyService.getInstance();
-
-    this.deckEditorService = DeckEditorService.getInstance();
 
     this.deckService = DeckService.getInstance();
   }
@@ -51,7 +47,7 @@ export class EditorHelper {
           return;
         }
 
-        this.deckEditorService.next(deck);
+        store.state.deck = {...deck};
 
         if (!deck.data.slides || deck.data.slides.length <= 0) {
           resolve([]);
@@ -114,21 +110,16 @@ export class EditorHelper {
 
         const slideId: string = slide.getAttribute('slide_id');
 
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            let element: JSX.IntrinsicElements = null;
+        let element: JSX.IntrinsicElements = null;
 
-            if (deck && deck.data) {
-              const slide: Slide = await this.slideService.get(deck.id, slideId);
-              element = await ParseSlidesUtils.parseSlide(deck, slide, true, true);
-            }
+        if (store.state.deck && store.state.deck.data) {
+          const slide: Slide = await this.slideService.get(store.state.deck.id, slideId);
+          element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
+        }
 
-            this.busyService.deckBusy(false);
+        this.busyService.deckBusy(false);
 
-            resolve(element);
-          });
+        resolve(element);
       } catch (err) {
         this.errorService.error(err);
         this.busyService.deckBusy(false);

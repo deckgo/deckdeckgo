@@ -3,13 +3,13 @@ import {Component, Element, Prop, State, Watch, h} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {forkJoin} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
+
+import store from '../../../stores/deck.store';
 
 import {del, get, set} from 'idb-keyval';
 
 import {AuthUser} from '../../../models/auth/auth.user';
-import {Deck} from '../../../models/data/deck';
 
 import {Utils} from '../../../utils/core/utils';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
@@ -17,13 +17,12 @@ import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/en
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {AuthService} from '../../../services/auth/auth.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
   tag: 'app-signin',
-  styleUrl: 'app-signin.scss'
+  styleUrl: 'app-signin.scss',
 })
 export class AppSignIn {
   @Element() el: HTMLElement;
@@ -45,14 +44,11 @@ export class AppSignIn {
 
   private firebaseUser: firebase.User;
 
-  private deckEditorService: DeckEditorService;
-
   constructor() {
     this.navService = NavService.getInstance();
     this.deckService = DeckService.getInstance();
     this.userService = UserService.getInstance();
     this.authService = AuthService.getInstance();
-    this.deckEditorService = DeckEditorService.getInstance();
   }
 
   async componentDidLoad() {
@@ -116,8 +112,8 @@ export class AppSignIn {
         },
         // signInFailure callback must be provided to handle merge conflicts which
         // occur when an existing credential is linked to an anonymous user.
-        signInFailure: this.onSignInFailure
-      }
+        signInFailure: this.onSignInFailure,
+      },
     };
 
     // @ts-ignore
@@ -201,20 +197,19 @@ export class AppSignIn {
 
       await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
-      const observables = [];
-      observables.push(this.authService.watch().pipe(take(1)));
-      observables.push(this.deckEditorService.watch().pipe(take(1)));
+      this.authService
+        .watch()
+        .pipe(take(1))
+        .subscribe(async (authUser: AuthUser) => {
+          await set('deckdeckgo_redirect_info', {
+            deckId: store.state.deck ? store.state.deck.id : null,
+            userId: authUser ? authUser.uid : null,
+            userToken: authUser ? authUser.token : null,
+            anonymous: authUser ? authUser.anonymous : true,
+          });
 
-      forkJoin(observables).subscribe(async ([authUser, deck]: [AuthUser, Deck]) => {
-        await set('deckdeckgo_redirect_info', {
-          deckId: deck ? deck.id : null,
-          userId: authUser ? authUser.uid : null,
-          userToken: authUser ? authUser.token : null,
-          anonymous: authUser ? authUser.anonymous : true
+          resolve();
         });
-
-        resolve();
-      });
     });
   }
 
@@ -236,13 +231,13 @@ export class AppSignIn {
     // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
     this.navService.navigate({
       url: url,
-      direction: NavDirection.ROOT
+      direction: NavDirection.ROOT,
     });
   }
 
   async navigateBack() {
     this.navService.navigate({
-      direction: NavDirection.BACK
+      direction: NavDirection.BACK,
     });
   }
 
@@ -261,7 +256,7 @@ export class AppSignIn {
             <small>DeckDeckGo is free and open source 🖖</small>
           </p>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 
@@ -272,12 +267,12 @@ export class AppSignIn {
         <p class="ion-text-center ion-padding">
           Sign in to unleash all features of the editor like adding more slides, uploading and using your own images, using the author template or being able to
           share your presentation as an app.
-        </p>
+        </p>,
       ];
     } else {
       return [
         <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-        <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to be able to share your presentation as an app.</p>
+        <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to be able to share your presentation as an app.</p>,
       ];
     }
   }

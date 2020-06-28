@@ -4,6 +4,8 @@ import 'firebase/firestore';
 import {Observable, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
+import store from '../../../stores/deck.store';
+
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
 import {Slide, SlideAttributes, SlideTemplate} from '../../../models/data/slide';
@@ -15,7 +17,6 @@ import {ApiSlide} from '../../../models/api/api.slide';
 import {DeckService} from '../../data/deck/deck.service';
 import {SlideService} from '../../data/slide/slide.service';
 import {UserService} from '../../data/user/user.service';
-import {DeckEditorService} from '../deck/deck-editor.service';
 
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
@@ -26,8 +27,6 @@ import {FontsService} from '../fonts/fonts.service';
 
 export class PublishService {
   private static instance: PublishService;
-
-  private deckEditorService: DeckEditorService;
 
   private apiPresentationService: ApiPresentationService;
 
@@ -41,9 +40,6 @@ export class PublishService {
   private progressSubject: Subject<number> = new Subject<number>();
 
   private constructor() {
-    // Private constructor, singleton
-    this.deckEditorService = DeckEditorService.getInstance();
-
     this.apiPresentationService = ApiPresentationFactoryService.getInstance();
 
     this.deckService = DeckService.getInstance();
@@ -75,55 +71,51 @@ export class PublishService {
 
   // TODO: Move in a cloud functions?
   publish(description: string, tags: string[]): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<string>(async (resolve, reject) => {
       this.progress(0);
 
-      this.deckEditorService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (deck: Deck) => {
-          try {
-            if (!deck || !deck.id || !deck.data) {
-              this.progressComplete();
-              reject('No deck found');
-              return;
-            }
+      try {
+        if (!store.state.deck || !store.state.deck.id || !store.state.deck.data) {
+          this.progressComplete();
+          reject('No deck found');
+          return;
+        }
 
-            const apiDeck: ApiDeck = await this.convertDeck(deck, description);
+        const apiDeck: ApiDeck = await this.convertDeck(store.state.deck, description);
 
-            this.progress(0.25);
+        this.progress(0.25);
 
-            const apiDeckPublish: ApiPresentation = await this.publishDeck(deck, apiDeck);
+        const apiDeckPublish: ApiPresentation = await this.publishDeck(store.state.deck, apiDeck);
 
-            this.progress(0.5);
+        this.progress(0.5);
 
-            if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
-              this.progressComplete();
-              reject('Publish failed');
-              return;
-            }
+        if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
+          this.progressComplete();
+          reject('Publish failed');
+          return;
+        }
 
-            this.progress(0.75);
+        this.progress(0.75);
 
-            const newApiId: boolean = deck.data.api_id !== apiDeckPublish.id;
-            if (newApiId) {
-              deck.data.api_id = apiDeckPublish.id;
+        const newApiId: boolean = store.state.deck.data.api_id !== apiDeckPublish.id;
+        if (newApiId) {
+          store.state.deck.data.api_id = apiDeckPublish.id;
 
-              deck = await this.deckService.update(deck);
-            }
+          const updatedDeck: Deck = await this.deckService.update(store.state.deck);
+          store.state.deck = {...updatedDeck};
+        }
 
-            this.progress(0.8);
+        this.progress(0.8);
 
-            const publishedUrl: string = apiDeckPublish.url;
+        const publishedUrl: string = apiDeckPublish.url;
 
-            await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
+        await this.delayUpdateMeta(store.state.deck, publishedUrl, description, tags, newApiId);
 
-            resolve(publishedUrl);
-          } catch (err) {
-            this.progressComplete();
-            reject(err);
-          }
-        });
+        resolve(publishedUrl);
+      } catch (err) {
+        this.progressComplete();
+        reject(err);
+      }
     });
   }
 
@@ -376,7 +368,7 @@ export class PublishService {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const freshDeck: Deck = await this.deckService.get(deckId);
-        this.deckEditorService.next(freshDeck);
+        store.state.deck = {...freshDeck};
 
         resolve();
       } catch (err) {

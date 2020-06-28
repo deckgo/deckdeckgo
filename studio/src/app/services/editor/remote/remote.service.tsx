@@ -1,15 +1,15 @@
 import {Build} from '@stencil/core';
 
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
+
+import store from '../../../stores/deck.store';
 
 import {get, set} from 'idb-keyval';
 
 import {DeckdeckgoEventDeckRequest, ConnectionState} from '@deckdeckgo/types';
 
 import {Deck} from '../../../models/data/deck';
-
-import {DeckEditorService} from '../deck/deck-editor.service';
 
 export class RemoteService {
   private remoteSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -21,13 +21,6 @@ export class RemoteService {
   private remoteAcceptedRequestSubject: Subject<DeckdeckgoEventDeckRequest> = new Subject<DeckdeckgoEventDeckRequest>();
 
   private static instance: RemoteService;
-
-  private deckEditorService: DeckEditorService;
-
-  private constructor() {
-    // Private constructor, singleton
-    this.deckEditorService = DeckEditorService.getInstance();
-  }
 
   static getInstance() {
     if (!RemoteService.instance) {
@@ -66,20 +59,14 @@ export class RemoteService {
     return this.remoteSubject.asObservable();
   }
 
-  getRoom(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      this.deckEditorService
-        .watch()
-        .pipe(
-          filter((deck: Deck) => deck && deck.data && deck.data.name && deck.data.name !== undefined && deck.data.name !== ''),
-          take(1)
-        )
-        .subscribe(async (deck: Deck) => {
-          const roomName: string = deck.data.name.replace(/\.|#/g, '_');
+  async getRoom(): Promise<string | null> {
+    const deck: Deck | null = store.state.deck;
 
-          resolve(roomName);
-        });
-    });
+    if (deck && deck.data && deck.data.name && deck.data.name !== undefined && deck.data.name !== '') {
+      return deck.data.name.replace(/\.|#/g, '_');
+    }
+
+    return null;
   }
 
   async addPendingRequests(request: DeckdeckgoEventDeckRequest) {

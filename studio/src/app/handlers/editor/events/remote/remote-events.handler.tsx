@@ -418,6 +418,11 @@ export class RemoteEventsHandler {
 
       const room: string = await this.remoteService.getRoom();
 
+      if (!room) {
+        resolve();
+        return;
+      }
+
       deckgoRemoteElement.room = room;
 
       await deckgoRemoteElement.connect();

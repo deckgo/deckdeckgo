@@ -3,6 +3,8 @@ import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/c
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
+import store from '../../../stores/deck.store';
+
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
 import {User} from '../../../models/data/user';
@@ -13,7 +15,6 @@ import {SlotType} from '../../../utils/editor/slot-type';
 
 import {UserService} from '../../../services/data/user/user.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {AssetsService} from '../../../services/core/assets/assets.service';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -53,7 +54,6 @@ export class AppCreateSlide {
 
   private userService: UserService;
   private anonymousService: AnonymousService;
-  private deckEditorService: DeckEditorService;
 
   @Event() signIn: EventEmitter<void>;
 
@@ -64,7 +64,6 @@ export class AppCreateSlide {
   constructor() {
     this.userService = UserService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
-    this.deckEditorService = DeckEditorService.getInstance();
   }
 
   async componentWillLoad() {
@@ -168,13 +167,8 @@ export class AppCreateSlide {
     await this.closePopover(template, slide);
   }
 
-  private addSlideQRCode() {
-    this.deckEditorService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (deck: Deck) => {
-        await this.addSlide(SlideTemplate.QRCODE, deck);
-      });
+  private async addSlideQRCode() {
+    await this.addSlide(SlideTemplate.QRCODE, store.state.deck);
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
