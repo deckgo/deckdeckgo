@@ -1,7 +1,6 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, take} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
@@ -17,6 +16,7 @@ import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
+import {debounce} from '@deckdeckgo/utils';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -50,8 +50,7 @@ export class AppPublishEdit {
 
   private deckService: DeckService;
 
-  private updateDeckSubscription: Subscription;
-  private updateDeckSubject: Subject<void> = new Subject();
+  private readonly debounceUpdateDeck: () => void;
 
   @Event() private published: EventEmitter<string>;
 
@@ -66,6 +65,10 @@ export class AppPublishEdit {
     this.apiUserService = ApiUserFactoryService.getInstance();
 
     this.publishService = PublishService.getInstance();
+
+    this.debounceUpdateDeck = debounce(async () => {
+      await this.updateDeck();
+    }, 500);
   }
 
   async componentWillLoad() {
@@ -79,13 +82,6 @@ export class AppPublishEdit {
       )
       .subscribe(async (apiUser: ApiUser) => {
         this.apiUser = apiUser;
-      });
-
-    this.updateDeckSubscription = this.updateDeckSubject
-      .asObservable()
-      .pipe(debounceTime(500))
-      .subscribe(async () => {
-        await this.updateDeck();
       });
   }
 
@@ -104,12 +100,6 @@ export class AppPublishEdit {
         ? (deckStore.state.deck.data.meta.description as string)
         : await this.getFirstSlideContent();
     this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
-  }
-
-  componentDidUnload() {
-    if (this.updateDeckSubscription) {
-      this.updateDeckSubscription.unsubscribe();
-    }
   }
 
   private getFirstSlideContent(): Promise<string> {
@@ -206,7 +196,7 @@ export class AppPublishEdit {
 
       this.caption = title;
 
-      this.updateDeckSubject.next();
+      this.debounceUpdateDeck();
 
       resolve();
     });
