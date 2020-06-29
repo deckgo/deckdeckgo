@@ -1,7 +1,8 @@
 import {ItemReorderEventDetail} from '@ionic/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, take} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
+
+import {debounce} from '@deckdeckgo/utils';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
@@ -30,20 +31,27 @@ export class DeckEventsHandler {
 
   private authService: AuthService;
 
-  private updateSlideSubscription: Subscription;
-  private updateSlideSubject: Subject<HTMLElement> = new Subject();
-
-  private updateDeckTitleSubscription: Subscription;
-  private updateDeckTitleSubject: Subject<string> = new Subject();
-
   private deckService: DeckService;
   private slideService: SlideService;
+
+  private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
+  private readonly debounceUpdateDeckTitle: (title: string) => void;
 
   constructor() {
     this.authService = AuthService.getInstance();
 
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
+
+    this.debounceUpdateSlide = debounce(async (element: HTMLElement) => {
+      await this.updateSlide(element);
+
+      await this.emitSlideDidUpdate(element);
+    }, 500);
+
+    this.debounceUpdateDeckTitle = debounce(async (title: string) => {
+      await this.updateDeckTitle(title);
+    }, 500);
   }
 
   init(el: HTMLElement): Promise<void> {
@@ -66,16 +74,6 @@ export class DeckEventsHandler {
         document.addEventListener('deckDidChange', this.onDeckChange, false);
       }
 
-      this.updateSlideSubscription = this.updateSlideSubject.pipe(debounceTime(500)).subscribe(async (element: HTMLElement) => {
-        await this.updateSlide(element);
-
-        await this.emitSlideDidUpdate(element);
-      });
-
-      this.updateDeckTitleSubscription = this.updateDeckTitleSubject.pipe(debounceTime(500)).subscribe(async (title: string) => {
-        await this.updateDeckTitle(title);
-      });
-
       resolve();
     });
   }
@@ -95,14 +93,6 @@ export class DeckEventsHandler {
 
     if (document) {
       document.removeEventListener('deckDidChange', this.onDeckChange, true);
-    }
-
-    if (this.updateSlideSubscription) {
-      this.updateSlideSubscription.unsubscribe();
-    }
-
-    if (this.updateDeckTitleSubscription) {
-      this.updateDeckTitleSubscription.unsubscribe();
     }
   }
 
@@ -132,7 +122,7 @@ export class DeckEventsHandler {
       return;
     }
 
-    this.updateSlideSubject.next($event.detail);
+    this.debounceUpdateSlide($event.detail);
   };
 
   private onCustomEventChange = async ($event: CustomEvent) => {
@@ -148,7 +138,7 @@ export class DeckEventsHandler {
       return;
     }
 
-    this.updateSlideSubject.next(parent);
+    this.debounceUpdateSlide(parent);
   };
 
   private onInputChange = async ($event: Event) => {
@@ -168,11 +158,11 @@ export class DeckEventsHandler {
       return;
     }
 
-    this.updateSlideSubject.next(parent);
+    this.debounceUpdateSlide(parent);
 
     // The first content editable element on the first slide is the title of the presentation
     if (parent && !parent.previousElementSibling && !element.previousElementSibling) {
-      this.updateDeckTitleSubject.next(element.textContent);
+      this.debounceUpdateDeckTitle(element.textContent);
     }
   };
 
