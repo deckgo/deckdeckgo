@@ -1,4 +1,4 @@
-import state from '../../stores/theme.store';
+import themeStore from '../../stores/theme.store';
 
 import {get, set} from 'idb-keyval';
 
@@ -17,7 +17,7 @@ export class ThemeService {
   }
 
   async switch(dark: boolean) {
-    state.darkTheme = dark;
+    themeStore.state.darkTheme = dark;
 
     try {
       await set('deckdeckgo_dark_mode', dark);

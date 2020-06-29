@@ -6,7 +6,7 @@ import {filter, take} from 'rxjs/operators';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import state from '../../../stores/theme.store';
+import themeStore from '../../../stores/theme.store';
 import errorStore from '../../../stores/error.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 
@@ -488,7 +488,7 @@ export class AppHome {
   }
 
   async toggleTheme() {
-    await this.themeService.switch(!state.darkTheme);
+    await this.themeService.switch(!themeStore.state.darkTheme);
   }
 
   private renderDarkLightToggle() {
@@ -497,9 +497,9 @@ export class AppHome {
       <ion-list class="inputs-list dark-light-list">
         <ion-item>
           <ion-label>
-            {state.darkTheme ? 'Dark' : 'Light'} theme {state.darkTheme ? '🌑' : '☀️'}
+            {themeStore.state.darkTheme ? 'Dark' : 'Light'} theme {themeStore.state.darkTheme ? '🌑' : '☀️'}
           </ion-label>
-          <ion-toggle slot="end" checked={state.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
+          <ion-toggle slot="end" checked={themeStore.state.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
         </ion-item>
       </ion-list>,
     ];

@@ -4,7 +4,7 @@ import {popoverController} from '@ionic/core';
 
 import {Subscription} from 'rxjs';
 
-import state from '../../../stores/theme.store';
+import themeStore from '../../../stores/theme.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
@@ -142,7 +142,7 @@ export class AppNavigationActions {
           href="/editor"
           routerDirection="root"
           mode="md"
-          color={state.darkTheme ? 'light' : 'dark'}>
+          color={themeStore.state.darkTheme ? 'light' : 'dark'}>
           <ion-label>Write a presentation</ion-label>
         </ion-button>
       );
@@ -154,7 +154,12 @@ export class AppNavigationActions {
   private renderPublishButton() {
     if (this.publish) {
       return (
-        <ion-button class="publish ion-margin-end" shape="round" onClick={() => this.actionPublish.emit()} mode="md" color={state.darkTheme ? 'light' : 'dark'}>
+        <ion-button
+          class="publish ion-margin-end"
+          shape="round"
+          onClick={() => this.actionPublish.emit()}
+          mode="md"
+          color={themeStore.state.darkTheme ? 'light' : 'dark'}>
           <ion-label>Ready to share?</ion-label>
         </ion-button>
       );

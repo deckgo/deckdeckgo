@@ -13,4 +13,4 @@ onChange('darkTheme', (dark: boolean | undefined) => {
   dark ? domBodyClassList.add('dark') : domBodyClassList.remove('dark');
 });
 
-export default state;
+export default {state};
