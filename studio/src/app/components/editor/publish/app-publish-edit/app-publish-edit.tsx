@@ -2,6 +2,8 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
 import {filter, take} from 'rxjs/operators';
 
+import {debounce} from '@deckdeckgo/utils';
+
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
@@ -16,7 +18,6 @@ import {ApiUser} from '../../../../models/api/api.user';
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
-import {debounce} from '@deckdeckgo/utils';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;

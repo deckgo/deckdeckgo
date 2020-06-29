@@ -1,10 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-
-import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
+import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import store from '../../../../../stores/busy.store';
 
@@ -72,8 +69,7 @@ export class AppActionsElement {
 
   private elementResizeObserver: ResizeObserverConstructor;
 
-  private moveToolbarSubscription: Subscription;
-  private moveToolbarSubject: Subject<void> = new Subject();
+  private readonly debounceResizeSlideContent: () => void;
 
   @Event() signIn: EventEmitter<void>;
 
@@ -82,11 +78,13 @@ export class AppActionsElement {
 
   @Event() private resetted: EventEmitter<void>;
 
-  async componentWillLoad() {
-    this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
+  constructor() {
+    this.debounceResizeSlideContent = debounce(async () => {
       await this.resizeSlideContent();
-    });
+    }, 250);
+  }
 
+  async componentWillLoad() {
     this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
     this.shapeHelper = new ShapeHelper(this.slideDidChange, this.signIn);
   }
@@ -96,22 +94,18 @@ export class AppActionsElement {
   }
 
   async componentDidUnload() {
-    if (this.moveToolbarSubscription) {
-      this.moveToolbarSubscription.unsubscribe();
-    }
-
     this.removeWindowResize();
   }
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', () => this.moveToolbarSubject.next(), {passive: true});
+      window.addEventListener('resize', () => this.debounceResizeSlideContent(), {passive: true});
     }
   }
 
   private removeWindowResize() {
     if (window) {
-      window.removeEventListener('resize', () => this.moveToolbarSubject.next(), true);
+      window.removeEventListener('resize', () => this.debounceResizeSlideContent(), true);
     }
   }
 
@@ -782,7 +776,7 @@ export class AppActionsElement {
         this.elementResizeObserver.observe(this.selectedElement);
       } else {
         // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
-        this.selectedElement.addEventListener('focusout', () => this.moveToolbarSubject.next(), {passive: true});
+        this.selectedElement.addEventListener('focusout', () => this.debounceResizeSlideContent(), {passive: true});
       }
 
       resolve();
@@ -797,7 +791,7 @@ export class AppActionsElement {
           this.elementResizeObserver.disconnect;
         }
       } else {
-        this.selectedElement.removeEventListener('focusout', () => this.moveToolbarSubject.next(), true);
+        this.selectedElement.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);
       }
 
       resolve();
