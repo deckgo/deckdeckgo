@@ -33,12 +33,14 @@ export class AppPoll {
 
   private pollService: PollService;
 
+  private destroyPollListener;
+
   constructor() {
     this.pollService = PollService.getInstance();
   }
 
   async componentWillLoad() {
-    pollStore.onChange('poll', (poll: DeckdeckgoPoll | undefined) => {
+    this.destroyPollListener = pollStore.onChange('poll', (poll: DeckdeckgoPoll | undefined) => {
       if (this.pollKey && (!poll || poll === undefined)) {
         errorStore.state.error = 'Oopsie the poll was not found. Double check that the code is correct and try again.';
       }
@@ -53,6 +55,10 @@ export class AppPoll {
 
   async componentDidUnload() {
     await this.pollService.disconnect();
+
+    if (this.destroyPollListener) {
+      this.destroyPollListener();
+    }
   }
 
   private async onChoiceChange($event: CustomEvent) {

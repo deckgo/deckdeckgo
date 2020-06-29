@@ -34,8 +34,10 @@ export class AppFeed {
   async componentWillLoad() {
     this.initOffline(offlineStore.state.offline);
 
-    offlineStore.onChange('offline', (offline: OfflineDeck | undefined) => {
+    const destroyListner = offlineStore.onChange('offline', (offline: OfflineDeck | undefined) => {
       this.initOffline(offline);
+
+      destroyListner();
     });
 
     this.mobile = isMobile();

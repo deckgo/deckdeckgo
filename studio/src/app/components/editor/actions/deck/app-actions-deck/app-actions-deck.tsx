@@ -74,10 +74,12 @@ export class AppActionsDeck {
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
 
-    remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+    const destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
       if (requests && requests.length > 0) {
         await this.clickToOpenRemote();
       }
+
+      destroyListener();
     });
   }
 

@@ -1,7 +1,5 @@
 import {Build} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
 import remoteStore from '../../../../stores/remote.store';
 
 import {debounce} from '@deckdeckgo/utils';
@@ -18,8 +16,8 @@ export class RemoteEventsHandler {
 
   private remoteService: RemoteService;
 
-  private connectSubscription: Subscription;
-  private acceptRequestSubscription: Subscription;
+  private destroyConnectListener;
+  private destroyAcceptRequestListener;
 
   constructor() {
     this.remoteService = RemoteService.getInstance();
@@ -30,7 +28,7 @@ export class RemoteEventsHandler {
 
     await this.initRemote();
 
-    remoteStore.onChange('remote', async (enable: boolean) => {
+    this.destroyConnectListener = remoteStore.onChange('remote', async (enable: boolean) => {
       if (enable) {
         await this.connect();
       } else {
@@ -38,7 +36,7 @@ export class RemoteEventsHandler {
       }
     });
 
-    remoteStore.onChange('acceptedRequest', async (request: DeckdeckgoEventDeckRequest) => {
+    this.destroyAcceptRequestListener = remoteStore.onChange('acceptedRequest', async (request: DeckdeckgoEventDeckRequest) => {
       await this.startAcceptedRemoteRequest(request);
     });
   }
@@ -46,12 +44,12 @@ export class RemoteEventsHandler {
   async destroy() {
     await this.disconnect();
 
-    if (this.connectSubscription) {
-      this.connectSubscription.unsubscribe();
+    if (this.destroyConnectListener) {
+      this.destroyConnectListener();
     }
 
-    if (this.acceptRequestSubscription) {
-      this.acceptRequestSubscription.unsubscribe();
+    if (this.destroyAcceptRequestListener) {
+      this.destroyAcceptRequestListener();
     }
 
     const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');

@@ -27,6 +27,9 @@ export class AppRoot {
   @State()
   private loading: boolean = true;
 
+  private destroyErrorListener;
+  private destroyNavListener;
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.themeService = ThemeService.getInstance();
@@ -44,15 +47,25 @@ export class AppRoot {
   async componentDidLoad() {
     this.loading = false;
 
-    errorStore.onChange('error', (error: string | undefined) => {
+    this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
       if (error) {
         this.toastError(error);
       }
     });
 
-    navStore.onChange('nav', async (params: NavParams | undefined) => {
+    this.destroyNavListener = navStore.onChange('nav', async (params: NavParams | undefined) => {
       await this.navigate(params);
     });
+  }
+
+  componentDidUnload() {
+    if (this.destroyErrorListener) {
+      this.destroyErrorListener();
+    }
+
+    if (this.destroyNavListener) {
+      this.destroyNavListener();
+    }
   }
 
   private async toastError(error: string) {

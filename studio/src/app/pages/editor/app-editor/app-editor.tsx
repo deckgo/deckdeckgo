@@ -98,6 +98,8 @@ export class AppEditor {
   @State()
   private fullscreen: boolean = false;
 
+  private destroyBusyListener;
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
@@ -127,7 +129,7 @@ export class AppEditor {
 
     await this.initWithAuth();
 
-    busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
+    this.destroyBusyListener = busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
       this.slidesEditable = true;
 
       await this.contentEditable(slide);
@@ -200,6 +202,10 @@ export class AppEditor {
     await this.remoteEventsHandler.destroy();
 
     this.removeWindowResize();
+
+    if (this.destroyBusyListener) {
+      this.destroyBusyListener();
+    }
   }
 
   private updateInlineEditorListener(): Promise<void> {
