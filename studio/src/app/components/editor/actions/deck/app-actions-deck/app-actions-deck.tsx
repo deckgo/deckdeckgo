@@ -6,10 +6,8 @@ import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
 import {get, set} from 'idb-keyval';
 
-import {forkJoin, Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
-
 import offlineStore from '../../../../../stores/offline.store';
+import remoteStore from '../../../../../stores/remote.store';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
@@ -19,7 +17,6 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 import {DemoAction} from '../../../../../utils/editor/demo-action';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
-import {RemoteService} from '../../../../../services/editor/remote/remote.service';
 import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
 
 @Component({
@@ -70,28 +67,18 @@ export class AppActionsDeck {
 
   private anonymousService: AnonymousService;
 
-  private remoteService: RemoteService;
-  private remoteSubscription: Subscription;
-
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
-    this.remoteService = RemoteService.getInstance();
   }
 
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
 
-    this.remoteSubscription = this.remoteService.watchRequests().subscribe(async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+    remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
       if (requests && requests.length > 0) {
         await this.clickToOpenRemote();
       }
     });
-  }
-
-  async componentDidUnload() {
-    if (this.remoteSubscription) {
-      this.remoteSubscription.unsubscribe();
-    }
   }
 
   async onActionOpenSlideAdd($event: CustomEvent) {
@@ -468,47 +455,39 @@ export class AppActionsDeck {
   }
 
   private async clickToOpenRemote() {
-    this.remoteService
-      .watchState()
-      .pipe(take(1))
-      .subscribe((state: ConnectionState) => {
-        if (state !== ConnectionState.CONNECTED) {
-          let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
+    if (remoteStore.state.connectionState !== ConnectionState.CONNECTED) {
+      let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
 
-          if (!button) {
-            return;
-          }
+      if (!button) {
+        return;
+      }
 
-          const style: CSSStyleDeclaration = window.getComputedStyle(button);
+      const style: CSSStyleDeclaration = window.getComputedStyle(button);
 
-          // Actions are grouped in a popover on small devices?
-          if (style.display === 'none') {
-            button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
+      // Actions are grouped in a popover on small devices?
+      if (style.display === 'none') {
+        button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
 
-            if (!button) {
-              return;
-            }
-          }
-
-          // We click to button as we want to pass $event to the popover to stick it next to the button
-          button.click();
+        if (!button) {
+          return;
         }
-      });
+      }
+
+      // We click to button as we want to pass $event to the popover to stick it next to the button
+      button.click();
+    }
   }
 
   private async openRemote($event: UIEvent) {
-    forkJoin([this.remoteService.watchRequests().pipe(take(1)), this.remoteService.watchState().pipe(take(1))])
-      .pipe(take(1))
-      .subscribe(async ([requests, state]: [DeckdeckgoEventDeckRequest[] | undefined, ConnectionState]) => {
-        const connected: boolean = state !== ConnectionState.DISCONNECTED && state !== ConnectionState.NOT_CONNECTED;
+    const connected: boolean =
+      remoteStore.state.connectionState !== ConnectionState.DISCONNECTED && remoteStore.state.connectionState !== ConnectionState.NOT_CONNECTED;
 
-        if (connected && requests && requests.length > 0) {
-          await this.closeRemote();
-          await this.openRemoteControl($event, 'app-remote-request');
-        } else {
-          await this.openRemoteControl($event, 'app-remote-connect');
-        }
-      });
+    if (connected && remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length > 0) {
+      await this.closeRemote();
+      await this.openRemoteControl($event, 'app-remote-request');
+    } else {
+      await this.openRemoteControl($event, 'app-remote-connect');
+    }
   }
 
   private async closeRemote() {
