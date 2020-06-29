@@ -21,7 +21,7 @@ export class AppFeatures {
           <article>
             <h3>Showcase everywhere</h3>
 
-            <p>Presentations work on phones, tablets, computers and more. They are published as standalone apps.</p>
+            <p>Presentations work on computers, phones, tablets and more. They are published as standalone apps.</p>
           </article>
 
           <article>
@@ -33,7 +33,7 @@ export class AppFeatures {
           <article>
             <h3>Share standalone apps</h3>
 
-            <p>Your presentation are published as standalone Progressive Web Apps. Share them by sending your friends a link.</p>
+            <p>Your presentation are published as standalone Progressive Web Apps. Share them by sending your colleagues and friends a link.</p>
           </article>
 
           <article>
