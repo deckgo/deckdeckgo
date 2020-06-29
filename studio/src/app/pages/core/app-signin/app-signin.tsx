@@ -3,12 +3,11 @@ import {Component, Element, Prop, State, Watch, h} from '@stencil/core';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {filter, take} from 'rxjs/operators';
-
 import {del, get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
@@ -16,7 +15,6 @@ import {Utils} from '../../../utils/core/utils';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import {AuthService} from '../../../services/auth/auth.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
 
@@ -37,7 +35,6 @@ export class AppSignIn {
   private signInInProgress: boolean = false;
 
   private userService: UserService;
-  private authService: AuthService;
   private deckService: DeckService;
 
   private firebaseUser: firebase.User;
@@ -45,7 +42,6 @@ export class AppSignIn {
   constructor() {
     this.deckService = DeckService.getInstance();
     this.userService = UserService.getInstance();
-    this.authService = AuthService.getInstance();
   }
 
   async componentDidLoad() {
@@ -154,34 +150,41 @@ export class AppSignIn {
         return;
       }
 
-      this.authService
-        .watch()
-        .pipe(
-          filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && authUser.uid && authUser.uid !== mergeInfo.userId),
-          take(1)
-        )
-        .subscribe(async (authUser: AuthUser) => {
-          // Merge deck to new user
-          await this.deckService.mergeDeck(mergeInfo.deckId, authUser.uid);
+      const destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+        await this.mergeDeck(mergeInfo, destroyListener);
 
-          // Delete previous anonymous user from the database
-          await this.userService.delete(mergeInfo.userId);
-
-          // Delete previous anonymous user from Firebase
-          if (this.firebaseUser) {
-            await this.firebaseUser.delete();
-          }
-
-          await this.navigateRedirect();
-
-          resolve();
-        });
+        resolve();
+      });
 
       await firebase.auth().signInWithCredential(cred);
-
-      resolve();
     });
   };
+
+  private async mergeDeck(mergeInfo: MergeInformation, destroyListener) {
+    if (
+      authStore.state.authUser === null ||
+      authStore.state.authUser === undefined ||
+      !authStore.state.authUser.uid ||
+      authStore.state.authUser.uid === mergeInfo.userId
+    ) {
+      return;
+    }
+
+    destroyListener();
+
+    // Merge deck to new user
+    await this.deckService.mergeDeck(mergeInfo.deckId, authStore.state.authUser.uid);
+
+    // Delete previous anonymous user from the database
+    await this.userService.delete(mergeInfo.userId);
+
+    // Delete previous anonymous user from Firebase
+    if (this.firebaseUser) {
+      await this.firebaseUser.delete();
+    }
+
+    await this.navigateRedirect();
+  }
 
   private saveRedirect(): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -194,19 +197,14 @@ export class AppSignIn {
 
       await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
-      this.authService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (authUser: AuthUser) => {
-          await set('deckdeckgo_redirect_info', {
-            deckId: deckStore.state.deck ? deckStore.state.deck.id : null,
-            userId: authUser ? authUser.uid : null,
-            userToken: authUser ? authUser.token : null,
-            anonymous: authUser ? authUser.anonymous : true,
-          });
+      await set('deckdeckgo_redirect_info', {
+        deckId: deckStore.state.deck ? deckStore.state.deck.id : null,
+        userId: authStore.state.authUser ? authStore.state.authUser.uid : null,
+        userToken: authStore.state.authUser ? authStore.state.authUser.token : null,
+        anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true,
+      });
 
-          resolve();
-        });
+      resolve();
     });
   }
 

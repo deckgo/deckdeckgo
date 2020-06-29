@@ -2,11 +2,10 @@ import {Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {filter, take} from 'rxjs/operators';
-
 import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
@@ -126,32 +125,7 @@ export class AppEditor {
 
     await this.initOffline();
 
-    // If no user create an anonymous one
-    this.authService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (authUser: AuthUser) => {
-        if (!authUser) {
-          await this.authService.signInAnonymous();
-        }
-      });
-
-    // As soon as we have got a user, an anonymous where the creation started above or an already used anonymous or a logged one, we init
-    this.authService
-      .watch()
-      .pipe(
-        filter((authUser: AuthUser) => authUser !== null && authUser !== undefined),
-        take(1)
-      )
-      .subscribe(async (_authUser: AuthUser) => {
-        if (!this.deckId) {
-          await this.initSlide();
-        } else {
-          await this.fetchSlides();
-        }
-
-        this.slidesFetched = true;
-      });
+    await this.initWithAuth();
 
     busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
       this.slidesEditable = true;
@@ -160,6 +134,35 @@ export class AppEditor {
     });
 
     this.fullscreen = isFullscreen() && !isIOS();
+  }
+
+  private async initWithAuth() {
+    if (!authStore.state.authUser) {
+      // As soon as the anonymous is created, we proceed
+      const destroyListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
+        if (authUser) {
+          await this.initOrFetch();
+        }
+
+        destroyListener();
+      });
+
+      // If no user create an anonymous one
+      await this.authService.signInAnonymous();
+    } else {
+      // We have got a user, regardless if anonymous or not, we init
+      await this.initOrFetch();
+    }
+  }
+
+  private async initOrFetch() {
+    if (!this.deckId) {
+      await this.initSlide();
+    } else {
+      await this.fetchSlides();
+    }
+
+    this.slidesFetched = true;
   }
 
   async initOffline() {

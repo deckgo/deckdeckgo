@@ -3,7 +3,8 @@ import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/c
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import store from '../../../stores/deck.store';
+import deckStore from '../../../stores/deck.store';
+import authStore from '../../../stores/auth.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
@@ -14,7 +15,6 @@ import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
 
 import {UserService} from '../../../services/data/user/user.service';
-import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {AssetsService} from '../../../services/core/assets/assets.service';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -53,7 +53,6 @@ export class AppCreateSlide {
   private user: User;
 
   private userService: UserService;
-  private anonymousService: AnonymousService;
 
   @Event() signIn: EventEmitter<void>;
 
@@ -63,7 +62,6 @@ export class AppCreateSlide {
 
   constructor() {
     this.userService = UserService.getInstance();
-    this.anonymousService = AnonymousService.getInstance();
   }
 
   async componentWillLoad() {
@@ -168,14 +166,12 @@ export class AppCreateSlide {
   }
 
   private async addSlideQRCode() {
-    await this.addSlide(SlideTemplate.QRCODE, store.state.deck);
+    await this.addSlide(SlideTemplate.QRCODE, deckStore.state.deck);
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
   private async addRestrictedSlide(template: SlideTemplate) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
@@ -187,9 +183,7 @@ export class AppCreateSlide {
 
   // User will need an account to upload her/his data
   private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       await this.closePopover(null);
       return;

@@ -1,19 +1,17 @@
 import {ItemReorderEventDetail} from '@ionic/core';
 
-import {filter, take} from 'rxjs/operators';
-
 import {debounce} from '@deckdeckgo/utils';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import busyStore from '../../../../stores/busy.store';
+import authStore from '../../../../stores/auth.store';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {AuthUser} from '../../../../models/auth/auth.user';
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
 import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideSplitType, SlideTemplate} from '../../../../models/data/slide';
 
@@ -22,14 +20,11 @@ import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
-import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
 
 export class DeckEventsHandler {
   private el: HTMLElement;
-
-  private authService: AuthService;
 
   private deckService: DeckService;
   private slideService: SlideService;
@@ -38,8 +33,6 @@ export class DeckEventsHandler {
   private readonly debounceUpdateDeckTitle: (title: string) => void;
 
   constructor() {
-    this.authService = AuthService.getInstance();
-
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
 
@@ -246,32 +239,29 @@ export class DeckEventsHandler {
   private createDeck(): Promise<Deck> {
     return new Promise<Deck>(async (resolve, reject) => {
       try {
-        this.authService
-          .watch()
-          .pipe(
-            filter((user: AuthUser) => user !== null && user !== undefined),
-            take(1)
-          )
-          .subscribe(async (authUser: AuthUser) => {
-            let deck: DeckData = {
-              name: `Presentation ${await Utils.getNow()}`,
-              owner_id: authUser.uid,
-            };
+        if (!authStore.state.authUser) {
+          reject('User not authenticated');
+          return;
+        }
 
-            // Retrieve text and background color style randomly generated in the editor
-            const deckElement: HTMLElement = this.el.querySelector('deckgo-deck');
-            if (deckElement) {
-              const attributes: DeckAttributes = await this.getDeckAttributes(deckElement, false);
-              deck.attributes = attributes;
-            }
+        let deck: DeckData = {
+          name: `Presentation ${await Utils.getNow()}`,
+          owner_id: authStore.state.authUser.uid,
+        };
 
-            const persistedDeck: Deck = await this.deckService.create(deck);
-            deckStore.state.deck = {...persistedDeck};
+        // Retrieve text and background color style randomly generated in the editor
+        const deckElement: HTMLElement = this.el.querySelector('deckgo-deck');
+        if (deckElement) {
+          const attributes: DeckAttributes = await this.getDeckAttributes(deckElement, false);
+          deck.attributes = attributes;
+        }
 
-            await this.updateNavigation(persistedDeck);
+        const persistedDeck: Deck = await this.deckService.create(deck);
+        deckStore.state.deck = {...persistedDeck};
 
-            resolve(persistedDeck);
-          });
+        await this.updateNavigation(persistedDeck);
+
+        resolve(persistedDeck);
       } catch (err) {
         reject(err);
       }

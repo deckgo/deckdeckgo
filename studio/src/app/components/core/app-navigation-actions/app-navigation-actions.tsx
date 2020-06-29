@@ -6,13 +6,12 @@ import {Subscription} from 'rxjs';
 
 import themeStore from '../../../stores/theme.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
-import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
 import {Utils} from '../../../utils/core/utils';
 
-import {AuthService} from '../../../services/auth/auth.service';
 import {UserService} from '../../../services/data/user/user.service';
 
 @Component({
@@ -25,14 +24,8 @@ export class AppNavigationActions {
   @Prop() presentation: boolean = false;
   @Prop() publish: boolean = false;
 
-  private authService: AuthService;
-  private subscription: Subscription;
-
   private userService: UserService;
   private userSubscription: Subscription;
-
-  @State()
-  private authUser: AuthUser;
 
   @State()
   private photoUrl: string;
@@ -43,15 +36,10 @@ export class AppNavigationActions {
   @Event() private actionPublish: EventEmitter<void>;
 
   constructor() {
-    this.authService = AuthService.getInstance();
     this.userService = UserService.getInstance();
   }
 
   componentWillLoad() {
-    this.subscription = this.authService.watch().subscribe((authUser: AuthUser) => {
-      this.authUser = authUser;
-    });
-
     this.userSubscription = this.userService.watch().subscribe((user: User) => {
       this.photoUrl = user && user.data ? user.data.photo_url : undefined;
       this.photoUrlLoaded = true;
@@ -59,10 +47,6 @@ export class AppNavigationActions {
   }
 
   componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
@@ -98,7 +82,7 @@ export class AppNavigationActions {
   }
 
   private renderFeed() {
-    if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
+    if (Utils.isLoggedIn(authStore.state.authUser) || !this.signIn) {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
@@ -110,7 +94,7 @@ export class AppNavigationActions {
   }
 
   private renderSignIn() {
-    if (Utils.isLoggedIn(this.authUser) || !this.signIn) {
+    if (Utils.isLoggedIn(authStore.state.authUser) || !this.signIn) {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
@@ -122,7 +106,7 @@ export class AppNavigationActions {
   }
 
   private renderLoggedIn() {
-    if (Utils.isLoggedIn(this.authUser) && this.photoUrlLoaded) {
+    if (Utils.isLoggedIn(authStore.state.authUser) && this.photoUrlLoaded) {
       return (
         <button class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu" tabindex={0}>
           <app-avatar src={this.photoUrl}></app-avatar>

@@ -2,6 +2,7 @@ import {EventEmitter} from '@stencil/core';
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import busyStore from '../../stores/busy.store';
+import authStore from '../../stores/auth.store';
 
 import {ImageAction} from '../../utils/editor/image-action';
 import {EditAction} from '../../utils/editor/edit-action';
@@ -9,14 +10,8 @@ import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 
-import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
-
 export class ImageHelper {
-  private anonymousService: AnonymousService;
-
-  constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {
-    this.anonymousService = AnonymousService.getInstance();
-  }
+  constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
@@ -57,9 +52,7 @@ export class ImageHelper {
   }
 
   async openCustomModalRestricted(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action: EditAction) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       return;
     }

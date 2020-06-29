@@ -2,35 +2,29 @@ import {Component, Prop, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
-import {AuthUser} from '../../../models/auth/auth.user';
+import authStore from '../../../stores/auth.store';
+
 import {User} from '../../../models/data/user';
 
 import {ApiUser} from '../../../models/api/api.user';
 
-import {AuthService} from '../../../services/auth/auth.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
 
 @Component({
   tag: 'app-user-info',
-  styleUrl: 'app-user-info.scss'
+  styleUrl: 'app-user-info.scss',
 })
 export class AppUserInfo {
   @Prop()
   avatarColSize: number = 4;
-
-  private authService: AuthService;
-  private authSubscription: Subscription;
 
   private apiUserService: ApiUserService;
   private apiUserSubscription: Subscription;
 
   private userService: UserService;
   private userSubscription: Subscription;
-
-  @State()
-  private authUser: AuthUser;
 
   @State()
   private apiUser: ApiUser;
@@ -42,16 +36,11 @@ export class AppUserInfo {
   private photoUrl: string;
 
   constructor() {
-    this.authService = AuthService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.userService = UserService.getInstance();
   }
 
   componentWillLoad() {
-    this.authSubscription = this.authService.watch().subscribe((authUser: AuthUser) => {
-      this.authUser = authUser;
-    });
-
     this.apiUserSubscription = this.apiUserService.watch().subscribe((user: ApiUser) => {
       this.apiUser = user;
     });
@@ -63,10 +52,6 @@ export class AppUserInfo {
   }
 
   componentDidUnload() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-
     if (this.apiUserSubscription) {
       this.apiUserSubscription.unsubscribe();
     }
@@ -77,7 +62,7 @@ export class AppUserInfo {
   }
 
   render() {
-    if (this.authUser) {
+    if (authStore.state.authUser) {
       return (
         <ion-grid>
           <ion-row class="ion-align-items-center">
@@ -86,7 +71,7 @@ export class AppUserInfo {
             </ion-col>
             <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
               <ion-label>{this.name}</ion-label>
-              <ion-label>{!this.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
+              <ion-label>{!authStore.state.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>

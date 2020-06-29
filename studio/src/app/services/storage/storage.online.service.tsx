@@ -3,24 +3,13 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
-import store from '../../stores/error.store';
-
-import {take} from 'rxjs/operators';
-
-import {AuthUser} from '../../models/auth/auth.user';
+import errorStore from '../../stores/error.store';
+import authStore from '../../stores/auth.store';
 
 import {Resources} from '../../utils/core/resources';
 
-import {AuthService} from '../auth/auth.service';
-
 export class StorageOnlineService {
   private static instance: StorageOnlineService;
-
-  private authService: AuthService;
-
-  private constructor() {
-    this.authService = AuthService.getInstance();
-  }
 
   static getInstance() {
     if (!StorageOnlineService.instance) {
@@ -30,74 +19,64 @@ export class StorageOnlineService {
   }
 
   uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
-    return new Promise<StorageFile>((resolve) => {
+    return new Promise<StorageFile>(async (resolve) => {
       try {
-        this.authService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (authUser: AuthUser) => {
-            if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
-              store.state.error = 'Not logged in.';
-              resolve();
-              return;
-            }
+        if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
+          errorStore.state.error = 'Not logged in.';
+          resolve();
+          return;
+        }
 
-            if (!data || !data.name) {
-              store.state.error = 'File not valid.';
-              resolve();
-              return;
-            }
+        if (!data || !data.name) {
+          errorStore.state.error = 'File not valid.';
+          resolve();
+          return;
+        }
 
-            if (data.size > maxSize) {
-              store.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
-              resolve();
-              return;
-            }
+        if (data.size > maxSize) {
+          errorStore.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
+          resolve();
+          return;
+        }
 
-            const ref: Reference = firebase.storage().ref(`${authUser.uid}/assets/${folder}/${data.name}`);
+        const ref: Reference = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/${data.name}`);
 
-            await ref.put(data);
+        await ref.put(data);
 
-            resolve({
-              downloadUrl: await ref.getDownloadURL(),
-              fullPath: ref.fullPath,
-              name: ref.name,
-            });
-          });
+        resolve({
+          downloadUrl: await ref.getDownloadURL(),
+          fullPath: ref.fullPath,
+          name: ref.name,
+        });
       } catch (err) {
-        store.state.error = err.message;
+        errorStore.state.error = err.message;
         resolve();
       }
     });
   }
 
   getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
-    return new Promise<StorageFilesList | null>((resolve) => {
+    return new Promise<StorageFilesList | null>(async (resolve) => {
       try {
-        this.authService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (authUser: AuthUser) => {
-            if (!authUser || !authUser.uid || authUser.uid === '' || authUser.uid === undefined) {
-              store.state.error = 'Not logged in.';
-              resolve(null);
-              return;
-            }
+        if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
+          errorStore.state.error = 'Not logged in.';
+          resolve(null);
+          return;
+        }
 
-            const ref = firebase.storage().ref(`${authUser.uid}/assets/${folder}/`);
+        const ref = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/`);
 
-            let options: ListOptions = {
-              maxResults: Resources.Constants.STORAGE.MAX_QUERY_RESULTS,
-            };
+        let options: ListOptions = {
+          maxResults: Resources.Constants.STORAGE.MAX_QUERY_RESULTS,
+        };
 
-            if (next) {
-              options.pageToken = next;
-            }
+        if (next) {
+          options.pageToken = next;
+        }
 
-            const results: ListResult = await ref.list(options);
+        const results: ListResult = await ref.list(options);
 
-            resolve(this.toStorageFileList(results));
-          });
+        resolve(this.toStorageFileList(results));
       } catch (err) {
         resolve(null);
       }

@@ -1,10 +1,7 @@
-import {Component, Element, State, h} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
-import store from '../../../stores/nav.store';
-
-import {AuthUser} from '../../../models/auth/auth.user';
+import navStore from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
 import {Utils} from '../../../utils/core/utils';
 
@@ -20,29 +17,13 @@ export class AppMenu {
   @Element() el: HTMLElement;
 
   private authService: AuthService;
-  private authSubscription: Subscription;
-
-  @State()
-  private authUser: AuthUser;
 
   constructor() {
     this.authService = AuthService.getInstance();
   }
 
-  componentWillLoad() {
-    this.authSubscription = this.authService.watch().subscribe(async (authUser: AuthUser) => {
-      this.authUser = authUser;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-  }
-
   private async signIn() {
-    store.state.nav = {
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
     };
@@ -51,7 +32,7 @@ export class AppMenu {
   private async signOut() {
     await this.authService.signOut();
 
-    store.state.nav = {
+    navStore.state.nav = {
       url: '/',
       direction: NavDirection.ROOT,
     };
@@ -72,7 +53,7 @@ export class AppMenu {
   }
 
   private renderUser() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (Utils.isLoggedIn(authStore.state.authUser)) {
       return (
         <ion-item class="user">
           <app-user-info avatarColSize={3}></app-user-info>
@@ -84,7 +65,7 @@ export class AppMenu {
   }
 
   private renderDashboard() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (Utils.isLoggedIn(authStore.state.authUser)) {
       return (
         <ion-item button class="home" href="/dashboard" routerDirection="forward">
           <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
@@ -97,7 +78,7 @@ export class AppMenu {
   }
 
   private renderSignInOut() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (Utils.isLoggedIn(authStore.state.authUser)) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
           <ion-icon lazy={true} name="log-out-outline" slot="start"></ion-icon>
@@ -124,7 +105,7 @@ export class AppMenu {
   }
 
   private renderDiscover() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (Utils.isLoggedIn(authStore.state.authUser)) {
       return undefined;
     }
 

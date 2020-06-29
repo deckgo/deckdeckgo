@@ -3,6 +3,7 @@ import {EventEmitter} from '@stencil/core';
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import busyStore from '../../stores/busy.store';
+import authStore from '../../stores/auth.store';
 
 import {ShapeAction, ShapeActionSVG} from '../../utils/editor/shape-action';
 import {ImageAction} from '../../utils/editor/image-action';
@@ -10,14 +11,8 @@ import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 import {EditAction} from '../../utils/editor/edit-action';
 
-import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
-
 export class ShapeHelper {
-  private anonymousService: AnonymousService;
-
-  constructor(private didChange: EventEmitter<HTMLElement>, private signIn: EventEmitter<void>) {
-    this.anonymousService = AnonymousService.getInstance();
-  }
+  constructor(private didChange: EventEmitter<HTMLElement>, private signIn: EventEmitter<void>) {}
 
   async appendShape(slideElement: HTMLElement, shapeAction: ShapeAction) {
     if (shapeAction.svg) {
@@ -62,9 +57,7 @@ export class ShapeHelper {
   }
 
   private async openModalRestricted(slideElement: HTMLElement) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       return;
     }

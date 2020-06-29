@@ -9,15 +9,14 @@ import '@firebase/auth';
 import themeStore from '../../../stores/theme.store';
 import errorStore from '../../../stores/error.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
 import {ApiUser} from '../../../models/api/api.user';
-import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
 
 import {ApiUserService} from '../../../services/api/user/api.user.service';
-import {AuthService} from '../../../services/auth/auth.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {StorageService} from '../../../services/storage/storage.service';
@@ -30,9 +29,6 @@ import {ThemeService} from '../../../services/theme/theme.service';
 })
 export class AppHome {
   @Element() el: HTMLElement;
-
-  @State()
-  private authUser: AuthUser;
 
   @State()
   private user: User;
@@ -53,7 +49,6 @@ export class AppHome {
   @State()
   private saving: boolean = false;
 
-  private authService: AuthService;
   private userService: UserService;
   private apiUserService: ApiUserService;
 
@@ -84,7 +79,6 @@ export class AppHome {
   private custom: string = undefined;
 
   constructor() {
-    this.authService = AuthService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = UserService.getInstance();
@@ -92,17 +86,7 @@ export class AppHome {
     this.themeService = ThemeService.getInstance();
   }
 
-  componentWillLoad() {
-    this.authService
-      .watch()
-      .pipe(
-        filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (authUser: AuthUser) => {
-        this.authUser = authUser;
-      });
-
+  async componentWillLoad() {
     this.apiUserService
       .watch()
       .pipe(
@@ -279,7 +263,7 @@ export class AppHome {
       this.apiUser.username = this.apiUsername;
 
       try {
-        await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
+        await this.apiUserService.put(this.apiUser, authStore.state.authUser.token, this.apiUser.id);
 
         resolve();
       } catch (err) {
@@ -342,10 +326,10 @@ export class AppHome {
 
         if (firebaseUser) {
           // We need the user token to access the API, therefore delete it here first
-          await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
+          await this.apiUserService.delete(this.apiUser.id, authStore.state.authUser.token);
 
           // Then delete the user
-          await this.userService.delete(this.authUser.uid);
+          await this.userService.delete(authStore.state.authUser.uid);
 
           // Decks and slides are delete with a cloud function triggered on auth.delete
 
@@ -398,7 +382,7 @@ export class AppHome {
   }
 
   private renderGuardedContent() {
-    if (!this.authUser) {
+    if (!authStore.state.authUser || authStore.state.anonymous) {
       return this.renderNotLoggedInContent();
     } else {
       return [this.renderUserContent(), this.renderDangerZone()];
@@ -542,7 +526,7 @@ export class AppHome {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !this.apiUser || !this.authUser}>
+        disabled={this.saving || !this.apiUser || !authStore.state.authUser}>
         <ion-label>Delete my user</ion-label>
       </ion-button>,
     ];
