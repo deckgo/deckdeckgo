@@ -9,6 +9,8 @@ import {get, set} from 'idb-keyval';
 import {forkJoin, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
+import offlineStore from '../../../../../stores/offline.store';
+
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
@@ -17,7 +19,6 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 import {DemoAction} from '../../../../../utils/editor/demo-action';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
-import {OfflineService} from '../../../../../services/editor/offline/offline.service';
 import {RemoteService} from '../../../../../services/editor/remote/remote.service';
 import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
 
@@ -67,29 +68,18 @@ export class AppActionsDeck {
   @State()
   private fullscreenEnable: boolean = true;
 
-  @State()
-  private offline: boolean = false;
-
   private anonymousService: AnonymousService;
-
-  private offlineService: OfflineService;
-  private offlineSubscription: Subscription;
 
   private remoteService: RemoteService;
   private remoteSubscription: Subscription;
 
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
-    this.offlineService = OfflineService.getInstance();
     this.remoteService = RemoteService.getInstance();
   }
 
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
-
-    this.offlineSubscription = this.offlineService.watchOffline().subscribe((status: OfflineDeck | undefined) => {
-      this.offline = status !== undefined;
-    });
 
     this.remoteSubscription = this.remoteService.watchRequests().subscribe(async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
       if (requests && requests.length > 0) {
@@ -99,10 +89,6 @@ export class AppActionsDeck {
   }
 
   async componentDidUnload() {
-    if (this.offlineSubscription) {
-      this.offlineSubscription.unsubscribe();
-    }
-
     if (this.remoteSubscription) {
       this.remoteSubscription.unsubscribe();
     }
@@ -392,7 +378,7 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
       componentProps: {
-        offline: this.offline,
+        offline: offlineStore.state.offline,
       },
       event: $event,
       mode: 'ios',
@@ -473,7 +459,7 @@ export class AppActionsDeck {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-offline',
       componentProps: {
-        offline: this.offline,
+        offline: offlineStore.state.offline,
       },
       cssClass: 'fullscreen',
     });
@@ -576,8 +562,8 @@ export class AppActionsDeck {
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
-            <ion-icon src={`/assets/icons/ionicons/${this.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
-            {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
+            <ion-icon src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
+            {offlineStore.state.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
           </ion-tab-button>
 
           <app-action-help class="wider-devices"></app-action-help>

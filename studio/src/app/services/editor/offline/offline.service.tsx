@@ -2,10 +2,8 @@ import * as firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
-
-import store from '../../../stores/deck.store';
+import deckStore from '../../../stores/deck.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
@@ -34,10 +32,6 @@ export class OfflineService {
   private assetsService: AssetsService;
   private fontsService: FontsService;
 
-  private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
-
-  private progressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-
   private constructor() {
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
@@ -55,49 +49,31 @@ export class OfflineService {
   }
 
   async status(): Promise<OfflineDeck> {
-    return new Promise<OfflineDeck>((resolve) => {
-      this.offlineSubject.pipe(take(1)).subscribe(async (offline: OfflineDeck | undefined) => {
-        if (offline === undefined) {
-          const saved: OfflineDeck = await get('deckdeckgo_offline');
+    if (offlineStore.state.offline === undefined) {
+      const saved: OfflineDeck = await get('deckdeckgo_offline');
 
-          this.offlineSubject.next(saved);
+      offlineStore.state.offline = saved ? {...saved} : undefined;
 
-          resolve(saved);
-          return;
-        }
+      return saved;
+    }
 
-        resolve(offline);
-      });
-    });
+    return offlineStore.state.offline;
   }
 
   async init() {
     await this.status();
   }
 
-  watchOffline(): Observable<OfflineDeck | undefined> {
-    return this.offlineSubject.asObservable();
-  }
-
-  watchProgress(): Observable<number> {
-    return this.progressSubject.asObservable();
-  }
-
   private progress(progress: number) {
-    this.progressSubject
-      .asObservable()
-      .pipe(take(1))
-      .subscribe((current: number) => {
-        this.progressSubject.next(current + progress);
-      });
+    offlineStore.state.progress += progress;
   }
 
   private progressStart() {
-    this.progressSubject.next(0);
+    offlineStore.state.progress = 0;
   }
 
   private progressComplete() {
-    this.progressSubject.next(1);
+    offlineStore.state.progress = 1;
   }
 
   save(): Promise<void> {
@@ -131,7 +107,7 @@ export class OfflineService {
 
         this.progressComplete();
 
-        this.offlineSubject.next(undefined);
+        offlineStore.reset();
 
         resolve();
       } catch (err) {
@@ -144,19 +120,19 @@ export class OfflineService {
     return new Promise<void>(async (resolve, reject) => {
       try {
         try {
-          if (!store.state.deck || !store.state.deck.id || !store.state.deck.data) {
+          if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
             reject('No deck found');
             return;
           }
 
           const offline: OfflineDeck = {
-            id: store.state.deck.id,
-            name: store.state.deck.data.name,
+            id: deckStore.state.deck.id,
+            name: deckStore.state.deck.data.name,
           };
 
           await set('deckdeckgo_offline', offline);
 
-          this.offlineSubject.next(offline);
+          offlineStore.state.offline = {...offline};
 
           this.progressComplete();
 
@@ -369,18 +345,18 @@ export class OfflineService {
   private saveDeck(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        if (!store.state.deck || !store.state.deck.id || !store.state.deck.data) {
+        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
           reject('No deck found');
           return;
         }
 
-        await this.saveSlides(store.state.deck);
+        await this.saveSlides(deckStore.state.deck);
 
-        if (store.state.deck.data.background && OfflineUtils.shouldAttributeBeCleaned(store.state.deck.data.background)) {
-          store.state.deck.data.background = null;
+        if (deckStore.state.deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.background)) {
+          deckStore.state.deck.data.background = null;
         }
 
-        await set(`/decks/${store.state.deck.id}`, store.state.deck);
+        await set(`/decks/${deckStore.state.deck.id}`, deckStore.state.deck);
 
         this.progress(0.5);
 
@@ -441,18 +417,18 @@ export class OfflineService {
   private uploadData(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        if (!store.state.deck || !store.state.deck.id || !store.state.deck.data) {
+        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
           reject('No deck found');
           return;
         }
 
-        await this.uploadSlides(store.state.deck);
+        await this.uploadSlides(deckStore.state.deck);
 
-        await this.deleteSlides(store.state.deck);
+        await this.deleteSlides(deckStore.state.deck);
 
-        const persistedDeck: Deck = await this.uploadDeck(store.state.deck);
+        const persistedDeck: Deck = await this.uploadDeck(deckStore.state.deck);
 
-        store.state.deck = {...persistedDeck};
+        deckStore.state.deck = {...persistedDeck};
 
         resolve();
       } catch (err) {

@@ -1,8 +1,7 @@
 import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
-import store from '../../../../stores/error.store';
-
-import {Subscription} from 'rxjs';
+import errorStore from '../../../../stores/error.store';
+import offlineStore from '../../../../stores/offline.store';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
 
@@ -19,27 +18,10 @@ export class AppGoOffline {
   @Event()
   private inProgress: EventEmitter<boolean>;
 
-  @State()
-  private progress: number = 0;
-
   private offlineService: OfflineService;
-
-  private progressSubscription: Subscription;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
-  }
-
-  componentWillLoad() {
-    this.progressSubscription = this.offlineService.watchProgress().subscribe((progress: number) => {
-      this.progress = progress;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.progressSubscription) {
-      this.progressSubscription.unsubscribe();
-    }
   }
 
   private async goOffline() {
@@ -53,7 +35,7 @@ export class AppGoOffline {
     } catch (err) {
       this.goingOffline = false;
       this.inProgress.emit(false);
-      store.state.error = 'Apologies, something went wrong and app was unable to go offline.';
+      errorStore.state.error = 'Apologies, something went wrong and app was unable to go offline.';
     }
   }
 
@@ -83,7 +65,7 @@ export class AppGoOffline {
     } else {
       return (
         <div class="in-progress">
-          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+          <ion-progress-bar value={offlineStore.state.progress} color="tertiary"></ion-progress-bar>
           <ion-label>Hang on, we are gathering the content.</ion-label>
         </div>
       );
