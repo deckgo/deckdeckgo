@@ -5,9 +5,10 @@ import '@firebase/auth';
 
 import {filter, take} from 'rxjs/operators';
 
-import store from '../../../stores/deck.store';
-
 import {del, get, set} from 'idb-keyval';
+
+import deckStore from '../../../stores/deck.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
@@ -15,7 +16,6 @@ import {Utils} from '../../../utils/core/utils';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {AuthService} from '../../../services/auth/auth.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
@@ -36,8 +36,6 @@ export class AppSignIn {
   @State()
   private signInInProgress: boolean = false;
 
-  private navService: NavService;
-
   private userService: UserService;
   private authService: AuthService;
   private deckService: DeckService;
@@ -45,7 +43,6 @@ export class AppSignIn {
   private firebaseUser: firebase.User;
 
   constructor() {
-    this.navService = NavService.getInstance();
     this.deckService = DeckService.getInstance();
     this.userService = UserService.getInstance();
     this.authService = AuthService.getInstance();
@@ -202,7 +199,7 @@ export class AppSignIn {
         .pipe(take(1))
         .subscribe(async (authUser: AuthUser) => {
           await set('deckdeckgo_redirect_info', {
-            deckId: store.state.deck ? store.state.deck.id : null,
+            deckId: deckStore.state.deck ? deckStore.state.deck.id : null,
             userId: authUser ? authUser.uid : null,
             userToken: authUser ? authUser.token : null,
             anonymous: authUser ? authUser.anonymous : true,
@@ -229,16 +226,16 @@ export class AppSignIn {
     const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
 
     // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
-    this.navService.navigate({
+    navStore.state.nav = {
       url: url,
       direction: NavDirection.ROOT,
-    });
+    };
   }
 
   async navigateBack() {
-    this.navService.navigate({
+    navStore.state.nav = {
       direction: NavDirection.BACK,
-    });
+    };
   }
 
   render() {

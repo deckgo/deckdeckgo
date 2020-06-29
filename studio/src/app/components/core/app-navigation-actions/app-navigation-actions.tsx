@@ -5,6 +5,7 @@ import {popoverController} from '@ionic/core';
 import {Subscription} from 'rxjs';
 
 import state from '../../../stores/theme.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
@@ -12,7 +13,6 @@ import {User} from '../../../models/data/user';
 import {Utils} from '../../../utils/core/utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {UserService} from '../../../services/data/user/user.service';
 
 @Component({
@@ -27,8 +27,6 @@ export class AppNavigationActions {
 
   private authService: AuthService;
   private subscription: Subscription;
-
-  private navService: NavService;
 
   private userService: UserService;
   private userSubscription: Subscription;
@@ -46,7 +44,6 @@ export class AppNavigationActions {
 
   constructor() {
     this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
     this.userService = UserService.getInstance();
   }
 
@@ -82,10 +79,10 @@ export class AppNavigationActions {
   }
 
   private async navigateSignIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
-    });
+    };
   }
 
   render() {

@@ -13,12 +13,12 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -42,8 +42,6 @@ export class AppDashboard {
 
   private authService: AuthService;
 
-  private navService: NavService;
-
   private deckService: DeckService;
   private slideService: SlideService;
 
@@ -54,7 +52,6 @@ export class AppDashboard {
 
   constructor() {
     this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
@@ -223,10 +220,10 @@ export class AppDashboard {
   }
 
   private async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
-    });
+    };
   }
 
   private async filterDecksOnChange(e: CustomEvent) {
@@ -258,17 +255,17 @@ export class AppDashboard {
 
     const url: string = `/editor/${deck.deck.id}`;
 
-    this.navService.navigate({
+    navStore.state.nav = {
       url: url,
       direction: NavDirection.ROOT,
-    });
+    };
   }
 
   private async navigateEditor() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/editor',
       direction: NavDirection.ROOT,
-    });
+    };
   }
 
   private removeDeletedDeck($event: CustomEvent): Promise<void> {

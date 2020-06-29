@@ -2,17 +2,19 @@ import {Component, Element, State, h} from '@stencil/core';
 
 import {Subscription} from 'rxjs';
 
+import store from '../../../stores/nav.store';
+
 import {AuthUser} from '../../../models/auth/auth.user';
 
 import {Utils} from '../../../utils/core/utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {NavDirection} from '../../../stores/nav.store';
 
 @Component({
   tag: 'app-menu',
   styleUrl: 'app-menu.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppMenu {
   @Element() el: HTMLElement;
@@ -20,14 +22,11 @@ export class AppMenu {
   private authService: AuthService;
   private authSubscription: Subscription;
 
-  private navService: NavService;
-
   @State()
   private authUser: AuthUser;
 
   constructor() {
     this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
   }
 
   componentWillLoad() {
@@ -43,19 +42,19 @@ export class AppMenu {
   }
 
   private async signIn() {
-    this.navService.navigate({
+    store.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
-    });
+      direction: NavDirection.FORWARD,
+    };
   }
 
   private async signOut() {
     await this.authService.signOut();
 
-    this.navService.navigate({
+    store.state.nav = {
       url: '/',
-      direction: NavDirection.ROOT
-    });
+      direction: NavDirection.ROOT,
+    };
   }
 
   render() {

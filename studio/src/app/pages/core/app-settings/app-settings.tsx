@@ -8,6 +8,7 @@ import '@firebase/auth';
 
 import state from '../../../stores/theme.store';
 import errorStore from '../../../stores/error.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 import {ApiUser} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
@@ -17,7 +18,6 @@ import {UserUtils} from '../../../utils/core/user-utils';
 
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {StorageService} from '../../../services/storage/storage.service';
@@ -57,8 +57,6 @@ export class AppHome {
   private userService: UserService;
   private apiUserService: ApiUserService;
 
-  private navService: NavService;
-
   private imageHistoryService: ImageHistoryService;
 
   private profilePicture: File;
@@ -88,7 +86,6 @@ export class AppHome {
   constructor() {
     this.authService = AuthService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
-    this.navService = NavService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = UserService.getInstance();
     this.storageService = StorageService.getInstance();
@@ -148,10 +145,10 @@ export class AppHome {
   }
 
   private async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
-    });
+    };
   }
 
   @Listen('keydown')
@@ -357,10 +354,10 @@ export class AppHome {
 
         await this.imageHistoryService.clear();
 
-        this.navService.navigate({
+        navStore.state.nav = {
           url: '/',
           direction: NavDirection.ROOT,
-        });
+        };
 
         await loading.dismiss();
 

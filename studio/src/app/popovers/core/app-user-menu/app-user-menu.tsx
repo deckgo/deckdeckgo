@@ -1,24 +1,23 @@
 import {Component, Element, h} from '@stencil/core';
 
+import navStore, {NavDirection} from '../../../stores/nav.store';
+
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
   tag: 'app-user-menu',
-  styleUrl: 'app-user-menu.scss'
+  styleUrl: 'app-user-menu.scss',
 })
 export class AppUserMenu {
   @Element() el: HTMLElement;
 
   private authService: AuthService;
-  private navService: NavService;
 
   private imageHistoryService: ImageHistoryService;
 
   constructor() {
     this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
@@ -28,10 +27,10 @@ export class AppUserMenu {
 
     await this.closePopover();
 
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/',
-      direction: NavDirection.ROOT
-    });
+      direction: NavDirection.ROOT,
+    };
   }
 
   async closePopover() {
@@ -39,10 +38,10 @@ export class AppUserMenu {
   }
 
   private async navigateEditor() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/editor',
-      direction: NavDirection.ROOT
-    });
+      direction: NavDirection.ROOT,
+    };
 
     await this.closePopover();
   }

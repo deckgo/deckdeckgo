@@ -194,9 +194,6 @@ export class DeckEventsHandler {
 
         if (slide.getAttribute('slide_id')) {
           // !isNew
-
-          console.log('yolo', slide, {...slide});
-
           busyStore.state.slideEditable = slide;
 
           resolve();

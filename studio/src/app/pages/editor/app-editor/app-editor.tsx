@@ -4,8 +4,9 @@ import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ioni
 
 import {filter, take} from 'rxjs/operators';
 
-import store from '../../../stores/deck.store';
+import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
@@ -34,7 +35,6 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -79,7 +79,6 @@ export class AppEditor {
 
   private authService: AuthService;
   private anonymousService: AnonymousService;
-  private navService: NavService;
 
   private offlineService: OfflineService;
 
@@ -103,7 +102,6 @@ export class AppEditor {
   constructor() {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
-    this.navService = NavService.getInstance();
     this.offlineService = OfflineService.getInstance();
     this.fontsService = FontsService.getInstance();
   }
@@ -156,8 +154,6 @@ export class AppEditor {
       });
 
     busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
-      console.log('yo', slide, slide !== undefined);
-
       this.slidesEditable = true;
 
       await this.contentEditable(slide);
@@ -183,7 +179,7 @@ export class AppEditor {
 
     await this.remoteEventsHandler.destroy();
 
-    store.reset();
+    deckStore.reset();
   }
 
   async componentDidLoad() {
@@ -267,17 +263,17 @@ export class AppEditor {
   }
 
   private async initDeckStyle() {
-    if (store.state.deck && store.state.deck.data && store.state.deck.data.attributes && store.state.deck.data.attributes.style) {
-      this.style = await convertStyle(store.state.deck.data.attributes.style);
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.style) {
+      this.style = await convertStyle(deckStore.state.deck.data.attributes.style);
     } else {
       this.style = undefined;
     }
 
-    if (store.state.deck && store.state.deck.data && store.state.deck.data.attributes && store.state.deck.data.attributes.transition) {
-      this.transition = store.state.deck.data.attributes.transition;
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.transition) {
+      this.transition = deckStore.state.deck.data.attributes.transition;
     }
 
-    this.background = await ParseBackgroundUtils.convertBackground(store.state.deck.data.background, true);
+    this.background = await ParseBackgroundUtils.convertBackground(deckStore.state.deck.data.background, true);
 
     const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
     await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
@@ -571,10 +567,10 @@ export class AppEditor {
 
   @Listen('signIn', {target: 'document'})
   async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
-    });
+    };
   }
 
   private contentEditable(slide: HTMLElement): Promise<void> {
