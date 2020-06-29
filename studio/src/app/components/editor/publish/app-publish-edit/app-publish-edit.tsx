@@ -6,6 +6,7 @@ import {debounceTime, filter, take} from 'rxjs/operators';
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
+import publishStore from '../../../../stores/publish.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -59,11 +60,6 @@ export class AppPublishEdit {
 
   private publishService: PublishService;
 
-  @State()
-  private progress: number = 0;
-
-  private progressSubscription: Subscription;
-
   constructor() {
     this.deckService = DeckService.getInstance();
 
@@ -74,10 +70,6 @@ export class AppPublishEdit {
 
   async componentWillLoad() {
     await this.init();
-
-    this.progressSubscription = this.publishService.watchProgress().subscribe((progress: number) => {
-      this.progress = progress;
-    });
 
     this.apiUserService
       .watch()
@@ -117,10 +109,6 @@ export class AppPublishEdit {
   componentDidUnload() {
     if (this.updateDeckSubscription) {
       this.updateDeckSubscription.unsubscribe();
-    }
-
-    if (this.progressSubscription) {
-      this.progressSubscription.unsubscribe();
     }
   }
 
@@ -437,7 +425,7 @@ export class AppPublishEdit {
     } else {
       return (
         <div class="publishing">
-          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+          <ion-progress-bar value={publishStore.state.progress} color="tertiary"></ion-progress-bar>
           <ion-label>Hang on, we are publishing your presentation</ion-label>
         </div>
       );

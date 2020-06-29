@@ -1,10 +1,10 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Observable, Subject} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import store from '../../../stores/deck.store';
+import deckStore from '../../../stores/deck.store';
+import publishStore from '../../../stores/publish.store';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
@@ -37,8 +37,6 @@ export class PublishService {
 
   private fontsService: FontsService;
 
-  private progressSubject: Subject<number> = new Subject<number>();
-
   private constructor() {
     this.apiPresentationService = ApiPresentationFactoryService.getInstance();
 
@@ -57,16 +55,12 @@ export class PublishService {
     return PublishService.instance;
   }
 
-  watchProgress(): Observable<number> {
-    return this.progressSubject.asObservable();
-  }
-
   private progress(progress: number) {
-    this.progressSubject.next(progress);
+    publishStore.state.progress = progress;
   }
 
   private progressComplete() {
-    this.progressSubject.next(1);
+    publishStore.state.progress = 1;
   }
 
   // TODO: Move in a cloud functions?
@@ -75,17 +69,17 @@ export class PublishService {
       this.progress(0);
 
       try {
-        if (!store.state.deck || !store.state.deck.id || !store.state.deck.data) {
+        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
           this.progressComplete();
           reject('No deck found');
           return;
         }
 
-        const apiDeck: ApiDeck = await this.convertDeck(store.state.deck, description);
+        const apiDeck: ApiDeck = await this.convertDeck(deckStore.state.deck, description);
 
         this.progress(0.25);
 
-        const apiDeckPublish: ApiPresentation = await this.publishDeck(store.state.deck, apiDeck);
+        const apiDeckPublish: ApiPresentation = await this.publishDeck(deckStore.state.deck, apiDeck);
 
         this.progress(0.5);
 
@@ -97,19 +91,19 @@ export class PublishService {
 
         this.progress(0.75);
 
-        const newApiId: boolean = store.state.deck.data.api_id !== apiDeckPublish.id;
+        const newApiId: boolean = deckStore.state.deck.data.api_id !== apiDeckPublish.id;
         if (newApiId) {
-          store.state.deck.data.api_id = apiDeckPublish.id;
+          deckStore.state.deck.data.api_id = apiDeckPublish.id;
 
-          const updatedDeck: Deck = await this.deckService.update(store.state.deck);
-          store.state.deck = {...updatedDeck};
+          const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+          deckStore.state.deck = {...updatedDeck};
         }
 
         this.progress(0.8);
 
         const publishedUrl: string = apiDeckPublish.url;
 
-        await this.delayUpdateMeta(store.state.deck, publishedUrl, description, tags, newApiId);
+        await this.delayUpdateMeta(deckStore.state.deck, publishedUrl, description, tags, newApiId);
 
         resolve(publishedUrl);
       } catch (err) {
@@ -368,7 +362,7 @@ export class PublishService {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const freshDeck: Deck = await this.deckService.get(deckId);
-        store.state.deck = {...freshDeck};
+        deckStore.state.deck = {...freshDeck};
 
         resolve();
       } catch (err) {
