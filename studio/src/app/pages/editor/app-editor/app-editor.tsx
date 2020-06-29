@@ -2,10 +2,10 @@ import {Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {Subscription} from 'rxjs';
 import {filter, take} from 'rxjs/operators';
 
 import store from '../../../stores/deck.store';
+import busyStore from '../../../stores/busy.store';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
@@ -35,7 +35,6 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {BusyService} from '../../../services/editor/busy/busy.service';
 
 import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -82,9 +81,6 @@ export class AppEditor {
   private anonymousService: AnonymousService;
   private navService: NavService;
 
-  private busySubscription: Subscription;
-  private busyService: BusyService;
-
   private offlineService: OfflineService;
 
   private fontsService: FontsService;
@@ -108,7 +104,6 @@ export class AppEditor {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
     this.navService = NavService.getInstance();
-    this.busyService = BusyService.getInstance();
     this.offlineService = OfflineService.getInstance();
     this.fontsService = FontsService.getInstance();
   }
@@ -160,7 +155,9 @@ export class AppEditor {
         this.slidesFetched = true;
       });
 
-    this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
+    busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
+      console.log('yo', slide, slide !== undefined);
+
       this.slidesEditable = true;
 
       await this.contentEditable(slide);
@@ -185,10 +182,6 @@ export class AppEditor {
     this.chartEventsHandler.destroy();
 
     await this.remoteEventsHandler.destroy();
-
-    if (this.busySubscription) {
-      this.busySubscription.unsubscribe();
-    }
 
     store.reset();
   }

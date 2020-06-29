@@ -2,21 +2,20 @@ import {EventEmitter} from '@stencil/core';
 
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
+import busyStore from '../../stores/busy.store';
+
 import {ShapeAction, ShapeActionSVG} from '../../utils/editor/shape-action';
 import {ImageAction} from '../../utils/editor/image-action';
 import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 import {EditAction} from '../../utils/editor/edit-action';
 
-import {BusyService} from '../../services/editor/busy/busy.service';
 import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
 
 export class ShapeHelper {
-  private busyService: BusyService;
   private anonymousService: AnonymousService;
 
   constructor(private didChange: EventEmitter<HTMLElement>, private signIn: EventEmitter<void>) {
-    this.busyService = BusyService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
   }
 
@@ -29,7 +28,7 @@ export class ShapeHelper {
   }
 
   private async appendShapeSVG(slideElement: HTMLElement, shapeAction: ShapeActionSVG) {
-    this.busyService.deckBusy(true);
+    busyStore.state.deckBusy = true;
 
     await this.appendContentShape(slideElement, shapeAction.ratio, shapeAction.src, shapeAction.label, 'svg');
   }
@@ -47,7 +46,7 @@ export class ShapeHelper {
   }
 
   async cloneShape(shapeElement: HTMLElement) {
-    this.busyService.deckBusy(true);
+    busyStore.state.deckBusy = true;
 
     await this.cloneShapeElement(shapeElement);
   }
@@ -56,7 +55,7 @@ export class ShapeHelper {
     const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
     if (deckgImg !== undefined) {
-      this.busyService.deckBusy(true);
+      busyStore.state.deckBusy = true;
 
       await this.appendContentShape(slideElement, 1, deckgImg.src, deckgImg.label, 'img');
     }
@@ -75,7 +74,7 @@ export class ShapeHelper {
 
   private async openModal(slideElement: HTMLElement, componentTag: string) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: componentTag
+      component: componentTag,
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

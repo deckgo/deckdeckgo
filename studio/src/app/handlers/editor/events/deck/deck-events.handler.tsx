@@ -5,6 +5,7 @@ import {debounceTime, filter, take} from 'rxjs/operators';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
+import busyStore from '../../../../stores/busy.store';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
@@ -20,15 +21,12 @@ import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
-import {BusyService} from '../../../../services/editor/busy/busy.service';
 import {AuthService} from '../../../../services/auth/auth.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
 
 export class DeckEventsHandler {
   private el: HTMLElement;
-
-  private busyService: BusyService;
 
   private authService: AuthService;
 
@@ -42,8 +40,6 @@ export class DeckEventsHandler {
   private slideService: SlideService;
 
   constructor() {
-    this.busyService = BusyService.getInstance();
-
     this.authService = AuthService.getInstance();
 
     this.deckService = DeckService.getInstance();
@@ -198,13 +194,16 @@ export class DeckEventsHandler {
 
         if (slide.getAttribute('slide_id')) {
           // !isNew
-          this.busyService.slideEditable(slide);
+
+          console.log('yolo', slide, {...slide});
+
+          busyStore.state.slideEditable = slide;
 
           resolve();
           return;
         }
 
-        this.busyService.deckBusy(true);
+        busyStore.state.deckBusy = true;
 
         if (!deckStore.state.deck) {
           const persistedDeck: Deck = await this.createDeck();
@@ -217,12 +216,12 @@ export class DeckEventsHandler {
         // But maybe in the future it is something which could be moved to the cloud.
         await this.updateDeckSlideList(deckStore.state.deck, persistedSlide);
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve();
       }
     });
@@ -250,7 +249,7 @@ export class DeckEventsHandler {
       if (persistedSlide && persistedSlide.id) {
         slide.setAttribute('slide_id', persistedSlide.id);
 
-        this.busyService.slideEditable(slide);
+        busyStore.state.slideEditable = slide;
       }
 
       resolve(persistedSlide);
@@ -342,7 +341,7 @@ export class DeckEventsHandler {
           return;
         }
 
-        this.busyService.deckBusy(true);
+        busyStore.state.deckBusy = true;
 
         const currentDeck: Deck | null = deckStore.state.deck;
 
@@ -363,12 +362,12 @@ export class DeckEventsHandler {
 
         deckStore.state.deck = {...updatedDeck};
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve();
       }
     });
@@ -382,7 +381,7 @@ export class DeckEventsHandler {
           return;
         }
 
-        this.busyService.deckBusy(true);
+        busyStore.state.deckBusy = true;
 
         const currentDeck: Deck | null = deckStore.state.deck;
 
@@ -402,12 +401,12 @@ export class DeckEventsHandler {
         const updatedDeck: Deck = await this.deckService.update(currentDeck);
         deckStore.state.deck = {...updatedDeck};
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve();
       }
     });
@@ -452,12 +451,12 @@ export class DeckEventsHandler {
           await this.slideService.update(deckStore.state.deck.id, slideUpdate);
         }
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve();
       }
     });
@@ -503,12 +502,12 @@ export class DeckEventsHandler {
 
         await this.deleteSlideElement();
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve();
       }
     });

@@ -2,26 +2,22 @@ import {JSX} from '@stencil/core';
 
 import store from '../../stores/deck.store';
 import errorStore from '../../stores/error.store';
+import busyStore from '../../stores/busy.store';
 
 import {Slide} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 
-import {BusyService} from '../../services/editor/busy/busy.service';
 import {DeckService} from '../../services/data/deck/deck.service';
 import {SlideService} from '../../services/data/slide/slide.service';
 
 export class EditorHelper {
-  private busyService: BusyService;
-
   private slideService: SlideService;
   private deckService: DeckService;
 
   constructor() {
     this.slideService = SlideService.getInstance();
-
-    this.busyService = BusyService.getInstance();
 
     this.deckService = DeckService.getInstance();
   }
@@ -34,7 +30,7 @@ export class EditorHelper {
         return;
       }
 
-      this.busyService.deckBusy(true);
+      busyStore.state.deckBusy = true;
 
       try {
         const deck: Deck = await this.deckService.get(deckId);
@@ -67,12 +63,12 @@ export class EditorHelper {
           return;
         }
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve(parsedSlides);
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve(null);
       }
     });
@@ -115,12 +111,12 @@ export class EditorHelper {
           element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
         }
 
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
 
         resolve(element);
       } catch (err) {
         errorStore.state.error = err;
-        this.busyService.deckBusy(false);
+        busyStore.state.deckBusy = false;
         resolve(null);
       }
     });
