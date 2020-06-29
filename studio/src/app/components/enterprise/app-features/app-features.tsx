@@ -15,13 +15,13 @@ export class AppFeatures {
           <article>
             <h3>Edit anywhere</h3>
 
-            <p>The editor is available anywhere, it is a Progressive Web Apps!</p>
+            <p>The editor is available anywhere, it is a Progressive Web App!</p>
           </article>
 
           <article>
             <h3>Showcase everywhere</h3>
 
-            <p>Presentations work on any device. These are published are standalone apps.</p>
+            <p>Presentations work on phones, tablets, computers and more. They are published as standalone apps.</p>
           </article>
 
           <article>
@@ -33,7 +33,7 @@ export class AppFeatures {
           <article>
             <h3>Share standalone apps</h3>
 
-            <p>Your presentation are published as standalone Progressive Web Apps. It only needs a link to share them.</p>
+            <p>Your presentation are published as standalone Progressive Web Apps. Share them by sending your friends a link.</p>
           </article>
 
           <article>
@@ -41,7 +41,7 @@ export class AppFeatures {
               Share privately <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Create private links to restrain the access to your published content.</p>
+            <p>Create private links to prevent access to your published content.</p>
           </article>
 
           <article>
@@ -49,13 +49,13 @@ export class AppFeatures {
               Export to PDF <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>If you rather like PDF over apps.</p>
+            <p>If you like PDF more than apps.</p>
           </article>
 
           <article>
             <h3>Polls</h3>
 
-            <p>Engage your audience in real time. Involve them to contribute to your presentations with their smartphones and show the results live.</p>
+            <p>Engage with your audience in real time. Get them involved during your presentations with their smartphones and show the results live.</p>
           </article>
 
           <article>
@@ -71,7 +71,7 @@ export class AppFeatures {
               Unbreakable templates <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Distribute and keep up-to-date your corporate identity and design across all your company's presentations.</p>
+            <p>Keep your corporate identity and design up-to-date across all presentations and share them easily.</p>
           </article>
 
           <article>
@@ -89,19 +89,19 @@ export class AppFeatures {
           <article>
             <h3>Cloud library</h3>
 
-            <p>All images or data your are uploading are saved in your personal cloud storage and available to all your slides.</p>
+            <p>All data (text, images, etc) your upload are saved in your personal cloud storage and available to all slides.</p>
           </article>
 
           <article>
             <h3>Youtube</h3>
 
-            <p>Embed easily Youtube videos. Play and pause through the remote control.</p>
+            <p>Embed YouTube videos easily. Play and pause through the remote control.</p>
           </article>
 
           <article>
             <h3>Unsplash and Giphy</h3>
 
-            <p>Search and integrate freely stock photos and gifs.</p>
+            <p>Search and integrate stock photos and gifs.</p>
           </article>
 
           <article>
@@ -127,13 +127,13 @@ export class AppFeatures {
           <article>
             <h3>Transition</h3>
 
-            <p>Make individual text element appear one after the others.</p>
+            <p>Make individual text elements appear one after the others.</p>
           </article>
 
           <article>
             <h3>Math</h3>
 
-            <p>Render math formula with Katex in your slides.</p>
+            <p>Render Math formulas with Katex in your slides.</p>
           </article>
 
           <article>
@@ -147,7 +147,7 @@ export class AppFeatures {
           <article>
             <h3>Remote control</h3>
 
-            <p>Remote control your presentations, draw over your slides and set timer from your phone, tablet or any devices.</p>
+            <p>Control your presentations remotely, draw over your slides and set a timer from your phone or tablet.</p>
           </article>
 
           <article>
@@ -171,7 +171,7 @@ export class AppFeatures {
               Custom domain <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Publish your decks under with your org domain name.</p>
+            <p>Publish your decks under your own domain name.</p>
           </article>
 
           <article>
@@ -187,7 +187,7 @@ export class AppFeatures {
               Collaborate <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Multiple concurrent users can edit the same presentation at the same time.</p>
+            <p>Multiple users can edit a presentation at the same time.</p>
           </article>
 
           <article>
@@ -203,7 +203,7 @@ export class AppFeatures {
           <article>
             <h3>Developer Kit</h3>
 
-            <p>You rather like to code your presentation with HTML or Markdown? All public features used by our editor are available in a developer kit.</p>
+            <p>Would you rather prepare your presentation with HTML or Markdown? All public features used by our editor are available as a developer kit.</p>
           </article>
 
           <article>
@@ -217,7 +217,7 @@ export class AppFeatures {
               .
             </p>
 
-            <p>We encourage enterprise to adopt this approach but we do understand if you rather like to keep your corporate templates private.</p>
+            <p>We encourage enterprise to adopt this approach but we do understand if you prefer to keep your corporate templates private.</p>
           </article>
 
           <p>
