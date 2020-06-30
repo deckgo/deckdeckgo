@@ -1,11 +1,9 @@
-import {Observable, ReplaySubject} from 'rxjs';
+import themeStore from '../../stores/theme.store';
 
 import {get, set} from 'idb-keyval';
 
 export class ThemeService {
   private static instance: ThemeService;
-
-  private darkTheme: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   private constructor() {
     // Private constructor, singleton
@@ -18,12 +16,8 @@ export class ThemeService {
     return ThemeService.instance;
   }
 
-  watch(): Observable<boolean> {
-    return this.darkTheme.asObservable();
-  }
-
   async switch(dark: boolean) {
-    this.darkTheme.next(dark);
+    themeStore.state.darkTheme = dark;
 
     try {
       await set('deckdeckgo_dark_mode', dark);
@@ -38,17 +32,17 @@ export class ThemeService {
 
       // If user already specified once a preference, we use that as default
       if (savedDarkModePreference !== undefined) {
-        this.switch(savedDarkModePreference);
+        await this.switch(savedDarkModePreference);
         return;
       }
     } catch (err) {
-      this.switch(false);
+      await this.switch(false);
       return;
     }
 
     // Otherwise we check the prefers-color-scheme of the OS
     const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
-    this.switch(darkModePreferenceFromMedia.matches);
+    await this.switch(darkModePreferenceFromMedia.matches);
   }
 }

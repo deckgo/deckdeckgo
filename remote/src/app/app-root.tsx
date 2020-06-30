@@ -1,7 +1,5 @@
 import {Build, Component, h, State} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
 import {TimerService} from './services/timer/timer.service';
 import {AccelerometerService} from './services/accelerometer/accelerometer.service';
 import {ThemeService} from './services/theme/theme.service';
@@ -14,10 +12,7 @@ export class AppRoot {
   private timerService: TimerService;
   private accelerometerService: AccelerometerService;
 
-  private themeSubscription: Subscription;
   private themeService: ThemeService;
-
-  private domBodyClassList: DOMTokenList = document.body.classList;
 
   @State()
   private loading: boolean = true;
@@ -29,10 +24,6 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
-      this.updateDarkModePreferences(dark);
-    });
-
     await this.themeService.initDarkModePreference();
   }
 
@@ -48,14 +39,6 @@ export class AppRoot {
 
   async componentDidUnload() {
     await this.timerService.destroy();
-
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
-  }
-
-  private updateDarkModePreferences(dark: boolean) {
-    dark ? this.domBodyClassList.add('dark') : this.domBodyClassList.remove('dark');
   }
 
   render() {
