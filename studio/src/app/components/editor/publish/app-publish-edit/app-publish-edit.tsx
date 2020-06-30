@@ -1,23 +1,19 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
-import {filter, take} from 'rxjs/operators';
-
 import {debounce} from '@deckdeckgo/utils';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
 import publishStore from '../../../../stores/publish.store';
+import apiUserStore from '../../../../stores/api.user.store';
 
 import {Deck} from '../../../../models/data/deck';
 
 import {Resources} from '../../../../utils/core/resources';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
-import {ApiUser} from '../../../../models/api/api.user';
-import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
-import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -55,15 +51,10 @@ export class AppPublishEdit {
 
   @Event() private published: EventEmitter<string>;
 
-  private apiUser: ApiUser;
-  private apiUserService: ApiUserService;
-
   private publishService: PublishService;
 
   constructor() {
     this.deckService = DeckService.getInstance();
-
-    this.apiUserService = ApiUserFactoryService.getInstance();
 
     this.publishService = PublishService.getInstance();
 
@@ -74,16 +65,6 @@ export class AppPublishEdit {
 
   async componentWillLoad() {
     await this.init();
-
-    this.apiUserService
-      .watch()
-      .pipe(
-        filter((apiUser: ApiUser) => apiUser !== null && apiUser !== undefined && !apiUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (apiUser: ApiUser) => {
-        this.apiUser = apiUser;
-      });
   }
 
   componentDidLoad() {
@@ -409,7 +390,7 @@ export class AppPublishEdit {
   private renderPublish() {
     if (!this.publishing) {
       return (
-        <ion-button type="submit" disabled={!this.valid || this.disablePublish || !this.apiUser} color="tertiary" shape="round">
+        <ion-button type="submit" disabled={!this.valid || this.disablePublish || !apiUserStore.state.apiUser} color="tertiary" shape="round">
           <ion-label>Publish now</ion-label>
         </ion-button>
       );

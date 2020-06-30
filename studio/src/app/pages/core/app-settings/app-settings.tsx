@@ -1,8 +1,6 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
 import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {filter, take} from 'rxjs/operators';
-
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
@@ -11,6 +9,7 @@ import errorStore from '../../../stores/error.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
+import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUser} from '../../../models/api/api.user';
 import {User} from '../../../models/data/user';
@@ -79,7 +78,8 @@ export class AppHome {
   @State()
   private custom: string = undefined;
 
-  private destroyListener;
+  private destroyUserListener;
+  private destroyApiUserListener;
 
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
@@ -89,38 +89,53 @@ export class AppHome {
     this.themeService = ThemeService.getInstance();
   }
 
-  async componentWillLoad() {
-    this.apiUserService
-      .watch()
-      .pipe(
-        filter((apiUser: ApiUser) => apiUser !== null && apiUser !== undefined && !apiUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (apiUser: ApiUser) => {
-        this.apiUser = apiUser;
-
-        this.apiUsername = this.apiUser.username;
-      });
+  async componentDidLoad() {
+    const promises: Promise<void>[] = [this.initUser(), this.initApiUser()];
+    await Promise.all(promises);
   }
 
-  async componentDidLoad() {
+  private async initUser() {
     if (userStore.state.user) {
       await this.initSocial();
     } else {
-      this.destroyListener = userStore.onChange('user', async () => {
+      this.destroyUserListener = userStore.onChange('user', async () => {
         await this.initSocial();
       });
     }
   }
 
-  componentDidUnload() {
-    if (this.destroyListener) {
-      this.destroyListener();
+  private async initApiUser() {
+    if (apiUserStore.state.apiUser) {
+      await this.initUsername();
+    } else {
+      this.destroyApiUserListener = apiUserStore.onChange('apiUser', async () => {
+        await this.initUsername();
+      });
     }
   }
 
+  componentDidUnload() {
+    if (this.destroyUserListener) {
+      this.destroyUserListener();
+    }
+
+    if (this.destroyApiUserListener) {
+      this.destroyApiUserListener();
+    }
+  }
+
+  private initUsername() {
+    if (!apiUserStore.state.apiUser || apiUserStore.state.apiUser === undefined || apiUserStore.state.apiUser.anonymous) {
+      return;
+    }
+
+    this.apiUser = apiUserStore.state.apiUser;
+
+    this.apiUsername = this.apiUser.username;
+  }
+
   private async initSocial() {
-    if (!userStore.state.user || !userStore.state.user.data || userStore.state.user.data.anonymous) {
+    if (!userStore.state.user || userStore.state.user === undefined || !userStore.state.user.data || userStore.state.user.data.anonymous) {
       return;
     }
 
