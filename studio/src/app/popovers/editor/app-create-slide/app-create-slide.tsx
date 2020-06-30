@@ -1,10 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
 
 import {interval, Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
 
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
+import userStore from '../../../stores/user.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
@@ -14,7 +14,6 @@ import {Deck} from '../../../models/data/deck';
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
 
-import {UserService} from '../../../services/data/user/user.service';
 import {AssetsService} from '../../../services/core/assets/assets.service';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -36,9 +35,6 @@ export class AppCreateSlide {
   @Element() el: HTMLElement;
 
   @State()
-  private photoUrl: string;
-
-  @State()
   private assets: Assets | undefined = undefined;
 
   @State()
@@ -52,28 +48,13 @@ export class AppCreateSlide {
 
   private user: User;
 
-  private userService: UserService;
-
   @Event() signIn: EventEmitter<void>;
 
   private timerSubscription: Subscription;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-  constructor() {
-    this.userService = UserService.getInstance();
-  }
-
   async componentWillLoad() {
-    this.userService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (user: User) => {
-        this.user = user;
-        this.photoUrl =
-          user && user.data && user.data.photo_url ? user.data.photo_url : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg';
-      });
-
     this.assets = await AssetsService.getInstance().assets();
   }
 
@@ -768,7 +749,14 @@ export class AppCreateSlide {
 
     return (
       <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
-        <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">
+        <deckgo-slide-author
+          class="showcase"
+          img-src={
+            userStore.state.user && userStore.state.user.data && userStore.state.user.data.photo_url
+              ? userStore.state.user.data.photo_url
+              : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg'
+          }
+          img-alt="Author">
           <p slot="title">Author</p>
           <p slot="author">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>

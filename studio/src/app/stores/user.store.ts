@@ -1,0 +1,25 @@
+import {createStore} from '@stencil/store';
+
+import {User} from '../models/data/user';
+
+interface UserStore {
+  user: User | undefined;
+  photoUrl: string | undefined;
+  loaded: boolean;
+  name: string | undefined;
+}
+
+const {state, onChange, reset} = createStore({
+  user: undefined,
+  photoUrl: undefined,
+  loaded: false,
+  name: undefined,
+} as UserStore);
+
+onChange('user', (user: User | undefined) => {
+  state.photoUrl = user && user.data ? user.data.photo_url : undefined;
+  state.name = user && user.data ? user.data.name : undefined;
+  state.loaded = true;
+});
+
+export default {state, onChange, reset};

@@ -3,12 +3,10 @@ import {Component, Prop, State, h} from '@stencil/core';
 import {Subscription} from 'rxjs';
 
 import authStore from '../../../stores/auth.store';
-
-import {User} from '../../../models/data/user';
+import userStore from '../../../stores/user.store';
 
 import {ApiUser} from '../../../models/api/api.user';
 
-import {UserService} from '../../../services/data/user/user.service';
 import {ApiUserService} from '../../../services/api/user/api.user.service';
 import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
 
@@ -23,41 +21,22 @@ export class AppUserInfo {
   private apiUserService: ApiUserService;
   private apiUserSubscription: Subscription;
 
-  private userService: UserService;
-  private userSubscription: Subscription;
-
   @State()
   private apiUser: ApiUser;
 
-  @State()
-  private name: string;
-
-  @State()
-  private photoUrl: string;
-
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
-    this.userService = UserService.getInstance();
   }
 
   componentWillLoad() {
     this.apiUserSubscription = this.apiUserService.watch().subscribe((user: ApiUser) => {
       this.apiUser = user;
     });
-
-    this.userSubscription = this.userService.watch().subscribe((user: User) => {
-      this.name = user && user.data ? user.data.name : undefined;
-      this.photoUrl = user && user.data ? user.data.photo_url : undefined;
-    });
   }
 
   componentDidUnload() {
     if (this.apiUserSubscription) {
       this.apiUserSubscription.unsubscribe();
-    }
-
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
     }
   }
 
@@ -67,10 +46,10 @@ export class AppUserInfo {
         <ion-grid>
           <ion-row class="ion-align-items-center">
             <ion-col size={'' + this.avatarColSize}>
-              <app-avatar src={this.photoUrl} aria-hidden="true"></app-avatar>
+              <app-avatar src={userStore.state.photoUrl} aria-hidden="true"></app-avatar>
             </ion-col>
             <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
-              <ion-label>{this.name}</ion-label>
+              <ion-label>{userStore.state.name}</ion-label>
               <ion-label>{!authStore.state.authUser.anonymous && this.apiUser && this.apiUser.username ? '@' + this.apiUser.username : undefined}</ion-label>
             </ion-col>
           </ion-row>

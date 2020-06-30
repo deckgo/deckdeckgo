@@ -10,6 +10,7 @@ import themeStore from '../../../stores/theme.store';
 import errorStore from '../../../stores/error.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
+import userStore from '../../../stores/user.store';
 
 import {ApiUser} from '../../../models/api/api.user';
 import {User} from '../../../models/data/user';
@@ -78,6 +79,8 @@ export class AppHome {
   @State()
   private custom: string = undefined;
 
+  private destroyListener;
+
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
@@ -98,34 +101,41 @@ export class AppHome {
 
         this.apiUsername = this.apiUser.username;
       });
-
-    this.userService
-      .watch()
-      .pipe(
-        filter((user: User) => user !== null && user !== undefined && user.data && !user.data.anonymous),
-        take(1)
-      )
-      .subscribe(async (user: User) => {
-        this.user = user;
-
-        await this.initSocial();
-      });
   }
 
-  private initSocial(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.user || !this.user.data || !this.user.data.social) {
-        resolve();
-        return;
-      }
+  async componentDidLoad() {
+    if (userStore.state.user) {
+      await this.initSocial();
+    } else {
+      this.destroyListener = userStore.onChange('user', async () => {
+        await this.initSocial();
+      });
+    }
+  }
 
-      this.twitter = this.user.data.social.twitter;
-      this.linkedin = this.user.data.social.linkedin;
-      this.dev = this.user.data.social.dev;
-      this.medium = this.user.data.social.medium;
-      this.github = this.user.data.social.github;
-      this.custom = this.user.data.social.custom;
-    });
+  componentDidUnload() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+  }
+
+  private async initSocial() {
+    if (!userStore.state.user || !userStore.state.user.data || userStore.state.user.data.anonymous) {
+      return;
+    }
+
+    this.user = {...userStore.state.user};
+
+    if (!userStore.state.user.data.social) {
+      return;
+    }
+
+    this.twitter = this.user.data.social.twitter;
+    this.linkedin = this.user.data.social.linkedin;
+    this.dev = this.user.data.social.dev;
+    this.medium = this.user.data.social.medium;
+    this.github = this.user.data.social.github;
+    this.custom = this.user.data.social.custom;
   }
 
   private async signIn() {

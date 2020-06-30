@@ -1,18 +1,13 @@
-import {Component, Event, EventEmitter, Prop, State, h} from '@stencil/core';
+import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
-
-import {Subscription} from 'rxjs';
 
 import themeStore from '../../../stores/theme.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
-
-import {User} from '../../../models/data/user';
+import userStore from '../../../stores/user.store';
 
 import {Utils} from '../../../utils/core/utils';
-
-import {UserService} from '../../../services/data/user/user.service';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -24,33 +19,7 @@ export class AppNavigationActions {
   @Prop() presentation: boolean = false;
   @Prop() publish: boolean = false;
 
-  private userService: UserService;
-  private userSubscription: Subscription;
-
-  @State()
-  private photoUrl: string;
-
-  @State()
-  private photoUrlLoaded: boolean = false;
-
   @Event() private actionPublish: EventEmitter<void>;
-
-  constructor() {
-    this.userService = UserService.getInstance();
-  }
-
-  componentWillLoad() {
-    this.userSubscription = this.userService.watch().subscribe((user: User) => {
-      this.photoUrl = user && user.data ? user.data.photo_url : undefined;
-      this.photoUrlLoaded = true;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -106,10 +75,10 @@ export class AppNavigationActions {
   }
 
   private renderLoggedIn() {
-    if (Utils.isLoggedIn(authStore.state.authUser) && this.photoUrlLoaded) {
+    if (Utils.isLoggedIn(authStore.state.authUser) && userStore.state.loaded) {
       return (
         <button class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu" tabindex={0}>
-          <app-avatar src={this.photoUrl}></app-avatar>
+          <app-avatar src={userStore.state.photoUrl}></app-avatar>
         </button>
       );
     } else {

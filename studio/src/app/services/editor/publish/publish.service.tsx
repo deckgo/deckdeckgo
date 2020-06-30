@@ -1,22 +1,19 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {take} from 'rxjs/operators';
-
 import deckStore from '../../../stores/deck.store';
 import publishStore from '../../../stores/publish.store';
+import userStore from '../../../stores/user.store';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
 import {Slide, SlideAttributes, SlideTemplate} from '../../../models/data/slide';
-import {User} from '../../../models/data/user';
 
 import {ApiPresentation} from '../../../models/api/api.presentation';
 import {ApiSlide} from '../../../models/api/api.slide';
 
 import {DeckService} from '../../data/deck/deck.service';
 import {SlideService} from '../../data/slide/slide.service';
-import {UserService} from '../../data/user/user.service';
 
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
@@ -33,8 +30,6 @@ export class PublishService {
   private deckService: DeckService;
   private slideService: SlideService;
 
-  private userService: UserService;
-
   private fontsService: FontsService;
 
   private constructor() {
@@ -42,8 +37,6 @@ export class PublishService {
 
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
-
-    this.userService = UserService.getInstance();
 
     this.fontsService = FontsService.getInstance();
   }
@@ -379,62 +372,62 @@ export class PublishService {
           return;
         }
 
-        this.userService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (user: User) => {
-            const url: URL = new URL(publishedUrl);
-            const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+        if (!userStore.state.user || !userStore.state.user.data) {
+          reject('No user');
+          return;
+        }
 
-            if (!deck.data.meta) {
-              deck.data.meta = {
-                title: deck.data.name,
-                pathname: url.pathname,
-                published: true,
-                published_at: now,
-                feed: true,
-                updated_at: now,
-              };
-            } else {
-              deck.data.meta.title = deck.data.name;
-              deck.data.meta.pathname = url.pathname;
-              deck.data.meta.updated_at = now;
-            }
+        const url: URL = new URL(publishedUrl);
+        const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
-            if (description && description !== undefined && description !== '') {
-              deck.data.meta.description = description;
-            } else {
-              deck.data.meta.description = firebase.firestore.FieldValue.delete();
-            }
+        if (!deck.data.meta) {
+          deck.data.meta = {
+            title: deck.data.name,
+            pathname: url.pathname,
+            published: true,
+            published_at: now,
+            feed: true,
+            updated_at: now,
+          };
+        } else {
+          deck.data.meta.title = deck.data.name;
+          deck.data.meta.pathname = url.pathname;
+          deck.data.meta.updated_at = now;
+        }
 
-            if (!tags || tags.length <= 0) {
-              deck.data.meta.tags = firebase.firestore.FieldValue.delete();
-            } else {
-              deck.data.meta.tags = tags;
-            }
+        if (description && description !== undefined && description !== '') {
+          deck.data.meta.description = description;
+        } else {
+          deck.data.meta.description = firebase.firestore.FieldValue.delete();
+        }
 
-            if (user && user.data && user.data.name) {
-              if (!deck.data.meta.author) {
-                deck.data.meta.author = {
-                  name: user.data.name,
-                };
-              } else {
-                (deck.data.meta.author as DeckMetaAuthor).name = user.data.name;
-              }
+        if (!tags || tags.length <= 0) {
+          deck.data.meta.tags = firebase.firestore.FieldValue.delete();
+        } else {
+          deck.data.meta.tags = tags;
+        }
 
-              if (user.data.photo_url) {
-                (deck.data.meta.author as DeckMetaAuthor).photo_url = user.data.photo_url;
-              }
-            } else {
-              if (deck.data.meta.author) {
-                deck.data.meta.author = firebase.firestore.FieldValue.delete();
-              }
-            }
+        if (userStore.state.user && userStore.state.user.data && userStore.state.user.data.name) {
+          if (!deck.data.meta.author) {
+            deck.data.meta.author = {
+              name: userStore.state.user.data.name,
+            };
+          } else {
+            (deck.data.meta.author as DeckMetaAuthor).name = userStore.state.user.data.name;
+          }
 
-            await this.deckService.update(deck);
+          if (userStore.state.user.data.photo_url) {
+            (deck.data.meta.author as DeckMetaAuthor).photo_url = userStore.state.user.data.photo_url;
+          }
+        } else {
+          if (deck.data.meta.author) {
+            deck.data.meta.author = firebase.firestore.FieldValue.delete();
+          }
+        }
 
-            resolve();
-          });
+        await this.deckService.update(deck);
+
+        resolve();
       } catch (err) {
         reject(err);
       }
