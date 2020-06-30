@@ -1,11 +1,12 @@
 import {Component, Element, Prop, State, h, JSX} from '@stencil/core';
 import {alertController, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {Subscription} from 'rxjs';
-
 import {isMobile} from '@deckdeckgo/utils';
 
+import {Subscription} from 'rxjs';
+
 import notesStores from '../../stores/notes.store';
+import remoteStore from '../../stores/remote.store';
 
 // Types
 import {
@@ -40,8 +41,8 @@ export class AppRemote {
   @Prop()
   room: string;
 
-  private subscriptionState: Subscription;
-  private subscriptionEvent: Subscription;
+  private stateDestroyListener;
+  private eventDestroyListener;
 
   @State() private connectionState: ConnectionState = ConnectionState.DISCONNECTED;
 
@@ -81,7 +82,7 @@ export class AppRemote {
   }
 
   async componentDidLoad() {
-    this.subscriptionState = this.communicationService.watchState().subscribe(async (state: ConnectionState) => {
+    this.stateDestroyListener = remoteStore.onChange('state', async (state: ConnectionState) => {
       this.connectionState = state;
 
       if (state === ConnectionState.CONNECTED) {
@@ -92,7 +93,7 @@ export class AppRemote {
       }
     });
 
-    this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
+    this.eventDestroyListener = remoteStore.onChange('$event', async ($event: DeckdeckgoEvent) => {
       if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
         if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
           await this.initDeckAndSlides($event as DeckdeckgoEventDeck);
@@ -185,12 +186,12 @@ export class AppRemote {
   async componentDidUnload() {
     await this.disconnect();
 
-    if (this.subscriptionState) {
-      this.subscriptionState.unsubscribe();
+    if (this.stateDestroyListener) {
+      this.stateDestroyListener();
     }
 
-    if (this.subscriptionEvent) {
-      this.subscriptionEvent.unsubscribe();
+    if (this.eventDestroyListener) {
+      this.eventDestroyListener();
     }
 
     if (this.acceleratorSubscription) {
