@@ -3,8 +3,6 @@ import {Component, Element, h} from '@stencil/core';
 import navStore from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 
-import {Utils} from '../../../utils/core/utils';
-
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection} from '../../../stores/nav.store';
 
@@ -53,7 +51,7 @@ export class AppMenu {
   }
 
   private renderUser() {
-    if (Utils.isLoggedIn(authStore.state.authUser)) {
+    if (authStore.state.loggedIn) {
       return (
         <ion-item class="user">
           <app-user-info avatarColSize={3}></app-user-info>
@@ -65,7 +63,7 @@ export class AppMenu {
   }
 
   private renderDashboard() {
-    if (Utils.isLoggedIn(authStore.state.authUser)) {
+    if (authStore.state.loggedIn) {
       return (
         <ion-item button class="home" href="/dashboard" routerDirection="forward">
           <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
@@ -78,7 +76,7 @@ export class AppMenu {
   }
 
   private renderSignInOut() {
-    if (Utils.isLoggedIn(authStore.state.authUser)) {
+    if (authStore.state.loggedIn) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
           <ion-icon lazy={true} name="log-out-outline" slot="start"></ion-icon>
@@ -105,7 +103,7 @@ export class AppMenu {
   }
 
   private renderDiscover() {
-    if (Utils.isLoggedIn(authStore.state.authUser)) {
+    if (authStore.state.loggedIn) {
       return undefined;
     }
 

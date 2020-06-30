@@ -7,8 +7,6 @@ import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
 
-import {Utils} from '../../../utils/core/utils';
-
 @Component({
   tag: 'app-navigation-actions',
   styleUrl: 'app-navigation-actions.scss',
@@ -51,7 +49,7 @@ export class AppNavigationActions {
   }
 
   private renderFeed() {
-    if (Utils.isLoggedIn(authStore.state.authUser) || !this.signIn) {
+    if (authStore.state.loggedIn || !this.signIn) {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
@@ -63,7 +61,7 @@ export class AppNavigationActions {
   }
 
   private renderSignIn() {
-    if (Utils.isLoggedIn(authStore.state.authUser) || !this.signIn) {
+    if (authStore.state.loggedIn || !this.signIn) {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
@@ -75,7 +73,7 @@ export class AppNavigationActions {
   }
 
   private renderLoggedIn() {
-    if (Utils.isLoggedIn(authStore.state.authUser) && userStore.state.loaded) {
+    if (authStore.state.loggedIn && userStore.state.loaded) {
       return (
         <button class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu" tabindex={0}>
           <app-avatar src={userStore.state.photoUrl}></app-avatar>
