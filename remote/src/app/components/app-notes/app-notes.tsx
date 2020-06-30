@@ -1,19 +1,15 @@
 import {Component, h, Listen, State} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
+import notesStores from '../../stores/notes.store';
 
 import {Remarkable} from 'remarkable';
 
-import {NotesService} from '../../services/notes/notes.service';
-
 @Component({
   tag: 'app-notes',
-  styleUrl: 'app-notes.scss'
+  styleUrl: 'app-notes.scss',
 })
 export class AppNotes {
-  private notesService: NotesService;
-
-  private subscription: Subscription;
+  private destroyListener;
 
   @State()
   private portrait: boolean = true;
@@ -21,12 +17,8 @@ export class AppNotes {
   @State()
   private notes: string;
 
-  constructor() {
-    this.notesService = NotesService.getInstance();
-  }
-
   componentWillLoad() {
-    this.subscription = this.notesService.watch().subscribe((element: HTMLElement) => {
+    notesStores.onChange('currentSlide', (element: HTMLElement) => {
       let notes: string = undefined;
 
       if (document && element) {
@@ -36,7 +28,7 @@ export class AppNotes {
           const md: Remarkable = new Remarkable({
             html: true,
             xhtmlOut: true,
-            breaks: true
+            breaks: true,
           });
 
           const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {
@@ -63,8 +55,8 @@ export class AppNotes {
   }
 
   componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.destroyListener) {
+      this.destroyListener();
     }
   }
 

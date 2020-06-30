@@ -5,6 +5,8 @@ import {Subscription} from 'rxjs';
 
 import {isMobile} from '@deckdeckgo/utils';
 
+import notesStores from '../../stores/notes.store';
+
 // Types
 import {
   DeckdeckgoEvent,
@@ -22,12 +24,11 @@ import {
 
 // Utils
 import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
+import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
 
 // Services
 import {CommunicationService} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
-import {NotesService} from '../../services/notes/notes.service';
-import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
 
 @Component({
   tag: 'app-remote',
@@ -69,12 +70,10 @@ export class AppRemote {
 
   private communicationService: CommunicationService;
   private accelerometerService: AccelerometerService;
-  private notesService: NotesService;
 
   constructor() {
     this.communicationService = CommunicationService.getInstance();
     this.accelerometerService = AccelerometerService.getInstance();
-    this.notesService = NotesService.getInstance();
   }
 
   componentWillLoad() {
@@ -297,7 +296,7 @@ export class AppRemote {
       next = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
     }
 
-    this.notesService.next(next);
+    notesStores.state.currentSlide = next;
   }
 
   private async lazyLoadPollContent($slideEvent: DeckdeckgoEventSlide) {
