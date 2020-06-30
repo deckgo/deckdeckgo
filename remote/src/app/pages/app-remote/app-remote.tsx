@@ -3,10 +3,9 @@ import {alertController, modalController, OverlayEventDetail} from '@ionic/core'
 
 import {isMobile} from '@deckdeckgo/utils';
 
-import {Subscription} from 'rxjs';
-
 import notesStores from '../../stores/notes.store';
 import remoteStore from '../../stores/remote.store';
+import accStore from '../../stores/accelerometer.store';
 
 // Types
 import {
@@ -66,8 +65,8 @@ export class AppRemote {
   @State()
   private clientId: string;
 
-  private acceleratorSubscription: Subscription;
-  private acceleratorInitSubscription: Subscription;
+  private destroyAcceleratorListener;
+  private destroyAcceleratorInitListener;
 
   private communicationService: CommunicationService;
   private accelerometerService: AccelerometerService;
@@ -125,7 +124,7 @@ export class AppRemote {
       }
     });
 
-    this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean) => {
+    this.destroyAcceleratorListener = accStore.onChange('trigger', async (prev: boolean) => {
       await this.prevNextSlide(prev, false);
 
       setTimeout(async () => {
@@ -133,7 +132,7 @@ export class AppRemote {
       }, this.accelerometerService.delay);
     });
 
-    this.acceleratorInitSubscription = this.accelerometerService.watchInitialized().subscribe(async (initialized: boolean) => {
+    this.destroyAcceleratorInitListener = accStore.onChange('initialized', async (initialized: boolean) => {
       if (initialized) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -194,12 +193,12 @@ export class AppRemote {
       this.eventDestroyListener();
     }
 
-    if (this.acceleratorSubscription) {
-      this.acceleratorSubscription.unsubscribe();
+    if (this.destroyAcceleratorListener) {
+      this.destroyAcceleratorListener();
     }
 
-    if (this.acceleratorInitSubscription) {
-      this.acceleratorInitSubscription.unsubscribe();
+    if (this.destroyAcceleratorInitListener) {
+      this.destroyAcceleratorInitListener();
     }
   }
 
