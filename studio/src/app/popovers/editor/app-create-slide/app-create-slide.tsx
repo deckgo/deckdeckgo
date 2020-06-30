@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
 
-import {interval, Subscription} from 'rxjs';
-
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
@@ -50,7 +48,8 @@ export class AppCreateSlide {
 
   @Event() signIn: EventEmitter<void>;
 
-  private timerSubscription: Subscription;
+  private timerInterval: NodeJS.Timeout;
+  private timerCounter: number = 0;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
@@ -73,8 +72,8 @@ export class AppCreateSlide {
   }
 
   private unsubscribeTimer() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
   }
 
@@ -205,15 +204,17 @@ export class AppCreateSlide {
 
     this.unsubscribeTimer();
 
-    this.timerSubscription = interval(2000).subscribe(async (val: number) => {
+    this.timerInterval = setInterval(async () => {
       const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-slide-chart[animation]');
 
       if (elements) {
         for (const element of Array.from(elements)) {
-          await (element as any).beforeSwipe(val % 2 === 0, true);
+          await (element as any).beforeSwipe(this.timerCounter % 2 === 0, true);
         }
       }
-    });
+
+      this.timerCounter++;
+    }, 2000);
   }
 
   private async selectElement(slotType: SlotType) {
