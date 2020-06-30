@@ -46,7 +46,6 @@
     "@ionic/core": "^5.2.2",
     "firebase": "^7.15.4",
     "idb-keyval": "^3.2.0",
-    "rxjs": "^6.5.5",
     "socket.io-client": "^2.3.0",
     "uuid": "^8.2.0",
     "web-social-share": "^6.4.0"
