@@ -47,7 +47,6 @@
     "date-fns": "^2.14.0",
     "idb-keyval": "^3.2.0",
     "remarkable": "^2.0.1",
-    "rxjs": "^6.5.5",
     "socket.io-client": "^2.3.0",
     "uuid": "^8.2.0"
   },
