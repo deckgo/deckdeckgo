@@ -46,8 +46,8 @@ export class AppRoot {
     }
   }
 
-  componentDidUnload() {
-    this.timerService.destroy();
+  async componentDidUnload() {
+    await this.timerService.destroy();
 
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
