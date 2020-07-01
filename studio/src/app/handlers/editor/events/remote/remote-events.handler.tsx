@@ -1,7 +1,6 @@
 import {Build} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
+import remoteStore from '../../../../stores/remote.store';
 
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
@@ -17,44 +16,40 @@ export class RemoteEventsHandler {
 
   private remoteService: RemoteService;
 
-  private connectSubscription: Subscription;
-  private acceptRequestSubscription: Subscription;
+  private destroyConnectListener;
+  private destroyAcceptRequestListener;
 
   constructor() {
     this.remoteService = RemoteService.getInstance();
   }
 
-  init(el: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.el = el;
+  async init(el: HTMLElement) {
+    this.el = el;
 
-      await this.initRemote();
+    await this.initRemote();
 
-      this.connectSubscription = this.remoteService.watch().subscribe(async (enable: boolean) => {
-        if (enable) {
-          await this.connect();
-        } else {
-          await this.disconnect();
-        }
-      });
+    this.destroyConnectListener = remoteStore.onChange('remote', async (enable: boolean) => {
+      if (enable) {
+        await this.connect();
+      } else {
+        await this.disconnect();
+      }
+    });
 
-      this.acceptRequestSubscription = this.remoteService.watchAcceptedRequest().subscribe(async (request: DeckdeckgoEventDeckRequest) => {
-        await this.startAcceptedRemoteRequest(request);
-      });
-
-      resolve();
+    this.destroyAcceptRequestListener = remoteStore.onChange('acceptedRequest', async (request: DeckdeckgoEventDeckRequest) => {
+      await this.startAcceptedRemoteRequest(request);
     });
   }
 
   async destroy() {
     await this.disconnect();
 
-    if (this.connectSubscription) {
-      this.connectSubscription.unsubscribe();
+    if (this.destroyConnectListener) {
+      this.destroyConnectListener();
     }
 
-    if (this.acceptRequestSubscription) {
-      this.acceptRequestSubscription.unsubscribe();
+    if (this.destroyAcceptRequestListener) {
+      this.destroyAcceptRequestListener();
     }
 
     const deckgoRemoteElement: HTMLElement = this.el.querySelector('deckgo-remote');
@@ -147,8 +142,6 @@ export class RemoteEventsHandler {
       await this.initSlidesDidLoadListener();
 
       await this.initDeckMove();
-
-      await this.remoteService.init();
 
       this.el.addEventListener('slideDelete', this.onSlideDelete, false);
       this.el.addEventListener('slideDidUpdate', this.slideDidUpdate, false);
@@ -269,6 +262,8 @@ export class RemoteEventsHandler {
       }
 
       deck.addEventListener('slidesDidLoad', async ($event: CustomEvent) => {
+        await this.remoteService.init();
+
         await this.initRemoteSize();
 
         await this.initRemoteSlides($event);
@@ -418,6 +413,11 @@ export class RemoteEventsHandler {
 
       const room: string = await this.remoteService.getRoom();
 
+      if (!room) {
+        resolve();
+        return;
+      }
+
       deckgoRemoteElement.room = room;
 
       await deckgoRemoteElement.connect();
@@ -488,7 +488,7 @@ export class RemoteEventsHandler {
       }
 
       const observer: MutationObserver = new MutationObserver(async (_mutations: MutationRecord[], _observer: MutationObserver) => {
-        this.executeIfConnected(this.updateRemoteDeckWithDefinition);
+        await this.executeIfConnected(this.updateRemoteDeckWithDefinition);
 
         observer.disconnect();
       });
@@ -597,7 +597,7 @@ export class RemoteEventsHandler {
       return;
     }
 
-    this.executeIfConnected(this.deleteRemoteSlide);
+    await this.executeIfConnected(this.deleteRemoteSlide);
   };
 
   private slideDidUpdate = async ($event: CustomEvent) => {
@@ -605,7 +605,7 @@ export class RemoteEventsHandler {
       return;
     }
 
-    this.executeIfConnected(this.updateCurrentSlideWithDefinition);
+    await this.executeIfConnected(this.updateCurrentSlideWithDefinition);
   };
 
   private pollUpdated = async ($event: CustomEvent) => {
@@ -613,7 +613,7 @@ export class RemoteEventsHandler {
       return;
     }
 
-    this.executeIfConnected(this.updatePollSlideWithDefinition, $event.target);
+    await this.executeIfConnected(this.updatePollSlideWithDefinition, $event.target);
   };
 
   private deckDidChange = async ($event: CustomEvent) => {
@@ -621,18 +621,13 @@ export class RemoteEventsHandler {
       return;
     }
 
-    this.executeIfConnected(this.updateRemoteDeckWithDefinition);
+    await this.executeIfConnected(this.updateRemoteDeckWithDefinition);
   };
 
-  private executeIfConnected(func: (self, options?) => Promise<void>, options?) {
-    this.remoteService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (enable: boolean) => {
-        if (enable) {
-          await func(this, options);
-        }
-      });
+  private async executeIfConnected(func: (self, options?) => Promise<void>, options?) {
+    if (remoteStore.state.remote) {
+      await func(this, options);
+    }
   }
 
   private deleteRemoteSlide(self): Promise<void> {

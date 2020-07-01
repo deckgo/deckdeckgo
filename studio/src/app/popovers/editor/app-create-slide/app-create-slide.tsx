@@ -1,7 +1,8 @@
 import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
 
-import {interval, Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
+import deckStore from '../../../stores/deck.store';
+import authStore from '../../../stores/auth.store';
+import userStore from '../../../stores/user.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
@@ -11,9 +12,6 @@ import {Deck} from '../../../models/data/deck';
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
 
-import {UserService} from '../../../services/data/user/user.service';
-import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
 import {AssetsService} from '../../../services/core/assets/assets.service';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -35,9 +33,6 @@ export class AppCreateSlide {
   @Element() el: HTMLElement;
 
   @State()
-  private photoUrl: string;
-
-  @State()
   private assets: Assets | undefined = undefined;
 
   @State()
@@ -51,32 +46,14 @@ export class AppCreateSlide {
 
   private user: User;
 
-  private userService: UserService;
-  private anonymousService: AnonymousService;
-  private deckEditorService: DeckEditorService;
-
   @Event() signIn: EventEmitter<void>;
 
-  private timerSubscription: Subscription;
+  private timerInterval: NodeJS.Timeout;
+  private timerCounter: number = 0;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-  constructor() {
-    this.userService = UserService.getInstance();
-    this.anonymousService = AnonymousService.getInstance();
-    this.deckEditorService = DeckEditorService.getInstance();
-  }
-
   async componentWillLoad() {
-    this.userService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (user: User) => {
-        this.user = user;
-        this.photoUrl =
-          user && user.data && user.data.photo_url ? user.data.photo_url : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg';
-      });
-
     this.assets = await AssetsService.getInstance().assets();
   }
 
@@ -95,8 +72,8 @@ export class AppCreateSlide {
   }
 
   private unsubscribeTimer() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
   }
 
@@ -168,20 +145,13 @@ export class AppCreateSlide {
     await this.closePopover(template, slide);
   }
 
-  private addSlideQRCode() {
-    this.deckEditorService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (deck: Deck) => {
-        await this.addSlide(SlideTemplate.QRCODE, deck);
-      });
+  private async addSlideQRCode() {
+    await this.addSlide(SlideTemplate.QRCODE, deckStore.state.deck);
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
   private async addRestrictedSlide(template: SlideTemplate) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
@@ -193,9 +163,7 @@ export class AppCreateSlide {
 
   // User will need an account to upload her/his data
   private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
@@ -236,15 +204,17 @@ export class AppCreateSlide {
 
     this.unsubscribeTimer();
 
-    this.timerSubscription = interval(2000).subscribe(async (val: number) => {
+    this.timerInterval = setInterval(async () => {
       const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-slide-chart[animation]');
 
       if (elements) {
         for (const element of Array.from(elements)) {
-          await (element as any).beforeSwipe(val % 2 === 0, true);
+          await (element as any).beforeSwipe(this.timerCounter % 2 === 0, true);
         }
       }
-    });
+
+      this.timerCounter++;
+    }, 2000);
   }
 
   private async selectElement(slotType: SlotType) {
@@ -780,7 +750,14 @@ export class AppCreateSlide {
 
     return (
       <div class="item" custom-tappable onClick={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}>
-        <deckgo-slide-author class="showcase" img-src={this.photoUrl} img-alt="Author">
+        <deckgo-slide-author
+          class="showcase"
+          img-src={
+            userStore.state.user && userStore.state.user.data && userStore.state.user.data.photo_url
+              ? userStore.state.user.data.photo_url
+              : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg'
+          }
+          img-alt="Author">
           <p slot="title">Author</p>
           <p slot="author">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>

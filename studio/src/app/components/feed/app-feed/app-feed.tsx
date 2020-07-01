@@ -1,32 +1,23 @@
 import {Component, h, State, Host} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
 import {isMobile} from '@deckdeckgo/utils';
+
+import feedStore from '../../../stores/feed.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {Deck} from '../../../models/data/deck';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 import {FeedService} from '../../../services/data/feed/feed.service';
-import {OfflineService} from '../../../services/editor/offline/offline.service';
 
 @Component({
   tag: 'app-feed',
   styleUrl: 'app-feed.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppFeed {
   private feedService: FeedService;
-
-  @State()
-  private decks: Deck[] = [];
-
-  @State()
-  private lastPageReached: boolean = false;
-
-  @State()
-  private decksFetched: boolean = false;
 
   @State()
   private mobile: boolean = false;
@@ -36,51 +27,28 @@ export class AppFeed {
 
   private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
 
-  private subscription: Subscription;
-  private lastPageSubscription: Subscription;
-
-  private offlineSubscription: Subscription;
-  private offlineService: OfflineService;
-
   constructor() {
     this.feedService = FeedService.getInstance();
-    this.offlineService = OfflineService.getInstance();
   }
 
   async componentWillLoad() {
-    this.subscription = this.feedService.watchDecks().subscribe((decks: Deck[]) => {
-      this.decks = decks;
-      this.decksFetched = true;
-    });
+    this.initOffline(offlineStore.state.offline);
 
-    this.lastPageSubscription = this.feedService.watchLastPageReached().subscribe((lastPageReached: boolean) => {
-      this.lastPageReached = lastPageReached;
-      this.decksFetched = lastPageReached;
-    });
+    const destroyListner = offlineStore.onChange('offline', (offline: OfflineDeck | undefined) => {
+      this.initOffline(offline);
 
-    this.offlineSubscription = this.offlineService.watchOffline().subscribe((offline: OfflineDeck | undefined) => {
-      this.offline = navigator && !navigator.onLine && offline !== undefined ? offline : undefined;
+      destroyListner();
     });
 
     this.mobile = isMobile();
   }
 
-  async componentDidLoad() {
-    await this.feedService.find();
+  private initOffline(offline: OfflineDeck | undefined) {
+    this.offline = navigator && !navigator.onLine && offline !== undefined ? offline : undefined;
   }
 
-  async componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.lastPageSubscription) {
-      this.lastPageSubscription.unsubscribe();
-    }
-
-    if (this.offlineSubscription) {
-      this.offlineSubscription.unsubscribe();
-    }
+  async componentDidLoad() {
+    await this.feedService.find();
   }
 
   private async findNextDecks($event) {
@@ -125,12 +93,12 @@ export class AppFeed {
       <div class="feed">
         {this.renderDecks()}
 
-        <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={this.lastPageReached}>
+        <ion-infinite-scroll onIonInfinite={($event: CustomEvent) => this.findNextDecks($event)} disabled={feedStore.state.lastPageReached}>
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </div>,
 
-      <app-popular help={true}></app-popular>
+      <app-popular help={true}></app-popular>,
     ];
   }
 
@@ -148,8 +116,8 @@ export class AppFeed {
   }
 
   private renderDecks() {
-    if (this.decks && this.decks.length > 0) {
-      return this.decks.map((deck: Deck, i: number) => {
+    if (feedStore.state.decks && feedStore.state.decks.length > 0) {
+      return feedStore.state.decks.map((deck: Deck, i: number) => {
         return (
           <a href={this.presentationUrl + deck.data.meta.pathname} aria-label={deck.data.meta.title} target="_blank">
             <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
@@ -162,7 +130,7 @@ export class AppFeed {
   }
 
   private renderLoading() {
-    if (this.decksFetched) {
+    if (feedStore.state.decks !== undefined) {
       return undefined;
     } else {
       return (

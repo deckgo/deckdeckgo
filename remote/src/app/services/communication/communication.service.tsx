@@ -1,6 +1,6 @@
 import * as io from 'socket.io-client';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import remoteStore from '../../stores/remote.store';
 
 // Types
 import {
@@ -9,7 +9,7 @@ import {
   DeckdeckgoEventNextPrevSlide,
   DeckdeckgoEventSlideAction,
   DeckdeckgoEventSlideTo,
-  ConnectionState
+  ConnectionState,
 } from '@deckdeckgo/types';
 
 // Services
@@ -20,16 +20,10 @@ const configuration: RTCConfiguration = {
     {
       urls: 'turn:api.deckdeckgo.com:3478',
       username: 'user',
-      credential: 'deckdeckgo'
-    }
-  ]
+      credential: 'deckdeckgo',
+    },
+  ],
 };
-
-export interface ActiveRoom {
-  room: string;
-  clients: number;
-  connected: boolean;
-}
 
 // @ts-ignore
 const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
@@ -51,10 +45,6 @@ export class CommunicationService {
     .toString()
     .replace(/\B(?=(\d{2})+(?!\d))/g, ' ');
 
-  private state: BehaviorSubject<ConnectionState> = new BehaviorSubject<ConnectionState>(ConnectionState.DISCONNECTED);
-  private event: Subject<DeckdeckgoEvent> = new Subject<DeckdeckgoEvent>();
-  private rooms: BehaviorSubject<ActiveRoom[]> = new BehaviorSubject<ActiveRoom[]>([]);
-
   private constructor() {
     // Private constructor, singleton
   }
@@ -73,14 +63,14 @@ export class CommunicationService {
         return;
       }
 
-      this.state.next(ConnectionState.CONNECTING);
+      remoteStore.state.state = ConnectionState.CONNECTING;
 
       const url: string = EnvironmentConfigService.getInstance().get('signalingServerUrl');
 
       this.socket = io.connect(url, {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
-        query: 'type=app'
+        query: 'type=app',
       });
 
       this.socket.on('connect', async () => {
@@ -88,7 +78,7 @@ export class CommunicationService {
       });
 
       this.socket.on('active_rooms', async (data) => {
-        this.rooms.next(data.rooms);
+        remoteStore.state.rooms = [...data.rooms];
       });
 
       this.socket.on('joined', async () => {
@@ -96,7 +86,7 @@ export class CommunicationService {
 
         this.sendApp();
 
-        this.state.next(ConnectionState.CONNECTED_WITH_SIGNALING_SERVER);
+        remoteStore.state.state = ConnectionState.CONNECTED_WITH_SIGNALING_SERVER;
       });
 
       this.socket.on('deck_joined', async () => {
@@ -124,7 +114,7 @@ export class CommunicationService {
                 }
               },
               (_err) => {
-                this.state.next(ConnectionState.NOT_CONNECTED);
+                remoteStore.state.state = ConnectionState.NOT_CONNECTED;
               }
             );
           } else {
@@ -134,23 +124,23 @@ export class CommunicationService {
       });
 
       this.socket.on('connect_error', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
+        remoteStore.state.state = ConnectionState.NOT_CONNECTED;
       });
 
       this.socket.on('connect_timeout', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
+        remoteStore.state.state = ConnectionState.NOT_CONNECTED;
       });
 
       this.socket.on('error', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
+        remoteStore.state.state = ConnectionState.NOT_CONNECTED;
       });
 
       this.socket.on('reconnect_failed', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
+        remoteStore.state.state = ConnectionState.NOT_CONNECTED;
       });
 
       this.socket.on('reconnect_error', () => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
+        remoteStore.state.state = ConnectionState.NOT_CONNECTED;
       });
 
       resolve();
@@ -163,7 +153,7 @@ export class CommunicationService {
     }
 
     this.socket.emit('join', {
-      room: this.room
+      room: this.room,
     });
   }
 
@@ -182,13 +172,13 @@ export class CommunicationService {
 
       if (this.socket) {
         this.socket.emit('leave', {
-          room: this.room
+          room: this.room,
         });
         this.socket.removeAllListeners();
         this.socket.disconnect();
       }
 
-      this.state.next(ConnectionState.DISCONNECTED);
+      remoteStore.state.state = ConnectionState.DISCONNECTED;
 
       resolve();
     });
@@ -198,18 +188,6 @@ export class CommunicationService {
     if (this.dataChannelIn) {
       this.dataChannelIn.send(JSON.stringify(data));
     }
-  }
-
-  watchState(): Observable<ConnectionState> {
-    return this.state.asObservable();
-  }
-
-  watchEvent(): Observable<DeckdeckgoEvent> {
-    return this.event.asObservable();
-  }
-
-  watchRooms(): Observable<ActiveRoom[]> {
-    return this.rooms.asObservable();
   }
 
   private startSignaling() {
@@ -223,7 +201,7 @@ export class CommunicationService {
         this.socket.emit('signal', {
           type: 'ice_candidate',
           message: JSON.stringify({candidate: evt.candidate}),
-          room: this.room
+          room: this.room,
         });
       }
     };
@@ -235,7 +213,7 @@ export class CommunicationService {
     this.socket.emit('signal', {
       type: 'app_here',
       room: this.room,
-      message: this.clientId
+      message: this.clientId,
     });
   }
 
@@ -245,11 +223,11 @@ export class CommunicationService {
         this.socket.emit('signal', {
           type: 'sending_local_description',
           message: JSON.stringify({sdp: this.rtcPeerConn.localDescription}),
-          room: this.room
+          room: this.room,
         });
       },
       (_err) => {
-        this.state.next(ConnectionState.NOT_CONNECTED);
+        remoteStore.state.state = ConnectionState.NOT_CONNECTED;
       }
     );
   }
@@ -261,7 +239,7 @@ export class CommunicationService {
   };
 
   private connectedWhenOpened = () => {
-    this.state.next(ConnectionState.CONNECTED);
+    remoteStore.state.state = ConnectionState.CONNECTED;
   };
 
   private receiveDataChannelMessage = (event) => {
@@ -270,6 +248,6 @@ export class CommunicationService {
     }
 
     const data: DeckdeckgoEvent = JSON.parse(event.data);
-    this.event.next(data);
+    remoteStore.state.$event = {...data};
   };
 }

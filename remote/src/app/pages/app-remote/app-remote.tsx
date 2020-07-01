@@ -1,9 +1,11 @@
 import {Component, Element, Prop, State, h, JSX} from '@stencil/core';
 import {alertController, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {Subscription} from 'rxjs';
-
 import {isMobile} from '@deckdeckgo/utils';
+
+import notesStores from '../../stores/notes.store';
+import remoteStore from '../../stores/remote.store';
+import accStore from '../../stores/accelerometer.store';
 
 // Types
 import {
@@ -22,12 +24,11 @@ import {
 
 // Utils
 import {ParseSlidesUtils} from '../../utils/parse-slides.utils';
+import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
 
 // Services
 import {CommunicationService} from '../../services/communication/communication.service';
 import {AccelerometerService} from '../../services/accelerometer/accelerometer.service';
-import {NotesService} from '../../services/notes/notes.service';
-import {ParseAttributesUtils} from '../../utils/parse-attributes.utils';
 
 @Component({
   tag: 'app-remote',
@@ -39,8 +40,8 @@ export class AppRemote {
   @Prop()
   room: string;
 
-  private subscriptionState: Subscription;
-  private subscriptionEvent: Subscription;
+  private stateDestroyListener;
+  private eventDestroyListener;
 
   @State() private connectionState: ConnectionState = ConnectionState.DISCONNECTED;
 
@@ -64,17 +65,15 @@ export class AppRemote {
   @State()
   private clientId: string;
 
-  private acceleratorSubscription: Subscription;
-  private acceleratorInitSubscription: Subscription;
+  private destroyAcceleratorListener;
+  private destroyAcceleratorInitListener;
 
   private communicationService: CommunicationService;
   private accelerometerService: AccelerometerService;
-  private notesService: NotesService;
 
   constructor() {
     this.communicationService = CommunicationService.getInstance();
     this.accelerometerService = AccelerometerService.getInstance();
-    this.notesService = NotesService.getInstance();
   }
 
   componentWillLoad() {
@@ -82,7 +81,7 @@ export class AppRemote {
   }
 
   async componentDidLoad() {
-    this.subscriptionState = this.communicationService.watchState().subscribe(async (state: ConnectionState) => {
+    this.stateDestroyListener = remoteStore.onChange('state', async (state: ConnectionState) => {
       this.connectionState = state;
 
       if (state === ConnectionState.CONNECTED) {
@@ -93,7 +92,7 @@ export class AppRemote {
       }
     });
 
-    this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async ($event: DeckdeckgoEvent) => {
+    this.eventDestroyListener = remoteStore.onChange('$event', async ($event: DeckdeckgoEvent) => {
       if ($event.emitter === DeckdeckgoEventEmitter.DECK) {
         if ($event.type === DeckdeckgoEventType.SLIDES_ANSWER) {
           await this.initDeckAndSlides($event as DeckdeckgoEventDeck);
@@ -125,7 +124,7 @@ export class AppRemote {
       }
     });
 
-    this.acceleratorSubscription = this.accelerometerService.watch().subscribe(async (prev: boolean) => {
+    this.destroyAcceleratorListener = accStore.onChange('trigger', async (prev: boolean) => {
       await this.prevNextSlide(prev, false);
 
       setTimeout(async () => {
@@ -133,7 +132,7 @@ export class AppRemote {
       }, this.accelerometerService.delay);
     });
 
-    this.acceleratorInitSubscription = this.accelerometerService.watchInitialized().subscribe(async (initialized: boolean) => {
+    this.destroyAcceleratorInitListener = accStore.onChange('initialized', async (initialized: boolean) => {
       if (initialized) {
         const deck: HTMLElement = this.el.querySelector('deckgo-deck');
 
@@ -186,20 +185,20 @@ export class AppRemote {
   async componentDidUnload() {
     await this.disconnect();
 
-    if (this.subscriptionState) {
-      this.subscriptionState.unsubscribe();
+    if (this.stateDestroyListener) {
+      this.stateDestroyListener();
     }
 
-    if (this.subscriptionEvent) {
-      this.subscriptionEvent.unsubscribe();
+    if (this.eventDestroyListener) {
+      this.eventDestroyListener();
     }
 
-    if (this.acceleratorSubscription) {
-      this.acceleratorSubscription.unsubscribe();
+    if (this.destroyAcceleratorListener) {
+      this.destroyAcceleratorListener();
     }
 
-    if (this.acceleratorInitSubscription) {
-      this.acceleratorInitSubscription.unsubscribe();
+    if (this.destroyAcceleratorInitListener) {
+      this.destroyAcceleratorInitListener();
     }
   }
 
@@ -297,7 +296,7 @@ export class AppRemote {
       next = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
     }
 
-    this.notesService.next(next);
+    notesStores.state.currentSlide = next;
   }
 
   private async lazyLoadPollContent($slideEvent: DeckdeckgoEventSlide) {

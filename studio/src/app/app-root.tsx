@@ -2,15 +2,14 @@ import {Build, Component, Element, h, Listen, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
-import {Subscription} from 'rxjs';
+import errorStore from './stores/error.store';
+import navStore from './stores/nav.store';
 
-import {ErrorService} from './services/core/error/error.service';
 import {AuthService} from './services/auth/auth.service';
-
-import {NavDirection, NavParams, NavService} from './services/core/nav/nav.service';
 
 import {ThemeService} from './services/theme/theme.service';
 import {OfflineService} from './services/editor/offline/offline.service';
+import {NavDirection, NavParams} from './stores/nav.store';
 
 @Component({
   tag: 'app-root',
@@ -19,28 +18,20 @@ import {OfflineService} from './services/editor/offline/offline.service';
 export class AppRoot {
   @Element() el: HTMLElement;
 
-  private errorSubscription: Subscription;
-  private errorService: ErrorService;
-
   private authService: AuthService;
 
-  private navSubscription: Subscription;
-  private navService: NavService;
-
-  private themeSubscription: Subscription;
   private themeService: ThemeService;
 
   private offlineService: OfflineService;
 
-  private domBodyClassList: DOMTokenList = document.body.classList;
-
   @State()
   private loading: boolean = true;
 
+  private destroyErrorListener;
+  private destroyNavListener;
+
   constructor() {
-    this.errorService = ErrorService.getInstance();
     this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
     this.themeService = ThemeService.getInstance();
     this.offlineService = OfflineService.getInstance();
   }
@@ -56,30 +47,24 @@ export class AppRoot {
   async componentDidLoad() {
     this.loading = false;
 
-    this.errorSubscription = this.errorService.watch().subscribe(async (error: string) => {
-      await this.toastError(error);
+    this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
+      if (error) {
+        this.toastError(error);
+      }
     });
 
-    this.navSubscription = this.navService.watch().subscribe(async (params: NavParams) => {
+    this.destroyNavListener = navStore.onChange('nav', async (params: NavParams | undefined) => {
       await this.navigate(params);
-    });
-
-    this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
-      this.updateDarkModePreferences(dark);
     });
   }
 
-  async componentDidUnload() {
-    if (this.errorSubscription) {
-      this.errorSubscription.unsubscribe();
+  componentDidUnload() {
+    if (this.destroyErrorListener) {
+      this.destroyErrorListener();
     }
 
-    if (this.navSubscription) {
-      this.navSubscription.unsubscribe();
-    }
-
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
+    if (this.destroyNavListener) {
+      this.destroyNavListener();
     }
   }
 
@@ -98,10 +83,6 @@ export class AppRoot {
     });
 
     await popover.present();
-  }
-
-  private updateDarkModePreferences(dark: boolean) {
-    dark ? this.domBodyClassList.add('dark') : this.domBodyClassList.remove('dark');
   }
 
   private async navigate(params: NavParams) {

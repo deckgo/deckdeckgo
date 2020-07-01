@@ -1,15 +1,9 @@
 import {keys, set} from 'idb-keyval';
 
-import {ErrorService} from '../core/error/error.service';
+import store from '../../stores/error.store';
 
 export class StorageOfflineService {
   private static instance: StorageOfflineService;
-
-  private errorService: ErrorService;
-
-  private constructor() {
-    this.errorService = ErrorService.getInstance();
-  }
 
   static getInstance() {
     if (!StorageOfflineService.instance) {
@@ -22,13 +16,13 @@ export class StorageOfflineService {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!data || !data.name) {
-          this.errorService.error('File not valid.');
+          store.state.error = 'File not valid.';
           resolve();
           return;
         }
 
         if (data.size > maxSize) {
-          this.errorService.error(`File is too big (max. ${maxSize / 1048576} Mb)`);
+          store.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
           resolve();
           return;
         }
@@ -40,10 +34,10 @@ export class StorageOfflineService {
         resolve({
           downloadUrl: key,
           fullPath: key,
-          name: data.name
+          name: data.name,
         });
       } catch (err) {
-        this.errorService.error('File could not be saved.');
+        store.state.error = 'File could not be saved.';
         resolve();
       }
     });
@@ -71,13 +65,13 @@ export class StorageOfflineService {
         return {
           downloadUrl: key,
           fullPath: key,
-          name: key
+          name: key,
         } as StorageFile;
       });
 
       resolve({
         items,
-        nextPageToken: undefined
+        nextPageToken: undefined,
       });
     });
   }

@@ -1,19 +1,16 @@
 import {Component, Element, State, h} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import {take} from 'rxjs/operators';
+import accStore from '../../../stores/accelerometer.store';
 
 // Services
 import {AccelerometerService} from '../../../services/accelerometer/accelerometer.service';
 
 @Component({
-  tag: 'app-experimental-settings'
+  tag: 'app-experimental-settings',
 })
 export class AppExperimentalSettings {
   @Element() el: HTMLElement;
-
-  @State()
-  private accelerometerEnabled: boolean = false;
 
   @State()
   private accelerometerFrequency: number = 0;
@@ -34,13 +31,6 @@ export class AppExperimentalSettings {
   }
 
   componentWillLoad() {
-    this.accelerometerService
-      .watchEnabled()
-      .pipe(take(1))
-      .subscribe((enabled: boolean) => {
-        this.accelerometerEnabled = enabled;
-      });
-
     this.accelerometerFrequency = this.accelerometerService.frequency;
     this.accelerometerSensibility = this.accelerometerService.sensibility;
     this.accelerometerTakeUntil = this.accelerometerService.takeUntil;
@@ -48,14 +38,22 @@ export class AppExperimentalSettings {
   }
 
   private async toggleAccelerometerSupport() {
-    try {
-      this.accelerometerEnabled = await this.accelerometerService.toggle();
+    let destroyListener;
 
-      if (this.accelerometerEnabled) {
+    try {
+      destroyListener = accStore.onChange('enable', async () => {
         await this.accelerometerService.start();
-      }
+
+        destroyListener();
+      });
+
+      await this.accelerometerService.toggle();
     } catch (err) {
-      this.accelerometerEnabled = false;
+      accStore.state.enable = false;
+
+      if (destroyListener) {
+        destroyListener();
+      }
     }
   }
 
@@ -98,10 +96,10 @@ export class AppExperimentalSettings {
 
         <ion-item>
           <ion-label>Swipe like a Jedi</ion-label>
-          <ion-toggle slot="end" color="switcher" checked={this.accelerometerEnabled} onIonChange={() => this.toggleAccelerometerSupport()}></ion-toggle>
+          <ion-toggle slot="end" color="switcher" checked={accStore.state.enable} onIonChange={() => this.toggleAccelerometerSupport()}></ion-toggle>
         </ion-item>
 
-        <p style={{color: this.accelerometerEnabled ? 'inherit' : 'var(--ion-color-medium)'}}>
+        <p style={{color: accStore.state.enable ? 'inherit' : 'var(--ion-color-medium)'}}>
           <ion-label>Accelerometer's frequency ({this.accelerometerFrequency} measures/seconds)</ion-label>
         </p>
 
@@ -111,12 +109,12 @@ export class AppExperimentalSettings {
             max={300}
             value={this.accelerometerFrequency}
             mode="md"
-            disabled={!this.accelerometerEnabled}
+            disabled={!accStore.state.enable}
             color="switcher"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateAccelerometerFrequency(e)}></ion-range>
         </ion-item>
 
-        <p style={{color: this.accelerometerEnabled ? 'inherit' : 'var(--ion-color-medium)'}}>
+        <p style={{color: accStore.state.enable ? 'inherit' : 'var(--ion-color-medium)'}}>
           <ion-label>Debounce (trigger swipe after {(this.accelerometerTakeUntil / this.accelerometerFrequency).toFixed(2)} seconds)</ion-label>
         </p>
 
@@ -126,12 +124,12 @@ export class AppExperimentalSettings {
             max={30}
             value={this.accelerometerTakeUntil}
             mode="md"
-            disabled={!this.accelerometerEnabled}
+            disabled={!accStore.state.enable}
             color="switcher"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateAccelerometerTakeUntil(e)}></ion-range>
         </ion-item>
 
-        <p style={{color: this.accelerometerEnabled ? 'inherit' : 'var(--ion-color-medium)'}}>
+        <p style={{color: accStore.state.enable ? 'inherit' : 'var(--ion-color-medium)'}}>
           <ion-label>Sensibility (detect acceleration above velocity {this.accelerometerSensibility})</ion-label>
         </p>
 
@@ -141,12 +139,12 @@ export class AppExperimentalSettings {
             max={30}
             value={this.accelerometerSensibility}
             mode="md"
-            disabled={!this.accelerometerEnabled}
+            disabled={!accStore.state.enable}
             color="switcher"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateAccelerometerSensibility(e)}></ion-range>
         </ion-item>
 
-        <p style={{color: this.accelerometerEnabled ? 'inherit' : 'var(--ion-color-medium)'}}>
+        <p style={{color: accStore.state.enable ? 'inherit' : 'var(--ion-color-medium)'}}>
           <ion-label>Delay (after swipe, detect again after {this.accelerometerDelay}ms)</ion-label>
         </p>
 
@@ -156,11 +154,11 @@ export class AppExperimentalSettings {
             max={2500}
             value={this.accelerometerDelay}
             mode="md"
-            disabled={!this.accelerometerEnabled}
+            disabled={!accStore.state.enable}
             color="switcher"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateAccelerometerDelay(e)}></ion-range>
         </ion-item>
-      </ion-list>
+      </ion-list>,
     ];
   }
 }

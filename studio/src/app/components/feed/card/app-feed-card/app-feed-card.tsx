@@ -109,7 +109,12 @@ export class AppFeedCard {
       }
 
       const options: DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
-      this.formattedPublishedAt = new Intl.DateTimeFormat('en-US', options).format(this.getDateObj(this.deck.data.meta.published_at));
+
+      try {
+        this.formattedPublishedAt = new Intl.DateTimeFormat('en-US', options).format(this.getDateObj(this.deck.data.meta.published_at));
+      } catch (err) {
+        this.formattedPublishedAt = undefined;
+      }
 
       resolve();
     });
@@ -141,7 +146,7 @@ export class AppFeedCard {
   }
 
   private getDateObj(myDate: any): Date {
-    if (myDate == null) {
+    if (!myDate) {
       return null;
     }
 
@@ -150,7 +155,12 @@ export class AppFeedCard {
     }
 
     // A Firebase Timestamp format
-    if (myDate && (myDate.seconds >= 0 || myDate.seconds < 0) && (myDate.nanoseconds >= 0 || myDate.nanoseconds < 0)) {
+    if (
+      myDate &&
+      (myDate.seconds >= 0 || myDate.seconds < 0) &&
+      (myDate.nanoseconds >= 0 || myDate.nanoseconds < 0) &&
+      typeof (myDate as any).toDate === 'function'
+    ) {
       return new Date(myDate.toDate());
     }
 

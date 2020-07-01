@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, Prop, h, State} from '@stencil/core';
 
-import {interval, Subscription} from 'rxjs';
-
 @Component({
   tag: 'app-deck-transition',
   styleUrl: 'app-deck-transition.scss',
@@ -17,7 +15,8 @@ export class AppDeckTransition {
   @State()
   private selectedTransition: 'slide' | 'fade' | 'none';
 
-  private timerSubscription: Subscription;
+  private timerInterval: NodeJS.Timeout;
+  private timerCounter: number = 0;
 
   async componentWillLoad() {
     await this.initSelectedTransition();
@@ -28,8 +27,8 @@ export class AppDeckTransition {
   }
 
   componentDidUnload() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
   }
 
@@ -48,19 +47,21 @@ export class AppDeckTransition {
   }
 
   private async animateDecks() {
-    this.timerSubscription = interval(2000).subscribe(async (val: number) => {
+    this.timerInterval = setInterval(async () => {
       const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck');
 
       if (elements) {
         for (const element of Array.from(elements)) {
-          if (val % 2 === 0) {
+          if (this.timerCounter % 2 === 0) {
             await (element as any).slideNext();
           } else {
             await (element as any).slidePrev();
           }
         }
       }
-    });
+
+      this.timerCounter++;
+    }, 2000);
   }
 
   private applyTransition(transition: 'slide' | 'fade' | 'none'): Promise<void> {

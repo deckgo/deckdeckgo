@@ -1,7 +1,7 @@
 import {Build} from '@stencil/core';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, take} from 'rxjs/operators';
+import deckStore from '../../../stores/deck.store';
+import remoteStore from '../../../stores/remote.store';
 
 import {get, set} from 'idb-keyval';
 
@@ -9,25 +9,8 @@ import {DeckdeckgoEventDeckRequest, ConnectionState} from '@deckdeckgo/types';
 
 import {Deck} from '../../../models/data/deck';
 
-import {DeckEditorService} from '../deck/deck-editor.service';
-
 export class RemoteService {
-  private remoteSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  private remotePendingRequestsSubject: BehaviorSubject<DeckdeckgoEventDeckRequest[] | undefined> = new BehaviorSubject(undefined);
-
-  private remoteStateSubject: BehaviorSubject<ConnectionState> = new BehaviorSubject(ConnectionState.DISCONNECTED);
-
-  private remoteAcceptedRequestSubject: Subject<DeckdeckgoEventDeckRequest> = new Subject<DeckdeckgoEventDeckRequest>();
-
   private static instance: RemoteService;
-
-  private deckEditorService: DeckEditorService;
-
-  private constructor() {
-    // Private constructor, singleton
-    this.deckEditorService = DeckEditorService.getInstance();
-  }
 
   static getInstance() {
     if (!RemoteService.instance) {
@@ -45,13 +28,9 @@ export class RemoteService {
 
       const remote: boolean = await get<boolean>('deckdeckgo_remote');
 
-      this.watch()
-        .pipe(take(1))
-        .subscribe((current: boolean) => {
-          if (current !== remote) {
-            this.remoteSubject.next(remote);
-          }
-        });
+      if (remoteStore.state.remote !== remote) {
+        remoteStore.state.remote = remote;
+      }
 
       resolve();
     });
@@ -59,72 +38,43 @@ export class RemoteService {
 
   async switch(enable: boolean) {
     await set('deckdeckgo_remote', enable);
-    this.remoteSubject.next(enable);
+    remoteStore.state.remote = enable;
   }
 
-  watch(): Observable<boolean> {
-    return this.remoteSubject.asObservable();
-  }
+  async getRoom(): Promise<string | null> {
+    const deck: Deck | null = deckStore.state.deck;
 
-  getRoom(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      this.deckEditorService
-        .watch()
-        .pipe(
-          filter((deck: Deck) => deck && deck.data && deck.data.name && deck.data.name !== undefined && deck.data.name !== ''),
-          take(1)
-        )
-        .subscribe(async (deck: Deck) => {
-          const roomName: string = deck.data.name.replace(/\.|#/g, '_');
+    if (deck && deck.data && deck.data.name && deck.data.name !== undefined && deck.data.name !== '') {
+      return deck.data.name.replace(/\.|#/g, '_');
+    }
 
-          resolve(roomName);
-        });
-    });
+    return null;
   }
 
   async addPendingRequests(request: DeckdeckgoEventDeckRequest) {
-    this.remotePendingRequestsSubject.pipe(take(1)).subscribe((requests: DeckdeckgoEventDeckRequest[] | undefined) => {
-      if (!requests) {
-        requests = [];
-      }
+    let requests: DeckdeckgoEventDeckRequest[] = remoteStore.state.pendingRequests;
+    if (!requests) {
+      requests = [];
+    }
 
-      requests.push(request);
+    requests.push(request);
 
-      this.remotePendingRequestsSubject.next(requests);
-    });
+    remoteStore.state.pendingRequests = [...requests];
   }
 
-  shiftPendingRequests(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.remotePendingRequestsSubject.pipe(take(1)).subscribe((requests: DeckdeckgoEventDeckRequest[] | undefined) => {
-        if (requests && requests.length > 0) {
-          requests.shift();
+  async shiftPendingRequests() {
+    if (remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length > 0) {
+      remoteStore.state.pendingRequests.shift();
 
-          this.remotePendingRequestsSubject.next(requests);
-        }
-
-        resolve();
-      });
-    });
+      remoteStore.state.pendingRequests = [...remoteStore.state.pendingRequests];
+    }
   }
 
   acceptRequest(request: DeckdeckgoEventDeckRequest) {
-    this.remoteAcceptedRequestSubject.next(request);
-  }
-
-  watchRequests(): Observable<DeckdeckgoEventDeckRequest[] | undefined> {
-    return this.remotePendingRequestsSubject.asObservable();
-  }
-
-  watchState(): Observable<ConnectionState> {
-    return this.remoteStateSubject.asObservable();
-  }
-
-  watchAcceptedRequest(): Observable<DeckdeckgoEventDeckRequest> {
-    return this.remoteAcceptedRequestSubject.asObservable();
+    remoteStore.state.acceptedRequest = {...request};
   }
 
   nextState(state: ConnectionState) {
-    this.remoteStateSubject.next(state);
+    remoteStore.state.connectionState = state;
   }
 }

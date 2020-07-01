@@ -1,10 +1,12 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
+
+import navStore, {NavDirection} from '../../../stores/nav.store';
+
 import {UserUtils} from '../../../utils/core/user-utils';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 
 @Component({
   tag: 'app-user-delete',
-  styleUrl: 'app-user-delete.scss'
+  styleUrl: 'app-user-delete.scss',
 })
 export class AppUserDelete {
   @Element() el: HTMLElement;
@@ -17,12 +19,8 @@ export class AppUserDelete {
 
   private inputUsername: string;
 
-  private navService: NavService;
-
   async componentDidLoad() {
     history.pushState({modal: true}, null);
-
-    this.navService = NavService.getInstance();
   }
 
   @Listen('popstate', {target: 'window'})
@@ -55,10 +53,10 @@ export class AppUserDelete {
   private async navigateContact() {
     await this.closeModal();
 
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/contact',
-      direction: NavDirection.FORWARD
-    });
+      direction: NavDirection.FORWARD,
+    };
   }
 
   render() {
@@ -99,7 +97,7 @@ export class AppUserDelete {
           Please note that currently, your presentations are not automatically removed from internet. If you wish to unpublish them, drop us a message on one of
           our <a onClick={() => this.navigateContact()}>contact</a> channels.
         </p>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

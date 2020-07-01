@@ -1,21 +1,15 @@
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
 import {OverlayEventDetail, popoverController} from '@ionic/core';
 
-import {take} from 'rxjs/operators';
-
-import {Deck} from '../../../../../models/data/deck';
+import store from '../../../../../stores/deck.store';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
-import {DeckEditorService} from '../../../../../services/editor/deck/deck-editor.service';
-
 @Component({
-  tag: 'app-action-share'
+  tag: 'app-action-share',
 })
 export class AppActionShare {
   @Element() el: HTMLElement;
-
-  private deckEditorService: DeckEditorService;
 
   @Event() private actionPublish: EventEmitter<void>;
 
@@ -23,27 +17,12 @@ export class AppActionShare {
 
   @Event() private openEmbed: EventEmitter<void>;
 
-  constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
-  }
-
-  private share($event: UIEvent): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.deckEditorService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (deck: Deck) => {
-          const deckPublished: boolean = deck && deck.data && deck.data.meta && deck.data.meta.published;
-
-          if (deckPublished) {
-            await this.openShareOptions($event);
-          } else {
-            this.actionPublish.emit();
-          }
-
-          resolve();
-        });
-    });
+  private async share($event: UIEvent) {
+    if (store.state.published) {
+      await this.openShareOptions($event);
+    } else {
+      this.actionPublish.emit();
+    }
   }
 
   async openShareOptions($event: UIEvent) {
@@ -54,7 +33,7 @@ export class AppActionShare {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-share-options',
       event: $event,
-      mode: 'ios'
+      mode: 'ios',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {

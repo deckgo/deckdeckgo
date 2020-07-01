@@ -1,6 +1,6 @@
 import {Component, Element, h, State} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
+import remoteStore from '../../../../stores/remote.store';
 
 import {DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
@@ -8,7 +8,7 @@ import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-remote-request',
-  styleUrl: 'app-remote-request.scss'
+  styleUrl: 'app-remote-request.scss',
 })
 export class AppRemoteRequest {
   @Element() el: HTMLElement;
@@ -23,12 +23,7 @@ export class AppRemoteRequest {
   }
 
   async componentDidLoad() {
-    this.remoteService
-      .watchRequests()
-      .pipe(take(1))
-      .subscribe((requests: DeckdeckgoEventDeckRequest[] | undefined) => {
-        this.request = requests && requests.length >= 1 ? requests[0] : undefined;
-      });
+    this.request = remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length >= 1 ? remoteStore.state.pendingRequests[0] : undefined;
   }
 
   private async shiftRequestsAndClose() {
@@ -67,7 +62,7 @@ export class AppRemoteRequest {
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-label="Accept" src="/assets/icons/ionicons/checkmark.svg"></ion-icon>
         </button>
-      </div>
+      </div>,
     ];
   }
 }

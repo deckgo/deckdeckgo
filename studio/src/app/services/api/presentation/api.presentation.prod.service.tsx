@@ -1,3 +1,5 @@
+import authStore from '../../../stores/auth.store';
+
 import {ApiPresentationService} from './api.presentation.service';
 import {ApiDeck} from '../../../models/api/api.deck';
 import {ApiPresentation} from '../../../models/api/api.presentation';
@@ -12,7 +14,7 @@ export class ApiPresentationProdService extends ApiPresentationService {
         const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
         if (!bearer) {
-          bearer = await this.authService.getBearer();
+          bearer = authStore.state.bearer;
         }
 
         const rawResponse: Response = await fetch(config.apiUrl + context, {
@@ -20,9 +22,9 @@ export class ApiPresentationProdService extends ApiPresentationService {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: bearer
+            Authorization: bearer,
           },
-          body: JSON.stringify(deck)
+          body: JSON.stringify(deck),
         });
 
         if (!rawResponse || !rawResponse.ok) {

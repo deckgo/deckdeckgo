@@ -1,3 +1,5 @@
+import apiUserStore from '../../../stores/api.user.store';
+
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
 import {ApiUserService} from './api.user.service';
@@ -12,7 +14,7 @@ export class ApiUserMockService extends ApiUserService {
     return new Promise<ApiUser>(async (resolve) => {
       const testUser: ApiUser = await this.createTestUserInfo(apiUserInfo);
 
-      this.apiUserSubject.next(testUser);
+      apiUserStore.state.apiUser = {...testUser};
 
       resolve(testUser);
     });
@@ -38,7 +40,7 @@ export class ApiUserMockService extends ApiUserService {
         id: apiUserInfo.firebase_uid,
         anonymous: false,
         firebase_uid: apiUserInfo.firebase_uid,
-        username: 'Peter Parker'
+        username: 'Peter Parker',
       };
 
       resolve(testUser);

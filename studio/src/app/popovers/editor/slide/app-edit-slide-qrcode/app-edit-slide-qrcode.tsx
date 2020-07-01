@@ -2,17 +2,13 @@ import {Component, Element, EventEmitter, h, Prop, State, Event} from '@stencil/
 
 import {alertController} from '@ionic/core';
 
-import {take} from 'rxjs/operators';
-
-import {Deck} from '../../../../models/data/deck';
+import store from '../../../../stores/deck.store';
 
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
 import {EditAction} from '../../../../utils/editor/edit-action';
 
-import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-
 @Component({
-  tag: 'app-edit-slide-qrcode'
+  tag: 'app-edit-slide-qrcode',
 })
 export class AppEditSlideQRCode {
   @Element() el: HTMLElement;
@@ -31,12 +27,6 @@ export class AppEditSlideQRCode {
 
   @Event()
   private action: EventEmitter<EditAction>;
-
-  private deckEditorService: DeckEditorService;
-
-  constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
-  }
 
   async componentWillLoad() {
     this.customQRCode = this.selectedElement && this.selectedElement.hasAttribute('custom-qrcode');
@@ -118,19 +108,14 @@ export class AppEditSlideQRCode {
         return;
       }
 
-      this.deckEditorService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (deck: Deck) => {
-          this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(deck));
-          this.selectedElement.removeAttribute('custom-qrcode');
+      this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(store.state.deck));
+      this.selectedElement.removeAttribute('custom-qrcode');
 
-          this.customContent = undefined;
+      this.customContent = undefined;
 
-          this.slideDidChange.emit(this.selectedElement);
+      this.slideDidChange.emit(this.selectedElement);
 
-          resolve();
-        });
+      resolve();
     });
   }
 
@@ -184,7 +169,7 @@ export class AppEditSlideQRCode {
         <ion-button shape="round" onClick={() => this.action.emit(EditAction.DELETE_LOGO)} fill="outline" class="delete">
           <ion-label>Delete logo</ion-label>
         </ion-button>
-      </ion-item>
+      </ion-item>,
     ];
   }
 }
