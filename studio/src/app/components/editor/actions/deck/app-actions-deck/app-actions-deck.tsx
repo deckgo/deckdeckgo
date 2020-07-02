@@ -438,7 +438,7 @@ export class AppActionsDeck {
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu popover-menu-wide',
     });
 
     await popover.present();
