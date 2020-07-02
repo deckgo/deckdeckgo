@@ -1,3 +1,20 @@
+<a name="1.5.0"></a>
+
+# 1.5.0 (2020-07-02)
+
+### Features
+
+- use @stencil/store instead of rxjs ([#773](https://github.com/deckgo/deckdeckgo/issues/773))
+- web app shortcuts ([#766](https://github.com/deckgo/deckdeckgo/pull/766))
+- use Google Font "Open Sans" for the editor ([#772](https://github.com/deckgo/deckdeckgo/pull/772))
+- at least four slides needed to make a published deck appear in feed ([#776](https://github.com/deckgo/deckdeckgo/pull/776))
+- remove random color and background when creating a new deck ([#777](https://github.com/deckgo/deckdeckgo/pull/777))
+- wider deck style menu popover ([#778](https://github.com/deckgo/deckdeckgo/pull/778))
+
+### Fix
+
+- grammar mistake on app-landing-deck.tsx ([#775](https://github.com/deckgo/deckdeckgo/pull/775))
+
 <a name="1.4.0"></a>
 
 # 1.4.0 (2020-06-25)

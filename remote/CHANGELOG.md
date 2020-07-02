@@ -1,3 +1,9 @@
+# 1.5.0 (2020-07-02)
+
+### Features
+
+- use @stencil/store instead of rxjs ([#773](https://github.com/deckgo/deckdeckgo/issues/773))
+
 # 1.4.0 (2020-06-05)
 
 ### Fix

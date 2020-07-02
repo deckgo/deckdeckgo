@@ -1,6 +1,12 @@
 <a name="1.5.0"></a>
 
-# [1.5.0](https://github.com/deckgo/deckdeckgo/compare/v1.4.0...v1.5.0) (In progress)
+# [1.5.0](https://github.com/deckgo/deckdeckgo/compare/v1.4.0...v1.5.0) (2020-07-02)
+
+### Applications
+
+- docs: v1.6.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- remote: v1.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v1.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
 
