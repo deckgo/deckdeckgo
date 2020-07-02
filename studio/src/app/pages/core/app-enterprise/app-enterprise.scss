@@ -66,7 +66,7 @@ app-enterprise {
   section.hero {
     height: calc(100vh - 56px);
 
-    background: linear-gradient(45deg, var(--ion-color-dark) 5%, var(--ion-color-tertiary) 95%);
+    background: var(--ion-color-dark);
     color: var(--ion-color-dark-contrast);
 
     div.content {
@@ -74,6 +74,10 @@ app-enterprise {
       grid-template-columns: repeat(2, 50%);
 
       height: 100%;
+
+      h1 {
+        margin-top: 0;
+      }
 
       @media (max-width: 992px) {
         grid-template-columns: 100%;
