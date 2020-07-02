@@ -27,6 +27,8 @@ export class AppFeed {
 
   private presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
 
+  private destroyListener;
+
   constructor() {
     this.feedService = FeedService.getInstance();
   }
@@ -34,13 +36,19 @@ export class AppFeed {
   async componentWillLoad() {
     this.initOffline(offlineStore.state.offline);
 
-    const destroyListner = offlineStore.onChange('offline', (offline: OfflineDeck | undefined) => {
+    this.destroyListener = offlineStore.onChange('offline', (offline: OfflineDeck | undefined) => {
       this.initOffline(offline);
 
-      destroyListner();
+      this.destroyListener();
     });
 
     this.mobile = isMobile();
+  }
+
+  componentDidUnload() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
   }
 
   private initOffline(offline: OfflineDeck | undefined) {
