@@ -1,33 +1,24 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
+import remoteStore, {ActiveRoom} from '../../stores/remote.store';
 
 // Services
-import {ActiveRoom, CommunicationService} from '../../services/communication/communication.service';
+import {CommunicationService} from '../../services/communication/communication.service';
 
 @Component({
   tag: 'app-remote-connect',
-  styleUrl: 'app-remote-connect.scss'
+  styleUrl: 'app-remote-connect.scss',
 })
 export class AppRemoteConnect {
   @Element() el: HTMLElement;
 
   @State()
-  private rooms: ActiveRoom[] = [];
-
-  @State()
   private readonly clientId: string;
-
-  private readonly subscription: Subscription;
 
   private communicationService: CommunicationService;
 
   constructor() {
     this.communicationService = CommunicationService.getInstance();
-
-    this.subscription = this.communicationService.watchRooms().subscribe(async (activeRooms: ActiveRoom[]) => {
-      this.rooms = activeRooms;
-    });
 
     this.clientId = this.communicationService.clientId;
   }
@@ -36,12 +27,6 @@ export class AppRemoteConnect {
     await this.communicationService.connect();
 
     history.pushState({modal: true}, null);
-  }
-
-  async componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   @Listen('popstate', {target: 'window'})
@@ -69,12 +54,12 @@ export class AppRemoteConnect {
         </ion-buttons>
       </app-header>,
 
-      <ion-content class="ion-padding">{this.renderContent()}</ion-content>
+      <ion-content class="ion-padding">{this.renderContent()}</ion-content>,
     ];
   }
 
   private renderContent() {
-    if (this.rooms && this.rooms.length > 0) {
+    if (remoteStore.state.rooms && remoteStore.state.rooms.length > 0) {
       return (
         <ion-list>
           <ion-list-header class="ion-padding-bottom ion-padding-top">
@@ -92,7 +77,7 @@ export class AppRemoteConnect {
   }
 
   private renderRooms() {
-    return this.rooms.map((activeRoom: ActiveRoom) => {
+    return remoteStore.state.rooms.map((activeRoom: ActiveRoom) => {
       return (
         <ion-item onClick={() => this.updateAndCloseModal(activeRoom.room)} disabled={activeRoom.connected}>
           <ion-label>{activeRoom.room}</ion-label>

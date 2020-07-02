@@ -1,20 +1,19 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, take} from 'rxjs/operators';
+import {debounce} from '@deckdeckgo/utils';
+
+import deckStore from '../../../../stores/deck.store';
+import errorStore from '../../../../stores/error.store';
+import feedStore from '../../../../stores/feed.store';
+import publishStore from '../../../../stores/publish.store';
+import apiUserStore from '../../../../stores/api.user.store';
 
 import {Deck} from '../../../../models/data/deck';
 
 import {Resources} from '../../../../utils/core/resources';
 
-import {DeckEditorService} from '../../../../services/editor/deck/deck-editor.service';
-import {ErrorService} from '../../../../services/core/error/error.service';
 import {DeckService} from '../../../../services/data/deck/deck.service';
-import {ApiUser} from '../../../../models/api/api.user';
-import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
-import {FeedService} from '../../../../services/data/feed/feed.service';
-import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -22,7 +21,7 @@ interface CustomInputEvent extends KeyboardEvent {
 
 @Component({
   tag: 'app-publish-edit',
-  styleUrl: 'app-publish-edit.scss'
+  styleUrl: 'app-publish-edit.scss',
 })
 export class AppPublishEdit {
   @State()
@@ -46,98 +45,43 @@ export class AppPublishEdit {
   @State()
   private tags: string[] = [];
 
-  private deckEditorService: DeckEditorService;
   private deckService: DeckService;
 
-  private errorService: ErrorService;
-
-  private updateDeckSubscription: Subscription;
-  private updateDeckSubject: Subject<void> = new Subject();
+  private readonly debounceUpdateDeck: () => void;
 
   @Event() private published: EventEmitter<string>;
 
-  private apiUser: ApiUser;
-  private apiUserService: ApiUserService;
-
   private publishService: PublishService;
 
-  private feedService: FeedService;
-
-  @State()
-  private progress: number = 0;
-
-  private progressSubscription: Subscription;
-
   constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
     this.deckService = DeckService.getInstance();
-
-    this.errorService = ErrorService.getInstance();
-
-    this.apiUserService = ApiUserFactoryService.getInstance();
 
     this.publishService = PublishService.getInstance();
 
-    this.feedService = FeedService.getInstance();
+    this.debounceUpdateDeck = debounce(async () => {
+      await this.updateDeck();
+    }, 500);
   }
 
   async componentWillLoad() {
-    this.deckEditorService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (deck: Deck) => {
-        await this.init(deck);
-      });
-
-    this.progressSubscription = this.publishService.watchProgress().subscribe((progress: number) => {
-      this.progress = progress;
-    });
-
-    this.apiUserService
-      .watch()
-      .pipe(
-        filter((apiUser: ApiUser) => apiUser !== null && apiUser !== undefined && !apiUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (apiUser: ApiUser) => {
-        this.apiUser = apiUser;
-      });
-
-    this.updateDeckSubscription = this.updateDeckSubject
-      .asObservable()
-      .pipe(debounceTime(500))
-      .subscribe(async () => {
-        await this.updateDeck();
-      });
+    await this.init();
   }
 
   componentDidLoad() {
     this.validateCaptionInput();
   }
 
-  private init(deck: Deck): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!deck || !deck.data) {
-        resolve();
-        return;
-      }
-
-      this.caption = deck.data.name;
-      this.description = deck.data.meta && deck.data.meta.description ? (deck.data.meta.description as string) : await this.getFirstSlideContent();
-      this.tags = deck.data.meta && deck.data.meta.tags ? (deck.data.meta.tags as string[]) : [];
-
-      resolve();
-    });
-  }
-
-  componentDidUnload() {
-    if (this.updateDeckSubscription) {
-      this.updateDeckSubscription.unsubscribe();
+  private async init() {
+    if (!deckStore.state.deck || !deckStore.state.deck.data) {
+      return;
     }
 
-    if (this.progressSubscription) {
-      this.progressSubscription.unsubscribe();
-    }
+    this.caption = deckStore.state.deck.data.name;
+    this.description =
+      deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.description
+        ? (deckStore.state.deck.data.meta.description as string)
+        : await this.getFirstSlideContent();
+    this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
   }
 
   private getFirstSlideContent(): Promise<string> {
@@ -173,26 +117,21 @@ export class AppPublishEdit {
       this.disablePublish = true;
 
       try {
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            if (!deck || !deck.data || !deck.id) {
-              this.disablePublish = false;
-              resolve();
-              return;
-            }
+        if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.id) {
+          this.disablePublish = false;
+          resolve();
+          return;
+        }
 
-            deck.data.name = this.caption;
+        deckStore.state.deck.data.name = this.caption;
 
-            const updatedDeck: Deck = await this.deckService.update(deck);
-            this.deckEditorService.next(updatedDeck);
+        const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+        deckStore.state.deck = {...updatedDeck};
 
-            this.disablePublish = false;
-          });
+        this.disablePublish = false;
       } catch (err) {
         this.disablePublish = false;
-        this.errorService.error(err);
+        errorStore.state.error = err;
       }
 
       resolve();
@@ -217,12 +156,12 @@ export class AppPublishEdit {
         this.publishing = false;
 
         // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
-        await this.feedService.reset();
+        feedStore.reset();
 
         resolve();
       } catch (err) {
         this.publishing = false;
-        this.errorService.error(err);
+        errorStore.state.error = err;
         resolve();
       }
     });
@@ -239,7 +178,7 @@ export class AppPublishEdit {
 
       this.caption = title;
 
-      this.updateDeckSubject.next();
+      this.debounceUpdateDeck();
 
       resolve();
     });
@@ -451,14 +390,14 @@ export class AppPublishEdit {
   private renderPublish() {
     if (!this.publishing) {
       return (
-        <ion-button type="submit" disabled={!this.valid || this.disablePublish || !this.apiUser} color="tertiary" shape="round">
+        <ion-button type="submit" disabled={!this.valid || this.disablePublish || !apiUserStore.state.apiUser} color="tertiary" shape="round">
           <ion-label>Publish now</ion-label>
         </ion-button>
       );
     } else {
       return (
         <div class="publishing">
-          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+          <ion-progress-bar value={publishStore.state.progress} color="tertiary"></ion-progress-bar>
           <ion-label>Hang on, we are publishing your presentation</ion-label>
         </div>
       );

@@ -1,13 +1,13 @@
 import {Component, h, Prop, State} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
+import errorStore from '../../../stores/error.store';
+import pollStore from '../../../stores/poll.store';
 
 import {get, set} from 'idb-keyval';
 
 import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 
 import {PollService} from '../../../services/poll/poll.service';
-import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
   tag: 'app-poll',
@@ -16,9 +16,6 @@ import {ErrorService} from '../../../services/core/error/error.service';
 export class AppPoll {
   @Prop({mutable: true})
   pollKey: string;
-
-  @State()
-  private poll: DeckdeckgoPoll;
 
   @State()
   private choice: string;
@@ -35,21 +32,17 @@ export class AppPoll {
   private keywords: string[] = ['You did it', 'Applause', 'Thumbs up', 'Congratulations'];
 
   private pollService: PollService;
-  private errorService: ErrorService;
 
-  private subscription: Subscription;
+  private destroyPollListener;
 
   constructor() {
     this.pollService = PollService.getInstance();
-    this.errorService = ErrorService.getInstance();
   }
 
   async componentWillLoad() {
-    this.subscription = this.pollService.watch().subscribe((poll: DeckdeckgoPoll) => {
-      this.poll = poll;
-
+    this.destroyPollListener = pollStore.onChange('poll', (poll: DeckdeckgoPoll | undefined) => {
       if (this.pollKey && (!poll || poll === undefined)) {
-        this.errorService.error('Oopsie the poll was not found. Double check that the code is correct and try again.');
+        errorStore.state.error = 'Oopsie the poll was not found. Double check that the code is correct and try again.';
       }
 
       this.connecting = false;
@@ -63,8 +56,8 @@ export class AppPoll {
   async componentDidUnload() {
     await this.pollService.disconnect();
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.destroyPollListener) {
+      this.destroyPollListener();
     }
   }
 
@@ -75,7 +68,7 @@ export class AppPoll {
   private async handleSubmit($event: Event) {
     $event.preventDefault();
 
-    if (!this.poll || !this.poll.key) {
+    if (!pollStore.state.poll || !pollStore.state.poll.key) {
       return;
     }
 
@@ -84,13 +77,13 @@ export class AppPoll {
     }
 
     try {
-      await this.pollService.vote(this.poll.key, this.choice);
+      await this.pollService.vote(pollStore.state.poll.key, this.choice);
 
       this.hasVoted = true;
 
-      await set(`deckdeckgo_poll_${this.poll.key}`, new Date().getTime());
+      await set(`deckdeckgo_poll_${pollStore.state.poll.key}`, new Date().getTime());
     } catch (err) {
-      this.errorService.error(err);
+      errorStore.state.error = err;
     }
   }
 
@@ -131,7 +124,7 @@ export class AppPoll {
   private cancel() {
     this.pollKey = undefined;
     this.hasVoted = false;
-    this.poll = undefined;
+    pollStore.reset();
   }
 
   render() {
@@ -152,12 +145,12 @@ export class AppPoll {
       return undefined;
     }
 
-    if (!this.poll || !this.poll.poll) {
+    if (!pollStore.state.poll || !pollStore.state.poll.poll) {
       return undefined;
     }
 
     return [
-      <h1>{this.poll.poll.label}</h1>,
+      <h1>{pollStore.state.poll.poll.label}</h1>,
       <form onSubmit={(e: Event) => this.handleSubmit(e)}>
         <ion-list class="ion-padding-top">
           <ion-radio-group onIonChange={($event) => this.onChoiceChange($event)}>{this.renderPollChoices()}</ion-radio-group>
@@ -169,11 +162,11 @@ export class AppPoll {
   }
 
   private renderPollChoices() {
-    if (!this.poll.poll.values || this.poll.poll.values.length <= 0) {
+    if (!pollStore.state.poll.poll.values || pollStore.state.poll.poll.values.length <= 0) {
       return undefined;
     }
 
-    return this.poll.poll.values.map((choice: DeckdeckgoPollAnswer) => {
+    return pollStore.state.poll.poll.values.map((choice: DeckdeckgoPollAnswer) => {
       return (
         <ion-item>
           <ion-label>{choice.label}</ion-label>
@@ -188,7 +181,7 @@ export class AppPoll {
       return undefined;
     }
 
-    if (this.poll && this.poll.poll) {
+    if (pollStore.state.poll && pollStore.state.poll.poll) {
       return undefined;
     }
 

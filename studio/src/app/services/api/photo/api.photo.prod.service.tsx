@@ -3,6 +3,8 @@ import {ApiPhotoService} from './api.photo.service';
 import {EnvironmentUnsplashConfig} from '../../core/environment/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
+import store from '../../../stores/error.store';
+
 export class ApiPhotoProdService extends ApiPhotoService {
   // @Override
   getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse> {
@@ -17,14 +19,14 @@ export class ApiPhotoProdService extends ApiPhotoService {
         const response: UnsplashSearchResponse = JSON.parse(await rawResponse.text());
 
         if (!response) {
-          this.errorService.error('Unsplash photos could not be fetched');
+          store.state.error = 'Unsplash photos could not be fetched';
           resolve();
           return;
         }
 
         resolve(response);
       } catch (err) {
-        this.errorService.error(err.message);
+        store.state.error = err.message;
         resolve();
       }
     });

@@ -1,11 +1,8 @@
-import {Component, Prop, h, State} from '@stencil/core';
+import {Component, Prop, h} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
+import offlineStore from '../../../stores/offline.store';
 
-import {Deck} from '../../../models/data/deck';
-
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
-import {OfflineService} from '../../../services/editor/offline/offline.service';
+import store from '../../../stores/deck.store';
 
 @Component({
   tag: 'app-navigation',
@@ -20,46 +17,9 @@ export class AppNavigation {
   @Prop() presentation: boolean = false;
   @Prop() publish: boolean = false;
 
-  private subscription: Subscription;
-  private deckEditorService: DeckEditorService;
-
-  private offlineSubscription: Subscription;
-  private offlineService: OfflineService;
-
-  @State()
-  private deckName: string = null;
-
-  @State()
-  private offline: OfflineDeck = undefined;
-
-  constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
-    this.offlineService = OfflineService.getInstance();
-  }
-
-  componentWillLoad() {
-    this.subscription = this.deckEditorService.watch().subscribe((deck: Deck) => {
-      this.deckName = deck && deck.data && deck.data.name && deck.data.name !== '' ? deck.data.name : null;
-    });
-
-    this.offlineSubscription = this.offlineService.watchOffline().subscribe((offline: OfflineDeck | undefined) => {
-      this.offline = offline;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.offlineSubscription) {
-      this.offlineSubscription.unsubscribe();
-    }
-  }
-
   render() {
     return (
-      <ion-header class={this.offline ? 'offline' : undefined}>
+      <ion-header class={offlineStore.state.offline ? 'offline' : undefined}>
         <ion-toolbar>
           {this.renderTitleOnline()}
           {this.renderTitleOffline()}
@@ -72,11 +32,11 @@ export class AppNavigation {
   }
 
   private renderTitleOnline() {
-    if (this.offline !== undefined) {
+    if (offlineStore.state.offline !== undefined) {
       return undefined;
     }
 
-    const titleClass = this.deckName && this.deckName !== '' ? 'title deck-name-visible' : 'title';
+    const titleClass = store.state.name && store.state.name !== '' ? 'title deck-name-visible' : 'title';
 
     return (
       <div class={titleClass}>
@@ -88,7 +48,7 @@ export class AppNavigation {
 
         {this.renderEnterprise()}
 
-        <ion-label class="deck-name">{this.deckName}</ion-label>
+        <ion-label class="deck-name">{store.state.name}</ion-label>
       </div>
     );
   }
@@ -118,17 +78,17 @@ export class AppNavigation {
   }
 
   private renderTitleOffline() {
-    if (this.offline === undefined) {
+    if (offlineStore.state.offline === undefined) {
       return undefined;
     }
 
     return (
       <div class="title offline deck-name-visible">
-        <ion-router-link href={`/editor/${this.offline.id}`} routerDirection="root" class="home">
+        <ion-router-link href={`/editor/${offlineStore.state.offline.id}`} routerDirection="root" class="home">
           <div>
             {this.renderLogo()}
 
-            <ion-label>{this.offline.name}</ion-label>
+            <ion-label>{offlineStore.state.offline.name}</ion-label>
           </div>
         </ion-router-link>
       </div>
@@ -164,7 +124,7 @@ export class AppNavigation {
   }
 
   private renderMenuToggle() {
-    if (this.offline !== undefined) {
+    if (offlineStore.state.offline !== undefined) {
       return undefined;
     }
 
@@ -184,7 +144,7 @@ export class AppNavigation {
   }
 
   private renderUser() {
-    if (this.offline !== undefined) {
+    if (offlineStore.state.offline !== undefined) {
       return undefined;
     }
 
@@ -200,12 +160,12 @@ export class AppNavigation {
   }
 
   private renderInfoOffline() {
-    if (this.offline === undefined) {
+    if (offlineStore.state.offline === undefined) {
       return undefined;
     }
 
     return (
-      <ion-router-link href={`/editor/${this.offline.id}`} routerDirection="root" slot="end" class="offline-info ion-padding-end">
+      <ion-router-link href={`/editor/${offlineStore.state.offline.id}`} routerDirection="root" slot="end" class="offline-info ion-padding-end">
         <ion-label>You are editing offline.</ion-label>
       </ion-router-link>
     );

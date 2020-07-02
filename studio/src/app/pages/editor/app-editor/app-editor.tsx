@@ -2,18 +2,17 @@ import {Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {Subscription} from 'rxjs';
-import {filter, take} from 'rxjs/operators';
+import deckStore from '../../../stores/deck.store';
+import busyStore from '../../../stores/busy.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
-import {generateRandomStyleColors} from '../../../utils/editor/random-palette';
-
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
-import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
@@ -33,9 +32,6 @@ import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {DeckEditorService} from '../../../services/editor/deck/deck-editor.service';
-import {BusyService} from '../../../services/editor/busy/busy.service';
 
 import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -80,12 +76,6 @@ export class AppEditor {
 
   private authService: AuthService;
   private anonymousService: AnonymousService;
-  private navService: NavService;
-
-  private deckEditorService: DeckEditorService;
-
-  private busySubscription: Subscription;
-  private busyService: BusyService;
 
   private offlineService: OfflineService;
 
@@ -106,12 +96,12 @@ export class AppEditor {
   @State()
   private fullscreen: boolean = false;
 
+  private destroyBusyListener;
+  private destroyAuthListener;
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
-    this.navService = NavService.getInstance();
-    this.deckEditorService = DeckEditorService.getInstance();
-    this.busyService = BusyService.getInstance();
     this.offlineService = OfflineService.getInstance();
     this.fontsService = FontsService.getInstance();
   }
@@ -136,40 +126,44 @@ export class AppEditor {
 
     await this.initOffline();
 
-    // If no user create an anonymous one
-    this.authService
-      .watch()
-      .pipe(take(1))
-      .subscribe(async (authUser: AuthUser) => {
-        if (!authUser) {
-          await this.authService.signInAnonymous();
-        }
-      });
+    await this.initWithAuth();
 
-    // As soon as we have got a user, an anonymous where the creation started above or an already used anonymous or a logged one, we init
-    this.authService
-      .watch()
-      .pipe(
-        filter((authUser: AuthUser) => authUser !== null && authUser !== undefined),
-        take(1)
-      )
-      .subscribe(async (_authUser: AuthUser) => {
-        if (!this.deckId) {
-          await this.initSlide();
-        } else {
-          await this.fetchSlides();
-        }
-
-        this.slidesFetched = true;
-      });
-
-    this.busySubscription = this.busyService.watchSlideEditable().subscribe(async (slide: HTMLElement) => {
+    this.destroyBusyListener = busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
       this.slidesEditable = true;
 
       await this.contentEditable(slide);
     });
 
     this.fullscreen = isFullscreen() && !isIOS();
+  }
+
+  private async initWithAuth() {
+    if (!authStore.state.authUser) {
+      // As soon as the anonymous is created, we proceed
+      this.destroyAuthListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
+        if (authUser) {
+          await this.initOrFetch();
+        }
+
+        this.destroyAuthListener();
+      });
+
+      // If no user create an anonymous one
+      await this.authService.signInAnonymous();
+    } else {
+      // We have got a user, regardless if anonymous or not, we init
+      await this.initOrFetch();
+    }
+  }
+
+  private async initOrFetch() {
+    if (!this.deckId) {
+      await this.initSlide();
+    } else {
+      await this.fetchSlides();
+    }
+
+    this.slidesFetched = true;
   }
 
   async initOffline() {
@@ -189,11 +183,7 @@ export class AppEditor {
 
     await this.remoteEventsHandler.destroy();
 
-    if (this.busySubscription) {
-      this.busySubscription.unsubscribe();
-    }
-
-    this.deckEditorService.next(null);
+    deckStore.reset();
   }
 
   async componentDidLoad() {
@@ -211,6 +201,14 @@ export class AppEditor {
     await this.remoteEventsHandler.destroy();
 
     this.removeWindowResize();
+
+    if (this.destroyBusyListener) {
+      this.destroyBusyListener();
+    }
+
+    if (this.destroyAuthListener) {
+      this.destroyAuthListener();
+    }
   }
 
   private updateInlineEditorListener(): Promise<void> {
@@ -247,8 +245,6 @@ export class AppEditor {
 
       await this.concatSlide(slide);
 
-      await this.initRandomDeckStyle();
-
       resolve();
     });
   }
@@ -272,34 +268,21 @@ export class AppEditor {
     });
   }
 
-  private async initRandomDeckStyle() {
-    this.style = await generateRandomStyleColors();
-  }
+  private async initDeckStyle() {
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.style) {
+      this.style = await convertStyle(deckStore.state.deck.data.attributes.style);
+    } else {
+      this.style = undefined;
+    }
 
-  private initDeckStyle(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.deckEditorService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (deck: Deck) => {
-          if (deck && deck.data && deck.data.attributes && deck.data.attributes.style) {
-            this.style = await convertStyle(deck.data.attributes.style);
-          } else {
-            this.style = undefined;
-          }
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.transition) {
+      this.transition = deckStore.state.deck.data.attributes.transition;
+    }
 
-          if (deck && deck.data && deck.data.attributes && deck.data.attributes.transition) {
-            this.transition = deck.data.attributes.transition;
-          }
+    this.background = await ParseBackgroundUtils.convertBackground(deckStore.state.deck.data.background, true);
 
-          this.background = await ParseBackgroundUtils.convertBackground(deck.data.background, true);
-
-          const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-          await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
-
-          resolve();
-        });
-    });
+    const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
+    await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
   }
 
   private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {
@@ -590,10 +573,10 @@ export class AppEditor {
 
   @Listen('signIn', {target: 'document'})
   async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
-    });
+    };
   }
 
   private contentEditable(slide: HTMLElement): Promise<void> {

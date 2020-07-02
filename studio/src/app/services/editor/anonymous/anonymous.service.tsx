@@ -1,18 +1,9 @@
-import {take} from 'rxjs/operators';
+import authStore from '../../../stores/auth.store';
 
-import {AuthUser} from '../../../models/auth/auth.user';
-
-import {AuthService} from '../../auth/auth.service';
+import {Resources} from '../../../utils/core/resources';
 
 export class AnonymousService {
   private static instance: AnonymousService;
-
-  private authService: AuthService;
-
-  private constructor() {
-    // Private constructor, singleton
-    this.authService = AuthService.getInstance();
-  }
 
   static getInstance() {
     if (!AnonymousService.instance) {
@@ -32,22 +23,17 @@ export class AnonymousService {
         return;
       }
 
-      this.authService
-        .watch()
-        .pipe(take(1))
-        .subscribe((authUser: AuthUser) => {
-          if (!authUser) {
-            resolve(false);
-            return;
-          }
+      if (!authStore.state.authUser) {
+        resolve(false);
+        return;
+      }
 
-          if (!authUser.anonymous) {
-            resolve(true);
-            return;
-          }
+      if (!authStore.state.authUser.anonymous) {
+        resolve(true);
+        return;
+      }
 
-          resolve(slides.length < 3);
-        });
+      resolve(slides.length < Resources.Constants.DECK.MIN_SLIDES);
     });
   }
 
@@ -58,33 +44,12 @@ export class AnonymousService {
         return;
       }
 
-      this.authService
-        .watch()
-        .pipe(take(1))
-        .subscribe((authUser: AuthUser) => {
-          if (!authUser) {
-            resolve(false);
-            return;
-          }
+      if (!authStore.state.authUser) {
+        resolve(false);
+        return;
+      }
 
-          resolve(!authUser.anonymous);
-        });
-    });
-  }
-
-  isAnonymous(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      this.authService
-        .watch()
-        .pipe(take(1))
-        .subscribe((authUser: AuthUser) => {
-          if (!authUser) {
-            resolve(true);
-            return;
-          }
-
-          resolve(authUser.anonymous);
-        });
+      resolve(!authStore.state.anonymous);
     });
   }
 }

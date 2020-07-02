@@ -2,8 +2,8 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from 'firebase';
 
-import {Observable, ReplaySubject} from 'rxjs';
-import {take} from 'rxjs/operators';
+import errorStore from '../../stores/error.store';
+import authStore from '../../stores/auth.store';
 
 import {get, set, del} from 'idb-keyval';
 
@@ -11,17 +11,11 @@ import {EnvironmentConfigService} from '../core/environment/environment-config.s
 
 import {AuthUser} from '../../models/auth/auth.user';
 
-import {ErrorService} from '../core/error/error.service';
-
 import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
 import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
 
 export class AuthService {
-  private authUserSubject: ReplaySubject<AuthUser> = new ReplaySubject(1);
-
-  private errorService: ErrorService;
-
   private apiUserService: ApiUserService;
 
   private firestoreUserService: UserService;
@@ -30,7 +24,6 @@ export class AuthService {
 
   private constructor() {
     // Private constructor, singleton
-    this.errorService = ErrorService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.firestoreUserService = UserService.getInstance();
   }
@@ -47,13 +40,13 @@ export class AuthService {
       // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
       // And we also need it in case the user go offline, so we could also check offline if user is anonymous or not
       const localUser: AuthUser = await this.getLocalAuthUser();
-      this.authUserSubject.next(localUser);
+      authStore.state.authUser = localUser ? {...localUser} : null;
 
       firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
       firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser) => {
         if (!firebaseUser) {
-          this.authUserSubject.next(null);
+          authStore.reset();
           await del('deckdeckgo_auth_user');
 
           await this.apiUserService.signOut();
@@ -67,7 +60,7 @@ export class AuthService {
             name: firebaseUser.displayName,
             email: firebaseUser.email,
             email_verified: firebaseUser.emailVerified,
-            photo_url: firebaseUser.photoURL
+            photo_url: firebaseUser.photoURL,
           };
 
           // Update anonymous user
@@ -84,7 +77,7 @@ export class AuthService {
 
           await set('deckdeckgo_auth_user', authUser);
 
-          this.authUserSubject.next(authUser);
+          authStore.state.authUser = {...authUser};
 
           await this.apiUserService.signIn(authUser);
         }
@@ -110,23 +103,9 @@ export class AuthService {
 
         resolve();
       } catch (err) {
-        this.errorService.error(err.message);
+        errorStore.state.error = err.message;
         resolve();
       }
-    });
-  }
-
-  watch(): Observable<AuthUser> {
-    return this.authUserSubject.asObservable();
-  }
-
-  getBearer(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      this.watch()
-        .pipe(take(1))
-        .subscribe((authUser: AuthUser) => {
-          resolve(`Bearer ${authUser ? authUser.token : ''}`);
-        });
     });
   }
 

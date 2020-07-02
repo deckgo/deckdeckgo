@@ -1,10 +1,9 @@
 import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
-import {isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
+import store from '../../../../../stores/busy.store';
 
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
@@ -20,8 +19,6 @@ import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
 import {DemoAction} from '../../../../../utils/editor/demo-action';
 import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
-
-import {BusyService} from '../../../../../services/editor/busy/busy.service';
 
 @Component({
   tag: 'app-actions-element',
@@ -70,16 +67,9 @@ export class AppActionsElement {
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
   @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
-  private subscription: Subscription;
-  private busyService: BusyService;
-
-  @State()
-  private deckBusy: boolean = false;
-
   private elementResizeObserver: ResizeObserverConstructor;
 
-  private moveToolbarSubscription: Subscription;
-  private moveToolbarSubject: Subject<void> = new Subject();
+  private readonly debounceResizeSlideContent: () => void;
 
   @Event() signIn: EventEmitter<void>;
 
@@ -89,18 +79,12 @@ export class AppActionsElement {
   @Event() private resetted: EventEmitter<void>;
 
   constructor() {
-    this.busyService = BusyService.getInstance();
+    this.debounceResizeSlideContent = debounce(async () => {
+      await this.resizeSlideContent();
+    }, 250);
   }
 
   async componentWillLoad() {
-    this.subscription = this.busyService.watchDeckBusy().subscribe((busy: boolean) => {
-      this.deckBusy = busy;
-    });
-
-    this.moveToolbarSubscription = this.moveToolbarSubject.pipe(debounceTime(250)).subscribe(async () => {
-      await this.resizeSlideContent();
-    });
-
     this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
     this.shapeHelper = new ShapeHelper(this.slideDidChange, this.signIn);
   }
@@ -110,26 +94,18 @@ export class AppActionsElement {
   }
 
   async componentDidUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.moveToolbarSubscription) {
-      this.moveToolbarSubscription.unsubscribe();
-    }
-
     this.removeWindowResize();
   }
 
   private initWindowResize() {
     if (window) {
-      window.addEventListener('resize', () => this.moveToolbarSubject.next(), {passive: true});
+      window.addEventListener('resize', () => this.debounceResizeSlideContent(), {passive: true});
     }
   }
 
   private removeWindowResize() {
     if (window) {
-      window.removeEventListener('resize', () => this.moveToolbarSubject.next(), true);
+      window.removeEventListener('resize', () => this.debounceResizeSlideContent(), true);
     }
   }
 
@@ -401,12 +377,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (this.deckBusy && this.slide) {
+      if (store.state.deckBusy && this.slide) {
         resolve();
         return;
       }
 
-      this.busyService.deckBusy(true);
+      store.state.deckBusy = true;
 
       if (this.selectedElement.nodeName && this.selectedElement.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
         this.slideDelete.emit(this.selectedElement);
@@ -439,7 +415,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (this.deckBusy || !this.shape) {
+      if (store.state.deckBusy || !this.shape) {
         resolve();
         return;
       }
@@ -457,12 +433,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (this.deckBusy || !this.slide) {
+      if (store.state.deckBusy || !this.slide) {
         resolve();
         return;
       }
 
-      this.busyService.deckBusy(true);
+      store.state.deckBusy = true;
 
       this.slideCopy.emit(this.selectedElement);
 
@@ -800,7 +776,7 @@ export class AppActionsElement {
         this.elementResizeObserver.observe(this.selectedElement);
       } else {
         // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
-        this.selectedElement.addEventListener('focusout', () => this.moveToolbarSubject.next(), {passive: true});
+        this.selectedElement.addEventListener('focusout', () => this.debounceResizeSlideContent(), {passive: true});
       }
 
       resolve();
@@ -815,7 +791,7 @@ export class AppActionsElement {
           this.elementResizeObserver.disconnect;
         }
       } else {
-        this.selectedElement.removeEventListener('focusout', () => this.moveToolbarSubject.next(), true);
+        this.selectedElement.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);
       }
 
       resolve();
@@ -1051,7 +1027,7 @@ export class AppActionsElement {
         aria-label="Delete"
         color="primary"
         mode="md"
-        disabled={this.deckBusy && this.slide}
+        disabled={store.state.deckBusy && this.slide}
         class="wider-devices">
         <ion-icon src="/assets/icons/ionicons/trash-bin.svg"></ion-icon>
         <ion-label>Delete</ion-label>
@@ -1063,7 +1039,7 @@ export class AppActionsElement {
     const classElement: string | undefined = `wider-devices ${this.slide ? '' : 'hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={this.deckBusy} class={classElement}>
+      <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={store.state.deckBusy} class={classElement}>
         <ion-icon src="/assets/icons/ionicons/create.svg"></ion-icon>
         <ion-label>Notes</ion-label>
       </ion-tab-button>
@@ -1074,7 +1050,7 @@ export class AppActionsElement {
     const classSlide: string | undefined = `wider-devices ${this.slide || this.shape ? '' : 'hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={this.deckBusy} class={classSlide}>
+      <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={store.state.deckBusy} class={classSlide}>
         <ion-icon src="/assets/icons/ionicons/copy.svg"></ion-icon>
         <ion-label>Copy</ion-label>
       </ion-tab-button>
@@ -1172,7 +1148,7 @@ export class AppActionsElement {
 
   private renderMore() {
     return (
-      <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={this.deckBusy} color="primary" class="small-devices" mode="md">
+      <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.deckBusy} color="primary" class="small-devices" mode="md">
         <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
         <ion-label>More</ion-label>
       </ion-tab-button>

@@ -1,3 +1,9 @@
+# 1.6.1 (2020-07-02)
+
+### Features
+
+- remove unused rxjs dependency
+
 # 1.6.0 (2020-06-05)
 
 ### Fix

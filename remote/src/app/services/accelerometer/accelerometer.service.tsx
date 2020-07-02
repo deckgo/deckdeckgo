@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import store from '../../stores/accelerometer.store';
 
 import {get, set} from 'idb-keyval';
 
@@ -13,7 +13,6 @@ interface AccelerometerValues {
 export class AccelerometerService {
   private static instance: AccelerometerService;
 
-  private enableSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private enable: boolean = false;
 
   private permissionGranted: boolean = false;
@@ -31,10 +30,6 @@ export class AccelerometerService {
 
   private sumAccelerationNext: number = 0;
   private sumAccelerationPrev: number = 0;
-
-  private triggerSubject: Subject<boolean> = new Subject();
-
-  private initializedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   private constructor() {
     // Private constructor, singleton
@@ -98,7 +93,7 @@ export class AccelerometerService {
         if (this.sensor.x > this.sensibility || this.sensor.x < this.sensibility * -1) {
           // We are emitting the direction after a bit of time
           if (this.takeValues >= this.takeUntil) {
-            this.triggerSubject.next(this.sumAccelerationNext > this.sumAccelerationPrev);
+            store.state.trigger = this.sumAccelerationNext > this.sumAccelerationPrev;
 
             // We are stopping to listen and will start again once the slide transition is done
             this.stop();
@@ -123,28 +118,23 @@ export class AccelerometerService {
     }
   }
 
-  toggle(): Promise<boolean> {
-    return new Promise<boolean>(async (resolve, reject) => {
-      try {
-        if (this.enable) {
-          this.stop();
-        } else {
-          await this.askPermission();
-        }
-
-        this.toggleEnabled(!this.enable);
-
-        resolve(this.enable);
-      } catch (err) {
-        this.toggleEnabled(false);
-        reject(err);
+  async toggle() {
+    try {
+      if (this.enable) {
+        this.stop();
+      } else {
+        await this.askPermission();
       }
-    });
+
+      this.toggleEnabled(!this.enable);
+    } catch (err) {
+      this.toggleEnabled(false);
+    }
   }
 
   private toggleEnabled(enabled: boolean) {
     this.enable = enabled;
-    this.enableSubject.next(this.enable);
+    store.state.enable = this.enable;
   }
 
   private askPermission(): Promise<any> {
@@ -172,17 +162,13 @@ export class AccelerometerService {
     );
   }
 
-  watch(): Observable<boolean> {
-    return this.triggerSubject.asObservable();
-  }
-
   async save() {
     await set('deckdeckgo_accelerometer', {
       enable: this.enable,
       frequency: this.frequency,
       sensibility: this.sensibility,
       takeUntil: this.takeUntil,
-      delay: this.delay
+      delay: this.delay,
     });
   }
 
@@ -199,17 +185,9 @@ export class AccelerometerService {
         await this.askPermission();
       }
 
-      this.enableSubject.next(this.enable);
+      store.state.enable = this.enable;
     }
 
-    this.initializedSubject.next(true);
-  }
-
-  watchInitialized(): Observable<boolean> {
-    return this.initializedSubject.asObservable();
-  }
-
-  watchEnabled(): Observable<boolean> {
-    return this.enableSubject.asObservable();
+    store.state.initialized = true;
   }
 }

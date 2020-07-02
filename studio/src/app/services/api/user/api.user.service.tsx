@@ -1,11 +1,9 @@
-import {Observable, ReplaySubject} from 'rxjs';
+import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
 
 export abstract class ApiUserService {
-  protected apiUserSubject: ReplaySubject<ApiUser> = new ReplaySubject(1);
-
   abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser>;
 
   abstract delete(userId: string, token: string): Promise<void>;
@@ -41,12 +39,8 @@ export abstract class ApiUserService {
     });
   }
 
-  signOut(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.apiUserSubject.next(null);
-
-      resolve();
-    });
+  async signOut() {
+    apiUserStore.reset();
   }
 
   post(apiUser: ApiUserInfo, token: string): Promise<ApiUser> {
@@ -55,10 +49,6 @@ export abstract class ApiUserService {
 
   put(apiUser: ApiUserInfo | ApiUser, token: string, userId: string): Promise<ApiUser> {
     return this.query(apiUser, token, `/users/${userId}`, 'PUT');
-  }
-
-  watch(): Observable<ApiUser> {
-    return this.apiUserSubject.asObservable();
   }
 
   private createUserInfo(authUser: AuthUser): Promise<ApiUserInfo> {
@@ -71,7 +61,7 @@ export abstract class ApiUserService {
       const apiUserInfo: ApiUserInfo = {
         anonymous: authUser.anonymous,
         firebase_uid: authUser.uid,
-        email: authUser.anonymous ? null : authUser.email
+        email: authUser.anonymous ? null : authUser.email,
       };
 
       resolve(apiUserInfo);

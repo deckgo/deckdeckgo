@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
 // Types
 import {
   DeckdeckgoDrawAction,
@@ -12,12 +10,14 @@ import {
   DeckdeckgoSlideAction,
   DeckdeckgoDeckDefinition,
   DeckdeckgoSlideDefinition,
-  ConnectionState
+  ConnectionState,
 } from '@deckdeckgo/types';
 
 import {isMobile} from '@deckdeckgo/utils';
 
 import {Arrow, Circle, Drawable, Pencil} from '@deckdeckgo/remote-utils';
+
+import store from '../../stores/remote.store';
 
 // Services
 import {CommunicationService} from '../../services/communication/communication.service';
@@ -25,7 +25,7 @@ import {CommunicationService} from '../../services/communication/communication.s
 @Component({
   tag: 'deckgo-remote',
   styleUrl: 'deckdeckgo-remote.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoRemote {
   @Element() el: HTMLElement;
@@ -46,8 +46,8 @@ export class DeckdeckgoRemote {
   @Event() state: EventEmitter<ConnectionState>;
   @Event() event: EventEmitter<DeckdeckgoEvent>;
 
-  private subscriptionState: Subscription;
-  private subscriptionEvent: Subscription;
+  private destroyStateListener;
+  private destroyEventListener;
 
   private ctx: CanvasRenderingContext2D;
   private drawables: Drawable[] = [];
@@ -64,26 +64,26 @@ export class DeckdeckgoRemote {
   }
 
   async componentDidLoad() {
-    this.subscriptionState = this.communicationService.watchState().subscribe((state: ConnectionState) => {
+    this.destroyStateListener = store.onChange('state', (state: ConnectionState) => {
       this.state.emit(state);
     });
 
-    this.subscriptionEvent = this.communicationService.watchEvent().subscribe(async (event: DeckdeckgoEvent) => {
-      if (event.emitter === DeckdeckgoEventEmitter.APP) {
-        if (event.type === DeckdeckgoEventType.SLIDES_REQUEST) {
+    this.destroyEventListener = store.onChange('$event', async ($event: DeckdeckgoEvent) => {
+      if ($event.emitter === DeckdeckgoEventEmitter.APP) {
+        if ($event.type === DeckdeckgoEventType.SLIDES_REQUEST) {
           // If app is asking for the deck length, how many slides, we answer directly
           await this.sendSlidesToApp(DeckdeckgoEventType.SLIDES_ANSWER);
-        } else if (event.type === DeckdeckgoEventType.CLEAR_SLIDE) {
+        } else if ($event.type === DeckdeckgoEventType.CLEAR_SLIDE) {
           await this.clear();
-        } else if (event.type === DeckdeckgoEventType.START_DRAWING) {
-          await this.startDrawing(event as DeckdeckgoEventDraw);
-        } else if (event.type === DeckdeckgoEventType.END_DRAWING) {
-          await this.endDrawing(event as DeckdeckgoEventDraw);
-        } else if (event.type === DeckdeckgoEventType.DRAW) {
-          await this.draw(event as DeckdeckgoEventDraw);
+        } else if ($event.type === DeckdeckgoEventType.START_DRAWING) {
+          await this.startDrawing($event as DeckdeckgoEventDraw);
+        } else if ($event.type === DeckdeckgoEventType.END_DRAWING) {
+          await this.endDrawing($event as DeckdeckgoEventDraw);
+        } else if ($event.type === DeckdeckgoEventType.DRAW) {
+          await this.draw($event as DeckdeckgoEventDraw);
         } else {
           // Else it's a command to apply on the deck, we propagate
-          this.event.emit(event);
+          this.event.emit($event);
         }
       }
     });
@@ -106,12 +106,12 @@ export class DeckdeckgoRemote {
   async componentDidUnload() {
     await this.communicationService.disconnect();
 
-    if (this.subscriptionState) {
-      this.subscriptionState.unsubscribe();
+    if (this.destroyStateListener) {
+      this.destroyStateListener();
     }
 
-    if (this.subscriptionEvent) {
-      this.subscriptionEvent.unsubscribe();
+    if (this.destroyEventListener) {
+      this.destroyEventListener();
     }
   }
 
@@ -210,7 +210,7 @@ export class DeckdeckgoRemote {
             {x: this.startX, y: this.startY},
             {
               x: this.startX,
-              y: this.startY
+              y: this.startY,
             },
             event.color
           )
@@ -245,7 +245,7 @@ export class DeckdeckgoRemote {
           {x: this.startX, y: this.startY},
           {
             x: toX,
-            y: toY
+            y: toY,
           },
           event.color
         );
@@ -277,7 +277,7 @@ export class DeckdeckgoRemote {
           {x: this.startX, y: this.startY},
           {
             x: toX,
-            y: toY
+            y: toY,
           },
           event.color
         );
@@ -308,7 +308,7 @@ export class DeckdeckgoRemote {
         emitter: DeckdeckgoEventEmitter.DECK,
         length: this.length,
         deck: this.deck,
-        mobile: isMobile()
+        mobile: isMobile(),
       });
 
       resolve();
@@ -339,7 +339,7 @@ export class DeckdeckgoRemote {
         type: DeckdeckgoEventType.SLIDE_UPDATE,
         emitter: DeckdeckgoEventEmitter.DECK,
         index: index,
-        slide: slide
+        slide: slide,
       });
 
       resolve();
@@ -351,7 +351,7 @@ export class DeckdeckgoRemote {
     return new Promise<void>((resolve) => {
       this.communicationService.emit({
         type: DeckdeckgoEventType.DELETE_SLIDE,
-        emitter: DeckdeckgoEventEmitter.DECK
+        emitter: DeckdeckgoEventEmitter.DECK,
       });
 
       resolve();
@@ -364,7 +364,7 @@ export class DeckdeckgoRemote {
       this.communicationService.emit({
         type: DeckdeckgoEventType.DECK_REVEAL_UPDATE,
         emitter: DeckdeckgoEventEmitter.DECK,
-        reveal: reveal
+        reveal: reveal,
       });
 
       resolve();
@@ -406,7 +406,7 @@ export class DeckdeckgoRemote {
       type: DeckdeckgoEventType.SLIDE_TO,
       emitter: DeckdeckgoEventEmitter.DECK,
       index: index,
-      speed: speed
+      speed: speed,
     });
   }
 
@@ -415,7 +415,7 @@ export class DeckdeckgoRemote {
     this.communicationService.emit({
       type: DeckdeckgoEventType.SLIDE_ACTION,
       emitter: DeckdeckgoEventEmitter.DECK,
-      action: DeckdeckgoSlideAction.PLAY
+      action: DeckdeckgoSlideAction.PLAY,
     });
   }
 
@@ -424,7 +424,7 @@ export class DeckdeckgoRemote {
     this.communicationService.emit({
       type: DeckdeckgoEventType.SLIDE_ACTION,
       emitter: DeckdeckgoEventEmitter.DECK,
-      action: DeckdeckgoSlideAction.PAUSE
+      action: DeckdeckgoSlideAction.PAUSE,
     });
   }
 

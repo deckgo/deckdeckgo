@@ -1,21 +1,22 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
 import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
 
-import {filter, take} from 'rxjs/operators';
-
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import themeStore from '../../../stores/theme.store';
+import errorStore from '../../../stores/error.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
+import userStore from '../../../stores/user.store';
+import apiUserStore from '../../../stores/api.user.store';
+
 import {ApiUser} from '../../../models/api/api.user';
-import {AuthUser} from '../../../models/auth/auth.user';
 import {User} from '../../../models/data/user';
 
 import {UserUtils} from '../../../utils/core/user-utils';
 
 import {ApiUserService} from '../../../services/api/user/api.user.service';
-import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
-import {ErrorService} from '../../../services/core/error/error.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {UserService} from '../../../services/data/user/user.service';
 import {StorageService} from '../../../services/storage/storage.service';
@@ -24,13 +25,10 @@ import {ThemeService} from '../../../services/theme/theme.service';
 
 @Component({
   tag: 'app-settings',
-  styleUrl: 'app-settings.scss'
+  styleUrl: 'app-settings.scss',
 })
 export class AppHome {
   @Element() el: HTMLElement;
-
-  @State()
-  private authUser: AuthUser;
 
   @State()
   private user: User;
@@ -51,13 +49,8 @@ export class AppHome {
   @State()
   private saving: boolean = false;
 
-  private authService: AuthService;
   private userService: UserService;
   private apiUserService: ApiUserService;
-
-  private navService: NavService;
-
-  private errorService: ErrorService;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -85,84 +78,86 @@ export class AppHome {
   @State()
   private custom: string = undefined;
 
-  @State()
-  private darkTheme: boolean;
+  private destroyUserListener;
+  private destroyApiUserListener;
 
   constructor() {
-    this.authService = AuthService.getInstance();
     this.apiUserService = ApiUserFactoryService.getInstance();
-    this.navService = NavService.getInstance();
-    this.errorService = ErrorService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = UserService.getInstance();
     this.storageService = StorageService.getInstance();
     this.themeService = ThemeService.getInstance();
   }
 
-  componentWillLoad() {
-    this.authService
-      .watch()
-      .pipe(
-        filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (authUser: AuthUser) => {
-        this.authUser = authUser;
-      });
-
-    this.apiUserService
-      .watch()
-      .pipe(
-        filter((apiUser: ApiUser) => apiUser !== null && apiUser !== undefined && !apiUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (apiUser: ApiUser) => {
-        this.apiUser = apiUser;
-
-        this.apiUsername = this.apiUser.username;
-      });
-
-    this.userService
-      .watch()
-      .pipe(
-        filter((user: User) => user !== null && user !== undefined && user.data && !user.data.anonymous),
-        take(1)
-      )
-      .subscribe(async (user: User) => {
-        this.user = user;
-
-        await this.initSocial();
-      });
-
-    this.themeService
-      .watch()
-      .pipe(take(1))
-      .subscribe((dark: boolean) => {
-        this.darkTheme = dark;
-      });
+  async componentDidLoad() {
+    const promises: Promise<void>[] = [this.initUser(), this.initApiUser()];
+    await Promise.all(promises);
   }
 
-  private initSocial(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.user || !this.user.data || !this.user.data.social) {
-        resolve();
-        return;
-      }
+  private async initUser() {
+    if (userStore.state.user) {
+      await this.initSocial();
+    } else {
+      this.destroyUserListener = userStore.onChange('user', async () => {
+        await this.initSocial();
+      });
+    }
+  }
 
-      this.twitter = this.user.data.social.twitter;
-      this.linkedin = this.user.data.social.linkedin;
-      this.dev = this.user.data.social.dev;
-      this.medium = this.user.data.social.medium;
-      this.github = this.user.data.social.github;
-      this.custom = this.user.data.social.custom;
-    });
+  private async initApiUser() {
+    if (apiUserStore.state.apiUser) {
+      await this.initUsername();
+    } else {
+      this.destroyApiUserListener = apiUserStore.onChange('apiUser', async () => {
+        await this.initUsername();
+      });
+    }
+  }
+
+  componentDidUnload() {
+    if (this.destroyUserListener) {
+      this.destroyUserListener();
+    }
+
+    if (this.destroyApiUserListener) {
+      this.destroyApiUserListener();
+    }
+  }
+
+  private initUsername() {
+    if (!apiUserStore.state.apiUser || apiUserStore.state.apiUser === undefined || apiUserStore.state.apiUser.anonymous) {
+      return;
+    }
+
+    this.apiUser = apiUserStore.state.apiUser;
+
+    this.apiUsername = this.apiUser.username;
+  }
+
+  private async initSocial() {
+    if (!userStore.state.user || userStore.state.user === undefined || !userStore.state.user.data || userStore.state.user.data.anonymous) {
+      return;
+    }
+
+    this.user = {...userStore.state.user};
+
+    if (!userStore.state.user.data.social) {
+      return;
+    }
+
+    this.twitter = this.user.data.social.twitter;
+    this.linkedin = this.user.data.social.linkedin;
+    this.dev = this.user.data.social.dev;
+    this.medium = this.user.data.social.medium;
+    this.github = this.user.data.social.github;
+    this.custom = this.user.data.social.custom;
   }
 
   private async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
-    });
+      direction: NavDirection.FORWARD,
+    };
   }
 
   @Listen('keydown')
@@ -253,7 +248,7 @@ export class AppHome {
 
         this.saving = false;
       } catch (err) {
-        this.errorService.error(err);
+        errorStore.state.error = err;
         this.saving = false;
       }
 
@@ -293,7 +288,7 @@ export class AppHome {
       this.apiUser.username = this.apiUsername;
 
       try {
-        await this.apiUserService.put(this.apiUser, this.authUser.token, this.apiUser.id);
+        await this.apiUserService.put(this.apiUser, authStore.state.authUser.token, this.apiUser.id);
 
         resolve();
       } catch (err) {
@@ -332,8 +327,8 @@ export class AppHome {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser.username
-      }
+        username: this.apiUser.username,
+      },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -356,10 +351,10 @@ export class AppHome {
 
         if (firebaseUser) {
           // We need the user token to access the API, therefore delete it here first
-          await this.apiUserService.delete(this.apiUser.id, this.authUser.token);
+          await this.apiUserService.delete(this.apiUser.id, authStore.state.authUser.token);
 
           // Then delete the user
-          await this.userService.delete(this.authUser.uid);
+          await this.userService.delete(authStore.state.authUser.uid);
 
           // Decks and slides are delete with a cloud function triggered on auth.delete
 
@@ -368,16 +363,16 @@ export class AppHome {
 
         await this.imageHistoryService.clear();
 
-        this.navService.navigate({
+        navStore.state.nav = {
           url: '/',
-          direction: NavDirection.ROOT
-        });
+          direction: NavDirection.ROOT,
+        };
 
         await loading.dismiss();
 
         resolve();
       } catch (err) {
-        this.errorService.error("Your user couldn't be deleted, contact us per email");
+        errorStore.state.error = "Your user couldn't be deleted, contact us per email";
       }
     });
   }
@@ -407,12 +402,12 @@ export class AppHome {
           {this.renderDarkLightToggle()}
           {this.renderGuardedContent()}
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 
   private renderGuardedContent() {
-    if (!this.authUser) {
+    if (!authStore.state.authUser || authStore.state.anonymous) {
       return this.renderNotLoggedInContent();
     } else {
       return [this.renderUserContent(), this.renderDangerZone()];
@@ -426,7 +421,7 @@ export class AppHome {
           Sign in
         </button>
         to access your profile and settings.
-      </p>
+      </p>,
     ];
   }
 
@@ -448,7 +443,7 @@ export class AppHome {
 
         {this.renderSubmitForm()}
       </form>,
-      <p class="info">Note that your update has no effect on the presentations you would have already published.</p>
+      <p class="info">Note that your update has no effect on the presentations you would have already published.</p>,
     ];
   }
 
@@ -468,7 +463,7 @@ export class AppHome {
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
           onIonChange={() => this.validateNameInput()}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -497,13 +492,12 @@ export class AppHome {
           checked={this.user && this.user.data ? this.user.data.newsletter : false}
           disabled={this.saving}
           onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
-      </div>
+      </div>,
     ];
   }
 
   async toggleTheme() {
-    this.darkTheme = !this.darkTheme;
-    await this.themeService.switch(this.darkTheme);
+    await this.themeService.switch(!themeStore.state.darkTheme);
   }
 
   private renderDarkLightToggle() {
@@ -512,11 +506,11 @@ export class AppHome {
       <ion-list class="inputs-list dark-light-list">
         <ion-item>
           <ion-label>
-            {this.darkTheme ? 'Dark' : 'Light'} theme {this.darkTheme ? '🌑' : '☀️'}
+            {themeStore.state.darkTheme ? 'Dark' : 'Light'} theme {themeStore.state.darkTheme ? '🌑' : '☀️'}
           </ion-label>
-          <ion-toggle slot="end" checked={this.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
+          <ion-toggle slot="end" checked={themeStore.state.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
         </ion-item>
-      </ion-list>
+      </ion-list>,
     ];
   }
 
@@ -536,7 +530,7 @@ export class AppHome {
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
           onIonChange={() => this.validateUsernameInput()}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -557,9 +551,9 @@ export class AppHome {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !this.apiUser || !this.authUser}>
+        disabled={this.saving || !this.apiUser || !authStore.state.authUser}>
         <ion-label>Delete my user</ion-label>
-      </ion-button>
+      </ion-button>,
     ];
   }
 
@@ -639,7 +633,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -661,7 +655,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -683,7 +677,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -705,7 +699,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -727,7 +721,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 
@@ -749,7 +743,7 @@ export class AppHome {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
-      </ion-item>
+      </ion-item>,
     ];
   }
 }

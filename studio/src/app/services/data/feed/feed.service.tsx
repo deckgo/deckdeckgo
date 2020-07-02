@@ -1,31 +1,17 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
-import {take} from 'rxjs/operators';
+import feedStore from '../../../stores/feed.store';
+import errorStore from '../../../stores/error.store';
 
 import {Deck, DeckData} from '../../../models/data/deck';
-
-import {ErrorService} from '../../core/error/error.service';
 
 export class FeedService {
   private static instance: FeedService;
 
-  private decksSubject: ReplaySubject<Deck[]> = new ReplaySubject(1);
-  private lastPageReached: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  private errorService: ErrorService;
-
   private nextQueryAfter: firebase.firestore.DocumentSnapshot;
 
   private queryLimit: number = 20;
-
-  private decks: Deck[] = [];
-
-  private constructor() {
-    // Private constructor, singleton
-    this.errorService = ErrorService.getInstance();
-  }
 
   static getInstance() {
     if (!FeedService.instance) {
@@ -34,30 +20,11 @@ export class FeedService {
     return FeedService.instance;
   }
 
-  watchDecks(): Observable<Deck[]> {
-    return this.decksSubject.asObservable();
-  }
-
-  watchLastPageReached(): Observable<boolean> {
-    return this.lastPageReached.asObservable();
-  }
-
-  reset(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.nextQueryAfter = null;
-      this.decks = [];
-
-      this.lastPageReached.next(false);
-      this.decksSubject.next([]);
-
-      resolve();
-    });
-  }
-
   refresh(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       this.nextQueryAfter = null;
-      this.decks = [];
+
+      feedStore.reset();
 
       await this.find();
 
@@ -65,21 +32,12 @@ export class FeedService {
     });
   }
 
-  find(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.watchLastPageReached()
-        .pipe(take(1))
-        .subscribe(async (reached: boolean) => {
-          if (reached) {
-            resolve();
-            return;
-          }
+  async find() {
+    if (feedStore.state.lastPageReached) {
+      return;
+    }
 
-          await this.findNext();
-
-          resolve();
-        });
-    });
+    await this.findNext();
   }
 
   private findNext(): Promise<void> {
@@ -88,7 +46,7 @@ export class FeedService {
         const snapshot: firebase.firestore.QuerySnapshot = await this.query();
 
         if (!snapshot || !snapshot.docs || snapshot.docs.length <= 0) {
-          this.lastPageReached.next(true);
+          feedStore.state.lastPageReached = true;
 
           resolve();
           return;
@@ -107,7 +65,7 @@ export class FeedService {
 
         resolve();
       } catch (err) {
-        this.errorService.error("Something weird happened, we couldn't fetch the decks.");
+        errorStore.state.error = "Something weird happened, we couldn't fetch the decks.";
         resolve();
       }
     });
@@ -132,7 +90,7 @@ export class FeedService {
   private addDecks(decks: Deck[]): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!decks || decks.length <= 0) {
-        this.lastPageReached.next(true);
+        feedStore.state.lastPageReached = true;
 
         resolve();
         return;
@@ -140,9 +98,9 @@ export class FeedService {
 
       // It costs around half a second to randomize 10 cards with Chrome but makes the feed more dynamic
       const randomlySortedDecks: Deck[] = await this.shuffle(decks);
-      this.decks = this.decks.concat(randomlySortedDecks);
+      const updatedDecks: Deck[] = feedStore.state.decks ? feedStore.state.decks.concat(randomlySortedDecks) : randomlySortedDecks;
 
-      this.decksSubject.next(this.decks);
+      feedStore.state.decks = [...updatedDecks];
 
       resolve();
     });

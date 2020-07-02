@@ -1,23 +1,17 @@
 import {EventEmitter} from '@stencil/core';
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
+import busyStore from '../../stores/busy.store';
+import authStore from '../../stores/auth.store';
+
 import {ImageAction} from '../../utils/editor/image-action';
 import {EditAction} from '../../utils/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 
-import {AnonymousService} from '../../services/editor/anonymous/anonymous.service';
-import {BusyService} from '../../services/editor/busy/busy.service';
-
 export class ImageHelper {
-  private anonymousService: AnonymousService;
-  private busyService: BusyService;
-
-  constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {
-    this.anonymousService = AnonymousService.getInstance();
-    this.busyService = BusyService.getInstance();
-  }
+  constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
@@ -35,7 +29,7 @@ export class ImageHelper {
 
   private async openModal(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action?: EditAction) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: componentTag
+      component: componentTag,
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -58,9 +52,7 @@ export class ImageHelper {
   }
 
   async openCustomModalRestricted(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action: EditAction) {
-    const isAnonymous: boolean = await this.anonymousService.isAnonymous();
-
-    if (isAnonymous) {
+    if (authStore.state.anonymous) {
       this.signIn.emit();
       return;
     }
@@ -75,7 +67,7 @@ export class ImageHelper {
         return;
       }
 
-      this.busyService.deckBusy(true);
+      busyStore.state.deckBusy = true;
 
       if (slide || deck) {
         await this.appendBackgroundImg(selectedElement, image, deck);
@@ -102,7 +94,7 @@ export class ImageHelper {
       const currentSlotElement: HTMLElement = selectedElement.querySelector(":scope > [slot='background']");
 
       if (currentSlotElement) {
-        this.busyService.deckBusy(true);
+        busyStore.state.deckBusy = true;
 
         if (deck) {
           selectedElement.removeChild(currentSlotElement);
@@ -220,7 +212,7 @@ export class ImageHelper {
         return;
       }
 
-      this.busyService.deckBusy(true);
+      busyStore.state.deckBusy = true;
 
       selectedElement.removeAttribute('img-src');
 
@@ -237,7 +229,7 @@ export class ImageHelper {
         return;
       }
 
-      this.busyService.deckBusy(true);
+      busyStore.state.deckBusy = true;
 
       selectedElement.setAttribute(attribute, image.downloadUrl);
 
