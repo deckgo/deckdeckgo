@@ -71,7 +71,7 @@ export class AppContactForm {
             )}
             {this.status === 'ERROR' && <p class="ion-margin-top">Ooops! There was an error.</p>}
 
-            <div>
+            <div class="ion-margin-top">
               <small>* required field</small>
             </div>
           </form>
