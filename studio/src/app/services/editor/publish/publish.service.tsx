@@ -9,6 +9,8 @@ import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
 import {Slide, SlideAttributes, SlideTemplate} from '../../../models/data/slide';
 
+import {Resources} from '../../../utils/core/resources';
+
 import {ApiPresentation} from '../../../models/api/api.presentation';
 import {ApiSlide} from '../../../models/api/api.slide';
 
@@ -380,19 +382,22 @@ export class PublishService {
         const url: URL = new URL(publishedUrl);
         const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
+        const feed: boolean = deck.data.slides && deck.data.slides.length > Resources.Constants.DECK.MIN_SLIDES;
+
         if (!deck.data.meta) {
           deck.data.meta = {
             title: deck.data.name,
             pathname: url.pathname,
             published: true,
             published_at: now,
-            feed: true,
+            feed: feed,
             updated_at: now,
           };
         } else {
           deck.data.meta.title = deck.data.name;
           deck.data.meta.pathname = url.pathname;
           deck.data.meta.updated_at = now;
+          deck.data.meta.feed = feed;
         }
 
         if (description && description !== undefined && description !== '') {

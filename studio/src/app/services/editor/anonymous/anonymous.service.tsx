@@ -1,5 +1,7 @@
 import authStore from '../../../stores/auth.store';
 
+import {Resources} from '../../../utils/core/resources';
+
 export class AnonymousService {
   private static instance: AnonymousService;
 
@@ -31,7 +33,7 @@ export class AnonymousService {
         return;
       }
 
-      resolve(slides.length < 3);
+      resolve(slides.length < Resources.Constants.DECK.MIN_SLIDES);
     });
   }
 
