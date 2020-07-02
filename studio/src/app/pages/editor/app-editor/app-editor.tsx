@@ -97,6 +97,7 @@ export class AppEditor {
   private fullscreen: boolean = false;
 
   private destroyBusyListener;
+  private destroyAuthListener;
 
   constructor() {
     this.authService = AuthService.getInstance();
@@ -139,12 +140,12 @@ export class AppEditor {
   private async initWithAuth() {
     if (!authStore.state.authUser) {
       // As soon as the anonymous is created, we proceed
-      const destroyListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
+      this.destroyAuthListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
         if (authUser) {
           await this.initOrFetch();
         }
 
-        destroyListener();
+        this.destroyAuthListener();
       });
 
       // If no user create an anonymous one
@@ -203,6 +204,10 @@ export class AppEditor {
 
     if (this.destroyBusyListener) {
       this.destroyBusyListener();
+    }
+
+    if (this.destroyAuthListener) {
+      this.destroyAuthListener();
     }
   }
 

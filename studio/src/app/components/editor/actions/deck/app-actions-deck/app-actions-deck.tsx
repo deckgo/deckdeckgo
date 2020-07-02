@@ -67,6 +67,8 @@ export class AppActionsDeck {
 
   private anonymousService: AnonymousService;
 
+  private destroyListener;
+
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
   }
@@ -74,13 +76,19 @@ export class AppActionsDeck {
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
 
-    const destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+    this.destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
       if (requests && requests.length > 0) {
         await this.clickToOpenRemote();
       }
 
-      destroyListener();
+      this.destroyListener();
     });
+  }
+
+  componentDidUnload() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
   }
 
   async onActionOpenSlideAdd($event: CustomEvent) {

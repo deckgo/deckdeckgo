@@ -44,6 +44,8 @@ export class AppDashboard {
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
+  private destroyListener;
+
   constructor() {
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
@@ -54,19 +56,19 @@ export class AppDashboard {
     await this.imageEventsHandler.init();
     await this.chartEventsHandler.init();
 
-    const destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
-      await this.initDashboard(destroyListener);
+    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+      await this.initDashboard();
     });
 
-    await this.initDashboard(destroyListener);
+    await this.initDashboard();
   }
 
-  private async initDashboard(destroyListener) {
+  private async initDashboard() {
     if (!authStore.state.authUser) {
       return;
     }
 
-    destroyListener();
+    this.destroyListener();
 
     const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
     this.decks = await this.fetchFirstSlides(userDecks);
@@ -77,6 +79,10 @@ export class AppDashboard {
   }
 
   componentDidUnload() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+
     this.imageEventsHandler.destroy();
     this.chartEventsHandler.destroy();
   }
