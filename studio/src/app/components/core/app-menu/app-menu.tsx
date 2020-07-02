@@ -1,61 +1,39 @@
-import {Component, Element, State, h} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
-import {AuthUser} from '../../../models/auth/auth.user';
-
-import {Utils} from '../../../utils/core/utils';
+import navStore from '../../../stores/nav.store';
+import authStore from '../../../stores/auth.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import {NavDirection} from '../../../stores/nav.store';
 
 @Component({
   tag: 'app-menu',
   styleUrl: 'app-menu.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppMenu {
   @Element() el: HTMLElement;
 
   private authService: AuthService;
-  private authSubscription: Subscription;
-
-  private navService: NavService;
-
-  @State()
-  private authUser: AuthUser;
 
   constructor() {
     this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
-  }
-
-  componentWillLoad() {
-    this.authSubscription = this.authService.watch().subscribe(async (authUser: AuthUser) => {
-      this.authUser = authUser;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
   }
 
   private async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
-      direction: NavDirection.FORWARD
-    });
+      direction: NavDirection.FORWARD,
+    };
   }
 
   private async signOut() {
     await this.authService.signOut();
 
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/',
-      direction: NavDirection.ROOT
-    });
+      direction: NavDirection.ROOT,
+    };
   }
 
   render() {
@@ -73,7 +51,7 @@ export class AppMenu {
   }
 
   private renderUser() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (authStore.state.loggedIn) {
       return (
         <ion-item class="user">
           <app-user-info avatarColSize={3}></app-user-info>
@@ -85,7 +63,7 @@ export class AppMenu {
   }
 
   private renderDashboard() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (authStore.state.loggedIn) {
       return (
         <ion-item button class="home" href="/dashboard" routerDirection="forward">
           <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
@@ -98,7 +76,7 @@ export class AppMenu {
   }
 
   private renderSignInOut() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (authStore.state.loggedIn) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
           <ion-icon lazy={true} name="log-out-outline" slot="start"></ion-icon>
@@ -125,7 +103,7 @@ export class AppMenu {
   }
 
   private renderDiscover() {
-    if (Utils.isLoggedIn(this.authUser)) {
+    if (authStore.state.loggedIn) {
       return undefined;
     }
 

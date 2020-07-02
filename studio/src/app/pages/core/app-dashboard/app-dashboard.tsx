@@ -1,24 +1,23 @@
 import {Component, h, JSX, State} from '@stencil/core';
 
-import {filter, take} from 'rxjs/operators';
-
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
-import {AuthUser} from '../../../models/auth/auth.user';
+import authStore from '../../../stores/auth.store';
+
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
+import {AuthUser} from '../../../models/auth/auth.user';
 
 import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
+
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
-
-import {AuthService} from '../../../services/auth/auth.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
-import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 
+import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -33,16 +32,9 @@ interface DeckAndFirstSlide {
 })
 export class AppDashboard {
   @State()
-  private authUser: AuthUser;
-
-  @State()
   private filteredDecks: DeckAndFirstSlide[] = null;
 
   private decks: DeckAndFirstSlide[] = null;
-
-  private authService: AuthService;
-
-  private navService: NavService;
 
   private deckService: DeckService;
   private slideService: SlideService;
@@ -53,8 +45,6 @@ export class AppDashboard {
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
   constructor() {
-    this.authService = AuthService.getInstance();
-    this.navService = NavService.getInstance();
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
@@ -64,22 +54,26 @@ export class AppDashboard {
     await this.imageEventsHandler.init();
     await this.chartEventsHandler.init();
 
-    this.authService
-      .watch()
-      .pipe(
-        filter((authUser: AuthUser) => authUser !== null && authUser !== undefined && !authUser.anonymous),
-        take(1)
-      )
-      .subscribe(async (authUser: AuthUser) => {
-        this.authUser = authUser;
+    const destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+      await this.initDashboard(destroyListener);
+    });
 
-        const userDecks: Deck[] = await this.deckService.getUserDecks(authUser.uid);
-        this.decks = await this.fetchFirstSlides(userDecks);
-        await this.filterDecks(null);
+    await this.initDashboard(destroyListener);
+  }
 
-        // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
-        await this.initWatchForClonedDecks();
-      });
+  private async initDashboard(destroyListener) {
+    if (!authStore.state.authUser) {
+      return;
+    }
+
+    destroyListener();
+
+    const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
+    this.decks = await this.fetchFirstSlides(userDecks);
+    await this.filterDecks(null);
+
+    // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
+    await this.initWatchForClonedDecks();
   }
 
   componentDidUnload() {
@@ -223,10 +217,10 @@ export class AppDashboard {
   }
 
   private async signIn() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/signin' + (window && window.location ? window.location.pathname : ''),
       direction: NavDirection.FORWARD,
-    });
+    };
   }
 
   private async filterDecksOnChange(e: CustomEvent) {
@@ -258,17 +252,17 @@ export class AppDashboard {
 
     const url: string = `/editor/${deck.deck.id}`;
 
-    this.navService.navigate({
+    navStore.state.nav = {
       url: url,
       direction: NavDirection.ROOT,
-    });
+    };
   }
 
   private async navigateEditor() {
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/editor',
       direction: NavDirection.ROOT,
-    });
+    };
   }
 
   private removeDeletedDeck($event: CustomEvent): Promise<void> {
@@ -407,7 +401,7 @@ export class AppDashboard {
   }
 
   private renderGuardedContent() {
-    if (!this.authUser) {
+    if (!authStore.state.authUser) {
       return this.renderNotLoggedInContent();
     } else {
       return this.renderContent();

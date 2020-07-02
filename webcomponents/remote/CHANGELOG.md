@@ -1,6 +1,12 @@
+# 1.2.0 (2020-06-30)
+
+### Features
+
+- migrate `rxjs` to `@stencil/store` ([#773](https://github.com/deckgo/deckdeckgo/issues/773))
+
 # 1.1.1 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

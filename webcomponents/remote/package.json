@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/remote",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -24,18 +24,18 @@
   "dependencies": {
     "@deckdeckgo/remote-utils": "^1.0.0",
     "@deckdeckgo/utils": "^1.1.0",
-    "rxjs": "^6.5.5",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.1.0",
-    "@stencil/core": "^1.13.0",
+    "@stencil/core": "^1.15.0",
     "@stencil/postcss": "^1.0.1",
-    "@stencil/sass": "^1.3.1",
+    "@stencil/sass": "^1.3.2",
+    "@stencil/store": "^1.3.0",
     "@stencil/utils": "0.0.5",
-    "@types/socket.io-client": "^1.4.32",
+    "@types/socket.io-client": "^1.4.33",
     "@types/webrtc": "0.0.26",
-    "autoprefixer": "^9.7.6",
+    "autoprefixer": "^9.8.4",
     "husky": "^4.2.5",
     "prettier": "2.0.5",
     "pretty-quick": "^2.0.1",

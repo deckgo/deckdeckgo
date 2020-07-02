@@ -43,9 +43,7 @@
     "@deckdeckgo/social": "^1.0.1",
     "@deckdeckgo/youtube": "^1.1.2",
     "@ionic/core": "^5.2.2",
-    "idb-keyval": "^3.2.0",
-    "ionicons": "^5.0.1",
-    "rxjs": "^6.5.5"
+    "idb-keyval": "^3.2.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.1.0",

@@ -1,7 +1,5 @@
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
-import {AuthUser} from '../../models/auth/auth.user';
-
 export class Utils {
   static injectJS(id: string, src: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
@@ -55,10 +53,6 @@ export class Utils {
     });
   }
 
-  static isLoggedIn(authUser: AuthUser): boolean {
-    return authUser && !authUser.anonymous;
-  }
-
   static getNow(): Promise<string> {
     return new Promise<string>((resolve) => {
       const options: DateTimeFormatOptions = {
@@ -68,7 +62,7 @@ export class Utils {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false
+        hour12: false,
       };
       const now: string = new Intl.DateTimeFormat('en-US', options).format(new Date());
 

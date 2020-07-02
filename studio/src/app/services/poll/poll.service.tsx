@@ -1,7 +1,6 @@
 import * as io from 'socket.io-client';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import store from '../../stores/poll.store';
 
 import {DeckdeckgoPoll} from '@deckdeckgo/types';
 
@@ -10,8 +9,6 @@ import {EnvironmentConfigService} from '../core/environment/environment-config.s
 
 export class PollService {
   private socket: SocketIOClient.Socket;
-
-  private poll: BehaviorSubject<DeckdeckgoPoll | undefined> = new BehaviorSubject<DeckdeckgoPoll | undefined>(undefined);
 
   private static instance: PollService;
 
@@ -40,7 +37,7 @@ export class PollService {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
         query: 'type=app',
-        path: '/poll'
+        path: '/poll',
       });
 
       this.socket.on('connect', async () => {
@@ -48,7 +45,7 @@ export class PollService {
       });
 
       this.socket.on('poll_desc', async (data: DeckdeckgoPoll) => {
-        this.poll.next(data);
+        store.state.poll = {...data};
       });
 
       resolve();
@@ -64,7 +61,7 @@ export class PollService {
 
       this.socket.emit('vote', {
         key: key,
-        answer: answer
+        answer: answer,
       });
 
       resolve();
@@ -78,24 +75,16 @@ export class PollService {
         return;
       }
 
-      this.watch()
-        .pipe(take(1))
-        .subscribe((poll: DeckdeckgoPoll) => {
-          if (poll) {
-            this.socket.emit('leave', {
-              key: poll.key
-            });
-          }
-
-          this.socket.removeAllListeners();
-          this.socket.disconnect();
-
-          resolve();
+      if (store.state.poll) {
+        this.socket.emit('leave', {
+          key: store.state.poll.key,
         });
-    });
-  }
+      }
 
-  watch(): Observable<DeckdeckgoPoll | undefined> {
-    return this.poll.asObservable();
+      this.socket.removeAllListeners();
+      this.socket.disconnect();
+
+      resolve();
+    });
   }
 }

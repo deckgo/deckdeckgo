@@ -1,11 +1,9 @@
-import {Observable, ReplaySubject} from 'rxjs';
+import themeStore from '../../stores/theme.store';
 
 import {get, set} from 'idb-keyval';
 
 export class ThemeService {
   private static instance: ThemeService;
-
-  private darkTheme: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   private constructor() {
     // Private constructor, singleton
@@ -18,12 +16,8 @@ export class ThemeService {
     return ThemeService.instance;
   }
 
-  watch(): Observable<boolean> {
-    return this.darkTheme.asObservable();
-  }
-
   async switch(dark: boolean) {
-    this.darkTheme.next(dark);
+    themeStore.state.darkTheme = dark;
 
     try {
       await set('deckdeckgo_dark_mode', dark);

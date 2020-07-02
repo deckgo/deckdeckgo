@@ -1,18 +1,15 @@
 import {Component, Element, State, h} from '@stencil/core';
 
-import {take} from 'rxjs/operators';
+import remoteStore from '../../../../stores/remote.store';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-remote-connect',
-  styleUrl: 'app-remote-connect.scss'
+  styleUrl: 'app-remote-connect.scss',
 })
 export class AppRemoteConnect {
   @Element() el: HTMLElement;
-
-  @State()
-  private remoteEnabled: boolean = false;
 
   private remoteService: RemoteService;
 
@@ -24,13 +21,6 @@ export class AppRemoteConnect {
   }
 
   async componentWillLoad() {
-    this.remoteService
-      .watch()
-      .pipe(take(1))
-      .subscribe((enable: boolean) => {
-        this.remoteEnabled = enable;
-      });
-
     await this.initQRCodeURI();
 
     await this.initCloseOnConnected();
@@ -86,8 +76,7 @@ export class AppRemoteConnect {
   }
 
   private async toggleRemoteEnabled() {
-    this.remoteEnabled = !this.remoteEnabled;
-    await this.remoteService.switch(this.remoteEnabled);
+    await this.remoteService.switch(!remoteStore.state.remote);
   }
 
   private initQRCodeURI(): Promise<void> {
@@ -122,7 +111,7 @@ export class AppRemoteConnect {
         <ion-list>
           <ion-item>
             {this.renderLabel()}
-            <ion-toggle slot="end" mode="md" checked={this.remoteEnabled} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+            <ion-toggle slot="end" mode="md" checked={remoteStore.state.remote} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
           </ion-item>
         </ion-list>
 
@@ -134,7 +123,7 @@ export class AppRemoteConnect {
   }
 
   private renderLabel() {
-    if (this.remoteEnabled) {
+    if (remoteStore.state.remote) {
       return (
         <ion-label>
           Remote is <strong>enabled</strong>

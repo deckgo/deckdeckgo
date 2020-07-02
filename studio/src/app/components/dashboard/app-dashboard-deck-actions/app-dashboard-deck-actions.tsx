@@ -1,24 +1,23 @@
 import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
 import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
 
+import store from '../../../stores/error.store';
+
 import {Deck} from '../../../models/data/deck';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
-import {ErrorService} from '../../../services/core/error/error.service';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
   styleUrl: 'app-dashboard-deck-actions.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
 
   private deckService: DeckService;
   private deckDashboardService: DeckDashboardService;
-
-  private errorService: ErrorService;
 
   @Event() deckDeleted: EventEmitter<string>;
   @Event() deckCloned: EventEmitter<DeckDashboardCloneResult>;
@@ -29,8 +28,6 @@ export class AppDashboardDeckActions {
   constructor() {
     this.deckService = DeckService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
-
-    this.errorService = ErrorService.getInstance();
   }
 
   private async presentConfirmDelete($event: UIEvent) {
@@ -54,8 +51,8 @@ export class AppDashboardDeckActions {
       component: 'app-deck-delete',
       componentProps: {
         deckName: this.deck.data.name,
-        published: this.deck.data.meta && this.deck.data.meta.published
-      }
+        published: this.deck.data.meta && this.deck.data.meta.published,
+      },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -85,7 +82,7 @@ export class AppDashboardDeckActions {
 
         this.deckDeleted.emit(this.deck.id);
       } catch (err) {
-        this.errorService.error(err);
+        store.state.error = err;
       }
 
       await loading.dismiss();
@@ -133,7 +130,7 @@ export class AppDashboardDeckActions {
 
         this.deckCloned.emit(clone);
       } catch (err) {
-        this.errorService.error(err);
+        store.state.error = err;
       }
 
       await loading.dismiss();

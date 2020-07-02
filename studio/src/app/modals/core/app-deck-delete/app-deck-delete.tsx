@@ -1,10 +1,10 @@
 import {Component, Element, Listen, Prop, h} from '@stencil/core';
 
-import {NavDirection, NavService} from '../../../services/core/nav/nav.service';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 @Component({
   tag: 'app-deck-delete',
-  styleUrl: 'app-deck-delete.scss'
+  styleUrl: 'app-deck-delete.scss',
 })
 export class AppDeckDelete {
   @Element() el: HTMLElement;
@@ -15,12 +15,8 @@ export class AppDeckDelete {
   @Prop()
   published: string;
 
-  private navService: NavService;
-
   async componentDidLoad() {
     history.pushState({modal: true}, null);
-
-    this.navService = NavService.getInstance();
   }
 
   @Listen('popstate', {target: 'window'})
@@ -41,10 +37,10 @@ export class AppDeckDelete {
   private async navigateContact() {
     await this.closeModal();
 
-    this.navService.navigate({
+    navStore.state.nav = {
       url: '/contact',
-      direction: NavDirection.FORWARD
-    });
+      direction: NavDirection.FORWARD,
+    };
   }
 
   render() {
@@ -71,7 +67,7 @@ export class AppDeckDelete {
         </form>
 
         {this.renderNotePublished()}
-      </ion-content>
+      </ion-content>,
     ];
   }
 

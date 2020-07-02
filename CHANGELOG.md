@@ -1,3 +1,11 @@
+<a name="1.5.0"></a>
+
+# [1.5.0](https://github.com/deckgo/deckdeckgo/compare/v1.4.0...v1.5.0) (In progress)
+
+### Web Components
+
+- remote: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
+
 <a name="1.4.0"></a>
 
 # [1.4.0](https://github.com/deckgo/deckdeckgo/compare/v1.3.0...v1.4.0) (2020-06-25)

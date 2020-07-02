@@ -1,39 +1,29 @@
-import {Observable, interval, Subject, BehaviorSubject, Subscription} from 'rxjs';
-import {filter, takeUntil, withLatestFrom} from 'rxjs/operators';
+import {Build} from '@stencil/core';
 
 import {differenceInMilliseconds, addMilliseconds, isAfter} from 'date-fns';
 
 import {get, set, del} from 'idb-keyval';
 
-import {Comparator, Converter} from '../utils/utils';
-import {NotificationService} from '../notification/notification.service';
-import {Build} from '@stencil/core';
+import timerStore from '../../stores/timer.store';
 
-export interface TimerInterval {
-  timerProgression: number;
-  timerRemaining: number;
-  timerLength: number;
-}
+import {Comparator, Converter} from '../utils/utils';
+
+import {NotificationService} from '../notification/notification.service';
 
 export class TimerService {
   private static instance: TimerService;
 
-  private timerSubject: BehaviorSubject<BehaviorSubject<TimerInterval>> = new BehaviorSubject(null);
-
-  private intervalSubject: BehaviorSubject<TimerInterval>;
-
-  private stopTimer: Subject<void> = new Subject<void>();
-  private pauseTimer: Subject<boolean> = new Subject<boolean>();
-
   private timerPausedAt: Date;
-
-  private stopwatchSubscription: Subscription;
 
   private timerEnd: Date;
   private timerLength: number;
   private timerProgression: number;
 
   private notificationService: NotificationService = NotificationService.getInstance();
+
+  private timerInterval: NodeJS.Timeout;
+
+  private pauseTimer: boolean = false;
 
   private constructor() {
     // Private constructor, singleton
@@ -46,12 +36,20 @@ export class TimerService {
     return TimerService.instance;
   }
 
-  destroy() {
-    this.stopTimer.next();
+  async destroy() {
+    await this.clear();
+  }
 
-    if (this.stopwatchSubscription) {
-      this.stopwatchSubscription.unsubscribe();
+  private async clear() {
+    timerStore.reset();
+
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
+
+    await del('deckdeckgo_timer_end');
+    await del('deckdeckgo_timer_length');
+    await del('deckdeckgo_timer_progression');
   }
 
   start(length: number): Promise<void> {
@@ -65,9 +63,9 @@ export class TimerService {
         await set('deckdeckgo_timer_length', this.timerLength);
         await set('deckdeckgo_timer_progression', this.timerProgression);
 
-        this.initTimer();
+        this.pauseTimer = false;
 
-        this.pauseTimer.next(false);
+        this.initTimer();
 
         resolve();
       } catch (e) {
@@ -86,9 +84,9 @@ export class TimerService {
           this.timerLength = parseInt(await get('deckdeckgo_timer_length'), 0);
           this.timerProgression = parseInt(await get('deckdeckgo_timer_progression'), 0);
 
-          this.initTimer();
+          this.pauseTimer = false;
 
-          this.pauseTimer.next(false);
+          this.initTimer();
         }
 
         resolve();
@@ -99,66 +97,45 @@ export class TimerService {
   }
 
   private initTimer() {
-    this.intervalSubject = new BehaviorSubject<TimerInterval>(null);
+    this.timerInterval = setInterval(async () => {
+      if (this.timerEnd && !this.pauseTimer) {
+        const now: Date = new Date();
 
-    this.stopwatchSubscription = interval(1000)
-      .pipe(
-        takeUntil(this.stopTimer),
-        withLatestFrom(this.pauseTimer.asObservable()),
-        filter(([_v, paused]) => !paused)
-      )
-      .subscribe(async ([_intervalValue, _paused]: [number, boolean]) => {
-        if (this.timerEnd) {
-          const now: Date = new Date();
+        if (isAfter(this.timerEnd, now)) {
+          this.timerProgression = this.timerProgression + 1000;
+          const timerRemaining: number = this.timerLength - this.timerProgression;
 
-          if (isAfter(this.timerEnd, now)) {
-            this.timerProgression = this.timerProgression + 1000;
-            const timerRemaining: number = this.timerLength - this.timerProgression;
+          await set('deckdeckgo_timer_progression', this.timerProgression);
 
-            await set('deckdeckgo_timer_progression', this.timerProgression);
+          timerStore.state.timer = {
+            timerProgression: this.timerProgression,
+            timerRemaining: timerRemaining,
+            timerLength: this.timerLength,
+          };
 
-            this.intervalSubject.next({
-              timerProgression: this.timerProgression,
-              timerRemaining: timerRemaining,
-              timerLength: this.timerLength
-            });
-
-            await this.showWarnNotification(timerRemaining);
-          } else {
-            await this.stop(true);
-          }
+          await this.showWarnNotification(timerRemaining);
+        } else {
+          await this.stop(true);
         }
-      });
-
-    this.timerSubject.next(this.intervalSubject);
-  }
-
-  watch(): Observable<BehaviorSubject<TimerInterval>> {
-    return this.timerSubject.asObservable();
-  }
-
-  pause(state: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (state) {
-        this.timerPausedAt = new Date();
-      } else {
-        const pausedFor: number = differenceInMilliseconds(new Date(), this.timerPausedAt);
-        this.timerEnd = addMilliseconds(this.timerEnd, pausedFor);
       }
+    }, 1000);
+  }
 
-      this.pauseTimer.next(state);
+  async pause(state: boolean) {
+    this.pauseTimer = state;
 
-      resolve();
-    });
+    if (state) {
+      this.timerPausedAt = new Date();
+    } else {
+      const pausedFor: number = differenceInMilliseconds(new Date(), this.timerPausedAt);
+      this.timerEnd = addMilliseconds(this.timerEnd, pausedFor);
+    }
   }
 
   async stop(notification: boolean) {
-    if (!this.intervalSubject) {
-      return;
-    }
+    await this.clear();
 
-    this.intervalSubject.complete();
-    this.stopTimer.next();
+    this.emitStepEvent();
 
     if (notification) {
       // Star Wars shamelessly taken from the awesome Peter Beverloo as in the Google example
@@ -180,9 +157,17 @@ export class TimerService {
         110,
         170,
         40,
-        500
+        500,
       ]);
     }
+  }
+
+  private emitStepEvent() {
+    const stopTimer: CustomEvent<void> = new CustomEvent<void>('stopTimer', {
+      bubbles: true,
+    });
+
+    document.dispatchEvent(stopTimer);
   }
 
   private showWarnNotification(timerRemaining: number): Promise<void> {
@@ -223,9 +208,5 @@ export class TimerService {
         resolve(false);
       }
     });
-  }
-
-  clearEndAt(): Promise<void> {
-    return del('deckdeckgo_timer_end');
   }
 }

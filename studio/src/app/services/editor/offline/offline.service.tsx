@@ -2,8 +2,8 @@ import * as firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
-import {BehaviorSubject, Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import deckStore from '../../../stores/deck.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
@@ -13,7 +13,6 @@ import {SlotType} from '../../../utils/editor/slot-type';
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker-utils';
 
-import {DeckEditorService} from '../deck/deck-editor.service';
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
 import {AssetsService} from '../../core/assets/assets.service';
@@ -26,8 +25,6 @@ import {FontsService} from '../fonts/fonts.service';
 export class OfflineService {
   private static instance: OfflineService;
 
-  private deckEditorService: DeckEditorService;
-
   private slideOnlineService: SlideOnlineService;
   private deckOnlineService: DeckOnlineService;
   private storageOnlineService: StorageOnlineService;
@@ -35,13 +32,7 @@ export class OfflineService {
   private assetsService: AssetsService;
   private fontsService: FontsService;
 
-  private offlineSubject: BehaviorSubject<OfflineDeck | undefined> = new BehaviorSubject(undefined);
-
-  private progressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-
   private constructor() {
-    this.deckEditorService = DeckEditorService.getInstance();
-
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
     this.storageOnlineService = StorageOnlineService.getInstance();
@@ -58,49 +49,31 @@ export class OfflineService {
   }
 
   async status(): Promise<OfflineDeck> {
-    return new Promise<OfflineDeck>((resolve) => {
-      this.offlineSubject.pipe(take(1)).subscribe(async (offline: OfflineDeck | undefined) => {
-        if (offline === undefined) {
-          const saved: OfflineDeck = await get('deckdeckgo_offline');
+    if (offlineStore.state.offline === undefined) {
+      const saved: OfflineDeck = await get('deckdeckgo_offline');
 
-          this.offlineSubject.next(saved);
+      offlineStore.state.offline = saved ? {...saved} : undefined;
 
-          resolve(saved);
-          return;
-        }
+      return saved;
+    }
 
-        resolve(offline);
-      });
-    });
+    return offlineStore.state.offline;
   }
 
   async init() {
     await this.status();
   }
 
-  watchOffline(): Observable<OfflineDeck | undefined> {
-    return this.offlineSubject.asObservable();
-  }
-
-  watchProgress(): Observable<number> {
-    return this.progressSubject.asObservable();
-  }
-
   private progress(progress: number) {
-    this.progressSubject
-      .asObservable()
-      .pipe(take(1))
-      .subscribe((current: number) => {
-        this.progressSubject.next(current + progress);
-      });
+    offlineStore.state.progress += progress;
   }
 
   private progressStart() {
-    this.progressSubject.next(0);
+    offlineStore.state.progress = 0;
   }
 
   private progressComplete() {
-    this.progressSubject.next(1);
+    offlineStore.state.progress = 1;
   }
 
   save(): Promise<void> {
@@ -134,7 +107,7 @@ export class OfflineService {
 
         this.progressComplete();
 
-        this.offlineSubject.next(undefined);
+        offlineStore.reset();
 
         resolve();
       } catch (err) {
@@ -144,34 +117,29 @@ export class OfflineService {
   }
 
   private toggleOffline(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       try {
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            try {
-              if (!deck || !deck.id || !deck.data) {
-                reject('No deck found');
-                return;
-              }
+        try {
+          if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
+            reject('No deck found');
+            return;
+          }
 
-              const offline: OfflineDeck = {
-                id: deck.id,
-                name: deck.data.name,
-              };
+          const offline: OfflineDeck = {
+            id: deckStore.state.deck.id,
+            name: deckStore.state.deck.data.name,
+          };
 
-              await set('deckdeckgo_offline', offline);
+          await set('deckdeckgo_offline', offline);
 
-              this.offlineSubject.next(offline);
+          offlineStore.state.offline = {...offline};
 
-              this.progressComplete();
+          this.progressComplete();
 
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          });
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
       } catch (err) {
         reject(err);
       }
@@ -375,33 +343,24 @@ export class OfflineService {
   }
 
   private saveDeck(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       try {
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            try {
-              if (!deck || !deck.id || !deck.data) {
-                reject('No deck found');
-                return;
-              }
+        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
+          reject('No deck found');
+          return;
+        }
 
-              await this.saveSlides(deck);
+        await this.saveSlides(deckStore.state.deck);
 
-              if (deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deck.data.background)) {
-                deck.data.background = null;
-              }
+        if (deckStore.state.deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.background)) {
+          deckStore.state.deck.data.background = null;
+        }
 
-              await set(`/decks/${deck.id}`, deck);
+        await set(`/decks/${deckStore.state.deck.id}`, deckStore.state.deck);
 
-              this.progress(0.5);
+        this.progress(0.5);
 
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          });
+        resolve();
       } catch (err) {
         reject(err);
       }
@@ -456,31 +415,22 @@ export class OfflineService {
   }
 
   private uploadData(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       try {
-        this.deckEditorService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (deck: Deck) => {
-            try {
-              if (!deck || !deck.id || !deck.data) {
-                reject('No deck found');
-                return;
-              }
+        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
+          reject('No deck found');
+          return;
+        }
 
-              await this.uploadSlides(deck);
+        await this.uploadSlides(deckStore.state.deck);
 
-              await this.deleteSlides(deck);
+        await this.deleteSlides(deckStore.state.deck);
 
-              const persistedDeck: Deck = await this.uploadDeck(deck);
+        const persistedDeck: Deck = await this.uploadDeck(deckStore.state.deck);
 
-              this.deckEditorService.next(persistedDeck);
+        deckStore.state.deck = {...persistedDeck};
 
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          });
+        resolve();
       } catch (err) {
         reject(err);
       }

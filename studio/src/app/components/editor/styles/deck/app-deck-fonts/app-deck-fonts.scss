@@ -36,6 +36,10 @@ app-deck-fonts {
         p[slot="title"] {
           margin: 0;
           font-weight: normal;
+
+          &.default {
+            font-family: var(--font-family-default);
+          }
         }
       }
     }

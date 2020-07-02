@@ -80,7 +80,7 @@ export class AppLandingDeck {
         <deckgo-slide-split>
           <div slot="start">
             <h1>Make more than presentations</h1>
-            <h3 style={{'font-weight': '300'}}>Create, present and share apps. Interact with your audience.</h3>
+            <h3 style={{'font-weight': '300', 'margin-top': '16px'}}>Create, present and share apps. Interact with your audience.</h3>
 
             <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
               <ion-label style={{'text-transform': 'none'}}>Get started with DeckDeckGo</ion-label>
@@ -124,7 +124,7 @@ export class AppLandingDeck {
         <deckgo-slide-title>
           <h2 slot="title">Search Unsplash and Tenor GIFs.</h2>
           <h3 slot="content" style={{'font-weight': '300'}}>
-            Integrate easily Youtube video.
+            Easily integrate Youtube video.
           </h3>
 
           {this.renderSlideBackground(

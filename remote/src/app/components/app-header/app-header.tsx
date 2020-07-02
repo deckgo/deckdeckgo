@@ -1,40 +1,16 @@
-import {Component, h, State} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
-
-import {ThemeService} from '../../services/theme/theme.service';
+import themeStore from '../../stores/theme.store';
 
 @Component({
   tag: 'app-header',
-  styleUrl: 'app-header.scss'
+  styleUrl: 'app-header.scss',
 })
 export class AppHeader {
-  private themeSubscription: Subscription;
-  private themeService: ThemeService;
-
-  @State()
-  private darkTheme: boolean;
-
-  constructor() {
-    this.themeService = ThemeService.getInstance();
-  }
-
-  async componentWillLoad() {
-    this.themeSubscription = this.themeService.watch().subscribe((dark: boolean) => {
-      this.darkTheme = dark;
-    });
-  }
-
-  componentWillUnload() {
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
-  }
-
   render() {
     return (
       <ion-header>
-        <ion-toolbar color={this.darkTheme ? 'dark' : 'primary'}>
+        <ion-toolbar color={themeStore.state.darkTheme ? 'dark' : 'primary'}>
           <slot name="start">
             <ion-buttons slot="start">
               <ion-menu-toggle>

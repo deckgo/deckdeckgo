@@ -1,21 +1,21 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Observable, Subject} from 'rxjs';
-import {take} from 'rxjs/operators';
+import deckStore from '../../../stores/deck.store';
+import publishStore from '../../../stores/publish.store';
+import userStore from '../../../stores/user.store';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 import {ApiDeck} from '../../../models/api/api.deck';
 import {Slide, SlideAttributes, SlideTemplate} from '../../../models/data/slide';
-import {User} from '../../../models/data/user';
+
+import {Resources} from '../../../utils/core/resources';
 
 import {ApiPresentation} from '../../../models/api/api.presentation';
 import {ApiSlide} from '../../../models/api/api.slide';
 
 import {DeckService} from '../../data/deck/deck.service';
 import {SlideService} from '../../data/slide/slide.service';
-import {UserService} from '../../data/user/user.service';
-import {DeckEditorService} from '../deck/deck-editor.service';
 
 import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
 import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
@@ -27,29 +27,18 @@ import {FontsService} from '../fonts/fonts.service';
 export class PublishService {
   private static instance: PublishService;
 
-  private deckEditorService: DeckEditorService;
-
   private apiPresentationService: ApiPresentationService;
 
   private deckService: DeckService;
   private slideService: SlideService;
 
-  private userService: UserService;
-
   private fontsService: FontsService;
 
-  private progressSubject: Subject<number> = new Subject<number>();
-
   private constructor() {
-    // Private constructor, singleton
-    this.deckEditorService = DeckEditorService.getInstance();
-
     this.apiPresentationService = ApiPresentationFactoryService.getInstance();
 
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
-
-    this.userService = UserService.getInstance();
 
     this.fontsService = FontsService.getInstance();
   }
@@ -61,69 +50,61 @@ export class PublishService {
     return PublishService.instance;
   }
 
-  watchProgress(): Observable<number> {
-    return this.progressSubject.asObservable();
-  }
-
   private progress(progress: number) {
-    this.progressSubject.next(progress);
+    publishStore.state.progress = progress;
   }
 
   private progressComplete() {
-    this.progressSubject.next(1);
+    publishStore.state.progress = 1;
   }
 
   // TODO: Move in a cloud functions?
   publish(description: string, tags: string[]): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<string>(async (resolve, reject) => {
       this.progress(0);
 
-      this.deckEditorService
-        .watch()
-        .pipe(take(1))
-        .subscribe(async (deck: Deck) => {
-          try {
-            if (!deck || !deck.id || !deck.data) {
-              this.progressComplete();
-              reject('No deck found');
-              return;
-            }
+      try {
+        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
+          this.progressComplete();
+          reject('No deck found');
+          return;
+        }
 
-            const apiDeck: ApiDeck = await this.convertDeck(deck, description);
+        const apiDeck: ApiDeck = await this.convertDeck(deckStore.state.deck, description);
 
-            this.progress(0.25);
+        this.progress(0.25);
 
-            const apiDeckPublish: ApiPresentation = await this.publishDeck(deck, apiDeck);
+        const apiDeckPublish: ApiPresentation = await this.publishDeck(deckStore.state.deck, apiDeck);
 
-            this.progress(0.5);
+        this.progress(0.5);
 
-            if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
-              this.progressComplete();
-              reject('Publish failed');
-              return;
-            }
+        if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
+          this.progressComplete();
+          reject('Publish failed');
+          return;
+        }
 
-            this.progress(0.75);
+        this.progress(0.75);
 
-            const newApiId: boolean = deck.data.api_id !== apiDeckPublish.id;
-            if (newApiId) {
-              deck.data.api_id = apiDeckPublish.id;
+        const newApiId: boolean = deckStore.state.deck.data.api_id !== apiDeckPublish.id;
+        if (newApiId) {
+          deckStore.state.deck.data.api_id = apiDeckPublish.id;
 
-              deck = await this.deckService.update(deck);
-            }
+          const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+          deckStore.state.deck = {...updatedDeck};
+        }
 
-            this.progress(0.8);
+        this.progress(0.8);
 
-            const publishedUrl: string = apiDeckPublish.url;
+        const publishedUrl: string = apiDeckPublish.url;
 
-            await this.delayUpdateMeta(deck, publishedUrl, description, tags, newApiId);
+        await this.delayUpdateMeta(deckStore.state.deck, publishedUrl, description, tags, newApiId);
 
-            resolve(publishedUrl);
-          } catch (err) {
-            this.progressComplete();
-            reject(err);
-          }
-        });
+        resolve(publishedUrl);
+      } catch (err) {
+        this.progressComplete();
+        reject(err);
+      }
     });
   }
 
@@ -376,7 +357,7 @@ export class PublishService {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const freshDeck: Deck = await this.deckService.get(deckId);
-        this.deckEditorService.next(freshDeck);
+        deckStore.state.deck = {...freshDeck};
 
         resolve();
       } catch (err) {
@@ -393,62 +374,65 @@ export class PublishService {
           return;
         }
 
-        this.userService
-          .watch()
-          .pipe(take(1))
-          .subscribe(async (user: User) => {
-            const url: URL = new URL(publishedUrl);
-            const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+        if (!userStore.state.user || !userStore.state.user.data) {
+          reject('No user');
+          return;
+        }
 
-            if (!deck.data.meta) {
-              deck.data.meta = {
-                title: deck.data.name,
-                pathname: url.pathname,
-                published: true,
-                published_at: now,
-                feed: true,
-                updated_at: now,
-              };
-            } else {
-              deck.data.meta.title = deck.data.name;
-              deck.data.meta.pathname = url.pathname;
-              deck.data.meta.updated_at = now;
-            }
+        const url: URL = new URL(publishedUrl);
+        const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
-            if (description && description !== undefined && description !== '') {
-              deck.data.meta.description = description;
-            } else {
-              deck.data.meta.description = firebase.firestore.FieldValue.delete();
-            }
+        const feed: boolean = deck.data.slides && deck.data.slides.length > Resources.Constants.DECK.MIN_SLIDES;
 
-            if (!tags || tags.length <= 0) {
-              deck.data.meta.tags = firebase.firestore.FieldValue.delete();
-            } else {
-              deck.data.meta.tags = tags;
-            }
+        if (!deck.data.meta) {
+          deck.data.meta = {
+            title: deck.data.name,
+            pathname: url.pathname,
+            published: true,
+            published_at: now,
+            feed: feed,
+            updated_at: now,
+          };
+        } else {
+          deck.data.meta.title = deck.data.name;
+          deck.data.meta.pathname = url.pathname;
+          deck.data.meta.updated_at = now;
+          deck.data.meta.feed = feed;
+        }
 
-            if (user && user.data && user.data.name) {
-              if (!deck.data.meta.author) {
-                deck.data.meta.author = {
-                  name: user.data.name,
-                };
-              } else {
-                (deck.data.meta.author as DeckMetaAuthor).name = user.data.name;
-              }
+        if (description && description !== undefined && description !== '') {
+          deck.data.meta.description = description;
+        } else {
+          deck.data.meta.description = firebase.firestore.FieldValue.delete();
+        }
 
-              if (user.data.photo_url) {
-                (deck.data.meta.author as DeckMetaAuthor).photo_url = user.data.photo_url;
-              }
-            } else {
-              if (deck.data.meta.author) {
-                deck.data.meta.author = firebase.firestore.FieldValue.delete();
-              }
-            }
+        if (!tags || tags.length <= 0) {
+          deck.data.meta.tags = firebase.firestore.FieldValue.delete();
+        } else {
+          deck.data.meta.tags = tags;
+        }
 
-            await this.deckService.update(deck);
+        if (userStore.state.user && userStore.state.user.data && userStore.state.user.data.name) {
+          if (!deck.data.meta.author) {
+            deck.data.meta.author = {
+              name: userStore.state.user.data.name,
+            };
+          } else {
+            (deck.data.meta.author as DeckMetaAuthor).name = userStore.state.user.data.name;
+          }
 
-            resolve();
-          });
+          if (userStore.state.user.data.photo_url) {
+            (deck.data.meta.author as DeckMetaAuthor).photo_url = userStore.state.user.data.photo_url;
+          }
+        } else {
+          if (deck.data.meta.author) {
+            deck.data.meta.author = firebase.firestore.FieldValue.delete();
+          }
+        }
+
+        await this.deckService.update(deck);
+
+        resolve();
       } catch (err) {
         reject(err);
       }

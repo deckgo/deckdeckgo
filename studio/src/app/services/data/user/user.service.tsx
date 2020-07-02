@@ -1,14 +1,12 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Observable, ReplaySubject} from 'rxjs';
+import store from '../../../stores/user.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User, UserData} from '../../../models/data/user';
 
 export class UserService {
-  private userSubject: ReplaySubject<User> = new ReplaySubject(1);
-
   private static instance: UserService;
 
   private constructor() {
@@ -37,16 +35,16 @@ export class UserService {
         if (!snapshot.exists) {
           const user: User = await this.createUser(authUser);
 
-          this.userSubject.next(user);
+          store.state.user = {...user};
         } else {
           const user: UserData = snapshot.data() as UserData;
 
           const updatedUser: UserData = await this.updateUserWithAuthData(authUser, user);
 
-          this.userSubject.next({
+          store.state.user = {
             id: authUser.uid,
             data: updatedUser,
-          });
+          };
         }
 
         resolve();
@@ -143,10 +141,6 @@ export class UserService {
     }
   }
 
-  watch(): Observable<User> {
-    return this.userSubject.asObservable();
-  }
-
   update(user: User): Promise<User> {
     return new Promise<User>(async (resolve, reject) => {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
@@ -157,7 +151,7 @@ export class UserService {
       try {
         await firestore.collection('users').doc(user.id).set(user.data, {merge: true});
 
-        this.userSubject.next(user);
+        store.state.user = {...user};
 
         resolve(user);
       } catch (err) {
@@ -173,7 +167,7 @@ export class UserService {
 
         await firestore.collection('users').doc(userId).delete();
 
-        this.userSubject.next(null);
+        store.reset();
 
         resolve();
       } catch (err) {

@@ -6,8 +6,8 @@ import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
 import {get, set} from 'idb-keyval';
 
-import {forkJoin, Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
+import offlineStore from '../../../../../stores/offline.store';
+import remoteStore from '../../../../../stores/remote.store';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
@@ -17,8 +17,6 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 import {DemoAction} from '../../../../../utils/editor/demo-action';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
-import {OfflineService} from '../../../../../services/editor/offline/offline.service';
-import {RemoteService} from '../../../../../services/editor/remote/remote.service';
 import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
 
 @Component({
@@ -67,45 +65,22 @@ export class AppActionsDeck {
   @State()
   private fullscreenEnable: boolean = true;
 
-  @State()
-  private offline: boolean = false;
-
   private anonymousService: AnonymousService;
-
-  private offlineService: OfflineService;
-  private offlineSubscription: Subscription;
-
-  private remoteService: RemoteService;
-  private remoteSubscription: Subscription;
 
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
-    this.offlineService = OfflineService.getInstance();
-    this.remoteService = RemoteService.getInstance();
   }
 
   async componentWillLoad() {
     this.fullscreenEnable = !isIPad();
 
-    this.offlineSubscription = this.offlineService.watchOffline().subscribe((status: OfflineDeck | undefined) => {
-      this.offline = status !== undefined;
-    });
-
-    this.remoteSubscription = this.remoteService.watchRequests().subscribe(async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
+    const destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
       if (requests && requests.length > 0) {
         await this.clickToOpenRemote();
       }
+
+      destroyListener();
     });
-  }
-
-  async componentDidUnload() {
-    if (this.offlineSubscription) {
-      this.offlineSubscription.unsubscribe();
-    }
-
-    if (this.remoteSubscription) {
-      this.remoteSubscription.unsubscribe();
-    }
   }
 
   async onActionOpenSlideAdd($event: CustomEvent) {
@@ -392,7 +367,7 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
       componentProps: {
-        offline: this.offline,
+        offline: offlineStore.state.offline,
       },
       event: $event,
       mode: 'ios',
@@ -463,7 +438,7 @@ export class AppActionsDeck {
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu popover-menu-wide',
     });
 
     await popover.present();
@@ -473,7 +448,7 @@ export class AppActionsDeck {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-offline',
       componentProps: {
-        offline: this.offline,
+        offline: offlineStore.state.offline,
       },
       cssClass: 'fullscreen',
     });
@@ -482,47 +457,39 @@ export class AppActionsDeck {
   }
 
   private async clickToOpenRemote() {
-    this.remoteService
-      .watchState()
-      .pipe(take(1))
-      .subscribe((state: ConnectionState) => {
-        if (state !== ConnectionState.CONNECTED) {
-          let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
+    if (remoteStore.state.connectionState !== ConnectionState.CONNECTED) {
+      let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
 
-          if (!button) {
-            return;
-          }
+      if (!button) {
+        return;
+      }
 
-          const style: CSSStyleDeclaration = window.getComputedStyle(button);
+      const style: CSSStyleDeclaration = window.getComputedStyle(button);
 
-          // Actions are grouped in a popover on small devices?
-          if (style.display === 'none') {
-            button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
+      // Actions are grouped in a popover on small devices?
+      if (style.display === 'none') {
+        button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
 
-            if (!button) {
-              return;
-            }
-          }
-
-          // We click to button as we want to pass $event to the popover to stick it next to the button
-          button.click();
+        if (!button) {
+          return;
         }
-      });
+      }
+
+      // We click to button as we want to pass $event to the popover to stick it next to the button
+      button.click();
+    }
   }
 
   private async openRemote($event: UIEvent) {
-    forkJoin([this.remoteService.watchRequests().pipe(take(1)), this.remoteService.watchState().pipe(take(1))])
-      .pipe(take(1))
-      .subscribe(async ([requests, state]: [DeckdeckgoEventDeckRequest[] | undefined, ConnectionState]) => {
-        const connected: boolean = state !== ConnectionState.DISCONNECTED && state !== ConnectionState.NOT_CONNECTED;
+    const connected: boolean =
+      remoteStore.state.connectionState !== ConnectionState.DISCONNECTED && remoteStore.state.connectionState !== ConnectionState.NOT_CONNECTED;
 
-        if (connected && requests && requests.length > 0) {
-          await this.closeRemote();
-          await this.openRemoteControl($event, 'app-remote-request');
-        } else {
-          await this.openRemoteControl($event, 'app-remote-connect');
-        }
-      });
+    if (connected && remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length > 0) {
+      await this.closeRemote();
+      await this.openRemoteControl($event, 'app-remote-request');
+    } else {
+      await this.openRemoteControl($event, 'app-remote-connect');
+    }
   }
 
   private async closeRemote() {
@@ -576,8 +543,8 @@ export class AppActionsDeck {
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
-            <ion-icon src={`/assets/icons/ionicons/${this.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
-            {this.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
+            <ion-icon src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
+            {offlineStore.state.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
           </ion-tab-button>
 
           <app-action-help class="wider-devices"></app-action-help>

@@ -1,12 +1,12 @@
 import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
-import {Subscription} from 'rxjs';
+import errorStore from '../../../../stores/error.store';
+import offlineStore from '../../../../stores/offline.store';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
-import {ErrorService} from '../../../../services/core/error/error.service';
 
 @Component({
-  tag: 'app-go-online'
+  tag: 'app-go-online',
 })
 export class AppGoOnline {
   @State()
@@ -21,29 +21,10 @@ export class AppGoOnline {
   @Event()
   private inProgress: EventEmitter<boolean>;
 
-  @State()
-  private progress: number = 0;
-
   private offlineService: OfflineService;
-  private errorService: ErrorService;
-
-  private progressSubscription: Subscription;
 
   constructor() {
     this.offlineService = OfflineService.getInstance();
-    this.errorService = ErrorService.getInstance();
-  }
-
-  componentWillLoad() {
-    this.progressSubscription = this.offlineService.watchProgress().subscribe((progress: number) => {
-      this.progress = progress;
-    });
-  }
-
-  componentDidUnload() {
-    if (this.progressSubscription) {
-      this.progressSubscription.unsubscribe();
-    }
   }
 
   private async goOnline() {
@@ -60,7 +41,7 @@ export class AppGoOnline {
     } catch (err) {
       this.goingOnline = false;
       this.inProgress.emit(false);
-      this.errorService.error('Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!');
+      errorStore.state.error = 'Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!';
     }
   }
 
@@ -95,7 +76,7 @@ export class AppGoOnline {
       <p>
         Please note that the upload of this deck will <strong>replace</strong> its previous online version.
       </p>,
-      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>
+      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>,
     ];
   }
 
@@ -109,7 +90,7 @@ export class AppGoOnline {
     } else {
       return (
         <div class="in-progress">
-          <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>
+          <ion-progress-bar value={offlineStore.state.progress} color="tertiary"></ion-progress-bar>
           <ion-label>Hang on still, we are uploading the content.</ion-label>
         </div>
       );
