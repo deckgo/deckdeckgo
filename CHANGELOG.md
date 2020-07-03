@@ -12,6 +12,10 @@
 
 - highlight-code: v1.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
+### Others
+
+- starter kit: v2.5.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+
 <a name="1.5.0"></a>
 
 # [1.5.0](https://github.com/deckgo/deckdeckgo/compare/v1.4.0...v1.5.0) (2020-07-02)
