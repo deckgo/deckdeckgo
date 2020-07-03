@@ -1,3 +1,11 @@
+<a name="1.6.0"></a>
+
+# [1.6.0](https://github.com/deckgo/deckdeckgo/compare/v1.5.0...v1.6.0) (2020-07-03)
+
+### Web Components
+
+- highlight-code: v1.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
 <a name="1.5.0"></a>
 
 # [1.5.0](https://github.com/deckgo/deckdeckgo/compare/v1.4.0...v1.5.0) (2020-07-02)
