@@ -106,7 +106,7 @@ div.deckgo-highlight-code-container {
   align-items: var(--deckgo-highlight-code-container-align-items);
 
   code {
-    overflow-y: var(--deckgo-highlight-code-scroll, scroll);
+    overflow-y: var(--deckgo-highlight-code-scroll, auto);
     white-space: var(--deckgo-highlight-code-white-space, pre-wrap);
 
     font-size: var(--deckgo-highlight-code-font-size);
@@ -115,6 +115,8 @@ div.deckgo-highlight-code-container {
     display: var(--deckgo-highlight-code-display, block);
 
     counter-reset: linenumber;
+
+    height: 100%;
 
     > div.deckgo-highlight-code-line-number {
       counter-increment: linenumber;
