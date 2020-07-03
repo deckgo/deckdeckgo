@@ -1,3 +1,9 @@
+# 1.6.0 (In progress)
+
+### Style
+
+- update `@deckdeckgo/highlight-code`
+
 <a name="1.5.0"></a>
 
 # 1.5.0 (2020-07-02)
