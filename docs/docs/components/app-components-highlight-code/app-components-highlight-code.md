@@ -171,7 +171,7 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-token-function            | #ffb86c                  | Highlighted code function, class-name                                             |
 | --deckgo-highlight-code-token-regex               | #f1fa8c                  | Highlighted code tokens regex, important, variable                                |
 | --deckgo-highlight-code-empty-text                | "Click to add your code" | Place holder in case the `editable` is set to `true`                              |
-| --deckgo-highlight-code-scroll                    | scroll                   | In case you would like to change the scroll property of the shadowed code block   |
+| --deckgo-highlight-code-scroll                    | auto                     | In case you would like to change the scroll property of the shadowed code block   |
 | --deckgo-highlight-code-container-width           |                          | The attribute width of the code's container                                       |
 | --deckgo-highlight-code-container-height          |                          | The attribute height of the code's container                                      |
 | --deckgo-highlight-code-container-display         |                          | The attribute display of the code's container                                     |
