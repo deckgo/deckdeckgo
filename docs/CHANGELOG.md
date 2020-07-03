@@ -1,3 +1,9 @@
+# 1.6.2 (2020-07-02)
+
+### Style
+
+- update `@deckdeckgo/highlight-code`
+
 # 1.6.1 (2020-07-02)
 
 ### Features

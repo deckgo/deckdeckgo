@@ -531,7 +531,7 @@ export class AppComponentsHighlightCode {
               </tr>
               <tr>
                 <td>--deckgo-highlight-code-scroll</td>
-                <td>scroll</td>
+                <td>auto</td>
                 <td>In case you would like to change the scroll property of the shadowed code block</td>
               </tr>
               <tr>

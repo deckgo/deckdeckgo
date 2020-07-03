@@ -1,3 +1,22 @@
+<a name="1.6.0"></a>
+
+# [1.6.0](https://github.com/deckgo/deckdeckgo/compare/v1.5.0...v1.6.0) (2020-07-03)
+
+### Applications
+
+- docs: v1.6.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- remote: v1.5.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v1.6.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+
+- highlight-code: v1.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
+### Others
+
+- gatsby-remark-highlight-code: v1.4.3 ([CHANGELOG](https://github.com/deckgo/gatsby-remark-highlight-code/blob/master/CHANGELOG.md))
+- starter kit: v2.5.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
+
 <a name="1.5.0"></a>
 
 # [1.5.0](https://github.com/deckgo/deckdeckgo/compare/v1.4.0...v1.5.0) (2020-07-02)

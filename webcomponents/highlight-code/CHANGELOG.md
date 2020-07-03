@@ -1,3 +1,10 @@
+# 1.1.2 (2020-07-03)
+
+### Style
+
+- set default scrollbar (overflow) behavior to `auto` instead of `scroll`
+- host `display` set as `block`
+
 # 1.1.1 (2020-06-14)
 
 ### Style
