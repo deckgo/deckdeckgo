@@ -1,102 +1,102 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
 
-  <title>DeckDeckGo - Slide Title Template</title>
+    <title>DeckDeckGo - Slide Title Template</title>
 
-  <script type="module" src="/build/deckdeckgo-slide-title.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-slide-title.js"></script>
+    <script type="module" src="/build/deckdeckgo-slide-title.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-slide-title.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
-
-</head>
-<body style="margin: 0; overflow: hidden;">
-
-<deckgo-deck>
-  <deckgo-slide-title>
-    <h1 slot="title">DeckDeckGo</h1>
-    <p slot="content">
-      Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-      <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-    </p>
-    <div slot="notes">This are some notes about this particular slide</div>
-  </deckgo-slide-title>
-
-  <deckgo-slide-title custom-background="true">
-    <h1 slot="title">Custom slide background</h1>
-    <div slot="background">
-      <img src="https://deckdeckgo.com/assets/img/deckdeckgo-homecoming.png"/>
-    </div>
-  </deckgo-slide-title>
-
-  <deckgo-slide-title>
-    <h1 slot="title">Reveal as slot</h1>
-    <deckgo-reveal slot="content">
-      <p contenteditable="true">
-        Hello World EDITABLE EDITABLE HERE <a href="https://ionicframework.com">Ionic</a> 🚀
-        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-      </p>
-
-      <p>
-        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-      </p>
-
-      <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-    </deckgo-reveal>
-
-  </deckgo-slide-title>
-
-  <deckgo-slide-title>
-    <h1 slot="title">Reveal inside slot</h1>
-    <div slot="content">
-      <deckgo-reveal>
-        <p>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <deckgo-deck>
+      <deckgo-slide-title>
+        <h1 slot="title">DeckDeckGo</h1>
+        <p slot="content">
           Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
         </p>
-      </deckgo-reveal>
+        <div slot="notes">This are some notes about this particular slide</div>
 
-      <deckgo-reveal>
-        <p>
-          Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-        </p>
-      </deckgo-reveal>
+        <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
+        <div slot="footer">
+          <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+        </div>
+      </deckgo-slide-title>
 
-      <p>
-        Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-        <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px"/>
-      </p>
-    </div>
+      <deckgo-slide-title custom-background="true">
+        <h1 slot="title">Custom slide background</h1>
+        <div slot="background">
+          <img src="https://deckdeckgo.com/assets/img/deckdeckgo-homecoming.png" />
+        </div>
+      </deckgo-slide-title>
 
-  </deckgo-slide-title>
+      <deckgo-slide-title>
+        <h1 slot="title">Reveal as slot</h1>
+        <deckgo-reveal slot="content">
+          <p contenteditable="true">
+            Hello World EDITABLE EDITABLE HERE <a href="https://ionicframework.com">Ionic</a> 🚀
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+          </p>
 
-  <deckgo-slide-title>
-    <h1 slot="title">Not reveal list</h1>
-    <ul slot="content">
-      <li>Blue cheese</li>
-      <li>Feta</li>
-      <li>Gruyère</li>
-    </ul>
-  </deckgo-slide-title>
+          <p>
+            Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+          </p>
 
-  <img slot="background" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png">
+          <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+        </deckgo-reveal>
+      </deckgo-slide-title>
 
-  <button onclick="slideNext()" slot="actions">Action slide next</button>
-</deckgo-deck>
+      <deckgo-slide-title>
+        <h1 slot="title">Reveal inside slot</h1>
+        <div slot="content">
+          <deckgo-reveal>
+            <p>
+              Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+            </p>
+          </deckgo-reveal>
 
-<script type="text/javascript">
-    function slideNext() {
+          <deckgo-reveal>
+            <p>
+              Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+            </p>
+          </deckgo-reveal>
+
+          <p>
+            Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+          </p>
+        </div>
+      </deckgo-slide-title>
+
+      <deckgo-slide-title>
+        <h1 slot="title">Not reveal list</h1>
+        <ul slot="content">
+          <li>Blue cheese</li>
+          <li>Feta</li>
+          <li>Gruyère</li>
+        </ul>
+      </deckgo-slide-title>
+
+      <img slot="background" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" />
+
+      <button onclick="slideNext()" slot="actions">Action slide next</button>
+    </deckgo-deck>
+
+    <script type="text/javascript">
+      function slideNext() {
         const elem = document.getElementsByTagName('deckgo-deck');
         if (elem && elem.length > 0) {
-            elem[0].slideNext(false);
+          elem[0].slideNext(false);
         }
-    }
-</script>
-
-</body>
+      }
+    </script>
+  </body>
 </html>
