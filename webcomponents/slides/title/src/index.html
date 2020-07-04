@@ -9,12 +9,12 @@
     <script type="module" src="/build/deckdeckgo-slide-title.esm.js"></script>
     <script nomodule src="/build/deckdeckgo-slide-title.js"></script>
 
-    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
-    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+    <script type="module" src="http://localhost:3335/build/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="http://localhost:3335/build/deckdeckgo.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden;">
     <deckgo-deck>
-      <deckgo-slide-title>
+      <deckgo-slide-title custom-footer custom-header>
         <h1 slot="title">DeckDeckGo</h1>
         <p slot="content">
           Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
@@ -22,10 +22,10 @@
         </p>
         <div slot="notes">This are some notes about this particular slide</div>
 
-        <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
-        <div slot="footer">
-          <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+        <div slot="header">
+          <img style="max-height: 100%;" src="https://static-exp1.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico" /> LinkedIn
         </div>
+        <div slot="footer"><img style="max-height: 100%;" src="https://github.com/fluidicon.png" /> peterpeterparker</div>
       </deckgo-slide-title>
 
       <deckgo-slide-title custom-background="true">
@@ -86,6 +86,11 @@
       </deckgo-slide-title>
 
       <img slot="background" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" />
+
+      <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
+      <div slot="footer">
+        <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+      </div>
 
       <button onclick="slideNext()" slot="actions">Action slide next</button>
     </deckgo-deck>
