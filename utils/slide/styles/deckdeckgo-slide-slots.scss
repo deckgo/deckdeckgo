@@ -50,15 +50,23 @@
 ::slotted([slot="header"]) {
   top: 0;
 
+  width: calc(var(--slide-width) - var(--slide-header-padding-start, 32px) - var(--slide-header-padding-end, 32px));
   max-height: var(--slide-header-max-height, calc(var(--slide-height) * 0.05));
+
   justify-content: var(--slide-header-justify-content, flex-start);
-  padding: var(--slide-header-padding, 32px);
+
+  padding: var(--slide-header-padding-top, 32px) var(--slide-header-padding-end, 32px) var(--slide-header-padding-bottom, 32px)
+    var(--slide-header-padding-start, 32px);
 }
 
 ::slotted([slot="footer"]) {
   bottom: 0;
 
+  width: calc(var(--slide-width) - var(--slide-footer-padding-start, 16px) - var(--slide-footer-padding-end, 16px));
   max-height: var(--slide-footer-max-height, calc(var(--slide-height) * 0.05));
+
   justify-content: var(--slide-footer-justify-content, center);
-  padding: var(--slide-footer-padding, 16px);
+
+  padding: var(--slide-footer-padding-top, 16px) var(--slide-footer-padding-end, 16px) var(--slide-footer-padding-bottom, 16px)
+    var(--slide-footer-padding-start, 16px);
 }
