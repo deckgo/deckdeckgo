@@ -19,7 +19,6 @@
 ::slotted([slot="footer"]),
 ::slotted([slot="background"]) {
   pointer-events: none;
-  z-index: -1;
 }
 
 ::slotted([slot="background"]) {
@@ -30,6 +29,8 @@
 
   width: var(--slide-background-width);
   height: var(--slide-background-height);
+
+  z-index: -2;
 }
 
 ::slotted([slot="header"]),
@@ -42,6 +43,8 @@
 
   display: flex;
   align-items: center;
+
+  z-index: -1;
 }
 
 ::slotted([slot="header"]) {
