@@ -48,7 +48,7 @@ export class AppRoot {
     this.loading = false;
 
     this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
-      if (error) {
+      if (error && error !== undefined) {
         this.toastError(error);
       }
     });
@@ -80,6 +80,10 @@ export class AppRoot {
       position: 'top',
       color: 'danger',
       duration: 6000,
+    });
+
+    popover.onDidDismiss().then(() => {
+      errorStore.state.error = undefined;
     });
 
     await popover.present();
