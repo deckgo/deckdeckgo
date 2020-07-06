@@ -51,19 +51,23 @@
   top: 0;
 
   width: calc(var(--slide-width) - var(--slide-header-padding-start, 32px) - var(--slide-header-padding-end, 32px));
-  max-height: var(--slide-header-max-height, calc(var(--slide-height) * 0.05));
+  max-height: var(--slide-header-max-height, 64px);
 
   justify-content: var(--slide-header-justify-content, flex-start);
 
   padding: var(--slide-header-padding-top, 32px) var(--slide-header-padding-end, 32px) var(--slide-header-padding-bottom, 32px)
     var(--slide-header-padding-start, 32px);
+
+  @media screen and (max-width: 1024px) {
+    max-height: var(--slide-header-max-height, 48px);
+  }
 }
 
 ::slotted([slot="footer"]) {
   bottom: 0;
 
   width: calc(var(--slide-width) - var(--slide-footer-padding-start, 16px) - var(--slide-footer-padding-end, 16px));
-  max-height: var(--slide-footer-max-height, calc(var(--slide-height) * 0.05));
+  max-height: var(--slide-footer-max-height, 32px);
 
   justify-content: var(--slide-footer-justify-content, center);
 
