@@ -1,14 +1,14 @@
 app-deck-transition {
   div.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, calc((100% - 16px) / 2));
+    grid-gap: 16px;
+    margin: 16px;
 
     div.item {
       border-radius: 8px;
       margin: 8px 0;
-      width: calc(100% - 32px);
+      width: 100%;
       height: 7rem;
 
       display: block;
