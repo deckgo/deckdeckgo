@@ -26,9 +26,7 @@ import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-even
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
-import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -45,7 +43,7 @@ import {FontsService} from '../../../services/editor/fonts/fonts.service';
 export class AppEditor {
   @Element() el: HTMLElement;
 
-  @Prop()
+  @Prop({mutable: true})
   deckId: string;
 
   @State()
@@ -91,9 +89,6 @@ export class AppEditor {
   private hideNavigation: boolean = false;
 
   @State()
-  private slidesEditable: boolean = false;
-
-  @State()
   private fullscreen: boolean = false;
 
   private destroyBusyListener;
@@ -127,12 +122,6 @@ export class AppEditor {
     await this.initOffline();
 
     await this.initWithAuth();
-
-    this.destroyBusyListener = busyStore.onChange('slideEditable', async (slide: HTMLElement | undefined) => {
-      this.slidesEditable = true;
-
-      await this.contentEditable(slide);
-    });
 
     this.fullscreen = isFullscreen() && !isIOS();
   }
@@ -579,30 +568,6 @@ export class AppEditor {
     };
   }
 
-  private contentEditable(slide: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!slide || slide.childElementCount <= 0) {
-        resolve();
-        return;
-      }
-
-      const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
-      elements.forEach((e: HTMLElement) => {
-        if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-          if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.MATH) {
-            e.setAttribute('editable', '');
-          } else if (ParseElementsUtils.isElementContentEditable(e)) {
-            e.setAttribute('contentEditable', '');
-          } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
-            e.firstElementChild.setAttribute('contentEditable', '');
-          }
-        }
-      });
-
-      resolve();
-    });
-  }
-
   private stickyToolbarActivated($event: CustomEvent) {
     this.hideFooter = $event ? isMobile() && !isIOS() && $event.detail : false;
     this.hideNavigation = $event ? isIOS() && $event.detail : false;
@@ -657,7 +622,7 @@ export class AppEditor {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content>
-        <main class={this.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
+        <main class={busyStore.state.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
           <deckgo-deck
             embedded={true}
