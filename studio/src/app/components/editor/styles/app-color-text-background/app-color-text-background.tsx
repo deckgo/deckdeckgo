@@ -198,7 +198,7 @@ export class AppColorTextBackground {
           <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
         </deckgo-color>
         <ion-item class="action-button ion-margin-bottom">
-          <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
+          <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete" disabled={this.color === null}>
             <ion-label>Reset color</ion-label>
           </ion-button>
         </ion-item>
