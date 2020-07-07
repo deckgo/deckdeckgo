@@ -19,6 +19,8 @@ import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {SlotType} from '../../../../utils/editor/slot-type';
+import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
@@ -177,7 +179,7 @@ export class DeckEventsHandler {
 
         if (slide.getAttribute('slide_id')) {
           // !isNew
-          busyStore.state.slideEditable = slide;
+          await this.contentEditable(slide);
 
           resolve();
           return;
@@ -229,7 +231,7 @@ export class DeckEventsHandler {
       if (persistedSlide && persistedSlide.id) {
         slide.setAttribute('slide_id', persistedSlide.id);
 
-        busyStore.state.slideEditable = slide;
+        await this.contentEditable(slide);
       }
 
       resolve(persistedSlide);
@@ -888,5 +890,28 @@ export class DeckEventsHandler {
 
       resolve();
     });
+  }
+
+  private async contentEditable(slide: HTMLElement): Promise<void> {
+    if (!slide || slide.childElementCount <= 0) {
+      busyStore.state.slidesEditable = true;
+      return;
+    }
+
+    const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
+
+    elements.forEach((e: HTMLElement) => {
+      if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
+        if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.MATH) {
+          e.setAttribute('editable', '');
+        } else if (ParseElementsUtils.isElementContentEditable(e)) {
+          e.setAttribute('contentEditable', '');
+        } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
+          e.firstElementChild.setAttribute('contentEditable', '');
+        }
+      }
+    });
+
+    busyStore.state.slidesEditable = true;
   }
 }
