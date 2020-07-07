@@ -20,7 +20,8 @@ ion-item {
     --min-height: 42px;
 
     ion-button {
-      width: 100%;
+      min-width: calc((100% - 32px) / 2);
+      margin: auto;
     }
   }
 
@@ -78,4 +79,9 @@ ion-segment {
 
 deckgo-color {
   --deckgo-button-more-border: 1px solid var(--ion-color-medium);
+  min-height: 96px;
+
+  ion-icon[slot="more"] {
+    margin-top: 4px;
+  }
 }

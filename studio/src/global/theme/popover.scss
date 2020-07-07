@@ -10,8 +10,12 @@ ion-popover {
 
 ion-popover.popover-menu {
   &.popover-menu-wide {
-    --width: 380px;
+    --width: 396px;
     --max-width: 100%;
+
+    @media screen and (min-width: 720px) {
+      --width: 464px;
+    }
   }
 
   --width: 284px;
