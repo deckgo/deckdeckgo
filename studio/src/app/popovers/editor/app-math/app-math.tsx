@@ -60,7 +60,7 @@ export class AppMath {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <ion-list>
+      <ion-list class="article">
         <ion-item-divider>
           <ion-label>Macros</ion-label>
         </ion-item-divider>
