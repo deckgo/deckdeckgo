@@ -78,10 +78,11 @@ ion-segment {
 }
 
 deckgo-color {
+  background: white;
   --deckgo-button-more-border: 1px solid var(--ion-color-medium);
   min-height: 96px;
 
-  ion-icon[slot="more"] {
-    margin-top: 4px;
+  @media screen and (max-width: 720px) {
+    min-height: 128px;
   }
 }

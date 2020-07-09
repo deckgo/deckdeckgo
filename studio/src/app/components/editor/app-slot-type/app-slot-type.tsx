@@ -72,7 +72,7 @@ export class AppSlotType {
 
   render() {
     return (
-      <ion-list>
+      <ion-list class="article">
         <a onClick={() => this.select(SlotType.H1)} class={this.currentType === SlotType.H1 ? 'current' : ''}>
           <ion-item>
             <ion-icon name="text-outline" slot="start"></ion-icon>

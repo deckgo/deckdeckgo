@@ -104,7 +104,7 @@ export class AppCode {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <ion-list>
+      <ion-list class="article">
         <ion-item-divider>
           <ion-label>Language</ion-label>
         </ion-item-divider>

@@ -43,9 +43,10 @@ app-create-slide {
       overflow: hidden;
 
       background: white;
-      border: 1px solid #dedede;
 
+      border: 1px solid #dedede;
       box-shadow: rgba(0, 0, 0, 0.12) 0 1px 4px;
+      border-radius: 4px;
 
       --slide-width: 100%;
 
@@ -108,6 +109,10 @@ app-create-slide {
       deckgo-slide-poll,
       deckgo-slide-aspect-ratio {
         --slide-width: 184px;
+
+        @media screen and (min-width: 720px) {
+          --slide-width: 224px;
+        }
       }
 
       deckgo-slide-gif {

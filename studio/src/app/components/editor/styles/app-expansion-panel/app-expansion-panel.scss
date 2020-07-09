@@ -1,7 +1,16 @@
 app-expansion-panel {
   display: block;
 
+  margin-bottom: 16px;
+  overflow: hidden;
+
+  border: 1px solid #dedede;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 1px 4px;
+  border-radius: 4px;
+
   article {
+    background: white;
+
     > div {
       overflow: hidden;
       transition: height 0.25s ease-in;
@@ -39,6 +48,10 @@ app-expansion-panel {
           opacity: 0;
         }
       }
+    }
+
+    &:not(.close) {
+      padding-bottom: 8px;
     }
   }
 }
