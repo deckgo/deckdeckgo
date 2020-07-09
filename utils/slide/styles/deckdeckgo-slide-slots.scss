@@ -50,13 +50,13 @@
 ::slotted([slot="header"]) {
   top: 0;
 
-  width: calc(var(--slide-width) - var(--slide-header-padding-start, 32px) - var(--slide-header-padding-end, 32px));
+  width: calc(var(--slide-width) - var(--slide-header-margin-start, 32px) - var(--slide-header-margin-end, 32px));
   max-height: var(--slide-header-max-height, 64px);
 
   justify-content: var(--slide-header-justify-content, flex-start);
 
-  padding: var(--slide-header-padding-top, 32px) var(--slide-header-padding-end, 32px) var(--slide-header-padding-bottom, 32px)
-    var(--slide-header-padding-start, 32px);
+  margin: var(--slide-header-margin-top, 32px) var(--slide-header-margin-end, 32px) var(--slide-header-margin-bottom, 32px)
+    var(--slide-header-margin-start, 32px);
 
   @media screen and (max-width: 1024px) {
     max-height: var(--slide-header-max-height, 48px);
@@ -66,11 +66,11 @@
 ::slotted([slot="footer"]) {
   bottom: 0;
 
-  width: calc(var(--slide-width) - var(--slide-footer-padding-start, 16px) - var(--slide-footer-padding-end, 16px));
+  width: calc(var(--slide-width) - var(--slide-footer-margin-start, 16px) - var(--slide-footer-margin-end, 16px));
   max-height: var(--slide-footer-max-height, 32px);
 
   justify-content: var(--slide-footer-justify-content, center);
 
-  padding: var(--slide-footer-padding-top, 16px) var(--slide-footer-padding-end, 16px) var(--slide-footer-padding-bottom, 16px)
-    var(--slide-footer-padding-start, 16px);
+  margin: var(--slide-footer-margin-top, 16px) var(--slide-footer-margin-end, 16px) var(--slide-footer-margin-bottom, 16px)
+    var(--slide-footer-margin-start, 16px);
 }
