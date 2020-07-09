@@ -9,7 +9,7 @@ import {AssetsService} from '../../../services/core/assets/assets.service';
 
 @Component({
   tag: 'app-shape',
-  styleUrl: 'app-shape.scss'
+  styleUrl: 'app-shape.scss',
 })
 export class AppShape {
   @Element() el: HTMLElement;
@@ -50,15 +50,15 @@ export class AppShape {
       svg: {
         src,
         label,
-        ratio
-      }
+        ratio,
+      },
     });
   }
 
   private async selectImage($event: CustomEvent<ImageAction>) {
     if ($event && $event.detail) {
       await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-        img: $event.detail
+        img: $event.detail,
       });
     }
   }
@@ -76,7 +76,7 @@ export class AppShape {
         images={true}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
       this.renderShapes(),
-      this.renderImages()
+      this.renderImages(),
     ];
   }
 
@@ -101,7 +101,7 @@ export class AppShape {
 
     return (
       <div class="container ion-margin-bottom">
-        <ion-list>
+        <ion-list class="article">
           <ion-item-divider>
             <ion-label>Shapes</ion-label>
           </ion-item-divider>

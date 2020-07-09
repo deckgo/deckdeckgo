@@ -252,10 +252,7 @@ export class AppCreateSlide {
         {this.renderToolbarTitle()}
         {this.renderToolbarAction()}
       </ion-toolbar>,
-      <div
-        class={`container ion-margin-bottom ion-padding-start ion-padding-end${
-          this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''
-        }`}>
+      <div class={`container ion-margin-bottom ${this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''}`}>
         {this.renderTemplates()}
         {this.renderCompose()}
       </div>,

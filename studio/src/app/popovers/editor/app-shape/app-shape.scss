@@ -10,8 +10,8 @@ app-shape {
     > div {
       display: block;
       flex-grow: 1;
-      flex-basis: calc(100% / 4);
-      max-width: calc(100% / 4);
+      flex-basis: calc(100% / 6);
+      max-width: calc(100% / 6);
 
       touch-action: manipulation;
       cursor: pointer;

@@ -26,7 +26,7 @@ export class AppReveal {
 
   render() {
     return (
-      <ion-list>
+      <ion-list class="article">
         <ion-item>
           <ion-label>Animate transition</ion-label>
           <ion-checkbox slot="end" checked={this.reveal} onIonChange={() => this.toggle()}></ion-checkbox>
