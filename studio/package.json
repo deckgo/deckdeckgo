@@ -38,7 +38,7 @@
     "@deckdeckgo/slide-qrcode": "^1.0.3",
     "@deckdeckgo/slide-split": "^1.2.0",
     "@deckdeckgo/slide-title": "file:../webcomponents/slides/title",
-    "@deckdeckgo/slide-utils": "^1.1.0",
+    "@deckdeckgo/slide-utils": "file:../utils/slide",
     "@deckdeckgo/slide-youtube": "^1.0.1",
     "@deckdeckgo/social": "^1.0.1",
     "@deckdeckgo/utils": "^1.1.0",

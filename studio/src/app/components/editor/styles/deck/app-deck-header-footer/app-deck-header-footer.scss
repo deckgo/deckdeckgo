@@ -1,0 +1,27 @@
+app-deck-header-footer {
+  button {
+    padding: 0;
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: none;
+
+    deckgo-social {
+      pointer-events: none;
+
+      deckgo-lazy-img {
+        --deckgo-lazy-img-width: 2rem;
+        --deckgo-lazy-img-height: auto;
+        --deckgo-lazy-img-vertical-align: middle;
+      }
+    }
+  }
+
+  div.container {
+    display: grid;
+    grid-template-columns: repeat(2, calc((100% - 16px) / 2));
+    grid-gap: 16px;
+    margin: 16px;
+  }
+}

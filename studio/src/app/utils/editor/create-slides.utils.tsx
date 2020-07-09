@@ -9,10 +9,11 @@ import {SlideAttributes, SlideTemplate} from '../../models/data/slide';
 import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
-import {User, UserSocial} from '../../models/data/user';
+import {User} from '../../models/data/user';
 import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
+import {SocialUtils} from './social.utils';
 import {SlotType} from './slot-type';
 
 export interface InitTemplate {
@@ -186,7 +187,7 @@ export class CreateSlidesUtils {
       const imgSrc: string = user && user.data && user.data.photo_url ? user.data.photo_url : undefined;
       const imgAlt: string = user && user.data && user.data.name ? user.data.name : 'Author';
 
-      const links = await this.createSocialLinks(user);
+      const links = await SocialUtils.createSocialLinks(user);
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-author key={uuid()} img-src={imgSrc} img-alt={imgAlt}>
@@ -197,68 +198,6 @@ export class CreateSlidesUtils {
       );
 
       resolve(slide);
-    });
-  }
-
-  private static createSocialLinks(user: User): Promise<JSX.IntrinsicElements[]> {
-    return new Promise<JSX.IntrinsicElements[]>((resolve) => {
-      const links = [];
-
-      if (user && user.data && user.data.social) {
-        const userSocial: UserSocial = user.data.social;
-
-        const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-        if (userSocial.twitter && userSocial.twitter !== '' && userSocial.twitter !== undefined) {
-          links.push(
-            <deckgo-social slot={`social-link`} twitter={user.data.social.twitter}>
-              <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/ionicons/twitter.svg`} aria-label="Twitter"></deckgo-lazy-img>
-            </deckgo-social>
-          );
-        }
-
-        if (userSocial.linkedin && userSocial.linkedin !== '' && userSocial.linkedin !== undefined) {
-          links.push(
-            <deckgo-social slot={`social-link`} linkedin={user.data.social.linkedin}>
-              <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/ionicons/linkedin.svg`} aria-label="LinkedIn"></deckgo-lazy-img>
-            </deckgo-social>
-          );
-        }
-
-        if (userSocial.dev && userSocial.dev !== '' && userSocial.dev !== undefined) {
-          links.push(
-            <deckgo-social slot={`social-link`} dev={user.data.social.dev}>
-              <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/dev.svg`} aria-label="Dev"></deckgo-lazy-img>
-            </deckgo-social>
-          );
-        }
-
-        if (userSocial.medium && userSocial.medium !== '' && userSocial.medium !== undefined) {
-          links.push(
-            <deckgo-social slot={`social-link`} medium={user.data.social.medium}>
-              <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/medium.svg`} aria-label="Medium"></deckgo-lazy-img>
-            </deckgo-social>
-          );
-        }
-
-        if (userSocial.github && userSocial.github !== '' && userSocial.github !== undefined) {
-          links.push(
-            <deckgo-social slot={`social-link`} github={user.data.social.github}>
-              <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/ionicons/github.svg`} aria-label="GitHub"></deckgo-lazy-img>
-            </deckgo-social>
-          );
-        }
-
-        if (userSocial.custom && userSocial.custom !== '' && userSocial.custom !== undefined) {
-          links.push(
-            <deckgo-social slot={`social-link`} fullUrl={user.data.social.custom}>
-              <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/ionicons/globe.svg`} aria-label="Web"></deckgo-lazy-img>
-            </deckgo-social>
-          );
-        }
-      }
-
-      resolve(links);
     });
   }
 
