@@ -6,7 +6,6 @@ import userStore from '../../../stores/user.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
-import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
@@ -43,8 +42,6 @@ export class AppCreateSlide {
 
   @State()
   private elements: SlotType[] | undefined = undefined;
-
-  private user: User;
 
   @Event() signIn: EventEmitter<void>;
 
@@ -136,7 +133,7 @@ export class AppCreateSlide {
   }
 
   private async addSlide(template: SlideTemplate, deck?: Deck) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
@@ -157,7 +154,7 @@ export class AppCreateSlide {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
