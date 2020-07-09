@@ -1,3 +1,5 @@
+@use "./editor/editor-mixin";
+
 // Fix pre-rendering
 ion-list.ion-no-padding {
   padding: 0;
@@ -5,8 +7,6 @@ ion-list.ion-no-padding {
 
 ion-popover.popover-menu {
   ion-list.article {
-    border: 1px solid #dedede;
-    box-shadow: rgba(0, 0, 0, 0.12) 0 1px 4px;
-    border-radius: 4px;
+    @include editor-mixin.panel;
   }
 }

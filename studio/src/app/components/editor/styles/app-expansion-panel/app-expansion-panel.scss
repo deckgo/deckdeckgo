@@ -1,12 +1,12 @@
+@use "../../../../../global/theme/editor/editor-mixin";
+
 app-expansion-panel {
   display: block;
 
   margin-bottom: 16px;
   overflow: hidden;
 
-  border: 1px solid #dedede;
-  box-shadow: rgba(0, 0, 0, 0.12) 0 1px 4px;
-  border-radius: 4px;
+  @include editor-mixin.panel;
 
   article {
     background: white;
