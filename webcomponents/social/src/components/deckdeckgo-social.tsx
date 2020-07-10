@@ -8,14 +8,15 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
   shadow: true,
 })
 export class DeckdeckgoSocial implements DeckdeckgoComponent {
-  @State() url: string;
-
   @Prop({reflect: true}) twitter: string;
   @Prop({reflect: true}) linkedin: string;
   @Prop({reflect: true}) medium: string;
   @Prop({reflect: true}) dev: string;
   @Prop({reflect: true}) github: string;
   @Prop({reflect: true}) fullUrl: string;
+
+  @State()
+  private url: string;
 
   @State()
   private ariaLabel: string;
@@ -95,7 +96,12 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
     }
 
     this.url = this.fullUrl;
-    this.ariaLabel = this.fullUrl;
+
+    if (this.fullUrl) {
+      this.ariaLabel = this.fullUrl.replace(/http:\/\/|https:\/\/|www\./g, '');
+    } else {
+      this.ariaLabel = this.fullUrl;
+    }
   }
 
   render() {
@@ -109,7 +115,7 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
             {this.medium ? <span>{`${this.medium}`}</span> : undefined}
             {this.dev ? <span>{`${this.dev}`}</span> : undefined}
             {this.github ? <span>{`${this.github}`}</span> : undefined}
-            {this.fullUrl ? <span>{`${this.fullUrl}`}</span> : undefined}
+            {this.fullUrl ? <span>{`${this.ariaLabel}`}</span> : undefined}
           </slot>
         </a>
       </Host>
