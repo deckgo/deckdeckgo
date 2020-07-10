@@ -1,9 +1,10 @@
-import {Component, Element, h, Prop, Host, JSX, EventEmitter, State} from '@stencil/core';
+import {Component, Element, h, Prop, Host, JSX, EventEmitter, State, Event} from '@stencil/core';
 
 import userStore from '../../../../../stores/user.store';
 
 import {SocialUtils} from '../../../../../utils/editor/social.utils';
 import {HeaderFooterUtils} from '../../../../../utils/editor/header-footer.utils';
+import navStore, {NavDirection} from '../../../../../stores/nav.store';
 
 @Component({
   tag: 'app-deck-header-footer',
@@ -17,6 +18,9 @@ export class AppDeckHeaderFooter {
 
   @Prop()
   deckDidChange: EventEmitter<HTMLElement>;
+
+  @Event()
+  private navigateSettings: EventEmitter<void>;
 
   @State()
   private headerType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined = undefined;
@@ -53,12 +57,37 @@ export class AppDeckHeaderFooter {
     }
   }
 
+  private async onNavigateSettings() {
+    this.navigateSettings.emit();
+
+    navStore.state.nav = {
+      url: '/settings',
+      direction: NavDirection.FORWARD,
+    };
+  }
+
+  private hasOneOptionAtLeast(): boolean {
+    return (
+      userStore.state.user &&
+      userStore.state.user.data &&
+      userStore.state.user.data.social &&
+      (userStore.state.user.data.social.twitter !== null ||
+        userStore.state.user.data.social.linkedin !== null ||
+        userStore.state.user.data.social.dev !== null ||
+        userStore.state.user.data.social.medium !== null ||
+        userStore.state.user.data.social.github !== null ||
+        userStore.state.user.data.social.custom !== null)
+    );
+  }
+
   render() {
     return (
       <Host>
         {this.renderHeaderFooter('header', this.headerType)}
 
         {this.renderHeaderFooter('footer', this.footerType)}
+
+        {this.optionsNotice()}
       </Host>
     );
   }
@@ -67,6 +96,8 @@ export class AppDeckHeaderFooter {
     if (!userStore.state.user || !userStore.state.user.data || !userStore.state.user.data.social) {
       return undefined;
     }
+
+    const options: boolean = this.hasOneOptionAtLeast();
 
     return (
       <app-expansion-panel>
@@ -78,14 +109,37 @@ export class AppDeckHeaderFooter {
           {this.renderMedium(slotName, selectedType)}
           {this.renderGitHub(slotName, selectedType)}
           {this.renderCustom(slotName, selectedType)}
+          {this.renderNoOptions(options)}
         </div>
 
-        <ion-item class="action-button">
-          <ion-button shape="round" onClick={() => this.reset(slotName)} fill="outline" class="delete" disabled={selectedType === undefined}>
-            <ion-label>Reset</ion-label>
-          </ion-button>
-        </ion-item>
+        {this.renderReset(slotName, selectedType, options)}
       </app-expansion-panel>
+    );
+  }
+
+  private renderNoOptions(options: boolean) {
+    if (options) {
+      return undefined;
+    }
+
+    return <ion-label class="no-options">No options provided yet.</ion-label>;
+  }
+
+  private renderReset(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined,
+    options: boolean
+  ) {
+    if (!options) {
+      return undefined;
+    }
+
+    return (
+      <ion-item class="action-button">
+        <ion-button shape="round" onClick={() => this.reset(slotName)} fill="outline" class="delete" disabled={selectedType === undefined}>
+          <ion-label>Reset</ion-label>
+        </ion-button>
+      </ion-item>
     );
   }
 
@@ -178,6 +232,14 @@ export class AppDeckHeaderFooter {
       <button onClick={() => this.appendHeaderFooter(slotName, 'custom')} class={selectedType === 'custom' ? 'selected' : undefined}>
         {link}
       </button>
+    );
+  }
+
+  private optionsNotice() {
+    return (
+      <div class="ion-padding-start ion-padding-end ion-padding-top">
+        Your custom and predefined (Twitter, etc.) options can be edited in your <a onClick={() => this.onNavigateSettings()}>settings</a>.
+      </div>
     );
   }
 }

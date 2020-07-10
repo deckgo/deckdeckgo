@@ -1278,6 +1278,7 @@ declare namespace LocalJSX {
     interface AppDeckHeaderFooter {
         "deckDidChange"?: EventEmitter<HTMLElement>;
         "deckElement"?: HTMLElement;
+        "onNavigateSettings"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckStyle {
         "blockSlide"?: EventEmitter<boolean>;

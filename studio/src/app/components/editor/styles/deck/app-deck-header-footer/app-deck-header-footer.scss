@@ -22,10 +22,19 @@ app-deck-header-footer {
     }
   }
 
+  a {
+    cursor: pointer;
+  }
+
   div.container {
     display: grid;
     grid-template-columns: repeat(2, calc((100% - 16px) / 2));
     grid-gap: 16px;
     margin: 16px;
+
+    ion-label.no-options {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
   }
 }
