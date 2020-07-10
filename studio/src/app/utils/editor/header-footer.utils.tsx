@@ -37,13 +37,7 @@ export class HeaderFooterUtils {
 
     // prettier-ignore
     deckgoImg.addEventListener('lazyImgDidLoad', async () => {
-      if (slotName === 'footer') {
-        await (deck as any).loadFooter();
-      } else {
-        await (deck as any).loadHeader();
-      }
-      
-      // TODO: this.didChange.emit(deck);
+      await this.reload(deck, slotName);
     }, {once: true});
   }
 
@@ -79,5 +73,27 @@ export class HeaderFooterUtils {
     }
 
     return deckgoImg;
+  }
+
+  static async remove(deck: HTMLElement, slotName: 'header' | 'footer'): Promise<void> {
+    if (!deck) {
+      return;
+    }
+
+    const currentSlotElement: HTMLElement = deck.querySelector(`:scope > [slot='${slotName}']`);
+
+    if (currentSlotElement) {
+      deck.removeChild(currentSlotElement);
+    }
+
+    await this.reload(deck, slotName);
+  }
+
+  private static async reload(deck: HTMLElement, slotName: 'header' | 'footer') {
+    if (slotName === 'footer') {
+      await (deck as any).loadFooter();
+    } else {
+      await (deck as any).loadHeader();
+    }
   }
 }

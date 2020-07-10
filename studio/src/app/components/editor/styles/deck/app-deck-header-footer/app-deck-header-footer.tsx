@@ -24,6 +24,12 @@ export class AppDeckHeaderFooter {
     this.deckDidChange.emit(this.deckElement);
   }
 
+  private async reset(slotName: 'header' | 'footer') {
+    await HeaderFooterUtils.remove(this.deckElement, slotName);
+
+    this.deckDidChange.emit(this.deckElement);
+  }
+
   render() {
     return (
       <Host>
@@ -34,22 +40,28 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderHeaderFooter(type: 'header' | 'footer') {
+  private renderHeaderFooter(slotName: 'header' | 'footer') {
     if (!userStore.state.user || !userStore.state.user.data || !userStore.state.user.data.social) {
       return undefined;
     }
 
     return (
       <app-expansion-panel>
-        <ion-label slot="title">{type === 'header' ? 'Header' : 'Footer'}</ion-label>
+        <ion-label slot="title">{slotName === 'header' ? 'Header' : 'Footer'}</ion-label>
         <div class="container ion-margin-bottom">
-          {this.renderTwitter(type)}
-          {this.renderLinkedin(type)}
-          {this.renderDev(type)}
-          {this.renderMedium(type)}
-          {this.renderGitHub(type)}
-          {this.renderCustom(type)}
+          {this.renderTwitter(slotName)}
+          {this.renderLinkedin(slotName)}
+          {this.renderDev(slotName)}
+          {this.renderMedium(slotName)}
+          {this.renderGitHub(slotName)}
+          {this.renderCustom(slotName)}
         </div>
+
+        <ion-item class="action-button">
+          <ion-button shape="round" onClick={() => this.reset(slotName)} fill="outline" class="delete">
+            <ion-label>Reset</ion-label>
+          </ion-button>
+        </ion-item>
       </app-expansion-panel>
     );
   }
