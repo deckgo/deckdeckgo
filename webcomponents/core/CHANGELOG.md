@@ -1,6 +1,16 @@
+# 1.1.0 (2020-07-10)
+
+### Features
+
+- introduces methods to load `header` and `footer`
+
+### Style
+
+- pager default size reduced to `48px`
+
 # 1.0.2 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 
