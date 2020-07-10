@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoPlaygroundTheme, } from "./declarations/deckdeckgo-playground-theme";
+import { DeckdeckgoPlaygroundTheme } from "./declarations/deckdeckgo-playground-theme";
 export namespace Components {
     interface DeckgoPlayground {
         "allowFullscreen": boolean;
