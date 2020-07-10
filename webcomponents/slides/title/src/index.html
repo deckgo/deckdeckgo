@@ -9,8 +9,8 @@
     <script type="module" src="/build/deckdeckgo-slide-title.esm.js"></script>
     <script nomodule src="/build/deckdeckgo-slide-title.js"></script>
 
-    <script type="module" src="http://localhost:3335/build/deckdeckgo.esm.js"></script>
-    <script nomodule="" src="http://localhost:3335/build/deckdeckgo.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
     <style>
       * {
@@ -34,10 +34,13 @@
         <div slot="footer"><img style="max-height: 100%;" src="https://github.com/fluidicon.png" /> peterpeterparker</div>
       </deckgo-slide-title>
 
-      <deckgo-slide-title custom-background="true">
+      <deckgo-slide-title custom-background>
         <h1 slot="title">Custom slide background</h1>
         <div slot="background">
-          <img src="https://images.unsplash.com/photo-1574356544558-c29e9a3b35f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
+          <img
+            style="width: 200px;"
+            src="https://images.unsplash.com/photo-1574356544558-c29e9a3b35f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60"
+          />
         </div>
       </deckgo-slide-title>
 
@@ -94,6 +97,7 @@
       <img
         slot="background"
         data-src="https://images.unsplash.com/photo-1548523697-8bd0d1ecc91a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80"
+        style="width: 400px;"
       />
 
       <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
@@ -111,6 +115,14 @@
           elem[0].slideNext(false);
         }
       }
+
+      document.addEventListener(
+        'deckDidLoad',
+        () => {
+          window.dispatchEvent(new Event('resize'));
+        },
+        {once: true}
+      );
     </script>
   </body>
 </html>
