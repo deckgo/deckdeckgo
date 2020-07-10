@@ -1,3 +1,15 @@
+<a name="2.0.0"></a>
+
+# 2.0.0 (2020-07-10)
+
+### Breaking Changes
+
+- move `slot` related styles to a separate new style sheet `deckdeckgo-slide-slots.scss`
+
+### Features
+
+- add style for `header` and `footer`
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-05-07)
