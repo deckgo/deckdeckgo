@@ -5,10 +5,9 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 @Component({
   tag: 'deckgo-slide-gif',
   styleUrl: 'deckdeckgo-slide-gif.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
-
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
@@ -20,9 +19,6 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
 
   @State() loaded: boolean = false;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
-
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
@@ -32,7 +28,7 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   @Method()
   beforeSwipe(_enter: boolean, _reveal: boolean): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      resolve(true)
+      resolve(true);
     });
   }
 
@@ -62,23 +58,27 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   }
 
   render() {
-    return <Host class={{
-      'deckgo-slide-container': true,
-      'deckgo-slide-container-fullscreen': this.fullscreen,
-      'deckgo-slide-gif-hidden': !this.loaded
-    }}>
-      <div class="deckgo-slide">
-        <slot name="title"></slot>
-        <div class="deckgo-gif-container">
-          <slot name="header"></slot>
-          <deckgo-gif src={this.src} alt={this.alt} fullscreen={this.fullscreen}></deckgo-gif>
-          <slot name="footer"></slot>
-          <slot name="notes"></slot>
-          <slot name="actions"></slot>
-          <slot name="background"></slot>
+    return (
+      <Host
+        class={{
+          'deckgo-slide-container': true,
+          'deckgo-slide-container-fullscreen': this.fullscreen,
+          'deckgo-slide-gif-hidden': !this.loaded,
+        }}>
+        <div class="deckgo-slide">
+          <slot name="title"></slot>
+          <div class="deckgo-gif-container">
+            <slot name="header"></slot>
+            <deckgo-gif src={this.src} alt={this.alt} fullscreen={this.fullscreen}></deckgo-gif>
+            <slot name="footer"></slot>
+            <slot name="notes"></slot>
+            <slot name="actions"></slot>
+            <slot name="background"></slot>
+            <slot name="header"></slot>
+            <slot name="footer"></slot>
+          </div>
         </div>
-      </div>
-    </Host>
+      </Host>
+    );
   }
-
 }
