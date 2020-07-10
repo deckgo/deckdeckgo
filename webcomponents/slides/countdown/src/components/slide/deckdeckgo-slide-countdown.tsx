@@ -5,7 +5,7 @@ import {DeckdeckgoSlide} from '@deckdeckgo/slide-utils';
 @Component({
   tag: 'deckgo-slide-countdown',
   styleUrl: 'deckdeckgo-slide-countdown.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   @Event()
@@ -40,9 +40,6 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
 
   private mTotalSeconds = 0;
   private mCountdownInterval = -1;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
     await this.clearUp();
@@ -197,6 +194,8 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

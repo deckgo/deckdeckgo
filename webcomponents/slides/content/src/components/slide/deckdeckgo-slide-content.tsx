@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, h, Host} from '@stencil/core';
 
 import {
   DeckdeckgoSlide,
@@ -7,21 +7,18 @@ import {
   beforeSwipe,
   lazyLoadContent,
   hideAllRevealElements,
-  showAllRevealElements
+  showAllRevealElements,
 } from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-slide-content',
   styleUrl: 'deckdeckgo-slide-content.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
@@ -63,6 +60,8 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

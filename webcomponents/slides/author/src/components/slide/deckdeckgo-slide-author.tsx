@@ -7,7 +7,7 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 @Component({
   tag: 'deckgo-slide-author',
   styleUrl: 'deckdeckgo-slide-author.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -18,9 +18,6 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Prop() imgAlt: string;
 
   @Prop({reflectToAttr: true}) imgMode: 'cover' | 'circle' | 'none' = 'cover';
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @State()
   private mobile: boolean = false;
@@ -114,6 +111,8 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );
