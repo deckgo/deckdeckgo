@@ -57,7 +57,9 @@ export class AppDashboard {
   async componentWillLoad() {
     await this.imageEventsHandler.init();
     await this.chartEventsHandler.init();
+  }
 
+  async componentDidLoad() {
     this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
       await this.initDashboard();
     });

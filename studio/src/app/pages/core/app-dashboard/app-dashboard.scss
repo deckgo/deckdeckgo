@@ -1,4 +1,6 @@
 app-dashboard {
+  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+
   main {
     background: white;
 
@@ -22,6 +24,8 @@ app-dashboard {
       --color: black;
 
       --pager-display: none;
+
+      font-size: 8px;
 
       --font-size-very-small: 4px;
       --font-size-small: 8px;
