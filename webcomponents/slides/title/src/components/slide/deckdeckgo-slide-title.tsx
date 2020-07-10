@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Method, h, Host} from '@stencil/core';
 
 import {
   DeckdeckgoSlide,
@@ -19,9 +19,6 @@ export class DeckdeckgoSlideTitle implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
