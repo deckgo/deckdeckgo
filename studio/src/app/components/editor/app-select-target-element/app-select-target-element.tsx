@@ -141,8 +141,8 @@ export class AppSelectTargetElement {
   private renderHeaderFooter() {
     if (this.headerFooter) {
       return (
-        <ion-segment-button value={TargetElement.HEADER_FOOTER} mode="md">
-          <ion-label>Header/Footer</ion-label>
+        <ion-segment-button value={TargetElement.HEADER_FOOTER} mode="md" class="header-footer">
+          <ion-label>Header &amp; Footer</ion-label>
         </ion-segment-button>
       );
     } else {

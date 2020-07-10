@@ -1,34 +1,13 @@
-fionapp-select-target-element {
-  ion-list.list-ios {
-    margin-bottom: 0;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-
-  ion-item {
-    --border-width: 0;
-    --inner-border-width: 0;
-  }
-
-  ion-item-divider {
-    --color: black;
-    --background: inherit;
-    --ion-item-border-color: transparent;
-    --ion-padding: 0;
-
-    ion-label {
-      margin: 16px 0 4px;
-    }
-  }
-
+app-select-target-element {
   ion-segment {
-    background: var(--ion-color-light);
-
     ion-segment-button {
-      min-width: auto;
+      &.header-footer {
+        width: 42%;
+      }
 
-      --padding-end: 0;
-      --padding-start: 0;
+      ion-label {
+        white-space: pre-wrap;
+      }
     }
   }
 }
