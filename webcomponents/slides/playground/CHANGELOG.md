@@ -1,3 +1,9 @@
+# 1.1.1 (2020-07-10)
+
+### Fix
+
+- `Rollup: Unresolved Import Could not resolve './components' from ../webcomponents/slides/playground/dist/collection/index.js`
+
 # 1.1.0 (2020-07-10)
 
 ### Features
