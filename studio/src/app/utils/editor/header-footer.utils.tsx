@@ -54,6 +54,9 @@ export class HeaderFooterUtils {
 
     socialElement.setAttribute(type === 'custom' ? 'full-url' : type, user.data.social[type]);
 
+    // Use in studio only to identify which header or footer is currently applied
+    socialElement.setAttribute('type', type);
+
     return socialElement;
   }
 
@@ -95,5 +98,28 @@ export class HeaderFooterUtils {
     } else {
       await (deck as any).loadHeader();
     }
+  }
+
+  static async currentType(
+    deck: HTMLElement,
+    slotName: 'header' | 'footer'
+  ): Promise<'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined> {
+    if (!deck) {
+      return undefined;
+    }
+
+    const currentSlotElement: HTMLElement = deck.querySelector(`:scope > [slot='${slotName}']`);
+
+    if (!currentSlotElement) {
+      return undefined;
+    }
+
+    const socialElement: HTMLElement = currentSlotElement.querySelector('deckgo-social');
+
+    if (!socialElement) {
+      return undefined;
+    }
+
+    return socialElement.getAttribute('type') as 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined;
   }
 }

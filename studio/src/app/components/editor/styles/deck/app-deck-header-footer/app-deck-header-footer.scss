@@ -7,6 +7,10 @@ app-deck-header-footer {
     color: inherit;
     background: none;
 
+    &.selected {
+      color: var(--ion-color-primary);
+    }
+
     deckgo-social {
       pointer-events: none;
 
