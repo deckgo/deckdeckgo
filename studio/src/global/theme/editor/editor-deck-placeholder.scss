@@ -28,7 +28,7 @@ deckgo-deck {
 
   > * > deckgo-lazy-img,
   > * > deckgo-reveal deckgo-lazy-img {
-    &:not([img-src]) {
+    &:not([img-src]):not([svg-src]) {
       position: relative;
       --deckgo-lazy-img-width: auto;
       font-size: 2em;
