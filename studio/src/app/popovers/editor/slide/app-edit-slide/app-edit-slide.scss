@@ -1,4 +1,11 @@
 app-edit-slide {
   @import "../../../../../global/theme/editor/editor-info";
   @import "../../../../../global/theme/editor/editor-popover";
+
+  ion-list {
+    > * {
+      display: block;
+      margin-bottom: 16px;
+    }
+  }
 }
