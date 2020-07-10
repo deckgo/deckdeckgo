@@ -5,7 +5,7 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 @Component({
   tag: 'deckgo-social',
   styleUrl: 'deckdeckgo-social.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSocial implements DeckdeckgoComponent {
   @State() url: string;
@@ -17,95 +17,90 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
   @Prop({reflect: true}) github: string;
   @Prop({reflect: true}) fullUrl: string;
 
-  componentWillLoad() {
-    this.concatTwitterUrl();
-    this.concatLinkedinUrl();
-    this.concatMediumUrl();
-    this.concatDevUrl();
-    this.concatGithubUrl();
-    this.concatFullUrl();
+  @State()
+  private ariaLabel: string;
+
+  async componentWillLoad() {
+    const promises: Promise<void>[] = [
+      this.concatTwitterUrl(),
+      this.concatLinkedinUrl(),
+      this.concatMediumUrl(),
+      this.concatDevUrl(),
+      this.concatGithubUrl(),
+      this.concatFullUrl(),
+    ];
+
+    await Promise.all(promises);
   }
 
   @Method()
   lazyLoadContent(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      resolve();
-    });
+    return Promise.resolve();
   }
 
   @Watch('twitter')
-  concatTwitterUrl() {
+  async concatTwitterUrl() {
     if (!this.twitter) {
       return;
     }
 
     this.url = 'https://twitter.com/' + this.twitter;
+    this.ariaLabel = `twitter/${this.twitter}`;
   }
 
   @Watch('linkedin')
-  concatLinkedinUrl() {
+  async concatLinkedinUrl() {
     if (!this.linkedin) {
       return;
     }
 
     this.url = 'https://www.linkedin.com/in/' + this.linkedin;
+    this.ariaLabel = `linkedin/${this.linkedin}`;
   }
 
   @Watch('medium')
-  concatMediumUrl() {
+  async concatMediumUrl() {
     if (!this.medium) {
       return;
     }
 
     this.url = 'https://medium.com/@' + this.medium;
+    this.ariaLabel = `medium/${this.medium}`;
   }
 
   @Watch('dev')
-  concatDevUrl() {
+  async concatDevUrl() {
     if (!this.dev) {
       return;
     }
 
     this.url = 'https://dev.to/' + this.dev;
+    this.ariaLabel = `thepracticaldev/${this.dev}`;
   }
 
   @Watch('github')
-  concatGithubUrl() {
+  async concatGithubUrl() {
     if (!this.github) {
       return;
     }
 
     this.url = 'https://github.com/' + this.github;
+    this.ariaLabel = `github/${this.github}`;
   }
 
   @Watch('fullUrl')
-  concatFullUrl() {
+  async concatFullUrl() {
     if (!this.fullUrl) {
       return;
     }
 
     this.url = this.fullUrl;
-  }
-
-  private ariaLabel() {
-    if (this.twitter) {
-      return `twitter/${this.twitter}`;
-    } else if (this.linkedin) {
-      return `linkedin/${this.linkedin}`;
-    } else if (this.medium) {
-      return `medium/${this.medium}`;
-    } else if (this.dev) {
-      return `thepracticaldev/${this.dev}`;
-    } else if (this.github) {
-      return `github/${this.github}`;
-    } else {
-      return this.fullUrl;
-    }
+    this.ariaLabel = this.fullUrl;
   }
 
   render() {
     return (
-      <Host aria-label={this.ariaLabel()}>
+      <Host aria-label={this.ariaLabel}>
         <a href={this.url}>
           <slot name="icon"></slot>
           <slot>
