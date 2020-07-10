@@ -1,6 +1,12 @@
+# 2.0.0 (2020-07-10)
+
+### Features
+
+- the default `full-url` text is now displayed without `http`, `https` and `www`. if you still want to display these, provide the url as slot too.
+
 # 1.0.1 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 
