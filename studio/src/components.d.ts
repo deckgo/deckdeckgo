@@ -129,6 +129,7 @@ export namespace Components {
         "moreColors": boolean;
     }
     interface AppDeckHeaderFooter {
+        "deckDidChange": EventEmitter<HTMLElement>;
         "deckElement": HTMLElement;
     }
     interface AppDeckStyle {
@@ -1275,6 +1276,7 @@ declare namespace LocalJSX {
         "onFontsChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckHeaderFooter {
+        "deckDidChange"?: EventEmitter<HTMLElement>;
         "deckElement"?: HTMLElement;
     }
     interface AppDeckStyle {

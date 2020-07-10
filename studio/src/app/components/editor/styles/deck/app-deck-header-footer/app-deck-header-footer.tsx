@@ -1,4 +1,4 @@
-import {Component, Element, h, Prop, Host, JSX} from '@stencil/core';
+import {Component, Element, h, Prop, Host, JSX, EventEmitter} from '@stencil/core';
 
 import userStore from '../../../../../stores/user.store';
 
@@ -15,10 +15,13 @@ export class AppDeckHeaderFooter {
   @Prop()
   deckElement: HTMLElement;
 
-  private async appendHeaderFooter(slotName: 'header' | 'footer', type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom') {
-    console.log(this.deckElement);
+  @Prop()
+  deckDidChange: EventEmitter<HTMLElement>;
 
+  private async appendHeaderFooter(slotName: 'header' | 'footer', type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom') {
     await HeaderFooterUtils.append(this.deckElement, userStore.state.user, slotName, type);
+
+    this.deckDidChange.emit(this.deckElement);
   }
 
   render() {
