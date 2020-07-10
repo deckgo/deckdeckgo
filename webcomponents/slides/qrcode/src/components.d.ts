@@ -10,8 +10,6 @@ export namespace Components {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
         "content": string;
-        "customActions": boolean;
-        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "imgAlt": string;
         "imgSrc": string;
@@ -34,8 +32,6 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoSlideQrcode {
         "content"?: string;
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "imgAlt"?: string;
         "imgSrc"?: string;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;

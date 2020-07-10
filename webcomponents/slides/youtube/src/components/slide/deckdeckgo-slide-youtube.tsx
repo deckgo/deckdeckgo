@@ -6,7 +6,7 @@ import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdec
 @Component({
   tag: 'deckgo-slide-youtube',
   styleUrl: 'deckdeckgo-slide-youtube.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   @Element() el: HTMLElement;
@@ -25,9 +25,6 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   @State() frameTitle: string;
 
   private isPlaying: boolean = false;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
@@ -185,6 +182,8 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

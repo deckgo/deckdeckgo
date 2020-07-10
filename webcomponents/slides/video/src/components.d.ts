@@ -10,8 +10,6 @@ export namespace Components {
         "afterSwipe": () => Promise<void>;
         "autoplay": boolean;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "getVideo": () => Promise<HTMLMediaElement>;
         "height": number;
         "hideContent": () => Promise<void>;
@@ -43,8 +41,6 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoSlideVideo {
         "autoplay"?: boolean;
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "height"?: number;
         "loop"?: boolean;
         "muted"?: boolean;

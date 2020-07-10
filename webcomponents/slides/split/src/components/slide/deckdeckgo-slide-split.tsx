@@ -20,9 +20,6 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
-
   @Prop({reflectToAttr: true}) vertical: boolean = false;
 
   @Prop({reflectToAttr: true}) type: 'demo' | 'default' = 'default';
@@ -93,6 +90,8 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

@@ -18,12 +18,13 @@
 - slide-content: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/content/CHANGELOG.md))
 - slide-countdown: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/countdown/CHANGELOG.md))
 - slide-gif: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/gif/CHANGELOG.md))
-- slide-poll: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/poll/CHANGELOG.md))
-- slide-qrcode: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
-- slide-split: v1.1.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/split/CHANGELOG.md))
+- slide-playground: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/playground/CHANGELOG.md))
+- slide-poll: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/poll/CHANGELOG.md))
+- slide-qrcode: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/qrcode/CHANGELOG.md))
+- slide-split: v1.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/split/CHANGELOG.md))
 - slide-title: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/title/CHANGELOG.md))
-- slide-video: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/video/CHANGELOG.md))
-- slide-youtube: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/youtube/CHANGELOG.md))
+- slide-video: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/video/CHANGELOG.md))
+- slide-youtube: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/youtube/CHANGELOG.md))
 
 ### Web Components
 

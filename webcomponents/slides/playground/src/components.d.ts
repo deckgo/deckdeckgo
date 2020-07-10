@@ -21,8 +21,6 @@ export namespace Components {
         "afterSwipe": () => Promise<void>;
         "allowFullscreen": boolean;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "height": number;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
@@ -63,8 +61,6 @@ declare namespace LocalJSX {
     }
     interface DeckgoSlidePlayground {
         "allowFullscreen"?: boolean;
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "height"?: number;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "src"?: string;

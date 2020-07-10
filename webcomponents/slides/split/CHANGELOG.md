@@ -1,3 +1,13 @@
+# 1.3.0 (2020-07-10)
+
+### Features
+
+- add `header` and `footer`
+
+### Refactoring
+
+- remove `custom-actions` and `custom-background` properties because these are only use as attributes
+
 # 1.2.0 (2020-06-23)
 
 ### Style
