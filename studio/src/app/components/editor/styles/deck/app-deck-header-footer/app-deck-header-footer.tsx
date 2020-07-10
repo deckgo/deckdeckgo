@@ -1,6 +1,7 @@
 import {Component, Element, h, Prop, Host, JSX, EventEmitter, State, Event} from '@stencil/core';
 
 import userStore from '../../../../../stores/user.store';
+import authStore from '../../../../../stores/auth.store';
 
 import {SocialUtils} from '../../../../../utils/editor/social.utils';
 import {HeaderFooterUtils} from '../../../../../utils/editor/header-footer.utils';
@@ -21,6 +22,9 @@ export class AppDeckHeaderFooter {
 
   @Event()
   private navigateSettings: EventEmitter<void>;
+
+  @Event()
+  private navigateSignIn: EventEmitter<void>;
 
   @State()
   private headerType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined = undefined;
@@ -66,6 +70,10 @@ export class AppDeckHeaderFooter {
     };
   }
 
+  private async onNavigateSignIn() {
+    this.navigateSignIn.emit();
+  }
+
   private hasOneOptionAtLeast(): boolean {
     return (
       userStore.state.user &&
@@ -81,6 +89,29 @@ export class AppDeckHeaderFooter {
   }
 
   render() {
+    if (!authStore.state.loggedIn) {
+      return this.renderNotLoggedIn();
+    }
+
+    return this.renderOptions();
+  }
+
+  private renderNotLoggedIn() {
+    return (
+      <app-expansion-panel>
+        <ion-label slot="title">Header &amp; Footer</ion-label>
+
+        <div class="container ion-margin-bottom">
+          <ion-label class="no-options">
+            Oh, hi! Users' settings are the options for the header and footer. Therefore, if you wish to give a try to this feature, please{' '}
+            <a onClick={() => this.onNavigateSignIn()}>sign in</a>.
+          </ion-label>
+        </div>
+      </app-expansion-panel>
+    );
+  }
+
+  private renderOptions() {
     return (
       <Host>
         {this.renderHeaderFooter('header', this.headerType)}

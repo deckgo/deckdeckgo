@@ -75,6 +75,12 @@ export class AppDeck {
     }
   }
 
+  private async closePopoverAndSignIn() {
+    this.signIn.emit();
+
+    await this.closePopover();
+  }
+
   render() {
     return [
       <ion-toolbar>
@@ -115,7 +121,8 @@ export class AppDeck {
         <app-deck-header-footer
           deckElement={this.deckElement}
           deckDidChange={this.deckDidChange}
-          onNavigateSettings={() => this.closePopover()}></app-deck-header-footer>
+          onNavigateSettings={() => this.closePopover()}
+          onNavigateSignIn={() => this.closePopoverAndSignIn()}></app-deck-header-footer>
       );
     } else {
       return undefined;

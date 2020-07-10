@@ -1279,6 +1279,7 @@ declare namespace LocalJSX {
         "deckDidChange"?: EventEmitter<HTMLElement>;
         "deckElement"?: HTMLElement;
         "onNavigateSettings"?: (event: CustomEvent<void>) => void;
+        "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckStyle {
         "blockSlide"?: EventEmitter<boolean>;
