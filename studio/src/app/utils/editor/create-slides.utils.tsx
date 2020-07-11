@@ -151,9 +151,9 @@ export class CreateSlidesUtils {
         return;
       }
 
-      const title = <h2 slot="header"></h2>;
+      const title = <h2 slot="top"></h2>;
 
-      const content = <h3 slot="footer"></h3>;
+      const content = <h3 slot="bottom"></h3>;
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-gif src={src} key={uuid()}>
