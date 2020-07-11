@@ -9,7 +9,7 @@
 
 ::slotted([slot="actions"]) {
   position: absolute;
-  top: var(--slide-actions-top, 32px);
+  top: var(--slide-actions-top, 16px);
   right: var(--slide-actions-end, 32px);
   left: var(--slide-actions-start);
   display: var(--slide-actions-display);
@@ -51,15 +51,15 @@
   top: 0;
 
   width: calc(var(--slide-width) - var(--slide-header-margin-start, 32px) - var(--slide-header-margin-end, 32px));
-  max-height: var(--slide-header-max-height, 64px);
+  max-height: var(--slide-header-max-height, 48px);
 
   justify-content: var(--slide-header-justify-content, flex-start);
 
-  margin: var(--slide-header-margin-top, 32px) var(--slide-header-margin-end, 32px) var(--slide-header-margin-bottom, 32px)
+  margin: var(--slide-header-margin-top, 16px) var(--slide-header-margin-end, 32px) var(--slide-header-margin-bottom, 16px)
     var(--slide-header-margin-start, 32px);
 
   @media screen and (max-width: 1024px) {
-    max-height: var(--slide-header-max-height, 48px);
+    max-height: var(--slide-header-max-height, 16px);
   }
 }
 

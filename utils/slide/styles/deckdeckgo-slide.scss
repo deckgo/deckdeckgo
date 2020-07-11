@@ -13,9 +13,9 @@
   --slide-padding-start-default: 64px;
 
   @media screen and (max-width: 1024px) {
-    --slide-padding-top-default: 16px;
+    --slide-padding-top-default: 32px;
     --slide-padding-end-default: 32px;
-    --slide-padding-bottom-default: 16px;
+    --slide-padding-bottom-default: 32px;
     --slide-padding-start-default: 32px;
   }
 }

@@ -1,3 +1,12 @@
+<a name="2.1.0"></a>
+
+# 2.1.0 (2020-07-11)
+
+### Features
+
+- default `top` and `bottom` padding when screen < `1024px` set to `32px` per default
+- smaller margin and size for the `header` and `footer`
+
 <a name="2.0.0"></a>
 
 # 2.0.0 (2020-07-10)
