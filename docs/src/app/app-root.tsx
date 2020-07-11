@@ -136,7 +136,7 @@ export class AppRoot {
                   </ion-item>
 
                   <ion-item-divider>
-                    <ion-label>Slides</ion-label>
+                    <ion-label>Templates</ion-label>
                   </ion-item-divider>
                   <ion-item detail={false} href="/slides/concept" routerDirection="forward">
                     <ion-label>Concept</ion-label>
@@ -233,6 +233,9 @@ export class AppRoot {
                   <ion-item detail={false} href="/deck/transition" routerDirection="forward">
                     <ion-label>Transition</ion-label>
                   </ion-item>
+                  <ion-item detail={false} href="/deck/background" routerDirection="forward">
+                    <ion-label>Background</ion-label>
+                  </ion-item>
                   <ion-item detail={false} href="/deck/navigation" routerDirection="forward">
                     <ion-label>Navigation</ion-label>
                   </ion-item>
@@ -247,9 +250,6 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/deck/events" routerDirection="forward">
                     <ion-label>Events</ion-label>
-                  </ion-item>
-                  <ion-item detail={false} href="/deck/background" routerDirection="forward">
-                    <ion-label>Background</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/deck/actions" routerDirection="forward">
                     <ion-label>Actions</ion-label>
