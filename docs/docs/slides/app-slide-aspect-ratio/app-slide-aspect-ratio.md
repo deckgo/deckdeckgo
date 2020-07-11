@@ -87,7 +87,7 @@ The "Aspect Ratio" slide's Web Component could be integrated using the tag `<dec
 
 ### Slots
 
-The slots `title`, `header` and `footer` are both optional. `header` and `footer` would be displayed over the content.
+The slots `title`, `top` and `bottom` are both optional. `top` and `bottom` would be displayed over the content.
 
 ### Notes
 

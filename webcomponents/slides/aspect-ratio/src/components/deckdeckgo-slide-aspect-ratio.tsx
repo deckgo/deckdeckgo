@@ -100,8 +100,8 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
             <div class={classContent} ref={(el) => (this.refContainer = el as HTMLDivElement)}>
               <slot />
             </div>
-            <slot name="header"></slot>
-            <slot name="footer"></slot>
+            <slot name="top"></slot>
+            <slot name="bottom"></slot>
           </div>
           <slot name="notes"></slot>
           <slot name="actions"></slot>
