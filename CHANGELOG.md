@@ -1,12 +1,24 @@
-<a name="1.6.0"></a>
+<a name="2.0.0"></a>
 
-# [1.6.0](https://github.com/deckgo/deckdeckgo/compare/v1.5.0...v1.6.0) (In progress...)
+# [2.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.5.0...v1.6.0) (In progress...)
+
+### Breaking Changes
+
+Because we are introducing the `header` and `footer` features, slots in the templates `gif` and `aspect-ratio` had to be renamed to avoid name collision.
+
+Therefore, if you would edit such templates with our editor or developer kit, created before these releases, these modifications have to be performed in your content.
+
+Ping [me](mailto:david.dalbusco@outlook.com) if you need any help or have questions.
+
+Best regards,
+
+David
 
 ### Applications
 
 - docs: v1.6.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 - remote: v1.5.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
-- studio: v1.6.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+- studio: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components Templates
 
@@ -35,7 +47,7 @@
 ### Others
 
 - gatsby-remark-highlight-code: v1.4.4 ([CHANGELOG](https://github.com/deckgo/gatsby-remark-highlight-code/blob/master/CHANGELOG.md))
-- slide-utils: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
+- slide-utils: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
 - starter kit: v2.5.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-starter/blob/master/CHANGELOG.md))
 
 <a name="1.5.0"></a>
