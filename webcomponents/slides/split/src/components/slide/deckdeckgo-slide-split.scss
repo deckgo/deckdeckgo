@@ -1,6 +1,11 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+:host {
+  --slide-actions-z-index: 3;
+  --slide-header-footer-z-index: 1;
+}
+
 div.deckgo-slide {
   flex-flow: row wrap;
 
@@ -31,8 +36,8 @@ div.deckgo-slide-split {
   align-items: var(--slide-split-align, inherit);
   text-align: var(--slide-split-text-align, inherit);
 
-  padding: var(--slide-split-padding-top, 0) var(--slide-split-padding-end, var(--slide-padding-end-default)) var(--slide-split-padding-bottom, 0)
-    var(--slide-split-padding-start, var(--slide-padding-start-default));
+  padding: var(--slide-split-padding-top, var(--slide-padding-top-default)) var(--slide-split-padding-end, var(--slide-padding-end-default))
+    var(--slide-split-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-padding-start, var(--slide-padding-start-default));
 
   &.deckgo-slide-split-start {
     display: var(--slide-split-display-start, flex);
@@ -67,4 +72,10 @@ div.deckgo-slide-split-vertical {
 
   padding: var(--slide-split-title-padding-top, var(--slide-padding-top-default)) var(--slide-split-title-padding-end, var(--slide-padding-end-default))
     var(--slide-split-title-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-title-padding-start, var(--slide-padding-start-default));
+}
+
+::slotted([slot="title"]),
+::slotted([slot="start"]),
+::slotted([slot="end"]) {
+  z-index: 2;
 }

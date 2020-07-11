@@ -3,6 +3,7 @@
 ### Style
 
 - adjusted `header` and `footer` positions
+- default `padding-top` and `padding-bottom` modified to the general template values instead of `0`
 
 # 1.3.0 (2020-07-10)
 
