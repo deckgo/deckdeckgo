@@ -13,6 +13,8 @@
   right: var(--slide-actions-end, 32px);
   left: var(--slide-actions-start);
   display: var(--slide-actions-display);
+
+  z-index: var(--slide-actions-z-index);
 }
 
 ::slotted([slot="header"]),
@@ -44,7 +46,7 @@
   display: flex;
   align-items: center;
 
-  z-index: -1;
+  z-index: var(--slide-header-footer-z-index, -1);
 }
 
 ::slotted([slot="header"]) {

@@ -1,3 +1,11 @@
+<a name="2.1.1"></a>
+
+# 2.1.1 (2020-07-11)
+
+### Fix
+
+- `z-index` between `header`, `footer`, content and backgrounds
+
 <a name="2.1.0"></a>
 
 # 2.1.0 (2020-07-11)
