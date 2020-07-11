@@ -13,7 +13,6 @@ The "Code" slide is a the slide to use if you would like to showcase code during
   - [Usage with file URI](#app-slide-code-usage-with-file-uri)
   - [Usage with slotted element](#app-slide-code-usage-with-slotted-element)
   - [Slots](#app-slide-code-slots)
-  - [Notes](#app-slide-code-notes)
 - [Code components](#app-slide-code-code-components)
 - [Installation](#app-slide-code-installation)
 - [Attributes](#app-slide-code-attributes)
@@ -108,12 +107,6 @@ You could provide a file URI to the code you want to display or provide it with 
 The slots `title` and `code` are optional.
 
 This template also exposes a slot `info` which would let you display an information over your code on mobile devices, useful to explain your reader that they should click to switch between vertical and horizontal scrolling. Find an example of the use of that slot on the [DeckDeckGo] website.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Code components
 

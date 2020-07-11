@@ -35,6 +35,7 @@ export class AppRoot {
           <ion-route url="/edit/fonts" component="app-edit-fonts" />
           <ion-route url="/edit/reveal" component="app-edit-reveal" />
           <ion-route url="/edit/rtl" component="app-edit-rtl" />
+          <ion-route url="/edit/notes" component="app-edit-notes" />
 
           <ion-route url="/slides" component="app-concept" />
           <ion-route url="/slides/concept" component="app-slides-concept" />
@@ -133,6 +134,9 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/edit/rtl" routerDirection="forward">
                     <ion-label>RTL</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/edit/notes" routerDirection="forward">
+                    <ion-label>Notes</ion-label>
                   </ion-item>
 
                   <ion-item-divider>

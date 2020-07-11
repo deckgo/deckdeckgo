@@ -12,7 +12,6 @@ The "Chart" slide let you draw easily charts in your presentation.
   - [Framework integration](#app-slide-chart-framework-integration)
 - [Usage](#app-slide-chart-usage)
   - [Slots](#app-slide-chart-slots)
-  - [Notes](#app-slide-chart-notes)
 - [Chart components](#app-slide-chart-chart-components)
 - [Installation](#app-slide-chart-installation)
 - [Attributes](#app-slide-chart-attributes)
@@ -101,12 +100,6 @@ The "Chart" slide's Web Component could be integrated using the tag `<deckgo-sli
 ### Slots
 
 The slot `title` is optional.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Chart components
 

@@ -54,6 +54,8 @@ export namespace Components {
     }
     interface AppEditMarkdown {
     }
+    interface AppEditNotes {
+    }
     interface AppEditReveal {
     }
     interface AppEditRtl {
@@ -275,6 +277,12 @@ declare global {
     var HTMLAppEditMarkdownElement: {
         prototype: HTMLAppEditMarkdownElement;
         new (): HTMLAppEditMarkdownElement;
+    };
+    interface HTMLAppEditNotesElement extends Components.AppEditNotes, HTMLStencilElement {
+    }
+    var HTMLAppEditNotesElement: {
+        prototype: HTMLAppEditNotesElement;
+        new (): HTMLAppEditNotesElement;
     };
     interface HTMLAppEditRevealElement extends Components.AppEditReveal, HTMLStencilElement {
     }
@@ -517,6 +525,7 @@ declare global {
         "app-edit-fonts": HTMLAppEditFontsElement;
         "app-edit-lazy-loading": HTMLAppEditLazyLoadingElement;
         "app-edit-markdown": HTMLAppEditMarkdownElement;
+        "app-edit-notes": HTMLAppEditNotesElement;
         "app-edit-reveal": HTMLAppEditRevealElement;
         "app-edit-rtl": HTMLAppEditRtlElement;
         "app-edit-theming": HTMLAppEditThemingElement;
@@ -603,6 +612,8 @@ declare namespace LocalJSX {
     interface AppEditLazyLoading {
     }
     interface AppEditMarkdown {
+    }
+    interface AppEditNotes {
     }
     interface AppEditReveal {
     }
@@ -705,6 +716,7 @@ declare namespace LocalJSX {
         "app-edit-fonts": AppEditFonts;
         "app-edit-lazy-loading": AppEditLazyLoading;
         "app-edit-markdown": AppEditMarkdown;
+        "app-edit-notes": AppEditNotes;
         "app-edit-reveal": AppEditReveal;
         "app-edit-rtl": AppEditRtl;
         "app-edit-theming": AppEditTheming;
@@ -771,6 +783,7 @@ declare module "@stencil/core" {
             "app-edit-fonts": LocalJSX.AppEditFonts & JSXBase.HTMLAttributes<HTMLAppEditFontsElement>;
             "app-edit-lazy-loading": LocalJSX.AppEditLazyLoading & JSXBase.HTMLAttributes<HTMLAppEditLazyLoadingElement>;
             "app-edit-markdown": LocalJSX.AppEditMarkdown & JSXBase.HTMLAttributes<HTMLAppEditMarkdownElement>;
+            "app-edit-notes": LocalJSX.AppEditNotes & JSXBase.HTMLAttributes<HTMLAppEditNotesElement>;
             "app-edit-reveal": LocalJSX.AppEditReveal & JSXBase.HTMLAttributes<HTMLAppEditRevealElement>;
             "app-edit-rtl": LocalJSX.AppEditRtl & JSXBase.HTMLAttributes<HTMLAppEditRtlElement>;
             "app-edit-theming": LocalJSX.AppEditTheming & JSXBase.HTMLAttributes<HTMLAppEditThemingElement>;

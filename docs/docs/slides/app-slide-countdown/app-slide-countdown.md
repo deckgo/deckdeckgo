@@ -14,7 +14,6 @@ It could be handy, for example when you organize a meetup, to display a countdow
 - [Usage](#app-slide-countdown-usage)
   - [Usage](#app-slide-countdown-usage-1)
   - [Slots](#app-slide-countdown-slots)
-  - [Notes](#app-slide-countdown-notes)
 - [Attributes](#app-slide-countdown-attributes)
   - [Example without any slots](#app-slide-countdown-example-without-any-slots)
 - [Theming](#app-slide-countdown-theming)
@@ -95,12 +94,6 @@ The "Countdown" slide's Web Component could be integrated using the tag `<deckgo
 ### Slots
 
 The slots `title` as well as `days`, `hours`, `minutes` and `seconds` are optional.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

@@ -59,9 +59,6 @@ export class AppSlideCode {
                 <li>
                   <a href="#app-slide-code-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-code-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -170,15 +167,6 @@ export class AppSlideCode {
             This template also exposes a slot <code>info</code> which would let you display an information over your code on mobile devices, useful to explain
             your reader that they should click to switch between vertical and horizontal scrolling. Find an example of the use of that slot on the{' '}
             <a href="https://deckdeckgo.com">DeckDeckGo</a> website.
-          </p>
-          <h3 id="app-slide-code-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-code-code-components">Code components</h2>
           <p>

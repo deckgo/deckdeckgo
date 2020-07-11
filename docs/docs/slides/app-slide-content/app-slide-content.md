@@ -13,7 +13,6 @@ This slide could be for example use for the every slides of your presentation wh
   - [Framework integration](#app-slide-content-framework-integration)
 - [Usage](#app-slide-content-usage)
   - [Slots](#app-slide-content-slots)
-  - [Notes](#app-slide-content-notes)
 - [Attributes](#app-slide-content-attributes)
   - [Example](#app-slide-content-example)
 - [Theming](#app-slide-content-theming)
@@ -91,12 +90,6 @@ The "Content" slide's Web Component could be integrated using the tag `<deckgo-s
 ### Slots
 
 Both slots `title` and `content` are optional. Without providing one of them, the page will remain empty.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

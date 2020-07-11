@@ -14,7 +14,6 @@ Add a slide "Poll" to your presentation.
   - [Framework integration](#app-slide-poll-framework-integration)
 - [Usage](#app-slide-poll-usage)
   - [Slots](#app-slide-poll-slots)
-  - [Notes](#app-slide-poll-notes)
   - [Youtube component](#app-slide-poll-youtube-component)
 - [Attributes](#app-slide-poll-attributes)
 - [Theming](#app-slide-poll-theming)
@@ -113,12 +112,6 @@ The slots `question` and at least one `answer` should be provided. Answer slots 
 The slot `how-to` and `awaiting-votes` are optional, still, it's probably for best of your audience to provide these.
 
 Note also that if you provide a string `{0}` in the content of your slot `how-to`, the information will be automatically converted to the real key of your poll (the key your audience could use to reach it and vote).
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you would need to mark them with an attribute `show`.
 
 ## Attributes
 

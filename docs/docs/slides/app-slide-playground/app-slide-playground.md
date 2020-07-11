@@ -12,7 +12,6 @@ The "Playground" template helps embed easily playgrounds as [Codepen](https://co
   - [Youtube component](#app-slide-playground-youtube-component)
 - [Usage](#app-slide-playground-usage)
   - [Slots](#app-slide-playground-slots)
-  - [Notes](#app-slide-playground-notes)
   - [Youtube component](#app-slide-playground-youtube-component)
 - [Attributes](#app-slide-playground-attributes)
 - [Theming](#app-slide-playground-theming)
@@ -86,12 +85,6 @@ The "Playground" slide's Web Component could be integrated using the tag `<deckg
 ### Slots
 
 Both slots `title` and `content` are optional.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

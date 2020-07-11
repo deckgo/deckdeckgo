@@ -61,9 +61,6 @@ export class AppSlideContent {
                 <li>
                   <a href="#app-slide-split-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-split-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -164,15 +161,6 @@ export class AppSlideContent {
           </p>
           <p>
             Note: The slot <code>title</code> is per default hidden even if you provide it. See attributes below if you wish to display it.
-          </p>
-          <h3 id="app-slide-split-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-split-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>

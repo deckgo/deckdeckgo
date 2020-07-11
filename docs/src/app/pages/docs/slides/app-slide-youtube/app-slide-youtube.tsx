@@ -59,9 +59,6 @@ export class AppSlideYoutube {
                   <a href="#app-slide-youtube-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-youtube-notes">Notes</a>
-                </li>
-                <li>
                   <a href="#app-slide-youtube-youtube-component">Youtube component</a>
                 </li>
               </ul>
@@ -162,15 +159,6 @@ export class AppSlideYoutube {
           <h3 id="app-slide-youtube-slots">Slots</h3>
           <p>
             The slot <code>title</code> and <code>content</code> are optional. The slot <code>content</code> is displayed before the video.
-          </p>
-          <h3 id="app-slide-youtube-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h3 id="app-slide-youtube-youtube-component-1">Youtube component</h3>
           <p>

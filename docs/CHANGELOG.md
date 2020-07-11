@@ -1,3 +1,9 @@
+# 1.7.0 (2020-07-11)
+
+### Features
+
+- group `notes` in a single page
+
 # 1.6.2 (2020-07-02)
 
 ### Style
