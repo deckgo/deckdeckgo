@@ -4,6 +4,10 @@
 
 - in order to support `header` and `footer`, the slots duplicating these names add to be renamed to `top` and `bottom`
 
+### Style
+
+- adjusted `header` and `footer` positions
+
 # 1.1.0 (2020-07-10)
 
 ### Features

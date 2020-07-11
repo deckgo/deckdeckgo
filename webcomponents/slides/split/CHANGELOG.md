@@ -1,3 +1,9 @@
+# 1.3.1 (2020-07-11)
+
+### Style
+
+- adjusted `header` and `footer` positions
+
 # 1.3.0 (2020-07-10)
 
 ### Features
