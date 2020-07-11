@@ -1,6 +1,11 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+:host {
+  --slide-actions-z-index: 1;
+  --slide-header-footer-z-index: 1;
+}
+
 :host(.deckgo-slide-container-fullscreen) {
   ::slotted([slot="title"]) {
     display: none;
@@ -23,8 +28,8 @@ div.deckgo-gif-container {
   align-items: center;
   justify-content: center;
 
-  ::slotted([slot="header"]),
-  ::slotted([slot="footer"]) {
+  ::slotted([slot="top"]),
+  ::slotted([slot="bottom"]) {
     position: absolute;
 
     left: 50%;
@@ -35,22 +40,27 @@ div.deckgo-gif-container {
     background: var(--background);
     color: var(--color);
     padding: var(--padding, 8px);
+    margin: var(--margin, 16px 0);
+
+    @media screen and (max-width: 1024px) {
+      margin: var(--margin, 32px 0);
+    }
 
     z-index: var(--zIndex, 2);
   }
 
-  ::slotted([slot="header"]) {
+  ::slotted([slot="top"]) {
     top: 0;
   }
 
-  ::slotted([slot="footer"]) {
+  ::slotted([slot="bottom"]) {
     bottom: 0;
   }
 }
 
 :host(.deckgo-slide-gif-hidden) {
-  ::slotted([slot="header"]),
-  ::slotted([slot="footer"]) {
+  ::slotted([slot="top"]),
+  ::slotted([slot="bottom"]) {
     display: none;
   }
 }

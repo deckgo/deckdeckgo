@@ -1,3 +1,9 @@
+# 2.0.0 (2020-07-11)
+
+### Breaking Changes
+
+- in order to support `header` and `footer`, the slots duplicating these names add to be renamed to `top` and `bottom`
+
 # 1.1.0 (2020-07-10)
 
 ### Features

@@ -68,15 +68,15 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
         <div class="deckgo-slide">
           <slot name="title"></slot>
           <div class="deckgo-gif-container">
-            <slot name="header"></slot>
+            <slot name="top"></slot>
             <deckgo-gif src={this.src} alt={this.alt} fullscreen={this.fullscreen}></deckgo-gif>
-            <slot name="footer"></slot>
-            <slot name="notes"></slot>
-            <slot name="actions"></slot>
-            <slot name="background"></slot>
-            <slot name="header"></slot>
-            <slot name="footer"></slot>
+            <slot name="bottom"></slot>
           </div>
+          <slot name="notes"></slot>
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );
