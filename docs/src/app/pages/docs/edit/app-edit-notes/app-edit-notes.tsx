@@ -38,7 +38,7 @@ export class AppEditNotes {
           </deckgo-highlight-code>
           <h2 id="app-edit-notes-markdown">Markdown</h2>
           <p>
-            The <a href="https://deckdeckgo.app">remote control</a> supports Markdown for your notes too.{' '}
+            The <a href="https://deckdeckgo.app">remote control</a> supports Markdown for your notes too.
           </p>
         </main>
 

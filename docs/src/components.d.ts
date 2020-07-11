@@ -38,6 +38,8 @@ export namespace Components {
     }
     interface AppDeckExtraFeatures {
     }
+    interface AppDeckHeaderFooter {
+    }
     interface AppDeckNavigation {
     }
     interface AppDeckPager {
@@ -229,6 +231,12 @@ declare global {
     var HTMLAppDeckExtraFeaturesElement: {
         prototype: HTMLAppDeckExtraFeaturesElement;
         new (): HTMLAppDeckExtraFeaturesElement;
+    };
+    interface HTMLAppDeckHeaderFooterElement extends Components.AppDeckHeaderFooter, HTMLStencilElement {
+    }
+    var HTMLAppDeckHeaderFooterElement: {
+        prototype: HTMLAppDeckHeaderFooterElement;
+        new (): HTMLAppDeckHeaderFooterElement;
     };
     interface HTMLAppDeckNavigationElement extends Components.AppDeckNavigation, HTMLStencilElement {
     }
@@ -517,6 +525,7 @@ declare global {
         "app-deck-background": HTMLAppDeckBackgroundElement;
         "app-deck-events": HTMLAppDeckEventsElement;
         "app-deck-extra-features": HTMLAppDeckExtraFeaturesElement;
+        "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
         "app-deck-navigation": HTMLAppDeckNavigationElement;
         "app-deck-pager": HTMLAppDeckPagerElement;
         "app-deck-size": HTMLAppDeckSizeElement;
@@ -596,6 +605,8 @@ declare namespace LocalJSX {
     interface AppDeckEvents {
     }
     interface AppDeckExtraFeatures {
+    }
+    interface AppDeckHeaderFooter {
     }
     interface AppDeckNavigation {
     }
@@ -708,6 +719,7 @@ declare namespace LocalJSX {
         "app-deck-background": AppDeckBackground;
         "app-deck-events": AppDeckEvents;
         "app-deck-extra-features": AppDeckExtraFeatures;
+        "app-deck-header-footer": AppDeckHeaderFooter;
         "app-deck-navigation": AppDeckNavigation;
         "app-deck-pager": AppDeckPager;
         "app-deck-size": AppDeckSize;
@@ -775,6 +787,7 @@ declare module "@stencil/core" {
             "app-deck-background": LocalJSX.AppDeckBackground & JSXBase.HTMLAttributes<HTMLAppDeckBackgroundElement>;
             "app-deck-events": LocalJSX.AppDeckEvents & JSXBase.HTMLAttributes<HTMLAppDeckEventsElement>;
             "app-deck-extra-features": LocalJSX.AppDeckExtraFeatures & JSXBase.HTMLAttributes<HTMLAppDeckExtraFeaturesElement>;
+            "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
             "app-deck-navigation": LocalJSX.AppDeckNavigation & JSXBase.HTMLAttributes<HTMLAppDeckNavigationElement>;
             "app-deck-pager": LocalJSX.AppDeckPager & JSXBase.HTMLAttributes<HTMLAppDeckPagerElement>;
             "app-deck-size": LocalJSX.AppDeckSize & JSXBase.HTMLAttributes<HTMLAppDeckSizeElement>;

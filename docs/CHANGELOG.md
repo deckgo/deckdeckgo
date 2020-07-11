@@ -3,6 +3,7 @@
 ### Features
 
 - group `notes` in a single page
+- add new `header` and `footer`
 
 # 1.6.2 (2020-07-02)
 
