@@ -32,8 +32,6 @@ app-features {
       }
 
       > h2 {
-        color: rgba(var(--ion-color-medium-rgb), 0.4);
-
         &:not(:first-of-type) {
           margin-top: 48px;
         }

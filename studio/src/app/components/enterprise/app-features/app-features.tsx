@@ -198,6 +198,14 @@ export class AppFeatures {
             <p>Organize your company's media library and share it with your teams.</p>
           </article>
 
+          <article>
+            <h3>
+              Support <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
+            </h3>
+
+            <p>Your inquiries have the highest priorities.</p>
+          </article>
+
           <h2>Developers</h2>
 
           <article>

@@ -74,6 +74,13 @@ export class AppContactForm {
             <div class="ion-margin-top">
               <small>* required field</small>
             </div>
+
+            <p class="ion-margin-top address">
+              {`DeckDeckGo
+c/o The Hub Zürich Association
+Sihlquai 131
+8005 Zürich, Switzerland`}
+            </p>
           </form>
         </div>
       </section>

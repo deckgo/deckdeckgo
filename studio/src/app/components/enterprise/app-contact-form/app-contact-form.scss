@@ -20,6 +20,14 @@ section.contact {
       p {
         width: fit-content;
         align-self: center;
+
+        &.address {
+          white-space: pre-wrap;
+          text-align: center;
+          margin: 64px 16px 0;
+          font-size: var(--font-size-normal);
+          line-height: calc(var(--font-size-normal) + 8px);
+        }
       }
 
       small {
