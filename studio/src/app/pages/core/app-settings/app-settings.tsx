@@ -23,6 +23,9 @@ import {StorageService} from '../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
 import {ThemeService} from '../../../services/theme/theme.service';
 
+import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+
 @Component({
   tag: 'app-settings',
   styleUrl: 'app-settings.scss',
@@ -56,6 +59,8 @@ export class AppHome {
 
   private profilePicture: File;
 
+  private customLogo: File;
+
   private storageService: StorageService;
 
   private themeService: ThemeService;
@@ -80,6 +85,8 @@ export class AppHome {
 
   private destroyUserListener;
   private destroyApiUserListener;
+
+  private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
@@ -243,6 +250,8 @@ export class AppHome {
         this.saving = true;
 
         await this.uploadProfilePicture();
+        await this.uploadCustomLogo();
+
         await this.saveUser();
         await this.saveApiUser();
 
@@ -323,6 +332,37 @@ export class AppHome {
     });
   }
 
+  private uploadCustomLogo(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (!this.valid || !this.user || !this.user.data) {
+        resolve();
+        return;
+      }
+
+      if (!this.user.data.social || !this.user.data.social.custom) {
+        resolve();
+        return;
+      }
+
+      if (!this.customLogo) {
+        resolve();
+        return;
+      }
+
+      try {
+        const storageFile: StorageFile = await this.storageService.uploadFile(this.customLogo, 'images', 524288);
+
+        if (storageFile) {
+          this.user.data.social.custom_logo_url = storageFile.downloadUrl;
+        }
+
+        resolve();
+      } catch (err) {
+        reject('Could not upload your profile picture!');
+      }
+    });
+  }
+
   private async presentConfirmDelete() {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
@@ -377,21 +417,28 @@ export class AppHome {
     });
   }
 
-  private selectProfilePicture(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const filePicker: HTMLInputElement = this.el.querySelector('input#inputProfilePicture');
+  private async selectProfilePicture() {
+    const filePicker: HTMLInputElement = this.el.querySelector('input#inputProfilePicture');
 
-      if (!filePicker) {
-        resolve();
-        return;
-      }
+    if (!filePicker) {
+      return;
+    }
 
-      if (filePicker.files && filePicker.files.length > 0) {
-        this.profilePicture = filePicker.files[0];
-      }
+    if (filePicker.files && filePicker.files.length > 0) {
+      this.profilePicture = filePicker.files[0];
+    }
+  }
 
-      resolve();
-    });
+  private async selectCustomLogo() {
+    const filePicker: HTMLInputElement = this.el.querySelector('input#inputCustomLogo');
+
+    if (!filePicker) {
+      return;
+    }
+
+    if (filePicker.files && filePicker.files.length > 0) {
+      this.customLogo = filePicker.files[0];
+    }
   }
 
   render() {
@@ -732,7 +779,7 @@ export class AppHome {
       </ion-item>,
       <p>
         <small>
-          Your website or any custom url (for example: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>)
+          Your website or any url (for example: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>)
         </small>
       </p>,
       <ion-item>
@@ -744,6 +791,24 @@ export class AppHome {
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
       </ion-item>,
+
+      <p class="ion-margin-top">
+        <small>A logo for this custom address</small>
+      </p>,
+      <div class="avatar">
+        {this.user && this.user.data && this.user.data.social && this.user.data.social.custom_logo_url ? (
+          <app-avatar src={this.user.data.social.custom_logo_url} aria-label="Custom logo"></app-avatar>
+        ) : (
+          <deckgo-lazy-img slot="icon" svg-src={`${this.config.globalAssetsUrl}/icons/ionicons/globe.svg`} aria-label="Web"></deckgo-lazy-img>
+        )}
+        <input
+          id="inputCustomLogo"
+          type="file"
+          accept="image/x-png,image/jpeg,image/gif"
+          onChange={() => this.selectCustomLogo()}
+          disabled={this.saving || !this.user || !this.user.data || !this.user.data.social || !this.user.data.social.custom}
+        />
+      </div>,
     ];
   }
 }

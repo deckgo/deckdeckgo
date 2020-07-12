@@ -4,7 +4,9 @@ export interface UserSocial {
   dev?: string;
   medium?: string;
   github?: string;
+
   custom?: string;
+  custom_logo_url?: string;
 }
 
 export interface UserData {
