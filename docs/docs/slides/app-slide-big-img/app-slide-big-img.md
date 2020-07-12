@@ -11,7 +11,6 @@ If you would like to display a fullscreen image in your presentation and select 
   - [Framework integration](#app-slide-bigimg-framework-integration)
 - [Usage](#app-slide-bigimg-usage)
   - [Slots](#app-slide-bigimg-slots)
-  - [Notes](#app-slide-bigimg-notes)
 - [Attributes](#app-slide-bigimg-attributes)
 - [Theming](#app-slide-bigimg-theming)
 
@@ -85,12 +84,6 @@ The "Big Image" slide's Web Component could be integrated using the tag `<deckgo
 ### Slots
 
 The slots `title` is optional (it is not displayed but could be use for the navigation). Otherwise no particular slots are currently available in order to display additional information on this template.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

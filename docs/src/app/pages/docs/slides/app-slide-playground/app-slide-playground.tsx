@@ -60,9 +60,6 @@ export class AppSlidePlayground {
                   <a href="#app-slide-playground-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-playground-notes">Notes</a>
-                </li>
-                <li>
                   <a href="#app-slide-playground-youtube-component">Youtube component</a>
                 </li>
               </ul>
@@ -159,15 +156,6 @@ export class AppSlidePlayground {
           <h3 id="app-slide-playground-slots">Slots</h3>
           <p>
             Both slots <code>title</code> and <code>content</code> are optional.
-          </p>
-          <h3 id="app-slide-playground-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-playground-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>

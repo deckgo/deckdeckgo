@@ -57,9 +57,6 @@ export class AppSlideAspectRatio {
                 <li>
                   <a href="#app-slide-aspect-ratio-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-aspect-ratio-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -143,32 +140,9 @@ export class AppSlideAspectRatio {
           </deckgo-highlight-code>
           <h3 id="app-slide-aspect-ratio-slots">Slots</h3>
           <p>
-            The slots <code>title</code>, <code>header</code> and <code>footer</code> are both optional. <code>header</code> and <code>footer</code> would be
+            The slots <code>title</code>, <code>top</code> and <code>bottom</code> are both optional. <code>top</code> and <code>bottom</code> would be
             displayed over the content.
           </p>
-          <h3 id="app-slide-aspect-ratio-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <deckgo-highlight-code language="javascript">
-            <code slot="code">
-              &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-aspect-ratio&gt;{'\n'} &lt;h1&gt;An element&lt;&#47;h1&gt;{'\n'} &lt;div slot=&quot;notes&quot;&gt;A
-              note regarding this particular slide&lt;&#47;div&gt;{'\n'}
-              {'\n'}And another note on a new line about it too.{'\n'} &lt;&#47;deckgo-slide-aspect-ratio&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
-            </code>
-          </deckgo-highlight-code>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
-          </p>
-          <deckgo-highlight-code language="javascript">
-            <code slot="code">
-              &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-aspect-ratio&gt;{'\n'} &lt;h1&gt;An element&lt;&#47;h1&gt;{'\n'} &lt;div slot=&quot;notes&quot;
-              show&gt;A note displayed in the presentation within a modal accessible for anyone&lt;&#47;div&gt;{'\n'} &lt;&#47;deckgo-slide-aspect-ratio&gt;
-              {'\n'}&lt;&#47;deckgo-deck&gt;
-            </code>
-          </deckgo-highlight-code>
           <h2 id="app-slide-aspect-ratio-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>
           <table>

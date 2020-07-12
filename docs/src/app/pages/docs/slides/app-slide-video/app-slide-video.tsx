@@ -69,9 +69,6 @@ export class AppSlideVideo {
                   <a href="#app-slide-video-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-video-notes">Notes</a>
-                </li>
-                <li>
                   <a href="#app-slide-video-youtube-component">Youtube component</a>
                 </li>
               </ul>
@@ -173,15 +170,6 @@ export class AppSlideVideo {
           <h3 id="app-slide-video-slots">Slots</h3>
           <p>
             The slot <code>title</code> and <code>content</code> are optional. The slot <code>content</code> is displayed before the video.
-          </p>
-          <h3 id="app-slide-video-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-video-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>

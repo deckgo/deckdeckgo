@@ -333,9 +333,19 @@ export class DeckEventsHandler {
         // @ts-ignore
         currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
 
-        const background: string = await this.getDeckBackground(deck);
+        const slotsPromises: Promise<string>[] = ['background', 'header', 'footer'].map((slotName: 'background' | 'header' | 'footer') => {
+          return this.getDeckSlot(deck, slotName);
+        });
+        const [background, header, footer] = await Promise.all(slotsPromises);
+
         // @ts-ignore
         currentDeck.data.background = background && background !== undefined && background !== '' ? background : firebase.firestore.FieldValue.delete();
+
+        // @ts-ignore
+        currentDeck.data.header = header && header !== undefined && header !== '' ? header : firebase.firestore.FieldValue.delete();
+
+        // @ts-ignore
+        currentDeck.data.footer = footer && footer !== undefined && footer !== '' ? footer : firebase.firestore.FieldValue.delete();
 
         const updatedDeck: Deck = await this.deckService.update(currentDeck);
 
@@ -736,19 +746,14 @@ export class DeckEventsHandler {
     });
   }
 
-  private getDeckBackground(deck: HTMLElement): Promise<string> {
-    return new Promise<string>(async (resolve) => {
-      const slotElement: HTMLElement = deck.querySelector(":scope > [slot='background']");
+  private async getDeckSlot(deck: HTMLElement, slotName: 'background' | 'header' | 'footer'): Promise<string | null> {
+    const slotElement: HTMLElement = deck.querySelector(`:scope > [slot='${slotName}']`);
 
-      if (!slotElement) {
-        resolve(null);
-        return;
-      }
+    if (!slotElement) {
+      return null;
+    }
 
-      const result: string = await cleanContent(slotElement.innerHTML);
-
-      resolve(result);
-    });
+    return cleanContent(slotElement.innerHTML);
   }
 
   private cleanSlideContent(slide: HTMLElement): Promise<string> {

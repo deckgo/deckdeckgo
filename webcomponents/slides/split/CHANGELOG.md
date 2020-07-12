@@ -1,3 +1,26 @@
+# 1.3.2 (2020-07-12)
+
+### Features
+
+- pointer-events supported for `header` and `footer`
+
+# 1.3.1 (2020-07-11)
+
+### Style
+
+- adjusted `header` and `footer` positions
+- default `padding-top` and `padding-bottom` modified to the general template values instead of `0`
+
+# 1.3.0 (2020-07-10)
+
+### Features
+
+- add `header` and `footer`
+
+### Refactoring
+
+- remove `custom-actions` and `custom-background` properties because these are only use as attributes
+
 # 1.2.0 (2020-06-23)
 
 ### Style

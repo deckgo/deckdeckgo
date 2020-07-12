@@ -75,6 +75,12 @@ export class AppDeck {
     }
   }
 
+  private async closePopoverAndSignIn() {
+    this.signIn.emit();
+
+    await this.closePopover();
+  }
+
   render() {
     return [
       <ion-toolbar>
@@ -87,7 +93,7 @@ export class AppDeck {
         textTarget={true}
         background={true}
         transition={true}
-        fonts={true}
+        header-footer={true}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
 
       this.renderOptions(),
@@ -110,6 +116,14 @@ export class AppDeck {
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onDeckChangeAndClose()}></app-deck-transition>;
+    } else if (this.applyToTargetElement === TargetElement.HEADER_FOOTER) {
+      return (
+        <app-deck-header-footer
+          deckElement={this.deckElement}
+          deckDidChange={this.deckDidChange}
+          onNavigateSettings={() => this.closePopover()}
+          onNavigateSignIn={() => this.closePopoverAndSignIn()}></app-deck-header-footer>
+      );
     } else {
       return undefined;
     }

@@ -6,13 +6,13 @@ import {debounce} from '@deckdeckgo/utils';
 enum DeckdeckgoSlideChartType {
   LINE = 'line',
   PIE = 'pie',
-  BAR = 'bar'
+  BAR = 'bar',
 }
 
 @Component({
   tag: 'deckgo-slide-chart',
   styleUrl: 'deckdeckgo-slide-chart.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
@@ -50,9 +50,6 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Prop({reflect: true}) area: string;
   @Prop({reflect: true}) ticks: number;
   @Prop({reflect: true}) grid: string;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @Prop({reflect: true}) animation: boolean = false;
   @Prop() animationDuration: number = 1000;
@@ -232,6 +229,8 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );
@@ -239,7 +238,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
 
   private renderChart() {
     const attrs = {
-      separator: this.separator ? this.separator : ';'
+      separator: this.separator ? this.separator : ';',
     };
 
     if (this.type === DeckdeckgoSlideChartType.LINE) {

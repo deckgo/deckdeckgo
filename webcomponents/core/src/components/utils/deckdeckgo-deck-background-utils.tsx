@@ -40,9 +40,9 @@ export class DeckdeckgoDeckBackgroundUtils {
     });
   }
 
-  static cloneAndLoadBackground(el: HTMLElement, slides: HTMLElement[], cloneBackground: boolean): Promise<void> {
+  static loadSlots(el: HTMLElement, slides: HTMLElement[], slotName: string, clone: boolean = true): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const background: HTMLElement = el.querySelector(":scope > [slot='background']");
+      const background: HTMLElement = el.querySelector(`:scope > [slot='${slotName}']`);
 
       if (!background) {
         resolve();
@@ -51,11 +51,11 @@ export class DeckdeckgoDeckBackgroundUtils {
 
       await this.lazyBackgroundImages(el);
 
-      if (cloneBackground) {
-        await this.cloneSlots(el, slides, 'background');
+      if (clone) {
+        await this.cloneSlots(el, slides, slotName);
       }
 
-      await this.showHideBackgroundSlot(el, cloneBackground);
+      await this.showHideBackgroundSlot(el, clone);
 
       resolve();
     });

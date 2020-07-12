@@ -9,11 +9,9 @@ export namespace Components {
     interface DeckgoSlideAuthor {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "imgAlt": string;
-        "imgMode": "cover" | "circle" | "none";
+        "imgMode": 'cover' | 'circle' | 'none';
         "imgSrc": string;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
@@ -32,10 +30,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideAuthor {
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "imgAlt"?: string;
-        "imgMode"?: "cover" | "circle" | "none";
+        "imgMode"?: 'cover' | 'circle' | 'none';
         "imgSrc"?: string;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
     }

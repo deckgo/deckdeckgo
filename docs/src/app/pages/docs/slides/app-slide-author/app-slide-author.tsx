@@ -57,9 +57,6 @@ export class AppSlideAuthor {
                   <a href="#app-slide-author-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-author-notes">Notes</a>
-                </li>
-                <li>
                   <a href="#app-slide-author-social-components">Social components</a>
                 </li>
               </ul>
@@ -182,15 +179,6 @@ export class AppSlideAuthor {
               </p>
             </li>
           </ul>
-          <h3 id="app-slide-author-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be used to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
-          </p>
           <h3 id="app-slide-author-social-components">Social components</h3>
           <p>
             The details of the component <code>&lt;deckgo-social/&gt;</code> is described in the components{' '}

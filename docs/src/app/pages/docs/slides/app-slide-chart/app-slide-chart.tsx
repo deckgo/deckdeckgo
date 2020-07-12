@@ -56,9 +56,6 @@ export class AppSlideChart {
                 <li>
                   <a href="#app-slide-chart-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-chart-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -180,15 +177,6 @@ export class AppSlideChart {
           <h3 id="app-slide-chart-slots">Slots</h3>
           <p>
             The slot <code>title</code> is optional.
-          </p>
-          <h3 id="app-slide-chart-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-chart-chart-components">Chart components</h2>
           <p>

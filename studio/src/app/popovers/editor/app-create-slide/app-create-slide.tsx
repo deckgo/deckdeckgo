@@ -691,10 +691,10 @@ export class AppCreateSlide {
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
         <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
-          <p slot="header">
+          <p slot="top">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
           </p>
-          <p slot="footer">
+          <p slot="bottom">
             <ion-skeleton-text style={{width: '40%'}}></ion-skeleton-text>
           </p>
         </deckgo-slide-gif>

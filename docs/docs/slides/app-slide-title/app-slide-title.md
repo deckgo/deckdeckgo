@@ -13,7 +13,6 @@ This slide could be for example use for the very first and last slide of your pr
   - [Framework integration](#app-slide-title-framework-integration)
 - [Usage](#app-slide-title-usage)
   - [Slots](#app-slide-title-slots)
-  - [Notes](#app-slide-title-notes)
 - [Attributes](#app-slide-title-attributes)
 - [Example](#app-slide-title-example)
 - [Theming](#app-slide-title-theming)
@@ -91,32 +90,6 @@ The "Title" slide's Web Component could be integrated using the tag `<deckgo-sli
 ### Slots
 
 Both slots `title` and `content` are optional. Without providing one of them, the page will remain empty.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-```
-<deckgo-deck>
-  <deckgo-slide-title>
-    <h1 slot="title">My presentation title</h1>
-    <div slot="notes">A note regarding this particular slide</div>
-
-And another note on a new line about it too.
-  </deckgo-slide-title>
-</deckgo-deck>
-```
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
-
-```
-<deckgo-deck>
-  <deckgo-slide-title>
-    <h1 slot="title">My presentation title</h1>
-    <div slot="notes" show>A note displayed in the presentation within a modal accessible for anyone</div>
-  </deckgo-slide-title>
-</deckgo-deck>
-```
 
 ## Attributes
 

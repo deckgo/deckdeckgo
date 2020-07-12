@@ -13,7 +13,6 @@ The "Split" slide is a simple slide which display two panes on the page.
   - [Framework integration](#app-slide-split-framework-integration)
 - [Usage](#app-slide-split-usage)
   - [Slots](#app-slide-split-slots)
-  - [Notes](#app-slide-split-notes)
 - [Attributes](#app-slide-split-attributes)
 - [Theming](#app-slide-split-theming)
 
@@ -118,12 +117,6 @@ Both slots `title`, `start` and `end` are optional. Without providing one of the
 The `start` slot is the content of the left pane respectively the slot `end` is the content of the right pane.
 
 Note: The slot `title` is per default hidden even if you provide it. See attributes below if you wish to display it.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

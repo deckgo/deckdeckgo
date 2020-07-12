@@ -23,7 +23,7 @@ interface PagerColor {
 @Component({
   tag: 'deckgo-deck',
   styleUrl: 'deckdeckgo-deck.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoDeck {
   @Element() el: HTMLElement;
@@ -411,7 +411,7 @@ export class DeckdeckgoDeck {
       resolve({
         slider: slider,
         swipeLeft: swipeLeft,
-        deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX
+        deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX,
       });
     });
   }
@@ -455,7 +455,9 @@ export class DeckdeckgoDeck {
       const promises: Promise<void>[] = [];
       promises.push(this.lazyLoadFirstSlides());
       promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
-      promises.push(DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground));
+      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'background', this.cloneBackground));
+      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
+      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
       promises.push(this.initSlidePagerColor());
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
@@ -498,7 +500,7 @@ export class DeckdeckgoDeck {
         orderedSlidesTagNames.push({
           template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
           content: slide.innerHTML,
-          attributes: attributes
+          attributes: attributes,
         });
       }
 
@@ -510,7 +512,7 @@ export class DeckdeckgoDeck {
         attributes: attributes,
         background: background ? background.innerHTML : null,
         reveal: this.reveal,
-        revealOnMobile: this.revealOnMobile
+        revealOnMobile: this.revealOnMobile,
       };
 
       resolve(deck);
@@ -550,20 +552,29 @@ export class DeckdeckgoDeck {
 
   @Method()
   loadBackground(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
+    return this.loadSlots('background', this.cloneBackground);
+  }
 
-      if (!filteredSlides || filteredSlides.length <= 0) {
-        resolve();
-        return;
-      }
+  @Method()
+  loadHeader(): Promise<void> {
+    return this.loadSlots('header');
+  }
 
-      await DeckdeckgoDeckBackgroundUtils.removeSlots(filteredSlides, 'background');
+  @Method()
+  loadFooter(): Promise<void> {
+    return this.loadSlots('footer');
+  }
 
-      await DeckdeckgoDeckBackgroundUtils.cloneAndLoadBackground(this.el, filteredSlides, this.cloneBackground);
+  private async loadSlots(slotName: string, clone: boolean = true) {
+    const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
-      resolve();
-    });
+    if (!filteredSlides || filteredSlides.length <= 0) {
+      return;
+    }
+
+    await DeckdeckgoDeckBackgroundUtils.removeSlots(filteredSlides, slotName);
+
+    await DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, slotName, clone);
   }
 
   // The last children might be slots (background, note or action)
@@ -644,7 +655,7 @@ export class DeckdeckgoDeck {
       const deltaX: DeltaX = {
         slider: slider,
         swipeLeft: swipeLeft,
-        deltaX: window.innerWidth
+        deltaX: window.innerWidth,
       };
 
       await this.swipeSlide(deltaX, emitEvent);
@@ -1009,7 +1020,7 @@ export class DeckdeckgoDeck {
       if (slide.style.getPropertyValue('--background') !== undefined && slide.style.getPropertyValue('--background') !== '') {
         this.pagerColor = {
           background: '#fff',
-          color: slide.style.getPropertyValue('--background')
+          color: slide.style.getPropertyValue('--background'),
         };
       } else if (
         slide.parentElement &&
@@ -1018,7 +1029,7 @@ export class DeckdeckgoDeck {
       ) {
         this.pagerColor = {
           background: '#fff',
-          color: slide.parentElement.style.getPropertyValue('--background')
+          color: slide.parentElement.style.getPropertyValue('--background'),
         };
       } else {
         this.pagerColor = undefined;
@@ -1038,7 +1049,7 @@ export class DeckdeckgoDeck {
         <slot name="actions"></slot>
         <slot name="background"></slot>
       </div>,
-      <div class="deckgo-pager">{this.renderPager()}</div>
+      <div class="deckgo-pager">{this.renderPager()}</div>,
     ];
   }
 
@@ -1048,7 +1059,7 @@ export class DeckdeckgoDeck {
     if (this.pagerColor) {
       pagerStyle = {
         '--pager-background': this.pagerColor.background,
-        '--pager-color': this.pagerColor.color
+        '--pager-color': this.pagerColor.color,
       };
     }
 

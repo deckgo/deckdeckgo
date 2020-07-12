@@ -58,9 +58,6 @@ export class AppSlidePoll {
                   <a href="#app-slide-poll-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-poll-notes">Notes</a>
-                </li>
-                <li>
                   <a href="#app-slide-poll-youtube-component">Youtube component</a>
                 </li>
               </ul>
@@ -190,15 +187,6 @@ export class AppSlidePoll {
           <p>
             Note also that if you provide a string <code>{0}</code> in the content of your slot <code>how-to</code>, the information will be automatically
             converted to the real key of your poll (the key your audience could use to reach it and vote).
-          </p>
-          <h3 id="app-slide-poll-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you would need to
-            mark them with an attribute <code>show</code>.
           </p>
           <h2 id="app-slide-poll-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>

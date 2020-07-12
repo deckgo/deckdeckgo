@@ -9,12 +9,10 @@ export namespace Components {
     interface DeckgoSlideSplit {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (enter: boolean, reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
-        "type": "demo" | "default";
+        "type": 'demo' | 'default';
         "vertical": boolean;
     }
 }
@@ -31,10 +29,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideSplit {
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
-        "type"?: "demo" | "default";
+        "type"?: 'demo' | 'default';
         "vertical"?: boolean;
     }
     interface IntrinsicElements {

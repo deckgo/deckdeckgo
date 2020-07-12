@@ -8,7 +8,7 @@ import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 import {AuthUser} from '../../../models/auth/auth.user';
 
-import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
+import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {DeckService} from '../../../services/data/deck/deck.service';
@@ -23,7 +23,9 @@ interface DeckAndFirstSlide {
   deck: Deck;
   slide: JSX.IntrinsicElements | undefined;
   style: any;
-  background: any;
+  background: JSX.IntrinsicElements | undefined;
+  header: JSX.IntrinsicElements | undefined;
+  footer: JSX.IntrinsicElements | undefined;
 }
 
 @Component({
@@ -147,13 +149,17 @@ export class AppDashboard {
 
         const style: any = await this.convertStyle(deck);
 
-        const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
+        const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
+        const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
+        const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
 
         resolve({
-          deck: deck,
+          deck,
           slide: element,
-          style: style,
-          background: background,
+          style,
+          background,
+          header,
+          footer,
         });
       } catch (err) {
         resolve(undefined);
@@ -173,13 +179,17 @@ export class AppDashboard {
 
         const style: any = await this.convertStyle(deck);
 
-        const background: any = await ParseBackgroundUtils.convertBackground(deck.data.background, false);
+        const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
+        const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
+        const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
 
         resolve({
-          deck: deck,
+          deck,
           slide: element,
-          style: style,
-          background: background,
+          style,
+          background,
+          header,
+          footer,
         });
       } catch (err) {
         resolve(undefined);
@@ -519,6 +529,8 @@ export class AppDashboard {
         <deckgo-deck embedded={true} keyboard={false} style={deck.style} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
           {deck.slide}
           {deck.background}
+          {deck.header}
+          {deck.footer}
         </deckgo-deck>
       );
     }

@@ -107,6 +107,8 @@ export class AppRoot {
     } else {
       await router.push(params.url);
     }
+
+    navStore.reset();
   }
 
   @Listen('openShare', {target: 'document'})

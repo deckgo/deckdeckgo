@@ -6,7 +6,7 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 @Component({
   tag: 'deckgo-slide-aspect-ratio',
   styleUrl: 'deckdeckgo-slide-aspect-ratio.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -21,9 +21,6 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
 
   @Prop()
   editable: boolean = false;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @State()
   private displayGrid: boolean = false;
@@ -95,7 +92,7 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
       <Host
         class={{
           'deckgo-slide-container': true,
-          'deckgo-read-only': !this.editable
+          'deckgo-read-only': !this.editable,
         }}>
         <div class="deckgo-slide">
           <slot name="title"></slot>
@@ -103,12 +100,14 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
             <div class={classContent} ref={(el) => (this.refContainer = el as HTMLDivElement)}>
               <slot />
             </div>
-            <slot name="header"></slot>
-            <slot name="footer"></slot>
+            <slot name="top"></slot>
+            <slot name="bottom"></slot>
           </div>
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

@@ -12,7 +12,6 @@ The "QR code" slide is an handy slide in case you would like to display a QR cod
 - [Usage](#app-slide-qrcode-usage)
   - [Usage](#app-slide-qrcode-usage-1)
   - [Slots](#app-slide-qrcode-slots)
-  - [Notes](#app-slide-qrcode-notes)
 - [Code components](#app-slide-qrcode-code-components)
 - [Installation](#app-slide-qrcode-installation)
 - [Attributes](#app-slide-qrcode-attributes)
@@ -90,12 +89,6 @@ The "QR code" slide's Web Component could be integrated using the tag `<deckgo-s
 ### Slots
 
 The slots `title` and `content` are optional.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Code components
 

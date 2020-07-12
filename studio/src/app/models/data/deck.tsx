@@ -36,6 +36,8 @@ export interface DeckData {
 
   attributes?: DeckAttributes;
   background?: string;
+  header?: string;
+  footer?: string;
 
   owner_id: string;
 

@@ -28,9 +28,6 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
 
   @State() frameTitle: string;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
-
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
 
@@ -136,6 +133,8 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

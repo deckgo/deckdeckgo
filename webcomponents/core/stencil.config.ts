@@ -1,24 +1,28 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
-import { sass } from '@stencil/sass';
-import { postcss } from '@stencil/postcss';
+import {sass} from '@stencil/sass';
+import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
   namespace: 'deckdeckgo',
-  outputTargets:[
+  outputTargets: [
     {
-      type: 'dist'
+      type: 'dist',
     },
     {
       type: 'www',
-      serviceWorker: null
-    }
+      serviceWorker: null,
+    },
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()]
-    })
-  ]
+      plugins: [autoprefixer()],
+    }),
+  ],
+  devServer: {
+    openBrowser: false,
+    port: 3335,
+  },
 };

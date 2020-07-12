@@ -20,7 +20,7 @@ export class AppDeckBackground {
         <main>
           <h1 id="app-deck-background-background">Background</h1>
           <p>
-            Beside slides and templates, a <a href="https://deckdeckgo.com">DeckDeckGo</a> deck could also contains a customized element <code>background</code>{' '}
+            Beside slides and templates, a <a href="https://deckdeckgo.com">DeckDeckGo</a> deck could also contain a customized element <code>background</code>{' '}
             which could be injected using a dedicated <code>slot</code>.
           </p>
           <h2 id="app-deck-background-table-of-contents">Table of contents</h2>
@@ -41,10 +41,6 @@ export class AppDeckBackground {
           <h2 id="app-deck-background-introduction">Introduction</h2>
           <p>
             The slot <code>background</code> provided for the deck will be cloned into each slides of your presentation.
-          </p>
-          <p>This slot is particularly useful if you wish to display your brand or company logo on each slides.</p>
-          <p>
-            Also worth to notice, this slot will be <code>hidden</code> when the presentation will be displayed full screen.
           </p>
           <p>
             Optionally, if you wish, this slot could also not be cloned, could be useful in case you rather would like to display a background which follows

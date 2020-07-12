@@ -15,7 +15,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-import {ParseBackgroundUtils} from '../../../utils/editor/parse-background.utils';
+import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -50,7 +50,13 @@ export class AppEditor {
   private slides: JSX.IntrinsicElements[] = [];
 
   @State()
-  private background: any;
+  private background: JSX.IntrinsicElements | undefined;
+
+  @State()
+  private header: JSX.IntrinsicElements | undefined;
+
+  @State()
+  private footer: JSX.IntrinsicElements | undefined;
 
   @State()
   private style: any;
@@ -268,7 +274,9 @@ export class AppEditor {
       this.transition = deckStore.state.deck.data.attributes.transition;
     }
 
-    this.background = await ParseBackgroundUtils.convertBackground(deckStore.state.deck.data.background, true);
+    this.background = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.background, 'background');
+    this.header = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.header, 'header');
+    this.footer = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.footer, 'footer');
 
     const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
     await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
@@ -278,7 +286,7 @@ export class AppEditor {
     return new Promise<void>(async (resolve) => {
       this.slides = [...this.slides, extraSlide];
 
-      await ParseBackgroundUtils.stickDeckBackgroundLastChild(this.el);
+      await ParseDeckSlotsUtils.stickLastChildren(this.el);
 
       resolve();
     });
@@ -636,6 +644,8 @@ export class AppEditor {
             onSlideToChange={() => this.onSlideChangeHideToolbar()}>
             {this.slides}
             {this.background}
+            {this.header}
+            {this.footer}
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
         </main>

@@ -12,7 +12,6 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
   - [Youtube component](#app-slide-youtube-youtube-component)
 - [Usage](#app-slide-youtube-usage)
   - [Slots](#app-slide-youtube-slots)
-  - [Notes](#app-slide-youtube-notes)
   - [Youtube component](#app-slide-youtube-youtube-component)
 - [Attributes](#app-slide-youtube-attributes)
 - [Theming](#app-slide-youtube-theming)
@@ -90,12 +89,6 @@ The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-s
 ### Slots
 
 The slot `title` and `content` are optional. The slot `content` is displayed before the video.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ### Youtube component
 

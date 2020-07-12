@@ -12,7 +12,6 @@ The "Author" slide lets you introduce the author of the presentation.
   - [Social component](#app-slide-author-social-component)
 - [Usage](#app-slide-author-usage)
   - [Slots](#app-slide-author-slots)
-  - [Notes](#app-slide-author-notes)
   - [Social components](#app-slide-author-social-components)
 - [Attributes](#app-slide-author-attributes)
   - [Example](#app-slide-author-example)
@@ -103,12 +102,6 @@ Notes:
 - The slot `title` is hidden. If you use the [DeckDeckGo] starter, it will be used for the navigation model.
 
 - You could provide up to six `social-link` slots. Each of these could be your custom code or you could use the component `<deckgo-social/>` to easily provide a link to an external URI.
-
-### Notes
-
-Optionally a slot `notes` could be used to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ### Social components
 

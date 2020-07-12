@@ -9,8 +9,6 @@ export namespace Components {
     interface DeckgoSlideContent {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (enter: boolean, reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
@@ -29,8 +27,6 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideContent {
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
     }
     interface IntrinsicElements {

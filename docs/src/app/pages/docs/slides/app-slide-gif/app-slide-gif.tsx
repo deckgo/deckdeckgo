@@ -61,9 +61,6 @@ export class AppSlideGif {
                 <li>
                   <a href="#app-slide-gif-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-gif-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -81,8 +78,8 @@ export class AppSlideGif {
             <deckgo-deck embedded={true}>
               <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
                 <h1 slot="title">My title</h1>
-                <h1 slot="header">Hey</h1>
-                <h2 slot="footer">It's a cool gif</h2>
+                <h1 slot="top">Hey</h1>
+                <h2 slot="bottom">It's a cool gif</h2>
               </deckgo-slide-gif>
             </deckgo-deck>
           </div>
@@ -155,17 +152,8 @@ export class AppSlideGif {
           </deckgo-highlight-code>
           <h3 id="app-slide-gif-slots">Slots</h3>
           <p>
-            The slots <code>title</code>, <code>header</code> and <code>footer</code> are both optional. <code>header</code> and <code>footer</code> would be
+            The slots <code>title</code>, <code>top</code> and <code>bottom</code> are both optional. <code>top</code> and <code>bottom</code> would be
             displayed over the gif.
-          </p>
-          <h3 id="app-slide-gif-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-gif-gif-component">Gif component</h2>
           <p>

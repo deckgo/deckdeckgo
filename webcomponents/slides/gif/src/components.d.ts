@@ -16,8 +16,6 @@ export namespace Components {
         "afterSwipe": () => Promise<void>;
         "alt": string;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "fullscreen": boolean;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
@@ -52,8 +50,6 @@ declare namespace LocalJSX {
     }
     interface DeckgoSlideGif {
         "alt"?: string;
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "fullscreen"?: boolean;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "src"?: string;

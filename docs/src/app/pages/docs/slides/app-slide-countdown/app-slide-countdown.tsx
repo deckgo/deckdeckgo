@@ -57,9 +57,6 @@ export class AppSlideCountdown {
                 <li>
                   <a href="#app-slide-countdown-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-countdown-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -150,15 +147,6 @@ export class AppSlideCountdown {
           <h3 id="app-slide-countdown-slots">Slots</h3>
           <p>
             The slots <code>title</code> as well as <code>days</code>, <code>hours</code>, <code>minutes</code> and <code>seconds</code> are optional.
-          </p>
-          <h3 id="app-slide-countdown-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
           </p>
           <h2 id="app-slide-countdown-attributes">Attributes</h2>
           <p>

@@ -35,6 +35,7 @@ export class AppRoot {
           <ion-route url="/edit/fonts" component="app-edit-fonts" />
           <ion-route url="/edit/reveal" component="app-edit-reveal" />
           <ion-route url="/edit/rtl" component="app-edit-rtl" />
+          <ion-route url="/edit/notes" component="app-edit-notes" />
 
           <ion-route url="/slides" component="app-concept" />
           <ion-route url="/slides/concept" component="app-slides-concept" />
@@ -70,12 +71,13 @@ export class AppRoot {
 
           <ion-route url="/deck" component="app-deck-transition" />
           <ion-route url="/deck/transition" component="app-deck-transition" />
+          <ion-route url="/deck/background" component="app-deck-background" />
+          <ion-route url="/deck/header-footer" component="app-deck-header-footer" />
           <ion-route url="/deck/navigation" component="app-deck-navigation" />
           <ion-route url="/deck/pager" component="app-deck-pager" />
           <ion-route url="/deck/size" component="app-deck-size" />
           <ion-route url="/deck/extra" component="app-deck-extra-features" />
           <ion-route url="/deck/events" component="app-deck-events" />
-          <ion-route url="/deck/background" component="app-deck-background" />
           <ion-route url="/deck/actions" component="app-deck-actions" />
 
           <ion-route url="/misc" component="app-misc-open-source" />
@@ -134,9 +136,12 @@ export class AppRoot {
                   <ion-item detail={false} href="/edit/rtl" routerDirection="forward">
                     <ion-label>RTL</ion-label>
                   </ion-item>
+                  <ion-item detail={false} href="/edit/notes" routerDirection="forward">
+                    <ion-label>Notes</ion-label>
+                  </ion-item>
 
                   <ion-item-divider>
-                    <ion-label>Slides</ion-label>
+                    <ion-label>Templates</ion-label>
                   </ion-item-divider>
                   <ion-item detail={false} href="/slides/concept" routerDirection="forward">
                     <ion-label>Concept</ion-label>
@@ -233,6 +238,12 @@ export class AppRoot {
                   <ion-item detail={false} href="/deck/transition" routerDirection="forward">
                     <ion-label>Transition</ion-label>
                   </ion-item>
+                  <ion-item detail={false} href="/deck/background" routerDirection="forward">
+                    <ion-label>Background</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/deck/header-footer" routerDirection="forward">
+                    <ion-label>Header &amp; Footer</ion-label>
+                  </ion-item>
                   <ion-item detail={false} href="/deck/navigation" routerDirection="forward">
                     <ion-label>Navigation</ion-label>
                   </ion-item>
@@ -247,9 +258,6 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/deck/events" routerDirection="forward">
                     <ion-label>Events</ion-label>
-                  </ion-item>
-                  <ion-item detail={false} href="/deck/background" routerDirection="forward">
-                    <ion-label>Background</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/deck/actions" routerDirection="forward">
                     <ion-label>Actions</ion-label>

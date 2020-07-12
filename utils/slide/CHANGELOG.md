@@ -1,3 +1,40 @@
+<a name="2.1.2"></a>
+
+# 2.1.2 (2020-07-12)
+
+### Features
+
+- pointer-events per default supported for header and footer
+
+<a name="2.1.1"></a>
+
+# 2.1.1 (2020-07-11)
+
+### Fix
+
+- `z-index` between `header`, `footer`, content and backgrounds
+
+<a name="2.1.0"></a>
+
+# 2.1.0 (2020-07-11)
+
+### Features
+
+- default `top` and `bottom` padding when screen < `1024px` set to `32px` per default
+- smaller margin and size for the `header` and `footer`
+
+<a name="2.0.0"></a>
+
+# 2.0.0 (2020-07-10)
+
+### Breaking Changes
+
+- move `slot` related styles to a separate new style sheet `deckdeckgo-slide-slots.scss`
+
+### Features
+
+- add style for `header` and `footer`
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-05-07)

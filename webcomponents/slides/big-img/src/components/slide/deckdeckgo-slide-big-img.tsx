@@ -7,15 +7,12 @@ const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 @Component({
   tag: 'deckgo-slide-big-img',
   styleUrl: 'deckdeckgo-slide-big-img.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @Prop() imgSrc: string = '';
   @Prop() imgAlt: string;
@@ -95,7 +92,7 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
         const currentNaturalDivision = this.currentStep === this.divisions.length ? imgNaturalLength : this.divisions[this.currentStep];
         return {
           length: (currentNaturalDivision - previousNaturalDivision) * lengthFactor,
-          shift: -(previousNaturalDivision * lengthFactor)
+          shift: -(previousNaturalDivision * lengthFactor),
         };
       };
 
@@ -169,6 +166,8 @@ export class DeckdeckgoSlideBigImg implements DeckdeckgoSlide {
             <slot name="notes"></slot>
             <slot name="actions"></slot>
             <slot name="background"></slot>
+            <slot name="header"></slot>
+            <slot name="footer"></slot>
           </div>
         </div>
       </Host>

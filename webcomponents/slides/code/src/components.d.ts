@@ -5,15 +5,13 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal, } from "@deckdeckgo/highlight-code";
+import { DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal } from "@deckdeckgo/highlight-code";
 export namespace Components {
     interface DeckgoSlideCode {
         "afterSwipe": () => Promise<void>;
         "anchor": string;
         "anchorZoom": string;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "hideAnchor": boolean;
         "hideContent": () => Promise<void>;
         "language": string;
@@ -39,8 +37,6 @@ declare namespace LocalJSX {
     interface DeckgoSlideCode {
         "anchor"?: string;
         "anchorZoom"?: string;
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "hideAnchor"?: boolean;
         "language"?: string;
         "onScrolling"?: (event: CustomEvent<boolean>) => void;
