@@ -1,0 +1,8 @@
+main {
+  deckgo-deck {
+    *[slot="header"],
+    *[slot="footer"] {
+      pointer-events: none;
+    }
+  }
+}
