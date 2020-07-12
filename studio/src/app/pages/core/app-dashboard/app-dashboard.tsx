@@ -508,6 +508,10 @@ export class AppDashboard {
 
   private renderDecksCards() {
     return this.filteredDecks.map((deck: DeckAndFirstSlide) => {
+      if (deck === undefined) {
+        return undefined;
+      }
+
       return (
         <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
           {this.renderDeck(deck)}
