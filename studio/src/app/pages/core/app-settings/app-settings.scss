@@ -24,6 +24,11 @@ app-settings {
     div.avatar {
       --deckgo-avatar-size: 3rem;
 
+      deckgo-lazy-img {
+        width: 3rem;
+        height: 3rem;
+      }
+
       input {
         padding-left: 8px;
         padding-right: 8px;
