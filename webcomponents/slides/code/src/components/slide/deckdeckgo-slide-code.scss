@@ -11,7 +11,12 @@ div.deckgo-slide {
 
 div.deckgo-slide-code-container {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 96px);
+
+  @media screen and (max-width: 1024px) {
+    height: calc(100% - 128px);
+  }
+
   overflow-y: auto;
 
   scroll-behavior: smooth;
