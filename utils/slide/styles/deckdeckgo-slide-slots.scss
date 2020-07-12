@@ -17,12 +17,6 @@
   z-index: var(--slide-actions-z-index);
 }
 
-::slotted([slot="header"]),
-::slotted([slot="footer"]),
-::slotted([slot="background"]) {
-  pointer-events: none;
-}
-
 ::slotted([slot="background"]) {
   position: var(--slide-background-position, absolute);
   top: var(--slide-background-top, 0);
@@ -33,6 +27,8 @@
   height: var(--slide-background-height);
 
   z-index: -2;
+
+  pointer-events: none;
 }
 
 ::slotted([slot="header"]),
