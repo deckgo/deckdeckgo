@@ -792,14 +792,23 @@ export class AppHome {
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
       </ion-item>,
 
+      this.renderCustomLogo(),
+    ];
+  }
+
+  private renderCustomLogo() {
+    return [
       <p class="ion-margin-top">
         <small>A logo for this custom address</small>
       </p>,
       <div class="avatar">
         {this.user && this.user.data && this.user.data.social && this.user.data.social.custom_logo_url ? (
-          <app-avatar src={this.user.data.social.custom_logo_url} aria-label="Custom logo"></app-avatar>
+          <deckgo-lazy-img slot="icon" img-src={this.user.data.social.custom_logo_url} aria-label="Custom logo"></deckgo-lazy-img>
         ) : (
-          <deckgo-lazy-img slot="icon" svg-src={`${this.config.globalAssetsUrl}/icons/ionicons/globe.svg`} aria-label="Web"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            slot="icon"
+            svg-src={`${this.config.globalAssetsUrl}/icons/ionicons/globe.svg`}
+            aria-label="Custom logo image placeholder"></deckgo-lazy-img>
         )}
         <input
           id="inputCustomLogo"
