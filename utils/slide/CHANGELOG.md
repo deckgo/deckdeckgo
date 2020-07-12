@@ -1,3 +1,11 @@
+<a name="2.1.2"></a>
+
+# 2.1.2 (2020-07-12)
+
+### Features
+
+- pointer-events per default supported for header and footer
+
 <a name="2.1.1"></a>
 
 # 2.1.1 (2020-07-11)
