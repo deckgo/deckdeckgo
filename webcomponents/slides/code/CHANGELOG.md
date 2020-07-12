@@ -1,3 +1,9 @@
+# 1.2.3 (2020-07-12)
+
+### Features
+
+- pointer-events supported for `header` and `footer`
+
 # 1.2.2 (2020-07-11)
 
 ### Style
