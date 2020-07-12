@@ -54,9 +54,6 @@ export class AppSlideTitle {
                 <li>
                   <a href="#app-slide-title-slots">Slots</a>
                 </li>
-                <li>
-                  <a href="#app-slide-title-notes">Notes</a>
-                </li>
               </ul>
             </li>
             <li>
@@ -141,29 +138,6 @@ export class AppSlideTitle {
           <p>
             Both slots <code>title</code> and <code>content</code> are optional. Without providing one of them, the page will remain empty.
           </p>
-          <h3 id="app-slide-title-notes">Notes</h3>
-          <p>
-            Optionally a slot <code>notes</code> could be use to add some notes regarding the particular slide. These will be automatically{' '}
-            <code>displayed</code> in the <a href="https://deckdeckgo.app">remote control</a>.
-          </p>
-          <deckgo-highlight-code language="javascript">
-            <code slot="code">
-              &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-title&gt;{'\n'} &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'} &lt;div
-              slot=&quot;notes&quot;&gt;A note regarding this particular slide&lt;&#47;div&gt;{'\n'}
-              {'\n'}And another note on a new line about it too.{'\n'} &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
-            </code>
-          </deckgo-highlight-code>
-          <p>
-            If you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit and wish to make your notes accessible to anyone, you will need to
-            mark them with the attribute <code>show</code>.
-          </p>
-          <deckgo-highlight-code language="javascript">
-            <code slot="code">
-              &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-title&gt;{'\n'} &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'} &lt;div
-              slot=&quot;notes&quot; show&gt;A note displayed in the presentation within a modal accessible for anyone&lt;&#47;div&gt;{'\n'}{' '}
-              &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
-            </code>
-          </deckgo-highlight-code>
           <h2 id="app-slide-title-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>
           <table>

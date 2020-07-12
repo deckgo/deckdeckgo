@@ -13,7 +13,6 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 - [For images too](#app-slide-gif-for-images-too)
 - [Usage](#app-slide-gif-usage)
   - [Slots](#app-slide-gif-slots)
-  - [Notes](#app-slide-gif-notes)
 - [Gif component](#app-slide-gif-gif-component)
 - [Attributes](#app-slide-gif-attributes)
 - [Theming](#app-slide-gif-theming)
@@ -24,8 +23,8 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
   <deckgo-deck embedded={true}>
     <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen={true}>
       <h1 slot="title">My title</h1>
-      <h1 slot="header">Hey</h1>
-      <h2 slot="footer">It's a cool gif</h2>
+      <h1 slot="top">Hey</h1>
+      <h2 slot="bottom">It's a cool gif</h2>
     </deckgo-slide-gif>
   </deckgo-deck>
 </div>
@@ -96,13 +95,7 @@ The "Gif" slide's Web Component could be integrated using the tag `<deckgo-slide
 
 ### Slots
 
-The slots `title`, `header` and `footer` are both optional. `header` and `footer` would be displayed over the gif.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
+The slots `title`, `top` and `bottom` are both optional. `top` and `bottom` would be displayed over the gif.
 
 ## Gif component
 

@@ -9,8 +9,6 @@ export namespace Components {
     interface DeckgoSlideCountdown {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
-        "customActions": boolean;
-        "customBackground": boolean;
         "days": number;
         "hideContent": () => Promise<void>;
         "hours": number;
@@ -36,8 +34,6 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideCountdown {
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "days"?: number;
         "hours"?: number;
         "minutes"?: number;

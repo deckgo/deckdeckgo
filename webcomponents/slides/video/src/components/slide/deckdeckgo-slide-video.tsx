@@ -6,15 +6,12 @@ import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdec
 @Component({
   tag: 'deckgo-slide-video',
   styleUrl: 'deckdeckgo-slide-video.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
   @Element() el: HTMLElement;
 
   @Event() slideDidLoad: EventEmitter<void>;
-
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
 
   @Prop({reflectToAttr: true}) src: string;
   @Prop() type: string = 'video/mp4';
@@ -191,7 +188,7 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
       <Host
         class={{
           'deckgo-slide-container': true,
-          'deckgo-slide-video-centered': this.alignCenter
+          'deckgo-slide-video-centered': this.alignCenter,
         }}>
         <div class="deckgo-slide">
           <slot name="title"></slot>
@@ -211,6 +208,8 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

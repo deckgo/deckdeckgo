@@ -6,7 +6,6 @@ import userStore from '../../../stores/user.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
-import {User} from '../../../models/data/user';
 import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
@@ -43,8 +42,6 @@ export class AppCreateSlide {
 
   @State()
   private elements: SlotType[] | undefined = undefined;
-
-  private user: User;
 
   @Event() signIn: EventEmitter<void>;
 
@@ -136,7 +133,7 @@ export class AppCreateSlide {
   }
 
   private async addSlide(template: SlideTemplate, deck?: Deck) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
@@ -157,7 +154,7 @@ export class AppCreateSlide {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, this.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
@@ -252,10 +249,7 @@ export class AppCreateSlide {
         {this.renderToolbarTitle()}
         {this.renderToolbarAction()}
       </ion-toolbar>,
-      <div
-        class={`container ion-margin-bottom ion-padding-start ion-padding-end${
-          this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''
-        }`}>
+      <div class={`container ion-margin-bottom ${this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''}`}>
         {this.renderTemplates()}
         {this.renderCompose()}
       </div>,
@@ -697,10 +691,10 @@ export class AppCreateSlide {
     return (
       <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.GIF)}>
         <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
-          <p slot="header">
+          <p slot="top">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
           </p>
-          <p slot="footer">
+          <p slot="bottom">
             <ion-skeleton-text style={{width: '40%'}}></ion-skeleton-text>
           </p>
         </deckgo-slide-gif>

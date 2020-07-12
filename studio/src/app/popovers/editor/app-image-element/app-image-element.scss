@@ -6,10 +6,6 @@ app-image-element {
     &.history-empty {
       --color: var(--ion-color-medium);
     }
-
-    &.action-button-margin {
-      margin-top: 8px;
-    }
   }
 
   app-image-columns {

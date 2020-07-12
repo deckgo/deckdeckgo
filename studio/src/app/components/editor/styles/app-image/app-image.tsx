@@ -104,14 +104,15 @@ export class AppImage {
     return (
       <app-expansion-panel expander={this.expander}>
         <ion-label slot="title">Image</ion-label>
-        <ion-list>
+
+        <div class="image-actions ion-margin">
           {this.renderStockPhotos()}
           {this.renderGif()}
-
           {this.renderCustom()}
-
           {this.renderDeleteAction()}
+        </div>
 
+        <ion-list>
           <ion-item-divider class="ion-padding-top ion-margin-top">
             <ion-label>History</ion-label>
             <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
@@ -132,11 +133,9 @@ export class AppImage {
     }
 
     return (
-      <ion-item class="action-button action-button-margin">
-        <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
-          <ion-label>Stock photo</ion-label>
-        </ion-button>
-      </ion-item>
+      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
+        <ion-label>Stock photo</ion-label>
+      </ion-button>
     );
   }
 
@@ -147,21 +146,17 @@ export class AppImage {
     }
 
     return (
-      <ion-item class="action-button">
-        <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
-          <ion-label>Gif</ion-label>
-        </ion-button>
-      </ion-item>
+      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
+        <ion-label>Gif</ion-label>
+      </ion-button>
     );
   }
 
   private renderCustom() {
     return (
-      <ion-item class={`action-button ${!this.navigatorOnline ? 'action-button-margin' : ''}`}>
-        <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
-          <ion-label>Your images</ion-label>
-        </ion-button>
-      </ion-item>
+      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
+        <ion-label>Your images</ion-label>
+      </ion-button>
     );
   }
 
@@ -170,11 +165,9 @@ export class AppImage {
       return undefined;
     } else {
       return (
-        <ion-item class="action-button ion-margin-bottom">
-          <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
-            <ion-label>Reset image</ion-label>
-          </ion-button>
-        </ion-item>
+        <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
+          <ion-label>Reset image</ion-label>
+        </ion-button>
       );
     }
   }

@@ -10,3 +10,10 @@ ion-footer {
     border: 1px solid var(--ion-color-light);
   }
 }
+
+ion-popover.popover-menu {
+  ion-toolbar {
+    --ion-toolbar-border-color: transparent;
+    --ion-toolbar-background: var(--ion-color-light);
+  }
+}

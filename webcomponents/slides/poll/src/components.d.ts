@@ -10,8 +10,6 @@ export namespace Components {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
         "connectPollSocket": boolean;
-        "customActions": boolean;
-        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "isAnswered": () => Promise<boolean>;
         "lazyLoadContent": () => Promise<void>;
@@ -38,8 +36,6 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoSlidePoll {
         "connectPollSocket"?: boolean;
-        "customActions"?: boolean;
-        "customBackground"?: boolean;
         "onPollUpdated"?: (event: CustomEvent<void>) => void;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "pollKey"?: string;

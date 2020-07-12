@@ -1,0 +1,40 @@
+app-deck-header-footer {
+  button {
+    padding: 4px;
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: none;
+
+    &.selected {
+      color: var(--ion-color-primary);
+    }
+
+    deckgo-social {
+      pointer-events: none;
+
+      deckgo-lazy-img {
+        --deckgo-lazy-img-width: 2rem;
+        --deckgo-lazy-img-height: auto;
+        --deckgo-lazy-img-vertical-align: middle;
+      }
+    }
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  div.container {
+    display: grid;
+    grid-template-columns: repeat(2, calc((100% - 16px) / 2));
+    grid-gap: 16px;
+    margin: 16px;
+
+    ion-label.no-options {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
+}

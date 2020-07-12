@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoAttributeDefinition, DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, } from "@deckdeckgo/types";
+import { DeckdeckgoAttributeDefinition, DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition } from "@deckdeckgo/types";
 export namespace Components {
     interface DeckgoDeck {
         "blockSlide": (block: boolean) => Promise<void>;
@@ -14,9 +14,9 @@ export namespace Components {
         "doPrint": () => Promise<void>;
         "embedded": boolean;
         "getActiveIndex": () => Promise<number>;
-        "getDeckDefinition": () => Promise<DeckdeckgoDeckDefinition>;
+        "getDeckDefinition": () => Promise<DeckdeckgoDeckDefinition | null>;
         "getLength": () => Promise<number>;
-        "getSlideDefinition": (index: number) => Promise<DeckdeckgoSlideDefinition>;
+        "getSlideDefinition": (index: number) => Promise<DeckdeckgoSlideDefinition | null>;
         "initSlideSize": () => Promise<void>;
         "isBeginning": () => Promise<boolean>;
         "isEnd": () => Promise<boolean>;
@@ -24,14 +24,16 @@ export namespace Components {
         "keyboard": boolean;
         "lazyLoadAllContent": () => Promise<void[]>;
         "loadBackground": () => Promise<void>;
+        "loadFooter": () => Promise<void>;
+        "loadHeader": () => Promise<void>;
         "reveal": boolean;
         "revealOnMobile": boolean;
         "slideNext": (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
         "slidePrev": (slideAnimation?: boolean, emitEvent?: boolean) => Promise<void>;
-        "slideTo": (index: number, speed?: number, emitEvent?: boolean) => Promise<void>;
+        "slideTo": (index: number, speed?: number | undefined, emitEvent?: boolean) => Promise<void>;
         "toggleFullScreen": () => Promise<void>;
         "toggleKeyboardAssist": (state: boolean) => Promise<void>;
-        "transition": "slide" | "fade" | "none";
+        "transition": 'slide' | 'fade' | 'none';
     }
     interface DeckgoPager {
         "activeIndex": number;
@@ -104,7 +106,7 @@ declare namespace LocalJSX {
         "onSlidesDidLoad"?: (event: CustomEvent<any>) => void;
         "reveal"?: boolean;
         "revealOnMobile"?: boolean;
-        "transition"?: "slide" | "fade" | "none";
+        "transition"?: 'slide' | 'fade' | 'none';
     }
     interface DeckgoPager {
         "activeIndex"?: number;

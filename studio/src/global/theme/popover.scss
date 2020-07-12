@@ -10,16 +10,20 @@ ion-popover {
 
 ion-popover.popover-menu {
   &.popover-menu-wide {
-    --width: 380px;
-    --max-width: 100%;
+    @media screen and (min-width: 720px) {
+      --width: 498px;
+    }
   }
 
-  --width: 284px;
+  --width: 376px;
+  --max-width: 100%;
 
   div.popover-content {
     top: 0 !important;
     left: inherit !important;
     right: 0;
+
+    padding: 16px;
 
     --min-height: 100%;
 
@@ -27,6 +31,8 @@ ion-popover.popover-menu {
 
     box-shadow: -8px 0 16px rgba(0, 0, 0, 0.12);
     border-radius: 0;
+
+    background: var(--ion-color-light);
   }
 }
 

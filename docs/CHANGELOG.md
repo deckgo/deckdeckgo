@@ -1,3 +1,16 @@
+# 1.7.0 (2020-07-11)
+
+### Features
+
+- group `notes` in a single page
+- add new `header` and `footer`
+
+# 1.6.2 (2020-07-02)
+
+### Style
+
+- update `@deckdeckgo/highlight-code`
+
 # 1.6.1 (2020-07-02)
 
 ### Features

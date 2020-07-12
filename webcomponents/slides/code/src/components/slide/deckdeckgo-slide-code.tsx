@@ -35,9 +35,6 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
 
   private action: DeckdeckgoSlideCodeAction = DeckdeckgoSlideCodeAction.SWIPE;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
-
   @Prop() terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
   @Prop() theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
@@ -247,6 +244,8 @@ export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

@@ -1,6 +1,6 @@
 # Background
 
-Beside slides and templates, a [DeckDeckGo] deck could also contains a customized element `background` which could be injected using a dedicated `slot`.
+Beside slides and templates, a [DeckDeckGo] deck could also contain a customized element `background` which could be injected using a dedicated `slot`.
 
 ## Table of contents
 
@@ -13,33 +13,29 @@ Beside slides and templates, a [DeckDeckGo] deck could also contains a customize
 
 The slot `background` provided for the deck will be cloned into each slides of your presentation.
 
-This slot is particularly useful if you wish to display your brand or company logo on each slides.
-
-Also worth to notice, this slot will be `hidden` when the presentation will be displayed full screen.
-
 Optionally, if you wish, this slot could also not be cloned, could be useful in case you rather would like to display a background which follows your entire presentation.
 
 ## Attributes
 
 The following attribute could be applied to the `deckgo-deck` element:
 
-| Property       | Attribute       | Mandatory | Description | Type      | Default                             |
-| -------------- | --------------- | --------- | ----------- | --------- | ----------------------------------- |
-| `cloneBackground`         | `clone-background`          |  | Set to false in case you don't want to clone the background in each slides | `boolean`                | true |
+| Property          | Attribute          | Mandatory | Description                                                                | Type      | Default |
+| ----------------- | ------------------ | --------- | -------------------------------------------------------------------------- | --------- | ------- |
+| `cloneBackground` | `clone-background` |           | Set to false in case you don't want to clone the background in each slides | `boolean` | true    |
 
 ## Theming
 
 The following theming options will affect the slot `background` if set on the `deckgo-deck` or any slides.
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --slide-background-position | absolute | The position of the background |
-| --slide-background-top | 0 | Top value |
-| --slide-background-end |  | In LTR, right value |
-| --slide-background-start | 0 | In LTR, left value |
-| --slide-background-width |  | A background width, default without being set all width |
-| --slide-background-height |  | A background height, default without being set all height |
-| --slide-background-print-display | none | Don't print per default the background |
+| CSS4 variable                    | Default  | Note                                                      |
+| -------------------------------- | -------- | --------------------------------------------------------- |
+| --slide-background-position      | absolute | The position of the background                            |
+| --slide-background-top           | 0        | Top value                                                 |
+| --slide-background-end           |          | In LTR, right value                                       |
+| --slide-background-start         | 0        | In LTR, left value                                        |
+| --slide-background-width         |          | A background width, default without being set all width   |
+| --slide-background-height        |          | A background height, default without being set all height |
+| --slide-background-print-display | none     | Don't print per default the background                    |
 
 ## Examples
 
@@ -53,7 +49,7 @@ An example with an image cloned as background for each slides:
       Hello World 🚀
     </p>
   </deckgo-slide-title>
-  
+
   <img slot="background" data-src="https://deckdeckgo.com/assets/favicon/android-chrome-512x512.png">
 </deckgo-deck>
 ```
@@ -68,7 +64,7 @@ An example with a more complex html and css element which is set as background f
       Hello World 🚀
     </p>
   </deckgo-slide-title>
-  
+
   <div class="circle" slot="background"></div>
 </deckgo-deck>
 ```
@@ -91,4 +87,4 @@ div.circle {
 }
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

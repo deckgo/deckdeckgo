@@ -1,3 +1,15 @@
+# 1.6.0 (2020-07-11)
+
+### Features
+
+- new template supporting `header` and `footer`
+
+# 1.5.1 (2020-07-02)
+
+### Style
+
+- update `@deckdeckgo/highlight-code`
+
 # 1.5.0 (2020-07-02)
 
 ### Features

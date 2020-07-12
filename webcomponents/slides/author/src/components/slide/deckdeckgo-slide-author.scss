@@ -1,4 +1,10 @@
 @import "./deckdeckgo-slide";
+@import "./deckdeckgo-slide-slots";
+
+:host {
+  --slide-actions-z-index: 3;
+  --slide-header-footer-z-index: 1;
+}
 
 div.deckgo-slide {
   flex-flow: row;
@@ -107,4 +113,10 @@ div.deckgo-slide-author {
 ::slotted([slot="social-link"]) {
   padding: var(--slide-author-social-link-padding, 8px);
   max-width: 100%;
+}
+
+::slotted([slot="title"]),
+::slotted([slot="author"]),
+::slotted([slot="social-link"]) {
+  z-index: 2;
 }

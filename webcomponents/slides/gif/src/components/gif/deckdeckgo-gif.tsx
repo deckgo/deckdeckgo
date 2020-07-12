@@ -5,10 +5,9 @@ import {DeckdeckgoComponent, hideLazyLoadImages, lazyLoadImages} from '@deckdeck
 @Component({
   tag: 'deckgo-gif',
   styleUrl: 'deckdeckgo-gif.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoGif implements DeckdeckgoComponent {
-
   @Element() el: HTMLElement;
 
   @Prop() src: string;
@@ -26,10 +25,14 @@ export class DeckdeckgoGif implements DeckdeckgoComponent {
     const img: HTMLImageElement = this.el.shadowRoot.querySelector('img');
 
     if (img) {
-      img.addEventListener('load', () => {
-        this.loaded = true;
-        this.gifLoaded.emit(true);
-      }, false);
+      img.addEventListener(
+        'load',
+        () => {
+          this.loaded = true;
+          this.gifLoaded.emit(true);
+        },
+        false
+      );
     }
   }
 
@@ -39,15 +42,18 @@ export class DeckdeckgoGif implements DeckdeckgoComponent {
   }
 
   render() {
-    return <Host class={{
-        'deckgo-gif-fullscreen': this.fullscreen,
-        'deckgo-gif-hidden': !this.loaded
-      }}>
-      <div class="deckgo-gif">
-        <slot name="header"></slot>
-        <img data-src={this.src} alt={this.alt}/>
-        <slot name="footer"></slot>
-      </div>
-    </Host>;
+    return (
+      <Host
+        class={{
+          'deckgo-gif-fullscreen': this.fullscreen,
+          'deckgo-gif-hidden': !this.loaded,
+        }}>
+        <div class="deckgo-gif">
+          <slot name="top"></slot>
+          <img data-src={this.src} alt={this.alt} />
+          <slot name="bottom"></slot>
+        </div>
+      </Host>
+    );
   }
 }

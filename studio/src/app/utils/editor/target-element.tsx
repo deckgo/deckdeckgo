@@ -11,4 +11,5 @@ export enum TargetElement {
   SHAPES = 'shapes',
   IMAGES = 'images',
   IMAGE = 'image',
+  HEADER_FOOTER = 'header-footer',
 }

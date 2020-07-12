@@ -15,9 +15,6 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
 
   @Prop({reflectToAttr: true}) content: string;
 
-  @Prop({reflectToAttr: true}) customActions: boolean = false;
-  @Prop({reflectToAttr: true}) customBackground: boolean = false;
-
   @Prop({reflectToAttr: true}) imgSrc: string;
   @Prop({reflectToAttr: true}) imgAlt: string;
 
@@ -142,6 +139,8 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
           <slot name="notes"></slot>
           <slot name="actions"></slot>
           <slot name="background"></slot>
+          <slot name="header"></slot>
+          <slot name="footer"></slot>
         </div>
       </Host>
     );

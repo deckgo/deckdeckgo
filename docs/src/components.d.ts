@@ -38,6 +38,8 @@ export namespace Components {
     }
     interface AppDeckExtraFeatures {
     }
+    interface AppDeckHeaderFooter {
+    }
     interface AppDeckNavigation {
     }
     interface AppDeckPager {
@@ -53,6 +55,8 @@ export namespace Components {
     interface AppEditLazyLoading {
     }
     interface AppEditMarkdown {
+    }
+    interface AppEditNotes {
     }
     interface AppEditReveal {
     }
@@ -228,6 +232,12 @@ declare global {
         prototype: HTMLAppDeckExtraFeaturesElement;
         new (): HTMLAppDeckExtraFeaturesElement;
     };
+    interface HTMLAppDeckHeaderFooterElement extends Components.AppDeckHeaderFooter, HTMLStencilElement {
+    }
+    var HTMLAppDeckHeaderFooterElement: {
+        prototype: HTMLAppDeckHeaderFooterElement;
+        new (): HTMLAppDeckHeaderFooterElement;
+    };
     interface HTMLAppDeckNavigationElement extends Components.AppDeckNavigation, HTMLStencilElement {
     }
     var HTMLAppDeckNavigationElement: {
@@ -275,6 +285,12 @@ declare global {
     var HTMLAppEditMarkdownElement: {
         prototype: HTMLAppEditMarkdownElement;
         new (): HTMLAppEditMarkdownElement;
+    };
+    interface HTMLAppEditNotesElement extends Components.AppEditNotes, HTMLStencilElement {
+    }
+    var HTMLAppEditNotesElement: {
+        prototype: HTMLAppEditNotesElement;
+        new (): HTMLAppEditNotesElement;
     };
     interface HTMLAppEditRevealElement extends Components.AppEditReveal, HTMLStencilElement {
     }
@@ -509,6 +525,7 @@ declare global {
         "app-deck-background": HTMLAppDeckBackgroundElement;
         "app-deck-events": HTMLAppDeckEventsElement;
         "app-deck-extra-features": HTMLAppDeckExtraFeaturesElement;
+        "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
         "app-deck-navigation": HTMLAppDeckNavigationElement;
         "app-deck-pager": HTMLAppDeckPagerElement;
         "app-deck-size": HTMLAppDeckSizeElement;
@@ -517,6 +534,7 @@ declare global {
         "app-edit-fonts": HTMLAppEditFontsElement;
         "app-edit-lazy-loading": HTMLAppEditLazyLoadingElement;
         "app-edit-markdown": HTMLAppEditMarkdownElement;
+        "app-edit-notes": HTMLAppEditNotesElement;
         "app-edit-reveal": HTMLAppEditRevealElement;
         "app-edit-rtl": HTMLAppEditRtlElement;
         "app-edit-theming": HTMLAppEditThemingElement;
@@ -588,6 +606,8 @@ declare namespace LocalJSX {
     }
     interface AppDeckExtraFeatures {
     }
+    interface AppDeckHeaderFooter {
+    }
     interface AppDeckNavigation {
     }
     interface AppDeckPager {
@@ -603,6 +623,8 @@ declare namespace LocalJSX {
     interface AppEditLazyLoading {
     }
     interface AppEditMarkdown {
+    }
+    interface AppEditNotes {
     }
     interface AppEditReveal {
     }
@@ -697,6 +719,7 @@ declare namespace LocalJSX {
         "app-deck-background": AppDeckBackground;
         "app-deck-events": AppDeckEvents;
         "app-deck-extra-features": AppDeckExtraFeatures;
+        "app-deck-header-footer": AppDeckHeaderFooter;
         "app-deck-navigation": AppDeckNavigation;
         "app-deck-pager": AppDeckPager;
         "app-deck-size": AppDeckSize;
@@ -705,6 +728,7 @@ declare namespace LocalJSX {
         "app-edit-fonts": AppEditFonts;
         "app-edit-lazy-loading": AppEditLazyLoading;
         "app-edit-markdown": AppEditMarkdown;
+        "app-edit-notes": AppEditNotes;
         "app-edit-reveal": AppEditReveal;
         "app-edit-rtl": AppEditRtl;
         "app-edit-theming": AppEditTheming;
@@ -763,6 +787,7 @@ declare module "@stencil/core" {
             "app-deck-background": LocalJSX.AppDeckBackground & JSXBase.HTMLAttributes<HTMLAppDeckBackgroundElement>;
             "app-deck-events": LocalJSX.AppDeckEvents & JSXBase.HTMLAttributes<HTMLAppDeckEventsElement>;
             "app-deck-extra-features": LocalJSX.AppDeckExtraFeatures & JSXBase.HTMLAttributes<HTMLAppDeckExtraFeaturesElement>;
+            "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
             "app-deck-navigation": LocalJSX.AppDeckNavigation & JSXBase.HTMLAttributes<HTMLAppDeckNavigationElement>;
             "app-deck-pager": LocalJSX.AppDeckPager & JSXBase.HTMLAttributes<HTMLAppDeckPagerElement>;
             "app-deck-size": LocalJSX.AppDeckSize & JSXBase.HTMLAttributes<HTMLAppDeckSizeElement>;
@@ -771,6 +796,7 @@ declare module "@stencil/core" {
             "app-edit-fonts": LocalJSX.AppEditFonts & JSXBase.HTMLAttributes<HTMLAppEditFontsElement>;
             "app-edit-lazy-loading": LocalJSX.AppEditLazyLoading & JSXBase.HTMLAttributes<HTMLAppEditLazyLoadingElement>;
             "app-edit-markdown": LocalJSX.AppEditMarkdown & JSXBase.HTMLAttributes<HTMLAppEditMarkdownElement>;
+            "app-edit-notes": LocalJSX.AppEditNotes & JSXBase.HTMLAttributes<HTMLAppEditNotesElement>;
             "app-edit-reveal": LocalJSX.AppEditReveal & JSXBase.HTMLAttributes<HTMLAppEditRevealElement>;
             "app-edit-rtl": LocalJSX.AppEditRtl & JSXBase.HTMLAttributes<HTMLAppEditRtlElement>;
             "app-edit-theming": LocalJSX.AppEditTheming & JSXBase.HTMLAttributes<HTMLAppEditThemingElement>;

@@ -11,7 +11,6 @@ The "Video" slide let you add your own video or for example a Gif as MPEG-4 (MP4
   - [Framework integration](#app-slide-video-framework-integration)
 - [Usage](#app-slide-video-usage)
   - [Slots](#app-slide-video-slots)
-  - [Notes](#app-slide-video-notes)
   - [Youtube component](#app-slide-video-youtube-component)
 - [Attributes](#app-slide-video-attributes)
 - [Theming](#app-slide-video-theming)
@@ -87,12 +86,6 @@ The "Video" slide's Web Component could be integrated using the tag `<deckgo-sli
 ### Slots
 
 The slot `title` and `content` are optional. The slot `content` is displayed before the video.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
 
 ## Attributes
 

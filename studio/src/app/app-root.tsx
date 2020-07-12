@@ -48,7 +48,7 @@ export class AppRoot {
     this.loading = false;
 
     this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
-      if (error) {
+      if (error && error !== undefined) {
         this.toastError(error);
       }
     });
@@ -82,6 +82,10 @@ export class AppRoot {
       duration: 6000,
     });
 
+    popover.onDidDismiss().then(() => {
+      errorStore.state.error = undefined;
+    });
+
     await popover.present();
   }
 
@@ -103,6 +107,8 @@ export class AppRoot {
     } else {
       await router.push(params.url);
     }
+
+    navStore.reset();
   }
 
   @Listen('openShare', {target: 'document'})

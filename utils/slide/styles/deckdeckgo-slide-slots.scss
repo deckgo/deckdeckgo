@@ -1,0 +1,74 @@
+::slotted(ul),
+::slotted(ol) {
+  padding-inline-start: var(--slide-padding-start, var(--slide-padding-start-default));
+}
+
+::slotted([slot="notes"]) {
+  display: none;
+}
+
+::slotted([slot="actions"]) {
+  position: absolute;
+  top: var(--slide-actions-top, 16px);
+  right: var(--slide-actions-end, 32px);
+  left: var(--slide-actions-start);
+  display: var(--slide-actions-display);
+
+  z-index: var(--slide-actions-z-index);
+}
+
+::slotted([slot="background"]) {
+  position: var(--slide-background-position, absolute);
+  top: var(--slide-background-top, 0);
+  right: var(--slide-background-end);
+  left: var(--slide-background-start, 0);
+
+  width: var(--slide-background-width);
+  height: var(--slide-background-height);
+
+  z-index: -2;
+
+  pointer-events: none;
+}
+
+::slotted([slot="header"]),
+::slotted([slot="footer"]) {
+  position: absolute;
+  left: 0;
+
+  width: var(--slide-width);
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  z-index: var(--slide-header-footer-z-index, -1);
+}
+
+::slotted([slot="header"]) {
+  top: 0;
+
+  width: calc(var(--slide-width) - var(--slide-header-margin-start, 32px) - var(--slide-header-margin-end, 32px));
+  max-height: var(--slide-header-max-height, 48px);
+
+  justify-content: var(--slide-header-justify-content, flex-start);
+
+  margin: var(--slide-header-margin-top, 16px) var(--slide-header-margin-end, 32px) var(--slide-header-margin-bottom, 16px)
+    var(--slide-header-margin-start, 32px);
+
+  @media screen and (max-width: 1024px) {
+    max-height: var(--slide-header-max-height, 16px);
+  }
+}
+
+::slotted([slot="footer"]) {
+  bottom: 0;
+
+  width: calc(var(--slide-width) - var(--slide-footer-margin-start, 16px) - var(--slide-footer-margin-end, 16px));
+  max-height: var(--slide-footer-max-height, 32px);
+
+  justify-content: var(--slide-footer-justify-content, center);
+
+  margin: var(--slide-footer-margin-top, 16px) var(--slide-footer-margin-end, 16px) var(--slide-footer-margin-bottom, 16px)
+    var(--slide-footer-margin-start, 16px);
+}

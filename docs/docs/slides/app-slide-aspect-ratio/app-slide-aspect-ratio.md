@@ -13,7 +13,6 @@ We use this slide in the [DeckDeckGo] editor to let users create slides containi
   - [Framework integration](#app-slide-aspect-ratio-framework-integration)
 - [Usage](#app-slide-aspect-ratio-usage)
   - [Slots](#app-slide-aspect-ratio-slots)
-  - [Notes](#app-slide-aspect-ratio-notes)
 - [Attributes](#app-slide-aspect-ratio-attributes)
 - [Example](#app-slide-aspect-ratio-example)
 - [Theming](#app-slide-aspect-ratio-theming)
@@ -87,33 +86,7 @@ The "Aspect Ratio" slide's Web Component could be integrated using the tag `<dec
 
 ### Slots
 
-The slots `title`, `header` and `footer` are both optional. `header` and `footer` would be displayed over the content.
-
-### Notes
-
-Optionally a slot `notes` could be use to add some notes regarding the particular slide. These will be automatically `displayed` in the [remote control](https://deckdeckgo.app).
-
-```
-<deckgo-deck>
-  <deckgo-slide-aspect-ratio>
-    <h1>An element</h1>
-    <div slot="notes">A note regarding this particular slide</div>
-
-And another note on a new line about it too.
-  </deckgo-slide-aspect-ratio>
-</deckgo-deck>
-```
-
-If you are using the [DeckDeckGo] starter kit and wish to make your notes accessible to anyone, you will need to mark them with the attribute `show`.
-
-```
-<deckgo-deck>
-  <deckgo-slide-aspect-ratio>
-    <h1>An element</h1>
-    <div slot="notes" show>A note displayed in the presentation within a modal accessible for anyone</div>
-  </deckgo-slide-aspect-ratio>
-</deckgo-deck>
-```
+The slots `title`, `top` and `bottom` are both optional. `top` and `bottom` would be displayed over the content.
 
 ## Attributes
 

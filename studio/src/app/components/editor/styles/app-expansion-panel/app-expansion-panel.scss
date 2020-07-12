@@ -1,7 +1,16 @@
+@use "../../../../../global/theme/editor/editor-mixin";
+
 app-expansion-panel {
   display: block;
 
+  margin-bottom: 16px;
+  overflow: hidden;
+
+  @include editor-mixin.panel;
+
   article {
+    background: white;
+
     > div {
       overflow: hidden;
       transition: height 0.25s ease-in;
@@ -39,6 +48,10 @@ app-expansion-panel {
           opacity: 0;
         }
       }
+    }
+
+    &:not(.close) {
+      padding-bottom: 8px;
     }
   }
 }

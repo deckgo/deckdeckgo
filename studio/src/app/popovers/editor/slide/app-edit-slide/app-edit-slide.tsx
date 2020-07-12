@@ -4,7 +4,7 @@ import {EditAction} from '../../../../utils/editor/edit-action';
 
 @Component({
   tag: 'app-edit-slide',
-  styleUrl: 'app-edit-slide.scss'
+  styleUrl: 'app-edit-slide.scss',
 })
 export class AppEditSlide {
   @Element() el: HTMLElement;
@@ -34,7 +34,7 @@ export class AppEditSlide {
     }
 
     const data = {
-      action: $event.detail
+      action: $event.detail,
     };
 
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(data);
@@ -48,7 +48,7 @@ export class AppEditSlide {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <ion-list>{this.renderOptions()}</ion-list>
+      <ion-list class="article">{this.renderOptions()}</ion-list>,
     ];
   }
 

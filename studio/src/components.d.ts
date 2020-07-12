@@ -130,6 +130,10 @@ export namespace Components {
         "deckElement": HTMLElement;
         "moreColors": boolean;
     }
+    interface AppDeckHeaderFooter {
+        "deckDidChange": EventEmitter<HTMLElement>;
+        "deckElement": HTMLElement;
+    }
     interface AppDeckStyle {
         "blockSlide": EventEmitter<boolean>;
         "deckDidChange": EventEmitter<HTMLElement>;
@@ -339,7 +343,7 @@ export namespace Components {
         "background": boolean;
         "chart": boolean;
         "code": boolean;
-        "fonts": boolean;
+        "headerFooter": boolean;
         "image": boolean;
         "images": boolean;
         "qrCode": boolean;
@@ -547,6 +551,12 @@ declare global {
     var HTMLAppDeckFontsElement: {
         prototype: HTMLAppDeckFontsElement;
         new (): HTMLAppDeckFontsElement;
+    };
+    interface HTMLAppDeckHeaderFooterElement extends Components.AppDeckHeaderFooter, HTMLStencilElement {
+    }
+    var HTMLAppDeckHeaderFooterElement: {
+        prototype: HTMLAppDeckHeaderFooterElement;
+        new (): HTMLAppDeckHeaderFooterElement;
     };
     interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {
     }
@@ -1079,6 +1089,7 @@ declare global {
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
         "app-deck-delete": HTMLAppDeckDeleteElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
+        "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-demo": HTMLAppDemoElement;
@@ -1302,6 +1313,12 @@ declare namespace LocalJSX {
         "deckElement"?: HTMLElement;
         "moreColors"?: boolean;
         "onFontsChange"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppDeckHeaderFooter {
+        "deckDidChange"?: EventEmitter<HTMLElement>;
+        "deckElement"?: HTMLElement;
+        "onNavigateSettings"?: (event: CustomEvent<void>) => void;
+        "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckStyle {
         "blockSlide"?: EventEmitter<boolean>;
@@ -1531,7 +1548,7 @@ declare namespace LocalJSX {
         "background"?: boolean;
         "chart"?: boolean;
         "code"?: boolean;
-        "fonts"?: boolean;
+        "headerFooter"?: boolean;
         "image"?: boolean;
         "images"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
@@ -1612,6 +1629,7 @@ declare namespace LocalJSX {
         "app-dashboard-deck-actions": AppDashboardDeckActions;
         "app-deck-delete": AppDeckDelete;
         "app-deck-fonts": AppDeckFonts;
+        "app-deck-header-footer": AppDeckHeaderFooter;
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
         "app-demo": AppDemo;
@@ -1728,6 +1746,7 @@ declare module "@stencil/core" {
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
+            "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
