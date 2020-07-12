@@ -41,13 +41,21 @@ export class SocialUtils {
   }
 
   static createCustom(user: User): JSX.IntrinsicElements {
-    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
     return (
       <deckgo-social slot={`social-link`} fullUrl={user.data.social.custom}>
-        <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/ionicons/globe.svg`} aria-label="Web"></deckgo-lazy-img>
+        {this.createCustomLogo(user)}
       </deckgo-social>
     );
+  }
+
+  private static createCustomLogo(user: User): JSX.IntrinsicElements {
+    if (user.data.social.custom_logo_url) {
+      return <deckgo-lazy-img slot="icon" img-src={user.data.social.custom_logo_url} aria-label="Web"></deckgo-lazy-img>;
+    }
+
+    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+    return <deckgo-lazy-img slot="icon" svg-src={`${config.globalAssetsUrl}/icons/ionicons/globe.svg`} aria-label="Web"></deckgo-lazy-img>;
   }
 
   static createGitHub(user: User): JSX.IntrinsicElements {

@@ -26,7 +26,7 @@ export class HeaderFooterUtils {
       deck.removeChild(currentSlotElement);
     }
 
-    const promises: Promise<HTMLElement>[] = [this.createContainer(slotName), this.createSocial(user, type), this.createImg(type)];
+    const promises: Promise<HTMLElement>[] = [this.createContainer(slotName), this.createSocial(user, type), this.createImg(user, type)];
     const [div, social, deckgoImg] = await Promise.all(promises);
 
     social.appendChild(deckgoImg);
@@ -60,7 +60,7 @@ export class HeaderFooterUtils {
     return socialElement;
   }
 
-  private static async createImg(type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom'): Promise<HTMLElement> {
+  private static async createImg(user: User, type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom'): Promise<HTMLElement> {
     const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
     deckgoImg.setAttribute('slot', 'icon');
     deckgoImg.setAttribute('aria-label', type);
@@ -71,6 +71,8 @@ export class HeaderFooterUtils {
       deckgoImg.setAttribute('svg-src', `${config.globalAssetsUrl}/icons/ionicons/${type}.svg`);
     } else if (type === 'medium' || type === 'dev') {
       deckgoImg.setAttribute('svg-src', `${config.globalAssetsUrl}/icons/${type}.svg`);
+    } else if (user.data.social.custom_logo_url !== undefined && user.data.social.custom_logo_url !== '') {
+      deckgoImg.setAttribute('img-src', user.data.social.custom_logo_url);
     } else {
       deckgoImg.setAttribute('svg-src', `${config.globalAssetsUrl}/icons/ionicons/globe.svg`);
     }
