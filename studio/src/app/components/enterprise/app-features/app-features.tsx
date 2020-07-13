@@ -71,7 +71,7 @@ export class AppFeatures {
               Unbreakable templates <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Keep your corporate identity and design up-to-date across all presentations and share them easily.</p>
+            <p>Apply your design, colors, fonts, styles and any other options to your templates. These are those used by your collaborators, period.</p>
           </article>
 
           <article>
@@ -172,6 +172,14 @@ export class AppFeatures {
             </h3>
 
             <p>Publish your decks under your own domain name.</p>
+          </article>
+
+          <article>
+            <h3>
+              Always up-to-date <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
+            </h3>
+
+            <p>Spread your corporate design improvements to all your presentations.</p>
           </article>
 
           <article>

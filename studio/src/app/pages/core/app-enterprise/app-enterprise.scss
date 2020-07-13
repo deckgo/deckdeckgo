@@ -137,6 +137,10 @@ app-enterprise {
           margin: 0 16px;
           color: var(--ion-color-medium);
           font-style: italic;
+
+          &:last-of-type {
+            margin: 16px;
+          }
         }
       }
 

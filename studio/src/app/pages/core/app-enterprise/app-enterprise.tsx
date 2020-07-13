@@ -26,7 +26,7 @@ export class AppEnterprise {
           <div class="content">
             <div>
               <h1>The unbreakable slides for your corporate communication.</h1>
-              <h3 style={{'font-weight': '300'}}>Distribute and keep up-to-date your corporate identity and design across all your company's presentations.</h3>
+              <h3 style={{'font-weight': '300'}}>Apply your corporate identity and design to your company's presentations.</h3>
 
               <ion-button class="ion-margin-top" shape="round" onClick={() => this.scrollTo(this.formRef)} mode="md" color="tertiary">
                 <ion-label style={{'text-transform': 'none'}}>Get in touch</ion-label>
@@ -42,15 +42,16 @@ export class AppEnterprise {
             <blockquote>
               <span>❝</span>
               <p>Did you had a look to Bob's last presentation? He used our old logo and made it green, again.</p>
+
+              <p>- A sentence your marketing team wish to not hear anymore.</p>
             </blockquote>
 
             <h2>Templates and options that match your CI/CD.</h2>
 
             <div>
-              <p>
-                Unlike any other editor for presentations, DeckDeckGo assists you in applying your corporate identity to your company's presentations. The
-                templates and set of options you are defining are those your collaborators are using.
-              </p>
+              <p>Unlike any other editor for presentations, DeckDeckGo assists you in applying your corporate identity to your company's presentations.</p>
+
+              <p>The design, colors, fonts, styles and any other options you are defining in your templates are those your collaborators are using.</p>
             </div>
 
             <div>
