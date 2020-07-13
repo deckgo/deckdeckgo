@@ -104,10 +104,6 @@ export class AppMenu {
   }
 
   private renderDiscover() {
-    if (authStore.state.loggedIn) {
-      return undefined;
-    }
-
     return (
       <ion-item button class="home" href="/discover" routerDirection="forward">
         <ion-icon lazy={true} name="search-outline" slot="start"></ion-icon>
