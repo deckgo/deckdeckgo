@@ -41,9 +41,7 @@ export class AppEnterprise {
           <div class="content">
             <blockquote>
               <span>❝</span>
-              <p>Did you had a look to Bob's last presentation? He used our old logo and made it green, again.</p>
-
-              <p>- A sentence your marketing team wish to not hear anymore.</p>
+              <p>Did you have a look at Bob's presentation? He used the wrong logo, again.</p>
             </blockquote>
 
             <h2>Templates and options that match your CI/CD.</h2>

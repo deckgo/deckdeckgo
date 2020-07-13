@@ -71,7 +71,7 @@ export class AppFeatures {
               Unbreakable templates <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Apply your design, colors, fonts, styles and any other options to your templates. These are those used by your collaborators, period.</p>
+            <p>Apply your design, colors, fonts, styles and any other options to your templates. Those will be used by all your collaborators.</p>
           </article>
 
           <article>
@@ -179,7 +179,7 @@ export class AppFeatures {
               Always up-to-date <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Spread your corporate design improvements to all your presentations.</p>
+            <p>Propagate your corporate design improvements to all your presentations.</p>
           </article>
 
           <article>
