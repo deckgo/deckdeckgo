@@ -1,4 +1,4 @@
-import {Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
+import {Build, Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
 
@@ -162,6 +162,10 @@ export class AppEditor {
   }
 
   async initOffline() {
+    if (Build.isServer) {
+      return;
+    }
+
     // if we are offline we can't create a new deck or edit another one that the one we have marked as currently being edited offline
     const offline: OfflineDeck = await this.offlineService.status();
     if (offline !== undefined) {
