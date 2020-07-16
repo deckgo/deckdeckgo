@@ -100,6 +100,12 @@ export class AppEditor {
   private destroyBusyListener;
   private destroyAuthListener;
 
+  @State()
+  private deckIsBeginning: boolean = true;
+
+  @State()
+  private deckIsEnd: boolean = false;
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
@@ -404,6 +410,12 @@ export class AppEditor {
     });
   }
 
+  private async onSlideDidChange() {
+    const promises: Promise<void>[] = [this.onSlideChangeHideToolbar(), this.updateDeckPosition()];
+
+    await Promise.all(promises);
+  }
+
   private onSlideChangeHideToolbar(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
@@ -630,6 +642,17 @@ export class AppEditor {
     await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
   }
 
+  private async updateDeckPosition() {
+    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+    if (!deck) {
+      return;
+    }
+
+    this.deckIsBeginning = await (deck as any).isBeginning();
+    this.deckIsEnd = await (deck as any).isEnd();
+  }
+
   render() {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
@@ -643,9 +666,9 @@ export class AppEditor {
             transition={this.transition}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-            onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
-            onSlidePrevDidChange={() => this.onSlideChangeHideToolbar()}
-            onSlideToChange={() => this.onSlideChangeHideToolbar()}>
+            onSlideNextDidChange={() => this.onSlideDidChange()}
+            onSlidePrevDidChange={() => this.onSlideDidChange()}
+            onSlideToChange={() => this.onSlideDidChange()}>
             {this.slides}
             {this.background}
             {this.header}
@@ -653,6 +676,12 @@ export class AppEditor {
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
         </main>
+        <app-extra-actions-editor
+          deckIsBeginning={this.deckIsBeginning}
+          deckIsEnd={this.deckIsEnd}
+          fullscreen={this.fullscreen}
+          onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
+          onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}></app-extra-actions-editor>
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>
         <app-actions-editor

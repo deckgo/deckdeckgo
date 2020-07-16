@@ -1,6 +1,11 @@
 @use "../../../../global/theme/editor/editor-fullscreen";
 @use "node_modules/@deckdeckgo/deck-utils/css/fullscreen";
 
+// In comparison to the platform, we define a main content max. a bit smaller
+ion-nav app-editor ion-content main {
+  max-width: 1140px;
+}
+
 app-editor {
   @import "../../../../global/theme/editor/editor-deck";
   @import "../../../../global/theme/editor/editor-deck-placeholder";
@@ -54,12 +59,6 @@ app-editor {
     ion-icon[slot="unorderedList"] {
       padding-top: 10px;
       font-size: 1.6rem;
-    }
-  }
-
-  @media screen and (min-width: 1140px) {
-    main {
-      max-width: 960px;
     }
   }
 }

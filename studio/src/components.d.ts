@@ -187,6 +187,12 @@ export namespace Components {
         "expanded": 'open' | 'close';
         "expander": boolean;
     }
+    interface AppExtraActionsEditor {
+        "deckIsBeginning": boolean;
+        "deckIsEnd": boolean;
+        "fullscreen": boolean;
+        "slides": JSX.IntrinsicElements[];
+    }
     interface AppFaq {
     }
     interface AppFeed {
@@ -626,6 +632,12 @@ declare global {
     var HTMLAppExpansionPanelElement: {
         prototype: HTMLAppExpansionPanelElement;
         new (): HTMLAppExpansionPanelElement;
+    };
+    interface HTMLAppExtraActionsEditorElement extends Components.AppExtraActionsEditor, HTMLStencilElement {
+    }
+    var HTMLAppExtraActionsEditorElement: {
+        prototype: HTMLAppExtraActionsEditorElement;
+        new (): HTMLAppExtraActionsEditorElement;
     };
     interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {
     }
@@ -1070,6 +1082,7 @@ declare global {
         "app-element-style": HTMLAppElementStyleElement;
         "app-embed": HTMLAppEmbedElement;
         "app-expansion-panel": HTMLAppExpansionPanelElement;
+        "app-extra-actions-editor": HTMLAppExtraActionsEditorElement;
         "app-faq": HTMLAppFaqElement;
         "app-feed": HTMLAppFeedElement;
         "app-feed-card": HTMLAppFeedCardElement;
@@ -1340,6 +1353,16 @@ declare namespace LocalJSX {
         "expanded"?: 'open' | 'close';
         "expander"?: boolean;
     }
+    interface AppExtraActionsEditor {
+        "deckIsBeginning"?: boolean;
+        "deckIsEnd"?: boolean;
+        "fullscreen"?: boolean;
+        "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
+        "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
+        "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
+        "onSignIn"?: (event: CustomEvent<void>) => void;
+        "slides"?: JSX.IntrinsicElements[];
+    }
     interface AppFaq {
     }
     interface AppFeed {
@@ -1597,6 +1620,7 @@ declare namespace LocalJSX {
         "app-element-style": AppElementStyle;
         "app-embed": AppEmbed;
         "app-expansion-panel": AppExpansionPanel;
+        "app-extra-actions-editor": AppExtraActionsEditor;
         "app-faq": AppFaq;
         "app-feed": AppFeed;
         "app-feed-card": AppFeedCard;
@@ -1710,6 +1734,7 @@ declare module "@stencil/core" {
             "app-element-style": LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
             "app-embed": LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
             "app-expansion-panel": LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
+            "app-extra-actions-editor": LocalJSX.AppExtraActionsEditor & JSXBase.HTMLAttributes<HTMLAppExtraActionsEditorElement>;
             "app-faq": LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
             "app-feed": LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
             "app-feed-card": LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;

@@ -1,0 +1,35 @@
+@use "../../../../../global/theme/button-deck-navigation";
+
+app-extra-actions-editor {
+  &.fullscreen {
+    display: none;
+  }
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
+
+  button.action {
+    @media (max-width: 1360px) {
+      display: none;
+    }
+
+    &.prev,
+    &.next {
+      left: 50%;
+      right: inherit;
+    }
+
+    &.prev {
+      transform: translate(calc(-1332px / 2), -50%);
+    }
+
+    &.next {
+      transform: translate(calc((1332px / 2) - 3.6rem), -50%);
+    }
+
+    &.add {
+      padding-right: 8px;
+    }
+  }
+}
