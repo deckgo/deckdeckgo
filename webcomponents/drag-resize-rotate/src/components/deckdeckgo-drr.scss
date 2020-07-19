@@ -29,6 +29,13 @@
   }
 }
 
+:host(:not(.editing)) {
+  ::slotted(*) {
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
 :host(.selected.draggable:not(.drag)) {
   cursor: move;
 }
@@ -41,9 +48,7 @@
   width: 100%;
   height: 100%;
 
-  user-select: var(--user-select, none);
   touch-action: none;
-  pointer-events: var(--pointer-events, none);
 }
 
 div.anchor {

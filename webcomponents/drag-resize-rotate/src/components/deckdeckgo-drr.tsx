@@ -564,9 +564,12 @@ export class DeckdeckgoDragResizeRotate {
 
     const element: HTMLElement = this.el.querySelector(Build.isBrowser ? `:scope > *` : '> *');
     if (element) {
-      element.focus();
+      // Webkit workaround otherwise element is not focused
+      setTimeout(async () => {
+        element.focus();
 
-      await this.moveCursorToEnd(element);
+        await this.moveCursorToEnd(element);
+      });
     }
   };
 
