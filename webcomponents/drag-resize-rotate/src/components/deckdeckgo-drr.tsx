@@ -152,10 +152,7 @@ export class DeckdeckgoDragResizeRotate {
       document.removeEventListener('touchmove', this.transform, true);
       document.removeEventListener('mouseup', this.stop, true);
       document.removeEventListener('touchend', this.stop, true);
-    }
-
-    if (this.el) {
-      this.el.removeEventListener('dblclick', this.dbclick, true);
+      document.removeEventListener('dblclick', this.dbclick, true);
     }
   }
 
@@ -184,10 +181,8 @@ export class DeckdeckgoDragResizeRotate {
       return;
     }
 
-    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
-
     // If we click elsewhere or select another component, then this component should loose focus and values need to be reset for next usage
-    if (!selected || !selected.isEqualNode(this.el)) {
+    if (!this.isTargetEvent($event)) {
       this.stopAndReset(false);
 
       if (this.selected) {
@@ -202,6 +197,8 @@ export class DeckdeckgoDragResizeRotate {
     }
 
     if (!this.editing) {
+      const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
+
       this.drrSelect.emit(selected);
 
       this.selected = true;
@@ -214,12 +211,18 @@ export class DeckdeckgoDragResizeRotate {
     await this.initStartPositions($event);
   };
 
+  private isTargetEvent($event: MouseEvent | TouchEvent): boolean {
+    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
+
+    return selected && selected.isEqualNode(this.el);
+  }
+
   private initTextEditable() {
     if (!this.text || !this.el) {
       return;
     }
 
-    this.el.addEventListener('dblclick', this.dbclick, {once: true});
+    document.addEventListener('dblclick', this.dbclick.bind(this), {once: true});
 
     const element: HTMLElement = this.el.querySelector(Build.isBrowser ? `:scope > *` : '> *');
     if (element) {
@@ -228,13 +231,15 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private resetTextEditable() {
-    if (!this.text || !this.el) {
+    if (!this.text) {
       return;
     }
 
     this.editing = false;
 
-    this.el.removeEventListener('dblclick', this.dbclick, true);
+    if (document) {
+      document.removeEventListener('dblclick', this.dbclick, true);
+    }
   }
 
   private async initStartPositions($event: MouseEvent | TouchEvent) {
@@ -559,17 +564,18 @@ export class DeckdeckgoDragResizeRotate {
     };
   }
 
-  private dbclick = async () => {
+  private dbclick = async ($event: MouseEvent | TouchEvent) => {
+    if (!this.isTargetEvent($event)) {
+      return;
+    }
+
     this.editing = true;
 
     const element: HTMLElement = this.el.querySelector(Build.isBrowser ? `:scope > *` : '> *');
     if (element) {
-      // Webkit workaround otherwise element is not focused
-      setTimeout(async () => {
-        element.focus();
+      element.focus();
 
-        await this.moveCursorToEnd(element);
-      });
+      await this.moveCursorToEnd(element);
     }
   };
 
@@ -598,10 +604,12 @@ export class DeckdeckgoDragResizeRotate {
           '--top': `${this.top}${heightUnit}`,
           '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`,
+          '--pointer-events': `${this.editing ? 'all' : 'none'}`,
+          '--user-select': `${this.text ? 'text' : 'none'}`,
         }}
         class={`${this.selected ? 'selected' : ''} ${this.text ? 'text' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${
           this.drag !== 'none' && this.moving ? 'drag' : ''
-        } ${this.editing ? 'editing' : ''}`}>
+        }`}>
         {this.renderEdgesAnchors()}
         {this.renderBorderAnchors()}
         {this.renderRotateAnchor()}
