@@ -1,6 +1,12 @@
+# 1.1.0 (2020-07-19)
+
+### Features
+
+- support for content editable elements
+
 # 1.0.2 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 
