@@ -8,20 +8,17 @@ export const config: Config = {
   namespace: 'deckdeckgo-drag-resize-rotate',
   outputTargets: [
     {
-      type: 'dist'
-    },
-    {
-      type: 'docs-readme'
+      type: 'dist',
     },
     {
       type: 'www',
-      serviceWorker: null // disable service workers
-    }
+      serviceWorker: null, // disable service workers
+    },
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()]
-    })
-  ]
+      plugins: [autoprefixer()],
+    }),
+  ],
 };
