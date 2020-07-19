@@ -1,3 +1,9 @@
+# 1.1.1 (2020-07-19)
+
+### Refactoring
+
+- use style class instead of style selector for text
+
 # 1.1.0 (2020-07-19)
 
 ### Features
