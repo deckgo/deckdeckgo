@@ -117,7 +117,6 @@ export class ShapeHelper {
     deckGoDrr.style.setProperty('--top', `${50 - size / 2}`); // vh center
 
     const section = document.createElement(SlotType.SECTION);
-    section.innerHTML = 'Edit me';
     section.setAttribute('contentEditable', 'true');
 
     this.addSection(deckGoDrr, slideElement, section);
