@@ -1,3 +1,9 @@
+# 1.1.2 (2020-07-19)
+
+### Fix
+
+- webkit workaround :(
+
 # 1.1.1 (2020-07-19)
 
 ### Refactoring
