@@ -7,11 +7,11 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoDrr {
-        "drag": "x-axis" | "y-axis" | "all" | "none";
+        "drag": 'x-axis' | 'y-axis' | 'all' | 'none';
         "resize": boolean;
         "rotation": boolean;
         "text": boolean;
-        "unit": "percentage" | "viewport" | "px";
+        "unit": 'percentage' | 'viewport' | 'px';
     }
 }
 declare global {
@@ -27,13 +27,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoDrr {
-        "drag"?: "x-axis" | "y-axis" | "all" | "none";
+        "drag"?: 'x-axis' | 'y-axis' | 'all' | 'none';
         "onDrrDidChange"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "onDrrSelect"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "resize"?: boolean;
         "rotation"?: boolean;
         "text"?: boolean;
-        "unit"?: "percentage" | "viewport" | "px";
+        "unit"?: 'percentage' | 'viewport' | 'px';
     }
     interface IntrinsicElements {
         "deckgo-drr": DeckgoDrr;
