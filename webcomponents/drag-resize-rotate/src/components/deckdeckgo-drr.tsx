@@ -595,11 +595,10 @@ export class DeckdeckgoDragResizeRotate {
           '--top': `${this.top}${heightUnit}`,
           '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`,
-          '--contain': this.text ? 'layout' : 'size',
-          '--pointer-events': `${this.editing ? 'all' : 'none'}`,
-          '--user-select': `${this.editing ? 'text' : 'none'}`,
         }}
-        class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
+        class={`${this.selected ? 'selected' : ''} ${this.text ? 'text' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${
+          this.drag !== 'none' && this.moving ? 'drag' : ''
+        } ${this.editing ? 'editing' : ''}`}>
         {this.renderEdgesAnchors()}
         {this.renderBorderAnchors()}
         {this.renderRotateAnchor()}
