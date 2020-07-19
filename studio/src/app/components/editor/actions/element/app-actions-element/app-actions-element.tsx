@@ -533,6 +533,10 @@ export class AppActionsElement {
     await popover.present();
   }
 
+  private async appendText() {
+    await this.shapeHelper.appendText(this.selectedElement);
+  }
+
   private async getImagePopover(): Promise<HTMLIonPopoverElement> {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-image-element',
@@ -1003,7 +1007,7 @@ export class AppActionsElement {
         <ion-buttons slot="start">
           {this.renderStyle()}
           {this.renderEdit()}
-          {this.renderShapes()}
+          {this.renderAspectRatio()}
           {this.renderImages()}
           {this.renderCodeOptions()}
           {this.renderMathOptions()}
@@ -1103,13 +1107,17 @@ export class AppActionsElement {
     );
   }
 
-  private renderShapes() {
+  private renderAspectRatio() {
     const classSlide: string | undefined = this.slideNodeName === 'deckgo-slide-aspect-ratio' ? undefined : 'hidden';
 
     return [
       <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
         <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
         <ion-label>Add shape</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button onClick={() => this.appendText()} color="primary" aria-label="Add a text" mode="md" class={classSlide}>
+        <ion-icon src="/assets/icons/text.svg"></ion-icon>
+        <ion-label>Add text</ion-label>
       </ion-tab-button>,
     ];
   }

@@ -145,7 +145,7 @@ export class DeckEventsHandler {
 
     let parent: HTMLElement = element.parentElement;
 
-    if (SlotUtils.isNodeReveal(parent)) {
+    if (SlotUtils.isNodeReveal(parent) || SlotUtils.isNodeDragDropResize(parent)) {
       parent = parent.parentElement;
     }
 

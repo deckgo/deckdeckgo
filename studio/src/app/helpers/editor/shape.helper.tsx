@@ -22,6 +22,10 @@ export class ShapeHelper {
     }
   }
 
+  async appendText(slideElement: HTMLElement) {
+    await this.appendContentText(slideElement);
+  }
+
   private async appendShapeSVG(slideElement: HTMLElement, shapeAction: ShapeActionSVG) {
     busyStore.state.deckBusy = true;
 
@@ -79,7 +83,7 @@ export class ShapeHelper {
 
   private appendContentShape(slideElement: HTMLElement, ratio: number, src: string, label: string, type: 'svg' | 'img'): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
+      const deckGoDrr: HTMLElement = this.initDeckGoDrr();
 
       const size: number = 10; // percent
 
@@ -102,34 +106,59 @@ export class ShapeHelper {
     });
   }
 
-  private cloneShapeElement(shapeElement: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
+  private async appendContentText(slideElement: HTMLElement) {
+    const deckGoDrr: HTMLElement = this.initDeckGoDrr();
 
-      deckGoDrr.setAttribute('style', shapeElement.getAttribute('style'));
+    deckGoDrr.setAttribute('text', 'true');
 
-      const img: HTMLElement = shapeElement.querySelector(SlotType.IMG);
+    const size: number = 10; // percent
 
-      if (!img) {
-        resolve();
-        return;
-      }
+    deckGoDrr.style.setProperty('--left', `${50 - size / 2}`); // vw center
+    deckGoDrr.style.setProperty('--top', `${50 - size / 2}`); // vh center
 
+    const section = document.createElement(SlotType.SECTION);
+    section.innerHTML = 'Edit me';
+    section.setAttribute('contentEditable', 'true');
+
+    this.addSection(deckGoDrr, slideElement, section);
+  }
+
+  private async cloneShapeElement(shapeElement: HTMLElement) {
+    const deckGoDrr: HTMLElement = this.initDeckGoDrr();
+
+    deckGoDrr.setAttribute('style', shapeElement.getAttribute('style'));
+
+    const img: HTMLElement = shapeElement.querySelector(SlotType.IMG);
+
+    if (img) {
       const type: 'svg' | 'img' = (img as any).imgSrc !== undefined && (img as any).imgSrc !== '' ? 'img' : 'svg';
       const src: string = type === 'img' ? (img as any).imgSrc : (img as any).svgSrc;
       const label: string = type === 'img' ? (img as any).svgAlt : (img as any).svgAlt;
 
       this.addShape(deckGoDrr, shapeElement.parentElement, src, label, type);
 
-      resolve();
-    });
+      return;
+    }
+
+    const section: HTMLElement = shapeElement.querySelector(SlotType.SECTION);
+
+    if (section) {
+      deckGoDrr.setAttribute('text', 'true');
+
+      this.addSection(deckGoDrr, shapeElement.parentElement, section.cloneNode(true));
+    }
+  }
+
+  private initDeckGoDrr(): HTMLElement {
+    const deckGoDrr: HTMLElement = document.createElement(SlotType.DRAG_RESIZE_ROTATE);
+
+    deckGoDrr.setAttribute('slot', '');
+    deckGoDrr.setAttribute('contentEditable', 'false');
+
+    return deckGoDrr;
   }
 
   private addShape(deckGoDrr: HTMLElement, slideElement: HTMLElement, src: string, label: string, type: 'svg' | 'img') {
-    deckGoDrr.setAttribute('slot', '');
-
-    deckGoDrr.setAttribute('contentEditable', 'false');
-
     const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
     if (type === 'img') {
@@ -141,6 +170,14 @@ export class ShapeHelper {
     }
 
     deckGoDrr.appendChild(deckgoImg);
+
+    slideElement.appendChild(deckGoDrr);
+
+    this.didChange.emit(slideElement);
+  }
+
+  private addSection(deckGoDrr: HTMLElement, slideElement: HTMLElement, section: HTMLElement | Node) {
+    deckGoDrr.appendChild(section);
 
     slideElement.appendChild(deckGoDrr);
 
