@@ -10,6 +10,7 @@ export namespace Components {
         "drag": "x-axis" | "y-axis" | "all" | "none";
         "resize": boolean;
         "rotation": boolean;
+        "text": boolean;
         "unit": "percentage" | "viewport" | "px";
     }
 }
@@ -31,6 +32,7 @@ declare namespace LocalJSX {
         "onDrrSelect"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "resize"?: boolean;
         "rotation"?: boolean;
+        "text"?: boolean;
         "unit"?: "percentage" | "viewport" | "px";
     }
     interface IntrinsicElements {

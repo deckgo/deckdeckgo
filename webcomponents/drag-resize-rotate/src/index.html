@@ -17,11 +17,11 @@
       </deckgo-drr>
 
       <deckgo-drr style="--width: 10%; --height: 20%; --top: 45%; --left: 8%;" drag="y-axis">
-        <div style="background: yellow"></div>
+        <div style="background: yellow;"></div>
       </deckgo-drr>
 
       <deckgo-drr style="--width: 10%; --height: 10%; --top: 25%; --left: 10%;" resize="false">
-        <div style="background: green"></div>
+        <div style="background: green;"></div>
       </deckgo-drr>
 
       <deckgo-drr style="--width: 10%; --height: 15%; --top: 25%; --left: 15%;" drag="none">
@@ -35,6 +35,23 @@
       <deckgo-drr style="--width: 34%; --height: 20%; --top: 40%; --left: 25%;">
         <img src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="display: none;" />
       </deckgo-drr>
+
+      <deckgo-drr
+        style="
+          --width: auto;
+          --height: auto;
+          --top: 50%;
+          --left: 35%;
+          --deckgo-drr-contain: layout;
+          --deckgo-drr-width: fit-content;
+          --deckgo-drr-height: auto;
+          --deckgo-drr-pointer-events: all;
+        "
+        resize="false"
+        text="true"
+      >
+        <h1 style="margin: 0; background: lightcoral;" slot contenteditable="true">Move and edit me</h1>
+      </deckgo-drr>
     </div>
 
     <h1>Not editable container</h1>
@@ -45,7 +62,22 @@
       </deckgo-drr>
 
       <deckgo-drr style="--width: 10%; --height: 20%; --top: 45%; --left: 8%;" drag="y-axis">
-        <div style="background: yellow"></div>
+        <div style="background: yellow;"></div>
+      </deckgo-drr>
+
+      <deckgo-drr
+        style="
+          --top: 50%;
+          --left: 35%;
+          --deckgo-drr-contain: layout;
+          --deckgo-drr-width: fit-content;
+          --deckgo-drr-height: auto;
+          --deckgo-drr-pointer-events: all;
+        "
+        resize="false"
+        text="true"
+      >
+        <h1 style="margin: 0; background: lightcoral;" slot contenteditable="true">You can't edit me</h1>
       </deckgo-drr>
     </div>
   </body>

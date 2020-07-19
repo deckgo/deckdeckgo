@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
 
-  contain: size;
+  contain: var(--contain);
 
   width: var(--width);
   height: var(--height);
@@ -30,9 +30,9 @@
   width: 100%;
   height: 100%;
 
-  user-select: none;
+  user-select: var(--user-select, none);
   touch-action: none;
-  pointer-events: none;
+  pointer-events: var(--pointer-events, none);
 }
 
 div.anchor {
