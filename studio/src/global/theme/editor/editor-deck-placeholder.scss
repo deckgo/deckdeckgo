@@ -95,7 +95,7 @@ deckgo-deck {
 
   deckgo-slide-aspect-ratio {
     &:empty:not(:focus):after {
-      content: "Click to add a shape";
+      content: "Add text, shapes or images";
       font-size: 2em;
       min-height: 1.7em;
       position: absolute;

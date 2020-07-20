@@ -190,10 +190,6 @@ export class AppActionsElement {
         await this.openImage();
       }
 
-      if (autoOpen && this.isSlideAspectRatioEmpty(selected)) {
-        await this.openShape();
-      }
-
       this.blockSlide.emit(!this.slide);
 
       resolve();
@@ -202,10 +198,6 @@ export class AppActionsElement {
 
   private isImgNotDefined(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG && !element.hasAttribute('img-src');
-  }
-
-  private isSlideAspectRatioEmpty(element: HTMLElement): boolean {
-    return element && element.nodeName && this.slideNodeName === 'deckgo-slide-aspect-ratio' && !element.hasChildNodes();
   }
 
   @Method()
@@ -509,13 +501,13 @@ export class AppActionsElement {
     await popover.present();
   }
 
-  private async openShape() {
+  private async openShape(component: 'app-shape' | 'app-image-element') {
     if (!this.slide || this.slideNodeName !== 'deckgo-slide-aspect-ratio') {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-shape',
+      component: component,
       componentProps: {
         selectedElement: this.selectedElement,
       },
@@ -526,7 +518,14 @@ export class AppActionsElement {
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
-        await this.shapeHelper.appendShape(this.selectedElement, detail.data);
+        await this.shapeHelper.appendShape(
+          this.selectedElement,
+          component === 'app-image-element'
+            ? {
+                img: detail.data,
+              }
+            : detail.data
+        );
       }
     });
 
@@ -981,6 +980,7 @@ export class AppActionsElement {
       componentProps: {
         notes: this.slide,
         copy: this.slide || this.shape,
+        images: this.slideNodeName === 'deckgo-slide-aspect-ratio',
       },
       event: $event,
       mode: 'ios',
@@ -994,6 +994,8 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
+        } else if (detail.data.action === MoreAction.IMAGES) {
+          await this.openShape('app-image-element');
         }
       }
     });
@@ -1111,13 +1113,22 @@ export class AppActionsElement {
     const classSlide: string | undefined = this.slideNodeName === 'deckgo-slide-aspect-ratio' ? undefined : 'hidden';
 
     return [
-      <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
-        <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
-        <ion-label>Add shape</ion-label>
-      </ion-tab-button>,
       <ion-tab-button onClick={() => this.appendText()} color="primary" aria-label="Add a text" mode="md" class={classSlide}>
         <ion-icon src="/assets/icons/text.svg"></ion-icon>
         <ion-label>Add text</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button onClick={() => this.openShape('app-shape')} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
+        <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
+        <ion-label>Add shape</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button
+        onClick={() => this.openShape('app-image-element')}
+        aria-label="Add an image"
+        color="primary"
+        mode="md"
+        class={`wider-devices ${classSlide}`}>
+        <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
+        <ion-label>Add image</ion-label>
       </ion-tab-button>,
     ];
   }

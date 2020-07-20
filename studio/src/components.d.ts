@@ -264,6 +264,7 @@ export namespace Components {
     }
     interface AppMoreElementActions {
         "copy": boolean;
+        "images": boolean;
         "notes": boolean;
     }
     interface AppMoreShareOptions {
@@ -338,9 +339,7 @@ export namespace Components {
         "code": boolean;
         "headerFooter": boolean;
         "image": boolean;
-        "images": boolean;
         "qrCode": boolean;
-        "shapes": boolean;
         "sides": boolean;
         "slide": boolean;
         "textTarget": boolean;
@@ -1428,6 +1427,7 @@ declare namespace LocalJSX {
     }
     interface AppMoreElementActions {
         "copy"?: boolean;
+        "images"?: boolean;
         "notes"?: boolean;
     }
     interface AppMoreShareOptions {
@@ -1506,10 +1506,8 @@ declare namespace LocalJSX {
         "code"?: boolean;
         "headerFooter"?: boolean;
         "image"?: boolean;
-        "images"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
-        "shapes"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
         "textTarget"?: boolean;
