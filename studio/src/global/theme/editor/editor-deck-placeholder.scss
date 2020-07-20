@@ -105,6 +105,12 @@ deckgo-deck {
       width: 100%;
       text-align: center;
     }
+
+    [highlighted] {
+      // Safari issue when typing text
+      box-shadow: none;
+      outline: 1px solid var(--ion-color-primary);
+    }
   }
 
   [highlighted] {
