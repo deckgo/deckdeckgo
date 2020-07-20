@@ -22,9 +22,6 @@ export class AppColorTextBackground {
   deck: boolean = false;
 
   @Prop()
-  shape: boolean = false;
-
-  @Prop()
   colorType: 'text' | 'background' = 'text';
 
   @Prop()

@@ -104,7 +104,6 @@ export namespace Components {
         "initCurrentColors": () => Promise<void>;
         "moreColors": boolean;
         "selectedElement": HTMLElement;
-        "shape": boolean;
         "slide": boolean;
     }
     interface AppContact {
@@ -178,7 +177,7 @@ export namespace Components {
         "imgDidChange": EventEmitter<HTMLElement>;
         "math": boolean;
         "selectedElement": HTMLElement;
-        "shape": boolean;
+        "shape": 'shape' | 'text' | undefined;
         "slide": boolean;
     }
     interface AppEmbed {
@@ -264,6 +263,7 @@ export namespace Components {
     }
     interface AppMoreElementActions {
         "copy": boolean;
+        "images": boolean;
         "notes": boolean;
     }
     interface AppMoreShareOptions {
@@ -338,9 +338,8 @@ export namespace Components {
         "code": boolean;
         "headerFooter": boolean;
         "image": boolean;
-        "images": boolean;
         "qrCode": boolean;
-        "shapes": boolean;
+        "shape": boolean;
         "sides": boolean;
         "slide": boolean;
         "textTarget": boolean;
@@ -1247,7 +1246,6 @@ declare namespace LocalJSX {
         "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
-        "shape"?: boolean;
         "slide"?: boolean;
     }
     interface AppContact {
@@ -1331,7 +1329,7 @@ declare namespace LocalJSX {
         "math"?: boolean;
         "onStyleDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
-        "shape"?: boolean;
+        "shape"?: 'shape' | 'text' | undefined;
         "slide"?: boolean;
     }
     interface AppEmbed {
@@ -1428,6 +1426,7 @@ declare namespace LocalJSX {
     }
     interface AppMoreElementActions {
         "copy"?: boolean;
+        "images"?: boolean;
         "notes"?: boolean;
     }
     interface AppMoreShareOptions {
@@ -1506,10 +1505,9 @@ declare namespace LocalJSX {
         "code"?: boolean;
         "headerFooter"?: boolean;
         "image"?: boolean;
-        "images"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
-        "shapes"?: boolean;
+        "shape"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
         "textTarget"?: boolean;

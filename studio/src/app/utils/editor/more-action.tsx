@@ -10,6 +10,5 @@ export enum MoreAction {
   DELETE,
   HELP,
   OFFLINE,
-  LIST,
-  REVEAL,
+  IMAGES,
 }

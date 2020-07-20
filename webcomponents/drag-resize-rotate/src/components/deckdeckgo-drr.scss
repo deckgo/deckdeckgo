@@ -18,6 +18,10 @@
   user-select: var(--deckgo-drr-user-select, none);
 }
 
+:host(.text) {
+  contain: layout;
+}
+
 :host(.selected.draggable:not(.drag)) {
   cursor: move;
 }
@@ -30,9 +34,9 @@
   width: 100%;
   height: 100%;
 
-  user-select: none;
+  user-select: var(--user-select, none);
   touch-action: none;
-  pointer-events: none;
+  pointer-events: var(--pointer-events, none);
 }
 
 div.anchor {

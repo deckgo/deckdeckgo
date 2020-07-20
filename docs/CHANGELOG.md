@@ -4,6 +4,7 @@
 
 - group `notes` in a single page
 - add new `header` and `footer`
+- property `text` of `@deckdeckgo/drag-resize-rotate`
 
 # 1.6.2 (2020-07-02)
 

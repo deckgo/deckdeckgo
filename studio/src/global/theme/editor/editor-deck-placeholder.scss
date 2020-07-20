@@ -58,6 +58,19 @@ deckgo-deck {
     }
   }
 
+  deckgo-slide-aspect-ratio {
+    section {
+      &:empty:not(:focus):after {
+        content: "Double click to\A edit text";
+        white-space: pre;
+      }
+
+      &:empty {
+        min-width: 48px;
+      }
+    }
+  }
+
   deckgo-slide-gif {
     h1,
     h2,
@@ -82,7 +95,7 @@ deckgo-deck {
 
   deckgo-slide-aspect-ratio {
     &:empty:not(:focus):after {
-      content: "Click to add a shape";
+      content: "Add text, shapes or images";
       font-size: 2em;
       min-height: 1.7em;
       position: absolute;
@@ -91,6 +104,12 @@ deckgo-deck {
       transform: translate(-50%, -50%);
       width: 100%;
       text-align: center;
+    }
+
+    [highlighted] {
+      // Safari issue when typing text
+      box-shadow: none;
+      outline: 1px solid var(--ion-color-primary);
     }
   }
 

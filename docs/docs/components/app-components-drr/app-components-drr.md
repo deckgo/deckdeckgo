@@ -83,12 +83,13 @@ The default slot is mandatory.
 
 This component offers the following options which could be set using attributes:
 
-| Attribute | Type                                | Default      | Description                                                                                                       |
-| --------- | ----------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------- |
-| unit      | 'percentage', 'viewport' or 'px'    | 'percentage' | The component could be use with percentage, viewport (vw/vh) or pixels (px) units. All relative to the container. |
-| resize    | boolean                             | true         | Allow or not the resize actions                                                                                   |
-| drag      | 'x-axis', 'y-axis', 'all' or 'none' | 'all'        | Allow the component to be dragged in which direction                                                              |
-| rotation  | boolean                             | true         | Allow or not the rotation of the element                                                                          |
+| Attribute | Type                                | Default      | Description                                                                                                                                                                                         |
+| --------- | ----------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| unit      | 'percentage', 'viewport' or 'px'    | 'percentage' | The component could be use with percentage, viewport (vw/vh) or pixels (px) units. All relative to the container.                                                                                   |
+| resize    | boolean                             | true         | Allow or not the resize actions                                                                                                                                                                     |
+| drag      | 'x-axis', 'y-axis', 'all' or 'none' | 'all'        | Allow the component to be dragged in which direction                                                                                                                                                |
+| rotation  | boolean                             | true         | Allow or not the rotation of the element                                                                                                                                                            |
+| text      | boolean                             | false        | To be used if your slotted element is to be defined as `contentEditable`. Useful for text edition. Note that if turns to `true`, the property `resize` is going to be set to `false` automatically. |
 
 ### Event listeners
 
