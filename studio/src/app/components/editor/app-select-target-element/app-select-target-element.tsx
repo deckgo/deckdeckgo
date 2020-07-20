@@ -36,13 +36,10 @@ export class AppSelectTargetElement {
   headerFooter: boolean = false;
 
   @Prop()
-  shapes: boolean = false;
-
-  @Prop()
-  images: boolean = false;
-
-  @Prop()
   image: boolean = false;
+
+  @Prop()
+  shape: boolean = false;
 
   @Event()
   applyTo: EventEmitter<TargetElement>;
@@ -66,10 +63,6 @@ export class AppSelectTargetElement {
       ? TargetElement.QR_CODE
       : this.chart
       ? TargetElement.CHART
-      : this.shapes
-      ? TargetElement.SHAPES
-      : this.images
-      ? TargetElement.IMAGES
       : TargetElement.SLIDE;
 
     return (
@@ -84,8 +77,6 @@ export class AppSelectTargetElement {
         {this.renderBackground()}
         {this.renderHeaderFooter()}
         {this.renderTransition()}
-        {this.renderShapes()}
-        {this.renderImages()}
       </ion-segment>
     );
   }
@@ -154,7 +145,7 @@ export class AppSelectTargetElement {
     if (this.background) {
       return (
         <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
-          <ion-label>Background</ion-label>
+          <ion-label>{this.shape ? 'Color' : 'Background'}</ion-label>
         </ion-segment-button>
       );
     } else {
@@ -203,30 +194,6 @@ export class AppSelectTargetElement {
       return (
         <ion-segment-button value={TargetElement.SIDES} mode="md">
           <ion-label>Sides</ion-label>
-        </ion-segment-button>
-      );
-    } else {
-      return undefined;
-    }
-  }
-
-  private renderShapes() {
-    if (this.shapes) {
-      return (
-        <ion-segment-button value={TargetElement.SHAPES} mode="md">
-          <ion-label>Shapes</ion-label>
-        </ion-segment-button>
-      );
-    } else {
-      return undefined;
-    }
-  }
-
-  private renderImages() {
-    if (this.images) {
-      return (
-        <ion-segment-button value={TargetElement.IMAGES} mode="md">
-          <ion-label>Images</ion-label>
         </ion-segment-button>
       );
     } else {

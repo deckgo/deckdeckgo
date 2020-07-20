@@ -55,7 +55,7 @@ export class AppActionsElement {
   private image: boolean = false;
 
   @State()
-  private shape: boolean = false;
+  private shape: 'shape' | 'text' | undefined = undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -190,10 +190,6 @@ export class AppActionsElement {
         await this.openImage();
       }
 
-      if (autoOpen && this.isSlideAspectRatioEmpty(selected)) {
-        await this.openShape();
-      }
-
       this.blockSlide.emit(!this.slide);
 
       resolve();
@@ -202,10 +198,6 @@ export class AppActionsElement {
 
   private isImgNotDefined(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG && !element.hasAttribute('img-src');
-  }
-
-  private isSlideAspectRatioEmpty(element: HTMLElement): boolean {
-    return element && element.nodeName && this.slideNodeName === 'deckgo-slide-aspect-ratio' && !element.hasChildNodes();
   }
 
   @Method()
@@ -257,8 +249,12 @@ export class AppActionsElement {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MATH;
   }
 
-  private isElementShape(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
+  private isElementShape(element: HTMLElement): 'shape' | 'text' | undefined {
+    if (!element || !element.nodeName || element.nodeName.toLowerCase() !== SlotType.DRAG_RESIZE_ROTATE) {
+      return undefined;
+    }
+
+    return element.hasAttribute('text') ? 'text' : 'shape';
   }
 
   private isElementImage(element: HTMLElement): boolean {
@@ -401,7 +397,7 @@ export class AppActionsElement {
   }
 
   private async clone() {
-    if (this.shape) {
+    if (this.shape !== undefined) {
       await this.cloneShape();
     } else {
       await this.cloneSlide();
@@ -415,7 +411,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.deckBusy || !this.shape) {
+      if (store.state.deckBusy || this.shape === undefined) {
         resolve();
         return;
       }
@@ -509,13 +505,13 @@ export class AppActionsElement {
     await popover.present();
   }
 
-  private async openShape() {
+  private async openShape(component: 'app-shape' | 'app-image-element') {
     if (!this.slide || this.slideNodeName !== 'deckgo-slide-aspect-ratio') {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-shape',
+      component: component,
       componentProps: {
         selectedElement: this.selectedElement,
       },
@@ -526,11 +522,22 @@ export class AppActionsElement {
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
-        await this.shapeHelper.appendShape(this.selectedElement, detail.data);
+        await this.shapeHelper.appendShape(
+          this.selectedElement,
+          component === 'app-image-element'
+            ? {
+                img: detail.data,
+              }
+            : detail.data
+        );
       }
     });
 
     await popover.present();
+  }
+
+  private async appendText() {
+    await this.shapeHelper.appendText(this.selectedElement);
   }
 
   private async getImagePopover(): Promise<HTMLIonPopoverElement> {
@@ -976,7 +983,8 @@ export class AppActionsElement {
       component: 'app-more-element-actions',
       componentProps: {
         notes: this.slide,
-        copy: this.slide || this.shape,
+        copy: this.slide || this.shape !== undefined,
+        images: this.slideNodeName === 'deckgo-slide-aspect-ratio',
       },
       event: $event,
       mode: 'ios',
@@ -990,6 +998,8 @@ export class AppActionsElement {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
+        } else if (detail.data.action === MoreAction.IMAGES) {
+          await this.openShape('app-image-element');
         }
       }
     });
@@ -1003,7 +1013,7 @@ export class AppActionsElement {
         <ion-buttons slot="start">
           {this.renderStyle()}
           {this.renderEdit()}
-          {this.renderShapes()}
+          {this.renderAspectRatio()}
           {this.renderImages()}
           {this.renderCodeOptions()}
           {this.renderMathOptions()}
@@ -1047,7 +1057,7 @@ export class AppActionsElement {
   }
 
   private renderCopy() {
-    const classSlide: string | undefined = `wider-devices ${this.slide || this.shape ? '' : 'hidden'}`;
+    const classSlide: string | undefined = `wider-devices ${this.slide || this.shape !== undefined ? '' : 'hidden'}`;
 
     return (
       <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={store.state.deckBusy} class={classSlide}>
@@ -1093,7 +1103,7 @@ export class AppActionsElement {
   }
 
   private renderTransform() {
-    const classToggle: string | undefined = !this.slide && !this.shape ? undefined : 'hidden';
+    const classToggle: string | undefined = !this.slide && this.shape === undefined ? undefined : 'hidden';
 
     return (
       <ion-tab-button onClick={() => this.openTransform()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
@@ -1103,13 +1113,26 @@ export class AppActionsElement {
     );
   }
 
-  private renderShapes() {
+  private renderAspectRatio() {
     const classSlide: string | undefined = this.slideNodeName === 'deckgo-slide-aspect-ratio' ? undefined : 'hidden';
 
     return [
-      <ion-tab-button onClick={() => this.openShape()} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
+      <ion-tab-button onClick={() => this.appendText()} color="primary" aria-label="Add a text" mode="md" class={classSlide}>
+        <ion-icon src="/assets/icons/text.svg"></ion-icon>
+        <ion-label>Add text</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button onClick={() => this.openShape('app-shape')} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
         <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
         <ion-label>Add shape</ion-label>
+      </ion-tab-button>,
+      <ion-tab-button
+        onClick={() => this.openShape('app-image-element')}
+        aria-label="Add an image"
+        color="primary"
+        mode="md"
+        class={`wider-devices ${classSlide}`}>
+        <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
+        <ion-label>Add image</ion-label>
       </ion-tab-button>,
     ];
   }

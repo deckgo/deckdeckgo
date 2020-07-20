@@ -160,6 +160,15 @@ export class AppComponentsDrr {
                 <td>true</td>
                 <td>Allow or not the rotation of the element</td>
               </tr>
+              <tr>
+                <td>text</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>
+                  To be used if your slotted element is to be defined as <code>contentEditable</code>. Useful for text edition. Note that if turns to{' '}
+                  <code>true</code>, the property <code>resize</code> is going to be set to <code>false</code> automatically.
+                </td>
+              </tr>
             </tbody>
           </table>
           <h3 id="app-components-drr-event-listeners">Event listeners</h3>

@@ -35,7 +35,7 @@ export class AppElementStyle {
   math: boolean = false;
 
   @Prop()
-  shape: boolean = false;
+  shape: 'shape' | 'text' | undefined = undefined;
 
   @Prop()
   image: boolean = false;
@@ -164,8 +164,8 @@ export class AppElementStyle {
   }
 
   private renderSelectTarget() {
-    const elementTarget: boolean = !this.slide && !this.shape && !this.image;
-    const transition: boolean = !this.slide && !this.code && !this.math && !this.shape && !this.demo;
+    const elementTarget: boolean = !this.slide && this.shape !== 'shape' && !this.image;
+    const transition: boolean = !this.slide && !this.code && !this.math && this.shape === undefined && !this.demo;
 
     return (
       <app-select-target-element
@@ -177,6 +177,7 @@ export class AppElementStyle {
         code={this.code}
         image={this.image}
         sides={this.author || this.split}
+        shape={this.shape === 'shape'}
         transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );
@@ -231,7 +232,6 @@ export class AppElementStyle {
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
           slide={this.slide}
-          shape={this.shape}
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       ];
     }

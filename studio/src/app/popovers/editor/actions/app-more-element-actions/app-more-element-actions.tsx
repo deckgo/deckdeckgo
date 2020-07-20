@@ -14,6 +14,9 @@ export class AppMoreElementActions {
   @Prop()
   copy: boolean = false;
 
+  @Prop()
+  images: boolean = false;
+
   private async closePopover(action: MoreAction) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       action: action,
@@ -23,6 +26,7 @@ export class AppMoreElementActions {
   render() {
     return (
       <div class="ion-padding">
+        {this.renderImages()}
         {this.renderNotes()}
         {this.renderCopy()}
         {this.renderDelete()}
@@ -58,6 +62,18 @@ export class AppMoreElementActions {
     return (
       <a onClick={() => this.closePopover(MoreAction.DELETE)} aria-label="Delete">
         <p>Delete</p>
+      </a>
+    );
+  }
+
+  private renderImages() {
+    if (!this.images) {
+      return undefined;
+    }
+
+    return (
+      <a onClick={() => this.closePopover(MoreAction.IMAGES)} aria-label="Add an image">
+        <p>Add image</p>
       </a>
     );
   }

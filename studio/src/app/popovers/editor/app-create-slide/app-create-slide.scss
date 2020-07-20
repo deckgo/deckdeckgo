@@ -421,6 +421,14 @@ app-create-slide {
             transform: translate(-50%, -50%);
           }
         }
+
+        span {
+          font-size: var(--font-size-very-small);
+          top: 5%;
+          position: absolute;
+          left: 40%;
+          transform: translate(-50%, -50%) rotate(-15deg);
+        }
       }
 
       deckgo-slide-split[type="demo"] {
