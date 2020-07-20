@@ -9,7 +9,7 @@ export enum TextAlign {
 
 export class AlignUtils {
   static async getAlignment(element: HTMLElement): Promise<TextAlign | undefined> {
-    if (!element || !this.isElementText(element)) {
+    if (!element || (!this.isElementText(element) && !this.isShapeText(element))) {
       return undefined;
     }
 
@@ -28,6 +28,10 @@ export class AlignUtils {
 
   private static getDefaultAlignment(): TextAlign {
     return isRTL() ? TextAlign.RIGHT : TextAlign.LEFT;
+  }
+
+  private static isShapeText(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() && SlotType.DRAG_RESIZE_ROTATE && element.hasAttribute('text');
   }
 
   private static isElementText(element: HTMLElement): boolean {

@@ -104,7 +104,6 @@ export namespace Components {
         "initCurrentColors": () => Promise<void>;
         "moreColors": boolean;
         "selectedElement": HTMLElement;
-        "shape": boolean;
         "slide": boolean;
     }
     interface AppContact {
@@ -178,7 +177,7 @@ export namespace Components {
         "imgDidChange": EventEmitter<HTMLElement>;
         "math": boolean;
         "selectedElement": HTMLElement;
-        "shape": boolean;
+        "shape": 'shape' | 'text' | undefined;
         "slide": boolean;
     }
     interface AppEmbed {
@@ -340,6 +339,7 @@ export namespace Components {
         "headerFooter": boolean;
         "image": boolean;
         "qrCode": boolean;
+        "shape": boolean;
         "sides": boolean;
         "slide": boolean;
         "textTarget": boolean;
@@ -1246,7 +1246,6 @@ declare namespace LocalJSX {
         "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
-        "shape"?: boolean;
         "slide"?: boolean;
     }
     interface AppContact {
@@ -1330,7 +1329,7 @@ declare namespace LocalJSX {
         "math"?: boolean;
         "onStyleDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
-        "shape"?: boolean;
+        "shape"?: 'shape' | 'text' | undefined;
         "slide"?: boolean;
     }
     interface AppEmbed {
@@ -1508,6 +1507,7 @@ declare namespace LocalJSX {
         "image"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
+        "shape"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
         "textTarget"?: boolean;
