@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ContentAlign, ContentList, FontSize, ToolbarActions, } from "./types/enums";
-import { DeckdeckgoPalette, } from "@deckdeckgo/color";
-import { EventEmitter, } from "@stencil/core";
-import { AnchorLink, InlineAction, } from "./interfaces/interfaces";
+import { ContentAlign, ContentList, FontSize, ToolbarActions } from "./types/enums";
+import { DeckdeckgoPalette } from "@deckdeckgo/color";
+import { EventEmitter } from "@stencil/core";
+import { AnchorLink, InlineAction } from "./interfaces/interfaces";
 export namespace Components {
     interface DeckgoIeActionButton {
         "cssClass": string;
@@ -26,7 +26,7 @@ export namespace Components {
         "sticky": boolean;
     }
     interface DeckgoIeColorActions {
-        "action": "foreColor" | "backColor";
+        "action": 'foreColor' | 'backColor';
         "mobile": boolean;
         "palette": DeckdeckgoPalette[];
         "selection": Selection;
@@ -200,7 +200,7 @@ declare namespace LocalJSX {
         "sticky"?: boolean;
     }
     interface DeckgoIeColorActions {
-        "action"?: "foreColor" | "backColor";
+        "action"?: 'foreColor' | 'backColor';
         "mobile"?: boolean;
         "onColorModified"?: (event: CustomEvent<void>) => void;
         "palette"?: DeckdeckgoPalette[];
