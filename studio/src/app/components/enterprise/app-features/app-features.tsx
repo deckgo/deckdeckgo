@@ -99,7 +99,7 @@ export class AppFeatures {
           </article>
 
           <article>
-            <h3>Unsplash and Giphy</h3>
+            <h3>Unsplash and Tenor</h3>
 
             <p>Search and integrate stock photos and gifs.</p>
           </article>
