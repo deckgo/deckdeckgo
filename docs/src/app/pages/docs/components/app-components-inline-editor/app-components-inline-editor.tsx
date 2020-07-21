@@ -362,6 +362,21 @@ export class AppComponentsInlineEditor {
                   <code>true</code>
                 </td>
               </tr>
+              <tr>
+                <td>
+                  <code>backgroundColor</code>
+                </td>
+                <td>
+                  <code>background-color</code>
+                </td>
+                <td>To hide the option to select a background-color</td>
+                <td>
+                  <code>boolean</code>
+                </td>
+                <td>
+                  <code>true</code>
+                </td>
+              </tr>
             </tbody>
           </table>
           <h3 id="app-components-inline-editor-custom-actions-slots">Custom actions slots</h3>
