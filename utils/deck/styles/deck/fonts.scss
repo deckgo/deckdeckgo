@@ -32,6 +32,10 @@ deckgo-deck *:not(b) {
   h2,
   h3 {
     font-weight: 700;
+
+    * {
+      font-weight: inherit;
+    }
   }
 
   h4,
@@ -39,6 +43,10 @@ deckgo-deck *:not(b) {
   h6,
   strong {
     font-weight: 500;
+
+    * {
+      font-weight: inherit;
+    }
   }
 }
 
