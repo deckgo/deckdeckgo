@@ -26,6 +26,7 @@ export namespace Components {
         "sticky": boolean;
     }
     interface DeckgoIeColorActions {
+        "action": "foreColor" | "backColor";
         "color": string;
         "mobile": boolean;
         "palette": DeckdeckgoPalette[];
@@ -199,6 +200,7 @@ declare namespace LocalJSX {
         "sticky"?: boolean;
     }
     interface DeckgoIeColorActions {
+        "action"?: "foreColor" | "backColor";
         "color"?: string;
         "mobile"?: boolean;
         "onColorModified"?: (event: CustomEvent<void>) => void;

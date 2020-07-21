@@ -15,6 +15,9 @@ export class ColorActions {
   color: string;
 
   @Prop()
+  action: 'foreColor' | 'backColor';
+
+  @Prop()
   palette: DeckdeckgoPalette[];
 
   @Prop()
@@ -25,6 +28,10 @@ export class ColorActions {
 
   private async selectColor($event: CustomEvent) {
     if (!this.selection || !$event || !$event.detail) {
+      return;
+    }
+
+    if (!this.action) {
       return;
     }
 
@@ -40,7 +47,7 @@ export class ColorActions {
       return;
     }
 
-    document.execCommand('foreColor', false, this.color);
+    document.execCommand(this.action, false, this.color);
 
     await this.colorModified.emit();
   }
