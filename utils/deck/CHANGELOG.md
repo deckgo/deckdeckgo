@@ -1,3 +1,11 @@
+<a name="2.3.2"></a>
+
+# 2.3.2 (2020-07-21)
+
+### Fix
+
+- inherit `font-weight` in titles and strong
+
 <a name="2.3.1"></a>
 
 # 2.3.1 (2020-06-13)
