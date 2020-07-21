@@ -39,12 +39,6 @@ export class DeckdeckgoInlineEditor {
   private contentList: ContentList | undefined = undefined;
 
   @State()
-  private color: string | undefined = undefined;
-
-  @State()
-  private backgroundColor: string | undefined = undefined;
-
-  @State()
   private contentFontSize: FontSize | undefined = undefined;
 
   @State()
@@ -265,9 +259,6 @@ export class DeckdeckgoInlineEditor {
     return new Promise<void>(async (resolve) => {
       this.toolbarActions = ToolbarActions.IMAGE;
 
-      this.color = undefined;
-      this.backgroundColor = undefined;
-
       await this.setToolsActivated(true);
 
       resolve();
@@ -466,8 +457,6 @@ export class DeckdeckgoInlineEditor {
         this.underline = false;
         this.strikethrough = false;
         this.contentList = undefined;
-        this.color = undefined;
-        this.backgroundColor = undefined;
         this.contentFontSize = undefined;
 
         await this.initDefaultContentAlign();
@@ -507,9 +496,6 @@ export class DeckdeckgoInlineEditor {
 
         this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
 
-        const promises: Promise<void>[] = [this.findColor(node), this.findBackground(node)];
-        await Promise.all(promises);
-
         this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
 
         resolve();
@@ -523,8 +509,6 @@ export class DeckdeckgoInlineEditor {
           this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
         }
 
-        await this.findColor(node);
-
         await this.findStyle(node.parentNode);
 
         if (this.contentFontSize === undefined) {
@@ -534,28 +518,6 @@ export class DeckdeckgoInlineEditor {
         resolve();
       }
     });
-  }
-
-  private async findColor(node: Node) {
-    if (this.color && this.color !== '') {
-      return;
-    }
-
-    if ((node as HTMLElement).style.color) {
-      this.color = (node as HTMLElement).style.color;
-    } else if (node instanceof HTMLFontElement && (node as HTMLFontElement).color) {
-      this.color = (node as HTMLFontElement).color;
-    }
-  }
-
-  private async findBackground(node: Node) {
-    if (this.backgroundColor && this.backgroundColor !== '') {
-      return;
-    }
-
-    if ((node as HTMLElement).style.backgroundColor) {
-      this.color = (node as HTMLElement).style.backgroundColor;
-    }
   }
 
   private initLink(selection: Selection): Promise<void> {
@@ -791,7 +753,6 @@ export class DeckdeckgoInlineEditor {
       return (
         <deckgo-ie-color-actions
           selection={this.selection}
-          color={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? this.backgroundColor : this.color}
           action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'backColor' : 'foreColor'}
           palette={this.palette}
           mobile={this.mobile}

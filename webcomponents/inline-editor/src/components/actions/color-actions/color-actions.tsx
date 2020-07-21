@@ -12,9 +12,6 @@ export class ColorActions {
   selection: Selection;
 
   @Prop()
-  color: string;
-
-  @Prop()
   action: 'foreColor' | 'backColor';
 
   @Prop()
@@ -35,8 +32,6 @@ export class ColorActions {
       return;
     }
 
-    this.color = $event.detail.hex;
-
     if (!this.selection || this.selection.rangeCount <= 0 || !document) {
       return;
     }
@@ -47,7 +42,7 @@ export class ColorActions {
       return;
     }
 
-    document.execCommand(this.action, false, this.color);
+    document.execCommand(this.action, false, $event.detail.hex);
 
     await this.colorModified.emit();
   }
