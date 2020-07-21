@@ -77,6 +77,7 @@ export namespace Components {
     interface DeckgoInlineEditor {
         "align": boolean;
         "attachTo": HTMLElement;
+        "backgroundColor": boolean;
         "containers": string;
         "customActions": string;
         "fontSize": boolean;
@@ -256,6 +257,7 @@ declare namespace LocalJSX {
     interface DeckgoInlineEditor {
         "align"?: boolean;
         "attachTo"?: HTMLElement;
+        "backgroundColor"?: boolean;
         "containers"?: string;
         "customActions"?: string;
         "fontSize"?: boolean;

@@ -108,6 +108,9 @@ export class DeckdeckgoInlineEditor {
   fontSize: boolean = true;
 
   @Prop()
+  backgroundColor: boolean = true;
+
+  @Prop()
   customActions: string; // Comma separated list of additional action components
 
   @Event()
@@ -840,15 +843,21 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderColorActions() {
-    return [
+    const result = [
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker(ToolbarActions.COLOR)}>
         <deckgo-ie-action-image cssClass={'pick-color'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
-
-      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker(ToolbarActions.BACKGROUND_COLOR)}>
-        <deckgo-ie-action-image cssClass={'pick-background'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
     ];
+
+    if (this.backgroundColor) {
+      result.push(
+        <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker(ToolbarActions.BACKGROUND_COLOR)}>
+          <deckgo-ie-action-image cssClass={'pick-background'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>
+      );
+    }
+
+    return result;
   }
 
   private renderSeparator() {
