@@ -44,6 +44,7 @@ David
 - core: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - drag-resize-rotate: v1.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
 - highlight-code: v1.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+- inline-editor: v1.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 - social: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/CHANGELOG.md))
 
 ### Others
