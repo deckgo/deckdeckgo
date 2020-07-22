@@ -51,7 +51,10 @@ export class DeckOnlineService {
       try {
         await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
 
-        resolve(deck);
+        // Fetch newly persisted deck (clean firebase.firestore.FieldValue.delete())
+        const updatedDeck: Deck = await this.get(deck.id);
+
+        resolve(updatedDeck);
       } catch (err) {
         reject(err);
       }
