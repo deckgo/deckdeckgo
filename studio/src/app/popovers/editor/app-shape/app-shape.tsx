@@ -1,8 +1,5 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
-import {TargetElement} from '../../../utils/editor/target-element';
-import {ImageAction} from '../../../utils/editor/image-action';
-
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {AssetsService} from '../../../services/core/assets/assets.service';
@@ -18,9 +15,6 @@ export class AppShape {
   selectedElement: HTMLElement;
 
   @State()
-  private applyToTargetElement: TargetElement = TargetElement.SHAPES;
-
-  @State()
   private assets: Assets | undefined = undefined;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
@@ -31,12 +25,6 @@ export class AppShape {
 
   private async closePopoverWithoutResults() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
-  }
-
-  private async selectApplyToTargetElement($event: CustomEvent<TargetElement>) {
-    if ($event && $event.detail) {
-      this.applyToTargetElement = $event.detail;
-    }
   }
 
   private async selectShape(src: string, label: string) {
@@ -55,14 +43,6 @@ export class AppShape {
     });
   }
 
-  private async selectImage($event: CustomEvent<ImageAction>) {
-    if ($event && $event.detail) {
-      await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-        img: $event.detail,
-      });
-    }
-  }
-
   render() {
     return [
       <ion-toolbar>
@@ -71,34 +51,11 @@ export class AppShape {
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-router-link>
       </ion-toolbar>,
-      <app-select-target-element
-        shapes={true}
-        images={true}
-        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
       this.renderShapes(),
-      this.renderImages(),
     ];
   }
 
-  private renderImages() {
-    if (this.applyToTargetElement !== TargetElement.IMAGES) {
-      return undefined;
-    }
-
-    return (
-      <app-image
-        selectedElement={this.selectedElement}
-        slide={true}
-        deleteBackground={false}
-        onAction={($event: CustomEvent<ImageAction>) => this.selectImage($event)}></app-image>
-    );
-  }
-
   private renderShapes() {
-    if (this.applyToTargetElement !== TargetElement.SHAPES) {
-      return undefined;
-    }
-
     return (
       <div class="container ion-margin-bottom">
         <ion-list class="article">

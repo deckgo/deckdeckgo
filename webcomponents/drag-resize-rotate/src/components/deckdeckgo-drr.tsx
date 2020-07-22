@@ -22,7 +22,7 @@ export class DeckdeckgoDragResizeRotate {
 
   // Size
 
-  @Prop()
+  @Prop({mutable: true})
   resize: boolean = true;
 
   // Position
@@ -34,6 +34,11 @@ export class DeckdeckgoDragResizeRotate {
 
   @Prop()
   rotation: boolean = true;
+
+  // Text content editable
+
+  @Prop({reflect: true})
+  text: boolean = false;
 
   // Size
 
@@ -107,6 +112,9 @@ export class DeckdeckgoDragResizeRotate {
   private pp_x: number;
   private pp_y: number;
 
+  @State()
+  private editing: boolean = false;
+
   async componentWillLoad() {
     await this.init();
 
@@ -144,19 +152,20 @@ export class DeckdeckgoDragResizeRotate {
       document.removeEventListener('touchmove', this.transform, true);
       document.removeEventListener('mouseup', this.stop, true);
       document.removeEventListener('touchend', this.stop, true);
+      document.removeEventListener('dblclick', this.dbclick, true);
     }
   }
 
-  private init(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.width = this.el.style.getPropertyValue('--width') ? parseFloat(this.el.style.getPropertyValue('--width')) : 0;
-      this.height = this.el.style.getPropertyValue('--height') ? parseFloat(this.el.style.getPropertyValue('--height')) : 0;
-      this.top = this.el.style.getPropertyValue('--top') ? parseFloat(this.el.style.getPropertyValue('--top')) : 0;
-      this.left = this.el.style.getPropertyValue('--left') ? parseFloat(this.el.style.getPropertyValue('--left')) : 0;
-      this.rotate = this.el.style.getPropertyValue('--rotate') ? parseFloat(this.el.style.getPropertyValue('--rotate')) : 0;
+  private async init() {
+    this.width = this.el.style.getPropertyValue('--width') ? parseFloat(this.el.style.getPropertyValue('--width')) : 0;
+    this.height = this.el.style.getPropertyValue('--height') ? parseFloat(this.el.style.getPropertyValue('--height')) : 0;
+    this.top = this.el.style.getPropertyValue('--top') ? parseFloat(this.el.style.getPropertyValue('--top')) : 0;
+    this.left = this.el.style.getPropertyValue('--left') ? parseFloat(this.el.style.getPropertyValue('--left')) : 0;
+    this.rotate = this.el.style.getPropertyValue('--rotate') ? parseFloat(this.el.style.getPropertyValue('--rotate')) : 0;
 
-      resolve();
-    });
+    if (this.text) {
+      this.resize = false;
+    }
   }
 
   private async displaySlot() {
@@ -172,10 +181,8 @@ export class DeckdeckgoDragResizeRotate {
       return;
     }
 
-    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
-
     // If we click elsewhere or select another component, then this component should loose focus and values need to be reset for next usage
-    if (!selected || !selected.isEqualNode(this.el)) {
+    if (!this.isTargetEvent($event)) {
       this.stopAndReset(false);
 
       if (this.selected) {
@@ -183,16 +190,57 @@ export class DeckdeckgoDragResizeRotate {
       }
 
       this.selected = false;
+
+      this.resetTextEditable();
+
       return;
     }
 
-    this.drrSelect.emit(selected);
+    if (!this.editing) {
+      const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
 
-    this.selected = true;
+      this.drrSelect.emit(selected);
 
-    this.startMove();
+      this.selected = true;
+
+      this.initTextEditable();
+
+      this.startMove();
+    }
+
     await this.initStartPositions($event);
   };
+
+  private isTargetEvent($event: MouseEvent | TouchEvent): boolean {
+    const selected: HTMLElement = ($event.target as HTMLElement).closest('deckgo-drr');
+
+    return selected && selected.isEqualNode(this.el);
+  }
+
+  private initTextEditable() {
+    if (!this.text || !this.el) {
+      return;
+    }
+
+    document.addEventListener('dblclick', this.dbclick.bind(this), {once: true});
+
+    const element: HTMLElement = this.el.querySelector(Build.isBrowser ? `:scope > *` : '> *');
+    if (element) {
+      element.setAttribute('contentEditable', 'true');
+    }
+  }
+
+  private resetTextEditable() {
+    if (!this.text) {
+      return;
+    }
+
+    this.editing = false;
+
+    if (document) {
+      document.removeEventListener('dblclick', this.dbclick, true);
+    }
+  }
 
   private async initStartPositions($event: MouseEvent | TouchEvent) {
     this.startX = unifyEvent($event).clientX;
@@ -206,8 +254,8 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private initStartPositionsMove() {
-    this.startWidth = this.width;
-    this.startHeight = this.height;
+    this.startWidth = isNaN(this.width) ? 0 : this.width;
+    this.startHeight = isNaN(this.height) ? 0 : this.height;
 
     this.startTop = this.top;
     this.startLeft = this.left;
@@ -516,6 +564,34 @@ export class DeckdeckgoDragResizeRotate {
     };
   }
 
+  private dbclick = async ($event: MouseEvent | TouchEvent) => {
+    if (!this.isTargetEvent($event)) {
+      return;
+    }
+
+    this.editing = true;
+
+    const element: HTMLElement = this.el.querySelector(Build.isBrowser ? `:scope > *` : '> *');
+    if (element) {
+      element.focus();
+
+      await this.moveCursorToEnd(element);
+    }
+  };
+
+  // https://stackoverflow.com/a/3866442/5404186
+  private async moveCursorToEnd(contentEditableElement: HTMLElement) {
+    if (window && document && document.createRange && contentEditableElement) {
+      const range: Range = document.createRange();
+      range.selectNodeContents(contentEditableElement);
+      range.collapse(false);
+
+      const selection: Selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+
   render() {
     const widthUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vw' : this.unit;
     const heightUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vh' : this.unit;
@@ -523,13 +599,17 @@ export class DeckdeckgoDragResizeRotate {
     return (
       <Host
         style={{
-          '--width': `${this.width}${widthUnit}`,
-          '--height': `${this.height}${heightUnit}`,
+          '--width': this.text ? 'auto' : `${this.width}${widthUnit}`,
+          '--height': this.text ? 'auto' : `${this.height}${heightUnit}`,
           '--top': `${this.top}${heightUnit}`,
           '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`,
+          '--pointer-events': `${this.editing ? 'all' : 'none'}`,
+          '--user-select': `${this.text ? 'text' : 'none'}`,
         }}
-        class={`${this.selected ? 'selected' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${this.drag !== 'none' && this.moving ? 'drag' : ''}`}>
+        class={`${this.selected ? 'selected' : ''} ${this.text ? 'text' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${
+          this.drag !== 'none' && this.moving ? 'drag' : ''
+        }`}>
         {this.renderEdgesAnchors()}
         {this.renderBorderAnchors()}
         {this.renderRotateAnchor()}

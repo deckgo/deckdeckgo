@@ -6,6 +6,7 @@ export enum ToolbarActions {
   ALIGNMENT,
   LIST,
   FONT_SIZE,
+  BACKGROUND_COLOR,
 }
 
 export enum ImageSize {

@@ -1,6 +1,30 @@
+# 1.1.3 (2020-07-19)
+
+### Fix
+
+- iOS :(
+
+# 1.1.2 (2020-07-19)
+
+### Fix
+
+- webkit workaround :(
+
+# 1.1.1 (2020-07-19)
+
+### Refactoring
+
+- use style class instead of style selector for text
+
+# 1.1.0 (2020-07-19)
+
+### Features
+
+- support for content editable elements
+
 # 1.0.2 (2020-05-11)
 
-### Feat
+### Features
 
 - update Stencil for Gatsby build
 

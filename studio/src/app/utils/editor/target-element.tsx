@@ -8,8 +8,6 @@ export enum TargetElement {
   BACKGROUND = 'background',
   TRANSITION = 'transition',
   SIDES = 'sides',
-  SHAPES = 'shapes',
-  IMAGES = 'images',
   IMAGE = 'image',
   HEADER_FOOTER = 'header-footer',
 }

@@ -18,6 +18,7 @@ app-user-menu {
     --border-color: transparent;
     cursor: pointer;
     --min-height: 36px;
+    font-size: var(--font-size-normal);
 
     ion-router-link {
       color: inherit;

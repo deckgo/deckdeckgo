@@ -42,6 +42,10 @@ export class RemoteEventsHandler {
   }
 
   async destroy() {
+    if (!this.el) {
+      return;
+    }
+
     await this.disconnect();
 
     if (this.destroyConnectListener) {

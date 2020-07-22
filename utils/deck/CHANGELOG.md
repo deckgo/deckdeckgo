@@ -1,3 +1,19 @@
+<a name="2.3.3"></a>
+
+# 2.3.3 (2020-07-21)
+
+### Fix
+
+- inherit `font-weight` in titles and strong when top is not set as strong
+
+<a name="2.3.2"></a>
+
+# 2.3.2 (2020-07-21)
+
+### Fix
+
+- inherit `font-weight` in titles and strong
+
 <a name="2.3.1"></a>
 
 # 2.3.1 (2020-06-13)

@@ -12,7 +12,7 @@ export class ColorActions {
   selection: Selection;
 
   @Prop()
-  color: string;
+  action: 'foreColor' | 'backColor';
 
   @Prop()
   palette: DeckdeckgoPalette[];
@@ -28,7 +28,9 @@ export class ColorActions {
       return;
     }
 
-    this.color = $event.detail.hex;
+    if (!this.action) {
+      return;
+    }
 
     if (!this.selection || this.selection.rangeCount <= 0 || !document) {
       return;
@@ -40,7 +42,7 @@ export class ColorActions {
       return;
     }
 
-    document.execCommand('foreColor', false, this.color);
+    document.execCommand(this.action, false, $event.detail.hex);
 
     await this.colorModified.emit();
   }

@@ -590,6 +590,7 @@ export class AppCreateSlide {
             class="arrow-end-bottom"></deckgo-lazy-img>
           <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/database-solid.svg`} aria-label="Database" class="database"></deckgo-lazy-img>
           <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/envelope-solid.svg`} aria-label="Envelope" class="envelope"></deckgo-lazy-img>
+          <span>Diagrams</span>
         </deckgo-slide-aspect-ratio>
       </div>
     );

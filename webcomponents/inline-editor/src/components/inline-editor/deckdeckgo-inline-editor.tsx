@@ -39,9 +39,6 @@ export class DeckdeckgoInlineEditor {
   private contentList: ContentList | undefined = undefined;
 
   @State()
-  private color: string;
-
-  @State()
   private contentFontSize: FontSize | undefined = undefined;
 
   @State()
@@ -109,6 +106,9 @@ export class DeckdeckgoInlineEditor {
 
   @Prop()
   fontSize: boolean = true;
+
+  @Prop()
+  backgroundColor: boolean = true;
 
   @Prop()
   customActions: string; // Comma separated list of additional action components
@@ -261,7 +261,7 @@ export class DeckdeckgoInlineEditor {
   private activateToolbarImage(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       this.toolbarActions = ToolbarActions.IMAGE;
-      this.color = undefined;
+
       await this.setToolsActivated(true);
 
       resolve();
@@ -460,7 +460,6 @@ export class DeckdeckgoInlineEditor {
         this.underline = false;
         this.strikethrough = false;
         this.contentList = undefined;
-        this.color = null;
         this.contentFontSize = undefined;
 
         await this.initDefaultContentAlign();
@@ -500,7 +499,6 @@ export class DeckdeckgoInlineEditor {
 
         this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
 
-        await this.findColor(node);
         this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
 
         resolve();
@@ -514,8 +512,6 @@ export class DeckdeckgoInlineEditor {
           this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
         }
 
-        await this.findColor(node);
-
         await this.findStyle(node.parentNode);
 
         if (this.contentFontSize === undefined) {
@@ -524,23 +520,6 @@ export class DeckdeckgoInlineEditor {
 
         resolve();
       }
-    });
-  }
-
-  private findColor(node: Node): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (this.color && this.color !== '') {
-        resolve();
-        return;
-      }
-
-      if ((node as HTMLElement).style.color) {
-        this.color = (node as HTMLElement).style.color;
-      } else if (node instanceof HTMLFontElement && (node as HTMLFontElement).color) {
-        this.color = (node as HTMLFontElement).color;
-      }
-
-      resolve();
     });
   }
 
@@ -709,8 +688,8 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private async openColorPicker(): Promise<void> {
-    this.toolbarActions = ToolbarActions.COLOR;
+  private async openColorPicker(action: ToolbarActions.COLOR | ToolbarActions.BACKGROUND_COLOR): Promise<void> {
+    this.toolbarActions = action;
   }
 
   private async openAlignmentActions(): Promise<void> {
@@ -773,11 +752,11 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           onLinkModified={($event: CustomEvent<boolean>) => this.reset($event.detail)}></deckgo-ie-link-actions>
       );
-    } else if (this.toolbarActions === ToolbarActions.COLOR) {
+    } else if (this.toolbarActions === ToolbarActions.COLOR || this.toolbarActions === ToolbarActions.BACKGROUND_COLOR) {
       return (
         <deckgo-ie-color-actions
           selection={this.selection}
-          color={this.color}
+          action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'backColor' : 'foreColor'}
           palette={this.palette}
           mobile={this.mobile}
           onColorModified={() => this.reset(true)}></deckgo-ie-color-actions>
@@ -843,9 +822,9 @@ export class DeckdeckgoInlineEditor {
 
       this.renderFontSizeAction(),
 
-      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker()}>
-        <deckgo-ie-action-image cssClass={'pick-color'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
+      this.renderSeparator(),
+
+      this.renderColorActions(),
 
       this.renderSeparator(),
 
@@ -861,6 +840,24 @@ export class DeckdeckgoInlineEditor {
 
       this.renderCustomActions(),
     ];
+  }
+
+  private renderColorActions() {
+    const result = [
+      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker(ToolbarActions.COLOR)}>
+        <deckgo-ie-action-image cssClass={'pick-color'}></deckgo-ie-action-image>
+      </deckgo-ie-action-button>,
+    ];
+
+    if (this.backgroundColor) {
+      result.push(
+        <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker(ToolbarActions.BACKGROUND_COLOR)}>
+          <deckgo-ie-action-image cssClass={'pick-background'}></deckgo-ie-action-image>
+        </deckgo-ie-action-button>
+      );
+    }
+
+    return result;
   }
 
   private renderSeparator() {

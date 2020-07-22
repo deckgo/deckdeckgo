@@ -1,3 +1,10 @@
+# 1.5.0 (2020-07-21)
+
+### Features
+
+- add new option `background-color`
+- new icon for `color`
+
 # 1.4.0 (2020-05-31)
 
 ### Features

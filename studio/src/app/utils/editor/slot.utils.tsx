@@ -30,4 +30,8 @@ export class SlotUtils {
   static isSlotTypeEditable(type: SlotType): boolean {
     return type !== SlotType.IMG && type !== SlotType.SOCIAL && type !== SlotType.DEMO;
   }
+
+  static isNodeDragDropResize(selectedElement: HTMLElement): boolean {
+    return selectedElement && selectedElement.nodeName && selectedElement.nodeName.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
+  }
 }

@@ -236,6 +236,7 @@
     {"src": "/icons/math.svg", "ariaLabel": "Math"},
     {"src": "/icons/ionicons/color-wand.svg", "ariaLabel": "Transform element"},
     {"src": "/icons/ionicons/chevron-down.svg", "ariaLabel": "Chevron down"},
-    {"src": "/icons/ionicons/settings.svg", "ariaLabel": "Settings"}
+    {"src": "/icons/ionicons/settings.svg", "ariaLabel": "Settings"},
+    {"src": "/icons/text.svg", "ariaLabel": "Text"}
   ]
 }
