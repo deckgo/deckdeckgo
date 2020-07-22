@@ -6,9 +6,11 @@ import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 import {ContentAlign, ContentList, FontSize, ToolbarActions} from '../../types/enums';
-import {AnchorLink, InlineAction} from '../../interfaces/interfaces';
+
+import {AnchorLink, ExecCommandAction, InlineAction} from '../../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
+import {execCommand} from '../../utils/execcommand.utils';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -714,6 +716,16 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private async onExecCommand($event: CustomEvent<ExecCommandAction>) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    await execCommand(this.selection, $event.detail, this.containers);
+
+    await this.reset(true);
+  }
+
   render() {
     let classNames: string = this.displayToolsActivated
       ? this.mobile
@@ -756,10 +768,10 @@ export class DeckdeckgoInlineEditor {
       return (
         <deckgo-ie-color-actions
           selection={this.selection}
-          action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'backColor' : 'foreColor'}
+          action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'background-color' : 'color'}
           palette={this.palette}
           mobile={this.mobile}
-          onColorModified={() => this.reset(true)}></deckgo-ie-color-actions>
+          onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-color-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
       return (

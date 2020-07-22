@@ -13,3 +13,8 @@ export interface InlineAction {
   selection: Selection;
   anchorLink: AnchorLink;
 }
+
+export interface ExecCommandAction {
+  style: 'color' | 'background-color';
+  value: string;
+}
