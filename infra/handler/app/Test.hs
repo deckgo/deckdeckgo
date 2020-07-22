@@ -173,6 +173,8 @@ testPresDeploys = withQueueName $ withEnv $ \env -> withSQS env $ withS3 env $ d
           , presentationOwner = someUserId
           , presentationAttributes = HMS.empty
           , presentationBackground = Nothing
+          , presentationHeader = Nothing
+          , presentationFooter = Nothing
           , presentationDescription = ""
           , presentationHeadExtra = Nothing
           }
