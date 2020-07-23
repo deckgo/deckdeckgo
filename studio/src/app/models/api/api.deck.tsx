@@ -9,5 +9,7 @@ export interface ApiDeck {
   owner_id: string;
   attributes?: DeckAttributes;
   background?: string;
+  header?: string;
+  footer?: string;
   head_extra?: string;
 }

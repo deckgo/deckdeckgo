@@ -3,6 +3,8 @@ import * as firebase from 'firebase/app';
 import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';
 
+import {FirestoreUtils} from './firestore.utils';
+
 export class OfflineUtils {
   static cleanAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
     return new Promise<SlideAttributes | DeckAttributes>((resolve) => {
@@ -22,26 +24,13 @@ export class OfflineUtils {
         const attr = attributes[key];
 
         // Replace Firestore "to delete fields" with null values
-        if (this.shouldAttributeBeCleaned(attr)) {
+        if (FirestoreUtils.shouldAttributeBeCleaned(attr)) {
           attributes[key] = null;
         }
       });
 
       resolve(attributes);
     });
-  }
-
-  static shouldAttributeBeCleaned(attr): boolean {
-    // If attr is a not an object (string, number or boolean) for sure it isn't a Firestore FieldValue.delete
-    if (typeof attr !== 'object') {
-      return false;
-    }
-
-    const firestoreDelete = Object.keys(attr).find((key: string) => {
-      return attr[key] === 'FieldValue.delete';
-    });
-
-    return firestoreDelete !== null;
   }
 
   static prepareAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {

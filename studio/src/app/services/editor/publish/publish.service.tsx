@@ -139,6 +139,8 @@ export class PublishService {
           owner_id: deck.data.owner_id,
           attributes: deck.data.attributes,
           background: deck.data.background,
+          header: deck.data.header,
+          footer: deck.data.footer,
           slides: apiSlides,
         };
 
