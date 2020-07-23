@@ -97,6 +97,8 @@ export class AppHome {
   }
 
   async componentDidLoad() {
+    this.destroyListener();
+
     const promises: Promise<void>[] = [this.initUser(), this.initApiUser()];
     await Promise.all(promises);
   }
@@ -122,6 +124,10 @@ export class AppHome {
   }
 
   componentDidUnload() {
+    this.destroyListener();
+  }
+
+  private destroyListener() {
     if (this.destroyUserListener) {
       this.destroyUserListener();
     }
