@@ -1,8 +1,25 @@
-# 1.6.0 (In progress)
+# 2.0.0 (2020-07-23)
+
+### Features
+
+- header and footer ([#794](https://github.com/deckgo/deckdeckgo/pull/794), [#791](https://github.com/deckgo/deckdeckgo/pull/791), [#793](https://github.com/deckgo/deckdeckgo/pull/793), [#792](https://github.com/deckgo/deckdeckgo/pull/792))
+- floating editable text for diagrams ([#799](https://github.com/deckgo/deckdeckgo/pull/799))
+- background color options for selected text ([#805](https://github.com/deckgo/deckdeckgo/pull/805))
+- self host Google Fonts to improve load time ([#796](https://github.com/deckgo/deckdeckgo/pull/796))
+- shorten default full url displayed social text ([#789](https://github.com/deckgo/deckdeckgo/pull/789))
 
 ### Style
 
-- update `@deckdeckgo/highlight-code`
+- box popover options to improve readability ([#790](https://github.com/deckgo/deckdeckgo/pull/790), [#786](https://github.com/deckgo/deckdeckgo/pull/786))
+- highlight code scrollbar (overflow-y) set to auto instead of scroll ([#781](https://github.com/deckgo/deckdeckgo/pull/781))
+
+### Fix
+
+- re-hydrate editor with prerendering ([#797](https://github.com/deckgo/deckdeckgo/pull/797))
+- recursively clean Firestore FieldValue.delete ([#807](https://github.com/deckgo/deckdeckgo/pull/807) and [#806](https://github.com/deckgo/deckdeckgo/pull/806))
+- improve dashboard navigation and style ([#788](https://github.com/deckgo/deckdeckgo/pull/788))
+- use user store to create author slide ([#787](https://github.com/deckgo/deckdeckgo/pull/787))
+- code editable attribute was sometimes missing ([#784](https://github.com/deckgo/deckdeckgo/pull/784))
 
 <a name="1.5.0"></a>
 
