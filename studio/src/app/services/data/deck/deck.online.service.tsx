@@ -2,6 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../../models/data/deck';
+import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
 export class DeckOnlineService {
   private static instance: DeckOnlineService;
@@ -51,10 +52,7 @@ export class DeckOnlineService {
       try {
         await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
 
-        // Fetch newly persisted deck (clean firebase.firestore.FieldValue.delete())
-        const updatedDeck: Deck = await this.get(deck.id);
-
-        resolve(updatedDeck);
+        resolve(FirestoreUtils.filterDelete(deck));
       } catch (err) {
         reject(err);
       }
