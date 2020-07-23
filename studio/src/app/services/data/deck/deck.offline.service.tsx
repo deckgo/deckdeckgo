@@ -3,6 +3,7 @@ import {get, set} from 'idb-keyval';
 import {Deck} from '../../../models/data/deck';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
 export class DeckOfflineService {
   private static instance: DeckOfflineService;
@@ -41,7 +42,7 @@ export class DeckOfflineService {
         // @ts-ignore
         deck.data.updated_at = new Date();
 
-        if (deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deck.data.background)) {
+        if (deck.data.background && FirestoreUtils.shouldAttributeBeCleaned(deck.data.background)) {
           deck.data.background = null;
         }
 
