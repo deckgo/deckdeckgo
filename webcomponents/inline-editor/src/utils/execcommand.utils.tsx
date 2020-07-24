@@ -27,36 +27,70 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
     return;
   }
 
-  if (anchorNode.nodeType === 3) {
-    const content = anchorNode.nodeValue;
+  if (anchorNode.nodeType !== 3) {
+    return;
+  }
 
-    const minOffset: number = Math.min(selection.anchorOffset, selection.focusOffset);
-    const maxOffset: number = Math.max(selection.anchorOffset, selection.focusOffset);
+  const selectionInAnchor: boolean = anchorNode.textContent.indexOf(selection.toString()) > -1;
 
-    const a: Text | null = content.substring(0, minOffset) !== '' ? document.createTextNode(content.substring(0, minOffset)) : null;
-    const b: Text | null = content.substring(maxOffset) !== '' ? document.createTextNode(content.substring(maxOffset)) : null;
-
-    const span = document.createElement('span');
-    span.style[action.style] = action.value;
-    span.innerHTML = selection.toString();
-
-    if (selection.focusNode.nextSibling === null) {
-      append(anchorNode, a);
-      append(anchorNode, span);
-      append(anchorNode, b);
-    } else {
-      insertBefore(anchorNode, b, selection.focusNode.nextSibling);
-      insertBefore(anchorNode, span, selection.focusNode.nextSibling);
-      insertBefore(anchorNode, a, selection.focusNode.nextSibling);
-    }
-
-    anchorNode.parentElement.removeChild(anchorNode);
+  if (selectionInAnchor) {
+    await extractText(anchorNode, selection, action);
+  } else {
+    await extractNodes(anchorNode, selection, action);
   }
 }
 
-function append(anchorNode: Node, element: Text | HTMLSpanElement | null) {
+async function extractNodes(anchorNode: Node, selection: Selection, action: ExecCommandAction) {
+  const content = anchorNode.parentNode.textContent;
+
+  const {minOffset, maxOffset} = minMaxOffset(selection);
+
+  const a: Text | null = content.substring(0, maxOffset) !== '' ? document.createTextNode(content.substring(0, maxOffset)) : null;
+  const b: Text | null =
+    anchorNode.textContent !== null
+      ? selection.anchorOffset < selection.focusOffset
+        ? document.createTextNode(anchorNode.textContent.substring(minOffset))
+        : document.createTextNode(content.substring(maxOffset + selection.toString().length))
+      : null;
+
+  const span: HTMLSpanElement = createSpan(action, selection);
+
+  const parent: HTMLElement = anchorNode.parentElement;
+
+  // Remove all children
+  parent.textContent = '';
+
+  append(parent, a);
+  append(parent, span);
+  append(parent, b);
+}
+
+async function extractText(anchorNode: Node, selection: Selection, action: ExecCommandAction) {
+  const content = anchorNode.nodeValue;
+
+  const {minOffset, maxOffset} = minMaxOffset(selection);
+
+  const a: Text | null = content.substring(0, minOffset) !== '' ? document.createTextNode(content.substring(0, minOffset)) : null;
+  const b: Text | null = content.substring(maxOffset) !== '' ? document.createTextNode(content.substring(maxOffset)) : null;
+
+  const span: HTMLSpanElement = createSpan(action, selection);
+
+  if (selection.focusNode.nextSibling === null) {
+    append(anchorNode.parentElement, a);
+    append(anchorNode.parentElement, span);
+    append(anchorNode.parentElement, b);
+  } else {
+    insertBefore(anchorNode, b, selection.focusNode.nextSibling);
+    insertBefore(anchorNode, span, selection.focusNode.nextSibling);
+    insertBefore(anchorNode, a, selection.focusNode.nextSibling);
+  }
+
+  anchorNode.parentElement.removeChild(anchorNode);
+}
+
+function append(parentElement: HTMLElement, element: Text | HTMLSpanElement | null) {
   if (element !== null) {
-    anchorNode.parentElement.appendChild(element);
+    parentElement.appendChild(element);
   }
 }
 
@@ -64,6 +98,21 @@ function insertBefore(anchorNode: Node, element: Text | HTMLSpanElement | null, 
   if (element !== null) {
     anchorNode.parentElement.insertBefore(element, reference);
   }
+}
+
+function createSpan(action: ExecCommandAction, selection: Selection): HTMLSpanElement {
+  const span = document.createElement('span');
+  span.style[action.style] = action.value;
+  span.innerHTML = selection.toString();
+
+  return span;
+}
+
+function minMaxOffset(selection: Selection): {minOffset: number; maxOffset: number} {
+  const minOffset: number = Math.min(selection.anchorOffset, selection.focusOffset);
+  const maxOffset: number = Math.max(selection.anchorOffset, selection.focusOffset);
+
+  return {minOffset, maxOffset};
 }
 
 async function findStyle(node: Node, style: string, containers: string): Promise<Node | null> {
