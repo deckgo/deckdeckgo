@@ -13,8 +13,7 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
     return;
   }
 
-  // TODO: Does not work yet
-  const style: Node | null = await findStyle(anchorNode.nodeType === 3 ? anchorNode.parentNode : anchorNode, action, containers);
+  const style: Node | null = await findStyle(anchorNode.nodeType === 3 ? anchorNode.parentNode : anchorNode, action.style, containers);
 
   if (style) {
     (style as HTMLElement).style[action.style] = action.value;
@@ -52,18 +51,22 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
   }
 }
 
-async function findStyle(node: Node, action: ExecCommandAction, containers: string): Promise<Node | null> {
+async function findStyle(node: Node, style: string, containers: string): Promise<Node | null> {
   // Just in case
   if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
     return null;
   }
 
-  const hasStyle: boolean = (node as HTMLElement).style[action.style] !== null;
-  const sameStyleValue: boolean = (node as HTMLElement).style[action.style] === action.value;
-
-  if (DeckdeckgoInlineEditorUtils.isContainer(containers, node) || hasStyle) {
-    return sameStyleValue ? node : null;
+  if (DeckdeckgoInlineEditorUtils.isContainer(containers, node)) {
+    return null;
   }
 
-  await findStyle(node.parentNode, action, containers);
+  const hasStyle: boolean =
+    (node as HTMLElement).style[style] !== null && (node as HTMLElement).style[style] !== undefined && (node as HTMLElement).style[style] !== '';
+
+  if (hasStyle) {
+    return node;
+  }
+
+  return await findStyle(node.parentNode, style, containers);
 }
