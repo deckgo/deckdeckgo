@@ -3,7 +3,7 @@ import {ExecCommandAction} from '../interfaces/interfaces';
 import {DeckdeckgoInlineEditorUtils} from './utils';
 
 export async function execCommand(selection: Selection, action: ExecCommandAction, containers: string) {
-  if (!document) {
+  if (!document || !selection) {
     return;
   }
 
@@ -15,7 +15,9 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
 
   const style: Node | null = await findStyle(anchorNode.nodeType === 3 ? anchorNode.parentNode : anchorNode, action.style, containers);
 
-  if (style) {
+  const sameSelection: boolean = style && (style as HTMLElement).innerText === selection.toString();
+
+  if (style && sameSelection) {
     (style as HTMLElement).style[action.style] = action.value;
     return;
   }
@@ -28,26 +30,39 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
   if (anchorNode.nodeType === 3) {
     const content = anchorNode.nodeValue;
 
-    const a = document.createTextNode(content.substring(0, selection.anchorOffset));
+    const minOffset: number = Math.min(selection.anchorOffset, selection.focusOffset);
+    const maxOffset: number = Math.max(selection.anchorOffset, selection.focusOffset);
 
-    // TODO: last char
-    const b = document.createTextNode(content.substring(selection.focusOffset));
+    const a: Text | null = content.substring(0, minOffset) !== '' ? document.createTextNode(content.substring(0, minOffset)) : null;
+    const b: Text | null = content.substring(maxOffset) !== '' ? document.createTextNode(content.substring(maxOffset)) : null;
 
     const span = document.createElement('span');
     span.style[action.style] = action.value;
     span.innerHTML = selection.toString();
 
     if (selection.focusNode.nextSibling === null) {
-      anchorNode.parentElement.appendChild(a);
-      anchorNode.parentElement.appendChild(span);
-      anchorNode.parentElement.appendChild(b);
+      append(anchorNode, a);
+      append(anchorNode, span);
+      append(anchorNode, b);
     } else {
-      anchorNode.parentElement.insertBefore(b, selection.focusNode.nextSibling);
-      anchorNode.parentElement.insertBefore(span, selection.focusNode.nextSibling);
-      anchorNode.parentElement.insertBefore(a, selection.focusNode.nextSibling);
+      insertBefore(anchorNode, b, selection.focusNode.nextSibling);
+      insertBefore(anchorNode, span, selection.focusNode.nextSibling);
+      insertBefore(anchorNode, a, selection.focusNode.nextSibling);
     }
 
     anchorNode.parentElement.removeChild(anchorNode);
+  }
+}
+
+function append(anchorNode: Node, element: Text | HTMLSpanElement | null) {
+  if (element !== null) {
+    anchorNode.parentElement.appendChild(element);
+  }
+}
+
+function insertBefore(anchorNode: Node, element: Text | HTMLSpanElement | null, reference: Node) {
+  if (element !== null) {
+    anchorNode.parentElement.insertBefore(element, reference);
   }
 }
 
