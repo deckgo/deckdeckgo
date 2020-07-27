@@ -247,7 +247,7 @@ declare namespace LocalJSX {
         "disabledTitle"?: boolean;
         "italic"?: boolean;
         "mobile"?: boolean;
-        "onInitStyle"?: (event: CustomEvent<any>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "selection"?: Selection;
         "strikethrough"?: boolean;
         "underline"?: boolean;

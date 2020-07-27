@@ -828,7 +828,7 @@ export class DeckdeckgoInlineEditor {
         italic={this.italic}
         underline={this.underline}
         strikethrough={this.strikethrough}
-        onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
+        onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-style-actions>,
 
       this.renderSeparator(),
 

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, h, Host, Prop, Event} from '@stencil/core';
 
-import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
+import {ExecCommandAction} from '../../../interfaces/interfaces';
 
 @Component({
   tag: 'deckgo-ie-style-actions',
@@ -30,38 +30,42 @@ export class StyleActions {
   strikethrough: boolean;
 
   @Event()
-  private initStyle: EventEmitter;
+  private execCommand: EventEmitter<ExecCommandAction>;
 
   private async styleBold($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'bold');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      style: 'font-weight',
+      value: 'bold',
+    });
   }
 
   private async styleItalic($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'italic');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      style: 'font-style',
+      value: 'italic',
+    });
   }
 
   private async styleUnderline($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'underline');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      style: 'text-decoration',
+      value: 'underline',
+    });
   }
 
   private async styleStrikeThrough($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'strikeThrough');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      style: 'text-decoration',
+      value: 'line-through',
+    });
   }
 
   render() {
