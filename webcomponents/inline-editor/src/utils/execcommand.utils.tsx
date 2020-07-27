@@ -31,7 +31,16 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
     return;
   }
 
-  const selectionInAnchor: boolean = anchorNode.textContent.indexOf(selection.toString()) > -1;
+  const selectionInAnchor: boolean =
+    anchorNode.textContent
+      .replace(/[\n\r]+/g, '')
+      .replace(/ /g, '')
+      .indexOf(
+        selection
+          .toString()
+          .replace(/[\n\r]+/g, '')
+          .replace(/ /g, '')
+      ) > -1;
 
   if (selectionInAnchor) {
     await extractText(anchorNode, selection, action);
@@ -45,7 +54,15 @@ async function extractNodes(anchorNode: Node, selection: Selection, action: Exec
 
   const {minOffset, maxOffset} = minMaxOffset(selection);
 
-  const a: Text | null = content.substring(0, maxOffset) !== '' ? document.createTextNode(content.substring(0, maxOffset)) : null;
+  const a: Text | null =
+    minOffset === 0
+      ? anchorNode.parentNode.firstChild
+        ? document.createTextNode(anchorNode.parentNode.firstChild.textContent)
+        : null
+      : content.substring(0, maxOffset) !== ''
+      ? document.createTextNode(content.substring(0, maxOffset))
+      : null;
+
   const b: Text | null =
     anchorNode.textContent !== null
       ? selection.anchorOffset < selection.focusOffset
