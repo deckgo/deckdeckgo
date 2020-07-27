@@ -1,29 +1,7 @@
 import {ExecCommandAction} from '../interfaces/interfaces';
 
-import {DeckdeckgoInlineEditorUtils} from './utils';
-
-export async function execCommand(selection: Selection, action: ExecCommandAction, containers: string) {
+export async function execCommand(selection: Selection, action: ExecCommandAction, _containers: string) {
   if (!document || !selection) {
-    return;
-  }
-
-  const anchorNode: Node = selection.anchorNode;
-
-  if (!anchorNode || !anchorNode.parentElement) {
-    return;
-  }
-
-  const style: Node | null = await findStyle(anchorNode.nodeType === 3 ? anchorNode.parentNode : anchorNode, action.style, containers);
-
-  const sameSelection: boolean = style && (style as HTMLElement).innerText === selection.toString();
-
-  if (style && sameSelection) {
-    (style as HTMLElement).style[action.style] = action.value;
-    return;
-  }
-
-  if (anchorNode.nodeType === 1) {
-    (anchorNode as HTMLElement).style[action.style] = action.value;
     return;
   }
 
@@ -31,40 +9,40 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
 }
 
 async function replaceSelection(action: ExecCommandAction, selection: Selection) {
-  // https://stackoverflow.com/a/15229371/5404186
   const range: Range = selection.getRangeAt(0);
-  const span: HTMLSpanElement = createSpan(action, selection);
-  range.deleteContents();
+
+  const fragment: DocumentFragment = range.extractContents();
+
+  const span: HTMLSpanElement = createSpan(action);
+  span.appendChild(fragment);
+
+  await cleanChildren(action, span);
+
   range.insertNode(span);
-  range.selectNode(span);
-  selection.removeAllRanges();
-  selection.addRange(range);
+  selection.selectAllChildren(span);
 }
 
-function createSpan(action: ExecCommandAction, selection: Selection): HTMLSpanElement {
+async function cleanChildren(action: ExecCommandAction, span: HTMLSpanElement) {
+  if (!span.hasChildNodes()) {
+    return;
+  }
+
+  const children: HTMLElement[] = Array.from(span.children).filter((element: HTMLElement) => {
+    return element.style[action.style] !== undefined && element.style[action.style] !== '';
+  }) as HTMLElement[];
+
+  if (!children || children.length <= 0) {
+    return;
+  }
+
+  children.forEach((element: HTMLElement) => {
+    element.style[action.style] = '';
+  });
+}
+
+function createSpan(action: ExecCommandAction): HTMLSpanElement {
   const span = document.createElement('span');
   span.style[action.style] = action.value;
-  span.innerHTML = selection.toString();
 
   return span;
-}
-
-async function findStyle(node: Node, style: string, containers: string): Promise<Node | null> {
-  // Just in case
-  if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
-    return null;
-  }
-
-  if (DeckdeckgoInlineEditorUtils.isContainer(containers, node)) {
-    return null;
-  }
-
-  const hasStyle: boolean =
-    (node as HTMLElement).style[style] !== null && (node as HTMLElement).style[style] !== undefined && (node as HTMLElement).style[style] !== '';
-
-  if (hasStyle) {
-    return node;
-  }
-
-  return await findStyle(node.parentNode, style, containers);
 }
