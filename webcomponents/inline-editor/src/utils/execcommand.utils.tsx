@@ -27,6 +27,10 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
     return;
   }
 
+  await replaceSelection(action, selection);
+}
+
+async function replaceSelection(action: ExecCommandAction, selection: Selection) {
   // https://stackoverflow.com/a/15229371/5404186
   const range: Range = selection.getRangeAt(0);
   const span: HTMLSpanElement = createSpan(action, selection);
