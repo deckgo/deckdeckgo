@@ -15,6 +15,6 @@ export interface InlineAction {
 }
 
 export interface ExecCommandAction {
-  style: 'color' | 'background-color';
+  style: 'color' | 'background-color' | 'font-size';
   value: string;
 }

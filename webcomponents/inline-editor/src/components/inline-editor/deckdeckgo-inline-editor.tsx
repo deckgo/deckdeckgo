@@ -811,7 +811,7 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           sticky={sticky}
           fontSize={this.contentFontSize}
-          onFontSizeModified={() => this.reset(true)}></deckgo-ie-font-size-actions>
+          onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-font-size-actions>
       );
     } else {
       return this.renderSelectionActions();

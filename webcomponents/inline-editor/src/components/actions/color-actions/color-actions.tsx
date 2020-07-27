@@ -23,7 +23,7 @@ export class ColorActions {
   mobile: boolean;
 
   @Event()
-  execCommand: EventEmitter<ExecCommandAction>;
+  private execCommand: EventEmitter<ExecCommandAction>;
 
   private async selectColor($event: CustomEvent) {
     if (!this.selection || !$event || !$event.detail) {

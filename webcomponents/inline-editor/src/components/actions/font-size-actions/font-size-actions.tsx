@@ -1,5 +1,6 @@
 import {Component, Event, EventEmitter, h, Host, Prop} from '@stencil/core';
 import {FontSize} from '../../../types/enums';
+import {ExecCommandAction} from '../../..';
 
 @Component({
   tag: 'deckgo-ie-font-size-actions',
@@ -17,14 +18,17 @@ export class FontSizeActions {
   fontSize: FontSize;
 
   @Event()
-  private fontSizeModified: EventEmitter<void>;
+  private execCommand: EventEmitter<ExecCommandAction>;
 
   private async modifyFontSize($event: UIEvent, size: FontSize): Promise<void> {
     $event.stopPropagation();
 
-    document.execCommand('fontSize', false, size.toString());
+    const value: string = Object.keys(FontSize).find((key) => FontSize[key] === size);
 
-    this.fontSizeModified.emit();
+    this.execCommand.emit({
+      style: 'font-size',
+      value: value.toLowerCase().replace('_', '-'),
+    });
   }
 
   render() {

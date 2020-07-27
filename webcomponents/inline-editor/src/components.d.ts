@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ContentAlign, ContentList, FontSize, ToolbarActions } from "./types/enums";
 import { DeckdeckgoPalette } from "@deckdeckgo/color";
 import { AnchorLink, ExecCommandAction, InlineAction } from "./interfaces/interfaces";
+import { ExecCommandAction as ExecCommandAction1 } from ".";
 import { EventEmitter } from "@stencil/core";
 export namespace Components {
     interface DeckgoIeActionButton {
@@ -209,7 +210,7 @@ declare namespace LocalJSX {
     interface DeckgoIeFontSizeActions {
         "fontSize"?: FontSize;
         "mobile"?: boolean;
-        "onFontSizeModified"?: (event: CustomEvent<void>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "sticky"?: boolean;
     }
     interface DeckgoIeImageActions {
