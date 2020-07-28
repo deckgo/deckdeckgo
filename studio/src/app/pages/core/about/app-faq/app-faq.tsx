@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-faq',
-  styleUrl: 'app-faq.scss'
+  styleUrl: 'app-faq.scss',
 })
 export class AppFaq {
   render() {
@@ -21,7 +21,7 @@ export class AppFaq {
 
           <p>
             Earlier this year (2018) I published an{' '}
-            <a href="https://dev.to/daviddalbusco/we-are-developing-an-open-source-editor-for-presentations-1bng" target="_blank">
+            <a href="https://dev.to/daviddalbusco/we-are-developing-an-open-source-editor-for-presentations-1bng" target="_blank" rel="noopener noreferrer">
               article
             </a>{' '}
             to present our project and ourselves, you might find more answers in it if you wish to have a more concrete answer.
@@ -85,7 +85,7 @@ export class AppFaq {
             updated with their online urls. Alternatively, you could also provide a custom url for their content.
           </p>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

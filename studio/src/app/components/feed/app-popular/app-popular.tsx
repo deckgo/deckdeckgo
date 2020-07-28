@@ -3,7 +3,7 @@ import {Component, h, Prop, Host} from '@stencil/core';
 @Component({
   tag: 'app-popular',
   styleUrl: 'app-popular.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppPopular {
   @Prop()
@@ -43,7 +43,7 @@ export class AppPopular {
               your interests and ideas.
             </p>
           </ion-card-content>
-        </ion-card>
+        </ion-card>,
       ];
     } else {
       return undefined;
@@ -62,15 +62,24 @@ export class AppPopular {
               Send us your feedback and ideas on{' '}
               <a
                 href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"
-                target="_blank">
+                target="_blank"
+                rel="noopener noreferrer">
                 Slack
               </a>
-              , via <a href="mailto:hello@deckdeckgo.com">email</a> or on <a href="https://twitter.com/deckdeckgo">Twitter</a>.
+              , via{' '}
+              <a href="mailto:hello@deckdeckgo.com" rel="noopener noreferrer">
+                email
+              </a>{' '}
+              or on{' '}
+              <a href="https://twitter.com/deckdeckgo" rel="noopener noreferrer">
+                Twitter
+              </a>
+              .
             </p>
 
             <p class="ion-padding-top">You are awesome!</p>
           </ion-card-content>
-        </ion-card>
+        </ion-card>,
       ];
     } else {
       return undefined;
