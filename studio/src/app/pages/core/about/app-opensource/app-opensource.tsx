@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-opensource',
-  styleUrl: 'app-opensource.scss'
+  styleUrl: 'app-opensource.scss',
 })
 export class AppAbout {
   render() {
@@ -30,11 +30,11 @@ export class AppAbout {
           <p>
             The open source code of DeckDeckGo is available on&nbsp;
             <a href="http://github.com/deckgo/deckdeckgo">
-              <ion-icon name="logo-github" area-label="Github"></ion-icon> Github
+              <ion-icon name="logo-github" aria-label="GitHub"></ion-icon> Github
             </a>
           </p>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
