@@ -1,3 +1,9 @@
+# 1.7.1 (2020-07-28)
+
+### Features
+
+- `part` option for `@deckdeckgo/color` component
+
 # 1.7.0 (2020-07-11)
 
 ### Features

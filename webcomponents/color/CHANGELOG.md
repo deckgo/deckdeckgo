@@ -1,3 +1,9 @@
+# 2.1.0 (2020-07-28)
+
+### Features
+
+- allow container to be access via `part` ([#811](https://github.com/deckgo/deckdeckgo/pull/811))
+
 # 2.0.0 (2020-05-15)
 
 ### Breaking
