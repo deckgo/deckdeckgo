@@ -24,8 +24,8 @@ The "Author" slide lets you introduce the author of the presentation.
     <deckgo-slide-author img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <h1 slot="title">slot="title"</h1>
         <div slot="author">slot="author"</div>
-        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon area-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon></deckgo-social></div>
-        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social linkedin="david-dal-busco"><ion-icon area-label="David on Linkedin" slot="icon" name="logo-linkedin"></ion-icon></deckgo-social></div>
+        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social twitter="daviddalbusco"><ion-icon aria-label="David on Twitter" slot="icon" name="logo-twitter"></ion-icon></deckgo-social></div>
+        <div slot="social-link" style={{fontSize: '0.5rem'}}><deckgo-social linkedin="david-dal-busco"><ion-icon aria-label="David on LinkedIn" slot="icon" name="logo-linkedin"></ion-icon></deckgo-social></div>
     </deckgo-slide-author>
   </deckgo-deck>
 </div>

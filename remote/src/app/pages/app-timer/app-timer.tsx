@@ -222,7 +222,7 @@ export class AppTimer {
             <p class="ion-padding-start ion-padding-end">Not timer running. Click here to start a countdown or start it with the button below.</p>
           </a>
           <div class="deck-action-button deck-action-button-screen-center">
-            <button onClick={() => this.startAction()} area-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
+            <button onClick={() => this.startAction()} aria-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
               <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
             </button>
           </div>
