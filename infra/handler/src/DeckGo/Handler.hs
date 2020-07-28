@@ -244,6 +244,14 @@ newtype PresentationBackground = PresentationBackground { unPresentationBackgrou
   deriving stock (Show, Eq)
   deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
 
+newtype PresentationHeader = PresentationHeader { unPresentationHeader :: T.Text }
+  deriving stock (Show, Eq)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
+
+newtype PresentationFooter = PresentationFooter { unPresentationFooter :: T.Text }
+  deriving stock (Show, Eq)
+  deriving newtype (Aeson.FromJSON, Aeson.ToJSON)
+
 -- SLIDES
 
 instance ToSchema Slide where
@@ -312,6 +320,8 @@ data PresentationInfo = PresentationInfo
   { presentationName :: PresentationName
   , presentationOwner :: UserId
   , presentationBackground :: Maybe PresentationBackground
+  , presentationHeader :: Maybe PresentationHeader
+  , presentationFooter :: Maybe PresentationFooter
   , presentationAttributes :: HMS.HashMap T.Text T.Text
   , presentationSlides :: [Slide]
   , presentationDescription :: T.Text
@@ -331,6 +341,8 @@ instance FromJSONObject PresentationInfo where
       obj .: "name" <*>
       obj .: "owner_id" <*>
       obj .:? "background" <*>
+      obj .:? "header" <*>
+      obj .:? "footer" <*>
       obj .:? "attributes" .!= HMS.empty <*>
       obj .: "slides" <*>
       obj .: "description" <*>
@@ -1325,16 +1337,36 @@ type Tag = TagSoup.Tag T.Text
 processTags :: PresentationInfo -> [Tag] -> [Tag]
 processTags presentationInfo = concatMap $ \case
   TagSoup.TagOpen str (HMS.fromList -> attrs)
+    -- If the tag is 'deckgo-deck', we add the slides and the "background",
+    -- "header" and "footer" divs
     | str == "deckgo-deck" -> do
         [ TagSoup.TagOpen str (HMS.toList (presentationAttributes presentationInfo <> attrs)) ] <>
           (concatMap slideTags (presentationSlides presentationInfo)) <>
           (maybe [] presentationBackgroundTags
-            (presentationBackground presentationInfo))
+            (presentationBackground presentationInfo)) <>
+          (maybe [] presentationHeaderTags
+            (presentationHeader presentationInfo)) <>
+          (maybe [] presentationFooterTags
+            (presentationFooter presentationInfo))
   t -> [t]
 
 presentationBackgroundTags :: PresentationBackground -> [Tag]
 presentationBackgroundTags (unPresentationBackground -> bg) =
     [ TagSoup.TagOpen "div" (HMS.toList $ HMS.singleton "slot" "background")
+    ] <> TagSoup.parseTags bg <>
+    [ TagSoup.TagClose "div"
+    ]
+
+presentationHeaderTags :: PresentationHeader -> [Tag]
+presentationHeaderTags (unPresentationHeader -> bg) =
+    [ TagSoup.TagOpen "div" (HMS.toList $ HMS.singleton "slot" "header")
+    ] <> TagSoup.parseTags bg <>
+    [ TagSoup.TagClose "div"
+    ]
+
+presentationFooterTags :: PresentationFooter -> [Tag]
+presentationFooterTags (unPresentationFooter -> bg) =
+    [ TagSoup.TagOpen "div" (HMS.toList $ HMS.singleton "slot" "footer")
     ] <> TagSoup.parseTags bg <>
     [ TagSoup.TagClose "div"
     ]

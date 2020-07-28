@@ -11,6 +11,7 @@ import {Slide} from '../../../models/data/slide';
 import {SlotType} from '../../../utils/editor/slot-type';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker-utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
@@ -352,7 +353,7 @@ export class OfflineService {
 
         await this.saveSlides(deckStore.state.deck);
 
-        if (deckStore.state.deck.data.background && OfflineUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.background)) {
+        if (deckStore.state.deck.data.background && FirestoreUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.background)) {
           deckStore.state.deck.data.background = null;
         }
 

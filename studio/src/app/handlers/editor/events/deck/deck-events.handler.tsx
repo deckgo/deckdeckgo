@@ -767,12 +767,21 @@ export class DeckEventsHandler {
 
       let result: string = await cleanContent(content);
 
-      if (!slide.hasAttribute('custom-background')) {
-        result = result.replace(/<div slot="background">(.*?)<\/div>/g, '');
-      }
+      result = await this.cleanSlideCustomSlots(slide, result, 'background');
+      result = await this.cleanSlideCustomSlots(slide, result, 'header');
+      result = await this.cleanSlideCustomSlots(slide, result, 'footer');
 
       resolve(result);
     });
+  }
+
+  private async cleanSlideCustomSlots(slide: HTMLElement, content: string, customAttribute: 'background' | 'header' | 'footer'): Promise<string> {
+    if (!slide.hasAttribute(`custom-${customAttribute}`)) {
+      const regex: RegExp = new RegExp(`<div slot="${customAttribute}"(.*?)<\/div>`, 'g');
+      content = content.replace(regex, '');
+    }
+
+    return content;
   }
 
   private filterSlideContentSlots(slide: HTMLElement): Promise<string> {

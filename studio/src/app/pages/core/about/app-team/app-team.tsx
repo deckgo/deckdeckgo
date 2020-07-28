@@ -4,7 +4,7 @@ import {AssetsService} from '../../../../services/core/assets/assets.service';
 
 @Component({
   tag: 'app-team',
-  styleUrl: 'app-team.scss'
+  styleUrl: 'app-team.scss',
 })
 export class AppTeam {
   @State()
@@ -25,9 +25,7 @@ export class AppTeam {
             <div>
               {this.assets !== undefined && this.assets.team ? (
                 <app-avatar src={this.assets.team.david} role="presentation" aria-label="David Dal Busco"></app-avatar>
-              ) : (
-                undefined
-              )}
+              ) : undefined}
 
               <h2>David Dal Busco</h2>
 
@@ -37,23 +35,23 @@ export class AppTeam {
               </p>
 
               <div class="social-links">
-                <a href="https://twitter.com/daviddalbusco">
+                <a href="https://twitter.com/daviddalbusco" rel="noopener noreferrer">
                   <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                 </a>
 
-                <a href="https://daviddalbusco.com">
+                <a href="https://daviddalbusco.com" rel="noopener noreferrer">
                   <ion-icon name="globe" area-label="Personal blog and website"></ion-icon>
                 </a>
 
-                <a href="https://dev.to/daviddalbusco">
+                <a href="https://dev.to/daviddalbusco" rel="noopener noreferrer">
                   <ion-icon src="./assets/icons/dev.svg" area-label="Dev"></ion-icon>
                 </a>
 
-                <a href="https://medium.com/@david.dalbusco">
+                <a href="https://medium.com/@david.dalbusco" rel="noopener noreferrer">
                   <ion-icon src="./assets/icons/medium.svg" area-label="Medium"></ion-icon>
                 </a>
 
-                <a href="http://github.com/peterpeterparker">
+                <a href="http://github.com/peterpeterparker" rel="noopener noreferrer">
                   <ion-icon name="logo-github" area-label="Github"></ion-icon>
                 </a>
               </div>
@@ -62,31 +60,29 @@ export class AppTeam {
             <div>
               {this.assets !== undefined && this.assets.team ? (
                 <app-avatar src={this.assets.team.nicolas} role="presentation" aria-label="Nicolas Mattia"></app-avatar>
-              ) : (
-                undefined
-              )}
+              ) : undefined}
 
               <h2>Nicolas Mattia</h2>
 
-              <p class="ion-text-center">Nicolas ... has a bio as soon as he'll send me a PR 😉</p>
+              <p class="ion-text-center">Nicolas &hellip; has a bio as soon as he'll send me a PR 😉</p>
 
               <div class="social-links">
-                <a href="https://twitter.com/nasmattia">
+                <a href="https://twitter.com/nasmattia" rel="noopener noreferrer">
                   <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                 </a>
 
-                <a href="https://nmattia.com">
+                <a href="https://nmattia.com" rel="noopener noreferrer">
                   <ion-icon name="globe" area-label="Personal blog and website"></ion-icon>
                 </a>
 
-                <a href="https://github.com/nmattia">
+                <a href="https://github.com/nmattia" rel="noopener noreferrer">
                   <ion-icon name="logo-github" area-label="Github"></ion-icon>
                 </a>
               </div>
             </div>
           </div>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

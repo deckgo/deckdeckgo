@@ -125,8 +125,8 @@ export class AppPlayground {
         </ion-button>
 
         <p>
-          Embed your best Codepen, JSFiddle or WebComponents.dev. All you need is to enter their full links. Check out this{' '}
-          <a href="https://www.youtube.com/watch?v=nS4A2XSwQrw" target="_blank" aria-label="Demo on Youtube">
+          Embed your best CodePen, JSFiddle or WebComponents.dev. All you need is to enter their full links. Check out this{' '}
+          <a href="https://www.youtube.com/watch?v=nS4A2XSwQrw" target="_blank" aria-label="Demo on YouTube" rel="noopener noreferrer">
             YouTube video
           </a>{' '}
           for a quick tutorial.

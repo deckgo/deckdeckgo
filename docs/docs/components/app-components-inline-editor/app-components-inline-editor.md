@@ -96,6 +96,7 @@ The `<deckgo-inline-editor/>` expose the following properties:
 | `list`                | `list`                   | Actions to manipulate the selection as list enabled?                                                                                                                                      | `boolean`             | `true`                    |
 | `align`               | `align`                  | Actions to manipulate the selection alignment enabled?                                                                                                                                    | `boolean`             | `true`                    |
 | `fontSize`            | `font-size`              | Actions to modify the selection font-size enabled?                                                                                                                                        | `boolean`             | `true`                    |
+| `backgroundColor`     | `background-color`       | To hide the option to select a background-color                                                                                                                                           | `boolean`             | `true`                    |
 
 ### Custom actions slots
 

@@ -2,7 +2,7 @@ import {Component, Element, h} from '@stencil/core';
 
 @Component({
   tag: 'app-get-help',
-  styleUrl: 'app-get-help.scss'
+  styleUrl: 'app-get-help.scss',
 })
 export class AppGetHelp {
   @Element() el: HTMLElement;
@@ -23,7 +23,11 @@ export class AppGetHelp {
             target="_blank">
             Slack
           </a>
-          , via <a href="mailto:hello@deckdeckgo.com">email</a> or on <a href="https://twitter.com/deckdeckgo">Twitter</a>.
+          , via <a href="mailto:hello@deckdeckgo.com">email</a> or on{' '}
+          <a href="https://twitter.com/deckdeckgo" rel="noopener noreferrer">
+            Twitter
+          </a>
+          .
         </p>
         <div class="ion-text-center ion-padding-top">
           <ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>

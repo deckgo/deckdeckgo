@@ -5,6 +5,7 @@ import {del, get, set} from 'idb-keyval';
 import {Slide, SlideData} from '../../../models/data/slide';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
 export class SlideOfflineService {
   private static instance: SlideOfflineService;
@@ -27,7 +28,7 @@ export class SlideOfflineService {
 
         const slide: Slide = {
           id: slideId,
-          data: slideData
+          data: slideData,
         };
 
         const now: Date = new Date();
@@ -68,7 +69,7 @@ export class SlideOfflineService {
 
         slide.data.attributes = await OfflineUtils.cleanAttributes(slide.data.attributes);
 
-        if (slide.data.content && OfflineUtils.shouldAttributeBeCleaned(slide.data.content)) {
+        if (slide.data.content && FirestoreUtils.shouldAttributeBeCleaned(slide.data.content)) {
           slide.data.content = null;
         }
 

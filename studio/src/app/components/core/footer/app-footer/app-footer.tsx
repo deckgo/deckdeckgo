@@ -81,13 +81,15 @@ export class AppFooter {
         </section>
 
         <div class="social ion-padding-top ion-margin-top">
-          <a href="https://twitter.com/deckdeckgo">
+          <a href="https://twitter.com/deckdeckgo" rel="noopener norefferer">
             <ion-icon name="logo-twitter"></ion-icon>
           </a>
-          <a href="https://github.com/deckgo">
+          <a href="https://github.com/deckgo" rel="noopener noreferrer">
             <ion-icon name="logo-github"></ion-icon>
           </a>
-          <a href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY">
+          <a
+            href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"
+            rel="noopener noreferrer">
             <ion-icon name="logo-slack"></ion-icon>
           </a>
         </div>

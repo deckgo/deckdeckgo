@@ -127,7 +127,7 @@ export class AppFeed {
     if (feedStore.state.decks && feedStore.state.decks.length > 0) {
       return feedStore.state.decks.map((deck: Deck, i: number) => {
         return (
-          <a href={this.presentationUrl + deck.data.meta.pathname} aria-label={deck.data.meta.title} target="_blank">
+          <a href={this.presentationUrl + deck.data.meta.pathname} aria-label={deck.data.meta.title} target="_blank" rel="noopener noreferrer">
             <app-feed-card compact={i > 0} deck={deck}></app-feed-card>
           </a>
         );
