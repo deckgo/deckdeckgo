@@ -6,14 +6,21 @@ It is fully configurable in terms of colors, you could define the set of colors 
 
 ## Table of contents
 
-- [Showcase](#app-components-color-showcase)
-- [Installation](#app-components-color-installation) - [Using from a CDN](#app-components-color-from-a-cdn) - [Install from NPM](#app-components-color-from-npm) - [Framework integration](#app-components-color-framework-integration)
-- [Usage](#app-components-color-usage)
-  - [Slots](#app-components-color-slots)
-  - [Attributes](#app-components-color-attributes)
-  - [Theming](#app-components-color-theming)
-  - [Methods](#app-components-color-methods)
-- [Trying it out](#app-components-color-trying-it-out)
+- [Color Picker](#color-picker)
+  - [Table of contents](#table-of-contents)
+  - [Showcase](#showcase)
+  - [Installation](#installation)
+    - [Using from a CDN](#using-from-a-cdn)
+    - [Install from NPM](#install-from-npm)
+    - [Framework integration](#framework-integration)
+      - [Import](#import)
+      - [Loader](#loader)
+  - [Usage](#usage)
+    - [Slots](#slots)
+    - [Attributes](#attributes)
+      - [Palette](#palette)
+    - [Theming](#theming)
+    - [Events](#events)
 
 ## Showcase
 
@@ -224,6 +231,10 @@ The following theming options will affect this component if set on its host or p
 | --deckgo-color-label-min-height        | 15px        | Minimal height of the color description                       |
 | --deckgo-color-label-text-align        | center      | Text alignment of the color description                       |
 | --deckgo-color-label-color-font-weight | 300         | Font weight of the hexadecimal value of the color description |
+
+| Shadow-DOM part | Note                                                   |
+| --------------- | ------------------------------------------------------ |
+| container       | Allows to style the container the color buttons are in |
 
 ### Events
 
