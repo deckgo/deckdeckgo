@@ -237,7 +237,7 @@ export class DeckdeckgoColor {
   render() {
     return (
       <Host>
-        <div class="color-container">
+        <div class="color-container" part="container">
           {this.renderPalette()}
           {this.renderMore()}
         </div>
