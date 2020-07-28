@@ -1,3 +1,9 @@
+# 2.1.1 (2020-07-28)
+
+### Fix
+
+- bump for npmjs publishing
+
 # 2.1.0 (2020-07-28)
 
 ### Features

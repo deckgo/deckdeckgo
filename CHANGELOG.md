@@ -8,7 +8,7 @@
 
 ### Web Components
 
-- color: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
+- color: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
 
 <a name="2.0.0"></a>
 
