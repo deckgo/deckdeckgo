@@ -25,7 +25,7 @@ export class AppEnterprise {
         <section class="hero">
           <div class="content">
             <div>
-              <h1>Professional presentation building, custom tailored to your brand.</h1>
+              <h1>Professional presentation building, tailored to your brand.</h1>
               <h3 style={{'font-weight': '300'}}>
                 Easily apply your corporate identity and design across all your company’s presentations. Secure distribution and maintenance.
               </h3>
@@ -55,7 +55,7 @@ export class AppEnterprise {
             </div>
 
             <div>
-              <p>Together with your designers, we create unbreakable slides for your design systems.</p>
+              <p>Together with your designers, we create unbreakable slides that match your design systems.</p>
 
               <p>Moreover, rolling out new design and logo has never been so easy and DeckDeckGo can offer so much more.</p>
 
