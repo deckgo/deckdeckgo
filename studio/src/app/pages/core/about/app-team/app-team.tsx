@@ -64,7 +64,7 @@ export class AppTeam {
 
               <h2>Nicolas Mattia</h2>
 
-              <p class="ion-text-center">Nicolas ... has a bio as soon as he'll send me a PR 😉</p>
+              <p class="ion-text-center">Nicolas &hellip; has a bio as soon as he'll send me a PR 😉</p>
 
               <div class="social-links">
                 <a href="https://twitter.com/nasmattia" rel="noopener noreferrer">

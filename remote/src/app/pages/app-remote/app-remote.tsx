@@ -672,7 +672,7 @@ export class AppRemote {
           <div class="deck-action-button deck-action-button-screen-center">
             <button
               onClick={() => this.openConnectModal()}
-              area-label="Connect a presentation"
+              aria-label="Connect a presentation"
               style={{'--action-button-background': 'var(--ion-color-primary'}}>
               <ion-icon name="play" class="deck-action-button-icon-play"></ion-icon>
             </button>
@@ -714,7 +714,7 @@ export class AppRemote {
 
       return (
         <div class="deck-action-button">
-          <button onClick={(e: UIEvent) => this.emitAction(e)} area-label={icon} style={{'--action-button-background': 'var(--ion-color-tertiary'}}>
+          <button onClick={(e: UIEvent) => this.emitAction(e)} aria-label={icon} style={{'--action-button-background': 'var(--ion-color-tertiary'}}>
             <ion-icon name={icon} class={`deck-action-button-icon-${icon}`}></ion-icon>
           </button>
         </div>
