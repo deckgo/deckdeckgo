@@ -44,11 +44,11 @@ export class AppTeam {
                 </a>
 
                 <a href="https://dev.to/daviddalbusco" rel="noopener noreferrer">
-                  <ion-icon src="./assets/icons/dev.svg" area-label="Dev"></ion-icon>
+                  <ion-icon src="/assets/icons/dev.svg" area-label="Dev"></ion-icon>
                 </a>
 
                 <a href="https://medium.com/@david.dalbusco" rel="noopener noreferrer">
-                  <ion-icon src="./assets/icons/medium.svg" area-label="Medium"></ion-icon>
+                  <ion-icon src="/assets/icons/medium.svg" area-label="Medium"></ion-icon>
                 </a>
 
                 <a href="http://github.com/peterpeterparker" rel="noopener noreferrer">
