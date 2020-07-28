@@ -29,8 +29,8 @@ export class AppAbout {
 
           <p>
             The open source code of DeckDeckGo is available on&nbsp;
-            <a href="http://github.com/deckgo/deckdeckgo">
-              <ion-icon name="logo-github" aria-label="GitHub"></ion-icon> Github
+            <a href="http://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
+              <ion-icon name="logo-github" area-label="Github"></ion-icon> Github
             </a>
           </p>
         </main>

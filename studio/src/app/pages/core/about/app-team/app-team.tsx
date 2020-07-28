@@ -35,24 +35,24 @@ export class AppTeam {
               </p>
 
               <div class="social-links">
-                <a href="https://twitter.com/daviddalbusco">
-                  <ion-icon name="logo-twitter" aria-label="David on Twitter"></ion-icon>
+                <a href="https://twitter.com/daviddalbusco" rel="noopener noreferrer">
+                  <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                 </a>
 
-                <a href="https://daviddalbusco.com">
-                  <ion-icon name="globe" aria-label="Personal blog and website"></ion-icon>
+                <a href="https://daviddalbusco.com" rel="noopener noreferrer">
+                  <ion-icon name="globe" area-label="Personal blog and website"></ion-icon>
                 </a>
 
-                <a href="https://dev.to/daviddalbusco">
-                  <ion-icon src="./assets/icons/dev.svg" aria-label="David on Dev"></ion-icon>
+                <a href="https://dev.to/daviddalbusco" rel="noopener noreferrer">
+                  <ion-icon src="./assets/icons/dev.svg" area-label="Dev"></ion-icon>
                 </a>
 
-                <a href="https://medium.com/@david.dalbusco">
-                  <ion-icon src="./assets/icons/medium.svg" aria-label="David on Medium"></ion-icon>
+                <a href="https://medium.com/@david.dalbusco" rel="noopener noreferrer">
+                  <ion-icon src="./assets/icons/medium.svg" area-label="Medium"></ion-icon>
                 </a>
 
-                <a href="http://github.com/peterpeterparker">
-                  <ion-icon name="logo-github" aria-label="David on GitHub"></ion-icon>
+                <a href="http://github.com/peterpeterparker" rel="noopener noreferrer">
+                  <ion-icon name="logo-github" area-label="Github"></ion-icon>
                 </a>
               </div>
             </div>
@@ -67,16 +67,16 @@ export class AppTeam {
               <p class="ion-text-center">Nicolas &hellip; has a bio as soon as he'll send me a PR 😉</p>
 
               <div class="social-links">
-                <a href="https://twitter.com/nasmattia">
-                  <ion-icon name="logo-twitter" aria-label="Nicolas on Twitter"></ion-icon>
+                <a href="https://twitter.com/nasmattia" rel="noopener noreferrer">
+                  <ion-icon name="logo-twitter" area-label="Twitter"></ion-icon>
                 </a>
 
-                <a href="https://nmattia.com">
-                  <ion-icon name="globe" aria-label="Personal blog and website"></ion-icon>
+                <a href="https://nmattia.com" rel="noopener noreferrer">
+                  <ion-icon name="globe" area-label="Personal blog and website"></ion-icon>
                 </a>
 
-                <a href="https://github.com/nmattia">
-                  <ion-icon name="logo-github" aria-label="Nicolas on GitHub"></ion-icon>
+                <a href="https://github.com/nmattia" rel="noopener noreferrer">
+                  <ion-icon name="logo-github" area-label="Github"></ion-icon>
                 </a>
               </div>
             </div>
