@@ -163,7 +163,7 @@ export class AppFeatures {
               In housing <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Integrate DeckDeckGo in your infrastructure and private network.</p>
+            <p>Integrate DeckDeckGo into your private infrastructure and networks.</p>
           </article>
 
           <article>

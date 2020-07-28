@@ -25,8 +25,10 @@ export class AppEnterprise {
         <section class="hero">
           <div class="content">
             <div>
-              <h1>The unbreakable slides for your corporate communication.</h1>
-              <h3 style={{'font-weight': '300'}}>Apply your corporate identity and design to your company's presentations.</h3>
+              <h1>Professional presentation building, custom tailored to your brand.</h1>
+              <h3 style={{'font-weight': '300'}}>
+                Easily apply your corporate identity and design across all your company’s presentations. Secure distribution and maintenance.
+              </h3>
 
               <ion-button class="ion-margin-top" shape="round" onClick={() => this.scrollTo(this.formRef)} mode="md" color="tertiary">
                 <ion-label style={{'text-transform': 'none'}}>Get in touch</ion-label>
@@ -41,7 +43,7 @@ export class AppEnterprise {
           <div class="content">
             <blockquote>
               <span>❝</span>
-              <p>Did you have a look at Bob's presentation? He used the wrong logo, again.</p>
+              <p>Did you see Bob’s presentation? He used the wrong logo, again.</p>
             </blockquote>
 
             <h2>Templates and options that match your CI/CD.</h2>
@@ -53,7 +55,7 @@ export class AppEnterprise {
             </div>
 
             <div>
-              <p>Together with your designers, we create unbreakable slides.</p>
+              <p>Together with your designers, we create unbreakable slides for your design systems.</p>
 
               <p>Moreover, rolling out new design and logo has never been so easy and DeckDeckGo can offer so much more.</p>
 
