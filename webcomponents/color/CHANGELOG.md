@@ -1,3 +1,9 @@
+# 2.1.2 (2020-07-29)
+
+### Fix
+
+- `Rollup: Unresolved Import Could not resolve './components' from ./node_modules/@deckdeckgo/color/dist/collection/index.js at error`
+
 # 2.1.1 (2020-07-28)
 
 ### Fix
