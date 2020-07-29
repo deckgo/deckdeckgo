@@ -39,25 +39,12 @@ export class AppNavigationActions {
   render() {
     return (
       <div>
-        {this.renderFeed()}
         {this.renderSignIn()}
         {this.renderPresentationButton()}
         {this.renderPublishButton()}
         {this.renderLoggedIn()}
       </div>
     );
-  }
-
-  private renderFeed() {
-    if (authStore.state.loggedIn || !this.signIn) {
-      return undefined;
-    } else if (this.presentation || this.publish) {
-      return (
-        <ion-router-link href="/discover" routerDirection="forward" class="wide-device ion-padding-start ion-padding-end">
-          <ion-label>Discover</ion-label>
-        </ion-router-link>
-      );
-    }
   }
 
   private renderSignIn() {
