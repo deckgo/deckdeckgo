@@ -13,12 +13,12 @@ export class AppPress {
           <h1>Press</h1>
 
           <p>
-            We don't provide any press kit yet but, as we are open source and are welcoming any contributions, we would be happy to get your help to create such
-            material 😄.
+            We don't provide unfortunately any press kit yet. We are open source and are welcoming any contributions, we would be happy to get your help to
+            create such material 😄.
           </p>
 
           <p>
-            That being said, you could download our logo as a{' '}
+            That being said, you can download our logo as a{' '}
             <a href="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" target="_blank">
               svg
             </a>{' '}
