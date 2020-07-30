@@ -124,7 +124,7 @@ export class AppLandingDeck {
         <deckgo-slide-title>
           <h2 slot="title">Search Unsplash and Tenor GIFs.</h2>
           <h3 slot="content" style={{'font-weight': '300'}}>
-            Easily integrate Youtube video.
+            Easily integrate YouTube video.
           </h3>
 
           {this.renderSlideBackground(
