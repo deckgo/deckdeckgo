@@ -49,13 +49,13 @@ export class AppFeatures {
               Export to PDF <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>If you like PDF more than apps.</p>
+            <p>If you like PDFs more than apps.</p>
           </article>
 
           <article>
             <h3>Polls</h3>
 
-            <p>Engage with your audience in real time. Get them involved during your presentations with their smartphones and show the results live.</p>
+            <p>Engage with your audience in real time. Get them involved during your presentations with their smartphones and show live results.</p>
           </article>
 
           <article>
@@ -89,25 +89,25 @@ export class AppFeatures {
           <article>
             <h3>Cloud library</h3>
 
-            <p>All data (text, images, etc) your upload are saved in your personal cloud storage and available to all slides.</p>
+            <p>All data (text, images, etc) you upload are saved in your personal cloud storage and available to all slides.</p>
           </article>
 
           <article>
-            <h3>Youtube</h3>
+            <h3>YouTube</h3>
 
             <p>Embed YouTube videos easily. Play and pause through the remote control.</p>
           </article>
 
           <article>
-            <h3>Unsplash and Tenor</h3>
+            <h3>Unsplash and Tenor GIFs</h3>
 
-            <p>Search and integrate stock photos and gifs.</p>
+            <p>Search and integrate stock photos and GIFs.</p>
           </article>
 
           <article>
-            <h3>Google fonts</h3>
+            <h3>Google Fonts</h3>
 
-            <p>Select a Google Font from a list we have preselected for your.</p>
+            <p>Select a Google Font from a list we have preselected for you.</p>
           </article>
 
           <article>
@@ -115,19 +115,19 @@ export class AppFeatures {
               Custom fonts <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
 
-            <p>Use your brand fonts.</p>
+            <p>Use your own brand fonts.</p>
           </article>
 
           <article>
             <h3>Full screen edit</h3>
 
-            <p>No more toggle to make a quick change, your slides are editable in full screen mode as well.</p>
+            <p>No more switch to make a quick change, your slides are editable in full screen mode as well.</p>
           </article>
 
           <article>
             <h3>Transition</h3>
 
-            <p>Make individual text elements appear one after the others.</p>
+            <p>Make individual text elements appear one after the other.</p>
           </article>
 
           <article>
@@ -156,7 +156,7 @@ export class AppFeatures {
             <p>Write notes for your slides. Cherry on top, Markdown is supported.</p>
           </article>
 
-          <h2>More for enterprise</h2>
+          <h2>More for Enterprise</h2>
 
           <article>
             <h3>
@@ -226,9 +226,9 @@ export class AppFeatures {
             <h3>Open source</h3>
 
             <p>
-              DeckDeckGo is open source. All the code of our applications and components are available on&nbsp;
-              <a href="http://github.com/deckgo/deckdeckgo">
-                <ion-icon name="logo-github" area-label="Github"></ion-icon> Github
+              DeckDeckGo is open source. All code of our applications and components are available on&nbsp;
+              <a href="http://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
+                <ion-icon name="logo-github" aria-label="GitHub"></ion-icon> GitHub
               </a>
               .
             </p>
