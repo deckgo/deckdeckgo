@@ -2,7 +2,7 @@
 
 # [2.1.0](https://github.com/deckgo/deckdeckgo/compare/v2.0.0...v2.1.0) (2020-07-30)
 
-Announcing DeckDeckGo **Enterprise**, another kind of editor for your company's presentations.
+Announcing **DeckDeckGo for Enterprise**, another kind of editor for your company's presentations.
 
 Easily apply your corporate identity and design across all your company’s presentations. Secure distribution and maintenance.
 
