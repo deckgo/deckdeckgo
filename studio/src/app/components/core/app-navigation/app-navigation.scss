@@ -42,6 +42,14 @@ app-navigation {
         opacity: 1;
       }
 
+      ion-router-link.nav:first-of-type {
+        margin-right: 0;
+      }
+
+      ion-router-link.nav:not(:first-of-type) {
+        display: none;
+      }
+
       ion-router-link.nav ion-label {
         display: none;
       }
