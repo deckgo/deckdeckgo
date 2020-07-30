@@ -5,7 +5,29 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
     return;
   }
 
+  const anchorNode: Node = selection.anchorNode;
+
+  if (!anchorNode) {
+    return;
+  }
+
+  const container: HTMLElement = anchorNode.nodeType === 1 ? (anchorNode as HTMLElement) : anchorNode.parentElement;
+
+  const sameSelection: boolean = container && container.innerText === selection.toString();
+
+  if (sameSelection && container.style[action.style] !== undefined) {
+    await updateSelection(container, action);
+
+    return;
+  }
+
   await replaceSelection(action, selection);
+}
+
+async function updateSelection(container: HTMLElement, action: ExecCommandAction) {
+  container.style[action.style] = action.value;
+
+  await cleanChildren(action, container);
 }
 
 async function replaceSelection(action: ExecCommandAction, selection: Selection) {
@@ -27,17 +49,27 @@ async function cleanChildren(action: ExecCommandAction, span: HTMLSpanElement) {
     return;
   }
 
+  // Clean direct (> *) children with same style
   const children: HTMLElement[] = Array.from(span.children).filter((element: HTMLElement) => {
     return element.style[action.style] !== undefined && element.style[action.style] !== '';
   }) as HTMLElement[];
 
-  if (!children || children.length <= 0) {
+  if (children && children.length > 0) {
+    children.forEach((element: HTMLElement) => {
+      element.style[action.style] = '';
+    });
+  }
+
+  // Direct children (> *) may have children (*) which need to be cleaned too
+  const cleanChildrenChildren: Promise<void>[] = Array.from(span.children).map((element: HTMLElement) => {
+    return cleanChildren(action, element);
+  });
+
+  if (!cleanChildrenChildren || cleanChildrenChildren.length <= 0) {
     return;
   }
 
-  children.forEach((element: HTMLElement) => {
-    element.style[action.style] = '';
-  });
+  await Promise.all(cleanChildrenChildren);
 }
 
 function createSpan(action: ExecCommandAction): HTMLSpanElement {
