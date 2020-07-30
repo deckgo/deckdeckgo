@@ -63,13 +63,13 @@ export class AppContactForm {
             </ion-list>
 
             {this.status === 'SUCCESS' ? (
-              <p class="ion-margin-top">Thanks!</p>
+              <p style={{'padding-top': '16px', 'margin-bottom': '12px'}}>Thanks! We will come back to you asap.</p>
             ) : (
               <ion-button type="submit" color="primary" shape="round" class="ion-margin-top">
                 Submit
               </ion-button>
             )}
-            {this.status === 'ERROR' && <p class="ion-margin-top">Ooops! There was an error.</p>}
+            {this.status === 'ERROR' && <p style={{'padding-top': '16px', 'margin-bottom': '12px'}}>Ooops! There was an error.</p>}
 
             <div class="ion-margin-top">
               <small>* required field</small>
