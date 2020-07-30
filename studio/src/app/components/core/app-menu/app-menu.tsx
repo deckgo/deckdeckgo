@@ -43,6 +43,7 @@ export class AppMenu {
 
         {this.renderHome()}
         {this.renderDiscover()}
+        {this.renderEnterprise()}
         {this.renderDashboard()}
         {this.renderSettings()}
         {this.renderSignInOut()}
@@ -53,7 +54,7 @@ export class AppMenu {
   private renderUser() {
     if (authStore.state.loggedIn) {
       return (
-        <ion-item class="user">
+        <ion-item class="user ion-margin-bottom">
           <app-user-info avatarColSize={3}></app-user-info>
         </ion-item>
       );
@@ -95,22 +96,27 @@ export class AppMenu {
 
   private renderHome() {
     return (
-      <ion-item button class="home" href="/" routerDirection="forward">
-        <ion-icon lazy={true} name="home-outline" slot="start"></ion-icon>
-        <ion-label>Home</ion-label>
+      <ion-item button class="home" href="/home" routerDirection="forward">
+        <app-logo slot="start"></app-logo>
+        <ion-label>DeckDeckGo</ion-label>
       </ion-item>
     );
   }
 
   private renderDiscover() {
-    if (authStore.state.loggedIn) {
-      return undefined;
-    }
-
     return (
       <ion-item button class="home" href="/discover" routerDirection="forward">
         <ion-icon lazy={true} name="search-outline" slot="start"></ion-icon>
         <ion-label>Discover</ion-label>
+      </ion-item>
+    );
+  }
+
+  private renderEnterprise() {
+    return (
+      <ion-item button class="home" href="/enterprise" routerDirection="forward">
+        <ion-icon lazy={true} name="business-outline" slot="start"></ion-icon>
+        <ion-label>Enterprise</ion-label>
       </ion-item>
     );
   }

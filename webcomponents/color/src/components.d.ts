@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoPalette, DeckdeckgoPaletteColor, } from "./utils/deckdeckgo-palette";
+import { DeckdeckgoPalette, DeckdeckgoPaletteColor } from "./utils/deckdeckgo-palette";
 export namespace Components {
     interface DeckgoColor {
         "colorHex": string;

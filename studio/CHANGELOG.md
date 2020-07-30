@@ -1,3 +1,15 @@
+# 2.1.0 (2020-07-30)
+
+### Features
+
+- enterprise: new dedicated page, improved navigation and press update ([#820](https://github.com/deckgo/deckdeckgo/pull/820))
+
+### Fix
+
+- social icons are not shown ([#814](https://github.com/deckgo/deckdeckgo/issues/814))
+- add rel to outgoing links for security reasons ([#815](https://github.com/deckgo/deckdeckgo/issues/815))
+- aria-labels are incorrectly implemented (typo) ([#812](https://github.com/deckgo/deckdeckgo/issues/812))
+
 # 2.0.0 (2020-07-23)
 
 ### Features

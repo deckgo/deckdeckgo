@@ -1,3 +1,21 @@
+# 2.1.2 (2020-07-29)
+
+### Fix
+
+- `Rollup: Unresolved Import Could not resolve './components' from ./node_modules/@deckdeckgo/color/dist/collection/index.js at error`
+
+# 2.1.1 (2020-07-28)
+
+### Fix
+
+- bump for npmjs publishing
+
+# 2.1.0 (2020-07-28)
+
+### Features
+
+- allow container to be access via `part` ([#811](https://github.com/deckgo/deckdeckgo/pull/811))
+
 # 2.0.0 (2020-05-15)
 
 ### Breaking

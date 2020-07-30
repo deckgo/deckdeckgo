@@ -32,13 +32,25 @@ app-navigation {
       user-select: none;
     }
 
+    ion-router-link.nav:not(:last-of-type) {
+      margin-right: 24px;
+    }
+
     &.deck-name-visible {
       ion-label.deck-name {
         visibility: initial;
         opacity: 1;
       }
 
-      ion-router-link.home div.logo ion-label {
+      ion-router-link.nav:first-of-type {
+        margin-right: 0;
+      }
+
+      ion-router-link.nav:not(:first-of-type) {
+        display: none;
+      }
+
+      ion-router-link.nav ion-label {
         display: none;
       }
     }
@@ -111,11 +123,11 @@ body.dark {
   }
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 768px) {
   ion-nav {
     div.title:not(.offline) {
       ion-label.deck-name,
-      ion-router-link.home ion-label {
+      ion-router-link.nav ion-label {
         display: none;
       }
     }

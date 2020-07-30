@@ -1,6 +1,25 @@
+<a name="2.1.0"></a>
+
+# [2.1.0](https://github.com/deckgo/deckdeckgo/compare/v2.0.0...v2.1.0) (2020-07-30)
+
+Announcing **DeckDeckGo for Enterprise**, another kind of editor for your company's presentations.
+
+Easily apply your corporate identity and design across all your company’s presentations. Secure distribution and maintenance.
+
+[More information, features and contact](https://deckdeckgo.com/enterprise).
+
+### Applications
+
+- docs: v1.7.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- studio: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+
+- color: v2.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
+
 <a name="2.0.0"></a>
 
-# [2.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.5.0...v1.6.0) (In progress...)
+# [2.0.0](https://github.com/deckgo/deckdeckgo/compare/v1.5.0...v2.0.0) (2020-07-23)
 
 ### Breaking Changes
 

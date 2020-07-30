@@ -256,7 +256,7 @@ export class AppPoll {
 
         <div class="by-deckdeckgo">
           Created with{' '}
-          <ion-router-link href="/" routerDirection="forward">
+          <ion-router-link href="/home" routerDirection="forward">
             <div>
               <app-logo></app-logo> DeckDeckGo
             </div>

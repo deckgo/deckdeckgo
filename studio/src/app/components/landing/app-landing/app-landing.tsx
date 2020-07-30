@@ -3,7 +3,7 @@ import {Component, Element, h, Host} from '@stencil/core';
 @Component({
   tag: 'app-landing',
   styleUrl: 'app-landing.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppLanding {
   @Element() el: HTMLElement;
@@ -17,7 +17,7 @@ export class AppLanding {
 
         <app-landing-content></app-landing-content>
 
-        <app-landing-footer></app-landing-footer>
+        <app-section-footer></app-section-footer>
       </Host>
     );
   }

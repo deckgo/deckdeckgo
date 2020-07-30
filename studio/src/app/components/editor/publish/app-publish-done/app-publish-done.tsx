@@ -2,7 +2,7 @@ import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/
 
 @Component({
   tag: 'app-publish-done',
-  styleUrl: 'app-publish-done.scss'
+  styleUrl: 'app-publish-done.scss',
 })
 export class AppPublishDone {
   @Element() el: HTMLElement;
@@ -35,7 +35,7 @@ export class AppPublishDone {
 
         <ion-label class="published-url ion-padding ion-text-center">
           Or{' '}
-          <a href={this.publishedUrl} target="_blank">
+          <a href={this.publishedUrl} target="_blank" rel="noopener noreferrer">
             click here
           </a>{' '}
           to open it.

@@ -63,7 +63,7 @@ app-actions-editor {
     }
   }
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 768px) {
     ion-tab-button,
     app-action-share,
     app-action-busy,
@@ -74,7 +74,7 @@ app-actions-editor {
     }
   }
 
-  @media screen and (min-width: 720px) {
+  @media screen and (min-width: 768px) {
     ion-tab-button,
     app-action-share,
     app-action-busy,
