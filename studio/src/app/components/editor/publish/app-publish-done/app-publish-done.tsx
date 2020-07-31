@@ -38,7 +38,7 @@ export class AppPublishDone {
         </p>
 
         <ion-button color="tertiary" shape="round" onClick={() => this.share()} class="ion-margin">
-          <ion-icon name="share" slot="start"></ion-icon>
+          <ion-icon name="share-outline" slot="start"></ion-icon>
           <ion-label>Share</ion-label>
         </ion-button>
 

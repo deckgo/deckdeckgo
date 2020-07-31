@@ -4,6 +4,8 @@ import {debounce} from '@deckdeckgo/utils';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
+import shareStore from '../../../../stores/share.store';
+
 import {Deck, DeckMetaAuthor} from '../../../../models/data/deck';
 
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
@@ -167,6 +169,15 @@ export class AppFeedCard {
     return myDate;
   }
 
+  private async share($event: UIEvent) {
+    $event.preventDefault();
+
+    shareStore.state.share = {
+      deck: this.deck,
+      userName: this.author,
+    };
+  }
+
   render() {
     return (
       <ion-card class="ion-margin-top" style={{'--card-width': `${this.width}px`}}>
@@ -189,6 +200,13 @@ export class AppFeedCard {
         <p class="content ion-padding-start ion-padding-end ion-padding-bottom">{this.description}</p>
 
         {this.renderTags()}
+
+        <div class="share">
+          <ion-button shape="round" size="small" mode="md" color="light" onClick={($event: UIEvent) => this.share($event)}>
+            <ion-icon name="share-outline" slot="start"></ion-icon>
+            <ion-label>Share</ion-label>
+          </ion-button>
+        </div>
       </ion-card-content>
     );
   }
@@ -199,7 +217,8 @@ export class AppFeedCard {
         <p class="author">
           {this.renderAuthorAvatar()}
           <ion-label>
-            {this.author} | {this.formattedPublishedAt}
+            {this.author}
+            <small>{this.formattedPublishedAt}</small>
           </ion-label>
         </p>
       );
