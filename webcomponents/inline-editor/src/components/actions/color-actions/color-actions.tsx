@@ -2,6 +2,8 @@ import {Component, Event, EventEmitter, h, Prop, Host} from '@stencil/core';
 
 import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
+import {hexToRgb} from '@deckdeckgo/utils';
+
 import {ExecCommandAction} from '../../../interfaces/interfaces';
 
 @Component({
@@ -47,6 +49,12 @@ export class ColorActions {
     this.execCommand.emit({
       style: this.action,
       value: $event.detail.hex,
+      initial: (element: HTMLElement | null) => {
+        return new Promise<boolean>(async (resolve) => {
+          const rgb: string = await hexToRgb($event.detail.hex);
+          resolve(element && (element.style[this.action] === $event.detail.hex || element.style[this.action] === `rgb(${rgb})`));
+        });
+      },
     });
   }
 

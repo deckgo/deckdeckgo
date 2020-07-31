@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@deckdeckgo/color": "^2.0.0",
-    "@deckdeckgo/utils": "^1.1.0"
+    "@deckdeckgo/utils": "file:../../utils/utils"
   },
   "devDependencies": {
     "@stencil/core": "^1.16.4",
