@@ -1,3 +1,9 @@
+# 2.1.3 (2020-07-31)
+
+### Refactor
+
+- move color converter to `@deckdeckgo/utils`
+
 # 2.1.2 (2020-07-29)
 
 ### Fix
