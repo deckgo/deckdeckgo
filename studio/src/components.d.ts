@@ -36,7 +36,6 @@ export namespace Components {
         "blockSlide": EventEmitter;
         "deckDidChange": EventEmitter;
         "fullscreen": boolean;
-        "openShare": EventEmitter;
         "signIn": EventEmitter;
         "slideTo": EventEmitter;
         "slides": JSX.IntrinsicElements[];
@@ -1189,7 +1188,6 @@ declare namespace LocalJSX {
     interface AppActionShare {
         "onActionPublish"?: (event: CustomEvent<void>) => void;
         "onOpenEmbed"?: (event: CustomEvent<void>) => void;
-        "onOpenShare"?: (event: CustomEvent<void>) => void;
     }
     interface AppActionsDeck {
         "actionPublish"?: EventEmitter;
@@ -1199,7 +1197,6 @@ declare namespace LocalJSX {
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
-        "openShare"?: EventEmitter;
         "signIn"?: EventEmitter;
         "slideTo"?: EventEmitter;
         "slides"?: JSX.IntrinsicElements[];
@@ -1214,7 +1211,6 @@ declare namespace LocalJSX {
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onElementFocus"?: (event: CustomEvent<HTMLElement>) => void;
-        "onOpenShare"?: (event: CustomEvent<void>) => void;
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTo"?: (event: CustomEvent<number>) => void;
@@ -1519,7 +1515,6 @@ declare namespace LocalJSX {
     interface AppPublish {
     }
     interface AppPublishDone {
-        "onOpenShare"?: (event: CustomEvent<void>) => void;
         "publishedUrl"?: string;
     }
     interface AppPublishEdit {

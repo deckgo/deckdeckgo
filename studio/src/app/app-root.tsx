@@ -1,9 +1,10 @@
-import {Build, Component, Element, h, Listen, State} from '@stencil/core';
+import {Build, Component, Element, h, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
 import errorStore from './stores/error.store';
 import navStore from './stores/nav.store';
+import shareStore, {ShareData} from './stores/share.store';
 
 import {AuthService} from './services/auth/auth.service';
 
@@ -29,6 +30,9 @@ export class AppRoot {
 
   private destroyErrorListener;
   private destroyNavListener;
+  private destroyShareListener;
+
+  private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
     this.authService = AuthService.getInstance();
@@ -56,6 +60,10 @@ export class AppRoot {
     this.destroyNavListener = navStore.onChange('nav', async (params: NavParams | undefined) => {
       await this.navigate(params);
     });
+
+    this.destroyShareListener = shareStore.onChange('share', async (share: ShareData | null) => {
+      await this.openShare(share);
+    });
   }
 
   componentDidUnload() {
@@ -65,6 +73,10 @@ export class AppRoot {
 
     if (this.destroyNavListener) {
       this.destroyNavListener();
+    }
+
+    if (this.destroyShareListener) {
+      this.destroyShareListener();
     }
   }
 
@@ -111,15 +123,16 @@ export class AppRoot {
     navStore.reset();
   }
 
-  @Listen('openShare', {target: 'document'})
-  async openShare() {
-    const shareDeck: HTMLElement = this.el.querySelector('app-share-deck');
-
-    if (!shareDeck) {
+  private async openShare(share: ShareData | null) {
+    if (!share) {
       return;
     }
 
-    await (shareDeck as any).openShare();
+    if (!this.shareRef) {
+      return;
+    }
+
+    await this.shareRef.openShare();
   }
 
   render() {
@@ -174,7 +187,7 @@ export class AppRoot {
 
         <ion-nav id="menu-content" />
 
-        <app-share-deck></app-share-deck>
+        <app-share-deck ref={(el) => (this.shareRef = el as HTMLAppShareDeckElement)}></app-share-deck>
       </ion-app>,
     ];
   }

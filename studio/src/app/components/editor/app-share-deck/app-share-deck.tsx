@@ -2,110 +2,100 @@ import {Component, Element, h, Method} from '@stencil/core';
 
 import 'web-social-share';
 
-import {ShareService} from '../../../services/editor/share/share.service';
+import shareStore from '../../../stores/share.store';
+
+import {getPublishedUrl, getShareText} from '../../../utils/core/share.utils';
 
 @Component({
   tag: 'app-share-deck',
   styleUrl: 'app-share-deck.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppShareDeck {
   @Element() el: HTMLElement;
 
-  private shareService: ShareService;
-
-  constructor() {
-    this.shareService = ShareService.getInstance();
-  }
-
   @Method()
-  openShare(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      // @ts-ignore
-      if (navigator && navigator.share) {
-        await this.shareMobile();
-      } else {
-        await this.shareDesktop();
-      }
+  async openShare() {
+    // @ts-ignore
+    if (navigator && navigator.share) {
+      await this.shareMobile();
+    } else {
+      await this.shareDesktop();
+    }
+  }
 
-      resolve();
+  private async shareMobile() {
+    const text: string = await getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
+    const publishedUrl: string = await getPublishedUrl(shareStore.state.share.deck);
+
+    // @ts-ignore
+    await navigator.share({
+      text: text,
+      url: publishedUrl,
     });
   }
 
-  private shareMobile() {
-    return new Promise(async (resolve) => {
-      const text: string = await this.shareService.getShareText();
-      const publishedUrl: string = await this.shareService.getPublishedUrl();
+  private async shareDesktop() {
+    const webSocialShare = this.el.shadowRoot.querySelector('web-social-share');
 
-      // @ts-ignore
-      await navigator.share({
-        text: text,
-        url: publishedUrl
-      });
+    if (!webSocialShare || !window) {
+      return;
+    }
 
-      resolve();
-    });
+    const text: string = await getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
+    const publishedUrl: string = await getPublishedUrl(shareStore.state.share.deck);
+
+    const shareOptions = {
+      displayNames: true,
+      config: [
+        {
+          twitter: {
+            socialShareText: text,
+            socialShareUrl: publishedUrl,
+            socialSharePopupWidth: 300,
+            socialSharePopupHeight: 400,
+          },
+        },
+        {
+          linkedin: {
+            socialShareUrl: publishedUrl,
+          },
+        },
+        {
+          email: {
+            socialShareBody: `${text} ${publishedUrl}`,
+          },
+        },
+        {
+          whatsapp: {
+            socialShareUrl: publishedUrl,
+          },
+        },
+        {
+          copy: {
+            socialShareUrl: publishedUrl,
+          },
+        },
+        {
+          hackernews: {
+            socialShareUrl: publishedUrl,
+          },
+        },
+      ],
+    };
+
+    webSocialShare.share = shareOptions;
+
+    webSocialShare.show = true;
   }
 
-  private shareDesktop() {
-    return new Promise(async (resolve) => {
-      const webSocialShare = this.el.shadowRoot.querySelector('web-social-share');
-
-      if (!webSocialShare || !window) {
-        return;
-      }
-
-      const publishedUrl: string = await this.shareService.getPublishedUrl();
-
-      const shareOptions = {
-        displayNames: true,
-        config: [
-          {
-            twitter: {
-              socialShareUrl: publishedUrl,
-              socialSharePopupWidth: 300,
-              socialSharePopupHeight: 400
-            }
-          },
-          {
-            linkedin: {
-              socialShareUrl: publishedUrl
-            }
-          },
-          {
-            email: {
-              socialShareBody: publishedUrl
-            }
-          },
-          {
-            whatsapp: {
-              socialShareUrl: publishedUrl
-            }
-          },
-          {
-            copy: {
-              socialShareUrl: publishedUrl
-            }
-          },
-          {
-            hackernews: {
-              socialShareUrl: publishedUrl
-            }
-          }
-        ]
-      };
-
-      webSocialShare.share = shareOptions;
-
-      webSocialShare.show = true;
-
-      resolve();
-    });
+  private resetShare() {
+    shareStore.reset();
   }
 
   render() {
     return (
-      <web-social-share show={false}>
+      <web-social-share show={false} onClosed={() => this.resetShare()}>
         <ion-icon name="logo-twitter" slot="twitter" style={{color: '#00aced', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
         <ion-icon name="logo-linkedin" slot="linkedin" style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
         <ion-icon name="mail-outline" slot="email" style={{color: 'var(--ion-color-tertiary)', 'font-size': '1.6rem', display: 'block'}}></ion-icon>

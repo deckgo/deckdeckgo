@@ -1,9 +1,12 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
-import {ShareService} from '../../../services/editor/share/share.service';
+
+import deckStore from '../../../stores/deck.store';
+
+import {getPublishedUrl} from '../../../utils/core/share.utils';
 
 @Component({
   tag: 'app-embed',
-  styleUrl: 'app-embed.scss'
+  styleUrl: 'app-embed.scss',
 })
 export class AppEmbed {
   @Element() el: HTMLElement;
@@ -13,14 +16,8 @@ export class AppEmbed {
 
   private embedCodeElement!: HTMLIonTextareaElement;
 
-  private shareService: ShareService;
-
-  constructor() {
-    this.shareService = ShareService.getInstance();
-  }
-
   async componentWillLoad() {
-    const url: string = await this.shareService.getPublishedUrl();
+    const url: string = await getPublishedUrl(deckStore.state.deck);
     this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 
@@ -90,7 +87,7 @@ export class AppEmbed {
         <ion-button color="primary" shape="round" onClick={() => this.copyEmbedCode()}>
           <ion-label>Copy to clipboard</ion-label>
         </ion-button>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

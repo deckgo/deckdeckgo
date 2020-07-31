@@ -1,4 +1,8 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, h, Prop, State} from '@stencil/core';
+
+import deckStore from '../../../../stores/deck.store';
+import userStore from '../../../../stores/user.store';
+import shareStore from '../../../../stores/share.store';
 
 @Component({
   tag: 'app-publish-done',
@@ -15,7 +19,12 @@ export class AppPublishDone {
 
   private keywords: string[] = ['Hooray', 'You did it', 'Applause', 'Thumbs up'];
 
-  @Event() private openShare: EventEmitter<void>;
+  private share() {
+    shareStore.state.share = {
+      deck: deckStore.state.deck,
+      userName: userStore.state.name,
+    };
+  }
 
   render() {
     return (
@@ -25,10 +34,10 @@ export class AppPublishDone {
         <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
         <p class="ion-text-center">
-          It's time to <a onClick={() => this.openShare.emit()}>share</a> it with the world, your colleagues, friends and community.
+          It's time to <a onClick={() => this.share()}>share</a> it with the world, your colleagues, friends and community.
         </p>
 
-        <ion-button color="tertiary" shape="round" onClick={() => this.openShare.emit()} class="ion-margin">
+        <ion-button color="tertiary" shape="round" onClick={() => this.share()} class="ion-margin">
           <ion-icon name="share" slot="start"></ion-icon>
           <ion-label>Share</ion-label>
         </ion-button>
