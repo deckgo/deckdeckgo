@@ -1,3 +1,11 @@
+<a name="1.2.0"></a>
+
+# 1.2.0 (2020-07-31)
+
+### Features
+
+- add functions `hexToRgb` and `rgbToHex`
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-04-17)
