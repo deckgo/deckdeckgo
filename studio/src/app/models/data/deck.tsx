@@ -1,6 +1,9 @@
+import {UserSocial} from './user';
+
 export interface DeckMetaAuthor {
   name: string;
   photo_url?: string;
+  social?: UserSocial | firebase.firestore.FieldValue;
 }
 
 export interface DeckMeta {

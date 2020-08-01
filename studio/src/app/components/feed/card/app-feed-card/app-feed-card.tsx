@@ -7,6 +7,7 @@ import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 import shareStore from '../../../../stores/share.store';
 
 import {Deck, DeckMetaAuthor} from '../../../../models/data/deck';
+import {UserSocial} from '../../../../models/data/user';
 
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
@@ -175,6 +176,10 @@ export class AppFeedCard {
     shareStore.state.share = {
       deck: this.deck,
       userName: this.author,
+      userSocial:
+        this.deck && this.deck.data && this.deck.data.meta && this.deck.data.meta.author && (this.deck.data.meta.author as DeckMetaAuthor).social
+          ? ((this.deck.data.meta.author as DeckMetaAuthor).social as UserSocial)
+          : undefined,
     };
   }
 

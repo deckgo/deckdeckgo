@@ -4,7 +4,7 @@ import 'web-social-share';
 
 import shareStore from '../../../stores/share.store';
 
-import {getPublishedUrl, getShareText} from '../../../utils/core/share.utils';
+import {getPublishedUrl, getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
 
 @Component({
   tag: 'app-share-deck',
@@ -43,6 +43,7 @@ export class AppShareDeck {
     }
 
     const text: string = await getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
+    const twitterText: string = await getShareTwitterText(shareStore.state.share.deck, shareStore.state.share.userName, shareStore.state.share.userSocial);
     const publishedUrl: string = await getPublishedUrl(shareStore.state.share.deck);
 
     const shareOptions = {
@@ -50,7 +51,7 @@ export class AppShareDeck {
       config: [
         {
           twitter: {
-            socialShareText: text,
+            socialShareText: twitterText,
             socialShareUrl: publishedUrl,
             socialSharePopupWidth: 300,
             socialSharePopupHeight: 400,

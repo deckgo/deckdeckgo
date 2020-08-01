@@ -391,6 +391,7 @@ export class AppActionsDeck {
           shareStore.state.share = {
             deck: deckStore.state.deck,
             userName: userStore.state.name,
+            userSocial: userStore.state.social,
           };
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();

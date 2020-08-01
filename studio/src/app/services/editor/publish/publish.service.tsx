@@ -426,10 +426,14 @@ export class PublishService {
           if (userStore.state.user.data.photo_url) {
             (deck.data.meta.author as DeckMetaAuthor).photo_url = userStore.state.user.data.photo_url;
           }
-        } else {
-          if (deck.data.meta.author) {
-            deck.data.meta.author = firebase.firestore.FieldValue.delete();
+
+          if (userStore.state.user.data.social) {
+            (deck.data.meta.author as DeckMetaAuthor).social = userStore.state.user.data.social;
+          } else {
+            (deck.data.meta.author as DeckMetaAuthor).social = firebase.firestore.FieldValue.delete();
           }
+        } else if (deck.data.meta.author) {
+          deck.data.meta.author = firebase.firestore.FieldValue.delete();
         }
 
         await this.deckService.update(deck);
