@@ -1,57 +1,59 @@
 import {firestore} from 'firebase-admin';
+import {UserSocial} from './user';
 
 export interface DeckMetaAuthor {
-    name: string;
-    photo_url?: string;
+  name: string;
+  photo_url?: string | firestore.FieldValue;
+  social?: UserSocial | firestore.FieldValue;
 }
 
 export interface DeckMeta {
-    title: string;
+  title: string;
 
-    description?: string | firestore.FieldValue;
-    tags?: string[] | firestore.FieldValue;
+  description?: string | firestore.FieldValue;
+  tags?: string[] | firestore.FieldValue;
 
-    pathname: string;
+  pathname: string;
 
-    author?: DeckMetaAuthor | firestore.FieldValue;
+  author?: DeckMetaAuthor | firestore.FieldValue;
 
-    published: boolean;
-    published_at: firestore.Timestamp;
+  published: boolean;
+  published_at: firestore.Timestamp;
 
-    updated_at: firestore.Timestamp;
+  updated_at: firestore.Timestamp;
 }
 
 export interface DeckAttributes {
-    style?: string;
+  style?: string;
 }
 
 export interface DeckClone {
-    deck_id_from?: string;
-    deck_id_to?: string;
+  deck_id_from?: string;
+  deck_id_to?: string;
 }
 
 export interface DeckData {
-    name: string;
+  name: string;
 
-    attributes?: DeckAttributes;
-    background?: string;
+  attributes?: DeckAttributes;
+  background?: string;
 
-    owner_id: string;
+  owner_id: string;
 
-    slides?: string[];
+  slides?: string[];
 
-    api_id?: string;
+  api_id?: string;
 
-    meta?: DeckMeta;
+  meta?: DeckMeta;
 
-    clone?: DeckClone;
+  clone?: DeckClone;
 
-    created_at?: firestore.Timestamp;
-    updated_at?: firestore.Timestamp;
+  created_at?: firestore.Timestamp;
+  updated_at?: firestore.Timestamp;
 }
 
 export interface Deck {
-    id: string;
-    data: DeckData;
-    ref: firestore.DocumentReference;
+  id: string;
+  data: DeckData;
+  ref: firestore.DocumentReference;
 }
