@@ -1,12 +1,13 @@
 import {createStore} from '@stencil/store';
 
-import {User} from '../models/data/user';
+import {User, UserSocial} from '../models/data/user';
 
 interface UserStore {
   user: User | undefined;
   photoUrl: string | undefined;
   loaded: boolean;
   name: string | undefined;
+  social: UserSocial | undefined;
 }
 
 const {state, onChange, reset} = createStore({
@@ -14,12 +15,13 @@ const {state, onChange, reset} = createStore({
   photoUrl: undefined,
   loaded: false,
   name: undefined,
-  social: false,
+  social: undefined,
 } as UserStore);
 
 onChange('user', (user: User | undefined) => {
   state.photoUrl = user && user.data ? user.data.photo_url : undefined;
   state.name = user && user.data ? user.data.name : undefined;
+  state.social = user && user.data ? user.data.social : undefined;
   state.loaded = true;
 });
 
