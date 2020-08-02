@@ -41,7 +41,7 @@
     <script type="text/javascript">
       function myActions(e) {
         if (e && e.detail && e.detail.action === 'my-inline-action') {
-          document.execCommand('insertHTML', false, `<acme-placeholder class="own-class">${e.detail.selection}</acme-placeholder>`);
+          console.log('my custom action');
         }
       }
 

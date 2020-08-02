@@ -235,7 +235,7 @@ declare namespace LocalJSX {
         "contentList"?: ContentList;
         "disabledTitle"?: boolean;
         "mobile"?: boolean;
-        "onListModified"?: (event: CustomEvent<void>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "selection"?: Selection;
         "sticky"?: boolean;
     }

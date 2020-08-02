@@ -216,26 +216,6 @@ export class DeckdeckgoInlineEditorUtils {
     });
   }
 
-  static execCommand(selection: Selection, command: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!selection || selection.rangeCount <= 0 || !document) {
-        resolve();
-        return;
-      }
-
-      const text: string = selection.toString();
-
-      if (!text || text.length <= 0) {
-        resolve();
-        return;
-      }
-
-      document.execCommand(command);
-
-      resolve();
-    });
-  }
-
   static findContainer(containers: string, element: HTMLElement): Promise<HTMLElement> {
     return new Promise<HTMLElement>(async (resolve) => {
       if (!element) {

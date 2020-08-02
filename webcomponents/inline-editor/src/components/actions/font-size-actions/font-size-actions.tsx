@@ -26,9 +26,12 @@ export class FontSizeActions {
     const value: string = Object.keys(FontSize).find((key) => FontSize[key] === size);
 
     this.execCommand.emit({
-      style: 'font-size',
-      value: value.toLowerCase().replace('_', '-'),
-      initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-size'] === value.toLowerCase().replace('_', '-')),
+      cmd: 'style',
+      detail: {
+        style: 'font-size',
+        value: value.toLowerCase().replace('_', '-'),
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-size'] === value.toLowerCase().replace('_', '-')),
+      },
     });
   }
 

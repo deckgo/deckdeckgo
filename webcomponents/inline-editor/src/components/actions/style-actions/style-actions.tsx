@@ -36,9 +36,12 @@ export class StyleActions {
     $event.stopPropagation();
 
     this.execCommand.emit({
-      style: 'font-weight',
-      value: 'bold',
-      initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-weight'] === 'bold'),
+      cmd: 'style',
+      detail: {
+        style: 'font-weight',
+        value: 'bold',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-weight'] === 'bold'),
+      },
     });
   }
 
@@ -46,9 +49,12 @@ export class StyleActions {
     $event.stopPropagation();
 
     this.execCommand.emit({
-      style: 'font-style',
-      value: 'italic',
-      initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-style'] === 'italic'),
+      cmd: 'style',
+      detail: {
+        style: 'font-style',
+        value: 'italic',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-style'] === 'italic'),
+      },
     });
   }
 
@@ -56,9 +62,12 @@ export class StyleActions {
     $event.stopPropagation();
 
     this.execCommand.emit({
-      style: 'text-decoration',
-      value: 'underline',
-      initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'underline'),
+      cmd: 'style',
+      detail: {
+        style: 'text-decoration',
+        value: 'underline',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'underline'),
+      },
     });
   }
 
@@ -66,9 +75,12 @@ export class StyleActions {
     $event.stopPropagation();
 
     this.execCommand.emit({
-      style: 'text-decoration',
-      value: 'line-through',
-      initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'line-through'),
+      cmd: 'style',
+      detail: {
+        style: 'text-decoration',
+        value: 'line-through',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'line-through'),
+      },
     });
   }
 

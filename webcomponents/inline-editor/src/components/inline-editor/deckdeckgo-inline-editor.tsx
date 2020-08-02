@@ -803,7 +803,7 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           sticky={sticky}
           contentList={this.contentList}
-          onListModified={() => this.reset(true)}></deckgo-ie-list-actions>
+          onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-list-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.FONT_SIZE) {
       return (

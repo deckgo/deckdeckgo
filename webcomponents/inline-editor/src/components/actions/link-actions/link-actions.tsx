@@ -59,7 +59,7 @@ export class LinkActions {
       }
 
       // If node text
-      if (container.nodeType === 3) {
+      if (container.nodeType === Node.TEXT_NODE) {
         container = container.parentElement;
       }
 

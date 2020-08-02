@@ -14,8 +14,17 @@ export interface InlineAction {
   anchorLink: AnchorLink;
 }
 
-export interface ExecCommandAction {
+export interface ExecCommandStyle {
   style: 'color' | 'background-color' | 'font-size' | 'font-weight' | 'font-style' | 'text-decoration';
   value: string;
   initial: (element: HTMLElement | null) => Promise<boolean>;
+}
+
+export interface ExecCommandList {
+  ordered: boolean;
+}
+
+export interface ExecCommandAction {
+  cmd: 'style' | 'list';
+  detail: ExecCommandStyle | ExecCommandList;
 }
