@@ -13,7 +13,7 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
     return;
   }
 
-  const container: HTMLElement = anchorNode.nodeType === 1 ? (anchorNode as HTMLElement) : anchorNode.parentElement;
+  const container: HTMLElement = anchorNode.nodeType !== Node.TEXT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
 
   const sameSelection: boolean = container && container.innerText === selection.toString();
 
