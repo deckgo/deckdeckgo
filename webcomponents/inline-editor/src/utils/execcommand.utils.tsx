@@ -41,6 +41,7 @@ async function replaceSelection(container: HTMLElement, action: ExecCommandActio
   span.appendChild(fragment);
 
   await cleanChildren(action, span);
+  await flattenChildren(action, span);
 
   range.insertNode(span);
   selection.selectAllChildren(span);
@@ -59,6 +60,10 @@ async function cleanChildren(action: ExecCommandAction, span: HTMLSpanElement) {
   if (children && children.length > 0) {
     children.forEach((element: HTMLElement) => {
       element.style[action.style] = '';
+
+      if (element.getAttribute('style') === '' || element.style === null) {
+        element.removeAttribute('style');
+      }
     });
   }
 
@@ -123,4 +128,41 @@ async function findStyleNode(node: Node, style: string, containers: string): Pro
   }
 
   return await findStyleNode(node.parentNode, style, containers);
+}
+
+// We try to not keep <span/> in the tree if we can use text
+async function flattenChildren(action: ExecCommandAction, span: HTMLSpanElement) {
+  if (!span.hasChildNodes()) {
+    return;
+  }
+
+  // Flatten direct (> *) children with no style
+  const children: HTMLElement[] = Array.from(span.children).filter((element: HTMLElement) => {
+    const style: string | null = element.getAttribute('style');
+    return !style || style === '';
+  }) as HTMLElement[];
+
+  if (children && children.length > 0) {
+    children.forEach((element: HTMLElement) => {
+      // Can only be flattened if there is no other style applied to a children, like a color to part of a text with a background
+      const styledChildren: NodeListOf<HTMLElement> = element.querySelectorAll('[style]');
+      if (!styledChildren || styledChildren.length === 0) {
+        const text: Text = document.createTextNode(element.textContent);
+        element.parentElement.replaceChild(text, element);
+      }
+    });
+
+    return;
+  }
+
+  // Direct children (> *) may have children (*) which need to be flattened too
+  const flattenChildrenChildren: Promise<void>[] = Array.from(span.children).map((element: HTMLElement) => {
+    return flattenChildren(action, element);
+  });
+
+  if (!flattenChildrenChildren || flattenChildrenChildren.length <= 0) {
+    return;
+  }
+
+  await Promise.all(flattenChildrenChildren);
 }
