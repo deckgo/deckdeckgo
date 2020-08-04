@@ -91,7 +91,7 @@ function movePreviousSiblings(container: HTMLElement) {
   }
 }
 
-async function moveNextSiblings(container: HTMLElement) {
+function moveNextSiblings(container: HTMLElement) {
   if (container.nextElementSibling && container.nextElementSibling.nodeName.toLowerCase() === 'li') {
     const list: HTMLElement | null = moveSibling(container.nextElementSibling, false);
 
