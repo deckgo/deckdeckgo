@@ -3,159 +3,129 @@ import {isRTL} from '@deckdeckgo/utils';
 import {ContentAlign, ContentList, FontSize} from '../types/enums';
 
 export class DeckdeckgoInlineEditorUtils {
-  static isBold(element: HTMLElement): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      let result: boolean = await this.isTag(element, 'b');
+  static async getBold(element: HTMLElement): Promise<'bold' | 'initial' | undefined> {
+    if (await this.isTag(element, 'b')) {
+      return 'bold';
+    }
 
-      if (result) {
-        resolve(result);
-        return;
-      }
+    if (await this.isTag(element, 'strong')) {
+      return 'bold';
+    }
 
-      result = await this.isTag(element, 'strong');
-
-      resolve(result);
-    });
+    return element.style.fontWeight === 'bold' ? 'bold' : element.style.fontWeight === 'initial' ? 'initial' : undefined;
   }
 
-  static isItalic(element: HTMLElement): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      let result: boolean = await this.isTag(element, 'i');
+  static async getItalic(element: HTMLElement): Promise<'italic' | 'initial' | undefined> {
+    if (await this.isTag(element, 'i')) {
+      return 'italic';
+    }
 
-      if (result) {
-        resolve(result);
-        return;
+    if (await this.isTag(element, 'em')) {
+      return 'italic';
+    }
+
+    if (element.style.fontStyle === 'italic') {
+      return 'italic';
+    }
+
+    if (element.style.fontStyle === 'initial') {
+      return 'initial';
+    }
+
+    if (!element.hasChildNodes()) {
+      return undefined;
+    }
+
+    const children: HTMLCollection = element.children;
+    if (children && children.length > 0) {
+      const selectedChild: HTMLElement = Array.from(children).find((child: HTMLElement) => {
+        return child.style.fontStyle === 'italic' || child.style.fontStyle === 'initial';
+      }) as HTMLElement;
+
+      if (selectedChild) {
+        return selectedChild.style.fontStyle === 'italic' ? 'italic' : 'initial';
       }
+    }
 
-      result = await this.isTag(element, 'em');
-
-      if (result) {
-        resolve(result);
-        return;
-      }
-
-      if (!element.hasChildNodes()) {
-        resolve(false);
-        return;
-      }
-
-      // Sometimes it generates font-style: italic;
-      result = element.style.fontStyle === 'italic';
-      if (result) {
-        resolve(result);
-        return;
-      }
-
-      const children: HTMLCollection = element.children;
-      if (children && children.length > 0) {
-        const selectedChild: Element = Array.from(children).find((child: HTMLElement) => {
-          return child.style.fontStyle === 'italic';
-        });
-
-        if (selectedChild) {
-          resolve(true);
-          return;
-        }
-      }
-
-      resolve(result);
-    });
+    return undefined;
   }
 
-  static isUnderline(element: HTMLElement): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      let result: boolean = await this.isTag(element, 'u');
+  static async getUnderline(element: HTMLElement): Promise<'underline' | 'initial' | undefined> {
+    if (await this.isTag(element, 'u')) {
+      return 'underline';
+    }
 
-      if (result) {
-        resolve(result);
-        return;
+    if (element.style.textDecoration === 'underline') {
+      return 'underline';
+    }
+
+    if (element.style.textDecoration === 'initial') {
+      return 'initial';
+    }
+
+    if (!element.hasChildNodes()) {
+      return undefined;
+    }
+
+    const children: HTMLCollection = element.children;
+    if (children && children.length > 0) {
+      const selectedChild: HTMLElement = Array.from(children).find((child: HTMLElement) => {
+        return child.style.textDecorationLine === 'underline' || child.style.textDecorationLine === 'initial';
+      }) as HTMLElement;
+
+      if (selectedChild) {
+        return selectedChild.style.fontStyle === 'underline' ? 'underline' : 'initial';
       }
+    }
 
-      if (!element.hasChildNodes()) {
-        resolve(false);
-        return;
-      }
-
-      // Sometimes it generates text-decoration-line: underline; too
-      result = (element.style as any).textDecorationLine === 'underline';
-      if (result) {
-        resolve(result);
-        return;
-      }
-
-      const children: HTMLCollection = element.children;
-      if (children && children.length > 0) {
-        const selectedChild: Element = Array.from(children).find((child: HTMLElement) => {
-          return (child.style as any).textDecorationLine === 'underline';
-        });
-
-        if (selectedChild) {
-          resolve(true);
-          return;
-        }
-      }
-
-      resolve(result);
-    });
+    return undefined;
   }
 
-  static isStrikeThrough(element: HTMLElement): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      let result: boolean = await this.isTag(element, 'strike');
+  static async getStrikeThrough(element: HTMLElement): Promise<'strikethrough' | 'initial' | undefined> {
+    if (await this.isTag(element, 'strike')) {
+      return 'strikethrough';
+    }
 
-      if (result) {
-        resolve(result);
-        return;
+    if (element.style.textDecoration === 'line-through') {
+      return 'strikethrough';
+    }
+
+    if (element.style.textDecoration === 'initial') {
+      return 'initial';
+    }
+
+    if (!element.hasChildNodes()) {
+      return undefined;
+    }
+
+    const children: HTMLCollection = element.children;
+    if (children && children.length > 0) {
+      const selectedChild: HTMLElement = Array.from(children).find((child: HTMLElement) => {
+        return child.style.textDecoration === 'line-through' || child.style.textDecoration === 'initial';
+      }) as HTMLElement;
+
+      if (selectedChild) {
+        return selectedChild.style.fontStyle === 'line-through' ? 'strikethrough' : 'initial';
       }
+    }
 
-      if (!element.hasChildNodes()) {
-        resolve(false);
-        return;
-      }
-
-      // Sometimes it generates font-style: line-through;
-      result = element.style.textDecoration === 'line-through';
-      if (result) {
-        resolve(result);
-        return;
-      }
-
-      const children: HTMLCollection = element.children;
-      if (children && children.length > 0) {
-        const selectedChild: Element = Array.from(children).find((child: HTMLElement) => {
-          return child.style.textDecoration === 'line-through';
-        });
-
-        if (selectedChild) {
-          resolve(true);
-          return;
-        }
-      }
-
-      resolve(result);
-    });
+    return undefined;
   }
 
-  static isList(element: HTMLElement): Promise<ContentList | undefined> {
-    return new Promise<ContentList | undefined>(async (resolve) => {
-      if (!element) {
-        resolve(undefined);
-        return;
-      }
+  static async getList(element: HTMLElement): Promise<ContentList | undefined> {
+    if (!element) {
+      return undefined;
+    }
 
-      if (element.nodeName && element.nodeName.toLowerCase() === 'li' && element.parentElement && element.parentElement.nodeName) {
-        resolve(
-          element.parentElement.nodeName.toLowerCase() === 'ol'
-            ? ContentList.ORDERED
-            : element.parentElement.nodeName.toLowerCase() === 'ul'
-            ? ContentList.UNORDERED
-            : undefined
-        );
-        return;
-      }
+    if (element.nodeName && element.nodeName.toLowerCase() === 'li' && element.parentElement && element.parentElement.nodeName) {
+      return element.parentElement.nodeName.toLowerCase() === 'ol'
+        ? ContentList.ORDERED
+        : element.parentElement.nodeName.toLowerCase() === 'ul'
+        ? ContentList.UNORDERED
+        : undefined;
+    }
 
-      resolve(undefined);
-    });
+    return undefined;
   }
 
   static async getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
@@ -172,25 +142,21 @@ export class DeckdeckgoInlineEditorUtils {
     return isRTL() ? ContentAlign.RIGHT : ContentAlign.LEFT;
   }
 
-  private static isTag(element: HTMLElement, tagName: string): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      if (!element) {
-        resolve(false);
-        return;
-      }
+  private static async isTag(element: HTMLElement, tagName: string): Promise<boolean> {
+    if (!element) {
+      return false;
+    }
 
-      if (element.nodeName.toLowerCase() === tagName) {
-        resolve(true);
-        return;
-      }
+    if (element.nodeName.toLowerCase() === tagName) {
+      return true;
+    }
 
-      if (element.hasChildNodes()) {
-        const children: HTMLCollection = element.getElementsByTagName(tagName);
-        resolve(children && children.length > 0);
-      } else {
-        resolve(false);
-      }
-    });
+    if (element.hasChildNodes()) {
+      const children: HTMLCollection = element.getElementsByTagName(tagName);
+      return children && children.length > 0;
+    }
+
+    return false;
   }
 
   static isContainer(containers: string, element: Node): boolean {

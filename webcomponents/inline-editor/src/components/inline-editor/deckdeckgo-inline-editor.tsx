@@ -23,16 +23,16 @@ export class DeckdeckgoInlineEditor {
   @Prop() palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
 
   @State()
-  private bold: boolean = false;
+  private bold: 'bold' | 'initial' | undefined = undefined;
 
   @State()
-  private italic: boolean = false;
+  private italic: 'italic' | 'initial' | undefined = undefined;
 
   @State()
-  private underline: boolean = false;
+  private underline: 'underline' | 'initial' | undefined = undefined;
 
   @State()
-  private strikethrough: boolean = false;
+  private strikethrough: 'strikethrough' | 'initial' | undefined = undefined;
 
   @State()
   private contentAlign: ContentAlign;
@@ -457,10 +457,10 @@ export class DeckdeckgoInlineEditor {
       }
 
       if (this.isContainer(content) || content.parentElement) {
-        this.bold = false;
-        this.italic = false;
-        this.underline = false;
-        this.strikethrough = false;
+        this.bold = undefined;
+        this.italic = undefined;
+        this.underline = undefined;
+        this.strikethrough = undefined;
         this.contentList = undefined;
         this.contentFontSize = undefined;
 
@@ -505,13 +505,24 @@ export class DeckdeckgoInlineEditor {
 
         resolve();
       } else {
-        this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
-        this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
-        this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
-        this.strikethrough = await DeckdeckgoInlineEditorUtils.isStrikeThrough(node as HTMLElement);
+        if (this.bold === undefined) {
+          this.bold = await DeckdeckgoInlineEditorUtils.getBold(node as HTMLElement);
+        }
+
+        if (this.italic === undefined) {
+          this.italic = await DeckdeckgoInlineEditorUtils.getItalic(node as HTMLElement);
+        }
+
+        if (this.underline === undefined) {
+          this.underline = await DeckdeckgoInlineEditorUtils.getUnderline(node as HTMLElement);
+        }
+
+        if (this.strikethrough === undefined) {
+          this.strikethrough = await DeckdeckgoInlineEditorUtils.getStrikeThrough(node as HTMLElement);
+        }
 
         if (this.contentList === undefined) {
-          this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
+          this.contentList = await DeckdeckgoInlineEditorUtils.getList(node as HTMLElement);
         }
 
         await this.findStyle(node.parentNode);
@@ -824,10 +835,10 @@ export class DeckdeckgoInlineEditor {
         mobile={this.mobile}
         disabledTitle={this.disabledTitle}
         selection={this.selection}
-        bold={this.bold}
-        italic={this.italic}
-        underline={this.underline}
-        strikethrough={this.strikethrough}
+        bold={this.bold === 'bold'}
+        italic={this.italic === 'italic'}
+        underline={this.underline === 'underline'}
+        strikethrough={this.strikethrough === 'strikethrough'}
         onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-style-actions>,
 
       this.renderSeparator(),
