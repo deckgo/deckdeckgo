@@ -21,7 +21,7 @@ export interface ExecCommandStyle {
 }
 
 export interface ExecCommandList {
-  ordered: boolean;
+  type: 'ol' | 'ul';
 }
 
 export interface ExecCommandAction {

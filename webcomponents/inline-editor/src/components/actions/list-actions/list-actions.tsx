@@ -27,14 +27,14 @@ export class AlignActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
-  private toggleList(e: UIEvent, ordered: boolean): Promise<void> {
+  private toggleList(e: UIEvent, type: 'ol' | 'ul'): Promise<void> {
     return new Promise<void>(async (resolve) => {
       e.stopPropagation();
 
       this.execCommand.emit({
         cmd: 'list',
         detail: {
-          ordered,
+          type,
         },
       });
 
@@ -48,7 +48,7 @@ export class AlignActions {
         <deckgo-ie-action-button
           mobile={this.mobile}
           disableAction={this.disabledTitle}
-          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, true)}
+          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'ol')}
           class={this.contentList === ContentList.ORDERED ? 'active' : undefined}>
           <deckgo-ie-action-image cssClass={'ordered-list'}></deckgo-ie-action-image>
         </deckgo-ie-action-button>
@@ -56,7 +56,7 @@ export class AlignActions {
         <deckgo-ie-action-button
           mobile={this.mobile}
           disableAction={this.disabledTitle}
-          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, false)}
+          onAction={($event: CustomEvent<UIEvent>) => this.toggleList($event.detail, 'ul')}
           class={this.contentList === ContentList.UNORDERED ? 'active' : undefined}>
           <deckgo-ie-action-image cssClass={'unordered-list'}></deckgo-ie-action-image>
         </deckgo-ie-action-button>

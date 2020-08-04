@@ -1,8 +1,6 @@
 import {ExecCommandList} from '../interfaces/interfaces';
 
-// TODO Ol or Ul
-
-export async function execCommandList(selection: Selection, _action: ExecCommandList, _containers: string) {
+export async function execCommandList(selection: Selection, action: ExecCommandList) {
   const anchorNode: Node = selection.anchorNode;
 
   if (!anchorNode) {
@@ -14,7 +12,7 @@ export async function execCommandList(selection: Selection, _action: ExecCommand
   const range: Range = selection.getRangeAt(0);
 
   // Did the user select the all list
-  if (range.commonAncestorContainer && range.commonAncestorContainer.nodeName.toLowerCase() === 'ol') {
+  if (range.commonAncestorContainer && range.commonAncestorContainer.nodeName.toLowerCase() === action.type) {
     await removeList(range);
 
     return;
@@ -22,26 +20,28 @@ export async function execCommandList(selection: Selection, _action: ExecCommand
 
   // Did the user select an element of the list
   if (container.nodeName.toLowerCase() === 'li') {
-    await removeItem(container, range, selection);
+    await removeItem(container, range, selection, action.type);
 
     return;
   }
 
   // Create a brand new list
-  await createList(range, selection);
+  await createList(container, range, selection, action.type);
 }
 
-async function createList(range: Range, selection: Selection) {
+async function createList(container: HTMLElement, range: Range, selection: Selection, type: 'ol' | 'ul') {
   const fragment: DocumentFragment = range.extractContents();
 
-  const ol = document.createElement('ol');
-  const li = document.createElement('li');
+  const list: HTMLOListElement | HTMLUListElement = document.createElement(type);
+
+  const li: HTMLLIElement = document.createElement('li');
+  li.style.cssText = container.style.cssText;
   li.appendChild(fragment);
 
-  ol.appendChild(li);
+  list.appendChild(li);
 
-  range.insertNode(ol);
-  selection.selectAllChildren(ol);
+  range.insertNode(list);
+  selection.selectAllChildren(list);
 }
 
 async function removeList(range: Range) {
@@ -62,15 +62,19 @@ async function removeList(range: Range) {
   list.parentElement.removeChild(list);
 }
 
-async function removeItem(container: HTMLElement, range: Range, selection: Selection) {
-  movePreviousSiblings(container);
-  moveNextSiblings(container);
+async function removeItem(container: HTMLElement, range: Range, selection: Selection, type: 'ol' | 'ul') {
+  movePreviousSiblings(container, type);
+  moveNextSiblings(container, type);
 
   // Finally convert selected item to not be part of the list anymore
+  const span: HTMLSpanElement = document.createElement('span');
+  span.style.cssText = container.style.cssText;
+
   const fragment: DocumentFragment = range.extractContents();
+  span.appendChild(fragment);
 
   container.parentElement.parentElement.insertBefore(
-    fragment,
+    span,
     container.parentElement.nextElementSibling ? container.parentElement.nextElementSibling : container.parentElement.parentElement.lastChild
   );
   selection.selectAllChildren(container);
@@ -83,9 +87,9 @@ async function removeItem(container: HTMLElement, range: Range, selection: Selec
   }
 }
 
-function movePreviousSiblings(container: HTMLElement) {
+function movePreviousSiblings(container: HTMLElement, type: 'ol' | 'ul') {
   if (container.previousElementSibling && container.previousElementSibling.nodeName.toLowerCase() === 'li') {
-    const list: HTMLElement | null = moveSibling(container.previousElementSibling, true);
+    const list: HTMLElement | null = moveSibling(container.previousElementSibling, true, type);
 
     if (list) {
       container.parentElement.parentElement.insertBefore(list, container.parentElement);
@@ -93,9 +97,9 @@ function movePreviousSiblings(container: HTMLElement) {
   }
 }
 
-function moveNextSiblings(container: HTMLElement) {
+function moveNextSiblings(container: HTMLElement, type: 'ol' | 'ul') {
   if (container.nextElementSibling && container.nextElementSibling.nodeName.toLowerCase() === 'li') {
-    const list: HTMLElement | null = moveSibling(container.nextElementSibling, false);
+    const list: HTMLElement | null = moveSibling(container.nextElementSibling, false, type);
 
     if (list) {
       container.parentElement.nextSibling
@@ -105,7 +109,7 @@ function moveNextSiblings(container: HTMLElement) {
   }
 }
 
-function moveSibling(sibling: Element | null, previous: boolean): HTMLElement | null {
+function moveSibling(sibling: Element | null, previous: boolean, type: 'ol' | 'ul'): HTMLOListElement | HTMLUListElement | null {
   if (!sibling || sibling.nodeName.toLowerCase() !== 'li') {
     return null;
   }
@@ -122,7 +126,7 @@ function moveSibling(sibling: Element | null, previous: boolean): HTMLElement | 
     return null;
   }
 
-  const list: HTMLElement = document.createElement('ol');
+  const list: HTMLOListElement | HTMLUListElement = document.createElement(type);
 
   if (previous) {
     list.append(...children.reverse());

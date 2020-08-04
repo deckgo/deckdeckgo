@@ -76,7 +76,7 @@ async function cleanChildren(action: ExecCommandStyle, span: HTMLSpanElement) {
 }
 
 async function createSpan(container: HTMLElement, action: ExecCommandStyle, containers: string): Promise<HTMLSpanElement> {
-  const span = document.createElement('span');
+  const span: HTMLSpanElement = document.createElement('span');
   span.style[action.style] = await getStyleValue(container, action, containers);
 
   return span;
