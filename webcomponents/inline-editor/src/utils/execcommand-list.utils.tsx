@@ -69,7 +69,10 @@ async function removeItem(container: HTMLElement, range: Range, selection: Selec
   // Finally convert selected item to not be part of the list anymore
   const fragment: DocumentFragment = range.extractContents();
 
-  container.parentElement.parentElement.insertBefore(fragment, container.parentElement.parentElement.lastChild);
+  container.parentElement.parentElement.insertBefore(
+    fragment,
+    container.parentElement.nextElementSibling ? container.parentElement.nextElementSibling : container.parentElement.parentElement.lastChild
+  );
   selection.selectAllChildren(container);
 
   const list = container.parentElement;
@@ -85,7 +88,6 @@ function movePreviousSiblings(container: HTMLElement) {
     const list: HTMLElement | null = moveSibling(container.previousElementSibling, true);
 
     if (list) {
-      // TODO
       container.parentElement.parentElement.insertBefore(list, container.parentElement);
     }
   }
@@ -96,8 +98,9 @@ function moveNextSiblings(container: HTMLElement) {
     const list: HTMLElement | null = moveSibling(container.nextElementSibling, false);
 
     if (list) {
-      // TODO
-      container.parentElement.parentElement.appendChild(list);
+      container.parentElement.nextSibling
+        ? container.parentElement.parentElement.insertBefore(list, container.parentElement.nextSibling)
+        : container.parentElement.parentElement.appendChild(list);
     }
   }
 }
@@ -120,7 +123,12 @@ function moveSibling(sibling: Element | null, previous: boolean): HTMLElement | 
   }
 
   const list: HTMLElement = document.createElement('ol');
-  list.append(...children.reverse());
+
+  if (previous) {
+    list.append(...children.reverse());
+  } else {
+    list.append(...children);
+  }
 
   return list;
 }
