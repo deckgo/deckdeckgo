@@ -1,4 +1,9 @@
-# 1.6.0-beta.1 (2020-08-04)
+# 2.0.0-beta.1 (2020-08-04)
+
+### Breaking Changes
+
+- on style change the `input` event is not triggered anymore on the container. to overcome the problem, the component emits a new event `styleChange`
+- the event `linkCreated` does not emit the link as detail anymore but rather the container
 
 ### Features
 

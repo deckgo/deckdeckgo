@@ -48,7 +48,8 @@
       document.addEventListener('customAction', myActions);
 
       document.addEventListener('imgDidChange', ($event) => console.log('imgDidChange', $event));
-      document.addEventListener('linkCreated', ($event) => console.log('linkCreated', $event));
+      document.addEventListener('linkCreated', ($event) => console.log('linkCreated', $event.detail));
+      document.addEventListener('styleDidChange', ($event) => console.log('styleDidChange', $event.detail));
     </script>
   </body>
 </html>

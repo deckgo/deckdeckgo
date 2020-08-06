@@ -48,6 +48,7 @@ export namespace Components {
     }
     interface DeckgoIeLinkActions {
         "anchorLink": AnchorLink;
+        "containers": string;
         "linkCreated": EventEmitter<HTMLElement>;
         "mobile": boolean;
         "selection": Selection;
@@ -225,6 +226,7 @@ declare namespace LocalJSX {
     }
     interface DeckgoIeLinkActions {
         "anchorLink"?: AnchorLink;
+        "containers"?: string;
         "linkCreated"?: EventEmitter<HTMLElement>;
         "mobile"?: boolean;
         "onLinkModified"?: (event: CustomEvent<boolean>) => void;
@@ -272,6 +274,7 @@ declare namespace LocalJSX {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onLinkCreated"?: (event: CustomEvent<HTMLElement>) => void;
         "onStickyToolbarActivated"?: (event: CustomEvent<boolean>) => void;
+        "onStyleDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "palette"?: DeckdeckgoPalette[];
         "stickyDesktop"?: boolean;
         "stickyMobile"?: boolean;

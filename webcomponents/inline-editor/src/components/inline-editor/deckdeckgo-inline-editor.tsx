@@ -86,6 +86,8 @@ export class DeckdeckgoInlineEditor {
 
   @Event() private linkCreated: EventEmitter<HTMLElement>;
 
+  @Event() private styleDidChange: EventEmitter<HTMLElement>;
+
   @Prop()
   imgAnchor: string = 'img';
 
@@ -734,6 +736,9 @@ export class DeckdeckgoInlineEditor {
 
     await execCommand(this.selection, $event.detail, this.containers);
 
+    const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, document.activeElement as HTMLElement);
+    this.styleDidChange.emit(container);
+
     await this.reset(true);
   }
 
@@ -772,6 +777,7 @@ export class DeckdeckgoInlineEditor {
           anchorLink={this.anchorLink}
           selection={this.selection}
           linkCreated={this.linkCreated}
+          containers={this.containers}
           mobile={this.mobile}
           onLinkModified={($event: CustomEvent<boolean>) => this.reset($event.detail)}></deckgo-ie-link-actions>
       );
