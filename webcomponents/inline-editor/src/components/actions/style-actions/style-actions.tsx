@@ -1,6 +1,6 @@
 import {Component, EventEmitter, h, Host, Prop, Event} from '@stencil/core';
 
-import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
+import {ExecCommandAction} from '../../../interfaces/interfaces';
 
 @Component({
   tag: 'deckgo-ie-style-actions',
@@ -30,38 +30,58 @@ export class StyleActions {
   strikethrough: boolean;
 
   @Event()
-  private initStyle: EventEmitter;
+  private execCommand: EventEmitter<ExecCommandAction>;
 
   private async styleBold($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'bold');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      cmd: 'style',
+      detail: {
+        style: 'font-weight',
+        value: 'bold',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-weight'] === 'bold'),
+      },
+    });
   }
 
   private async styleItalic($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'italic');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      cmd: 'style',
+      detail: {
+        style: 'font-style',
+        value: 'italic',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-style'] === 'italic'),
+      },
+    });
   }
 
   private async styleUnderline($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'underline');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      cmd: 'style',
+      detail: {
+        style: 'text-decoration',
+        value: 'underline',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'underline'),
+      },
+    });
   }
 
   private async styleStrikeThrough($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
-    await DeckdeckgoInlineEditorUtils.execCommand(this.selection, 'strikeThrough');
-
-    this.initStyle.emit();
+    this.execCommand.emit({
+      cmd: 'style',
+      detail: {
+        style: 'text-decoration',
+        value: 'line-through',
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'line-through'),
+      },
+    });
   }
 
   render() {

@@ -1362,7 +1362,7 @@ declare namespace LocalJSX {
         "imageHelper"?: ImageHelper;
         "imgDidChange"?: EventEmitter<HTMLElement>;
         "math"?: boolean;
-        "onStyleDidChange"?: (event: CustomEvent<void>) => void;
+        "onOptionsDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
         "shape"?: 'shape' | 'text' | undefined;
         "slide"?: boolean;

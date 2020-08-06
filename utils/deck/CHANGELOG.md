@@ -1,3 +1,11 @@
+<a name="2.4.0"></a>
+
+# 2.4.0 (2020-08-06)
+
+### Features
+
+- adapt `font-weight` to work with new inline editor
+
 <a name="2.3.3"></a>
 
 # 2.3.3 (2020-07-21)

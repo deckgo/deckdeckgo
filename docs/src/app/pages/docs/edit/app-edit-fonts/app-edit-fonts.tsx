@@ -2,7 +2,6 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-edit-fonts',
-  styleUrl: 'app-edit-fonts.scss',
 })
 export class AppEditFonts {
   render() {

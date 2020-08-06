@@ -1,3 +1,20 @@
+# 2.0.1 (2020-08-06)
+
+### Style
+
+- add a CSS4 variable `--deckgo-inline-editor-position`
+
+# 2.0.0 (2020-08-06)
+
+### Breaking Changes
+
+- on style change the `input` event is not triggered anymore on the container. to overcome the problem, the component emits a new event `styleChange`
+- the event `linkCreated` does not emit the link as detail anymore but rather the container
+
+### Features
+
+- replace `document.execCommand` marked as obsolete with custom code ([#741](https://github.com/deckgo/deckdeckgo/issues/741))
+
 # 1.5.0 (2020-07-21)
 
 ### Features

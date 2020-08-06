@@ -1,6 +1,6 @@
 import {Component, h, Prop, EventEmitter, Event, Element, Host, State, Watch} from '@stencil/core';
 
-import {debounce} from '@deckdeckgo/utils';
+import {debounce, hexToRgb} from '@deckdeckgo/utils';
 
 import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../utils/deckdeckgo-palette';
 
@@ -53,7 +53,7 @@ export class DeckdeckgoColor {
 
   async componentWillLoad() {
     this.selectedColorHex = this.colorHex;
-    this.selectedColorRgb = this.colorRgb ? this.colorRgb : await this.hexToRgb(this.colorHex);
+    this.selectedColorRgb = this.colorRgb ? this.colorRgb : await hexToRgb(this.colorHex);
 
     this.selectedColorPalette = await this.initSelectedColorPalette();
     await this.initSelectedColorPaletteAlt();
@@ -156,7 +156,7 @@ export class DeckdeckgoColor {
   private selectColor = async ($event) => {
     const selectedColor: string = $event.target.value;
 
-    const rgb: string = await this.hexToRgb(selectedColor);
+    const rgb: string = await hexToRgb(selectedColor);
 
     const color: DeckdeckgoPaletteColor = {
       hex: selectedColor,
@@ -167,20 +167,6 @@ export class DeckdeckgoColor {
 
     this.colorChange.emit(color);
   };
-
-  // https://stackoverflow.com/a/5624139/5404186
-  private hexToRgb(hex: string): Promise<string> {
-    return new Promise<string>((resolve) => {
-      if (!hex || hex === undefined || hex === '') {
-        resolve(undefined);
-        return;
-      }
-
-      const result: RegExpExecArray | null = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-      resolve(result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : undefined);
-    });
-  }
 
   private isHexColorSelected(element: DeckdeckgoPalette): boolean {
     if (!element || !element.color || !element.color.hex) {

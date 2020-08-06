@@ -1,3 +1,13 @@
+# 1.8.0 (2020-08-06)
+
+### Features
+
+- document new events for `@deckdeckgo/inline-editor` v2
+
+### Fix
+
+- position y for the `@deckdeckgo/inline-editor` demo
+
 # 1.7.1 (2020-07-28)
 
 ### Features

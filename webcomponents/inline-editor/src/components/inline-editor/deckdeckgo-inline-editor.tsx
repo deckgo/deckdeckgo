@@ -6,9 +6,11 @@ import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 import {ContentAlign, ContentList, FontSize, ToolbarActions} from '../../types/enums';
-import {AnchorLink, InlineAction} from '../../interfaces/interfaces';
+
+import {AnchorLink, ExecCommandAction, InlineAction} from '../../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
+import {execCommand} from '../../utils/execcommand.utils';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -21,16 +23,16 @@ export class DeckdeckgoInlineEditor {
   @Prop() palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
 
   @State()
-  private bold: boolean = false;
+  private bold: 'bold' | 'initial' | undefined = undefined;
 
   @State()
-  private italic: boolean = false;
+  private italic: 'italic' | 'initial' | undefined = undefined;
 
   @State()
-  private underline: boolean = false;
+  private underline: 'underline' | 'initial' | undefined = undefined;
 
   @State()
-  private strikethrough: boolean = false;
+  private strikethrough: 'strikethrough' | 'initial' | undefined = undefined;
 
   @State()
   private contentAlign: ContentAlign;
@@ -83,6 +85,8 @@ export class DeckdeckgoInlineEditor {
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
 
   @Event() private linkCreated: EventEmitter<HTMLElement>;
+
+  @Event() private styleDidChange: EventEmitter<HTMLElement>;
 
   @Prop()
   imgAnchor: string = 'img';
@@ -455,10 +459,10 @@ export class DeckdeckgoInlineEditor {
       }
 
       if (this.isContainer(content) || content.parentElement) {
-        this.bold = false;
-        this.italic = false;
-        this.underline = false;
-        this.strikethrough = false;
+        this.bold = undefined;
+        this.italic = undefined;
+        this.underline = undefined;
+        this.strikethrough = undefined;
         this.contentList = undefined;
         this.contentFontSize = undefined;
 
@@ -503,13 +507,24 @@ export class DeckdeckgoInlineEditor {
 
         resolve();
       } else {
-        this.bold = await DeckdeckgoInlineEditorUtils.isBold(node as HTMLElement);
-        this.italic = await DeckdeckgoInlineEditorUtils.isItalic(node as HTMLElement);
-        this.underline = await DeckdeckgoInlineEditorUtils.isUnderline(node as HTMLElement);
-        this.strikethrough = await DeckdeckgoInlineEditorUtils.isStrikeThrough(node as HTMLElement);
+        if (this.bold === undefined) {
+          this.bold = await DeckdeckgoInlineEditorUtils.getBold(node as HTMLElement);
+        }
+
+        if (this.italic === undefined) {
+          this.italic = await DeckdeckgoInlineEditorUtils.getItalic(node as HTMLElement);
+        }
+
+        if (this.underline === undefined) {
+          this.underline = await DeckdeckgoInlineEditorUtils.getUnderline(node as HTMLElement);
+        }
+
+        if (this.strikethrough === undefined) {
+          this.strikethrough = await DeckdeckgoInlineEditorUtils.getStrikeThrough(node as HTMLElement);
+        }
 
         if (this.contentList === undefined) {
-          this.contentList = await DeckdeckgoInlineEditorUtils.isList(node as HTMLElement);
+          this.contentList = await DeckdeckgoInlineEditorUtils.getList(node as HTMLElement);
         }
 
         await this.findStyle(node.parentNode);
@@ -714,6 +729,19 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
+  private async onExecCommand($event: CustomEvent<ExecCommandAction>) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    await execCommand(this.selection, $event.detail, this.containers);
+
+    const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, document.activeElement as HTMLElement);
+    this.styleDidChange.emit(container);
+
+    await this.reset(true);
+  }
+
   render() {
     let classNames: string = this.displayToolsActivated
       ? this.mobile
@@ -749,6 +777,7 @@ export class DeckdeckgoInlineEditor {
           anchorLink={this.anchorLink}
           selection={this.selection}
           linkCreated={this.linkCreated}
+          containers={this.containers}
           mobile={this.mobile}
           onLinkModified={($event: CustomEvent<boolean>) => this.reset($event.detail)}></deckgo-ie-link-actions>
       );
@@ -756,10 +785,10 @@ export class DeckdeckgoInlineEditor {
       return (
         <deckgo-ie-color-actions
           selection={this.selection}
-          action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'backColor' : 'foreColor'}
+          action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'background-color' : 'color'}
           palette={this.palette}
           mobile={this.mobile}
-          onColorModified={() => this.reset(true)}></deckgo-ie-color-actions>
+          onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-color-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {
       return (
@@ -791,7 +820,7 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           sticky={sticky}
           contentList={this.contentList}
-          onListModified={() => this.reset(true)}></deckgo-ie-list-actions>
+          onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-list-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.FONT_SIZE) {
       return (
@@ -799,7 +828,7 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           sticky={sticky}
           fontSize={this.contentFontSize}
-          onFontSizeModified={() => this.reset(true)}></deckgo-ie-font-size-actions>
+          onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-font-size-actions>
       );
     } else {
       return this.renderSelectionActions();
@@ -812,11 +841,11 @@ export class DeckdeckgoInlineEditor {
         mobile={this.mobile}
         disabledTitle={this.disabledTitle}
         selection={this.selection}
-        bold={this.bold}
-        italic={this.italic}
-        underline={this.underline}
-        strikethrough={this.strikethrough}
-        onInitStyle={() => this.initStyle(this.selection)}></deckgo-ie-style-actions>,
+        bold={this.bold === 'bold'}
+        italic={this.italic === 'italic'}
+        underline={this.underline === 'underline'}
+        strikethrough={this.strikethrough === 'strikethrough'}
+        onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-style-actions>,
 
       this.renderSeparator(),
 

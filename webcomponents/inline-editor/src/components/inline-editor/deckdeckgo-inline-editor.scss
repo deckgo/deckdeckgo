@@ -3,7 +3,7 @@
 }
 
 div.deckgo-tools {
-  position: absolute;
+  position: var(--deckgo-inline-editor-position, absolute);
   visibility: hidden;
   opacity: 0;
 

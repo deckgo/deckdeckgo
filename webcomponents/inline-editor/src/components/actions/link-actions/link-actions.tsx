@@ -3,6 +3,7 @@ import {Component, Event, EventEmitter, h, Prop, Host} from '@stencil/core';
 import {AnchorLink, InputTargetEvent} from '../../../interfaces/interfaces';
 
 import {ToolbarActions} from '../../../types/enums';
+import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
 
 @Component({
   tag: 'deckgo-ie-link-actions',
@@ -30,6 +31,9 @@ export class LinkActions {
   @Event()
   linkModified: EventEmitter<boolean>;
 
+  @Prop()
+  containers: string;
+
   private handleLinkInput($event: UIEvent) {
     this.linkUrl = ($event.target as InputTargetEvent).value;
   }
@@ -51,19 +55,19 @@ export class LinkActions {
         return;
       }
 
-      let container: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : this.selection.anchorNode;
+      let targetContainer: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : this.selection.anchorNode;
 
-      if (!container) {
+      if (!targetContainer) {
         resolve();
         return;
       }
 
       // If node text
-      if (container.nodeType === 3) {
-        container = container.parentElement;
+      if (targetContainer.nodeType === Node.TEXT_NODE) {
+        targetContainer = targetContainer.parentElement;
       }
 
-      const target: Node = Array.from(container.childNodes).find((node: Node) => {
+      const target: Node = Array.from(targetContainer.childNodes).find((node: Node) => {
         return node.textContent && node.textContent.trim().indexOf(this.anchorLink.text) > -1;
       });
 
@@ -96,7 +100,8 @@ export class LinkActions {
         target.parentElement.replaceChild(a, target);
       }
 
-      this.linkCreated.emit(container as HTMLElement);
+      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, targetContainer as HTMLElement);
+      this.linkCreated.emit(container);
 
       this.toolbarActions = ToolbarActions.SELECTION;
 

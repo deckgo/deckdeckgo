@@ -7,8 +7,9 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ContentAlign, ContentList, FontSize, ToolbarActions } from "./types/enums";
 import { DeckdeckgoPalette } from "@deckdeckgo/color";
+import { AnchorLink, ExecCommandAction, InlineAction } from "./interfaces/interfaces";
+import { ExecCommandAction as ExecCommandAction1 } from ".";
 import { EventEmitter } from "@stencil/core";
-import { AnchorLink, InlineAction } from "./interfaces/interfaces";
 export namespace Components {
     interface DeckgoIeActionButton {
         "cssClass": string;
@@ -26,7 +27,7 @@ export namespace Components {
         "sticky": boolean;
     }
     interface DeckgoIeColorActions {
-        "action": 'foreColor' | 'backColor';
+        "action": 'color' | 'background-color';
         "mobile": boolean;
         "palette": DeckdeckgoPalette[];
         "selection": Selection;
@@ -47,6 +48,7 @@ export namespace Components {
     }
     interface DeckgoIeLinkActions {
         "anchorLink": AnchorLink;
+        "containers": string;
         "linkCreated": EventEmitter<HTMLElement>;
         "mobile": boolean;
         "selection": Selection;
@@ -200,16 +202,16 @@ declare namespace LocalJSX {
         "sticky"?: boolean;
     }
     interface DeckgoIeColorActions {
-        "action"?: 'foreColor' | 'backColor';
+        "action"?: 'color' | 'background-color';
         "mobile"?: boolean;
-        "onColorModified"?: (event: CustomEvent<void>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "palette"?: DeckdeckgoPalette[];
         "selection"?: Selection;
     }
     interface DeckgoIeFontSizeActions {
         "fontSize"?: FontSize;
         "mobile"?: boolean;
-        "onFontSizeModified"?: (event: CustomEvent<void>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "sticky"?: boolean;
     }
     interface DeckgoIeImageActions {
@@ -224,6 +226,7 @@ declare namespace LocalJSX {
     }
     interface DeckgoIeLinkActions {
         "anchorLink"?: AnchorLink;
+        "containers"?: string;
         "linkCreated"?: EventEmitter<HTMLElement>;
         "mobile"?: boolean;
         "onLinkModified"?: (event: CustomEvent<boolean>) => void;
@@ -234,7 +237,7 @@ declare namespace LocalJSX {
         "contentList"?: ContentList;
         "disabledTitle"?: boolean;
         "mobile"?: boolean;
-        "onListModified"?: (event: CustomEvent<void>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "selection"?: Selection;
         "sticky"?: boolean;
     }
@@ -246,7 +249,7 @@ declare namespace LocalJSX {
         "disabledTitle"?: boolean;
         "italic"?: boolean;
         "mobile"?: boolean;
-        "onInitStyle"?: (event: CustomEvent<any>) => void;
+        "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "selection"?: Selection;
         "strikethrough"?: boolean;
         "underline"?: boolean;
@@ -271,6 +274,7 @@ declare namespace LocalJSX {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onLinkCreated"?: (event: CustomEvent<HTMLElement>) => void;
         "onStickyToolbarActivated"?: (event: CustomEvent<boolean>) => void;
+        "onStyleDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "palette"?: DeckdeckgoPalette[];
         "stickyDesktop"?: boolean;
         "stickyMobile"?: boolean;

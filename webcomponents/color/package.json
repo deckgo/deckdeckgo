@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/color",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "A color picker developed with Web Components",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -56,7 +56,7 @@
     "color-picker"
   ],
   "dependencies": {
-    "@deckdeckgo/utils": "^1.1.0"
+    "@deckdeckgo/utils": "^1.2.0"
   },
   "husky": {
     "hooks": {

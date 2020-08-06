@@ -4,7 +4,6 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-installation',
-  styleUrl: 'app-installation.scss',
 })
 export class AppInstallation {
   @Element() el: HTMLElement;

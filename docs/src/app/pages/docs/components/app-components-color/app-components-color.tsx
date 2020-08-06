@@ -27,31 +27,59 @@ export class AppComponentsColor {
           <h2 id="app-components-color-table-of-contents">Table of contents</h2>
           <ul>
             <li>
-              <a href="#app-components-color-showcase">Showcase</a>
-            </li>
-            <li>
-              <a href="#app-components-color-installation">Installation</a> - <a href="#app-components-color-from-a-cdn">Using from a CDN</a> -{' '}
-              <a href="#app-components-color-from-npm">Install from NPM</a> - <a href="#app-components-color-framework-integration">Framework integration</a>
-            </li>
-            <li>
-              <a href="#app-components-color-usage">Usage</a>
+              <a href="#color-picker">Color Picker</a>
               <ul>
                 <li>
-                  <a href="#app-components-color-slots">Slots</a>
+                  <a href="#table-of-contents">Table of contents</a>
                 </li>
                 <li>
-                  <a href="#app-components-color-attributes">Attributes</a>
+                  <a href="#showcase">Showcase</a>
                 </li>
                 <li>
-                  <a href="#app-components-color-theming">Theming</a>
+                  <a href="#installation">Installation</a>
+                  <ul>
+                    <li>
+                      <a href="#using-from-a-cdn">Using from a CDN</a>
+                    </li>
+                    <li>
+                      <a href="#install-from-npm">Install from NPM</a>
+                    </li>
+                    <li>
+                      <a href="#framework-integration">Framework integration</a>
+                      <ul>
+                        <li>
+                          <a href="#import">Import</a>
+                        </li>
+                        <li>
+                          <a href="#loader">Loader</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="#app-components-color-methods">Methods</a>
+                  <a href="#usage">Usage</a>
+                  <ul>
+                    <li>
+                      <a href="#slots">Slots</a>
+                    </li>
+                    <li>
+                      <a href="#attributes">Attributes</a>
+                      <ul>
+                        <li>
+                          <a href="#palette">Palette</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a href="#theming">Theming</a>
+                    </li>
+                    <li>
+                      <a href="#events">Events</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
-            </li>
-            <li>
-              <a href="#app-components-color-trying-it-out">Trying it out</a>
             </li>
           </ul>
           <h2 id="app-components-color-showcase">Showcase</h2>
@@ -357,6 +385,20 @@ export class AppComponentsColor {
                 <td>--deckgo-color-label-color-font-weight</td>
                 <td>300</td>
                 <td>Font weight of the hexadecimal value of the color description</td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>Shadow-DOM part</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>container</td>
+                <td>Allows to style the container the color buttons are in</td>
               </tr>
             </tbody>
           </table>

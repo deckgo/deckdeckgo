@@ -123,8 +123,8 @@ export class AppActionsElement {
     await this.reset();
   }
 
-  @Listen('styleDidChange', {target: 'document'})
-  async onStyleDidChange() {
+  @Listen('optionsDidChange', {target: 'document'})
+  async onOptionsDidChange() {
     await this.emitChange();
   }
 

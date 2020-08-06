@@ -1,6 +1,7 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
 
 import deckStore from '../../../stores/deck.store';
+import errorStore from '../../../stores/error.store';
 
 import {getPublishedUrl} from '../../../utils/core/share.utils';
 
@@ -48,13 +49,17 @@ export class AppEmbed {
   }
 
   private async copyEmbedCode() {
-    if (!document) {
+    if (!document || !this.embedCodeElement) {
       return;
     }
 
     await this.selectEmbedCode();
 
-    document.execCommand('copy');
+    try {
+      await navigator.clipboard.writeText(this.embedCodeElement.value);
+    } catch (err) {
+      errorStore.state.error = "Well it seems that copy isn't supported by this browser";
+    }
   }
 
   render() {

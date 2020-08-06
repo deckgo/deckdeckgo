@@ -41,14 +41,15 @@
     <script type="text/javascript">
       function myActions(e) {
         if (e && e.detail && e.detail.action === 'my-inline-action') {
-          document.execCommand('insertHTML', false, `<acme-placeholder class="own-class">${e.detail.selection}</acme-placeholder>`);
+          console.log('my custom action');
         }
       }
 
       document.addEventListener('customAction', myActions);
 
       document.addEventListener('imgDidChange', ($event) => console.log('imgDidChange', $event));
-      document.addEventListener('linkCreated', ($event) => console.log('linkCreated', $event));
+      document.addEventListener('linkCreated', ($event) => console.log('linkCreated', $event.detail));
+      document.addEventListener('styleDidChange', ($event) => console.log('styleDidChange', $event.detail));
     </script>
   </body>
 </html>

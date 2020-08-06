@@ -1,5 +1,7 @@
 import {Component, h, Prop, State, Watch} from '@stencil/core';
 
+import {rgbToHex} from '@deckdeckgo/utils';
+
 @Component({
   tag: 'deckgo-color-label',
   styleUrl: 'deckdeckgo-color-label.scss',
@@ -38,26 +40,10 @@ export class DeckdeckgoColorLabel {
     }
 
     if (this.customColorRgb) {
-      return this.rgbToHex(this.customColorRgb);
+      return rgbToHex(this.customColorRgb);
     }
 
-    return this.rgbToHex(this.colorRgb);
-  }
-
-  // https://stackoverflow.com/a/42429333/5404186
-  async rgbToHex(rgb: string | undefined): Promise<string | undefined> {
-    if (!rgb) {
-      return undefined;
-    }
-
-    const toHex = (rgb): string => `#${rgb.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
-    const extractRgb = (rgb): number[] =>
-      rgb
-        .match(/(\d+),\s*(\d+),\s*(\d+)/)
-        .splice(1, 3)
-        .map((v) => Number(v));
-
-    return toHex(extractRgb(rgb));
+    return rgbToHex(this.colorRgb);
   }
 
   render() {

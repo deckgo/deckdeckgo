@@ -2,6 +2,10 @@ import {Component, Event, EventEmitter, h, Prop, Host} from '@stencil/core';
 
 import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
+import {hexToRgb} from '@deckdeckgo/utils';
+
+import {ExecCommandAction} from '../../../interfaces/interfaces';
+
 @Component({
   tag: 'deckgo-ie-color-actions',
   styleUrl: 'color-actions.scss',
@@ -12,7 +16,7 @@ export class ColorActions {
   selection: Selection;
 
   @Prop()
-  action: 'foreColor' | 'backColor';
+  action: 'color' | 'background-color';
 
   @Prop()
   palette: DeckdeckgoPalette[];
@@ -21,7 +25,7 @@ export class ColorActions {
   mobile: boolean;
 
   @Event()
-  colorModified: EventEmitter<void>;
+  private execCommand: EventEmitter<ExecCommandAction>;
 
   private async selectColor($event: CustomEvent) {
     if (!this.selection || !$event || !$event.detail) {
@@ -42,9 +46,19 @@ export class ColorActions {
       return;
     }
 
-    document.execCommand(this.action, false, $event.detail.hex);
-
-    await this.colorModified.emit();
+    this.execCommand.emit({
+      cmd: 'style',
+      detail: {
+        style: this.action,
+        value: $event.detail.hex,
+        initial: (element: HTMLElement | null) => {
+          return new Promise<boolean>(async (resolve) => {
+            const rgb: string = await hexToRgb($event.detail.hex);
+            resolve(element && (element.style[this.action] === $event.detail.hex || element.style[this.action] === `rgb(${rgb})`));
+          });
+        },
+      },
+    });
   }
 
   render() {
