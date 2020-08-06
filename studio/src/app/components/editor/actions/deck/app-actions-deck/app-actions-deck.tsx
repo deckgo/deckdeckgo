@@ -8,6 +8,9 @@ import {get, set} from 'idb-keyval';
 
 import offlineStore from '../../../../../stores/offline.store';
 import remoteStore from '../../../../../stores/remote.store';
+import deckStore from '../../../../../stores/deck.store';
+import userStore from '../../../../../stores/user.store';
+import shareStore from '../../../../../stores/share.store';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
@@ -52,9 +55,6 @@ export class AppActionsDeck {
 
   @Prop()
   actionPublish: EventEmitter;
-
-  @Prop()
-  openShare: EventEmitter;
 
   @Prop()
   deckDidChange: EventEmitter;
@@ -388,7 +388,11 @@ export class AppActionsDeck {
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.SHARE) {
-          this.openShare.emit();
+          shareStore.state.share = {
+            deck: deckStore.state.deck,
+            userName: userStore.state.name,
+            userSocial: userStore.state.social,
+          };
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.STYLE) {

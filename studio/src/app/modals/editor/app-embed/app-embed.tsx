@@ -1,8 +1,9 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
 
+import deckStore from '../../../stores/deck.store';
 import errorStore from '../../../stores/error.store';
 
-import {ShareService} from '../../../services/editor/share/share.service';
+import {getPublishedUrl} from '../../../utils/core/share.utils';
 
 @Component({
   tag: 'app-embed',
@@ -16,14 +17,8 @@ export class AppEmbed {
 
   private embedCodeElement!: HTMLIonTextareaElement;
 
-  private shareService: ShareService;
-
-  constructor() {
-    this.shareService = ShareService.getInstance();
-  }
-
   async componentWillLoad() {
-    const url: string = await this.shareService.getPublishedUrl();
+    const url: string = await getPublishedUrl(deckStore.state.deck);
     this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 

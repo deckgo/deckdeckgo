@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions';
 
+import 'firebase-functions/lib/logger/compat';
+
 import * as admin from 'firebase-admin';
 const app: admin.app.App = admin.initializeApp();
 app.firestore().settings({timestampsInSnapshots: true});
@@ -8,8 +10,8 @@ import {applyWatchDeckCreate, applyWatchDeckDelete, applyWatchDeckUpdate} from '
 import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
 
 const runtimeOpts = {
-    timeoutSeconds: 120,
-    memory: <const> '1GB'
+  timeoutSeconds: 120,
+  memory: <const>'1GB',
 };
 
 export const watchDeckUpdate = functions.runWith(runtimeOpts).firestore.document('decks/{deckId}').onUpdate(applyWatchDeckUpdate);

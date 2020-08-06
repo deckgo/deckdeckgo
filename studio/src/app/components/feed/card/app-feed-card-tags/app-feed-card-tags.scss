@@ -16,10 +16,10 @@ app-feed-card-tags {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 2px 8px;
-    margin: 4px 2px;
+    padding: var(--card-tags-padding, 2px 8px);
+    margin: var(--card-tags-margin, 4px 2px);
 
-    font-size: var(--font-size-normal);
+    font-size: var(--card-tags-font-size, var(--font-size-normal));
 
     ion-icon {
       padding: 4px 0;

@@ -5,7 +5,7 @@ import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
 @Component({
   tag: 'app-actions-editor',
   styleUrl: 'app-actions-editor.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppActionsEditor {
   @Element() el: HTMLElement;
@@ -32,8 +32,6 @@ export class AppActionsEditor {
   @Event() private toggleFullScreen: EventEmitter<void>;
 
   @Event() private actionPublish: EventEmitter<void>;
-
-  @Event() private openShare: EventEmitter<void>;
 
   @Event() private deckDidChange: EventEmitter<HTMLElement>;
 
@@ -102,7 +100,7 @@ export class AppActionsEditor {
       <Host
         class={{
           fullscreen: this.fullscreen,
-          hidden: this.hideFooter
+          hidden: this.hideFooter,
         }}>
         {this.renderSelectedIndicator()}
 
@@ -134,7 +132,6 @@ export class AppActionsEditor {
         slideTo={this.slideTo}
         toggleFullScreen={this.toggleFullScreen}
         actionPublish={this.actionPublish}
-        openShare={this.openShare}
         deckDidChange={this.deckDidChange}
         onSelectDeck={() => this.selectDeck()}></app-actions-deck>
     );

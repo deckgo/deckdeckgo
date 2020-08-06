@@ -13,6 +13,7 @@ import {Resources} from '../../../utils/core/resources';
 
 import {ApiPresentation} from '../../../models/api/api.presentation';
 import {ApiSlide} from '../../../models/api/api.slide';
+import {UserSocial} from '../../../models/data/user';
 
 import {DeckService} from '../../data/deck/deck.service';
 import {SlideService} from '../../data/slide/slide.service';
@@ -426,10 +427,21 @@ export class PublishService {
           if (userStore.state.user.data.photo_url) {
             (deck.data.meta.author as DeckMetaAuthor).photo_url = userStore.state.user.data.photo_url;
           }
-        } else {
-          if (deck.data.meta.author) {
-            deck.data.meta.author = firebase.firestore.FieldValue.delete();
+
+          if (userStore.state.user.data.social) {
+            (deck.data.meta.author as DeckMetaAuthor).social = Object.keys(userStore.state.user.data.social).reduce((acc: UserSocial, key: string) => {
+              // @ts-ignore
+              acc[key] =
+                userStore.state.user.data.social[key] !== null && userStore.state.user.data.social[key] !== undefined
+                  ? userStore.state.user.data.social[key]
+                  : firebase.firestore.FieldValue.delete();
+              return acc;
+            }, {} as UserSocial);
+          } else {
+            (deck.data.meta.author as DeckMetaAuthor).social = firebase.firestore.FieldValue.delete();
           }
+        } else if (deck.data.meta.author) {
+          deck.data.meta.author = firebase.firestore.FieldValue.delete();
         }
 
         await this.deckService.update(deck);

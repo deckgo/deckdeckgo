@@ -1,7 +1,9 @@
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
 import {OverlayEventDetail, popoverController} from '@ionic/core';
 
-import store from '../../../../../stores/deck.store';
+import deckStore from '../../../../../stores/deck.store';
+import userStore from '../../../../../stores/user.store';
+import shareStore from '../../../../../stores/share.store';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
 
@@ -13,12 +15,10 @@ export class AppActionShare {
 
   @Event() private actionPublish: EventEmitter<void>;
 
-  @Event() private openShare: EventEmitter<void>;
-
   @Event() private openEmbed: EventEmitter<void>;
 
   private async share($event: UIEvent) {
-    if (store.state.published) {
+    if (deckStore.state.published) {
       await this.openShareOptions($event);
     } else {
       this.actionPublish.emit();
@@ -39,7 +39,11 @@ export class AppActionShare {
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data) {
         if (detail.data.action === MoreAction.SHARE) {
-          this.openShare.emit();
+          shareStore.state.share = {
+            deck: deckStore.state.deck,
+            userName: userStore.state.name,
+            userSocial: userStore.state.social,
+          };
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
