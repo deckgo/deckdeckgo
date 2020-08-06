@@ -1,3 +1,9 @@
+# 2.0.1 (2020-08-06)
+
+### Style
+
+- add a CSS4 variable `--deckgo-inline-editor-position`
+
 # 2.0.0 (2020-08-06)
 
 ### Breaking Changes
