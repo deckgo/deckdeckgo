@@ -13,7 +13,7 @@ export async function execCommandStyle(selection: Selection, action: ExecCommand
 
   const sameSelection: boolean = container && container.innerText === selection.toString();
 
-  if (sameSelection && container.style[action.style] !== undefined) {
+  if (sameSelection && !DeckdeckgoInlineEditorUtils.isContainer(containers, container) && container.style[action.style] !== undefined) {
     await updateSelection(container, action, containers);
 
     return;
