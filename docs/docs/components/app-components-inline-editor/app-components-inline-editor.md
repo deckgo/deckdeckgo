@@ -145,6 +145,7 @@ The `<deckgo-inline-editor/>` could be styled using the following CSS4 variables
 | --deckgo-inline-editor-width                   | inherit                        | The width of the toolbar                                                                              |
 | --deckgo-inline-editor-box-shadow              | 0 0 8px 4px rgba(0, 0, 0, 0.1) | A box shadow for the toolbar                                                                          |
 | --deckgo-inline-editor-triangle-box-shadow     | 0 0 8px 4px rgba(0, 0, 0, 0.1) | A box shadow for the triangle above the toolbar                                                       |
+| --deckgo-inline-editor-position                | absolute                       | The position of the toolbar                                                                           |
 
 Furthermore, the following variables are also available but only have an effects on mobile devices:
 

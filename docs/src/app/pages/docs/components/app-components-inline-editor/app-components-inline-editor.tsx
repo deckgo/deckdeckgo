@@ -4,6 +4,7 @@ import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
   tag: 'app-components-inline-editor',
+  styleUrl: 'app-components-inline-editor.scss',
 })
 export class AppComponentsInlineEditor {
   @Element() el: HTMLElement;
@@ -533,6 +534,11 @@ export class AppComponentsInlineEditor {
                 <td>--deckgo-inline-editor-triangle-box-shadow</td>
                 <td>0 0 8px 4px rgba(0, 0, 0, 0.1)</td>
                 <td>A box shadow for the triangle above the toolbar</td>
+              </tr>
+              <tr>
+                <td>--deckgo-inline-editor-position</td>
+                <td>absolute</td>
+                <td>The position of the toolbar</td>
               </tr>
             </tbody>
           </table>
