@@ -1,17 +1,27 @@
 # WYSIWYG inline editor
 
-The "WYSIWYG inline editor" component is an extra component which will be use in the upcoming [DeckDeckGo] Studio.
+The "WYSIWYG inline editor" component is an HTML floating or sticky rich text editor.
 
 ## Table of contents
 
 - [Showcase](#app-components-inline-editor-showcase)
   - [Video](#app-components-inline-editor-video)
-- [Installation](#app-components-inline-editor-installation) - [Using from a CDN](#app-components-inline-editor-from-a-cdn) - [Install from NPM](#app-components-inline-editor-from-npm) - [Framework integration](#app-components-inline-editor-framework-integration)
-- [Usage](#app-components-inline-editor-usage) - [Properties](#app-components-inline-editor-properties) - [Custom actions slots](#app-components-inline-editor-custom-actions-slots) - [Styling](#app-components-inline-editor-styling) - [Events](#app-components-inline-editor-events) - [Methods](#app-components-inline-editor-methods) - [Examples](#app-components-inline-editor-examples)
+- [Installation](#app-components-inline-editor-installation)
+  - [Using from a CDN](#app-components-inline-editor-from-a-cdn)
+  - [Install from NPM](#app-components-inline-editor-from-npm)
+  - [Framework integration](#app-components-inline-editor-framework-integration)
+- [Usage](#app-components-inline-editor-usage)
+  - [Properties](#app-components-inline-editor-properties)
+  - [Custom actions slots](#app-components-inline-editor-custom-actions-slots)
+  - [Styling](#app-components-inline-editor-styling)
+  - [Events](#app-components-inline-editor-events)
+  - [Methods](#app-components-inline-editor-methods)
+  - [Examples](#app-components-inline-editor-examples)
+- [Implementation](#app-components-inline-editorimplementation)
 
 ## Showcase
 
-<div>
+<div id="showcase">
   <h1 style={{color: '#3880ff'}} contenteditable slot="title">DeckDeckGo (editable title)</h1>
 
   <h2 style={{color: '#3880ff'}} contenteditable slot="title">The Progressive Web App alternative for simple presentations 🚀 (editable subtitle)</h2>
@@ -155,12 +165,13 @@ Furthermore, the following variables are also available but only have an effects
 
 ### Events
 
-The event `input` will be automatically triggered when the content will be modified using the `<deckgo-inline-editor/>`. However, when manipulating image, this event won't be triggered. Therefore a custom event will be instead triggered. Moreover, if you provide custom actions, an event is triggered each time one of these are selected.
+The component emits the following events:
 
 | Event                    | Description                                                                                                                                                                              | Type                        |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
 | `imgDidChange`           | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element.                                                               | `CustomEvent<HTMLElement>`  |
-| `linkCreated`            | Triggered when a link is created by the user using this component                                                                                                                        | `CustomEvent<HTMLElement>`  |
+| `linkCreated`            | Triggered when a link is created by the user. The event detail is the container.                                                                                                         | `CustomEvent<HTMLElement>`  |
+| `styleDidChange`         | Triggered when the style is modified (bold, italic, color, alignment, etc.). The event detail is the container.                                                                          | `CustomEvent<HTMLElement>`  |
 | `stickyToolbarActivated` | Triggered when the sticky toolbar would be activated or not. Useful for example if you want to catch the event to hide things in your footer, as the sticky toolbar is display above it. | `CustomEvent<boolean>`      |
 | `customAction`           | Triggered when a custom action is selected. Its detail provide an `action` name, the `Selection` and an `anchorLink`                                                                     | `CustomEvent<InlineAction>` |
 
@@ -182,5 +193,9 @@ await element.reset(clearSelection: boolean, blurActiveElement?: boolean);
 
 <deckgo-inline-editor></deckgo-inline-editor>
 ```
+
+## Implementation
+
+Worth to notice that this Web Component does not use the obsolete [Document.execCommand()](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) and is therefore kind of future proof.
 
 [deckdeckgo]: https://deckdeckgo.com

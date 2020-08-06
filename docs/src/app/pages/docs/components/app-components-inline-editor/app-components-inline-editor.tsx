@@ -19,10 +19,7 @@ export class AppComponentsInlineEditor {
       <ion-content class="ion-padding">
         <main>
           <h1 id="app-components-inline-editor-wysiwyg-inline-editor">WYSIWYG inline editor</h1>
-          <p>
-            The &quot;WYSIWYG inline editor&quot; component is an extra component which will be use in the upcoming{' '}
-            <a href="https://deckdeckgo.com">DeckDeckGo</a> Studio.
-          </p>
+          <p>The &quot;WYSIWYG inline editor&quot; component is an HTML floating or sticky rich text editor.</p>
           <h2 id="app-components-inline-editor-table-of-contents">Table of contents</h2>
           <ul>
             <li>
@@ -34,19 +31,48 @@ export class AppComponentsInlineEditor {
               </ul>
             </li>
             <li>
-              <a href="#app-components-inline-editor-installation">Installation</a> - <a href="#app-components-inline-editor-from-a-cdn">Using from a CDN</a> -{' '}
-              <a href="#app-components-inline-editor-from-npm">Install from NPM</a> -{' '}
-              <a href="#app-components-inline-editor-framework-integration">Framework integration</a>
+              <a href="#app-components-inline-editor-installation">Installation</a>
+              <ul>
+                <li>
+                  <a href="#app-components-inline-editor-from-a-cdn">Using from a CDN</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-from-npm">Install from NPM</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-framework-integration">Framework integration</a>
+                </li>
+              </ul>
             </li>
             <li>
-              <a href="#app-components-inline-editor-usage">Usage</a> - <a href="#app-components-inline-editor-properties">Properties</a> -{' '}
-              <a href="#app-components-inline-editor-custom-actions-slots">Custom actions slots</a> -{' '}
-              <a href="#app-components-inline-editor-styling">Styling</a> - <a href="#app-components-inline-editor-events">Events</a> -{' '}
-              <a href="#app-components-inline-editor-methods">Methods</a> - <a href="#app-components-inline-editor-examples">Examples</a>
+              <a href="#app-components-inline-editor-usage">Usage</a>
+              <ul>
+                <li>
+                  <a href="#app-components-inline-editor-properties">Properties</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-custom-actions-slots">Custom actions slots</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-styling">Styling</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-events">Events</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-methods">Methods</a>
+                </li>
+                <li>
+                  <a href="#app-components-inline-editor-examples">Examples</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#app-components-inline-editorimplementation">Implementation</a>
             </li>
           </ul>
           <h2 id="app-components-inline-editor-showcase">Showcase</h2>
-          <div>
+          <div id="showcase">
             <h1 style={{color: '#3880ff'}} contenteditable slot="title">
               DeckDeckGo (editable title)
             </h1>
@@ -574,11 +600,7 @@ export class AppComponentsInlineEditor {
           </table>
           <p>** like above but for mobile</p>
           <h3 id="app-components-inline-editor-events">Events</h3>
-          <p>
-            The event <code>input</code> will be automatically triggered when the content will be modified using the <code>&lt;deckgo-inline-editor/&gt;</code>.
-            However, when manipulating image, this event won&#39;t be triggered. Therefore a custom event will be instead triggered. Moreover, if you provide
-            custom actions, an event is triggered each time one of these are selected.
-          </p>
+          <p>The component emits the following events:</p>
           <table>
             <thead>
               <tr>
@@ -601,7 +623,16 @@ export class AppComponentsInlineEditor {
                 <td>
                   <code>linkCreated</code>
                 </td>
-                <td>Triggered when a link is created by the user using this component</td>
+                <td>Triggered when a link is created by the user. The event detail is the container.</td>
+                <td>
+                  <code>CustomEvent&lt;HTMLElement&gt;</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>styleDidChange</code>
+                </td>
+                <td>Triggered when the style is modified (bold, italic, color, alignment, etc.). The event detail is the container.</td>
                 <td>
                   <code>CustomEvent&lt;HTMLElement&gt;</code>
                 </td>
@@ -650,6 +681,11 @@ export class AppComponentsInlineEditor {
               {'\n'}&lt;deckgo-inline-editor&gt;&lt;&#47;deckgo-inline-editor&gt;
             </code>
           </deckgo-highlight-code>
+          <h2 id="app-components-inline-editor-implementation">Implementation</h2>
+          <p>
+            Worth to notice that this Web Component does not use the obsolete{' '}
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand">Document.execCommand()</a> and is therefore kind of future proof.
+          </p>
         </main>
 
         <app-footer></app-footer>
