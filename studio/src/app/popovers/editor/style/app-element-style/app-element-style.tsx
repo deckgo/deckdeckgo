@@ -40,7 +40,7 @@ export class AppElementStyle {
   @Prop()
   image: boolean = false;
 
-  @Event() styleDidChange: EventEmitter<void>;
+  @Event() optionsDidChange: EventEmitter<void>;
 
   @State()
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
@@ -124,7 +124,7 @@ export class AppElementStyle {
   }
 
   private emitStyleChange() {
-    this.styleDidChange.emit();
+    this.optionsDidChange.emit();
   }
 
   private async onImageAction($event: CustomEvent<ImageAction>) {

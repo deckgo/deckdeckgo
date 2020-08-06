@@ -62,6 +62,7 @@ export class DeckEventsHandler {
       this.el.addEventListener('mathDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('linkCreated', this.onCustomEventChange, false);
+      this.el.addEventListener('styleDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('drrDidChange', this.onCustomEventChange, false);
       this.el.addEventListener('notesDidChange', this.onSlideChange, false);
 
@@ -83,6 +84,7 @@ export class DeckEventsHandler {
     this.el.removeEventListener('mathDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('linkCreated', this.onCustomEventChange, true);
+    this.el.removeEventListener('styleDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('drrDidChange', this.onCustomEventChange, true);
     this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
 
