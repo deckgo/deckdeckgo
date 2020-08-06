@@ -1,9 +1,12 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
+
+import errorStore from '../../../stores/error.store';
+
 import {ShareService} from '../../../services/editor/share/share.service';
 
 @Component({
   tag: 'app-embed',
-  styleUrl: 'app-embed.scss'
+  styleUrl: 'app-embed.scss',
 })
 export class AppEmbed {
   @Element() el: HTMLElement;
@@ -51,13 +54,17 @@ export class AppEmbed {
   }
 
   private async copyEmbedCode() {
-    if (!document) {
+    if (!document || !this.embedCodeElement) {
       return;
     }
 
     await this.selectEmbedCode();
 
-    document.execCommand('copy');
+    try {
+      await navigator.clipboard.writeText(this.embedCodeElement.value);
+    } catch (err) {
+      errorStore.state.error = "Well it seems that copy isn't supported by this browser";
+    }
   }
 
   render() {
@@ -90,7 +97,7 @@ export class AppEmbed {
         <ion-button color="primary" shape="round" onClick={() => this.copyEmbedCode()}>
           <ion-label>Copy to clipboard</ion-label>
         </ion-button>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
