@@ -226,8 +226,7 @@ export class AppCreateSlide {
         await this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true});
       } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
         await this.addSlideSplit(SlideTemplate.SPLIT);
-      }
-      if (this.composeTemplate === ComposeTemplate.CONTENT) {
+      } else if (this.composeTemplate === ComposeTemplate.CONTENT) {
         await this.addSlide(SlideTemplate.CONTENT);
       } else {
         await this.addSlide(SlideTemplate.TITLE);
