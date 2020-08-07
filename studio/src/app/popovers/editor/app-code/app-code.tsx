@@ -100,9 +100,9 @@ export class AppCode {
     return [
       <ion-toolbar>
         <h2>Code options</h2>
-        <ion-router-link slot="end" onClick={() => this.closePopover()}>
+        <button slot="end" class="close-options" onClick={() => this.closePopover()} tabindex={0}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </ion-router-link>
+        </button>
       </ion-toolbar>,
       <ion-list class="article">
         <ion-item-divider>

@@ -1,9 +1,15 @@
 ion-popover {
   ion-toolbar {
-    ion-router-link[slot="end"] {
-      cursor: pointer;
-      border-bottom-color: transparent;
-      color: black;
+    button.close-options {
+      background: none;
+      font-size: var(--font-size-h2);
+      padding: 0;
+
+      border-radius: 2px;
+
+      &:focus {
+        background: rgba(var(--ion-color-medium-rgb), 0.1);
+      }
     }
   }
 }

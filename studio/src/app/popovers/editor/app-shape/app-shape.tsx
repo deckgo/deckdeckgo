@@ -47,9 +47,9 @@ export class AppShape {
     return [
       <ion-toolbar>
         <h2>Add a shape</h2>
-        <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
+        <button slot="end" class="close-options" onClick={() => this.closePopoverWithoutResults()} tabindex={0}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </ion-router-link>
+        </button>
       </ion-toolbar>,
       this.renderShapes(),
     ];

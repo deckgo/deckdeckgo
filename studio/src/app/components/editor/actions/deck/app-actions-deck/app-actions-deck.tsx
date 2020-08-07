@@ -368,7 +368,7 @@ export class AppActionsDeck {
   }
 
   private async openMoreActions($event: UIEvent) {
-    if (!$event || !$event.detail) {
+    if (!$event) {
       return;
     }
 
@@ -470,7 +470,7 @@ export class AppActionsDeck {
 
   private async clickToOpenRemote() {
     if (remoteStore.state.connectionState !== ConnectionState.CONNECTED) {
-      let button: HTMLElement = this.el.querySelector('ion-tab-button.open-remote');
+      let button: HTMLElement = this.el.querySelector('button.open-remote');
 
       if (!button) {
         return;
@@ -480,7 +480,7 @@ export class AppActionsDeck {
 
       // Actions are grouped in a popover on small devices?
       if (style.display === 'none') {
-        button = this.el.querySelector('ion-tab-button.open-remote-small-devices');
+        button = this.el.querySelector('button.open-remote-small-devices');
 
         if (!button) {
           return;
@@ -524,20 +524,23 @@ export class AppActionsDeck {
             <ion-label>Add slide</ion-label>
           </app-action-busy>
 
-          <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(false)} color="primary" mode="md">
+          <button onClick={() => this.animatePrevNextSlide.emit(false)} class="ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
             <ion-label>Previous</ion-label>
-          </ion-tab-button>
+          </button>
 
-          <ion-tab-button onClick={() => this.animatePrevNextSlide.emit(true)} color="primary" mode="md">
+          <button onClick={() => this.animatePrevNextSlide.emit(true)} class="ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
             <ion-label>Next</ion-label>
-          </ion-tab-button>
+          </button>
 
-          <ion-tab-button onClick={() => this.openSlideNavigate()} color="primary" class="wider-devices" mode="md">
+          <button onClick={() => this.openSlideNavigate()} color="primary" class="ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src="/assets/icons/ionicons/md-list.svg"></ion-icon>
             <ion-label>Slides</ion-label>
-          </ion-tab-button>
+          </button>
 
           <app-action-busy iconSrc="/assets/icons/ionicons/brush.svg" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
             <ion-label>Style</ion-label>
@@ -545,31 +548,35 @@ export class AppActionsDeck {
 
           {this.renderFullscreenButton()}
 
-          <ion-tab-button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="wider-devices open-remote" mode="md">
+          <button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="wider-devices open-remote ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label>Remote</ion-label>
-          </ion-tab-button>
+          </button>
         </ion-buttons>
 
         <ion-buttons slot="end">
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
-          <ion-tab-button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices" mode="md">
+          <button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
             {offlineStore.state.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
-          </ion-tab-button>
+          </button>
 
           <app-action-help class="wider-devices"></app-action-help>
 
-          <ion-tab-button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="small-devices open-remote-small-devices" mode="md">
+          <button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="small-devices open-remote-small-devices ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label>Remote</ion-label>
-          </ion-tab-button>
+          </button>
 
-          <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices" mode="md">
+          <button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices ion-activatable">
+            <ion-ripple-effect></ion-ripple-effect>
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
             <ion-label>More</ion-label>
-          </ion-tab-button>
+          </button>
         </ion-buttons>
       </ion-toolbar>
     );
@@ -578,9 +585,10 @@ export class AppActionsDeck {
   private renderFullscreenButton() {
     if (this.fullscreenEnable) {
       return (
-        <ion-tab-button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices" mode="md">
+        <button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices ion-activatable">
+          <ion-ripple-effect></ion-ripple-effect>
           {this.renderFullscreen()}
-        </ion-tab-button>
+        </button>
       );
     } else {
       return undefined;

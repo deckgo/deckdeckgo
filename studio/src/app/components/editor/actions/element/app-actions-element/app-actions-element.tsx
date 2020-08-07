@@ -975,7 +975,7 @@ export class AppActionsElement {
   }
 
   private async openMoreActions($event: UIEvent) {
-    if (!$event || !$event.detail) {
+    if (!$event) {
       return;
     }
 
@@ -1032,55 +1032,59 @@ export class AppActionsElement {
 
   private renderDelete() {
     return (
-      <ion-tab-button
+      <button
         onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
         aria-label="Delete"
-        color="primary"
-        mode="md"
         disabled={store.state.deckBusy && this.slide}
-        class="wider-devices">
+        class="wider-devices ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/trash-bin.svg"></ion-icon>
         <ion-label>Delete</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderNotes() {
-    const classElement: string | undefined = `wider-devices ${this.slide ? '' : 'hidden'}`;
+    const classElement: string | undefined = `wider-devices ion-activatable ${this.slide ? '' : 'hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.openNotes()} aria-label="Notes" color="primary" mode="md" disabled={store.state.deckBusy} class={classElement}>
+      <button onClick={() => this.openNotes()} aria-label="Notes" disabled={store.state.deckBusy} class={classElement} tabindex={this.slide ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/create.svg"></ion-icon>
         <ion-label>Notes</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderCopy() {
-    const classSlide: string | undefined = `wider-devices ${this.slide || this.shape !== undefined ? '' : 'hidden'}`;
+    const displayed: boolean = this.slide || this.shape !== undefined;
+    const classSlide: string | undefined = `wider-devices ion-activatable ${displayed ? '' : 'hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.clone()} aria-label="Copy" color="primary" mode="md" disabled={store.state.deckBusy} class={classSlide}>
+      <button onClick={() => this.clone()} aria-label="Copy" disabled={store.state.deckBusy} class={classSlide} tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/copy.svg"></ion-icon>
         <ion-label>Copy</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderStyle() {
     return (
-      <ion-tab-button onClick={() => this.openStyle()} aria-label="Style" color="primary" mode="md">
+      <button onClick={() => this.openStyle()} aria-label="Style" class="ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/brush.svg"></ion-icon>
         <ion-label>Style</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderEdit() {
-    const classSlide: string | undefined = this.slide && this.isSlideEditable() ? undefined : 'hidden';
+    const displayed: boolean = this.slide && this.isSlideEditable();
+    const classSlide: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
-      <ion-tab-button
+      <button
         onClick={() =>
           this.slideNodeName === 'deckgo-slide-poll'
             ? this.openEditPollSlide()
@@ -1092,89 +1096,94 @@ export class AppActionsElement {
             ? this.openEditModalSlide('app-demo', this.updateSlideDemo)
             : this.openEditSlide()
         }
-        color="primary"
         aria-label="Edit slide options"
-        mode="md"
-        class={classSlide}>
+        class={classSlide}
+        tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label>Options</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderTransform() {
-    const classToggle: string | undefined = !this.slide && this.shape === undefined ? undefined : 'hidden';
+    const displayed: boolean = !this.slide && this.shape === undefined;
+    const classToggle: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.openTransform()} aria-label="Toggle element type" color="primary" mode="md" class={classToggle}>
+      <button onClick={() => this.openTransform()} aria-label="Toggle element type" class={classToggle} tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
         <ion-label>Transform</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderAspectRatio() {
-    const classSlide: string | undefined = this.slideNodeName === 'deckgo-slide-aspect-ratio' ? undefined : 'hidden';
+    const displayed: boolean = this.slideNodeName === 'deckgo-slide-aspect-ratio';
+    const classSlide: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return [
-      <ion-tab-button onClick={() => this.appendText()} color="primary" aria-label="Add a text" mode="md" class={classSlide}>
+      <button onClick={() => this.appendText()} aria-label="Add a text" class={classSlide} tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/text.svg"></ion-icon>
         <ion-label>Add text</ion-label>
-      </ion-tab-button>,
-      <ion-tab-button onClick={() => this.openShape('app-shape')} color="primary" aria-label="Add a shape" mode="md" class={classSlide}>
+      </button>,
+      <button onClick={() => this.openShape('app-shape')} aria-label="Add a shape" class={classSlide} tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
         <ion-label>Add shape</ion-label>
-      </ion-tab-button>,
-      <ion-tab-button
-        onClick={() => this.openShape('app-image-element')}
-        aria-label="Add an image"
-        color="primary"
-        mode="md"
-        class={`wider-devices ${classSlide}`}>
+      </button>,
+      <button onClick={() => this.openShape('app-image-element')} aria-label="Add an image" class={`wider-devices ${classSlide}`} tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label>Add image</ion-label>
-      </ion-tab-button>,
+      </button>,
     ];
   }
 
   private renderCodeOptions() {
-    const classSlideCode: string | undefined = this.code ? undefined : 'hidden';
+    const classSlideCode: string | undefined = `ion-activatable${this.code ? '' : ' hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.openCode()} aria-label="Code attributes" color="primary" mode="md" class={classSlideCode}>
+      <button onClick={() => this.openCode()} aria-label="Code attributes" class={classSlideCode} tabindex={this.code ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label>Options</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
   private renderMathOptions() {
-    const classSlideMath: string | undefined = this.math ? undefined : 'hidden';
+    const classSlideMath: string | undefined = `ion-activatable${this.math ? '' : ' hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.openMath()} aria-label="Math options" color="primary" mode="md" class={classSlideMath}>
+      <button onClick={() => this.openMath()} aria-label="Math options" class={classSlideMath} tabindex={this.math ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label>Options</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderImages() {
-    const classImage: string | undefined = this.image ? undefined : 'hidden';
+    const classImage: string | undefined = `ion-activatable${this.image ? '' : ' hidden'}`;
 
     return (
-      <ion-tab-button onClick={() => this.openImage()} aria-label="Image" color="primary" mode="md" class={classImage}>
+      <button onClick={() => this.openImage()} aria-label="Image" class={classImage} tabindex={this.image ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label>Image</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 
   private renderMore() {
     return (
-      <ion-tab-button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.deckBusy} color="primary" class="small-devices" mode="md">
+      <button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.deckBusy} class="small-devices ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
         <ion-label>More</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 }

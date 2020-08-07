@@ -57,10 +57,11 @@ export class AppActionShare {
 
   render() {
     return (
-      <ion-tab-button onClick={($event: UIEvent) => this.share($event)} color="primary" mode="md">
+      <button onClick={($event: UIEvent) => this.share($event)} class="ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src="/assets/icons/ionicons/share.svg"></ion-icon>
         <ion-label>Share</ion-label>
-      </ion-tab-button>
+      </button>
     );
   }
 }
