@@ -35,8 +35,8 @@ export class AuthService {
     return AuthService.instance;
   }
 
-  init(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
+  async init() {
+    try {
       // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
       // And we also need it in case the user go offline, so we could also check offline if user is anonymous or not
       const localUser: AuthUser = await this.getLocalAuthUser();
@@ -82,9 +82,11 @@ export class AuthService {
           await this.apiUserService.signIn(authUser);
         }
       });
-
-      resolve();
-    });
+    } catch (err) {
+      console.error(
+        'Hey hi. There was an issue with the authentication for anonymous or registered users. Checkout your internet connection and browser capabilities. For example, if you are using Firefox Incognito, enable "remember history" (see issue #827 in our repo).'
+      );
+    }
   }
 
   async signOut() {
