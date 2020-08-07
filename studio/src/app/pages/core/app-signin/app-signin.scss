@@ -17,7 +17,7 @@ app-signin {
   form button {
     &.firebaseui-idp-password,
     &.firebaseui-idp-password:hover {
-      background-color: var(--ion-color-primary);
+      background-color: var(--ion-color-primary) !important;
     }
   }
 

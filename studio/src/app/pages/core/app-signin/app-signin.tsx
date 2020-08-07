@@ -63,8 +63,8 @@ export class AppSignIn {
   async setupFirebaseUI() {
     this.signInInProgress = false;
 
-    await Utils.injectJS('firebase-ui-script', 'https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.js');
-    await Utils.injectCSS('firebase-ui-css', 'https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css');
+    await Utils.injectJS('firebase-ui-script', 'https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js');
+    await Utils.injectCSS('firebase-ui-css', 'https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css');
 
     const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
