@@ -204,7 +204,7 @@ function Example() {
         </deckgo-slide-split>
 
         <deckgo-slide-title>
-          <h1 slot="title">And many more features</h1>
+          <h2 slot="title">And many more features</h2>
           <div slot="content" style={{'margin-bottom': '48px'}}>
             <h3 style={{'font-weight': '300'}}>Create your slides with DeckDeckGo now.</h3>
 
