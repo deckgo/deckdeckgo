@@ -118,11 +118,6 @@ export class AppActionsElement {
     await this.blurSelectedElement();
   }
 
-  @Listen('pagerClick', {target: 'document'})
-  async onPagerClick() {
-    await this.reset();
-  }
-
   @Listen('optionsDidChange', {target: 'document'})
   async onOptionsDidChange() {
     await this.emitChange();
