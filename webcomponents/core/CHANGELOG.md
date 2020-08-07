@@ -1,3 +1,9 @@
+# 1.2.0 (2020-08-07)
+
+### Style
+
+- pager default display set to `hidden`. if you wish to display it, use the variable `--pager-display`.
+
 # 1.1.0 (2020-07-10)
 
 ### Features
