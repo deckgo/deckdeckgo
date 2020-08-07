@@ -3,6 +3,7 @@
 ### Style
 
 - pager default display set to `hidden`. if you wish to display it, use the variable `--pager-display`.
+- if displayed, pager color does not change according some background color anymore. use CSS4 variable to customize it for your slides.
 
 # 1.1.0 (2020-07-10)
 
