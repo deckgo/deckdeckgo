@@ -1038,8 +1038,8 @@ export class AppActionsElement {
         disabled={store.state.deckBusy && this.slide}
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/trash-bin.svg"></ion-icon>
-        <ion-label>Delete</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/trash-bin.svg"></ion-icon>
+        <ion-label aria-hidden="true">Delete</ion-label>
       </button>
     );
   }
@@ -1050,8 +1050,8 @@ export class AppActionsElement {
     return (
       <button onClick={() => this.openNotes()} aria-label="Notes" disabled={store.state.deckBusy} class={classElement} tabindex={this.slide ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/create.svg"></ion-icon>
-        <ion-label>Notes</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/create.svg"></ion-icon>
+        <ion-label aria-hidden="true">Notes</ion-label>
       </button>
     );
   }
@@ -1063,8 +1063,8 @@ export class AppActionsElement {
     return (
       <button onClick={() => this.clone()} aria-label="Copy" disabled={store.state.deckBusy} class={classSlide} tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/copy.svg"></ion-icon>
-        <ion-label>Copy</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/copy.svg"></ion-icon>
+        <ion-label aria-hidden="true">Copy</ion-label>
       </button>
     );
   }
@@ -1073,8 +1073,8 @@ export class AppActionsElement {
     return (
       <button onClick={() => this.openStyle()} aria-label="Style" class="ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/brush.svg"></ion-icon>
-        <ion-label>Style</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/brush.svg"></ion-icon>
+        <ion-label aria-hidden="true">Style</ion-label>
       </button>
     );
   }
@@ -1100,8 +1100,8 @@ export class AppActionsElement {
         class={classSlide}
         tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
-        <ion-label>Options</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label aria-hidden="true">Options</ion-label>
       </button>
     );
   }
@@ -1111,10 +1111,10 @@ export class AppActionsElement {
     const classToggle: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
-      <button onClick={() => this.openTransform()} aria-label="Toggle element type" class={classToggle} tabindex={displayed ? 0 : -1}>
+      <button aria-label="Transform" onClick={() => this.openTransform()} class={classToggle} tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
-        <ion-label>Transform</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
+        <ion-label aria-hidden="true">Transform</ion-label>
       </button>
     );
   }
@@ -1126,18 +1126,18 @@ export class AppActionsElement {
     return [
       <button onClick={() => this.appendText()} aria-label="Add a text" class={classSlide} tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/text.svg"></ion-icon>
-        <ion-label>Add text</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/text.svg"></ion-icon>
+        <ion-label aria-hidden="true">Add text</ion-label>
       </button>,
       <button onClick={() => this.openShape('app-shape')} aria-label="Add a shape" class={classSlide} tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/shapes.svg"></ion-icon>
-        <ion-label>Add shape</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/shapes.svg"></ion-icon>
+        <ion-label aria-hidden="true">Add shape</ion-label>
       </button>,
       <button onClick={() => this.openShape('app-image-element')} aria-label="Add an image" class={`wider-devices ${classSlide}`} tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
-        <ion-label>Add image</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/images.svg"></ion-icon>
+        <ion-label aria-hidden="true">Add image</ion-label>
       </button>,
     ];
   }
@@ -1146,10 +1146,10 @@ export class AppActionsElement {
     const classSlideCode: string | undefined = `ion-activatable${this.code ? '' : ' hidden'}`;
 
     return (
-      <button onClick={() => this.openCode()} aria-label="Code attributes" class={classSlideCode} tabindex={this.code ? 0 : -1}>
+      <button onClick={() => this.openCode()} aria-label="Code options" class={classSlideCode} tabindex={this.code ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
-        <ion-label>Options</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label aria-hidden="true">Options</ion-label>
       </button>
     );
   }
@@ -1159,8 +1159,8 @@ export class AppActionsElement {
     return (
       <button onClick={() => this.openMath()} aria-label="Math options" class={classSlideMath} tabindex={this.math ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/settings.svg"></ion-icon>
-        <ion-label>Options</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/settings.svg"></ion-icon>
+        <ion-label aria-hidden="true">Options</ion-label>
       </button>
     );
   }
@@ -1171,8 +1171,8 @@ export class AppActionsElement {
     return (
       <button onClick={() => this.openImage()} aria-label="Image" class={classImage} tabindex={this.image ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/images.svg"></ion-icon>
-        <ion-label>Image</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/images.svg"></ion-icon>
+        <ion-label aria-hidden="true">Image</ion-label>
       </button>
     );
   }
@@ -1181,8 +1181,8 @@ export class AppActionsElement {
     return (
       <button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.deckBusy} class="small-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
-        <ion-label>More</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
+        <ion-label aria-hidden="true">More</ion-label>
       </button>
     );
   }
