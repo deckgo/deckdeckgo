@@ -36,10 +36,11 @@ export class AppActionHelp {
       );
     } else {
       return (
-        <ion-tab-button onClick={($event: UIEvent) => this.openGetHelp($event)} color="primary" mode="md" class="get-help-action">
+        <button onClick={($event: UIEvent) => this.openGetHelp($event)} class="get-help-action ion-activatable">
+          <ion-ripple-effect></ion-ripple-effect>
           <ion-icon src="/assets/icons/ionicons/help.svg"></ion-icon>
           <ion-label>Help</ion-label>
-        </ion-tab-button>
+        </button>
       );
     }
   }

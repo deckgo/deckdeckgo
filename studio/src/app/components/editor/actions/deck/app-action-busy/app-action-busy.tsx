@@ -19,10 +19,11 @@ export class AppActionBusy {
 
   render() {
     return (
-      <ion-tab-button onClick={(e: UIEvent) => this.action(e)} color="primary" disabled={store.state.deckBusy} mode="md">
+      <button onClick={(e: UIEvent) => this.action(e)} disabled={store.state.deckBusy} class="ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-icon src={this.iconSrc}></ion-icon>
         <slot></slot>
-      </ion-tab-button>
+      </button>
     );
   }
 }

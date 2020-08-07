@@ -22,6 +22,10 @@ ion-footer {
   app-actions-editor {
     width: fit-content;
 
+    @media (min-width: 768px) {
+      min-width: 720px;
+    }
+
     border-radius: 16px;
     margin: 32px;
     padding: 4px 8px 8px;

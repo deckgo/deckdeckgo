@@ -266,16 +266,16 @@ export class AppCreateSlide {
   private renderToolbarAction() {
     if (this.composeTemplate == undefined) {
       return (
-        <ion-router-link slot="end" onClick={() => this.closePopoverWithoutResults()}>
+        <button slot="end" class="close-options" onClick={() => this.closePopoverWithoutResults()} tabindex={0}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </ion-router-link>
+        </button>
       );
     }
 
     return (
-      <ion-router-link slot="end" onClick={() => this.backCompose()}>
+      <button slot="end" class="close-options" onClick={() => this.backCompose()} tabindex={0}>
         <ion-icon aria-label="Back to all slides" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
-      </ion-router-link>
+      </button>
     );
   }
 
