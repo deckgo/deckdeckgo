@@ -47,7 +47,7 @@ export class AppDeckPager {
             <tbody>
               <tr>
                 <td>--pager-display</td>
-                <td>hidden</td>
+                <td>none</td>
                 <td>
                   The display property of the pager. Set to <code>block</code> to display it.
                 </td>
@@ -127,14 +127,14 @@ export class AppDeckPager {
               </tr>
               <tr>
                 <td>--pager-text-percentage-display</td>
-                <td>hidden</td>
+                <td>none</td>
                 <td>
                   Set to <code>block</code> to display a progression with percentage (for example: 35%)
                 </td>
               </tr>
               <tr>
                 <td>--pager-text-slides-display</td>
-                <td>hidden</td>
+                <td>none</td>
                 <td>
                   Set to <code>block</code> to display a progression as slides&#39; count (for example: 2/15)
                 </td>

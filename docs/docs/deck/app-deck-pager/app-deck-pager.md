@@ -12,7 +12,7 @@ To show the pager, a CSS4 variable has to be set on the `<deckgo-deck/>` element
 
 | Attribute              | Default | Description                                                                |
 | ---------------------- | ------- | -------------------------------------------------------------------------- |
-| --pager-display        | hidden  | The display property of the pager. Set to `block` to display it.           |
+| --pager-display        | none    | The display property of the pager. Set to `block` to display it.           |
 | --pager-position-left  |         | The left attribute of the absolute positioning of the pager over the deck  |
 | --pager-position-right |         | The right attribute of the absolute positioning of the pager over the deck |
 
@@ -32,8 +32,8 @@ The following style options are available to style the pager:
 | --pager-text-size               | 0.5em   |                                                                              |
 | --pager-stroke-outer-width      | 2.8     |                                                                              |
 | --pager-stroke-inner-width      | 1.8     |                                                                              |
-| --pager-text-percentage-display | hidden  | Set to `block` to display a progression with percentage (for example: 35%)   |
-| --pager-text-slides-display     | hidden  | Set to `block` to display a progression as slides' count (for example: 2/15) |
+| --pager-text-percentage-display | none    | Set to `block` to display a progression with percentage (for example: 35%)   |
+| --pager-text-slides-display     | none    | Set to `block` to display a progression as slides' count (for example: 2/15) |
 
 Note: of course if you would display both `--pager-text-percentage-display` and `--pager-text-slides-display` it would be a weird display, use just one at once.
 
