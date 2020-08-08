@@ -45,7 +45,7 @@
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden;">
-    <deckgo-deck id="slider">
+    <deckgo-deck id="slider" style="--pager-display: block; --pager-text-slides-display: block;">
       <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
         <h1 slot="title">My presentation will start in</h1>
         <span slot="days">Days</span>
@@ -58,7 +58,7 @@
         <h1 slot="title">DeckDeckGo</h1>
         <p slot="content">
           Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
         </p>
         <div slot="notes">This are some notes about this particular slide</div>
       </deckgo-slide-title>
@@ -91,15 +91,15 @@
         <deckgo-reveal slot="content">
           <p contenteditable="true">
             Hello World EDITABLE EDITABLE HERE <a href="https://ionicframework.com">Ionic</a> 🚀
-            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
           </p>
 
           <p>
             Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
           </p>
 
-          <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+          <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
         </deckgo-reveal>
       </deckgo-slide-title>
 
@@ -109,20 +109,20 @@
           <deckgo-reveal>
             <p>
               Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
             </p>
           </deckgo-reveal>
 
           <deckgo-reveal>
             <p>
               Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
             </p>
           </deckgo-reveal>
 
           <p>
             Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
-            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
           </p>
         </div>
       </deckgo-slide-title>
@@ -148,10 +148,10 @@
           </deckgo-reveal-list>
 
           <deckgo-reveal>
-            <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
 
             <p>
-              <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+              <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px;" />
             </p>
           </deckgo-reveal>
         </div>
@@ -162,7 +162,7 @@
         <div slot="start">Hello World 1 <a href="https://ionicframework.com">Ionic</a> 🚀</div>
         <div slot="end">
           Cool beans
-          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" alt="DeckDeckGo" style="width: 50px" />
+          <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" alt="DeckDeckGo" style="width: 50px;" />
         </div>
       </deckgo-slide-split>
 
@@ -311,7 +311,7 @@
         });
       }
 
-      document.addEventListener('pagerClick', function() {
+      document.addEventListener('pagerClick', function () {
         console.log('Pager clicked');
       });
     </script>

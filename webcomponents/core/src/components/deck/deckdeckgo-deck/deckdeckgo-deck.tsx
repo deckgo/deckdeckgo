@@ -15,11 +15,6 @@ interface DeltaX {
   deltaX: number;
 }
 
-interface PagerColor {
-  color: string;
-  background: string;
-}
-
 @Component({
   tag: 'deckgo-deck',
   styleUrl: 'deckdeckgo-deck.scss',
@@ -68,9 +63,6 @@ export class DeckdeckgoDeck {
 
   @Prop() reveal: boolean = true;
   @Prop() revealOnMobile: boolean = false;
-
-  @State()
-  private pagerColor: PagerColor;
 
   @Prop({reflect: true}) transition: 'slide' | 'fade' | 'none' = 'slide';
 
@@ -458,7 +450,6 @@ export class DeckdeckgoDeck {
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'background', this.cloneBackground));
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
-      promises.push(this.initSlidePagerColor());
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
@@ -661,8 +652,6 @@ export class DeckdeckgoDeck {
       await this.swipeSlide(deltaX, emitEvent);
 
       await this.afterSwipe(swipeLeft);
-
-      await this.initSlidePagerColor();
     } else if (emitEvent) {
       if (swipeLeft) {
         this.slideNextDidAnimate.emit();
@@ -991,56 +980,6 @@ export class DeckdeckgoDeck {
 
   /* END: Reveal */
 
-  /* BEGIN: Pager */
-
-  private initSlidePagerColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
-
-      if (!slide) {
-        this.pagerColor = undefined;
-
-        resolve();
-        return;
-      }
-
-      // If a pager background or color is explicitely set on the deck, then we don't define automatically a color
-      if (
-        slide.parentElement &&
-        ((slide.parentElement.style.getPropertyValue('--pager-background') !== undefined &&
-          slide.parentElement.style.getPropertyValue('--pager-background') !== '') ||
-          (slide.parentElement.style.getPropertyValue('--pager-color') !== undefined && slide.parentElement.style.getPropertyValue('--pager-color') !== ''))
-      ) {
-        this.pagerColor = undefined;
-
-        resolve();
-        return;
-      }
-
-      if (slide.style.getPropertyValue('--background') !== undefined && slide.style.getPropertyValue('--background') !== '') {
-        this.pagerColor = {
-          background: '#fff',
-          color: slide.style.getPropertyValue('--background'),
-        };
-      } else if (
-        slide.parentElement &&
-        slide.parentElement.style.getPropertyValue('--background') !== undefined &&
-        slide.parentElement.style.getPropertyValue('--background') !== ''
-      ) {
-        this.pagerColor = {
-          background: '#fff',
-          color: slide.parentElement.style.getPropertyValue('--background'),
-        };
-      } else {
-        this.pagerColor = undefined;
-      }
-
-      resolve();
-    });
-  }
-
-  /* END: Pager */
-
   render() {
     return [
       this.renderTransition(),
@@ -1054,16 +993,7 @@ export class DeckdeckgoDeck {
   }
 
   private renderPager() {
-    let pagerStyle = {};
-
-    if (this.pagerColor) {
-      pagerStyle = {
-        '--pager-background': this.pagerColor.background,
-        '--pager-color': this.pagerColor.color,
-      };
-    }
-
-    return <deckgo-pager active-index={this.activeIndex} length={this.length} style={pagerStyle}></deckgo-pager>;
+    return <deckgo-pager active-index={this.activeIndex} length={this.length}></deckgo-pager>;
   }
 
   private renderTransition() {
