@@ -1,4 +1,4 @@
-export * from './components';
+export type {Components, JSX} from './components';
 
 export * from './declarations/deckdeckgo-highlight-code-anchor';
 
