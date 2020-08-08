@@ -1,8 +1,14 @@
+# 1.2.1 (2020-08-07)
+
+### Style
+
+- pager display `none` not `hidden` (I need a coffee)
+
 # 1.2.0 (2020-08-07)
 
 ### Style
 
-- pager default display set to `hidden`. if you wish to display it, use the variable `--pager-display`.
+- pager default display set to `none`. if you wish to display it, use the variable `--pager-display`.
 - if displayed, pager color does not change according some background color anymore. use CSS4 variable to customize it for your slides.
 - pager progression text default color set to `black`
 
