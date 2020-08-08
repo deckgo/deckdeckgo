@@ -1,3 +1,9 @@
+# 2.0.2 (2020-08-08)
+
+### Features
+
+- handles comment node
+
 # 2.0.1 (2020-08-06)
 
 ### Style
