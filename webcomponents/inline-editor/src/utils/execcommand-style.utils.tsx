@@ -9,7 +9,8 @@ export async function execCommandStyle(selection: Selection, action: ExecCommand
     return;
   }
 
-  const container: HTMLElement = anchorNode.nodeType !== Node.TEXT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
+  const container: HTMLElement =
+    anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.COMMENT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
 
   const sameSelection: boolean = container && container.innerText === selection.toString();
 
