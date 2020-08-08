@@ -1,3 +1,9 @@
+# 1.9.0 (2020-08-08)
+
+### Features
+
+- pager `hidden` per default
+
 # 1.8.0 (2020-08-06)
 
 ### Features

@@ -19,12 +19,7 @@ export class AppDeckPager {
       <ion-content class="ion-padding">
         <main>
           <h1 id="app-deck-pager-pager">Pager</h1>
-          <p>
-            <a href="https://deckdeckgo.com">DeckDeckGo</a> displays a pager in form of a progress circle bar if the presentation is not displayed in
-            fullscreen.{' '}
-          </p>
-          <p>It&#39;s possible to hide it or to customize the following various style options.</p>
-          <p>Also worth to notice that the pager inherits per default the document and deck direction (LTR or RTL for example).</p>
+          <p>A pager for the progression of the presentation can optionally be displayed in form of a progress circle bar. </p>
           <ul>
             <li>
               <a href="#app-deck-pager-deck">Deck</a>
@@ -38,8 +33,8 @@ export class AppDeckPager {
           </ul>
           <h2 id="app-deck-pager-show-or-hide">Show or hide</h2>
           <p>
-            To show or hide the pager, a CSS4 variable has to be set on the <code>&lt;deckgo-deck&gt;</code> element. Two more options are also available when
-            set on this element.
+            To show the pager, a CSS4 variable has to be set on the <code>&lt;deckgo-deck/&gt;</code> element. Two more options are also available when set on
+            this element.
           </p>
           <table>
             <thead>
@@ -52,9 +47,9 @@ export class AppDeckPager {
             <tbody>
               <tr>
                 <td>--pager-display</td>
-                <td></td>
+                <td>hidden</td>
                 <td>
-                  The display property of the pager. Set to <code>none</code> to hide it.
+                  The display property of the pager. Set to <code>block</code> to display it.
                 </td>
               </tr>
               <tr>
