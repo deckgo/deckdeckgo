@@ -1,3 +1,9 @@
+# 1.6.1 (2020-08-08)
+
+### Features
+
+- update recent dependencies for next DeckDeckGo next release
+
 # 1.6.0 (2020-07-11)
 
 ### Features
