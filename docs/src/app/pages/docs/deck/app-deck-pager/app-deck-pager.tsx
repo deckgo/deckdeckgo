@@ -19,7 +19,7 @@ export class AppDeckPager {
       <ion-content class="ion-padding">
         <main>
           <h1 id="app-deck-pager-pager">Pager</h1>
-          <p>A pager for the progression of the presentation can optionally be displayed in form of a progress circle bar. </p>
+          <p>A pager for the progression of the presentation can optionally be displayed in form of a progress circle bar.</p>
           <ul>
             <li>
               <a href="#app-deck-pager-deck">Deck</a>
@@ -28,7 +28,7 @@ export class AppDeckPager {
               <a href="#app-deck-pager-customization">Customization</a>
             </li>
             <li>
-              <a href="#app-deck-pager-events">Events</a>{' '}
+              <a href="#app-deck-pager-events">Events</a>
             </li>
           </ul>
           <h2 id="app-deck-pager-show-or-hide">Show or hide</h2>
