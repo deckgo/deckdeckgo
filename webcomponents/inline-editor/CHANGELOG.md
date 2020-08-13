@@ -1,3 +1,9 @@
+# 2.0.3 (2020-08-13)
+
+### Fix
+
+- `styleDidChange` was not always emitting the container
+
 # 2.0.2 (2020-08-08)
 
 ### Features
