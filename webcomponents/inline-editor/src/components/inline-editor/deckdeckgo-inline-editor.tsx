@@ -736,7 +736,10 @@ export class DeckdeckgoInlineEditor {
 
     await execCommand(this.selection, $event.detail, this.containers);
 
-    const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, document.activeElement as HTMLElement);
+    const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(
+      this.containers,
+      !this.selection ? document.activeElement : this.selection.anchorNode
+    );
     this.styleDidChange.emit(container);
 
     await this.reset(true);
