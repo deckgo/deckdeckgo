@@ -652,6 +652,7 @@ export class AppEditor {
             {this.footer}
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
+          <app-slide-contrast></app-slide-contrast>
         </main>
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>

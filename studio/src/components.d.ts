@@ -367,6 +367,8 @@ export namespace Components {
         "redirect": string;
         "redirectId": string;
     }
+    interface AppSlideContrast {
+    }
     interface AppSlideNavigate {
     }
     interface AppSlotType {
@@ -1000,6 +1002,12 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
+    interface HTMLAppSlideContrastElement extends Components.AppSlideContrast, HTMLStencilElement {
+    }
+    var HTMLAppSlideContrastElement: {
+        prototype: HTMLAppSlideContrastElement;
+        new (): HTMLAppSlideContrastElement;
+    };
     interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {
     }
     var HTMLAppSlideNavigateElement: {
@@ -1162,6 +1170,7 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
+        "app-slide-contrast": HTMLAppSlideContrastElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-team": HTMLAppTeamElement;
@@ -1568,6 +1577,8 @@ declare namespace LocalJSX {
         "redirect"?: string;
         "redirectId"?: string;
     }
+    interface AppSlideContrast {
+    }
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
@@ -1697,6 +1708,7 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
+        "app-slide-contrast": AppSlideContrast;
         "app-slide-navigate": AppSlideNavigate;
         "app-slot-type": AppSlotType;
         "app-team": AppTeam;
@@ -1814,6 +1826,7 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
+            "app-slide-contrast": LocalJSX.AppSlideContrast & JSXBase.HTMLAttributes<HTMLAppSlideContrastElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
