@@ -12,7 +12,7 @@ export class ContrastUtils {
     // TODO: how to handle alpha? both in custom color as in default backgroundColor rba(0,0,0,0)
 
     const bgColor: string =
-      element.style.background !== ''
+      element.style.background !== '' && element.style.background !== 'initial'
         ? style.backgroundColor
         : parentsColors.slideBgColor !== ''
         ? parentsColors.slideBgColor
@@ -20,7 +20,7 @@ export class ContrastUtils {
         ? parentsColors.deckBgColor
         : style.backgroundColor;
     const color: string =
-      element.style.color !== ''
+      element.style.color !== '' && element.style.color !== 'initial'
         ? style.color
         : parentsColors.slideColor !== ''
         ? parentsColors.slideColor

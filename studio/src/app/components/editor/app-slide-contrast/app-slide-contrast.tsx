@@ -22,6 +22,11 @@ export class AppSlideContrast {
     await this.analyzeContrast();
   }
 
+  @Listen('deckDidChange', {target: 'document'})
+  async onDeckDidChange() {
+    await this.analyzeContrast();
+  }
+
   @Listen('slideNextDidChange', {target: 'document'})
   @Listen('slidePrevDidChange', {target: 'document'})
   @Listen('slideToChange', {target: 'document'})
@@ -59,6 +64,18 @@ export class AppSlideContrast {
       return false;
     }
 
+    const slotsChildren = Array.from(slots).reduce((acc: HTMLElement[], slot: HTMLElement) => {
+      const children: NodeListOf<HTMLElement> = slot.querySelectorAll('*');
+
+      if (children && children.length > 0) {
+        acc.push(...Array.from(children));
+      }
+
+      return acc;
+    }, []);
+
+    const elements: HTMLElement[] = slotsChildren && slotsChildren.length > 0 ? [...Array.from(slots), ...slotsChildren] : Array.from(slots);
+
     const parentsColors: ParentsColors = {
       slideBgColor: slide.style.background,
       slideColor: slide.style.color,
@@ -66,7 +83,7 @@ export class AppSlideContrast {
       deckColor: deck.style.getPropertyValue('--color'),
     };
 
-    const promises: Promise<number>[] = Array.from(slots).map((slot: HTMLElement) => ContrastUtils.calculateContrastRatio(slot, parentsColors));
+    const promises: Promise<number>[] = Array.from(elements).map((slot: HTMLElement) => ContrastUtils.calculateContrastRatio(slot, parentsColors));
 
     const contrasts: number[] = await Promise.all(promises);
 
@@ -75,8 +92,6 @@ export class AppSlideContrast {
     }
 
     const lowContrast: number | undefined = contrasts.find((contrast: number) => contrast > this.lowestAACompliantLevel);
-
-    console.log(lowContrast, contrasts);
 
     return lowContrast !== undefined;
   }
