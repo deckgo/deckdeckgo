@@ -1,6 +1,7 @@
 import {Component, h, Host, Listen, State} from '@stencil/core';
 
 import {ContrastUtils, ParentsColors} from '../../../utils/editor/contrast.utils';
+import {popoverController} from '@ionic/core';
 
 @Component({
   tag: 'app-slide-contrast',
@@ -96,14 +97,28 @@ export class AppSlideContrast {
     return lowContrast !== undefined;
   }
 
+  private async openInformation($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-contrast-info',
+      event: $event,
+      mode: 'ios',
+      cssClass: 'info',
+    });
+
+    await popover.present();
+  }
+
   render() {
     return (
       <Host
         class={{
           warning: this.warning,
         }}>
-        <ion-label>Low contrast</ion-label>
-        <ion-icon name="warning-outline"></ion-icon>
+        <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-label>Low contrast</ion-label>
+          <ion-icon name="warning-outline"></ion-icon>
+        </button>
       </Host>
     );
   }

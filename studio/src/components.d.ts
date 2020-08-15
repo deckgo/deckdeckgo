@@ -109,6 +109,8 @@ export namespace Components {
     }
     interface AppContactForm {
     }
+    interface AppContrastInfo {
+    }
     interface AppCreateSlide {
     }
     interface AppCustomData {
@@ -509,6 +511,12 @@ declare global {
     var HTMLAppContactFormElement: {
         prototype: HTMLAppContactFormElement;
         new (): HTMLAppContactFormElement;
+    };
+    interface HTMLAppContrastInfoElement extends Components.AppContrastInfo, HTMLStencilElement {
+    }
+    var HTMLAppContrastInfoElement: {
+        prototype: HTMLAppContrastInfoElement;
+        new (): HTMLAppContrastInfoElement;
     };
     interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {
     }
@@ -1088,6 +1096,7 @@ declare global {
         "app-color-text-background": HTMLAppColorTextBackgroundElement;
         "app-contact": HTMLAppContactElement;
         "app-contact-form": HTMLAppContactFormElement;
+        "app-contrast-info": HTMLAppContrastInfoElement;
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
@@ -1293,6 +1302,8 @@ declare namespace LocalJSX {
     interface AppContact {
     }
     interface AppContactForm {
+    }
+    interface AppContrastInfo {
     }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
@@ -1626,6 +1637,7 @@ declare namespace LocalJSX {
         "app-color-text-background": AppColorTextBackground;
         "app-contact": AppContact;
         "app-contact-form": AppContactForm;
+        "app-contrast-info": AppContrastInfo;
         "app-create-slide": AppCreateSlide;
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
@@ -1744,6 +1756,7 @@ declare module "@stencil/core" {
             "app-color-text-background": LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
             "app-contact": LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
             "app-contact-form": LocalJSX.AppContactForm & JSXBase.HTMLAttributes<HTMLAppContactFormElement>;
+            "app-contrast-info": LocalJSX.AppContrastInfo & JSXBase.HTMLAttributes<HTMLAppContrastInfoElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
