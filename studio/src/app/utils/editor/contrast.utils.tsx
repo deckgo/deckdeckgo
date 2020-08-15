@@ -1,3 +1,5 @@
+import {extractRgb, extractRgba} from '@deckdeckgo/utils';
+
 export interface ParentsColors {
   slideBgColor: string | undefined;
   slideColor: string | undefined;
@@ -72,16 +74,6 @@ export class ContrastUtils {
 
   // Source: https://github.com/LeaVerou/contrast-ratio/blob/eb7fe8f16206869f8d36d517d7eb0962830d0e81/color.js#L86
   private static async convertAlphaRgba(color: string, base: number[]): Promise<string> {
-    const extractRgba = (rgb: string): number[] | undefined => {
-      const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
-
-      if (!match) {
-        return undefined;
-      }
-
-      return match.splice(1, 4).map((v) => Number(v));
-    };
-
     const rgba: number[] | undefined = extractRgba(color);
 
     if (!rgba || rgba.length < 4) {
@@ -107,17 +99,6 @@ export class ContrastUtils {
     lumColor: number,
     base: number[]
   ): Promise<{luminanceOverlay: number; ratio: number}> {
-    // TODO extract utils
-    const extractRgb = (rgb: string): number[] | undefined => {
-      const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
-
-      if (!match) {
-        return undefined;
-      }
-
-      return match.splice(1, 3).map((v) => Number(v));
-    };
-
     const overlay = extractRgb(await this.convertAlphaRgba(bgColor, base));
 
     const lumOverlay: number = this.calculateLuminance(overlay);
@@ -129,17 +110,6 @@ export class ContrastUtils {
   }
 
   private static async calculateContrastRatioAlpha(bgColor: string, color: string): Promise<number> {
-    // TODO extract utils
-    const extractRgb = (rgb: string): number[] | undefined => {
-      const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
-
-      if (!match) {
-        return undefined;
-      }
-
-      return match.splice(1, 3).map((v) => Number(v));
-    };
-
     const lumColor: number = this.calculateLuminance(extractRgb(color));
 
     const onBlack: {luminanceOverlay: number; ratio: number} = await this.calculateColorContrastRatioWithBase(bgColor, lumColor, [0, 0, 0, 1]);
@@ -158,17 +128,6 @@ export class ContrastUtils {
   }
 
   private static async calculateContrastRatioOpaque(bgColor: string, color: string): Promise<number> {
-    // TODO extract utils
-    const extractRgb = (rgb: string): number[] | undefined => {
-      const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
-
-      if (!match) {
-        return undefined;
-      }
-
-      return match.splice(1, 3).map((v) => Number(v));
-    };
-
     const bgRgb: number[] | undefined = extractRgb(bgColor);
     const colorRgb: number[] | undefined = extractRgb(color);
 
