@@ -19,7 +19,7 @@ export class AppPress {
 
           <p>
             That being said, you can download our logo as a{' '}
-            <a href="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" target="_blank">
+            <a href="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" target="_blank" rel="noopener noreferrer">
               svg
             </a>{' '}
             and could{' '}

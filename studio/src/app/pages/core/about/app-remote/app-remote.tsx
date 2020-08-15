@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-remote',
-  styleUrl: 'app-remote.scss'
+  styleUrl: 'app-remote.scss',
 })
 export class AppRemote {
   render() {
@@ -26,7 +26,7 @@ export class AppRemote {
 
           <p class="ion-padding-bottom">
             Start the{' '}
-            <a href="https://deckdeckgo.app" target="_blank">
+            <a href="https://deckdeckgo.app" target="_blank" rel="noopener noreferrer">
               remote control
             </a>{' '}
             now 🚀
@@ -34,7 +34,7 @@ export class AppRemote {
 
           <iframe width="260" height="146" src="https://www.youtube.com/embed/PnSNT5WpauE"></iframe>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }
