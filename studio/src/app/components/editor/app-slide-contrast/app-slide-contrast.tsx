@@ -7,7 +7,7 @@ import {ContrastUtils, ParentsColors} from '../../../utils/editor/contrast.utils
   styleUrl: 'app-slide-contrast.scss',
 })
 export class AppSlideContrast {
-  private readonly lowestAACompliantLevel: number = 1 / 3;
+  private readonly lowestAACompliantLevel: number = 3;
 
   @State()
   private warning: boolean = false;
@@ -91,7 +91,7 @@ export class AppSlideContrast {
       return false;
     }
 
-    const lowContrast: number | undefined = contrasts.find((contrast: number) => contrast > this.lowestAACompliantLevel);
+    const lowContrast: number | undefined = contrasts.find((contrast: number) => contrast < this.lowestAACompliantLevel);
 
     return lowContrast !== undefined;
   }
