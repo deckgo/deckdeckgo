@@ -30,17 +30,7 @@ export class ContrastUtils {
         : style.color;
 
     // The text color may or may not be semi-transparent, but that doesn't matter
-    const extractRgba = (rgb: string): number[] | undefined => {
-      const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
-
-      if (!match) {
-        return undefined;
-      }
-
-      return match.splice(1, 4).map((v) => Number(v));
-    };
-
-    const bgRgba = extractRgba(bgColor);
+    const bgRgba: number[] | undefined = extractRgba(bgColor);
 
     if (!bgRgba || bgRgba.length < 4 || bgRgba[3] >= 1) {
       return this.calculateContrastRatioOpaque(bgColor, color);
