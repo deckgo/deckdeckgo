@@ -1,3 +1,11 @@
+<a name="1.3.0"></a>
+
+# 1.3.0 (2020-08-15)
+
+- improve `extractRgb` to support decimals value (as for example `rgb(5.5, 4.7, 4)`)
+- expose function `extractRgb`
+- add and expose function `extractRgba`
+
 <a name="1.2.0"></a>
 
 # 1.2.0 (2020-07-31)

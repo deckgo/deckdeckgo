@@ -109,6 +109,8 @@ export namespace Components {
     }
     interface AppContactForm {
     }
+    interface AppContrastInfo {
+    }
     interface AppCreateSlide {
     }
     interface AppCustomData {
@@ -367,6 +369,8 @@ export namespace Components {
         "redirect": string;
         "redirectId": string;
     }
+    interface AppSlideContrast {
+    }
     interface AppSlideNavigate {
     }
     interface AppSlotType {
@@ -507,6 +511,12 @@ declare global {
     var HTMLAppContactFormElement: {
         prototype: HTMLAppContactFormElement;
         new (): HTMLAppContactFormElement;
+    };
+    interface HTMLAppContrastInfoElement extends Components.AppContrastInfo, HTMLStencilElement {
+    }
+    var HTMLAppContrastInfoElement: {
+        prototype: HTMLAppContrastInfoElement;
+        new (): HTMLAppContrastInfoElement;
     };
     interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {
     }
@@ -1000,6 +1010,12 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
+    interface HTMLAppSlideContrastElement extends Components.AppSlideContrast, HTMLStencilElement {
+    }
+    var HTMLAppSlideContrastElement: {
+        prototype: HTMLAppSlideContrastElement;
+        new (): HTMLAppSlideContrastElement;
+    };
     interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {
     }
     var HTMLAppSlideNavigateElement: {
@@ -1080,6 +1096,7 @@ declare global {
         "app-color-text-background": HTMLAppColorTextBackgroundElement;
         "app-contact": HTMLAppContactElement;
         "app-contact-form": HTMLAppContactFormElement;
+        "app-contrast-info": HTMLAppContrastInfoElement;
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
@@ -1162,6 +1179,7 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
+        "app-slide-contrast": HTMLAppSlideContrastElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-team": HTMLAppTeamElement;
@@ -1284,6 +1302,8 @@ declare namespace LocalJSX {
     interface AppContact {
     }
     interface AppContactForm {
+    }
+    interface AppContrastInfo {
     }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
@@ -1568,6 +1588,8 @@ declare namespace LocalJSX {
         "redirect"?: string;
         "redirectId"?: string;
     }
+    interface AppSlideContrast {
+    }
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
@@ -1615,6 +1637,7 @@ declare namespace LocalJSX {
         "app-color-text-background": AppColorTextBackground;
         "app-contact": AppContact;
         "app-contact-form": AppContactForm;
+        "app-contrast-info": AppContrastInfo;
         "app-create-slide": AppCreateSlide;
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
@@ -1697,6 +1720,7 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
+        "app-slide-contrast": AppSlideContrast;
         "app-slide-navigate": AppSlideNavigate;
         "app-slot-type": AppSlotType;
         "app-team": AppTeam;
@@ -1732,6 +1756,7 @@ declare module "@stencil/core" {
             "app-color-text-background": LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
             "app-contact": LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
             "app-contact-form": LocalJSX.AppContactForm & JSXBase.HTMLAttributes<HTMLAppContactFormElement>;
+            "app-contrast-info": LocalJSX.AppContrastInfo & JSXBase.HTMLAttributes<HTMLAppContrastInfoElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
@@ -1814,6 +1839,7 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
+            "app-slide-contrast": LocalJSX.AppSlideContrast & JSXBase.HTMLAttributes<HTMLAppSlideContrastElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;

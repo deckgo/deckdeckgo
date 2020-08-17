@@ -30,7 +30,7 @@ export class AppGetHelp {
           </a>
           .
         </p>
-        <div class="ion-text-center ion-padding-top">
+        <div class="ion-text-center">
           <ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>
             Got it
           </ion-button>

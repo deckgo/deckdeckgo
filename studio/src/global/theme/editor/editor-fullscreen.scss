@@ -60,6 +60,15 @@
           box-shadow: none;
         }
       }
+
+      app-slide-contrast {
+        display: none;
+      }
+    }
+
+    app-slide-contrast {
+      top: 32px;
+      left: 32px;
     }
   }
 
