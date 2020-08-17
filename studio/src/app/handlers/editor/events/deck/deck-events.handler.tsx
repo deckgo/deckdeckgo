@@ -129,7 +129,11 @@ export class DeckEventsHandler {
 
     const element: HTMLElement = $event.detail as HTMLElement;
 
-    const parent: HTMLElement = element.parentElement;
+    let parent: HTMLElement = element.parentElement;
+
+    if (SlotUtils.isNodeReveal(parent) || SlotUtils.isNodeDragDropResize(parent)) {
+      parent = parent.parentElement;
+    }
 
     if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
       return;
