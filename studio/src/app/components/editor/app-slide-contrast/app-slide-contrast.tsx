@@ -57,11 +57,8 @@ export class AppSlideContrast {
     }
 
     const slots: NodeListOf<HTMLElement> = slide.querySelectorAll(
-      '[slot="title"]:not(:empty),[slot="content"]:not(:empty),[slot="start"]:not(:empty),[slot="end"]:not(:empty),[slot="header"]:not(:empty),[slot="footer"]:not(:empty),[slot="author"]:not(:empty)'
+      '[slot="title"]:not(:empty),[slot="content"]:not(:empty),[slot="start"]:not(:empty),[slot="end"]:not(:empty),[slot="header"]:not(:empty),[slot="footer"]:not(:empty),[slot="author"]:not(:empty),deckgo-drr > section:not(:empty)'
     );
-
-    // TODO drr
-    // const slots: NodeListOf<HTMLElement> = slide.querySelectorAll('[slot="title"],[slot="content"],[slot="start"],[slot="end"],[slot="header"],[slot="footer"],deckgo-drr');
 
     if (!slots || slots.length <= 0) {
       return false;
@@ -102,6 +99,8 @@ export class AppSlideContrast {
   private async calculateRatio(element: HTMLElement, deck: HTMLElement, slide: HTMLElement) {
     const bgColor = await NodeUtils.findColors(element, 'background', deck, slide);
     const color = await NodeUtils.findColors(element, 'color', deck, slide);
+
+    console.log('yo', bgColor, color);
 
     return ContrastUtils.calculateContrastRatio(bgColor, color);
   }
