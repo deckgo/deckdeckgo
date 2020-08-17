@@ -57,7 +57,7 @@ export class AppSlideContrast {
     }
 
     const slots: NodeListOf<HTMLElement> = slide.querySelectorAll(
-      '[slot="title"]:not(:empty),[slot="content"]:not(:empty),[slot="start"]:not(:empty),[slot="end"]:not(:empty),[slot="header"]:not(:empty),[slot="footer"]:not(:empty),[slot="author"]:not(:empty),deckgo-drr > section:not(:empty)'
+      '[slot="title"]:not(:empty),[slot="content"]:not(:empty),[slot="start"]:not(:empty),[slot="end"]:not(:empty),[slot="header"]:not(:empty),[slot="footer"]:not(:empty),[slot="author"]:not(:empty),[slot="top"]:not(:empty),[slot="bottom"]:not(:empty),deckgo-drr > section:not(:empty)'
     );
 
     if (!slots || slots.length <= 0) {
