@@ -49,7 +49,7 @@ export class NodeUtils {
     const styleAttr: string = color === 'background' ? 'background-color' : 'color';
 
     if (node.style[styleAttr] !== '' && node.style[styleAttr] !== 'initial') {
-      return node.style[color];
+      return node.style[styleAttr];
     }
 
     return await this.findColors(node.parentElement, color, slide, deck);
