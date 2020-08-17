@@ -1,42 +1,18 @@
 import {extractRgb, extractRgba} from '@deckdeckgo/utils';
 
-export interface ParentsColors {
-  slideBgColor: string | undefined;
-  slideColor: string | undefined;
-  deckBgColor: string | undefined;
-  deckColor: string | undefined;
-}
-
 export class ContrastUtils {
-  static async calculateContrastRatio(element: HTMLElement, parentsColors: ParentsColors): Promise<number> {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element);
-
-    const bgColor: string =
-      element.style.background !== '' && element.style.background !== 'initial'
-        ? style.backgroundColor
-        : parentsColors.slideBgColor !== ''
-        ? parentsColors.slideBgColor
-        : parentsColors.deckBgColor !== ''
-        ? parentsColors.deckBgColor
-        : style.backgroundColor;
-
-    const color: string =
-      element.style.color !== '' && element.style.color !== 'initial'
-        ? style.color
-        : parentsColors.slideColor !== ''
-        ? parentsColors.slideColor
-        : parentsColors.deckColor !== ''
-        ? parentsColors.deckColor
-        : style.color;
+  static async calculateContrastRatio(bgColor: string | undefined, color: string | undefined): Promise<number> {
+    const bgColorWithDefault: string = bgColor === undefined || bgColor === '' ? `rgb(255, 255, 255)` : bgColor;
+    const colorWithDefault: string = color === undefined || color === '' ? `rgb(0, 0, 0)` : color;
 
     // The text color may or may not be semi-transparent, but that doesn't matter
-    const bgRgba: number[] | undefined = extractRgba(bgColor);
+    const bgRgba: number[] | undefined = extractRgba(bgColorWithDefault);
 
     if (!bgRgba || bgRgba.length < 4 || bgRgba[3] >= 1) {
-      return this.calculateContrastRatioOpaque(bgColor, color);
+      return this.calculateContrastRatioOpaque(bgColorWithDefault, colorWithDefault);
     }
 
-    return this.calculateContrastRatioAlpha(bgColor, color);
+    return this.calculateContrastRatioAlpha(bgColorWithDefault, colorWithDefault);
   }
 
   private static calculateLuminance(rgb: number[]): number {

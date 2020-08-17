@@ -1,7 +1,9 @@
 import {Component, h, Host, Listen, State} from '@stencil/core';
 
-import {ContrastUtils, ParentsColors} from '../../../utils/editor/contrast.utils';
 import {popoverController} from '@ionic/core';
+
+import {ContrastUtils} from '../../../utils/editor/contrast.utils';
+import {NodeUtils} from '../../../utils/editor/node.utils';
 
 @Component({
   tag: 'app-slide-contrast',
@@ -65,26 +67,26 @@ export class AppSlideContrast {
       return false;
     }
 
-    const slotsChildren = Array.from(slots).reduce((acc: HTMLElement[], slot: HTMLElement) => {
-      const children: NodeListOf<HTMLElement> = slot.querySelectorAll('*');
+    // Slots with direct text children
+    const slotsWithText: HTMLElement[] = await NodeUtils.childrenTextNode(slots);
 
-      if (children && children.length > 0) {
-        acc.push(...Array.from(children));
-      }
+    // All children (<span/>) of the slots
+    const children: HTMLElement[] = await NodeUtils.children(slots);
 
-      return acc;
-    }, []);
+    const elements: HTMLElement[] =
+      children && children.length > 0
+        ? slotsWithText && slotsWithText.length > 0
+          ? [...Array.from(slotsWithText), ...children]
+          : [...children]
+        : slotsWithText && slotsWithText.length > 0
+        ? [...slotsWithText]
+        : null;
 
-    const elements: HTMLElement[] = slotsChildren && slotsChildren.length > 0 ? [...Array.from(slots), ...slotsChildren] : Array.from(slots);
+    if (!elements) {
+      return false;
+    }
 
-    const parentsColors: ParentsColors = {
-      slideBgColor: slide.style.background,
-      slideColor: slide.style.color,
-      deckBgColor: deck.style.getPropertyValue('--background'),
-      deckColor: deck.style.getPropertyValue('--color'),
-    };
-
-    const promises: Promise<number>[] = Array.from(elements).map((slot: HTMLElement) => ContrastUtils.calculateContrastRatio(slot, parentsColors));
+    const promises: Promise<number>[] = Array.from(elements).map((element: HTMLElement) => this.calculateRatio(element, deck, slide));
 
     const contrasts: number[] = await Promise.all(promises);
 
@@ -95,6 +97,13 @@ export class AppSlideContrast {
     const lowContrast: number | undefined = contrasts.find((contrast: number) => contrast < this.lowestAACompliantLevel);
 
     return lowContrast !== undefined;
+  }
+
+  private async calculateRatio(element: HTMLElement, deck: HTMLElement, slide: HTMLElement) {
+    const bgColor = await NodeUtils.findColors(element, 'background', deck, slide);
+    const color = await NodeUtils.findColors(element, 'color', deck, slide);
+
+    return ContrastUtils.calculateContrastRatio(bgColor, color);
   }
 
   private async openInformation($event: UIEvent) {
