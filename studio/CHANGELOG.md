@@ -1,3 +1,23 @@
+# 2.2.0 (2020-08-17)
+
+### Features
+
+- add warning when colors do not meet contrast ratio (a11y, [#819](https://github.com/deckgo/deckdeckgo/issues/819))
+- custom inline editor execCommand implementation ([#741](https://github.com/deckgo/deckdeckgo/issues/741))
+- share on feed page and add twitter tags ([#824](https://github.com/deckgo/deckdeckgo/pull/824))
+- improve web caching ([#840](https://github.com/deckgo/deckdeckgo/pull/840))
+- hide the pager ([#835](https://github.com/deckgo/deckdeckgo/pull/835))
+- only one h1 on the landing page (Google SEO friendly, [#834](https://github.com/deckgo/deckdeckgo/pull/834))
+- display a message in the console when cannot be use in Firefox Private Window ([#827](https://github.com/deckgo/deckdeckgo/issues/827))
+- update dependencies and firebase ui ([#829](https://github.com/deckgo/deckdeckgo/pull/829))
+- remove old ionic / chrome resize issue workaround ([#327](https://github.com/deckgo/deckdeckgo/issues/327))
+
+### Fix
+
+- toolbar options skips some options (a11y, [#811](https://github.com/deckgo/deckdeckgo/issues/821))
+- unhandled and unexpected add slide ([#830](https://github.com/deckgo/deckdeckgo/pull/830))
+- adjust copy enterprise ([#823](https://github.com/deckgo/deckdeckgo/pull/823))
+
 # 2.1.0 (2020-07-30)
 
 ### Features

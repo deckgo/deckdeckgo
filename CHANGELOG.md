@@ -1,12 +1,13 @@
 <a name="2.2.0"></a>
 
-# [2.2.0](https://github.com/deckgo/deckdeckgo/compare/v2.1.0...v2.2.0) (In progress...)
+# [2.2.0](https://github.com/deckgo/deckdeckgo/compare/v2.1.0...v2.2.0) (2020-08-17)
 
 ### Applications
 
 - demo: v2.4.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo-website/blob/master/CHANGELOG.md))
 - docs: v1.9.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 - remote: v1.6.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
 
