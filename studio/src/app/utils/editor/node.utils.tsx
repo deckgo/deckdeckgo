@@ -20,8 +20,12 @@ export class NodeUtils {
     return Array.from(elements).reduce((acc: HTMLElement[], slot: HTMLElement) => {
       const children: NodeListOf<HTMLElement> = slot.querySelectorAll('*');
 
-      if (children && children.length > 0) {
-        acc.push(...Array.from(children));
+      const filteredChildren: HTMLElement[] | undefined = Array.from(children).filter((child) =>
+        Array.from(child.childNodes).some((element) => element.nodeType === Node.TEXT_NODE)
+      );
+
+      if (filteredChildren && filteredChildren.length > 0) {
+        acc.push(...Array.from(filteredChildren));
       }
 
       return acc;
@@ -48,7 +52,8 @@ export class NodeUtils {
 
     const styleAttr: string = color === 'background' ? 'background-color' : 'color';
 
-    if (node.style[styleAttr] !== '' && node.style[styleAttr] !== 'initial') {
+    // initial act for background as inherit
+    if (node.style[styleAttr] !== '' && ((color === 'background' && node.style[styleAttr] !== 'initial') || color === 'color')) {
       return node.style[styleAttr];
     }
 

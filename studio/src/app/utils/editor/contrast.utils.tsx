@@ -3,7 +3,7 @@ import {extractRgb, extractRgba} from '@deckdeckgo/utils';
 export class ContrastUtils {
   static async calculateContrastRatio(bgColor: string | undefined, color: string | undefined): Promise<number> {
     const bgColorWithDefault: string = bgColor === undefined || bgColor === '' ? `rgb(255, 255, 255)` : bgColor;
-    const colorWithDefault: string = color === undefined || color === '' ? `rgb(0, 0, 0)` : color;
+    const colorWithDefault: string = color === undefined || color === '' || color === 'initial' ? `rgb(0, 0, 0)` : color;
 
     // The text color may or may not be semi-transparent, but that doesn't matter
     const bgRgba: number[] | undefined = extractRgba(bgColorWithDefault);
