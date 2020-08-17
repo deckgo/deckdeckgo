@@ -100,8 +100,6 @@ export class AppSlideContrast {
     const bgColor = await NodeUtils.findColors(element, 'background', deck, slide);
     const color = await NodeUtils.findColors(element, 'color', deck, slide);
 
-    console.log('yo', bgColor, color);
-
     return ContrastUtils.calculateContrastRatio(bgColor, color);
   }
 
