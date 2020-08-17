@@ -208,6 +208,7 @@ export class AppElementStyle {
       return [
         <app-color-text-background
           expander={this.slide}
+          key={'<app-color-text-background-background'}
           colorType={'background'}
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
