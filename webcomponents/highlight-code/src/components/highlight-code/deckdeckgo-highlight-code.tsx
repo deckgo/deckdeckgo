@@ -12,6 +12,8 @@ import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-
 import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
+import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
+
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
@@ -58,7 +60,7 @@ export class DeckdeckgoHighlightCode {
   async componentDidLoad() {
     const languageWasLoaded: boolean = await this.languageDidLoad();
 
-    await this.loadLanguage();
+    await this.loadLanguages();
 
     if (languageWasLoaded) {
       await this.fetchOrParse();
@@ -124,14 +126,39 @@ export class DeckdeckgoHighlightCode {
   }
 
   @Watch('language')
-  loadLanguage(): Promise<void> {
+  async loadLanguages() {
+    await this.loadLanguagesRequire();
+
+    await this.loadScript(this.language);
+  }
+
+  private async loadLanguagesRequire() {
+    const promises: Promise<void>[] = [];
+
+    const definition = deckdeckgoHighlightCodeLanguages[this.language];
+    if (definition.require) {
+      if (Array.isArray(definition.require) && definition.require.length > 0) {
+        promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript)));
+      } else if (typeof definition.require === 'string' && definition.require !== '') {
+        promises.push(this.loadScript(definition.require));
+      }
+    }
+
+    if (promises.length <= 0) {
+      return;
+    }
+
+    await Promise.all(promises);
+  }
+
+  private loadScript(lang: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!document || !this.language || this.language === '' || this.language === 'javascript') {
+      if (!document || !lang || lang === '' || lang === 'javascript') {
         resolve();
         return;
       }
 
-      const scripts = document.querySelector("[deckdeckgo-prism='" + this.language + "']");
+      const scripts = document.querySelector("[deckdeckgo-prism='" + lang + "']");
       if (scripts) {
         resolve();
         return;
@@ -140,8 +167,8 @@ export class DeckdeckgoHighlightCode {
       const script = document.createElement('script');
 
       script.onload = async () => {
-        script.setAttribute('deckdeckgo-prism-loaded', this.language);
-        this.prismLanguageLoaded.emit(this.language);
+        script.setAttribute('deckdeckgo-prism-loaded', lang);
+        this.prismLanguageLoaded.emit(lang);
       };
 
       script.onerror = async () => {
@@ -150,11 +177,11 @@ export class DeckdeckgoHighlightCode {
         }
 
         // if the language definition doesn't exist or if unpkg is down, display code anyway
-        this.prismLanguageLoaded.emit(this.language);
+        this.prismLanguageLoaded.emit(lang);
       };
 
-      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + this.language + '.js';
-      script.setAttribute('deckdeckgo-prism', this.language);
+      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + lang + '.js';
+      script.setAttribute('deckdeckgo-prism', lang);
       script.defer = true;
 
       document.head.appendChild(script);
@@ -198,7 +225,7 @@ export class DeckdeckgoHighlightCode {
       if (document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']")) {
         await this.fetchOrParse();
       } else {
-        await this.loadLanguage();
+        await this.loadLanguages();
       }
 
       resolve();

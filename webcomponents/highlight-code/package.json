@@ -16,10 +16,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "stencil build",
-    "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "config": "node scripts/config.languages.js && prettier --write ./src/declarations/deckdeckgo-highlight-code-languages.tsx",
+    "build": "npm run config && stencil build",
+    "start": "npm run config && stencil build --dev --watch --serve",
+    "test": "npm run config && stencil test --spec --e2e",
+    "test.watch": "npm run config && stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
     "@deckdeckgo/utils": "1.2.0",
@@ -33,6 +34,7 @@
     "@types/prismjs": "^1.16.1",
     "autoprefixer": "^9.8.6",
     "husky": "^4.2.5",
+    "node-fetch": "^2.6.0",
     "prettier": "2.0.5",
     "pretty-quick": "^2.0.1"
   },
