@@ -9,13 +9,7 @@ const langInterfaces = `export interface DeckdeckgoHighlightCodeLanguageAlias {
 
 export interface DeckdeckgoHighlightCodeLanguage {
   title: string;
-  alias?: string | string[];
-  aliasTitles?: DeckdeckgoHighlightCodeLanguageAlias;
-  option?: string;
-  optional?: string | string[];
-  modify?: string | string[];
-  owner?: string;
-  require?: string | string[];
+  require?: string[];
 }
 
 export interface DeckdeckgoHighlightCodeLanguages {
@@ -46,12 +40,20 @@ async function getLanguages() {
     Object.keys(languages)
       .filter((key) => key !== 'meta')
       .forEach((key) => {
-        filteredLanguages[key] = languages[key];
+        filteredLanguages[key] = {
+          title: languages[key].title,
+        };
+
+        if (languages[key].require && Array.isArray(languages[key].require) && languages[key].require.length > 0) {
+          filteredLanguages[key].require = languages[key].require.filter((req) => req !== 'clike' && req !== 'javascript');
+        } else if (languages[key].require && languages[key].require !== 'clike' && languages[key].require !== 'javascript') {
+          filteredLanguages[key].require = [languages[key].require];
+        }
       });
 
     const languagesEnum = `${langInterfaces}
 
-    export const deckdeckgoHighlightCodeLanguages = ${JSON.stringify(filteredLanguages)}`;
+    export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages = ${JSON.stringify(filteredLanguages)}`;
 
     fs.writeFile(`./src/declarations/deckdeckgo-highlight-code-languages.tsx`, languagesEnum, 'utf8', (err) => {
       if (err) return console.log(err);

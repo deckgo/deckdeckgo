@@ -51,6 +51,12 @@ export class DeckdeckgoHighlightCode {
   @State()
   private themeStyle: string | undefined;
 
+  @State()
+  private languagesToLoad: string[];
+
+  @State()
+  private loaded: boolean = false;
+
   async componentWillLoad() {
     await this.loadGoogleFonts();
 
@@ -91,8 +97,14 @@ export class DeckdeckgoHighlightCode {
       return;
     }
 
-    if (this.language && this.language !== 'javascript' && $event.detail === this.language) {
+    if (this.languagesToLoad) {
+      this.languagesToLoad = this.languagesToLoad.filter((lang) => lang !== $event.detail);
+    }
+
+    if (this.language && !this.loaded && (this.languagesToLoad === undefined || this.languagesToLoad.length <= 0)) {
       await this.fetchOrParse();
+
+      this.loaded = true;
     }
   }
 
@@ -111,11 +123,6 @@ export class DeckdeckgoHighlightCode {
         return;
       }
 
-      if (this.language === 'javascript') {
-        resolve(true);
-        return;
-      }
-
       const scripts = document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']");
       if (scripts) {
         resolve(true);
@@ -126,10 +133,28 @@ export class DeckdeckgoHighlightCode {
   }
 
   @Watch('language')
-  async loadLanguages() {
+  async onLanguage() {
+    await this.loadLanguages(true);
+  }
+
+  private async loadLanguages(reload: boolean = false) {
+    this.loaded = false;
+
+    await this.initLanguagesToLoad();
+
     await this.loadLanguagesRequire();
 
-    await this.loadScript(this.language);
+    await this.loadScript(this.language, reload);
+  }
+
+  private async initLanguagesToLoad() {
+    if (!this.language) {
+      return;
+    }
+
+    const definition = deckdeckgoHighlightCodeLanguages[this.language];
+
+    this.languagesToLoad = definition.require && definition.require.length > 0 ? [this.language, ...definition.require] : [this.language];
   }
 
   private async loadLanguagesRequire() {
@@ -137,11 +162,7 @@ export class DeckdeckgoHighlightCode {
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
     if (definition.require) {
-      if (Array.isArray(definition.require) && definition.require.length > 0) {
-        promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript)));
-      } else if (typeof definition.require === 'string' && definition.require !== '') {
-        promises.push(this.loadScript(definition.require));
-      }
+      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript)));
     }
 
     if (promises.length <= 0) {
@@ -151,15 +172,27 @@ export class DeckdeckgoHighlightCode {
     await Promise.all(promises);
   }
 
-  private loadScript(lang: string): Promise<void> {
+  private loadScript(lang: string, reload: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!document || !lang || lang === '' || lang === 'javascript') {
+      if (!document || !lang || lang === '') {
+        resolve();
+        return;
+      }
+
+      // No need to load javascript, it is there
+      if (lang === 'javascript') {
+        this.prismLanguageLoaded.emit('javascript');
+
         resolve();
         return;
       }
 
       const scripts = document.querySelector("[deckdeckgo-prism='" + lang + "']");
       if (scripts) {
+        if (reload) {
+          this.prismLanguageLoaded.emit(lang);
+        }
+
         resolve();
         return;
       }
