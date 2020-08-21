@@ -1,3 +1,9 @@
+# 1.1.4 (2020-08-21)
+
+### Fix
+
+- load required scripts for prismjs ([#848](https://github.com/deckgo/deckdeckgo/issues/848))
+
 # 1.1.3 (2020-08-08)
 
 ### Features
