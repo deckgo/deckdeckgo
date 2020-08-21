@@ -78,6 +78,13 @@ public static void main(String args[]) {
         }
       }
 
+      function toggleLanguage() {
+        const elem = document.getElementsByTagName('deckgo-highlight-code');
+        if (elem && elem.length > 0) {
+          elem[0].language = elem[0].language === 'java' ? 'typescript' : 'java';
+        }
+      }
+
       function changeTheme() {
         const toggler = document.getElementById('themeToggler');
         const theme = toggler.value;
@@ -91,6 +98,7 @@ public static void main(String args[]) {
 
     <button onclick="toggleLineNumbers()">Toggle line numbers</button>
     <button onclick="toggleCarbon()">Toggle carbon</button>
+    <button onclick="toggleLanguage()">Toggle language</button>
 
     <h1>Editable empty:</h1>
 
@@ -230,6 +238,12 @@ program = [
       terminal="none"
       src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx"
     >
+    </deckgo-highlight-code>
+
+    <h1>Load extra scripts</h1>
+    <!-- prettier-ignore -->
+    <deckgo-highlight-code language="php">
+      <code slot="code">'Hello World'</code>
     </deckgo-highlight-code>
   </body>
 </html>
