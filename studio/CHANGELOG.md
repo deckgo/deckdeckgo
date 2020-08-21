@@ -1,3 +1,9 @@
+# 2.3.0 (In progress...)
+
+### Fix
+
+- update `@deckdeckgo/highlight-code` ([#848](https://github.com/deckgo/deckdeckgo/issues/848))
+
 # 2.2.0 (2020-08-17)
 
 ### Features

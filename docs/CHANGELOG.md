@@ -1,3 +1,9 @@
+# 1.9.1 (2020-08-21)
+
+### Features
+
+- update `@deckdeckgo/highlight-code`
+
 # 1.9.0 (2020-08-08)
 
 ### Features
