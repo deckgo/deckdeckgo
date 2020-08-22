@@ -57,6 +57,8 @@ export async function publishToGitHub(change: Change<DocumentSnapshot>) {
 
     const repo: GitHubRepo | undefined = await findOrCreateRepo(token.data.github.token, user);
 
+    //TODO: In the future, if the repo is an existing one, sync dependencies within the PR aka compare these with source repo and provide change to upgrade repo.
+
     await clone(repo);
 
     // TODO: create branch
