@@ -2,8 +2,9 @@ import {createStore} from '@stencil/store';
 
 export enum NavDirection {
   FORWARD,
-  ROOT,
+  RELOAD,
   BACK,
+  ROOT,
 }
 
 export interface NavParams {

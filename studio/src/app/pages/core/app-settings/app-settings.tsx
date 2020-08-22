@@ -411,7 +411,7 @@ export class AppHome {
 
         navStore.state.nav = {
           url: '/',
-          direction: NavDirection.ROOT,
+          direction: NavDirection.RELOAD,
         };
 
         await loading.dismiss();

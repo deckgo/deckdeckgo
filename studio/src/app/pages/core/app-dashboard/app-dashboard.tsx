@@ -272,14 +272,14 @@ export class AppDashboard {
 
     navStore.state.nav = {
       url: url,
-      direction: NavDirection.ROOT,
+      direction: NavDirection.RELOAD,
     };
   }
 
   private async navigateEditor() {
     navStore.state.nav = {
       url: '/editor',
-      direction: NavDirection.ROOT,
+      direction: NavDirection.RELOAD,
     };
   }
 
