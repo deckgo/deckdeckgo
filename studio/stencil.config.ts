@@ -11,9 +11,9 @@ const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
 // @ts-ignore
 const staging: boolean = process.argv && process.argv.indexOf('--staging') > -1;
 
-const globalScript: string = dev ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : 'src/global/app.ts';
+const globalScript: string = dev && !staging ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : 'src/global/app.ts';
 
-const configDataFile = dev ? './config.dev.json' : staging ? './config.staging.json' : './config.prod.json';
+const configDataFile = dev && !staging ? './config.dev.json' : staging ? './config.staging.json' : './config.prod.json';
 const configValues = require(configDataFile);
 
 const assetLinks = dev || staging ? 'assetlinks.dev.json' : 'assetlinks.prod.json';
