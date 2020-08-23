@@ -14,27 +14,24 @@ export function deleteDir(localPath: string): Promise<void> {
   });
 }
 
-export function parseDeck(): Promise<void> {
-  return new Promise<void>(async (resolve, reject) => {
-    try {
-      // TODO use and replace real and all content
-      // TODO update all files not just index.html
+export async function parseDeck(login: string, project: string) {
+  // TODO use and replace real and all content
+  // TODO update all files not just index.html
 
-      //  TODO replace test with project name
-      const localPath: string = path.join(os.tmpdir(), 'test');
+  const indexPath: string = getLocalIndexPath(login, project);
 
-      const indexPath: string = path.join(localPath, 'src', 'index.html');
+  const data = await fs.readFile(indexPath, 'utf8');
 
-      const data = await fs.readFile(indexPath, 'utf8');
+  let result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, 'test');
+  result = result.replace(/\{\{DECKDECKGO_AUTHOR\}\}/g, 'david');
 
-      let result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, 'test');
-      result = result.replace(/\{\{DECKDECKGO_AUTHOR\}\}/g, 'david');
+  await fs.writeFile(indexPath, result, 'utf8');
+}
 
-      await fs.writeFile(indexPath, result, 'utf8');
+export function getLocalPath(login: string, project: string): string {
+  return path.join(os.tmpdir(), login, project);
+}
 
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+export function getLocalIndexPath(login: string, project: string): string {
+  return path.join(getLocalPath(login, project), 'src', 'index.html');
 }

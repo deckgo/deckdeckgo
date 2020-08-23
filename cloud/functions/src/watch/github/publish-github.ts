@@ -35,13 +35,15 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
   }
 
   try {
+    // Has the useer a GitHub token?
+
     const userToken: Token = await findToken(newValue.owner_id);
 
     if (!userToken || !userToken.data || !userToken.data.github || !userToken.data.github.token) {
       return;
     }
 
-    // For the user with her/his token
+    // Get GitHub user information such as id and username (login)
 
     const user: GitHubUser = await getUser(userToken.data.github.token);
 
@@ -49,10 +51,11 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
       return;
     }
 
-    // TODO
-    // const project: string = newValue.meta.title.replace(' ', '-');
+    const project: string = newValue.meta.title.replace(' ', '-');
 
-    const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user);
+    // Get or create GitHub repo / project
+
+    const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user, project);
 
     if (!repo || repo === undefined || !repo.url) {
       return;
@@ -60,23 +63,26 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     //TODO: In the future, if the repo is an existing one, sync dependencies within the PR aka compare these with source repo and provide change to upgrade repo.
 
-    // As DeckDeckGo
+    // DeckDeckGo friendly robot / GitHub user information
     const email: string = functions.config().github.email;
     const name: string = functions.config().github.name;
 
-    await clone(repo.url);
+    // Working branch name
+    const branch: string = functions.config().github.branch;
 
-    await checkoutBranch();
+    await clone(repo.url, user.login, project);
 
-    await pull(repo.url);
+    await checkoutBranch(user.login, project, branch);
 
-    await parseDeck();
+    await pull(repo.url, user.login, project, branch);
 
-    await commit(name, email);
+    await parseDeck(user.login, project);
 
-    await push(userToken.data.github.token, name, email, user.login, 'test');
+    await commit(name, email, user.login, project);
 
-    await createPR(userToken.data.github.token, repo.id);
+    await push(userToken.data.github.token, name, email, user.login, project, branch);
+
+    await createPR(userToken.data.github.token, repo.id, branch);
   } catch (err) {
     console.error(err);
   }

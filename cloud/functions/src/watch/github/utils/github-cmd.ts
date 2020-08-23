@@ -1,14 +1,9 @@
 import simpleGit, {SimpleGit} from 'simple-git';
 
-import * as os from 'os';
-import * as path from 'path';
+import {deleteDir, getLocalIndexPath, getLocalPath} from './github-fs';
 
-import {deleteDir} from './github-fs';
-
-export async function clone(url: string) {
-  // TODO replace test with project name
-  // TODO prefix tmp dir test with username or a uuid? just in case
-  const localPath: string = path.join(os.tmpdir(), 'test');
+export async function clone(url: string, login: string, project: string) {
+  const localPath: string = getLocalPath(login, project);
 
   // Just in case, tmp directory are not shared across functions
   await deleteDir(localPath);
@@ -18,59 +13,52 @@ export async function clone(url: string) {
   await git.clone(url, localPath);
 }
 
-export async function checkoutBranch() {
-  //  TODO replace test with project name
-  const localPath: string = path.join(os.tmpdir(), 'test');
-  const git: SimpleGit = simpleGit(localPath);
+export async function checkoutBranch(login: string, project: string, branch: string) {
+  const git: SimpleGit = getSimpleGit(login, project);
 
-  // TODO: Branch name? Reuse same branch name if PR is merged?
-  await git.checkout(['-B', 'deckdeckgo']);
+  await git.checkout(['-B', branch]);
 }
 
-export async function pull(url: string) {
-  //  TODO replace test with project name
-  const localPath: string = path.join(os.tmpdir(), 'test');
-  const git: SimpleGit = simpleGit(localPath);
+export async function pull(url: string, login: string, project: string, branch: string) {
+  const git: SimpleGit = getSimpleGit(login, project);
 
-  const result: string | undefined = await git.listRemote([url, 'deckdeckgo']);
+  const result: string | undefined = await git.listRemote([url, branch]);
 
   if (!result || result === undefined || result === '') {
     // The branch does not exist yet, therefore we should not perform a pull (it would throw an error "fatal: couldn't find remote ref deckdeckgo")
     return;
   }
 
-  // TODO: Branch name? Reuse same branch name if PR is merged?
-  await git.pull(url, 'deckdeckgo');
+  await git.pull(url, branch);
 }
 
-export async function commit(name: string, email: string) {
-  //  TODO replace test with project name
-  const localPath: string = path.join(os.tmpdir(), 'test');
-  const git: SimpleGit = simpleGit(localPath);
+export async function commit(name: string, email: string, login: string, project: string) {
+  const git: SimpleGit = getSimpleGit(login, project);
 
   await git.addConfig('user.name', name);
   await git.addConfig('user.email', email);
 
-  //  TODO replace test with project name
-  const indexPath: string = path.join(localPath, 'src', 'index.html');
+  const indexPath: string = getLocalIndexPath(login, project);
 
   // TODO: commit msg
   await git.commit('feat: last changes', [indexPath]);
 }
 
-export async function push(githubToken: string, name: string, email: string, login: string, project: string) {
+export async function push(githubToken: string, name: string, email: string, login: string, project: string, branch: string) {
   try {
-    //  TODO replace test with project name
-    const localPath: string = path.join(os.tmpdir(), 'test');
-    const git: SimpleGit = simpleGit(localPath);
+    const git: SimpleGit = getSimpleGit(login, project);
 
     await git.addConfig('user.name', name);
     await git.addConfig('user.email', email);
 
-    await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, 'deckdeckgo');
+    await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, branch);
   } catch (err) {
     // We catch the errors and parse a custom error instead in order to not print the token in the logs
-    // TODO branch name
-    throw new Error(`Error while pushing changes to branch deckdeckgo for ${login}/${project}`);
+    throw new Error(`Error while pushing changes to branch ${branch} for ${login}/${project}`);
   }
+}
+
+export function getSimpleGit(login: string, project: string): SimpleGit {
+  const localPath: string = getLocalPath(login, project);
+  return simpleGit(localPath);
 }

@@ -39,7 +39,7 @@ export function getUser(githubToken: string): Promise<GitHubUser> {
   });
 }
 
-export function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise<GitHubRepo | undefined> {
+export function findOrCreateRepo(githubToken: string, user: GitHubUser, project: string): Promise<GitHubRepo | undefined> {
   return new Promise<GitHubRepo | undefined>(async (resolve, reject) => {
     try {
       if (!user) {
@@ -47,11 +47,9 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise
         return;
       }
 
-      // TODO replace "test" (the repo name) with deck title formatted
-
       const query = `
         query {
-          repository(owner:"${user.login}", name:"test") {
+          repository(owner:"${user.login}", name:"${project}") {
             id,
             url,
             nameWithOwner
@@ -69,8 +67,8 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise
         return;
       }
 
-      // Create a new repo
-      const newRepo: GitHubRepo | undefined = await createRepo(githubToken, user);
+      // Create a new repo otherwise
+      const newRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project);
 
       // TODO setInterval  resolve until ready aka queryGitHub until ready
       setTimeout(() => {
@@ -83,7 +81,7 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise
   });
 }
 
-export function createRepo(githubToken: string, user: GitHubUser): Promise<GitHubRepo | undefined> {
+export function createRepo(githubToken: string, user: GitHubUser, project: string): Promise<GitHubRepo | undefined> {
   return new Promise<GitHubRepo | undefined>(async (resolve, reject) => {
     try {
       if (!user) {
@@ -98,7 +96,7 @@ export function createRepo(githubToken: string, user: GitHubUser): Promise<GitHu
 
       const query = `
         mutation CloneTemplateRepository {
-          cloneTemplateRepository(input:{description:"Hello",includeAllBranches:false,name:"test",repositoryId:"${repositoryId}",visibility:PUBLIC,ownerId:"${user.id}"}) {
+          cloneTemplateRepository(input:{description:"Hello",includeAllBranches:false,name:"${project}",repositoryId:"${repositoryId}",visibility:PUBLIC,ownerId:"${user.id}"}) {
             clientMutationId,
             repository {
               id,
@@ -126,15 +124,14 @@ export function createRepo(githubToken: string, user: GitHubUser): Promise<GitHu
   });
 }
 
-export function createPR(githubToken: string, repositoryId: string): Promise<void> {
+export function createPR(githubToken: string, repositoryId: string, branch: string): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       // TODO: Description and title from deck data
-      // TODO: branch name
 
       const query = `
         mutation CreatePullRequest {
-          createPullRequest(input:{baseRefName:"master",body:"Hello",headRefName:"deckdeckgo",repositoryId:"${repositoryId}",title:"Hello World"}) {
+          createPullRequest(input:{baseRefName:"master",body:"Hello",headRefName:"${branch}",repositoryId:"${repositoryId}",title:"Hello World"}) {
             pullRequest {
               id
             }
