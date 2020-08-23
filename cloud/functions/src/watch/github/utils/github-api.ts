@@ -123,7 +123,7 @@ export function createPR(githubToken: string, repositoryId: string, branch: stri
   return new Promise<void>(async (resolve, reject) => {
     try {
       const title: string = 'feat: DeckDeckGo slides update';
-      const body: string = `Hi 👋 Here the latest changes you made to your slides on [DeckDeckGo](https://deckdeckgo.com)`;
+      const body: string = `Hi 👋 Here are the latest changes you made to your slides on [DeckDeckGo](https://deckdeckgo.com)`;
 
       const query = `
         mutation CreatePullRequest {
