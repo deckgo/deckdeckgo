@@ -84,7 +84,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await push(userToken.data.github.token, name, email, user.login, 'test');
 
-    // TODO create PR
+    await createPR(userToken.data.github.token, repo.id);
   } catch (err) {
     console.error(err);
   }
@@ -190,7 +190,7 @@ function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise<GitHub
 }
 
 function createRepo(githubToken: string, user: GitHubUser): Promise<GitHubRepo | undefined> {
-  return new Promise<GitHubRepo>(async (resolve, reject) => {
+  return new Promise<GitHubRepo | undefined>(async (resolve, reject) => {
     try {
       if (!user) {
         resolve(undefined);
@@ -225,6 +225,39 @@ function createRepo(githubToken: string, user: GitHubUser): Promise<GitHubRepo |
       }
 
       resolve(result.data.cloneTemplateRepository.repository);
+    } catch (err) {
+      console.error('Unexpected error while creating the repo.', err);
+      reject(err);
+    }
+  });
+}
+
+function createPR(githubToken: string, repositoryId: string): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      // TODO: Description and title from deck data
+      // TODO: branch name
+
+      const query = `
+        mutation CreatePullRequest {
+          createPullRequest(input:{baseRefName:"master",body:"Hello",headRefName:"deckdeckgo",repositoryId:"${repositoryId}",title:"Hello World"}) {
+            pullRequest {
+              id
+            }
+          }
+        }
+      `;
+
+      const response: Response = await queryGitHub(githubToken, query);
+
+      const result = await response.json();
+
+      if (!result || !result.data || !result.data.createPullRequest || result.errors) {
+        resolve(undefined);
+        return;
+      }
+
+      resolve();
     } catch (err) {
       console.error('Unexpected error while creating the repo.', err);
       reject(err);
