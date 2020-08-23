@@ -344,8 +344,11 @@ async function commit(name: string, email: string) {
 
   console.log('CONFIG', await git.listConfig());
 
+  //  TODO replace test with project name
+  const indexPath: string = path.join(localPath, 'src', 'index.html');
+
   // TODO: commit msg
-  await git.commit('feat: last changes');
+  await git.commit('feat: last changes', [indexPath]);
 
   console.log('COMMIT');
 }
