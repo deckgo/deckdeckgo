@@ -76,7 +76,9 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await clone(repo.url);
 
-    await createBranch();
+    await checkoutBranch();
+
+    await pull(repo.url);
 
     await parseDeck();
 
@@ -307,13 +309,29 @@ function deleteDir(localPath: string): Promise<void> {
   });
 }
 
-async function createBranch() {
+async function checkoutBranch() {
   //  TODO replace test with project name
   const localPath: string = path.join(os.tmpdir(), 'test');
   const git: SimpleGit = simpleGit(localPath);
 
   // TODO: Branch name? Reuse same branch name if PR is merged?
-  await git.checkoutLocalBranch('deckdeckgo');
+  await git.checkout(['-B', 'deckdeckgo']);
+}
+
+async function pull(url: string) {
+  //  TODO replace test with project name
+  const localPath: string = path.join(os.tmpdir(), 'test');
+  const git: SimpleGit = simpleGit(localPath);
+
+  const result: string | undefined = await git.listRemote([url, 'deckdeckgo']);
+
+  if (!result || result === undefined || result === '') {
+    // The branch does not exist yet, therefore we should not perform a pull (it would throw an error "fatal: couldn't find remote ref deckdeckgo")
+    return;
+  }
+
+  // TODO: Branch name? Reuse same branch name if PR is merged?
+  await git.pull(url, 'deckdeckgo');
 }
 
 async function commit(name: string, email: string) {
@@ -332,14 +350,20 @@ async function commit(name: string, email: string) {
 }
 
 async function push(githubToken: string, name: string, email: string, login: string, project: string) {
-  //  TODO replace test with project name
-  const localPath: string = path.join(os.tmpdir(), 'test');
-  const git: SimpleGit = simpleGit(localPath);
+  try {
+    //  TODO replace test with project name
+    const localPath: string = path.join(os.tmpdir(), 'test');
+    const git: SimpleGit = simpleGit(localPath);
 
-  await git.addConfig('user.name', name);
-  await git.addConfig('user.email', email);
+    await git.addConfig('user.name', name);
+    await git.addConfig('user.email', email);
 
-  await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, 'deckdeckgo');
+    await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, 'deckdeckgo');
+  } catch (err) {
+    // We catch the errors and parse a custom error instead in order to not print the token in the logs
+    // TODO branch name
+    throw new Error(`Error while pushing changes to branch deckdeckgo for ${login}/${project}`);
+  }
 }
 
 function parseDeck(): Promise<void> {
@@ -355,7 +379,8 @@ function parseDeck(): Promise<void> {
 
       const data = await fs.readFile(indexPath, 'utf8');
 
-      const result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, 'test');
+      let result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, 'test');
+      result = result.replace(/\{\{DECKDECKGO_AUTHOR\}\}/g, 'david');
 
       await fs.writeFile(indexPath, result, 'utf8');
 
