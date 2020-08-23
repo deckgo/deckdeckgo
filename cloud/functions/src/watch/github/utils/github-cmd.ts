@@ -40,8 +40,9 @@ export async function commit(name: string, email: string, login: string, project
 
   const indexPath: string = getLocalIndexPath(login, project);
 
-  // TODO: commit msg
-  await git.commit('feat: last changes', [indexPath]);
+  const msg: string = 'feat: slides update';
+
+  await git.commit(msg, [indexPath]);
 }
 
 export async function push(githubToken: string, name: string, email: string, login: string, project: string, branch: string) {

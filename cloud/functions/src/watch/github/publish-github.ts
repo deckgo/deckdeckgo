@@ -52,10 +52,11 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
     }
 
     const project: string = newValue.meta.title.replace(' ', '-');
+    const description: string = newValue.meta.description ? (newValue.meta.description as string) : '';
 
     // Get or create GitHub repo / project
 
-    const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user, project);
+    const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user, project, description);
 
     if (!repo || repo === undefined || !repo.url) {
       return;
