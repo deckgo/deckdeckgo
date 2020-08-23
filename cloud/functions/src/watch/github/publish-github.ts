@@ -1,14 +1,14 @@
-import {Change} from 'firebase-functions';
+import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 import * as admin from 'firebase-admin';
 
 import fetch, {Response} from 'node-fetch';
 
 import simpleGit, {SimpleGit} from 'simple-git';
-const git: SimpleGit = simpleGit();
 
 import * as rimraf from 'rimraf';
 
+import {promises as fs} from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
@@ -16,6 +16,8 @@ import {DeckData} from '../../model/deck';
 import {Token, TokenData} from '../../model/token';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
+
+import {GitHubForkResponse} from '../../types/github';
 
 interface GitHubUser {
   id: string;
@@ -25,9 +27,10 @@ interface GitHubUser {
 interface GitHubRepo {
   id: string;
   url: string;
+  nameWithOwner: string;
 }
 
-export async function publishToGitHub(change: Change<DocumentSnapshot>) {
+export async function publishToGitHub(change: functions.Change<DocumentSnapshot>) {
   const newValue: DeckData = change.after.data() as DeckData;
 
   const previousValue: DeckData = change.before.data() as DeckData;
@@ -47,23 +50,48 @@ export async function publishToGitHub(change: Change<DocumentSnapshot>) {
   }
 
   try {
-    const token: Token = await findToken(newValue.owner_id);
+    const userToken: Token = await findToken(newValue.owner_id);
 
-    if (!token || !token.data || !token.data.github || !token.data.github.token) {
+    if (!userToken || !userToken.data || !userToken.data.github || !userToken.data.github.token) {
       return;
     }
 
-    const user: GitHubUser = await getUser(token.data.github.token);
+    // For the user with her/his token
 
-    const repo: GitHubRepo | undefined = await findOrCreateRepo(token.data.github.token, user);
+    const user: GitHubUser = await getUser(userToken.data.github.token);
+
+    if (!user) {
+      return;
+    }
+
+    const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user);
+
+    if (!repo || repo === undefined || !repo.url) {
+      return;
+    }
 
     //TODO: In the future, if the repo is an existing one, sync dependencies within the PR aka compare these with source repo and provide change to upgrade repo.
 
-    await clone(repo);
+    // As DeckDeckGo
 
-    // TODO: create branch
-    // TODO: parse deck
-    // TODO: create PR
+    // const token: string = functions.config().github.token;
+    const email: string = functions.config().github.email;
+    const name: string = functions.config().github.name;
+
+    // TODO: do we need a fork?
+    // const fork: GitHubForkResponse = await forkRepo(token, repo.nameWithOwner);
+
+    await clone(repo.url); // fork.clone_url
+
+    await createBranch();
+
+    await parseDeck();
+
+    await commit(name, email);
+
+    await push(userToken.data.github.token, name, email, user.login, 'test'); // token, name, email, fork.name
+
+    // TODO create PR
   } catch (err) {
     console.error(err);
   }
@@ -132,13 +160,14 @@ function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise<GitHub
         return;
       }
 
-      // TODO replace test with deck title formatted
+      // TODO replace "test" (the repo name) with deck title formatted
 
       const query = `
         query {
           repository(owner:"${user.login}", name:"test") {
             id,
-            url
+            url,
+            nameWithOwner
           }
         }
       `;
@@ -156,7 +185,10 @@ function findOrCreateRepo(githubToken: string, user: GitHubUser): Promise<GitHub
       // Create a new repo
       const newRepo: GitHubRepo | undefined = await createRepo(githubToken, user);
 
-      resolve(newRepo);
+      // TODO setInterval  resolve until ready aka queryGitHub until ready
+      setTimeout(() => {
+        resolve(newRepo);
+      }, 2000);
     } catch (err) {
       console.error('Unexpected error while finding the repo.', err);
       reject(err);
@@ -183,7 +215,8 @@ function createRepo(githubToken: string, user: GitHubUser): Promise<GitHubRepo |
             clientMutationId,
             repository {
               id,
-              url
+              url,
+              nameWithOwner
             }
           }
         }
@@ -229,17 +262,57 @@ async function queryGitHub(githubToken: string, query: string): Promise<Response
 
 // https://github.com/steveukx/git-js
 
-async function clone(repo: GitHubRepo | undefined) {
-  if (!repo || repo === undefined || !repo.url) {
-    return;
-  }
+export function forkRepo(githubToken: string, nameWithOwner: string): Promise<GitHubForkResponse> {
+  return new Promise<GitHubForkResponse>(async (resolve, reject) => {
+    try {
+      const githubApiV3: string = 'https://api.github.com/repos';
 
-  //  TODO replace test with project name
+      console.log('FORKING', `${githubApiV3}/${nameWithOwner}/forks`);
+
+      const rawResponse: Response = await fetch(`${githubApiV3}/${nameWithOwner}/forks`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `token ${githubToken}`,
+        },
+      });
+
+      if (!rawResponse || !rawResponse.ok) {
+        console.error(rawResponse);
+        reject(new Error('Error forking the repo.'));
+        return;
+      }
+
+      const results: GitHubForkResponse = await rawResponse.json();
+
+      if (!results) {
+        reject(new Error('Error no response when forking.'));
+        return;
+      }
+
+      // TODO: fork might take some times aka queryGitHub until ready like every setInterval 100ms max 5 seconds throw error
+      setTimeout(() => {
+        resolve(results);
+      }, 2000);
+    } catch (err) {
+      console.error('Unexpected error forking the repo.');
+      reject(err);
+    }
+  });
+}
+
+async function clone(url: string) {
+  // TODO replace test with project name
+  // TODO prefix tmp dir test with username or a uuid? just in case
   const localPath: string = path.join(os.tmpdir(), 'test');
 
+  // Just in case, tmp directory are not shared across functions
   await deleteDir(localPath);
 
-  await git.clone(repo.url, localPath);
+  const git: SimpleGit = simpleGit();
+
+  await git.clone(url, localPath);
 }
 
 function deleteDir(localPath: string): Promise<void> {
@@ -250,14 +323,82 @@ function deleteDir(localPath: string): Promise<void> {
   });
 }
 
+async function createBranch() {
+  //  TODO replace test with project name
+  const localPath: string = path.join(os.tmpdir(), 'test');
+  const git: SimpleGit = simpleGit(localPath);
+
+  // TODO: Branch name? Reuse same branch name if PR is merged?
+  await git.checkoutLocalBranch('deckdeckgo');
+
+  console.log('CHECKOUT');
+}
+
+async function commit(name: string, email: string) {
+  //  TODO replace test with project name
+  const localPath: string = path.join(os.tmpdir(), 'test');
+  const git: SimpleGit = simpleGit(localPath);
+
+  await git.addConfig('user.name', name);
+  await git.addConfig('user.email', email);
+
+  console.log('CONFIG', await git.listConfig());
+
+  // TODO: commit msg
+  await git.commit('feat: last changes');
+
+  console.log('COMMIT');
+}
+
+async function push(githubToken: string, name: string, email: string, login: string, project: string) {
+  //  TODO replace test with project name
+  const localPath: string = path.join(os.tmpdir(), 'test');
+  const git: SimpleGit = simpleGit(localPath);
+
+  await git.addConfig('user.name', name);
+  await git.addConfig('user.email', email);
+
+  await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, 'deckdeckgo');
+
+  console.log('PUSH');
+}
+
+function parseDeck(): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      // TODO use and replace real and all content
+      // TODO update all files not just index.html
+
+      //  TODO replace test with project name
+      const localPath: string = path.join(os.tmpdir(), 'test');
+
+      const indexPath: string = path.join(localPath, 'src', 'index.html');
+
+      const data = await fs.readFile(indexPath, 'utf8');
+
+      const result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, 'test');
+
+      await fs.writeFile(indexPath, result, 'utf8');
+
+      console.log('DECK PARSED', result);
+
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 // (async () => {
 //   try {
-//     const token = '';
+//     const userToken = '';
+//     const ddgToken = '';
 //
-//     const user = await getUser(token);
+//     const user = await getUser(userToken);
 //     console.log('User', user);
-//     const repo: GitHubRepo | undefined = await findOrCreateRepo(token, user);
+//     const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken, user);
 //     console.log('Repo', repo);
+//     await forkRepo(ddgToken, (repo as GitHubRepo).nameWithOwner);
 //   } catch (e) {
 //     console.error(e);
 //   }

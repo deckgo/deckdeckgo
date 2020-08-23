@@ -24,6 +24,7 @@
     "simple-git": "^2.19.0"
   },
   "devDependencies": {
+    "@types/node": "^10.17.28",
     "@types/node-fetch": "^2.5.7",
     "@types/nodemailer": "^6.4.0",
     "@types/puppeteer": "^2.0.1",
