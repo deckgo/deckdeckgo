@@ -1,15 +1,15 @@
 import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
-import * as admin from 'firebase-admin';
 
 import {DeckData} from '../../model/deck';
-import {Token, TokenData} from '../../model/token';
+import {Token} from '../../model/token';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
 import {createPR, findOrCreateRepo, getUser, GitHubRepo, GitHubUser} from './utils/github-api';
 import {checkoutBranch, clone, commit, pull, push} from './utils/github-cmd';
 import {parseDeck} from './utils/github-fs';
+import {findToken} from './utils/github-db';
 
 export async function publishToGitHub(change: functions.Change<DocumentSnapshot>) {
   const newValue: DeckData = change.after.data() as DeckData;
@@ -80,27 +80,4 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
   } catch (err) {
     console.error(err);
   }
-}
-
-function findToken(userId: string): Promise<Token> {
-  return new Promise<Token>(async (resolve, reject) => {
-    try {
-      const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/tokens/${userId}/`).get();
-
-      if (!snapshot.exists) {
-        reject('Token not found');
-        return;
-      }
-
-      const tokenData: TokenData = snapshot.data() as TokenData;
-
-      resolve({
-        id: snapshot.id,
-        ref: snapshot.ref,
-        data: tokenData,
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
 }
