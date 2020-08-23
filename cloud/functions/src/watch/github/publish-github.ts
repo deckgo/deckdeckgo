@@ -78,7 +78,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
     const email: string = functions.config().github.email;
     const name: string = functions.config().github.name;
 
-    // TODO: do we need a fork?
+    // TODO: we maybe don't need to fork if we have the token and the right to work in user's repo
     // const fork: GitHubForkResponse = await forkRepo(token, repo.nameWithOwner);
 
     await clone(repo.url); // fork.clone_url
@@ -358,6 +358,7 @@ async function push(githubToken: string, name: string, email: string, login: str
   await git.addConfig('user.name', name);
   await git.addConfig('user.email', email);
 
+  // TODO: push did work, I find the branch but I don't find any modifications?
   await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, 'deckdeckgo');
 
   console.log('PUSH');
