@@ -2,6 +2,8 @@
 
 // https://developer.github.com/v4/explorer/
 
+import * as functions from 'firebase-functions';
+
 import fetch, {Response} from 'node-fetch';
 
 export interface GitHubUser {
@@ -86,8 +88,7 @@ export function createRepo(githubToken: string, user: GitHubUser, project: strin
         return;
       }
 
-      // TODO: Update const from new repo, that's the ID of the starter kit
-      const repositoryId: string = 'MDEwOlJlcG9zaXRvcnkxNTM0MDk2MTg=';
+      const repositoryId: string = functions.config().github.template.id;
 
       const query = `
         mutation CloneTemplateRepository {
