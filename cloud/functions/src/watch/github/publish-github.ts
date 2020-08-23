@@ -17,8 +17,6 @@ import {Token, TokenData} from '../../model/token';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
-import {GitHubForkResponse} from '../../types/github';
-
 interface GitHubUser {
   id: string;
   login: string;
@@ -73,15 +71,10 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
     //TODO: In the future, if the repo is an existing one, sync dependencies within the PR aka compare these with source repo and provide change to upgrade repo.
 
     // As DeckDeckGo
-
-    // const token: string = functions.config().github.token;
     const email: string = functions.config().github.email;
     const name: string = functions.config().github.name;
 
-    // TODO: we maybe don't need to fork if we have the token and the right to work in user's repo
-    // const fork: GitHubForkResponse = await forkRepo(token, repo.nameWithOwner);
-
-    await clone(repo.url); // fork.clone_url
+    await clone(repo.url);
 
     await createBranch();
 
@@ -89,7 +82,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await commit(name, email);
 
-    await push(userToken.data.github.token, name, email, user.login, 'test'); // token, name, email, fork.name
+    await push(userToken.data.github.token, name, email, user.login, 'test');
 
     // TODO create PR
   } catch (err) {
@@ -260,48 +253,6 @@ async function queryGitHub(githubToken: string, query: string): Promise<Response
   return rawResponse;
 }
 
-// https://github.com/steveukx/git-js
-
-export function forkRepo(githubToken: string, nameWithOwner: string): Promise<GitHubForkResponse> {
-  return new Promise<GitHubForkResponse>(async (resolve, reject) => {
-    try {
-      const githubApiV3: string = 'https://api.github.com/repos';
-
-      console.log('FORKING', `${githubApiV3}/${nameWithOwner}/forks`);
-
-      const rawResponse: Response = await fetch(`${githubApiV3}/${nameWithOwner}/forks`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `token ${githubToken}`,
-        },
-      });
-
-      if (!rawResponse || !rawResponse.ok) {
-        console.error(rawResponse);
-        reject(new Error('Error forking the repo.'));
-        return;
-      }
-
-      const results: GitHubForkResponse = await rawResponse.json();
-
-      if (!results) {
-        reject(new Error('Error no response when forking.'));
-        return;
-      }
-
-      // TODO: fork might take some times aka queryGitHub until ready like every setInterval 100ms max 5 seconds throw error
-      setTimeout(() => {
-        resolve(results);
-      }, 2000);
-    } catch (err) {
-      console.error('Unexpected error forking the repo.');
-      reject(err);
-    }
-  });
-}
-
 async function clone(url: string) {
   // TODO replace test with project name
   // TODO prefix tmp dir test with username or a uuid? just in case
@@ -330,8 +281,6 @@ async function createBranch() {
 
   // TODO: Branch name? Reuse same branch name if PR is merged?
   await git.checkoutLocalBranch('deckdeckgo');
-
-  console.log('CHECKOUT');
 }
 
 async function commit(name: string, email: string) {
@@ -342,15 +291,11 @@ async function commit(name: string, email: string) {
   await git.addConfig('user.name', name);
   await git.addConfig('user.email', email);
 
-  console.log('CONFIG', await git.listConfig());
-
   //  TODO replace test with project name
   const indexPath: string = path.join(localPath, 'src', 'index.html');
 
   // TODO: commit msg
   await git.commit('feat: last changes', [indexPath]);
-
-  console.log('COMMIT');
 }
 
 async function push(githubToken: string, name: string, email: string, login: string, project: string) {
@@ -361,10 +306,7 @@ async function push(githubToken: string, name: string, email: string, login: str
   await git.addConfig('user.name', name);
   await git.addConfig('user.email', email);
 
-  // TODO: push did work, I find the branch but I don't find any modifications?
   await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, 'deckdeckgo');
-
-  console.log('PUSH');
 }
 
 function parseDeck(): Promise<void> {
@@ -383,8 +325,6 @@ function parseDeck(): Promise<void> {
       const result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, 'test');
 
       await fs.writeFile(indexPath, result, 'utf8');
-
-      console.log('DECK PARSED', result);
 
       resolve();
     } catch (err) {
