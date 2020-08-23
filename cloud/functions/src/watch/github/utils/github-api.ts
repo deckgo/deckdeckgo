@@ -70,10 +70,7 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser, project:
       // Create a new repo otherwise
       const newRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project, description);
 
-      // TODO setInterval  resolve until ready aka queryGitHub until ready
-      setTimeout(() => {
-        resolve(newRepo);
-      }, 2000);
+      resolve(newRepo);
     } catch (err) {
       console.error('Unexpected error while finding the repo.', err);
       reject(err);
