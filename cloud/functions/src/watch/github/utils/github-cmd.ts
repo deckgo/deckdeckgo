@@ -1,6 +1,6 @@
 import simpleGit, {SimpleGit} from 'simple-git';
 
-import {deleteDir, getLocalIndexPath, getLocalPath} from './github-fs';
+import {deleteDir, getLocalFilePath, getLocalPath} from './github-fs';
 
 export async function clone(url: string, login: string, project: string) {
   const localPath: string = getLocalPath(login, project);
@@ -38,7 +38,7 @@ export async function commit(name: string, email: string, login: string, project
   await git.addConfig('user.name', name);
   await git.addConfig('user.email', email);
 
-  const indexPath: string = getLocalIndexPath(login, project);
+  const indexPath: string = getLocalFilePath(login, project);
 
   const msg: string = 'feat: slides update';
 
