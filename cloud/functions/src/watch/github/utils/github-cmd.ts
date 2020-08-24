@@ -38,11 +38,12 @@ export async function commit(name: string, email: string, login: string, project
   await git.addConfig('user.name', name);
   await git.addConfig('user.email', email);
 
-  const indexPath: string = getLocalFilePath(login, project);
+  const indexPath: string = getLocalFilePath(login, project, 'src', 'index.html');
+  const manifestPath: string = getLocalFilePath(login, project, 'src', 'manifest.json');
 
   const msg: string = 'feat: slides update';
 
-  await git.commit(msg, [indexPath]);
+  await git.commit(msg, [indexPath, manifestPath]);
 }
 
 export async function push(githubToken: string, name: string, email: string, login: string, project: string, branch: string) {
