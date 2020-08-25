@@ -56,6 +56,12 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     // Get or create GitHub repo / project
 
+    // TODO: Avoid the "hello world world" incident
+    // - save repo id in db (deck.meta or a subcollection deck/id/github or a new collection github/deckId ... mmmmh)
+    // - if not undefined, find repo with it (or should we save in the DB the all GitHubRepo object...I guess no we want to check if it has not been deleted)
+    // - if found / exist, cool we go on with it
+    // - if not found as if db repo id undefined, do findOrCreateRepo
+
     const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user, project, description);
 
     if (!repo || repo === undefined || !repo.url) {
