@@ -90,7 +90,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 }
 
 async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckMeta: DeckMeta): Promise<GitHubRepo | undefined> {
-  const project: string = deckMeta.title.replace(' ', '-');
+  const project: string = deckMeta.title.replace(' ', '-').toLowerCase();
   const description: string = deckMeta.description ? (deckMeta.description as string) : '';
 
   const platformDeck: PlatformDeck | undefined = await findPlatformDeck(userId, deckId);
