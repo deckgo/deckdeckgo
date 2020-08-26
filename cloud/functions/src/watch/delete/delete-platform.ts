@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-export async function deleteToken(userRecord: admin.auth.UserRecord) {
+export async function deletePlatform(userRecord: admin.auth.UserRecord) {
   if (!userRecord || !userRecord.uid || userRecord.uid === undefined || userRecord.uid === '') {
     return;
   }
@@ -8,16 +8,16 @@ export async function deleteToken(userRecord: admin.auth.UserRecord) {
   try {
     const userId: string = userRecord.uid;
 
-    await deleteTokenDoc(userId);
+    await deletePlatformDoc(userId);
   } catch (err) {
     console.error(err);
   }
 }
 
-function deleteTokenDoc(userId: string): Promise<void> {
+function deletePlatformDoc(userId: string): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection(`/tokens/`);
+      const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection(`/platforms/`);
       const doc: admin.firestore.DocumentReference = collectionRef.doc(userId);
 
       await doc.delete();
