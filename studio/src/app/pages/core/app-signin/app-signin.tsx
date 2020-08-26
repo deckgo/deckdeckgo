@@ -8,7 +8,7 @@ import {del, get, set} from 'idb-keyval';
 import deckStore from '../../../stores/deck.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
-import tokenStore from '../../../stores/token.store';
+import platformStore from '../../../stores/platform.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
@@ -260,7 +260,7 @@ export class AppSignIn {
       return;
     }
 
-    tokenStore.state.token = {
+    platformStore.state.platform = {
       id: userCred.user.uid,
       data: {
         github: {
