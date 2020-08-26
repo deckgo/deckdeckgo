@@ -2,14 +2,14 @@ import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import {DeckData} from '../../model/deck';
-import {Token} from '../../model/token';
+import {Platform} from '../../model/platform';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
 import {createPR, findOrCreateRepo, getUser, GitHubRepo, GitHubUser} from './utils/github-api';
 import {checkoutBranch, clone, commit, pull, push} from './utils/github-cmd';
 import {parseDeck} from './utils/github-fs';
-import {findToken} from './utils/github-db';
+import {findPlatform} from './utils/github-db';
 
 export async function publishToGitHub(change: functions.Change<DocumentSnapshot>) {
   const newValue: DeckData = change.after.data() as DeckData;
@@ -37,15 +37,15 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
   try {
     // Has the useer a GitHub token?
 
-    const userToken: Token = await findToken(newValue.owner_id);
+    const platform: Platform = await findPlatform(newValue.owner_id);
 
-    if (!userToken || !userToken.data || !userToken.data.github || !userToken.data.github.token) {
+    if (!platform || !platform.data || !platform.data.github || !platform.data.github.token) {
       return;
     }
 
     // Get GitHub user information such as id and username (login)
 
-    const user: GitHubUser = await getUser(userToken.data.github.token);
+    const user: GitHubUser = await getUser(platform.data.github.token);
 
     if (!user) {
       return;
@@ -62,7 +62,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
     // - if found / exist, cool we go on with it
     // - if not found as if db repo id undefined, do findOrCreateRepo
 
-    const repo: GitHubRepo | undefined = await findOrCreateRepo(userToken.data.github.token, user, project, description);
+    const repo: GitHubRepo | undefined = await findOrCreateRepo(platform.data.github.token, user, project, description);
 
     if (!repo || repo === undefined || !repo.url) {
       return;
@@ -87,9 +87,9 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await commit(name, email, user.login, project);
 
-    await push(userToken.data.github.token, name, email, user.login, project, branch);
+    await push(platform.data.github.token, name, email, user.login, project, branch);
 
-    await createPR(userToken.data.github.token, repo.id, branch);
+    await createPR(platform.data.github.token, repo.id, branch);
   } catch (err) {
     console.error(err);
   }
