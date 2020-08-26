@@ -10,8 +10,8 @@ import {cloneDeckSlides} from './clone/clone-deck-slides';
 
 import {publishToGitHub} from './github/publish-github';
 
-export async function applyWatchDeckUpdate(change: Change<DocumentSnapshot>, _context: EventContext) {
-  await publishToGitHub(change);
+export async function applyWatchDeckUpdate(change: Change<DocumentSnapshot>, context: EventContext) {
+  await publishToGitHub(change, context);
   await generateDeckScreenshot(change);
   await infoDeckPublish(change);
 }

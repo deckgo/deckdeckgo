@@ -6,15 +6,11 @@ import * as functions from 'firebase-functions';
 
 import fetch, {Response} from 'node-fetch';
 
+import {GitHubRepo} from '../../../model/platform-deck';
+
 export interface GitHubUser {
   id: string;
   login: string;
-}
-
-export interface GitHubRepo {
-  id: string;
-  url: string;
-  nameWithOwner: string;
 }
 
 export function getUser(githubToken: string): Promise<GitHubUser> {
@@ -44,6 +40,28 @@ export function getUser(githubToken: string): Promise<GitHubUser> {
 export function findOrCreateRepo(githubToken: string, user: GitHubUser, project: string, description: string): Promise<GitHubRepo | undefined> {
   return new Promise<GitHubRepo | undefined>(async (resolve, reject) => {
     try {
+      const repo: GitHubRepo | undefined = await findRepo(githubToken, user, project);
+
+      // Repo already exists
+      if (repo) {
+        resolve(repo);
+        return;
+      }
+
+      // Create a new repo otherwise
+      const newRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project, description);
+
+      resolve(newRepo);
+    } catch (err) {
+      console.error('Unexpected error while finding the repo.', err);
+      reject(err);
+    }
+  });
+}
+
+export function findRepo(githubToken: string, user: GitHubUser, project: string): Promise<GitHubRepo | undefined> {
+  return new Promise<GitHubRepo | undefined>(async (resolve, reject) => {
+    try {
       if (!user) {
         resolve(undefined);
         return;
@@ -54,6 +72,7 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser, project:
           repository(owner:"${user.login}", name:"${project}") {
             id,
             url,
+            name,
             nameWithOwner
           }
         }
@@ -63,18 +82,14 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser, project:
 
       const repo = await response.json();
 
-      // Repo already exists
-      if (repo && repo.data && repo.data.repository) {
-        resolve(repo.data.repository);
+      if (!repo || !repo.data || !repo.data.repository) {
+        resolve(undefined);
         return;
       }
 
-      // Create a new repo otherwise
-      const newRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project, description);
-
-      resolve(newRepo);
+      resolve(repo.data.repository);
     } catch (err) {
-      console.error('Unexpected error while finding the repo.', err);
+      console.error('Unexpected error while fetching the repo.', err);
       reject(err);
     }
   });
@@ -97,6 +112,7 @@ export function createRepo(githubToken: string, user: GitHubUser, project: strin
             repository {
               id,
               url,
+              name,
               nameWithOwner
             }
           }

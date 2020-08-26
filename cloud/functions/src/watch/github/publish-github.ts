@@ -1,17 +1,18 @@
 import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
-import {DeckData} from '../../model/deck';
+import {DeckData, DeckMeta} from '../../model/deck';
 import {Platform} from '../../model/platform';
+import {GitHubRepo, PlatformDeck, PlatformDeckData} from '../../model/platform-deck';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
-import {createPR, findOrCreateRepo, getUser, GitHubRepo, GitHubUser} from './utils/github-api';
+import {createPR, createRepo, findOrCreateRepo, findRepo, getUser, GitHubUser} from './utils/github-api';
 import {checkoutBranch, clone, commit, pull, push} from './utils/github-cmd';
 import {parseDeck} from './utils/github-fs';
-import {findPlatform} from './utils/github-db';
+import {findPlatform, findPlatformDeck, updatePlatformDeck} from './utils/github-db';
 
-export async function publishToGitHub(change: functions.Change<DocumentSnapshot>) {
+export async function publishToGitHub(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
   const newValue: DeckData = change.after.data() as DeckData;
 
   const previousValue: DeckData = change.before.data() as DeckData;
@@ -35,7 +36,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
   }
 
   try {
-    // Has the useer a GitHub token?
+    // Has the user a GitHub token?
 
     const platform: Platform = await findPlatform(newValue.owner_id);
 
@@ -51,20 +52,13 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
       return;
     }
 
-    const project: string = newValue.meta.title.replace(' ', '-');
-    const description: string = newValue.meta.description ? (newValue.meta.description as string) : '';
-
     // Get or create GitHub repo / project
 
-    // TODO: Avoid the "hello world world" incident
-    // - save repo id in db (deck.meta or a subcollection deck/id/github or a new collection github/deckId ... mmmmh)
-    // - if not undefined, find repo with it (or should we save in the DB the all GitHubRepo object...I guess no we want to check if it has not been deleted)
-    // - if found / exist, cool we go on with it
-    // - if not found as if db repo id undefined, do findOrCreateRepo
+    const deckId: string = context.params.deckId;
 
-    const repo: GitHubRepo | undefined = await findOrCreateRepo(platform.data.github.token, user, project, description);
+    const repo: GitHubRepo | undefined = await getRepo(platform.data.github.token, user, newValue.owner_id, deckId, newValue.meta);
 
-    if (!repo || repo === undefined || !repo.url) {
+    if (!repo || repo === undefined || !repo.url || !repo.name) {
       return;
     }
 
@@ -77,20 +71,61 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
     // Working branch name
     const branch: string = functions.config().github.branch;
 
-    await clone(repo.url, user.login, project);
+    await clone(repo.url, user.login, repo.name);
 
-    await checkoutBranch(user.login, project, branch);
+    await checkoutBranch(user.login, repo.name, branch);
 
-    await pull(repo.url, user.login, project, branch);
+    await pull(repo.url, user.login, repo.name, branch);
 
-    await parseDeck(user.login, project, newValue.meta);
+    await parseDeck(user.login, repo.name, newValue.meta);
 
-    await commit(name, email, user.login, project);
+    await commit(name, email, user.login, repo.name);
 
-    await push(platform.data.github.token, name, email, user.login, project, branch);
+    await push(platform.data.github.token, name, email, user.login, repo.name, branch);
 
     await createPR(platform.data.github.token, repo.id, branch);
   } catch (err) {
     console.error(err);
   }
+}
+
+async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckMeta: DeckMeta): Promise<GitHubRepo | undefined> {
+  const project: string = deckMeta.title.replace(' ', '-');
+  const description: string = deckMeta.description ? (deckMeta.description as string) : '';
+
+  const platformDeck: PlatformDeck | undefined = await findPlatformDeck(userId, deckId);
+
+  if (platformDeck) {
+    const existingRepo: GitHubRepo | undefined = await findRepo(githubToken, user, platformDeck.data.github.repo.name);
+
+    if (existingRepo) {
+      // We update our information because the user may have renamed its repo. For example, the new repo name ("hello world world") is returned when looking with the old repo name ("hello world")
+      await updatePlatformDeck(userId, deckId, platformDeck.data, existingRepo);
+
+      return existingRepo;
+    }
+
+    // The user may have delete its repo
+
+    const createdRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project, description);
+    await updatePlatformDeck(userId, deckId, platformDeck.data, createdRepo);
+
+    return createdRepo;
+  }
+
+  const repo: GitHubRepo | undefined = await findOrCreateRepo(githubToken, user, project, description);
+
+  if (!repo) {
+    return undefined;
+  }
+
+  const data: PlatformDeckData = {
+    github: {
+      repo,
+    },
+  };
+
+  await updatePlatformDeck(userId, deckId, data, repo);
+
+  return repo;
 }
