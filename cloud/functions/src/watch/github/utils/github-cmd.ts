@@ -74,10 +74,11 @@ export async function commit(name: string, email: string, login: string, project
 
   const indexPath: string = getLocalFilePath(login, project, 'src', 'index.html');
   const manifestPath: string = getLocalFilePath(login, project, 'src', 'manifest.json');
+  const readmePath: string = getLocalFilePath(login, project, 'README.md');
 
   const msg: string = 'feat: slides update';
 
-  await git.commit(msg, [indexPath, manifestPath]);
+  await git.commit(msg, [indexPath, manifestPath, readmePath]);
 }
 
 export async function push(githubToken: string, name: string, email: string, login: string, project: string, branch: string) {

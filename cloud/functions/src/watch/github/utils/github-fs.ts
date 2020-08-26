@@ -20,12 +20,10 @@ export function deleteDir(localPath: string): Promise<void> {
   });
 }
 
-export async function parseDeck(login: string, project: string, meta: DeckMeta) {
-  // TODO use and replace real and all content
-  // TODO update all files not just index.html
-
+export async function parseDeck(login: string, project: string, url: string, meta: DeckMeta) {
   await parseIndexHtml(login, project, meta);
   await parseManifestJson(login, project, meta);
+  await parseReadme(login, project, url, meta);
 }
 
 async function parseIndexHtml(login: string, project: string, meta: DeckMeta) {
@@ -42,6 +40,20 @@ async function parseManifestJson(login: string, project: string, meta: DeckMeta)
   const manifestJson: string = await getRemoteContent(meta, 'manifest.json');
 
   await fs.writeFile(manifestJsonPath, html_beautify(manifestJson), 'utf8');
+}
+
+async function parseReadme(login: string, project: string, url: string, meta: DeckMeta) {
+  const readmePath: string = getLocalFilePath(login, project, 'README.md');
+
+  const data = await fs.readFile(readmePath, 'utf8');
+
+  let result = data.replace(/\{\{DECKDECKGO_TITLE\}\}/g, meta.title);
+  result = result.replace(/\{\{DECKDECKGO_DESCRIPTION\}\}/g, meta.description ? (meta.description as string) : '');
+  result = result.replace(/\{\{DECKDECKGO_BASE_HREF\}\}/g, meta.pathname);
+  result = result.replace(/\{\{DECKDECKGO_GITHUB_REPO_URL\}\}/g, url);
+  result = result.replace(/\{\{DECKDECKGO_GITHUB_REPO_NAME\}\}/g, project);
+
+  await fs.writeFile(readmePath, result, 'utf8');
 }
 
 async function getRemoteContent(meta: DeckMeta, rootFilename: string): Promise<string> {

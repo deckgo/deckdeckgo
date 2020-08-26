@@ -77,7 +77,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await pull(repo.url, user.login, repo.name, branch);
 
-    await parseDeck(user.login, repo.name, newValue.meta);
+    await parseDeck(user.login, repo.name, repo.url, newValue.meta);
 
     await commit(name, email, user.login, repo.name);
 

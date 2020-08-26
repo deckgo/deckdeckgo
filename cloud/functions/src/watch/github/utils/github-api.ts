@@ -139,7 +139,7 @@ export function createRepo(githubToken: string, user: GitHubUser, project: strin
 export function createPR(githubToken: string, repositoryId: string, branch: string): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      const title: string = 'feat: DeckDeckGo slides update';
+      const title: string = 'feat: DeckDeckGo update';
       const body: string = `Hi 👋 Here are the latest changes you made to your slides on [DeckDeckGo](https://deckdeckgo.com)`;
 
       const query = `
