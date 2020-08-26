@@ -8,9 +8,43 @@ export async function clone(url: string, login: string, project: string) {
   // Just in case, tmp directory are not shared across functions
   await deleteDir(localPath);
 
+  const exist: boolean = await waitForRepoExist(url);
+
+  if (!exist) {
+    throw new Error('Repo not found and cannot be cloned');
+  }
+
   const git: SimpleGit = simpleGit();
 
   await git.clone(url, localPath);
+}
+
+function waitForRepoExist(url: string): Promise<boolean> {
+  return new Promise<boolean>((resolve) => {
+    const git: SimpleGit = simpleGit();
+
+    const interval = setInterval(async () => {
+      const exist: boolean = await repoExist(git, url);
+
+      if (exist) {
+        clearInterval(interval);
+
+        resolve(true);
+      }
+    }, 500);
+
+    setTimeout(() => {
+      clearInterval(interval);
+
+      resolve(false);
+    }, 10000);
+  });
+}
+
+async function repoExist(git: SimpleGit, url: string): Promise<boolean> {
+  const result: string | undefined = await git.listRemote([url, 'master']);
+
+  return result !== null && result !== undefined && result !== '';
 }
 
 export async function checkoutBranch(login: string, project: string, branch: string) {
