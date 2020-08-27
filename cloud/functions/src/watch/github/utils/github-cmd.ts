@@ -74,11 +74,23 @@ export async function commit(name: string, email: string, login: string, project
 
   const indexPath: string = getLocalFilePath(login, project, 'src', 'index.html');
   const manifestPath: string = getLocalFilePath(login, project, 'src', 'manifest.json');
-  const readmePath: string = getLocalFilePath(login, project, 'README.md');
 
   const msg: string = 'feat: slides update';
 
-  await git.commit(msg, [indexPath, manifestPath, readmePath]);
+  await git.commit(msg, [indexPath, manifestPath]);
+}
+
+export async function commitReadme(name: string, email: string, login: string, project: string) {
+  const git: SimpleGit = getSimpleGit(login, project);
+
+  await git.addConfig('user.name', name);
+  await git.addConfig('user.email', email);
+
+  const readmePath: string = getLocalFilePath(login, project, 'README.md');
+
+  const msg: string = 'docs: update presentation info';
+
+  await git.commit(msg, [readmePath]);
 }
 
 export async function push(githubToken: string, name: string, email: string, login: string, project: string, branch: string) {

@@ -1,16 +1,17 @@
 import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
-import {DeckData, DeckMeta} from '../../model/deck';
+import {DeckData} from '../../model/deck';
 import {Platform} from '../../model/platform';
-import {GitHubRepo, PlatformDeck, PlatformDeckData} from '../../model/platform-deck';
+import {GitHubRepo} from '../../model/platform-deck';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
-import {createPR, createRepo, findOrCreateRepo, findRepo, getUser, GitHubUser} from './utils/github-api';
+import {createPR, getUser, GitHubUser} from './utils/github-api';
 import {checkoutBranch, clone, commit, pull, push} from './utils/github-cmd';
 import {parseDeck} from './utils/github-fs';
-import {findPlatform, findPlatformDeck, updatePlatformDeck} from './utils/github-db';
+import {findPlatform} from './utils/github-db';
+import {getRepo, updateReadme} from './utils/github-utils';
 
 export async function publishToGitHub(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
   const newValue: DeckData = change.after.data() as DeckData;
@@ -73,11 +74,13 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await clone(repo.url, user.login, repo.name);
 
+    await updateReadme(platform.data.github.token, name, email, user.login, repo.name, repo.url, newValue.meta);
+
     await checkoutBranch(user.login, repo.name, branch);
 
     await pull(repo.url, user.login, repo.name, branch);
 
-    await parseDeck(user.login, repo.name, repo.url, newValue.meta);
+    await parseDeck(user.login, repo.name, newValue.meta);
 
     await commit(name, email, user.login, repo.name);
 
@@ -87,45 +90,4 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
   } catch (err) {
     console.error(err);
   }
-}
-
-async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckMeta: DeckMeta): Promise<GitHubRepo | undefined> {
-  const project: string = deckMeta.title.replace(' ', '-').toLowerCase();
-  const description: string = deckMeta.description ? (deckMeta.description as string) : '';
-
-  const platformDeck: PlatformDeck | undefined = await findPlatformDeck(userId, deckId);
-
-  if (platformDeck) {
-    const existingRepo: GitHubRepo | undefined = await findRepo(githubToken, user, platformDeck.data.github.repo.name);
-
-    if (existingRepo) {
-      // We update our information because the user may have renamed its repo. For example, the new repo name ("hello world world") is returned when looking with the old repo name ("hello world")
-      await updatePlatformDeck(userId, deckId, platformDeck.data, existingRepo);
-
-      return existingRepo;
-    }
-
-    // The user may have delete its repo
-
-    const createdRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project, description);
-    await updatePlatformDeck(userId, deckId, platformDeck.data, createdRepo);
-
-    return createdRepo;
-  }
-
-  const repo: GitHubRepo | undefined = await findOrCreateRepo(githubToken, user, project, description);
-
-  if (!repo) {
-    return undefined;
-  }
-
-  const data: PlatformDeckData = {
-    github: {
-      repo,
-    },
-  };
-
-  await updatePlatformDeck(userId, deckId, data, repo);
-
-  return repo;
 }

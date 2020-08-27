@@ -20,10 +20,9 @@ export function deleteDir(localPath: string): Promise<void> {
   });
 }
 
-export async function parseDeck(login: string, project: string, url: string, meta: DeckMeta) {
+export async function parseDeck(login: string, project: string, meta: DeckMeta) {
   await parseIndexHtml(login, project, meta);
   await parseManifestJson(login, project, meta);
-  await parseReadme(login, project, url, meta);
 }
 
 async function parseIndexHtml(login: string, project: string, meta: DeckMeta) {
@@ -42,7 +41,7 @@ async function parseManifestJson(login: string, project: string, meta: DeckMeta)
   await fs.writeFile(manifestJsonPath, html_beautify(manifestJson), 'utf8');
 }
 
-async function parseReadme(login: string, project: string, url: string, meta: DeckMeta) {
+export async function parseReadme(login: string, project: string, url: string, meta: DeckMeta) {
   const readmePath: string = getLocalFilePath(login, project, 'README.md');
 
   const data = await fs.readFile(readmePath, 'utf8');
@@ -54,6 +53,12 @@ async function parseReadme(login: string, project: string, url: string, meta: De
   result = result.replace(/\{\{DECKDECKGO_GITHUB_REPO_NAME\}\}/g, project);
 
   await fs.writeFile(readmePath, result, 'utf8');
+}
+
+export async function shouldUpdateReadme(login: string, project: string): Promise<boolean> {
+  const readmePath: string = getLocalFilePath(login, project, 'README.md');
+  const data = await fs.readFile(readmePath, 'utf8');
+  return /\{\{DECKDECKGO_.*\}\}/g.test(data);
 }
 
 async function getRemoteContent(meta: DeckMeta, rootFilename: string): Promise<string> {
