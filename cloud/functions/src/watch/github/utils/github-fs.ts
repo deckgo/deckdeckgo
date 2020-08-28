@@ -30,7 +30,18 @@ async function parseIndexHtml(login: string, project: string, meta: DeckMeta) {
 
   const indexHtml: string = await getRemoteContent(meta, 'index.html');
 
-  await fs.writeFile(indexPath, html_beautify(indexHtml), 'utf8');
+  if (!indexHtml || indexHtml === '') {
+    throw new Error('Content is empty');
+  }
+
+  // Remove unuseful </base> tag ending
+  let cleanedIndexHtml: string = indexHtml.replace(/<\/base>/g, '');
+  // Remove CSP to be able to run the presentation locally easily
+  cleanedIndexHtml = cleanedIndexHtml.replace(/<meta http-equiv="Content-Security-Policy".*?>/g, '');
+  // Remove the script of the prod build
+  cleanedIndexHtml = cleanedIndexHtml.replace(/<script src=".*?>/g, '');
+
+  await fs.writeFile(indexPath, html_beautify(cleanedIndexHtml), 'utf8');
 }
 
 async function parseManifestJson(login: string, project: string, meta: DeckMeta) {
