@@ -4,6 +4,8 @@
 
 ### Features
 
+- repo `deckdeckgo-starter` renamed to `starter-kit`
+
 ### Fix
 
 - Google Fonts with `.svg` extension
