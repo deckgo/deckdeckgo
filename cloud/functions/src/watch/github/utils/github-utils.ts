@@ -55,7 +55,7 @@ export async function updateProject(githubToken: string, login: string, project:
   // Webpack dev server configuration
   await updateInfo(githubToken, login, project, url, meta, 'webpack.config.js', 'chore: update project settings');
 
-  await push(githubToken, login, name, 'master');
+  await push(githubToken, login, project, 'master');
 }
 
 async function updateInfo(githubToken: string, login: string, project: string, url: string, meta: DeckMeta, file: string, msg: string) {
