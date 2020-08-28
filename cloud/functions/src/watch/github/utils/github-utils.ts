@@ -3,8 +3,8 @@ import {GitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platfor
 
 import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
 import {findPlatformDeck, updatePlatformDeck} from './github-db';
-import {parseDeck, parseReadme, shouldUpdateReadme} from './github-fs';
-import {checkoutBranch, commit, commitReadme, pull, push} from './github-cmd';
+import {parseDeck, parseInfo, shouldUpdate} from './github-fs';
+import {checkoutBranch, commitDeck, commit, pull, push} from './github-cmd';
 import * as functions from 'firebase-functions';
 
 export async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckMeta: DeckMeta): Promise<GitHubRepo | undefined> {
@@ -48,30 +48,30 @@ export async function getRepo(githubToken: string, user: GitHubUser, userId: str
   return repo;
 }
 
-export async function updateReadme(githubToken: string, login: string, project: string, url: string, meta: DeckMeta) {
-  const needUpdate: boolean = await shouldUpdateReadme(login, project);
+export async function updateProject(githubToken: string, login: string, project: string, url: string, meta: DeckMeta) {
+  // README.md
+  await updateInfo(githubToken, login, project, url, meta, 'README.md', 'docs: update presentation info');
+
+  // Webpack dev server configuration
+  await updateInfo(githubToken, login, project, url, meta, 'webpack.config.js', 'chore: update project settings');
+
+  await push(githubToken, login, name, 'master');
+}
+
+async function updateInfo(githubToken: string, login: string, project: string, url: string, meta: DeckMeta, file: string, msg: string) {
+  const needUpdate: boolean = await shouldUpdate(login, project, file);
   if (!needUpdate) {
     return;
   }
 
-  await parseReadme(login, project, url, meta);
+  await parseInfo(login, project, url, meta, file);
 
-  // DeckDeckGo friendly robot / GitHub user information
-  const email: string = functions.config().github.email;
-  const name: string = functions.config().github.name;
-
-  await commitReadme(name, email, login, project);
-
-  await push(githubToken, name, email, login, project, 'master');
+  await commit(login, project, file, msg);
 }
 
 export async function updateDeck(githubToken: string, user: GitHubUser, repo: GitHubRepo, meta: DeckMeta) {
   // Working branch name
   const branch: string = functions.config().github.branch;
-
-  // DeckDeckGo friendly robot / GitHub user information
-  const email: string = functions.config().github.email;
-  const name: string = functions.config().github.name;
 
   await checkoutBranch(user.login, repo.name, branch);
 
@@ -79,9 +79,9 @@ export async function updateDeck(githubToken: string, user: GitHubUser, repo: Gi
 
   await parseDeck(user.login, repo.name, meta);
 
-  await commit(name, email, user.login, repo.name);
+  await commitDeck(user.login, repo.name);
 
-  await push(githubToken, name, email, user.login, repo.name, branch);
+  await push(githubToken, user.login, repo.name, branch);
 
   await createPR(githubToken, repo.id, branch);
 }

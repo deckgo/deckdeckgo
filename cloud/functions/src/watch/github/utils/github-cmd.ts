@@ -1,6 +1,13 @@
+import * as functions from 'firebase-functions';
+
 import simpleGit, {SimpleGit} from 'simple-git';
 
 import {deleteDir, getLocalFilePath, getLocalPath} from './github-fs';
+
+interface GitHubDeckGoUser {
+  email: string;
+  name: string;
+}
 
 export async function clone(url: string, login: string, project: string) {
   const localPath: string = getLocalPath(login, project);
@@ -66,11 +73,13 @@ export async function pull(url: string, login: string, project: string, branch: 
   await git.pull(url, branch);
 }
 
-export async function commit(name: string, email: string, login: string, project: string) {
+export async function commitDeck(login: string, project: string) {
+  const user: GitHubDeckGoUser = getGitHubUser();
+
   const git: SimpleGit = getSimpleGit(login, project);
 
-  await git.addConfig('user.name', name);
-  await git.addConfig('user.email', email);
+  await git.addConfig('user.name', user.name);
+  await git.addConfig('user.email', user.email);
 
   const indexPath: string = getLocalFilePath(login, project, 'src', 'index.html');
   const manifestPath: string = getLocalFilePath(login, project, 'src', 'manifest.json');
@@ -80,25 +89,27 @@ export async function commit(name: string, email: string, login: string, project
   await git.commit(msg, [indexPath, manifestPath]);
 }
 
-export async function commitReadme(name: string, email: string, login: string, project: string) {
+export async function commit(login: string, project: string, file: string, msg: string) {
+  const user: GitHubDeckGoUser = getGitHubUser();
+
   const git: SimpleGit = getSimpleGit(login, project);
 
-  await git.addConfig('user.name', name);
-  await git.addConfig('user.email', email);
+  await git.addConfig('user.name', user.name);
+  await git.addConfig('user.email', user.email);
 
-  const readmePath: string = getLocalFilePath(login, project, 'README.md');
+  const localPath: string = getLocalFilePath(login, project, file);
 
-  const msg: string = 'docs: update presentation info';
-
-  await git.commit(msg, [readmePath]);
+  await git.commit(msg, [localPath]);
 }
 
-export async function push(githubToken: string, name: string, email: string, login: string, project: string, branch: string) {
+export async function push(githubToken: string, login: string, project: string, branch: string) {
   try {
+    const user: GitHubDeckGoUser = getGitHubUser();
+
     const git: SimpleGit = getSimpleGit(login, project);
 
-    await git.addConfig('user.name', name);
-    await git.addConfig('user.email', email);
+    await git.addConfig('user.name', user.name);
+    await git.addConfig('user.email', user.email);
 
     await git.push(`https://${login}:${githubToken}@github.com/${login}/${project}.git`, branch);
   } catch (err) {
@@ -110,4 +121,15 @@ export async function push(githubToken: string, name: string, email: string, log
 export function getSimpleGit(login: string, project: string): SimpleGit {
   const localPath: string = getLocalPath(login, project);
   return simpleGit(localPath);
+}
+
+function getGitHubUser(): GitHubDeckGoUser {
+  // DeckDeckGo friendly robot / GitHub user information
+  const email: string = functions.config().github.email;
+  const name: string = functions.config().github.name;
+
+  return {
+    email,
+    name,
+  };
 }

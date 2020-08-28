@@ -10,7 +10,7 @@ import {isDeckPublished} from '../screenshot/utils/update-deck';
 import {getUser, GitHubUser} from './utils/github-api';
 import {clone} from './utils/github-cmd';
 import {findPlatform} from './utils/github-db';
-import {getRepo, updateDeck, updateReadme} from './utils/github-utils';
+import {getRepo, updateDeck, updateProject} from './utils/github-utils';
 
 export async function publishToGitHub(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
   const newValue: DeckData = change.after.data() as DeckData;
@@ -66,7 +66,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     await clone(repo.url, user.login, repo.name);
 
-    await updateReadme(platform.data.github.token, user.login, repo.name, repo.url, newValue.meta);
+    await updateProject(platform.data.github.token, user.login, repo.name, repo.url, newValue.meta);
 
     await updateDeck(platform.data.github.token, user, repo, newValue.meta);
   } catch (err) {

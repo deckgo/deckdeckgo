@@ -41,8 +41,8 @@ async function parseManifestJson(login: string, project: string, meta: DeckMeta)
   await fs.writeFile(manifestJsonPath, html_beautify(manifestJson), 'utf8');
 }
 
-export async function parseReadme(login: string, project: string, url: string, meta: DeckMeta) {
-  const readmePath: string = getLocalFilePath(login, project, 'README.md');
+export async function parseInfo(login: string, project: string, url: string, meta: DeckMeta, file: string) {
+  const readmePath: string = getLocalFilePath(login, project, file);
 
   const data = await fs.readFile(readmePath, 'utf8');
 
@@ -55,8 +55,8 @@ export async function parseReadme(login: string, project: string, url: string, m
   await fs.writeFile(readmePath, result, 'utf8');
 }
 
-export async function shouldUpdateReadme(login: string, project: string): Promise<boolean> {
-  const readmePath: string = getLocalFilePath(login, project, 'README.md');
+export async function shouldUpdate(login: string, project: string, file: string): Promise<boolean> {
+  const readmePath: string = getLocalFilePath(login, project, file);
   const data = await fs.readFile(readmePath, 'utf8');
   return /\{\{DECKDECKGO_.*\}\}/g.test(data);
 }
