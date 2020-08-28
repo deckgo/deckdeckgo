@@ -418,7 +418,8 @@ export class AppHome {
 
         resolve();
       } catch (err) {
-        errorStore.state.error = "Your user couldn't be deleted, contact us per email";
+        errorStore.state.error =
+          "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
   }
