@@ -1,10 +1,11 @@
 import {DeckMeta} from '../../../model/deck';
 import {GitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platform-deck';
 
-import {createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
+import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
 import {findPlatformDeck, updatePlatformDeck} from './github-db';
-import {parseReadme, shouldUpdateReadme} from './github-fs';
-import {commitReadme, push} from './github-cmd';
+import {parseDeck, parseReadme, shouldUpdateReadme} from './github-fs';
+import {checkoutBranch, commit, commitReadme, pull, push} from './github-cmd';
+import * as functions from 'firebase-functions';
 
 export async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckMeta: DeckMeta): Promise<GitHubRepo | undefined> {
   const project: string = deckMeta.title.replace(' ', '-').toLowerCase();
@@ -47,7 +48,7 @@ export async function getRepo(githubToken: string, user: GitHubUser, userId: str
   return repo;
 }
 
-export async function updateReadme(githubToken: string, name: string, email: string, login: string, project: string, url: string, meta: DeckMeta) {
+export async function updateReadme(githubToken: string, login: string, project: string, url: string, meta: DeckMeta) {
   const needUpdate: boolean = await shouldUpdateReadme(login, project);
   if (!needUpdate) {
     return;
@@ -55,7 +56,32 @@ export async function updateReadme(githubToken: string, name: string, email: str
 
   await parseReadme(login, project, url, meta);
 
+  // DeckDeckGo friendly robot / GitHub user information
+  const email: string = functions.config().github.email;
+  const name: string = functions.config().github.name;
+
   await commitReadme(name, email, login, project);
 
   await push(githubToken, name, email, login, project, 'master');
+}
+
+export async function updateDeck(githubToken: string, user: GitHubUser, repo: GitHubRepo, meta: DeckMeta) {
+  // Working branch name
+  const branch: string = functions.config().github.branch;
+
+  // DeckDeckGo friendly robot / GitHub user information
+  const email: string = functions.config().github.email;
+  const name: string = functions.config().github.name;
+
+  await checkoutBranch(user.login, repo.name, branch);
+
+  await pull(repo.url, user.login, repo.name, branch);
+
+  await parseDeck(user.login, repo.name, meta);
+
+  await commit(name, email, user.login, repo.name);
+
+  await push(githubToken, name, email, user.login, repo.name, branch);
+
+  await createPR(githubToken, repo.id, branch);
 }

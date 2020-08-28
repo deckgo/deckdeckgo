@@ -7,11 +7,10 @@ import {GitHubRepo} from '../../model/platform-deck';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
-import {createPR, getUser, GitHubUser} from './utils/github-api';
-import {checkoutBranch, clone, commit, pull, push} from './utils/github-cmd';
-import {parseDeck} from './utils/github-fs';
+import {getUser, GitHubUser} from './utils/github-api';
+import {clone} from './utils/github-cmd';
 import {findPlatform} from './utils/github-db';
-import {getRepo, updateReadme} from './utils/github-utils';
+import {getRepo, updateDeck, updateReadme} from './utils/github-utils';
 
 export async function publishToGitHub(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
   const newValue: DeckData = change.after.data() as DeckData;
@@ -65,28 +64,11 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     //TODO: In the future, if the repo is an existing one, sync dependencies within the PR aka compare these with source repo and provide change to upgrade repo.
 
-    // DeckDeckGo friendly robot / GitHub user information
-    const email: string = functions.config().github.email;
-    const name: string = functions.config().github.name;
-
-    // Working branch name
-    const branch: string = functions.config().github.branch;
-
     await clone(repo.url, user.login, repo.name);
 
-    await updateReadme(platform.data.github.token, name, email, user.login, repo.name, repo.url, newValue.meta);
+    await updateReadme(platform.data.github.token, user.login, repo.name, repo.url, newValue.meta);
 
-    await checkoutBranch(user.login, repo.name, branch);
-
-    await pull(repo.url, user.login, repo.name, branch);
-
-    await parseDeck(user.login, repo.name, newValue.meta);
-
-    await commit(name, email, user.login, repo.name);
-
-    await push(platform.data.github.token, name, email, user.login, repo.name, branch);
-
-    await createPR(platform.data.github.token, repo.id, branch);
+    await updateDeck(platform.data.github.token, user, repo, newValue.meta);
   } catch (err) {
     console.error(err);
   }
