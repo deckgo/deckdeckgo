@@ -41,7 +41,17 @@ async function parseIndexHtml(login: string, project: string, meta: DeckMeta) {
   // Remove the script of the prod build
   cleanedIndexHtml = cleanedIndexHtml.replace(/<script src=".*?>/g, '');
 
-  await fs.writeFile(indexPath, html_beautify(cleanedIndexHtml), 'utf8');
+  let formattedHtml: string = html_beautify(cleanedIndexHtml);
+
+  // Align code
+  const matches: RegExpMatchArray | null = formattedHtml.match(/<code slot="code">([\s\S]*?)<\/code>/gm);
+  if (matches && matches.length > 0) {
+    matches.forEach((match) => {
+      formattedHtml = formattedHtml.replace(match, match.replace(/                /g, ''));
+    });
+  }
+
+  await fs.writeFile(indexPath, formattedHtml, 'utf8');
 }
 
 async function parseManifestJson(login: string, project: string, meta: DeckMeta) {
