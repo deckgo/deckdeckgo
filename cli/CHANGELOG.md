@@ -1,8 +1,12 @@
 <a name="1.2.0"></a>
 
-# 1.2.10 (2020-08-28)
+# 1.2.0 (2020-08-28)
 
 ### Features
+
+### Fix
+
+- Google Fonts with `.svg` extension
 
 <a name="1.0.1"></a>
 
