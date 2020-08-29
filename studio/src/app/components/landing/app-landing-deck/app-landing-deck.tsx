@@ -167,7 +167,7 @@ function Example() {
           </div>
 
           <div slot="end">
-            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3.5)'}} />
+            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 2.5)'}} />
           </div>
 
           {this.renderSlideBackground('end')}
