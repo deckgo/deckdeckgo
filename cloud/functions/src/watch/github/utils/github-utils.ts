@@ -50,23 +50,28 @@ export async function getRepo(githubToken: string, user: GitHubUser, userId: str
 
 export async function updateProject(githubToken: string, login: string, project: string, url: string, meta: DeckMeta) {
   // README.md
-  await updateInfo(githubToken, login, project, url, meta, 'README.md', 'docs: update presentation info');
+  await updateInfo(githubToken, login, project, url, meta, 'docs: update presentation info', 'README.md');
 
   // Webpack dev server configuration
-  await updateInfo(githubToken, login, project, url, meta, 'webpack.config.js', 'chore: update project settings');
+  await updateInfo(githubToken, login, project, url, meta, 'chore: update project settings', 'webpack.config.js');
+
+  // Icons path
+  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'menu.js');
+  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'modalNotes.js');
+  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'remotePopover.js');
 
   await push(githubToken, login, project, 'master');
 }
 
-async function updateInfo(githubToken: string, login: string, project: string, url: string, meta: DeckMeta, file: string, msg: string) {
-  const needUpdate: boolean = await shouldUpdate(login, project, file);
+async function updateInfo(githubToken: string, login: string, project: string, url: string, meta: DeckMeta, msg: string, ...files: string[]) {
+  const needUpdate: boolean = await shouldUpdate(login, project, ...files);
   if (!needUpdate) {
     return;
   }
 
-  await parseInfo(login, project, url, meta, file);
+  await parseInfo(login, project, url, meta, ...files);
 
-  await commit(login, project, file, msg);
+  await commit(login, project, msg, ...files);
 }
 
 export async function updateDeck(githubToken: string, user: GitHubUser, repo: GitHubRepo, meta: DeckMeta) {

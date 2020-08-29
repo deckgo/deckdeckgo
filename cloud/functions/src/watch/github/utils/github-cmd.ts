@@ -89,7 +89,7 @@ export async function commitDeck(login: string, project: string) {
   await git.commit(msg, [indexPath, manifestPath]);
 }
 
-export async function commit(login: string, project: string, file: string, msg: string) {
+export async function commit(login: string, project: string, msg: string, ...files: string[]) {
   const user: GitHubDeckGoUser = getGitHubUser();
 
   const git: SimpleGit = getSimpleGit(login, project);
@@ -97,7 +97,7 @@ export async function commit(login: string, project: string, file: string, msg: 
   await git.addConfig('user.name', user.name);
   await git.addConfig('user.email', user.email);
 
-  const localPath: string = getLocalFilePath(login, project, file);
+  const localPath: string = getLocalFilePath(login, project, ...files);
 
   await git.commit(msg, [localPath]);
 }
