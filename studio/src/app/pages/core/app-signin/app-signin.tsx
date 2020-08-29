@@ -76,13 +76,13 @@ export class AppSignIn {
 
     const signInOptions = [];
 
-    signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
-
     // GitHub scope
     signInOptions.push({
       provider: firebase.auth.GithubAuthProvider.PROVIDER_ID,
       scopes: ['public_repo'],
     });
+
+    signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
 
     signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
@@ -279,6 +279,8 @@ export class AppSignIn {
 
           {this.renderMsg()}
 
+          {this.renderGitHub()}
+
           <div id="firebaseui-auth-container"></div>
 
           <p class="ion-text-center ion-padding-start ion-padding-end">
@@ -290,20 +292,10 @@ export class AppSignIn {
   }
 
   private renderMsg() {
-    if (this.redirect === 'editor') {
-      return [
-        <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
-        <p class="ion-text-center ion-padding">
-          Sign in to unleash all features of the editor like adding more slides, uploading and using your own images, using the author template or being able to
-          share your presentation as an app.
-        </p>,
-      ];
-    } else {
-      return [
-        <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-        <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to be able to share your presentation as an app.</p>,
-      ];
-    }
+    return [
+      <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
+      <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to share your presentation online.</p>,
+    ];
   }
 
   private renderBackButton() {
@@ -318,5 +310,13 @@ export class AppSignIn {
         </ion-buttons>
       );
     }
+  }
+
+  private renderGitHub() {
+    return (
+      <p class="ion-text-center ion-padding-start ion-padding-end ion-padding-bottom">
+        Push the source code of your slides to a repo with the GitHub <ion-icon name="logo-github"></ion-icon> logging.
+      </p>
+    );
   }
 }
