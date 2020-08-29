@@ -300,18 +300,14 @@ export class AppPublishEdit {
       <article>
         <h1>Share your presentation online</h1>
 
-        <p>
-          <strong>Publish</strong> your presentation to share it with the world, your colleagues, friends and community.
-        </p>
+        <p>Publish your presentation to share it with the world, your colleagues, friends and community.</p>
 
-        <p>
-          DeckDeckGo will distribute it online as a modern <strong>app</strong>.
-        </p>
+        <p>DeckDeckGo will distribute it online as a modern app.</p>
 
-        <h2>Meta</h2>
+        <h2 class="ion-padding-top">Meta</h2>
 
         <p class="meta-text">
-          But first, edit or review your presentation's title and summary and add or change tags (up to 5) to make your presentation more inviting to readers.
+          Edit or review your presentation's title, summary and add or change tags (up to 5) to make your presentation more inviting to readers.
         </p>
 
         <form
@@ -320,9 +316,7 @@ export class AppPublishEdit {
             e.key === 'Enter' && e.preventDefault();
           }}>
           <ion-list class="inputs-list">
-            <ion-item class="item-title">
-              <ion-label>Title</ion-label>
-            </ion-item>
+            {this.renderTitleLabel()}
 
             <ion-item>
               <ion-input
@@ -337,7 +331,7 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateCaptionInput()}></ion-input>
             </ion-item>
 
-            <p class="small">
+            <p class={`small ${this.valid ? undefined : 'error'}`}>
               The title could be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
               {Resources.Constants.DECK.TITLE_MAX_LENGTH} characters.
             </p>
@@ -384,6 +378,16 @@ export class AppPublishEdit {
 
         <p class="small">DeckDeckGo will automatically generate the social card for your presentation based on the first slide of your deck.</p>
       </article>
+    );
+  }
+
+  private renderTitleLabel() {
+    return (
+      <ion-item class={`item-title ${this.valid ? undefined : 'error'}`}>
+        <ion-label>
+          Title {this.valid ? undefined : <ion-icon aria-label="Title needs to match the expected format" name="warning-outline"></ion-icon>}
+        </ion-label>
+      </ion-item>
     );
   }
 
