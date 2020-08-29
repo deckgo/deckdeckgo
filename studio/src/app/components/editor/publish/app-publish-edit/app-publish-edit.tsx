@@ -351,7 +351,7 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
             </ion-item>
 
-            <ion-item class="item-title">
+            <ion-item class="item-title ion-margin-top">
               <ion-label>Tags</ion-label>
             </ion-item>
 
