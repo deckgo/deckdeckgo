@@ -342,7 +342,7 @@ export class AppPublishEdit {
             </ion-item>
 
             <p class={`small ${this.valid ? undefined : 'error'}`}>
-              The title could be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
+              The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
               {Resources.Constants.DECK.TITLE_MAX_LENGTH} characters.
             </p>
 

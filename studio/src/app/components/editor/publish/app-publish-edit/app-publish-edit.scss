@@ -16,7 +16,9 @@ app-publish-edit {
     display: inline-block;
     padding-top: 8px;
 
-    height: 37px;
+    &:not(:empty) {
+      height: 37px;
+    }
   }
 
   p.small {
