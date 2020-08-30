@@ -3,7 +3,7 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import {DeckData} from '../../model/deck';
 import {Platform} from '../../model/platform';
-import {GitHubRepo} from '../../model/platform-deck';
+import {PlatformDeckGitHubRepo} from '../../model/platform-deck';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
@@ -60,7 +60,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     const deckId: string = context.params.deckId;
 
-    const repo: GitHubRepo | undefined = await getRepo(platform.data.github.token, user, newValue.owner_id, deckId, newValue.meta);
+    const repo: PlatformDeckGitHubRepo | undefined = await getRepo(platform.data.github.token, user, newValue.owner_id, deckId, newValue.meta);
 
     if (!repo || repo === undefined || !repo.url || !repo.name) {
       return;

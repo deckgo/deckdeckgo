@@ -1,5 +1,5 @@
 import {DeckMeta} from '../../../model/deck';
-import {GitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platform-deck';
+import {PlatformDeckGitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platform-deck';
 
 import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
 import {findPlatformDeck, updatePlatformDeck} from './github-db';
@@ -7,14 +7,20 @@ import {parseDeck, parseInfo, shouldUpdate} from './github-fs';
 import {checkoutBranch, commitDeck, commit, pull, push} from './github-cmd';
 import * as functions from 'firebase-functions';
 
-export async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckMeta: DeckMeta): Promise<GitHubRepo | undefined> {
+export async function getRepo(
+  githubToken: string,
+  user: GitHubUser,
+  userId: string,
+  deckId: string,
+  deckMeta: DeckMeta
+): Promise<PlatformDeckGitHubRepo | undefined> {
   const project: string = deckMeta.title.replace(' ', '-').toLowerCase();
   const description: string = deckMeta.description ? (deckMeta.description as string) : '';
 
   const platformDeck: PlatformDeck | undefined = await findPlatformDeck(userId, deckId);
 
   if (platformDeck) {
-    const existingRepo: GitHubRepo | undefined = await findRepo(githubToken, user, platformDeck.data.github.repo.name);
+    const existingRepo: PlatformDeckGitHubRepo | undefined = await findRepo(githubToken, user, platformDeck.data.github.repo.name);
 
     if (existingRepo) {
       // We update our information because the user may have renamed its repo. For example, the new repo name ("hello world world") is returned when looking with the old repo name ("hello world")
@@ -25,13 +31,13 @@ export async function getRepo(githubToken: string, user: GitHubUser, userId: str
 
     // The user may have delete its repo
 
-    const createdRepo: GitHubRepo | undefined = await createRepo(githubToken, user, project, description);
+    const createdRepo: PlatformDeckGitHubRepo | undefined = await createRepo(githubToken, user, project, description);
     await updatePlatformDeck(userId, deckId, platformDeck.data, createdRepo);
 
     return createdRepo;
   }
 
-  const repo: GitHubRepo | undefined = await findOrCreateRepo(githubToken, user, project, description);
+  const repo: PlatformDeckGitHubRepo | undefined = await findOrCreateRepo(githubToken, user, project, description);
 
   if (!repo) {
     return undefined;
@@ -74,7 +80,7 @@ async function updateInfo(githubToken: string, login: string, project: string, u
   await commit(login, project, msg, ...files);
 }
 
-export async function updateDeck(githubToken: string, user: GitHubUser, repo: GitHubRepo, meta: DeckMeta) {
+export async function updateDeck(githubToken: string, user: GitHubUser, repo: PlatformDeckGitHubRepo, meta: DeckMeta) {
   // Working branch name
   const branch: string = functions.config().github.branch;
 

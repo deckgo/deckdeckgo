@@ -8,6 +8,7 @@ import feedStore from '../../../../stores/feed.store';
 import publishStore from '../../../../stores/publish.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
+import platformStore from '../../../../stores/platform.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -428,7 +429,7 @@ export class AppPublishEdit {
       <h2 class="ion-padding-top">
         GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>
       </h2>,
-      <p class="meta-text">Push the source code of the presentation to a public GitHub repo?</p>,
+      this.renderGitHubText(),
       <ion-list class="inputs-list ion-margin-bottom">
         <ion-radio-group value={this.pushToGitHub} onIonChange={($event) => this.onGitHubChange($event)}>
           <ion-item>
@@ -443,5 +444,13 @@ export class AppPublishEdit {
         </ion-radio-group>
       </ion-list>,
     ];
+  }
+
+  private renderGitHubText() {
+    if (!platformStore.state.platformDeck) {
+      return <p class="meta-text">Push the source code of the presentation to a new public repository of your GitHub account?</p>;
+    }
+
+    return <p class="meta-text">Submit the source code of the presentation to its GitHub repository?</p>;
   }
 }

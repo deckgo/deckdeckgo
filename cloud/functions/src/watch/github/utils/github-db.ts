@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import {Platform, PlatformData} from '../../../model/platform';
-import {GitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platform-deck';
+import {PlatformDeckGitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platform-deck';
 
 export function findPlatform(userId: string): Promise<Platform> {
   return new Promise<Platform>(async (resolve, reject) => {
@@ -49,7 +49,7 @@ export function findPlatformDeck(userId: string, deckId: string): Promise<Platfo
   });
 }
 
-export function updatePlatformDeck(userId: string, deckId: string, deckData: PlatformDeckData, repo: GitHubRepo | undefined): Promise<void> {
+export function updatePlatformDeck(userId: string, deckId: string, deckData: PlatformDeckData, repo: PlatformDeckGitHubRepo | undefined): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || deckId === '') {

@@ -1,14 +1,28 @@
 import {Component, Element, Listen, h, State} from '@stencil/core';
 
+import {PlatformService} from '../../../services/data/platform/platform.service';
+
 @Component({
   tag: 'app-publish',
-  styleUrl: 'app-publish.scss'
+  styleUrl: 'app-publish.scss',
 })
 export class AppPublish {
   @Element() el: HTMLElement;
 
   @State()
   private publishedUrl: string;
+
+  private platformService: PlatformService;
+
+  private unsubscribeSnapshot: () => void | undefined;
+
+  constructor() {
+    this.platformService = PlatformService.getInstance();
+  }
+
+  async componentWillLoad() {
+    this.unsubscribeSnapshot = await this.platformService.snapshotPlatformDeck();
+  }
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
@@ -20,6 +34,10 @@ export class AppPublish {
   }
 
   async closeModal() {
+    if (this.unsubscribeSnapshot) {
+      this.unsubscribeSnapshot();
+    }
+
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
 
@@ -71,7 +89,7 @@ export class AppPublish {
         <main class={this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'}>
           {this.renderMain()}
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 

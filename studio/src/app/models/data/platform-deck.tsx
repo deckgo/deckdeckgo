@@ -1,5 +1,3 @@
-import {firestore} from 'firebase-admin';
-
 export interface PlatformDeckGitHubRepo {
   id: string;
   url: string;
@@ -14,12 +12,11 @@ export interface PlatformDeckGitHub {
 export interface PlatformDeckData {
   github: PlatformDeckGitHub;
 
-  created_at?: firestore.Timestamp;
-  updated_at?: firestore.Timestamp;
+  updated_at?: firebase.firestore.Timestamp;
+  created_at?: firebase.firestore.Timestamp;
 }
 
 export interface PlatformDeck {
   id: string;
-  ref: firestore.DocumentReference;
   data: PlatformDeckData;
 }
