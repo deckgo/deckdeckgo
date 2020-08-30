@@ -6,7 +6,7 @@ import * as functions from 'firebase-functions';
 
 import fetch, {Response} from 'node-fetch';
 
-import {PlatformDeckGitHubRepo} from '../../../model/platform-deck';
+import {DeployGitHubRepo} from '../../../model/deploy';
 
 export interface GitHubUser {
   id: string;
@@ -37,10 +37,10 @@ export function getUser(githubToken: string): Promise<GitHubUser> {
   });
 }
 
-export function findOrCreateRepo(githubToken: string, user: GitHubUser, project: string, description: string): Promise<PlatformDeckGitHubRepo | undefined> {
-  return new Promise<PlatformDeckGitHubRepo | undefined>(async (resolve, reject) => {
+export function findOrCreateRepo(githubToken: string, user: GitHubUser, project: string, description: string): Promise<DeployGitHubRepo | undefined> {
+  return new Promise<DeployGitHubRepo | undefined>(async (resolve, reject) => {
     try {
-      const repo: PlatformDeckGitHubRepo | undefined = await findRepo(githubToken, user, project);
+      const repo: DeployGitHubRepo | undefined = await findRepo(githubToken, user, project);
 
       // Repo already exists
       if (repo) {
@@ -49,7 +49,7 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser, project:
       }
 
       // Create a new repo otherwise
-      const newRepo: PlatformDeckGitHubRepo | undefined = await createRepo(githubToken, user, project, description);
+      const newRepo: DeployGitHubRepo | undefined = await createRepo(githubToken, user, project, description);
 
       resolve(newRepo);
     } catch (err) {
@@ -59,8 +59,8 @@ export function findOrCreateRepo(githubToken: string, user: GitHubUser, project:
   });
 }
 
-export function findRepo(githubToken: string, user: GitHubUser, project: string): Promise<PlatformDeckGitHubRepo | undefined> {
-  return new Promise<PlatformDeckGitHubRepo | undefined>(async (resolve, reject) => {
+export function findRepo(githubToken: string, user: GitHubUser, project: string): Promise<DeployGitHubRepo | undefined> {
+  return new Promise<DeployGitHubRepo | undefined>(async (resolve, reject) => {
     try {
       if (!user) {
         resolve(undefined);
@@ -95,8 +95,8 @@ export function findRepo(githubToken: string, user: GitHubUser, project: string)
   });
 }
 
-export function createRepo(githubToken: string, user: GitHubUser, project: string, description: string): Promise<PlatformDeckGitHubRepo | undefined> {
-  return new Promise<PlatformDeckGitHubRepo | undefined>(async (resolve, reject) => {
+export function createRepo(githubToken: string, user: GitHubUser, project: string, description: string): Promise<DeployGitHubRepo | undefined> {
+  return new Promise<DeployGitHubRepo | undefined>(async (resolve, reject) => {
     try {
       if (!user) {
         resolve(undefined);

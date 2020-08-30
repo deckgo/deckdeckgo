@@ -8,7 +8,7 @@ import feedStore from '../../../../stores/feed.store';
 import publishStore from '../../../../stores/publish.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
-import platformStore from '../../../../stores/platform.store';
+import deployStore from '../../../../stores/deploy.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -447,7 +447,7 @@ export class AppPublishEdit {
   }
 
   private renderGitHubText() {
-    if (!platformStore.state.platformDeck) {
+    if (!deployStore.state.deploy || !deployStore.state.deploy.data) {
       return <p class="meta-text">Push the source code of the presentation to a new public repository of your GitHub account?</p>;
     }
 

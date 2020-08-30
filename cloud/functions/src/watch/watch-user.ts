@@ -5,7 +5,8 @@ import * as admin from 'firebase-admin';
 
 import {deleteDecksSlides} from './delete/delete-decks-slides';
 import {deleteUserStorage} from './delete/delete-user-storage';
-import {deletePlatform} from './delete/delete-platform';
+import {deleteToken} from './delete/delete-token';
+import {deleteDeploy} from './delete/delete-deploy';
 
 import {createMailchimpMember, deleteMailchimpMember, updateMailchimpMember} from './mailchimp/mailchimp-member';
 
@@ -15,7 +16,8 @@ export async function applyWatchUserDelete(userRecord: admin.auth.UserRecord, _c
   await deleteDecksSlides(userRecord);
   await deleteUserStorage(userRecord);
   await deleteMailchimpMember(userRecord);
-  await deletePlatform(userRecord);
+  await deleteToken(userRecord);
+  await deleteDeploy(userRecord);
 }
 
 export async function applyWatchUserCreate(userRecord: admin.auth.UserRecord, _context: EventContext) {

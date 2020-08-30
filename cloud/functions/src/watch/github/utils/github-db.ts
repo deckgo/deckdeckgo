@@ -1,19 +1,19 @@
 import * as admin from 'firebase-admin';
 
-import {Platform, PlatformData} from '../../../model/platform';
-import {PlatformDeckGitHubRepo, PlatformDeck, PlatformDeckData} from '../../../model/platform-deck';
+import {Token, TokenData} from '../../../model/token';
+import {DeployGitHubRepo, Deploy, DeployData} from '../../../model/deploy';
 
-export function findPlatform(userId: string): Promise<Platform> {
-  return new Promise<Platform>(async (resolve, reject) => {
+export function findToken(userId: string): Promise<Token> {
+  return new Promise<Token>(async (resolve, reject) => {
     try {
-      const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/platforms/${userId}/`).get();
+      const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/tokens/${userId}/`).get();
 
       if (!snapshot.exists) {
         reject('Platform not found');
         return;
       }
 
-      const data: PlatformData = snapshot.data() as PlatformData;
+      const data: TokenData = snapshot.data() as TokenData;
 
       resolve({
         id: snapshot.id,
@@ -26,17 +26,17 @@ export function findPlatform(userId: string): Promise<Platform> {
   });
 }
 
-export function findPlatformDeck(userId: string, deckId: string): Promise<PlatformDeck | undefined> {
-  return new Promise<PlatformDeck | undefined>(async (resolve, reject) => {
+export function findDeploy(deckId: string): Promise<Deploy | undefined> {
+  return new Promise<Deploy | undefined>(async (resolve, reject) => {
     try {
-      const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/platforms/${userId}/decks/${deckId}`).get();
+      const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/deploys/${deckId}`).get();
 
       if (!snapshot.exists) {
         resolve(undefined);
         return;
       }
 
-      const data: PlatformDeckData = snapshot.data() as PlatformDeckData;
+      const data: DeployData = snapshot.data() as DeployData;
 
       resolve({
         id: snapshot.id,
@@ -49,7 +49,7 @@ export function findPlatformDeck(userId: string, deckId: string): Promise<Platfo
   });
 }
 
-export function updatePlatformDeck(userId: string, deckId: string, deckData: PlatformDeckData, repo: PlatformDeckGitHubRepo | undefined): Promise<void> {
+export function updateDeploy(deckId: string, deckData: DeployData, repo: DeployGitHubRepo | undefined): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || deckId === '') {
@@ -62,7 +62,7 @@ export function updatePlatformDeck(userId: string, deckId: string, deckData: Pla
         return;
       }
 
-      const data: PlatformDeckData = {...deckData};
+      const data: DeployData = {...deckData};
       data.github.repo = {...repo};
 
       data.updated_at = admin.firestore.Timestamp.now();
@@ -71,7 +71,7 @@ export function updatePlatformDeck(userId: string, deckId: string, deckData: Pla
         data.created_at = admin.firestore.Timestamp.now();
       }
 
-      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/platforms/${userId}/decks/${deckId}`);
+      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}`);
 
       await documentReference.set(data, {merge: true});
 

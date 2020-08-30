@@ -2,14 +2,14 @@ import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import {DeckData} from '../../model/deck';
-import {Platform} from '../../model/platform';
-import {PlatformDeckGitHubRepo} from '../../model/platform-deck';
+import {Token} from '../../model/token';
+import {DeployGitHubRepo} from '../../model/deploy';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
 import {getUser, GitHubUser} from './utils/github-api';
 import {clone} from './utils/github-cmd';
-import {findPlatform} from './utils/github-db';
+import {findToken} from './utils/github-db';
 import {getRepo, updateDeck, updateProject} from './utils/github-utils';
 
 export async function publishToGitHub(change: functions.Change<DocumentSnapshot>, context: functions.EventContext) {
@@ -42,7 +42,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
   try {
     // Has the user a GitHub token?
 
-    const platform: Platform = await findPlatform(newValue.owner_id);
+    const platform: Token = await findToken(newValue.owner_id);
 
     if (!platform || !platform.data || !platform.data.github || !platform.data.github.token) {
       return;
@@ -60,7 +60,7 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
 
     const deckId: string = context.params.deckId;
 
-    const repo: PlatformDeckGitHubRepo | undefined = await getRepo(platform.data.github.token, user, newValue.owner_id, deckId, newValue.meta);
+    const repo: DeployGitHubRepo | undefined = await getRepo(platform.data.github.token, user, newValue.owner_id, deckId, newValue.meta);
 
     if (!repo || repo === undefined || !repo.url || !repo.name) {
       return;

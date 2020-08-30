@@ -3,9 +3,9 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import {DeckData} from '../../model/deck';
 
-import {deletePlatformDeckForIds} from './utils/delete-platform-utils';
+import {deleteDeployForId} from './utils/delete-platform-utils';
 
-export async function deletePlatformDeck(snap: DocumentSnapshot, context: EventContext) {
+export async function deleteDeckDeploy(snap: DocumentSnapshot, context: EventContext) {
   const deckId: string = context.params.deckId;
 
   if (!deckId || deckId === undefined || deckId === '') {
@@ -19,7 +19,7 @@ export async function deletePlatformDeck(snap: DocumentSnapshot, context: EventC
   }
 
   try {
-    await deletePlatformDeckForIds(deck.owner_id, deckId);
+    await deleteDeployForId(deckId);
   } catch (err) {
     console.error(err);
   }

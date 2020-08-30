@@ -4,7 +4,7 @@ import deckStore from '../../../../stores/deck.store';
 import userStore from '../../../../stores/user.store';
 import shareStore from '../../../../stores/share.store';
 import authStore from '../../../../stores/auth.store';
-import platformStore from '../../../../stores/platform.store';
+import deployStore from '../../../../stores/deploy.store';
 
 @Component({
   tag: 'app-publish-done',
@@ -59,7 +59,7 @@ export class AppPublishDone {
       return undefined;
     }
 
-    if (!platformStore.state.platformDeck || !platformStore.state.platformDeck.data) {
+    if (!deployStore.state.deploy || !deployStore.state.deploy.data) {
       return (
         <ion-label class="published-url ion-padding ion-text-center">
           The source code of the presentation is processing <ion-spinner color="tertiary"></ion-spinner>
@@ -69,8 +69,8 @@ export class AppPublishDone {
 
     return (
       <ion-label class="published-url ion-padding ion-text-center">
-        The source code of the presentation has been submitted to the{' '}
-        <a href={`${platformStore.state.platformDeck.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
+        The source code of the presentation has been submitted to a{' '}
+        <a href={`${deployStore.state.deploy.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
           repository
         </a>{' '}
         on GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>.

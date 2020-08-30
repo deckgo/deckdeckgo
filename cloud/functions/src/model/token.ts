@@ -1,17 +1,17 @@
 import {firestore} from 'firebase-admin';
 
-export interface PlatformGitHub {
+export interface TokenGitHub {
   token: string;
 }
 
-export interface PlatformData {
-  github?: PlatformGitHub;
+export interface TokenData {
+  github?: TokenGitHub;
 
   updated_at?: firestore.Timestamp;
 }
 
-export interface Platform {
+export interface Token {
   id: string;
-  data: PlatformData;
+  data: TokenData;
   ref: firestore.DocumentReference;
 }

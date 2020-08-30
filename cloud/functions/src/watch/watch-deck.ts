@@ -5,7 +5,7 @@ import {generateDeckScreenshot} from './screenshot/generate-deck-screenshot';
 import {infoDeckPublish} from './info/info-deck-publish';
 
 import {deleteDeckSlides} from './delete/delete-deck-slides';
-import {deletePlatformDeck} from './delete/delete-platform-deck';
+import {deleteDeckDeploy} from './delete/delete-deck-deploy';
 
 import {cloneDeckSlides} from './clone/clone-deck-slides';
 
@@ -19,7 +19,7 @@ export async function applyWatchDeckUpdate(change: Change<DocumentSnapshot>, con
 
 export async function applyWatchDeckDelete(snapshot: DocumentSnapshot, context: EventContext) {
   await deleteDeckSlides(snapshot, context);
-  await deletePlatformDeck(snapshot, context);
+  await deleteDeckDeploy(snapshot, context);
 }
 
 export async function applyWatchDeckCreate(snapshot: DocumentSnapshot, context: EventContext) {
