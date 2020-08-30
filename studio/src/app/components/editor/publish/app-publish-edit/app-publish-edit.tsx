@@ -7,6 +7,7 @@ import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
 import publishStore from '../../../../stores/publish.store';
 import apiUserStore from '../../../../stores/api.user.store';
+import authStore from '../../../../stores/auth.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -45,6 +46,9 @@ export class AppPublishEdit {
   @State()
   private tags: string[] = [];
 
+  @State()
+  private pushToGitHub: boolean = true;
+
   private deckService: DeckService;
 
   private readonly debounceUpdateDeck: () => void;
@@ -82,6 +86,7 @@ export class AppPublishEdit {
         ? (deckStore.state.deck.data.meta.description as string)
         : await this.getFirstSlideContent();
     this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
+    this.pushToGitHub = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.github !== undefined ? deckStore.state.deck.data.meta.github : true;
   }
 
   private getFirstSlideContent(): Promise<string> {
@@ -149,7 +154,7 @@ export class AppPublishEdit {
       try {
         this.publishing = true;
 
-        const publishedUrl: string = await this.publishService.publish(this.description, this.tags);
+        const publishedUrl: string = await this.publishService.publish(this.description, this.tags, this.pushToGitHub);
 
         this.published.emit(publishedUrl);
 
@@ -295,6 +300,10 @@ export class AppPublishEdit {
     });
   }
 
+  private async onGitHubChange($event: CustomEvent) {
+    this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
+  }
+
   render() {
     return (
       <article>
@@ -373,6 +382,8 @@ export class AppPublishEdit {
               onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
           </ion-list>
 
+          {this.renderGitHub()}
+
           <div class="ion-padding ion-text-center publish">{this.renderPublish()}</div>
         </form>
 
@@ -406,5 +417,31 @@ export class AppPublishEdit {
         </div>
       );
     }
+  }
+
+  private renderGitHub() {
+    if (!authStore.state.gitHub) {
+      return undefined;
+    }
+
+    return [
+      <h2 class="ion-padding-top">
+        GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>
+      </h2>,
+      <p class="meta-text">Push the source code of the presentation to a public GitHub repo?</p>,
+      <ion-list class="inputs-list ion-margin-bottom">
+        <ion-radio-group value={this.pushToGitHub} onIonChange={($event) => this.onGitHubChange($event)}>
+          <ion-item>
+            <ion-radio value={true} mode="md" disabled={this.publishing}></ion-radio>
+            <ion-label>Yes</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-radio value={false} mode="md" disabled={this.publishing}></ion-radio>
+            <ion-label>No</ion-label>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>,
+    ];
   }
 }

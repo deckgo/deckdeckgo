@@ -60,7 +60,7 @@ export class PublishService {
   }
 
   // TODO: Move in a cloud functions?
-  publish(description: string, tags: string[]): Promise<string> {
+  publish(description: string, tags: string[], github: boolean): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
       this.progress(0);
 
@@ -99,7 +99,7 @@ export class PublishService {
 
         const publishedUrl: string = apiDeckPublish.url;
 
-        await this.delayUpdateMeta(deckStore.state.deck, publishedUrl, description, tags, newApiId);
+        await this.delayUpdateMeta(deckStore.state.deck, publishedUrl, description, tags, github, newApiId);
 
         resolve(publishedUrl);
       } catch (err) {
@@ -327,7 +327,7 @@ export class PublishService {
 
   // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
   // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], delay: boolean): Promise<void> {
+  private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], github: boolean, delay: boolean): Promise<void> {
     return new Promise<void>((resolve) => {
       setTimeout(
         () => {
@@ -335,7 +335,7 @@ export class PublishService {
 
           setTimeout(
             async () => {
-              await this.updateDeckMeta(deck, publishedUrl, description, tags);
+              await this.updateDeckMeta(deck, publishedUrl, description, tags, github);
 
               this.progress(0.95);
 
@@ -369,7 +369,7 @@ export class PublishService {
     });
   }
 
-  private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[]): Promise<void> {
+  private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], github: boolean): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
@@ -394,6 +394,7 @@ export class PublishService {
             published: true,
             published_at: now,
             feed: feed,
+            github: github,
             updated_at: now,
           };
         } else {
@@ -401,6 +402,7 @@ export class PublishService {
           deck.data.meta.pathname = url.pathname;
           deck.data.meta.updated_at = now;
           deck.data.meta.feed = feed;
+          deck.data.meta.github = github;
         }
 
         if (description && description !== undefined && description !== '') {

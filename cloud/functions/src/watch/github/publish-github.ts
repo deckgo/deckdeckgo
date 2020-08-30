@@ -29,6 +29,10 @@ export async function publishToGitHub(change: functions.Change<DocumentSnapshot>
     return;
   }
 
+  if (newValue.meta.github !== true) {
+    return;
+  }
+
   const update: boolean = await isDeckPublished(previousValue, newValue);
 
   if (!update) {
