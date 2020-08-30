@@ -37,6 +37,14 @@ export class AppFeatures {
           </article>
 
           <article>
+            <h3>Push to GitHub</h3>
+
+            <p>
+              Get the source code of your apps pushed automatically to your GitHub <ion-icon name="logo-github"></ion-icon> repos.
+            </p>
+          </article>
+
+          <article>
             <h3>
               Share privately <ion-icon name="business-outline" aria-label="Enterprise only"></ion-icon>
             </h3>
@@ -228,7 +236,8 @@ export class AppFeatures {
             <p>
               DeckDeckGo is open source. All code of our applications and components are available on&nbsp;
               <a href="http://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
-                <ion-icon name="logo-github" aria-label="GitHub"></ion-icon> GitHub
+                GitHub&nbsp;
+                <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>
               </a>
               .
             </p>

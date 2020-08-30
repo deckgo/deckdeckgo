@@ -8,6 +8,14 @@ app-signin {
       top: 8px;
       right: 8px;
     }
+
+    p {
+      margin: 0;
+
+      strong {
+        text-decoration: none;
+      }
+    }
   }
 
   strong {
@@ -47,8 +55,17 @@ app-signin {
     }
   }
 
+  button.firebaseui-idp-google > .firebaseui-idp-text {
+    color: black;
+  }
+
+  .firebaseui-idp-button {
+    font-family: var(--ion-font-family, inherit);
+  }
+
   p.firebaseui-tos {
-    color: var(--ion-color-medium);
+    color: black;
+    font-family: var(--ion-font-family, inherit);
 
     a,
     a:hover,

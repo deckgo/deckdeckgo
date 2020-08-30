@@ -4,6 +4,8 @@ export interface AuthUser {
 
   anonymous: boolean;
 
+  gitHub: boolean;
+
   name?: string;
   email?: string;
   email_verified?: boolean;

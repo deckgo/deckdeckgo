@@ -3,6 +3,8 @@ import {Component, Element, h, Prop, State} from '@stencil/core';
 import deckStore from '../../../../stores/deck.store';
 import userStore from '../../../../stores/user.store';
 import shareStore from '../../../../stores/share.store';
+import authStore from '../../../../stores/auth.store';
+import deployStore from '../../../../stores/deploy.store';
 
 @Component({
   tag: 'app-publish-done',
@@ -35,7 +37,7 @@ export class AppPublishDone {
         <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your presentation has been published.</h1>
 
         <p class="ion-text-center">
-          It's time to <a onClick={() => this.share()}>share</a> it with the world, your colleagues, friends and community.
+          <a onClick={() => this.share()}>Share</a> it with the world, your colleagues, friends and community.
         </p>
 
         <ion-button color="tertiary" shape="round" onClick={() => this.share()} class="ion-margin">
@@ -43,14 +45,36 @@ export class AppPublishDone {
           <ion-label>Share</ion-label>
         </ion-button>
 
-        <ion-label class="published-url ion-padding ion-text-center">
-          Or{' '}
-          <a href={this.publishedUrl} target="_blank" rel="noopener noreferrer">
-            click here
-          </a>{' '}
-          to open it.
-        </ion-label>
+        {this.renderGitHub()}
       </article>
+    );
+  }
+
+  private renderGitHub() {
+    if (!authStore.state.gitHub) {
+      return undefined;
+    }
+
+    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.meta || !deckStore.state.deck.data.meta.github) {
+      return undefined;
+    }
+
+    if (!deployStore.state.deploy || !deployStore.state.deploy.data) {
+      return (
+        <ion-label class="published-url ion-padding ion-text-center">
+          The source code of the presentation is processing <ion-spinner color="tertiary"></ion-spinner>
+        </ion-label>
+      );
+    }
+
+    return (
+      <ion-label class="published-url ion-padding ion-text-center">
+        The source code of the presentation has been submitted to a{' '}
+        <a href={`${deployStore.state.deploy.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
+          repository
+        </a>{' '}
+        on GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>.
+      </ion-label>
     );
   }
 }

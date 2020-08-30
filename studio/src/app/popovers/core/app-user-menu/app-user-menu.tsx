@@ -29,7 +29,7 @@ export class AppUserMenu {
 
     navStore.state.nav = {
       url: '/',
-      direction: NavDirection.ROOT,
+      direction: NavDirection.RELOAD,
     };
   }
 
@@ -40,7 +40,7 @@ export class AppUserMenu {
   private async navigateEditor() {
     navStore.state.nav = {
       url: '/editor',
-      direction: NavDirection.ROOT,
+      direction: NavDirection.RELOAD,
     };
 
     await this.closePopover();

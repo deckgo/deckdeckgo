@@ -66,7 +66,7 @@ export class Utils {
       };
       const now: string = new Intl.DateTimeFormat('en-US', options).format(new Date());
 
-      resolve(now);
+      resolve(now.replace(/,/g, '').replace(/:/g, '-'));
     });
   }
 }

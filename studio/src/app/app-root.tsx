@@ -112,8 +112,10 @@ export class AppRoot {
       return;
     }
 
-    if (params.direction === NavDirection.ROOT) {
+    if (params.direction === NavDirection.RELOAD) {
       window.location.assign(params.url);
+    } else if (params.direction === NavDirection.ROOT) {
+      await router.push(params.url, 'root');
     } else if (params.direction === NavDirection.BACK) {
       await router.back();
     } else {

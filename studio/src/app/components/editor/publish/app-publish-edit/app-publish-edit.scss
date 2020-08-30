@@ -15,10 +15,25 @@ app-publish-edit {
 
     display: inline-block;
     padding-top: 8px;
+
+    &:not(:empty) {
+      height: 37px;
+    }
   }
 
   p.small {
     font-size: var(--font-size-small);
+  }
+
+  ion-item,
+  p {
+    &.error {
+      color: var(--ion-color-danger);
+
+      ion-icon {
+        vertical-align: middle;
+      }
+    }
   }
 
   div.publish {
@@ -37,6 +52,18 @@ app-publish-edit {
       ion-label {
         margin-top: 8px;
         font-size: var(--font-size-small);
+      }
+    }
+  }
+
+  ion-radio-group {
+    ion-item {
+      display: inline-block;
+      --inner-border-width: 0;
+      --padding-start: 4px;
+
+      ion-radio {
+        margin-right: 8px;
       }
     }
   }

@@ -7,6 +7,8 @@ import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
 import publishStore from '../../../../stores/publish.store';
 import apiUserStore from '../../../../stores/api.user.store';
+import authStore from '../../../../stores/auth.store';
+import deployStore from '../../../../stores/deploy.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -45,6 +47,9 @@ export class AppPublishEdit {
   @State()
   private tags: string[] = [];
 
+  @State()
+  private pushToGitHub: boolean = true;
+
   private deckService: DeckService;
 
   private readonly debounceUpdateDeck: () => void;
@@ -82,6 +87,7 @@ export class AppPublishEdit {
         ? (deckStore.state.deck.data.meta.description as string)
         : await this.getFirstSlideContent();
     this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
+    this.pushToGitHub = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.github !== undefined ? deckStore.state.deck.data.meta.github : true;
   }
 
   private getFirstSlideContent(): Promise<string> {
@@ -149,7 +155,7 @@ export class AppPublishEdit {
       try {
         this.publishing = true;
 
-        const publishedUrl: string = await this.publishService.publish(this.description, this.tags);
+        const publishedUrl: string = await this.publishService.publish(this.description, this.tags, this.pushToGitHub);
 
         this.published.emit(publishedUrl);
 
@@ -295,23 +301,23 @@ export class AppPublishEdit {
     });
   }
 
+  private async onGitHubChange($event: CustomEvent) {
+    this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
+  }
+
   render() {
     return (
       <article>
         <h1>Share your presentation online</h1>
 
-        <p>
-          <strong>Publish</strong> your presentation to share it with the world, your colleagues, friends and community.
-        </p>
+        <p>Publish your presentation to share it with the world, your colleagues, friends and community.</p>
 
-        <p>
-          DeckDeckGo will distribute it online as a modern <strong>app</strong>.
-        </p>
+        <p>DeckDeckGo will distribute it online as a modern app.</p>
 
-        <h2>Meta</h2>
+        <h2 class="ion-padding-top">Meta</h2>
 
         <p class="meta-text">
-          But first, edit or review your presentation's title and summary and add or change tags (up to 5) to make your presentation more inviting to readers.
+          Edit or review your presentation's title, summary and add or change tags (up to 5) to make your presentation more inviting to readers.
         </p>
 
         <form
@@ -320,9 +326,7 @@ export class AppPublishEdit {
             e.key === 'Enter' && e.preventDefault();
           }}>
           <ion-list class="inputs-list">
-            <ion-item class="item-title">
-              <ion-label>Title</ion-label>
-            </ion-item>
+            {this.renderTitleLabel()}
 
             <ion-item>
               <ion-input
@@ -337,8 +341,8 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateCaptionInput()}></ion-input>
             </ion-item>
 
-            <p class="small">
-              The title could be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
+            <p class={`small ${this.valid ? undefined : 'error'}`}>
+              The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
               {Resources.Constants.DECK.TITLE_MAX_LENGTH} characters.
             </p>
 
@@ -357,7 +361,7 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
             </ion-item>
 
-            <ion-item class="item-title">
+            <ion-item class="item-title ion-margin-top">
               <ion-label>Tags</ion-label>
             </ion-item>
 
@@ -379,11 +383,23 @@ export class AppPublishEdit {
               onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
           </ion-list>
 
+          {this.renderGitHub()}
+
           <div class="ion-padding ion-text-center publish">{this.renderPublish()}</div>
         </form>
 
         <p class="small">DeckDeckGo will automatically generate the social card for your presentation based on the first slide of your deck.</p>
       </article>
+    );
+  }
+
+  private renderTitleLabel() {
+    return (
+      <ion-item class={`item-title ${this.valid ? undefined : 'error'}`}>
+        <ion-label>
+          Title {this.valid ? undefined : <ion-icon aria-label="Title needs to match the expected format" name="warning-outline"></ion-icon>}
+        </ion-label>
+      </ion-item>
     );
   }
 
@@ -402,5 +418,39 @@ export class AppPublishEdit {
         </div>
       );
     }
+  }
+
+  private renderGitHub() {
+    if (!authStore.state.gitHub) {
+      return undefined;
+    }
+
+    return [
+      <h2 class="ion-padding-top">
+        GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>
+      </h2>,
+      this.renderGitHubText(),
+      <ion-list class="inputs-list ion-margin-bottom">
+        <ion-radio-group value={this.pushToGitHub} onIonChange={($event) => this.onGitHubChange($event)}>
+          <ion-item>
+            <ion-radio value={true} mode="md" disabled={this.publishing}></ion-radio>
+            <ion-label>Yes</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-radio value={false} mode="md" disabled={this.publishing}></ion-radio>
+            <ion-label>No</ion-label>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>,
+    ];
+  }
+
+  private renderGitHubText() {
+    if (!deployStore.state.deploy || !deployStore.state.deploy.data) {
+      return <p class="meta-text">Push the source code of the presentation to a new public repository of your GitHub account?</p>;
+    }
+
+    return <p class="meta-text">Submit the source code of the presentation to its GitHub repository?</p>;
   }
 }
