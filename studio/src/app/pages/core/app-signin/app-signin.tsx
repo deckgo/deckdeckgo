@@ -315,7 +315,7 @@ export class AppSignIn {
   private renderGitHub() {
     return (
       <p class="ion-text-center ion-padding-start ion-padding-end ion-padding-bottom">
-        Push the source code of your slides to a repo with the GitHub <ion-icon name="logo-github"></ion-icon> logging.
+        Additionally, push the source code of your slides to repos with the GitHub <ion-icon name="logo-github"></ion-icon> logging.
       </p>
     );
   }
