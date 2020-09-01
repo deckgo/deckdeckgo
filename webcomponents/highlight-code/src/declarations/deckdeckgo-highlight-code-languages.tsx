@@ -176,6 +176,7 @@ export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages 
   puppet: {title: 'Puppet'},
   pure: {title: 'Pure'},
   purebasic: {title: 'PureBasic'},
+  purescript: {title: 'PureScript', require: ['haskell']},
   python: {title: 'Python'},
   q: {title: 'Q (kdb+ database)'},
   qml: {title: 'QML'},

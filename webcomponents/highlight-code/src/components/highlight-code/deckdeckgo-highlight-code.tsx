@@ -31,16 +31,16 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop({reflectToAttr: true}) language: string = 'javascript';
+  @Prop({reflect: true}) language: string = 'javascript';
 
-  @Prop({reflectToAttr: true}) highlightLines: string;
-  @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
+  @Prop({reflect: true}) highlightLines: string;
+  @Prop({reflect: true}) lineNumbers: boolean = false;
 
-  @Prop({reflectToAttr: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
+  @Prop({reflect: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+  @Prop({reflect: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   @State() editing: boolean = false;
 

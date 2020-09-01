@@ -155,7 +155,7 @@ export class DeckdeckgoInlineEditor {
     }
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.detachListener(this.attachTo ? this.attachTo : document);
   }
 

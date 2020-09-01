@@ -67,7 +67,7 @@ export class DeckdeckgoColor {
     await this.colorPickerListener(true);
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.colorPickerListener(false);
   }
 
