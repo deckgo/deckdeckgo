@@ -1,7 +1,19 @@
-# 2.3.0 (In progress...)
+# 2.3.0 (2020-09-01)
+
+### Features
+
+- publish presentations source code to GitHub ([#851](https://github.com/deckgo/deckdeckgo/pull/851))
+- highlight why "publish" action would be disabled ([#613](https://github.com/deckgo/deckdeckgo/issues/613))
+- new staging environment ([#850](https://github.com/deckgo/deckdeckgo/pull/850))
+- make lighthouse happy ([#847](https://github.com/deckgo/deckdeckgo/pull/847))
+
+### Style
+
+- less christmassy landing drawings ([#855](https://github.com/deckgo/deckdeckgo/pull/855))
 
 ### Fix
 
+- hide placeholder in fullscreen mode if idle ([#854](https://github.com/deckgo/deckdeckgo/pull/854))
 - update `@deckdeckgo/highlight-code` ([#848](https://github.com/deckgo/deckdeckgo/issues/848))
 
 # 2.2.0 (2020-08-17)
