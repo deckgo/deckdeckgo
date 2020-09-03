@@ -27,7 +27,7 @@
     "katex": "^0.12.0"
   },
   "devDependencies": {
-    "@stencil/core": "^2.0.1",
+    "@stencil/core": "^2.0.2",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.3.2",
     "@types/katex": "^0.11.0",
