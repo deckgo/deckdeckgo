@@ -13,7 +13,7 @@ export class DeckdeckgoMath {
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) macros: string = `{"\\\\f":"f(#1)"}`;
+  @Prop({reflect: true}) macros: string = `{"\\\\f":"f(#1)"}`;
 
   @State()
   private editing: boolean = false;

@@ -103,7 +103,7 @@ export class DeckdeckgoRemote {
     }
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.communicationService.disconnect();
 
     if (this.destroyStateListener) {

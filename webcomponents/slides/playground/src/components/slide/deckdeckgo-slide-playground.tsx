@@ -15,8 +15,8 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) src: string;
-  @Prop({reflectToAttr: true}) theme: DeckdeckgoPlaygroundTheme = DeckdeckgoPlaygroundTheme.DEFAULT;
+  @Prop({reflect: true}) src: string;
+  @Prop({reflect: true}) theme: DeckdeckgoPlaygroundTheme = DeckdeckgoPlaygroundTheme.DEFAULT;
 
   @Prop() width: number;
   @Prop() height: number;

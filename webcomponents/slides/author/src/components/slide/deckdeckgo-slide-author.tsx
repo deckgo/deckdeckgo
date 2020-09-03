@@ -17,7 +17,7 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Prop() imgSrc: string;
   @Prop() imgAlt: string;
 
-  @Prop({reflectToAttr: true}) imgMode: 'cover' | 'circle' | 'none' = 'cover';
+  @Prop({reflect: true}) imgMode: 'cover' | 'circle' | 'none' = 'cover';
 
   @State()
   private mobile: boolean = false;

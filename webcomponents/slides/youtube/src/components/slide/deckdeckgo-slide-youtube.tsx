@@ -13,7 +13,7 @@ export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) src: string;
+  @Prop({reflect: true}) src: string;
   @Prop() width: number;
   @Prop() height: number;
 

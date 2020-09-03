@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue, } from "@deckdeckgo/types";
+import { DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue } from "@deckdeckgo/types";
 export namespace Components {
     interface DeckgoBarChart {
         "animation": boolean;
@@ -21,7 +21,7 @@ export namespace Components {
         "marginRight": number;
         "marginTop": number;
         "next": () => Promise<void>;
-        "postCustomLoad": (content: string) => Promise<void>;
+        "postCustomLoad": (content: string | undefined) => Promise<void>;
         "prev": () => Promise<void>;
         "separator": string;
         "src": string;
@@ -46,7 +46,7 @@ export namespace Components {
         "marginRight": number;
         "marginTop": number;
         "next": () => Promise<void>;
-        "postCustomLoad": (content: string) => Promise<void>;
+        "postCustomLoad": (content: string | undefined) => Promise<void>;
         "prev": () => Promise<void>;
         "separator": string;
         "smooth": boolean;
@@ -69,7 +69,7 @@ export namespace Components {
         "marginRight": number;
         "marginTop": number;
         "next": () => Promise<void>;
-        "postCustomLoad": (content: string) => Promise<void>;
+        "postCustomLoad": (content: string | undefined) => Promise<void>;
         "prev": () => Promise<void>;
         "separator": string;
         "src": string;
