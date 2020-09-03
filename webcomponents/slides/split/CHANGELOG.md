@@ -2,7 +2,7 @@
 
 ### Breaking Changes
 
-- E11, Edge 16-18 and Safari 10 not supported
+- IE11, Edge 16-18 and Safari 10 not supported
 
 # 1.3.2 (2020-07-12)
 
