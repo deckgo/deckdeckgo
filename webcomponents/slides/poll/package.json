@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-poll",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "Interact with your audience, add a live poll to your presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
