@@ -1,3 +1,9 @@
+# 1.9.3 (2020-09-03)
+
+### Features
+
+- update all dependencies
+
 # 1.9.1 (2020-08-21)
 
 ### Features
