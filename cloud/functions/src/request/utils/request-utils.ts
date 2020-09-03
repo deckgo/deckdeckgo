@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
-export async function verifyToken(request: functions.Request): Promise<boolean> {
+export async function verifyToken(request: functions.Request, acceptAnonymous: boolean = false): Promise<boolean> {
   if (!request.headers.authorization) {
     return false;
   }
@@ -11,7 +11,7 @@ export async function verifyToken(request: functions.Request): Promise<boolean> 
 
     const payload: admin.auth.DecodedIdToken = await admin.auth().verifyIdToken(token);
 
-    return payload !== null;
+    return payload !== null && (acceptAnonymous || payload.firebase.sign_in_provider !== 'anonymous');
   } catch (err) {
     return false;
   }
