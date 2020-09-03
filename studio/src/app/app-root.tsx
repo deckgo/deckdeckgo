@@ -66,7 +66,7 @@ export class AppRoot {
     });
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyErrorListener) {
       this.destroyErrorListener();
     }

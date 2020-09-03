@@ -6,6 +6,7 @@
 - highlight why "publish" action would be disabled ([#613](https://github.com/deckgo/deckdeckgo/issues/613))
 - new staging environment ([#850](https://github.com/deckgo/deckdeckgo/pull/850))
 - make lighthouse happy ([#847](https://github.com/deckgo/deckdeckgo/pull/847))
+- update dependencies including all Web Components build with Stencil v2 ([#858](https://github.com/deckgo/deckdeckgo/issues/858))
 
 ### Style
 

@@ -196,7 +196,7 @@ export class AppEditor {
     this.initWindowResize();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.remoteEventsHandler.destroy();
 
     this.removeWindowResize();

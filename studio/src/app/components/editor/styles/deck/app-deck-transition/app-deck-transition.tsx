@@ -26,7 +26,7 @@ export class AppDeckTransition {
     await this.animateDecks();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
     }

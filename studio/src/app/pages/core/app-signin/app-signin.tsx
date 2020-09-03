@@ -49,7 +49,7 @@ export class AppSignIn {
     await this.setupFirebaseUI();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     const ui = firebaseui.auth.AuthUI.getInstance();
     if (ui) {
       await ui.delete();

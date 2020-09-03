@@ -93,7 +93,7 @@ export class AppActionsElement {
     this.initWindowResize();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     this.removeWindowResize();
   }
 

@@ -123,7 +123,7 @@ export class AppHome {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.destroyListener();
   }
 

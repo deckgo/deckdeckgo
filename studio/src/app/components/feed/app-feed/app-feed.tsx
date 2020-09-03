@@ -45,7 +45,7 @@ export class AppFeed {
     this.mobile = isMobile();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyListener) {
       this.destroyListener();
     }
