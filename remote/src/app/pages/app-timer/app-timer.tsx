@@ -43,7 +43,7 @@ export class AppTimer {
     }
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     if (this.destroyListener) {
       this.destroyListener();
     }

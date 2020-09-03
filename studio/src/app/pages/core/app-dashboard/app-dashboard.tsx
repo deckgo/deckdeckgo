@@ -82,7 +82,7 @@ export class AppDashboard {
     await this.initWatchForClonedDecks();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyListener) {
       this.destroyListener();
     }

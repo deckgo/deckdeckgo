@@ -1,3 +1,9 @@
+# 1.6.3 (2020-09-03)
+
+### Features
+
+- update all dependencies
+
 # 1.6.2 (2020-08-21)
 
 ### Features

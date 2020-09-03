@@ -85,7 +85,7 @@ export class AppActionsDeck {
     });
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyListener) {
       this.destroyListener();
     }

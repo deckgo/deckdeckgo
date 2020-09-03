@@ -26,7 +26,7 @@ export class AppRemoteConnect {
     await this.initCloseOnConnected();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.destroyCloseOnConnected();
   }
 
