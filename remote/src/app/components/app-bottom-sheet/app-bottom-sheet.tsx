@@ -4,7 +4,7 @@ import {debounce, unifyEvent} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'app-bottom-sheet',
-  styleUrl: 'app-bottom-sheet.scss'
+  styleUrl: 'app-bottom-sheet.scss',
 })
 export class AppBottomSheet {
   @Element() el: HTMLElement;
@@ -33,7 +33,7 @@ export class AppBottomSheet {
     this.initWindowResize();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.destroy();
 
     this.removeWindowResize();
@@ -138,7 +138,7 @@ export class AppBottomSheet {
         style={{
           '--bottom-sheet-top': `${this.bottomSheetTop}px`,
           '--bottom-sheet-toolbaroffset': `${this.toolbarOffset}px`,
-          '--contentheight': `${this.contentHeight}px`
+          '--contentheight': `${this.contentHeight}px`,
         }}>
         {this.renderBackdrop()}
         <div class="container" ref={(el) => (this.container = el)}>

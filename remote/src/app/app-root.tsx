@@ -37,7 +37,7 @@ export class AppRoot {
     }
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.timerService.destroy();
   }
 
