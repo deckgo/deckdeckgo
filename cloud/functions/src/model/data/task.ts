@@ -2,7 +2,7 @@ import {firestore} from 'firebase-admin';
 
 export interface TaskData {
   deckId: string;
-  token: string;
+  token: string | firestore.FieldValue;
 
   type: 'publish-deck' | 'push-github';
 

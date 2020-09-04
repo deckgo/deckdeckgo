@@ -8,6 +8,7 @@ app.firestore().settings({timestampsInSnapshots: true});
 
 import {applyWatchDeckCreate, applyWatchDeckDelete, applyWatchDeckUpdate} from './watch/watch-deck';
 import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from './watch/watch-user';
+import {applyWatchTaskCreate} from './watch/watch-task';
 
 import {publishTask} from './request/publish';
 
@@ -24,8 +25,10 @@ export const watchDeckCreate = functions.firestore.document('decks/{deckId}').on
 
 export const watchUserUpdate = functions.firestore.document('users/{userId}').onUpdate(applyWatchUserUpdate);
 
+export const watchTaskCreate = functions.firestore.document('tasks/{taskId}').onCreate(applyWatchTaskCreate);
+
 export const watchUserDelete = functions.auth.user().onDelete(applyWatchUserDelete);
 
 export const watchUserCreate = functions.auth.user().onCreate(applyWatchUserCreate);
 
-export const publish = functions.runWith(runtimeOpts).https.onRequest(publishTask);
+export const publish = functions.https.onRequest(publishTask);

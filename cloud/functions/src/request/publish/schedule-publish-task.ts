@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 
-import {scheduleTask} from '../utils/task-utils';
+import {scheduleTask} from '../../utils/data/task-utils';
 import {geToken} from '../utils/request-utils';
 
 export interface ScheduledPublishTask {}
