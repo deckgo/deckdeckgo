@@ -13,6 +13,7 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
     try {
       const token: string | undefined = await geToken(request);
       const deckId: string | undefined = request.body.deckId;
+      const ownerId: string | undefined = request.body.ownerId;
 
       if (!deckId) {
         reject('No deck information provided.');
@@ -21,6 +22,11 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
 
       if (!token) {
         reject('No token provided.');
+        return;
+      }
+
+      if (!ownerId) {
+        reject('No owner ID provided.');
         return;
       }
 
@@ -33,7 +39,7 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
       }
 
       // We tell the frontend to wait
-      await scheduleDeploy(deckId, publish, github);
+      await scheduleDeploy(deckId, ownerId, publish, github);
 
       // We schedule internally / cloud the job so we keep secret the token
 
@@ -65,7 +71,7 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
   });
 }
 
-function scheduleDeploy(deckId: string, publish: boolean, github: boolean): Promise<void> {
+function scheduleDeploy(deckId: string, ownerId: string, publish: boolean, github: boolean): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || !deckId) {
@@ -75,7 +81,8 @@ function scheduleDeploy(deckId: string, publish: boolean, github: boolean): Prom
 
       const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}/`);
 
-      const updateData: Partial<DeployData> = {
+      const updateData: DeployData = {
+        owner_id: ownerId,
         updated_at: admin.firestore.Timestamp.now(),
       };
 

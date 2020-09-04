@@ -65,6 +65,7 @@ export class PublishService {
           },
           body: JSON.stringify({
             deckId: deck.id,
+            ownerId: deck.data.owner_id,
             publish: true,
             github: deck.data.meta.github,
           }),
