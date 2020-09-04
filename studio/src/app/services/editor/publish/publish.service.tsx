@@ -49,7 +49,7 @@ export class PublishService {
     });
   }
 
-  private async publishDeck(deck: Deck): Promise<void> {
+  private publishDeck(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const config: EnvironmentFirebaseConfig = EnvironmentConfigService.getInstance().get('firebase');
