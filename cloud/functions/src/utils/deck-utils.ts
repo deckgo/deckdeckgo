@@ -1,7 +1,6 @@
 import * as admin from 'firebase-admin';
 
 import {Deck, DeckData} from '../model/deck';
-import {DeployData, DeployGitHubRepo} from '../model/deploy';
 
 export function findDeck(deckId: string): Promise<Deck> {
   return new Promise<Deck>(async (resolve, reject) => {

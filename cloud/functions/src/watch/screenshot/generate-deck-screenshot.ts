@@ -1,4 +1,4 @@
-import {Change} from 'firebase-functions';
+import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import * as admin from 'firebase-admin';
@@ -10,9 +10,8 @@ import {Resources} from '../../utils/resources';
 import {DeckData} from '../../model/deck';
 
 import {isDeckPublished} from './utils/update-deck';
-import * as functions from 'firebase-functions';
 
-export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
+export async function generateDeckScreenshot(change: functions.Change<DocumentSnapshot>) {
   const newValue: DeckData = change.after.data() as DeckData;
 
   const previousValue: DeckData = change.before.data() as DeckData;
