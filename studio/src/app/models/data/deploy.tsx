@@ -6,16 +6,22 @@ export interface DeployGitHubRepo {
 }
 
 export interface DeployGitHub {
-  repo: DeployGitHubRepo;
+  repo?: DeployGitHubRepo;
+  status: 'scheduled' | 'failure' | 'successful';
+}
+
+export interface DeployApi {
+  status: 'scheduled' | 'failure' | 'successful';
 }
 
 export interface DeployData {
   owner_id: string;
 
-  github: DeployGitHub;
+  github?: DeployGitHub;
+
+  api?: DeployApi;
 
   updated_at?: firebase.firestore.Timestamp;
-  created_at?: firebase.firestore.Timestamp;
 }
 
 export interface Deploy {

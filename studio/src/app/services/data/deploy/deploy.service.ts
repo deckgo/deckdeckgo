@@ -25,18 +25,16 @@ export class DeployService {
 
   snapshot(): Promise<() => void | undefined> {
     return new Promise<() => void | undefined>((resolve) => {
+      deployStore.reset();
+
       const deck: Deck = deckStore.state.deck;
 
       if (!deck || !deck.id) {
-        deployStore.reset();
-
         resolve(undefined);
         return;
       }
 
       if (!authStore.state.gitHub) {
-        deployStore.reset();
-
         resolve(undefined);
         return;
       }

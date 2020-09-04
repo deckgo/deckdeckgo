@@ -3,7 +3,6 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 import deckStore from '../../../stores/deck.store';
-import publishStore from '../../../stores/publish.store';
 import userStore from '../../../stores/user.store';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
@@ -31,38 +30,20 @@ export class PublishService {
     return PublishService.instance;
   }
 
-  private progress(progress: number) {
-    publishStore.state.progress = progress;
-  }
-
-  private progressComplete() {
-    publishStore.state.progress = 1;
-  }
-
-  publish(description: string, tags: string[], github: boolean): Promise<string> {
-    return new Promise<string>(async (resolve, reject) => {
-      this.progress(0);
-
+  publish(description: string, tags: string[], github: boolean): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
       try {
         if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
-          this.progressComplete();
           reject('No deck found');
           return;
         }
 
         await this.updateDeckMeta(description, tags, github);
 
-        this.progress(0.25);
-
         await this.publishDeck(deckStore.state.deck);
 
-        this.progress(0.75);
-
-        await this.delayRefreshDeck();
-
-        resolve('https://deckdeckgo.com/todo');
+        resolve();
       } catch (err) {
-        this.progressComplete();
         reject(err);
       }
     });
@@ -84,6 +65,8 @@ export class PublishService {
           },
           body: JSON.stringify({
             deckId: deck.id,
+            publish: true,
+            github: deck.data.meta.github,
           }),
         });
 
@@ -99,41 +82,8 @@ export class PublishService {
     });
   }
 
-  // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
-  // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private delayRefreshDeck(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const currentDeck: Deck = {...deckStore.state.deck};
-
-      await this.refreshDeck(currentDeck.id);
-
-      this.progress(0.9);
-
-      const newApiId: boolean = currentDeck.data.api_id !== deckStore.state.deck.data.api_id;
-
-      const interval = newApiId
-        ? setInterval(() => {
-            this.progress(publishStore.state.progress + 0.01);
-          }, 7000 / 9)
-        : undefined;
-
-      setTimeout(
-        () => {
-          if (interval) {
-            clearInterval(interval);
-          }
-
-          this.progressComplete();
-
-          resolve();
-        },
-        newApiId ? 7000 : 0
-      );
-    });
-  }
-
   // Otherwise we gonna kept in memory references like firebase.firestore.FieldValue.delete instead of null values
-  private refreshDeck(deckId: string): Promise<void> {
+  refreshDeck(deckId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const freshDeck: Deck = await this.deckService.get(deckId);
@@ -211,7 +161,8 @@ export class PublishService {
           deck.data.meta.author = firebase.firestore.FieldValue.delete();
         }
 
-        await this.deckService.update(deck);
+        const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+        deckStore.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
