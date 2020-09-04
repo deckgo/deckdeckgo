@@ -39,8 +39,6 @@ export class DeployService {
         return;
       }
 
-      console.log(deck);
-
       const firestore: firebase.firestore.Firestore = firebase.firestore();
       const unsubscribe = firestore
         .collection(`deploys`)
@@ -53,7 +51,6 @@ export class DeployService {
             };
           },
           (_err) => {
-            console.log(_err);
             errorStore.state.error = 'Cannont retrieve the deploy information.';
           }
         );
