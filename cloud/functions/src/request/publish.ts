@@ -24,6 +24,7 @@ export async function publishJob(request: functions.Request, response: functions
       const token: string | undefined = await geToken(request);
       const deckId: string | undefined = request.body.deckId;
 
+      // TODO: Don't publish here but trigger the functions
       const apiDeckPublish: ApiPresentation = await publishDeck(deckId, token);
 
       response.json(apiDeckPublish);
