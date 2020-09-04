@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {DeployApi, DeployData, DeployGitHub} from '../../model/data/deploy';
+import {DeployData} from '../../model/data/deploy';
 
 export function successfulDeploy(deckId: string, type: 'github' | 'api'): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
@@ -40,12 +40,20 @@ function updateStatus(deckId: string, type: 'github' | 'api', status: 'scheduled
         updated_at: admin.firestore.Timestamp.now(),
       };
 
-      (updateData[type] as DeployGitHub | DeployApi).status = status;
+      if (type === 'github') {
+        updateData.github = {
+          status,
+        };
+      } else if (type === 'api') {
+        updateData.api = {
+          status,
+        };
+      }
 
       await admin.firestore().runTransaction((transaction) => {
         return transaction.get(documentReference).then((sfDoc) => {
           if (!sfDoc.exists) {
-            throw 'Document does not exist!';
+            throw new Error('Document does not exist!');
           }
 
           transaction.set(documentReference, updateData, {merge: true});
