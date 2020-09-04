@@ -7,6 +7,7 @@ import {ApiPresentation} from '../../../model/api/api.presentation';
 import {convertDeck} from '../../../request/utils/convert-deck-utils';
 import {publishDeckApi} from '../../../request/utils/api-utils';
 import {updateDeck} from '../../../utils/data/deck-utils';
+import {failureDeploy, successfulDeploy} from '../../../utils/data/deploy-utils';
 
 import {Resources} from '../../../utils/resources/resources';
 
@@ -39,8 +40,12 @@ export function publishToApi(deck: Deck, token: string): Promise<void> {
 
       await updateDeckPublished(deck, apiDeckPublish);
 
+      await successfulDeploy(deck.id, 'api');
+
       resolve();
     } catch (err) {
+      await failureDeploy(deck.id, 'api');
+
       reject(err);
     }
   });

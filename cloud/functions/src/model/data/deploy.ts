@@ -8,15 +8,21 @@ export interface DeployGitHubRepo {
 }
 
 export interface DeployGitHub {
-  repo: DeployGitHubRepo;
+  repo?: DeployGitHubRepo;
+  status: 'scheduled' | 'failure' | 'successful';
+}
+
+export interface DeployApi {
+  status: 'scheduled' | 'failure' | 'successful';
 }
 
 export interface DeployData {
   owner_id: string;
 
-  github: DeployGitHub;
+  github?: DeployGitHub;
 
-  created_at?: firestore.Timestamp;
+  api?: DeployApi;
+
   updated_at?: firestore.Timestamp;
 }
 

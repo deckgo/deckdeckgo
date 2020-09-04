@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import {Token, TokenData} from '../../../../model/data/token';
-import {DeployGitHubRepo, Deploy, DeployData} from '../../../../model/data/deploy';
+import {DeployGitHubRepo, Deploy, DeployData, DeployGitHub} from '../../../../model/data/deploy';
 
 export function findToken(userId: string): Promise<Token> {
   return new Promise<Token>(async (resolve, reject) => {
@@ -49,7 +49,7 @@ export function findDeploy(deckId: string): Promise<Deploy | undefined> {
   });
 }
 
-export function updateDeploy(deckId: string, deckData: DeployData, repo: DeployGitHubRepo | undefined): Promise<void> {
+export function updateGitHubDeploy(deckId: string, deckData: DeployData, repo: DeployGitHubRepo | undefined): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || deckId === '') {
@@ -63,13 +63,9 @@ export function updateDeploy(deckId: string, deckData: DeployData, repo: DeployG
       }
 
       const data: DeployData = {...deckData};
-      data.github.repo = {...repo};
+      (data.github as DeployGitHub).repo = {...repo};
 
       data.updated_at = admin.firestore.Timestamp.now();
-
-      if (!data.created_at) {
-        data.created_at = admin.firestore.Timestamp.now();
-      }
 
       const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}`);
 

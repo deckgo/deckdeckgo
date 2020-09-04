@@ -1,8 +1,8 @@
 import {DeckMeta} from '../../../../model/data/deck';
-import {DeployGitHubRepo, Deploy, DeployData} from '../../../../model/data/deploy';
+import {DeployGitHubRepo, Deploy, DeployData, DeployGitHub} from '../../../../model/data/deploy';
 
 import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
-import {findDeploy, updateDeploy} from './github-db';
+import {findDeploy, updateGitHubDeploy} from './github-db';
 import {parseDeck, parseInfo, shouldUpdate} from './github-fs';
 import {checkoutBranch, commitDeck, commit, pull, push} from './github-cmd';
 import * as functions from 'firebase-functions';
@@ -19,12 +19,12 @@ export async function getRepo(
 
   const deploy: Deploy | undefined = await findDeploy(deckId);
 
-  if (deploy) {
+  if (deploy && deploy.data && deploy.data.github && deploy.data.github.repo) {
     const existingRepo: DeployGitHubRepo | undefined = await findRepo(githubToken, user, deploy.data.github.repo.name);
 
     if (existingRepo) {
       // We update our information because the user may have renamed its repo. For example, the new repo name ("hello world world") is returned when looking with the old repo name ("hello world")
-      await updateDeploy(deckId, deploy.data, existingRepo);
+      await updateGitHubDeploy(deckId, deploy.data, existingRepo);
 
       return existingRepo;
     }
@@ -32,7 +32,7 @@ export async function getRepo(
     // The user may have delete its repo
 
     const createdRepo: DeployGitHubRepo | undefined = await createRepo(githubToken, user, project, description);
-    await updateDeploy(deckId, deploy.data, createdRepo);
+    await updateGitHubDeploy(deckId, deploy.data, createdRepo);
 
     return createdRepo;
   }
@@ -47,10 +47,10 @@ export async function getRepo(
     owner_id: userId,
     github: {
       repo,
-    },
+    } as DeployGitHub,
   };
 
-  await updateDeploy(deckId, data, repo);
+  await updateGitHubDeploy(deckId, data, repo);
 
   return repo;
 }
@@ -81,7 +81,7 @@ async function updateInfo(githubToken: string, login: string, project: string, u
   await commit(login, project, msg, ...files);
 }
 
-export async function updateDeck(githubToken: string, user: GitHubUser, repo: DeployGitHubRepo, meta: DeckMeta) {
+export async function updateGitHubDeck(githubToken: string, user: GitHubUser, repo: DeployGitHubRepo, meta: DeckMeta) {
   // Working branch name
   const branch: string = functions.config().github.branch;
 

@@ -25,7 +25,7 @@ export function scheduleTask(data: Partial<TaskData>): Promise<void> {
   });
 }
 
-export function successful(taskId: string): Promise<void> {
+export function successfulTask(taskId: string): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       await updateStatus(taskId, 'successful');
@@ -37,7 +37,7 @@ export function successful(taskId: string): Promise<void> {
   });
 }
 
-export function failure(taskId: string): Promise<void> {
+export function failureTask(taskId: string): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       await updateStatus(taskId, 'failure');

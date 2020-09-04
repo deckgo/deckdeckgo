@@ -5,7 +5,8 @@ import {DeployGitHubRepo} from '../../../model/data/deploy';
 import {getUser, GitHubUser} from './utils/github-api';
 import {clone} from './utils/github-cmd';
 import {findToken} from './utils/github-db';
-import {getRepo, updateDeck, updateProject} from './utils/github-utils';
+import {getRepo, updateGitHubDeck, updateProject} from './utils/github-utils';
+import {failureDeploy, successfulDeploy} from '../../../utils/data/deploy-utils';
 
 export async function publishToGitHub(deckId: string, deckData: DeckData): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
@@ -58,10 +59,14 @@ export async function publishToGitHub(deckId: string, deckData: DeckData): Promi
 
       await updateProject(platform.data.github.token, user.login, repo.name, repo.url, deckData.meta);
 
-      await updateDeck(platform.data.github.token, user, repo, deckData.meta);
+      await updateGitHubDeck(platform.data.github.token, user, repo, deckData.meta);
+
+      await successfulDeploy(deckId, 'github');
 
       resolve();
     } catch (err) {
+      await failureDeploy(deckId, 'github');
+
       reject(err);
     }
   });

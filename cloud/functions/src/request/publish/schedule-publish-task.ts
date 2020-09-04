@@ -1,7 +1,10 @@
+import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 import {scheduleTask} from '../../utils/data/task-utils';
 import {geToken} from '../utils/request-utils';
+
+import {DeployData} from '../../model/data/deploy';
 
 export interface ScheduledPublishTask {}
 
@@ -22,6 +25,17 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
       }
 
       const publish: boolean = request.body.publish !== undefined && request.body.publish;
+      const github: boolean = request.body.github !== undefined && request.body.github;
+
+      if (!github && !publish) {
+        reject('Nothing to publish');
+        return;
+      }
+
+      // We tell the frontend to wait
+      await scheduleDeploy(deckId, publish, github);
+
+      // We schedule internally / cloud the job so we keep secret the token
 
       if (publish) {
         await scheduleTask({
@@ -30,8 +44,6 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
           type: 'publish-deck',
         });
       }
-
-      const github: boolean = request.body.github !== undefined && request.body.github;
 
       if (github) {
         await scheduleTask({
@@ -47,6 +59,41 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
         publish: publish,
         github: github,
       });
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+function scheduleDeploy(deckId: string, publish: boolean, github: boolean): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      if (!deckId || deckId === undefined || !deckId) {
+        resolve();
+        return;
+      }
+
+      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}/`);
+
+      const updateData: Partial<DeployData> = {
+        updated_at: admin.firestore.Timestamp.now(),
+      };
+
+      if (publish) {
+        updateData.api = {
+          status: 'scheduled',
+        };
+      }
+
+      if (github) {
+        updateData.github = {
+          status: 'scheduled',
+        };
+      }
+
+      await documentReference.set(updateData, {merge: true});
+
+      resolve();
     } catch (err) {
       reject(err);
     }

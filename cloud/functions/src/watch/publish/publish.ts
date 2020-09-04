@@ -6,7 +6,7 @@ import {TaskData} from '../../model/data/task';
 
 import {findDeck} from '../../utils/data/deck-utils';
 
-import {failure, successful} from '../../utils/data/task-utils';
+import {failureTask, successfulTask} from '../../utils/data/task-utils';
 import {publishToApi} from './api/publish-api';
 import {publishToGitHub} from './github/publish-github';
 
@@ -20,11 +20,11 @@ export async function publish(snap: DocumentSnapshot, context: EventContext) {
   try {
     await publishJob(snap);
 
-    await successful(taskId);
+    await successfulTask(taskId);
   } catch (err) {
     console.error(err);
 
-    await failure(taskId);
+    await failureTask(taskId);
   }
 }
 
