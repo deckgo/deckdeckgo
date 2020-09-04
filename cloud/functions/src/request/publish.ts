@@ -2,12 +2,11 @@ import * as functions from 'firebase-functions';
 
 import * as cors from 'cors';
 
-import {geToken, verifyToken} from './utils/request-utils';
-import {publishDeck} from './publish/publish-deck';
+import {verifyToken} from './utils/request-utils';
 
-import {ApiPresentation} from '../model/api/api.presentation';
+import {ScheduledPublishTask, schedulePublish} from './publish/schedule-publish-task';
 
-export async function publishJob(request: functions.Request, response: functions.Response<any>) {
+export async function publishTask(request: functions.Request, response: functions.Response<any>) {
   const corsHandler = cors({origin: true});
 
   corsHandler(request, response, async () => {
@@ -15,19 +14,15 @@ export async function publishJob(request: functions.Request, response: functions
 
     if (!validToken) {
       response.status(400).json({
-        error: 'Not Authorized',
+        error: 'Not Authorized.',
       });
       return;
     }
 
     try {
-      const token: string | undefined = await geToken(request);
-      const deckId: string | undefined = request.body.deckId;
+      const scheduledTask: ScheduledPublishTask = await schedulePublish(request);
 
-      // TODO: Don't publish here but trigger the functions
-      const apiDeckPublish: ApiPresentation = await publishDeck(deckId, token);
-
-      response.json(apiDeckPublish);
+      response.json(scheduledTask);
     } catch (err) {
       response.status(500).json({
         error: err,
