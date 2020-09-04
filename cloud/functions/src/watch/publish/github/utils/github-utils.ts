@@ -1,5 +1,5 @@
-import {DeckMeta} from '../../../model/data/deck';
-import {DeployGitHubRepo, Deploy, DeployData} from '../../../model/data/deploy';
+import {DeckMeta} from '../../../../model/data/deck';
+import {DeployGitHubRepo, Deploy, DeployData} from '../../../../model/data/deploy';
 
 import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
 import {findDeploy, updateDeploy} from './github-db';
