@@ -5,47 +5,21 @@ import {ApiDeck} from '../../model/api/api.deck';
 
 import {findDeck} from '../../utils/deck-utils';
 import {convertDeck} from '../utils/convert-deck-utils';
-import {verifyToken} from '../utils/request-utils';
 
-export async function publishDeck(request: functions.Request, response: functions.Response<any>) {
-  const validToken: boolean = await verifyToken(request);
+export async function publishDeck(request: functions.Request) {
+  const deckId: string = request.body.deckId;
 
-  if (!validToken) {
-    response.status(400).json({
-      error: 'Not Authorized',
-    });
-    return;
+  if (!deckId) {
+    throw new Error('No deck information provided');
   }
 
-  try {
-    const deckId: string = request.body.deckId;
+  const deck: Deck = await findDeck(deckId);
 
-    if (!deckId) {
-      response.status(500).json({
-        error: 'No deck information provided',
-      });
-      return;
-    }
-
-    const deck: Deck = await findDeck(deckId);
-
-    if (!deck) {
-      response.status(500).json({
-        error: 'No matching deck',
-      });
-      return;
-    }
-
-    const apiDeck: ApiDeck = await convertDeck(deck);
-
-    console.log('API DECK', apiDeck);
-
-    response.json({
-      result: 'success',
-    });
-  } catch (err) {
-    response.status(500).json({
-      error: err,
-    });
+  if (!deck) {
+    throw new Error('No matching deck');
   }
+
+  const apiDeck: ApiDeck = await convertDeck(deck);
+
+  console.log('API DECK', apiDeck);
 }
