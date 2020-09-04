@@ -1,13 +1,13 @@
 export class Resources {
-
-    static get Constants(): any {
-        return {
-            PRESENTATION: {
-                URL: 'https://beta.deckdeckgo.io',
-                FOLDER: 'presentations',
-                IMAGE: 'deckdeckgo.png'
-            }
-        };
-    }
-
+  static get Constants(): any {
+    return {
+      PRESENTATION: {
+        FOLDER: 'presentations',
+        IMAGE: 'deckdeckgo.png',
+      },
+      FEED: {
+        MIN_SLIDES: 3,
+      },
+    };
+  }
 }

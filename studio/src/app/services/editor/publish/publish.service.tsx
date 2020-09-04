@@ -7,17 +7,12 @@ import publishStore from '../../../stores/publish.store';
 import userStore from '../../../stores/user.store';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
-import {ApiDeck} from '../../../models/api/api.deck';
 
 import {Resources} from '../../../utils/core/resources';
 
-import {ApiPresentation} from '../../../models/api/api.presentation';
 import {UserSocial} from '../../../models/data/user';
 
 import {DeckService} from '../../data/deck/deck.service';
-
-import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
-import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../core/environment/environment-config';
@@ -25,13 +20,9 @@ import {EnvironmentFirebaseConfig} from '../../core/environment/environment-conf
 export class PublishService {
   private static instance: PublishService;
 
-  private apiPresentationService: ApiPresentationService;
-
   private deckService: DeckService;
 
   private constructor() {
-    this.apiPresentationService = ApiPresentationFactoryService.getInstance();
-
     this.deckService = DeckService.getInstance();
   }
 
@@ -62,20 +53,6 @@ export class PublishService {
           return;
         }
 
-        // TODO
-        // this.progress(0.25);
-        //
-        // const apiDeckPublish: ApiPresentation = await this.publishDeck(deckStore.state.deck, apiDeck);
-        //
-        // this.progress(0.5);
-        //
-        // if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
-        //   this.progressComplete();
-        //   reject('Publish failed');
-        //   return;
-        // }
-        //
-        // this.progress(0.75);
         //
         // const newApiId: boolean = deckStore.state.deck.data.api_id !== apiDeckPublish.id;
         // if (newApiId) {
@@ -134,26 +111,6 @@ export class PublishService {
         reject(err);
       }
     });
-  }
-
-  publishDeckApi(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
-    return new Promise<ApiPresentation>(async (resolve, reject) => {
-      try {
-        const apiDeckPublish: ApiPresentation = await this.createOrUpdatePublish(deck, apiDeck);
-
-        resolve(apiDeckPublish);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private createOrUpdatePublish(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
-    if (deck.data.api_id) {
-      return this.apiPresentationService.put(deck.data.api_id, apiDeck);
-    } else {
-      return this.apiPresentationService.post(apiDeck);
-    }
   }
 
   // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
@@ -220,12 +177,12 @@ export class PublishService {
 
         if (!deck.data.meta) {
           deck.data.meta = {
-            title: deck.data.name,
+            title: deck.data.name, // here
             pathname: url.pathname,
             published: true,
             published_at: now,
             feed: feed,
-            github: github,
+            github: github, // here
             updated_at: now,
           };
         } else {
@@ -236,18 +193,21 @@ export class PublishService {
           deck.data.meta.github = github;
         }
 
+        // here
         if (description && description !== undefined && description !== '') {
           deck.data.meta.description = description;
         } else {
           deck.data.meta.description = firebase.firestore.FieldValue.delete();
         }
 
+        // here
         if (!tags || tags.length <= 0) {
           deck.data.meta.tags = firebase.firestore.FieldValue.delete();
         } else {
           deck.data.meta.tags = tags;
         }
 
+        // here
         if (userStore.state.user && userStore.state.user.data && userStore.state.user.data.name) {
           if (!deck.data.meta.author) {
             deck.data.meta.author = {

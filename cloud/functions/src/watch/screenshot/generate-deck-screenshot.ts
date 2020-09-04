@@ -10,6 +10,7 @@ import {Resources} from '../../utils/resources';
 import {DeckData} from '../../model/deck';
 
 import {isDeckPublished} from './utils/update-deck';
+import * as functions from 'firebase-functions';
 
 export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
   const newValue: DeckData = change.after.data() as DeckData;
@@ -57,7 +58,8 @@ function generateScreenshot(deckData: DeckData): Promise<string> {
       pathname += pathname.endsWith('/') ? '' : '/';
 
       // ?screenshot = no navigation and action displayed in the presentation
-      await page.goto(Resources.Constants.PRESENTATION.URL + pathname + '?screenshot', {waitUntil: 'networkidle0', timeout: 30000});
+      const presentationUrl: string = functions.config().deckdeckgo.presentation.url;
+      await page.goto(presentationUrl + pathname + '?screenshot', {waitUntil: 'networkidle0', timeout: 30000});
 
       await (page as any)._client.send('ServiceWorker.enable');
       await (page as any)._client.send('ServiceWorker.stopAllWorkers');
