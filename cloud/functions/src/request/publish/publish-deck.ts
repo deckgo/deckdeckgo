@@ -6,20 +6,28 @@ import {ApiDeck} from '../../model/api/api.deck';
 import {findDeck} from '../../utils/deck-utils';
 import {convertDeck} from '../utils/convert-deck-utils';
 
-export async function publishDeck(request: functions.Request) {
-  const deckId: string = request.body.deckId;
+export function publishDeck(request: functions.Request): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      const deckId: string = request.body.deckId;
 
-  if (!deckId) {
-    throw new Error('No deck information provided');
-  }
+      if (!deckId) {
+        reject('No deck information provided');
+        return;
+      }
 
-  const deck: Deck = await findDeck(deckId);
+      const deck: Deck = await findDeck(deckId);
 
-  if (!deck) {
-    throw new Error('No matching deck');
-  }
+      if (!deck) {
+        reject('No matching deck');
+        return;
+      }
 
-  const apiDeck: ApiDeck = await convertDeck(deck);
+      const apiDeck: ApiDeck = await convertDeck(deck);
 
-  console.log('API DECK', apiDeck);
+      console.log('API DECK', apiDeck);
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
