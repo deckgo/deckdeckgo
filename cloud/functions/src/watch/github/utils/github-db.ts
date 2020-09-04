@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
-import {Token, TokenData} from '../../../model/token';
-import {DeployGitHubRepo, Deploy, DeployData} from '../../../model/deploy';
+import {Token, TokenData} from '../../../model/data/token';
+import {DeployGitHubRepo, Deploy, DeployData} from '../../../model/data/deploy';
 
 export function findToken(userId: string): Promise<Token> {
   return new Promise<Token>(async (resolve, reject) => {

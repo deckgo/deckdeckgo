@@ -1,4 +1,4 @@
-import {SlideAttributes, SlideTemplate} from '../slide';
+import {SlideAttributes, SlideTemplate} from '../data/slide';
 
 export interface ApiSlide {
   content?: string;

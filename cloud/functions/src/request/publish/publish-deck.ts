@@ -1,11 +1,11 @@
-import {Deck, DeckData, DeckMeta} from '../../model/deck';
+import {Deck, DeckData, DeckMeta} from '../../model/data/deck';
 import {ApiDeck} from '../../model/api/api.deck';
 import {ApiPresentation} from '../../model/api/api.presentation';
 
-import {findDeck, updateDeck} from '../../utils/deck-utils';
+import {findDeck, updateDeck} from '../../utils/data/deck-utils';
 import {convertDeck} from '../utils/convert-deck-utils';
 import {publishDeckApi} from '../utils/api-utils';
-import {Resources} from '../../utils/resources';
+import {Resources} from '../../utils/resources/resources';
 import * as admin from 'firebase-admin';
 
 export function publishDeck(deckId: string | undefined, token: string | undefined): Promise<ApiPresentation> {

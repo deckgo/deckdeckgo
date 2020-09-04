@@ -10,7 +10,7 @@ import {promises as fs} from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
-import {DeckMeta} from '../../../model/deck';
+import {DeckMeta} from '../../../model/data/deck';
 
 export function deleteDir(localPath: string): Promise<void> {
   return new Promise<void>((resolve) => {

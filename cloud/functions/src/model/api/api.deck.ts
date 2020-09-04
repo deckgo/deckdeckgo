@@ -1,4 +1,4 @@
-import {DeckAttributes} from '../deck';
+import {DeckAttributes} from '../data/deck';
 import {ApiSlide} from './api.slide';
 
 export interface ApiDeck {

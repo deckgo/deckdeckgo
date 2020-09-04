@@ -6,7 +6,7 @@ import * as functions from 'firebase-functions';
 
 import fetch, {Response} from 'node-fetch';
 
-import {DeployGitHubRepo} from '../../../model/deploy';
+import {DeployGitHubRepo} from '../../../model/data/deploy';
 
 export interface GitHubUser {
   id: string;

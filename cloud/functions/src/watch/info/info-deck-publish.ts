@@ -3,7 +3,7 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import * as nodemailer from 'nodemailer';
 
-import {DeckData} from '../../model/deck';
+import {DeckData} from '../../model/data/deck';
 import * as Mail from 'nodemailer/lib/mailer';
 
 export async function infoDeckPublish(change: functions.Change<DocumentSnapshot>) {

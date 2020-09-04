@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {Deck, DeckData} from '../model/deck';
+import {Deck, DeckData} from '../../model/data/deck';
 
 export function findDeck(deckId: string): Promise<Deck> {
   return new Promise<Deck>(async (resolve, reject) => {

@@ -1,11 +1,11 @@
 import * as functions from 'firebase-functions';
 
-import {Deck} from '../../model/deck';
+import {Deck} from '../../model/data/deck';
 import {ApiDeck} from '../../model/api/api.deck';
 import {ApiSlide} from '../../model/api/api.slide';
-import {Slide, SlideAttributes, SlideTemplate} from '../../model/slide';
+import {Slide, SlideAttributes, SlideTemplate} from '../../model/data/slide';
 
-import {findSlide} from '../../utils/slide-utils';
+import {findSlide} from '../../utils/data/slide-utils';
 import {getGoogleFontScript} from './google-fonts-utils';
 
 export function convertDeck(deck: Deck): Promise<ApiDeck> {

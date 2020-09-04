@@ -1,4 +1,4 @@
-import {Deck} from '../../model/deck';
+import {Deck} from '../../model/data/deck';
 
 import {JSDOM} from 'jsdom';
 

@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {Slide, SlideData} from '../model/slide';
+import {Slide, SlideData} from '../../model/data/slide';
 
 export function findSlide(deckId: string, slideId: string): Promise<Slide> {
   return new Promise<Slide>(async (resolve, reject) => {

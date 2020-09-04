@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {Deploy} from '../../model/deploy';
+import {Deploy} from '../../model/data/deploy';
 
 import {deleteDeployForId} from './utils/delete-platform-utils';
 

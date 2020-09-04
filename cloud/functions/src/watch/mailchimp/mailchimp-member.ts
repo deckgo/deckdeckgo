@@ -11,7 +11,7 @@ import * as crypto from 'crypto';
 // @ts-ignore incorrect typescript typings
 import * as Mailchimp from 'mailchimp-api-v3';
 
-import {UserData} from '../../model/user';
+import {UserData} from '../../model/data/user';
 
 export async function createMailchimpMember(userRecord: admin.auth.UserRecord) {
   if (!userRecord || !userRecord.email || userRecord.email === undefined || userRecord.email === '') {

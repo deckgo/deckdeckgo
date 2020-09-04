@@ -5,9 +5,9 @@ import * as admin from 'firebase-admin';
 
 import * as puppeteer from 'puppeteer';
 
-import {Resources} from '../../utils/resources';
+import {Resources} from '../../utils/resources/resources';
 
-import {DeckData} from '../../model/deck';
+import {DeckData} from '../../model/data/deck';
 
 import {isDeckPublished} from './utils/update-deck';
 

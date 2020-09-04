@@ -3,8 +3,8 @@ import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import * as admin from 'firebase-admin';
 
-import {UserData, UserSocial} from '../../model/user';
-import {Deck, DeckData, DeckMetaAuthor} from '../../model/deck';
+import {UserData, UserSocial} from '../../model/data/user';
+import {Deck, DeckData, DeckMetaAuthor} from '../../model/data/deck';
 
 export async function updateDeckMeta(change: Change<DocumentSnapshot>, context: EventContext) {
   const userId: string = context.params.userId;

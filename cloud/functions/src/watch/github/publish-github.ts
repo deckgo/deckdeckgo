@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
-import {DeckData} from '../../model/deck';
-import {Token} from '../../model/token';
-import {DeployGitHubRepo} from '../../model/deploy';
+import {DeckData} from '../../model/data/deck';
+import {Token} from '../../model/data/token';
+import {DeployGitHubRepo} from '../../model/data/deploy';
 
 import {isDeckPublished} from '../screenshot/utils/update-deck';
 
