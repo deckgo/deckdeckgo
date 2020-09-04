@@ -20,7 +20,10 @@ const {state, onChange, reset} = createStore({
 
 onChange('authUser', (authUser: AuthUser) => {
   state.anonymous = authUser ? authUser.anonymous : true;
+
+  // TODO: Remove bearer from store
   state.bearer = `Bearer ${authUser ? authUser.token : ''}`;
+
   state.loggedIn = authUser && !authUser.anonymous;
   state.gitHub = authUser ? authUser.gitHub : false;
 });

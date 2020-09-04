@@ -2,6 +2,8 @@ import * as functions from 'firebase-functions';
 
 import 'firebase-functions/lib/logger/compat';
 
+import * as cors from 'cors';
+
 import * as admin from 'firebase-admin';
 const app: admin.app.App = admin.initializeApp();
 app.firestore().settings({timestampsInSnapshots: true});
@@ -16,6 +18,8 @@ const runtimeOpts = {
   memory: <const>'1GB',
 };
 
+const corsHandler = cors({origin: true});
+
 export const watchDeckUpdate = functions.runWith(runtimeOpts).firestore.document('decks/{deckId}').onUpdate(applyWatchDeckUpdate);
 
 export const watchDeckDelete = functions.firestore.document('decks/{deckId}').onDelete(applyWatchDeckDelete);
@@ -28,4 +32,8 @@ export const watchUserDelete = functions.auth.user().onDelete(applyWatchUserDele
 
 export const watchUserCreate = functions.auth.user().onCreate(applyWatchUserCreate);
 
-export const publish = functions.runWith(runtimeOpts).https.onRequest(publishDeck);
+export const publish = functions.runWith(runtimeOpts).https.onRequest((request: functions.Request, response: functions.Response<any>) => {
+  corsHandler(request, response, async () => {
+    await publishDeck(request, response);
+  });
+});

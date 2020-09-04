@@ -1,4 +1,5 @@
 import {firestore} from 'firebase-admin';
+
 import {UserSocial} from './user';
 
 export interface DeckMetaAuthor {
@@ -20,13 +21,15 @@ export interface DeckMeta {
   published: boolean;
   published_at: firestore.Timestamp;
 
-  updated_at: firestore.Timestamp;
-
+  feed: boolean;
   github?: boolean;
+
+  updated_at: firestore.Timestamp;
 }
 
 export interface DeckAttributes {
   style?: string;
+  transition?: 'slide' | 'fade' | 'none';
 }
 
 export interface DeckClone {
@@ -39,6 +42,8 @@ export interface DeckData {
 
   attributes?: DeckAttributes;
   background?: string;
+  header?: string;
+  footer?: string;
 
   owner_id: string;
 
