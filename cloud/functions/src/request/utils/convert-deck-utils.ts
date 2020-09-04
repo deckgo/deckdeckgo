@@ -6,7 +6,7 @@ import {ApiSlide} from '../../model/api/api.slide';
 import {Slide, SlideAttributes, SlideTemplate} from '../../model/slide';
 
 import {findSlide} from '../../utils/slide-utils';
-import {getGoogleFontScript} from './google-fonts.utils';
+import {getGoogleFontScript} from './google-fonts-utils';
 
 export function convertDeck(deck: Deck): Promise<ApiDeck> {
   return new Promise<ApiDeck>(async (resolve, reject) => {

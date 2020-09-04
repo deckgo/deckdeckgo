@@ -2,12 +2,12 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 export async function verifyToken(request: functions.Request, acceptAnonymous: boolean = false): Promise<boolean> {
-  if (!request.headers.authorization) {
-    return false;
-  }
-
   try {
-    const token: string = request.headers.authorization.replace(/^Bearer\s/, '');
+    const token: string | undefined = await geToken(request);
+
+    if (!token) {
+      return false;
+    }
 
     const payload: admin.auth.DecodedIdToken = await admin.auth().verifyIdToken(token);
 
@@ -15,4 +15,14 @@ export async function verifyToken(request: functions.Request, acceptAnonymous: b
   } catch (err) {
     return false;
   }
+}
+
+export async function geToken(request: functions.Request): Promise<string | undefined> {
+  if (!request.headers.authorization) {
+    return undefined;
+  }
+
+  const token: string = request.headers.authorization.replace(/^Bearer\s/, '');
+
+  return token;
 }

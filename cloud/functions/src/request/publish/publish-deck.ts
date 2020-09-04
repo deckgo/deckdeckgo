@@ -1,31 +1,41 @@
-import * as functions from 'firebase-functions';
-
 import {Deck} from '../../model/deck';
 import {ApiDeck} from '../../model/api/api.deck';
+import {ApiPresentation} from '../../model/api/api.presentation';
 
 import {findDeck} from '../../utils/deck-utils';
 import {convertDeck} from '../utils/convert-deck-utils';
+import {publishDeckApi} from '../utils/api-utils';
 
-export function publishDeck(request: functions.Request): Promise<void> {
-  return new Promise<void>(async (resolve, reject) => {
+export function publishDeck(deckId: string | undefined, token: string | undefined): Promise<string> {
+  return new Promise<string>(async (resolve, reject) => {
     try {
-      const deckId: string = request.body.deckId;
-
       if (!deckId) {
-        reject('No deck information provided');
+        reject('No deck information provided.');
+        return;
+      }
+
+      if (!token) {
+        reject('No token provided.');
         return;
       }
 
       const deck: Deck = await findDeck(deckId);
 
       if (!deck) {
-        reject('No matching deck');
+        reject('No matching deck.');
         return;
       }
 
       const apiDeck: ApiDeck = await convertDeck(deck);
 
-      console.log('API DECK', apiDeck);
+      if (!apiDeck) {
+        reject('No converted deck.');
+        return;
+      }
+
+      const apiDeckPublish: ApiPresentation = await publishDeckApi(deck, apiDeck, token);
+
+      resolve(apiDeckPublish.url);
     } catch (err) {
       reject(err);
     }
