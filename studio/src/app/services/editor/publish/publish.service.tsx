@@ -8,8 +8,6 @@ import userStore from '../../../stores/user.store';
 
 import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
 
-import {Resources} from '../../../utils/core/resources';
-
 import {UserSocial} from '../../../models/data/user';
 
 import {DeckService} from '../../data/deck/deck.service';
@@ -41,7 +39,6 @@ export class PublishService {
     publishStore.state.progress = 1;
   }
 
-  // TODO: Move in a cloud functions?
   publish(description: string, tags: string[], github: boolean): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
       this.progress(0);
@@ -53,26 +50,15 @@ export class PublishService {
           return;
         }
 
-        //
-        // const newApiId: boolean = deckStore.state.deck.data.api_id !== apiDeckPublish.id;
-        // if (newApiId) {
-        //   deckStore.state.deck.data.api_id = apiDeckPublish.id;
-        //
-        //   const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
-        //   deckStore.state.deck = {...updatedDeck};
-        // }
-        //
-        // this.progress(0.8);
+        await this.updateDeckMeta(description, tags, github);
 
-        // const publishedUrl: string = apiDeckPublish.url;
-
-        // await this.delayUpdateMeta(deckStore.state.deck, publishedUrl, description, tags, github, newApiId);
-
-        await this.delayUpdateMeta(deckStore.state.deck, 'https://deckdeckgo.com/todo', description, tags, github, true);
+        this.progress(0.25);
 
         await this.publishDeck(deckStore.state.deck);
 
-        // TODO
+        this.progress(0.75);
+
+        await this.delayRefreshDeck();
 
         resolve('https://deckdeckgo.com/todo');
       } catch (err) {
@@ -115,30 +101,33 @@ export class PublishService {
 
   // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
   // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], github: boolean, delay: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
+  private delayRefreshDeck(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const currentDeck: Deck = {...deckStore.state.deck};
+
+      await this.refreshDeck(currentDeck.id);
+
+      this.progress(0.9);
+
+      const newApiId: boolean = currentDeck.data.api_id !== deckStore.state.deck.data.api_id;
+
+      const interval = newApiId
+        ? setInterval(() => {
+            this.progress(publishStore.state.progress + 0.01);
+          }, 7000 / 9)
+        : undefined;
+
       setTimeout(
         () => {
-          this.progress(0.9);
+          if (interval) {
+            clearInterval(interval);
+          }
 
-          setTimeout(
-            async () => {
-              await this.updateDeckMeta(deck, publishedUrl, description, tags, github);
+          this.progressComplete();
 
-              this.progress(0.95);
-
-              await this.refreshDeck(deck.id);
-
-              this.progressComplete();
-
-              setTimeout(() => {
-                resolve();
-              }, 500);
-            },
-            delay ? 3500 : 0
-          );
+          resolve();
         },
-        delay ? 3500 : 0
+        newApiId ? 7000 : 0
       );
     });
   }
@@ -157,57 +146,42 @@ export class PublishService {
     });
   }
 
-  private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], github: boolean): Promise<void> {
+  private updateDeckMeta(description: string, tags: string[], github: boolean): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
-          resolve();
-          return;
-        }
-
         if (!userStore.state.user || !userStore.state.user.data) {
           reject('No user');
           return;
         }
 
-        const url: URL = new URL(publishedUrl);
         const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
-        const feed: boolean = deck.data.slides && deck.data.slides.length > Resources.Constants.DECK.MIN_SLIDES;
+        const deck: Deck = {...deckStore.state.deck};
 
         if (!deck.data.meta) {
           deck.data.meta = {
-            title: deck.data.name, // here
-            pathname: url.pathname,
-            published: true,
-            published_at: now,
-            feed: feed,
-            github: github, // here
+            title: deck.data.name,
+            github: github,
             updated_at: now,
           };
         } else {
           deck.data.meta.title = deck.data.name;
-          deck.data.meta.pathname = url.pathname;
           deck.data.meta.updated_at = now;
-          deck.data.meta.feed = feed;
           deck.data.meta.github = github;
         }
 
-        // here
         if (description && description !== undefined && description !== '') {
           deck.data.meta.description = description;
         } else {
           deck.data.meta.description = firebase.firestore.FieldValue.delete();
         }
 
-        // here
         if (!tags || tags.length <= 0) {
           deck.data.meta.tags = firebase.firestore.FieldValue.delete();
         } else {
           deck.data.meta.tags = tags;
         }
 
-        // here
         if (userStore.state.user && userStore.state.user.data && userStore.state.user.data.name) {
           if (!deck.data.meta.author) {
             deck.data.meta.author = {
