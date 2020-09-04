@@ -6,8 +6,8 @@ import {findDeck} from '../../utils/deck-utils';
 import {convertDeck} from '../utils/convert-deck-utils';
 import {publishDeckApi} from '../utils/api-utils';
 
-export function publishDeck(deckId: string | undefined, token: string | undefined): Promise<string> {
-  return new Promise<string>(async (resolve, reject) => {
+export function publishDeck(deckId: string | undefined, token: string | undefined): Promise<ApiPresentation> {
+  return new Promise<ApiPresentation>(async (resolve, reject) => {
     try {
       if (!deckId) {
         reject('No deck information provided.');
@@ -35,7 +35,7 @@ export function publishDeck(deckId: string | undefined, token: string | undefine
 
       const apiDeckPublish: ApiPresentation = await publishDeckApi(deck, apiDeck, token);
 
-      resolve(apiDeckPublish.url);
+      resolve(apiDeckPublish);
     } catch (err) {
       reject(err);
     }

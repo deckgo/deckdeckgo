@@ -5,6 +5,8 @@ import * as cors from 'cors';
 import {geToken, verifyToken} from './utils/request-utils';
 import {publishDeck} from './publish/publish-deck';
 
+import {ApiPresentation} from '../model/api/api.presentation';
+
 export async function publishJob(request: functions.Request, response: functions.Response<any>) {
   const corsHandler = cors({origin: true});
 
@@ -22,11 +24,9 @@ export async function publishJob(request: functions.Request, response: functions
       const token: string | undefined = await geToken(request);
       const deckId: string | undefined = request.body.deckId;
 
-      await publishDeck(deckId, token);
+      const apiDeckPublish: ApiPresentation = await publishDeck(deckId, token);
 
-      response.json({
-        result: 'success',
-      });
+      response.json(apiDeckPublish);
     } catch (err) {
       response.status(500).json({
         error: err,
