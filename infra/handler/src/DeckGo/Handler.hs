@@ -596,9 +596,10 @@ usersPost conn fuid uinfo = do
         { Servant.errBody = BL.fromStrict $ T.encodeUtf8 e }
       Right user -> pure user
     liftIO (dbCreateUser iface userId user) >>= \case
-      Left () -> Servant.throwError $ Servant.err409
-        { Servant.errBody = Aeson.encode (Item userId user) }
-      Right () -> pure $ Item userId user
+      Left () ->
+          Servant.throwError $ Servant.err409
+            { Servant.errBody = Aeson.encode (Item userId user) }
+      Right user' -> pure $ Item userId user'
 
 userInfoToUser :: UserInfo -> Either T.Text User
 userInfoToUser uinfo = User <$>
@@ -618,7 +619,7 @@ emailToUsername t = case T.breakOn "@" t of
         c | isAscii c && isAlphaNum c -> T.singleton c
           | otherwise -> ""
 
-usersPostSession :: UserId -> User -> HS.Session (Either () ())
+usersPostSession :: UserId -> User -> HS.Session (Either () User)
 usersPostSession uid u = do
     HS.sql "BEGIN"
     liftIO $ putStrLn "Creating user in DB"
@@ -628,19 +629,27 @@ usersPostSession uid u = do
         case userUsername u of
           Just uname -> do
             liftIO $ putStrLn "Creating username"
+            let success unam = do
+                    liftIO $ putStrLn "User created successfully"
+                    HS.sql "COMMIT"
+                    pure $ Right $ u { userUsername = Just unam }
             HS.statement (uname, uid) usersPostStatement' >>= \case
-              1 -> do
-                liftIO $ putStrLn "User created successfully"
-                HS.sql "COMMIT"
-                pure $ Right ()
+              1 -> success uname
               _ -> do
                 liftIO $ putStrLn "Couldn't create username"
-                HS.sql "ROLLBACK"
-                pure $ Left ()
+                rand <- liftIO $ randomText 4 ['0' .. '9' ]
+                let uname' = Username $ unUsername uname <> rand
+                liftIO $ putStrLn $ "Retrying with username " <> (T.unpack $ unUsername uname')
+                HS.statement (uname', uid) usersPostStatement' >>= \case
+                  1 -> success uname'
+                  _ -> do
+                    liftIO $ putStrLn "Couldn't create username again"
+                    HS.sql "ROLLBACK"
+                    pure $ Left ()
           Nothing -> do
             liftIO $ putStrLn "No username"
             HS.sql "COMMIT"
-            pure $ Right ()
+            pure $ Right u
       _ -> do
         liftIO $ putStrLn "Couldn't create exactly one user"
         HS.sql "ROLLBACK"
@@ -662,12 +671,11 @@ usersPostStatement = Statement sql encoder decoder True
       contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text)
     decoder = HD.rowsAffected
 
--- TODO: deal with conflict error
 usersPostStatement' :: Statement (Username, UserId) Int64
 usersPostStatement' = Statement sql encoder decoder True
   where
     sql = BS8.unwords
-      [ "UPDATE account SET username = $1 WHERE id = $2" ]
+      [ "UPDATE account SET username = $1 WHERE id = $2 AND NOT EXISTS (SELECT 1 FROM account WHERE username = $1)" ]
     encoder =
       contramap
         (unUsername . view _1)
@@ -835,7 +843,7 @@ instance Aeson.FromJSON PresResponse where
 data DbInterface = DbInterface
   { dbGetAllUsers :: IO [Item UserId User]
   , dbGetUserById :: UserId -> IO (Maybe (Item UserId User))
-  , dbCreateUser :: UserId -> User -> IO (Either () ())
+  , dbCreateUser :: UserId -> User -> IO (Either () User)
   , dbUpdateUser :: UserId -> User -> IO UserUpdateResult
   , dbDeleteUser :: UserId -> IO (Either () ())
 
