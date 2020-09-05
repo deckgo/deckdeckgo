@@ -5,6 +5,7 @@ import 'firebase/auth';
 import deckStore from '../../../stores/deck.store';
 import userStore from '../../../stores/user.store';
 import errorStore from '../../../stores/error.store';
+import authStore from '../../../stores/auth.store';
 
 import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 
@@ -68,7 +69,7 @@ export class PublishService {
             deckId: deck.id,
             ownerId: deck.data.owner_id,
             publish: true,
-            github: deck.data.meta.github,
+            github: deck.data.github ? deck.data.github.publish : false,
           }),
         });
 
@@ -99,13 +100,11 @@ export class PublishService {
         if (!deck.data.meta) {
           deck.data.meta = {
             title: deck.data.name,
-            github: github,
             updated_at: now,
           };
         } else {
           deck.data.meta.title = deck.data.name;
           deck.data.meta.updated_at = now;
-          deck.data.meta.github = github;
         }
 
         if (description && description !== undefined && description !== '') {
@@ -147,6 +146,17 @@ export class PublishService {
           }
         } else if (deck.data.meta.author) {
           deck.data.meta.author = firebase.firestore.FieldValue.delete();
+        }
+
+        // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept
+        if (authStore.state.gitHub) {
+          if (deck.data.github) {
+            deck.data.github.publish = github;
+          } else {
+            deck.data.github = {
+              publish: github,
+            };
+          }
         }
 
         const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);

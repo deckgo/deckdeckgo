@@ -54,11 +54,11 @@ export class AppPublishDone {
       return undefined;
     }
 
-    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.meta || !deckStore.state.deck.data.meta.github) {
+    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.github || !deckStore.state.deck.data.github.publish) {
       return undefined;
     }
 
-    if (!deckStore.state.deck.data.github) {
+    if (!deckStore.state.deck.data.github || !deckStore.state.deck.data.github.repo) {
       return (
         <ion-label class="published-url ion-padding ion-text-center">
           The source code of the presentation is processing <ion-spinner color="tertiary"></ion-spinner>

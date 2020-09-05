@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import {Token, TokenData} from '../../../../model/data/token';
-import {DeckData, DeckGitHubRepo} from '../../../../model/data/deck';
+import {DeckData, DeckGitHub, DeckGitHubRepo} from '../../../../model/data/deck';
 
 export function findToken(userId: string): Promise<Token> {
   return new Promise<Token>(async (resolve, reject) => {
@@ -43,7 +43,7 @@ export function updateDeckGitHub(deckId: string, repo: DeckGitHubRepo | undefine
         updated_at: admin.firestore.Timestamp.now(),
         github: {
           repo: {...repo},
-        },
+        } as DeckGitHub,
       };
 
       const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/decks/${deckId}`);

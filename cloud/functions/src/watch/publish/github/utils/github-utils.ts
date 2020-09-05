@@ -15,7 +15,7 @@ export async function getRepo(githubToken: string, user: GitHubUser, userId: str
   const project: string = deckData.meta.title.replace(' ', '-').toLowerCase();
   const description: string = deckData.meta.description ? (deckData.meta.description as string) : '';
 
-  if (deckData.github) {
+  if (deckData.github && deckData.github.repo) {
     const existingRepo: DeckGitHubRepo | undefined = await findRepo(githubToken, user, deckData.github.repo.name);
 
     if (existingRepo) {

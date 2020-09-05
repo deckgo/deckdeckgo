@@ -18,7 +18,8 @@ export interface DeckGitHubRepo {
 }
 
 export interface DeckGitHub {
-  repo: DeckGitHubRepo;
+  repo?: DeckGitHubRepo;
+  publish: boolean;
 }
 
 export interface DeckMetaAuthor {
@@ -41,7 +42,6 @@ export interface DeckMeta {
   published_at?: firebase.firestore.Timestamp;
 
   feed?: boolean;
-  github?: boolean;
 
   updated_at: firebase.firestore.Timestamp;
 }

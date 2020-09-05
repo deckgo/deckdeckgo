@@ -105,7 +105,7 @@ export class AppPublishEdit {
         ? (deckStore.state.deck.data.meta.description as string)
         : await this.getFirstSlideContent();
     this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
-    this.pushToGitHub = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.github !== undefined ? deckStore.state.deck.data.meta.github : true;
+    this.pushToGitHub = deckStore.state.deck.data.github ? deckStore.state.deck.data.github.publish : true;
   }
 
   private getFirstSlideContent(): Promise<string> {
