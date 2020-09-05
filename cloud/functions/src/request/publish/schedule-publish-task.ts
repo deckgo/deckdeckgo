@@ -6,7 +6,12 @@ import {geToken} from '../utils/request-utils';
 
 import {DeckData, DeckDeployData} from '../../model/data/deck';
 
-export interface ScheduledPublishTask {}
+export interface ScheduledPublishTask {
+  deckId: string;
+  status: 'scheduled';
+  publish: boolean;
+  github: boolean;
+}
 
 export function schedulePublish(request: functions.Request): Promise<ScheduledPublishTask> {
   return new Promise<ScheduledPublishTask>(async (resolve, reject) => {
