@@ -4,7 +4,7 @@ export interface TaskData {
   deckId: string;
   token: string | firestore.FieldValue;
 
-  type: 'publish-deck' | 'push-github';
+  type: 'publish-all' | 'publish-deck' | 'push-github';
 
   status: 'scheduled' | 'failure' | 'successful';
 
