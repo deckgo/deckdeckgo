@@ -1,5 +1,5 @@
-import * as firebase from 'firebase';
-import 'firebase/auth';
+import firebase from '@firebase/app';
+import '@firebase/auth';
 
 import apiUserStore from '../../../stores/api.user.store';
 
