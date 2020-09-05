@@ -65,7 +65,7 @@ function publishJob(snap: DocumentSnapshot): Promise<void> {
         // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
         setTimeout(
           async () => {
-            await publishToGitHub(deck.id, deck.data);
+            await delayPublishToGitHub(deck.id);
             resolve();
           },
           newPublish ? 5000 : 0
@@ -81,4 +81,19 @@ function publishJob(snap: DocumentSnapshot): Promise<void> {
       reject(err);
     }
   });
+}
+
+async function delayPublishToGitHub(deckId: string) {
+  // It has been changed by the publish to the API
+  const refreshDeck: Deck = await findDeck(deckId);
+
+  if (!refreshDeck || !refreshDeck.data) {
+    throw new Error('Updated published deck cannot be found');
+  }
+
+  try {
+    await publishToGitHub(refreshDeck.id, refreshDeck.data);
+  } catch (err) {
+    throw err;
+  }
 }
