@@ -68,7 +68,7 @@ function publishJob(snap: DocumentSnapshot): Promise<void> {
             await delayPublishToGitHub(deck.id);
             resolve();
           },
-          newPublish ? 5000 : 0
+          newPublish ? 7000 : 0
         );
       } else if (task.type === 'publish-deck') {
         await publishToApi(deck, task.token as string);
