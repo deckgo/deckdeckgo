@@ -4,8 +4,9 @@ import 'firebase/auth';
 
 import deckStore from '../../../stores/deck.store';
 import userStore from '../../../stores/user.store';
+import errorStore from '../../../stores/error.store';
 
-import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
+import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 
 import {UserSocial} from '../../../models/data/user';
 
@@ -75,20 +76,6 @@ export class PublishService {
           reject('Something went wrong while publishing the deck');
           return;
         }
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  // Otherwise we gonna kept in memory references like firebase.firestore.FieldValue.delete instead of null values
-  refreshDeck(deckId: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const freshDeck: Deck = await this.deckService.get(deckId);
-        deckStore.state.deck = {...freshDeck};
 
         resolve();
       } catch (err) {
@@ -169,6 +156,35 @@ export class PublishService {
       } catch (err) {
         reject(err);
       }
+    });
+  }
+
+  snapshot(): Promise<() => void | undefined> {
+    return new Promise<() => void | undefined>((resolve) => {
+      const deck: Deck = deckStore.state.deck;
+
+      if (!deck || !deck.id) {
+        resolve(undefined);
+        return;
+      }
+
+      const firestore: firebase.firestore.Firestore = firebase.firestore();
+      const unsubscribe = firestore
+        .collection(`decks`)
+        .doc(deck.id)
+        .onSnapshot(
+          (deploySnapshot: firebase.firestore.DocumentSnapshot<DeckData>) => {
+            deckStore.state.deck = {
+              id: deploySnapshot.id,
+              data: deploySnapshot.data(),
+            };
+          },
+          (_err) => {
+            errorStore.state.error = 'Cannont retrieve the deck information.';
+          }
+        );
+
+      resolve(unsubscribe);
     });
   }
 }

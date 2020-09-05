@@ -7,10 +7,8 @@ import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
-import deployStore from '../../../../stores/deploy.store';
 
 import {Deck} from '../../../../models/data/deck';
-import {Deploy} from '../../../../models/data/deploy';
 
 import {Resources} from '../../../../utils/core/resources';
 
@@ -63,7 +61,7 @@ export class AppPublishEdit {
 
   private publishService: PublishService;
 
-  private destroyDeployListener;
+  private destroyDeckListener;
 
   constructor() {
     this.deckService = DeckService.getInstance();
@@ -78,12 +76,11 @@ export class AppPublishEdit {
   async componentWillLoad() {
     await this.init();
 
-    this.destroyDeployListener = deployStore.onChange('deploy', async (_deploy: Deploy | undefined) => {
+    this.destroyDeckListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
+      // Deck is maybe updating while we have set it to true manually
       this.publishing =
-        deployStore.state.deploy &&
-        deployStore.state.deploy.data &&
-        deployStore.state.deploy.data.api &&
-        (deployStore.state.deploy.data.api.status === 'scheduled' || deployStore.state.deploy.data.api.status === 'failure');
+        this.publishing ||
+        (deck.data.deploy && deck.data.deploy.api && (deck.data.deploy.api.status === 'scheduled' || deck.data.deploy.api.status === 'failure'));
     });
   }
 
@@ -92,8 +89,8 @@ export class AppPublishEdit {
   }
 
   disconnectedCallback() {
-    if (this.destroyDeployListener) {
-      this.destroyDeployListener();
+    if (this.destroyDeckListener) {
+      this.destroyDeckListener();
     }
   }
 
@@ -190,28 +187,24 @@ export class AppPublishEdit {
   }
 
   private onSuccessfulPublish() {
-    const destroyDeploySuccessfulListener = deployStore.onChange('deploy', async (deploy: Deploy | undefined) => {
-      if (deploy && deploy.data && deploy.data.api && deploy.data.api.status === 'successful') {
-        destroyDeploySuccessfulListener();
+    const currentDeck: Deck = {...deckStore.state.deck};
 
-        await this.delayRefreshDeck();
+    const destroyDeckDeployListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
+      if (deck && deck.data && deck.data.deploy && deck.data.deploy.api && deck.data.deploy.api.status === 'successful') {
+        destroyDeckDeployListener();
+
+        // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
+        feedStore.reset();
+
+        await this.delayNavigation(currentDeck.data.api_id !== deckStore.state.deck.data.api_id);
       }
     });
   }
 
   // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
   // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private async delayRefreshDeck() {
+  private async delayNavigation(newApiId: boolean) {
     this.progress = 0;
-
-    const currentDeck: Deck = {...deckStore.state.deck};
-
-    await this.publishService.refreshDeck(currentDeck.id);
-
-    // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
-    feedStore.reset();
-
-    const newApiId: boolean = currentDeck.data.api_id !== deckStore.state.deck.data.api_id;
 
     const interval = setInterval(
       () => {
@@ -522,7 +515,7 @@ export class AppPublishEdit {
   }
 
   private renderGitHubText() {
-    if (!deployStore.state.deploy || !deployStore.state.deploy.data) {
+    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.github) {
       return <p class="meta-text">Push the source code of the presentation to a new public repository of your GitHub account?</p>;
     }
 
