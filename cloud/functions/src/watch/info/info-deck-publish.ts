@@ -46,6 +46,12 @@ function isFirstTimePublished(previousValue: DeckData, newValue: DeckData): Prom
 function sendInfo(deckId: string, deckData: DeckData): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
+      const infoMailSkip: string = functions.config().info.mail.skip;
+
+      if (infoMailSkip === 'true') {
+        return;
+      }
+
       const mailFrom: string = functions.config().info.mail.from;
       const mailPwd: string = functions.config().info.mail.pwd;
       const mailTo: string = functions.config().info.mail.to;

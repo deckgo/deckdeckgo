@@ -1,3 +1,5 @@
+import * as functions from 'firebase-functions';
+
 import {DeckData, DeckGitHubRepo} from '../../../model/data/deck';
 import {Token} from '../../../model/data/token';
 
@@ -22,6 +24,15 @@ export async function publishToGitHub(deckId: string, deckData: DeckData): Promi
 
       if (!deckData.meta.title || deckData.meta.title === '') {
         reject('No deck title.');
+        return;
+      }
+
+      const gitHubSkip: string = functions.config().github.skip;
+
+      if (gitHubSkip === 'true') {
+        await successfulDeploy(deckId, 'github');
+
+        resolve();
         return;
       }
 
