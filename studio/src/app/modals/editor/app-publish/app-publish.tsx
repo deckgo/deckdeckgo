@@ -1,6 +1,6 @@
 import {Component, Element, Listen, h, State} from '@stencil/core';
 
-import {DeployService} from '../../../services/data/deploy/deploy.service';
+import {PublishService} from '../../../services/editor/publish/publish.service';
 
 @Component({
   tag: 'app-publish',
@@ -12,16 +12,16 @@ export class AppPublish {
   @State()
   private publishedUrl: string;
 
-  private deployService: DeployService;
+  private publishService: PublishService;
 
   private unsubscribeSnapshot: () => void | undefined;
 
   constructor() {
-    this.deployService = DeployService.getInstance();
+    this.publishService = PublishService.getInstance();
   }
 
   async componentWillLoad() {
-    this.unsubscribeSnapshot = await this.deployService.snapshot();
+    this.unsubscribeSnapshot = await this.publishService.snapshot();
   }
 
   async componentDidLoad() {

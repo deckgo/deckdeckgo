@@ -1,4 +1,4 @@
-import {DeckData} from '../../../model/deck';
+import {DeckData} from '../../../model/data/deck';
 
 export function isDeckPublished(previousValue: DeckData, newValue: DeckData): Promise<boolean> {
   return new Promise<boolean>((resolve) => {

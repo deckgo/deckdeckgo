@@ -51,11 +51,8 @@ export class AuthService {
 
           await this.apiUserService.signOut();
         } else {
-          const tokenId: string = await firebaseUser.getIdToken();
-
           const authUser: AuthUser = {
             uid: firebaseUser.uid,
-            token: tokenId,
             anonymous: firebaseUser.isAnonymous,
             name: firebaseUser.displayName,
             email: firebaseUser.email,

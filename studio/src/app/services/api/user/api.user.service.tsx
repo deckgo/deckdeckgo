@@ -1,3 +1,6 @@
+import firebase from '@firebase/app';
+import '@firebase/auth';
+
 import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
@@ -27,7 +30,9 @@ export abstract class ApiUserService {
           if (!user) {
             const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
 
-            await this.post(apiUser, authUser.token);
+            const token: string = await firebase.auth().currentUser.getIdToken();
+
+            await this.post(apiUser, token);
           }
         } catch (err) {
           // We don't display the error. The user could continue to work and edit his/her presentations.

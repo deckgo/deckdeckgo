@@ -1,5 +1,28 @@
 import {firestore} from 'firebase-admin';
+
 import {UserSocial} from './user';
+
+export interface DeckDeployData {
+  status: 'scheduled' | 'failure' | 'successful';
+  updated_at: firestore.Timestamp;
+}
+
+export interface DeckDeploy {
+  github?: DeckDeployData;
+  api?: DeckDeployData;
+}
+
+export interface DeckGitHubRepo {
+  id: string;
+  url: string;
+  name: string;
+  nameWithOwner: string;
+}
+
+export interface DeckGitHub {
+  repo?: DeckGitHubRepo;
+  publish: boolean;
+}
 
 export interface DeckMetaAuthor {
   name: string;
@@ -20,13 +43,14 @@ export interface DeckMeta {
   published: boolean;
   published_at: firestore.Timestamp;
 
-  updated_at: firestore.Timestamp;
+  feed: boolean;
 
-  github?: boolean;
+  updated_at: firestore.Timestamp;
 }
 
 export interface DeckAttributes {
   style?: string;
+  transition?: 'slide' | 'fade' | 'none';
 }
 
 export interface DeckClone {
@@ -39,6 +63,8 @@ export interface DeckData {
 
   attributes?: DeckAttributes;
   background?: string;
+  header?: string;
+  footer?: string;
 
   owner_id: string;
 
@@ -47,6 +73,10 @@ export interface DeckData {
   api_id?: string;
 
   meta?: DeckMeta;
+
+  deploy?: DeckDeploy;
+
+  github?: DeckGitHub;
 
   clone?: DeckClone;
 

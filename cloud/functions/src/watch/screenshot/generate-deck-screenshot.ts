@@ -1,17 +1,17 @@
-import {Change} from 'firebase-functions';
+import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import * as admin from 'firebase-admin';
 
 import * as puppeteer from 'puppeteer';
 
-import {Resources} from '../../utils/resources';
+import {Resources} from '../../utils/resources/resources';
 
-import {DeckData} from '../../model/deck';
+import {DeckData} from '../../model/data/deck';
 
 import {isDeckPublished} from './utils/update-deck';
 
-export async function generateDeckScreenshot(change: Change<DocumentSnapshot>) {
+export async function generateDeckScreenshot(change: functions.Change<DocumentSnapshot>) {
   const newValue: DeckData = change.after.data() as DeckData;
 
   const previousValue: DeckData = change.before.data() as DeckData;
@@ -57,7 +57,8 @@ function generateScreenshot(deckData: DeckData): Promise<string> {
       pathname += pathname.endsWith('/') ? '' : '/';
 
       // ?screenshot = no navigation and action displayed in the presentation
-      await page.goto(Resources.Constants.PRESENTATION.URL + pathname + '?screenshot', {waitUntil: 'networkidle0', timeout: 30000});
+      const presentationUrl: string = functions.config().deckdeckgo.presentation.url;
+      await page.goto(presentationUrl + pathname + '?screenshot', {waitUntil: 'networkidle0', timeout: 30000});
 
       await (page as any)._client.send('ServiceWorker.enable');
       await (page as any)._client.send('ServiceWorker.stopAllWorkers');

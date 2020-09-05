@@ -1,56 +1,45 @@
-import {DeckMeta} from '../../../model/deck';
-import {DeployGitHubRepo, Deploy, DeployData} from '../../../model/deploy';
-
-import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
-import {findDeploy, updateDeploy} from './github-db';
-import {parseDeck, parseInfo, shouldUpdate} from './github-fs';
-import {checkoutBranch, commitDeck, commit, pull, push} from './github-cmd';
 import * as functions from 'firebase-functions';
 
-export async function getRepo(
-  githubToken: string,
-  user: GitHubUser,
-  userId: string,
-  deckId: string,
-  deckMeta: DeckMeta
-): Promise<DeployGitHubRepo | undefined> {
-  const project: string = deckMeta.title.replace(' ', '-').toLowerCase();
-  const description: string = deckMeta.description ? (deckMeta.description as string) : '';
+import {DeckData, DeckGitHubRepo, DeckMeta} from '../../../../model/data/deck';
 
-  const deploy: Deploy | undefined = await findDeploy(deckId);
+import {createPR, createRepo, findOrCreateRepo, findRepo, GitHubUser} from './github-api';
+import {updateDeckGitHub} from './github-db';
+import {parseDeck, parseInfo, shouldUpdate} from './github-fs';
+import {checkoutBranch, commitDeck, commit, pull, push} from './github-cmd';
 
-  if (deploy) {
-    const existingRepo: DeployGitHubRepo | undefined = await findRepo(githubToken, user, deploy.data.github.repo.name);
+export async function getRepo(githubToken: string, user: GitHubUser, userId: string, deckId: string, deckData: DeckData): Promise<DeckGitHubRepo | undefined> {
+  if (!deckData || !deckData.meta) {
+    return undefined;
+  }
+
+  const project: string = deckData.meta.title.replace(' ', '-').toLowerCase();
+  const description: string = deckData.meta.description ? (deckData.meta.description as string) : '';
+
+  if (deckData.github && deckData.github.repo) {
+    const existingRepo: DeckGitHubRepo | undefined = await findRepo(githubToken, user, deckData.github.repo.name);
 
     if (existingRepo) {
       // We update our information because the user may have renamed its repo. For example, the new repo name ("hello world world") is returned when looking with the old repo name ("hello world")
-      await updateDeploy(deckId, deploy.data, existingRepo);
+      await updateDeckGitHub(deckId, existingRepo);
 
       return existingRepo;
     }
 
     // The user may have delete its repo
 
-    const createdRepo: DeployGitHubRepo | undefined = await createRepo(githubToken, user, project, description);
-    await updateDeploy(deckId, deploy.data, createdRepo);
+    const createdRepo: DeckGitHubRepo | undefined = await createRepo(githubToken, user, project, description);
+    await updateDeckGitHub(deckId, createdRepo);
 
     return createdRepo;
   }
 
-  const repo: DeployGitHubRepo | undefined = await findOrCreateRepo(githubToken, user, project, description);
+  const repo: DeckGitHubRepo | undefined = await findOrCreateRepo(githubToken, user, project, description);
 
   if (!repo) {
     return undefined;
   }
 
-  const data: DeployData = {
-    owner_id: userId,
-    github: {
-      repo,
-    },
-  };
-
-  await updateDeploy(deckId, data, repo);
+  await updateDeckGitHub(deckId, repo);
 
   return repo;
 }
@@ -81,7 +70,7 @@ async function updateInfo(githubToken: string, login: string, project: string, u
   await commit(login, project, msg, ...files);
 }
 
-export async function updateDeck(githubToken: string, user: GitHubUser, repo: DeployGitHubRepo, meta: DeckMeta) {
+export async function updateGitHubDeck(githubToken: string, user: GitHubUser, repo: DeckGitHubRepo, meta: DeckMeta) {
   // Working branch name
   const branch: string = functions.config().github.branch;
 

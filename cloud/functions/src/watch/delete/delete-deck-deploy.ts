@@ -1,7 +1,7 @@
 import {EventContext} from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
-import {DeckData} from '../../model/deck';
+import {DeckData} from '../../model/data/deck';
 
 import {deleteDeployForId} from './utils/delete-platform-utils';
 

@@ -6,6 +6,7 @@ export interface EnvironmentFirebaseConfig {
   projectId: string;
   messagingSenderId: string;
   storageUrl: string;
+  functionsUrl: string;
   appId: string;
 }
 
@@ -56,7 +57,7 @@ export function setupConfig(config: EnvironmentConfig) {
   win.DeckGo = win.DeckGo || {};
   win.DeckGo.config = {
     ...win.DeckGo.config,
-    ...config
+    ...config,
   };
 
   return win.DeckGo.config;

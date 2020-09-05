@@ -19,4 +19,4 @@ onChange('deck', (deck: Deck | null) => {
   state.published = deck && deck.data && deck.data.meta && deck.data.meta.published ? deck.data.meta.published : false;
 });
 
-export default {state, reset};
+export default {state, onChange, reset};

@@ -212,10 +212,15 @@ export class AppSignIn {
 
       await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
+      let token: string | null = null;
+      if (authStore.state.authUser) {
+        token = await firebase.auth().currentUser.getIdToken();
+      }
+
       await set('deckdeckgo_redirect_info', {
         deckId: deckStore.state.deck ? deckStore.state.deck.id : null,
         userId: authStore.state.authUser ? authStore.state.authUser.uid : null,
-        userToken: authStore.state.authUser ? authStore.state.authUser.token : null,
+        userToken: token,
         anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true,
       });
 

@@ -303,7 +303,9 @@ export class AppHome {
       this.apiUser.username = this.apiUsername;
 
       try {
-        await this.apiUserService.put(this.apiUser, authStore.state.authUser.token, this.apiUser.id);
+        const token: string = await firebase.auth().currentUser.getIdToken();
+
+        await this.apiUserService.put(this.apiUser, token, this.apiUser.id);
 
         resolve();
       } catch (err) {
@@ -397,7 +399,8 @@ export class AppHome {
 
         if (firebaseUser) {
           // We need the user token to access the API, therefore delete it here first
-          await this.apiUserService.delete(this.apiUser.id, authStore.state.authUser.token);
+          const token: string = await firebase.auth().currentUser.getIdToken();
+          await this.apiUserService.delete(this.apiUser.id, token);
 
           // Then delete the user
           await this.userService.delete(authStore.state.authUser.uid);
