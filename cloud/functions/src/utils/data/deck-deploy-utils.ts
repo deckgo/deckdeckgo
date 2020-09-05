@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import {DeployData} from '../../model/data/deploy';
+import {DeckData} from '../../model/data/deck';
 
 export function successfulDeploy(deckId: string, type: 'github' | 'api'): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
@@ -34,19 +34,25 @@ function updateStatus(deckId: string, type: 'github' | 'api', status: 'scheduled
         return;
       }
 
-      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}/`);
+      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/decks/${deckId}/`);
 
-      const updateData: Partial<DeployData> = {
+      const updateData: Partial<DeckData> = {
         updated_at: admin.firestore.Timestamp.now(),
       };
 
       if (type === 'github') {
-        updateData.github = {
-          status,
+        updateData.deploy = {
+          github: {
+            status,
+            updated_at: admin.firestore.Timestamp.now(),
+          },
         };
       } else if (type === 'api') {
-        updateData.api = {
-          status,
+        updateData.deploy = {
+          api: {
+            status,
+            updated_at: admin.firestore.Timestamp.now(),
+          },
         };
       }
 

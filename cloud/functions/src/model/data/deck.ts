@@ -2,6 +2,27 @@ import {firestore} from 'firebase-admin';
 
 import {UserSocial} from './user';
 
+export interface DeckDeployData {
+  status: 'scheduled' | 'failure' | 'successful';
+  updated_at: firestore.Timestamp;
+}
+
+export interface DeckDeploy {
+  github?: DeckDeployData;
+  api?: DeckDeployData;
+}
+
+export interface DeckGitHubRepo {
+  id: string;
+  url: string;
+  name: string;
+  nameWithOwner: string;
+}
+
+export interface DeckGitHub {
+  repo: DeckGitHubRepo;
+}
+
 export interface DeckMetaAuthor {
   name: string;
   photo_url?: string | firestore.FieldValue;
@@ -52,6 +73,10 @@ export interface DeckData {
   api_id?: string;
 
   meta?: DeckMeta;
+
+  deploy?: DeckDeploy;
+
+  github?: DeckGitHub;
 
   clone?: DeckClone;
 

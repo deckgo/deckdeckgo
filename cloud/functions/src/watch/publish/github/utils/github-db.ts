@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import {Token, TokenData} from '../../../../model/data/token';
-import {DeployGitHubRepo, Deploy, DeployData, DeployGitHub} from '../../../../model/data/deploy';
+import {DeckData, DeckGitHubRepo} from '../../../../model/data/deck';
 
 export function findToken(userId: string): Promise<Token> {
   return new Promise<Token>(async (resolve, reject) => {
@@ -26,30 +26,7 @@ export function findToken(userId: string): Promise<Token> {
   });
 }
 
-export function findDeploy(deckId: string): Promise<Deploy | undefined> {
-  return new Promise<Deploy | undefined>(async (resolve, reject) => {
-    try {
-      const snapshot: admin.firestore.DocumentSnapshot = await admin.firestore().doc(`/deploys/${deckId}`).get();
-
-      if (!snapshot.exists) {
-        resolve(undefined);
-        return;
-      }
-
-      const data: DeployData = snapshot.data() as DeployData;
-
-      resolve({
-        id: snapshot.id,
-        ref: snapshot.ref,
-        data,
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-export function updateGitHubDeploy(deckId: string, deckData: DeployData, repo: DeployGitHubRepo | undefined): Promise<void> {
+export function updateDeckGitHub(deckId: string, repo: DeckGitHubRepo | undefined): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || deckId === '') {
@@ -62,12 +39,14 @@ export function updateGitHubDeploy(deckId: string, deckData: DeployData, repo: D
         return;
       }
 
-      const data: DeployData = {...deckData};
-      (data.github as DeployGitHub).repo = {...repo};
+      const data: Partial<DeckData> = {
+        updated_at: admin.firestore.Timestamp.now(),
+        github: {
+          repo: {...repo},
+        },
+      };
 
-      data.updated_at = admin.firestore.Timestamp.now();
-
-      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}`);
+      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/decks/${deckId}`);
 
       await documentReference.set(data, {merge: true});
 

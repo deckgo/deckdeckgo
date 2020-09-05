@@ -4,7 +4,7 @@ import * as functions from 'firebase-functions';
 import {scheduleTask} from '../../utils/data/task-utils';
 import {geToken} from '../utils/request-utils';
 
-import {DeployData} from '../../model/data/deploy';
+import {DeckData, DeckDeployData} from '../../model/data/deck';
 
 export interface ScheduledPublishTask {}
 
@@ -39,7 +39,7 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
       }
 
       // We tell the frontend to wait
-      await scheduleDeploy(deckId, ownerId, publish, github);
+      await updateDeckDeploy(deckId, ownerId, publish, github);
 
       // We schedule internally / cloud the job so we keep secret the token
 
@@ -71,7 +71,7 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
   });
 }
 
-function scheduleDeploy(deckId: string, ownerId: string, publish: boolean, github: boolean): Promise<void> {
+function updateDeckDeploy(deckId: string, ownerId: string, publish: boolean, github: boolean): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || !deckId) {
@@ -79,24 +79,28 @@ function scheduleDeploy(deckId: string, ownerId: string, publish: boolean, githu
         return;
       }
 
-      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/deploys/${deckId}/`);
+      const documentReference: admin.firestore.DocumentReference = admin.firestore().doc(`/decks/${deckId}/`);
 
-      const updateData: DeployData = {
-        owner_id: ownerId,
+      const deployData: DeckDeployData = {
+        status: 'scheduled',
         updated_at: admin.firestore.Timestamp.now(),
       };
 
-      if (publish) {
-        updateData.api = {
-          status: 'scheduled',
-        };
-      }
-
-      if (github) {
-        updateData.github = {
-          status: 'scheduled',
-        };
-      }
+      const updateData: Partial<DeckData> = publish
+        ? {
+            deploy: {
+              api: {
+                ...deployData,
+              },
+            },
+          }
+        : {
+            deploy: {
+              github: {
+                ...deployData,
+              },
+            },
+          };
 
       await documentReference.set(updateData, {merge: true});
 

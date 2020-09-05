@@ -1,12 +1,11 @@
-import {DeckData} from '../../../model/data/deck';
+import {DeckData, DeckGitHubRepo} from '../../../model/data/deck';
 import {Token} from '../../../model/data/token';
-import {DeployGitHubRepo} from '../../../model/data/deploy';
 
 import {getUser, GitHubUser} from './utils/github-api';
 import {clone} from './utils/github-cmd';
 import {findToken} from './utils/github-db';
 import {getRepo, updateGitHubDeck, updateProject} from './utils/github-utils';
-import {failureDeploy, successfulDeploy} from '../../../utils/data/deploy-utils';
+import {failureDeploy, successfulDeploy} from '../../../utils/data/deck-deploy-utils';
 
 export async function publishToGitHub(deckId: string, deckData: DeckData): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
@@ -46,7 +45,7 @@ export async function publishToGitHub(deckId: string, deckData: DeckData): Promi
 
       // Get or create GitHub repo / project
 
-      const repo: DeployGitHubRepo | undefined = await getRepo(platform.data.github.token, user, deckData.owner_id, deckId, deckData.meta);
+      const repo: DeckGitHubRepo | undefined = await getRepo(platform.data.github.token, user, deckData.owner_id, deckId, deckData);
 
       if (!repo || repo === undefined || !repo.url || !repo.name) {
         reject('No GitHub repo found or created.');

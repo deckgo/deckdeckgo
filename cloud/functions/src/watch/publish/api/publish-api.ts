@@ -7,7 +7,7 @@ import {ApiPresentation} from '../../../model/api/api.presentation';
 import {convertDeck} from '../../../request/utils/convert-deck-utils';
 import {publishDeckApi} from '../../../request/utils/api-utils';
 import {updateDeck} from '../../../utils/data/deck-utils';
-import {failureDeploy, successfulDeploy} from '../../../utils/data/deploy-utils';
+import {failureDeploy, successfulDeploy} from '../../../utils/data/deck-deploy-utils';
 
 import {Resources} from '../../../utils/resources/resources';
 
