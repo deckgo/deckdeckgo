@@ -55,13 +55,28 @@ function publishJob(snap: DocumentSnapshot): Promise<void> {
         return;
       }
 
-      if (task.type === 'publish-deck') {
+      if (task.type === 'publish-all') {
+        const newPublish: boolean = deck.data.api_id === undefined || deck.data.api_id === null;
+
+        // If we do both, currently we need the API first as we are getting the content from the published deck
         await publishToApi(deck, task.token as string);
+
+        // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
+        // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
+        setTimeout(
+          async () => {
+            await publishToGitHub(deck.id, deck.data);
+            resolve();
+          },
+          newPublish ? 5000 : 0
+        );
+      } else if (task.type === 'publish-deck') {
+        await publishToApi(deck, task.token as string);
+        resolve();
       } else if (task.type === 'push-github') {
         await publishToGitHub(deck.id, deck.data);
+        resolve();
       }
-
-      resolve();
     } catch (err) {
       reject(err);
     }

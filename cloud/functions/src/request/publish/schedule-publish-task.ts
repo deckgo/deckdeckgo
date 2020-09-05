@@ -18,7 +18,6 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
     try {
       const token: string | undefined = await geToken(request);
       const deckId: string | undefined = request.body.deckId;
-      const ownerId: string | undefined = request.body.ownerId;
 
       if (!deckId) {
         reject('No deck information provided.');
@@ -27,11 +26,6 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
 
       if (!token) {
         reject('No token provided.');
-        return;
-      }
-
-      if (!ownerId) {
-        reject('No owner ID provided.');
         return;
       }
 
@@ -44,25 +38,10 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
       }
 
       // We tell the frontend to wait
-      await updateDeckDeploy(deckId, ownerId, publish, github);
+      await updateDeckDeploy(deckId, publish, github);
 
       // We schedule internally / cloud the job so we keep secret the token
-
-      if (publish) {
-        await scheduleTask({
-          deckId,
-          token,
-          type: 'publish-deck',
-        });
-      }
-
-      if (github) {
-        await scheduleTask({
-          deckId,
-          token,
-          type: 'push-github',
-        });
-      }
+      await schedule(deckId, publish, github, token);
 
       resolve({
         deckId,
@@ -76,7 +55,35 @@ export function schedulePublish(request: functions.Request): Promise<ScheduledPu
   });
 }
 
-function updateDeckDeploy(deckId: string, ownerId: string, publish: boolean, github: boolean): Promise<void> {
+async function schedule(deckId: string, publish: boolean, github: boolean, token: string) {
+  if (publish && github) {
+    await scheduleTask({
+      deckId,
+      token,
+      type: 'publish-all',
+    });
+
+    return;
+  }
+
+  if (publish) {
+    await scheduleTask({
+      deckId,
+      token,
+      type: 'publish-deck',
+    });
+  }
+
+  if (github) {
+    await scheduleTask({
+      deckId,
+      token,
+      type: 'push-github',
+    });
+  }
+}
+
+function updateDeckDeploy(deckId: string, publish: boolean, github: boolean): Promise<void> {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckId || deckId === undefined || !deckId) {
