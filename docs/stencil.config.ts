@@ -10,6 +10,7 @@ export const config: Config = {
       type: 'www',
       baseUrl: 'https://docs.deckdeckgo.com',
       prerenderConfig: './prerender.config.ts',
+      copy: [{src: 'robots.txt'}],
     },
   ],
   globalScript: 'src/global/app.ts',
@@ -24,5 +25,4 @@ export const config: Config = {
   devServer: {
     openBrowser: false,
   },
-  copy: [{src: 'robots.txt'}],
 };

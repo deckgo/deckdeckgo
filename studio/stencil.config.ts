@@ -27,6 +27,7 @@ export const config: Config = {
       serviceWorker: {
         swSrc: 'src/sw.js',
       },
+      copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}],
     },
   ],
   globalScript: globalScript,
@@ -49,5 +50,4 @@ export const config: Config = {
     openBrowser: false,
     reloadStrategy: 'pageReload',
   },
-  copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}],
 };
