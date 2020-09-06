@@ -1,4 +1,4 @@
-# 2.3.0 (2020-09-01)
+# 2.3.0 (2020-09-06)
 
 ### Features
 
@@ -7,6 +7,8 @@
 - new staging environment ([#850](https://github.com/deckgo/deckdeckgo/pull/850))
 - make lighthouse happy ([#847](https://github.com/deckgo/deckdeckgo/pull/847))
 - update dependencies including all Web Components build with Stencil v2 ([#858](https://github.com/deckgo/deckdeckgo/issues/858))
+- upgrade to Stencil v2 ([#858](https://github.com/deckgo/deckdeckgo/issues/858))
+- prompt user to reload when an update is available ([#868](https://github.com/deckgo/deckdeckgo/pull/868))
 
 ### Style
 
@@ -16,6 +18,7 @@
 
 - hide placeholder in fullscreen mode if idle ([#854](https://github.com/deckgo/deckdeckgo/pull/854))
 - update `@deckdeckgo/highlight-code` ([#848](https://github.com/deckgo/deckdeckgo/issues/848))
+- API crash on unique constraint ([#858](https://github.com/deckgo/deckdeckgo/issues/859))
 
 # 2.2.0 (2020-08-17)
 
