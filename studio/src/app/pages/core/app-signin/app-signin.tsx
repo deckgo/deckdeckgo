@@ -298,7 +298,7 @@ export class AppSignIn {
 
   private renderMsg() {
     return [
-      <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
+      <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi 👋! Good to have you.</h1>,
       <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to share your presentation online.</p>,
     ];
   }
