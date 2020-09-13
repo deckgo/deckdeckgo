@@ -66,6 +66,8 @@ export class DeckdeckgoDeck {
 
   @Prop({reflect: true}) transition: 'slide' | 'fade' | 'none' = 'slide';
 
+  @Prop({reflect: true}) direction: 'horizontal' | 'papyrus' = 'horizontal';
+
   async componentWillLoad() {
     await this.initRtl();
   }

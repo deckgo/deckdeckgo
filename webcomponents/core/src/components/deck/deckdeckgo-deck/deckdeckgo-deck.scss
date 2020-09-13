@@ -21,6 +21,15 @@ div.deckgo-deck {
   --slide-height: 100%;
 }
 
+:host([direction="papyrus"]) {
+  div.deckgo-deck {
+    flex-direction: column;
+
+    --slide-height: auto;
+    --slide-min-height: 100vh;
+  }
+}
+
 div.deckgo-pager {
   position: absolute;
   bottom: 0;

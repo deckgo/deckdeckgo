@@ -11,6 +11,7 @@ export namespace Components {
         "blockSlide": (block: boolean) => Promise<void>;
         "cloneBackground": boolean;
         "deleteActiveSlide": () => Promise<void>;
+        "direction": 'horizontal' | 'papyrus';
         "doPrint": () => Promise<void>;
         "embedded": boolean;
         "getActiveIndex": () => Promise<number>;
@@ -92,6 +93,7 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoDeck {
         "cloneBackground"?: boolean;
+        "direction"?: 'horizontal' | 'papyrus';
         "embedded"?: boolean;
         "keyboard"?: boolean;
         "onDeckDidLoad"?: (event: CustomEvent<void>) => void;

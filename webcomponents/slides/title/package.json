@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.1.2"
+    "@deckdeckgo/slide-utils": "file:../../../utils/slide"
   },
   "devDependencies": {
     "@stencil/core": "^2.0.2",
