@@ -276,8 +276,6 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    console.log(delta);
-
     this.moveX(delta);
     this.moveY(delta);
 
