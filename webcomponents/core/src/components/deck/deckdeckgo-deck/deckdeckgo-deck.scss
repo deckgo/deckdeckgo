@@ -8,9 +8,10 @@ div.deckgo-deck {
   z-index: var(--zIndex);
 
   --transformX: 0px;
+  --transformY: 0px;
   --transformXDuration: 0ms;
 
-  transform: translate3d(var(--transformX), 0px, 0px);
+  transform: translate3d(var(--transformX), var(--transformY), 0px);
   transition-duration: var(--transformXDuration, 0ms);
 
   ::-webkit-scrollbar {
@@ -19,6 +20,14 @@ div.deckgo-deck {
 
   --slide-width: 100vw;
   --slide-height: 100%;
+}
+
+:host([direction="vertical"]) {
+  div.deckgo-deck {
+    flex-direction: column;
+
+    --slide-height: 100vh;
+  }
 }
 
 :host([direction="papyrus"]) {
