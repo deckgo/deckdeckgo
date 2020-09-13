@@ -1,9 +1,12 @@
 :host {
+  display: block;
+
   position: relative;
 
   background: var(--background);
   color: var(--color);
-  height: 100%;
+
+  height: inherit;
 
   z-index: var(--zIndex, 1);
 
@@ -30,6 +33,7 @@ div.deckgo-slide {
   height: calc(
     var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
   );
+  min-height: var(--slide-min-height);
 
   // Don't allow text selection
   -webkit-touch-callout: var(--slide-user-select, none); /* iOS Safari */
