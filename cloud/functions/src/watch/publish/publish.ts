@@ -5,10 +5,11 @@ import {Deck} from '../../model/data/deck';
 import {TaskData} from '../../model/data/task';
 
 import {findDeck} from '../../utils/data/deck-utils';
-
 import {failureTask, successfulTask} from '../../utils/data/task-utils';
+
 import {publishToApi} from './api/publish-api';
 import {publishToGitHub} from './github/publish-github';
+import {generateDeckScreenshot} from './screenshot/generate-deck-screenshot';
 
 export async function publish(snap: DocumentSnapshot, context: EventContext) {
   const taskId: string = context.params.taskId;
@@ -60,6 +61,7 @@ function publishJob(snap: DocumentSnapshot): Promise<void> {
 
         // If we do both, currently we need the API first as we are getting the content from the published deck
         await publishToApi(deck, task.token as string);
+        await generateDeckScreenshot(deck.id);
 
         // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
         // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
@@ -72,6 +74,7 @@ function publishJob(snap: DocumentSnapshot): Promise<void> {
         );
       } else if (task.type === 'publish-deck') {
         await publishToApi(deck, task.token as string);
+        await generateDeckScreenshot(deck.id);
         resolve();
       } else if (task.type === 'push-github') {
         await publishToGitHub(deck.id, deck.data);
