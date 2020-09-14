@@ -1,38 +1,32 @@
 import * as functions from 'firebase-functions';
-import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
 
 import * as admin from 'firebase-admin';
 
 import * as puppeteer from 'puppeteer';
 
-import {Resources} from '../../utils/resources/resources';
+import {Resources} from '../../../utils/resources/resources';
 
-import {DeckData} from '../../model/data/deck';
+import {Deck, DeckData} from '../../../model/data/deck';
 
-import {isDeckPublished} from './utils/update-deck';
+import {findDeck} from '../../../utils/data/deck-utils';
 
-export async function generateDeckScreenshot(change: functions.Change<DocumentSnapshot>) {
-  const newValue: DeckData = change.after.data() as DeckData;
+export async function generateDeckScreenshot(deckId: string) {
+  const apiSkip: string = functions.config().deckdeckgo.api.skip;
 
-  const previousValue: DeckData = change.before.data() as DeckData;
-
-  if (!newValue || !newValue.meta || !newValue.meta.published || !newValue.meta.pathname) {
+  if (apiSkip === 'true') {
     return;
   }
 
-  if (!newValue.owner_id || newValue.owner_id === undefined || newValue.owner_id === '') {
-    return;
-  }
+  const deck: Deck = await findDeck(deckId);
 
-  const update: boolean = await isDeckPublished(previousValue, newValue);
-
-  if (!update) {
+  if (!deck || !deck.data) {
+    console.error('Deck for screenshot not found.');
     return;
   }
 
   try {
-    const imageBuffer: string = await generateScreenshot(newValue);
-    await saveScreenshot(newValue, imageBuffer);
+    const imageBuffer: string = await generateScreenshot(deck.data);
+    await saveScreenshot(deck.data, imageBuffer);
   } catch (err) {
     console.error(err);
   }

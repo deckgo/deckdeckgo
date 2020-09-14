@@ -1,57 +1,45 @@
-import * as functions from 'firebase-functions';
 import {DocumentSnapshot} from 'firebase-functions/lib/providers/firestore';
+import * as functions from 'firebase-functions';
 
 import * as nodemailer from 'nodemailer';
-
-import {DeckData} from '../../model/data/deck';
 import * as Mail from 'nodemailer/lib/mailer';
 
-export async function infoDeckPublish(change: functions.Change<DocumentSnapshot>) {
-  const newValue: DeckData = change.after.data() as DeckData;
+import {Deck, DeckData} from '../../model/data/deck';
+import {TaskData} from '../../model/data/task';
 
-  const previousValue: DeckData = change.before.data() as DeckData;
+import {findDeck} from '../../utils/data/deck-utils';
 
-  if (!newValue || !newValue.meta || !newValue.meta.published || !newValue.meta.pathname) {
+export async function infoPublish(snap: DocumentSnapshot, _context: functions.EventContext) {
+  const infoMailSkip: string = functions.config().info.mail.skip;
+
+  if (infoMailSkip === 'true') {
     return;
   }
 
-  if (!newValue.owner_id || newValue.owner_id === undefined || newValue.owner_id === '') {
+  const task: TaskData = snap.data() as TaskData;
+
+  if (!task || task === undefined || !task.deckId) {
+    console.error('Task for info not provided.');
     return;
   }
 
-  const publish: boolean = await isFirstTimePublished(previousValue, newValue);
+  const deck: Deck = await findDeck(task.deckId);
 
-  if (!publish) {
+  if (!deck || !deck.data) {
+    console.error('Deck for info not found.');
     return;
   }
 
   try {
-    await sendInfo(change.after.id, newValue);
+    await sendInfo(task.deckId, deck.data, task);
   } catch (err) {
     console.error(err);
   }
 }
 
-function isFirstTimePublished(previousValue: DeckData, newValue: DeckData): Promise<boolean> {
-  return new Promise<boolean>((resolve) => {
-    if (!previousValue || !newValue) {
-      resolve(false);
-      return;
-    }
-
-    resolve(!previousValue.meta && newValue.meta && newValue.meta.published);
-  });
-}
-
-function sendInfo(deckId: string, deckData: DeckData): Promise<string> {
+function sendInfo(deckId: string, deckData: DeckData, task: TaskData): Promise<string> {
   return new Promise<string>(async (resolve, reject) => {
     try {
-      const infoMailSkip: string = functions.config().info.mail.skip;
-
-      if (infoMailSkip === 'true') {
-        return;
-      }
-
       const mailFrom: string = functions.config().info.mail.from;
       const mailPwd: string = functions.config().info.mail.pwd;
       const mailTo: string = functions.config().info.mail.to;
@@ -73,6 +61,7 @@ function sendInfo(deckId: string, deckData: DeckData): Promise<string> {
         subject: 'DeckDeckGo: New published deck',
         html: `<h2>${deckData.meta ? deckData.meta.title : 'Unknown title'}</h2>
                 <p>Deck: ${deckId}</p>
+                <p>Type: ${task.type}</p>
                 <p>Url: <a href="${deckUrl}">${deckUrl}</a></p>
             `,
       };
