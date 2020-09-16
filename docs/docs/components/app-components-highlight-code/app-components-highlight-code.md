@@ -186,6 +186,7 @@ Furthermore the following styles apply if the code is displayed as a "carbon" te
 | CSS4 variable                                                  | Default                        | Note                                                    |
 | -------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------- |
 | --deckgo-highlight-code-carbon-display                         | block                          | The display property of the host container.             |
+| --deckgo-highlight-code-carbon-toolbar-display                 | block                          | The display property of the toolbar container.          |
 | --deckgo-highlight-code-carbon-overflow                        | auto                           | The overflow property of the host container.            |
 | --deckgo-highlight-code-carbon-border                          |                                | The border property of the host container.              |
 | --deckgo-highlight-code-carbon-border-radius                   | 4px                            | The border-radius property of the host container.       |
@@ -194,6 +195,7 @@ Furthermore the following styles apply if the code is displayed as a "carbon" te
 | --deckgo-highlight-code-carbon-box-shadow                      | rgba(0, 0, 0, 0.55) 0 8px 16px | The box-shadow property of the host container.          |
 | --deckgo-highlight-code-carbon-margin                          | 16px 0                         | The margin property of the host container.              |
 | --deckgo-highlight-code-carbon-header-padding                  | 16px                           | The padding property of the card header.                |
+| --deckgo-highlight-code-carbon-header-margin                   | 0                              | The margin property of the card header.                 |
 | --deckgo-highlight-code-carbon-header-button-width             | 12px                           | The width of a button of the card header.               |
 | --deckgo-highlight-code-carbon-header-button-height            | 12px                           | The height of a button of the card header.              |
 | --deckgo-highlight-code-carbon-header-button-border-radius     | 50%                            | The border-radius of a button of the card header.       |
