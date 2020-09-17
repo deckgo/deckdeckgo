@@ -457,6 +457,10 @@ export class DeckdeckgoDeck {
       return null;
     }
 
+    if (this.direction === 'papyrus') {
+      return null;
+    }
+
     const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
     if (!slider) {

@@ -38,6 +38,8 @@ div.deckgo-deck {
     --slide-min-height: calc(
       var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
     );
+
+    --slide-user-select: auto;
   }
 }
 
