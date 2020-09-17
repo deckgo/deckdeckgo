@@ -1,3 +1,9 @@
+# 2.1.0 (2020-09-17)
+
+### Features
+
+- added the ability to toggle the Carbon toolbar and adjust the margin ([#873](https://github.com/deckgo/deckdeckgo/pull/873))
+
 # 2.0.0 (2020-09-03)
 
 ### Breaking Changes
