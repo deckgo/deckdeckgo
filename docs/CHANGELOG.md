@@ -1,4 +1,10 @@
-# 1.9.3 (2020-09-03)
+# 1.9.3 (2020-09-17)
+
+### Features
+
+- highlight-code option to hide Carbon toolbar
+
+# 1.9.2 (2020-09-03)
 
 ### Features
 

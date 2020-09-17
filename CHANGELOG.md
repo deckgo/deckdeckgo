@@ -2,6 +2,10 @@
 
 # [2.4.0](https://github.com/deckgo/deckdeckgo/compare/v2.3.0...v2.4.0) (In progress...)
 
+### Applications
+
+- docs: v1.9.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components
 
 - highlight-code: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
