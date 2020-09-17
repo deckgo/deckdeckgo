@@ -129,19 +129,16 @@ export class DeckdeckgoDeck {
   }
 
   private initSlideSizeStandard(slider: HTMLElement): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!window || !screen) {
         resolve();
         return;
       }
 
-      if (isIOS()) {
-        slider.style.setProperty('--slide-width', `${screen.width > window.innerWidth ? screen.width : window.innerWidth}px`);
-        slider.style.setProperty('--slide-height', `${screen.height > window.innerHeight ? screen.height : window.innerHeight}px`);
-      } else {
-        slider.style.setProperty('--slide-width', `${window.innerWidth}px`);
-        slider.style.setProperty('--slide-height', `${window.innerHeight}px`);
-      }
+      const sliderSize: {width: number; height: number} = await this.getSliderSize();
+
+      slider.style.setProperty('--slide-width', `${sliderSize.width}px`);
+      slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
 
       resolve();
     });
@@ -197,9 +194,15 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    if (['ArrowLeft', 'k', 'PageUp'].indexOf($event.key) !== -1) {
+    const keysPrev: string[] = ['k', 'PageUp'];
+    const keysNext: string[] = ['j', 'PageDown'];
+
+    keysPrev.push(this.direction === 'horizontal' ? 'ArrowLeft' : 'ArrowUp');
+    keysNext.push(this.direction === 'horizontal' ? 'ArrowRight' : 'ArrowDown');
+
+    if (keysPrev.indexOf($event.key) !== -1) {
       await this.slideNextPrev(false, true);
-    } else if (['ArrowRight', 'j', 'PageDown'].indexOf($event.key) !== -1) {
+    } else if (keysNext.indexOf($event.key) !== -1) {
       await this.slideNextPrev(true, true);
     }
   };
@@ -342,13 +345,14 @@ export class DeckdeckgoDeck {
         const autoSwipeVertical: boolean = delta.deltaY > sliderSize.height / this.autoSwipeRatio;
 
         if (autoSwipeHorizontal || autoSwipeVertical) {
-          this.deckMove = autoSwipeVertical
-            ? delta.swipeNext
-              ? this.deckMove - sliderSize.height
-              : this.deckMove + sliderSize.height
-            : delta.swipeNext
-            ? this.deckMove - sliderSize.width
-            : this.deckMove + sliderSize.width;
+          this.deckMove =
+            this.direction !== 'horizontal'
+              ? delta.swipeNext
+                ? this.deckMove - sliderSize.height
+                : this.deckMove + sliderSize.height
+              : delta.swipeNext
+              ? this.deckMove - sliderSize.width
+              : this.deckMove + sliderSize.width;
 
           if (this.isNextChange(delta.swipeNext)) {
             this.activeIndex++;
@@ -377,25 +381,33 @@ export class DeckdeckgoDeck {
 
   private async getSliderSize(): Promise<{width: number; height: number}> {
     if (!this.embedded) {
-      return {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
+      return this.getSliderSizeNotEmbededd();
     }
 
     const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
     if (!slider || !slider.offsetParent || slider.offsetParent.clientWidth <= 0) {
-      return {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
+      return this.getSliderSizeNotEmbededd();
     }
 
     return {
       width: slider.offsetParent.clientWidth,
       height: slider.offsetParent.clientHeight,
     };
+  }
+
+  private async getSliderSizeNotEmbededd(): Promise<{width: number; height: number}> {
+    if (isIOS()) {
+      return {
+        width: screen.width > window.innerWidth ? screen.width : window.innerWidth,
+        height: screen.height > window.innerHeight ? screen.height : window.innerHeight,
+      };
+    } else {
+      return {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+    }
   }
 
   private isNextChange(swipeLeft: boolean): boolean {
@@ -707,11 +719,13 @@ export class DeckdeckgoDeck {
 
     // We might want first to show hide stuffs in the slide before swiping
     if (couldSwipe) {
+      const sliderSize: {width: number; height: number} = await this.getSliderSize();
+
       const deltaX: Delta = {
         slider,
         swipeNext,
-        deltaX: window.innerWidth,
-        deltaY: window.innerHeight,
+        deltaX: sliderSize.width,
+        deltaY: sliderSize.height,
       };
 
       await this.swipeSlide(deltaX, emitEvent);
@@ -785,10 +799,10 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    const slideWidth: number = this.length > 0 && slider.offsetWidth > 0 ? slider.offsetWidth / this.length : window.innerWidth;
-    const slideHeight: number = slider.offsetHeight > 0 ? slider.offsetHeight : window.innerHeight;
+    const sliderSize: {width: number; height: number} = await this.getSliderSize();
 
-    this.deckMove = index * (this.direction === 'horizontal' ? slideWidth : slideHeight) * (this.rtl ? 1 : -1);
+    this.deckMove = index * (this.direction === 'horizontal' ? sliderSize.width : sliderSize.height) * (this.rtl ? 1 : -1);
+
     this.activeIndex = index;
 
     await this.lazyLoadContent(this.activeIndex);
