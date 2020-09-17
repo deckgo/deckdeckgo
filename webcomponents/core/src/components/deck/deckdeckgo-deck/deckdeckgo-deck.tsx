@@ -416,6 +416,11 @@ export class DeckdeckgoDeck {
         slider.style.setProperty('--transformXDuration', '0ms');
       }
 
+      if (this.direction === 'papyrus') {
+        const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+        slide.scrollIntoView(this.transition === 'none' ? null : {behavior: 'smooth'});
+      }
+
       this.slideWillChange.emit(this.deckMove);
 
       this.resetStart();
@@ -509,7 +514,8 @@ export class DeckdeckgoDeck {
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
-      if (!this.reveal || (!this.revealOnMobile && isMobile())) {
+      // Also, no reveal for papyrus as we can scroll
+      if (!this.reveal || (!this.revealOnMobile && isMobile()) || this.direction === 'papyrus') {
         promises.push(this.revealAllContent());
       }
 
@@ -1055,7 +1061,7 @@ export class DeckdeckgoDeck {
   }
 
   private renderTransition() {
-    if (this.transition !== 'fade') {
+    if (this.transition !== 'fade' || this.direction === 'papyrus') {
       return <TransitionSlide />;
     }
 
