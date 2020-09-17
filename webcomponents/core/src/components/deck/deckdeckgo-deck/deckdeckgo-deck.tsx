@@ -137,8 +137,10 @@ export class DeckdeckgoDeck {
 
       if (isIOS()) {
         slider.style.setProperty('--slide-width', `${screen.width > window.innerWidth ? screen.width : window.innerWidth}px`);
+        slider.style.setProperty('--slide-height', `${screen.height > window.innerHeight ? screen.height : window.innerHeight}px`);
       } else {
         slider.style.setProperty('--slide-width', `${window.innerWidth}px`);
+        slider.style.setProperty('--slide-height', `${window.innerHeight}px`);
       }
 
       resolve();
