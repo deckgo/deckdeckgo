@@ -197,15 +197,9 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    const keysPrev: string[] = ['k', 'PageUp'];
-    const keysNext: string[] = ['j', 'PageDown'];
-
-    keysPrev.push(this.direction === 'horizontal' ? 'ArrowLeft' : 'ArrowUp');
-    keysNext.push(this.direction === 'horizontal' ? 'ArrowRight' : 'ArrowDown');
-
-    if (keysPrev.indexOf($event.key) !== -1) {
+    if (['ArrowLeft', 'k', 'PageUp'].indexOf($event.key) !== -1) {
       await this.slideNextPrev(false, true);
-    } else if (keysNext.indexOf($event.key) !== -1) {
+    } else if (['ArrowRight', 'j', 'PageDown'].indexOf($event.key) !== -1) {
       await this.slideNextPrev(true, true);
     }
   };
