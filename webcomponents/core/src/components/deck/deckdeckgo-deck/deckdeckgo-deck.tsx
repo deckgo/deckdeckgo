@@ -522,10 +522,17 @@ export class DeckdeckgoDeck {
 
       const promises: Promise<void>[] = [];
       promises.push(this.lazyLoadFirstSlides());
-      promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'background', this.cloneBackground));
-      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
-      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
+
+      if (this.direction !== 'papyrus') {
+        promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
+      } else if (filteredSlides && filteredSlides.length > 0) {
+        promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlot(this.el, filteredSlides[0], 'actions'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlot(this.el, filteredSlides[0], 'header'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlot(this.el, filteredSlides[filteredSlides.length - 1], 'footer'));
+      }
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
