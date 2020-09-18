@@ -141,7 +141,7 @@ export class DeckdeckgoDeck {
       const sliderSize: {width: number; height: number} = await this.getSliderSize();
 
       slider.style.setProperty('--slide-width', `${sliderSize.width}px`);
-      slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
+      slider.style.setProperty(this.direction === 'papyrus' ? '--slide-min-height' : '--slide-height', `${sliderSize.height}px`);
 
       resolve();
     });
@@ -160,7 +160,7 @@ export class DeckdeckgoDeck {
         }
 
         if (slider.offsetParent.clientHeight > 0) {
-          slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
+          slider.style.setProperty(this.direction === 'papyrus' ? '--slide-min-height' : '--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
       }
 
