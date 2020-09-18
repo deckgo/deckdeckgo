@@ -36,7 +36,7 @@ div.deckgo-deck {
 
     --slide-height: auto;
     --slide-min-height: calc(
-      var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
+      var(--slide-min-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
     );
 
     --slide-user-select: auto;
