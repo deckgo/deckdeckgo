@@ -98,7 +98,10 @@ export class DeckdeckgoDeck {
         'resize',
         debounce(async () => {
           await this.initSlideSize();
-          await this.slideTo(this.activeIndex);
+
+          if (this.direction !== 'papyrus') {
+            await this.slideTo(this.activeIndex);
+          }
 
           const toggleFullscreen: boolean = isFullscreen();
           await this.hideOrClearMouseCursorTimer(toggleFullscreen);
