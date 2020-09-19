@@ -43,9 +43,20 @@
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.js"></script>
+
+    <style>
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden">
-    <deckgo-deck id="slider" style="--pager-display: block; --pager-text-slides-display: block" direction="vertical">
+  <body style="margin: 0">
+    <deckgo-deck id="slider" style="--pager-display: block; --pager-text-slides-display: block" direction="papyrus">
       <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
         <h1 slot="title">My presentation will start in</h1>
         <span slot="days">Days</span>
