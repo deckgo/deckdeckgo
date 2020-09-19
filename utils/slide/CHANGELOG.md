@@ -5,6 +5,7 @@
 ### Features
 
 - default overflow `hidden` introduced to support `vertical` swipe
+- update dependencies to latest
 
 <a name="2.1.2"></a>
 
