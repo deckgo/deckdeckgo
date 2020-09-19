@@ -1069,15 +1069,17 @@ export class DeckdeckgoDeck {
   /* END: Reveal */
 
   render() {
-    return [
-      this.renderTransition(),
-      <div class="deckgo-deck">
-        <slot />
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>,
-      <div class="deckgo-pager">{this.renderPager()}</div>,
-    ];
+    return (
+      <main>
+        {this.renderTransition()}
+        <div class="deckgo-deck">
+          <slot />
+          <slot name="actions"></slot>
+          <slot name="background"></slot>
+        </div>
+        <div class="deckgo-pager">{this.renderPager()}</div>
+      </main>
+    );
   }
 
   private renderPager() {

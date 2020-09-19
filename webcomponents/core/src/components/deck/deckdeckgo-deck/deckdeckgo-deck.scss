@@ -1,3 +1,57 @@
+:host {
+  display: block;
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  contain: size style;
+}
+
+main {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  box-sizing: border-box;
+
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+
+  touch-action: auto;
+}
+
+:host([direction="vertical"]),
+:host([direction="horizontal"]) {
+  main {
+    overflow: hidden;
+  }
+}
+
+:host([direction="papyrus"]) {
+  main {
+    overflow-x: hidden;
+  }
+}
+
+:host([direction="vertical"]),
+:host([direction="papyrus"]) {
+  main {
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+  }
+}
+
+:host([direction="horizontal"]) {
+  main {
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+  }
+}
+
 div.deckgo-deck {
   display: flex;
 
