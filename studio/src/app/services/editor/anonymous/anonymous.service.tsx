@@ -1,3 +1,5 @@
+import {JSX} from '@stencil/core';
+
 import authStore from '../../../stores/auth.store';
 
 import {Resources} from '../../../utils/core/resources';
@@ -16,7 +18,7 @@ export class AnonymousService {
    * We limit anonymous user to add three slides
    * @param slides
    */
-  couldAddSlide(slides: any[]): Promise<boolean> {
+  couldAddSlide(slides: JSX.IntrinsicElements[]): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       if (!slides || slides.length <= 0) {
         resolve(true);
