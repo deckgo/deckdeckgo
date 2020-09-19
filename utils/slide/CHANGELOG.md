@@ -1,3 +1,11 @@
+<a name="2.2.0"></a>
+
+# 2.2.0 (2020-09-19)
+
+### Features
+
+- default overflow `hidden` introduced to support `vertical` swipe
+
 <a name="2.1.2"></a>
 
 # 2.1.2 (2020-07-12)
