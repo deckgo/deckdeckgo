@@ -1,3 +1,13 @@
+# 3.0.0 (2020-09-20)
+
+### Breaking Changes
+
+- the deck now contains a new shadowed `main` element set to a position `absolute` which might conflict with previous usages
+
+### Features
+
+- swipe `vertical` and `papyrus`
+
 # 2.0.0 (2020-09-03)
 
 ### Breaking Changes
