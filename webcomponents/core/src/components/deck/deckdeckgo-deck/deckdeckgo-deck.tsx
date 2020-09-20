@@ -141,7 +141,14 @@ export class DeckdeckgoDeck {
       const sliderSize: {width: number; height: number} = await this.getSliderSize();
 
       slider.style.setProperty('--slide-width', `${sliderSize.width}px`);
-      slider.style.setProperty(this.direction === 'papyrus' ? '--slide-min-height' : '--slide-height', `${sliderSize.height}px`);
+
+      if (this.direction === 'papyrus') {
+        slider.style.setProperty('--slide-min-height', `${sliderSize.height}px`);
+        slider.style.setProperty('--slide-height', `auto`);
+      } else {
+        slider.style.removeProperty('--slide-min-height');
+        slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
+      }
 
       resolve();
     });
@@ -159,8 +166,14 @@ export class DeckdeckgoDeck {
           slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
         }
 
-        if (slider.offsetParent.clientHeight > 0) {
-          slider.style.setProperty(this.direction === 'papyrus' ? '--slide-min-height' : '--slide-height', '' + slider.offsetParent.clientHeight + 'px');
+        if (slider.offsetParent.clientHeight > 0 && this.direction === 'papyrus') {
+          slider.style.setProperty('--slide-min-height', '' + slider.offsetParent.clientHeight + 'px');
+          slider.style.setProperty('--slide-height', `auto`);
+        }
+
+        if (slider.offsetParent.clientHeight > 0 && this.direction !== 'papyrus') {
+          slider.style.removeProperty('--slide-min-height');
+          slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
       }
 
