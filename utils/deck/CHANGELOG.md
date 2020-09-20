@@ -1,3 +1,15 @@
+<a name="2.5.0"></a>
+
+# 2.5.0 (2020-09-20)
+
+### Style
+
+- background lazy-img fits `cover` for `papyrus`
+
+### Features
+
+- update dependencies
+
 <a name="2.4.0"></a>
 
 # 2.4.0 (2020-08-06)

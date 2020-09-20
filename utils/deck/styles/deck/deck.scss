@@ -139,6 +139,10 @@ deckgo-deck [slot="background"] > deckgo-lazy-img {
   --deckgo-lazy-img-min-width: 100%;
 }
 
+deckgo-deck[direction="papyrus"] [slot="background"] > deckgo-lazy-img {
+  --deckgo-lazy-img-object-fit: cover;
+}
+
 /* Reveal */
 
 deckgo-slide-split deckgo-reveal > * {
