@@ -76,23 +76,15 @@ div.deckgo-deck {
   --slide-height: 100%;
 }
 
-:host([direction="vertical"]) {
+:host([direction="vertical"]),
+:host([direction="papyrus"]) {
   div.deckgo-deck {
     flex-direction: column;
-
-    --slide-height: var(--slide-height);
   }
 }
 
 :host([direction="papyrus"]) {
   div.deckgo-deck {
-    flex-direction: column;
-
-    --slide-height: auto;
-    --slide-min-height: calc(
-      var(--slide-min-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
-    );
-
     --slide-user-select: auto;
   }
 }
