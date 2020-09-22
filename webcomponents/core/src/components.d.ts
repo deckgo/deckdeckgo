@@ -21,7 +21,6 @@ export namespace Components {
         "initSlideSize": () => Promise<void>;
         "isBeginning": () => Promise<boolean>;
         "isEnd": () => Promise<boolean>;
-        "isMobile": () => Promise<boolean>;
         "keyboard": boolean;
         "lazyLoadAllContent": () => Promise<void[]>;
         "loadBackground": () => Promise<void>;

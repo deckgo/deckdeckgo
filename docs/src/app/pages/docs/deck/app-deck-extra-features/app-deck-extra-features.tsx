@@ -52,11 +52,6 @@ export class AppDeckExtraFeatures {
           <deckgo-highlight-code language="javascript">
             <code slot="code">await deck.print();</code>
           </deckgo-highlight-code>
-          <h2 id="app-deck-extra-features-mobile">Mobile</h2>
-          <p>A util method to know if the current presentation is browsed on a mobile device or not.</p>
-          <deckgo-highlight-code language="javascript">
-            <code slot="code">await deck.isMobile(); &#47;&#47; resolve a boolean</code>
-          </deckgo-highlight-code>
           <h2 id="app-deck-extra-features-init-slide-size">Init slide size</h2>
           <p>In case you would like to recalculate the slides&#39; size (width and height)</p>
           <deckgo-highlight-code language="javascript">

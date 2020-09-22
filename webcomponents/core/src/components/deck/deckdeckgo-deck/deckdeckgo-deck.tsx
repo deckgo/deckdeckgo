@@ -1002,13 +1002,6 @@ export class DeckdeckgoDeck {
     return Promise.all(promises);
   }
 
-  @Method()
-  isMobile(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      resolve(isMobile());
-    });
-  }
-
   /* END: Utils */
 
   /* BEGIN: Reveal */

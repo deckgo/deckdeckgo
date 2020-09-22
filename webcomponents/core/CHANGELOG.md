@@ -1,3 +1,9 @@
+# 4.0.0 (2020-09-22)
+
+### Breaking Changes
+
+- `isMobile` method removed. use the exposed function of `@deckdeckgo/utils` instead.
+
 # 3.0.0 (2020-09-20)
 
 ### Breaking Changes
