@@ -1,3 +1,9 @@
+# 1.10.0 (2020-09-22)
+
+### Features
+
+- `isMobile` method removed from core
+
 # 1.9.3 (2020-09-17)
 
 ### Features
