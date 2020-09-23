@@ -4,6 +4,11 @@
 
 - `isMobile` method removed. use the exposed function of `@deckdeckgo/utils` instead.
 
+### Features
+
+- introduce the ability to choose a specific `direction` for mobile devices
+- reflect `direction` to a respective host class
+
 # 3.0.0 (2020-09-20)
 
 ### Breaking Changes

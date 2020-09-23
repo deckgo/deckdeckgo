@@ -24,28 +24,28 @@ main {
   touch-action: auto;
 }
 
-:host([direction="vertical"]),
-:host([direction="horizontal"]) {
+:host(.vertical),
+:host(.horizontal) {
   main {
     overflow: hidden;
   }
 }
 
-:host([direction="papyrus"]) {
+:host(.papyrus) {
   main {
     overflow-x: hidden;
   }
 }
 
-:host([direction="vertical"]),
-:host([direction="papyrus"]) {
+:host(.vertical),
+:host(.papyrus) {
   main {
     touch-action: pan-y;
     overscroll-behavior-y: contain;
   }
 }
 
-:host([direction="horizontal"]) {
+:host(.horizontal) {
   main {
     touch-action: pan-x;
     overscroll-behavior-x: contain;
@@ -76,14 +76,14 @@ div.deckgo-deck {
   --slide-height: 100%;
 }
 
-:host([direction="vertical"]),
-:host([direction="papyrus"]) {
+:host(.vertical),
+:host(.papyrus) {
   div.deckgo-deck {
     flex-direction: column;
   }
 }
 
-:host([direction="papyrus"]) {
+:host(.papyrus) {
   div.deckgo-deck {
     --slide-user-select: auto;
   }

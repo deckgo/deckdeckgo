@@ -12,6 +12,7 @@ export namespace Components {
         "cloneBackground": boolean;
         "deleteActiveSlide": () => Promise<void>;
         "direction": 'horizontal' | 'vertical' | 'papyrus';
+        "directionMobile": 'horizontal' | 'vertical' | 'papyrus';
         "doPrint": () => Promise<void>;
         "embedded": boolean;
         "getActiveIndex": () => Promise<number>;
@@ -93,6 +94,7 @@ declare namespace LocalJSX {
     interface DeckgoDeck {
         "cloneBackground"?: boolean;
         "direction"?: 'horizontal' | 'vertical' | 'papyrus';
+        "directionMobile"?: 'horizontal' | 'vertical' | 'papyrus';
         "embedded"?: boolean;
         "keyboard"?: boolean;
         "onDeckDidLoad"?: (event: CustomEvent<void>) => void;
