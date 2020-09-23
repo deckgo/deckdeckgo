@@ -19,8 +19,8 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.0.0",
     "@deckdeckgo/color": "^3.0.0",
-    "@deckdeckgo/core": "^3.0.0",
-    "@deckdeckgo/deck-utils": "^2.5.1",
+    "@deckdeckgo/core": "file:../webcomponents/core",
+    "@deckdeckgo/deck-utils": "^2.6.0",
     "@deckdeckgo/demo": "^2.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.0.0",
     "@deckdeckgo/highlight-code": "^2.0.0",

@@ -1,4 +1,21 @@
 app-deck-transition {
+  div.device {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 0;
+
+    ion-segment {
+      width: fit-content;
+      background: transparent;
+      border: 1px solid var(--ion-color-light);
+
+      ion-segment-button {
+        --indicator-color: var(--ion-color-dark);
+        --color-checked: white;
+      }
+    }
+  }
+
   div.container {
     display: grid;
     grid-template-columns: repeat(2, calc((100% - 16px) / 2));
@@ -15,17 +32,7 @@ app-deck-transition {
       overflow: hidden;
       position: relative;
 
-      &.slide {
-        border: 1px solid var(--ion-color-primary);
-      }
-
-      &.fade {
-        border: 1px solid var(--ion-color-secondary);
-      }
-
-      &.none {
-        border: 1px solid var(--ion-color-tertiary);
-      }
+      border: 1px solid var(--ion-color-light);
 
       &.selected {
         &.slide {
