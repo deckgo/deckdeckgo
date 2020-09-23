@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch} from '@stencil/core';
+import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch, Host} from '@stencil/core';
 
 import {isIOS, unifyEvent, isMobile, isFullscreen, debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition, getAttributesDefinition} from '@deckdeckgo/deck-utils';
@@ -69,9 +69,14 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) transition: 'slide' | 'fade' | 'none' = 'slide';
 
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+  @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
+
+  @State()
+  private dir: 'horizontal' | 'vertical' | 'papyrus';
 
   async componentWillLoad() {
     await this.initRtl();
+    await this.initDirection();
   }
 
   async componentDidLoad() {
@@ -217,6 +222,20 @@ export class DeckdeckgoDeck {
     }
   };
 
+  @Watch('directionMobile')
+  async onDirectionMobileChange() {
+    await this.initDirection();
+  }
+
+  @Watch('direction')
+  async onDirectionChange() {
+    await this.initDirection();
+  }
+
+  private async initDirection() {
+    this.dir = isMobile() ? this.directionMobile : this.direction;
+  }
+
   /* BEGIN: Handle swipe */
 
   @Listen('mousedown', {passive: true})
@@ -298,7 +317,7 @@ export class DeckdeckgoDeck {
   }
 
   private moveX(delta: Delta) {
-    if (this.direction !== 'horizontal') {
+    if (this.dir !== 'horizontal') {
       return;
     }
 
@@ -310,7 +329,7 @@ export class DeckdeckgoDeck {
   }
 
   private moveY(delta: Delta) {
-    if (this.direction !== 'vertical') {
+    if (this.dir !== 'vertical') {
       return;
     }
 
@@ -356,7 +375,7 @@ export class DeckdeckgoDeck {
 
         if (autoSwipeHorizontal || autoSwipeVertical) {
           this.deckMove =
-            this.direction !== 'horizontal'
+            this.dir !== 'horizontal'
               ? delta.swipeNext
                 ? this.deckMove - sliderSize.height
                 : this.deckMove + sliderSize.height
@@ -426,11 +445,11 @@ export class DeckdeckgoDeck {
 
   private doSwipeSlide(slider: HTMLElement, speed?: number | undefined): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (this.direction === 'horizontal') {
+      if (this.dir === 'horizontal') {
         slider.style.setProperty('--transformX', this.deckMove + 'px');
       }
 
-      if (this.direction === 'vertical') {
+      if (this.dir === 'vertical') {
         slider.style.setProperty('--transformY', this.deckMove + 'px');
       }
 
@@ -440,7 +459,7 @@ export class DeckdeckgoDeck {
         slider.style.setProperty('--transformXDuration', '0ms');
       }
 
-      if (this.direction === 'papyrus') {
+      if (this.dir === 'papyrus') {
         const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
         slide.scrollIntoView(this.transition === 'none' ? null : {behavior: 'smooth'});
       }
@@ -459,15 +478,15 @@ export class DeckdeckgoDeck {
   }
 
   private async getDelta($event): Promise<Delta> {
-    if (!this.startX && this.direction === 'horizontal') {
+    if (!this.startX && this.dir === 'horizontal') {
       return null;
     }
 
-    if (!this.startY && this.direction === 'vertical') {
+    if (!this.startY && this.dir === 'vertical') {
       return null;
     }
 
-    if (this.direction === 'papyrus') {
+    if (this.dir === 'papyrus') {
       return null;
     }
 
@@ -480,14 +499,14 @@ export class DeckdeckgoDeck {
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
 
-    if (this.startX === currentX && this.direction === 'horizontal') {
+    if (this.startX === currentX && this.dir === 'horizontal') {
       return null;
-    } else if (this.startY === currentY && this.direction === 'vertical') {
+    } else if (this.startY === currentY && this.dir === 'vertical') {
       return null;
     }
 
-    const swipeLeft: boolean = this.startX > currentX && this.direction === 'horizontal';
-    const swipeTop: boolean = this.startY > currentY && this.direction === 'vertical';
+    const swipeLeft: boolean = this.startX > currentX && this.dir === 'horizontal';
+    const swipeTop: boolean = this.startY > currentY && this.dir === 'vertical';
 
     return {
       slider,
@@ -537,7 +556,7 @@ export class DeckdeckgoDeck {
       promises.push(this.lazyLoadFirstSlides());
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'background', this.cloneBackground));
 
-      if (this.direction !== 'papyrus') {
+      if (this.dir !== 'papyrus') {
         promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
         promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
         promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
@@ -550,7 +569,7 @@ export class DeckdeckgoDeck {
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
       // Also, no reveal for papyrus as we can scroll
-      if (!this.reveal || (!this.revealOnMobile && isMobile()) || this.direction === 'papyrus') {
+      if (!this.reveal || (!this.revealOnMobile && isMobile()) || this.dir === 'papyrus') {
         promises.push(this.revealAllContent());
       }
 
@@ -822,7 +841,7 @@ export class DeckdeckgoDeck {
 
     const sliderSize: {width: number; height: number} = await this.getSliderSize();
 
-    this.deckMove = index * (this.direction === 'horizontal' ? sliderSize.width : sliderSize.height) * (this.rtl ? 1 : -1);
+    this.deckMove = index * (this.dir === 'horizontal' ? sliderSize.width : sliderSize.height) * (this.rtl ? 1 : -1);
 
     this.activeIndex = index;
 
@@ -1076,15 +1095,17 @@ export class DeckdeckgoDeck {
 
   render() {
     return (
-      <main>
-        {this.renderTransition()}
-        <div class="deckgo-deck">
-          <slot />
-          <slot name="actions"></slot>
-          <slot name="background"></slot>
-        </div>
-        <div class="deckgo-pager">{this.renderPager()}</div>
-      </main>
+      <Host class={`${this.dir}`}>
+        <main>
+          {this.renderTransition()}
+          <div class="deckgo-deck">
+            <slot />
+            <slot name="actions"></slot>
+            <slot name="background"></slot>
+          </div>
+          <div class="deckgo-pager">{this.renderPager()}</div>
+        </main>
+      </Host>
     );
   }
 
@@ -1093,7 +1114,7 @@ export class DeckdeckgoDeck {
   }
 
   private renderTransition() {
-    if (this.transition !== 'fade' || this.direction === 'papyrus') {
+    if (this.transition !== 'fade' || this.dir === 'papyrus') {
       return <TransitionSlide />;
     }
 
