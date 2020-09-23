@@ -124,7 +124,7 @@ deckgo-deck > * div[slot="background"] {
   height: 100%;
 }
 
-deckgo-deck:not([direction="papyrus"]) > * div[slot="background"] {
+deckgo-deck:not(.papyrus) > * div[slot="background"] {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,7 +138,7 @@ deckgo-deck [slot="background"] > deckgo-lazy-img {
   --deckgo-lazy-img-min-width: 100%;
 }
 
-deckgo-deck:not([direction="papyrus"]) [slot="background"] > deckgo-lazy-img {
+deckgo-deck:not(.papyrus) [slot="background"] > deckgo-lazy-img {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -147,7 +147,7 @@ deckgo-deck:not([direction="papyrus"]) [slot="background"] > deckgo-lazy-img {
   --deckgo-lazy-img-width: 100%;
 }
 
-deckgo-deck[direction="papyrus"] [slot="background"] > deckgo-lazy-img {
+deckgo-deck.papyrus [slot="background"] > deckgo-lazy-img {
   --deckgo-lazy-img-object-fit: cover;
 }
 
