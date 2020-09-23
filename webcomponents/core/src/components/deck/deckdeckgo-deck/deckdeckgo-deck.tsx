@@ -461,7 +461,7 @@ export class DeckdeckgoDeck {
 
       if (this.dir === 'papyrus') {
         const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
-        slide.scrollIntoView(this.transition === 'none' ? null : {behavior: 'smooth'});
+        slide.scrollIntoView(this.transition === 'none' ? null : {behavior: 'smooth', block: 'nearest'});
       }
 
       this.slideWillChange.emit(this.deckMove);
