@@ -159,27 +159,15 @@ export class AppDeckTransition {
         </div>
 
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem(
-            'direction',
-            'horizontal',
-            this.selectedAnimation,
-            'var(--ion-color-primary)',
-            'Horizontal',
-            this.selectedDirection === 'horizontal',
-            () => this.applyDirection('horizontal')
+          {this.renderDeckItem('direction', 'horizontal', this.selectedAnimation, 'Horizontal', this.selectedDirection === 'horizontal', () =>
+            this.applyDirection('horizontal')
           )}
 
-          {this.renderDeckItem(
-            'direction',
-            'vertical',
-            this.selectedAnimation,
-            'var(--ion-color-secondary)',
-            'Vertical',
-            this.selectedDirection === 'vertical',
-            () => this.applyDirection('vertical')
+          {this.renderDeckItem('direction', 'vertical', this.selectedAnimation, 'Vertical', this.selectedDirection === 'vertical', () =>
+            this.applyDirection('vertical')
           )}
 
-          {this.renderShowcasePapyrus('var(--ion-color-tertiary)', 'Papyrus', this.selectedDirection === 'papyrus', () => this.applyDirection('papyrus'))}
+          {this.renderShowcasePapyrus('Papyrus', this.selectedDirection === 'papyrus', () => this.applyDirection('papyrus'))}
         </div>
       </app-expansion-panel>
     );
@@ -190,35 +178,11 @@ export class AppDeckTransition {
       <app-expansion-panel>
         <ion-label slot="title">Animation</ion-label>
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem(
-            'animation',
-            this.selectedDirection,
-            'slide',
-            'var(--ion-color-primary)',
-            'Slide animation',
-            this.selectedAnimation === 'slide',
-            () => this.applyAnimation('slide')
-          )}
+          {this.renderDeckItem('animation', 'horizontal', 'slide', 'Slide animation', this.selectedAnimation === 'slide', () => this.applyAnimation('slide'))}
 
-          {this.renderDeckItem(
-            'animation',
-            this.selectedDirection,
-            'fade',
-            'var(--ion-color-secondary)',
-            'Fade effect',
-            this.selectedAnimation === 'fade',
-            () => this.applyAnimation('fade')
-          )}
+          {this.renderDeckItem('animation', 'horizontal', 'fade', 'Fade effect', this.selectedAnimation === 'fade', () => this.applyAnimation('fade'))}
 
-          {this.renderDeckItem(
-            'animation',
-            this.selectedDirection,
-            'none',
-            'var(--ion-color-tertiary)',
-            'Instant transition',
-            this.selectedAnimation === 'none',
-            () => this.applyAnimation('none')
-          )}
+          {this.renderDeckItem('animation', 'horizontal', 'none', 'Instant transition', this.selectedAnimation === 'none', () => this.applyAnimation('none'))}
         </div>
       </app-expansion-panel>
     );
@@ -228,55 +192,39 @@ export class AppDeckTransition {
     showcase: 'animation' | 'direction',
     direction: 'horizontal' | 'vertical' | 'papyrus',
     animation: 'slide' | 'fade' | 'none',
-    nextSlideBackground: string,
     text: string,
     selected: boolean,
     action: (selection) => Promise<void>
   ) {
     return (
-      <div class={`item ${selected ? 'selected' : ''} item-direction-${direction} item-animation-${animation}`} custom-tappable onClick={action}>
+      <div class={`item ${selected ? 'selected' : ''} showcase-${showcase}`} custom-tappable onClick={action}>
         <deckgo-deck embedded={true} keyboard={false} animation={animation} direction={direction} class={`showcase-${showcase}`}>
-          <deckgo-slide-title style={{'--background': `${nextSlideBackground}`, '--color': 'white'}}>
-            <p slot="title">{text}</p>
-          </deckgo-slide-title>
-
-          <deckgo-slide-title>
-            <p slot="title">{text}</p>
-          </deckgo-slide-title>
-
-          {showcase === 'direction' ? this.renderMoreSlides(nextSlideBackground, text) : undefined}
+          {this.renderItems(text, showcase === 'direction' ? 4 : 2, selected, showcase)}
         </deckgo-deck>
       </div>
     );
   }
 
-  private renderShowcasePapyrus(nextSlideBackground: string, text: string, selected: boolean, action: (selection) => Promise<void>) {
+  private renderShowcasePapyrus(text: string, selected: boolean, action: (selection) => Promise<void>) {
     return (
-      <div class={`item ${selected ? 'selected' : ''} item-direction-papyrus`} custom-tappable onClick={action}>
-        <div class="showcase-papyrus">
-          <deckgo-slide-title style={{'--background': `${nextSlideBackground}`, '--color': 'white'}}>
-            <p slot="title">{text}</p>
-          </deckgo-slide-title>
-
-          <deckgo-slide-title>
-            <p slot="title">{text}</p>
-          </deckgo-slide-title>
-
-          {this.renderMoreSlides(nextSlideBackground, text)}
-        </div>
+      <div class={`item ${selected ? 'selected' : ''} showcase-direction`} custom-tappable onClick={action}>
+        <div class="showcase-papyrus">{this.renderItems(text, 4, selected, 'direction')}</div>
       </div>
     );
   }
 
-  private renderMoreSlides(nextSlideBackground: string, text: string) {
-    return [
-      <deckgo-slide-title style={{'--background': `${nextSlideBackground}`, '--color': 'white'}}>
-        <p slot="title">{text}</p>
-      </deckgo-slide-title>,
-
-      <deckgo-slide-title>
-        <p slot="title">{text}</p>
-      </deckgo-slide-title>,
-    ];
+  private renderItems(text: string, count: 2 | 4, selected: boolean, showcase: 'direction' | 'animation') {
+    return [...new Array(count)].map((_empty, i: number) => {
+      return (
+        <deckgo-slide-title
+          style={{
+            '--background': `${
+              i % 2 > 0 && !selected ? `rgba(var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-rgb), 0.2)` : 'transparent'
+            }`,
+          }}>
+          <p slot="title">{text}</p>
+        </deckgo-slide-title>
+      );
+    });
   }
 }
