@@ -68,7 +68,7 @@ export class AppEditor {
   private direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
 
   @State()
-  private directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+  private directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
   private slideIndex: number = 0;
 
