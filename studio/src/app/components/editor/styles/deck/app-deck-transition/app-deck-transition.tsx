@@ -249,8 +249,9 @@ export class AppDeckTransition {
         <deckgo-slide-title
           style={{
             '--background': `${
-              i % 2 > 0 && !selected ? `rgba(var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-rgb), 0.2)` : 'transparent'
+              i % 2 > 0 ? `rgba(var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-rgb), ${selected ? 1 : 0.2})` : 'transparent'
             }`,
+            '--color': `${i % 2 > 0 ? (selected ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit') : 'inherit'}`,
           }}>
           <p slot="title">{text}</p>
         </deckgo-slide-title>
