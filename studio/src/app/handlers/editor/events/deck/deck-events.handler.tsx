@@ -756,7 +756,7 @@ export class DeckEventsHandler {
       }
 
       if (deck.hasAttribute('direction-mobile') && deck.getAttribute('direction-mobile') !== 'papyrus') {
-        attributes.directionMobile = deck.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
+        attributes.directionMobile = deck.getAttribute('direction-mobile') as 'horizontal' | 'vertical' | 'papyrus';
       } else if (updateDeck) {
         // @ts-ignore
         attributes.directionMobile = firebase.firestore.FieldValue.delete();

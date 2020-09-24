@@ -64,6 +64,12 @@ export class AppEditor {
   @State()
   private animation: 'slide' | 'fade' | 'none' = 'slide';
 
+  @State()
+  private direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+
+  @State()
+  private directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+
   private slideIndex: number = 0;
 
   @State()
@@ -276,6 +282,14 @@ export class AppEditor {
 
     if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.animation) {
       this.animation = deckStore.state.deck.data.attributes.animation;
+    }
+
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.direction) {
+      this.direction = deckStore.state.deck.data.attributes.direction;
+    }
+
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.directionMobile) {
+      this.directionMobile = deckStore.state.deck.data.attributes.directionMobile;
     }
 
     this.background = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.background, 'background');
@@ -640,6 +654,8 @@ export class AppEditor {
             embedded={true}
             style={this.style}
             reveal={this.fullscreen && this.presenting}
+            direction={this.direction}
+            directionMobile={this.directionMobile}
             animation={this.animation}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
