@@ -1,3 +1,9 @@
+# 4.0.1 (2020-09-24)
+
+### Features
+
+- rename also optional CSS variables prefixed with `transition-` to `animation-`
+
 # 4.0.0 (2020-09-24)
 
 ### Breaking Changes
