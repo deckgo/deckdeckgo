@@ -1,7 +1,8 @@
-# 4.0.0 (2020-09-22)
+# 4.0.0 (2020-09-24)
 
 ### Breaking Changes
 
+- `transition` property has been renamed to `animation`
 - `isMobile` method removed. use the exposed function of `@deckdeckgo/utils` instead.
 
 ### Features
