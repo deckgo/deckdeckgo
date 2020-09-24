@@ -1,3 +1,9 @@
+# 4.0.2 (2020-09-24)
+
+### Style
+
+- `slide-height` set to `100%` instead of `auto` in mode `papyrus`
+
 # 4.0.1 (2020-09-24)
 
 ### Features

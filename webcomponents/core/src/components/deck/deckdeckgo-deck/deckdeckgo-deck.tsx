@@ -149,7 +149,7 @@ export class DeckdeckgoDeck {
 
       if (this.direction === 'papyrus') {
         slider.style.setProperty('--slide-min-height', `${sliderSize.height}px`);
-        slider.style.setProperty('--slide-height', `auto`);
+        slider.style.removeProperty('--slide-height');
       } else {
         slider.style.removeProperty('--slide-min-height');
         slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
@@ -173,7 +173,7 @@ export class DeckdeckgoDeck {
 
         if (slider.offsetParent.clientHeight > 0 && this.direction === 'papyrus') {
           slider.style.setProperty('--slide-min-height', '' + slider.offsetParent.clientHeight + 'px');
-          slider.style.setProperty('--slide-height', `auto`);
+          slider.style.removeProperty('--slide-height');
         }
 
         if (slider.offsetParent.clientHeight > 0 && this.direction !== 'papyrus') {
