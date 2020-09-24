@@ -35,27 +35,23 @@ app-deck-transition {
       border: 1px solid var(--ion-color-light);
 
       &.selected {
-        &.item-animation-slide,
-        &.item-direction-horizontal {
+        &.showcase-direction {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
           border: 1px solid var(--ion-color-primary);
+          background: var(--ion-color-primary);
+          color: var(--ion-color-primary-contrast);
         }
 
-        &.item-animation-fade,
-        &.item-direction-vertical {
-          box-shadow: 0 0 8px 4px rgba(var(--ion-color-secondary-rgb), 0.4);
-          border: 1px solid var(--ion-color-secondary);
-        }
-
-        &.item-animation-none,
-        &.item-direction-papyrus {
+        &.showcase-animation {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-tertiary-rgb), 0.4);
           border: 1px solid var(--ion-color-tertiary);
+          background: var(--ion-color-tertiary);
+          color: var(--ion-color-tertiary-contrast);
         }
       }
 
       deckgo-deck {
-        --transition-fade-duration: 2000ms;
+        --animation-fade-duration: 3000ms;
 
         deckgo-slide-title {
           --slide-padding-start: 4px;
