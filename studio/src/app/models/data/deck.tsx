@@ -48,7 +48,7 @@ export interface DeckMeta {
 
 export interface DeckAttributes {
   style?: string;
-  transition?: 'slide' | 'fade' | 'none';
+  animation?: 'slide' | 'fade' | 'none';
 }
 
 export interface DeckClone {

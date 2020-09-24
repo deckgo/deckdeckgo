@@ -741,11 +741,11 @@ export class DeckEventsHandler {
         attributes.style = firebase.firestore.FieldValue.delete();
       }
 
-      if (deck.hasAttribute('transition') && deck.getAttribute('transition') !== 'slide') {
-        attributes.transition = deck.getAttribute('transition') as 'slide' | 'fade' | 'none';
+      if (deck.hasAttribute('animation') && deck.getAttribute('animation') !== 'slide') {
+        attributes.animation = deck.getAttribute('animation') as 'slide' | 'fade' | 'none';
       } else if (updateDeck) {
         // @ts-ignore
-        attributes.transition = firebase.firestore.FieldValue.delete();
+        attributes.animation = firebase.firestore.FieldValue.delete();
       }
 
       resolve(attributes);
