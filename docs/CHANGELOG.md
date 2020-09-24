@@ -6,6 +6,10 @@
 
 ### Features
 
+- refresh links in header
+
+### Features
+
 - `isMobile` method removed from core
 
 # 1.9.3 (2020-09-17)

@@ -14,6 +14,14 @@ app-navigation {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+
+      --deckgo-logo-size: 16px;
+
+      app-logo,
+      ion-icon {
+        vertical-align: top;
+        padding: 0 4px;
+      }
     }
 
     ion-button {
@@ -25,6 +33,12 @@ app-navigation {
     }
   }
 
+  div[slot="end"] {
+    ion-button {
+      display: none;
+    }
+  }
+
   @media screen and (min-width: 540px) {
     div[slot="end"] {
       ion-button {
@@ -33,7 +47,7 @@ app-navigation {
     }
   }
 
-  @media screen and (max-width: 540px) {
+  @media screen and (max-width: 320px) {
     div[slot="end"] {
       div.links {
         display: none;
