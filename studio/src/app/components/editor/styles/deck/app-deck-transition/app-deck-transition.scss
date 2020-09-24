@@ -35,16 +35,22 @@ app-deck-transition {
       border: 1px solid var(--ion-color-light);
 
       &.selected {
-        &.slide {
+        &.item-animation-slide,
+        &.item-direction-horizontal {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
+          border: 1px solid var(--ion-color-primary);
         }
 
-        &.fade {
+        &.item-animation-fade,
+        &.item-direction-vertical {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-secondary-rgb), 0.4);
+          border: 1px solid var(--ion-color-secondary);
         }
 
-        &.none {
+        &.item-animation-none,
+        &.item-direction-papyrus {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-tertiary-rgb), 0.4);
+          border: 1px solid var(--ion-color-tertiary);
         }
       }
 
@@ -61,6 +67,11 @@ app-deck-transition {
         p {
           margin: 0;
         }
+      }
+
+      div.showcase-papyrus {
+        height: 100%;
+        overflow: scroll;
       }
     }
   }
