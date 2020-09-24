@@ -31,7 +31,19 @@
     </style>
   </head>
   <body style="margin: 0">
-    <deckgo-deck>
+    <deckgo-deck direction="horizontal">
+      <deckgo-slide-chart
+        type="line"
+        grid="true"
+        date-pattern="dd.MM.yyyy"
+        animation="true"
+        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"
+        ticks="5"
+        style="--background: white; --color: black"
+      >
+        <h3 slot="title">Or the template for charts</h3>
+      </deckgo-slide-chart>
+
       <deckgo-slide-chart
         type="line"
         grid="true"
