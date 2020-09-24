@@ -1,88 +1,99 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
 
-  <title>DeckDeckGo - Slide Poll Template</title>
+    <title>DeckDeckGo - Slide Poll Template</title>
 
-  <script type="module" src="/build/deckdeckgo-slide-poll.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-slide-poll.js"></script>
+    <script type="module" src="/build/deckdeckgo-slide-poll.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-slide-poll.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
 
-</head>
-<body style="margin: 0; overflow: hidden;">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<deckgo-deck>
-  <deckgo-slide-poll style="--deckgo-qrcode-color-fill: yellow; --deckgo-chart-fill-color-1: red;">
-    <h1 slot="question">Do you like my presentation so far?</h1>
-    <p slot="answer-1">It is super</p>
-    <p slot="answer-2">Meh</p>
-    <p slot="answer-3">I could'nt care less</p>
-    <p slot="answer-4">Tell me why</p>
-    <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
-    <p slot="awaiting-votes">Awaiting first votes</p>
-    <p slot="answer-5">Ain't nothin' but a heartache</p>
-  </deckgo-slide-poll>
-</deckgo-deck>
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <deckgo-deck>
+      <deckgo-slide-poll style="--deckgo-qrcode-color-fill: yellow; --deckgo-chart-fill-color-1: red">
+        <h1 slot="question">Do you like my presentation so far?</h1>
+        <p slot="answer-1">It is super</p>
+        <p slot="answer-2">Meh</p>
+        <p slot="answer-3">I could'nt care less</p>
+        <p slot="answer-4">Tell me why</p>
+        <p slot="how-to">Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}</p>
+        <p slot="awaiting-votes">Awaiting first votes</p>
+        <p slot="answer-5">Ain't nothin' but a heartache</p>
+      </deckgo-slide-poll>
+    </deckgo-deck>
 
-<div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
-  <button onclick="removeSecondAnswer()">Remove answer-2 slot</button>
-  <button onclick="removeAnswer()">Remove last answer</button>
-  <button onclick="addAnswer()">Add an answer</button>
-</div>
+    <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
+      <button onclick="removeSecondAnswer()">Remove answer-2 slot</button>
+      <button onclick="removeAnswer()">Remove last answer</button>
+      <button onclick="addAnswer()">Add an answer</button>
+    </div>
 
-<script type="text/javascript">
-    const addAnswer = async () => {
+    <script type="text/javascript">
+      const addAnswer = async () => {
         const elem = document.querySelector('deckgo-slide-poll');
         if (elem) {
-            const slots = document.querySelectorAll('[slot^=\'answer\']');
+          const slots = document.querySelectorAll("[slot^='answer']");
 
-            const p = document.createElement('p');
-            p.setAttribute('slot', 'answer-' + (slots.length + 1));
-            p.innerHTML = 'Yolo ' + (slots.length + 1);
+          const p = document.createElement('p');
+          p.setAttribute('slot', 'answer-' + (slots.length + 1));
+          p.innerHTML = 'Yolo ' + (slots.length + 1);
 
-            elem.appendChild(p);
+          elem.appendChild(p);
+
+          await elem.update();
+        }
+      };
+
+      const removeAnswer = async () => {
+        const elem = document.querySelector('deckgo-slide-poll');
+        if (elem) {
+          const slots = document.querySelectorAll("[slot^='answer']");
+
+          if (slots && slots.length > 0) {
+            elem.removeChild(slots[slots.length - 1]);
 
             await elem.update();
+          }
         }
-    };
+      };
 
-    const removeAnswer = async () => {
+      const removeSecondAnswer = async () => {
         const elem = document.querySelector('deckgo-slide-poll');
         if (elem) {
-            const slots = document.querySelectorAll('[slot^=\'answer\']');
+          const slot = document.querySelector("[slot^='answer-2']");
 
-            if (slots && slots.length > 0) {
-                elem.removeChild(slots[slots.length - 1]);
+          if (slot) {
+            elem.removeChild(slot);
 
-                await elem.update();
-            }
+            await elem.update();
+          }
         }
-    };
-
-    const removeSecondAnswer = async () => {
-        const elem = document.querySelector('deckgo-slide-poll');
-        if (elem) {
-            const slot = document.querySelector('[slot^=\'answer-2\']');
-
-            if (slot) {
-                elem.removeChild(slot);
-
-                await elem.update();
-            }
-        }
-    };
-
-</script>
-
-</body>
+      };
+    </script>
+  </body>
 </html>

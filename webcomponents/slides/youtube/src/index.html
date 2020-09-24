@@ -1,89 +1,101 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
 
-  <title>DeckDeckGo - Slide Youtube Template</title>
+    <title>DeckDeckGo - Slide Youtube Template</title>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.js"></script>
 
-  <script type="module" src="/build/deckdeckgo-slide-youtube.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-slide-youtube.js"></script>
+    <script type="module" src="/build/deckdeckgo-slide-youtube.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-slide-youtube.js"></script>
 
-</head>
-<body style="margin: 0; overflow: hidden;">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<deckgo-deck id="slider">
-  <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
-    <h1 slot="title">A 16/9 video</h1>
-    <h2 slot="content">A subtitle or something about the video</h2>
-  </deckgo-slide-youtube>
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <deckgo-deck id="slider">
+      <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
+        <h1 slot="title">A 16/9 video</h1>
+        <h2 slot="content">A subtitle or something about the video</h2>
+      </deckgo-slide-youtube>
 
-  <deckgo-slide-youtube src="https://youtu.be/e63Cgln6Yag">
-    <h1 slot="title">Another video</h1>
-    <h2 slot="content">Url provided as short Url</h2>
-  </deckgo-slide-youtube>
-</deckgo-deck>
+      <deckgo-slide-youtube src="https://youtu.be/e63Cgln6Yag">
+        <h1 slot="title">Another video</h1>
+        <h2 slot="content">Url provided as short Url</h2>
+      </deckgo-slide-youtube>
+    </deckgo-deck>
 
-<script type="text/javascript">
-    function toggleVideo() {
+    <script type="text/javascript">
+      function toggleVideo() {
         return new Promise(async (resolve) => {
-            const deck = document.getElementById('slider');
+          const deck = document.getElementById('slider');
 
-            if (!deck) {
-                resolve();
-                return;
-            }
-
-            const index = await deck.getActiveIndex();
-
-            const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
-
-            if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
-                resolve();
-                return;
-            }
-
-            await youtubeSlideElement.toggle();
-
+          if (!deck) {
             resolve();
-        });
-    }
+            return;
+          }
 
-    function updateVideo() {
+          const index = await deck.getActiveIndex();
+
+          const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+          if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
+            resolve();
+            return;
+          }
+
+          await youtubeSlideElement.toggle();
+
+          resolve();
+        });
+      }
+
+      function updateVideo() {
         return new Promise(async (resolve) => {
-            const deck = document.getElementById('slider');
+          const deck = document.getElementById('slider');
 
-            if (!deck) {
-                resolve();
-                return;
-            }
-
-            const index = await deck.getActiveIndex();
-
-            const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
-
-            if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
-                resolve();
-                return;
-            }
-
-            youtubeSlideElement.src = 'https://www.youtube.com/watch?v=-6Zc8Co2H3w';
-
+          if (!deck) {
             resolve();
+            return;
+          }
+
+          const index = await deck.getActiveIndex();
+
+          const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+          if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
+            resolve();
+            return;
+          }
+
+          youtubeSlideElement.src = 'https://www.youtube.com/watch?v=-6Zc8Co2H3w';
+
+          resolve();
         });
-    }
-</script>
+      }
+    </script>
 
-<div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
-  <button onclick="updateVideo()">Update video</button>
-  <button onclick="toggleVideo()">Toggle video</button>
-</div>
-
-</body>
+    <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
+      <button onclick="updateVideo()">Update video</button>
+      <button onclick="toggleVideo()">Toggle video</button>
+    </div>
+  </body>
 </html>

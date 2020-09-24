@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
 
-  <title>DeckDeckGo - Slide Chart Template</title>
+    <title>DeckDeckGo - Slide Chart Template</title>
 
-  <script type="module" src="/build/deckdeckgo-slide-chart.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-slide-chart.js"></script>
+    <script type="module" src="/build/deckdeckgo-slide-chart.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-slide-chart.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
-  <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
+    <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
 
-</head>
-<body style="margin: 0; overflow: hidden;">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<deckgo-deck>
-  <deckgo-slide-chart type="line" grid="true" date-pattern="dd.MM.yyyy" animation="true"
-                      src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"
-                      ticks="5" style="--background: white;--color: black;">
-    <h3 slot="title">Or the template for charts</h3>
-  </deckgo-slide-chart>
-</deckgo-deck>
-
-</body>
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <deckgo-deck>
+      <deckgo-slide-chart
+        type="line"
+        grid="true"
+        date-pattern="dd.MM.yyyy"
+        animation="true"
+        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-line-multiple.csv"
+        ticks="5"
+        style="--background: white; --color: black"
+      >
+        <h3 slot="title">Or the template for charts</h3>
+      </deckgo-slide-chart>
+    </deckgo-deck>
+  </body>
 </html>

@@ -16,10 +16,25 @@
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/qrcode@latest/dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/@deckdeckgo/deck-utils@2.3.0/css/deck.min.css" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck>
-      <deckgo-slide-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-color-fill: black;">
+      <deckgo-slide-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-color-fill: black">
         <h1 slot="title">QR Code</h1>
         <p slot="content">Display a QR code to let your audience get your slides as a PWA without any delay</p>
       </deckgo-slide-qrcode>

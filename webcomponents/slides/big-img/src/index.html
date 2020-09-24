@@ -17,8 +17,23 @@
         background-color: black;
       }
     </style>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck>
       <deckgo-slide-big-img
         img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
@@ -35,10 +50,7 @@
       >
       </deckgo-slide-big-img>
 
-      <deckgo-slide-big-img
-        img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"
-      >
-      </deckgo-slide-big-img>
+      <deckgo-slide-big-img img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"> </deckgo-slide-big-img>
 
       <button onclick="slideNext()" slot="actions">Action slide next</button>
     </deckgo-deck>

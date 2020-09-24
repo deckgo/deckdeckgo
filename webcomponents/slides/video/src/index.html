@@ -11,18 +11,31 @@
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck>
-      <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-      </deckgo-slide-video>
+      <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4"> </deckgo-slide-video>
 
       <deckgo-slide-video src="https://media.giphy.com/media/9Jcw5pUQlgQLe5NonJ/giphy.mp4" loop="true">
         <h1 slot="title">Hello</h1>
       </deckgo-slide-video>
 
-      <deckgo-slide-video src="https://media.giphy.com/media/ka55CqnDNjQ7iIKtRa/giphy.mp4" autoplay="true">
-      </deckgo-slide-video>
+      <deckgo-slide-video src="https://media.giphy.com/media/ka55CqnDNjQ7iIKtRa/giphy.mp4" autoplay="true"> </deckgo-slide-video>
 
       <deckgo-slide-video src="https://media.giphy.com/media/3oz8xvCesWi1ucQQaA/giphy.mp4">
         <h1 slot="title">Yolo</h1>
@@ -42,32 +55,32 @@
     </script>
 
     <script type="text/javascript">
-        function playPauseVideo() {
-            return new Promise(async (resolve) => {
-                const deck = document.querySelector('deckgo-deck');
+      function playPauseVideo() {
+        return new Promise(async (resolve) => {
+          const deck = document.querySelector('deckgo-deck');
 
-                if (!deck) {
-                    resolve();
-                    return;
-                }
+          if (!deck) {
+            resolve();
+            return;
+          }
 
-                const index = await deck.getActiveIndex();
+          const index = await deck.getActiveIndex();
 
-                const videoElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+          const videoElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-                if (!videoElement || videoElement.tagName !== 'deckgo-slide-video'.toUpperCase()) {
-                    resolve();
-                    return;
-                }
+          if (!videoElement || videoElement.tagName !== 'deckgo-slide-video'.toUpperCase()) {
+            resolve();
+            return;
+          }
 
-                await videoElement.toggle();
+          await videoElement.toggle();
 
-                resolve();
-            });
-        }
+          resolve();
+        });
+      }
     </script>
 
-    <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+    <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
       <button onclick="playPauseVideo()">Play/pause video</button>
     </div>
   </body>
