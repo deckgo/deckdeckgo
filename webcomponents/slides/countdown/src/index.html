@@ -28,8 +28,16 @@
     </style>
   </head>
   <body style="margin: 0">
-    <deckgo-deck>
-      <deckgo-slide-countdown until="2019-08-27T23:25:59.000+02:00">
+    <deckgo-deck direction="papyrus">
+      <deckgo-slide-countdown until="2021-08-27T23:25:59.000+02:00">
+        <h1 slot="title">My presentation will start in</h1>
+        <span slot="days">Days</span>
+        <span slot="hours">Hours</span>
+        <span slot="minutes">Minutes</span>
+        <span slot="seconds">Seconds</span>
+      </deckgo-slide-countdown>
+
+      <deckgo-slide-countdown until="2022-08-27T23:25:59.000+02:00">
         <h1 slot="title">My presentation will start in</h1>
         <span slot="days">Days</span>
         <span slot="hours">Hours</span>
