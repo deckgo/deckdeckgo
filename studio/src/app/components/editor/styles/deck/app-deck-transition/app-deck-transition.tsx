@@ -163,11 +163,11 @@ export class AppDeckTransition {
         {this.renderDirectionDevice()}
 
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem('direction', 'horizontal', this.selectedAnimation, 'Horizontal', this.selectedDirection === 'horizontal', () =>
+          {this.renderDeckItem('direction', 'horizontal', 'horizontal', this.selectedAnimation, 'Horizontal', this.selectedDirection === 'horizontal', () =>
             this.applyDirection('horizontal')
           )}
 
-          {this.renderDeckItem('direction', 'vertical', this.selectedAnimation, 'Vertical', this.selectedDirection === 'vertical', () =>
+          {this.renderDeckItem('direction', 'vertical', 'vertical', this.selectedAnimation, 'Vertical', this.selectedDirection === 'vertical', () =>
             this.applyDirection('vertical')
           )}
 
@@ -197,11 +197,15 @@ export class AppDeckTransition {
       <app-expansion-panel>
         <ion-label slot="title">Animation</ion-label>
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem('animation', 'horizontal', 'slide', 'Swipe', this.selectedAnimation === 'slide', () => this.applyAnimation('slide'))}
+          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'slide', 'Swipe', this.selectedAnimation === 'slide', () =>
+            this.applyAnimation('slide')
+          )}
 
-          {this.renderDeckItem('animation', 'horizontal', 'fade', 'Fade', this.selectedAnimation === 'fade', () => this.applyAnimation('fade'))}
+          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'fade', 'Fade', this.selectedAnimation === 'fade', () => this.applyAnimation('fade'))}
 
-          {this.renderDeckItem('animation', 'horizontal', 'none', 'Instant', this.selectedAnimation === 'none', () => this.applyAnimation('none'))}
+          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'none', 'Instant', this.selectedAnimation === 'none', () =>
+            this.applyAnimation('none')
+          )}
         </div>
       </app-expansion-panel>
     );
@@ -210,6 +214,7 @@ export class AppDeckTransition {
   private renderDeckItem(
     showcase: 'animation' | 'direction',
     direction: 'horizontal' | 'vertical' | 'papyrus',
+    directionMobile: 'horizontal' | 'vertical' | 'papyrus',
     animation: 'slide' | 'fade' | 'none',
     text: string,
     selected: boolean,
@@ -217,7 +222,13 @@ export class AppDeckTransition {
   ) {
     return (
       <div class={`item ${selected ? 'selected' : ''} showcase-${showcase}`} custom-tappable onClick={action}>
-        <deckgo-deck embedded={true} keyboard={false} animation={animation} direction={direction} class={`showcase-${showcase}`}>
+        <deckgo-deck
+          embedded={true}
+          keyboard={false}
+          animation={animation}
+          direction={direction}
+          directionMobile={directionMobile}
+          class={`showcase-${showcase}`}>
           {this.renderItems(text, showcase === 'direction' ? 4 : 2, selected, showcase)}
         </deckgo-deck>
       </div>
