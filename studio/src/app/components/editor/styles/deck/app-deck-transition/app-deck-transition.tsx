@@ -18,6 +18,9 @@ export class AppDeckTransition {
   @State()
   private selectedDirection: 'horizontal' | 'vertical' | 'papyrus';
 
+  @State()
+  private device: 'desktop' | 'mobile' = 'desktop';
+
   private timerIntervalDecks: NodeJS.Timeout;
   private timerCounterDecks: number = 0;
 
@@ -54,12 +57,14 @@ export class AppDeckTransition {
   }
 
   private async initSelectedDirection() {
-    if (!this.deckElement || !this.deckElement.hasAttribute('direction')) {
-      this.selectedDirection = 'horizontal';
+    const attribute: 'direction' | 'direction-mobile' = this.device === 'mobile' ? 'direction-mobile' : 'direction';
+
+    if (!this.deckElement || !this.deckElement.hasAttribute(attribute)) {
+      this.selectedDirection = this.device === 'mobile' ? 'papyrus' : 'horizontal';
       return;
     }
 
-    this.selectedDirection = this.deckElement.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
+    this.selectedDirection = this.deckElement.getAttribute(attribute) as 'horizontal' | 'vertical' | 'papyrus';
   }
 
   private async animateDecks() {
@@ -119,7 +124,7 @@ export class AppDeckTransition {
       return;
     }
 
-    this.deckElement.setAttribute('direction', direction);
+    this.deckElement.setAttribute(this.device === 'mobile' ? 'direction-mobile' : 'direction', direction);
 
     this.selectedDirection = direction;
 
@@ -138,6 +143,14 @@ export class AppDeckTransition {
     this.transitionChange.emit();
   }
 
+  private async selectDevice($event: CustomEvent) {
+    if ($event && $event.detail) {
+      this.device = $event.detail.value;
+
+      await this.initSelectedDirection();
+    }
+  }
+
   render() {
     return [this.renderDirection(), this.renderAnimation()];
   }
@@ -147,16 +160,7 @@ export class AppDeckTransition {
       <app-expansion-panel>
         <ion-label slot="title">Direction</ion-label>
 
-        <div class="device">
-          <ion-segment mode="ios" value="default">
-            <ion-segment-button value="default" mode="ios">
-              <ion-label>Default</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="mobile" mode="ios">
-              <ion-label>Mobile</ion-label>
-            </ion-segment-button>
-          </ion-segment>
-        </div>
+        {this.renderDirectionDevice()}
 
         <div class="container ion-margin-bottom">
           {this.renderDeckItem('direction', 'horizontal', this.selectedAnimation, 'Horizontal', this.selectedDirection === 'horizontal', () =>
@@ -173,16 +177,31 @@ export class AppDeckTransition {
     );
   }
 
+  private renderDirectionDevice() {
+    return (
+      <div class="device">
+        <ion-segment mode="ios" value={this.device} onIonChange={($event: CustomEvent) => this.selectDevice($event)}>
+          <ion-segment-button value="desktop" mode="ios">
+            <ion-label>Desktop</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="mobile" mode="ios">
+            <ion-label>Mobile</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+    );
+  }
+
   private renderAnimation() {
     return (
       <app-expansion-panel>
         <ion-label slot="title">Animation</ion-label>
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem('animation', 'horizontal', 'slide', 'Slide animation', this.selectedAnimation === 'slide', () => this.applyAnimation('slide'))}
+          {this.renderDeckItem('animation', 'horizontal', 'slide', 'Swipe', this.selectedAnimation === 'slide', () => this.applyAnimation('slide'))}
 
-          {this.renderDeckItem('animation', 'horizontal', 'fade', 'Fade effect', this.selectedAnimation === 'fade', () => this.applyAnimation('fade'))}
+          {this.renderDeckItem('animation', 'horizontal', 'fade', 'Fade', this.selectedAnimation === 'fade', () => this.applyAnimation('fade'))}
 
-          {this.renderDeckItem('animation', 'horizontal', 'none', 'Instant transition', this.selectedAnimation === 'none', () => this.applyAnimation('none'))}
+          {this.renderDeckItem('animation', 'horizontal', 'none', 'Instant', this.selectedAnimation === 'none', () => this.applyAnimation('none'))}
         </div>
       </app-expansion-panel>
     );

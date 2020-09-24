@@ -7,11 +7,12 @@ app-deck-transition {
     ion-segment {
       width: fit-content;
       background: transparent;
-      border: 1px solid var(--ion-color-light);
 
       ion-segment-button {
         --indicator-color: var(--ion-color-dark);
         --color-checked: white;
+        --color-hover: black;
+        --border-radius: 12px;
       }
     }
   }
@@ -51,7 +52,7 @@ app-deck-transition {
       }
 
       deckgo-deck {
-        --animation-fade-duration: 3000ms;
+        --animation-fade-duration: 3500ms;
 
         deckgo-slide-title {
           --slide-padding-start: 4px;
