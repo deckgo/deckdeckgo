@@ -64,6 +64,9 @@ export namespace Components {
         "ariaLabel": string;
         "src": string;
     }
+    interface AppBorderRadius {
+        "selectedElement": HTMLElement;
+    }
     interface AppBreadcrumbs {
         "step": BreadcrumbsStep;
     }
@@ -451,6 +454,12 @@ declare global {
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
+    };
+    interface HTMLAppBorderRadiusElement extends Components.AppBorderRadius, HTMLStencilElement {
+    }
+    var HTMLAppBorderRadiusElement: {
+        prototype: HTMLAppBorderRadiusElement;
+        new (): HTMLAppBorderRadiusElement;
     };
     interface HTMLAppBreadcrumbsElement extends Components.AppBreadcrumbs, HTMLStencilElement {
     }
@@ -1086,6 +1095,7 @@ declare global {
         "app-actions-element": HTMLAppActionsElementElement;
         "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
+        "app-border-radius": HTMLAppBorderRadiusElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
@@ -1255,6 +1265,10 @@ declare namespace LocalJSX {
     interface AppAvatar {
         "ariaLabel"?: string;
         "src"?: string;
+    }
+    interface AppBorderRadius {
+        "onBorderRadiusChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
     }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
@@ -1627,6 +1641,7 @@ declare namespace LocalJSX {
         "app-actions-element": AppActionsElement;
         "app-align": AppAlign;
         "app-avatar": AppAvatar;
+        "app-border-radius": AppBorderRadius;
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
@@ -1746,6 +1761,7 @@ declare module "@stencil/core" {
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+            "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
