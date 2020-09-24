@@ -1,6 +1,6 @@
 import {get, set} from 'idb-keyval';
 
-import {Deck} from '../../../models/data/deck';
+import {Deck, DeckAttributes} from '../../../models/data/deck';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
@@ -46,7 +46,7 @@ export class DeckOfflineService {
           deck.data.background = null;
         }
 
-        deck.data.attributes = await OfflineUtils.cleanAttributes(deck.data.attributes);
+        deck.data.attributes = (await OfflineUtils.cleanAttributes(deck.data.attributes)) as DeckAttributes;
 
         await set(`/decks/${deck.id}`, deck);
 

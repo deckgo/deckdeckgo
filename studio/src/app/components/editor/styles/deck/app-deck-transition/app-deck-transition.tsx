@@ -45,12 +45,12 @@ export class AppDeckTransition {
   }
 
   private async initSelectedAnimation() {
-    if (!this.deckElement || !this.deckElement.hasAttribute('transition')) {
+    if (!this.deckElement || !this.deckElement.hasAttribute('animation')) {
       this.selectedAnimation = 'slide';
       return;
     }
 
-    this.selectedAnimation = this.deckElement.getAttribute('transition') as 'slide' | 'fade' | 'none';
+    this.selectedAnimation = this.deckElement.getAttribute('animation') as 'slide' | 'fade' | 'none';
   }
 
   private async initSelectedDirection() {
@@ -131,7 +131,7 @@ export class AppDeckTransition {
       return;
     }
 
-    this.deckElement.setAttribute('transition', animation);
+    this.deckElement.setAttribute('animation', animation);
 
     this.selectedAnimation = animation;
 
@@ -235,7 +235,7 @@ export class AppDeckTransition {
   ) {
     return (
       <div class={`item ${selected ? 'selected' : ''} item-direction-${direction} item-animation-${animation}`} custom-tappable onClick={action}>
-        <deckgo-deck embedded={true} keyboard={false} transition={animation} direction={direction} class={`showcase-${showcase}`}>
+        <deckgo-deck embedded={true} keyboard={false} animation={animation} direction={direction} class={`showcase-${showcase}`}>
           <deckgo-slide-title style={{'--background': `${nextSlideBackground}`, '--color': 'white'}}>
             <p slot="title">{text}</p>
           </deckgo-slide-title>

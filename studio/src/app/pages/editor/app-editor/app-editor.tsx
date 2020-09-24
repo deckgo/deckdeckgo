@@ -62,7 +62,7 @@ export class AppEditor {
   private style: any;
 
   @State()
-  private transition: 'slide' | 'fade' | 'none' = 'slide';
+  private animation: 'slide' | 'fade' | 'none' = 'slide';
 
   private slideIndex: number = 0;
 
@@ -274,8 +274,8 @@ export class AppEditor {
       this.style = undefined;
     }
 
-    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.transition) {
-      this.transition = deckStore.state.deck.data.attributes.transition;
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.animation) {
+      this.animation = deckStore.state.deck.data.attributes.animation;
     }
 
     this.background = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.background, 'background');
@@ -640,7 +640,7 @@ export class AppEditor {
             embedded={true}
             style={this.style}
             reveal={this.fullscreen && this.presenting}
-            transition={this.transition}
+            animation={this.animation}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
             onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}

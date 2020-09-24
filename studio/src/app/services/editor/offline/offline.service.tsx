@@ -5,8 +5,8 @@ import {del, get, set} from 'idb-keyval';
 import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
 
-import {Deck} from '../../../models/data/deck';
-import {Slide} from '../../../models/data/slide';
+import {Deck, DeckAttributes} from '../../../models/data/deck';
+import {Slide, SlideAttributes} from '../../../models/data/slide';
 
 import {SlotType} from '../../../utils/editor/slot-type';
 
@@ -648,7 +648,7 @@ export class OfflineService {
           return;
         }
 
-        slide.data.attributes = await OfflineUtils.prepareAttributes(slide.data.attributes);
+        slide.data.attributes = (await OfflineUtils.prepareAttributes(slide.data.attributes)) as SlideAttributes;
 
         if (slide.data.content === null) {
           // @ts-ignore
@@ -684,7 +684,7 @@ export class OfflineService {
           return;
         }
 
-        deck.data.attributes = await OfflineUtils.prepareAttributes(deck.data.attributes);
+        deck.data.attributes = (await OfflineUtils.prepareAttributes(deck.data.attributes)) as DeckAttributes;
 
         if (deck.data.background === null) {
           // @ts-ignore
