@@ -1,3 +1,9 @@
+# 4.0.3 (2020-09-24)
+
+### Fix
+
+- Hack for Google Chrome until the `smooth` scroll behavior is going to be supported if triggered with keyboard or programmatically
+
 # 4.0.2 (2020-09-24)
 
 ### Style
