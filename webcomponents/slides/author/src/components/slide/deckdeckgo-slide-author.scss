@@ -4,6 +4,8 @@
 :host {
   --slide-actions-z-index: 3;
   --slide-header-footer-z-index: 1;
+
+  --overflow: visible;
 }
 
 div.deckgo-slide {
@@ -11,10 +13,10 @@ div.deckgo-slide {
 
   padding: 0;
   width: var(--slide-width);
+  height: var(--slide-min-height, var(--slide-height));
 }
 
 div.deckgo-slide-author {
-  height: 100%;
   width: 50%;
 
   display: flex;
