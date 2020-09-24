@@ -7,7 +7,7 @@ import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttribute
 
 import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
-import {HideSlides, RevealSlide, TransitionSlide} from '../../utils/deckdeckgo-deck-transition';
+import {HideSlides, RevealSlide, AnimationSlide} from '../../utils/deckdeckgo-deck-animation';
 
 interface Delta {
   slider: HTMLElement;
@@ -66,7 +66,7 @@ export class DeckdeckgoDeck {
   @Prop() reveal: boolean = true;
   @Prop() revealOnMobile: boolean = false;
 
-  @Prop({reflect: true}) transition: 'slide' | 'fade' | 'none' = 'slide';
+  @Prop({reflect: true}) animation: 'slide' | 'fade' | 'none' = 'slide';
 
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
@@ -300,7 +300,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    if (this.transition !== 'slide') {
+    if (this.animation !== 'slide') {
       return;
     }
 
@@ -453,7 +453,7 @@ export class DeckdeckgoDeck {
         slider.style.setProperty('--transformY', this.deckMove + 'px');
       }
 
-      if (this.transition === 'slide') {
+      if (this.animation === 'slide') {
         slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
       } else {
         slider.style.setProperty('--transformXDuration', '0ms');
@@ -461,7 +461,7 @@ export class DeckdeckgoDeck {
 
       if (this.dir === 'papyrus') {
         const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
-        slide.scrollIntoView(this.transition === 'none' ? null : {behavior: 'smooth', block: 'nearest'});
+        slide.scrollIntoView(this.animation === 'none' ? null : {behavior: 'smooth', block: 'nearest'});
       }
 
       this.slideWillChange.emit(this.deckMove);
@@ -1097,7 +1097,7 @@ export class DeckdeckgoDeck {
     return (
       <Host class={`${this.dir}`}>
         <main>
-          {this.renderTransition()}
+          {this.renderAnimation()}
           <div class="deckgo-deck">
             <slot />
             <slot name="actions"></slot>
@@ -1113,9 +1113,9 @@ export class DeckdeckgoDeck {
     return <deckgo-pager active-index={this.activeIndex} length={this.length}></deckgo-pager>;
   }
 
-  private renderTransition() {
-    if (this.transition !== 'fade' || this.dir === 'papyrus') {
-      return <TransitionSlide />;
+  private renderAnimation() {
+    if (this.animation !== 'fade' || this.dir === 'papyrus') {
+      return <AnimationSlide />;
     }
 
     return [<HideSlides />, <RevealSlide index={this.activeIndex} />];

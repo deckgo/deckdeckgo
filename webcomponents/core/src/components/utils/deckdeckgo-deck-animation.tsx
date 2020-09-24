@@ -29,7 +29,7 @@ export const RevealSlide: FunctionalComponent<{index: number}> = ({index}) => {
   );
 };
 
-export const TransitionSlide: FunctionalComponent = () => {
+export const AnimationSlide: FunctionalComponent = () => {
   return (
     <style>{`
       ::slotted(.deckgo-slide-container) {

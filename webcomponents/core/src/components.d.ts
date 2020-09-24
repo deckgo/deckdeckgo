@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DeckdeckgoAttributeDefinition, DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition } from "@deckdeckgo/types";
 export namespace Components {
     interface DeckgoDeck {
+        "animation": 'slide' | 'fade' | 'none';
         "blockSlide": (block: boolean) => Promise<void>;
         "cloneBackground": boolean;
         "deleteActiveSlide": () => Promise<void>;
@@ -34,7 +35,6 @@ export namespace Components {
         "slideTo": (index: number, speed?: number | undefined, emitEvent?: boolean) => Promise<void>;
         "toggleFullScreen": () => Promise<void>;
         "toggleKeyboardAssist": (state: boolean) => Promise<void>;
-        "transition": 'slide' | 'fade' | 'none';
     }
     interface DeckgoPager {
         "activeIndex": number;
@@ -92,6 +92,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoDeck {
+        "animation"?: 'slide' | 'fade' | 'none';
         "cloneBackground"?: boolean;
         "direction"?: 'horizontal' | 'vertical' | 'papyrus';
         "directionMobile"?: 'horizontal' | 'vertical' | 'papyrus';
@@ -109,7 +110,6 @@ declare namespace LocalJSX {
         "onSlidesDidLoad"?: (event: CustomEvent<any>) => void;
         "reveal"?: boolean;
         "revealOnMobile"?: boolean;
-        "transition"?: 'slide' | 'fade' | 'none';
     }
     interface DeckgoPager {
         "activeIndex"?: number;
