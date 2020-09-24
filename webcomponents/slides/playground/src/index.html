@@ -11,8 +11,23 @@
 
     <script type="module" src="/build/deckdeckgo-slide-playground.esm.js"></script>
     <script nomodule src="/build/deckdeckgo-slide-playground.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck id="slider">
       <deckgo-slide-playground src="https://codepen.io/peterpeterparker/pen/dyGbOZm">
         <h1 slot="title">A code pen by David</h1>
@@ -70,7 +85,7 @@
       }
     </script>
 
-    <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
+    <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
       <button onclick="updateTheme()">Update Theme</button>
       <button onclick="updatePlaygroundUrl('https://codepen.io/peterpeterparker/pen/dyGbOZm')">Switch Codepen</button>
       <button onclick="updatePlaygroundUrl('https://jsfiddle.net/peterpeterparker/5zjb39tn/')">Switch jsfiddle</button>

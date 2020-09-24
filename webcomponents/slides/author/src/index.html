@@ -14,8 +14,23 @@
 
     <script type="module" src="/build/deckdeckgo-slide-author.esm.js"></script>
     <script nomodule src="/build/deckdeckgo-slide-author.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck>
       <deckgo-slide-author img-alt="David" img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg">
         <div slot="author">
@@ -26,7 +41,7 @@
         </div>
         <div slot="social-link">
           <deckgo-social twitter="daviddalbusco">
-            <img slot="icon" alt="DeckDeckGo" src="https://docs.deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle;" />
+            <img slot="icon" alt="DeckDeckGo" src="https://docs.deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle" />
             twitter
           </deckgo-social>
         </div>
@@ -39,7 +54,7 @@
       </deckgo-slide-author>
 
       <deckgo-slide-author
-        style="--slide-author-background-start: blue; --slide-author-color-end: red; --slide-author-img-border: 2px solid white;"
+        style="--slide-author-background-start: blue; --slide-author-color-end: red; --slide-author-img-border: 2px solid white"
         img-mode="circle"
         img-alt="David"
         img-src="https://secure.meetupstatic.com/photos/member/9/c/4/2/member_272620002.jpeg"
@@ -59,7 +74,7 @@
         </div>
         <div slot="social-link">
           <deckgo-social twitter="daviddalbusco">
-            <img slot="icon" alt="DeckDeckGo" src="https://docs.deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle;" />
+            <img slot="icon" alt="DeckDeckGo" src="https://docs.deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 20px; vertical-align: middle" />
             twitter
           </deckgo-social>
         </div>
@@ -76,9 +91,9 @@
         <button onclick="slideNext()">Action slide next</button>
       </div>
 
-      <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
+      <div slot="header"><img style="max-height: 100%" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
       <div slot="footer">
-        <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+        <img style="max-height: 100%" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
       </div>
     </deckgo-deck>
 

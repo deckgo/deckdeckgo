@@ -16,15 +16,24 @@
       * {
         box-sizing: border-box;
       }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
     </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck>
       <deckgo-slide-content>
         <h1 slot="title">Reveal after element</h1>
 
         <div slot="content">
-          <deckgo-reveal-list list-tag="ul" style="list-style-type: square;" contenteditable="true">
+          <deckgo-reveal-list list-tag="ul" style="list-style-type: square" contenteditable="true">
             <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
             <li><strong>Ionic</strong> components and icons to create your content</li>
             <li><strong>Style</strong> your presentation quickly</li>
@@ -33,10 +42,10 @@
           </deckgo-reveal-list>
 
           <deckgo-reveal>
-            <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+            <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px" />
 
             <p>
-              <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px;" />
+              <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo.png" style="width: 50px" />
             </p>
           </deckgo-reveal>
 
@@ -50,9 +59,9 @@
         </div>
       </deckgo-slide-content>
 
-      <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
+      <div slot="header"><img style="max-height: 100%" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
       <div slot="footer">
-        <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+        <img style="max-height: 100%" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
       </div>
 
       <button onclick="slideNext()" slot="actions">Action slide next</button>

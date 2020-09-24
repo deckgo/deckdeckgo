@@ -11,21 +11,36 @@
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck>
       <deckgo-slide-aspect-ratio grid="true">
         <h1 slot="title">My title</h1>
         <h1 slot="top">A header</h1>
-        <h2 slot="bottom" style="--background: white; --color: blue;">and a footer</h2>
+        <h2 slot="bottom" style="--background: white; --color: blue">and a footer</h2>
 
-        <img src="https://demo.deckdeckgo.com/assets/img/desktop-light.svg" style="width: 100px; position: absolute; top: 50px; left: 50px;" />
+        <img src="https://demo.deckdeckgo.com/assets/img/desktop-light.svg" style="width: 100px; position: absolute; top: 50px; left: 50px" />
         <h1>Hello</h1>
       </deckgo-slide-aspect-ratio>
 
-      <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
+      <div slot="header"><img style="max-height: 100%" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
       <div slot="footer">
-        <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+        <img style="max-height: 100%" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
       </div>
     </deckgo-deck>
   </body>
