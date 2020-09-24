@@ -748,6 +748,20 @@ export class DeckEventsHandler {
         attributes.animation = firebase.firestore.FieldValue.delete();
       }
 
+      if (deck.hasAttribute('direction') && deck.getAttribute('direction') !== 'horizontal') {
+        attributes.direction = deck.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
+      } else if (updateDeck) {
+        // @ts-ignore
+        attributes.direction = firebase.firestore.FieldValue.delete();
+      }
+
+      if (deck.hasAttribute('direction-mobile') && deck.getAttribute('direction-mobile') !== 'papyrus') {
+        attributes.directionMobile = deck.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
+      } else if (updateDeck) {
+        // @ts-ignore
+        attributes.directionMobile = firebase.firestore.FieldValue.delete();
+      }
+
       resolve(attributes);
     });
   }
