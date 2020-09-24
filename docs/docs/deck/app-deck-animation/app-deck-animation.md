@@ -1,0 +1,29 @@
+# Animation
+
+The animation between the [DeckDeckGo] slides could happen in different ways.
+
+Per default, the animation is the `slide` effect respectively a swipe effect.
+
+## Properties
+
+A specific effect could be set using the following properties of the root element `<deckgo-deck/>`:
+
+| Property    | Attribute   | Description                          | Type                      | Default |
+| ----------- | ----------- | ------------------------------------ | ------------------------- | ------- |
+| `animation` | `animation` | The animation effect between slides. | `slide`, `fade` or `none` | `slide` |  |
+
+## Styling
+
+It is also possible to style the `fade` animation using the following CSS4 variables:
+
+| CSS4 variable                   | Default | Note                                                   |
+| ------------------------------- | ------- | ------------------------------------------------------ |
+| --animation-fade-duration       | 500ms   | The duration of the animation.                         |
+| --animation-fade-hidden-opacity | 0.4     | The base opacity when the slide is not displayed.      |
+| --slide-animation               |         | An optional animation effect for each slide container. |
+
+## Nota bene
+
+In case you would select the `fade` or `none` animation effect and would use the deck's slots `actions` or `background` too, please notes that these have to be ordered in last positions of the deck's children otherwise the animation effect will not be able to determine correctly the index of the next slide to animate.
+
+[deckdeckgo]: https://deckdeckgo.com

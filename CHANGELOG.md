@@ -4,7 +4,7 @@
 
 ### Applications
 
-- docs: v1.10.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- docs: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 
 ### Web Components Templates
 

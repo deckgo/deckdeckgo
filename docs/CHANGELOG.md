@@ -1,4 +1,8 @@
-# 1.10.0 (2020-09-22)
+# 2.0.0 (2020-09-24)
+
+### Breaking Changes
+
+- route `transition` renamed `animation`
 
 ### Features
 
