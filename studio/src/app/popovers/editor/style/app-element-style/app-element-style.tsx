@@ -1,13 +1,13 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Prop, State } from '@stencil/core';
 
-import {isIPad} from '@deckdeckgo/utils';
+import { isIPad } from '@deckdeckgo/utils';
 
-import {TargetElement} from '../../../../utils/editor/target-element';
-import {SlotType} from '../../../../utils/editor/slot-type';
-import {ImageAction} from '../../../../utils/editor/image-action';
-import {ListUtils} from '../../../../utils/editor/list.utils';
+import { TargetElement } from '../../../../utils/editor/target-element';
+import { SlotType } from '../../../../utils/editor/slot-type';
+import { ImageAction } from '../../../../utils/editor/image-action';
+import { ListUtils } from '../../../../utils/editor/list.utils';
 
-import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import { ImageHelper } from '../../../../helpers/editor/image.helper';
 
 @Component({
   tag: 'app-element-style',
@@ -85,14 +85,14 @@ export class AppElementStyle {
     this.applyToTargetElement = this.image
       ? TargetElement.IMAGE
       : this.code
-      ? TargetElement.CODE
-      : this.qrCode || this.poll
-      ? TargetElement.QR_CODE
-      : this.chart
-      ? TargetElement.CHART
-      : this.author || this.split
-      ? TargetElement.SIDES
-      : TargetElement.SLIDE;
+        ? TargetElement.CODE
+        : this.qrCode || this.poll
+          ? TargetElement.QR_CODE
+          : this.chart
+            ? TargetElement.CHART
+            : this.author || this.split
+              ? TargetElement.SIDES
+              : TargetElement.SLIDE;
 
     this.moreColors = !isIPad();
   }
@@ -227,6 +227,7 @@ export class AppElementStyle {
       return [
         this.renderFontSize(),
         <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
+        <app-border-radius selectedElement={this.selectedElement}></app-border-radius>,
         this.renderList(),
         <app-color-text-background
           expander={!this.slide}
