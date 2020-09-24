@@ -33,7 +33,12 @@
     </style>
   </head>
   <body style="margin: 0">
-    <deckgo-deck>
+    <deckgo-deck direction="vertical">
+      <deckgo-slide-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-color-fill: black">
+        <h1 slot="title">QR Code</h1>
+        <p slot="content">Display a QR code to let your audience get your slides as a PWA without any delay</p>
+      </deckgo-slide-qrcode>
+
       <deckgo-slide-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-color-fill: black">
         <h1 slot="title">QR Code</h1>
         <p slot="content">Display a QR code to let your audience get your slides as a PWA without any delay</p>
