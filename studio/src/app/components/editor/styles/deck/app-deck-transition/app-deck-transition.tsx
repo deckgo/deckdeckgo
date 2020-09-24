@@ -69,7 +69,7 @@ export class AppDeckTransition {
 
   private async animateDecks() {
     this.timerIntervalDecks = setInterval(async () => {
-      const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('deckgo-deck:not(.papyrus)');
+      const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('div.selected deckgo-deck:not(.papyrus)');
 
       if (elements) {
         for (const element of Array.from(elements)) {
@@ -87,7 +87,7 @@ export class AppDeckTransition {
 
   private async animatePapyrus() {
     this.timerIntervalPapyrus = setInterval(async () => {
-      const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('div.showcase-papyrus');
+      const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('div.selected div.showcase-papyrus');
 
       if (elements) {
         for (const element of Array.from(elements)) {
@@ -249,9 +249,9 @@ export class AppDeckTransition {
         <deckgo-slide-title
           style={{
             '--background': `${
-              i % 2 > 0 ? `rgba(var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-rgb), ${selected ? 1 : 0.2})` : 'transparent'
+              !selected ? 'transparent' : i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'})` : 'transparent'
             }`,
-            '--color': `${i % 2 > 0 ? (selected ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit') : 'inherit'}`,
+            '--color': !selected ? 'inherit' : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`,
           }}>
           <p slot="title">{text}</p>
         </deckgo-slide-title>
