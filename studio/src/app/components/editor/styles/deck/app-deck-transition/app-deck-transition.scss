@@ -39,15 +39,11 @@ app-deck-transition {
         &.showcase-direction {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
           border: 1px solid var(--ion-color-primary);
-          background: var(--ion-color-primary);
-          color: var(--ion-color-primary-contrast);
         }
 
         &.showcase-animation {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-tertiary-rgb), 0.4);
           border: 1px solid var(--ion-color-tertiary);
-          background: var(--ion-color-tertiary);
-          color: var(--ion-color-tertiary-contrast);
         }
       }
 
