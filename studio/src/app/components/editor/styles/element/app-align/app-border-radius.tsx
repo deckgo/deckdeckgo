@@ -36,13 +36,16 @@ export class BorderRadius {
         if (!this.selectedElement || !$event || !$event.detail) {
             return;
         }
-
-        this.borderRadiuses.set(corner, $event.detail.value);
         if (corner === 'General') {
+            this.borderRadiuses.forEach((_, key) => {
+                this.borderRadiuses.set(key, $event.detail.value);
+            });
             this.selectedElement.style.borderRadius = `${$event.detail.value}px`;
         } else {
+            this.borderRadiuses.set(corner, $event.detail.value);
             this.selectedElement.style[`border${corner}Radius`] = `${$event.detail.value}px`;
         }
+        this.borderRadiuses = new Map<string, number>(this.borderRadiuses);
 
         this.borderRadiusChange.emit();
     }
