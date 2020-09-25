@@ -124,11 +124,29 @@ export class AppDeckTransition {
       return;
     }
 
+    await this.goToFirstSlide();
+
     this.deckElement.setAttribute(this.device === 'mobile' ? 'direction-mobile' : 'direction', direction);
 
     this.selectedDirection = direction;
 
     this.transitionChange.emit();
+  }
+
+  private async goToFirstSlide() {
+    const begin: boolean = await (this.deckElement as HTMLDeckgoDeckElement).isBeginning();
+
+    if (begin) {
+      return;
+    }
+
+    await (this.deckElement as HTMLDeckgoDeckElement).slideTo(0);
+
+    if (!this.deckElement.firstElementChild) {
+      return;
+    }
+
+    this.deckElement.firstElementChild.scroll();
   }
 
   private async applyAnimation(animation: 'slide' | 'fade' | 'none') {
