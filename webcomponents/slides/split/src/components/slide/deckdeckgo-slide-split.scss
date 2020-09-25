@@ -12,6 +12,7 @@ div.deckgo-slide {
   padding: 0;
   width: var(--slide-width);
   height: var(--slide-height);
+  min-height: var(--slide-min-height);
 }
 
 div.deckgo-slide-vertical {
@@ -54,10 +55,11 @@ div.deckgo-slide-split {
 
 div.deckgo-slide-split-vertical {
   @extend div, .deckgo-slide-split;
-  height: calc(
-    (var(--slide-height) / 2) - (var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))) -
+  min-height: calc(
+    (var(--slide-min-height, var(--slide-height)) / 2) - (var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))) -
       (var(--slide-split-padding-top, var(--slide-padding-top-default)))
   );
+  height: auto;
   width: calc(
     var(--slide-width) - (var(--slide-split-padding-end, var(--slide-padding-end-default))) -
       (var(--slide-split-padding-start, var(--slide-padding-start-default)))
