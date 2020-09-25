@@ -6,6 +6,7 @@
 
 ### Features
 
+- introduce `papyrus` and `vertical` direction
 - refresh links in header
 
 ### Features
