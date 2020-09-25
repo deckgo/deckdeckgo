@@ -16,19 +16,34 @@
       * {
         box-sizing: border-box;
       }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
     </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <deckgo-deck>
+  <body style="margin: 0">
+    <deckgo-deck direction="horizontal">
       <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My title">
         <h1 slot="title">Gif</h1>
         <h1 slot="top">Hey Sani</h1>
-        <h2 slot="bottom" style="--background: white; --color: blue;">Cool?</h2>
+        <h2 slot="bottom" style="--background: white; --color: blue">Cool?</h2>
       </deckgo-slide-gif>
 
-      <div slot="header"><img style="max-height: 100%;" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
+      <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My title">
+        <h1 slot="title">Gif</h1>
+        <h1 slot="top">Hey Sani</h1>
+        <h2 slot="bottom" style="--background: white; --color: blue">Cool?</h2>
+      </deckgo-slide-gif>
+
+      <div slot="header"><img style="max-height: 100%" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo</div>
       <div slot="footer">
-        <img style="max-height: 100%;" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
+        <img style="max-height: 100%" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" /> daviddalbusco
       </div>
     </deckgo-deck>
   </body>

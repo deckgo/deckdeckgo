@@ -1,3 +1,10 @@
+# 2.1.0 (2020-09-19)
+
+### Features
+
+- support for `vertical` and `papyrus`
+- update dev dependencies
+
 # 2.0.0 (2020-09-03)
 
 ### Breaking Changes

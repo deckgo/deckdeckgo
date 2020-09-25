@@ -1,3 +1,31 @@
+<a name="2.6.0"></a>
+
+# 2.6.0 (2020-09-23)
+
+### Style
+
+- style according `papyrus` is now going to be applied on a class selector
+
+<a name="2.5.1"></a>
+
+# 2.5.1 (2020-09-20)
+
+### Style
+
+- fits `cover` correctly
+
+<a name="2.5.0"></a>
+
+# 2.5.0 (2020-09-20)
+
+### Style
+
+- background lazy-img fits `cover` for `papyrus`
+
+### Features
+
+- update dependencies
+
 <a name="2.4.0"></a>
 
 # 2.4.0 (2020-08-06)

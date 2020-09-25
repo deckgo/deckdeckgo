@@ -5,7 +5,7 @@ import {modalController} from '@ionic/core';
 @Component({
   tag: 'app-navigation',
   styleUrl: 'app-navigation.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppNavigation {
   @Prop() logo: boolean = false;
@@ -57,7 +57,7 @@ export class AppNavigation {
 
   private async openNavigationMenuModal() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-navigation-modal'
+      component: 'app-navigation-modal',
     });
 
     await modal.present();
@@ -72,10 +72,12 @@ export class AppNavigation {
           </ion-button>
           <div class="links">
             <a href="https://deckdeckgo.com" class="ion-padding-start ion-padding-end">
-              Demo
+              <app-logo></app-logo>
+              <ion-label>Editor</ion-label>
             </a>
             <a href="https://github.com/deckgo" class="ion-padding-start ion-padding-end">
-              Github
+              <ion-icon name="logo-github" aria-lable="GitHub"></ion-icon>
+              <ion-label>GitHub</ion-label>
             </a>
             <app-theme-switcher></app-theme-switcher>
           </div>

@@ -17,9 +17,24 @@
         background-color: black;
       }
     </style>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <deckgo-deck>
+  <body style="margin: 0">
+    <deckgo-deck direction="papyrus">
       <deckgo-slide-big-img
         img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo.jpg"
         img-divisions="500;1100;1700"
@@ -32,11 +47,6 @@
         img-divisions="900;1500;2200"
         axis="x"
         reverse
-      >
-      </deckgo-slide-big-img>
-
-      <deckgo-slide-big-img
-        img-src="https://deckdeckgo.com/assets/img/deckdeckgo.png"
       >
       </deckgo-slide-big-img>
 

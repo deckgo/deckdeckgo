@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid';
 
 import {del, get, set} from 'idb-keyval';
 
-import {Slide, SlideData} from '../../../models/data/slide';
+import {Slide, SlideAttributes, SlideData} from '../../../models/data/slide';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
@@ -67,7 +67,7 @@ export class SlideOfflineService {
           return;
         }
 
-        slide.data.attributes = await OfflineUtils.cleanAttributes(slide.data.attributes);
+        slide.data.attributes = (await OfflineUtils.cleanAttributes(slide.data.attributes)) as SlideAttributes;
 
         if (slide.data.content && FirestoreUtils.shouldAttributeBeCleaned(slide.data.content)) {
           slide.data.content = null;
