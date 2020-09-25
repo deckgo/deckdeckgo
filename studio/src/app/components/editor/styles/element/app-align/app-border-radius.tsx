@@ -24,12 +24,16 @@ export class BorderRadius {
     @State()
     private maxBorderRadius: number = 0;
 
-    @Event() borderRadiusChange: EventEmitter<void>;
+    @Event() borderRadiusDidChange: EventEmitter<void>;
 
     async componentWillLoad() {
         if (this.selectedElement) {
             this.maxBorderRadius = this.selectedElement.offsetHeight / 2;
         }
+    }
+
+    private emitBorderRadiusChange() {
+        this.borderRadiusDidChange.emit();
     }
 
     private async updateBorderRadius($event: CustomEvent, corner: string = ''): Promise<void> {
@@ -47,7 +51,7 @@ export class BorderRadius {
         }
         this.borderRadiuses = new Map<string, number>(this.borderRadiuses);
 
-        this.borderRadiusChange.emit();
+        this.emitBorderRadiusChange();
     }
 
     render() {
