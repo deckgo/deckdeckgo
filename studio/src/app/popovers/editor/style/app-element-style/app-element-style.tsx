@@ -227,6 +227,7 @@ export class AppElementStyle {
       return [
         this.renderFontSize(),
         <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
+        <app-box-shadow selectedElement={this.selectedElement}></app-box-shadow>,
         this.renderList(),
         <app-color-text-background
           expander={!this.slide}

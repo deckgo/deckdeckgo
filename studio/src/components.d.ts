@@ -64,6 +64,9 @@ export namespace Components {
         "ariaLabel": string;
         "src": string;
     }
+    interface AppBoxShadow {
+        "selectedElement": HTMLElement;
+    }
     interface AppBreadcrumbs {
         "step": BreadcrumbsStep;
     }
@@ -451,6 +454,12 @@ declare global {
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
+    };
+    interface HTMLAppBoxShadowElement extends Components.AppBoxShadow, HTMLStencilElement {
+    }
+    var HTMLAppBoxShadowElement: {
+        prototype: HTMLAppBoxShadowElement;
+        new (): HTMLAppBoxShadowElement;
     };
     interface HTMLAppBreadcrumbsElement extends Components.AppBreadcrumbs, HTMLStencilElement {
     }
@@ -1086,6 +1095,7 @@ declare global {
         "app-actions-element": HTMLAppActionsElementElement;
         "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
+        "app-box-shadow": HTMLAppBoxShadowElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
@@ -1255,6 +1265,10 @@ declare namespace LocalJSX {
     interface AppAvatar {
         "ariaLabel"?: string;
         "src"?: string;
+    }
+    interface AppBoxShadow {
+        "onBoxShadowDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
     }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
@@ -1627,6 +1641,7 @@ declare namespace LocalJSX {
         "app-actions-element": AppActionsElement;
         "app-align": AppAlign;
         "app-avatar": AppAvatar;
+        "app-box-shadow": AppBoxShadow;
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
@@ -1746,6 +1761,7 @@ declare module "@stencil/core" {
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+            "app-box-shadow": LocalJSX.AppBoxShadow & JSXBase.HTMLAttributes<HTMLAppBoxShadowElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
