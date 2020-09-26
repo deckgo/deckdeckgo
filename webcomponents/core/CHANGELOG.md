@@ -1,3 +1,9 @@
+# 5.0.0 (In progress...)
+
+### Fix
+
+- improve boot performance by better detecting when all slides effectively loaded
+
 # 4.0.3 (2020-09-24)
 
 ### Fix
