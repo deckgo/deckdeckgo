@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -29,7 +29,7 @@
     "@deckdeckgo/slide-author": "^2.1.0",
     "@deckdeckgo/slide-big-img": "^2.1.0",
     "@deckdeckgo/slide-chart": "^2.1.0",
-    "@deckdeckgo/slide-code": "^2.1.0",
+    "@deckdeckgo/slide-code": "^3.0.0",
     "@deckdeckgo/slide-content": "^2.1.0",
     "@deckdeckgo/slide-countdown": "^2.1.0",
     "@deckdeckgo/slide-gif": "^3.1.0",

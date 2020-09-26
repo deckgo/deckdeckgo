@@ -106,8 +106,6 @@ You could provide a file URI to the code you want to display or provide it with 
 
 The slots `title` and `code` are optional.
 
-This template also exposes a slot `info` which would let you display an information over your code on mobile devices, useful to explain your reader that they should click to switch between vertical and horizontal scrolling. Find an example of the use of that slot on the [DeckDeckGo] website.
-
 ## Code components
 
 The slide "Code" relies on the code component `<deckgo-highlight-code/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
