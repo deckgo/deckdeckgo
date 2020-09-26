@@ -125,7 +125,7 @@ export class DeckdeckgoDeck {
         debounce(async () => {
           await this.initSlideSize();
 
-          if (this.direction !== 'papyrus') {
+          if (this.dir !== 'papyrus') {
             await this.slideTo(this.activeIndex);
           }
 
@@ -168,7 +168,7 @@ export class DeckdeckgoDeck {
 
       slider.style.setProperty('--slide-width', `${sliderSize.width}px`);
 
-      if (this.direction === 'papyrus') {
+      if (this.dir === 'papyrus') {
         slider.style.setProperty('--slide-min-height', `${sliderSize.height}px`);
         slider.style.removeProperty('--slide-height');
       } else {
@@ -192,12 +192,12 @@ export class DeckdeckgoDeck {
           slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
         }
 
-        if (slider.offsetParent.clientHeight > 0 && this.direction === 'papyrus') {
+        if (slider.offsetParent.clientHeight > 0 && this.dir === 'papyrus') {
           slider.style.setProperty('--slide-min-height', '' + slider.offsetParent.clientHeight + 'px');
           slider.style.removeProperty('--slide-height');
         }
 
-        if (slider.offsetParent.clientHeight > 0 && this.direction !== 'papyrus') {
+        if (slider.offsetParent.clientHeight > 0 && this.dir !== 'papyrus') {
           slider.style.removeProperty('--slide-min-height');
           slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
