@@ -20,10 +20,6 @@ div.deckgo-slide-code-container {
   overflow-y: auto;
 
   scroll-behavior: smooth;
-
-  &.deckgo-slide-code-container-mobile {
-    overflow-y: hidden;
-  }
 }
 
 ::slotted([slot="title"]) {
