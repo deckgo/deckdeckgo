@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-code",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "The Code template let you display code in your presentation by referencing an url or including your own code",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,8 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.2.1",
-    "@deckdeckgo/utils": "^1.3.0"
+    "@deckdeckgo/slide-utils": "^2.2.1"
   },
   "devDependencies": {
     "@deckdeckgo/highlight-code": "^2.1.0",

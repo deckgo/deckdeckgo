@@ -23,7 +23,7 @@ export class AppDeckAnimation {
             The animation between the <a href="https://deckdeckgo.com">DeckDeckGo</a> slides could happen in different ways.
           </p>
           <p>
-            Per default, the animation is the <code>slide</code> effect respectively a swipe effect.{' '}
+            Per default, the animation is the <code>slide</code> effect respectively a swipe effect.
           </p>
           <h2 id="app-deck-animation-properties">Properties</h2>
           <p>
@@ -91,7 +91,7 @@ export class AppDeckAnimation {
           <p>
             In case you would select the <code>fade</code> or <code>none</code> animation effect and would use the deck&#39;s slots <code>actions</code> or{' '}
             <code>background</code> too, please notes that these have to be ordered in last positions of the deck&#39;s children otherwise the animation effect
-            will not be able to determine correctly the index of the next slide to animate.{' '}
+            will not be able to determine correctly the index of the next slide to animate.
           </p>
         </main>
 
