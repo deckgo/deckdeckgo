@@ -1,4 +1,8 @@
-# 5.0.0 (In progress...)
+# 5.0.0 (2020-09-26)
+
+### Breaking Changes
+
+- replace custom lazy loading implementation, based on slide index, with the IntersectionObserver API
 
 ### Fix
 
