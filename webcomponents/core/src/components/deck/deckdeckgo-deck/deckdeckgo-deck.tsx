@@ -87,6 +87,8 @@ export class DeckdeckgoDeck {
   @State()
   private dir: 'horizontal' | 'vertical' | 'papyrus';
 
+  private observer: IntersectionObserver;
+
   async componentWillLoad() {
     await this.initRtl();
     await this.initDirection();
@@ -97,6 +99,12 @@ export class DeckdeckgoDeck {
 
     this.initWindowResize();
     this.initKeyboardAssist();
+  }
+
+  disconnectedCallback() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
   private initRtl(): Promise<void> {
@@ -204,6 +212,55 @@ export class DeckdeckgoDeck {
       document.addEventListener('keydown', this.keyboardAssist, {passive: true});
     }
   }
+
+  private async initLazyLoadContent() {
+    if (window && 'IntersectionObserver' in window) {
+      await this.deferIntersectionObserverLoad();
+    } else {
+      await this.lazyLoadAllContent();
+    }
+  }
+
+  private async deferIntersectionObserverLoad() {
+    const slides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
+
+    if (!slides || slides.length <= 0) {
+      return;
+    }
+
+    this.observer = new IntersectionObserver(this.onIntersection, {
+      rootMargin: '100px 0px',
+    });
+
+    slides.forEach((slide: HTMLElement) => {
+      this.observer.observe(slide);
+    });
+  }
+
+  private onIntersection = async (entries: IntersectionObserverEntry[]) => {
+    if (!entries || entries.length <= 0) {
+      return;
+    }
+
+    const intersectingElements: Element[] = entries
+      .filter((entry: IntersectionObserverEntry) => entry.isIntersecting)
+      .map((entry: IntersectionObserverEntry) => entry.target);
+
+    if (!intersectingElements || intersectingElements.length <= 0) {
+      return;
+    }
+
+    const promises: Promise<void>[] = intersectingElements.map((element: Element) => {
+      return new Promise<void>(async (resolve) => {
+        this.observer.unobserve(element);
+        await (element as DeckdeckgoSlideHTMLElement).lazyLoadContent();
+
+        resolve();
+      });
+    });
+
+    await Promise.all(promises);
+  };
 
   @Method()
   async toggleKeyboardAssist(state: boolean) {
@@ -414,9 +471,6 @@ export class DeckdeckgoDeck {
 
       await this.doSwipeSlide(delta.slider);
 
-      // We want to lazy load the next slide images
-      await this.lazyLoadContent(this.activeIndex + 1);
-
       resolve();
     });
   }
@@ -570,7 +624,7 @@ export class DeckdeckgoDeck {
       const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
       const promises: Promise<void>[] = [];
-      promises.push(this.lazyLoadFirstSlides());
+      promises.push(this.initLazyLoadContent());
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'background', this.cloneBackground));
 
       if (this.dir !== 'papyrus') {
@@ -661,13 +715,6 @@ export class DeckdeckgoDeck {
 
       resolve(filteredSlides);
     });
-  }
-
-  private async lazyLoadFirstSlides() {
-    const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
-    const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
-
-    await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
   }
 
   @Method()
@@ -854,7 +901,6 @@ export class DeckdeckgoDeck {
 
     this.activeIndex = index;
 
-    await this.lazyLoadContent(this.activeIndex);
     await this.doSwipeSlide(slider, speed);
 
     if (emitEvent) {
