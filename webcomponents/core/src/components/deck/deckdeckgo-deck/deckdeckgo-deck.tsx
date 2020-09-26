@@ -16,6 +16,19 @@ interface Delta {
   deltaY: number;
 }
 
+// Duplicate DeckdeckgoSlide definition of @deckdeckgo/slide-utils without dependency but extending HTMLElement.
+interface DeckdeckgoSlideHTMLElement extends HTMLElement {
+  beforeSwipe(enter: boolean, _reveal: boolean): Promise<boolean>;
+
+  afterSwipe(): Promise<void>;
+
+  lazyLoadContent(): Promise<void>;
+
+  revealContent(): Promise<void>;
+
+  hideContent(): Promise<void>;
+}
+
 @Component({
   tag: 'deckgo-deck',
   styleUrl: 'deckdeckgo-deck.scss',
@@ -650,15 +663,11 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private lazyLoadFirstSlides(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
-      const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
+  private async lazyLoadFirstSlides() {
+    const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
+    const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
 
-      await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
-
-      resolve();
-    });
+    await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
   }
 
   @Method()
@@ -786,13 +795,13 @@ export class DeckdeckgoDeck {
 
   private beforeSwipe(enter: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+      const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
       if (!slide) {
         // If we find no slide, we are cool something went wrong but the talk/show must go on
         resolve(true);
       } else {
-        const result: boolean = await (slide as any).beforeSwipe(enter, this.reveal);
+        const result: boolean = await slide.beforeSwipe(enter, this.reveal);
         resolve(result);
       }
     });
@@ -807,28 +816,24 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')');
+      const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')');
 
       if (!slide) {
         // Might be a swipe after the first or last slide
         resolve();
       } else {
-        await (slide as any).afterSwipe();
+        await slide.afterSwipe();
         resolve();
       }
     });
   }
 
-  private lazyLoadContent(index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  private async lazyLoadContent(index: number) {
+    const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (slide) {
-        await (slide as any).lazyLoadContent();
-      }
-
-      resolve();
-    });
+    if (slide) {
+      await slide.lazyLoadContent();
+    }
   }
 
   @Method()
@@ -1071,28 +1076,20 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private revealContent(index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  private async revealContent(index: number) {
+    const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (slide) {
-        await (slide as any).revealContent();
-      }
-
-      resolve();
-    });
+    if (slide) {
+      await slide.revealContent();
+    }
   }
 
-  private hideContent(index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  private async hideContent(index: number) {
+    const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (slide) {
-        await (slide as any).hideContent();
-      }
-
-      resolve();
-    });
+    if (slide) {
+      await slide.hideContent();
+    }
   }
 
   /* END: Reveal */
