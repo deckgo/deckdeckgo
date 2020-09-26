@@ -16,7 +16,7 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.0.0",
     "@deckdeckgo/color": "^3.0.0",
-    "@deckdeckgo/core": "^4.0.3",
+    "@deckdeckgo/core": "^5.0.0",
     "@deckdeckgo/deck-utils": "^2.6.0",
     "@deckdeckgo/demo": "^2.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.0.0",
@@ -42,7 +42,7 @@
     "@deckdeckgo/slide-youtube": "^2.1.0",
     "@deckdeckgo/social": "^3.0.0",
     "@deckdeckgo/youtube": "^2.0.0",
-    "@ionic/core": "^5.3.3",
+    "@ionic/core": "^5.3.4",
     "idb-keyval": "^3.2.0"
   },
   "devDependencies": {
