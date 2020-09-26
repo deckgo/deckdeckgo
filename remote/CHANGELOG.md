@@ -1,3 +1,9 @@
+# 1.7.1 (2020-09-26)
+
+### Features
+
+- update slide code for mobile
+
 # 1.7.0 (2020-09-25)
 
 ### Features

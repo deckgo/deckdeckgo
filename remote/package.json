@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-remote",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "author": "David Dal Busco",
   "description": "Present and interact with your lightweight DeckDeckGo's presentation",
   "license": "AGPL-3.0-or-later",
@@ -29,7 +29,7 @@
     "@deckdeckgo/slide-author": "^2.1.0",
     "@deckdeckgo/slide-big-img": "^2.1.0",
     "@deckdeckgo/slide-chart": "^2.1.0",
-    "@deckdeckgo/slide-code": "^2.1.0",
+    "@deckdeckgo/slide-code": "^3.0.0",
     "@deckdeckgo/slide-content": "^2.1.0",
     "@deckdeckgo/slide-countdown": "^2.1.0",
     "@deckdeckgo/slide-gif": "^3.1.0",

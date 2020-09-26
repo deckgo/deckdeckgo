@@ -163,11 +163,6 @@ export class AppSlideCode {
           <p>
             The slots <code>title</code> and <code>code</code> are optional.
           </p>
-          <p>
-            This template also exposes a slot <code>info</code> which would let you display an information over your code on mobile devices, useful to explain
-            your reader that they should click to switch between vertical and horizontal scrolling. Find an example of the use of that slot on the{' '}
-            <a href="https://deckdeckgo.com">DeckDeckGo</a> website.
-          </p>
           <h2 id="app-slide-code-code-components">Code components</h2>
           <p>
             The slide &quot;Code&quot; relies on the code component <code>&lt;deckgo-highlight-code/&gt;</code> which is described in the components{' '}
