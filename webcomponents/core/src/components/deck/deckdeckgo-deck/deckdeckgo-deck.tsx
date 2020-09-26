@@ -599,7 +599,7 @@ export class DeckdeckgoDeck {
   @Method()
   getDeckDefinition(): Promise<DeckdeckgoDeckDefinition | null> {
     return new Promise<DeckdeckgoDeckDefinition | null>(async (resolve) => {
-      const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
+      const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container.hydrated');
 
       if (!loadedSlides || loadedSlides.length <= 0) {
         resolve(null);
