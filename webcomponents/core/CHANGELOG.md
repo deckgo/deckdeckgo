@@ -1,3 +1,9 @@
+# 5.0.1 (2020-09-26)
+
+### Fix
+
+- `direction-mobile` not used to initialize the size of the deck
+
 # 5.0.0 (2020-09-26)
 
 ### Breaking Changes
