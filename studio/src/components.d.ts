@@ -252,6 +252,9 @@ export namespace Components {
     }
     interface AppLandingDeck {
     }
+    interface AppLetterSpacing {
+        "selectedElement": HTMLElement;
+    }
     interface AppList {
         "selectedElement": HTMLElement;
     }
@@ -782,6 +785,12 @@ declare global {
         prototype: HTMLAppLandingDeckElement;
         new (): HTMLAppLandingDeckElement;
     };
+    interface HTMLAppLetterSpacingElement extends Components.AppLetterSpacing, HTMLStencilElement {
+    }
+    var HTMLAppLetterSpacingElement: {
+        prototype: HTMLAppLetterSpacingElement;
+        new (): HTMLAppLetterSpacingElement;
+    };
     interface HTMLAppListElement extends Components.AppList, HTMLStencilElement {
     }
     var HTMLAppListElement: {
@@ -1141,6 +1150,7 @@ declare global {
         "app-landing": HTMLAppLandingElement;
         "app-landing-content": HTMLAppLandingContentElement;
         "app-landing-deck": HTMLAppLandingDeckElement;
+        "app-letter-spacing": HTMLAppLetterSpacingElement;
         "app-list": HTMLAppListElement;
         "app-logo": HTMLAppLogoElement;
         "app-math": HTMLAppMathElement;
@@ -1466,6 +1476,10 @@ declare namespace LocalJSX {
     }
     interface AppLandingDeck {
     }
+    interface AppLetterSpacing {
+        "onLetterSpacingDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
+    }
     interface AppList {
         "onToggleList"?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
         "selectedElement"?: HTMLElement;
@@ -1682,6 +1696,7 @@ declare namespace LocalJSX {
         "app-landing": AppLanding;
         "app-landing-content": AppLandingContent;
         "app-landing-deck": AppLandingDeck;
+        "app-letter-spacing": AppLetterSpacing;
         "app-list": AppList;
         "app-logo": AppLogo;
         "app-math": AppMath;
@@ -1801,6 +1816,7 @@ declare module "@stencil/core" {
             "app-landing": LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
             "app-landing-content": LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
             "app-landing-deck": LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
+            "app-letter-spacing": LocalJSX.AppLetterSpacing & JSXBase.HTMLAttributes<HTMLAppLetterSpacingElement>;
             "app-list": LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
             "app-logo": LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
             "app-math": LocalJSX.AppMath & JSXBase.HTMLAttributes<HTMLAppMathElement>;
