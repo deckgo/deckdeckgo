@@ -84,10 +84,13 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
+  @Prop({reflect: true}) autoSlide: boolean = false;
+
   @State()
   private dir: 'horizontal' | 'vertical' | 'papyrus';
 
   private observer: IntersectionObserver;
+  private slideLoopInterval: NodeJS.Timeout;
 
   async componentWillLoad() {
     await this.initRtl();
@@ -1139,6 +1142,30 @@ export class DeckdeckgoDeck {
   }
 
   /* END: Reveal */
+
+  /* BEGIN: AutoSlide */
+
+  @Watch('autoSlide')
+  onAutoSlide() {
+    let idleMouseTimer;
+
+    setTimeout(() => (idleMouseTimer = this.idleMouseTimer), 2000);
+
+    if (this.autoSlide) {
+      this.slideLoopInterval = setInterval(async () => {
+        if (idleMouseTimer === this.idleMouseTimer) {
+          await this.slideNext(true);
+          this.activeIndex + 1 === this.length && (await this.slideTo(0, 0));
+        } else {
+          idleMouseTimer = this.idleMouseTimer;
+        }
+      }, 3000);
+    } else {
+      clearInterval(this.slideLoopInterval);
+    }
+  }
+
+  /* END: AutoSlide */
 
   render() {
     return (
