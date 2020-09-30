@@ -9,6 +9,7 @@ import { DeckdeckgoAttributeDefinition, DeckdeckgoDeckDefinition, DeckdeckgoSlid
 export namespace Components {
     interface DeckgoDeck {
         "animation": 'slide' | 'fade' | 'none';
+        "autoSlide": boolean;
         "blockSlide": (block: boolean) => Promise<void>;
         "cloneBackground": boolean;
         "deleteActiveSlide": () => Promise<void>;
@@ -93,6 +94,7 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoDeck {
         "animation"?: 'slide' | 'fade' | 'none';
+        "autoSlide"?: boolean;
         "cloneBackground"?: boolean;
         "direction"?: 'horizontal' | 'vertical' | 'papyrus';
         "directionMobile"?: 'horizontal' | 'vertical' | 'papyrus';

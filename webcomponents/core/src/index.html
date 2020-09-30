@@ -340,9 +340,25 @@
       document.addEventListener('pagerClick', function () {
         console.log('Pager clicked');
       });
+
+      function toggleAutoSlide() {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          deck.autoSlide = !deck.autoSlide;
+
+          resolve();
+        });
+      }
     </script>
 
     <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
+      <button onclick="toggleAutoSlide()">Toggle auto slide</button>
       <button onclick="setDirectionVertical()">Direction vertical</button>
       <button onclick="setAnimationFade()">Animation fade</button>
       <button onclick="toggleReveal()">Toggle deck reveal</button>
