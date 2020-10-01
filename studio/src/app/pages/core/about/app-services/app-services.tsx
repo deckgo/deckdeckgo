@@ -40,7 +40,8 @@ export class AppAbout {
               SQS
             </a>{' '}
             to save and publish online the presentations as Progressive Web Apps. The choice behind this is mostly the fact that we thought that the S3 solution
-            was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda.
+            was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda. Our AWS cloud server is set in{' '}
+            <samp>us-east-1</samp> (Virginia).
           </p>
 
           <h2>Google</h2>
@@ -59,7 +60,7 @@ export class AppAbout {
               Authentication
             </a>
             . Both feature are good match to serve and deploy easily Progressive Web Apps. Their Authentication is also interesting as it provides the social
-            login we were looking for (like email and GitHub).
+            login we were looking for (like email and GitHub). Our Firebase cloud server is set in <samp>nam5</samp> (<samp>us-central</samp>).
           </p>
 
           <h2>Tenor and Unsplash</h2>
