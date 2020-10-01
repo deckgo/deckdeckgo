@@ -1,9 +1,9 @@
 [![npm][npm-badge]][npm-badge-url]
 [![license][npm-license]][npm-license-url]
 
-[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/types-utils
-[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/types-utils
-[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/types-utils
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/types
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/types
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/types
 [npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/utils/types/LICENSE
 
 # DeckDeckGo - Types
