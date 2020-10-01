@@ -85,7 +85,7 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
-  @Prop({reflect: true}) autoSlide: boolean = false;
+  @Prop({reflect: true}) autoSlide: 'true' | 'false' = 'false';
 
   @Prop({reflect: true}) autoSlideInterval: number = 5000;
 
@@ -1164,7 +1164,7 @@ export class DeckdeckgoDeck {
   /* BEGIN: AutoSlide */
 
   private async initAutoSlide() {
-    if (this.autoSlide) {
+    if (this.autoSlide === 'true') {
       await this.onAutoSlide();
     }
   }
@@ -1175,11 +1175,16 @@ export class DeckdeckgoDeck {
 
     this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), this.idleMouseTimeout);
 
-    if (this.autoSlide) {
+    if (this.autoSlide === 'true') {
       this.slideLoopInterval = setInterval(async () => {
         if (idleMouseTimer === this.idleMouseTimer) {
-          await this.slideNext(true);
-          this.activeIndex + 1 === this.length && (await this.slideTo(0, 0));
+          const end: boolean = await this.isEnd();
+
+          if (end) {
+            await this.slideTo(0, 0);
+          } else {
+            await this.slideNext(true);
+          }
         } else {
           idleMouseTimer = this.idleMouseTimer;
         }
