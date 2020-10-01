@@ -350,7 +350,7 @@
             return;
           }
 
-          deck.autoSlide = !deck.autoSlide;
+          deck.autoSlide = deck.autoSlide ? 'false' : 'true';
 
           resolve();
         });
