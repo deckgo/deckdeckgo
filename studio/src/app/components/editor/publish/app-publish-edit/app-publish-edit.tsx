@@ -499,7 +499,7 @@ export class AppPublishEdit {
       </h2>,
       this.renderGitHubText(),
       <ion-list class="inputs-list ion-margin-bottom">
-        <ion-radio-group value={this.pushToGitHub} onIonChange={($event) => this.onGitHubChange($event)}>
+        <ion-radio-group value={this.pushToGitHub} onIonChange={($event) => this.onGitHubChange($event)} class="inline">
           <ion-item>
             <ion-radio value={true} mode="md" disabled={disable}></ion-radio>
             <ion-label>Yes</ion-label>
