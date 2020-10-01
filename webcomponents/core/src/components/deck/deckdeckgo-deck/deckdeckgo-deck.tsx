@@ -104,11 +104,10 @@ export class DeckdeckgoDeck {
 
   async componentDidLoad() {
     await this.initSlideSize();
+    await this.initAutoSlide();
 
     this.initWindowResize();
     this.initKeyboardAssist();
-
-    await this.onAutoSlide();
   }
 
   disconnectedCallback() {
@@ -1163,6 +1162,12 @@ export class DeckdeckgoDeck {
   /* END: Reveal */
 
   /* BEGIN: AutoSlide */
+
+  private async initAutoSlide() {
+    if (this.autoSlide) {
+      await this.onAutoSlide();
+    }
+  }
 
   @Watch('autoSlide')
   async onAutoSlide() {
