@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@deckdeckgo/charts": "^2.0.0",
-    "@deckdeckgo/core": "^5.0.1",
+    "@deckdeckgo/core": "^5.1.1",
     "@deckdeckgo/deck-utils": "^2.6.0",
     "@deckdeckgo/demo": "^2.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.0.0",
