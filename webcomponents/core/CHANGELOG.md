@@ -1,3 +1,25 @@
+# 5.1.2 (2020-10-01)
+
+### Features
+
+- auto slide pros set as string enum as boolean are not conveniently reflected to attributes for our construct
+
+### Fix
+
+- auto slide active index
+
+# 5.1.1 (2020-10-01)
+
+### Features
+
+- reflect auto slide properties to attributes
+
+# 5.1.0 (2020-10-01)
+
+### Features
+
+- auto slide
+
 # 5.0.1 (2020-09-26)
 
 ### Fix

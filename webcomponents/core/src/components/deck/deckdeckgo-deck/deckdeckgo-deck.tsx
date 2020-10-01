@@ -73,6 +73,7 @@ export class DeckdeckgoDeck {
   private fullscreen: boolean = false;
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
+  private readonly idleMouseTimeout: number = 2000;
 
   @Event() mouseInactivity: EventEmitter<boolean>;
 
@@ -84,13 +85,17 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
-  @Prop({reflect: true}) autoSlide: boolean = false;
+  @Prop({reflect: true}) autoSlide: 'true' | 'false' = 'false';
+
+  @Prop({reflect: true}) autoSlideInterval: number = 5000;
 
   @State()
   private dir: 'horizontal' | 'vertical' | 'papyrus';
 
   private observer: IntersectionObserver;
-  private slideLoopInterval: NodeJS.Timeout;
+
+  private slideLoopInterval: number;
+  private idleSlideLoopTimer: number;
 
   async componentWillLoad() {
     await this.initRtl();
@@ -99,6 +104,7 @@ export class DeckdeckgoDeck {
 
   async componentDidLoad() {
     await this.initSlideSize();
+    await this.initAutoSlide();
 
     this.initWindowResize();
     this.initKeyboardAssist();
@@ -107,6 +113,18 @@ export class DeckdeckgoDeck {
   disconnectedCallback() {
     if (this.observer) {
       this.observer.disconnect();
+    }
+
+    if (this.idleSlideLoopTimer > 0) {
+      clearTimeout(this.idleSlideLoopTimer);
+    }
+
+    if (this.slideLoopInterval > 0) {
+      clearInterval(this.slideLoopInterval);
+    }
+
+    if (this.idleMouseTimer > 0) {
+      clearTimeout(this.idleMouseTimer);
     }
   }
 
@@ -1002,7 +1020,7 @@ export class DeckdeckgoDeck {
 
     this.idleMouseTimer = setTimeout(async () => {
       await this.showHideMouseCursor(false);
-    }, 2000);
+    }, this.idleMouseTimeout);
   }
 
   private showHideMouseCursor(show: boolean): Promise<void> {
@@ -1145,21 +1163,32 @@ export class DeckdeckgoDeck {
 
   /* BEGIN: AutoSlide */
 
+  private async initAutoSlide() {
+    if (this.autoSlide === 'true') {
+      await this.onAutoSlide();
+    }
+  }
+
   @Watch('autoSlide')
-  onAutoSlide() {
+  async onAutoSlide() {
     let idleMouseTimer;
 
-    setTimeout(() => (idleMouseTimer = this.idleMouseTimer), 2000);
+    this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), this.idleMouseTimeout);
 
-    if (this.autoSlide) {
+    if (this.autoSlide === 'true') {
       this.slideLoopInterval = setInterval(async () => {
         if (idleMouseTimer === this.idleMouseTimer) {
-          await this.slideNext(true);
-          this.activeIndex + 1 === this.length && (await this.slideTo(0, 0));
+          const end: boolean = await this.isEnd();
+
+          if (end) {
+            await this.slideTo(0, 0);
+          } else {
+            await this.slideNext(true);
+          }
         } else {
           idleMouseTimer = this.idleMouseTimer;
         }
-      }, 3000);
+      }, this.autoSlideInterval);
     } else {
       clearInterval(this.slideLoopInterval);
     }

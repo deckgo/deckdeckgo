@@ -11,6 +11,7 @@ import { PrismLanguage } from "./app/services/editor/prism/prism.service";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
+import { DeckAction } from "./app/utils/editor/deck-action";
 import { EditAction } from "./app/utils/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/utils/editor/image-action";
@@ -1341,6 +1342,7 @@ declare namespace LocalJSX {
     }
     interface AppDeckTransition {
         "deckElement"?: HTMLElement;
+        "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
         "onTransitionChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDemo {

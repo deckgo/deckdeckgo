@@ -51,6 +51,7 @@ export interface DeckAttributes {
   animation?: 'slide' | 'fade' | 'none';
   direction?: 'horizontal' | 'vertical' | 'papyrus';
   directionMobile?: 'horizontal' | 'vertical' | 'papyrus';
+  autoSlide?: boolean;
 }
 
 export interface DeckClone {
