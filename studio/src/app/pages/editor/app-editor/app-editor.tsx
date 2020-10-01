@@ -645,6 +645,11 @@ export class AppEditor {
   }
 
   render() {
+    const autoSlide: boolean =
+      deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.autoSlide !== undefined
+        ? deckStore.state.deck.data.attributes.autoSlide
+        : false;
+
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content>
@@ -657,6 +662,7 @@ export class AppEditor {
             direction={this.direction}
             directionMobile={this.directionMobile}
             animation={this.animation}
+            autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
             onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
