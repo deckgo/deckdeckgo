@@ -6,7 +6,7 @@
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/utils
 [npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/LICENSE
 
-# DeckDeckGo - Types
+# DeckDeckGo - Utils
 
 A collection of utils methods and functions developed and used across apps and components of [DeckDeckGo].
 
