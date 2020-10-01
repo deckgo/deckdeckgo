@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/deckgo/deckdeckgo/blob/master/backend/LICENSE)
+
 # DeckDeckGo - Backend
 
 This project is a backend for [DeckDeckGo].
@@ -9,15 +11,15 @@ It also transmits the information for the live voting when you are interacting w
 ## Table of contents
 
 - [Remote control](#remote-control)
-	- [Receiver](#receiver)
-	- [Emitter](#emitter)
+  - [Receiver](#receiver)
+  - [Emitter](#emitter)
 - [Poll](#poll)
 - [Develop](#develop)
 - [License](#license)
 
 ## Remote control
 
-This project is use to connect a presentation with the [DeckDeckGo's Progressive Web App](https://deckdeckgo.app) respectively the remote control.   
+This project is use to connect a presentation with the [DeckDeckGo's Progressive Web App](https://deckdeckgo.app) respectively the remote control.
 
 The projects where the peers are implemented are the following:
 
@@ -25,17 +27,17 @@ The projects where the peers are implemented are the following:
 
 The remote control "receiver" which should be included in the presentation:
 
-| Source |
-| -------------------------- |
+| Source                                                                                     |
+| ------------------------------------------------------------------------------------------ |
 | [https://github.com/deckgo/deckdeckgo-remote](https://github.com/deckgo/deckdeckgo-remote) |
 
 ### Emitter
 
 The remote control "emitter", the Progressive Web App, which lets you present and interact with your presentation:
 
-| Application                      | Source |
-| -------------------------- |:-----------------:|
-|[https://deckdeckgo.app](https://deckdeckgo.app)|[https://github.com/deckgo/deckdeckgo-app](https://github.com/deckgo/deckdeckgo-app)|
+| Application                                      |                                        Source                                        |
+| ------------------------------------------------ | :----------------------------------------------------------------------------------: |
+| [https://deckdeckgo.app](https://deckdeckgo.app) | [https://github.com/deckgo/deckdeckgo-app](https://github.com/deckgo/deckdeckgo-app) |
 
 ## Poll
 
@@ -60,4 +62,4 @@ npm run start
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

@@ -1,3 +1,11 @@
+[![npm][npm-badge]][npm-badge-url]
+[![license][npm-license]][npm-license-url]
+
+[npm-badge]: https://img.shields.io/npm/v/deckdeckgo-webpack-plugins
+[npm-badge-url]: https://www.npmjs.com/package/deckdeckgo-webpack-plugins
+[npm-license]: https://img.shields.io/npm/l/deckdeckgo-webpack-plugins
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webpack/LICENSE
+
 # DeckDeckGo - Webpack Plugins
 
 This project is a collection of custom Webpack plugins used to build a [DeckDeckGo] presentation.
@@ -25,8 +33,8 @@ This Webpack plugin is a simple plugin which has for goal to display some inform
 
 ## Webpack Notes Plugin
 
-This Webpack plugin has for goal to remove your notes from your presentation, notably useful when you will run a production build before publishing your presentation online. 
- 
+This Webpack plugin has for goal to remove your notes from your presentation, notably useful when you will run a production build before publishing your presentation online.
+
 ## Getting Started
 
 If you would like to install and compile locally this project, proceed as following:
@@ -42,4 +50,4 @@ npm run build
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com
