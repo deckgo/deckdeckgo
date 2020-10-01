@@ -1,3 +1,9 @@
+# 5.1.1 (2020-10-01)
+
+### Features
+
+- reflect auto slide properties to attributes
+
 # 5.1.0 (2020-10-01)
 
 ### Features
