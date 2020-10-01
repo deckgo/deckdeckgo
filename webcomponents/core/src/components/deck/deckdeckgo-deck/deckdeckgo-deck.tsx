@@ -85,9 +85,9 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
-  @Prop() autoSlide: boolean = false;
+  @Prop({reflect: true}) autoSlide: boolean = false;
 
-  @Prop() autoSlideInterval: number = 5000;
+  @Prop({reflect: true}) autoSlideInterval: number = 5000;
 
   @State()
   private dir: 'horizontal' | 'vertical' | 'papyrus';
