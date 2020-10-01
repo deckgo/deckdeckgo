@@ -1,3 +1,8 @@
+[![license][agpl-license]][agpl-license-url]
+
+[agpl-license]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
+[agpl-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/infra/GNU-AGPL-3.0
+
 # DeckDeckGo - Infrastructure
 
 This project is the infrastructure of [DeckDeckGo].
@@ -15,7 +20,7 @@ The infrastructure is deployed with [Terraform] and runs on [AWS Lambda].
 
 To (re)deploy the infrastructure, run the following commands:
 
-``` shell
+```shell
 $ cd infra/
 $ nix-shell
 $ terraform apply
@@ -32,7 +37,7 @@ This project, respectively the infrastructure of [DeckDeckGo], is released under
 
 [DeckDeckGo] is developed by [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com).
 
-[DeckDeckGo]: https://deckdeckgo.com
-[Terraform]: https://www.terraform.io/
-[AWS Lambda]: https://aws.amazon.com/lambda/
-[Nix]: https://nixos.org/nix/
+[deckdeckgo]: https://deckdeckgo.com
+[terraform]: https://www.terraform.io/
+[aws lambda]: https://aws.amazon.com/lambda/
+[nix]: https://nixos.org/nix/

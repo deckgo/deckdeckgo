@@ -1,3 +1,8 @@
+[![license][agpl-license]][agpl-license-url]
+
+[agpl-license]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
+[agpl-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/infra/handler/GNU-AGPL-3.0
+
 # DeckDeckGo - Handler
 
 This project is the request handler of [DeckDeckGo].
@@ -17,4 +22,4 @@ details.
 Busco](mailto:david.dalbusco@outlook.com) and [Nicolas
 Mattia](mailto:nicolas@nmattia.com).
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com
