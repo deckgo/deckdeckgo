@@ -73,6 +73,7 @@ export class DeckdeckgoDeck {
   private fullscreen: boolean = false;
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
+  private readonly idleMouseTimeout: number = 2000;
 
   @Event() mouseInactivity: EventEmitter<boolean>;
 
@@ -85,6 +86,8 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
   @Prop() autoSlide: boolean = false;
+
+  @Prop() autoSlideInterval: number = 5000;
 
   @State()
   private dir: 'horizontal' | 'vertical' | 'papyrus';
@@ -1018,7 +1021,7 @@ export class DeckdeckgoDeck {
 
     this.idleMouseTimer = setTimeout(async () => {
       await this.showHideMouseCursor(false);
-    }, 2000);
+    }, this.idleMouseTimeout);
   }
 
   private showHideMouseCursor(show: boolean): Promise<void> {
@@ -1165,7 +1168,7 @@ export class DeckdeckgoDeck {
   async onAutoSlide() {
     let idleMouseTimer;
 
-    this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), 2000);
+    this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), this.idleMouseTimeout);
 
     if (this.autoSlide) {
       this.slideLoopInterval = setInterval(async () => {
@@ -1175,7 +1178,7 @@ export class DeckdeckgoDeck {
         } else {
           idleMouseTimer = this.idleMouseTimer;
         }
-      }, 3000);
+      }, this.autoSlideInterval);
     } else {
       clearInterval(this.slideLoopInterval);
     }
