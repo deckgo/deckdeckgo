@@ -84,13 +84,15 @@ export class DeckdeckgoDeck {
   @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
-  @Prop({reflect: true}) autoSlide: boolean = false;
+  @Prop() autoSlide: boolean = false;
 
   @State()
   private dir: 'horizontal' | 'vertical' | 'papyrus';
 
   private observer: IntersectionObserver;
-  private slideLoopInterval: NodeJS.Timeout;
+
+  private slideLoopInterval: number;
+  private idleSlideLoopTimer: number;
 
   async componentWillLoad() {
     await this.initRtl();
@@ -102,11 +104,25 @@ export class DeckdeckgoDeck {
 
     this.initWindowResize();
     this.initKeyboardAssist();
+
+    await this.onAutoSlide();
   }
 
   disconnectedCallback() {
     if (this.observer) {
       this.observer.disconnect();
+    }
+
+    if (this.idleSlideLoopTimer > 0) {
+      clearTimeout(this.idleSlideLoopTimer);
+    }
+
+    if (this.slideLoopInterval > 0) {
+      clearInterval(this.slideLoopInterval);
+    }
+
+    if (this.idleMouseTimer > 0) {
+      clearTimeout(this.idleMouseTimer);
     }
   }
 
@@ -1146,10 +1162,10 @@ export class DeckdeckgoDeck {
   /* BEGIN: AutoSlide */
 
   @Watch('autoSlide')
-  onAutoSlide() {
+  async onAutoSlide() {
     let idleMouseTimer;
 
-    setTimeout(() => (idleMouseTimer = this.idleMouseTimer), 2000);
+    this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), 2000);
 
     if (this.autoSlide) {
       this.slideLoopInterval = setInterval(async () => {
