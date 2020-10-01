@@ -19,19 +19,10 @@ export class PaletteService {
   async init() {
     try {
       const palette = await get<DeckdeckgoPalette[]>('deckdeckgo_palette');
-      paletteStore.state.palette = palette;
+      paletteStore.state.palette = palette ?? DEFAULT_PALETTE;
     } catch (err) {
       console.warn("Couldn't find stored palette. Proceeding with default");
       paletteStore.state.palette = DEFAULT_PALETTE;
-    }
-  }
-  async updatePalette(palette: DeckdeckgoPalette[]) {
-    paletteStore.state.palette = palette;
-
-    try {
-      await set('deckdeckgo_palette', palette);
-    } catch (err) {
-      console.error('Failed to update IDB with new palette');
     }
   }
 }

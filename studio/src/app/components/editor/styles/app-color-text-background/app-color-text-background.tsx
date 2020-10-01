@@ -2,6 +2,8 @@ import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} 
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
+import paletteStore from '../../../../stores/palette.store';
+import {colorInPaletteHandler} from '../../../../helpers/editor/palette.helper';
 
 @Component({
   tag: 'app-color-text-background',
@@ -68,6 +70,7 @@ export class AppColorTextBackground {
       return;
     }
 
+    paletteStore.state.palette = colorInPaletteHandler(paletteStore.state.palette, $event.detail);
     this.color = $event.detail.rgb;
 
     await this.applyColor();
@@ -188,6 +191,7 @@ export class AppColorTextBackground {
           </ion-item>
         </ion-list>
         <deckgo-color
+          palette={paletteStore.state.palette}
           class="ion-padding-start ion-padding-end ion-padding-bottom"
           more={this.moreColors}
           onColorChange={($event: CustomEvent) => this.selectColor($event)}
