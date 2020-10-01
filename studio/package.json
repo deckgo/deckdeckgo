@@ -8,6 +8,7 @@
     "dist/"
   ],
   "scripts": {
+    "prebuild": "node ./scripts/rm-www.js",
     "build": "stencil build --prerender",
     "build:staging": "npm run build -- --staging",
     "postbuild": "./scripts/config.index.js",
