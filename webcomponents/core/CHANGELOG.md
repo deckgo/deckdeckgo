@@ -1,3 +1,9 @@
+# 5.1.3 (2020-10-01)
+
+### Features
+
+- revert auto slide props reflected to attributes (the remote receive swipe information without these)
+
 # 5.1.2 (2020-10-01)
 
 ### Features
