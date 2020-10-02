@@ -33,6 +33,9 @@ export class AppSelectTargetElement {
   transition: boolean = false;
 
   @Prop()
+  section: boolean = false;
+
+  @Prop()
   headerFooter: boolean = false;
 
   @Prop()
@@ -76,6 +79,7 @@ export class AppSelectTargetElement {
         {this.renderText()}
         {this.renderBackground()}
         {this.renderHeaderFooter()}
+        {this.renderSection()}
         {this.renderTransition()}
       </ion-segment>
     );
@@ -182,6 +186,18 @@ export class AppSelectTargetElement {
       return (
         <ion-segment-button value={TargetElement.TRANSITION} mode="md">
           <ion-label>Transition</ion-label>
+        </ion-segment-button>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderSection() {
+    if (this.section) {
+      return (
+        <ion-segment-button value={TargetElement.SECTION} mode="md">
+          <ion-label>Section</ion-label>
         </ion-segment-button>
       );
     } else {

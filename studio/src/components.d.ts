@@ -351,6 +351,7 @@ export namespace Components {
         "headerFooter": boolean;
         "image": boolean;
         "qrCode": boolean;
+        "section": boolean;
         "shape": boolean;
         "sides": boolean;
         "slide": boolean;
@@ -1268,7 +1269,7 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface AppBorderRadius {
-        "onBorderRadiusChange"?: (event: CustomEvent<void>) => void;
+        "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppBreadcrumbs {
@@ -1582,6 +1583,7 @@ declare namespace LocalJSX {
         "image"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
+        "section"?: boolean;
         "shape"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
