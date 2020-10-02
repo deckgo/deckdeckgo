@@ -166,7 +166,6 @@ export class AppElementStyle {
   private renderSelectTarget() {
     const elementTarget: boolean = !this.slide && this.shape !== 'shape' && !this.image;
     const transition: boolean = !this.slide && !this.code && !this.math && this.shape === undefined && !this.demo;
-    const section: boolean = !this.slide && !this.code && this.shape === undefined && !this.demo;
 
     return (
       <app-select-target-element
@@ -180,7 +179,6 @@ export class AppElementStyle {
         sides={this.author || this.split}
         shape={this.shape === 'shape'}
         transition={transition}
-        section={section}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );
   }
@@ -207,20 +205,9 @@ export class AppElementStyle {
           moreColors={this.moreColors}></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
-      return [
-        <app-color-text-background
-          expander={this.slide}
-          key={'background'}
-          colorType={'background'}
-          selectedElement={this.selectedElement}
-          moreColors={this.moreColors}
-          onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
-        this.renderImage(),
-      ];
+      return this.renderBackground();
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-reveal selectedElement={this.selectedElement} onToggleReveal={() => this.closePopover()}></app-reveal>;
-    } else if (this.applyToTargetElement === TargetElement.SECTION) {
-      return <app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>;
     } else if (this.applyToTargetElement === TargetElement.IMAGE) {
       return (
         <app-image-style
@@ -241,6 +228,24 @@ export class AppElementStyle {
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       ];
     }
+  }
+
+  private renderBackground() {
+    const background = [
+      <app-color-text-background
+        key={'background'}
+        colorType={'background'}
+        selectedElement={this.selectedElement}
+        moreColors={this.moreColors}
+        onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
+      this.renderImage(),
+    ];
+
+    if (!this.slide) {
+      background.push(<app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>);
+    }
+
+    return background;
   }
 
   private renderImage() {
