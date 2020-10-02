@@ -351,6 +351,7 @@ export namespace Components {
         "headerFooter": boolean;
         "image": boolean;
         "qrCode": boolean;
+        "section": boolean;
         "shape": boolean;
         "sides": boolean;
         "slide": boolean;
@@ -1582,6 +1583,7 @@ declare namespace LocalJSX {
         "image"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
+        "section"?: boolean;
         "shape"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
