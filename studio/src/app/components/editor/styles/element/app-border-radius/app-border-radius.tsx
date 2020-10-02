@@ -11,11 +11,11 @@ export class BorderRadius {
 
   @State()
   private borderRadiuses: Map<string, number> = new Map([
-    ['General', 2],
-    ['TopLeft', 2],
-    ['TopRight', 2],
-    ['BottomLeft', 2],
-    ['BottomRight', 2],
+    ['General', 0],
+    ['TopLeft', 0],
+    ['TopRight', 0],
+    ['BottomLeft', 0],
+    ['BottomRight', 0],
   ]);
 
   @State()
@@ -27,6 +27,8 @@ export class BorderRadius {
 
   async componentWillLoad() {
     await this.initBorderRadius();
+
+    await this.initCornersExpanded();
   }
 
   private async initBorderRadius() {
@@ -44,6 +46,18 @@ export class BorderRadius {
     this.borderRadiuses.set('TopRight', parseInt(style.borderTopRightRadius));
     this.borderRadiuses.set('BottomRight', parseInt(style.borderBottomRightRadius));
     this.borderRadiuses.set('BottomLeft', parseInt(style.borderBottomLeftRadius));
+  }
+
+  private async initCornersExpanded() {
+    this.cornersExpanded = !(
+      this.borderRadiuses.get('TopLeft') === this.borderRadiuses.get('TopRight') &&
+      this.borderRadiuses.get('TopLeft') === this.borderRadiuses.get('BottomRight') &&
+      this.borderRadiuses.get('TopLeft') === this.borderRadiuses.get('BottomLeft')
+    );
+
+    if (!this.cornersExpanded) {
+      this.borderRadiuses.set('General', this.borderRadiuses.get('TopLeft'));
+    }
   }
 
   private emitBorderRadiusChange() {
@@ -86,20 +100,20 @@ export class BorderRadius {
             interface="popover"
             mode="md"
             class="ion-padding-start ion-padding-end">
-            <ion-select-option value={false}>All corners</ion-select-option>,
-            <ion-select-option value={true}>Individual corners</ion-select-option>,
+            <ion-select-option value={false}>All corners</ion-select-option>
+            <ion-select-option value={true}>Individual corners</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-list>
-          {this.renderOption('General', 'Every corner')}
-          {this.cornersExpanded && 
+          {!this.cornersExpanded ? this.renderOption('General', 'Every corner') : undefined}
+          {this.cornersExpanded && (
             <Fragment>
               {this.renderOption('TopLeft', 'Top left')}
               {this.renderOption('TopRight', 'Top right')}
               {this.renderOption('BottomRight', 'Bottom right')}
               {this.renderOption('BottomLeft', 'Bottom left')}
             </Fragment>
-          }
+          )}
         </ion-list>
       </app-expansion-panel>
     );
@@ -111,13 +125,13 @@ export class BorderRadius {
     return [
       <ion-item-divider class="ion-padding-top">
         <ion-label>
-          {text} {borderRadius > 2 ? <small>{borderRadius}px</small> : undefined}
+          {text} <small>{borderRadius}px</small>
         </ion-label>
       </ion-item-divider>,
       <ion-item class="item-opacity">
         <ion-range
           color="primary"
-          min={2}
+          min={0}
           max={this.maxBorderRadius}
           value={this.borderRadiuses.get(option)}
           mode="md"
