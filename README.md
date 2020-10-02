@@ -3,13 +3,14 @@
   
   <br/>
   
-  <p><strong>DeckDeckGo</strong> - The open source web editor for presentations. 🚀</p>
+  <p><strong><u>DeckDeckGo<u></strong> - The open source web editor for presentations. 🚀</p>
   
   <p>Create a PWA presentation using either our <a href="https://deckdeckgo.com">online editor</a> or our developer kit with HTML or Markdown.</p>
   
   <p>Cherry on the cake 🍒🎂 DeckDeckGo comes with a Progressive Web App to <a href="https://deckdeckgo.app">remote control</a> your slides. 📱</p>
   
   <br/>
+  
   
   ![Website](https://img.shields.io/website?label=Editor&url=https%3A%2F%2Fdeckdeckgo.com)
   ![Website](https://img.shields.io/website?label=Remotre%20control&url=https%3A%2F%2Fdeckdeckgo.app)
@@ -19,8 +20,8 @@
 </div>
 
 ---
-
-## Table of contents
+<hr>
+## Table of contents:-
 
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
@@ -29,19 +30,19 @@
 - [Web Components](#web-components)
 - [Others](#others)
 
-## Getting Started
+## Getting Started:-
 
 Start your new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick [Getting Started guide](https://docs.deckdeckgo.com/docs).
 
-## Documentation
+## Documentation:-
 
 The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
 
-## Contributing
+## Contributing:-
 
 Are you interested to contribute to our open source project? That would be awesome 👍 Have a look to our contributing [guide](CONTRIBUTING.md) to get started.
 
-## Progressive Web Apps
+## Progressive Web Apps:-
 
 | Project            | Version                                                                                                                       | Online                                                     |                   Links                   |                               Changelog                                |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | :---------------------------------------: | :--------------------------------------------------------------------: |
@@ -50,7 +51,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Documentation**  | [![version](https://img.shields.io/static/v1.svg?label=production&message=v2.0.0&color=success)](https://docs.deckdeckgo.com) | [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com) |        [`README`](docs/README.md)         |                    [`CHANGELOG`](docs/CHANGELOG.md)                    |
 | **Demo**           | [![version](https://img.shields.io/static/v1.svg?label=production&message=v5.0.0&color=success)](https://demo.deckdeckgo.com) | [https://demo.deckdeckgo.com](https://demo.deckdeckgo.com) | [`Repo`](https://github.com/deckgo/demo/) | [`CHANGELOG`](https://github.com/deckgo/demo/blob/master/CHANGELOG.md) |
 
-## Web Components
+## Web Components:-
 
 | Project                     | Package                                                                                          | Version                                                                                                                                                          |                         Links                          |                          Changelog                           |
 | --------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------: | :----------------------------------------------------------: |
@@ -68,7 +69,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Social**                  | [`@deckdeckgo/social`](https://www.npmjs.com/package/@deckdeckgo/social)                         | [![version](https://img.shields.io/npm/v/@deckdeckgo/social/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/social)                         |       [`README`](webcomponents/social/README.md)       |       [`CHANGELOG`](webcomponents/social/CHANGELOG.md)       |
 | **YouTube**                 | [`@deckdeckgo/youtube`](https://www.npmjs.com/package/@deckdeckgo/youtube)                       | [![version](https://img.shields.io/npm/v/@deckdeckgo/youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/youtube)                       |      [`README`](webcomponents/youtube/README.md)       |      [`CHANGELOG`](webcomponents/youtube/CHANGELOG.md)       |
 
-## Web Components - Slides/Templates
+## Web Components - Slides/Templates:-
 
 | Project          | Package                                                                                          | Version                                                                                                                                                          |                          Links                          |                           Changelog                           |
 | ---------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------------------------: | :-----------------------------------------------------------: |
@@ -88,7 +89,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Video**        | [`@deckdeckgo/slide-video`](https://www.npmjs.com/package/@deckdeckgo/slide-video)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-video/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-video)               |    [`README`](webcomponents/slides/video/README.md)     |    [`CHANGELOG`](webcomponents/slides/video/CHANGELOG.md)     |
 | **YouTube**      | [`@deckdeckgo/slide-youtube`](https://www.npmjs.com/package/@deckdeckgo/slide-youtube)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-youtube)           |   [`README`](webcomponents/slides/youtube/README.md)    |   [`CHANGELOG`](webcomponents/slides/youtube/CHANGELOG.md)    |
 
-## Utils for the Web Components
+## Utils for the Web Components:-
 
 | Project          | Package                                                                              | Version                                                                                                                                              |               Links                |                Changelog                 |
 | ---------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: | :--------------------------------------: |
@@ -98,7 +99,7 @@ Are you interested to contribute to our open source project? That would be aweso
 | **Types**        | [`@deckdeckgo/types`](https://www.npmjs.com/package/@deckdeckgo/types)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/types/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/types)               | [`README`](utils/types/README.md)  | [`CHANGELOG`](utils/types/CHANGELOG.md)  |
 | **Utils**        | [`@deckdeckgo/utils`](https://www.npmjs.com/package/@deckdeckgo/utils)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/utils/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/utils)               | [`README`](utils/utils/README.md)  | [`CHANGELOG`](utils/utils/CHANGELOG.md)  |
 
-## Others
+## Others:-
 
 | Project                          | Package                                                                                  | Version                                                                                                                                                      |                               Links                               |                                           Changelog                                            |
 | -------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
