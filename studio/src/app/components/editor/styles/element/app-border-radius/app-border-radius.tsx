@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Prop, State, Fragment} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
@@ -17,6 +17,9 @@ export class BorderRadius {
     ['BottomLeft', 2],
     ['BottomRight', 2],
   ]);
+
+  @State()
+  private cornersExpanded: boolean = false;
 
   private readonly maxBorderRadius: number = 64;
 
@@ -65,16 +68,38 @@ export class BorderRadius {
     this.emitBorderRadiusChange();
   }
 
+  private selectCornersToShow($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+    this.cornersExpanded = $event.detail.value;
+  }
+
   render() {
     return (
       <app-expansion-panel expanded="close">
         <ion-label slot="title">Border radius</ion-label>
+        <ion-item class="select">
+          <ion-select
+            value={this.cornersExpanded}
+            onIonChange={($event: CustomEvent) => this.selectCornersToShow($event)}
+            interface="popover"
+            mode="md"
+            class="ion-padding-start ion-padding-end">
+            <ion-select-option value={false}>All corners</ion-select-option>,
+            <ion-select-option value={true}>Individual corners</ion-select-option>,
+          </ion-select>
+        </ion-item>
         <ion-list>
           {this.renderOption('General', 'Every corner')}
-          {this.renderOption('TopLeft', 'Top left')}
-          {this.renderOption('TopRight', 'Top right')}
-          {this.renderOption('BottomRight', 'Bottom right')}
-          {this.renderOption('BottomLeft', 'Bottom left')}
+          {this.cornersExpanded && 
+            <Fragment>
+              {this.renderOption('TopLeft', 'Top left')}
+              {this.renderOption('TopRight', 'Top right')}
+              {this.renderOption('BottomRight', 'Bottom right')}
+              {this.renderOption('BottomLeft', 'Bottom left')}
+            </Fragment>
+          }
         </ion-list>
       </app-expansion-panel>
     );
