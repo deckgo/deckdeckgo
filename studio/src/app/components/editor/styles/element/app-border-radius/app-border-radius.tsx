@@ -67,7 +67,7 @@ export class BorderRadius {
 
   render() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel expanded="close">
         <ion-label slot="title">Border radius</ion-label>
         <ion-list>
           {this.renderOption('General', 'Every corner')}
