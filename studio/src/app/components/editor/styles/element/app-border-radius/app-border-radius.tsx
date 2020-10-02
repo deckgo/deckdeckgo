@@ -11,22 +11,36 @@ export class BorderRadius {
 
   @State()
   private borderRadiuses: Map<string, number> = new Map([
-    ['General', 0],
-    ['TopLeft', 0],
-    ['TopRight', 0],
-    ['BottomLeft', 0],
-    ['BottomRight', 0],
+    ['General', 2],
+    ['TopLeft', 2],
+    ['TopRight', 2],
+    ['BottomLeft', 2],
+    ['BottomRight', 2],
   ]);
 
-  @State()
-  private maxBorderRadius: number = 0;
+  private readonly maxBorderRadius: number = 64;
 
   @Event() borderRadiusDidChange: EventEmitter<void>;
 
   async componentWillLoad() {
-    if (this.selectedElement) {
-      this.maxBorderRadius = this.selectedElement.offsetHeight / 2;
+    await this.initBorderRadius();
+  }
+
+  private async initBorderRadius() {
+    if (!this.selectedElement || !window) {
+      return;
     }
+
+    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement);
+
+    if (!style) {
+      return;
+    }
+
+    this.borderRadiuses.set('TopLeft', parseInt(style.borderTopLeftRadius));
+    this.borderRadiuses.set('TopRight', parseInt(style.borderTopRightRadius));
+    this.borderRadiuses.set('BottomRight', parseInt(style.borderBottomRightRadius));
+    this.borderRadiuses.set('BottomLeft', parseInt(style.borderBottomLeftRadius));
   }
 
   private emitBorderRadiusChange() {
@@ -56,7 +70,7 @@ export class BorderRadius {
       <app-expansion-panel>
         <ion-label slot="title">Border radius</ion-label>
         <ion-list>
-          {this.renderOption('General', 'Border radius')}
+          {this.renderOption('General', 'Every corner')}
           {this.renderOption('TopLeft', 'Top left')}
           {this.renderOption('TopRight', 'Top right')}
           {this.renderOption('BottomRight', 'Bottom right')}
@@ -67,16 +81,18 @@ export class BorderRadius {
   }
 
   private renderOption(option: 'General' | 'TopLeft' | 'TopRight' | 'BottomRight' | 'BottomLeft', text: string) {
+    const borderRadius: number = this.borderRadiuses.get(option);
+
     return [
       <ion-item-divider class="ion-padding-top">
         <ion-label>
-          {text} <small>{this.borderRadiuses.get(option)}px</small>
+          {text} {borderRadius > 2 ? <small>{borderRadius}px</small> : undefined}
         </ion-label>
       </ion-item-divider>,
       <ion-item class="item-opacity">
         <ion-range
           color="primary"
-          min={0}
+          min={2}
           max={this.maxBorderRadius}
           value={this.borderRadiuses.get(option)}
           mode="md"
