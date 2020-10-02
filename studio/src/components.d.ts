@@ -1278,7 +1278,7 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface AppBorderRadius {
-        "onBorderRadiusChange"?: (event: CustomEvent<void>) => void;
+        "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppBoxShadow {
