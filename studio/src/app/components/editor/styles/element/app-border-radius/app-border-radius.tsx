@@ -4,7 +4,6 @@ import {RangeChangeEventDetail} from '@ionic/core';
 
 @Component({
   tag: 'app-border-radius',
-  styleUrl: 'app-align.scss',
 })
 export class BorderRadius {
   @Prop()
