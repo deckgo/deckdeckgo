@@ -1,3 +1,24 @@
+# 2.1.0 (2020-09-26)
+
+### Features
+
+- update slide code documentation for new `papyrus` behavior on mobile devices
+
+# 2.0.0 (2020-09-24)
+
+### Breaking Changes
+
+- route `transition` renamed `animation`
+
+### Features
+
+- introduce `papyrus` and `vertical` direction
+- refresh links in header
+
+### Features
+
+- `isMobile` method removed from core
+
 # 1.9.3 (2020-09-17)
 
 ### Features

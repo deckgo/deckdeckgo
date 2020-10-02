@@ -1,3 +1,15 @@
+# 1.7.1 (2020-09-26)
+
+### Features
+
+- update slide code for mobile
+
+# 1.7.0 (2020-09-25)
+
+### Features
+
+- support for `vertical` and `papyrus` directions
+
 # 1.6.3 (2020-09-03)
 
 ### Features

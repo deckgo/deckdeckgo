@@ -69,8 +69,8 @@ export class AppRoot {
           <ion-route url="/components/demo" component="app-components-demo" />
           <ion-route url="/components/math" component="app-components-math" />
 
-          <ion-route url="/deck" component="app-deck-transition" />
-          <ion-route url="/deck/transition" component="app-deck-transition" />
+          <ion-route url="/deck" component="app-deck-animation" />
+          <ion-route url="/deck/animation" component="app-deck-animation" />
           <ion-route url="/deck/background" component="app-deck-background" />
           <ion-route url="/deck/header-footer" component="app-deck-header-footer" />
           <ion-route url="/deck/navigation" component="app-deck-navigation" />
@@ -235,8 +235,8 @@ export class AppRoot {
                   <ion-item-divider>
                     <ion-label>Deck</ion-label>
                   </ion-item-divider>
-                  <ion-item detail={false} href="/deck/transition" routerDirection="forward">
-                    <ion-label>Transition</ion-label>
+                  <ion-item detail={false} href="/deck/animation" routerDirection="forward">
+                    <ion-label>Animation</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/deck/background" routerDirection="forward">
                     <ion-label>Background</ion-label>

@@ -1,4 +1,22 @@
 app-deck-transition {
+  div.device {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 0;
+
+    ion-segment {
+      width: fit-content;
+      background: transparent;
+
+      ion-segment-button {
+        --indicator-color: var(--ion-color-dark);
+        --color-checked: white;
+        --color-hover: black;
+        --border-radius: 12px;
+      }
+    }
+  }
+
   div.container {
     display: grid;
     grid-template-columns: repeat(2, calc((100% - 16px) / 2));
@@ -15,34 +33,22 @@ app-deck-transition {
       overflow: hidden;
       position: relative;
 
-      &.slide {
-        border: 1px solid var(--ion-color-primary);
-      }
-
-      &.fade {
-        border: 1px solid var(--ion-color-secondary);
-      }
-
-      &.none {
-        border: 1px solid var(--ion-color-tertiary);
-      }
+      border: 1px solid var(--ion-color-light);
 
       &.selected {
-        &.slide {
+        &.showcase-direction {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
+          border: 1px solid var(--ion-color-primary);
         }
 
-        &.fade {
-          box-shadow: 0 0 8px 4px rgba(var(--ion-color-secondary-rgb), 0.4);
-        }
-
-        &.none {
+        &.showcase-animation {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-tertiary-rgb), 0.4);
+          border: 1px solid var(--ion-color-tertiary);
         }
       }
 
       deckgo-deck {
-        --transition-fade-duration: 2000ms;
+        --animation-fade-duration: 3500ms;
 
         deckgo-slide-title {
           --slide-padding-start: 4px;
@@ -53,6 +59,20 @@ app-deck-transition {
 
         p {
           margin: 0;
+        }
+      }
+
+      div.showcase-papyrus {
+        height: 100%;
+        overflow: scroll;
+
+        deckgo-slide-title {
+          --slide-height: 110px;
+
+          --slide-padding-top: 32px;
+          --slide-padding-bottom: 32px;
+          --slide-padding-start: 0;
+          --slide-padding-end: 0;
         }
       }
     }

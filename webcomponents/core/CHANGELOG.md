@@ -1,3 +1,87 @@
+# 5.1.3 (2020-10-01)
+
+### Features
+
+- revert auto slide props reflected to attributes (the remote receive swipe information without these)
+
+# 5.1.2 (2020-10-01)
+
+### Features
+
+- auto slide pros set as string enum as boolean are not conveniently reflected to attributes for our construct
+
+### Fix
+
+- auto slide active index
+
+# 5.1.1 (2020-10-01)
+
+### Features
+
+- reflect auto slide properties to attributes
+
+# 5.1.0 (2020-10-01)
+
+### Features
+
+- auto slide
+
+# 5.0.1 (2020-09-26)
+
+### Fix
+
+- `direction-mobile` not used to initialize the size of the deck
+
+# 5.0.0 (2020-09-26)
+
+### Breaking Changes
+
+- replace custom lazy loading implementation, based on slide index, with the IntersectionObserver API
+
+### Fix
+
+- improve boot performance by better detecting when all slides effectively loaded
+
+# 4.0.3 (2020-09-24)
+
+### Fix
+
+- Hack for Google Chrome until the `smooth` scroll behavior is going to be supported if triggered with keyboard or programmatically
+
+# 4.0.2 (2020-09-24)
+
+### Style
+
+- `slide-height` set to `100%` instead of `auto` in mode `papyrus`
+
+# 4.0.1 (2020-09-24)
+
+### Features
+
+- rename also optional CSS variables prefixed with `transition-` to `animation-`
+
+# 4.0.0 (2020-09-24)
+
+### Breaking Changes
+
+- `transition` property has been renamed to `animation`
+- `isMobile` method removed. use the exposed function of `@deckdeckgo/utils` instead.
+
+### Features
+
+- introduce the ability to choose a specific `direction` for mobile devices
+- reflect `direction` to a respective host class
+
+# 3.0.0 (2020-09-20)
+
+### Breaking Changes
+
+- the deck now contains a new shadowed `main` element set to a position `absolute` which might conflict with previous usages
+
+### Features
+
+- swipe `vertical` and `papyrus`
+
 # 2.0.0 (2020-09-03)
 
 ### Breaking Changes

@@ -1,3 +1,11 @@
+[![npm][npm-badge]][npm-badge-url]
+[![license][npm-license]][npm-license-url]
+
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-code
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-code
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-code
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/code/LICENSE
+
 # DeckDeckGo - Slide "Code"
 
 This component is the slide/template "Code" of [DeckDeckGo].
@@ -24,4 +32,4 @@ npm run start
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

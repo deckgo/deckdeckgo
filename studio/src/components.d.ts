@@ -11,6 +11,7 @@ import { PrismLanguage } from "./app/services/editor/prism/prism.service";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
+import { DeckAction } from "./app/utils/editor/deck-action";
 import { EditAction } from "./app/utils/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/utils/editor/image-action";
@@ -63,6 +64,9 @@ export namespace Components {
     interface AppAvatar {
         "ariaLabel": string;
         "src": string;
+    }
+    interface AppBorderRadius {
+        "selectedElement": HTMLElement;
     }
     interface AppBreadcrumbs {
         "step": BreadcrumbsStep;
@@ -451,6 +455,12 @@ declare global {
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
+    };
+    interface HTMLAppBorderRadiusElement extends Components.AppBorderRadius, HTMLStencilElement {
+    }
+    var HTMLAppBorderRadiusElement: {
+        prototype: HTMLAppBorderRadiusElement;
+        new (): HTMLAppBorderRadiusElement;
     };
     interface HTMLAppBreadcrumbsElement extends Components.AppBreadcrumbs, HTMLStencilElement {
     }
@@ -1086,6 +1096,7 @@ declare global {
         "app-actions-element": HTMLAppActionsElementElement;
         "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
+        "app-border-radius": HTMLAppBorderRadiusElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
@@ -1256,6 +1267,10 @@ declare namespace LocalJSX {
         "ariaLabel"?: string;
         "src"?: string;
     }
+    interface AppBorderRadius {
+        "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
+    }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "step"?: BreadcrumbsStep;
@@ -1341,6 +1356,7 @@ declare namespace LocalJSX {
     }
     interface AppDeckTransition {
         "deckElement"?: HTMLElement;
+        "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
         "onTransitionChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDemo {
@@ -1627,6 +1643,7 @@ declare namespace LocalJSX {
         "app-actions-element": AppActionsElement;
         "app-align": AppAlign;
         "app-avatar": AppAvatar;
+        "app-border-radius": AppBorderRadius;
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
@@ -1746,6 +1763,7 @@ declare module "@stencil/core" {
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+            "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
