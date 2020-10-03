@@ -122,7 +122,10 @@ export class AppActionsEditor {
   private renderDeckActions() {
     return (
       <app-actions-deck
-        class={this.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
+        class={{
+          hidden: this.step != BreadcrumbsStep.DECK,
+          fullscreen: this.fullscreen,
+        }}
         fullscreen={this.fullscreen}
         slides={this.slides}
         blockSlide={this.blockSlide}

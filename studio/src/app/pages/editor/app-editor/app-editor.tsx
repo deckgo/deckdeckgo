@@ -562,7 +562,6 @@ export class AppEditor {
 
       await this.editorEventsHandler.selectDeck();
       await (deck as any).toggleFullScreen();
-
       resolve();
     });
   }

@@ -55,8 +55,32 @@ app-actions-editor {
   }
 
   &.fullscreen {
+    transition: opacity 0.3s ease;
+    opacity: 0.3;
+
+    &:hover {
+      opacity: 1;
+      app-breadcrumbs {
+        display: initial;
+      }
+      button > ion-label {
+        height: 100%;
+        opacity: 1;
+      }
+      div.indicator > app-breadcrumbs {
+        display: initial;
+      }
+    }
+    ion-toolbar {
+      opacity: 0;
+      height: 0%;
+    }
+
     div.indicator {
       padding-top: 8px;
+      & > app-breadcrumbs {
+        display: none;
+      }
     }
   }
 
