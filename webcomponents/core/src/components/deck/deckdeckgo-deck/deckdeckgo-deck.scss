@@ -94,7 +94,6 @@ div.deckgo-pager {
   bottom: 0;
   left: var(--pager-position-left);
   right: var(--pager-position-right);
-  display: var(--pager-display, none);
 }
 
 ::slotted([slot="background"]) {
