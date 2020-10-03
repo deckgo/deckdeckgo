@@ -4,9 +4,10 @@ import {alertController, RangeChangeEventDetail} from '@ionic/core';
 
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
-import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import paletteStore from '../../../../../stores/palette.store';
-import {colorInPaletteHandler} from '../../../../../helpers/editor/palette.helper';
+
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
+import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
 
 enum CodeColorType {
   COMMENTS,
@@ -103,7 +104,7 @@ export class AppColorCode {
         return;
       }
 
-      paletteStore.state.palette = colorInPaletteHandler(paletteStore.state.palette, $event.detail);
+      await PaletteUtils.updatePalette($event.detail);
 
       colorFunction($event);
 
