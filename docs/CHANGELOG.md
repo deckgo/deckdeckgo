@@ -1,3 +1,9 @@
+# 2.2.0 (2020-10-03)
+
+### Features
+
+- `pager` extracted from core
+
 # 2.1.0 (2020-09-26)
 
 ### Features

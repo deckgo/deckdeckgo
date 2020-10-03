@@ -1206,9 +1206,7 @@ export class DeckdeckgoDeck {
             <slot name="actions"></slot>
             <slot name="background"></slot>
           </div>
-          <div class="deckgo-pager">
-            <slot name="pager"></slot>
-          </div>
+          <slot name="pager"></slot>
         </main>
       </Host>
     );

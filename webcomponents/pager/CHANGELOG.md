@@ -1,5 +1,3 @@
-# 1.0.0 (2020-11-03)
+# 1.0.0 (2020-10-03)
 
-### Features
-
-- initial version
+Hello World 👋

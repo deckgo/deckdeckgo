@@ -5,8 +5,12 @@
 ### Applications
 
 - demo: v5.0.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
-- docs: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
-- remote: v1.7.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- docs: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- remote: v1.8.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+
+### Web Components: New
+
+- pager: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/pager/CHANGELOG.md))
 
 ### Web Components Templates
 
@@ -28,7 +32,7 @@
 
 ### Web Components
 
-- core: v5.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+- core: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - highlight-code: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 ### Others

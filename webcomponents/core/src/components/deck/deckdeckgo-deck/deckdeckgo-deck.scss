@@ -89,13 +89,6 @@ div.deckgo-deck {
   }
 }
 
-div.deckgo-pager {
-  position: absolute;
-  bottom: 0;
-  left: var(--pager-position-left);
-  right: var(--pager-position-right);
-}
-
 ::slotted([slot="background"]) {
   display: var(--background-display, none);
   pointer-events: none;
