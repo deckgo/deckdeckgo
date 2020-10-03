@@ -1,6 +1,7 @@
 import paletteStore from '../../stores/palette.store';
 
-import {get, set} from 'idb-keyval';
+import {get} from 'idb-keyval';
+
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 export class PaletteService {
@@ -16,6 +17,7 @@ export class PaletteService {
     }
     return PaletteService.instance;
   }
+
   async init() {
     try {
       const palette = await get<DeckdeckgoPalette[]>('deckdeckgo_palette');

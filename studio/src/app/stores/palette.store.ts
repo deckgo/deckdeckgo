@@ -1,6 +1,8 @@
-import {DeckdeckgoPalette} from '@deckdeckgo/color';
 import {createStore} from '@stencil/store';
+
 import {set} from 'idb-keyval';
+
+import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
 interface PaletteStore {
   palette: DeckdeckgoPalette[];
