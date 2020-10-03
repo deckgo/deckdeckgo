@@ -2,23 +2,73 @@
 
 A pager for the progression of the presentation can optionally be displayed in form of a progress circle bar.
 
-- [Deck](#app-deck-pager-deck)
+- [Limitation](#app-deck-pager-limitation)
+- [Installation](#app-deck-pager-installation)
+  - [Using from a CDN](#app-deck-pager-install-from-a-cdn)
+  - [Install from NPM](#app-deck-pager-install-from-npm)
+  - [Framework integration](#app-deck-pager-framework-integration)
+- [Usage](#app-deck-pager-usge)
 - [Customization](#app-deck-pager-customization)
 - [Events](#app-deck-pager-events)
 
-## Show or hide
+## Limitation
 
-To show the pager, a CSS4 variable has to be set on the `<deckgo-deck/>` element. Two more options are also available when set on this element.
+This pager only works in a single page presentation because it listens to events emitted by the deck on the `document` level.
 
-| Attribute              | Default | Description                                                                |
-| ---------------------- | ------- | -------------------------------------------------------------------------- |
-| --pager-display        | none    | The display property of the pager. Set to `block` to display it.           |
-| --pager-position-left  |         | The left attribute of the absolute positioning of the pager over the deck  |
-| --pager-position-right |         | The right attribute of the absolute positioning of the pager over the deck |
+## Installation
+
+This component could be added to your web application using the following methods.
+
+### Using from a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] pager from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.js"></script>
+```
+
+### Install from NPM
+
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/pager) using the following command:
+
+```bash
+npm install @deckdeckgo/pager
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/pager';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/pager/dist/loader';
+deckDeckGoElement();
+```
+
+## Usage
+
+In order to the pager to your presentation, provide it as last child of your deck using the slot `pager`.
+
+```
+<deckgo-deck>
+    <deckgo-pager slot="pager">
+    </deckgo-pager>
+</deckgo-deck>
+```
 
 ## Customization
 
-The following style options are available to style the pager:
+The following options are available to style the pager:
 
 | CSS4 variable                   | Default | Description                                                                  |
 | ------------------------------- | ------- | ---------------------------------------------------------------------------- |
@@ -34,6 +84,8 @@ The following style options are available to style the pager:
 | --pager-stroke-inner-width      | 1.8     |                                                                              |
 | --pager-text-percentage-display | none    | Set to `block` to display a progression with percentage (for example: 35%)   |
 | --pager-text-slides-display     | none    | Set to `block` to display a progression as slides' count (for example: 2/15) |
+| --pager-position-left           |         | The left attribute of the absolute positioning of the pager over the deck    |
+| --pager-position-right          |         | The right attribute of the absolute positioning of the pager over the deck   |
 
 Note: of course if you would display both `--pager-text-percentage-display` and `--pager-text-slides-display` it would be a weird display, use just one at once.
 

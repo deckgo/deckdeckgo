@@ -26,8 +26,18 @@ export class AppComponentsSocial {
               <a href="#app-components-social-showcase">Showcase</a>
             </li>
             <li>
-              <a href="#app-components-social-installation">Installation</a> - <a href="#app-components-social-from-a-cdn">Using from a CDN</a> -{' '}
-              <a href="#app-components-social-from-npm">Install from NPM</a> - <a href="#app-components-social-framework-integration">Framework integration</a>
+              <a href="#app-components-social-installation">Installation</a>
+              <ul>
+                <li>
+                  <a href="#app-components-social-install-from-a-cdn">Using from a CDN</a>
+                </li>
+                <li>
+                  <a href="#app-components-social-install-from-npm">Install from NPM</a>
+                </li>
+                <li>
+                  <a href="#app-components-social-framework-integration">Framework integration</a>
+                </li>
+              </ul>
             </li>
             <li>
               <a href="#app-components-social-usage">Usage</a>
@@ -61,8 +71,8 @@ export class AppComponentsSocial {
           <p>This component could be added to your web application using the following methods.</p>
           <h3 id="app-components-social-using-from-a-cdn">Using from a CDN</h3>
           <p>
-            It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> lazy image component
-            from a CDN. To do so, add the following include script in the main HTML file of your project:
+            It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> social component from
+            a CDN. To do so, add the following include script in the main HTML file of your project:
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -74,7 +84,7 @@ export class AppComponentsSocial {
           </deckgo-highlight-code>
           <h3 id="app-components-social-install-from-npm">Install from NPM</h3>
           <p>
-            Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> using the following command:
+            Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/social">npm</a> using the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;social</code>
