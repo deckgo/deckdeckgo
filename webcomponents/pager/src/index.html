@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>DeckDeckGo</title>
 
-    <script type="module" src="/build/deckdeckgo.esm.js"></script>
-    <script nomodule src="/build/deckdeckgo.js"></script>
+    <script type="module" src="/build/deckdeckgo-pager.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-pager.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/youtube@latest/dist/deckdeckgo-youtube/deckdeckgo-youtube.js"></script>
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.js"></script>
-
-    <script type="module" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.esm.js"></script>
-    <script nomodule="" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.js"></script>
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.js"></script>
@@ -241,138 +241,16 @@
         }
       }
 
-      function doPrint() {
-        const elem = document.getElementsByTagName('deckgo-deck');
-        if (elem && elem.length > 0) {
-          elem[0].doPrint();
-        }
-      }
-
-      function toggleVideo() {
-        return new Promise(async (resolve) => {
-          const deck = document.getElementById('slider');
-
-          if (!deck) {
-            resolve();
-            return;
-          }
-
-          const index = await deck.getActiveIndex();
-
-          const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
-
-          if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
-            resolve();
-            return;
-          }
-
-          await youtubeSlideElement.toggle();
-
-          resolve();
-        });
-      }
-
-      function updateVideo() {
-        return new Promise(async (resolve) => {
-          const deck = document.getElementById('slider');
-
-          if (!deck) {
-            resolve();
-            return;
-          }
-
-          const index = await deck.getActiveIndex();
-
-          const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
-
-          if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
-            resolve();
-            return;
-          }
-
-          youtubeSlideElement.src = 'https://www.youtube.com/watch?v=-6Zc8Co2H3w';
-
-          resolve();
-        });
-      }
-
-      function toggleReveal() {
-        return new Promise(async (resolve) => {
-          const deck = document.getElementById('slider');
-
-          if (!deck) {
-            resolve();
-            return;
-          }
-
-          deck.reveal = !deck.reveal;
-
-          resolve();
-        });
-      }
-
-      function setAnimationFade() {
-        return new Promise(async (resolve) => {
-          const deck = document.getElementById('slider');
-
-          if (!deck) {
-            resolve();
-            return;
-          }
-
-          deck.animation = 'fade';
-
-          resolve();
-        });
-      }
-
-      function setDirectionVertical() {
-        return new Promise(async (resolve) => {
-          const deck = document.getElementById('slider');
-
-          if (!deck) {
-            resolve();
-            return;
-          }
-
-          deck.direction = 'vertical';
-
-          resolve();
-        });
-      }
-
       document.addEventListener('pagerClick', function () {
         console.log('Pager clicked');
       });
-
-      function toggleAutoSlide() {
-        return new Promise(async (resolve) => {
-          const deck = document.getElementById('slider');
-
-          if (!deck) {
-            resolve();
-            return;
-          }
-
-          deck.autoSlide = deck.autoSlide ? 'false' : 'true';
-
-          resolve();
-        });
-      }
     </script>
 
     <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
-      <button onclick="toggleAutoSlide()">Toggle auto slide</button>
-      <button onclick="setDirectionVertical()">Direction vertical</button>
-      <button onclick="setAnimationFade()">Animation fade</button>
-      <button onclick="toggleReveal()">Toggle deck reveal</button>
-      <button onclick="updateVideo()">Update video</button>
-      <button onclick="toggleVideo()">Toggle video</button>
       <button onclick="slidePrev()">Prev</button>
       <button onclick="slideNext()">Next</button>
       <button onclick="slideTo()">Slide to</button>
       <button onclick="toggleFullScreen()">Full screen</button>
-      <button onclick="doPrint()">Print</button>
     </div>
   </body>
 </html>

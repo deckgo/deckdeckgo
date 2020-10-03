@@ -1206,14 +1206,12 @@ export class DeckdeckgoDeck {
             <slot name="actions"></slot>
             <slot name="background"></slot>
           </div>
-          <div class="deckgo-pager">{this.renderPager()}</div>
+          <div class="deckgo-pager">
+            <slot name="pager"></slot>
+          </div>
         </main>
       </Host>
     );
-  }
-
-  private renderPager() {
-    return <deckgo-pager active-index={this.activeIndex} length={this.length}></deckgo-pager>;
   }
 
   private renderAnimation() {
