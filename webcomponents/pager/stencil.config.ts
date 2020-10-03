@@ -11,9 +11,6 @@ export const config: Config = {
       type: 'dist',
     },
     {
-      type: 'docs-readme',
-    },
-    {
       type: 'www',
       serviceWorker: null, // disable service workers
     },
