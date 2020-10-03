@@ -1,3 +1,11 @@
+[![npm][npm-badge]][npm-badge-url]
+[![license][npm-license]][npm-license-url]
+
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/remote
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/remote
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/remote
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/LICENSE
+
 # DeckDeckGo - Remote
 
 This project is a Web Component which act as the remote control receiver of the [Progressive Web App](https://deckdeckgo.app) of [DeckDeckGo] .
@@ -6,13 +14,13 @@ This project is a Web Component which act as the remote control receiver of the 
 
 - [Features](#features)
 - [Getting Started](#getting-started)
-	- [Standalone](#standalone)
-	- [Install from NPM](#install-from-npm)
-	- [Using from a CDN](#using-from-a-cdn)
-	- [Framework integration](#framework-integration)
+  - [Standalone](#standalone)
+  - [Install from NPM](#install-from-npm)
+  - [Using from a CDN](#using-from-a-cdn)
+  - [Framework integration](#framework-integration)
 - [Usage](#usage)
-	- [Attributes](#attributes)
-	- [Methods](#methods)
+  - [Attributes](#attributes)
+  - [Methods](#methods)
 - [License](#license)
 
 ## Features
@@ -24,7 +32,7 @@ Once added in your project it will add the two following two main features:
 
 ## Getting Started
 
-Start you new presentation by following the quick  👉 [Getting Started guide](https://docs.deckdeckgo.com/docs) 👈
+Start you new presentation by following the quick 👉 [Getting Started guide](https://docs.deckdeckgo.com/docs) 👈
 
 ### Standalone
 
@@ -66,15 +74,15 @@ For a more concrete example you could have a look to the [DeckDeckGo Starter-kit
 
 The following options should be set using attributes:
 
-| Attribute                      | Type   | Description   |
-| -------------------------- |:-----------------:|:-----------------:|
-| room | string | The room respectively the presentation's name which will be displayed to the user in the app when he/she will search for presentations to connect to |
-| socketUrl | string | A socket URI, in case you would implement your own signaling server |
-| width | number | The width of the canvas |
-| height | number | The height of the canvas |
-| length | number | How many slides contains your deck, this is useful to inform the app about it and initialize the length of the canvas |
-| slides | string[] | The ordered list of all the tag names of the slides. Useful if you would like to inform the app about which slides are used in your deck. |
-| autoConnect | boolean | If you the component to not connect itself on load, set this property to `false` |
+| Attribute   |   Type   |                                                                     Description                                                                      |
+| ----------- | :------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: |
+| room        |  string  | The room respectively the presentation's name which will be displayed to the user in the app when he/she will search for presentations to connect to |
+| socketUrl   |  string  |                                         A socket URI, in case you would implement your own signaling server                                          |
+| width       |  number  |                                                               The width of the canvas                                                                |
+| height      |  number  |                                                               The height of the canvas                                                               |
+| length      |  number  |                How many slides contains your deck, this is useful to inform the app about it and initialize the length of the canvas                 |
+| slides      | string[] |      The ordered list of all the tag names of the slides. Useful if you would like to inform the app about which slides are used in your deck.       |
+| autoConnect | boolean  |                                   If you the component to not connect itself on load, set this property to `false`                                   |
 
 ### Methods
 
@@ -186,4 +194,4 @@ await remote.pause();
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

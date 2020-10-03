@@ -14,6 +14,9 @@
     <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.js"></script>
 
+    <script type="module" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.js"></script>
+
     <script type="module" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.js"></script>
 
@@ -56,7 +59,7 @@
     </style>
   </head>
   <body style="margin: 0">
-    <deckgo-deck id="slider" style="--pager-display: block; --pager-text-slides-display: block" direction="papyrus">
+    <deckgo-deck id="slider" style="--pager-text-slides-display: block">
       <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
         <h1 slot="title">My presentation will start in</h1>
         <span slot="days">Days</span>
@@ -206,6 +209,7 @@
       </div>
 
       <button onclick="slideNext()" slot="actions">Action slide next</button>
+      <deckgo-pager slot="pager"></deckgo-pager>
     </deckgo-deck>
 
     <script type="text/javascript">
@@ -340,9 +344,25 @@
       document.addEventListener('pagerClick', function () {
         console.log('Pager clicked');
       });
+
+      function toggleAutoSlide() {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          deck.autoSlide = deck.autoSlide ? 'false' : 'true';
+
+          resolve();
+        });
+      }
     </script>
 
     <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
+      <button onclick="toggleAutoSlide()">Toggle auto slide</button>
       <button onclick="setDirectionVertical()">Direction vertical</button>
       <button onclick="setAnimationFade()">Animation fade</button>
       <button onclick="toggleReveal()">Toggle deck reveal</button>

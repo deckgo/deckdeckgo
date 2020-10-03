@@ -205,16 +205,7 @@ export class AppElementStyle {
           moreColors={this.moreColors}></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
-      return [
-        <app-color-text-background
-          expander={this.slide}
-          key={'background'}
-          colorType={'background'}
-          selectedElement={this.selectedElement}
-          moreColors={this.moreColors}
-          onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
-        this.renderImage(),
-      ];
+      return this.renderBackground();
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-reveal selectedElement={this.selectedElement} onToggleReveal={() => this.closePopover()}></app-reveal>;
     } else if (this.applyToTargetElement === TargetElement.IMAGE) {
@@ -227,9 +218,10 @@ export class AppElementStyle {
       return [
         this.renderFontSize(),
         <app-align selectedElement={this.selectedElement} onAlignChange={() => this.emitStyleChange()}></app-align>,
+        this.renderLetterSpacing(),
         this.renderList(),
         <app-color-text-background
-          expander={!this.slide}
+          expanded={!this.code}
           key={'text'}
           selectedElement={this.selectedElement}
           moreColors={this.moreColors}
@@ -237,6 +229,32 @@ export class AppElementStyle {
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       ];
     }
+  }
+
+  private renderLetterSpacing() {
+    if (this.code) {
+      return undefined;
+    }
+
+    return <app-letter-spacing selectedElement={this.selectedElement} onLetterSpacingDidChange={() => this.emitStyleChange()}></app-letter-spacing>;
+  }
+
+  private renderBackground() {
+    const background = [
+      <app-color-text-background
+        key={'background'}
+        colorType={'background'}
+        selectedElement={this.selectedElement}
+        moreColors={this.moreColors}
+        onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
+      this.renderImage(),
+    ];
+
+    if (!this.slide) {
+      background.push(<app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>);
+    }
+
+    return background;
   }
 
   private renderImage() {

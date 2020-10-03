@@ -9,6 +9,8 @@ import { DeckdeckgoAttributeDefinition, DeckdeckgoDeckDefinition, DeckdeckgoSlid
 export namespace Components {
     interface DeckgoDeck {
         "animation": 'slide' | 'fade' | 'none';
+        "autoSlide": 'true' | 'false';
+        "autoSlideInterval": number;
         "blockSlide": (block: boolean) => Promise<void>;
         "cloneBackground": boolean;
         "deleteActiveSlide": () => Promise<void>;
@@ -36,10 +38,6 @@ export namespace Components {
         "toggleFullScreen": () => Promise<void>;
         "toggleKeyboardAssist": (state: boolean) => Promise<void>;
     }
-    interface DeckgoPager {
-        "activeIndex": number;
-        "length": number;
-    }
     interface DeckgoReveal {
         "allElementsHidden": boolean;
         "allElementsRevealed": boolean;
@@ -65,12 +63,6 @@ declare global {
         prototype: HTMLDeckgoDeckElement;
         new (): HTMLDeckgoDeckElement;
     };
-    interface HTMLDeckgoPagerElement extends Components.DeckgoPager, HTMLStencilElement {
-    }
-    var HTMLDeckgoPagerElement: {
-        prototype: HTMLDeckgoPagerElement;
-        new (): HTMLDeckgoPagerElement;
-    };
     interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {
     }
     var HTMLDeckgoRevealElement: {
@@ -85,7 +77,6 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "deckgo-deck": HTMLDeckgoDeckElement;
-        "deckgo-pager": HTMLDeckgoPagerElement;
         "deckgo-reveal": HTMLDeckgoRevealElement;
         "deckgo-reveal-list": HTMLDeckgoRevealListElement;
     }
@@ -93,6 +84,8 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoDeck {
         "animation"?: 'slide' | 'fade' | 'none';
+        "autoSlide"?: 'true' | 'false';
+        "autoSlideInterval"?: number;
         "cloneBackground"?: boolean;
         "direction"?: 'horizontal' | 'vertical' | 'papyrus';
         "directionMobile"?: 'horizontal' | 'vertical' | 'papyrus';
@@ -111,11 +104,6 @@ declare namespace LocalJSX {
         "reveal"?: boolean;
         "revealOnMobile"?: boolean;
     }
-    interface DeckgoPager {
-        "activeIndex"?: number;
-        "length"?: number;
-        "onPagerClick"?: (event: CustomEvent<void>) => void;
-    }
     interface DeckgoReveal {
         "allElementsHidden"?: boolean;
         "allElementsRevealed"?: boolean;
@@ -127,7 +115,6 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "deckgo-deck": DeckgoDeck;
-        "deckgo-pager": DeckgoPager;
         "deckgo-reveal": DeckgoReveal;
         "deckgo-reveal-list": DeckgoRevealList;
     }
@@ -137,7 +124,6 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-deck": LocalJSX.DeckgoDeck & JSXBase.HTMLAttributes<HTMLDeckgoDeckElement>;
-            "deckgo-pager": LocalJSX.DeckgoPager & JSXBase.HTMLAttributes<HTMLDeckgoPagerElement>;
             "deckgo-reveal": LocalJSX.DeckgoReveal & JSXBase.HTMLAttributes<HTMLDeckgoRevealElement>;
             "deckgo-reveal-list": LocalJSX.DeckgoRevealList & JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement>;
         }

@@ -4,8 +4,9 @@
 
 ### Applications
 
+- demo: v5.0.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 - docs: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
-- remote: v1.7.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- remote: v1.7.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### Web Components Templates
 
@@ -13,7 +14,7 @@
 - slide-author: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/author/CHANGELOG.md))
 - slide-big-img: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/big-img/CHANGELOG.md))
 - slide-chart: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/chart/CHANGELOG.md))
-- slide-code: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/code/CHANGELOG.md))
+- slide-code: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/code/CHANGELOG.md))
 - slide-content: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/content/CHANGELOG.md))
 - slide-countdown: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/countdown/CHANGELOG.md))
 - slide-gif: v3.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/gif/CHANGELOG.md))
@@ -27,13 +28,15 @@
 
 ### Web Components
 
-- core: v4.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+- core: v5.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - highlight-code: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 ### Others
 
 - deck-utils: v2.6.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 - slide-utils: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
+- starter kit: v5.0.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
+- studio kit: v5.0.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 
 <a name="2.3.0"></a>
 

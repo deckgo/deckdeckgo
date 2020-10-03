@@ -11,6 +11,7 @@ import { PrismLanguage } from "./app/services/editor/prism/prism.service";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
+import { DeckAction } from "./app/utils/editor/deck-action";
 import { EditAction } from "./app/utils/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/utils/editor/image-action";
@@ -64,6 +65,9 @@ export namespace Components {
         "ariaLabel": string;
         "src": string;
     }
+    interface AppBorderRadius {
+        "selectedElement": HTMLElement;
+    }
     interface AppBreadcrumbs {
         "step": BreadcrumbsStep;
     }
@@ -99,7 +103,7 @@ export namespace Components {
     interface AppColorTextBackground {
         "colorType": 'text' | 'background';
         "deck": boolean;
-        "expander": boolean;
+        "expanded": boolean;
         "initCurrentColors": () => Promise<void>;
         "moreColors": boolean;
         "selectedElement": HTMLElement;
@@ -251,6 +255,9 @@ export namespace Components {
     interface AppLandingContent {
     }
     interface AppLandingDeck {
+    }
+    interface AppLetterSpacing {
+        "selectedElement": HTMLElement;
     }
     interface AppList {
         "selectedElement": HTMLElement;
@@ -451,6 +458,12 @@ declare global {
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
+    };
+    interface HTMLAppBorderRadiusElement extends Components.AppBorderRadius, HTMLStencilElement {
+    }
+    var HTMLAppBorderRadiusElement: {
+        prototype: HTMLAppBorderRadiusElement;
+        new (): HTMLAppBorderRadiusElement;
     };
     interface HTMLAppBreadcrumbsElement extends Components.AppBreadcrumbs, HTMLStencilElement {
     }
@@ -782,6 +795,12 @@ declare global {
         prototype: HTMLAppLandingDeckElement;
         new (): HTMLAppLandingDeckElement;
     };
+    interface HTMLAppLetterSpacingElement extends Components.AppLetterSpacing, HTMLStencilElement {
+    }
+    var HTMLAppLetterSpacingElement: {
+        prototype: HTMLAppLetterSpacingElement;
+        new (): HTMLAppLetterSpacingElement;
+    };
     interface HTMLAppListElement extends Components.AppList, HTMLStencilElement {
     }
     var HTMLAppListElement: {
@@ -1086,6 +1105,7 @@ declare global {
         "app-actions-element": HTMLAppActionsElementElement;
         "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
+        "app-border-radius": HTMLAppBorderRadiusElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
@@ -1141,6 +1161,7 @@ declare global {
         "app-landing": HTMLAppLandingElement;
         "app-landing-content": HTMLAppLandingContentElement;
         "app-landing-deck": HTMLAppLandingDeckElement;
+        "app-letter-spacing": HTMLAppLetterSpacingElement;
         "app-list": HTMLAppListElement;
         "app-logo": HTMLAppLogoElement;
         "app-math": HTMLAppMathElement;
@@ -1256,6 +1277,10 @@ declare namespace LocalJSX {
         "ariaLabel"?: string;
         "src"?: string;
     }
+    interface AppBorderRadius {
+        "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
+    }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "step"?: BreadcrumbsStep;
@@ -1293,7 +1318,7 @@ declare namespace LocalJSX {
     interface AppColorTextBackground {
         "colorType"?: 'text' | 'background';
         "deck"?: boolean;
-        "expander"?: boolean;
+        "expanded"?: boolean;
         "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
@@ -1341,6 +1366,7 @@ declare namespace LocalJSX {
     }
     interface AppDeckTransition {
         "deckElement"?: HTMLElement;
+        "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
         "onTransitionChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDemo {
@@ -1465,6 +1491,10 @@ declare namespace LocalJSX {
     interface AppLandingContent {
     }
     interface AppLandingDeck {
+    }
+    interface AppLetterSpacing {
+        "onLetterSpacingDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
     }
     interface AppList {
         "onToggleList"?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
@@ -1627,6 +1657,7 @@ declare namespace LocalJSX {
         "app-actions-element": AppActionsElement;
         "app-align": AppAlign;
         "app-avatar": AppAvatar;
+        "app-border-radius": AppBorderRadius;
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
@@ -1682,6 +1713,7 @@ declare namespace LocalJSX {
         "app-landing": AppLanding;
         "app-landing-content": AppLandingContent;
         "app-landing-deck": AppLandingDeck;
+        "app-letter-spacing": AppLetterSpacing;
         "app-list": AppList;
         "app-logo": AppLogo;
         "app-math": AppMath;
@@ -1746,6 +1778,7 @@ declare module "@stencil/core" {
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+            "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
@@ -1801,6 +1834,7 @@ declare module "@stencil/core" {
             "app-landing": LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
             "app-landing-content": LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
             "app-landing-deck": LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
+            "app-letter-spacing": LocalJSX.AppLetterSpacing & JSXBase.HTMLAttributes<HTMLAppLetterSpacingElement>;
             "app-list": LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
             "app-logo": LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
             "app-math": LocalJSX.AppMath & JSXBase.HTMLAttributes<HTMLAppMathElement>;

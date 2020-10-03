@@ -1,13 +1,13 @@
-import {Component, Prop, State, Watch, h, Event, EventEmitter, Host} from '@stencil/core';
+import {Component, EventEmitter, Event, Listen, State, Watch, h, Host} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-pager',
   styleUrl: 'deckdeckgo-pager.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoPager {
-  @Prop() activeIndex: number;
-  @Prop() length: number;
+  @State() private activeIndex: number = 0;
+  @State() private length: number;
 
   @State()
   private percentageProgression: number = 0;
@@ -19,6 +19,22 @@ export class DeckdeckgoPager {
   @Watch('activeIndex')
   calculateProgression() {
     this.percentageProgression = this.length > 0 ? Math.round(((this.activeIndex + 1) / this.length) * 100) : 0;
+  }
+
+  @Listen('slidesDidLoad', {target: 'document'})
+  async onSlidesDidLoad($event: CustomEvent) {
+    if ($event) {
+      this.length = $event.detail.slides.length;
+    }
+  }
+
+  @Listen('slideNextDidChange', {target: 'document'})
+  @Listen('slidePrevDidChange', {target: 'document'})
+  @Listen('slideToChange', {target: 'document'})
+  async onSlideNavigate($event: CustomEvent) {
+    if ($event) {
+      this.activeIndex = $event.detail;
+    }
   }
 
   // Nice circular percentage chart from the article of Sergio Pedercini
@@ -55,7 +71,7 @@ export class DeckdeckgoPager {
       </text>,
       <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">
         {this.length > 0 ? this.activeIndex + 1 : 0}/{this.length}
-      </text>
+      </text>,
     ];
   }
 }

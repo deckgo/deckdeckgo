@@ -1,3 +1,9 @@
+# 2.1.0 (2020-09-26)
+
+### Features
+
+- update slide code documentation for new `papyrus` behavior on mobile devices
+
 # 2.0.0 (2020-09-24)
 
 ### Breaking Changes

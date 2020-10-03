@@ -1,3 +1,11 @@
+[![npm][npm-badge]][npm-badge-url]
+[![license][npm-license]][npm-license-url]
+
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/inline-editor
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/inline-editor
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/inline-editor
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/LICENSE
+
 # DeckDeckGo - WYSIWYG HTML Inline Editor Web Component
 
 This Web Component is an inline WYSIWYG HTML Editor developed for the project [DeckDeckGo].
@@ -31,4 +39,4 @@ MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia]
 
 The bullet list, link and image icons were both extracted to data uri from the [Ionicons](https://ionicons.com) which is licensed under the MIT license too.
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

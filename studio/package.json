@@ -8,6 +8,7 @@
     "dist/"
   ],
   "scripts": {
+    "prebuild": "node ./scripts/rm-www.js",
     "build": "stencil build --prerender",
     "build:staging": "npm run build -- --staging",
     "postbuild": "./scripts/config.index.js",
@@ -19,7 +20,7 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.0.0",
     "@deckdeckgo/color": "^3.0.0",
-    "@deckdeckgo/core": "^4.0.3",
+    "@deckdeckgo/core": "^5.1.3",
     "@deckdeckgo/deck-utils": "^2.6.0",
     "@deckdeckgo/demo": "^2.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.0.0",
@@ -43,7 +44,7 @@
     "@deckdeckgo/social": "^3.0.0",
     "@deckdeckgo/utils": "^1.3.0",
     "@deckdeckgo/youtube": "^2.0.0",
-    "@ionic/core": "^5.3.3",
+    "@ionic/core": "^5.3.4",
     "firebase": "^7.21.1",
     "idb-keyval": "^3.2.0",
     "socket.io-client": "^2.3.0",

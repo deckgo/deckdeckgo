@@ -1,5 +1,9 @@
 import {Component, Element, Event, EventEmitter, Prop, h, State} from '@stencil/core';
 
+import deckStore from '../../../../../stores/deck.store';
+
+import {DeckAction} from '../../../../../utils/editor/deck-action';
+
 @Component({
   tag: 'app-deck-transition',
   styleUrl: 'app-deck-transition.scss',
@@ -11,6 +15,8 @@ export class AppDeckTransition {
   deckElement: HTMLElement;
 
   @Event() private transitionChange: EventEmitter<void>;
+
+  @Event() deckNeedChange: EventEmitter<DeckAction>;
 
   @State()
   private selectedAnimation: 'slide' | 'fade' | 'none';
@@ -27,9 +33,13 @@ export class AppDeckTransition {
   private timerIntervalPapyrus: NodeJS.Timeout;
   private timerCounterPapyrus: number = 0;
 
+  @State()
+  private autoSlide: boolean = false;
+
   async componentWillLoad() {
     await this.initSelectedAnimation();
     await this.initSelectedDirection();
+    await this.initDeckAutoSlide();
   }
 
   async componentDidLoad() {
@@ -65,6 +75,13 @@ export class AppDeckTransition {
     }
 
     this.selectedDirection = this.deckElement.getAttribute(attribute) as 'horizontal' | 'vertical' | 'papyrus';
+  }
+
+  private async initDeckAutoSlide() {
+    this.autoSlide =
+      deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.autoSlide !== undefined
+        ? deckStore.state.deck.data.attributes.autoSlide
+        : false;
   }
 
   private async animateDecks() {
@@ -169,8 +186,38 @@ export class AppDeckTransition {
     }
   }
 
+  private async onAutoSlideChange($event: CustomEvent) {
+    this.autoSlide = $event && $event.detail ? $event.detail.value : true;
+
+    this.deckNeedChange.emit({
+      autoSlide: this.autoSlide,
+    });
+  }
+
   render() {
-    return [this.renderDirection(), this.renderAnimation()];
+    return [this.renderDirection(), this.renderAnimation(), this.renderAutoSlide()];
+  }
+
+  private renderAutoSlide() {
+    return (
+      <app-expansion-panel expanded="close">
+        <ion-label slot="title">Auto Slide</ion-label>
+
+        <ion-list class="inputs-list">
+          <ion-radio-group value={this.autoSlide} onIonChange={($event) => this.onAutoSlideChange($event)} class="inline ion-margin-start">
+            <ion-item>
+              <ion-radio value={true} mode="md"></ion-radio>
+              <ion-label>Yes</ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-radio value={false} mode="md"></ion-radio>
+              <ion-label>No</ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </app-expansion-panel>
+    );
   }
 
   private renderDirection() {
@@ -212,7 +259,7 @@ export class AppDeckTransition {
 
   private renderAnimation() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel expanded="close">
         <ion-label slot="title">Animation</ion-label>
         <div class="container ion-margin-bottom">
           {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'slide', 'Swipe', this.selectedAnimation === 'slide', () =>

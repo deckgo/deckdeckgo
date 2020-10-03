@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 import {scheduleTask} from '../../utils/data/task-utils';
-import {geToken} from '../utils/request-utils';
+import {getToken} from '../utils/request-utils';
 
 import {DeckData, DeckDeployData} from '../../model/data/deck';
 
@@ -16,7 +16,7 @@ export interface ScheduledPublishTask {
 export function schedulePublish(request: functions.Request): Promise<ScheduledPublishTask> {
   return new Promise<ScheduledPublishTask>(async (resolve, reject) => {
     try {
-      const token: string | undefined = await geToken(request);
+      const token: string | undefined = await getToken(request);
       const deckId: string | undefined = request.body.deckId;
 
       if (!deckId) {

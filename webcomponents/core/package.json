@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/core",
-  "version": "4.0.3",
+  "version": "5.1.3",
   "description": "Add a presentation to your web application using HTML and Web Components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/deck-utils": "^2.5.0",
+    "@deckdeckgo/deck-utils": "^2.6.0",
     "@deckdeckgo/utils": "^1.3.0"
   },
   "devDependencies": {

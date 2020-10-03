@@ -1,3 +1,47 @@
+# 5.1.3 (2020-10-01)
+
+### Features
+
+- revert auto slide props reflected to attributes (the remote receive swipe information without these)
+
+# 5.1.2 (2020-10-01)
+
+### Features
+
+- auto slide pros set as string enum as boolean are not conveniently reflected to attributes for our construct
+
+### Fix
+
+- auto slide active index
+
+# 5.1.1 (2020-10-01)
+
+### Features
+
+- reflect auto slide properties to attributes
+
+# 5.1.0 (2020-10-01)
+
+### Features
+
+- auto slide
+
+# 5.0.1 (2020-09-26)
+
+### Fix
+
+- `direction-mobile` not used to initialize the size of the deck
+
+# 5.0.0 (2020-09-26)
+
+### Breaking Changes
+
+- replace custom lazy loading implementation, based on slide index, with the IntersectionObserver API
+
+### Fix
+
+- improve boot performance by better detecting when all slides effectively loaded
+
 # 4.0.3 (2020-09-24)
 
 ### Fix
