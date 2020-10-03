@@ -25,7 +25,7 @@ export class AppColorTextBackground {
   colorType: 'text' | 'background' = 'text';
 
   @Prop()
-  expander: boolean = true;
+  expanded: boolean = true;
 
   @State()
   private color: string;
@@ -168,7 +168,7 @@ export class AppColorTextBackground {
 
   render() {
     return (
-      <app-expansion-panel expander={this.expander}>
+      <app-expansion-panel expanded={this.expanded ? 'open' : 'close'}>
         <ion-label slot="title">Color</ion-label>
         <ion-list class="ion-no-padding">
           <ion-item-divider class="ion-padding-top">

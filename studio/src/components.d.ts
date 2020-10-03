@@ -103,7 +103,7 @@ export namespace Components {
     interface AppColorTextBackground {
         "colorType": 'text' | 'background';
         "deck": boolean;
-        "expander": boolean;
+        "expanded": boolean;
         "initCurrentColors": () => Promise<void>;
         "moreColors": boolean;
         "selectedElement": HTMLElement;
@@ -1318,7 +1318,7 @@ declare namespace LocalJSX {
     interface AppColorTextBackground {
         "colorType"?: 'text' | 'background';
         "deck"?: boolean;
-        "expander"?: boolean;
+        "expanded"?: boolean;
         "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
