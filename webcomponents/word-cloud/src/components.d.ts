@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoWordCloud {
+        "editable": boolean;
         "font": string;
         "height": number;
         "width": number;
@@ -25,6 +26,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoWordCloud {
+        "editable"?: boolean;
         "font"?: string;
         "height"?: number;
         "width"?: number;

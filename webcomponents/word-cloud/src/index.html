@@ -9,18 +9,17 @@
     <script nomodule src="/build/word-cloud.js"></script>
   </head>
   <body>
-
-    <h1>By default width and height is 500px</h1>
-    <deckgo-word-cloud>
-      <p slot="words">Each Word entered it will become part of the cloud</p>
+    <h1>You can edit this awesome word cloud</h1>
+    <deckgo-word-cloud editable="true">
+      <code slot="words">Each Word entered it will become part of the cloud</code>
     </deckgo-word-cloud>
 
-    <h1>But you can always change it :)</h1>
-    <deckgo-word-cloud
-      width="800"
-      height="500"
-    >
-      <p slot="words">Each Word entered it will become part of the cloud</p>
+    <h1>Custom Width and Height (not editable)</h1>
+    <deckgo-word-cloud width="1024" height="768">
+      <code slot="words"
+        >How the Word Cloud Generator Works The layout algorithm for positioning words without overlap is available on GitHub under an open source license as d3-cloud. Note that
+        this is the only the layout algorithm and any code for converting text into words and rendering the final output requires additional development.</code
+      >
     </deckgo-word-cloud>
   </body>
 </html>

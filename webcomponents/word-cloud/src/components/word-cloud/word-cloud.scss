@@ -1,3 +1,16 @@
 :host {
-  display: block;
+  ::slotted([slot='words']) {
+    display: none;
+  }
+}
+
+:host(.deckgo-word-cloud-edit) {
+  ::slotted([slot='words']) {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  svg.words {
+    display: none;
+  }
 }
