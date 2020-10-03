@@ -22,6 +22,38 @@ export class AppLetterSpacing {
 
   @Event() letterSpacingDidChange: EventEmitter<void>;
 
+  async componentWillLoad() {
+    this.letterSpacing = await this.initLetterSpacing();
+  }
+
+  private async initLetterSpacing(): Promise<LetterSpacing> {
+    if (!this.selectedElement) {
+      return LetterSpacing.NORMAL;
+    }
+
+    const spacing: string = this.selectedElement.style.letterSpacing;
+
+    if (!spacing || spacing === '') {
+      return LetterSpacing.NORMAL;
+    }
+
+    if (spacing === '-0.1em') {
+      return LetterSpacing.TIGHTER;
+    } else if (spacing === '-0.05em') {
+      return LetterSpacing.TIGHT;
+    } else if (spacing === '0.1em') {
+      return LetterSpacing.WIDE;
+    } else if (spacing === '0.2em') {
+      return LetterSpacing.WIDER;
+    } else if (spacing === '0.3em') {
+      return LetterSpacing.SUPERWIDE;
+    } else if (spacing === '0.4em') {
+      return LetterSpacing.WIDEST;
+    }
+
+    return LetterSpacing.NORMAL;
+  }
+
   private emitLetterSpacingChange() {
     this.letterSpacingDidChange.emit();
   }
@@ -62,7 +94,7 @@ export class AppLetterSpacing {
 
   render() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel expanded="close">
         <ion-label slot="title">Letter spacing</ion-label>
         <ion-list>
           <ion-item class="select">
