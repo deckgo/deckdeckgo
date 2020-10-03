@@ -1,0 +1,51 @@
+:host {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+
+  cursor: pointer;
+}
+
+.deckgo-pager-circular-chart {
+  height: var(--pager-size, 48px);
+  width: var(--pager-size, 48px);
+  margin: var(--pager-margin-top, 8px) var(--pager-margin-end, 32px) var(--pager-margin-bottom, 8px) var(--pager-margin-start, 32px);
+  display: block;
+}
+
+.deckgo-pager-circle-bg {
+  fill: none;
+  stroke: var(--pager-background, #eee);
+  stroke-width: var(--pager-stroke-outer-width, 2.2);
+}
+
+.deckgo-pager-circle {
+  stroke: var(--pager-color, black);
+  fill: none;
+  stroke-width: var(--pager-stroke-inner-width, 2.2);
+  stroke-linecap: round;
+  transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.deckgo-pager-progression {
+  fill: var(--pager-text-color, black);
+  font-size: var(--pager-text-size, 0.5em);
+  text-anchor: middle;
+  font-weight: 300;
+
+  &.deckgo-pager-percentage {
+    display: var(--pager-text-percentage-display, none);
+  }
+
+  &.deckgo-pager-slides {
+    display: var(--pager-text-slides-display, none);
+  }
+}
+
+@media print {
+  .deckgo-pager-circular-chart {
+    display: none;
+  }
+}
