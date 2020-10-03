@@ -1,3 +1,9 @@
+# 6.0.0 (2020-10-03)
+
+### Breaking Changes
+
+- `pager` is not part of the core anymore but shipped as a separate new component `deckgo-pager`
+
 # 5.1.3 (2020-10-01)
 
 ### Features
