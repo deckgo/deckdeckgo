@@ -3,7 +3,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {ListUtils} from '../../../../../utils/editor/list.utils';
 
-import {OrderedStyle, UnorderedStyle} from '../../../../../utils/editor/list-style-type';
+import {ListStyle} from '../../../../../utils/editor/list-style-type';
 
 @Component({
   tag: 'app-list',
@@ -17,29 +17,29 @@ export class AppList {
   private listType: SlotType.OL | SlotType.UL | undefined;
 
   @State()
-  private selectedStyle: OrderedStyle | UnorderedStyle | undefined;
+  private selectedStyle: ListStyle | undefined;
 
   @Event() toggleList: EventEmitter<SlotType.OL | SlotType.UL>;
 
-  @Event() listStyleChanged: EventEmitter<OrderedStyle | UnorderedStyle>;
+  @Event() listStyleChanged: EventEmitter<ListStyle>;
 
   async componentWillLoad() {
     this.listType = await ListUtils.isElementList(this.selectedElement);
     this.selectedStyle = await ListUtils.getListElementType(this.selectedElement);
   }
 
-  private listStyleToSlotType(listStyle: OrderedStyle | UnorderedStyle) {
+  private listStyleToSlotType(listStyle: ListStyle) {
     switch (listStyle) {
-      case OrderedStyle.DECIMAL:
-      case OrderedStyle.DECIMAL_LEADING:
-      case OrderedStyle.LATIN_LOWER:
-      case OrderedStyle.LATIN_UPPER:
-      case OrderedStyle.ROMAN_LOWER:
-      case OrderedStyle.ROMAN_UPPER:
+      case ListStyle.DECIMAL:
+      case ListStyle.DECIMAL_LEADING:
+      case ListStyle.LATIN_LOWER:
+      case ListStyle.LATIN_UPPER:
+      case ListStyle.ROMAN_LOWER:
+      case ListStyle.ROMAN_UPPER:
         return SlotType.OL;
-      case UnorderedStyle.BULLET:
-      case UnorderedStyle.CIRCLE:
-      case UnorderedStyle.SQUARE:
+      case ListStyle.BULLET:
+      case ListStyle.CIRCLE:
+      case ListStyle.SQUARE:
         return SlotType.UL;
     }
   }
@@ -100,20 +100,20 @@ export class AppList {
 
   private renderOrderedStyles() {
     return [
-      <ion-select-option value={OrderedStyle.DECIMAL}>Decimal</ion-select-option>,
-      <ion-select-option value={OrderedStyle.DECIMAL_LEADING}>Decimal with Zero</ion-select-option>,
-      <ion-select-option value={OrderedStyle.LATIN_LOWER}>Latin Lowercase</ion-select-option>,
-      <ion-select-option value={OrderedStyle.LATIN_UPPER}>Latin Uppercase</ion-select-option>,
-      <ion-select-option value={OrderedStyle.ROMAN_LOWER}>Roman Lowercase</ion-select-option>,
-      <ion-select-option value={OrderedStyle.ROMAN_UPPER}>Roman Uppercase</ion-select-option>,
+      <ion-select-option value={ListStyle.DECIMAL}>Decimal</ion-select-option>,
+      <ion-select-option value={ListStyle.DECIMAL_LEADING}>Decimal with Zero</ion-select-option>,
+      <ion-select-option value={ListStyle.LATIN_LOWER}>Latin Lowercase</ion-select-option>,
+      <ion-select-option value={ListStyle.LATIN_UPPER}>Latin Uppercase</ion-select-option>,
+      <ion-select-option value={ListStyle.ROMAN_LOWER}>Roman Lowercase</ion-select-option>,
+      <ion-select-option value={ListStyle.ROMAN_UPPER}>Roman Uppercase</ion-select-option>,
     ];
   }
 
   private renderUnorderedStyles() {
     return [
-      <ion-select-option value={UnorderedStyle.BULLET}>Bullet</ion-select-option>,
-      <ion-select-option value={UnorderedStyle.CIRCLE}>Circle</ion-select-option>,
-      <ion-select-option value={UnorderedStyle.SQUARE}>Square</ion-select-option>,
+      <ion-select-option value={ListStyle.BULLET}>Bullet</ion-select-option>,
+      <ion-select-option value={ListStyle.CIRCLE}>Circle</ion-select-option>,
+      <ion-select-option value={ListStyle.SQUARE}>Square</ion-select-option>,
     ];
   }
 }

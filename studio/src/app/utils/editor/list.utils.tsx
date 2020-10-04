@@ -1,6 +1,6 @@
 import {SlotType} from './slot-type';
 import {SlotUtils} from './slot.utils';
-import {OrderedStyle, UnorderedStyle, mapHtmlListStyleTypeToListStyle} from './list-style-type';
+import {ListStyle, mapHtmlListStyleTypeToListStyle} from './list-style-type';
 
 export class ListUtils {
   static async isElementList(element: HTMLElement): Promise<SlotType.OL | SlotType.UL | undefined> {
@@ -15,7 +15,7 @@ export class ListUtils {
     }
   }
 
-  static async getListElementType(element: HTMLElement): Promise<OrderedStyle | UnorderedStyle | undefined> {
+  static async getListElementType(element: HTMLElement): Promise<ListStyle | undefined> {
     if (!SlotUtils.isNodeList(element)) {
       return undefined;
     }
@@ -25,7 +25,7 @@ export class ListUtils {
       (element && element.nodeName && element.nodeName.toLowerCase() === SlotType.UL)
     ) {
       const listStyle = mapHtmlListStyleTypeToListStyle(element.style.listStyleType);
-      return listStyle === undefined ? (element.nodeName.toLowerCase() === SlotType.OL ? OrderedStyle.DECIMAL : UnorderedStyle.BULLET) : listStyle;
+      return listStyle === undefined ? (element.nodeName.toLowerCase() === SlotType.OL ? ListStyle.DECIMAL : ListStyle.BULLET) : listStyle;
     }
   }
 }

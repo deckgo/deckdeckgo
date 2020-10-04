@@ -1,38 +1,35 @@
-export enum OrderedStyle {
+export enum ListStyle {
   DECIMAL = 'decimal',
   DECIMAL_LEADING = 'decimal-leading-zero',
   ROMAN_UPPER = 'upper-roman',
   ROMAN_LOWER = 'lower-roman',
   LATIN_UPPER = 'upper-latin',
   LATIN_LOWER = 'lower-latin',
-}
-
-export enum UnorderedStyle {
   BULLET = 'disc',
   CIRCLE = 'circle',
   SQUARE = 'square',
 }
 
-export function mapHtmlListStyleTypeToListStyle(listType: string): OrderedStyle | UnorderedStyle | undefined {
+export function mapHtmlListStyleTypeToListStyle(listType: string): ListStyle | undefined {
   switch (listType) {
     case 'decimal':
-      return OrderedStyle.DECIMAL;
+      return ListStyle.DECIMAL;
     case 'decimal-leading-zero':
-      return OrderedStyle.DECIMAL_LEADING;
+      return ListStyle.DECIMAL_LEADING;
     case 'upper-roman':
-      return OrderedStyle.ROMAN_UPPER;
+      return ListStyle.ROMAN_UPPER;
     case 'lower-roman':
-      return OrderedStyle.ROMAN_LOWER;
+      return ListStyle.ROMAN_LOWER;
     case 'lower-latin':
-      return OrderedStyle.LATIN_LOWER;
+      return ListStyle.LATIN_LOWER;
     case 'upper-latin':
-      return OrderedStyle.LATIN_UPPER;
+      return ListStyle.LATIN_UPPER;
     case 'disc':
-      return UnorderedStyle.BULLET;
+      return ListStyle.BULLET;
     case 'circle':
-      return UnorderedStyle.CIRCLE;
+      return ListStyle.CIRCLE;
     case 'square':
-      return UnorderedStyle.SQUARE;
+      return ListStyle.SQUARE;
     default:
       return undefined;
   }

@@ -1,7 +1,7 @@
 import {RevealSlotUtils} from './reveal-slot.utils';
 import {SlotType} from './slot-type';
 import {SlotUtils} from './slot.utils';
-import {OrderedStyle, UnorderedStyle} from './list-style-type';
+import {ListStyle} from './list-style-type';
 
 export class ToggleSlotUtils {
   static toggleSlotType(selectedElement: HTMLElement, type: SlotType): Promise<HTMLElement> {
@@ -36,7 +36,7 @@ export class ToggleSlotUtils {
     });
   }
 
-  static setListStyle(selectedElement: HTMLElement, listStyle: OrderedStyle | UnorderedStyle): Promise<HTMLElement> {
+  static setListStyle(selectedElement: HTMLElement, listStyle: ListStyle): Promise<HTMLElement> {
     return new Promise<HTMLElement>(async (resolve) => {
       if (!selectedElement || !selectedElement.parentElement) {
         resolve(null);
