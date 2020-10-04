@@ -1,6 +1,6 @@
-import { Component, Prop, h, Host, Element, State } from '@stencil/core';
+import {Component, Prop, h, Host, Element, State, Event, EventEmitter, Watch} from '@stencil/core';
 
-import { select } from 'd3-selection';
+import {select} from 'd3-selection';
 import cloud from 'd3-cloud';
 
 @Component({
@@ -15,23 +15,32 @@ export class DeckdeckgoWordCloud {
   @Prop() width: number = 500;
   @Prop() height: number = 500;
   @Prop() font: string = 'Impact';
+  @Prop({reflect: true}) colors: string = '#6114E5, #000000, #4E7224, #C43636, #7136C4, #76E514';
 
   @State()
   private editing: boolean = false;
 
-  constructor() {}
+  @Event()
+  private wordCloudDidChange: EventEmitter<HTMLElement>;
+
+  private _colors: string[] = [];
+
+  @Watch('colors')
+  colorsChanged() {
+    this._colors = this.colors.split(',');
+  }
 
   componentDidLoad() {
+    this.colorsChanged();
     this.wordCloud();
   }
 
   componentDidUpdate() {
-    this.clearSVG();
     this.wordCloud();
   }
 
   private edit(): Promise<void> {
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       if (!this.editable) {
         resolve();
         return;
@@ -44,7 +53,7 @@ export class DeckdeckgoWordCloud {
       if (wordsSlot) {
         setTimeout(() => {
           wordsSlot.setAttribute('contentEditable', 'true');
-          wordsSlot.addEventListener('blur', () => this.applyChanges(), { once: true });
+          wordsSlot.addEventListener('blur', () => this.applyChanges(), {once: true});
 
           wordsSlot.focus();
         }, 100);
@@ -55,13 +64,15 @@ export class DeckdeckgoWordCloud {
   }
 
   private stopEditing(): Promise<void> {
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       this.editing = false;
 
       const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
 
       if (wordsSlot) {
         wordsSlot.removeAttribute('contentEditable');
+
+        this.wordCloudDidChange.emit(this.el);
       }
 
       resolve();
@@ -73,12 +84,12 @@ export class DeckdeckgoWordCloud {
 
     const layout = cloud()
       .size([this.width, this.height])
-      .words(words.map(d => ({ text: d, size: 10 + Math.random() * 100, color: this.getRandomColor() })))
+      .words(words.map((d) => ({text: d, size: 10 + Math.random() * 110, color: this.getRandomColor()})))
       .rotate(() => ~~(Math.random() * 2) * 90)
       .padding(5)
       .font('Impact')
-      .fontSize(d => d.size)
-      .on('end', words => this.draw(words, this));
+      .fontSize((d) => d.size)
+      .on('end', (words) => this.draw(words, this));
 
     layout.start();
   }
@@ -88,6 +99,8 @@ export class DeckdeckgoWordCloud {
   }
 
   private draw(words, self: DeckdeckgoWordCloud) {
+    self.clearSVG();
+
     select(self.el.shadowRoot.querySelector('svg'))
       .attr('width', self.width)
       .attr('height', self.height)
@@ -97,17 +110,22 @@ export class DeckdeckgoWordCloud {
       .data(words)
       .enter()
       .append('text')
-      .style('font-size', d => d.size + 'px')
-      .style('fill', d => d.color)
+      .style('font-size', (d) => d.size + 'px')
+      .style('fill', (d) => d.color)
       .style('font-family', self.font)
       .attr('text-anchor', 'middle')
-      .attr('transform', d => 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')')
-      .text(d => d.text);
+      .attr('transform', (d) => 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')')
+      .text((d) => d.text);
   }
 
   private getRandomColor() {
-    const colors = ['#6114E5', '#000000', '#4E7224', '#C43636', '#7136C4', '#76E514'];
-    const index = Math.floor(Math.random() * colors.length) + 1;
+    const colors = this._colors;
+
+    if (!colors || !colors.length) {
+      return '#000000';
+    }
+
+    const index = this.getRandomIntInRange(0, colors.length);
     return colors[index];
   }
 
@@ -120,9 +138,12 @@ export class DeckdeckgoWordCloud {
   }
 
   private async applyChanges() {
-    this.clearSVG();
     this.wordCloud();
     await this.stopEditing();
+  }
+
+  private getRandomIntInRange(min: number, max: number) {
+    return Math.floor(Math.random() * max + min);
   }
 
   render() {
@@ -130,9 +151,7 @@ export class DeckdeckgoWordCloud {
       <Host
         class={{
           'deckgo-word-cloud-edit': this.editing,
-          '"word-cloud': true,
-        }}
-      >
+        }}>
         <div class="deckgo-word-cloud-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
           <slot name="words" />
           <svg class="words"></svg>

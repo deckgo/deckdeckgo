@@ -1,13 +1,15 @@
 {
-  "arrowParens": "avoid",
-  "bracketSpacing": true,
-  "jsxBracketSameLine": false,
-  "jsxSingleQuote": false,
-  "quoteProps": "consistent",
-  "printWidth": 180,
-  "semi": true,
+  "printWidth": 160,
   "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "useTabs": false
+  "arrowParens": "always",
+  "bracketSpacing": false,
+  "jsxBracketSameLine": true,
+  "overrides": [
+    {
+      "files": ["*.scss", "*.css"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
 }
