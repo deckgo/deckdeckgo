@@ -54,6 +54,13 @@ export class AppList {
   }
 
   private async setListStyle($event: CustomEvent) {
+    // If this condition evaluates to true, that simply means
+    // the tabs for the list types (ordered/unordered) was switched.
+    // No actual style change was made.
+    if ($event.detail.value === '' || $event.detail.value === this.selectedStyle.toString()) {
+      return;
+    }
+
     this.listType = this.listStyleToSlotType($event.detail.value);
     this.selectedStyle = $event.detail.value;
     this.emitSelection();
@@ -77,7 +84,7 @@ export class AppList {
           <ion-item class="select">
             <ion-label>List Style</ion-label>
             <ion-select
-              value={this.selectedStyle}
+              value={this.listStyleToSlotType(this.selectedStyle) === this.listType ? this.selectedStyle : ''}
               placeholder="Select style"
               onIonChange={($event: CustomEvent) => this.setListStyle($event)}
               interface="popover"
