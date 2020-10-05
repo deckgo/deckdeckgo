@@ -272,7 +272,9 @@ export class AppElementStyle {
       return undefined;
     }
 
-    return <app-list selectedElement={this.selectedElement} onToggleList={() => this.closePopover()}></app-list>;
+    return (
+      <app-list selectedElement={this.selectedElement} onToggleList={() => this.closePopover()} onListStyleChanged={() => this.emitStyleChange()}></app-list>
+    );
   }
 
   private renderFontSize() {
