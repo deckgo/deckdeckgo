@@ -20,8 +20,6 @@ import {MoreAction} from '../../../../../utils/editor/more-action';
 import {DemoAction} from '../../../../../utils/editor/demo-action';
 import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
 
-import {ListStyle} from '../../../../../utils/editor/list-style-type';
-
 @Component({
   tag: 'app-actions-element',
   styleUrl: 'app-actions-element.scss',
@@ -143,15 +141,6 @@ export class AppActionsElement {
     }
 
     await this.toggleList($event.detail);
-  }
-
-  @Listen('listStyleChanged', {target: 'document'})
-  async onToggleListStyle($event: CustomEvent<ListStyle>) {
-    if (!$event) {
-      return;
-    }
-
-    await this.setListStyle($event.detail);
   }
 
   @Method()
@@ -924,19 +913,6 @@ export class AppActionsElement {
       } else {
         await this.transformSlotType(destinationListType);
       }
-
-      resolve();
-    });
-  }
-
-  private setListStyle(listStyle: ListStyle): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.parentElement) {
-        resolve();
-        return;
-      }
-
-      await ToggleSlotUtils.setListStyle(this.selectedElement, listStyle);
 
       resolve();
     });

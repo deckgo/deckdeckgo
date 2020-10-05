@@ -2,8 +2,8 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {SlotType} from '../../../../../utils/editor/slot-type';
 import {ListUtils} from '../../../../../utils/editor/list.utils';
-
 import {ListStyle} from '../../../../../utils/editor/list-style-type';
+import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-list',
@@ -28,42 +28,44 @@ export class AppList {
     this.selectedStyle = await ListUtils.getListElementType(this.selectedElement);
   }
 
-  private listStyleToSlotType(listStyle: ListStyle) {
-    switch (listStyle) {
-      case ListStyle.DECIMAL:
-      case ListStyle.DECIMAL_LEADING:
-      case ListStyle.LATIN_LOWER:
-      case ListStyle.LATIN_UPPER:
-      case ListStyle.ROMAN_LOWER:
-      case ListStyle.ROMAN_UPPER:
-        return SlotType.OL;
-      case ListStyle.BULLET:
-      case ListStyle.CIRCLE:
-      case ListStyle.SQUARE:
-        return SlotType.UL;
-    }
-  }
-
-  private async emitSelection() {
-    this.listStyleChanged.emit(this.selectedStyle);
-    this.toggleList.emit(this.listType);
-  }
-
   private async setListType($event: CustomEvent) {
-    this.listType = $event.detail.value;
-  }
-
-  private async setListStyle($event: CustomEvent) {
-    // If this condition evaluates to true, that simply means
-    // the tabs for the list types (ordered/unordered) was switched.
-    // No actual style change was made.
-    if ($event.detail.value === '' || $event.detail.value === this.selectedStyle.toString()) {
+    if (!this.selectedElement || !$event || !$event.detail) {
       return;
     }
 
-    this.listType = this.listStyleToSlotType($event.detail.value);
-    this.selectedStyle = $event.detail.value;
-    this.emitSelection();
+    this.listType = $event.detail.value;
+
+    await this.removeStyle();
+
+    this.toggleList.emit(this.listType);
+  }
+
+  private async setListStyle($event: CustomEvent) {
+    if (!this.selectedElement || !$event || !$event.detail) {
+      return;
+    }
+
+    await this.updateStyle($event.detail.value);
+  }
+
+  private async updateStyle(style: ListStyle) {
+    this.selectedStyle = style;
+
+    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+      this.selectedElement.style['--reveal-list-style'] = this.selectedStyle;
+    } else {
+      this.selectedElement.style.listStyleType = this.selectedStyle;
+    }
+
+    this.listStyleChanged.emit();
+  }
+
+  private async removeStyle() {
+    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+      this.selectedElement.style['--reveal-list-style'] = '';
+    } else {
+      this.selectedElement.style.listStyleType = '';
+    }
   }
 
   render() {
@@ -71,20 +73,28 @@ export class AppList {
       <app-expansion-panel>
         <ion-label slot="title">List</ion-label>
 
-        <ion-segment onIonChange={($event: CustomEvent) => this.setListType($event)} value={this.listType}>
-          <ion-segment-button value={SlotType.OL}>
-            <ion-label>Ordered</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value={SlotType.UL}>
-            <ion-label>Unordered</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-        <br></br>
+        <ion-list>
+          <ion-item class="select">
+            <ion-label>List</ion-label>
+
+            <ion-select
+              value={this.listType}
+              placeholder="Select a type of list"
+              onIonChange={($event: CustomEvent) => this.setListType($event)}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end">
+              <ion-select-option value={SlotType.OL}>Ordered</ion-select-option>
+              <ion-select-option value={SlotType.UL}>Unordered</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
         <ion-list>
           <ion-item class="select">
             <ion-label>List Style</ion-label>
             <ion-select
-              value={this.listStyleToSlotType(this.selectedStyle) === this.listType ? this.selectedStyle : ''}
+              value={this.selectedStyle}
               placeholder="Select style"
               onIonChange={($event: CustomEvent) => this.setListStyle($event)}
               interface="popover"
