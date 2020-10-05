@@ -34,6 +34,8 @@ export namespace Components {
     }
     interface AppDeckAnimation {
     }
+    interface AppDeckAutoSlide {
+    }
     interface AppDeckBackground {
     }
     interface AppDeckEvents {
@@ -219,6 +221,12 @@ declare global {
     var HTMLAppDeckAnimationElement: {
         prototype: HTMLAppDeckAnimationElement;
         new (): HTMLAppDeckAnimationElement;
+    };
+    interface HTMLAppDeckAutoSlideElement extends Components.AppDeckAutoSlide, HTMLStencilElement {
+    }
+    var HTMLAppDeckAutoSlideElement: {
+        prototype: HTMLAppDeckAutoSlideElement;
+        new (): HTMLAppDeckAutoSlideElement;
     };
     interface HTMLAppDeckBackgroundElement extends Components.AppDeckBackground, HTMLStencilElement {
     }
@@ -523,6 +531,7 @@ declare global {
         "app-components-youtube": HTMLAppComponentsYoutubeElement;
         "app-deck-actions": HTMLAppDeckActionsElement;
         "app-deck-animation": HTMLAppDeckAnimationElement;
+        "app-deck-auto-slide": HTMLAppDeckAutoSlideElement;
         "app-deck-background": HTMLAppDeckBackgroundElement;
         "app-deck-events": HTMLAppDeckEventsElement;
         "app-deck-extra-features": HTMLAppDeckExtraFeaturesElement;
@@ -601,6 +610,8 @@ declare namespace LocalJSX {
     interface AppDeckActions {
     }
     interface AppDeckAnimation {
+    }
+    interface AppDeckAutoSlide {
     }
     interface AppDeckBackground {
     }
@@ -717,6 +728,7 @@ declare namespace LocalJSX {
         "app-components-youtube": AppComponentsYoutube;
         "app-deck-actions": AppDeckActions;
         "app-deck-animation": AppDeckAnimation;
+        "app-deck-auto-slide": AppDeckAutoSlide;
         "app-deck-background": AppDeckBackground;
         "app-deck-events": AppDeckEvents;
         "app-deck-extra-features": AppDeckExtraFeatures;
@@ -785,6 +797,7 @@ declare module "@stencil/core" {
             "app-components-youtube": LocalJSX.AppComponentsYoutube & JSXBase.HTMLAttributes<HTMLAppComponentsYoutubeElement>;
             "app-deck-actions": LocalJSX.AppDeckActions & JSXBase.HTMLAttributes<HTMLAppDeckActionsElement>;
             "app-deck-animation": LocalJSX.AppDeckAnimation & JSXBase.HTMLAttributes<HTMLAppDeckAnimationElement>;
+            "app-deck-auto-slide": LocalJSX.AppDeckAutoSlide & JSXBase.HTMLAttributes<HTMLAppDeckAutoSlideElement>;
             "app-deck-background": LocalJSX.AppDeckBackground & JSXBase.HTMLAttributes<HTMLAppDeckBackgroundElement>;
             "app-deck-events": LocalJSX.AppDeckEvents & JSXBase.HTMLAttributes<HTMLAppDeckEventsElement>;
             "app-deck-extra-features": LocalJSX.AppDeckExtraFeatures & JSXBase.HTMLAttributes<HTMLAppDeckExtraFeaturesElement>;
