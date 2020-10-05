@@ -19,11 +19,12 @@ export class AppDeckAutoSlide {
       <ion-content class="ion-padding">
         <main>
           <h1 id="app-deck-auto-slide-auto-slide">Auto Slide</h1>
-          <p>Set a presentation to swipe slides automatically after X seconds.</p>
-          <p>Per default, the auto slide interval is set to 5000 ms</p>
+          <p>The presentations can be configured to swipe slides automatically, without any user inputs. </p>
+          <p>Per default, if activated, the auto slide interval is set to 5000 ms</p>
           <h2 id="app-deck-auto-slide-properties">Properties</h2>
           <p>
-            This new options comes with two new properties which can be optionally set on the deck (<code>&lt;deckgo-deck/&gt;</code>) level.
+            Two options are available to make the decks step through slides automatically. The properties have to be set on the root element{' '}
+            <code>&lt;deckgo-deck/&gt;</code>.
           </p>
           <table>
             <thead>
@@ -43,7 +44,7 @@ export class AppDeckAutoSlide {
                 <td>
                   <code>auto-slide</code>
                 </td>
-                <td>Eneable auto slide</td>
+                <td>Enable auto slide</td>
                 <td>boolean</td>
                 <td>false</td>
               </tr>
@@ -54,7 +55,7 @@ export class AppDeckAutoSlide {
                 <td>
                   <code>auto-slide-interval</code>
                 </td>
-                <td>The interval (in milliseconds) on how often to swipe the slides</td>
+                <td>The interval provided in milliseconds)</td>
                 <td>number</td>
                 <td>5000</td>
               </tr>
