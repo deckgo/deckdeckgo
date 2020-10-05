@@ -16,6 +16,7 @@ import { EditAction } from "./app/utils/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/utils/editor/image-action";
 import { SlotType } from "./app/utils/editor/slot-type";
+import { ListStyle } from "./app/utils/editor/list-style-type";
 import { TargetElement } from "./app/utils/editor/target-element";
 import { MoreAction } from "./app/utils/editor/more-action";
 import { ItemReorderEventDetail } from "@ionic/core";
@@ -1497,6 +1498,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppList {
+        "onListStyleChanged"?: (event: CustomEvent<ListStyle>) => void;
         "onToggleList"?: (event: CustomEvent<SlotType.OL | SlotType.UL>) => void;
         "selectedElement"?: HTMLElement;
     }
