@@ -1,7 +1,7 @@
 {
-  "name": "word-cloud",
+  "name": "@deckdeckgo/word-cloud",
   "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "description": "A Web Component for creating word clouds",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -35,5 +35,32 @@
     "husky": "^4.2.5",
     "prettier": "2.1.1",
     "pretty-quick": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "Achilles Moraites",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "cloud",
+    "word",
+    "word cloud"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

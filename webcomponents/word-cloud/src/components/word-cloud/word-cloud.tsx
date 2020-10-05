@@ -87,7 +87,7 @@ export class DeckdeckgoWordCloud {
       .words(words.map((d) => ({text: d, size: 10 + Math.random() * 110, color: this.getRandomColor()})))
       .rotate(() => ~~(Math.random() * 2) * 90)
       .padding(5)
-      .font('Impact')
+      .font(this.font)
       .fontSize((d) => d.size)
       .on('end', (words) => this.draw(words, this));
 

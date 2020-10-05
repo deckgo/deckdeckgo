@@ -1,4 +1,4 @@
-# my-component
+# deckgo-word-cloud
 
 <!-- Auto Generated Below -->
 
