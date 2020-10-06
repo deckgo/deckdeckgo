@@ -23,7 +23,7 @@ export class PaletteService {
       const palette = await get<DeckdeckgoPalette[]>('deckdeckgo_palette');
       paletteStore.state.palette = palette ?? DEFAULT_PALETTE;
     } catch (err) {
-      console.warn("Couldn't find stored palette. Proceeding with default");
+      console.warn(`Couldn't find stored palette. Proceeding with default`);
       paletteStore.state.palette = DEFAULT_PALETTE;
     }
   }
