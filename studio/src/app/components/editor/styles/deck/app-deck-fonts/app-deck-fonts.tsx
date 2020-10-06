@@ -35,7 +35,7 @@ export class AppDeckFonts {
 
   private initSelectedFont(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.deckElement || !this.deckElement.style || !this.deckElement.style.getPropertyValue('font-family')) {
+      if (!this.deckElement || !this.deckElement?.style || !this.deckElement.style.getPropertyValue('font-family')) {
         this.selectedFont = undefined;
         resolve();
         return;

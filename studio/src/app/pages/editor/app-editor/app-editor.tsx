@@ -274,21 +274,21 @@ export class AppEditor {
   }
 
   private async initDeckStyle() {
-    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.style) {
+    if (deckStore.state.deck?.data?.attributes?.style) {
       this.style = await convertStyle(deckStore.state.deck.data.attributes.style);
     } else {
       this.style = undefined;
     }
 
-    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.animation) {
+    if (deckStore.state.deck?.data?.attributes?.animation) {
       this.animation = deckStore.state.deck.data.attributes.animation;
     }
 
-    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.direction) {
+    if (deckStore.state.deck?.data?.attributes?.direction) {
       this.direction = deckStore.state.deck.data.attributes.direction;
     }
 
-    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.directionMobile) {
+    if (deckStore.state.deck?.data?.attributes?.directionMobile) {
       this.directionMobile = deckStore.state.deck.data.attributes.directionMobile;
     }
 
@@ -588,7 +588,7 @@ export class AppEditor {
   @Listen('signIn', {target: 'document'})
   async signIn() {
     navStore.state.nav = {
-      url: '/signin' + (window && window.location ? window.location.pathname : ''),
+      url: '/signin' + (window.location?.pathname ?? ''),
       direction: NavDirection.FORWARD,
     };
   }
@@ -644,10 +644,7 @@ export class AppEditor {
   }
 
   render() {
-    const autoSlide: boolean =
-      deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.autoSlide !== undefined
-        ? deckStore.state.deck.data.attributes.autoSlide
-        : false;
+    const autoSlide: boolean = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,

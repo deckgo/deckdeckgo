@@ -101,7 +101,7 @@ export class AppDashboard {
       const promises = [];
       decks.forEach((deck: Deck) => {
         if (deck && deck.data) {
-          if (deck.data.clone && deck.data.clone.deck_id_from) {
+          if (deck.data.clone?.deck_id_from) {
             promises.push(this.initDeckCloneInProgress(deck));
           } else if (deck.data.slides && deck.data.slides.length >= 1) {
             promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
@@ -125,7 +125,7 @@ export class AppDashboard {
       const promises: Promise<void>[] = [];
 
       this.decks.forEach((deck: DeckAndFirstSlide) => {
-        if (deck && deck.deck && deck.deck.data && deck.deck.data.clone !== undefined) {
+        if (deck.deck?.data?.clone !== undefined) {
           promises.push(this.deckDashboardService.snapshot(deck.deck, this.watchClonedDeck));
         }
       });
@@ -199,7 +199,7 @@ export class AppDashboard {
 
   private async convertStyle(deck: Deck): Promise<any> {
     let style: any;
-    if (deck.data && deck.data.attributes && deck.data.attributes.style) {
+    if (deck.data?.attributes?.style) {
       style = await convertStyle(deck.data.attributes.style);
     } else {
       style = undefined;
@@ -225,7 +225,7 @@ export class AppDashboard {
       }
 
       const matchingDecks: DeckAndFirstSlide[] = this.decks.filter((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck.deck && matchDeck.deck.data && matchDeck.deck.data.name && matchDeck.deck.data.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        return matchDeck.deck?.data?.name?.toLowerCase().indexOf(value.toLowerCase()) > -1;
       });
 
       this.filteredDecks = [...matchingDecks];
@@ -236,7 +236,7 @@ export class AppDashboard {
 
   private async signIn() {
     navStore.state.nav = {
-      url: '/signin' + (window && window.location ? window.location.pathname : ''),
+      url: '/signin' + (window.location?.pathname ?? ''),
       direction: NavDirection.FORWARD,
     };
   }
@@ -264,7 +264,7 @@ export class AppDashboard {
       return;
     }
 
-    if (deck && deck.deck && deck.deck.data && deck.deck.data.clone) {
+    if (deck.deck?.data?.clone) {
       return;
     }
 
@@ -316,7 +316,7 @@ export class AppDashboard {
 
       const clone: DeckDashboardCloneResult = $event.detail;
 
-      const index: number = await this.findDeckIndex(clone && clone.from ? clone.from.id : undefined);
+      const index: number = await this.findDeckIndex(clone.from?.id ?? undefined);
 
       if (index < 0) {
         resolve();
@@ -349,7 +349,7 @@ export class AppDashboard {
       }
 
       const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck.deck && matchDeck.deck.id === id;
+        return matchDeck.deck?.id === id;
       });
 
       resolve(index);

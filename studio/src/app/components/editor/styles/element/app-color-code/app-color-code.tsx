@@ -67,13 +67,13 @@ export class AppColorCode {
   // prettier-ignore
   private initCurrentHiglight(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-            this.highlightLines = this.selectedElement && this.selectedElement.getAttribute('highlight-lines') ? this.selectedElement.getAttribute('highlight-lines') : null;
+            this.highlightLines = this.selectedElement?.getAttribute('highlight-lines') ?? null;
 
-            const color: string = this.selectedElement && this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-background') : '62,69,100';
+            const color: string = this.selectedElement?.style?.getPropertyValue('--deckgo-highlight-code-line-background') ?? '62,69,100';
 
       let styleColor: InitStyleColor = await ColorUtils.splitColor(color);
 
-      this.highlightColor = styleColor.rgb ? styleColor.rgb : color;
+      this.highlightColor = styleColor.rgb ?? color;
       this.highlightColorOpacity = styleColor.opacity;
 
       resolve();
@@ -115,12 +115,12 @@ export class AppColorCode {
   }
 
   private setCodeColor = async ($event: CustomEvent) => {
-    this.codeColor = $event.detail.rgb ? $event.detail.rgb : $event.detail.hex;
+    this.codeColor = $event.detail.rgb ?? $event.detail.hex;
     await this.applyCodeColor();
   };
 
   private setHighlightColor = async ($event: CustomEvent) => {
-    this.highlightColor = $event.detail.rgb ? $event.detail.rgb : $event.detail.hex;
+    this.highlightColor = $event.detail.rgb ?? $event.detail.hex;
     await this.applyHighlightColor();
   };
 
@@ -204,28 +204,28 @@ export class AppColorCode {
       let color: string;
 
       if (this.codeColorType === CodeColorType.PUNCTUATION) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') : '98,114,164';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ?? '98,114,164';
       } else if (this.codeColorType === CodeColorType.PROPERTY) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') : '189,147,249';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ?? '189,147,249';
       } else if (this.codeColorType === CodeColorType.SELECTOR) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') : '80,250,123';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ?? '80,250,123';
       } else if (this.codeColorType === CodeColorType.OPERATOR) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') : '255,121,198';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ?? '255,121,198';
       } else if (this.codeColorType === CodeColorType.KEYWORD) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') : '255,121,198';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ?? '255,121,198';
       } else if (this.codeColorType === CodeColorType.FUNCTION) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') : '255,184,108';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ?? '255,184,108';
       } else if (this.codeColorType === CodeColorType.REGEX) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') : '241,250,140';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ?? '241,250,140';
       } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') : '153,153,153';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ?? '153,153,153';
       } else {
-                color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ? this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') : '153,153,153';
+        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ?? '153,153,153';
       }
 
       let styleColor: InitStyleColor = await ColorUtils.splitColor(color);
 
-      this.codeColor = styleColor.rgb ? styleColor.rgb : color;
+      this.codeColor = styleColor.rgb ?? color;
       this.codeColorOpacity = styleColor.opacity;
 
       resolve();

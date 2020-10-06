@@ -76,9 +76,7 @@ export class AppDeckHeaderFooter {
 
   private hasOneOptionAtLeast(): boolean {
     return (
-      userStore.state.user &&
-      userStore.state.user.data &&
-      userStore.state.user.data.social &&
+      userStore.state.user?.data?.social &&
       (userStore.state.user.data.social.twitter !== null ||
         userStore.state.user.data.social.linkedin !== null ||
         userStore.state.user.data.social.dev !== null ||

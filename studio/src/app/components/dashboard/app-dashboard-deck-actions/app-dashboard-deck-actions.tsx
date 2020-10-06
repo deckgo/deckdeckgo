@@ -37,7 +37,7 @@ export class AppDashboardDeckActions {
       return;
     }
 
-    const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
+    const disabled: boolean = this.deck.data?.clone !== undefined;
 
     if (disabled) {
       return;
@@ -51,7 +51,7 @@ export class AppDashboardDeckActions {
       component: 'app-deck-delete',
       componentProps: {
         deckName: this.deck.data.name,
-        published: this.deck.data.meta && this.deck.data.meta.published,
+        published: this.deck.data.meta?.published,
       },
     });
 
@@ -66,7 +66,7 @@ export class AppDashboardDeckActions {
 
   private deleteDeck(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
+      if (!this.deck || !this.deck.id || this.deck.id === '') {
         resolve();
         return;
       }
@@ -102,14 +102,14 @@ export class AppDashboardDeckActions {
         return;
       }
 
-      const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
+      const disabled: boolean = this.deck.data?.clone !== undefined;
 
       if (disabled) {
         resolve();
         return;
       }
 
-      if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
+      if (!this.deck || !this.deck.id || this.deck.id === '') {
         resolve();
         return;
       }

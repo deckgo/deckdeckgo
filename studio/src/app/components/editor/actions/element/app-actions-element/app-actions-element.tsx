@@ -765,13 +765,7 @@ export class AppActionsElement {
         await this.detachMoveToolbarOnElement();
 
         this.elementResizeObserver = new ResizeObserver(async (entries) => {
-          if (
-            entries &&
-            entries.length > 0 &&
-            entries[0].target &&
-            entries[0].target.nodeName &&
-            entries[0].target.nodeName.toLowerCase().indexOf('deckgo-slide') === -1
-          ) {
+          if (entries?.[0]?.target?.nodeName?.toLowerCase().indexOf('deckgo-slide') === -1) {
             await this.resizeSlideContent();
           }
         });

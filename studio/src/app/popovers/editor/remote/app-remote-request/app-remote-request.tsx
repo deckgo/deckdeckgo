@@ -23,7 +23,7 @@ export class AppRemoteRequest {
   }
 
   async componentDidLoad() {
-    this.request = remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length >= 1 ? remoteStore.state.pendingRequests[0] : undefined;
+    this.request = remoteStore.state.pendingRequests?.length >= 1 ? remoteStore.state.pendingRequests[0] : undefined;
   }
 
   private async shiftRequestsAndClose() {

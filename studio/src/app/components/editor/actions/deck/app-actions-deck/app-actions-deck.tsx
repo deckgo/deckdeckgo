@@ -112,16 +112,16 @@ export class AppActionsDeck {
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data) {
+      if (detail?.data) {
         if (detail.data.template === SlideTemplate.GIF) {
           await this.openGifPicker();
-        } else if (detail.data.template === SlideTemplate.YOUTUBE) {
+        } else if (detail.data?.template === SlideTemplate.YOUTUBE) {
           await this.openYoutube();
         } else if (detail.data.template === SlideTemplate.CHART) {
           await this.openChart(detail.data.attributes);
         } else if (detail.data.template === SlideTemplate.POLL) {
           await this.openPoll();
-        } else if (detail.data.template === SlideTemplate.SPLIT && detail.data.attributes && detail.data.attributes.type === SlideSplitType.DEMO) {
+        } else if (detail.data.template === SlideTemplate.SPLIT && detail.data.attributes?.type === SlideSplitType.DEMO) {
           await this.openDemo();
         } else if (detail.data.template === SlideTemplate.PLAYGROUND) {
           await this.openPlayground();
