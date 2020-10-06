@@ -23,6 +23,8 @@ export class DeckdeckgoWordCloud {
   @Event()
   private wordCloudDidChange: EventEmitter<HTMLElement>;
 
+  private containerRef!: HTMLDivElement;
+
   private _colors: string[] = [];
 
   @Watch('colors')
@@ -30,7 +32,8 @@ export class DeckdeckgoWordCloud {
     this._colors = this.colors.split(',');
   }
 
-  componentDidLoad() {
+  async componentDidLoad() {
+    await this.updatePlaceholder();
     this.colorsChanged();
     this.wordCloud();
   }
@@ -79,6 +82,36 @@ export class DeckdeckgoWordCloud {
     });
   }
 
+  private parseSlottedWords(): string[] {
+    const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+    if (!wordsSlot) {
+      return [];
+    }
+
+    return wordsSlot.innerText.split(' ');
+  }
+
+  private updatePlaceholder() {
+    return new Promise<void>((resolve) => {
+      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+      this.containerRef.children[0].innerHTML = '';
+
+      const div: HTMLElement = document.createElement('div');
+
+      div.innerHTML = wordsSlot.innerHTML;
+
+      if (div.childNodes) {
+        this.containerRef.children[0].append(...Array.from(div.childNodes));
+      }
+
+      resolve();
+    });
+  }
+
+  private clearSVG() {
+    select(this.el.shadowRoot.querySelector('svg')).select('g').remove('text');
+  }
+
   wordCloud() {
     const words = this.parseSlottedWords();
 
@@ -92,10 +125,6 @@ export class DeckdeckgoWordCloud {
       .on('end', (words) => this.draw(words, this));
 
     layout.start();
-  }
-
-  private clearSVG() {
-    select(this.el.shadowRoot.querySelector('svg')).select('g').remove('text');
   }
 
   private draw(words, self: DeckdeckgoWordCloud) {
@@ -129,17 +158,10 @@ export class DeckdeckgoWordCloud {
     return colors[index];
   }
 
-  private parseSlottedWords(): string[] {
-    const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
-    if (!wordsSlot) {
-      return [];
-    }
-    return wordsSlot.innerText.split(' ');
-  }
-
   private async applyChanges() {
     this.wordCloud();
     await this.stopEditing();
+    await this.updatePlaceholder();
   }
 
   private getRandomIntInRange(min: number, max: number) {
@@ -152,7 +174,12 @@ export class DeckdeckgoWordCloud {
         class={{
           'deckgo-word-cloud-edit': this.editing,
         }}>
-        <div class="deckgo-word-cloud-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
+        <div
+          class="deckgo-word-cloud-container"
+          ref={(el) => (this.containerRef = el as HTMLInputElement)}
+          onMouseDown={() => this.edit()}
+          onTouchStart={() => this.edit()}>
+          <div class="placeholder"></div>
           <slot name="words" />
           <svg class="words"></svg>
         </div>
