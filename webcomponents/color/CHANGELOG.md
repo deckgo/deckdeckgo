@@ -1,3 +1,9 @@
+# 3.1.0 (2020-10-07)
+
+### Features
+
+- show focus state
+
 # 3.0.0 (2020-09-03)
 
 ### Breaking Changes
