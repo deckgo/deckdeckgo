@@ -36,7 +36,8 @@ div.color-container {
       box-shadow: 0 0 8px 4px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
     }
 
-    &:not(.selected):hover {
+    &:not(.selected):hover,
+    &:not(.selected):focus {
       box-shadow: 0 0 8px 2px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
     }
   }
