@@ -42,6 +42,27 @@ export class BoxShadow {
             this.maxHLength = this.selectedElement.offsetWidth / 2;
             this.maxVLength = this.selectedElement.offsetHeight / 2;
             this.maxBlurRadius = this.selectedElement.offsetHeight * 0.75;
+
+            const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement);
+
+            if (!style) {
+                return;
+            }
+
+            if (style.boxShadow === 'none') {
+                return;
+            } else {
+                const boxShadowSplitColor = style.boxShadow.split(')');
+                const initialColorRgba = `${boxShadowSplitColor[0]})`;
+                this.color = ColorUtils.rgbaToHex(`${boxShadowSplitColor[0]})`);
+                this.boxShadowProperties.set('opacity', Number(initialColorRgba.substring(initialColorRgba.lastIndexOf(',') + 1, initialColorRgba.lastIndexOf(')')).trim()) * 100);
+                const boxShadowOtherProperties = boxShadowSplitColor[1].split(/(\s+)/).filter( e => e.trim().length > 0);
+                this.boxShadowProperties.set('hLength', Number(boxShadowOtherProperties[0].replace('px', '')));
+                this.boxShadowProperties.set('vLength', Number(boxShadowOtherProperties[1].replace('px', '')));
+                this.boxShadowProperties.set('blurRadius', Number(boxShadowOtherProperties[2].replace('px', '')));
+                this.boxShadowProperties.set('spreadRadius', Number(boxShadowOtherProperties[3].replace('px', '')));
+                this.boxShadowProperties = new Map<string, number>(this.boxShadowProperties);
+            }
         }
     }
 
@@ -64,7 +85,7 @@ export class BoxShadow {
     }
 
     private setCodeColor = async ($event: CustomEvent) => {
-        this.color = $event.detail.rgb ? $event.detail.rgb : $event.detail.hex;
+        this.color = $event.detail.hex;
         await this.applyCodeColor();
     };
 
@@ -74,9 +95,8 @@ export class BoxShadow {
                 resolve();
                 return;
             }
-
-            this.color = `rgba(${this.color},${ColorUtils.transformOpacity(this.boxShadowProperties.get('opacity'))})`;
-            this.selectedElement.style.boxShadow = `${this.boxShadowProperties.get('hLength')}px ${this.boxShadowProperties.get('vLength')}px ${this.boxShadowProperties.get('blurRadius')}px ${this.boxShadowProperties.get('spreadRadius')}px ${this.color}`;
+            const newColor = ColorUtils.hexToRGBA((this.color), ColorUtils.transformOpacity(this.boxShadowProperties.get('opacity')));
+            this.selectedElement.style.boxShadow = `${this.boxShadowProperties.get('hLength')}px ${this.boxShadowProperties.get('vLength')}px ${this.boxShadowProperties.get('blurRadius')}px ${this.boxShadowProperties.get('spreadRadius')}px ${newColor}`;
             this.emitBoxShadowChange();
             resolve();
         });
@@ -92,7 +112,8 @@ export class BoxShadow {
         }
         this.boxShadowProperties.set(property, $event.detail.value);
         this.boxShadowProperties = new Map<string, number>(this.boxShadowProperties);
-        this.selectedElement.style.boxShadow = `${this.boxShadowProperties.get('hLength')}px ${this.boxShadowProperties.get('vLength')}px ${this.boxShadowProperties.get('blurRadius')}px ${this.boxShadowProperties.get('spreadRadius')}px ${this.color}`;
+        const newColor = ColorUtils.hexToRGBA((this.color), ColorUtils.transformOpacity(this.boxShadowProperties.get('opacity')));
+        this.selectedElement.style.boxShadow = `${this.boxShadowProperties.get('hLength')}px ${this.boxShadowProperties.get('vLength')}px ${this.boxShadowProperties.get('blurRadius')}px ${this.boxShadowProperties.get('spreadRadius')}px ${newColor}`;
         this.emitBoxShadowChange();
     }
 
