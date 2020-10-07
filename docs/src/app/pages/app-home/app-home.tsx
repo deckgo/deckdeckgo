@@ -22,10 +22,12 @@ export class AppHome {
 
           <section class="overview" padding-top margin-top>
             <p no-margin>
-              <p no-margin>
-                Create a PWA presentation using Web Components, <a href="https://ionicframework.com">Ionic</a> components and HTML or Markdown 🚀 Cherry on the
-                cake 🍒🎂 DeckDeckGo comes with a <a href="https://deckdeckgo.app">Progressive Web App</a> to remote control your slides 📱
-              </p>
+              Create a PWA presentation using Web Components,{' '}
+              <a href="https://ionicframework.com" rel="noopener norefferer">
+                Ionic
+              </a>{' '}
+              components and HTML or Markdown 🚀 Cherry on the cake 🍒🎂 DeckDeckGo comes with a <a href="https://deckdeckgo.app">Progressive Web App</a> to
+              remote control your slides 📱
             </p>
 
             <ul>
