@@ -1,0 +1,26 @@
+:host {
+  ::slotted([slot="words"]) {
+    display: none;
+  }
+
+  div.placeholder:not(:empty) {
+    display: none;
+  }
+}
+
+:host(.deckgo-word-cloud-edit) {
+  ::slotted([slot="words"]) {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  svg.words {
+    display: none;
+  }
+}
+
+:host([editable]) {
+  div.placeholder:empty:not(:focus):after {
+    content: var(--deckgo-word-cloud-empty-text, "Click to add your words");
+  }
+}
