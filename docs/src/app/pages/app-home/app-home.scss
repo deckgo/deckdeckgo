@@ -29,6 +29,7 @@ app-home {
       }
 
       > p {
+        margin: 0;
         padding-right: 40px;
       }
 
@@ -39,8 +40,11 @@ app-home {
         align-content: flex-start;
 
         li {
+          font-size: var(--font-size-normal);
+
           ion-icon {
             color: var(--ion-color-success);
+            padding-right: 0.5rem;
           }
         }
       }
