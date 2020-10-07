@@ -1,6 +1,6 @@
-# Slide: Gif
+# Slide: GIF
 
-The "Gif" slide let you add easily a gif, like those provided by [Giphy](https://giphy.com), to your presentation.
+The "GIF" slide let you add easily a GIF, like those provided by [Giphy](https://giphy.com), to your presentation.
 
 ## Table of contents
 
@@ -13,7 +13,7 @@ The "Gif" slide let you add easily a gif, like those provided by [Giphy](https:/
 - [For images too](#app-slide-gif-for-images-too)
 - [Usage](#app-slide-gif-usage)
   - [Slots](#app-slide-gif-slots)
-- [Gif component](#app-slide-gif-gif-component)
+- [GIF component](#app-slide-gif-gif-component)
 - [Attributes](#app-slide-gif-attributes)
 - [Theming](#app-slide-gif-theming)
 
@@ -79,11 +79,11 @@ deckDeckGoSlideElement();
 
 ## For images too
 
-The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen.
+The slide GIF is useful for GIFs but could be use for any images too, in case you would like for example to display an image fullscreen.
 
 ## Usage
 
-The "Gif" slide's Web Component could be integrated using the tag `<deckgo-slide-gif/>`.
+The "GIF" slide's Web Component could be integrated using the tag `<deckgo-slide-gif/>`.
 
 ```
 <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My gif" fullscreen="true">
@@ -97,9 +97,9 @@ The "Gif" slide's Web Component could be integrated using the tag `<deckgo-slide
 
 The slots `title`, `top` and `bottom` are both optional. `top` and `bottom` would be displayed over the gif.
 
-## Gif component
+## GIF component
 
-The slide "Gif" relies on the component `<deckgo-gif/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
+The slide "GIF" relies on the component `<deckgo-gif/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 ## Attributes
 
@@ -107,9 +107,9 @@ This component offers the following options which could be set using attributes:
 
 | Attribute         | Type    | Default | Description                                                                                                             |
 | ----------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
-| src               | string  |         | The source url, the src, of the Gif. Could be an embeddable external url or a local one.                                |
+| src               | string  |         | The source url, the src, of the GIF. Could be an embeddable external url or a local one.                                |
 | alt               | string  |         | And alt information could be provided for accessibility reason.                                                         |
-| fullscreen        | number  | true    | If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen. |
+| fullscreen        | number  | true    | If set to true, the GIF width and height will be related to the slide width and height respectively will be fullscreen. |
 | custom-background | boolean | false   | If you would provide a background for the all deck and a specific one for this slide, set this option to `true`         |
 | custom-actions    | boolean | false   | If you would provide actions for the all deck and a specific one for this slide, set this option to `true`              |
 

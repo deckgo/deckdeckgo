@@ -1,6 +1,6 @@
-# Slide: Youtube
+# Slide: YouTube
 
-The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to your presentation.
+The "YouTube" slide let you add easily a [YouTube](https://youtube.com) video to your presentation.
 
 ## Table of contents
 
@@ -9,10 +9,10 @@ The "Youtube" slide let you add easily a [Youtube](https://youtube.com) video to
   - [From a CDN](#app-slide-youtube-from-a-cdn)
   - [From NPM](#app-slide-youtube-from-npm)
   - [Framework integration](#app-slide-youtube-framework-integration)
-  - [Youtube component](#app-slide-youtube-youtube-component)
+  - [YouTube component](#app-slide-youtube-youtube-component)
 - [Usage](#app-slide-youtube-usage)
   - [Slots](#app-slide-youtube-slots)
-  - [Youtube component](#app-slide-youtube-youtube-component)
+  - [YouTube component](#app-slide-youtube-youtube-component)
 - [Attributes](#app-slide-youtube-attributes)
 - [Theming](#app-slide-youtube-theming)
 - [Methods](#app-slide-youtube-methods)
@@ -72,13 +72,13 @@ import { defineCustomElements as deckDeckGoSlideElement } from '@deckdeckgo/slid
 deckDeckGoSlideElement();
 ```
 
-### Youtube component
+### YouTube component
 
 This templates relies on the `@deckdeckgo/youtube` component without any explicit dependency. Therefore it should also be installed, see its related [installation](/components/youtube) guide.
 
 ## Usage
 
-The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-slide-youtube/>`.
+The "YouTube" slide's Web Component could be integrated using the tag `<deckgo-slide-youtube/>`.
 
 ```
 <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
@@ -90,9 +90,9 @@ The "Youtube" slide's Web Component could be integrated using the tag `<deckgo-s
 
 The slot `title` and `content` are optional. The slot `content` is displayed before the video.
 
-### Youtube component
+### YouTube component
 
-The slide "Youtube" relies on the component `<deckgo-youtube/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
+The slide "YouTube" relies on the component `<deckgo-youtube/>` which is described in the components [documentation](https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md).
 
 ## Attributes
 
@@ -100,7 +100,7 @@ This component offers the following options which could be set using attributes:
 
 | Attribute         | Type    | Default                                                                               | Description                                                                                                                               |
 | ----------------- | ------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| src               | string  |                                                                                       | The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube. |
+| src               | string  |                                                                                       | The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube. |
 | width             | number  | Per default the video width will be calculated according the content size available.  | Using this option you would be able to define your own width.                                                                             |
 | height            | number  | Per default the video height will be calculated according the content size available. | Using this option you would be able to define your own height.                                                                            |
 | custom-background | boolean | false                                                                                 | If you would provide a background for the all deck and a specific one for this slide, set this option to `true`                           |
@@ -125,7 +125,7 @@ The following theming options will affect this component if set on its host or p
 
 ## Methods
 
-The slide "Youtube" offers extra methods to play and pause the Youtube video clip. These methods are notably used by the [DeckDecGo]'s remote control.
+The slide "YouTube" offers extra methods to play and pause the YouTube video clip. These methods are notably used by the [DeckDecGo]'s remote control.
 
 ### Play the video
 

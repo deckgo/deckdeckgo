@@ -1,6 +1,6 @@
 # Slide: Video
 
-The "Video" slide let you add your own video or for example a Gif as MPEG-4 (MP4) to your presentation.
+The "Video" slide let you add your own video or for example a GIF as MPEG-4 (MP4) to your presentation.
 
 ## Table of contents
 
@@ -11,7 +11,7 @@ The "Video" slide let you add your own video or for example a Gif as MPEG-4 (MP4
   - [Framework integration](#app-slide-video-framework-integration)
 - [Usage](#app-slide-video-usage)
   - [Slots](#app-slide-video-slots)
-  - [Youtube component](#app-slide-video-youtube-component)
+  - [YouTube component](#app-slide-video-youtube-component)
 - [Attributes](#app-slide-video-attributes)
 - [Theming](#app-slide-video-theming)
 - [Methods](#app-slide-video-methods)
@@ -25,7 +25,7 @@ The "Video" slide let you add your own video or for example a Gif as MPEG-4 (MP4
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-      <h1 slot="title">A Gif as video</h1>
+      <h1 slot="title">A GIF as video</h1>
       <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
     </deckgo-slide-video>
   </deckgo-deck>
@@ -79,7 +79,7 @@ The "Video" slide's Web Component could be integrated using the tag `<deckgo-sli
 
 ```
 <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-  <h1 slot="title">A Gif as video</h1>
+  <h1 slot="title">A GIF as video</h1>
 </deckgo-slide-video>
 ```
 

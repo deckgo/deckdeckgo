@@ -5,7 +5,7 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 
 @Component({
   tag: 'app-gif',
-  styleUrl: 'app-gif.scss'
+  styleUrl: 'app-gif.scss',
 })
 export class AppGif {
   @Element() el: HTMLElement;
@@ -221,7 +221,7 @@ export class AppGif {
       <ion-header>
         <ion-toolbar color="secondary">
           <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-          <ion-title class="ion-text-uppercase">Gif</ion-title>
+          <ion-title class="ion-text-uppercase">GIFs</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -233,7 +233,7 @@ export class AppGif {
           onSelectImage={($event: CustomEvent) => this.selectGif($event)}></app-image-columns>
 
         <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText="Loading more Gifs..."></ion-infinite-scroll-content>
+          <ion-infinite-scroll-content loadingText="Loading more GIFs..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>,
       <ion-footer>
@@ -248,7 +248,7 @@ export class AppGif {
               this.search();
             }}></ion-searchbar>
         </ion-toolbar>
-      </ion-footer>
+      </ion-footer>,
     ];
   }
 

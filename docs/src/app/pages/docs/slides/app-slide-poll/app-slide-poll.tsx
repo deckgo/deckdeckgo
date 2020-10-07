@@ -58,7 +58,7 @@ export class AppSlidePoll {
                   <a href="#app-slide-poll-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-poll-youtube-component">Youtube component</a>
+                  <a href="#app-slide-poll-youtube-component">YouTube component</a>
                 </li>
               </ul>
             </li>

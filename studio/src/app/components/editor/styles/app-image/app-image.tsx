@@ -147,7 +147,7 @@ export class AppImage {
 
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
-        <ion-label>Gif</ion-label>
+        <ion-label>GIF</ion-label>
       </ion-button>
     );
   }

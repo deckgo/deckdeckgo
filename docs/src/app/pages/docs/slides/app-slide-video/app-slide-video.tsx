@@ -42,7 +42,7 @@ export class AppSlideVideo {
       <ion-content class="ion-padding">
         <main>
           <h1 id="app-slide-video-slide-video">Slide: Video</h1>
-          <p>The &quot;Video&quot; slide let you add your own video or for example a Gif as MPEG-4 (MP4) to your presentation.</p>
+          <p>The &quot;Video&quot; slide let you add your own video or for example a GIF as MPEG-4 (MP4) to your presentation.</p>
           <h2 id="app-slide-video-table-of-contents">Table of contents</h2>
           <ul>
             <li>
@@ -69,7 +69,7 @@ export class AppSlideVideo {
                   <a href="#app-slide-video-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-video-youtube-component">Youtube component</a>
+                  <a href="#app-slide-video-youtube-component">YouTube component</a>
                 </li>
               </ul>
             </li>
@@ -101,7 +101,7 @@ export class AppSlideVideo {
           <div class="container ion-margin">
             <deckgo-deck embedded={true}>
               <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-                <h1 slot="title">A Gif as video</h1>
+                <h1 slot="title">A GIF as video</h1>
                 <button slot="actions" onClick={() => this.playPauseVideo()}>
                   Play/pause
                 </button>
@@ -164,7 +164,7 @@ export class AppSlideVideo {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;deckgo-slide-video src=&quot;https:&#47;&#47;media.giphy.com&#47;media&#47;vv41HlvfogHAY&#47;giphy.mp4&quot;&gt;{'\n'} &lt;h1
-              slot=&quot;title&quot;&gt;A Gif as video&lt;&#47;h1&gt;{'\n'}&lt;&#47;deckgo-slide-video&gt;
+              slot=&quot;title&quot;&gt;A GIF as video&lt;&#47;h1&gt;{'\n'}&lt;&#47;deckgo-slide-video&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-video-slots">Slots</h3>

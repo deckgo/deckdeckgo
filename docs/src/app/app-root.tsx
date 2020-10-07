@@ -157,7 +157,7 @@ export class AppRoot {
                     <ion-label>Split</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/gif" routerDirection="forward">
-                    <ion-label>Gif</ion-label>
+                    <ion-label>GIF</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/bigimg" routerDirection="forward">
                     <ion-label>Big Image</ion-label>
@@ -166,7 +166,7 @@ export class AppRoot {
                     <ion-label>Chart</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/youtube" routerDirection="forward">
-                    <ion-label>Youtube</ion-label>
+                    <ion-label>YouTube</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/video" routerDirection="forward">
                     <ion-label>Video</ion-label>
@@ -209,7 +209,7 @@ export class AppRoot {
                     <ion-label>Drag, Resize and Rotate</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/components/gif" routerDirection="forward">
-                    <ion-label>Gif</ion-label>
+                    <ion-label>GIF</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/components/code" routerDirection="forward">
                     <ion-label>Highlight Code</ion-label>
@@ -230,7 +230,7 @@ export class AppRoot {
                     <ion-label>WYSIWYG inline editor</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/components/youtube" routerDirection="forward">
-                    <ion-label>Youtube</ion-label>
+                    <ion-label>YouTube</ion-label>
                   </ion-item>
 
                   <ion-item-divider>

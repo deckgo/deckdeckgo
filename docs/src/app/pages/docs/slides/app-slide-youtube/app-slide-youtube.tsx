@@ -26,7 +26,7 @@ export class AppSlideYoutube {
 
       <ion-content class="ion-padding">
         <main>
-          <h1 id="app-slide-youtube-slide-youtube">Slide: Youtube</h1>
+          <h1 id="app-slide-youtube-slide-youtube">Slide: YouTube</h1>
           <p>
             The &quot;Youtube&quot; slide let you add easily a <a href="https://youtube.com">Youtube</a> video to your presentation.
           </p>
@@ -48,7 +48,7 @@ export class AppSlideYoutube {
                   <a href="#app-slide-youtube-framework-integration">Framework integration</a>
                 </li>
                 <li>
-                  <a href="#app-slide-youtube-youtube-component">Youtube component</a>
+                  <a href="#app-slide-youtube-youtube-component">YouTube component</a>
                 </li>
               </ul>
             </li>
@@ -59,7 +59,7 @@ export class AppSlideYoutube {
                   <a href="#app-slide-youtube-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-youtube-youtube-component">Youtube component</a>
+                  <a href="#app-slide-youtube-youtube-component">YouTube component</a>
                 </li>
               </ul>
             </li>
@@ -141,7 +141,7 @@ export class AppSlideYoutube {
               deckDeckGoSlideElement();
             </code>
           </deckgo-highlight-code>
-          <h3 id="app-slide-youtube-youtube-component">Youtube component</h3>
+          <h3 id="app-slide-youtube-youtube-component">YouTube component</h3>
           <p>
             This templates relies on the <code>@deckdeckgo/youtube</code> component without any explicit dependency. Therefore it should also be installed, see
             its related <a href="/components/youtube">installation</a> guide.
@@ -160,7 +160,7 @@ export class AppSlideYoutube {
           <p>
             The slot <code>title</code> and <code>content</code> are optional. The slot <code>content</code> is displayed before the video.
           </p>
-          <h3 id="app-slide-youtube-youtube-component-1">Youtube component</h3>
+          <h3 id="app-slide-youtube-youtube-component-1">YouTube component</h3>
           <p>
             The slide &quot;Youtube&quot; relies on the component <code>&lt;deckgo-youtube/&gt;</code> which is described in the components{' '}
             <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.
@@ -182,7 +182,7 @@ export class AppSlideYoutube {
                 <td>string</td>
                 <td></td>
                 <td>
-                  The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube.
+                  The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube.
                 </td>
               </tr>
               <tr>
@@ -280,7 +280,7 @@ export class AppSlideYoutube {
           </table>
           <h2 id="app-slide-youtube-methods">Methods</h2>
           <p>
-            The slide &quot;Youtube&quot; offers extra methods to play and pause the Youtube video clip. These methods are notably used by the [DeckDecGo]&#39;s
+            The slide &quot;YouTube&quot; offers extra methods to play and pause the YouTube video clip. These methods are notably used by the [DeckDecGo]&#39;s
             remote control.
           </p>
           <h3 id="app-slide-youtube-play-the-video">Play the video</h3>
