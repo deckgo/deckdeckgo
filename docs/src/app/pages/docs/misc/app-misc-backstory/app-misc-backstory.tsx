@@ -106,7 +106,7 @@ export class AppMiscBackstory {
           </p>
           <p>
             From there it was really easy for me to go a bit “out of control” (like I like to say). I just began to develop all these features like being able
-            to remote control any presentations using WebRTC, or being able to add easily charts, or being able to easily add Gifs, Youtube videos or even QR
+            to remote control any presentations using WebRTC, or being able to add easily charts, or being able to easily add GIFs, YouTube videos or even QR
             codes and more.
           </p>
           <p>

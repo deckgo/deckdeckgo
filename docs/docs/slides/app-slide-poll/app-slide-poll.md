@@ -14,7 +14,7 @@ Add a slide "Poll" to your presentation.
   - [Framework integration](#app-slide-poll-framework-integration)
 - [Usage](#app-slide-poll-usage)
   - [Slots](#app-slide-poll-slots)
-  - [Youtube component](#app-slide-poll-youtube-component)
+  - [YouTube component](#app-slide-poll-youtube-component)
 - [Attributes](#app-slide-poll-attributes)
 - [Theming](#app-slide-poll-theming)
 - [Methods](#app-slide-poll-methods)

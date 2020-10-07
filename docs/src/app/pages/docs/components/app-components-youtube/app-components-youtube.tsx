@@ -20,7 +20,7 @@ export class AppComponentsYoutube {
         <main>
           <h1 id="app-components-youtube-youtube">Youtube</h1>
           <p>
-            The &quot;Youtube&quot; component allows you to easily add a <a href="https://youtube.com">Youtube</a> video in almost any slide of your
+            The &quot;YouTube&quot; component allows you to easily add a <a href="https://youtube.com">Youtube</a> video in almost any slide of your
             presentation.
           </p>
           <h2 id="app-components-youtube-table-of-contents">Table of contents</h2>
@@ -111,7 +111,7 @@ export class AppComponentsYoutube {
           </deckgo-highlight-code>
           <h2 id="app-components-youtube-usage">Usage</h2>
           <p>
-            The &quot;Youtube&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-youtube/&gt;</code>.
+            The &quot;YouTube&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-youtube/&gt;</code>.
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -137,7 +137,7 @@ export class AppComponentsYoutube {
                 <td>string</td>
                 <td></td>
                 <td>
-                  The source url, the Youtube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by Youtube.
+                  The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube.
                 </td>
               </tr>
               <tr>

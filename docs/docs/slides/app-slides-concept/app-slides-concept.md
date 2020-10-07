@@ -73,7 +73,7 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
   </deckgo-deck>
 </div>
 
-- Slide: [Gif](/slides/gif)
+- Slide: [GIF](/slides/gif)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -118,7 +118,7 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
   </deckgo-deck>
 </div>
 
-- Slide: [Youtube](/slides/youtube)
+- Slide: [YouTube](/slides/youtube)
 
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
@@ -133,7 +133,7 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
 <div class="container ion-margin">
   <deckgo-deck embedded={true}>
     <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-      <h1 slot="title">A Gif as video</h1>
+      <h1 slot="title">A GIF as video</h1>
       <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
     </deckgo-slide-video>
   </deckgo-deck>

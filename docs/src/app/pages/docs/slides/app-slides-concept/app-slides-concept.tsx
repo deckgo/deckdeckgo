@@ -118,7 +118,7 @@ export class AppSlidesConcept {
 
           <ul>
             <li>
-              Slide: <a href="/slides/gif">Gif</a>
+              Slide: <a href="/slides/gif">GIF</a>
             </li>
           </ul>
           <div class="container ion-margin">
@@ -208,7 +208,7 @@ export class AppSlidesConcept {
           <div class="container ion-margin">
             <deckgo-deck embedded={true}>
               <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-                <h1 slot="title">A Gif as video</h1>
+                <h1 slot="title">A GIF as video</h1>
                 <button slot="actions" onClick={() => this.playPauseVideo()}>
                   Play/pause
                 </button>

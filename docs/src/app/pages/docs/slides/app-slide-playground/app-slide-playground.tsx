@@ -49,7 +49,7 @@ export class AppSlidePlayground {
                   <a href="#app-slide-playground-framework-integration">Framework integration</a>
                 </li>
                 <li>
-                  <a href="#app-slide-playground-youtube-component">Youtube component</a>
+                  <a href="#app-slide-playground-youtube-component">YouTube component</a>
                 </li>
               </ul>
             </li>
@@ -60,7 +60,7 @@ export class AppSlidePlayground {
                   <a href="#app-slide-playground-slots">Slots</a>
                 </li>
                 <li>
-                  <a href="#app-slide-playground-youtube-component">Youtube component</a>
+                  <a href="#app-slide-playground-youtube-component">YouTube component</a>
                 </li>
               </ul>
             </li>

@@ -2,7 +2,7 @@ import {Component, h} from '@stencil/core';
 
 @Component({
   tag: 'app-privacy',
-  styleUrl: 'app-privacy.scss'
+  styleUrl: 'app-privacy.scss',
 })
 export class AppAbout {
   render() {
@@ -93,7 +93,7 @@ export class AppAbout {
 
           <p>
             Some of the content that you see displayed on DeckDeckGo is not hosted by DeckDeckGo. These “embeds” are hosted by a third-party and embedded in
-            DeckDeckGo. For example: YouTube videos, Giphy Gifs, Twitter tweets, or GitHub code that appear within a DeckDeckGo presentation. These files send
+            DeckDeckGo. For example: YouTube videos, Giphy GIFs, Twitter tweets, or GitHub code that appear within a DeckDeckGo presentation. These files send
             data to the hosted site just as if you were visiting that site directly. DeckDeckGo does not control what data third parties collect in cases like
             this, or what they will do with it. Third-party embeds on DeckDeckGo are not covered by this privacy policy; they are covered by the privacy policy
             of the third-party service. Be mindful when interacting with these services.
@@ -170,7 +170,7 @@ export class AppAbout {
 
           <p>We welcome feedback about this policy at hello@deckdeckgo.com.</p>
         </main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

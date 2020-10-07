@@ -36,9 +36,9 @@ export class AppComponentsGif {
 
       <ion-content class="ion-padding">
         <main>
-          <h1 id="app-components-gif-gif">Gif</h1>
+          <h1 id="app-components-gif-gif">GIF</h1>
           <p>
-            The &quot;Gif&quot; component allows you to easily add a Gif, like those provided by <a href="https://giphy.com">Giphy</a>, in almost any slide of
+            The &quot;GIF&quot; component allows you to easily add a GIF, like those provided by <a href="https://giphy.com">Giphy</a>, in almost any slide of
             your presentation.
           </p>
           <h2 id="app-components-gif-table-of-contents">Table of contents</h2>
@@ -77,7 +77,7 @@ export class AppComponentsGif {
 
           <h2 id="app-components-gif-installation">Installation</h2>
           <p>
-            This component is part of the &quot;Gif&quot; template. Therefore, if you would like to use it, install the related slide as described in its{' '}
+            This component is part of the &quot;GIF&quot; template. Therefore, if you would like to use it, install the related slide as described in its{' '}
             <a href="/slides/gif">installation</a> chapter.
           </p>
           <blockquote>
@@ -88,7 +88,7 @@ export class AppComponentsGif {
           </blockquote>
           <h2 id="app-components-gif-usage">Usage</h2>
           <p>
-            The &quot;Gif&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-gif/&gt;</code>.
+            The &quot;GIF&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-gif/&gt;</code>.
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -118,7 +118,7 @@ export class AppComponentsGif {
                 <td>src</td>
                 <td>string</td>
                 <td></td>
-                <td>The source url, the src, of the Gif. Could be an embeddable external url or a local one.</td>
+                <td>The source url, the src, of the GIF. Could be an embeddable external url or a local one.</td>
               </tr>
               <tr>
                 <td>alt</td>

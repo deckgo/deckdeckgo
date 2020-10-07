@@ -26,9 +26,9 @@ export class AppSlideGif {
 
       <ion-content class="ion-padding">
         <main>
-          <h1 id="app-slide-gif-slide-gif">Slide: Gif</h1>
+          <h1 id="app-slide-gif-slide-gif">Slide: GIF</h1>
           <p>
-            The &quot;Gif&quot; slide let you add easily a gif, like those provided by <a href="https://giphy.com">Giphy</a>, to your presentation.
+            The &quot;GIF&quot; slide let you add easily a gif, like those provided by <a href="https://giphy.com">Giphy</a>, to your presentation.
           </p>
           <h2 id="app-slide-gif-table-of-contents">Table of contents</h2>
           <ul>
@@ -64,7 +64,7 @@ export class AppSlideGif {
               </ul>
             </li>
             <li>
-              <a href="#app-slide-gif-gif-component">Gif component</a>
+              <a href="#app-slide-gif-gif-component">GIF component</a>
             </li>
             <li>
               <a href="#app-slide-gif-attributes">Attributes</a>
@@ -137,10 +137,10 @@ export class AppSlideGif {
             </code>
           </deckgo-highlight-code>
           <h2 id="app-slide-gif-for-images-too">For images too</h2>
-          <p>The slide Gif is useful for Gifs but could be use for any images too, in case you would like for example to display an image fullscreen.</p>
+          <p>The slide GIF is useful for GIFs but could be use for any images too, in case you would like for example to display an image fullscreen.</p>
           <h2 id="app-slide-gif-usage">Usage</h2>
           <p>
-            The &quot;Gif&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-gif/&gt;</code>.
+            The &quot;GIF&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-gif/&gt;</code>.
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -155,9 +155,9 @@ export class AppSlideGif {
             The slots <code>title</code>, <code>top</code> and <code>bottom</code> are both optional. <code>top</code> and <code>bottom</code> would be
             displayed over the gif.
           </p>
-          <h2 id="app-slide-gif-gif-component">Gif component</h2>
+          <h2 id="app-slide-gif-gif-component">GIF component</h2>
           <p>
-            The slide &quot;Gif&quot; relies on the component <code>&lt;deckgo-gif/&gt;</code> which is described in the components{' '}
+            The slide &quot;GIF&quot; relies on the component <code>&lt;deckgo-gif/&gt;</code> which is described in the components{' '}
             <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.
           </p>
           <h2 id="app-slide-gif-attributes">Attributes</h2>
@@ -176,7 +176,7 @@ export class AppSlideGif {
                 <td>src</td>
                 <td>string</td>
                 <td></td>
-                <td>The source url, the src, of the Gif. Could be an embeddable external url or a local one.</td>
+                <td>The source url, the src, of the GIF. Could be an embeddable external url or a local one.</td>
               </tr>
               <tr>
                 <td>alt</td>
