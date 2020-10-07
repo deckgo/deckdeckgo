@@ -52,6 +52,7 @@ setupDeckGoConfig({
     storageBucket: '<@FIREBASE_STORAGE_BUCKET@>',
     messagingSenderId: '<@FIREBASE_MESSAGING_SENDER_ID@>',
     storageUrl: '<@FIREBASE_STORAGE_URL@>',
+    functionsUrl: '<@FIREBASE_FUNCTIONS_URL@>',
     appId: '<@FIREBASE_APP_ID@>',
   },
   tenor: {

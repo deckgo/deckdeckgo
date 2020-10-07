@@ -2,12 +2,12 @@ import {createStore} from '@stencil/store';
 
 import {ApiUser} from '../models/api/api.user';
 
-interface ApitUserStore {
+interface ApiUserStore {
   apiUser: ApiUser | undefined;
 }
 
 const {state, onChange, reset} = createStore({
   apiUser: undefined,
-} as ApitUserStore);
+} as ApiUserStore);
 
 export default {state, onChange, reset};

@@ -4,7 +4,7 @@ import {BaseType, Selection} from 'd3-selection';
 import {pie, arc, Pie, Arc, DefaultArcObject} from 'd3-shape';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
-import {transition} from 'd3-transition';
+import 'd3-transition';
 import {ascending} from 'd3-array';
 
 interface DeckdeckgoPieChartDataValue {
@@ -21,7 +21,7 @@ interface DeckdeckgoPieChartData {
 @Component({
   tag: 'deckgo-pie-chart',
   styleUrl: 'deckdeckgo-pie-chart.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
@@ -90,9 +90,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       const radius: number = Math.min(maxWidth, maxHeight) / 2;
 
-      this.myPath = arc()
-        .innerRadius(this.innerRadius)
-        .outerRadius(radius);
+      this.myPath = arc().innerRadius(this.innerRadius).outerRadius(radius);
 
       this.data = await this.fetchData();
 
@@ -171,8 +169,6 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
   private drawPieForData(myPieData: any[], animationDuration: number): Promise<void> {
     return new Promise<void>((resolve) => {
-      const t = transition();
-
       const section: any = this.svg.selectAll('path').data(myPieData);
 
       section
@@ -194,7 +190,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
             ')'
           );
         })
-        .transition(t)
+        .transition()
         .duration(animationDuration)
         .attr('d', this.myPath);
 
@@ -327,13 +323,13 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
             label: label,
             value: parseInt(values[1]),
             randomFillColor: randomColors.length >= 1 ? randomColors[lineIndex] : undefined,
-            key: lineIndex + 1
+            key: lineIndex + 1,
           };
 
           if (!isNaN(pieData.value)) {
             if (results.length <= 0) {
               results.push({
-                values: []
+                values: [],
               });
             }
 
@@ -346,7 +342,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
               if (!isNaN(tmp)) {
                 if (results.length < i) {
                   results.push({
-                    values: []
+                    values: [],
                   });
                 }
 
@@ -354,7 +350,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
                   label: label,
                   value: parseInt(values[i]),
                   randomFillColor: randomColors.length >= i ? randomColors[lineIndex] : undefined,
-                  key: lineIndex + 1
+                  key: lineIndex + 1,
                 };
 
                 results[i - 1].values.push(pieData);

@@ -1,7 +1,10 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import paletteStore from '../../../../stores/palette.store';
+
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
+import {PaletteUtils} from '../../../../utils/editor/palette.utils';
 
 @Component({
   tag: 'app-color-text-background',
@@ -25,7 +28,7 @@ export class AppColorTextBackground {
   colorType: 'text' | 'background' = 'text';
 
   @Prop()
-  expander: boolean = true;
+  expanded: boolean = true;
 
   @State()
   private color: string;
@@ -67,6 +70,8 @@ export class AppColorTextBackground {
     if (!this.selectedElement || !$event || !$event.detail) {
       return;
     }
+
+    await PaletteUtils.updatePalette($event.detail);
 
     this.color = $event.detail.rgb;
 
@@ -168,7 +173,7 @@ export class AppColorTextBackground {
 
   render() {
     return (
-      <app-expansion-panel expander={this.expander}>
+      <app-expansion-panel expanded={this.expanded ? 'open' : 'close'}>
         <ion-label slot="title">Color</ion-label>
         <ion-list class="ion-no-padding">
           <ion-item-divider class="ion-padding-top">
@@ -188,6 +193,7 @@ export class AppColorTextBackground {
           </ion-item>
         </ion-list>
         <deckgo-color
+          palette={paletteStore.state.palette}
           class="ion-padding-start ion-padding-end ion-padding-bottom"
           more={this.moreColors}
           onColorChange={($event: CustomEvent) => this.selectColor($event)}

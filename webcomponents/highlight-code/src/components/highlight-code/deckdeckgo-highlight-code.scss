@@ -217,8 +217,10 @@ div.carbon {
   display: flex;
   justify-content: flex-start;
   padding: var(--deckgo-highlight-code-carbon-header-padding, 16px);
+  margin: var(--deckgo-highlight-code-carbon-header-margin, 0);
 
   > div {
+    display: var(--deckgo-highlight-code-carbon-toolbar-display, "block");
     width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
     height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
     border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);

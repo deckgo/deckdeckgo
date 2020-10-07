@@ -1,3 +1,15 @@
+<a name="1.2.0"></a>
+
+# 1.2.0 (2020-08-28)
+
+### Features
+
+- repo `deckdeckgo-starter` renamed to `starter-kit`
+
+### Fix
+
+- Google Fonts with `.svg` extension
+
 <a name="1.0.1"></a>
 
 # 1.0.1 (2020-03-19)

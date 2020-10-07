@@ -1,7 +1,5 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
 
-import {isMobile} from '@deckdeckgo/utils';
-
 @Component({
   tag: 'app-landing-deck',
   styleUrl: 'app-landing-deck.scss',
@@ -15,9 +13,6 @@ export class AppLandingDeck {
 
   @State()
   private deckIsEnd: boolean = false;
-
-  @State()
-  private deckTransition: 'slide' | 'fade' = isMobile() ? 'fade' : 'slide';
 
   @Listen('ionRouteDidChange', {target: 'window'})
   async onRouteDidChange($event: CustomEvent) {
@@ -72,17 +67,15 @@ export class AppLandingDeck {
 
   render() {
     return (
-      <deckgo-deck
-        embedded={true}
-        transition={this.deckTransition}
-        onSlideNextDidChange={() => this.updateDeckPosition()}
-        onSlidePrevDidChange={() => this.updateDeckPosition()}>
+      <deckgo-deck embedded={true} onSlideNextDidChange={() => this.updateDeckPosition()} onSlidePrevDidChange={() => this.updateDeckPosition()}>
         <deckgo-slide-split>
           <div slot="start">
             <h1>Make more than presentations</h1>
-            <h3 style={{'font-weight': '300', 'margin-top': '16px'}}>Create, present and share apps. Interact with your audience.</h3>
+            <section style={{'font-weight': '300', 'margin-top': '16px', 'font-size': 'var(--font-size-h3)'}}>
+              Create, present and share apps. Interact with your audience.
+            </section>
 
-            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
+            <ion-button class="ion-margin-top" style={{'margin-bottom': '32px'}} shape="round" href="/editor" routerDirection="root" mode="md" color="dark">
               <ion-label style={{'text-transform': 'none'}}>Get started with DeckDeckGo</ion-label>
             </ion-button>
           </div>
@@ -165,7 +158,7 @@ function Example() {
           </div>
 
           <div slot="end">
-            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 3.5)'}} />
+            <img data-src={`/assets/img/landing/illustrations/progressive-app.svg`} role="presentation" style={{width: 'calc(var(--slide-width) / 2.5)'}} />
           </div>
 
           {this.renderSlideBackground('end')}
@@ -204,11 +197,11 @@ function Example() {
         </deckgo-slide-split>
 
         <deckgo-slide-title>
-          <h1 slot="title">And many more features</h1>
+          <h2 slot="title">And many more features</h2>
           <div slot="content" style={{'margin-bottom': '48px'}}>
             <h3 style={{'font-weight': '300'}}>Create your slides with DeckDeckGo now.</h3>
 
-            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="tertiary">
+            <ion-button class="ion-margin-top" shape="round" href="/editor" routerDirection="root" mode="md" color="dark">
               <ion-label style={{'text-transform': 'none'}}>Start a presentation</ion-label>
             </ion-button>
           </div>

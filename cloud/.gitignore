@@ -64,4 +64,5 @@ node_modules/
 # dotenv environment variables file
 .env
 
-config/set-cloud-config.sh
+config/set-cloud-config-prod.sh
+config/set-cloud-config-staging.sh

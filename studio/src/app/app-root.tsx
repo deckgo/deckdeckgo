@@ -1,4 +1,4 @@
-import {Build, Component, Element, h, State} from '@stencil/core';
+import {Build, Component, Element, h, Listen, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
@@ -11,6 +11,7 @@ import {AuthService} from './services/auth/auth.service';
 import {ThemeService} from './services/theme/theme.service';
 import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
+import {PaletteService} from './services/palette/palette.service';
 
 @Component({
   tag: 'app-root',
@@ -22,6 +23,8 @@ export class AppRoot {
   private authService: AuthService;
 
   private themeService: ThemeService;
+
+  private paletteService: PaletteService;
 
   private offlineService: OfflineService;
 
@@ -37,6 +40,7 @@ export class AppRoot {
   constructor() {
     this.authService = AuthService.getInstance();
     this.themeService = ThemeService.getInstance();
+    this.paletteService = PaletteService.getInstance();
     this.offlineService = OfflineService.getInstance();
   }
 
@@ -44,6 +48,7 @@ export class AppRoot {
     if (Build.isBrowser) {
       await this.authService.init();
       await this.themeService.initDarkModePreference();
+      await this.paletteService.init();
       await this.offlineService.init();
     }
   }
@@ -66,7 +71,7 @@ export class AppRoot {
     });
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyErrorListener) {
       this.destroyErrorListener();
     }
@@ -80,8 +85,35 @@ export class AppRoot {
     }
   }
 
+  @Listen('swUpdate', {target: 'window'})
+  async onSWUpdate() {
+    const registration = await navigator.serviceWorker.getRegistration();
+
+    if (!registration || !registration.waiting) {
+      return;
+    }
+
+    const toast: HTMLIonToastElement = await toastController.create({
+      message: 'A new version is available, reload to update.',
+      buttons: [
+        {
+          text: 'Reload',
+          icon: 'refresh-circle-outline',
+          handler: () => {
+            registration.waiting.postMessage('skipWaiting');
+            window.location.reload();
+          },
+        },
+      ],
+      position: 'top',
+      color: 'quaternary',
+    });
+
+    await toast.present();
+  }
+
   private async toastError(error: string) {
-    const popover: HTMLIonToastElement = await toastController.create({
+    const toast: HTMLIonToastElement = await toastController.create({
       message: error,
       buttons: [
         {
@@ -94,11 +126,11 @@ export class AppRoot {
       duration: 6000,
     });
 
-    popover.onDidDismiss().then(() => {
+    toast.onDidDismiss().then(() => {
       errorStore.state.error = undefined;
     });
 
-    await popover.present();
+    await toast.present();
   }
 
   private async navigate(params: NavParams) {
@@ -112,8 +144,10 @@ export class AppRoot {
       return;
     }
 
-    if (params.direction === NavDirection.ROOT) {
+    if (params.direction === NavDirection.RELOAD) {
       window.location.assign(params.url);
+    } else if (params.direction === NavDirection.ROOT) {
+      await router.push(params.url, 'root');
     } else if (params.direction === NavDirection.BACK) {
       await router.back();
     } else {

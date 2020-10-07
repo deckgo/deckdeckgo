@@ -78,6 +78,13 @@ public static void main(String args[]) {
         }
       }
 
+      function toggleLanguage() {
+        const elem = document.getElementsByTagName('deckgo-highlight-code');
+        if (elem && elem.length > 0) {
+          elem[0].language = elem[0].language === 'java' ? 'typescript' : 'java';
+        }
+      }
+
       function changeTheme() {
         const toggler = document.getElementById('themeToggler');
         const theme = toggler.value;
@@ -91,6 +98,7 @@ public static void main(String args[]) {
 
     <button onclick="toggleLineNumbers()">Toggle line numbers</button>
     <button onclick="toggleCarbon()">Toggle carbon</button>
+    <button onclick="toggleLanguage()">Toggle language</button>
 
     <h1>Editable empty:</h1>
 
@@ -111,13 +119,13 @@ public static void main(String args[]) {
       }
     </script>
 
-    <button onclick="toggleSrcLineNumbers()" style="margin-bottom: 16px;">Toggle fetched line numbers</button>
+    <button onclick="toggleSrcLineNumbers()" style="margin-bottom: 16px">Toggle fetched line numbers</button>
 
     <h1>Fixed height container:</h1>
 
-    <div style="--deckgo-highlight-code-container-height: 200px; overflow: hidden;">
+    <div style="--deckgo-highlight-code-container-height: 200px; overflow: hidden">
       <deckgo-highlight-code
-        style="display: block;"
+        style="display: block"
         line-numbers="true"
         id="deckGoCode"
         terminal="none"
@@ -197,6 +205,30 @@ public static void main(String args[]) {
 }</code>
 </deckgo-highlight-code>
 
+    <h1>Without dots</h1>
+
+    <!-- prettier-ignore -->
+    <deckgo-highlight-code 
+      language="java" 
+      highlight-lines="0,2 6,6" 
+      style="--deckgo-highlight-code-carbon-toolbar-display: none; --deckgo-highlight-code-carbon-header-padding: 0; --deckgo-highlight-code-carbon-header-margin: 16px 0 0 0;"
+    >
+  <code slot="code">interface NumericTest {
+    boolean computeTest(int n);
+  }
+
+public static void main(String args[]) {
+  NumericTest isEven = (n) -> (n % 2) == 0;
+  NumericTest isNegative = (n) -> (n < 0);
+
+  // Output: false
+  System.out.println(isEven.computeTest(5));
+
+  // Output: true
+  System.out.println(isNegative.computeTest(-5));
+}</code>
+</deckgo-highlight-code>
+
     <h1>Issue #423</h1>
 
     <!-- prettier-ignore -->
@@ -230,6 +262,12 @@ program = [
       terminal="none"
       src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx"
     >
+    </deckgo-highlight-code>
+
+    <h1>Load extra scripts</h1>
+    <!-- prettier-ignore -->
+    <deckgo-highlight-code language="php">
+      <code slot="code">'Hello World'</code>
     </deckgo-highlight-code>
   </body>
 </html>

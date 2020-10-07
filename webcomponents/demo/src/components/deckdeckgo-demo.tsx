@@ -43,7 +43,7 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (window) {
       window.removeEventListener('resize', debounce(this.onResizeContent, 500));
     }

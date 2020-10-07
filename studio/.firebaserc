@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "deckdeckgo-studio-prod",
-    "staging": "deckdeckgo-studio-beta"
+    "staging": "deckdeckgo-studio-staging",
+    "dev": "deckdeckgo-studio-beta"
   }
 }

@@ -182,7 +182,7 @@ export class AppRemote {
     });
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.disconnect();
 
     if (this.stateDestroyListener) {

@@ -182,7 +182,7 @@ export class DeckdeckgoInlineEditorUtils {
     });
   }
 
-  static findContainer(containers: string, element: HTMLElement): Promise<HTMLElement> {
+  static findContainer(containers: string, element: HTMLElement | Node): Promise<HTMLElement> {
     return new Promise<HTMLElement>(async (resolve) => {
       if (!element) {
         resolve();
@@ -191,12 +191,12 @@ export class DeckdeckgoInlineEditorUtils {
 
       // Just in case
       if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
-        resolve(element);
+        resolve(element as HTMLElement);
         return;
       }
 
       if (DeckdeckgoInlineEditorUtils.isContainer(containers, element)) {
-        resolve(element);
+        resolve(element as HTMLElement);
       } else {
         const container: HTMLElement = await this.findContainer(containers, element.parentElement);
 

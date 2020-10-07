@@ -12,6 +12,8 @@ import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-
 import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
+import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
+
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
@@ -29,16 +31,16 @@ export class DeckdeckgoHighlightCode {
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
   @Prop() hideAnchor: boolean = true;
 
-  @Prop({reflectToAttr: true}) language: string = 'javascript';
+  @Prop({reflect: true}) language: string = 'javascript';
 
-  @Prop({reflectToAttr: true}) highlightLines: string;
-  @Prop({reflectToAttr: true}) lineNumbers: boolean = false;
+  @Prop({reflect: true}) highlightLines: string;
+  @Prop({reflect: true}) lineNumbers: boolean = false;
 
-  @Prop({reflectToAttr: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
+  @Prop({reflect: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
   @Prop() editable: boolean = false;
 
-  @Prop({reflectToAttr: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+  @Prop({reflect: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   @State() editing: boolean = false;
 
@@ -49,6 +51,12 @@ export class DeckdeckgoHighlightCode {
   @State()
   private themeStyle: string | undefined;
 
+  @State()
+  private languagesToLoad: string[];
+
+  @State()
+  private loaded: boolean = false;
+
   async componentWillLoad() {
     await this.loadGoogleFonts();
 
@@ -58,7 +66,7 @@ export class DeckdeckgoHighlightCode {
   async componentDidLoad() {
     const languageWasLoaded: boolean = await this.languageDidLoad();
 
-    await this.loadLanguage();
+    await this.loadLanguages();
 
     if (languageWasLoaded) {
       await this.fetchOrParse();
@@ -89,8 +97,14 @@ export class DeckdeckgoHighlightCode {
       return;
     }
 
-    if (this.language && this.language !== 'javascript' && $event.detail === this.language) {
+    if (this.languagesToLoad) {
+      this.languagesToLoad = this.languagesToLoad.filter((lang) => lang !== $event.detail);
+    }
+
+    if (this.language && !this.loaded && (this.languagesToLoad === undefined || this.languagesToLoad.length <= 0)) {
       await this.fetchOrParse();
+
+      this.loaded = true;
     }
   }
 
@@ -109,11 +123,6 @@ export class DeckdeckgoHighlightCode {
         return;
       }
 
-      if (this.language === 'javascript') {
-        resolve(true);
-        return;
-      }
-
       const scripts = document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']");
       if (scripts) {
         resolve(true);
@@ -124,15 +133,66 @@ export class DeckdeckgoHighlightCode {
   }
 
   @Watch('language')
-  loadLanguage(): Promise<void> {
+  async onLanguage() {
+    await this.loadLanguages(true);
+  }
+
+  private async loadLanguages(reload: boolean = false) {
+    this.loaded = false;
+
+    await this.initLanguagesToLoad();
+
+    await this.loadLanguagesRequire();
+
+    await this.loadScript(this.language, reload);
+  }
+
+  private async initLanguagesToLoad() {
+    if (!this.language) {
+      return;
+    }
+
+    const definition = deckdeckgoHighlightCodeLanguages[this.language];
+
+    this.languagesToLoad = definition.require && definition.require.length > 0 ? [this.language, ...definition.require] : [this.language];
+  }
+
+  private async loadLanguagesRequire() {
+    const promises: Promise<void>[] = [];
+
+    const definition = deckdeckgoHighlightCodeLanguages[this.language];
+    if (definition.require) {
+      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript)));
+    }
+
+    if (promises.length <= 0) {
+      return;
+    }
+
+    await Promise.all(promises);
+  }
+
+  private loadScript(lang: string, reload: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!document || !this.language || this.language === '' || this.language === 'javascript') {
+      if (!document || !lang || lang === '') {
         resolve();
         return;
       }
 
-      const scripts = document.querySelector("[deckdeckgo-prism='" + this.language + "']");
+      // No need to load javascript, it is there
+      if (lang === 'javascript') {
+        this.prismLanguageLoaded.emit('javascript');
+
+        resolve();
+        return;
+      }
+
+      const scripts = document.querySelector("[deckdeckgo-prism='" + lang + "']");
       if (scripts) {
+        if (reload) {
+          this.prismLanguageLoaded.emit(lang);
+        }
+
         resolve();
         return;
       }
@@ -140,8 +200,8 @@ export class DeckdeckgoHighlightCode {
       const script = document.createElement('script');
 
       script.onload = async () => {
-        script.setAttribute('deckdeckgo-prism-loaded', this.language);
-        this.prismLanguageLoaded.emit(this.language);
+        script.setAttribute('deckdeckgo-prism-loaded', lang);
+        this.prismLanguageLoaded.emit(lang);
       };
 
       script.onerror = async () => {
@@ -150,11 +210,11 @@ export class DeckdeckgoHighlightCode {
         }
 
         // if the language definition doesn't exist or if unpkg is down, display code anyway
-        this.prismLanguageLoaded.emit(this.language);
+        this.prismLanguageLoaded.emit(lang);
       };
 
-      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + this.language + '.js';
-      script.setAttribute('deckdeckgo-prism', this.language);
+      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + lang + '.js';
+      script.setAttribute('deckdeckgo-prism', lang);
       script.defer = true;
 
       document.head.appendChild(script);
@@ -198,7 +258,7 @@ export class DeckdeckgoHighlightCode {
       if (document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']")) {
         await this.fetchOrParse();
       } else {
-        await this.loadLanguage();
+        await this.loadLanguages();
       }
 
       resolve();

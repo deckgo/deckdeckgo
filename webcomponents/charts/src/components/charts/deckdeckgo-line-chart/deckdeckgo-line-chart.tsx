@@ -8,7 +8,7 @@ import {scaleLinear, scaleTime} from 'd3-scale';
 import {extent} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
 import {Area, area, curveMonotoneX} from 'd3-shape';
-import {transition} from 'd3-transition';
+import 'd3-transition';
 import {easeLinear} from 'd3-ease';
 
 import {DeckdeckgoChart, DeckdeckgoChartUtils} from '../deckdeckgo-chart';
@@ -25,13 +25,13 @@ interface DeckdeckgoLineChartSerie {
 
 enum DeckdeckgoLineChartAxisDomain {
   EXTENT = 'extent',
-  MAX = 'max'
+  MAX = 'max',
 }
 
 @Component({
   tag: 'deckgo-line-chart',
   styleUrl: 'deckdeckgo-line-chart.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
@@ -240,7 +240,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       if (!allMinMax || allMinMax.length <= 0) {
         resolve({
           min: 0,
-          max: 0
+          max: 0,
         });
         return;
       }
@@ -261,7 +261,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       resolve({
         min: min,
-        max: max
+        max: max,
       });
     });
   }
@@ -284,7 +284,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       resolve({
         min: min,
-        max: max
+        max: max,
       });
     });
   }
@@ -311,10 +311,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
         .attr('transform', 'translate(-10,0)rotate(-45)')
         .style('text-anchor', 'end');
 
-      this.svg
-        .append('g')
-        .attr('class', styleClassAxisY)
-        .call(leftAxis);
+      this.svg.append('g').attr('class', styleClassAxisY).call(leftAxis);
 
       resolve();
     });
@@ -365,8 +362,6 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   }
 
   private drawAnimatedLine(data: DeckdeckgoLineChartData[], index: number, line: Area<DeckdeckgoLineChartData>, randomFillColor: string) {
-    const t = transition();
-
     const section: any = this.svg.selectAll('.area').data([data], (d: DeckdeckgoLineChartData) => {
       return this.y(d.value);
     });
@@ -382,7 +377,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
       .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
       .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
-      .transition(t)
+      .transition()
       .duration(this.animationDuration)
       .ease(easeLinear)
       .attr('class', 'area')
@@ -457,7 +452,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
                     ? series[i - 1]
                     : {
                         data: [],
-                        randomFillColor: randomFillColor
+                        randomFillColor: randomFillColor,
                       };
 
                 if (!data.data || data.data.length <= 0) {
@@ -466,7 +461,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
                 data.data.push({
                   when: when,
-                  value: parseInt(values[i])
+                  value: parseInt(values[i]),
                 });
 
                 if (series && series.length >= i) {

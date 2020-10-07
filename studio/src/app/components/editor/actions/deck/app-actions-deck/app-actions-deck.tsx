@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {isIPad} from '@deckdeckgo/utils';
@@ -85,7 +85,7 @@ export class AppActionsDeck {
     });
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyListener) {
       this.destroyListener();
     }
@@ -327,11 +327,6 @@ export class AppActionsDeck {
 
       resolve();
     });
-  }
-
-  @Listen('pagerClick', {target: 'document'})
-  async onPagerClick() {
-    await this.openSlideNavigate();
   }
 
   private async openSlideNavigate() {

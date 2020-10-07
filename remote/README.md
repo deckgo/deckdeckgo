@@ -1,3 +1,8 @@
+[![license][agpl-license]][agpl-license-url]
+
+[agpl-license]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
+[agpl-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/remote/GNU-AGPL-3.0
+
 # DeckDeckGo - App
 
 This project is the remote control of [DeckDeckGo] which let you interact with and present your PWA presentation.
@@ -16,7 +21,7 @@ Better than a description, the [DeckDeckGo] website implement a deck and receive
 
 1. Open the [DeckDeckGo] website 👉 [https://deckdeckgo.com](https://deckdeckgo.com)
 2. Start this Progressive Web App 👉 [https://deckdeckgo.app](https://deckdeckgo.app)
-3. Have fun 🎉 
+3. Have fun 🎉
 
 ## Getting Started
 
@@ -35,4 +40,4 @@ This application, respectively this remote control of [DeckDeckGo], is released 
 
 [DeckDeckGo] is developed by [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com).
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

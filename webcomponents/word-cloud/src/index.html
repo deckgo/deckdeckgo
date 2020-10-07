@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/deckdeckgo-word-cloud.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-word-cloud.js"></script>
+  </head>
+  <body>
+    <h1>You can edit this awesome word cloud</h1>
+    <deckgo-word-cloud editable="true">
+      <code slot="words">Each Word entered it will become part of the cloud</code>
+    </deckgo-word-cloud>
+
+    <h1>Or you can just create your own cool cloud</h1>
+    <deckgo-word-cloud editable="true">
+      <code slot="words"></code>
+    </deckgo-word-cloud>
+
+    <h1>Define your own cool colors ! (not editable)</h1>
+    <deckgo-word-cloud colors="#000000, #10B597, #36E914">
+      <code slot="words">Each Word entered it will become part of the cloud</code>
+    </deckgo-word-cloud>
+
+    <h1>Custom Width and Height (not editable)</h1>
+    <deckgo-word-cloud width="1024" height="768">
+      <code slot="words"
+        >How the Word Cloud Generator Works The layout algorithm for positioning words without overlap is available on GitHub under an open source license as
+        d3-cloud. Note that this is the only the layout algorithm and any code for converting text into words and rendering the final output requires additional
+        development.</code
+      >
+    </deckgo-word-cloud>
+  </body>
+</html>

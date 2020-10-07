@@ -7,8 +7,6 @@ app-feed-card-tags {
     overflow: hidden;
   }
 
-  height: 42px;
-
   div.chips {
     background: var(--card-tags-background, rgba(var(--ion-color-medium-rgb), 0.08));
     color: var(--card-tags-color, var(--ion-color-medium));

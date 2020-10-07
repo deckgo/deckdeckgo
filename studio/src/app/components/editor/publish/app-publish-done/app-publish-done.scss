@@ -21,6 +21,11 @@ app-publish-done {
     ion-label.published-url {
       font-size: var(--font-size-small);
 
+      ion-spinner {
+        scale: 0.4;
+        vertical-align: middle;
+      }
+
       a {
         color: var(--ion-color-tertiary);
         text-decoration: none;

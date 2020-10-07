@@ -64,7 +64,7 @@ export class AppCreateSlide {
     await this.lazyLoadAllCharts();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.unsubscribeTimer();
   }
 

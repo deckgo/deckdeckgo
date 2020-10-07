@@ -20,7 +20,8 @@ export class AppGetHelp {
           Reach us on{' '}
           <a
             href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"
-            target="_blank">
+            target="_blank"
+            rel="noopener noreferrer">
             Slack
           </a>
           , via <a href="mailto:hello@deckdeckgo.com">email</a> or on{' '}
@@ -29,7 +30,7 @@ export class AppGetHelp {
           </a>
           .
         </p>
-        <div class="ion-text-center ion-padding-top">
+        <div class="ion-text-center">
           <ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>
             Got it
           </ion-button>

@@ -1,3 +1,11 @@
+[![npm][npm-badge]][npm-badge-url]
+[![license][npm-license]][npm-license-url]
+
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-video
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-video
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-video
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/video/LICENSE
+
 # DeckDeckGo - Slide Video
 
 This component is the slide/template "Video" of [DeckDeckGo].
@@ -24,4 +32,4 @@ npm run start
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com), [Nicolas Mattia](mailto:nicolas@nmattia.com) & [Noël Macé](mailto:contact@noelmace.com)
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

@@ -54,7 +54,7 @@ export class AppNotes {
     this.initPortrait();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.destroyListener) {
       this.destroyListener();
     }

@@ -53,7 +53,7 @@ export class AppPoll {
     await this.initHasVoted();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.pollService.disconnect();
 
     if (this.destroyPollListener) {

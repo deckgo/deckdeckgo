@@ -1,3 +1,11 @@
+[![npm][npm-badge]][npm-badge-url]
+[![license][npm-license]][npm-license-url]
+
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/math
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/math
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/math
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/math/LICENSE
+
 # DeckDeckGo - Math
 
 A Web Component to write and render math expressions.

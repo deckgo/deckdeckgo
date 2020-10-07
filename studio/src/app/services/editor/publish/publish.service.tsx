@@ -1,47 +1,28 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 import deckStore from '../../../stores/deck.store';
-import publishStore from '../../../stores/publish.store';
 import userStore from '../../../stores/user.store';
+import errorStore from '../../../stores/error.store';
+import authStore from '../../../stores/auth.store';
 
-import {Deck, DeckMetaAuthor} from '../../../models/data/deck';
-import {ApiDeck} from '../../../models/api/api.deck';
-import {Slide, SlideAttributes, SlideTemplate} from '../../../models/data/slide';
+import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 
-import {Resources} from '../../../utils/core/resources';
-
-import {ApiPresentation} from '../../../models/api/api.presentation';
-import {ApiSlide} from '../../../models/api/api.slide';
 import {UserSocial} from '../../../models/data/user';
 
 import {DeckService} from '../../data/deck/deck.service';
-import {SlideService} from '../../data/slide/slide.service';
-
-import {ApiPresentationService} from '../../api/presentation/api.presentation.service';
-import {ApiPresentationFactoryService} from '../../api/presentation/api.presentation.factory.service';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
-import {EnvironmentGoogleConfig} from '../../core/environment/environment-config';
-import {FontsService} from '../fonts/fonts.service';
+import {EnvironmentFirebaseConfig} from '../../core/environment/environment-config';
 
 export class PublishService {
   private static instance: PublishService;
 
-  private apiPresentationService: ApiPresentationService;
-
   private deckService: DeckService;
-  private slideService: SlideService;
-
-  private fontsService: FontsService;
 
   private constructor() {
-    this.apiPresentationService = ApiPresentationFactoryService.getInstance();
-
     this.deckService = DeckService.getInstance();
-    this.slideService = SlideService.getInstance();
-
-    this.fontsService = FontsService.getInstance();
   }
 
   static getInstance() {
@@ -51,316 +32,17 @@ export class PublishService {
     return PublishService.instance;
   }
 
-  private progress(progress: number) {
-    publishStore.state.progress = progress;
-  }
-
-  private progressComplete() {
-    publishStore.state.progress = 1;
-  }
-
-  // TODO: Move in a cloud functions?
-  publish(description: string, tags: string[]): Promise<string> {
-    return new Promise<string>(async (resolve, reject) => {
-      this.progress(0);
-
+  publish(description: string, tags: string[], github: boolean): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
       try {
         if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
-          this.progressComplete();
           reject('No deck found');
           return;
         }
 
-        const apiDeck: ApiDeck = await this.convertDeck(deckStore.state.deck, description);
+        await this.updateDeckMeta(description, tags, github);
 
-        this.progress(0.25);
-
-        const apiDeckPublish: ApiPresentation = await this.publishDeck(deckStore.state.deck, apiDeck);
-
-        this.progress(0.5);
-
-        if (!apiDeckPublish || !apiDeckPublish.id || !apiDeckPublish.url) {
-          this.progressComplete();
-          reject('Publish failed');
-          return;
-        }
-
-        this.progress(0.75);
-
-        const newApiId: boolean = deckStore.state.deck.data.api_id !== apiDeckPublish.id;
-        if (newApiId) {
-          deckStore.state.deck.data.api_id = apiDeckPublish.id;
-
-          const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
-          deckStore.state.deck = {...updatedDeck};
-        }
-
-        this.progress(0.8);
-
-        const publishedUrl: string = apiDeckPublish.url;
-
-        await this.delayUpdateMeta(deckStore.state.deck, publishedUrl, description, tags, newApiId);
-
-        resolve(publishedUrl);
-      } catch (err) {
-        this.progressComplete();
-        reject(err);
-      }
-    });
-  }
-
-  private publishDeck(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
-    return new Promise<ApiPresentation>(async (resolve, reject) => {
-      try {
-        const apiDeckPublish: ApiPresentation = await this.createOrUpdatePublish(deck, apiDeck);
-
-        resolve(apiDeckPublish);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private createOrUpdatePublish(deck: Deck, apiDeck: ApiDeck): Promise<ApiPresentation> {
-    if (deck.data.api_id) {
-      return this.apiPresentationService.put(deck.data.api_id, apiDeck);
-    } else {
-      return this.apiPresentationService.post(apiDeck);
-    }
-  }
-
-  private convertDeck(deck: Deck, description: string): Promise<ApiDeck> {
-    return new Promise<ApiDeck>(async (resolve, reject) => {
-      try {
-        const apiSlides: ApiSlide[] = await this.convertSlides(deck);
-
-        const apiDeck: ApiDeck = {
-          name: deck.data.name ? deck.data.name.trim() : deck.data.name,
-          description: description !== undefined && description !== '' ? description : deck.data.name,
-          owner_id: deck.data.owner_id,
-          attributes: deck.data.attributes,
-          background: deck.data.background,
-          header: deck.data.header,
-          footer: deck.data.footer,
-          slides: apiSlides,
-        };
-
-        const googleFontScript: string | undefined = await this.getGoogleFontScript(deck);
-        if (googleFontScript !== undefined) {
-          apiDeck.head_extra = googleFontScript;
-        }
-
-        resolve(apiDeck);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private getGoogleFontScript(deck: Deck): Promise<string | undefined> {
-    return new Promise<string | undefined>(async (resolve) => {
-      if (!document) {
-        resolve(undefined);
-        return;
-      }
-      if (!deck || !deck.data || !deck.data.attributes) {
-        resolve(undefined);
-        return;
-      }
-
-      if (!deck.data.attributes.style || deck.data.attributes.style === undefined || deck.data.attributes.style === '') {
-        resolve(undefined);
-        return;
-      }
-
-      const div: HTMLDivElement = document.createElement('div');
-      div.setAttribute('style', deck.data.attributes.style);
-
-      const fontFamily: string | undefined = div.style.getPropertyValue('font-family');
-
-      if (!fontFamily || fontFamily === undefined || fontFamily === '') {
-        resolve(undefined);
-        return;
-      }
-
-      const font: GoogleFont | undefined = await this.fontsService.extractGoogleFont(fontFamily);
-
-      if (!font || font === undefined) {
-        resolve(undefined);
-        return;
-      }
-
-      const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
-      const url: string = this.fontsService.getGoogleFontUrl(google.fontsUrl, font);
-
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'stylesheet');
-      link.setAttribute('href', url);
-
-      resolve(link.outerHTML);
-    });
-  }
-
-  private convertSlides(deck: Deck): Promise<ApiSlide[]> {
-    return new Promise<ApiSlide[]>(async (resolve, reject) => {
-      if (!deck.data.slides || deck.data.slides.length <= 0) {
-        resolve([]);
-        return;
-      }
-
-      try {
-        const promises: Promise<ApiSlide>[] = [];
-
-        for (let i: number = 0; i < deck.data.slides.length; i++) {
-          const slideId: string = deck.data.slides[i];
-
-          promises.push(this.convertSlide(deck, slideId));
-        }
-
-        if (!promises || promises.length <= 0) {
-          resolve([]);
-          return;
-        }
-
-        const slides: ApiSlide[] = await Promise.all(promises);
-
-        resolve(slides);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
-    return new Promise<ApiSlide>(async (resolve, reject) => {
-      const slide: Slide = await this.slideService.get(deck.id, slideId);
-
-      if (!slide || !slide.data) {
-        reject('Missing slide for publishing');
-        return;
-      }
-
-      const attributes: SlideAttributes = await this.convertAttributesToString(slide.data.attributes);
-
-      const apiSlide: ApiSlide = {
-        template: slide.data.template,
-        content: slide.data.content,
-        attributes: attributes,
-      };
-
-      const cleanApiSlide: ApiSlide = await this.convertSlideQRCode(apiSlide);
-      cleanApiSlide.content = await this.cleanNotes(apiSlide.content);
-
-      resolve(cleanApiSlide);
-    });
-  }
-
-  private convertAttributesToString(attributes: SlideAttributes): Promise<SlideAttributes> {
-    return new Promise<SlideAttributes>((resolve) => {
-      if (!attributes) {
-        resolve(undefined);
-        return;
-      }
-
-      // We loose the type but doing so we ensure that all attributes are converted to string in order to parse them to HTML in the API
-      const result: SlideAttributes = {};
-      Object.keys(attributes).forEach((key: string) => {
-        result[key] = `${attributes[key]}`;
-      });
-
-      if (!result) {
-        resolve(undefined);
-        return;
-      }
-
-      resolve(result);
-    });
-  }
-
-  private cleanNotes(content: string): Promise<string> {
-    return new Promise<string>((resolve) => {
-      if (!content || content === undefined || content === '') {
-        resolve(content);
-        return;
-      }
-
-      const result: string = content.replace(/<div slot="notes".*?>(.|[\s\S])*?<\/div>/gi, '');
-
-      resolve(result);
-    });
-  }
-
-  private convertSlideQRCode(apiSlide: ApiSlide): Promise<ApiSlide> {
-    return new Promise<ApiSlide>(async (resolve) => {
-      if (!apiSlide) {
-        resolve(apiSlide);
-        return;
-      }
-
-      if (apiSlide.template !== SlideTemplate.QRCODE) {
-        resolve(apiSlide);
-        return;
-      }
-
-      const presentationUrl: string = EnvironmentConfigService.getInstance().get('deckdeckgo').presentationUrl;
-
-      // If no attributes at all, we create an attribute "content" of the QR code with it's upcoming published url
-      if (!apiSlide.attributes) {
-        apiSlide.attributes = {
-          content: `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`,
-        };
-      }
-
-      // If not custom content, we replace the attribute "content" of the QR code with it's upcoming published url
-      if (!apiSlide.attributes.hasOwnProperty('customQRCode') || !apiSlide.attributes.customQRCode) {
-        apiSlide.attributes.content = `${presentationUrl}{{DECKDECKGO_BASE_HREF}}`;
-      }
-
-      // In any case, we don't need customQRCode attribute in our presentations, this is an attribute used by the editor
-      if (apiSlide.attributes.hasOwnProperty('customQRCode')) {
-        delete apiSlide.attributes['customQRCode'];
-      }
-
-      resolve(apiSlide);
-    });
-  }
-
-  // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
-  // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private delayUpdateMeta(deck: Deck, publishedUrl: string, description: string, tags: string[], delay: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      setTimeout(
-        () => {
-          this.progress(0.9);
-
-          setTimeout(
-            async () => {
-              await this.updateDeckMeta(deck, publishedUrl, description, tags);
-
-              this.progress(0.95);
-
-              await this.refreshDeck(deck.id);
-
-              this.progressComplete();
-
-              setTimeout(() => {
-                resolve();
-              }, 500);
-            },
-            delay ? 3500 : 0
-          );
-        },
-        delay ? 3500 : 0
-      );
-    });
-  }
-
-  // Otherwise we gonna kept in memory references like firebase.firestore.FieldValue.delete instead of null values
-  private refreshDeck(deckId: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const freshDeck: Deck = await this.deckService.get(deckId);
-        deckStore.state.deck = {...freshDeck};
+        await this.publishDeck(deckStore.state.deck);
 
         resolve();
       } catch (err) {
@@ -369,38 +51,60 @@ export class PublishService {
     });
   }
 
-  private updateDeckMeta(deck: Deck, publishedUrl: string, description: string, tags: string[]): Promise<void> {
+  private publishDeck(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        if (!publishedUrl || publishedUrl === undefined || publishedUrl === '') {
-          resolve();
+        const config: EnvironmentFirebaseConfig = EnvironmentConfigService.getInstance().get('firebase');
+
+        const token: string = await firebase.auth().currentUser.getIdToken();
+
+        const rawResponse: Response = await fetch(`${config.functionsUrl}/publish`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            deckId: deck.id,
+            ownerId: deck.data.owner_id,
+            publish: true,
+            github: deck.data.github ? deck.data.github.publish : false,
+          }),
+        });
+
+        if (!rawResponse || !rawResponse.ok) {
+          reject('Something went wrong while publishing the deck');
           return;
         }
 
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  private updateDeckMeta(description: string, tags: string[], github: boolean): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
         if (!userStore.state.user || !userStore.state.user.data) {
           reject('No user');
           return;
         }
 
-        const url: URL = new URL(publishedUrl);
         const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
-        const feed: boolean = deck.data.slides && deck.data.slides.length > Resources.Constants.DECK.MIN_SLIDES;
+        const deck: Deck = {...deckStore.state.deck};
 
         if (!deck.data.meta) {
           deck.data.meta = {
             title: deck.data.name,
-            pathname: url.pathname,
-            published: true,
-            published_at: now,
-            feed: feed,
             updated_at: now,
           };
         } else {
           deck.data.meta.title = deck.data.name;
-          deck.data.meta.pathname = url.pathname;
           deck.data.meta.updated_at = now;
-          deck.data.meta.feed = feed;
         }
 
         if (description && description !== undefined && description !== '') {
@@ -444,12 +148,53 @@ export class PublishService {
           deck.data.meta.author = firebase.firestore.FieldValue.delete();
         }
 
-        await this.deckService.update(deck);
+        // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept
+        if (authStore.state.gitHub) {
+          if (deck.data.github) {
+            deck.data.github.publish = github;
+          } else {
+            deck.data.github = {
+              publish: github,
+            };
+          }
+        }
+
+        const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+        deckStore.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
         reject(err);
       }
+    });
+  }
+
+  snapshot(): Promise<() => void | undefined> {
+    return new Promise<() => void | undefined>((resolve) => {
+      const deck: Deck = deckStore.state.deck;
+
+      if (!deck || !deck.id) {
+        resolve(undefined);
+        return;
+      }
+
+      const firestore: firebase.firestore.Firestore = firebase.firestore();
+      const unsubscribe = firestore
+        .collection(`decks`)
+        .doc(deck.id)
+        .onSnapshot(
+          (deploySnapshot: firebase.firestore.DocumentSnapshot<DeckData>) => {
+            deckStore.state.deck = {
+              id: deploySnapshot.id,
+              data: deploySnapshot.data(),
+            };
+          },
+          (_err) => {
+            errorStore.state.error = 'Cannont retrieve the deck information.';
+          }
+        );
+
+      resolve(unsubscribe);
     });
   }
 }

@@ -35,9 +35,9 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 setupDeckGoConfig({
   deckdeckgo: {
     prod: false,
-    appUrl: 'https://deckdeckgo-studio-beta.web.app',
-    globalAssetsUrl: 'https://deckdeckgo-studio-beta.web.app/assets',
-    pollUrl: 'https://deckdeckgo-studio-beta.web.app/poll',
+    appUrl: 'https://deckdeckgo-studio-staging.web.app',
+    globalAssetsUrl: 'https://deckdeckgo-studio-staging.web.app/assets',
+    pollUrl: 'https://deckdeckgo-studio-staging.web.app/poll',
     apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>',
@@ -50,6 +50,7 @@ setupDeckGoConfig({
     storageBucket: '<@FIREBASE_STORAGE_BUCKET@>',
     messagingSenderId: '<@FIREBASE_MESSAGING_SENDER_ID@>',
     storageUrl: '<@FIREBASE_STORAGE_URL@>',
+    functionsUrl: '<@FIREBASE_FUNCTIONS_URL@>',
     appId: '<@FIREBASE_APP_ID@>',
   },
   tenor: {

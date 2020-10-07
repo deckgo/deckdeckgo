@@ -586,6 +586,11 @@ export class AppComponentsHighlightCode {
                 <td>The display property of the host container.</td>
               </tr>
               <tr>
+                <td>--deckgo-highlight-code-carbon-toolbar-display</td>
+                <td>block</td>
+                <td>The display property of the toolbar container.</td>
+              </tr>
+              <tr>
                 <td>--deckgo-highlight-code-carbon-overflow</td>
                 <td>auto</td>
                 <td>The overflow property of the host container.</td>
@@ -624,6 +629,11 @@ export class AppComponentsHighlightCode {
                 <td>--deckgo-highlight-code-carbon-header-padding</td>
                 <td>16px</td>
                 <td>The padding property of the card header.</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-carbon-header-margin</td>
+                <td>0</td>
+                <td>The margin property of the card header.</td>
               </tr>
               <tr>
                 <td>--deckgo-highlight-code-carbon-header-button-width</td>

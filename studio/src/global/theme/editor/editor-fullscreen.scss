@@ -34,6 +34,39 @@
 
   @import "./editor-fullscreen-footer";
 
+  app-editor {
+    main {
+      &.idle {
+        deckgo-deck {
+          h1,
+          h2,
+          h3,
+          section,
+          ol,
+          ul,
+          deckgo-reveal-list,
+          *:not([slot="background"]) > deckgo-lazy-img,
+          deckgo-reveal[img],
+          deckgo-math {
+            border: 1px solid transparent;
+
+            &:empty:not(:focus):after {
+              content: none;
+            }
+          }
+
+          [highlighted] {
+            box-shadow: none;
+          }
+        }
+
+        app-slide-contrast {
+          display: none;
+        }
+      }
+    }
+  }
+
   main {
     max-width: 100%;
 
@@ -41,29 +74,9 @@
       box-shadow: none;
     }
 
-    &.idle {
-      deckgo-deck {
-        h1,
-        h2,
-        h3,
-        section,
-        ol,
-        ul,
-        deckgo-reveal-list,
-        *:not([slot="background"]) > deckgo-lazy-img,
-        deckgo-reveal[img],
-        deckgo-math {
-          border: 1px solid transparent;
-        }
-
-        [highlighted] {
-          box-shadow: none;
-        }
-      }
-    }
-
-    deckgo-deck {
-      --pager-display: none;
+    app-slide-contrast {
+      top: 32px;
+      left: 32px;
     }
   }
 

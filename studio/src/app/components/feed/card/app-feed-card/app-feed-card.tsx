@@ -59,7 +59,7 @@ export class AppFeedCard {
     await this.onWindowResize();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.removeWindowResize();
   }
 

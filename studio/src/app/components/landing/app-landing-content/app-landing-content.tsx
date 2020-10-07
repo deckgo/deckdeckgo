@@ -5,7 +5,7 @@ import {debounce, isIOS} from '@deckdeckgo/utils';
 @Component({
   tag: 'app-landing-content',
   styleUrl: 'app-landing-content.scss',
-  shadow: false
+  shadow: false,
 })
 export class AppLandingContent {
   @Element() el: HTMLElement;
@@ -35,7 +35,7 @@ export class AppLandingContent {
     }
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     this.removeWindowResize();
 
     if (this.videoObserver) {
@@ -63,7 +63,7 @@ export class AppLandingContent {
     return new Promise<void>((resolve) => {
       this.videoObserver = new IntersectionObserver(this.onVideoIntersection, {
         rootMargin: '100px 0px',
-        threshold: 0.25
+        threshold: 0.25,
       });
 
       const elements: NodeListOf<HTMLElement> = this.el.querySelectorAll('div.video');
@@ -82,7 +82,7 @@ export class AppLandingContent {
     return new Promise<void>((resolve) => {
       this.pollObserver = new IntersectionObserver(this.onPollIntersection, {
         rootMargin: '100px 0px',
-        threshold: 0.25
+        threshold: 0.25,
       });
 
       const element: HTMLElement = this.el.querySelector('deckgo-slide-poll');
@@ -283,7 +283,7 @@ export class AppLandingContent {
           style={{
             '--deckgo-qrcode-color-fill': '#222428',
             '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
-            '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)'
+            '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
           }}>
           <p slot="question">Interact with your audience</p>
           <p slot="answer-1">Cool</p>

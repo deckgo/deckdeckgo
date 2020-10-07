@@ -32,6 +32,10 @@ export namespace Components {
     }
     interface AppDeckActions {
     }
+    interface AppDeckAnimation {
+    }
+    interface AppDeckAutoSlide {
+    }
     interface AppDeckBackground {
     }
     interface AppDeckEvents {
@@ -45,8 +49,6 @@ export namespace Components {
     interface AppDeckPager {
     }
     interface AppDeckSize {
-    }
-    interface AppDeckTransition {
     }
     interface AppEditDefault {
     }
@@ -214,6 +216,18 @@ declare global {
         prototype: HTMLAppDeckActionsElement;
         new (): HTMLAppDeckActionsElement;
     };
+    interface HTMLAppDeckAnimationElement extends Components.AppDeckAnimation, HTMLStencilElement {
+    }
+    var HTMLAppDeckAnimationElement: {
+        prototype: HTMLAppDeckAnimationElement;
+        new (): HTMLAppDeckAnimationElement;
+    };
+    interface HTMLAppDeckAutoSlideElement extends Components.AppDeckAutoSlide, HTMLStencilElement {
+    }
+    var HTMLAppDeckAutoSlideElement: {
+        prototype: HTMLAppDeckAutoSlideElement;
+        new (): HTMLAppDeckAutoSlideElement;
+    };
     interface HTMLAppDeckBackgroundElement extends Components.AppDeckBackground, HTMLStencilElement {
     }
     var HTMLAppDeckBackgroundElement: {
@@ -255,12 +269,6 @@ declare global {
     var HTMLAppDeckSizeElement: {
         prototype: HTMLAppDeckSizeElement;
         new (): HTMLAppDeckSizeElement;
-    };
-    interface HTMLAppDeckTransitionElement extends Components.AppDeckTransition, HTMLStencilElement {
-    }
-    var HTMLAppDeckTransitionElement: {
-        prototype: HTMLAppDeckTransitionElement;
-        new (): HTMLAppDeckTransitionElement;
     };
     interface HTMLAppEditDefaultElement extends Components.AppEditDefault, HTMLStencilElement {
     }
@@ -522,6 +530,8 @@ declare global {
         "app-components-social": HTMLAppComponentsSocialElement;
         "app-components-youtube": HTMLAppComponentsYoutubeElement;
         "app-deck-actions": HTMLAppDeckActionsElement;
+        "app-deck-animation": HTMLAppDeckAnimationElement;
+        "app-deck-auto-slide": HTMLAppDeckAutoSlideElement;
         "app-deck-background": HTMLAppDeckBackgroundElement;
         "app-deck-events": HTMLAppDeckEventsElement;
         "app-deck-extra-features": HTMLAppDeckExtraFeaturesElement;
@@ -529,7 +539,6 @@ declare global {
         "app-deck-navigation": HTMLAppDeckNavigationElement;
         "app-deck-pager": HTMLAppDeckPagerElement;
         "app-deck-size": HTMLAppDeckSizeElement;
-        "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-edit-default": HTMLAppEditDefaultElement;
         "app-edit-fonts": HTMLAppEditFontsElement;
         "app-edit-lazy-loading": HTMLAppEditLazyLoadingElement;
@@ -600,6 +609,10 @@ declare namespace LocalJSX {
     }
     interface AppDeckActions {
     }
+    interface AppDeckAnimation {
+    }
+    interface AppDeckAutoSlide {
+    }
     interface AppDeckBackground {
     }
     interface AppDeckEvents {
@@ -613,8 +626,6 @@ declare namespace LocalJSX {
     interface AppDeckPager {
     }
     interface AppDeckSize {
-    }
-    interface AppDeckTransition {
     }
     interface AppEditDefault {
     }
@@ -716,6 +727,8 @@ declare namespace LocalJSX {
         "app-components-social": AppComponentsSocial;
         "app-components-youtube": AppComponentsYoutube;
         "app-deck-actions": AppDeckActions;
+        "app-deck-animation": AppDeckAnimation;
+        "app-deck-auto-slide": AppDeckAutoSlide;
         "app-deck-background": AppDeckBackground;
         "app-deck-events": AppDeckEvents;
         "app-deck-extra-features": AppDeckExtraFeatures;
@@ -723,7 +736,6 @@ declare namespace LocalJSX {
         "app-deck-navigation": AppDeckNavigation;
         "app-deck-pager": AppDeckPager;
         "app-deck-size": AppDeckSize;
-        "app-deck-transition": AppDeckTransition;
         "app-edit-default": AppEditDefault;
         "app-edit-fonts": AppEditFonts;
         "app-edit-lazy-loading": AppEditLazyLoading;
@@ -784,6 +796,8 @@ declare module "@stencil/core" {
             "app-components-social": LocalJSX.AppComponentsSocial & JSXBase.HTMLAttributes<HTMLAppComponentsSocialElement>;
             "app-components-youtube": LocalJSX.AppComponentsYoutube & JSXBase.HTMLAttributes<HTMLAppComponentsYoutubeElement>;
             "app-deck-actions": LocalJSX.AppDeckActions & JSXBase.HTMLAttributes<HTMLAppDeckActionsElement>;
+            "app-deck-animation": LocalJSX.AppDeckAnimation & JSXBase.HTMLAttributes<HTMLAppDeckAnimationElement>;
+            "app-deck-auto-slide": LocalJSX.AppDeckAutoSlide & JSXBase.HTMLAttributes<HTMLAppDeckAutoSlideElement>;
             "app-deck-background": LocalJSX.AppDeckBackground & JSXBase.HTMLAttributes<HTMLAppDeckBackgroundElement>;
             "app-deck-events": LocalJSX.AppDeckEvents & JSXBase.HTMLAttributes<HTMLAppDeckEventsElement>;
             "app-deck-extra-features": LocalJSX.AppDeckExtraFeatures & JSXBase.HTMLAttributes<HTMLAppDeckExtraFeaturesElement>;
@@ -791,7 +805,6 @@ declare module "@stencil/core" {
             "app-deck-navigation": LocalJSX.AppDeckNavigation & JSXBase.HTMLAttributes<HTMLAppDeckNavigationElement>;
             "app-deck-pager": LocalJSX.AppDeckPager & JSXBase.HTMLAttributes<HTMLAppDeckPagerElement>;
             "app-deck-size": LocalJSX.AppDeckSize & JSXBase.HTMLAttributes<HTMLAppDeckSizeElement>;
-            "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-edit-default": LocalJSX.AppEditDefault & JSXBase.HTMLAttributes<HTMLAppEditDefaultElement>;
             "app-edit-fonts": LocalJSX.AppEditFonts & JSXBase.HTMLAttributes<HTMLAppEditFontsElement>;
             "app-edit-lazy-loading": LocalJSX.AppEditLazyLoading & JSXBase.HTMLAttributes<HTMLAppEditLazyLoadingElement>;

@@ -24,6 +24,7 @@ import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils'
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
+import {DeckAction} from '../../../../utils/editor/deck-action';
 
 export class DeckEventsHandler {
   private el: HTMLElement;
@@ -68,6 +69,7 @@ export class DeckEventsHandler {
 
       if (document) {
         document.addEventListener('deckDidChange', this.onDeckChange, false);
+        document.addEventListener('deckNeedChange', this.onDeckNeedChange, false);
       }
 
       resolve();
@@ -90,6 +92,7 @@ export class DeckEventsHandler {
 
     if (document) {
       document.removeEventListener('deckDidChange', this.onDeckChange, true);
+      document.removeEventListener('deckNeedChange', this.onDeckNeedChange, true);
     }
   }
 
@@ -114,6 +117,14 @@ export class DeckEventsHandler {
     await this.updateDeck($event.detail);
   };
 
+  private onDeckNeedChange = async ($event: CustomEvent<DeckAction>) => {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    await this.updateDeckAction($event.detail);
+  };
+
   private onSlideChange = async ($event: CustomEvent) => {
     if (!$event || !$event.detail) {
       return;
@@ -129,7 +140,11 @@ export class DeckEventsHandler {
 
     const element: HTMLElement = $event.detail as HTMLElement;
 
-    const parent: HTMLElement = element.parentElement;
+    let parent: HTMLElement = element.parentElement;
+
+    if (SlotUtils.isNodeReveal(parent) || SlotUtils.isNodeDragDropResize(parent)) {
+      parent = parent.parentElement;
+    }
 
     if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
       return;
@@ -331,7 +346,8 @@ export class DeckEventsHandler {
           return;
         }
 
-        const attributes: DeckAttributes = await this.getDeckAttributes(deck, true);
+        const attributes: DeckAttributes = await this.getDeckAttributes(deck, true, currentDeck);
+
         // @ts-ignore
         currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
 
@@ -401,6 +417,40 @@ export class DeckEventsHandler {
         resolve();
       }
     });
+  }
+
+  private async updateDeckAction(action: DeckAction): Promise<void> {
+    try {
+      if (!action || action === undefined) {
+        return;
+      }
+
+      if (action.autoSlide === undefined) {
+        return;
+      }
+
+      busyStore.state.deckBusy = true;
+
+      const currentDeck: Deck | null = deckStore.state.deck;
+
+      if (!currentDeck || !currentDeck.data) {
+        return;
+      }
+
+      if (currentDeck.data.attributes === undefined) {
+        currentDeck.data.attributes = {};
+      }
+
+      currentDeck.data.attributes.autoSlide = action.autoSlide;
+
+      const updatedDeck: Deck = await this.deckService.update(currentDeck);
+      deckStore.state.deck = {...updatedDeck};
+
+      busyStore.state.deckBusy = false;
+    } catch (err) {
+      errorStore.state.error = err;
+      busyStore.state.deckBusy = false;
+    }
   }
 
   private updateSlide(slide: HTMLElement): Promise<void> {
@@ -726,7 +776,7 @@ export class DeckEventsHandler {
     });
   }
 
-  private getDeckAttributes(deck: HTMLElement, updateDeck: boolean): Promise<DeckAttributes> {
+  private getDeckAttributes(deck: HTMLElement, updateDeck: boolean, currentDeck: Deck | null = null): Promise<DeckAttributes> {
     return new Promise<DeckAttributes>((resolve) => {
       let attributes: DeckAttributes = {};
 
@@ -737,11 +787,34 @@ export class DeckEventsHandler {
         attributes.style = firebase.firestore.FieldValue.delete();
       }
 
-      if (deck.hasAttribute('transition') && deck.getAttribute('transition') !== 'slide') {
-        attributes.transition = deck.getAttribute('transition') as 'slide' | 'fade' | 'none';
+      if (deck.hasAttribute('animation') && deck.getAttribute('animation') !== 'slide') {
+        attributes.animation = deck.getAttribute('animation') as 'slide' | 'fade' | 'none';
       } else if (updateDeck) {
         // @ts-ignore
-        attributes.transition = firebase.firestore.FieldValue.delete();
+        attributes.animation = firebase.firestore.FieldValue.delete();
+      }
+
+      if (deck.hasAttribute('direction') && deck.getAttribute('direction') !== 'horizontal') {
+        attributes.direction = deck.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
+      } else if (updateDeck) {
+        // @ts-ignore
+        attributes.direction = firebase.firestore.FieldValue.delete();
+      }
+
+      if (deck.hasAttribute('direction-mobile') && deck.getAttribute('direction-mobile') !== 'papyrus') {
+        attributes.directionMobile = deck.getAttribute('direction-mobile') as 'horizontal' | 'vertical' | 'papyrus';
+      } else if (updateDeck) {
+        // @ts-ignore
+        attributes.directionMobile = firebase.firestore.FieldValue.delete();
+      }
+
+      if (currentDeck && currentDeck.data && currentDeck.data.attributes) {
+        if (currentDeck.data.attributes.autoSlide !== undefined) {
+          attributes.autoSlide = currentDeck.data.attributes.autoSlide;
+        } else {
+          // @ts-ignore
+          attributes.autoSlide = firebase.firestore.FieldValue.delete();
+        }
       }
 
       resolve(attributes);

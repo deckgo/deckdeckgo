@@ -6,14 +6,14 @@ import {BaseType, Selection} from 'd3-selection';
 import {scaleBand, scaleLinear} from 'd3-scale';
 import {max} from 'd3-array';
 import {Axis, axisBottom, axisLeft} from 'd3-axis';
-import {transition} from 'd3-transition';
+import 'd3-transition';
 
 import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from '@deckdeckgo/types';
 
 @Component({
   tag: 'deckgo-bar-chart',
   styleUrl: 'deckdeckgo-bar-chart.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
@@ -246,10 +246,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
       const leftAxis: Axis<any> = axisLeft(this.y);
 
-      this.svg
-        .append('g')
-        .attr('class', 'axis axis-y')
-        .call(leftAxis);
+      this.svg.append('g').attr('class', 'axis axis-y').call(leftAxis);
 
       resolve();
     });
@@ -284,8 +281,6 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private drawAnimatedBars(index: number, animationDuration: number): Promise<void> {
     return new Promise<void>((resolve) => {
-      const t = transition();
-
       const section: any = this.svg.selectAll('rect').data(this.chartData[index].values);
 
       section
@@ -307,7 +302,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
             ')'
           );
         })
-        .transition(t)
+        .transition()
         .duration(animationDuration)
         .attr('x', (d) => {
           return this.x0(d.label);
@@ -429,9 +424,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         if (values && values.length >= 2) {
           // Title
           if (!keys) {
-            keys = Array.apply(null, {length: values.length})
-              .map(Number.call, Number)
-              .slice(1);
+            keys = Array.apply(null, {length: values.length}).map(Number.call, Number).slice(1);
           }
 
           let dataValues: DeckdeckgoBarChartDataValue[] = [];
@@ -442,7 +435,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               dataValues.push({
                 key: `${i}`,
                 label: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
-                value: tmp
+                value: tmp,
               });
             } else if (lineCount === 0 && keys.length >= i) {
               keys[i - 1] = values[i];
@@ -452,7 +445,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
           if (dataValues && dataValues.length > 0) {
             results.push({
               label: values[0],
-              values: dataValues
+              values: dataValues,
             });
           }
         }

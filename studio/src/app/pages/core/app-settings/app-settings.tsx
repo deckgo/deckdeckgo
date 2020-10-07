@@ -123,7 +123,7 @@ export class AppHome {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.destroyListener();
   }
 
@@ -303,7 +303,9 @@ export class AppHome {
       this.apiUser.username = this.apiUsername;
 
       try {
-        await this.apiUserService.put(this.apiUser, authStore.state.authUser.token, this.apiUser.id);
+        const token: string = await firebase.auth().currentUser.getIdToken();
+
+        await this.apiUserService.put(this.apiUser, token, this.apiUser.id);
 
         resolve();
       } catch (err) {
@@ -397,7 +399,8 @@ export class AppHome {
 
         if (firebaseUser) {
           // We need the user token to access the API, therefore delete it here first
-          await this.apiUserService.delete(this.apiUser.id, authStore.state.authUser.token);
+          const token: string = await firebase.auth().currentUser.getIdToken();
+          await this.apiUserService.delete(this.apiUser.id, token);
 
           // Then delete the user
           await this.userService.delete(authStore.state.authUser.uid);
@@ -411,14 +414,15 @@ export class AppHome {
 
         navStore.state.nav = {
           url: '/',
-          direction: NavDirection.ROOT,
+          direction: NavDirection.RELOAD,
         };
 
         await loading.dismiss();
 
         resolve();
       } catch (err) {
-        errorStore.state.error = "Your user couldn't be deleted, contact us per email";
+        errorStore.state.error =
+          "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
   }

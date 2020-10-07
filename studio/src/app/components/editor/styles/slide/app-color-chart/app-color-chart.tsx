@@ -1,10 +1,13 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import paletteStore from '../../../../../stores/palette.store';
+
 import {SlideChartType} from '../../../../../models/data/slide';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {ChartUtils} from '../../../../../utils/editor/chart.utils';
+import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
 
 enum ApplyColorType {
   FILL,
@@ -102,6 +105,8 @@ export class AppColorDeckSlide {
     if (!this.selectedElement || !$event || !$event.detail) {
       return;
     }
+
+    await PaletteUtils.updatePalette($event.detail);
 
     this.color = $event.detail.rgb;
 
@@ -228,6 +233,7 @@ export class AppColorDeckSlide {
       </ion-item>,
 
       <deckgo-color
+        palette={paletteStore.state.palette}
         class="ion-padding-start ion-padding-end ion-padding-bottom"
         more={this.moreColors}
         onColorChange={($event: CustomEvent) => this.selectColor($event)}

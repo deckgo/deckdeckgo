@@ -36,7 +36,7 @@ export class AppAlign {
     }
 
     return (
-      <app-expansion-panel>
+      <app-expansion-panel expanded="close">
         <ion-label slot="title">Alignment</ion-label>
         <ion-list>
           <ion-item class="select">

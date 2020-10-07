@@ -2,7 +2,7 @@
   "API_URL": "https://localhost/beta/api",
   "PRESENTATION_URL": "https://beta.deckdeckgo.io",
   "UNSPLASH_URL": "https://localhost/beta/unsplash/",
-  "FIREBASE_API_KEY" : "AIzaSyDOC1HFzDfuFRH-WdUAJCzDDLA3c88KRw4",
+  "FIREBASE_API_KEY": "AIzaSyDOC1HFzDfuFRH-WdUAJCzDDLA3c88KRw4",
   "FIREBASE_AUTH_DOMAIN": "deckdeckgo-studio-beta.firebaseapp.com",
   "FIREBASE_DATABASE_URL": "https://deckdeckgo-studio-beta.firebaseio.com",
   "FIREBASE_PROJECT_ID": "deckdeckgo-studio-beta",
@@ -10,6 +10,7 @@
   "FIREBASE_MESSAGING_SENDER_ID": "448110541714",
   "FIREBASE_APP_ID": "1:448110541714:web:3d8fd2b806465304",
   "FIREBASE_STORAGE_URL": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-beta.appspot.com/o/",
+  "FIREBASE_FUNCTIONS_URL": "https://us-central1-deckdeckgo-studio-beta.cloudfunctions.net",
   "TENOR_KEY": "SECRET_KEY",
   "SOCKET_URL": "https://api.deckdeckgo.com"
 }

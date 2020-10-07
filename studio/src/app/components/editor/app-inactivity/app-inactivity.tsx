@@ -2,7 +2,7 @@ import {Component, EventEmitter, Event, Prop, Watch} from '@stencil/core';
 
 @Component({
   tag: 'app-inactivity',
-  shadow: true
+  shadow: true,
 })
 export class AppInactivity {
   @Prop()
@@ -28,7 +28,7 @@ export class AppInactivity {
     }
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.removeEventListener();
   }
 

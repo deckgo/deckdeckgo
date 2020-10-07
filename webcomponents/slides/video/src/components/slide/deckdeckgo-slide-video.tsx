@@ -13,7 +13,7 @@ export class DeckdeckgoSlideVideo implements DeckdeckgoSlidePlay {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) src: string;
+  @Prop({reflect: true}) src: string;
   @Prop() type: string = 'video/mp4';
 
   @Prop() muted: boolean = true;

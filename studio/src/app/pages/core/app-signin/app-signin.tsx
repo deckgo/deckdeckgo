@@ -8,6 +8,7 @@ import {del, get, set} from 'idb-keyval';
 import deckStore from '../../../stores/deck.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
+import tokenStore from '../../../stores/token.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
@@ -48,7 +49,7 @@ export class AppSignIn {
     await this.setupFirebaseUI();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     const ui = firebaseui.auth.AuthUI.getInstance();
     if (ui) {
       await ui.delete();
@@ -75,8 +76,14 @@ export class AppSignIn {
 
     const signInOptions = [];
 
+    // GitHub scope
+    signInOptions.push({
+      provider: firebase.auth.GithubAuthProvider.PROVIDER_ID,
+      scopes: ['public_repo'],
+    });
+
     signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
-    signInOptions.push(firebase.auth.GithubAuthProvider.PROVIDER_ID);
+
     signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
     this.firebaseUser = firebase.auth().currentUser;
@@ -94,12 +101,14 @@ export class AppSignIn {
       credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
       autoUpgradeAnonymousUsers: true,
       callbacks: {
-        signInSuccessWithAuthResult: (_authResult, _redirectUrl) => {
+        signInSuccessWithAuthResult: (authResult, _redirectUrl) => {
           this.signInInProgress = true;
+
+          this.saveGithubCredentials(authResult);
 
           // HACK: so signInSuccessWithAuthResult doesn't like promises, so we save the navigation information before and run the redirect not asynchronously
           // Ultimately I would like to transfer here the userService.updateMergedUser if async would be supported
-          this.navigateRoot(redirectUrl, mergeInfo);
+          this.navigateRoot(redirectUrl, NavDirection.ROOT, mergeInfo);
 
           return false;
         },
@@ -142,7 +151,7 @@ export class AppSignIn {
 
       if (!mergeInfo || !mergeInfo.deckId || !mergeInfo.userToken || !mergeInfo.userId) {
         // Should not happens but at least  don't get stuck
-        await firebase.auth().signInWithCredential(cred);
+        await this.signInWithCredential(cred);
 
         await this.navigateRedirect();
 
@@ -156,9 +165,15 @@ export class AppSignIn {
         resolve();
       });
 
-      await firebase.auth().signInWithCredential(cred);
+      await this.signInWithCredential(cred);
     });
   };
+
+  private async signInWithCredential(cred: firebase.auth.AuthCredential) {
+    const userCred: firebase.auth.UserCredential = await firebase.auth().signInWithCredential(cred);
+
+    this.saveGithubCredentials(userCred);
+  }
 
   private async mergeDeck(mergeInfo: MergeInformation, destroyListener) {
     if (
@@ -197,10 +212,15 @@ export class AppSignIn {
 
       await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
+      let token: string | null = null;
+      if (authStore.state.authUser) {
+        token = await firebase.auth().currentUser.getIdToken();
+      }
+
       await set('deckdeckgo_redirect_info', {
         deckId: deckStore.state.deck ? deckStore.state.deck.id : null,
         userId: authStore.state.authUser ? authStore.state.authUser.uid : null,
-        userToken: authStore.state.authUser ? authStore.state.authUser.token : null,
+        userToken: token,
         anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true,
       });
 
@@ -215,24 +235,43 @@ export class AppSignIn {
     await del('deckdeckgo_redirect');
     await del('deckdeckgo_redirect_info');
 
-    this.navigateRoot(redirectUrl, mergeInfo);
+    this.navigateRoot(redirectUrl, NavDirection.RELOAD, mergeInfo);
   }
 
-  private navigateRoot(redirectUrl: string, mergeInfo: MergeInformation) {
+  private navigateRoot(redirectUrl: string, direction: NavDirection, mergeInfo: MergeInformation) {
     // TODO: That's ugly
     // prettier-ignore
     const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
 
     // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
     navStore.state.nav = {
-      url: url,
-      direction: NavDirection.ROOT,
+      url,
+      direction,
     };
   }
 
   async navigateBack() {
     navStore.state.nav = {
       direction: NavDirection.BACK,
+    };
+  }
+
+  private saveGithubCredentials(userCred: firebase.auth.UserCredential) {
+    if (!userCred || !userCred.user || !userCred.user.uid) {
+      return;
+    }
+
+    if (!userCred.credential || userCred.credential.providerId !== 'github.com' || !(userCred.credential as firebase.auth.OAuthCredential).accessToken) {
+      return;
+    }
+
+    tokenStore.state.token = {
+      id: userCred.user.uid,
+      data: {
+        github: {
+          token: (userCred.credential as firebase.auth.OAuthCredential).accessToken,
+        },
+      },
     };
   }
 
@@ -245,6 +284,8 @@ export class AppSignIn {
 
           {this.renderMsg()}
 
+          {this.renderGitHub()}
+
           <div id="firebaseui-auth-container"></div>
 
           <p class="ion-text-center ion-padding-start ion-padding-end">
@@ -256,20 +297,10 @@ export class AppSignIn {
   }
 
   private renderMsg() {
-    if (this.redirect === 'editor') {
-      return [
-        <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Good to have you.</h1>,
-        <p class="ion-text-center ion-padding">
-          Sign in to unleash all features of the editor like adding more slides, uploading and using your own images, using the author template or being able to
-          share your presentation as an app.
-        </p>,
-      ];
-    } else {
-      return [
-        <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi! Welcome back.</h1>,
-        <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to be able to share your presentation as an app.</p>,
-      ];
-    }
+    return [
+      <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi 👋! Good to have you.</h1>,
+      <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to share your presentation online.</p>,
+    ];
   }
 
   private renderBackButton() {
@@ -284,5 +315,13 @@ export class AppSignIn {
         </ion-buttons>
       );
     }
+  }
+
+  private renderGitHub() {
+    return (
+      <p class="ion-text-center ion-padding-start ion-padding-end ion-padding-bottom">
+        Additionally, push the source code of your slides to repos with the GitHub <ion-icon name="logo-github"></ion-icon> logging.
+      </p>
+    );
   }
 }

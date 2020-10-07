@@ -51,16 +51,14 @@ export class AuthService {
 
           await this.apiUserService.signOut();
         } else {
-          const tokenId: string = await firebaseUser.getIdToken();
-
           const authUser: AuthUser = {
             uid: firebaseUser.uid,
-            token: tokenId,
             anonymous: firebaseUser.isAnonymous,
             name: firebaseUser.displayName,
             email: firebaseUser.email,
             email_verified: firebaseUser.emailVerified,
             photo_url: firebaseUser.photoURL,
+            gitHub: firebaseUser.providerData && firebaseUser.providerData.length > 0 ? firebaseUser.providerData[0].providerId === 'github.com' : false,
           };
 
           // Update anonymous user

@@ -13,10 +13,10 @@ export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) content: string;
+  @Prop({reflect: true}) content: string;
 
-  @Prop({reflectToAttr: true}) imgSrc: string;
-  @Prop({reflectToAttr: true}) imgAlt: string;
+  @Prop({reflect: true}) imgSrc: string;
+  @Prop({reflect: true}) imgAlt: string;
 
   private container!: HTMLDivElement;
   private qrCode!: HTMLElement;

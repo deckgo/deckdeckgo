@@ -1,3 +1,57 @@
+:host {
+  display: block;
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  contain: size style;
+}
+
+main {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  box-sizing: border-box;
+
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+
+  touch-action: auto;
+}
+
+:host(.vertical),
+:host(.horizontal) {
+  main {
+    overflow: hidden;
+  }
+}
+
+:host(.papyrus) {
+  main {
+    overflow-x: hidden;
+  }
+}
+
+:host(.vertical),
+:host(.papyrus) {
+  main {
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+  }
+}
+
+:host(.horizontal) {
+  main {
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+  }
+}
+
 div.deckgo-deck {
   display: flex;
 
@@ -8,9 +62,10 @@ div.deckgo-deck {
   z-index: var(--zIndex);
 
   --transformX: 0px;
+  --transformY: 0px;
   --transformXDuration: 0ms;
 
-  transform: translate3d(var(--transformX), 0px, 0px);
+  transform: translate3d(var(--transformX), var(--transformY), 0px);
   transition-duration: var(--transformXDuration, 0ms);
 
   ::-webkit-scrollbar {
@@ -21,12 +76,17 @@ div.deckgo-deck {
   --slide-height: 100%;
 }
 
-div.deckgo-pager {
-  position: absolute;
-  bottom: 0;
-  left: var(--pager-position-left);
-  right: var(--pager-position-right);
-  display: var(--pager-display);
+:host(.vertical),
+:host(.papyrus) {
+  div.deckgo-deck {
+    flex-direction: column;
+  }
+}
+
+:host(.papyrus) {
+  div.deckgo-deck {
+    --slide-user-select: auto;
+  }
 }
 
 ::slotted([slot="background"]) {

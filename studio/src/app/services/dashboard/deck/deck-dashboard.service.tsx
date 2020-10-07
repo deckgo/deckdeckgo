@@ -71,7 +71,7 @@ export class DeckDashboardService {
 
   snapshot(deck: Deck, updateFunction: Function): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!deck && !deck.id) {
+      if (!deck || !deck.id) {
         resolve();
         return;
       }

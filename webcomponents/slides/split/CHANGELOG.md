@@ -1,3 +1,16 @@
+# 2.1.0 (2020-09-25)
+
+### Features
+
+- support for `vertical` and `papyrus`
+- update dev dependencies
+
+# 2.0.0 (2020-09-03)
+
+### Breaking Changes
+
+- IE11, Edge 16-18 and Safari 10 not supported
+
 # 1.3.2 (2020-07-12)
 
 ### Features

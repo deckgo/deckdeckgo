@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckDeckGoCustomLoad, } from "./components/interfaces/custom-load";
+import { DeckDeckGoCustomLoad } from "./components/interfaces/custom-load";
 export namespace Components {
     interface DeckgoLazyImg {
         "ariaLabel": string;

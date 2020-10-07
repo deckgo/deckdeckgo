@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoHighlightCodeTerminal, } from "./declarations/deckdeckgo-highlight-code-terminal";
-import { DeckdeckgoHighlightCodeCarbonTheme, } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
-import { DeckdeckgoHighlightCodeAnchor, } from "./declarations/deckdeckgo-highlight-code-anchor";
+import { DeckdeckgoHighlightCodeTerminal } from "./declarations/deckdeckgo-highlight-code-terminal";
+import { DeckdeckgoHighlightCodeCarbonTheme } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
+import { DeckdeckgoHighlightCodeAnchor } from "./declarations/deckdeckgo-highlight-code-anchor";
 export namespace Components {
     interface DeckgoHighlightCode {
         "anchor": string;

@@ -1,0 +1,40 @@
+app-slide-contrast {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  transition: opacity 0.5s;
+
+  visibility: initial;
+  opacity: 1;
+
+  &:not(.warning) {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--ion-color-warning);
+    color: var(--ion-color-warning-contrast);
+
+    padding: 6px 12px;
+    border-radius: 64px;
+
+    position: relative;
+    overflow: hidden;
+
+    outline: 0;
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+    font-size: var(--font-size-small);
+
+    ion-label {
+      margin-right: 4px;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@deckdeckgo/pager",
+  "version": "1.0.0",
+  "description": "A pager for the progression of the presentation can optionally be displayed in form of a progress circle bar. ",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-pager/deckdeckgo-pager.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@stencil/core": "^2.0.3",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.3.2",
+    "autoprefixer": "^9.8.6",
+    "husky": "^4.3.0",
+    "prettier": "2.1.2",
+    "pretty-quick": "^3.0.2"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk",
+    "pager"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

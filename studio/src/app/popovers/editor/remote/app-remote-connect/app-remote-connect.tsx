@@ -26,7 +26,7 @@ export class AppRemoteConnect {
     await this.initCloseOnConnected();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.destroyCloseOnConnected();
   }
 
@@ -97,7 +97,7 @@ export class AppRemoteConnect {
         <p>Remote control your presentation with your phone or any devices.</p>
         <p class="no-padding-bottom">
           Scan the QR-Code or get the Progressive Web Apps at{' '}
-          <a href="https://deckdeckgo.app" target="_blank">
+          <a href="https://deckdeckgo.app" target="_blank" rel="noopener noreferrer">
             https://deckdeckgo.app <ion-icon name="open"></ion-icon>
           </a>
         </p>

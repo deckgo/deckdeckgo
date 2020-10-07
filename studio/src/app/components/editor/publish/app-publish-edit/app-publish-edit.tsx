@@ -5,8 +5,8 @@ import {debounce} from '@deckdeckgo/utils';
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
-import publishStore from '../../../../stores/publish.store';
 import apiUserStore from '../../../../stores/api.user.store';
+import authStore from '../../../../stores/auth.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -14,6 +14,8 @@ import {Resources} from '../../../../utils/core/resources';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
+
+import {getPublishedUrl} from '../../../../utils/core/share.utils';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -40,10 +42,16 @@ export class AppPublishEdit {
   private publishing: boolean = false;
 
   @State()
+  private progress: number | undefined = undefined;
+
+  @State()
   private tag: string;
 
   @State()
   private tags: string[] = [];
+
+  @State()
+  private pushToGitHub: boolean = true;
 
   private deckService: DeckService;
 
@@ -52,6 +60,8 @@ export class AppPublishEdit {
   @Event() private published: EventEmitter<string>;
 
   private publishService: PublishService;
+
+  private destroyDeckListener;
 
   constructor() {
     this.deckService = DeckService.getInstance();
@@ -65,10 +75,23 @@ export class AppPublishEdit {
 
   async componentWillLoad() {
     await this.init();
+
+    this.destroyDeckListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
+      // Deck is maybe updating while we have set it to true manually
+      this.publishing =
+        this.publishing ||
+        (deck.data.deploy && deck.data.deploy.api && (deck.data.deploy.api.status === 'scheduled' || deck.data.deploy.api.status === 'failure'));
+    });
   }
 
   componentDidLoad() {
     this.validateCaptionInput();
+  }
+
+  disconnectedCallback() {
+    if (this.destroyDeckListener) {
+      this.destroyDeckListener();
+    }
   }
 
   private async init() {
@@ -82,6 +105,7 @@ export class AppPublishEdit {
         ? (deckStore.state.deck.data.meta.description as string)
         : await this.getFirstSlideContent();
     this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
+    this.pushToGitHub = deckStore.state.deck.data.github ? deckStore.state.deck.data.github.publish : true;
   }
 
   private getFirstSlideContent(): Promise<string> {
@@ -149,14 +173,9 @@ export class AppPublishEdit {
       try {
         this.publishing = true;
 
-        const publishedUrl: string = await this.publishService.publish(this.description, this.tags);
+        this.onSuccessfulPublish();
 
-        this.published.emit(publishedUrl);
-
-        this.publishing = false;
-
-        // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
-        feedStore.reset();
+        await this.publishService.publish(this.description, this.tags, this.pushToGitHub);
 
         resolve();
       } catch (err) {
@@ -165,6 +184,51 @@ export class AppPublishEdit {
         resolve();
       }
     });
+  }
+
+  private onSuccessfulPublish() {
+    const currentDeck: Deck = {...deckStore.state.deck};
+
+    const destroyDeckDeployListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
+      if (deck && deck.data && deck.data.deploy && deck.data.deploy.api && deck.data.deploy.api.status === 'successful') {
+        destroyDeckDeployListener();
+
+        // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
+        feedStore.reset();
+
+        await this.delayNavigation(currentDeck.data.api_id !== deckStore.state.deck.data.api_id);
+      }
+    });
+  }
+
+  // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
+  // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
+  private async delayNavigation(newApiId: boolean) {
+    this.progress = 0;
+
+    const interval = setInterval(
+      () => {
+        this.progress += 0.1;
+      },
+      newApiId ? 7000 / 10 : 700 / 10
+    );
+
+    setTimeout(
+      async () => {
+        if (interval) {
+          clearInterval(interval);
+        }
+
+        this.progress = 1;
+
+        // Just for display so the progress bar reaches 100% for the eyes
+        setTimeout(async () => {
+          const publishedUrl: string = await getPublishedUrl(deckStore.state.deck);
+          this.published.emit(publishedUrl);
+        }, 200);
+      },
+      newApiId ? 7000 : 700
+    );
   }
 
   private onCaptionInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -295,23 +359,25 @@ export class AppPublishEdit {
     });
   }
 
+  private async onGitHubChange($event: CustomEvent) {
+    this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
+  }
+
   render() {
+    const disable: boolean = this.publishing || this.progress !== undefined;
+
     return (
       <article>
         <h1>Share your presentation online</h1>
 
-        <p>
-          <strong>Publish</strong> your presentation to share it with the world, your colleagues, friends and community.
-        </p>
+        <p>Publish your presentation to share it with the world, your colleagues, friends and community.</p>
 
-        <p>
-          DeckDeckGo will distribute it online as a modern <strong>app</strong>.
-        </p>
+        <p>DeckDeckGo will distribute it online as a modern app.</p>
 
-        <h2>Meta</h2>
+        <h2 class="ion-padding-top">Meta</h2>
 
         <p class="meta-text">
-          But first, edit or review your presentation's title and summary and add or change tags (up to 5) to make your presentation more inviting to readers.
+          Edit or review your presentation's title, summary and add or change tags (up to 5) to make your presentation more inviting to readers.
         </p>
 
         <form
@@ -320,16 +386,14 @@ export class AppPublishEdit {
             e.key === 'Enter' && e.preventDefault();
           }}>
           <ion-list class="inputs-list">
-            <ion-item class="item-title">
-              <ion-label>Title</ion-label>
-            </ion-item>
+            {this.renderTitleLabel()}
 
             <ion-item>
               <ion-input
                 value={this.caption}
                 debounce={500}
                 minlength={3}
-                disabled={this.publishing}
+                disabled={disable}
                 maxlength={Resources.Constants.DECK.TITLE_MAX_LENGTH}
                 required={true}
                 input-mode="text"
@@ -337,8 +401,8 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateCaptionInput()}></ion-input>
             </ion-item>
 
-            <p class="small">
-              The title could be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
+            <p class={`small ${this.valid ? undefined : 'error'}`}>
+              The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
               {Resources.Constants.DECK.TITLE_MAX_LENGTH} characters.
             </p>
 
@@ -351,13 +415,13 @@ export class AppPublishEdit {
                 rows={5}
                 value={this.description}
                 debounce={500}
-                disabled={this.publishing}
+                disabled={disable}
                 maxlength={Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH}
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}
                 onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
             </ion-item>
 
-            <ion-item class="item-title">
+            <ion-item class="item-title ion-margin-top">
               <ion-label>Tags</ion-label>
             </ion-item>
 
@@ -367,7 +431,7 @@ export class AppPublishEdit {
                 input-mode="text"
                 value={this.tag}
                 placeholder="Add a tag..."
-                disabled={!this.tags || this.tags.length >= 5 || this.publishing}
+                disabled={!this.tags || this.tags.length >= 5 || disable}
                 onKeyUp={($event: KeyboardEvent) => this.onTagInputKeyUp($event)}
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
             </ion-item>
@@ -375,11 +439,13 @@ export class AppPublishEdit {
             <app-feed-card-tags
               tags={this.tags}
               editable={true}
-              disable-remove={this.publishing}
+              disable-remove={disable}
               onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
           </ion-list>
 
-          <div class="ion-padding ion-text-center publish">{this.renderPublish()}</div>
+          {this.renderGitHub(disable)}
+
+          <div class="ion-padding ion-text-center publish">{this.renderPublish(disable)}</div>
         </form>
 
         <p class="small">DeckDeckGo will automatically generate the social card for your presentation based on the first slide of your deck.</p>
@@ -387,8 +453,18 @@ export class AppPublishEdit {
     );
   }
 
-  private renderPublish() {
-    if (!this.publishing) {
+  private renderTitleLabel() {
+    return (
+      <ion-item class={`item-title ${this.valid ? undefined : 'error'}`}>
+        <ion-label>
+          Title {this.valid ? undefined : <ion-icon aria-label="Title needs to match the expected format" name="warning-outline"></ion-icon>}
+        </ion-label>
+      </ion-item>
+    );
+  }
+
+  private renderPublish(disable: boolean) {
+    if (!disable) {
       return (
         <ion-button type="submit" disabled={!this.valid || this.disablePublish || !apiUserStore.state.apiUser} color="tertiary" shape="round">
           <ion-label>Publish now</ion-label>
@@ -397,10 +473,52 @@ export class AppPublishEdit {
     } else {
       return (
         <div class="publishing">
-          <ion-progress-bar value={publishStore.state.progress} color="tertiary"></ion-progress-bar>
+          {this.renderProgressBar()}
           <ion-label>Hang on, we are publishing your presentation</ion-label>
         </div>
       );
     }
+  }
+
+  private renderProgressBar() {
+    if (this.progress === undefined) {
+      return <ion-progress-bar type="indeterminate" color="tertiary"></ion-progress-bar>;
+    }
+
+    return <ion-progress-bar value={this.progress} color="tertiary"></ion-progress-bar>;
+  }
+
+  private renderGitHub(disable: boolean) {
+    if (!authStore.state.gitHub) {
+      return undefined;
+    }
+
+    return [
+      <h2 class="ion-padding-top">
+        GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>
+      </h2>,
+      this.renderGitHubText(),
+      <ion-list class="inputs-list ion-margin-bottom">
+        <ion-radio-group value={this.pushToGitHub} onIonChange={($event) => this.onGitHubChange($event)} class="inline">
+          <ion-item>
+            <ion-radio value={true} mode="md" disabled={disable}></ion-radio>
+            <ion-label>Yes</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-radio value={false} mode="md" disabled={disable}></ion-radio>
+            <ion-label>No</ion-label>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>,
+    ];
+  }
+
+  private renderGitHubText() {
+    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.github) {
+      return <p class="meta-text">Push the source code of the presentation to a new public repository of your GitHub account?</p>;
+    }
+
+    return <p class="meta-text">Submit the source code of the presentation to its GitHub repository?</p>;
   }
 }

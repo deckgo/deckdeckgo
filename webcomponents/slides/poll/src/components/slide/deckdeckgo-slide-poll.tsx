@@ -72,7 +72,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
     this.slideDidLoad.emit();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.communicationService.disconnect(this.pollKey);
   }
 

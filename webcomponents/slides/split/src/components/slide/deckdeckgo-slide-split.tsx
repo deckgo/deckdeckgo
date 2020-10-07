@@ -20,9 +20,9 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflectToAttr: true}) vertical: boolean = false;
+  @Prop({reflect: true}) vertical: boolean = false;
 
-  @Prop({reflectToAttr: true}) type: 'demo' | 'default' = 'default';
+  @Prop({reflect: true}) type: 'demo' | 'default' = 'default';
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);

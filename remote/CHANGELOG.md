@@ -1,3 +1,39 @@
+# 1.8.0 (2020-10-03)
+
+### Features
+
+- `pager` extracted from core
+
+# 1.7.1 (2020-09-26)
+
+### Features
+
+- update slide code for mobile
+
+# 1.7.0 (2020-09-25)
+
+### Features
+
+- support for `vertical` and `papyrus` directions
+
+# 1.6.3 (2020-09-03)
+
+### Features
+
+- update all dependencies
+
+# 1.6.2 (2020-08-21)
+
+### Features
+
+- update `@deckdeckgo/highlight-code`
+
+# 1.6.1 (2020-08-08)
+
+### Features
+
+- update recent dependencies for next DeckDeckGo next release
+
 # 1.6.0 (2020-07-11)
 
 ### Features

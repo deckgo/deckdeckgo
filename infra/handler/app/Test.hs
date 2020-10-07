@@ -206,7 +206,7 @@ testUsersGet = withPristineDB $ \conn -> do
           }
     dbCreateUser iface someUserId someUser >>= \case
       Left () -> error "Encountered error"
-      Right () -> pure ()
+      Right _ -> pure ()
 
     dbGetAllUsers iface >>= \case
       [Item userId user] ->
@@ -226,7 +226,7 @@ testUsersGetByUserId = withPristineDB $ \conn -> do
           }
     dbCreateUser iface someUserId someUser >>= \case
       Left () -> error "Encountered error"
-      Right () -> pure ()
+      Right _ -> pure ()
 
     dbGetUserById iface someUserId >>= \case
       Just (Item userId user) ->
@@ -246,7 +246,7 @@ testUsersDelete = withPristineDB $ \conn -> do
           }
     dbCreateUser iface someUserId someUser >>= \case
       Left () -> error "Encountered error"
-      Right () -> pure ()
+      Right _ -> pure ()
 
     dbDeleteUser iface someUserId >>= \case
       Left () -> error "couldn't delete"
@@ -263,7 +263,7 @@ testUsersCreate = withPristineDB $ \conn -> do
           }
     dbCreateUser iface someUserId someUser >>= \case
       Left () -> error "Encountered error"
-      Right () -> pure ()
+      Right _ -> pure ()
 
 testUsersUpdate :: IO ()
 testUsersUpdate = withPristineDB $ \conn -> do
@@ -277,7 +277,7 @@ testUsersUpdate = withPristineDB $ \conn -> do
 
     dbCreateUser iface someUserId someUser >>= \case
       Left () -> error "Encountered error"
-      Right () -> pure ()
+      Right _ -> pure ()
 
     let someUser' = User
           { userFirebaseId = someFirebaseId

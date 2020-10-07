@@ -5,7 +5,10 @@ The "Social" component helps you generate a social link to your Twitter, Dev, Me
 ## Table of contents
 
 - [Showcase](#app-components-social-showcase)
-- [Installation](#app-components-social-installation) - [Using from a CDN](#app-components-social-from-a-cdn) - [Install from NPM](#app-components-social-from-npm) - [Framework integration](#app-components-social-framework-integration)
+- [Installation](#app-components-social-installation)
+  - [Using from a CDN](#app-components-social-install-from-a-cdn)
+  - [Install from NPM](#app-components-social-install-from-npm)
+  - [Framework integration](#app-components-social-framework-integration)
 - [Usage](#app-components-social-usage)
   - [Slots](#app-components-social-slots)
   - [Attributes](#app-components-social-attributes)
@@ -27,7 +30,7 @@ This component could be added to your web application using the following method
 
 ### Using from a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy image component from a CDN. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] social component from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
@@ -36,7 +39,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 
 ### Install from NPM
 
-Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/qrcode) using the following command:
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/social) using the following command:
 
 ```bash
 npm install @deckdeckgo/social

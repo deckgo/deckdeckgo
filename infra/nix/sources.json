@@ -1,14 +1,14 @@
 {
   "deckdeckgo-starter": {
-    "branch": "studio",
+    "branch": "master",
     "description": "The Progressive Web App alternative for simple presentations",
     "homepage": "https://deckdeckgo.com",
     "owner": "deckgo",
-    "repo": "deckdeckgo-starter",
-    "rev": "5b24712022288b24f286e8a80f1478f13044f83b",
-    "sha256": "0s65wwsjnddn67xm7vxm2a95qx3vfm3hm84dzfalb7ivdf0ssnah",
+    "repo": "studio-kit",
+    "rev": "58357c71466e36d1e8d0973f06ab0fd9c5c8f5c3",
+    "sha256": "178bfwqv2afy1v3r4knm2byhj2yf63dx1s85g3k8k4rfz42vkk29",
     "type": "tarball",
-    "url": "https://github.com/deckgo/deckdeckgo-starter/archive/5b24712022288b24f286e8a80f1478f13044f83b.tar.gz",
+    "url": "https://github.com/deckgo/studio-kit/archive/58357c71466e36d1e8d0973f06ab0fd9c5c8f5c3.tar.gz",
     "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
   },
   "elasticmq": {

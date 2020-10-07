@@ -1,3 +1,54 @@
+# 2.2.0 (2020-10-03)
+
+### Features
+
+- `pager` extracted from core
+
+# 2.1.0 (2020-09-26)
+
+### Features
+
+- update slide code documentation for new `papyrus` behavior on mobile devices
+
+# 2.0.0 (2020-09-24)
+
+### Breaking Changes
+
+- route `transition` renamed `animation`
+
+### Features
+
+- introduce `papyrus` and `vertical` direction
+- refresh links in header
+
+### Features
+
+- `isMobile` method removed from core
+
+# 1.9.3 (2020-09-17)
+
+### Features
+
+- highlight-code option to hide Carbon toolbar
+
+# 1.9.2 (2020-09-03)
+
+### Features
+
+- update all dependencies
+
+# 1.9.1 (2020-08-21)
+
+### Features
+
+- update `@deckdeckgo/highlight-code`
+
+# 1.9.0 (2020-08-08)
+
+### Features
+
+- pager `hidden` per default
+
 # 1.8.0 (2020-08-06)
 
 ### Features

@@ -1,3 +1,27 @@
+# 2.1.0 (2020-09-17)
+
+### Features
+
+- added the ability to toggle the Carbon toolbar and adjust the margin ([#873](https://github.com/deckgo/deckdeckgo/pull/873))
+
+# 2.0.0 (2020-09-03)
+
+### Breaking Changes
+
+- IE11, Edge 16-18 and Safari 10 not supported
+
+# 1.1.4 (2020-08-21)
+
+### Fix
+
+- load required scripts for prismjs ([#848](https://github.com/deckgo/deckdeckgo/issues/848))
+
+# 1.1.3 (2020-08-08)
+
+### Features
+
+- update dependencies including prism v1.21.0
+
 # 1.1.2 (2020-07-03)
 
 ### Style

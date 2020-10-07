@@ -63,7 +63,7 @@ export class LinkActions {
       }
 
       // If node text
-      if (targetContainer.nodeType === Node.TEXT_NODE) {
+      if (targetContainer.nodeType === Node.TEXT_NODE || targetContainer.nodeType === Node.COMMENT_NODE) {
         targetContainer = targetContainer.parentElement;
       }
 

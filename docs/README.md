@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/deckgo/deckdeckgo/blob/master/docs/LICENSE)
+
 # DeckDeckGo - Docs
 
 This project is the documentation for developer of [DeckDeckGo].
@@ -25,10 +27,10 @@ npm run start
 
 The documentation is written in markdown and the app itself is developed with the [Ionic PWA Toolkit](https://ionicframework.com/pwa/toolkit).
 
-Before building the application, the markdown content is going to be parsed to HTML and injected in its source code (TSX). 
- 
+Before building the application, the markdown content is going to be parsed to HTML and injected in its source code (TSX).
+
 ## License
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com

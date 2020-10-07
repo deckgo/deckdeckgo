@@ -1,4 +1,4 @@
-import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch} from '@stencil/core';
+import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch, Host} from '@stencil/core';
 
 import {isIOS, unifyEvent, isMobile, isFullscreen, debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition, getAttributesDefinition} from '@deckdeckgo/deck-utils';
@@ -7,17 +7,26 @@ import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttribute
 
 import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
 
-import {HideSlides, RevealSlide, TransitionSlide} from '../../utils/deckdeckgo-deck-transition';
+import {HideSlides, RevealSlide, AnimationSlide} from '../../utils/deckdeckgo-deck-animation';
 
-interface DeltaX {
+interface Delta {
   slider: HTMLElement;
-  swipeLeft: boolean;
+  swipeNext: boolean;
   deltaX: number;
+  deltaY: number;
 }
 
-interface PagerColor {
-  color: string;
-  background: string;
+// Duplicate DeckdeckgoSlide definition of @deckdeckgo/slide-utils without dependency but extending HTMLElement.
+interface DeckdeckgoSlideHTMLElement extends HTMLElement {
+  beforeSwipe(enter: boolean, _reveal: boolean): Promise<boolean>;
+
+  afterSwipe(): Promise<void>;
+
+  lazyLoadContent(): Promise<void>;
+
+  revealContent(): Promise<void>;
+
+  hideContent(): Promise<void>;
 }
 
 @Component({
@@ -38,7 +47,8 @@ export class DeckdeckgoDeck {
   private rtl: boolean = false;
 
   private startX: number = null;
-  private deckTranslateX: number = 0;
+  private startY: number = null;
+  private deckMove: number = 0;
   private autoSwipeRatio: number = 10;
 
   private block: boolean = false;
@@ -63,26 +73,59 @@ export class DeckdeckgoDeck {
   private fullscreen: boolean = false;
   private cursorHidden: boolean = false;
   private idleMouseTimer: number;
+  private readonly idleMouseTimeout: number = 2000;
 
   @Event() mouseInactivity: EventEmitter<boolean>;
 
   @Prop() reveal: boolean = true;
   @Prop() revealOnMobile: boolean = false;
 
-  @State()
-  private pagerColor: PagerColor;
+  @Prop({reflect: true}) animation: 'slide' | 'fade' | 'none' = 'slide';
 
-  @Prop({reflect: true}) transition: 'slide' | 'fade' | 'none' = 'slide';
+  @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+  @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
+
+  @Prop() autoSlide: 'true' | 'false' = 'false';
+
+  @Prop() autoSlideInterval: number = 5000;
+
+  @State()
+  private dir: 'horizontal' | 'vertical' | 'papyrus';
+
+  private observer: IntersectionObserver;
+
+  private slideLoopInterval: number;
+  private idleSlideLoopTimer: number;
 
   async componentWillLoad() {
     await this.initRtl();
+    await this.initDirection();
   }
 
   async componentDidLoad() {
     await this.initSlideSize();
+    await this.initAutoSlide();
 
     this.initWindowResize();
     this.initKeyboardAssist();
+  }
+
+  disconnectedCallback() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
+    if (this.idleSlideLoopTimer > 0) {
+      clearTimeout(this.idleSlideLoopTimer);
+    }
+
+    if (this.slideLoopInterval > 0) {
+      clearInterval(this.slideLoopInterval);
+    }
+
+    if (this.idleMouseTimer > 0) {
+      clearTimeout(this.idleMouseTimer);
+    }
   }
 
   private initRtl(): Promise<void> {
@@ -102,7 +145,10 @@ export class DeckdeckgoDeck {
         'resize',
         debounce(async () => {
           await this.initSlideSize();
-          await this.slideTo(this.activeIndex);
+
+          if (this.dir !== 'papyrus') {
+            await this.slideTo(this.activeIndex);
+          }
 
           const toggleFullscreen: boolean = isFullscreen();
           await this.hideOrClearMouseCursorTimer(toggleFullscreen);
@@ -133,16 +179,22 @@ export class DeckdeckgoDeck {
   }
 
   private initSlideSizeStandard(slider: HTMLElement): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!window || !screen) {
         resolve();
         return;
       }
 
-      if (isIOS()) {
-        slider.style.setProperty('--slide-width', `${screen.width > window.innerWidth ? screen.width : window.innerWidth}px`);
+      const sliderSize: {width: number; height: number} = await this.getSliderSize();
+
+      slider.style.setProperty('--slide-width', `${sliderSize.width}px`);
+
+      if (this.dir === 'papyrus') {
+        slider.style.setProperty('--slide-min-height', `${sliderSize.height}px`);
+        slider.style.removeProperty('--slide-height');
       } else {
-        slider.style.setProperty('--slide-width', `${window.innerWidth}px`);
+        slider.style.removeProperty('--slide-min-height');
+        slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
       }
 
       resolve();
@@ -161,7 +213,13 @@ export class DeckdeckgoDeck {
           slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
         }
 
-        if (slider.offsetParent.clientHeight > 0) {
+        if (slider.offsetParent.clientHeight > 0 && this.dir === 'papyrus') {
+          slider.style.setProperty('--slide-min-height', '' + slider.offsetParent.clientHeight + 'px');
+          slider.style.removeProperty('--slide-height');
+        }
+
+        if (slider.offsetParent.clientHeight > 0 && this.dir !== 'papyrus') {
+          slider.style.removeProperty('--slide-min-height');
           slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
       }
@@ -175,6 +233,55 @@ export class DeckdeckgoDeck {
       document.addEventListener('keydown', this.keyboardAssist, {passive: true});
     }
   }
+
+  private async initLazyLoadContent() {
+    if (window && 'IntersectionObserver' in window) {
+      await this.deferIntersectionObserverLoad();
+    } else {
+      await this.lazyLoadAllContent();
+    }
+  }
+
+  private async deferIntersectionObserverLoad() {
+    const slides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
+
+    if (!slides || slides.length <= 0) {
+      return;
+    }
+
+    this.observer = new IntersectionObserver(this.onIntersection, {
+      rootMargin: '100px 0px',
+    });
+
+    slides.forEach((slide: HTMLElement) => {
+      this.observer.observe(slide);
+    });
+  }
+
+  private onIntersection = async (entries: IntersectionObserverEntry[]) => {
+    if (!entries || entries.length <= 0) {
+      return;
+    }
+
+    const intersectingElements: Element[] = entries
+      .filter((entry: IntersectionObserverEntry) => entry.isIntersecting)
+      .map((entry: IntersectionObserverEntry) => entry.target);
+
+    if (!intersectingElements || intersectingElements.length <= 0) {
+      return;
+    }
+
+    const promises: Promise<void>[] = intersectingElements.map((element: Element) => {
+      return new Promise<void>(async (resolve) => {
+        this.observer.unobserve(element);
+        await (element as DeckdeckgoSlideHTMLElement).lazyLoadContent();
+
+        resolve();
+      });
+    });
+
+    await Promise.all(promises);
+  };
 
   @Method()
   async toggleKeyboardAssist(state: boolean) {
@@ -205,6 +312,20 @@ export class DeckdeckgoDeck {
       await this.slideNextPrev(true, true);
     }
   };
+
+  @Watch('directionMobile')
+  async onDirectionMobileChange() {
+    await this.initDirection();
+  }
+
+  @Watch('direction')
+  async onDirectionChange() {
+    await this.initDirection();
+  }
+
+  private async initDirection() {
+    this.dir = isMobile() ? this.directionMobile : this.direction;
+  }
 
   /* BEGIN: Handle swipe */
 
@@ -240,12 +361,12 @@ export class DeckdeckgoDeck {
 
   @Listen('dblclick', {passive: true})
   async dblclick() {
-    this.startX = null;
+    this.resetStart();
   }
 
   @Listen('contextmenu', {passive: true})
   async contextMenu() {
-    this.startX = null;
+    this.resetStart();
   }
 
   @Listen('scrolling')
@@ -258,69 +379,102 @@ export class DeckdeckgoDeck {
     await this.clearMouseCursorTimer(true);
   }
 
-  private start(e: Event) {
-    this.startX = unifyEvent(e).clientX;
+  private start($event: Event) {
+    this.startX = unifyEvent($event).clientX;
+    this.startY = unifyEvent($event).clientY;
   }
 
-  private async move(e: Event) {
+  private async move($event: Event) {
     await this.clearMouseCursorTimer(true);
 
     if (this.block) {
       return;
     }
 
-    if (this.transition !== 'slide') {
+    if (this.animation !== 'slide') {
       return;
     }
 
-    const deltaX: DeltaX = await this.getDeltaX(e);
+    const delta: Delta = await this.getDelta($event);
 
-    if (!deltaX) {
+    if (!delta) {
       return;
     }
 
-    const transformX: number = deltaX.swipeLeft ? this.deckTranslateX - deltaX.deltaX : this.deckTranslateX + deltaX.deltaX;
+    this.moveX(delta);
+    this.moveY(delta);
 
-    deltaX.slider.style.setProperty('--transformX', transformX + 'px');
-    deltaX.slider.style.setProperty('--transformXDuration', '0ms');
+    delta.slider.style.setProperty('--transformXDuration', '0ms');
+  }
+
+  private moveX(delta: Delta) {
+    if (this.dir !== 'horizontal') {
+      return;
+    }
+
+    const transformX: number = delta.swipeNext ? this.deckMove - delta.deltaX : this.deckMove + delta.deltaX;
+
+    delta.slider.style.setProperty('--transformX', transformX + 'px');
 
     this.slideDrag.emit(transformX);
   }
 
-  private async stop(e: Event) {
+  private moveY(delta: Delta) {
+    if (this.dir !== 'vertical') {
+      return;
+    }
+
+    const transformY: number = delta.swipeNext ? this.deckMove - delta.deltaY : this.deckMove + delta.deltaY;
+
+    delta.slider.style.setProperty('--transformY', transformY + 'px');
+
+    this.slideDrag.emit(transformY);
+  }
+
+  private async stop($event: Event) {
     if (this.block) {
       return;
     }
 
-    const deltaX: DeltaX = await this.getDeltaX(e);
+    const delta: Delta = await this.getDelta($event);
 
-    await this.swipeSlide(deltaX);
+    await this.swipeSlide(delta);
 
-    this.startX = null;
+    this.resetStart();
   }
 
-  private swipeSlide(deltaX: DeltaX, emitEvent: boolean = true): Promise<void> {
+  private swipeSlide(delta: Delta, emitEvent: boolean = true): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!deltaX || !window) {
+      if (!delta || !window) {
         resolve();
         return;
       }
 
-      let couldSwipeLeft: boolean = deltaX.swipeLeft && this.activeIndex < this.length - 1;
-      let couldSwipeRight: boolean = !deltaX.swipeLeft && this.activeIndex > 0;
+      let couldSwipeNext: boolean = delta.swipeNext && this.activeIndex < this.length - 1;
+      let couldSwipePrevious: boolean = !delta.swipeNext && this.activeIndex > 0;
 
       if (this.rtl) {
-        couldSwipeLeft = deltaX.swipeLeft && this.activeIndex > 0;
-        couldSwipeRight = !deltaX.swipeLeft && this.activeIndex < this.length - 1;
+        couldSwipeNext = delta.swipeNext && this.activeIndex > 0;
+        couldSwipePrevious = !delta.swipeNext && this.activeIndex < this.length - 1;
       }
 
-      if (couldSwipeLeft || couldSwipeRight) {
-        const sliderWidth: number = await this.getSliderWidth();
+      if (couldSwipeNext || couldSwipePrevious) {
+        const sliderSize: {width: number; height: number} = await this.getSliderSize();
 
-        if (deltaX.deltaX > sliderWidth / this.autoSwipeRatio) {
-          this.deckTranslateX = deltaX.swipeLeft ? this.deckTranslateX - sliderWidth : this.deckTranslateX + sliderWidth;
+        const autoSwipeHorizontal: boolean = delta.deltaX > sliderSize.width / this.autoSwipeRatio;
+        const autoSwipeVertical: boolean = delta.deltaY > sliderSize.height / this.autoSwipeRatio;
 
-          if (this.isNextChange(deltaX.swipeLeft)) {
+        if (autoSwipeHorizontal || autoSwipeVertical) {
+          this.deckMove =
+            this.dir !== 'horizontal'
+              ? delta.swipeNext
+                ? this.deckMove - sliderSize.height
+                : this.deckMove + sliderSize.height
+              : delta.swipeNext
+              ? this.deckMove - sliderSize.width
+              : this.deckMove + sliderSize.width;
+
+          if (this.isNextChange(delta.swipeNext)) {
             this.activeIndex++;
 
             if (emitEvent) {
@@ -336,31 +490,41 @@ export class DeckdeckgoDeck {
         }
       }
 
-      await this.doSwipeSlide(deltaX.slider);
-
-      // We want to lazy load the next slide images
-      await this.lazyLoadContent(this.activeIndex + 1);
+      await this.doSwipeSlide(delta.slider);
 
       resolve();
     });
   }
 
-  private getSliderWidth(): Promise<number> {
-    return new Promise<number>((resolve) => {
-      if (!this.embedded) {
-        resolve(window.innerWidth);
-        return;
-      }
+  private async getSliderSize(): Promise<{width: number; height: number}> {
+    if (!this.embedded) {
+      return this.getSliderSizeNotEmbededd();
+    }
 
-      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+    const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
-      if (!slider || !slider.offsetParent || slider.offsetParent.clientWidth <= 0) {
-        resolve(window.innerWidth);
-        return;
-      }
+    if (!slider || !slider.offsetParent || slider.offsetParent.clientWidth <= 0) {
+      return this.getSliderSizeNotEmbededd();
+    }
 
-      resolve(slider.offsetParent.clientWidth);
-    });
+    return {
+      width: slider.offsetParent.clientWidth,
+      height: slider.offsetParent.clientHeight,
+    };
+  }
+
+  private async getSliderSizeNotEmbededd(): Promise<{width: number; height: number}> {
+    if (isIOS()) {
+      return {
+        width: screen.width > window.innerWidth ? screen.width : window.innerWidth,
+        height: screen.height > window.innerHeight ? screen.height : window.innerHeight,
+      };
+    } else {
+      return {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+    }
   }
 
   private isNextChange(swipeLeft: boolean): boolean {
@@ -369,51 +533,79 @@ export class DeckdeckgoDeck {
 
   private doSwipeSlide(slider: HTMLElement, speed?: number | undefined): Promise<void> {
     return new Promise<void>((resolve) => {
-      slider.style.setProperty('--transformX', this.deckTranslateX + 'px');
+      if (this.dir === 'horizontal') {
+        slider.style.setProperty('--transformX', this.deckMove + 'px');
+      }
 
-      if (this.transition === 'slide') {
+      if (this.dir === 'vertical') {
+        slider.style.setProperty('--transformY', this.deckMove + 'px');
+      }
+
+      if (this.animation === 'slide') {
         slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
       } else {
         slider.style.setProperty('--transformXDuration', '0ms');
       }
 
-      this.slideWillChange.emit(this.deckTranslateX);
+      if (this.dir === 'papyrus') {
+        const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
-      this.startX = null;
+        // HACK: Chrome does not perform any scroll if the behavior 'smooth' is set and the event is triggered programmatically or with the keyboard aka only works if triggered with a click event
+        setTimeout(() => {
+          slide.scrollIntoView(this.animation === 'none' ? null : {behavior: 'smooth', block: 'nearest'});
+        }, 0);
+      }
+
+      this.slideWillChange.emit(this.deckMove);
+
+      this.resetStart();
 
       resolve();
     });
   }
 
-  private getDeltaX(e): Promise<DeltaX> {
-    return new Promise<DeltaX>((resolve) => {
-      if (!this.startX) {
-        resolve(null);
-        return;
-      }
+  private resetStart() {
+    this.startX = null;
+    this.startY = null;
+  }
 
-      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+  private async getDelta($event): Promise<Delta> {
+    if (!this.startX && this.dir === 'horizontal') {
+      return null;
+    }
 
-      if (!slider) {
-        resolve(null);
-        return;
-      }
+    if (!this.startY && this.dir === 'vertical') {
+      return null;
+    }
 
-      const currentX: number = unifyEvent(e).clientX;
+    if (this.dir === 'papyrus') {
+      return null;
+    }
 
-      if (this.startX === currentX) {
-        resolve(null);
-        return;
-      }
+    const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
-      const swipeLeft: boolean = this.startX > currentX;
+    if (!slider) {
+      return null;
+    }
 
-      resolve({
-        slider: slider,
-        swipeLeft: swipeLeft,
-        deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX,
-      });
-    });
+    const currentX: number = unifyEvent($event).clientX;
+    const currentY: number = unifyEvent($event).clientY;
+
+    if (this.startX === currentX && this.dir === 'horizontal') {
+      return null;
+    } else if (this.startY === currentY && this.dir === 'vertical') {
+      return null;
+    }
+
+    const swipeLeft: boolean = this.startX > currentX && this.dir === 'horizontal';
+    const swipeTop: boolean = this.startY > currentY && this.dir === 'vertical';
+
+    return {
+      slider,
+      swipeNext: swipeLeft || swipeTop,
+      deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX,
+      deltaY: swipeTop ? this.startY - currentY : currentY - this.startY,
+    };
   }
 
   /* END: Handle swipe */
@@ -453,16 +645,23 @@ export class DeckdeckgoDeck {
       const filteredSlides: HTMLElement[] = await this.getDefinedFilteredSlides();
 
       const promises: Promise<void>[] = [];
-      promises.push(this.lazyLoadFirstSlides());
-      promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
+      promises.push(this.initLazyLoadContent());
       promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'background', this.cloneBackground));
-      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
-      promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
-      promises.push(this.initSlidePagerColor());
+
+      if (this.dir !== 'papyrus') {
+        promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlots(this.el, filteredSlides, 'actions'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'header'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlots(this.el, filteredSlides, 'footer'));
+      } else if (filteredSlides && filteredSlides.length > 0) {
+        promises.push(DeckdeckgoDeckBackgroundUtils.cloneSlot(this.el, filteredSlides[0], 'actions'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlot(this.el, filteredSlides[0], 'header'));
+        promises.push(DeckdeckgoDeckBackgroundUtils.loadSlot(this.el, filteredSlides[filteredSlides.length - 1], 'footer'));
+      }
 
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
-      if (!this.reveal || (!this.revealOnMobile && isMobile())) {
+      // Also, no reveal for papyrus as we can scroll
+      if (!this.reveal || (!this.revealOnMobile && isMobile()) || this.dir === 'papyrus') {
         promises.push(this.revealAllContent());
       }
 
@@ -475,7 +674,7 @@ export class DeckdeckgoDeck {
   @Method()
   getDeckDefinition(): Promise<DeckdeckgoDeckDefinition | null> {
     return new Promise<DeckdeckgoDeckDefinition | null>(async (resolve) => {
-      const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container');
+      const loadedSlides: NodeListOf<HTMLElement> = this.el.querySelectorAll('.deckgo-slide-container.hydrated');
 
       if (!loadedSlides || loadedSlides.length <= 0) {
         resolve(null);
@@ -536,17 +735,6 @@ export class DeckdeckgoDeck {
       const filteredSlides: HTMLElement[] = await this.filterSlides(definedSlides);
 
       resolve(filteredSlides);
-    });
-  }
-
-  private lazyLoadFirstSlides(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const lazyLoadContentFirstSlide = this.lazyLoadContent(0);
-      const lazyLoadContentSecondSlide = this.lazyLoadContent(1);
-
-      await Promise.all([lazyLoadContentFirstSlide, lazyLoadContentSecondSlide]);
-
-      resolve();
     });
   }
 
@@ -635,7 +823,7 @@ export class DeckdeckgoDeck {
     await this.slideNextPrev(this.rtl, slideAnimation, emitEvent);
   }
 
-  private async slideNextPrev(swipeLeft: boolean, slideAnimation: boolean = true, emitEvent?: boolean) {
+  private async slideNextPrev(swipeNext: boolean, slideAnimation: boolean = true, emitEvent?: boolean) {
     const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
 
     if (!slider || !window) {
@@ -647,24 +835,25 @@ export class DeckdeckgoDeck {
     if (!slideAnimation) {
       couldSwipe = true;
     } else {
-      couldSwipe = await this.beforeSwipe(this.isNextChange(swipeLeft));
+      couldSwipe = await this.beforeSwipe(this.isNextChange(swipeNext));
     }
 
     // We might want first to show hide stuffs in the slide before swiping
     if (couldSwipe) {
-      const deltaX: DeltaX = {
-        slider: slider,
-        swipeLeft: swipeLeft,
-        deltaX: window.innerWidth,
+      const sliderSize: {width: number; height: number} = await this.getSliderSize();
+
+      const deltaX: Delta = {
+        slider,
+        swipeNext,
+        deltaX: sliderSize.width,
+        deltaY: sliderSize.height,
       };
 
       await this.swipeSlide(deltaX, emitEvent);
 
-      await this.afterSwipe(swipeLeft);
-
-      await this.initSlidePagerColor();
+      await this.afterSwipe(swipeNext);
     } else if (emitEvent) {
-      if (swipeLeft) {
+      if (swipeNext) {
         this.slideNextDidAnimate.emit();
       } else {
         this.slidePrevDidAnimate.emit();
@@ -674,13 +863,13 @@ export class DeckdeckgoDeck {
 
   private beforeSwipe(enter: boolean): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+      const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
       if (!slide) {
         // If we find no slide, we are cool something went wrong but the talk/show must go on
         resolve(true);
       } else {
-        const result: boolean = await (slide as any).beforeSwipe(enter, this.reveal);
+        const result: boolean = await slide.beforeSwipe(enter, this.reveal);
         resolve(result);
       }
     });
@@ -695,28 +884,24 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')');
+      const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')');
 
       if (!slide) {
         // Might be a swipe after the first or last slide
         resolve();
       } else {
-        await (slide as any).afterSwipe();
+        await slide.afterSwipe();
         resolve();
       }
     });
   }
 
-  private lazyLoadContent(index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  private async lazyLoadContent(index: number) {
+    const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (slide) {
-        await (slide as any).lazyLoadContent();
-      }
-
-      resolve();
-    });
+    if (slide) {
+      await slide.lazyLoadContent();
+    }
   }
 
   @Method()
@@ -731,12 +916,12 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    const slideWidth: number = this.length > 0 && slider.offsetWidth > 0 ? slider.offsetWidth / this.length : window.innerWidth;
+    const sliderSize: {width: number; height: number} = await this.getSliderSize();
 
-    this.deckTranslateX = index * slideWidth * (this.rtl ? 1 : -1);
+    this.deckMove = index * (this.dir === 'horizontal' ? sliderSize.width : sliderSize.height) * (this.rtl ? 1 : -1);
+
     this.activeIndex = index;
 
-    await this.lazyLoadContent(this.activeIndex);
     await this.doSwipeSlide(slider, speed);
 
     if (emitEvent) {
@@ -772,7 +957,7 @@ export class DeckdeckgoDeck {
 
     // If we want to block, then we reset then previous start position as we don't want to start the slide to scroll when the blocking will be resolved
     if (this.block) {
-      this.startX = null;
+      this.resetStart();
     }
   }
 
@@ -835,7 +1020,7 @@ export class DeckdeckgoDeck {
 
     this.idleMouseTimer = setTimeout(async () => {
       await this.showHideMouseCursor(false);
-    }, 2000);
+    }, this.idleMouseTimeout);
   }
 
   private showHideMouseCursor(show: boolean): Promise<void> {
@@ -912,13 +1097,6 @@ export class DeckdeckgoDeck {
     return Promise.all(promises);
   }
 
-  @Method()
-  isMobile(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      resolve(isMobile());
-    });
-  }
-
   /* END: Utils */
 
   /* BEGIN: Reveal */
@@ -965,110 +1143,78 @@ export class DeckdeckgoDeck {
     });
   }
 
-  private revealContent(index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  private async revealContent(index: number) {
+    const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (slide) {
-        await (slide as any).revealContent();
-      }
-
-      resolve();
-    });
+    if (slide) {
+      await slide.revealContent();
+    }
   }
 
-  private hideContent(index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  private async hideContent(index: number) {
+    const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
-      if (slide) {
-        await (slide as any).hideContent();
-      }
-
-      resolve();
-    });
+    if (slide) {
+      await slide.hideContent();
+    }
   }
 
   /* END: Reveal */
 
-  /* BEGIN: Pager */
+  /* BEGIN: AutoSlide */
 
-  private initSlidePagerColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
-
-      if (!slide) {
-        this.pagerColor = undefined;
-
-        resolve();
-        return;
-      }
-
-      // If a pager background or color is explicitely set on the deck, then we don't define automatically a color
-      if (
-        slide.parentElement &&
-        ((slide.parentElement.style.getPropertyValue('--pager-background') !== undefined &&
-          slide.parentElement.style.getPropertyValue('--pager-background') !== '') ||
-          (slide.parentElement.style.getPropertyValue('--pager-color') !== undefined && slide.parentElement.style.getPropertyValue('--pager-color') !== ''))
-      ) {
-        this.pagerColor = undefined;
-
-        resolve();
-        return;
-      }
-
-      if (slide.style.getPropertyValue('--background') !== undefined && slide.style.getPropertyValue('--background') !== '') {
-        this.pagerColor = {
-          background: '#fff',
-          color: slide.style.getPropertyValue('--background'),
-        };
-      } else if (
-        slide.parentElement &&
-        slide.parentElement.style.getPropertyValue('--background') !== undefined &&
-        slide.parentElement.style.getPropertyValue('--background') !== ''
-      ) {
-        this.pagerColor = {
-          background: '#fff',
-          color: slide.parentElement.style.getPropertyValue('--background'),
-        };
-      } else {
-        this.pagerColor = undefined;
-      }
-
-      resolve();
-    });
+  private async initAutoSlide() {
+    if (this.autoSlide === 'true') {
+      await this.onAutoSlide();
+    }
   }
 
-  /* END: Pager */
+  @Watch('autoSlide')
+  async onAutoSlide() {
+    let idleMouseTimer;
+
+    this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), this.idleMouseTimeout);
+
+    if (this.autoSlide === 'true') {
+      this.slideLoopInterval = setInterval(async () => {
+        if (idleMouseTimer === this.idleMouseTimer) {
+          const end: boolean = await this.isEnd();
+
+          if (end) {
+            await this.slideTo(0, 0);
+          } else {
+            await this.slideNext(true);
+          }
+        } else {
+          idleMouseTimer = this.idleMouseTimer;
+        }
+      }, this.autoSlideInterval);
+    } else {
+      clearInterval(this.slideLoopInterval);
+    }
+  }
+
+  /* END: AutoSlide */
 
   render() {
-    return [
-      this.renderTransition(),
-      <div class="deckgo-deck">
-        <slot />
-        <slot name="actions"></slot>
-        <slot name="background"></slot>
-      </div>,
-      <div class="deckgo-pager">{this.renderPager()}</div>,
-    ];
+    return (
+      <Host class={`${this.dir}`}>
+        <main>
+          {this.renderAnimation()}
+          <div class="deckgo-deck">
+            <slot />
+            <slot name="actions"></slot>
+            <slot name="background"></slot>
+          </div>
+          <slot name="pager"></slot>
+        </main>
+      </Host>
+    );
   }
 
-  private renderPager() {
-    let pagerStyle = {};
-
-    if (this.pagerColor) {
-      pagerStyle = {
-        '--pager-background': this.pagerColor.background,
-        '--pager-color': this.pagerColor.color,
-      };
-    }
-
-    return <deckgo-pager active-index={this.activeIndex} length={this.length} style={pagerStyle}></deckgo-pager>;
-  }
-
-  private renderTransition() {
-    if (this.transition !== 'fade') {
-      return <TransitionSlide />;
+  private renderAnimation() {
+    if (this.animation !== 'fade' || this.dir === 'papyrus') {
+      return <AnimationSlide />;
     }
 
     return [<HideSlides />, <RevealSlide index={this.activeIndex} />];

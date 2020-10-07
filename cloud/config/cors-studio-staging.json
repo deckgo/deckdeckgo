@@ -1,0 +1,16 @@
+[
+  {
+    "origin": [
+      "http://localhost:3333",
+      "http://localhost:3334",
+      "https://deckdeckgo.app",
+      "https://deckdeckgo-studio-staging.web.app",
+      "https://deckdeckgo-studio-staging.firebaseapp.com",
+      "https://deckdeckgo-app-staging.web.app",
+      "https://deckdeckgo-app-staging.firebaseapp.com"
+    ],
+    "responseHeader": ["Content-Type"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]

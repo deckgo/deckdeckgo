@@ -50,7 +50,7 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
     this.slideDidLoad.emit();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     this.clearUp();
   }
 

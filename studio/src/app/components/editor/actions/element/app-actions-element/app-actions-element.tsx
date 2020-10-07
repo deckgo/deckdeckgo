@@ -93,7 +93,7 @@ export class AppActionsElement {
     this.initWindowResize();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     this.removeWindowResize();
   }
 
@@ -116,11 +116,6 @@ export class AppActionsElement {
     }
 
     await this.blurSelectedElement();
-  }
-
-  @Listen('pagerClick', {target: 'document'})
-  async onPagerClick() {
-    await this.reset();
   }
 
   @Listen('optionsDidChange', {target: 'document'})

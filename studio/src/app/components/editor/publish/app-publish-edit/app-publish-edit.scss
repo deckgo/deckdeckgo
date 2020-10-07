@@ -15,10 +15,25 @@ app-publish-edit {
 
     display: inline-block;
     padding-top: 8px;
+
+    &:not(:empty) {
+      height: 37px;
+    }
   }
 
   p.small {
     font-size: var(--font-size-small);
+  }
+
+  ion-item,
+  p {
+    &.error {
+      color: var(--ion-color-danger);
+
+      ion-icon {
+        vertical-align: middle;
+      }
+    }
   }
 
   div.publish {

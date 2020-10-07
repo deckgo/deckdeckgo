@@ -62,7 +62,13 @@ export class AppEditor {
   private style: any;
 
   @State()
-  private transition: 'slide' | 'fade' | 'none' = 'slide';
+  private animation: 'slide' | 'fade' | 'none' = 'slide';
+
+  @State()
+  private direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+
+  @State()
+  private directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
   private slideIndex: number = 0;
 
@@ -196,7 +202,7 @@ export class AppEditor {
     this.initWindowResize();
   }
 
-  async componentDidUnload() {
+  async disconnectedCallback() {
     await this.remoteEventsHandler.destroy();
 
     this.removeWindowResize();
@@ -274,8 +280,16 @@ export class AppEditor {
       this.style = undefined;
     }
 
-    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.transition) {
-      this.transition = deckStore.state.deck.data.attributes.transition;
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.animation) {
+      this.animation = deckStore.state.deck.data.attributes.animation;
+    }
+
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.direction) {
+      this.direction = deckStore.state.deck.data.attributes.direction;
+    }
+
+    if (deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.directionMobile) {
+      this.directionMobile = deckStore.state.deck.data.attributes.directionMobile;
     }
 
     this.background = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.background, 'background');
@@ -548,7 +562,6 @@ export class AppEditor {
 
       await this.editorEventsHandler.selectDeck();
       await (deck as any).toggleFullScreen();
-
       resolve();
     });
   }
@@ -631,6 +644,11 @@ export class AppEditor {
   }
 
   render() {
+    const autoSlide: boolean =
+      deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.autoSlide !== undefined
+        ? deckStore.state.deck.data.attributes.autoSlide
+        : false;
+
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content>
@@ -640,7 +658,10 @@ export class AppEditor {
             embedded={true}
             style={this.style}
             reveal={this.fullscreen && this.presenting}
-            transition={this.transition}
+            direction={this.direction}
+            directionMobile={this.directionMobile}
+            animation={this.animation}
+            autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
             onSlideNextDidChange={() => this.onSlideChangeHideToolbar()}
@@ -652,6 +673,7 @@ export class AppEditor {
             {this.footer}
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
+          <app-slide-contrast></app-slide-contrast>
         </main>
       </ion-content>,
       <ion-footer class={this.presenting ? 'idle' : undefined}>

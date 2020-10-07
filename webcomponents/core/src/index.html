@@ -43,8 +43,19 @@
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.js"></script>
+
+    <style>
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0">
     <deckgo-deck id="slider">
       <deckgo-slide-countdown until="2019-08-05T23:25:59.000+02:00">
         <h1 slot="title">My presentation will start in</h1>
@@ -54,7 +65,7 @@
         <span slot="seconds">Seconds</span>
       </deckgo-slide-countdown>
 
-      <deckgo-slide-title custom-background="true" style="--background: red;">
+      <deckgo-slide-title custom-background="true" style="--background: red">
         <h1 slot="title">DeckDeckGo</h1>
         <p slot="content">
           Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
@@ -63,7 +74,7 @@
         <div slot="notes">This are some notes about this particular slide</div>
       </deckgo-slide-title>
 
-      <deckgo-slide-title custom-background="true" style="--background: yellow;">
+      <deckgo-slide-title custom-background="true" style="--background: yellow">
         <h1 slot="title">Custom slide background</h1>
         <div slot="background">
           <img src="https://deckdeckgo.com/assets/img/deckdeckgo-homecoming.png" />
@@ -73,7 +84,7 @@
       <deckgo-slide-gif src="https://media.giphy.com/media/xUA7baWfTjfHGLZc3e/giphy.gif" alt="My title">
         <h1 slot="title">Gif</h1>
         <h1 slot="header">Hey Sani</h1>
-        <h2 slot="footer" style="--background: white; --color: blue;">Cool?</h2>
+        <h2 slot="footer" style="--background: white; --color: blue">Cool?</h2>
       </deckgo-slide-gif>
 
       <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
@@ -131,7 +142,7 @@
         <h1 slot="title">Reveal after element</h1>
 
         <div slot="content">
-          <deckgo-reveal-list list-tag="ul" style="list-style-type: square;" contenteditable="true">
+          <deckgo-reveal-list list-tag="ul" style="list-style-type: square" contenteditable="true">
             <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
             <li><strong>Ionic</strong> components and icons to create your content</li>
             <li><strong>Style</strong> your presentation quickly</li>
@@ -296,7 +307,7 @@
         });
       }
 
-      function setTransitionFade() {
+      function setAnimationFade() {
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
@@ -305,19 +316,47 @@
             return;
           }
 
-          deck.transition = 'fade';
+          deck.animation = 'fade';
 
           resolve();
         });
       }
 
-      document.addEventListener('pagerClick', function() {
-        console.log('Pager clicked');
-      });
+      function setDirectionVertical() {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          deck.direction = 'vertical';
+
+          resolve();
+        });
+      }
+
+      function toggleAutoSlide() {
+        return new Promise(async (resolve) => {
+          const deck = document.getElementById('slider');
+
+          if (!deck) {
+            resolve();
+            return;
+          }
+
+          deck.autoSlide = deck.autoSlide === 'true' ? 'false' : 'true';
+
+          resolve();
+        });
+      }
     </script>
 
-    <div style="position: fixed; bottom: 0; right: 0; padding: 32px;">
-      <button onclick="setTransitionFade()">Transition fade</button>
+    <div style="position: fixed; bottom: 0; right: 0; padding: 32px">
+      <button onclick="toggleAutoSlide()">Toggle auto slide</button>
+      <button onclick="setDirectionVertical()">Direction vertical</button>
+      <button onclick="setAnimationFade()">Animation fade</button>
       <button onclick="toggleReveal()">Toggle deck reveal</button>
       <button onclick="updateVideo()">Update video</button>
       <button onclick="toggleVideo()">Toggle video</button>

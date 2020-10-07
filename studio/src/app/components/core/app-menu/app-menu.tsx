@@ -32,7 +32,7 @@ export class AppMenu {
 
     navStore.state.nav = {
       url: '/',
-      direction: NavDirection.ROOT,
+      direction: NavDirection.RELOAD,
     };
   }
 

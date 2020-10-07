@@ -3,7 +3,7 @@ import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 @Component({
   tag: 'app-image-columns',
   styleUrl: 'app-image-columns.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppImageColumns {
   @Prop()
@@ -86,6 +86,7 @@ export class AppImageColumns {
           <a
             href={photo.user.links.html + '?utm_source=DeckDeckGo&utm_medium=referral'}
             target="_blank"
+            rel="noopener noreferrer"
             onClick={($event: UIEvent) => $event.stopPropagation()}>
             {photo.user.name}
           </a>

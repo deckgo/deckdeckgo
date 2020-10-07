@@ -3,9 +3,6 @@ deckgo-deck {
 
   --slide-user-select: text;
 
-  --pager-text-slides-display: block;
-  --pager-text-color: black;
-
   font-family: var(--font-family-default);
 
   h1,
@@ -16,7 +13,6 @@ deckgo-deck {
   ul,
   deckgo-reveal-list,
   deckgo-math {
-    border-radius: 2px;
     border: 1px solid var(--ion-color-light);
   }
 

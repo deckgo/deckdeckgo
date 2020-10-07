@@ -7,7 +7,8 @@ export async function execCommandList(selection: Selection, action: ExecCommandL
     return;
   }
 
-  const container: HTMLElement = anchorNode.nodeType !== Node.TEXT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
+  const container: HTMLElement =
+    anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.COMMENT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
 
   const range: Range = selection.getRangeAt(0);
 
@@ -48,7 +49,12 @@ async function removeList(range: Range) {
   const list: Node = range.commonAncestorContainer;
   if (list.hasChildNodes()) {
     Array.from(list.childNodes).forEach((child: Node) => {
-      if (child.hasChildNodes() && child.childNodes.length > 1 && child.firstChild.nodeType !== Node.TEXT_NODE) {
+      if (
+        child.hasChildNodes() &&
+        child.childNodes.length > 1 &&
+        child.firstChild.nodeType !== Node.TEXT_NODE &&
+        child.firstChild.nodeType !== Node.COMMENT_NODE
+      ) {
         const span: HTMLSpanElement = document.createElement('span');
         span.append(...Array.from(child.childNodes));
         list.parentElement.insertBefore(span, list);

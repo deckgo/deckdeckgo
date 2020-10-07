@@ -1,3 +1,22 @@
+# 3.0.0 (2020-09-26)
+
+### Breaking Changes
+
+- don't contain code height on mobile as we now use `papyrus` as display mode
+
+# 2.1.0 (2020-09-24)
+
+### Features
+
+- support for `vertical` and `papyrus`
+- update dev dependencies
+
+# 2.0.0 (2020-09-03)
+
+### Breaking Changes
+
+- IE11, Edge 16-18 and Safari 10 not supported
+
 # 1.2.3 (2020-07-12)
 
 ### Features

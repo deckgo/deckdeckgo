@@ -23,15 +23,25 @@ export async function rgbToHex(rgb: string | undefined): Promise<string | undefi
     return `#${rgb.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
   };
 
-  const extractRgb = (rgb: string): number[] | undefined => {
-    const match: RegExpMatchArray | null = rgb.match(/(\d+),\s*(\d+),\s*(\d+)/);
-
-    if (!match) {
-      return undefined;
-    }
-
-    return match.splice(1, 3).map((v) => Number(v));
-  };
-
   return toHex(extractRgb(rgb));
+}
+
+export function extractRgb(rgb: string): number[] | undefined {
+  const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
+
+  if (!match) {
+    return undefined;
+  }
+
+  return match.splice(1, 3).map((v) => Number(v));
+}
+
+export function extractRgba(rgb: string): number[] | undefined {
+  const match: RegExpMatchArray | null = rgb.match(/([.\d]+),\s*([.\d]+),\s*([.\d]+),\s*([.\d]+)/);
+
+  if (!match) {
+    return undefined;
+  }
+
+  return match.splice(1, 4).map((v) => Number(v));
 }
