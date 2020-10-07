@@ -1,3 +1,13 @@
+# 2.3.0 (2020-10-07)
+
+### Features
+
+- rename youtube and gif
+
+### Fix
+
+- align feature list correctly
+
 # 2.2.0 (2020-10-03)
 
 ### Features
