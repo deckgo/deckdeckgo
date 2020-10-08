@@ -8,6 +8,12 @@
   }
 }
 
+:host([editable]) {
+  div.placeholder:empty:not(:focus):after {
+    content: var(--deckgo-word-cloud-empty-text, "Click to add your words");
+  }
+}
+
 :host(.deckgo-word-cloud-edit) {
   ::slotted([slot="words"]) {
     display: block;
@@ -17,10 +23,8 @@
   svg.words {
     display: none;
   }
-}
 
-:host([editable]) {
-  div.placeholder:empty:not(:focus):after {
-    content: var(--deckgo-word-cloud-empty-text, "Click to add your words");
+  div.placeholder {
+    display: none;
   }
 }
