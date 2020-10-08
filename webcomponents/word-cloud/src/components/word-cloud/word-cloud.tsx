@@ -1,4 +1,4 @@
-import {Component, Prop, h, Host, Element, State, Event, EventEmitter, Watch} from '@stencil/core';
+import {Component, Prop, h, Host, Element, State, Event, EventEmitter} from '@stencil/core';
 
 import {select} from 'd3-selection';
 import cloud from 'd3-cloud';
@@ -14,7 +14,6 @@ export class DeckdeckgoWordCloud {
   @Prop() editable: boolean = false;
   @Prop() width: number = 500;
   @Prop() height: number = 500;
-  @Prop({reflect: true}) colors: string = '#6114E5, #000000, #4E7224, #C43636, #7136C4, #76E514';
 
   @State()
   private editing: boolean = false;
@@ -24,16 +23,10 @@ export class DeckdeckgoWordCloud {
 
   private containerRef!: HTMLDivElement;
 
-  private _colors: string[] = [];
-
-  @Watch('colors')
-  colorsChanged() {
-    this._colors = this.colors.split(',');
-  }
+  private colors: string[] = Array.from({length: 5}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
 
   async componentDidLoad() {
     await this.updatePlaceholder();
-    this.colorsChanged();
     this.wordCloud();
   }
 
@@ -144,25 +137,15 @@ export class DeckdeckgoWordCloud {
       .text((d) => d.text);
   }
 
-  private getRandomColor() {
-    const colors = this._colors;
-
-    if (!colors || !colors.length) {
-      return '#000000';
-    }
-
-    const index = this.getRandomIntInRange(0, colors.length);
-    return colors[index];
+  private getRandomColor(): string {
+    const index: number = Math.floor(Math.random() * this.colors.length);
+    return `#${this.colors[index]}`;
   }
 
   private async applyChanges() {
     this.wordCloud();
     await this.stopEditing();
     await this.updatePlaceholder();
-  }
-
-  private getRandomIntInRange(min: number, max: number) {
-    return Math.floor(Math.random() * max + min);
   }
 
   render() {
