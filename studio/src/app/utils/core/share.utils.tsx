@@ -5,7 +5,7 @@ import {Deck} from '../../models/data/deck';
 import {UserSocial} from '../../models/data/user';
 
 export async function getPublishedUrl(deck: Deck | null): Promise<string> {
-  if (deck && deck.data && deck.data.meta && deck.data.meta.pathname && deck.data.meta.pathname !== '') {
+  if (deck.data?.meta?.pathname !== '') {
     const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
     return config.presentationUrl + deck.data.meta.pathname;
   } else {
@@ -24,7 +24,7 @@ export async function getShareTwitterText(deck: Deck | null, userName: string | 
     return getCommonShareText(deck, userName, '@deckdeckgo');
   }
 
-  if (deck && deck.data && deck.data.name && deck.data.name !== '') {
+  if (deck.data?.name !== '') {
     return `"${deck.data.name}" by @${userSocial.twitter} created with @deckdeckgo`;
   } else {
     return `A presentation by ${userSocial.twitter} created with @deckdeckgo`;
@@ -32,7 +32,7 @@ export async function getShareTwitterText(deck: Deck | null, userName: string | 
 }
 
 async function getCommonShareText(deck: Deck | null, userName: string | undefined, deckDeckGo: string): Promise<string> {
-  if (deck && deck.data && deck.data.name && deck.data.name !== '') {
+  if (deck.data?.name !== '') {
     if (userName && userName !== undefined && userName !== '') {
       return `"${deck.data.name}" by ${userName} created with ${deckDeckGo}`;
     } else {

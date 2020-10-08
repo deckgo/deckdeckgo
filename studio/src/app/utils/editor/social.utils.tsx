@@ -9,7 +9,7 @@ export class SocialUtils {
   static async createSocialLinks(user: User): Promise<JSX.IntrinsicElements[]> {
     const links = [];
 
-    if (user && user.data && user.data.social) {
+    if (user.data?.social) {
       const userSocial: UserSocial = user.data.social;
 
       if (userSocial.twitter && userSocial.twitter !== '' && userSocial.twitter !== undefined) {
