@@ -27,7 +27,7 @@ export class DeckdeckgoWordCloud {
 
   async componentDidLoad() {
     await this.updatePlaceholder();
-    this.wordCloud();
+    await this.wordCloud();
   }
 
   private edit(): Promise<void> {
@@ -70,7 +70,7 @@ export class DeckdeckgoWordCloud {
     });
   }
 
-  private parseSlottedWords(): string[] {
+  private async parseSlottedWords(): Promise<string[]> {
     const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
     if (!wordsSlot) {
       return [];
@@ -100,8 +100,8 @@ export class DeckdeckgoWordCloud {
     select(this.el.shadowRoot.querySelector('svg')).selectAll('*').remove();
   }
 
-  private wordCloud() {
-    const words: string[] = this.parseSlottedWords();
+  private async wordCloud() {
+    const words: string[] = await this.parseSlottedWords();
 
     const layout = cloud()
       .size([this.width, this.height])
