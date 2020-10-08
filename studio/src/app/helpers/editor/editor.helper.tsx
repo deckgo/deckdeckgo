@@ -106,7 +106,7 @@ export class EditorHelper {
 
         let element: JSX.IntrinsicElements = null;
 
-        if (store.state.deck && store.state.deck.data) {
+        if (store.state.deck?.data) {
           const slide: Slide = await this.slideService.get(store.state.deck.id, slideId);
           element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
         }
