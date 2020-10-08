@@ -14,7 +14,6 @@ export class DeckdeckgoWordCloud {
   @Prop() editable: boolean = false;
   @Prop() width: number = 500;
   @Prop() height: number = 500;
-  @Prop() font: string = 'Impact';
   @Prop({reflect: true}) colors: string = '#6114E5, #000000, #4E7224, #C43636, #7136C4, #76E514';
 
   @State()
@@ -120,7 +119,6 @@ export class DeckdeckgoWordCloud {
       .words(words.map((d) => ({text: d, size: 10 + Math.random() * 110, color: this.getRandomColor()})))
       .rotate(() => ~~(Math.random() * 2) * 90)
       .padding(5)
-      .font(this.font)
       .fontSize((d) => d.size)
       .on('end', (words) => this.draw(words, this));
 
@@ -141,7 +139,6 @@ export class DeckdeckgoWordCloud {
       .append('text')
       .style('font-size', (d) => d.size + 'px')
       .style('fill', (d) => d.color)
-      .style('font-family', self.font)
       .attr('text-anchor', 'middle')
       .attr('transform', (d) => 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')')
       .text((d) => d.text);

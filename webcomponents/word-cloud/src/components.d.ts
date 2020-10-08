@@ -9,7 +9,6 @@ export namespace Components {
     interface DeckgoWordCloud {
         "colors": string;
         "editable": boolean;
-        "font": string;
         "height": number;
         "width": number;
     }
@@ -29,7 +28,6 @@ declare namespace LocalJSX {
     interface DeckgoWordCloud {
         "colors"?: string;
         "editable"?: boolean;
-        "font"?: string;
         "height"?: number;
         "onWordCloudDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "width"?: number;
