@@ -39,7 +39,7 @@ export class DeckdeckgoWordCloud {
 
       this.editing = true;
 
-      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+      const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
 
       if (wordsSlot) {
         setTimeout(() => {
@@ -58,7 +58,7 @@ export class DeckdeckgoWordCloud {
     return new Promise<void>((resolve) => {
       this.editing = false;
 
-      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+      const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
 
       if (wordsSlot) {
         wordsSlot.removeAttribute('contentEditable');
@@ -71,7 +71,7 @@ export class DeckdeckgoWordCloud {
   }
 
   private parseSlottedWords(): string[] {
-    const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+    const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
     if (!wordsSlot) {
       return [];
     }
@@ -81,7 +81,7 @@ export class DeckdeckgoWordCloud {
 
   private updatePlaceholder() {
     return new Promise<void>((resolve) => {
-      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+      const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
       this.containerRef.children[0].innerHTML = '';
 
       const div: HTMLElement = document.createElement('div');
