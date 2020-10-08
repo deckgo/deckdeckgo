@@ -1,7 +1,9 @@
 import {Component, Prop, h, Host, Element, State, Event, EventEmitter} from '@stencil/core';
 
-import {EnterElement, select, Selection} from 'd3-selection';
+import {select} from 'd3-selection';
 import cloud from 'd3-cloud';
+
+import {draw} from '../utils/word-cloud-draw';
 
 @Component({
   tag: 'deckgo-word-cloud',
@@ -23,6 +25,8 @@ export class DeckdeckgoWordCloud {
 
   private containerRef!: HTMLDivElement;
 
+  private svgRef!: SVGGElement;
+
   private colors: string[] = Array.from({length: 5}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
 
   async componentDidLoad() {
@@ -30,44 +34,35 @@ export class DeckdeckgoWordCloud {
     await this.wordCloud();
   }
 
-  private edit(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.editable) {
-        resolve();
-        return;
-      }
+  private async edit() {
+    if (!this.editable) {
+      return;
+    }
 
-      this.editing = true;
+    this.editing = true;
 
-      const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
+    const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
 
-      if (wordsSlot) {
-        setTimeout(() => {
-          wordsSlot.setAttribute('contentEditable', 'true');
-          wordsSlot.addEventListener('blur', () => this.applyChanges(), {once: true});
+    if (wordsSlot) {
+      setTimeout(() => {
+        wordsSlot.setAttribute('contentEditable', 'true');
+        wordsSlot.addEventListener('blur', () => this.applyChanges(), {once: true});
 
-          wordsSlot.focus();
-        }, 100);
-      }
-
-      resolve();
-    });
+        wordsSlot.focus();
+      }, 100);
+    }
   }
 
-  private stopEditing(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.editing = false;
+  private async stopEditing() {
+    this.editing = false;
 
-      const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
+    const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
 
-      if (wordsSlot) {
-        wordsSlot.removeAttribute('contentEditable');
+    if (wordsSlot) {
+      wordsSlot.removeAttribute('contentEditable');
 
-        this.wordCloudDidChange.emit(this.el);
-      }
-
-      resolve();
-    });
+      this.wordCloudDidChange.emit(this.el);
+    }
   }
 
   private async parseSlottedWords(): Promise<string[]> {
@@ -101,6 +96,10 @@ export class DeckdeckgoWordCloud {
   }
 
   private async wordCloud() {
+    if (!this.svgRef) {
+      return;
+    }
+
     const words: string[] = await this.parseSlottedWords();
 
     const layout = cloud()
@@ -115,30 +114,12 @@ export class DeckdeckgoWordCloud {
       .rotate(() => ~~(Math.random() * 2) * 90)
       .padding(5)
       .fontSize((d) => d.size)
-      .on('end', (words) => this.draw(words, this));
+      .on('end', (words) => {
+        this.clearSVG();
+        draw(this.svgRef, words, this.width, this.height);
+      });
 
     layout.start();
-  }
-
-  private draw(words, self: DeckdeckgoWordCloud) {
-    self.clearSVG();
-
-    const selection: Selection<EnterElement, any, SVGGElement, any> = select(self.el.shadowRoot.querySelector('svg'))
-      .attr('width', self.width)
-      .attr('height', self.height)
-      .append('g')
-      .attr('transform', 'translate(' + self.width / 2 + ',' + self.height / 2 + ')')
-      .selectAll('text')
-      .data(words)
-      .enter();
-
-    selection
-      .append('text')
-      .style('font-size', (d) => d.size + 'px')
-      .style('fill', (d) => d.color)
-      .attr('text-anchor', 'middle')
-      .attr('transform', (d) => 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')')
-      .text((d) => d.text);
   }
 
   private getRandomColor(): string {
@@ -147,9 +128,7 @@ export class DeckdeckgoWordCloud {
   }
 
   private async applyChanges() {
-    this.wordCloud();
-    await this.stopEditing();
-    await this.updatePlaceholder();
+    await Promise.all([this.wordCloud(), this.stopEditing(), this.updatePlaceholder()]);
   }
 
   render() {
@@ -165,7 +144,7 @@ export class DeckdeckgoWordCloud {
           onTouchStart={() => this.edit()}>
           <div class="placeholder"></div>
           <slot name="words" />
-          <svg class="words"></svg>
+          <svg class="words" ref={(el) => (this.svgRef = el as SVGGElement)}></svg>
         </div>
       </Host>
     );
