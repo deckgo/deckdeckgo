@@ -515,62 +515,73 @@ export class AppActionsDeck {
     return (
       <ion-toolbar>
         <ion-buttons slot="start">
-          <app-action-busy iconSrc="/assets/icons/ionicons/add.svg" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
-            <ion-label>Add slide</ion-label>
+          <app-action-busy
+            aria-label="Add slide"
+            iconSrc="/assets/icons/ionicons/add.svg"
+            onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+            <ion-label aria-hidden="true">Add slide</ion-label>
           </app-action-busy>
 
-          <button onClick={() => this.animatePrevNextSlide.emit(false)} class="ion-activatable">
+          <button aria-label="Previous" onClick={() => this.animatePrevNextSlide.emit(false)} class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
-            <ion-label>Previous</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
+            <ion-label aria-hidden="true">Previous</ion-label>
           </button>
 
-          <button onClick={() => this.animatePrevNextSlide.emit(true)} class="ion-activatable">
+          <button aria-label="Next" onClick={() => this.animatePrevNextSlide.emit(true)} class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
-            <ion-label>Next</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
+            <ion-label aria-hidden="true">Next</ion-label>
           </button>
 
-          <button onClick={() => this.openSlideNavigate()} color="primary" class="ion-activatable">
+          <button aria-label="Slides" onClick={() => this.openSlideNavigate()} color="primary" class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src="/assets/icons/ionicons/md-list.svg"></ion-icon>
-            <ion-label>Slides</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/md-list.svg"></ion-icon>
+            <ion-label aria-hidden="true">Slides</ion-label>
           </button>
 
-          <app-action-busy iconSrc="/assets/icons/ionicons/brush.svg" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
-            <ion-label>Style</ion-label>
+          <app-action-busy aria-label="Style" iconSrc="/assets/icons/ionicons/brush.svg" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+            <ion-label aria-hidden="true">Style</ion-label>
           </app-action-busy>
 
           {this.renderFullscreenButton()}
 
-          <button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="wider-devices open-remote ion-activatable">
+          <button aria-label="Remote" onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
-            <ion-label>Remote</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
+            <ion-label aria-hidden="true">Remote</ion-label>
           </button>
         </ion-buttons>
 
         <ion-buttons slot="end">
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
-          <button onClick={() => this.goOnlineOffline()} color="primary" class="wider-devices ion-activatable">
+          <button
+            aria-label={offlineStore.state.offline ? 'Go online' : 'Go offline'}
+            onClick={() => this.goOnlineOffline()}
+            color="primary"
+            class="wider-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
-            {offlineStore.state.offline ? <ion-label>Go online</ion-label> : <ion-label>Go offline</ion-label>}
+            <ion-icon aria-hidden="true" src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
+            {offlineStore.state.offline ? <ion-label aria-hidden="true">Go online</ion-label> : <ion-label aria-hidden="true">Go offline</ion-label>}
           </button>
 
           <app-action-help class="wider-devices"></app-action-help>
 
-          <button onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="small-devices open-remote-small-devices ion-activatable">
+          <button
+            aria-label="Remote"
+            onClick={($event: UIEvent) => this.openRemote($event)}
+            color="primary"
+            class="small-devices open-remote-small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
-            <ion-label>Remote</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
+            <ion-label aria-hidden="true">Remote</ion-label>
           </button>
 
           <button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
-            <ion-label>More</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
+            <ion-label aria-hidden="true">More</ion-label>
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -592,9 +603,9 @@ export class AppActionsDeck {
 
   private renderFullscreen() {
     if (this.fullscreen) {
-      return [<ion-icon src="/assets/icons/ionicons/contract.svg"></ion-icon>, <ion-label>Exit fullscreen</ion-label>];
+      return [<ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon>, <ion-label aria-hidden="true">Exit fullscreen</ion-label>];
     } else {
-      return [<ion-icon src="/assets/icons/ionicons/expand.svg"></ion-icon>, <ion-label>Fullscreen</ion-label>];
+      return [<ion-icon aria-hidden="true" src="/assets/icons/ionicons/expand.svg"></ion-icon>, <ion-label aria-hidden="true">Fullscreen</ion-label>];
     }
   }
 }

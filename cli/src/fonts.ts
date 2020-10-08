@@ -600,7 +600,7 @@ function filterFonts(fontsList: FontsList) {
             if (input && input.length >= 3) {
               return true;
             } else {
-              return 'Please provide at least 3 characters for the font\'s family name';
+              return "Please provide at least 3 characters for the font's family name";
             }
           },
         },

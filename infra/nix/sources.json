@@ -1,97 +1,97 @@
 {
-    "deckdeckgo-starter": {
-        "branch": "master",
-        "description": "The Progressive Web App alternative for simple presentations",
-        "homepage": "https://deckdeckgo.com",
-        "owner": "deckgo",
-        "repo": "studio-kit",
-        "rev": "58357c71466e36d1e8d0973f06ab0fd9c5c8f5c3",
-        "sha256": "178bfwqv2afy1v3r4knm2byhj2yf63dx1s85g3k8k4rfz42vkk29",
-        "type": "tarball",
-        "url": "https://github.com/deckgo/studio-kit/archive/58357c71466e36d1e8d0973f06ab0fd9c5c8f5c3.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "elasticmq": {
-        "sha256": "1cp2pmkc6gx7gr6109jlcphlky5rr6s1wj528r6hyhzdc01sjhhz",
-        "type": "file",
-        "url": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar",
-        "url_template": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar"
-    },
-    "hs-jose": {
-        "branch": "master",
-        "description": "Haskell JOSE and JWT library",
-        "homepage": "http://hackage.haskell.org/package/jose",
-        "owner": "frasertweedale",
-        "repo": "hs-jose",
-        "rev": "71274bf64c0600c1d877152173a08a5bff7adf4d",
-        "sha256": "0ah189vika1s0jk8f17mn77gilkw24vbs6xlggxw1qj926i6c4pk",
-        "type": "tarball",
-        "url": "https://github.com/frasertweedale/hs-jose/archive/71274bf64c0600c1d877152173a08a5bff7adf4d.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "napalm": {
-        "branch": "master",
-        "description": "Support for building npm packages in Nix and lightweight npm registry",
-        "homepage": "",
-        "owner": "nmattia",
-        "repo": "napalm",
-        "rev": "0331a5b586a186c966f816d434bd5c1ecfa16089",
-        "sha256": "14nlqmmv3xx4cf3r9kcw2xbfgpddppw27ygp8s3r0bbccgwcp9gi",
-        "type": "tarball",
-        "url": "https://github.com/nmattia/napalm/archive/0331a5b586a186c966f816d434bd5c1ecfa16089.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "niv": {
-        "branch": "master",
-        "description": "Easy dependency management for Nix projects",
-        "homepage": "https://github.com/nmattia/niv",
-        "owner": "nmattia",
-        "repo": "niv",
-        "rev": "c2698b0780b783880e0b1a520723948fe3b5c26a",
-        "sha256": "0v68x0h9si6kjqg5fcjrgsbsf4x18m32a786yvjmrdkrki9qwmcq",
-        "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/c2698b0780b783880e0b1a520723948fe3b5c26a.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs": {
-        "branch": "master",
-        "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
-        "homepage": null,
-        "owner": "nh2",
-        "repo": "nixpkgs",
-        "rev": "a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72",
-        "sha256": "1hnmp637r99qd6g0sbx4w3za564gbzwl5c4z0x7fvn7kfi2jp1hx",
-        "type": "tarball",
-        "url": "https://github.com/nh2/nixpkgs/archive/a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "port-utils": {
-        "sha256": "1vfmm8mmkmfffgza64h6qz4ibniibqdr8mj452ikp1xmvv6m8qm9",
-        "type": "tarball",
-        "url": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz",
-        "url_template": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz"
-    },
-    "static-haskell-nix": {
-        "branch": "master",
-        "description": "easily build most Haskell programs into fully static Linux executables",
-        "homepage": "",
-        "owner": "nh2",
-        "repo": "static-haskell-nix",
-        "rev": "8d004d7ced9da947c785b93b4011f39367442339",
-        "sha256": "0nw4g23c5rs0cvaar2phpr60zim9r0qycznpifi8d8k85y4r3bdd",
-        "type": "tarball",
-        "url": "https://github.com/nh2/static-haskell-nix/archive/8d004d7ced9da947c785b93b4011f39367442339.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "wai-lambda": {
-        "branch": "master",
-        "description": "Haskell Webapps on AWS Lambda",
-        "owner": "deckgo",
-        "repo": "wai-lambda",
-        "rev": "7f139047addff89e9d30e55b7eebb07c0e846456",
-        "sha256": "0qqi6wlg8v35dkh6gh9mrj0kb9kpzrz2pc7k0dykk2ahcj6m22k6",
-        "type": "tarball",
-        "url": "https://github.com/deckgo/wai-lambda/archive/7f139047addff89e9d30e55b7eebb07c0e846456.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    }
+  "deckdeckgo-starter": {
+    "branch": "master",
+    "description": "The Progressive Web App alternative for simple presentations",
+    "homepage": "https://deckdeckgo.com",
+    "owner": "deckgo",
+    "repo": "studio-kit",
+    "rev": "58357c71466e36d1e8d0973f06ab0fd9c5c8f5c3",
+    "sha256": "178bfwqv2afy1v3r4knm2byhj2yf63dx1s85g3k8k4rfz42vkk29",
+    "type": "tarball",
+    "url": "https://github.com/deckgo/studio-kit/archive/58357c71466e36d1e8d0973f06ab0fd9c5c8f5c3.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
+  "elasticmq": {
+    "sha256": "1cp2pmkc6gx7gr6109jlcphlky5rr6s1wj528r6hyhzdc01sjhhz",
+    "type": "file",
+    "url": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar",
+    "url_template": "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-0.14.6.jar"
+  },
+  "hs-jose": {
+    "branch": "master",
+    "description": "Haskell JOSE and JWT library",
+    "homepage": "http://hackage.haskell.org/package/jose",
+    "owner": "frasertweedale",
+    "repo": "hs-jose",
+    "rev": "71274bf64c0600c1d877152173a08a5bff7adf4d",
+    "sha256": "0ah189vika1s0jk8f17mn77gilkw24vbs6xlggxw1qj926i6c4pk",
+    "type": "tarball",
+    "url": "https://github.com/frasertweedale/hs-jose/archive/71274bf64c0600c1d877152173a08a5bff7adf4d.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
+  "napalm": {
+    "branch": "master",
+    "description": "Support for building npm packages in Nix and lightweight npm registry",
+    "homepage": "",
+    "owner": "nmattia",
+    "repo": "napalm",
+    "rev": "0331a5b586a186c966f816d434bd5c1ecfa16089",
+    "sha256": "14nlqmmv3xx4cf3r9kcw2xbfgpddppw27ygp8s3r0bbccgwcp9gi",
+    "type": "tarball",
+    "url": "https://github.com/nmattia/napalm/archive/0331a5b586a186c966f816d434bd5c1ecfa16089.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
+  "niv": {
+    "branch": "master",
+    "description": "Easy dependency management for Nix projects",
+    "homepage": "https://github.com/nmattia/niv",
+    "owner": "nmattia",
+    "repo": "niv",
+    "rev": "c2698b0780b783880e0b1a520723948fe3b5c26a",
+    "sha256": "0v68x0h9si6kjqg5fcjrgsbsf4x18m32a786yvjmrdkrki9qwmcq",
+    "type": "tarball",
+    "url": "https://github.com/nmattia/niv/archive/c2698b0780b783880e0b1a520723948fe3b5c26a.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
+  "nixpkgs": {
+    "branch": "master",
+    "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
+    "homepage": null,
+    "owner": "nh2",
+    "repo": "nixpkgs",
+    "rev": "a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72",
+    "sha256": "1hnmp637r99qd6g0sbx4w3za564gbzwl5c4z0x7fvn7kfi2jp1hx",
+    "type": "tarball",
+    "url": "https://github.com/nh2/nixpkgs/archive/a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
+  "port-utils": {
+    "sha256": "1vfmm8mmkmfffgza64h6qz4ibniibqdr8mj452ikp1xmvv6m8qm9",
+    "type": "tarball",
+    "url": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz",
+    "url_template": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz"
+  },
+  "static-haskell-nix": {
+    "branch": "master",
+    "description": "easily build most Haskell programs into fully static Linux executables",
+    "homepage": "",
+    "owner": "nh2",
+    "repo": "static-haskell-nix",
+    "rev": "8d004d7ced9da947c785b93b4011f39367442339",
+    "sha256": "0nw4g23c5rs0cvaar2phpr60zim9r0qycznpifi8d8k85y4r3bdd",
+    "type": "tarball",
+    "url": "https://github.com/nh2/static-haskell-nix/archive/8d004d7ced9da947c785b93b4011f39367442339.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  },
+  "wai-lambda": {
+    "branch": "master",
+    "description": "Haskell Webapps on AWS Lambda",
+    "owner": "deckgo",
+    "repo": "wai-lambda",
+    "rev": "7f139047addff89e9d30e55b7eebb07c0e846456",
+    "sha256": "0qqi6wlg8v35dkh6gh9mrj0kb9kpzrz2pc7k0dykk2ahcj6m22k6",
+    "type": "tarball",
+    "url": "https://github.com/deckgo/wai-lambda/archive/7f139047addff89e9d30e55b7eebb07c0e846456.tar.gz",
+    "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+  }
 }

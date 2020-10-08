@@ -36,10 +36,10 @@ export class AppActionHelp {
       );
     } else {
       return (
-        <button onClick={($event: UIEvent) => this.openGetHelp($event)} class="get-help-action ion-activatable">
+        <button aria-label="Help" onClick={($event: UIEvent) => this.openGetHelp($event)} class="get-help-action ion-activatable">
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon src="/assets/icons/ionicons/help.svg"></ion-icon>
-          <ion-label>Help</ion-label>
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/help.svg"></ion-icon>
+          <ion-label aria-hidden="true">Help</ion-label>
         </button>
       );
     }

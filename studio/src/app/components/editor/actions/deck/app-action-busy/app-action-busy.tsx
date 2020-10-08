@@ -21,7 +21,7 @@ export class AppActionBusy {
     return (
       <button onClick={(e: UIEvent) => this.action(e)} disabled={store.state.deckBusy} class="ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon src={this.iconSrc}></ion-icon>
+        <ion-icon aria-hidden="true" src={this.iconSrc}></ion-icon>
         <slot></slot>
       </button>
     );
