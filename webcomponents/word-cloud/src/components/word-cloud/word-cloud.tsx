@@ -30,10 +30,6 @@ export class DeckdeckgoWordCloud {
     this.wordCloud();
   }
 
-  componentDidUpdate() {
-    this.wordCloud();
-  }
-
   private edit(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!this.editable) {
