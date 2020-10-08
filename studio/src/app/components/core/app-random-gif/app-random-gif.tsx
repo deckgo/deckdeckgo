@@ -4,7 +4,7 @@ import {GifService} from '../../../services/tenor/gif/gif.service';
 
 @Component({
   tag: 'app-random-gif',
-  styleUrl: 'app-random-gif.scss'
+  styleUrl: 'app-random-gif.scss',
 })
 export class AppRandomGif {
   @Prop()
@@ -32,7 +32,7 @@ export class AppRandomGif {
 
       const gifResponse: TenorSearchResponse = await this.gifService.getRandomGif(this.keyword);
 
-      this.gif = gifResponse && gifResponse.results && gifResponse.results.length > 0 ? gifResponse.results[0] : null;
+      this.gif = gifResponse?.results?.[0] ?? null;
 
       resolve();
     });
@@ -43,7 +43,7 @@ export class AppRandomGif {
   }
 
   private renderGif() {
-    if (this.gif && this.gif.media && this.gif.media.length > 0 && this.gif.media[0].nanogif && this.gif.media[0].nanogif.url) {
+    if (this.gif?.media?.[0]?.nanogif?.url) {
       return (
         <deckgo-lazy-img imgSrc={this.gif.media[0].nanogif.url} imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
       );
