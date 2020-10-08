@@ -1,6 +1,6 @@
 import {Component, Prop, h, Host, Element, State, Event, EventEmitter} from '@stencil/core';
 
-import {select} from 'd3-selection';
+import {EnterElement, select, Selection} from 'd3-selection';
 import cloud from 'd3-cloud';
 
 @Component({
@@ -101,7 +101,7 @@ export class DeckdeckgoWordCloud {
   }
 
   private clearSVG() {
-    select(this.el.shadowRoot.querySelector('svg')).select('g').remove('text');
+    select(this.el.shadowRoot.querySelector('svg')).selectAll('*').remove();
   }
 
   private wordCloud() {
@@ -127,14 +127,16 @@ export class DeckdeckgoWordCloud {
   private draw(words, self: DeckdeckgoWordCloud) {
     self.clearSVG();
 
-    select(self.el.shadowRoot.querySelector('svg'))
+    const selection: Selection<EnterElement, any, SVGGElement, any> = select(self.el.shadowRoot.querySelector('svg'))
       .attr('width', self.width)
       .attr('height', self.height)
       .append('g')
       .attr('transform', 'translate(' + self.width / 2 + ',' + self.height / 2 + ')')
       .selectAll('text')
       .data(words)
-      .enter()
+      .enter();
+
+    selection
       .append('text')
       .style('font-size', (d) => d.size + 'px')
       .style('fill', (d) => d.color)
