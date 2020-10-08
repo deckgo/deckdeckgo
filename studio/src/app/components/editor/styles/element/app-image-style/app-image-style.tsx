@@ -78,7 +78,7 @@ export class AppImageStyle {
     return new Promise<ImageAlignment>((resolve) => {
       const parent: HTMLElement = this.selectedElement.parentElement;
 
-      if (parent && parent.nodeName && parent.nodeName.toLowerCase().indexOf('deckgo-slide') > -1) {
+      if (parent.nodeName?.toLowerCase().indexOf('deckgo-slide') > -1) {
         const container: HTMLElement = parent.shadowRoot.querySelector('.deckgo-slide');
         if (container) {
           const style: CSSStyleDeclaration = window.getComputedStyle(container);
