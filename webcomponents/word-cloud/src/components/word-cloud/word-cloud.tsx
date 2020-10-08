@@ -104,12 +104,18 @@ export class DeckdeckgoWordCloud {
     select(this.el.shadowRoot.querySelector('svg')).select('g').remove('text');
   }
 
-  wordCloud() {
-    const words = this.parseSlottedWords();
+  private wordCloud() {
+    const words: string[] = this.parseSlottedWords();
 
     const layout = cloud()
       .size([this.width, this.height])
-      .words(words.map((d) => ({text: d, size: 10 + Math.random() * 110, color: this.getRandomColor()})))
+      .words(
+        words.map((d: string, index: number) => ({
+          text: d,
+          size: 10 + Math.random() * 110,
+          color: `var(--deckgo-word-count-fill-color-${index}, ${this.getRandomColor()})`,
+        }))
+      )
       .rotate(() => ~~(Math.random() * 2) * 90)
       .padding(5)
       .fontSize((d) => d.size)
