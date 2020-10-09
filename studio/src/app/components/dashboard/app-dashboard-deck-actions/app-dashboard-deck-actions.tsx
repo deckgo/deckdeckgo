@@ -37,7 +37,7 @@ export class AppDashboardDeckActions {
       return;
     }
 
-    const disabled: boolean = this.deck.data?.clone !== undefined;
+    const disabled: boolean = this.deck?.data?.clone !== undefined;
 
     if (disabled) {
       return;
@@ -102,7 +102,7 @@ export class AppDashboardDeckActions {
         return;
       }
 
-      const disabled: boolean = this.deck.data?.clone !== undefined;
+      const disabled: boolean = this.deck?.data?.clone !== undefined;
 
       if (disabled) {
         resolve();

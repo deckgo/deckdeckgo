@@ -264,7 +264,7 @@ export class AppDashboard {
       return;
     }
 
-    if (deck.deck?.data?.clone) {
+    if (deck?.deck?.data?.clone) {
       return;
     }
 
@@ -316,7 +316,7 @@ export class AppDashboard {
 
       const clone: DeckDashboardCloneResult = $event.detail;
 
-      const index: number = await this.findDeckIndex(clone.from?.id ?? undefined);
+      const index: number = await this.findDeckIndex(clone?.from?.id ?? undefined);
 
       if (index < 0) {
         resolve();
