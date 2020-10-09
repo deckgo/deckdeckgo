@@ -13,8 +13,11 @@ export class AppEditFonts {
           <h1 id="app-edit-fonts-fonts">Fonts</h1>
           <p>
             As any web application, the fonts of your presentation could be easily styled, but <a href="https://deckdeckgo.com">DeckDeckGo</a> goes one step
-            further by downloading and installing <strong>automatically</strong> any <a href="https://fonts.google.com">Google Fonts</a> you would like to use
-            during the setup process (if you are using the starter kit).
+            further by downloading and installing <strong>automatically</strong> any{' '}
+            <a href="https://fonts.google.com" rel="noopener noreferrer">
+              Google Fonts
+            </a>{' '}
+            you would like to use during the setup process (if you are using the starter kit).
           </p>
           <h2 id="app-edit-fonts-using-automatically-any-google-fonts">Using automatically any Google Fonts</h2>
           <p>

@@ -103,8 +103,11 @@ export class AppSlideAuthor {
           </blockquote>
           <h3 id="app-slide-author-from-a-cdn">From a CDN</h3>
           <p>
-            It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include
-            script in the main HTML file of your project:
+            It&#39;s recommended to use{' '}
+            <a href="https://unpkg.com/" rel="noopener noreferrer">
+              unpkg
+            </a>{' '}
+            if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -116,16 +119,38 @@ export class AppSlideAuthor {
           </deckgo-highlight-code>
           <h3 id="app-slide-author-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-author">npm</a> run the following command:
+            To install this template in your project from{' '}
+            <a href="https://www.npmjs.com/package/@deckdeckgo/slide-author" rel="noopener noreferrer">
+              npm
+            </a>{' '}
+            run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-author</code>
           </deckgo-highlight-code>
           <h3 id="app-slide-author-framework-integration">Framework integration</h3>
           <p>
-            The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for{' '}
-            <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>,{' '}
-            <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.
+            The{' '}
+            <a href="https://stenciljs.com/docs/overview" rel="noopener noreferrer">
+              Stencil documentation
+            </a>{' '}
+            provide examples of framework integration for{' '}
+            <a href="https://stenciljs.com/docs/angular" rel="noopener noreferrer">
+              Angular
+            </a>
+            ,{' '}
+            <a href="https://stenciljs.com/docs/react" rel="noopener noreferrer">
+              React
+            </a>
+            ,{' '}
+            <a href="https://stenciljs.com/docs/vue" rel="noopener noreferrer">
+              Vue
+            </a>{' '}
+            and{' '}
+            <a href="https://stenciljs.com/docs/ember" rel="noopener noreferrer">
+              Ember
+            </a>
+            .
           </p>
           <p>
             That being said, commonly, you might either <code>import</code> or <code>load</code> it:
@@ -182,7 +207,10 @@ export class AppSlideAuthor {
           <h3 id="app-slide-author-social-components">Social components</h3>
           <p>
             The details of the component <code>&lt;deckgo-social/&gt;</code> is described in the components{' '}
-            <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.
+            <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md" rel="noopener noreferrer">
+              documentation
+            </a>
+            .
           </p>
           <h2 id="app-slide-author-attributes">Attributes</h2>
           <p>This component offers the following options which could be set using attributes:</p>
