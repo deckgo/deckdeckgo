@@ -26,6 +26,8 @@ export class AppImageElement {
   }
 
   render() {
+    console.log('here');
+
     return [
       <ion-toolbar>
         <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
@@ -35,6 +37,7 @@ export class AppImageElement {
       </ion-toolbar>,
       <app-image
         expander={false}
+        expanded="open"
         selectedElement={this.selectedElement}
         slide={this.slide}
         onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>,
