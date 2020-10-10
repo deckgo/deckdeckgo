@@ -65,13 +65,19 @@ export class DeckdeckgoWordCloud {
     }
   }
 
-  private async parseSlottedWords(): Promise<string[]> {
+  private async parseSlottedWords(): Promise<string[] | null> {
     const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
-    if (!wordsSlot) {
-      return [];
+    if (!wordsSlot || wordsSlot.innerText === '') {
+      return null;
     }
 
-    return wordsSlot.innerText.split(' ');
+    const words: RegExpMatchArray = wordsSlot.innerText.split(/[\s,]+/);
+
+    if (!words || words.length <= 0) {
+      return null;
+    }
+
+    return [...new Set(words)];
   }
 
   private updatePlaceholder() {
@@ -100,7 +106,12 @@ export class DeckdeckgoWordCloud {
       return;
     }
 
-    const words: string[] = await this.parseSlottedWords();
+    const words: string[] | null = await this.parseSlottedWords();
+
+    if (!words) {
+      this.clearSVG();
+      return;
+    }
 
     const layout = cloud()
       .size([this.width, this.height])
