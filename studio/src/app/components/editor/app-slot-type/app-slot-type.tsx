@@ -28,11 +28,7 @@ export class AppSlotType {
       }
     }
 
-    this.onlyTextTypes =
-      this.selectedElement &&
-      this.selectedElement.parentElement &&
-      this.selectedElement.parentElement.nodeName &&
-      this.selectedElement.parentElement.nodeName.toLowerCase() === 'deckgo-slide-poll';
+    this.onlyTextTypes = this.selectedElement?.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
   }
 
   private initCurrentType(): Promise<void> {

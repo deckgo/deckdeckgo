@@ -146,7 +146,7 @@ export class ImageHelper {
     return new Promise<void>((resolve) => {
       let element: HTMLElement = SlotUtils.isNodeReveal(selectedElement) ? (selectedElement.firstElementChild as HTMLElement) : selectedElement;
 
-      if (element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG) {
+      if (element.nodeName?.toLowerCase() === SlotType.IMG) {
         element = this.updateDeckgoLazyImgAttributes(element, image);
       } else {
         const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);

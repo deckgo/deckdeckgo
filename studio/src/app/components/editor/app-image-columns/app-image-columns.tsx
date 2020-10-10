@@ -46,7 +46,7 @@ export class AppImageColumns {
   }
 
   private renderGif(gif: TenorGif) {
-    if (gif && gif.media && gif.media.length > 0 && gif.media[0].tinygif && gif.media[0].tinygif.url) {
+    if (gif.media?.[0]?.tinygif?.url) {
       return (
         <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(gif)}>
           <div class="image-container">
