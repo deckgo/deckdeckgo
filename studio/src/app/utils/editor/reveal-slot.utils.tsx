@@ -66,7 +66,7 @@ export class RevealSlotUtils {
       if (reveal) {
         element = document.createElement(SlotType.REVEAL_LIST);
 
-        if (selectedElement.nodeName?.toLowerCase() === SlotType.UL) {
+        if (selectedElement?.nodeName?.toLowerCase() === SlotType.UL) {
           element.setAttribute('list-tag', SlotType.UL);
         }
       } else {
