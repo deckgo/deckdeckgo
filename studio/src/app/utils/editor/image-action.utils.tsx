@@ -21,7 +21,7 @@ export class ImageActionUtils {
       // Tenor
       const gif: TenorGif = image as TenorGif;
 
-      if (gif.media?.[0]?.gif) {
+      if (gif.media && gif.media.length > 0 && gif.media[0].gif) {
         return {
           src: gif.media[0].gif.url,
           label: gif.title,
