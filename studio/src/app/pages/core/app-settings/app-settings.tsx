@@ -168,7 +168,7 @@ export class AppHome {
 
   private async signIn() {
     navStore.state.nav = {
-      url: '/signin' + (window && window.location ? window.location.pathname : ''),
+      url: '/signin' + (window.location?.pathname ?? ''),
       direction: NavDirection.FORWARD,
     };
   }
