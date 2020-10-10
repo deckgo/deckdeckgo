@@ -19,9 +19,9 @@ const {state, onChange, reset} = createStore({
 } as UserStore);
 
 onChange('user', (user: User | undefined) => {
-  state.photoUrl = user.data?.photo_url ?? undefined;
-  state.name = user.data?.name ?? undefined;
-  state.social = user.data?.social ?? undefined;
+  state.photoUrl = user?.data?.photo_url ?? undefined;
+  state.name = user?.data?.name ?? undefined;
+  state.social = user?.data?.social ?? undefined;
   state.loaded = true;
 });
 
