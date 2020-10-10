@@ -119,7 +119,7 @@ export class PublishService {
           deck.data.meta.tags = tags;
         }
 
-        if (userStore.state.user && userStore.state.user.data && userStore.state.user.data.name) {
+        if (userStore.state.user?.data?.name) {
           if (!deck.data.meta.author) {
             deck.data.meta.author = {
               name: userStore.state.user.data.name,
