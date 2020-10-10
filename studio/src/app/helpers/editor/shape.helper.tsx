@@ -50,7 +50,7 @@ export class ShapeHelper {
     await this.cloneShapeElement(shapeElement);
   }
 
-  private async appendContentShapeImage(slideElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile) {
+  private async appendContentShapeImage(slideElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile | SvgWaves) {
     const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
     if (deckgImg !== undefined) {

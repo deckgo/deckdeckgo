@@ -242,8 +242,8 @@ export namespace Components {
         "slide": boolean;
     }
     interface AppImageColumns {
-        "imagesEven": (UnsplashPhoto | TenorGif | StorageFile)[];
-        "imagesOdd": (UnsplashPhoto | TenorGif | StorageFile)[];
+        "imagesEven": (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+        "imagesOdd": (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
     }
     interface AppImageElement {
         "selectedElement": HTMLElement;
@@ -387,6 +387,8 @@ export namespace Components {
     }
     interface AppSlotType {
         "selectedElement": HTMLElement;
+    }
+    interface AppSvgWaves {
     }
     interface AppTeam {
     }
@@ -1058,6 +1060,12 @@ declare global {
         prototype: HTMLAppSlotTypeElement;
         new (): HTMLAppSlotTypeElement;
     };
+    interface HTMLAppSvgWavesElement extends Components.AppSvgWaves, HTMLStencilElement {
+    }
+    var HTMLAppSvgWavesElement: {
+        prototype: HTMLAppSvgWavesElement;
+        new (): HTMLAppSvgWavesElement;
+    };
     interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {
     }
     var HTMLAppTeamElement: {
@@ -1215,6 +1223,7 @@ declare global {
         "app-slide-contrast": HTMLAppSlideContrastElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slot-type": HTMLAppSlotTypeElement;
+        "app-svg-waves": HTMLAppSvgWavesElement;
         "app-team": HTMLAppTeamElement;
         "app-terms": HTMLAppTermsElement;
         "app-transform": HTMLAppTransformElement;
@@ -1487,9 +1496,9 @@ declare namespace LocalJSX {
         "slide"?: boolean;
     }
     interface AppImageColumns {
-        "imagesEven"?: (UnsplashPhoto | TenorGif | StorageFile)[];
-        "imagesOdd"?: (UnsplashPhoto | TenorGif | StorageFile)[];
-        "onSelectImage"?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile>) => void;
+        "imagesEven"?: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+        "imagesOdd"?: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+        "onSelectImage"?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile | SvgWaves>) => void;
     }
     interface AppImageElement {
         "selectedElement"?: HTMLElement;
@@ -1645,6 +1654,8 @@ declare namespace LocalJSX {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
         "selectedElement"?: HTMLElement;
     }
+    interface AppSvgWaves {
+    }
     interface AppTeam {
     }
     interface AppTerms {
@@ -1774,6 +1785,7 @@ declare namespace LocalJSX {
         "app-slide-contrast": AppSlideContrast;
         "app-slide-navigate": AppSlideNavigate;
         "app-slot-type": AppSlotType;
+        "app-svg-waves": AppSvgWaves;
         "app-team": AppTeam;
         "app-terms": AppTerms;
         "app-transform": AppTransform;
@@ -1896,6 +1908,7 @@ declare module "@stencil/core" {
             "app-slide-contrast": LocalJSX.AppSlideContrast & JSXBase.HTMLAttributes<HTMLAppSlideContrastElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
+            "app-svg-waves": LocalJSX.AppSvgWaves & JSXBase.HTMLAttributes<HTMLAppSvgWavesElement>;
             "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
             "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
