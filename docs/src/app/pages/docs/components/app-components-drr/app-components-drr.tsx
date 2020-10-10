@@ -87,16 +87,38 @@ export class AppComponentsDrr {
           </deckgo-highlight-code>
           <h3 id="app-components-drr-install-from-npm">Install from NPM</h3>
           <p>
-            Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode">npm</a> using the following command:
+            Install it in your project from{' '}
+            <a href="https://www.npmjs.com/package/@deckdeckgo/qrcode" rel="noopener noreferrer">
+              npm
+            </a>{' '}
+            using the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;drag-resize-rotate</code>
           </deckgo-highlight-code>
           <h3 id="app-components-drr-framework-integration">Framework integration</h3>
           <p>
-            The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for{' '}
-            <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>,{' '}
-            <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.
+            The{' '}
+            <a href="https://stenciljs.com/docs/overview" rel="noopener noreferrer">
+              Stencil documentation
+            </a>{' '}
+            provide examples of framework integration for{' '}
+            <a href="https://stenciljs.com/docs/angular" rel="noopener noreferrer">
+              Angular
+            </a>
+            ,{' '}
+            <a href="https://stenciljs.com/docs/react" rel="noopener noreferrer">
+              React
+            </a>
+            ,{' '}
+            <a href="https://stenciljs.com/docs/vue" rel="noopener noreferrer">
+              Vue
+            </a>{' '}
+            and{' '}
+            <a href="https://stenciljs.com/docs/ember" rel="noopener noreferrer">
+              Ember
+            </a>
+            .
           </p>
           <p>
             That being said, commonly, you might either <code>import</code> or <code>load</code> it:

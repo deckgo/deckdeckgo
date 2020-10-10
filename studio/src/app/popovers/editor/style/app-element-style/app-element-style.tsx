@@ -71,14 +71,14 @@ export class AppElementStyle {
 
   async componentWillLoad() {
     if (this.slide) {
-      this.qrCode = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
-      this.chart = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
-      this.poll = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
-      this.author = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-author'.toUpperCase();
-      this.split = this.selectedElement && this.selectedElement.tagName && this.selectedElement.tagName.toUpperCase() === 'deckgo-slide-split'.toUpperCase();
+      this.qrCode = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
+      this.chart = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
+      this.poll = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
+      this.author = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-author'.toUpperCase();
+      this.split = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-split'.toUpperCase();
     }
 
-    this.demo = this.selectedElement && this.selectedElement.nodeName && this.selectedElement.nodeName.toLocaleLowerCase() === SlotType.DEMO;
+    this.demo = this.selectedElement.nodeName?.toLocaleLowerCase() === SlotType.DEMO;
 
     this.list = await ListUtils.isElementList(this.selectedElement);
 

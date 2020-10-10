@@ -38,8 +38,11 @@ export class AppComponentsGif {
         <main>
           <h1 id="app-components-gif-gif">GIF</h1>
           <p>
-            The &quot;GIF&quot; component allows you to easily add a GIF, like those provided by <a href="https://giphy.com">Giphy</a>, in almost any slide of
-            your presentation.
+            The &quot;GIF&quot; component allows you to easily add a GIF, like those provided by{' '}
+            <a href="https://giphy.com" rel="noopener noreferrer">
+              Giphy
+            </a>
+            , in almost any slide of your presentation.
           </p>
           <h2 id="app-components-gif-table-of-contents">Table of contents</h2>
           <ul>

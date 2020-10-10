@@ -409,7 +409,7 @@ export class OfflineService {
 
       await set(`/decks/${deck.id}/slides/${slideId}`, slide);
 
-      this.progress(deck.data && deck.data.slides && deck.data.slides.length > 0 ? 0.4 / deck.data.slides.length : 0);
+      this.progress(deck.data?.slides?.length > 0 ? 0.4 / deck.data.slides.length : 0);
 
       resolve(slide);
     });
@@ -472,7 +472,7 @@ export class OfflineService {
     await this.uploadSlideLocalUserAssets(deck, slideId);
     await this.uploadSlideData(deck, slideId);
 
-    this.progress(deck.data && deck.data.slides && deck.data.slides.length > 0 ? 0.7 / deck.data.slides.length : 0);
+    this.progress(deck.data?.slides?.length > 0 ? 0.7 / deck.data.slides.length : 0);
   }
 
   private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {

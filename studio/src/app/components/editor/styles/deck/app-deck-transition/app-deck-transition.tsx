@@ -78,10 +78,7 @@ export class AppDeckTransition {
   }
 
   private async initDeckAutoSlide() {
-    this.autoSlide =
-      deckStore.state.deck && deckStore.state.deck.data && deckStore.state.deck.data.attributes && deckStore.state.deck.data.attributes.autoSlide !== undefined
-        ? deckStore.state.deck.data.attributes.autoSlide
-        : false;
+    this.autoSlide = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
   }
 
   private async animateDecks() {

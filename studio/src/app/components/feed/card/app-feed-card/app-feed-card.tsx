@@ -177,7 +177,7 @@ export class AppFeedCard {
       deck: this.deck,
       userName: this.author,
       userSocial:
-        this.deck && this.deck.data && this.deck.data.meta && this.deck.data.meta.author && (this.deck.data.meta.author as DeckMetaAuthor).social
+        this.deck?.data?.meta?.author && (this.deck.data.meta.author as DeckMetaAuthor).social
           ? ((this.deck.data.meta.author as DeckMetaAuthor).social as UserSocial)
           : undefined,
     };

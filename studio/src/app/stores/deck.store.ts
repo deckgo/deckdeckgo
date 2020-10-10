@@ -15,8 +15,8 @@ const {state, onChange, reset} = createStore({
 } as DeckStore);
 
 onChange('deck', (deck: Deck | null) => {
-  state.name = deck && deck.data && deck.data.name && deck.data.name !== '' ? deck.data.name : null;
-  state.published = deck && deck.data && deck.data.meta && deck.data.meta.published ? deck.data.meta.published : false;
+  state.name = deck?.data?.name && deck?.data?.name !== '' ? deck.data.name : null;
+  state.published = deck?.data?.meta?.published ?? false;
 });
 
 export default {state, onChange, reset};

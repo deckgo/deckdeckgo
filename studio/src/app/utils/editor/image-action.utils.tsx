@@ -15,7 +15,7 @@ export class ImageActionUtils {
 
       return {
         src: photo.urls.regular,
-        label: photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.regular
+        label: photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.regular,
       };
     } else if (image.hasOwnProperty('media')) {
       // Tenor
@@ -24,7 +24,7 @@ export class ImageActionUtils {
       if (gif.media && gif.media.length > 0 && gif.media[0].gif) {
         return {
           src: gif.media[0].gif.url,
-          label: gif.title
+          label: gif.title,
         };
       }
     } else if (image.hasOwnProperty('downloadUrl')) {
@@ -33,7 +33,7 @@ export class ImageActionUtils {
 
       return {
         src: storageFile.downloadUrl,
-        label: storageFile.downloadUrl
+        label: storageFile.downloadUrl,
       };
     }
 

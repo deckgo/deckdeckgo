@@ -11,7 +11,7 @@ export class ListUtils {
     if (SlotUtils.isNodeRevealList(element)) {
       return element && element.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
     } else {
-      return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
+      return element?.nodeName?.toLowerCase() === SlotType.OL ? SlotType.OL : SlotType.UL;
     }
   }
 
@@ -20,10 +20,7 @@ export class ListUtils {
       return undefined;
     }
 
-    if (
-      (element && element.nodeName && element.nodeName.toLowerCase() === SlotType.OL) ||
-      (element && element.nodeName && element.nodeName.toLowerCase() === SlotType.UL)
-    ) {
+    if (element?.nodeName?.toLowerCase() === SlotType.OL || element?.nodeName?.toLowerCase() === SlotType.UL) {
       const listStyle = mapHtmlListStyleTypeToListStyle(element.style.listStyleType);
       return listStyle === undefined ? (element.nodeName.toLowerCase() === SlotType.OL ? ListStyle.DECIMAL : ListStyle.BULLET) : listStyle;
     }

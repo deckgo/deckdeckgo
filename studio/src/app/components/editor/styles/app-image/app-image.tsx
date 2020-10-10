@@ -31,6 +31,9 @@ export class AppImage {
   @Prop()
   expander: boolean = true;
 
+  @Prop()
+  expanded: 'open' | 'close' = 'close';
+
   private imageHistoryService: ImageHistoryService;
 
   @State()
@@ -102,7 +105,7 @@ export class AppImage {
 
   render() {
     return (
-      <app-expansion-panel expander={this.expander} expanded="close">
+      <app-expansion-panel expander={this.expander} expanded={this.expanded}>
         <ion-label slot="title">Image</ion-label>
 
         <div class="image-actions ion-margin">

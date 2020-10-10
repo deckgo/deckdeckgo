@@ -78,9 +78,7 @@ export class AppPublishEdit {
 
     this.destroyDeckListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
-      this.publishing =
-        this.publishing ||
-        (deck.data.deploy && deck.data.deploy.api && (deck.data.deploy.api.status === 'scheduled' || deck.data.deploy.api.status === 'failure'));
+      this.publishing = this.publishing || deck.data.deploy?.api?.status === 'scheduled' || deck.data.deploy?.api?.status === 'failure';
     });
   }
 
@@ -100,11 +98,8 @@ export class AppPublishEdit {
     }
 
     this.caption = deckStore.state.deck.data.name;
-    this.description =
-      deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.description
-        ? (deckStore.state.deck.data.meta.description as string)
-        : await this.getFirstSlideContent();
-    this.tags = deckStore.state.deck.data.meta && deckStore.state.deck.data.meta.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
+    this.description = deckStore.state.deck.data.meta?.description ? (deckStore.state.deck.data.meta.description as string) : await this.getFirstSlideContent();
+    this.tags = deckStore.state.deck.data.meta?.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
     this.pushToGitHub = deckStore.state.deck.data.github ? deckStore.state.deck.data.github.publish : true;
   }
 
@@ -119,7 +114,7 @@ export class AppPublishEdit {
 
       const slide: HTMLElement = document.querySelector('deckgo-deck > *:first-child');
 
-      if (slide && slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
+      if (slide?.tagName?.toLowerCase().indexOf('deckgo-slide') > -1) {
         const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
 
         if (contentElement) {
@@ -190,7 +185,7 @@ export class AppPublishEdit {
     const currentDeck: Deck = {...deckStore.state.deck};
 
     const destroyDeckDeployListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
-      if (deck && deck.data && deck.data.deploy && deck.data.deploy.api && deck.data.deploy.api.status === 'successful') {
+      if (deck?.data?.deploy?.api?.status === 'successful') {
         destroyDeckDeployListener();
 
         // In case the user would have browse the feed before, reset it to fetch is updated or new presentation

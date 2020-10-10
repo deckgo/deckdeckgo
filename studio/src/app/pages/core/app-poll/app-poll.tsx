@@ -181,7 +181,7 @@ export class AppPoll {
       return undefined;
     }
 
-    if (pollStore.state.poll && pollStore.state.poll.poll) {
+    if (pollStore.state.poll?.poll) {
       return undefined;
     }
 

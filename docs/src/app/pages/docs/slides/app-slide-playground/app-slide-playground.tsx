@@ -28,8 +28,19 @@ export class AppSlidePlayground {
         <main>
           <h1 id="app-slide-playground-slide-playground">Slide: Playground</h1>
           <p>
-            The &quot;Playground&quot; template helps embed easily playgrounds as <a href="https://codepen.io">Codepen</a>,{' '}
-            <a href="https://jsfiddle.net/">JSFiddle</a> and <a href="https://webcomponents.dev">WebComponents.dev</a> in your presentation.
+            The &quot;Playground&quot; template helps embed easily playgrounds as{' '}
+            <a href="https://codepen.io" rel="noopener noreferrer">
+              Codepen
+            </a>
+            ,{' '}
+            <a href="https://jsfiddle.net/" rel="noopener noreferrer">
+              JSFiddle
+            </a>{' '}
+            and{' '}
+            <a href="https://webcomponents.dev" rel="noopener noreferrer">
+              WebComponents.dev
+            </a>{' '}
+            in your presentation.
           </p>
           <h2 id="app-slide-playground-table-of-contents">Table of contents</h2>
           <ul>
@@ -104,8 +115,11 @@ export class AppSlidePlayground {
           </blockquote>
           <h3 id="app-slide-playground-from-a-cdn">From a CDN</h3>
           <p>
-            It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> if you want to use this template from a CDN. To do so, add the following include
-            script in the main HTML file of your project:
+            It&#39;s recommended to use{' '}
+            <a href="https://unpkg.com/" rel="noopener noreferrer">
+              unpkg
+            </a>{' '}
+            if you want to use this template from a CDN. To do so, add the following include script in the main HTML file of your project:
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -117,17 +131,38 @@ export class AppSlidePlayground {
           </deckgo-highlight-code>
           <h3 id="app-slide-playground-from-npm">From NPM</h3>
           <p>
-            To install this template in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/slide-playground">npm</a> run the following
-            command:
+            To install this template in your project from{' '}
+            <a href="https://www.npmjs.com/package/@deckdeckgo/slide-playground" rel="noopener noreferrer">
+              npm
+            </a>{' '}
+            run the following command:
           </p>
           <deckgo-highlight-code language="bash">
             <code slot="code">npm install @deckdeckgo&#47;slide-playground</code>
           </deckgo-highlight-code>
           <h3 id="app-slide-playground-framework-integration">Framework integration</h3>
           <p>
-            The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for{' '}
-            <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>,{' '}
-            <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.
+            The{' '}
+            <a href="https://stenciljs.com/docs/overview" rel="noopener noreferrer">
+              Stencil documentation
+            </a>{' '}
+            provide examples of framework integration for{' '}
+            <a href="https://stenciljs.com/docs/angular" rel="noopener noreferrer">
+              Angular
+            </a>
+            ,{' '}
+            <a href="https://stenciljs.com/docs/react" rel="noopener noreferrer">
+              React
+            </a>
+            ,{' '}
+            <a href="https://stenciljs.com/docs/vue" rel="noopener noreferrer">
+              Vue
+            </a>{' '}
+            and{' '}
+            <a href="https://stenciljs.com/docs/ember" rel="noopener noreferrer">
+              Ember
+            </a>
+            .
           </p>
           <p>
             That being said, commonly, you might either <code>import</code> or <code>load</code> it:
