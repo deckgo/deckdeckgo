@@ -106,7 +106,7 @@ export class AppShape {
   }
 
   private renderShapesGroup(group: string) {
-    if (this.assets.shapes?.[group]?.length > 0) {
+    if (this.assets?.shapes?.[group]?.length > 0) {
       return this.assets.shapes[group].map((asset: ImgAsset) => {
         return this.renderShape(`${this.config.globalAssetsUrl}${asset.src}`, asset.ariaLabel);
       });

@@ -114,7 +114,7 @@ export class AppPublishEdit {
 
       const slide: HTMLElement = document.querySelector('deckgo-deck > *:first-child');
 
-      if (slide.tagName?.toLowerCase().indexOf('deckgo-slide') > -1) {
+      if (slide?.tagName?.toLowerCase().indexOf('deckgo-slide') > -1) {
         const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
 
         if (contentElement) {
@@ -185,7 +185,7 @@ export class AppPublishEdit {
     const currentDeck: Deck = {...deckStore.state.deck};
 
     const destroyDeckDeployListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
-      if (deck.data?.deploy?.api?.status === 'successful') {
+      if (deck?.data?.deploy?.api?.status === 'successful') {
         destroyDeckDeployListener();
 
         // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
