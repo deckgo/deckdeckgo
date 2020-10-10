@@ -301,7 +301,7 @@ export class OfflineService {
   }
 
   private assetsShapesList(assets: Assets, group: string): string[] {
-    if (assets.shapes?.[group]?.length > 0) {
+    if (assets.shapes && assets.shapes[group] && assets.shapes[group].length > 0) {
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
       return assets.shapes[group].map((asset: ImgAsset) => {
