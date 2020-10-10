@@ -44,7 +44,7 @@ export class RemoteService {
   async getRoom(): Promise<string | null> {
     const deck: Deck | null = deckStore.state.deck;
 
-    if (deck.data?.name !== undefined && deck.data?.name !== '') {
+    if (deck?.data?.name !== undefined && deck?.data?.name !== '') {
       return deck.data.name.replace(/\.|#/g, '_');
     }
 
