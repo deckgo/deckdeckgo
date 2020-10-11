@@ -13,16 +13,19 @@
   div.placeholder:not(:empty) {
     display: none;
   }
+
+  div.placeholder,
+  svg.words {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 :host([editable]) {
   div.placeholder:empty:not(:focus):after {
     content: var(--deckgo-word-cloud-empty-text, "Click to add your words");
-
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
   }
 }
 

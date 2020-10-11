@@ -17,6 +17,11 @@ export class DeckdeckgoWordCloud {
 
   @Prop() editable: boolean = false;
 
+  @Prop() marginTop: number = 32;
+  @Prop() marginBottom: number = 32;
+  @Prop() marginLeft: number = 32;
+  @Prop() marginRight: number = 32;
+
   @State()
   private editing: boolean = false;
 
@@ -65,8 +70,11 @@ export class DeckdeckgoWordCloud {
   private async initSize() {
     const style: CSSStyleDeclaration | undefined = window ? window.getComputedStyle(this.el) : undefined;
 
-    this.width = style && parseInt(style.width) > 0 ? parseInt(style.width) : this.el.offsetWidth;
-    this.height = style && parseInt(style.height) > 0 ? parseInt(style.height) : this.el.offsetHeight;
+    const width: number = style && parseInt(style.width) > 0 ? parseInt(style.width) : this.el.offsetWidth;
+    const height: number = style && parseInt(style.height) > 0 ? parseInt(style.height) : this.el.offsetHeight;
+
+    this.width = width - this.marginLeft - this.marginRight;
+    this.height = height - this.marginTop - this.marginBottom;
   }
 
   private async edit() {
