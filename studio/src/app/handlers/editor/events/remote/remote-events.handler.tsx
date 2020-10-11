@@ -398,7 +398,7 @@ export class RemoteEventsHandler {
       const slide: HTMLElement = this.el.querySelector('deckgo-deck > :nth-child(' + (slideIndex + 1) + ')');
 
       // If slide has no id, it's a new slide, we will slide to the last one in the remote
-      if (slide.getAttribute('slide_id')) {
+      if (slide && slide.getAttribute('slide_id')) {
         await deckgoRemoteElement.slideTo(slideIndex, 0);
       }
 
