@@ -7,12 +7,12 @@ import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 })
 export class AppImageColumns {
   @Prop()
-  imagesOdd: (UnsplashPhoto | TenorGif | StorageFile)[];
+  imagesOdd: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
 
   @Prop()
-  imagesEven: (UnsplashPhoto | TenorGif | StorageFile)[];
+  imagesEven: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
 
-  @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | StorageFile>;
+  @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | StorageFile | SvgWaves>;
 
   render() {
     if ((!this.imagesEven || this.imagesEven.length <= 0) && (!this.imagesOdd || this.imagesOdd.length <= 0)) {
@@ -27,15 +27,17 @@ export class AppImageColumns {
     }
   }
 
-  private renderImages(images: (UnsplashPhoto | TenorGif | StorageFile)[]) {
+  private renderImages(images: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[]) {
     if (images && images.length > 0) {
-      return images.map((image: UnsplashPhoto | TenorGif | StorageFile) => {
+      return images.map((image: UnsplashPhoto | TenorGif | StorageFile | SvgWaves) => {
         if (image.hasOwnProperty('urls')) {
           return this.renderStockPhoto(image as UnsplashPhoto);
         } else if (image.hasOwnProperty('media')) {
           return this.renderGif(image as TenorGif);
         } else if (image.hasOwnProperty('downloadUrl')) {
           return this.renderCustomImage(image as StorageFile);
+        } else if (image.hasOwnProperty('viewBox')) {
+          return this.renderSvgWaves(image as SvgWaves);
         } else {
           return undefined;
         }
@@ -101,6 +103,22 @@ export class AppImageColumns {
         <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(storageFile)}>
           <div class="image-container">
             <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={storageFile.downloadUrl} custom-loader={true}></deckgo-lazy-img>
+          </div>
+        </div>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderSvgWaves(svgWaves: SvgWaves) {
+    if (svgWaves && svgWaves.path) {
+      return (
+        <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(svgWaves)}>
+          <div class="image-container">
+            <svg {...svgWaves}>
+              <path d={svgWaves.path.d} />
+            </svg>
           </div>
         </div>
       );

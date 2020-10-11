@@ -1,0 +1,34 @@
+app-svg-waves {
+  ion-content {
+    --background: var(--ion-color-light);
+
+    ion-item-divider {
+      --color: black;
+      --background: inherit;
+      --ion-item-border-color: transparent;
+      --ion-padding: 0;
+
+      .label-waves {
+        flex-grow: 1;
+      }
+    }
+
+    ion-item {
+      --background: inherit;
+      --border-width: 0;
+      --inner-border-width: 0;
+    }
+
+    deckgo-color {
+      --padding-top: 4px;
+    }
+
+    svg {
+      transition: opacity 0.3s ease;
+
+      path {
+        transition: 0.3s ease;
+      }
+    }
+  }
+}

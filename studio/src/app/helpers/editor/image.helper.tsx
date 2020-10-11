@@ -9,6 +9,7 @@ import {EditAction} from '../../utils/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
+import {SvgWavesHelper} from './svgWaves.helper';
 
 export class ImageHelper {
   constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
@@ -24,6 +25,8 @@ export class ImageHelper {
       await this.openModal(selectedElement, slide, deck, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
       await this.openCustomModalRestricted(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
+    } else if (imageAction.action === EditAction.OPEN_SVG_WAVES) {
+      await this.openModal(selectedElement, slide, deck, 'app-svg-waves');
     }
   }
 
@@ -60,7 +63,7 @@ export class ImageHelper {
     await this.openModal(selectedElement, slide, deck, componentTag, action);
   }
 
-  private appendImage(selectedElement: HTMLElement, slide: boolean, deck: boolean, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
+  private appendImage(selectedElement: HTMLElement, slide: boolean, deck: boolean, image: UnsplashPhoto | TenorGif | StorageFile | SvgWaves): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!selectedElement || !image || !document) {
         resolve();
@@ -70,9 +73,16 @@ export class ImageHelper {
       busyStore.state.deckBusy = true;
 
       if (slide || deck) {
-        await this.appendBackgroundImg(selectedElement, image, deck);
+        if (image.hasOwnProperty('viewBox')) {
+          const svgWavesHelper = new SvgWavesHelper(this.didChange);
+          await svgWavesHelper.appendSvgWaves(selectedElement, image as SvgWaves, deck);
+
+          resolve();
+          return;
+        }
+        await this.appendBackgroundImg(selectedElement, image as UnsplashPhoto | TenorGif | StorageFile, deck);
       } else {
-        await this.appendContentImg(selectedElement, image);
+        await this.appendContentImg(selectedElement, image as UnsplashPhoto | TenorGif | StorageFile);
       }
 
       resolve();

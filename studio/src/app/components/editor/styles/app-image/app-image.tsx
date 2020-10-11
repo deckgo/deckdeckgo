@@ -37,10 +37,10 @@ export class AppImage {
   private imageHistoryService: ImageHistoryService;
 
   @State()
-  private imagesHistoryOdd: (UnsplashPhoto | TenorGif | StorageFile)[];
+  private imagesHistoryOdd: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
 
   @State()
-  private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile)[];
+  private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
 
   @State()
   private navigatorOnline: boolean = navigator.onLine;
@@ -55,11 +55,15 @@ export class AppImage {
 
   private initImagesHistory(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const imagesHistory: (UnsplashPhoto | TenorGif | StorageFile)[] = await this.imageHistoryService.get();
+      let imagesHistory: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[] = await this.imageHistoryService.get();
 
       if (!imagesHistory || imagesHistory.length <= 0) {
         resolve();
         return;
+      }
+
+      if (!this.deck && !this.slide) {
+        imagesHistory = [...imagesHistory.filter((img) => !img.hasOwnProperty('viewBox'))];
       }
 
       this.imagesHistoryEven = [...imagesHistory.filter((_a, i) => i % 2)];
@@ -112,6 +116,7 @@ export class AppImage {
           {this.renderStockPhotos()}
           {this.renderGif()}
           {this.renderCustom()}
+          {this.renderSvgWaves()}
           {this.renderDeleteAction()}
         </div>
 
@@ -159,6 +164,19 @@ export class AppImage {
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
         <ion-label>Your images</ion-label>
+      </ion-button>
+    );
+  }
+
+  private renderSvgWaves() {
+    if (!this.deck && !this.slide) {
+      // SVG Waves only available for background
+      return undefined;
+    }
+
+    return (
+      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
+        <ion-label>SVG Waves</ion-label>
       </ion-button>
     );
   }
