@@ -1,5 +1,7 @@
 import {Component, Prop, h, Host, Element, State, Event, EventEmitter} from '@stencil/core';
 
+import {debounce} from '@deckdeckgo/utils';
+
 import {select} from 'd3-selection';
 import cloud from 'd3-cloud';
 
@@ -14,8 +16,6 @@ export class DeckdeckgoWordCloud {
   @Element() el: HTMLElement;
 
   @Prop() editable: boolean = false;
-  @Prop() width: number = 500;
-  @Prop() height: number = 500;
 
   @State()
   private editing: boolean = false;
@@ -29,9 +29,44 @@ export class DeckdeckgoWordCloud {
 
   private colors: string[] = Array.from({length: 5}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
 
+  private width: number;
+  private height: number;
+
   async componentDidLoad() {
+    this.initWindowResize();
+
+    await this.initSize();
+
     await this.updatePlaceholder();
     await this.wordCloud();
+  }
+
+  disconnectedCallback() {
+    if (window) {
+      window.removeEventListener('resize', debounce(this.onResizeContent, 500));
+    }
+  }
+
+  private initWindowResize() {
+    if (window) {
+      window.addEventListener('resize', debounce(this.onResizeContent, 500));
+    }
+  }
+
+  private onResizeContent = async () => {
+    await this.resizeReload();
+  };
+
+  private async resizeReload() {
+    await this.initSize();
+    await this.wordCloud();
+  }
+
+  private async initSize() {
+    const style: CSSStyleDeclaration | undefined = window ? window.getComputedStyle(this.el) : undefined;
+
+    this.width = style && parseInt(style.width) > 0 ? parseInt(style.width) : this.el.offsetWidth;
+    this.height = style && parseInt(style.height) > 0 ? parseInt(style.height) : this.el.offsetHeight;
   }
 
   private async edit() {

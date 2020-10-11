@@ -8,8 +8,6 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoWordCloud {
         "editable": boolean;
-        "height": number;
-        "width": number;
     }
 }
 declare global {
@@ -26,9 +24,7 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoWordCloud {
         "editable"?: boolean;
-        "height"?: number;
         "onWordCloudDidChange"?: (event: CustomEvent<HTMLElement>) => void;
-        "width"?: number;
     }
     interface IntrinsicElements {
         "deckgo-word-cloud": DeckgoWordCloud;
