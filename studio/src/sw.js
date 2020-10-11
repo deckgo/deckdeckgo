@@ -3,7 +3,7 @@
  * https://stenciljs.com/docs/service-workers
  */
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -12,6 +12,9 @@ self.addEventListener('message', (event) => {
 });
 
 workbox.setConfig({debug: false});
+
+const { CacheableResponsePlugin } = workbox.cacheableResponse;
+const { ExpirationPlugin } = workbox.expiration;
 
 /**
  * Cache font as displayed in the Workbox common recipe
@@ -32,10 +35,10 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst({
     cacheName: 'google-fonts-webfonts',
     plugins: [
-      new workbox.cacheableResponse.Plugin({
+      new CacheableResponsePlugin({
         statuses: [0, 200],
       }),
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 365,
         maxEntries: 30,
       }),
@@ -49,7 +52,7 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst({
     cacheName: 'assets',
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
         maxEntries: 60,
       }),
@@ -63,7 +66,7 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
         maxEntries: 60,
       }),
@@ -76,11 +79,11 @@ workbox.routing.registerRoute(
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'cors-images',
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
         maxEntries: 60,
       }),
-      new workbox.cacheableResponse.CacheableResponse({
+      new CacheableResponsePlugin({
         statuses: [0, 200],
       }),
     ],
@@ -93,7 +96,7 @@ workbox.routing.registerRoute(
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'data-content',
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
         maxEntries: 60,
       }),
@@ -107,7 +110,7 @@ workbox.routing.registerRoute(
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'unpkg',
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
         maxEntries: 60,
       }),
@@ -123,7 +126,7 @@ workbox.routing.registerRoute(
 );
 
 // the precache manifest will be injected into the following line
-self.workbox.precaching.precacheAndRoute([], {
+self.workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
   // Ignore all URL parameters otherwise /editor/:id won't be cached and therefore not accessible directly offline
   ignoreURLParametersMatching: [/.*/],
 });
