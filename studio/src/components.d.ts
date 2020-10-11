@@ -113,6 +113,10 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
+    interface AppColorWordCloud {
+        "moreColors": boolean;
+        "selectedElement": HTMLElement;
+    }
     interface AppContact {
     }
     interface AppContactForm {
@@ -190,6 +194,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "shape": 'shape' | 'text' | undefined;
         "slide": boolean;
+        "wordCloud": boolean;
     }
     interface AppEmbed {
     }
@@ -523,6 +528,12 @@ declare global {
     var HTMLAppColorTextBackgroundElement: {
         prototype: HTMLAppColorTextBackgroundElement;
         new (): HTMLAppColorTextBackgroundElement;
+    };
+    interface HTMLAppColorWordCloudElement extends Components.AppColorWordCloud, HTMLStencilElement {
+    }
+    var HTMLAppColorWordCloudElement: {
+        prototype: HTMLAppColorWordCloudElement;
+        new (): HTMLAppColorWordCloudElement;
     };
     interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {
     }
@@ -1126,6 +1137,7 @@ declare global {
         "app-color-qrcode": HTMLAppColorQrcodeElement;
         "app-color-sides": HTMLAppColorSidesElement;
         "app-color-text-background": HTMLAppColorTextBackgroundElement;
+        "app-color-word-cloud": HTMLAppColorWordCloudElement;
         "app-contact": HTMLAppContactElement;
         "app-contact-form": HTMLAppContactFormElement;
         "app-contrast-info": HTMLAppContrastInfoElement;
@@ -1340,6 +1352,11 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;
     }
+    interface AppColorWordCloud {
+        "moreColors"?: boolean;
+        "onWordCloudDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
+    }
     interface AppContact {
     }
     interface AppContactForm {
@@ -1428,6 +1445,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "shape"?: 'shape' | 'text' | undefined;
         "slide"?: boolean;
+        "wordCloud"?: boolean;
     }
     interface AppEmbed {
     }
@@ -1685,6 +1703,7 @@ declare namespace LocalJSX {
         "app-color-qrcode": AppColorQrcode;
         "app-color-sides": AppColorSides;
         "app-color-text-background": AppColorTextBackground;
+        "app-color-word-cloud": AppColorWordCloud;
         "app-contact": AppContact;
         "app-contact-form": AppContactForm;
         "app-contrast-info": AppContrastInfo;
@@ -1807,6 +1826,7 @@ declare module "@stencil/core" {
             "app-color-qrcode": LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
             "app-color-sides": LocalJSX.AppColorSides & JSXBase.HTMLAttributes<HTMLAppColorSidesElement>;
             "app-color-text-background": LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
+            "app-color-word-cloud": LocalJSX.AppColorWordCloud & JSXBase.HTMLAttributes<HTMLAppColorWordCloudElement>;
             "app-contact": LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
             "app-contact-form": LocalJSX.AppContactForm & JSXBase.HTMLAttributes<HTMLAppContactFormElement>;
             "app-contrast-info": LocalJSX.AppContrastInfo & JSXBase.HTMLAttributes<HTMLAppContrastInfoElement>;
