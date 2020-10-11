@@ -4,6 +4,8 @@
   height: 100%;
   width: 100%;
 
+  overflow: hidden;
+
   ::slotted([slot="words"]) {
     display: none;
   }
@@ -26,13 +28,6 @@
 
 :host(.deckgo-word-cloud-edit) {
   ::slotted([slot="words"]) {
-    white-space: pre-wrap;
-
-    width: 100%;
-    height: 100%;
-
-    text-align: center;
-
     display: flex;
     justify-content: center;
     align-content: center;
@@ -68,4 +63,14 @@ div.deckgo-word-cloud-container {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+
+  white-space: pre-wrap;
+
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+
+  max-height: 100%;
+  overflow: scroll;
 }
