@@ -224,7 +224,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code' && element.getAttribute('slot') !== 'math') {
+      if (
+        element.hasAttribute('slot') &&
+        element.getAttribute('slot') !== 'code' &&
+        element.getAttribute('slot') !== 'math' &&
+        element.getAttribute('slot') !== 'words'
+      ) {
         resolve(element);
         return;
       }

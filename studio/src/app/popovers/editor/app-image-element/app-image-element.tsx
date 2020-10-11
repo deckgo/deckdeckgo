@@ -26,8 +26,6 @@ export class AppImageElement {
   }
 
   render() {
-    console.log('here');
-
     return [
       <ion-toolbar>
         <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
