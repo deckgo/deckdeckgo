@@ -27,6 +27,14 @@ export class SlotUtils {
     return selectedElement?.nodeName?.toLowerCase() === SlotType.SOCIAL;
   }
 
+  static isNodeCode(selectedElement: HTMLElement | null): boolean {
+    return selectedElement?.nodeName?.toLowerCase() === SlotType.CODE;
+  }
+
+  static isNodeWordCloud(selectedElement: HTMLElement | null): boolean {
+    return selectedElement?.nodeName?.toLowerCase() === SlotType.WORD_CLOUD;
+  }
+
   static isSlotTypeEditable(type: SlotType): boolean {
     return type !== SlotType.IMG && type !== SlotType.SOCIAL && type !== SlotType.DEMO;
   }

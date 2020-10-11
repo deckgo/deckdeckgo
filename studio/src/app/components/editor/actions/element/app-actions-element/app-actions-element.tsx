@@ -51,6 +51,8 @@ export class AppActionsElement {
   @State()
   private math: boolean = false;
 
+  private wordCloud: boolean = false;
+
   @State()
   private image: boolean = false;
 
@@ -221,7 +223,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (element.hasAttribute('slot') && element.getAttribute('slot') !== 'code' && element.getAttribute('slot') !== 'math') {
+      if (
+        element.hasAttribute('slot') &&
+        element.getAttribute('slot') !== 'code' &&
+        element.getAttribute('slot') !== 'math' &&
+        element.getAttribute('slot') !== 'words'
+      ) {
         resolve(element);
         return;
       }
@@ -242,6 +249,10 @@ export class AppActionsElement {
 
   private isElementMath(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MATH;
+  }
+
+  private isElementWordcloud(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.WORD_CLOUD;
   }
 
   private isElementShape(element: HTMLElement): 'shape' | 'text' | undefined {
@@ -718,9 +729,12 @@ export class AppActionsElement {
       this.slideDemo = this.slide && this.slideNodeName === 'deckgo-slide-split' && element.getAttribute('type') === SlideSplitType.DEMO;
 
       this.math = this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
+      this.wordCloud = this.isElementWordcloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
+
+      console.log(element, this.wordCloud);
 
       if (element) {
         element.addEventListener('paste', this.cleanOnPaste, false);
@@ -812,6 +826,7 @@ export class AppActionsElement {
         math: this.math,
         shape: this.shape,
         image: this.image,
+        wordCloud: this.wordCloud,
       },
       mode: 'md',
       showBackdrop: false,

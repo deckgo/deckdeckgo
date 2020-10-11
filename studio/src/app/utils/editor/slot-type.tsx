@@ -13,4 +13,5 @@ export enum SlotType {
   DRAG_RESIZE_ROTATE = 'deckgo-drr',
   DEMO = 'deckgo-demo',
   MATH = 'deckgo-math',
+  WORD_CLOUD = 'deckgo-word-cloud',
 }

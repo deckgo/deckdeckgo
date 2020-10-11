@@ -7,11 +7,11 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoWordCloud {
-        "colors": string;
         "editable": boolean;
-        "font": string;
-        "height": number;
-        "width": number;
+        "marginBottom": number;
+        "marginLeft": number;
+        "marginRight": number;
+        "marginTop": number;
     }
 }
 declare global {
@@ -27,12 +27,12 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoWordCloud {
-        "colors"?: string;
         "editable"?: boolean;
-        "font"?: string;
-        "height"?: number;
+        "marginBottom"?: number;
+        "marginLeft"?: number;
+        "marginRight"?: number;
+        "marginTop"?: number;
         "onWordCloudDidChange"?: (event: CustomEvent<HTMLElement>) => void;
-        "width"?: number;
     }
     interface IntrinsicElements {
         "deckgo-word-cloud": DeckgoWordCloud;

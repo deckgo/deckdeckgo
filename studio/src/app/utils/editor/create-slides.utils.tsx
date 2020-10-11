@@ -139,6 +139,8 @@ export class CreateSlidesUtils {
           <code slot="code"></code>
         ) : slotType === SlotType.MATH ? (
           <code slot="math"></code>
+        ) : slotType === SlotType.WORD_CLOUD ? (
+          <code slot="words"></code>
         ) : undefined}
       </Element>
     );

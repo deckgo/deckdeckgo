@@ -4,8 +4,8 @@ export interface NodeColors {
 }
 
 export class NodeUtils {
-  static async childrenTextNode(elements: NodeListOf<HTMLElement>): Promise<HTMLElement[]> {
-    return Array.from(elements).reduce((acc: HTMLElement[], slot: HTMLElement) => {
+  static async childrenTextNode(elements: HTMLElement[]): Promise<HTMLElement[]> {
+    return elements.reduce((acc: HTMLElement[], slot: HTMLElement) => {
       const text = Array.from(slot.childNodes).find((child) => child.nodeType === Node.TEXT_NODE);
 
       if (text !== null && text !== undefined && text.textContent.replace(/(?:\r\n|\r|\n|\s)/g, '') !== '') {
@@ -16,8 +16,8 @@ export class NodeUtils {
     }, []);
   }
 
-  static async children(elements: NodeListOf<HTMLElement>): Promise<HTMLElement[]> {
-    return Array.from(elements).reduce((acc: HTMLElement[], slot: HTMLElement) => {
+  static async children(elements: HTMLElement[]): Promise<HTMLElement[]> {
+    return elements.reduce((acc: HTMLElement[], slot: HTMLElement) => {
       const children: NodeListOf<HTMLElement> = slot.querySelectorAll('*');
 
       const filteredChildren: HTMLElement[] | undefined = Array.from(children).filter((child) =>

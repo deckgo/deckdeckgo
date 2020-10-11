@@ -1,7 +1,11 @@
-import {Component, Prop, h, Host, Element, State, Event, EventEmitter, Watch} from '@stencil/core';
+import {Component, Prop, h, Host, Element, State, Event, EventEmitter} from '@stencil/core';
+
+import {debounce} from '@deckdeckgo/utils';
 
 import {select} from 'd3-selection';
 import cloud from 'd3-cloud';
+
+import {draw} from '../utils/word-cloud-draw';
 
 @Component({
   tag: 'deckgo-word-cloud',
@@ -12,10 +16,11 @@ export class DeckdeckgoWordCloud {
   @Element() el: HTMLElement;
 
   @Prop() editable: boolean = false;
-  @Prop() width: number = 500;
-  @Prop() height: number = 500;
-  @Prop() font: string = 'Impact';
-  @Prop({reflect: true}) colors: string = '#6114E5, #000000, #4E7224, #C43636, #7136C4, #76E514';
+
+  @Prop() marginTop: number = 32;
+  @Prop() marginBottom: number = 32;
+  @Prop() marginLeft: number = 32;
+  @Prop() marginRight: number = 32;
 
   @State()
   private editing: boolean = false;
@@ -25,75 +30,102 @@ export class DeckdeckgoWordCloud {
 
   private containerRef!: HTMLDivElement;
 
-  private _colors: string[] = [];
+  private svgRef!: SVGGElement;
 
-  @Watch('colors')
-  colorsChanged() {
-    this._colors = this.colors.split(',');
-  }
+  private colors: string[] = Array.from({length: 5}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+
+  private width: number;
+  private height: number;
 
   async componentDidLoad() {
+    this.initWindowResize();
+
+    await this.initSize();
+
     await this.updatePlaceholder();
-    this.colorsChanged();
-    this.wordCloud();
+    await this.wordCloud();
   }
 
-  componentDidUpdate() {
-    this.wordCloud();
+  disconnectedCallback() {
+    if (window) {
+      window.removeEventListener('resize', debounce(this.onResizeContent, 500));
+    }
   }
 
-  private edit(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.editable) {
-        resolve();
-        return;
-      }
-
-      this.editing = true;
-
-      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
-
-      if (wordsSlot) {
-        setTimeout(() => {
-          wordsSlot.setAttribute('contentEditable', 'true');
-          wordsSlot.addEventListener('blur', () => this.applyChanges(), {once: true});
-
-          wordsSlot.focus();
-        }, 100);
-      }
-
-      resolve();
-    });
+  private initWindowResize() {
+    if (window) {
+      window.addEventListener('resize', debounce(this.onResizeContent, 500));
+    }
   }
 
-  private stopEditing(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.editing = false;
+  private onResizeContent = async () => {
+    await this.resizeReload();
+  };
 
-      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
-
-      if (wordsSlot) {
-        wordsSlot.removeAttribute('contentEditable');
-
-        this.wordCloudDidChange.emit(this.el);
-      }
-
-      resolve();
-    });
+  private async resizeReload() {
+    await this.initSize();
+    await this.wordCloud();
   }
 
-  private parseSlottedWords(): string[] {
-    const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
-    if (!wordsSlot) {
-      return [];
+  private async initSize() {
+    const style: CSSStyleDeclaration | undefined = window ? window.getComputedStyle(this.el) : undefined;
+
+    const width: number = style && parseInt(style.width) > 0 ? parseInt(style.width) : this.el.offsetWidth;
+    const height: number = style && parseInt(style.height) > 0 ? parseInt(style.height) : this.el.offsetHeight;
+
+    this.width = width - this.marginLeft - this.marginRight;
+    this.height = height - this.marginTop - this.marginBottom;
+  }
+
+  private async edit() {
+    if (!this.editable) {
+      return;
     }
 
-    return wordsSlot.innerText.split(' ');
+    this.editing = true;
+
+    const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
+
+    if (wordsSlot) {
+      setTimeout(() => {
+        wordsSlot.setAttribute('contentEditable', 'true');
+        wordsSlot.addEventListener('blur', () => this.applyChanges(), {once: true});
+
+        wordsSlot.focus();
+      }, 100);
+    }
+  }
+
+  private async stopEditing() {
+    this.editing = false;
+
+    const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
+
+    if (wordsSlot) {
+      wordsSlot.removeAttribute('contentEditable');
+
+      this.wordCloudDidChange.emit(this.el);
+    }
+  }
+
+  private async parseSlottedWords(): Promise<string[] | null> {
+    const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
+    if (!wordsSlot || wordsSlot.innerText === '') {
+      return null;
+    }
+
+    const words: RegExpMatchArray = wordsSlot.innerText.split(/[\s,]+/);
+
+    if (!words || words.length <= 0) {
+      return null;
+    }
+
+    return [...new Set(words)];
   }
 
   private updatePlaceholder() {
     return new Promise<void>((resolve) => {
-      const wordsSlot: HTMLElement = this.el.querySelector("[slot='words']");
+      const wordsSlot: HTMLElement = this.el.querySelector(":scope > [slot='words']");
       this.containerRef.children[0].innerHTML = '';
 
       const div: HTMLElement = document.createElement('div');
@@ -109,63 +141,48 @@ export class DeckdeckgoWordCloud {
   }
 
   private clearSVG() {
-    select(this.el.shadowRoot.querySelector('svg')).select('g').remove('text');
+    select(this.el.shadowRoot.querySelector('svg')).selectAll('*').remove();
   }
 
-  wordCloud() {
-    const words = this.parseSlottedWords();
+  private async wordCloud() {
+    if (!this.svgRef) {
+      return;
+    }
+
+    const words: string[] | null = await this.parseSlottedWords();
+
+    if (!words) {
+      this.clearSVG();
+      return;
+    }
 
     const layout = cloud()
       .size([this.width, this.height])
-      .words(words.map((d) => ({text: d, size: 10 + Math.random() * 110, color: this.getRandomColor()})))
+      .words(
+        words.map((d: string, index: number) => ({
+          text: d,
+          size: 10 + Math.random() * 110,
+          color: `var(--deckgo-word-count-fill-color-${index}, ${this.getRandomColor()})`,
+        }))
+      )
       .rotate(() => ~~(Math.random() * 2) * 90)
       .padding(5)
-      .font(this.font)
       .fontSize((d) => d.size)
-      .on('end', (words) => this.draw(words, this));
+      .on('end', (words) => {
+        this.clearSVG();
+        draw(this.svgRef, words, this.width, this.height);
+      });
 
     layout.start();
   }
 
-  private draw(words, self: DeckdeckgoWordCloud) {
-    self.clearSVG();
-
-    select(self.el.shadowRoot.querySelector('svg'))
-      .attr('width', self.width)
-      .attr('height', self.height)
-      .append('g')
-      .attr('transform', 'translate(' + self.width / 2 + ',' + self.height / 2 + ')')
-      .selectAll('text')
-      .data(words)
-      .enter()
-      .append('text')
-      .style('font-size', (d) => d.size + 'px')
-      .style('fill', (d) => d.color)
-      .style('font-family', self.font)
-      .attr('text-anchor', 'middle')
-      .attr('transform', (d) => 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')')
-      .text((d) => d.text);
-  }
-
-  private getRandomColor() {
-    const colors = this._colors;
-
-    if (!colors || !colors.length) {
-      return '#000000';
-    }
-
-    const index = this.getRandomIntInRange(0, colors.length);
-    return colors[index];
+  private getRandomColor(): string {
+    const index: number = Math.floor(Math.random() * this.colors.length);
+    return `#${this.colors[index]}`;
   }
 
   private async applyChanges() {
-    this.wordCloud();
-    await this.stopEditing();
-    await this.updatePlaceholder();
-  }
-
-  private getRandomIntInRange(min: number, max: number) {
-    return Math.floor(Math.random() * max + min);
+    await Promise.all([this.wordCloud(), this.stopEditing(), this.updatePlaceholder()]);
   }
 
   render() {
@@ -181,7 +198,7 @@ export class DeckdeckgoWordCloud {
           onTouchStart={() => this.edit()}>
           <div class="placeholder"></div>
           <slot name="words" />
-          <svg class="words"></svg>
+          <svg class="words" ref={(el) => (this.svgRef = el as SVGGElement)}></svg>
         </div>
       </Host>
     );

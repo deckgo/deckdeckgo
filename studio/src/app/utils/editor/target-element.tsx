@@ -10,4 +10,5 @@ export enum TargetElement {
   SIDES = 'sides',
   IMAGE = 'image',
   HEADER_FOOTER = 'header-footer',
+  WORD_CLOUD = 'word-cloud',
 }

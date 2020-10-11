@@ -12,8 +12,16 @@ deckgo-deck {
   ol,
   ul,
   deckgo-reveal-list,
-  deckgo-math {
+  deckgo-math,
+  deckgo-word-cloud {
     border: 1px solid var(--ion-color-light);
+  }
+
+  deckgo-math,
+  deckgo-word-cloud {
+    code:focus {
+      outline: none;
+    }
   }
 
   h1 {

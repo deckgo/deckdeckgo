@@ -35,6 +35,9 @@ export class AppElementStyle {
   math: boolean = false;
 
   @Prop()
+  wordCloud: boolean = false;
+
+  @Prop()
   shape: 'shape' | 'text' | undefined = undefined;
 
   @Prop()
@@ -86,6 +89,8 @@ export class AppElementStyle {
       ? TargetElement.IMAGE
       : this.code
       ? TargetElement.CODE
+      : this.wordCloud
+      ? TargetElement.WORD_CLOUD
       : this.qrCode || this.poll
       ? TargetElement.QR_CODE
       : this.chart
@@ -165,7 +170,7 @@ export class AppElementStyle {
 
   private renderSelectTarget() {
     const elementTarget: boolean = !this.slide && this.shape !== 'shape' && !this.image;
-    const transition: boolean = !this.slide && !this.code && !this.math && this.shape === undefined && !this.demo;
+    const transition: boolean = !this.slide && !this.code && !this.math && !this.wordCloud && this.shape === undefined && !this.demo;
 
     return (
       <app-select-target-element
@@ -195,6 +200,13 @@ export class AppElementStyle {
     } else if (this.applyToTargetElement === TargetElement.CODE) {
       return (
         <app-color-code selectedElement={this.selectedElement} onCodeDidChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-code>
+      );
+    } else if (this.applyToTargetElement === TargetElement.WORD_CLOUD) {
+      return (
+        <app-color-word-cloud
+          selectedElement={this.selectedElement}
+          onWordCloudDidChange={() => this.emitStyleChange()}
+          moreColors={this.moreColors}></app-color-word-cloud>
       );
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (

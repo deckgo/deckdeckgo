@@ -1,4 +1,11 @@
 :host {
+  display: block;
+
+  height: 100%;
+  width: 100%;
+
+  overflow: hidden;
+
   ::slotted([slot="words"]) {
     display: none;
   }
@@ -6,16 +13,13 @@
   div.placeholder:not(:empty) {
     display: none;
   }
-}
 
-:host(.deckgo-word-cloud-edit) {
-  ::slotted([slot="words"]) {
-    display: block;
-    white-space: pre-wrap;
-  }
-
+  div.placeholder,
   svg.words {
-    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -23,4 +27,53 @@
   div.placeholder:empty:not(:focus):after {
     content: var(--deckgo-word-cloud-empty-text, "Click to add your words");
   }
+}
+
+:host(.deckgo-word-cloud-edit) {
+  ::slotted([slot="words"]) {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+  }
+
+  svg.words {
+    display: none;
+  }
+
+  div.placeholder {
+    display: none;
+  }
+}
+
+div.deckgo-word-cloud-container {
+  height: 100%;
+  position: relative;
+
+  div.placeholder {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 100%;
+    width: 100%;
+  }
+}
+
+::slotted([slot="words"]) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  white-space: pre-wrap;
+
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+
+  max-height: 100%;
+  overflow: scroll;
 }
