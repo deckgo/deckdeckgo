@@ -150,7 +150,7 @@ export class AppColorSides {
     });
   }
 
-  async toggleSide() {
+  private async toggleSide() {
     this.endSide = !this.endSide;
 
     await this.initCurrentColors();
