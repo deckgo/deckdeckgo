@@ -52,6 +52,9 @@ export class AppActionsElement {
   private math: boolean = false;
 
   @State()
+  private wordClound: boolean = false;
+
+  @State()
   private image: boolean = false;
 
   @State()
@@ -242,6 +245,10 @@ export class AppActionsElement {
 
   private isElementMath(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MATH;
+  }
+
+  private isElementWordcloud(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.WORD_CLOUD;
   }
 
   private isElementShape(element: HTMLElement): 'shape' | 'text' | undefined {
@@ -718,9 +725,12 @@ export class AppActionsElement {
       this.slideDemo = this.slide && this.slideNodeName === 'deckgo-slide-split' && element.getAttribute('type') === SlideSplitType.DEMO;
 
       this.math = this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
+      this.wordClound = this.isElementWordcloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
+
+      console.log(this.wordClound);
 
       if (element) {
         element.addEventListener('paste', this.cleanOnPaste, false);

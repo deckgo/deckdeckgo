@@ -134,6 +134,12 @@ export class AppSlotType {
           <ion-label>Math</ion-label>
         </ion-item>
       </a>,
+      <a onClick={() => this.select(SlotType.WORD_CLOUD)} class={this.currentType === SlotType.WORD_CLOUD ? 'current' : ''}>
+        <ion-item>
+          <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>
+          <ion-label>Word Cloud</ion-label>
+        </ion-item>
+      </a>,
     ];
   }
 }
