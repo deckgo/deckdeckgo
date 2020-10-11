@@ -1,3 +1,9 @@
+# 1.9.0 (2020-10-11)
+
+### Features
+
+- import `@deckdeckgo/word-cloud` component
+
 # 1.8.0 (2020-10-03)
 
 ### Features
