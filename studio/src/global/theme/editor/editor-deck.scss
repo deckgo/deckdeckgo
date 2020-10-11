@@ -17,6 +17,13 @@ deckgo-deck {
     border: 1px solid var(--ion-color-light);
   }
 
+  deckgo-math,
+  deckgo-word-cloud {
+    code:focus {
+      outline: none;
+    }
+  }
+
   h1 {
     min-height: calc(var(--font-size-h1) + 4px);
   }
