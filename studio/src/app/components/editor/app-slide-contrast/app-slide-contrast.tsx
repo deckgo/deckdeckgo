@@ -4,6 +4,7 @@ import {popoverController} from '@ionic/core';
 
 import {ContrastUtils} from '../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-slide-contrast',
@@ -64,11 +65,19 @@ export class AppSlideContrast {
       return false;
     }
 
+    const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
+      return !SlotUtils.isNodeCode(element) && !SlotUtils.isNodeWordCloud(element);
+    });
+
+    if (!filteredSlots || filteredSlots.length <= 0) {
+      return false;
+    }
+
     // Slots with direct text children
-    const slotsWithText: HTMLElement[] = await NodeUtils.childrenTextNode(slots);
+    const slotsWithText: HTMLElement[] = await NodeUtils.childrenTextNode(filteredSlots);
 
     // All children (<span/>) of the slots
-    const children: HTMLElement[] = await NodeUtils.children(slots);
+    const children: HTMLElement[] = await NodeUtils.children(filteredSlots);
 
     const elements: HTMLElement[] =
       children && children.length > 0
