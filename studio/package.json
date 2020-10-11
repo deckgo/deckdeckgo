@@ -43,7 +43,7 @@
     "@deckdeckgo/slide-youtube": "^2.1.0",
     "@deckdeckgo/social": "^3.0.0",
     "@deckdeckgo/utils": "^1.3.0",
-    "@deckdeckgo/word-cloud": "^1.0.0",
+    "@deckdeckgo/word-cloud": "^1.0.1",
     "@deckdeckgo/youtube": "^2.0.0",
     "@ionic/core": "^5.3.5",
     "firebase": "^7.21.1",
