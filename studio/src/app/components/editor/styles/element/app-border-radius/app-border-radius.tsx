@@ -5,7 +5,7 @@ import {RangeChangeEventDetail} from '@ionic/core';
 @Component({
   tag: 'app-border-radius',
 })
-export class BorderRadius {
+export class AppBorderRadius {
   @Prop()
   selectedElement: HTMLElement;
 
