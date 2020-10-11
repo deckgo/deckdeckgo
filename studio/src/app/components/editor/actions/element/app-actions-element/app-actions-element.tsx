@@ -734,8 +734,6 @@ export class AppActionsElement {
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
 
-      console.log(element, this.wordCloud);
-
       if (element) {
         element.addEventListener('paste', this.cleanOnPaste, false);
 
