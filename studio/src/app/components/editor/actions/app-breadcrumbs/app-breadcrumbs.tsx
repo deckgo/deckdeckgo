@@ -64,7 +64,12 @@ export class AppBreadcrumbs {
 
   private renderStep(step: BreadcrumbsStep) {
     return (
-      <button class={this.step === step ? 'selected' : undefined} onClick={() => this.selectStep(step)} disabled={store.state.deckBusy}>
+      <button
+        onMouseDown={($event) => $event.stopPropagation()}
+        onTouchStart={($event) => $event.stopPropagation()}
+        class={this.step === step ? 'selected' : undefined}
+        onClick={() => this.selectStep(step)}
+        disabled={store.state.deckBusy}>
         <ion-label>{step}</ion-label>
       </button>
     );

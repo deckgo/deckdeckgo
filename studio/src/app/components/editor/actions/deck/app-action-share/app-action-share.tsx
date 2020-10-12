@@ -57,7 +57,12 @@ export class AppActionShare {
 
   render() {
     return (
-      <button aria-label="Share" onClick={($event: UIEvent) => this.share($event)} class="ion-activatable">
+      <button
+        onMouseDown={($event) => $event.stopPropagation()}
+        onTouchStart={($event) => $event.stopPropagation()}
+        aria-label="Share"
+        onClick={($event: UIEvent) => this.share($event)}
+        class="ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/share.svg"></ion-icon>
         <ion-label aria-hidden="true">Share</ion-label>

@@ -36,7 +36,12 @@ export class AppActionHelp {
       );
     } else {
       return (
-        <button aria-label="Help" onClick={($event: UIEvent) => this.openGetHelp($event)} class="get-help-action ion-activatable">
+        <button
+          onMouseDown={($event) => $event.stopPropagation()}
+          onTouchStart={($event) => $event.stopPropagation()}
+          aria-label="Help"
+          onClick={($event: UIEvent) => this.openGetHelp($event)}
+          class="get-help-action ion-activatable">
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/help.svg"></ion-icon>
           <ion-label aria-hidden="true">Help</ion-label>

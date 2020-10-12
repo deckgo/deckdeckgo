@@ -19,7 +19,12 @@ export class AppActionBusy {
 
   render() {
     return (
-      <button onClick={(e: UIEvent) => this.action(e)} disabled={store.state.deckBusy} class="ion-activatable">
+      <button
+        onClick={(e: UIEvent) => this.action(e)}
+        disabled={store.state.deckBusy}
+        class="ion-activatable"
+        onMouseDown={($event) => $event.stopPropagation()}
+        onTouchStart={($event) => $event.stopPropagation()}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src={this.iconSrc}></ion-icon>
         <slot></slot>
