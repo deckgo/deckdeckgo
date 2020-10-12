@@ -1,6 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State} from '@stencil/core';
 
-import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
+import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
 
 @Component({
   tag: 'app-actions-editor',
@@ -102,12 +102,24 @@ export class AppActionsEditor {
           fullscreen: this.fullscreen,
           hidden: this.hideFooter,
         }}>
+        {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
+      </Host>
+    );
+  }
+
+  private renderFullscreen() {
+    return <app-bottom-sheet>{this.renderActions()}</app-bottom-sheet>;
+  }
+
+  private renderActions() {
+    return (
+      <Fragment>
         {this.renderSelectedIndicator()}
 
         {this.renderDeckActions()}
 
         {this.renderEditActions()}
-      </Host>
+      </Fragment>
     );
   }
 
@@ -122,10 +134,7 @@ export class AppActionsEditor {
   private renderDeckActions() {
     return (
       <app-actions-deck
-        class={{
-          hidden: this.step != BreadcrumbsStep.DECK,
-          fullscreen: this.fullscreen,
-        }}
+        class={this.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
         fullscreen={this.fullscreen}
         slides={this.slides}
         blockSlide={this.blockSlide}

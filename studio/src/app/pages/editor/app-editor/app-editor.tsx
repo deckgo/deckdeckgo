@@ -673,19 +673,17 @@ export class AppEditor {
           <app-slide-contrast></app-slide-contrast>
         </main>
       </ion-content>,
-      <ion-footer class={this.presenting ? 'idle' : undefined}>
-        <app-actions-editor
-          hideFooter={this.hideFooter}
-          fullscreen={this.fullscreen}
-          slides={this.slides}
-          onSignIn={() => this.signIn()}
-          onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
-          onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
-          onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
-          onToggleFullScreen={() => this.toggleFullScreen()}
-          onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-          onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-actions-editor>
-      </ion-footer>,
+      <app-actions-editor
+        hideFooter={this.hideFooter}
+        fullscreen={this.fullscreen}
+        slides={this.slides}
+        onSignIn={() => this.signIn()}
+        onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
+        onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
+        onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
+        onToggleFullScreen={() => this.toggleFullScreen()}
+        onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+        onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}></app-actions-editor>,
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
         sticky-mobile="true"
