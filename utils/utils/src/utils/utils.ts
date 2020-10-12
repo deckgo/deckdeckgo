@@ -55,10 +55,11 @@ export function isIPad(): boolean {
 }
 
 export function isFullscreen(): boolean {
-  if (!document) {
+  if (!window || !screen) {
     return false;
   }
-  return document.fullscreenElement !== null;
+
+  return window.innerHeight == screen.height;
 }
 
 export function isFirefox(): boolean {
