@@ -45,8 +45,7 @@ export namespace Components {
     }
     interface AppActionsEditor {
         "fullscreen": boolean;
-        "hide": () => Promise<void>;
-        "hideFooter": boolean;
+        "hideActions": boolean;
         "selectDeck": () => Promise<void>;
         "slides": JSX.IntrinsicElements[];
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
@@ -258,9 +257,6 @@ export namespace Components {
     }
     interface AppImageStyle {
         "selectedElement": HTMLElement;
-    }
-    interface AppInactivity {
-        "fullscreen": boolean;
     }
     interface AppLanding {
     }
@@ -803,12 +799,6 @@ declare global {
         prototype: HTMLAppImageStyleElement;
         new (): HTMLAppImageStyleElement;
     };
-    interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {
-    }
-    var HTMLAppInactivityElement: {
-        prototype: HTMLAppInactivityElement;
-        new (): HTMLAppInactivityElement;
-    };
     interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {
     }
     var HTMLAppLandingElement: {
@@ -1198,7 +1188,6 @@ declare global {
         "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
         "app-image-style": HTMLAppImageStyleElement;
-        "app-inactivity": HTMLAppInactivityElement;
         "app-landing": HTMLAppLandingElement;
         "app-landing-content": HTMLAppLandingContentElement;
         "app-landing-deck": HTMLAppLandingDeckElement;
@@ -1285,13 +1274,14 @@ declare namespace LocalJSX {
     }
     interface AppActionsEditor {
         "fullscreen"?: boolean;
-        "hideFooter"?: boolean;
+        "hideActions"?: boolean;
         "onActionPublish"?: (event: CustomEvent<void>) => void;
         "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onElementFocus"?: (event: CustomEvent<HTMLElement>) => void;
+        "onPresenting"?: (event: CustomEvent<boolean>) => void;
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTo"?: (event: CustomEvent<number>) => void;
@@ -1324,6 +1314,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppBottomSheet {
+        "onSheetChanged"?: (event: CustomEvent<'open' | 'close'>) => void;
     }
     interface AppBoxShadow {
         "onBoxShadowDidChange"?: (event: CustomEvent<void>) => void;
@@ -1536,10 +1527,6 @@ declare namespace LocalJSX {
     interface AppImageStyle {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "selectedElement"?: HTMLElement;
-    }
-    interface AppInactivity {
-        "fullscreen"?: boolean;
-        "onMouseInactivity"?: (event: CustomEvent<boolean>) => void;
     }
     interface AppLanding {
     }
@@ -1770,7 +1757,6 @@ declare namespace LocalJSX {
         "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
         "app-image-style": AppImageStyle;
-        "app-inactivity": AppInactivity;
         "app-landing": AppLanding;
         "app-landing-content": AppLandingContent;
         "app-landing-deck": AppLandingDeck;
@@ -1895,7 +1881,6 @@ declare module "@stencil/core" {
             "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
-            "app-inactivity": LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
             "app-landing": LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
             "app-landing-content": LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
             "app-landing-deck": LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;

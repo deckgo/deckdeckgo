@@ -8,11 +8,7 @@ app-actions-editor {
   }
 
   &.hidden {
-    div.indicator,
-    app-actions-deck,
-    app-actions-element {
-      display: none;
-    }
+    display: none;
   }
 
   app-actions-deck,

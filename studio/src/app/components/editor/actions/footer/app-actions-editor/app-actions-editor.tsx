@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State} from '@stencil/core';
 
 import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
 
@@ -11,7 +11,7 @@ export class AppActionsEditor {
   @Element() el: HTMLElement;
 
   @Prop()
-  hideFooter: boolean = false;
+  hideActions: boolean = false;
 
   @Prop()
   fullscreen: boolean = false;
@@ -38,6 +38,8 @@ export class AppActionsEditor {
   @Event() private slideCopy: EventEmitter<HTMLElement>;
 
   @Event() private elementFocus: EventEmitter<HTMLElement>;
+
+  @Event() private presenting: EventEmitter<boolean>;
 
   @State()
   private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
@@ -69,8 +71,12 @@ export class AppActionsEditor {
     this.selectStepDeck();
   }
 
-  @Method()
+  @Watch('hideActions')
   async hide() {
+    if (!this.hideActions) {
+      return;
+    }
+
     const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
     if (actionsElement) {
@@ -95,12 +101,16 @@ export class AppActionsEditor {
     }
   }
 
+  private sheetChanged($event: CustomEvent<'open' | 'close'>) {
+    this.presenting.emit($event?.detail === 'close');
+  }
+
   render() {
     return (
       <Host
         class={{
           fullscreen: this.fullscreen,
-          hidden: this.hideFooter,
+          hidden: this.hideActions,
         }}>
         {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
       </Host>
@@ -108,7 +118,7 @@ export class AppActionsEditor {
   }
 
   private renderFullscreen() {
-    return <app-bottom-sheet>{this.renderActions()}</app-bottom-sheet>;
+    return <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>{this.renderActions()}</app-bottom-sheet>;
   }
 
   private renderActions() {

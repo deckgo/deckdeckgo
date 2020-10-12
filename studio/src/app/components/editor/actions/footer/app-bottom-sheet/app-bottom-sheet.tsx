@@ -1,4 +1,4 @@
-import {Component, h, Element, Host, State} from '@stencil/core';
+import {Component, h, Element, Host, State, Event, EventEmitter} from '@stencil/core';
 
 import {debounce, unifyEvent} from '@deckdeckgo/utils';
 
@@ -23,6 +23,8 @@ export class AppBottomSheet {
 
   private container: HTMLElement;
   private content: HTMLElement;
+
+  @Event() sheetChanged: EventEmitter<'open' | 'close'>;
 
   async componentDidLoad() {
     await this.initSize();
@@ -122,6 +124,8 @@ export class AppBottomSheet {
     }
 
     this.startY = undefined;
+
+    this.sheetChanged.emit(this.bottomSheetTop === this.bottomSheetMinHeight ? 'close' : 'open');
   };
 
   render() {
