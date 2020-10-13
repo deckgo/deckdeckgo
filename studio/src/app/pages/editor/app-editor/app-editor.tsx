@@ -16,7 +16,6 @@ import {SlideTemplate} from '../../../models/data/slide';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
-import {FullscreenUtils} from '../../../utils/editor/fullscreen.utils';
 
 import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
 import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
@@ -605,7 +604,11 @@ export class AppEditor {
 
     await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
 
-    await FullscreenUtils.toggleEditable(!this.presenting);
+    await this.deckEventsHandler.toggleSlideEditable(!this.presenting);
+  }
+
+  private async onSlideChangeContentEditable() {
+    await this.deckEventsHandler.toggleSlideEditable(!this.fullscreen || !this.presenting);
   }
 
   render() {
@@ -614,7 +617,7 @@ export class AppEditor {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content>
-        <main class={busyStore.state.slidesEditable ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
+        <main class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
           <deckgo-deck
             embedded={true}
@@ -625,7 +628,10 @@ export class AppEditor {
             animation={this.animation}
             autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
-            onTouchStart={(e: TouchEvent) => this.deckTouched(e)}>
+            onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
+            onSlideNextDidChange={() => this.onSlideChangeContentEditable()}
+            onSlidePrevDidChange={() => this.onSlideChangeContentEditable()}
+            onSlideToChange={() => this.onSlideChangeContentEditable()}>
             {this.slides}
             {this.background}
             {this.header}
