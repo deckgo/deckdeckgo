@@ -424,6 +424,7 @@ export class AppActionsDeck {
       component: 'app-fullscreen-info',
       mode: 'ios',
       cssClass: 'info',
+      showBackdrop: true,
     });
 
     popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
