@@ -424,6 +424,7 @@ export class AppActionsDeck {
       component: 'app-fullscreen-info',
       mode: 'ios',
       cssClass: 'info',
+      showBackdrop: true,
     });
 
     popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -522,19 +523,35 @@ export class AppActionsDeck {
             <ion-label aria-hidden="true">Add slide</ion-label>
           </app-action-busy>
 
-          <button aria-label="Previous" onClick={() => this.animatePrevNextSlide.emit(false)} class="ion-activatable">
+          <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
+            aria-label="Previous"
+            onClick={() => this.animatePrevNextSlide.emit(false)}
+            class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
             <ion-label aria-hidden="true">Previous</ion-label>
           </button>
 
-          <button aria-label="Next" onClick={() => this.animatePrevNextSlide.emit(true)} class="ion-activatable">
+          <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
+            aria-label="Next"
+            onClick={() => this.animatePrevNextSlide.emit(true)}
+            class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
             <ion-label aria-hidden="true">Next</ion-label>
           </button>
 
-          <button aria-label="Slides" onClick={() => this.openSlideNavigate()} color="primary" class="ion-activatable">
+          <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
+            aria-label="Slides"
+            onClick={() => this.openSlideNavigate()}
+            color="primary"
+            class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/md-list.svg"></ion-icon>
             <ion-label aria-hidden="true">Slides</ion-label>
@@ -546,7 +563,13 @@ export class AppActionsDeck {
 
           {this.renderFullscreenButton()}
 
-          <button aria-label="Remote" onClick={($event: UIEvent) => this.openRemote($event)} color="primary" class="wider-devices open-remote ion-activatable">
+          <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
+            aria-label="Remote"
+            onClick={($event: UIEvent) => this.openRemote($event)}
+            color="primary"
+            class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
             <ion-label aria-hidden="true">Remote</ion-label>
@@ -557,6 +580,8 @@ export class AppActionsDeck {
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
             aria-label={offlineStore.state.offline ? 'Go online' : 'Go offline'}
             onClick={() => this.goOnlineOffline()}
             color="primary"
@@ -569,6 +594,8 @@ export class AppActionsDeck {
           <app-action-help class="wider-devices"></app-action-help>
 
           <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
             aria-label="Remote"
             onClick={($event: UIEvent) => this.openRemote($event)}
             color="primary"
@@ -578,7 +605,12 @@ export class AppActionsDeck {
             <ion-label aria-hidden="true">Remote</ion-label>
           </button>
 
-          <button onClick={(e: UIEvent) => this.openMoreActions(e)} color="primary" class="small-devices ion-activatable">
+          <button
+            onMouseDown={($event) => $event.stopPropagation()}
+            onTouchStart={($event) => $event.stopPropagation()}
+            onClick={(e: UIEvent) => this.openMoreActions(e)}
+            color="primary"
+            class="small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
             <ion-label aria-hidden="true">More</ion-label>
@@ -591,7 +623,12 @@ export class AppActionsDeck {
   private renderFullscreenButton() {
     if (this.fullscreenEnable) {
       return (
-        <button onClick={() => this.toggleFullScreenMode()} color="primary" class="wider-devices ion-activatable">
+        <button
+          onMouseDown={($event) => $event.stopPropagation()}
+          onTouchStart={($event) => $event.stopPropagation()}
+          onClick={() => this.toggleFullScreenMode()}
+          color="primary"
+          class="wider-devices ion-activatable">
           <ion-ripple-effect></ion-ripple-effect>
           {this.renderFullscreen()}
         </button>

@@ -983,26 +983,46 @@ export class DeckEventsHandler {
     });
   }
 
-  private async contentEditable(slide: HTMLElement): Promise<void> {
-    if (!slide || slide.childElementCount <= 0) {
-      busyStore.state.slidesEditable = true;
+  async toggleSlideEditable(editable: boolean) {
+    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+
+    if (!deck) {
       return;
     }
+
+    const index: number = await (deck as HTMLDeckgoDeckElement).getActiveIndex();
+
+    const slideElement: HTMLElement = deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+    if (!slideElement) {
+      return;
+    }
+
+    await this.contentEditable(slideElement, editable);
+  }
+
+  private async contentEditable(slide: HTMLElement, editable: boolean = true) {
+    if (!slide || slide.childElementCount <= 0) {
+      busyStore.state.slideReady = true;
+      return;
+    }
+
+    const attrEditableValue: '' | 'false' = editable ? '' : 'false';
 
     const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
 
     elements.forEach((e: HTMLElement) => {
       if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
         if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.MATH || e.nodeName.toLowerCase() === SlotType.WORD_CLOUD) {
-          e.setAttribute('editable', '');
+          e.setAttribute('editable', attrEditableValue);
         } else if (ParseElementsUtils.isElementContentEditable(e)) {
-          e.setAttribute('contentEditable', '');
+          e.setAttribute('contentEditable', attrEditableValue);
         } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
-          e.firstElementChild.setAttribute('contentEditable', '');
+          e.firstElementChild.setAttribute('contentEditable', attrEditableValue);
         }
       }
     });
 
-    busyStore.state.slidesEditable = true;
+    busyStore.state.slideReady = true;
   }
 }

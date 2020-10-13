@@ -1,3 +1,11 @@
+<a name="2.7.0"></a>
+
+# 2.7.0 (2020-10-13)
+
+### Features
+
+- clean attribute `editable` when `false` too
+
 <a name="2.6.0"></a>
 
 # 2.6.0 (2020-09-23)

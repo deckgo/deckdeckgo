@@ -45,8 +45,7 @@ export namespace Components {
     }
     interface AppActionsEditor {
         "fullscreen": boolean;
-        "hide": () => Promise<void>;
-        "hideFooter": boolean;
+        "hideActions": boolean;
         "selectDeck": () => Promise<void>;
         "slides": JSX.IntrinsicElements[];
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
@@ -68,6 +67,8 @@ export namespace Components {
     }
     interface AppBorderRadius {
         "selectedElement": HTMLElement;
+    }
+    interface AppBottomSheet {
     }
     interface AppBoxShadow {
         "selectedElement": HTMLElement;
@@ -256,9 +257,6 @@ export namespace Components {
     }
     interface AppImageStyle {
         "selectedElement": HTMLElement;
-    }
-    interface AppInactivity {
-        "fullscreen": boolean;
     }
     interface AppLanding {
     }
@@ -476,6 +474,12 @@ declare global {
     var HTMLAppBorderRadiusElement: {
         prototype: HTMLAppBorderRadiusElement;
         new (): HTMLAppBorderRadiusElement;
+    };
+    interface HTMLAppBottomSheetElement extends Components.AppBottomSheet, HTMLStencilElement {
+    }
+    var HTMLAppBottomSheetElement: {
+        prototype: HTMLAppBottomSheetElement;
+        new (): HTMLAppBottomSheetElement;
     };
     interface HTMLAppBoxShadowElement extends Components.AppBoxShadow, HTMLStencilElement {
     }
@@ -794,12 +798,6 @@ declare global {
     var HTMLAppImageStyleElement: {
         prototype: HTMLAppImageStyleElement;
         new (): HTMLAppImageStyleElement;
-    };
-    interface HTMLAppInactivityElement extends Components.AppInactivity, HTMLStencilElement {
-    }
-    var HTMLAppInactivityElement: {
-        prototype: HTMLAppInactivityElement;
-        new (): HTMLAppInactivityElement;
     };
     interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {
     }
@@ -1136,6 +1134,7 @@ declare global {
         "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
         "app-border-radius": HTMLAppBorderRadiusElement;
+        "app-bottom-sheet": HTMLAppBottomSheetElement;
         "app-box-shadow": HTMLAppBoxShadowElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
@@ -1189,7 +1188,6 @@ declare global {
         "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
         "app-image-style": HTMLAppImageStyleElement;
-        "app-inactivity": HTMLAppInactivityElement;
         "app-landing": HTMLAppLandingElement;
         "app-landing-content": HTMLAppLandingContentElement;
         "app-landing-deck": HTMLAppLandingDeckElement;
@@ -1276,13 +1274,14 @@ declare namespace LocalJSX {
     }
     interface AppActionsEditor {
         "fullscreen"?: boolean;
-        "hideFooter"?: boolean;
+        "hideActions"?: boolean;
         "onActionPublish"?: (event: CustomEvent<void>) => void;
         "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onElementFocus"?: (event: CustomEvent<HTMLElement>) => void;
+        "onPresenting"?: (event: CustomEvent<boolean>) => void;
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTo"?: (event: CustomEvent<number>) => void;
@@ -1313,6 +1312,9 @@ declare namespace LocalJSX {
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
+    }
+    interface AppBottomSheet {
+        "onSheetChanged"?: (event: CustomEvent<'open' | 'close'>) => void;
     }
     interface AppBoxShadow {
         "onBoxShadowDidChange"?: (event: CustomEvent<void>) => void;
@@ -1526,10 +1528,6 @@ declare namespace LocalJSX {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "selectedElement"?: HTMLElement;
     }
-    interface AppInactivity {
-        "fullscreen"?: boolean;
-        "onMouseInactivity"?: (event: CustomEvent<boolean>) => void;
-    }
     interface AppLanding {
     }
     interface AppLandingContent {
@@ -1705,6 +1703,7 @@ declare namespace LocalJSX {
         "app-align": AppAlign;
         "app-avatar": AppAvatar;
         "app-border-radius": AppBorderRadius;
+        "app-bottom-sheet": AppBottomSheet;
         "app-box-shadow": AppBoxShadow;
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
@@ -1758,7 +1757,6 @@ declare namespace LocalJSX {
         "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
         "app-image-style": AppImageStyle;
-        "app-inactivity": AppInactivity;
         "app-landing": AppLanding;
         "app-landing-content": AppLandingContent;
         "app-landing-deck": AppLandingDeck;
@@ -1829,6 +1827,7 @@ declare module "@stencil/core" {
             "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
             "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
+            "app-bottom-sheet": LocalJSX.AppBottomSheet & JSXBase.HTMLAttributes<HTMLAppBottomSheetElement>;
             "app-box-shadow": LocalJSX.AppBoxShadow & JSXBase.HTMLAttributes<HTMLAppBoxShadowElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
@@ -1882,7 +1881,6 @@ declare module "@stencil/core" {
             "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
-            "app-inactivity": LocalJSX.AppInactivity & JSXBase.HTMLAttributes<HTMLAppInactivityElement>;
             "app-landing": LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
             "app-landing-content": LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
             "app-landing-deck": LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;

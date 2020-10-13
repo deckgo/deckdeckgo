@@ -2,12 +2,13 @@ app-actions-editor {
   background: var(--ion-color-light);
   display: block;
 
+  ion-toolbar {
+    --ion-toolbar-border-color: transparent;
+    --ion-toolbar-background: var(--ion-color-light);
+  }
+
   &.hidden {
-    div.indicator,
-    app-actions-deck,
-    app-actions-element {
-      display: none;
-    }
+    display: none;
   }
 
   app-actions-deck,
@@ -55,35 +56,49 @@ app-actions-editor {
   }
 
   &.fullscreen {
-    transition: opacity 0.3s ease;
-    opacity: 0.2;
+    background: rgba(var(--ion-color-dark-rgb), 0.8);
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
 
-    &:hover {
-      opacity: 1;
+    transition: opacity 0.2s ease-in;
 
-      ion-toolbar button > ion-label {
-        height: 100%;
-        opacity: 1;
-        margin: initial;
+    visibility: visible;
+    opacity: 1;
+
+    &.hidden-bottom-sheet {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    div.indicator {
+      outline: 1px solid transparent;
+
+      ion-label {
+        color: white;
       }
-      div.indicator {
-        padding-top: 8px;
-        margin: initial;
-        & > app-breadcrumbs {
-          display: initial;
+
+      button {
+        color: white;
+
+        &.selected:not([disabled])::after {
+          background: white;
+        }
+
+        &::after {
+          background: none;
         }
       }
     }
-    ion-toolbar button > ion-label {
-      height: 0;
-      opacity: 0;
-      margin: 0;
-    }
-    div.indicator {
-      padding-top: 0;
-      margin: 0;
-      & > app-breadcrumbs {
-        display: none;
+
+    ion-toolbar {
+      --background: transparent;
+      --color: white;
+
+      ion-buttons {
+        background: transparent;
+
+        ion-icon {
+          color: white;
+        }
       }
     }
   }

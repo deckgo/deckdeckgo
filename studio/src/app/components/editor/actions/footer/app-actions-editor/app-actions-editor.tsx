@@ -1,6 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, Host, JSX, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State, Listen} from '@stencil/core';
 
-import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
+import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
 
 @Component({
   tag: 'app-actions-editor',
@@ -11,7 +11,7 @@ export class AppActionsEditor {
   @Element() el: HTMLElement;
 
   @Prop()
-  hideFooter: boolean = false;
+  hideActions: boolean = false;
 
   @Prop()
   fullscreen: boolean = false;
@@ -39,8 +39,20 @@ export class AppActionsEditor {
 
   @Event() private elementFocus: EventEmitter<HTMLElement>;
 
+  @Event() private presenting: EventEmitter<boolean>;
+
   @State()
   private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
+
+  @State()
+  private hideBottomSheet: boolean = true;
+
+  private bottomSheetState: 'open' | 'close' = 'close';
+
+  @Watch('fullscreen')
+  onFullscreenChange() {
+    this.hideBottomSheet = true;
+  }
 
   @Method()
   async touch(element: HTMLElement, autoOpen: boolean = true) {
@@ -69,8 +81,28 @@ export class AppActionsEditor {
     this.selectStepDeck();
   }
 
-  @Method()
+  @Listen('mouseInactivity', {target: 'document'})
+  async inactivity($event: CustomEvent) {
+    if (!this.fullscreen) {
+      return;
+    }
+
+    const mouseDisplayed: boolean = $event?.detail;
+
+    if (mouseDisplayed) {
+      this.hideBottomSheet = false;
+    } else if (this.bottomSheetState === 'close') {
+      // On mouse inactivity we hide the bottom sheet only if already closed, otherwise the user should close it (he/she might still use it)
+      this.hideBottomSheet = true;
+    }
+  }
+
+  @Watch('hideActions')
   async hide() {
+    if (!this.hideActions) {
+      return;
+    }
+
     const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
 
     if (actionsElement) {
@@ -95,19 +127,45 @@ export class AppActionsEditor {
     }
   }
 
+  private sheetChanged($event: CustomEvent<'open' | 'close'>) {
+    this.bottomSheetState = $event?.detail;
+    this.presenting.emit($event?.detail === 'close');
+
+    if ($event?.detail === 'close') {
+      setTimeout(async () => {
+        this.hideBottomSheet = true;
+        await this.hide();
+        await this.selectDeck();
+      }, 400);
+    }
+  }
+
   render() {
     return (
       <Host
         class={{
           fullscreen: this.fullscreen,
-          hidden: this.hideFooter,
+          hidden: this.hideActions,
+          'hidden-bottom-sheet': this.hideBottomSheet,
         }}>
+        {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
+      </Host>
+    );
+  }
+
+  private renderFullscreen() {
+    return <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>{this.renderActions()}</app-bottom-sheet>;
+  }
+
+  private renderActions() {
+    return (
+      <Fragment>
         {this.renderSelectedIndicator()}
 
         {this.renderDeckActions()}
 
         {this.renderEditActions()}
-      </Host>
+      </Fragment>
     );
   }
 
@@ -122,10 +180,7 @@ export class AppActionsEditor {
   private renderDeckActions() {
     return (
       <app-actions-deck
-        class={{
-          hidden: this.step != BreadcrumbsStep.DECK,
-          fullscreen: this.fullscreen,
-        }}
+        class={this.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
         fullscreen={this.fullscreen}
         slides={this.slides}
         blockSlide={this.blockSlide}

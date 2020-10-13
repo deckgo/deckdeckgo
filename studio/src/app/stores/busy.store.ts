@@ -2,12 +2,12 @@ import {createStore} from '@stencil/store';
 
 interface BusyStore {
   deckBusy: boolean | undefined;
-  slidesEditable: boolean;
+  slideReady: boolean;
 }
 
 const {state} = createStore({
   deckBusy: undefined,
-  slidesEditable: false,
+  slideReady: false,
 } as BusyStore);
 
 export default {state};
