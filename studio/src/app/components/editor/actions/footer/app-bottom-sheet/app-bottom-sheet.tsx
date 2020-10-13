@@ -121,6 +121,12 @@ export class AppBottomSheet {
   };
 
   private toggleBottomSheet(toY: number) {
+    if (this.startY === toY) {
+      // It's a click
+      this.startY = undefined;
+      return;
+    }
+
     if (this.startY > toY) {
       this.bottomSheetTop =
         this.bottomSheetTop <= this.bottomSheetMinHeight

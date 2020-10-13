@@ -85,9 +85,6 @@ export class AppActionsEditor {
       return;
     }
 
-    await this.hide();
-    await this.selectDeck();
-
     if (this.bottomSheetRef) {
       await this.bottomSheetRef.close();
     }
@@ -125,6 +122,13 @@ export class AppActionsEditor {
 
   private sheetChanged($event: CustomEvent<'open' | 'close'>) {
     this.presenting.emit($event?.detail === 'close');
+
+    if ($event?.detail === 'close') {
+      setTimeout(async () => {
+        await this.hide();
+        await this.selectDeck();
+      }, 400);
+    }
   }
 
   render() {
