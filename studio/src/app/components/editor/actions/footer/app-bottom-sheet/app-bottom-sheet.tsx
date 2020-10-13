@@ -1,4 +1,4 @@
-import {Component, h, Element, Host, State, Event, EventEmitter} from '@stencil/core';
+import {Component, h, Element, Host, State, Event, EventEmitter, Method} from '@stencil/core';
 
 import {debounce, unifyEvent} from '@deckdeckgo/utils';
 
@@ -97,6 +97,11 @@ export class AppBottomSheet {
     });
   }
 
+  @Method()
+  async close() {
+    this.toggleBottomSheet(0);
+  }
+
   private startEvent = ($event: MouseEvent | TouchEvent) => {
     $event.preventDefault();
 
@@ -112,6 +117,10 @@ export class AppBottomSheet {
 
     const toY: number = unifyEvent($event).clientY;
 
+    this.toggleBottomSheet(toY);
+  };
+
+  private toggleBottomSheet(toY: number) {
     if (this.startY > toY) {
       this.bottomSheetTop =
         this.bottomSheetTop <= this.bottomSheetMinHeight
@@ -126,7 +135,7 @@ export class AppBottomSheet {
     this.startY = undefined;
 
     this.sheetChanged.emit(this.bottomSheetTop === this.bottomSheetMinHeight ? 'close' : 'open');
-  };
+  }
 
   render() {
     return (

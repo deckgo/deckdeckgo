@@ -1,4 +1,4 @@
-import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State, Listen} from '@stencil/core';
 
 import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
 
@@ -10,7 +10,7 @@ import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
 export class AppActionsEditor {
   @Element() el: HTMLElement;
 
-  @Prop()
+  @Prop({mutable: true})
   hideActions: boolean = false;
 
   @Prop()
@@ -44,6 +44,8 @@ export class AppActionsEditor {
   @State()
   private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
 
+  private bottomSheetRef!: HTMLAppBottomSheetElement;
+
   @Method()
   async touch(element: HTMLElement, autoOpen: boolean = true) {
     const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
@@ -69,6 +71,26 @@ export class AppActionsEditor {
     this.blockSlide.emit(false);
 
     this.selectStepDeck();
+  }
+
+  @Listen('mouseInactivity', {target: 'document'})
+  async inactivity($event: CustomEvent) {
+    if (!this.fullscreen) {
+      return;
+    }
+
+    this.hideActions = !$event?.detail;
+
+    if (!this.hideActions) {
+      return;
+    }
+
+    await this.hide();
+    await this.selectDeck();
+
+    if (this.bottomSheetRef) {
+      await this.bottomSheetRef.close();
+    }
   }
 
   @Watch('hideActions')
@@ -118,7 +140,13 @@ export class AppActionsEditor {
   }
 
   private renderFullscreen() {
-    return <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>{this.renderActions()}</app-bottom-sheet>;
+    return (
+      <app-bottom-sheet
+        ref={(el) => (this.bottomSheetRef = el as HTMLAppBottomSheetElement)}
+        onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>
+        {this.renderActions()}
+      </app-bottom-sheet>
+    );
   }
 
   private renderActions() {
