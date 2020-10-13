@@ -69,7 +69,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppBottomSheet {
-        "close": () => Promise<void>;
     }
     interface AppBoxShadow {
         "selectedElement": HTMLElement;

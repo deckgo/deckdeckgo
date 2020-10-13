@@ -10,7 +10,7 @@ import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
 export class AppActionsEditor {
   @Element() el: HTMLElement;
 
-  @Prop({mutable: true})
+  @Prop()
   hideActions: boolean = false;
 
   @Prop()
@@ -44,7 +44,15 @@ export class AppActionsEditor {
   @State()
   private step: BreadcrumbsStep = BreadcrumbsStep.DECK;
 
-  private bottomSheetRef!: HTMLAppBottomSheetElement;
+  @State()
+  private hideBottomSheet: boolean = true;
+
+  private bottomSheetState: 'open' | 'close' = 'close';
+
+  @Watch('fullscreen')
+  onFullscreenChange() {
+    this.hideBottomSheet = true;
+  }
 
   @Method()
   async touch(element: HTMLElement, autoOpen: boolean = true) {
@@ -79,14 +87,13 @@ export class AppActionsEditor {
       return;
     }
 
-    this.hideActions = !$event?.detail;
+    const mouseDisplayed: boolean = $event?.detail;
 
-    if (!this.hideActions) {
-      return;
-    }
-
-    if (this.bottomSheetRef) {
-      await this.bottomSheetRef.close();
+    if (mouseDisplayed) {
+      this.hideBottomSheet = false;
+    } else if (this.bottomSheetState === 'close') {
+      // On mouse inactivity we hide the bottom sheet only if already closed, otherwise the user should close it (he/she might still use it)
+      this.hideBottomSheet = true;
     }
   }
 
@@ -121,10 +128,12 @@ export class AppActionsEditor {
   }
 
   private sheetChanged($event: CustomEvent<'open' | 'close'>) {
+    this.bottomSheetState = $event?.detail;
     this.presenting.emit($event?.detail === 'close');
 
     if ($event?.detail === 'close') {
       setTimeout(async () => {
+        this.hideBottomSheet = true;
         await this.hide();
         await this.selectDeck();
       }, 400);
@@ -137,6 +146,7 @@ export class AppActionsEditor {
         class={{
           fullscreen: this.fullscreen,
           hidden: this.hideActions,
+          'hidden-bottom-sheet': this.hideBottomSheet,
         }}>
         {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
       </Host>
@@ -144,13 +154,7 @@ export class AppActionsEditor {
   }
 
   private renderFullscreen() {
-    return (
-      <app-bottom-sheet
-        ref={(el) => (this.bottomSheetRef = el as HTMLAppBottomSheetElement)}
-        onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>
-        {this.renderActions()}
-      </app-bottom-sheet>
-    );
+    return <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>{this.renderActions()}</app-bottom-sheet>;
   }
 
   private renderActions() {

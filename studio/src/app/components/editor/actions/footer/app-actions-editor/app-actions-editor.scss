@@ -59,6 +59,16 @@ app-actions-editor {
     background: rgba(var(--ion-color-dark-rgb), 0.8);
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
 
+    transition: opacity 0.2s ease-in;
+
+    visibility: visible;
+    opacity: 1;
+
+    &.hidden-bottom-sheet {
+      opacity: 0;
+      visibility: hidden;
+    }
+
     div.indicator {
       outline: 1px solid transparent;
 

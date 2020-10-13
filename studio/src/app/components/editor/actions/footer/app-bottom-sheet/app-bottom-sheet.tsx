@@ -1,4 +1,4 @@
-import {Component, h, Element, Host, State, Event, EventEmitter, Method} from '@stencil/core';
+import {Component, h, Element, Host, State, Event, EventEmitter} from '@stencil/core';
 
 import {debounce, unifyEvent} from '@deckdeckgo/utils';
 
@@ -95,11 +95,6 @@ export class AppBottomSheet {
 
       resolve();
     });
-  }
-
-  @Method()
-  async close() {
-    this.toggleBottomSheet(0);
   }
 
   private startEvent = ($event: MouseEvent | TouchEvent) => {
