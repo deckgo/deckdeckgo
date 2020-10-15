@@ -6,7 +6,20 @@ export class FirestoreUtils {
 
     return Object.keys(obj)
       .filter((key) => !this.shouldAttributeBeCleaned(obj[key]))
-      .reduce((res, key) => ((res[key] = this.filterDelete(obj[key])), res), {} as T);
+      .reduce((res, key) => {
+        const value: T = this.filterDelete(obj[key]);
+
+        if (value && typeof value === 'object') {
+          // We don't want to keep empty leaf {}
+          if (Object.keys(value).length > 0) {
+            res[key] = value;
+          }
+        } else {
+          res[key] = value;
+        }
+
+        return res;
+      }, {} as T);
   }
 
   static shouldAttributeBeCleaned<T>(attr: T): boolean {
