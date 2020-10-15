@@ -46,6 +46,8 @@ export class AppColorWordCloud {
         return;
       }
 
+      $event.stopPropagation();
+
       await PaletteUtils.updatePalette($event.detail);
 
       colorFunction($event);

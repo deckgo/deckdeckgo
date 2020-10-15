@@ -106,6 +106,12 @@ export class AppColorDeckSlide {
       return;
     }
 
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    $event.stopPropagation();
+
     await PaletteUtils.updatePalette($event.detail);
 
     this.color = $event.detail.rgb;
