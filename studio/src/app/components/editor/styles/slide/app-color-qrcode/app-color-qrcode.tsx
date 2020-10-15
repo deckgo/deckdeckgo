@@ -75,6 +75,8 @@ export class AppColorQRCode {
       return;
     }
 
+    $event.stopPropagation();
+
     await PaletteUtils.updatePalette($event.detail);
 
     this.color = $event.detail.rgb;

@@ -103,6 +103,8 @@ export class AppColorCode {
         return;
       }
 
+      $event.stopPropagation();
+
       await PaletteUtils.updatePalette($event.detail);
 
       colorFunction($event);

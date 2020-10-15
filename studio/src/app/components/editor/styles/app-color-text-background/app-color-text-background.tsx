@@ -71,6 +71,8 @@ export class AppColorTextBackground {
       return;
     }
 
+    $event.stopPropagation();
+
     await PaletteUtils.updatePalette($event.detail);
 
     this.color = $event.detail.rgb;
