@@ -104,6 +104,8 @@ export class AppEditor {
   private destroyBusyListener;
   private destroyAuthListener;
 
+  private actionsEditorRef!: HTMLAppActionsEditorElement;
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
@@ -493,19 +495,12 @@ export class AppEditor {
     });
   }
 
-  private touchToolbar(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
+  private async touchToolbar(element: HTMLElement) {
+    if (!this.actionsEditorRef) {
+      return;
+    }
 
-      if (!actions) {
-        resolve();
-        return;
-      }
-
-      await actions.touch(element);
-
-      resolve();
-    });
+    await this.actionsEditorRef.touch(element);
   }
 
   private toggleFullScreen(): Promise<void> {
@@ -607,8 +602,12 @@ export class AppEditor {
     await this.deckEventsHandler.toggleSlideEditable(!this.presenting);
   }
 
-  private async onSlideChangeContentEditable() {
+  private async onSlideChange() {
     await this.deckEventsHandler.toggleSlideEditable(!this.fullscreen || !this.presenting);
+
+    if (this.actionsEditorRef) {
+      await this.actionsEditorRef.reset();
+    }
   }
 
   render() {
@@ -629,9 +628,9 @@ export class AppEditor {
             autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-            onSlideNextDidChange={() => this.onSlideChangeContentEditable()}
-            onSlidePrevDidChange={() => this.onSlideChangeContentEditable()}
-            onSlideToChange={() => this.onSlideChangeContentEditable()}>
+            onSlideNextDidChange={() => this.onSlideChange()}
+            onSlidePrevDidChange={() => this.onSlideChange()}
+            onSlideToChange={() => this.onSlideChange()}>
             {this.slides}
             {this.background}
             {this.header}
@@ -642,6 +641,7 @@ export class AppEditor {
         </main>
       </ion-content>,
       <app-actions-editor
+        ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
         hideActions={this.hideActions}
         fullscreen={this.fullscreen}
         slides={this.slides}

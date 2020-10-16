@@ -15,6 +15,8 @@ export class ImageHelper {
   constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
+    console.log(selectedElement);
+
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
       await this.openModal(selectedElement, slide, deck, 'app-photo');
     } else if (imageAction.action === EditAction.DELETE_BACKGROUND) {

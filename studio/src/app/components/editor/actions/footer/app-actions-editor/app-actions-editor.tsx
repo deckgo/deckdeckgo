@@ -49,6 +49,8 @@ export class AppActionsEditor {
 
   private bottomSheetState: 'open' | 'close' = 'close';
 
+  private actionsElementRef!: HTMLAppActionsElementElement;
+
   @Watch('fullscreen')
   onFullscreenChange() {
     this.hideBottomSheet = true;
@@ -56,24 +58,20 @@ export class AppActionsEditor {
 
   @Method()
   async touch(element: HTMLElement, autoOpen: boolean = true) {
-    const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
-
-    if (!actionsElement) {
+    if (!this.actionsElementRef) {
       return;
     }
 
-    await actionsElement.touch(element, autoOpen);
+    await this.actionsElementRef.touch(element, autoOpen);
 
     this.step = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1 ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
   }
 
   @Method()
   async selectDeck() {
-    const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
-
-    if (actionsElement) {
-      await actionsElement.blurSelectedElement();
-      await actionsElement.unSelect();
+    if (this.actionsElementRef) {
+      await this.actionsElementRef.blurSelectedElement();
+      await this.actionsElementRef.unSelect();
     }
 
     this.blockSlide.emit(false);
@@ -98,15 +96,18 @@ export class AppActionsEditor {
   }
 
   @Watch('hideActions')
-  async hide() {
+  async onHideActions() {
     if (!this.hideActions) {
       return;
     }
 
-    const actionsElement: HTMLAppActionsElementElement = this.el.querySelector('app-actions-element');
+    await this.reset();
+  }
 
-    if (actionsElement) {
-      await actionsElement.reset();
+  @Method()
+  async reset() {
+    if (this.actionsElementRef) {
+      await this.actionsElementRef.reset();
     }
   }
 
@@ -134,7 +135,7 @@ export class AppActionsEditor {
     if ($event?.detail === 'close') {
       setTimeout(async () => {
         this.hideBottomSheet = true;
-        await this.hide();
+        await this.reset();
         await this.selectDeck();
       }, 400);
     }
@@ -198,6 +199,7 @@ export class AppActionsEditor {
   private renderEditActions() {
     return (
       <app-actions-element
+        ref={(el) => (this.actionsElementRef = el as HTMLAppActionsElementElement)}
         class={this.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
         slideCopy={this.slideCopy}
         elementFocus={this.elementFocus}
