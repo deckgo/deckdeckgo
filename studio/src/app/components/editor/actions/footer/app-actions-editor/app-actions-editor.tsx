@@ -96,16 +96,11 @@ export class AppActionsEditor {
   }
 
   @Watch('hideActions')
-  async onHideActions() {
+  async reset() {
     if (!this.hideActions) {
       return;
     }
 
-    await this.reset();
-  }
-
-  @Method()
-  async reset() {
     if (this.actionsElementRef) {
       await this.actionsElementRef.reset();
     }

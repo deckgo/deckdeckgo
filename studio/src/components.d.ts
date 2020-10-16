@@ -46,7 +46,6 @@ export namespace Components {
     interface AppActionsEditor {
         "fullscreen": boolean;
         "hideActions": boolean;
-        "reset": () => Promise<void>;
         "selectDeck": () => Promise<void>;
         "slides": JSX.IntrinsicElements[];
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
