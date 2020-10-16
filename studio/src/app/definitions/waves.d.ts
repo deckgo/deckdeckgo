@@ -2,7 +2,7 @@ interface SvgPath {
   d: string;
 }
 
-interface SvgWaves {
+interface Waves {
   viewBox: string;
   width: string;
   fill: string;
@@ -12,4 +12,4 @@ interface SvgWaves {
   path: SvgPath;
 }
 
-type SvgWavesOrientation = 'upward' | 'downward';
+type WavesOrientation = 'upward' | 'downward';

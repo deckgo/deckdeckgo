@@ -2,20 +2,17 @@ import {RangeChangeEventDetail} from '@ionic/core';
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import paletteStore from '../../../stores/palette.store';
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 import {ColorUtils} from '../../../utils/editor/color.utils';
 import {PaletteUtils} from '../../../utils/editor/palette.utils';
-import {SvgWavesUtils} from '../../../utils/editor/svg-waves.utils';
+import {WavesUtils} from '../../../utils/editor/waves.utils';
 
 @Component({
-  tag: 'app-svg-waves',
-  styleUrl: 'app-svg-waves.scss',
+  tag: 'app-waves',
+  styleUrl: 'app-waves.scss',
 })
-export class AppSvgWaves {
+export class AppWaves {
   @Element() el: HTMLElement;
-
-  private imageHistoryService: ImageHistoryService;
 
   @State()
   private color: string;
@@ -27,14 +24,10 @@ export class AppSvgWaves {
   private coordinates: [string, string][] = [];
 
   @State()
-  private orientation: SvgWavesOrientation = 'upward';
+  private orientation: WavesOrientation = 'upward';
 
   @State()
-  private svgWaves: SvgWaves | null = null;
-
-  constructor() {
-    this.imageHistoryService = ImageHistoryService.getInstance();
-  }
+  private waves: Waves | null = null;
 
   componentWillLoad() {
     this.color = paletteStore.state.palette[0] ? paletteStore.state.palette[0].color.rgb : 'rgba(255, 0, 0, 1)';
@@ -62,7 +55,7 @@ export class AppSvgWaves {
     $event.stopPropagation();
 
     const opacity: string = String(($event.detail.value as number).toFixed(2));
-    this.svgWaves = {...this.svgWaves, opacity};
+    this.waves = {...this.waves, opacity};
   }
 
   private async selectColor($event: CustomEvent) {
@@ -75,7 +68,7 @@ export class AppSvgWaves {
     await PaletteUtils.updatePalette($event.detail);
 
     this.color = $event.detail.rgb;
-    this.svgWaves = {...this.svgWaves, fill: $event.detail.hex};
+    this.waves = {...this.waves, fill: $event.detail.hex};
   }
 
   private updateNodes($event: CustomEvent<RangeChangeEventDetail>): void {
@@ -97,16 +90,16 @@ export class AppSvgWaves {
   private generateWaves(mirror: boolean = false): void {
     if (!mirror) {
       // only generate new coordinates when isn't mirroring
-      this.coordinates = SvgWavesUtils.generateCoordinates(this.nodes);
+      this.coordinates = WavesUtils.generateCoordinates(this.nodes);
     }
     const fill = ColorUtils.rgbaToHex(`rgba(${this.color}, 1)`);
-    const fullPath: string = SvgWavesUtils.getFullPath(this.nodes, this.orientation, this.coordinates);
-    this.svgWaves = {
+    const fullPath: string = WavesUtils.getFullPath(this.nodes, this.orientation, this.coordinates);
+    this.waves = {
       width: '100%',
       viewBox: '0 0 500 150',
       preserveAspectRatio: 'none',
       fill,
-      opacity: this.svgWaves ? this.svgWaves.opacity : '1',
+      opacity: this.waves ? this.waves.opacity : '1',
       style: {alignSelf: this.orientation === 'upward' ? 'flex-end' : 'flex-start', verticalAlign: 'middle'},
       path: {d: fullPath},
     };
@@ -114,9 +107,7 @@ export class AppSvgWaves {
 
   private selectWave(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const svg: SvgWaves = this.svgWaves;
-
-      await this.imageHistoryService.push(svg);
+      const svg: Waves = this.waves;
 
       await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(svg);
 
@@ -134,8 +125,8 @@ export class AppSvgWaves {
       </ion-header>,
       <ion-content class="ion-padding">
         {this.renderOptions()}
-        <svg {...this.svgWaves}>
-          <path d={this.svgWaves.path.d} />
+        <svg {...this.waves}>
+          <path d={this.waves.path.d} />
         </svg>
       </ion-content>,
       <ion-footer class="ion-padding-horizontal">
@@ -189,7 +180,7 @@ export class AppSvgWaves {
         </ion-item>
         <ion-item-divider class="ion-padding-top">
           <ion-label>
-            Opacity <small>{Math.floor(Number(this.svgWaves.opacity) * 100)}%</small>
+            Opacity <small>{Math.floor(Number(this.waves.opacity) * 100)}%</small>
           </ion-label>
         </ion-item-divider>
         <ion-item class="item-opacity">
@@ -198,8 +189,8 @@ export class AppSvgWaves {
             min={0}
             max={1}
             step={0.01}
-            disabled={!this.svgWaves.fill || this.svgWaves.fill === undefined}
-            value={Number(this.svgWaves.opacity)}
+            disabled={!this.waves.fill || this.waves.fill === undefined}
+            value={Number(this.waves.opacity)}
             mode="md"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
         </ion-item>

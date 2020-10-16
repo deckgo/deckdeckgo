@@ -7,12 +7,12 @@ import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 })
 export class AppImageColumns {
   @Prop()
-  imagesOdd: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+  imagesOdd: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
 
   @Prop()
-  imagesEven: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+  imagesEven: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
 
-  @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | StorageFile | SvgWaves>;
+  @Event() private selectImage: EventEmitter<UnsplashPhoto | TenorGif | StorageFile | Waves>;
 
   render() {
     if ((!this.imagesEven || this.imagesEven.length <= 0) && (!this.imagesOdd || this.imagesOdd.length <= 0)) {
@@ -27,9 +27,9 @@ export class AppImageColumns {
     }
   }
 
-  private renderImages(images: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[]) {
+  private renderImages(images: (UnsplashPhoto | TenorGif | StorageFile | Waves)[]) {
     if (images && images.length > 0) {
-      return images.map((image: UnsplashPhoto | TenorGif | StorageFile | SvgWaves) => {
+      return images.map((image: UnsplashPhoto | TenorGif | StorageFile | Waves) => {
         if (image.hasOwnProperty('urls')) {
           return this.renderStockPhoto(image as UnsplashPhoto);
         } else if (image.hasOwnProperty('media')) {
@@ -37,7 +37,7 @@ export class AppImageColumns {
         } else if (image.hasOwnProperty('downloadUrl')) {
           return this.renderCustomImage(image as StorageFile);
         } else if (image.hasOwnProperty('viewBox')) {
-          return this.renderSvgWaves(image as SvgWaves);
+          return this.renderWaves(image as Waves);
         } else {
           return undefined;
         }
@@ -111,13 +111,13 @@ export class AppImageColumns {
     }
   }
 
-  private renderSvgWaves(svgWaves: SvgWaves) {
-    if (svgWaves && svgWaves.path) {
+  private renderWaves(waves: Waves) {
+    if (waves && waves.path) {
       return (
-        <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(svgWaves)}>
+        <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(waves)}>
           <div class="image-container">
-            <svg {...svgWaves}>
-              <path d={svgWaves.path.d} />
+            <svg {...waves}>
+              <path d={waves.path.d} />
             </svg>
           </div>
         </div>
