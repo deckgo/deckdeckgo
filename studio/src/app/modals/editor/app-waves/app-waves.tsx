@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State, h} from '@stencil/core';
+import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
@@ -16,7 +16,7 @@ export class AppWaves {
   @Element() el: HTMLElement;
 
   @State()
-  private color: string;
+  private color: string = '56, 128, 255'; // quinary color
 
   @State()
   private nodes: number = 8;
@@ -30,9 +30,8 @@ export class AppWaves {
   @State()
   private waves: Waves | null = null;
 
-  componentWillLoad() {
-    this.color = paletteStore.state.palette[0] ? paletteStore.state.palette[0].color.rgb : 'rgba(255, 0, 0, 1)';
-    this.generateWaves();
+  async componentWillLoad() {
+    await this.generateWaves();
   }
 
   async componentDidLoad() {
@@ -48,7 +47,7 @@ export class AppWaves {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
 
-  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>): void {
+  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>) {
     if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
       return;
     }
@@ -72,7 +71,7 @@ export class AppWaves {
     this.waves = {...this.waves, fill: $event.detail.hex};
   }
 
-  private updateNodes($event: CustomEvent<RangeChangeEventDetail>): void {
+  private updateNodes($event: CustomEvent<RangeChangeEventDetail>) {
     if (!$event || !$event.detail || $event.detail.value < 2 || $event.detail.value > 20) {
       return;
     }
@@ -83,12 +82,12 @@ export class AppWaves {
     this.generateWaves();
   }
 
-  private mirror(): void {
-    this.orientation = this.orientation === 'upward' ? 'downward' : 'upward';
+  private setOrientation(orientation: WavesOrientation) {
+    this.orientation = orientation;
     this.generateWaves(true);
   }
 
-  private generateWaves(mirror: boolean = false): void {
+  private async generateWaves(mirror: boolean = false) {
     if (!mirror) {
       // only generate new coordinates when isn't mirroring
       this.coordinates = WavesUtils.generateCoordinates(this.nodes);
@@ -117,25 +116,37 @@ export class AppWaves {
   }
 
   render() {
-    return [
-      <ion-header>
-        <ion-toolbar color="quaternary">
-          <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-          <ion-title class="ion-text-uppercase">Waves</ion-title>
-        </ion-toolbar>
-      </ion-header>,
-      <ion-content class="ion-padding">
-        {this.renderOptions()}
-        <svg {...this.waves}>
-          <path d={this.waves.path.d} />
-        </svg>
-      </ion-content>,
-      <ion-footer class="ion-padding-horizontal">
-        <ion-button onClick={() => this.selectWave()} color="quaternary">
-          Add
-        </ion-button>
-      </ion-footer>,
-    ];
+    return (
+      <Fragment>
+        <ion-header>
+          <ion-toolbar color="quinary">
+            <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
+            <ion-title class="ion-text-uppercase">Waves</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <div class="container ion-margin-bottom">
+            <svg {...this.waves}>
+              <path d={this.waves.path.d} />
+            </svg>
+          </div>
+
+          <app-expansion-panel>
+            <ion-label slot="title">Waves</ion-label>
+            {this.renderOptions()}
+          </app-expansion-panel>
+
+          <app-expansion-panel>
+            <ion-label slot="title">Color</ion-label>
+            {this.renderColor()}
+          </app-expansion-panel>
+
+          <ion-button onClick={() => this.selectWave()} color="quinary">
+            Add
+          </ion-button>
+        </ion-content>
+      </Fragment>
+    );
   }
 
   private renderCloseButton() {
@@ -146,39 +157,44 @@ export class AppWaves {
     );
   }
 
-  private renderMirrorToggle() {
+  private renderOptions() {
     return (
-      <div>
-        <ion-button onClick={() => this.mirror()} disabled={this.orientation === 'upward'} color="quaternary">
+      <div class="options">
+        <ion-fab-button size="small" onClick={() => this.generateWaves()} color="quinary" aria-label="Randomize">
+          <ion-icon name="shuffle-outline"></ion-icon>
+        </ion-fab-button>
+
+        <ion-fab-button
+          size="small"
+          onClick={() => this.setOrientation('upward')}
+          color={this.orientation === 'upward' ? 'quinary' : 'medium'}
+          aria-label="Direction up">
           <ion-icon name="chevron-up"></ion-icon>
-        </ion-button>
-        <ion-button onClick={() => this.mirror()} disabled={this.orientation === 'downward'} color="quaternary">
+        </ion-fab-button>
+
+        <ion-fab-button
+          size="small"
+          onClick={() => this.setOrientation('downward')}
+          color={this.orientation === 'downward' ? 'quinary' : 'medium'}
+          aria-label="Direction down">
           <ion-icon name="chevron-down"></ion-icon>
-        </ion-button>
+        </ion-fab-button>
+
+        <ion-range
+          color="primary"
+          min={2}
+          max={20}
+          step={2}
+          value={this.nodes}
+          mode="md"
+          onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateNodes(e)}></ion-range>
       </div>
     );
   }
 
-  private renderOptions() {
+  private renderColor() {
     return (
       <ion-list class="ion-no-padding">
-        <ion-item-divider class="ion-padding-top">
-          <ion-label class="label-waves">Waves</ion-label>
-          <ion-button onClick={() => this.generateWaves()} color="quinary">
-            Random
-          </ion-button>
-          {this.renderMirrorToggle()}
-        </ion-item-divider>
-        <ion-item class="item-opacity">
-          <ion-range
-            color="primary"
-            min={2}
-            max={20}
-            step={2}
-            value={this.nodes}
-            mode="md"
-            onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateNodes(e)}></ion-range>
-        </ion-item>
         <ion-item-divider class="ion-padding-top">
           <ion-label>
             Opacity <small>{Math.floor(Number(this.waves.opacity) * 100)}%</small>

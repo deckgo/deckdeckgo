@@ -1,6 +1,19 @@
-app-svg-waves {
+app-waves {
   ion-content {
     --background: var(--ion-color-light);
+
+    div.options {
+      display: grid;
+      grid-template-columns: repeat(3, 10%) 70%;
+      grid-column-gap: 8px;
+      width: calc(100% - 16px);
+      padding: 0 16px;
+      align-items: center;
+
+      ion-fab-button {
+        --box-shadow: none;
+      }
+    }
 
     ion-item-divider {
       --color: black;
@@ -14,7 +27,7 @@ app-svg-waves {
     }
 
     ion-item {
-      --background: inherit;
+      --background: white;
       --border-width: 0;
       --inner-border-width: 0;
     }
@@ -23,11 +36,19 @@ app-svg-waves {
       --padding-top: 4px;
     }
 
-    svg {
-      transition: opacity 0.3s ease;
+    div.container {
+      background: white;
+      border: 1px solid #dedede;
+      border-radius: 4px;
 
-      path {
-        transition: 0.3s ease;
+      overflow: hidden;
+
+      svg {
+        transition: opacity 0.3s ease;
+
+        path {
+          transition: 0.3s ease;
+        }
       }
     }
   }
