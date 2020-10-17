@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/word-cloud",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Web Component for creating word clouds",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-math/deckdeckgo-math.js",
+  "unpkg": "dist/deckdeckgo-word-cloud/deckdeckgo-word-cloud.js",
   "files": [
     "dist/",
     "README.md",
