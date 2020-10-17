@@ -12,7 +12,7 @@ describe('deckgo-social', () => {
     </deckgo-social>
   </div>
   <div><deckgo-social linkedin="david-dal-busco/">linkedin/david-dal-busco</deckgo-social></div>
-  <div><deckgo-social medium="david.dalbusco"></deckgo-social></div>
+  <div><deckgo-social medium="daviddalbusco"></deckgo-social></div>
   <div><deckgo-social dev="daviddalbusco"></deckgo-social></div>
   <div><deckgo-social github="peterpeterparker">+daviddalbusco</deckgo-social></div>
   <div><deckgo-social full-url="https://daviddalbusco.com">https://daviddalbusco.com</deckgo-social></div>`);
@@ -45,7 +45,7 @@ describe('deckgo-social', () => {
 
     let span: E2EElement = await page.find('div:nth-of-type(3) deckgo-social >>> span');
     expect(span).not.toBeNull();
-    expect(span.innerHTML).toEqual('david.dalbusco');
+    expect(span.innerHTML).toEqual('daviddalbusco');
   });
 
   it('rendersCustomHandle', async () => {
