@@ -990,6 +990,12 @@ export class DeckdeckgoDeck {
   private async hideOrClearMouseCursorTimer(toggleFullscreen: boolean) {
     if (toggleFullscreen) {
       this.fullscreen = true;
+
+      // We are entering fullscreen mode now, therefore we don't want to want two seconds to hide the mouse
+      setTimeout(async () => {
+        await this.showHideMouseCursor(false);
+      }, 500);
+
       this.hideMouseCursorWithDelay();
     } else {
       await this.clearMouseCursorTimer(false);
