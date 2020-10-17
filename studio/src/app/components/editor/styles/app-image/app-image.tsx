@@ -170,13 +170,13 @@ export class AppImage {
 
   private renderWaves() {
     if (!this.deck && !this.slide) {
-      // SVG Waves only available for background
+      // Waves only available for background
       return undefined;
     }
 
     return (
-      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
-        <ion-label>SVG Waves</ion-label>
+      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quinary">
+        <ion-label>Waves</ion-label>
       </ion-button>
     );
   }

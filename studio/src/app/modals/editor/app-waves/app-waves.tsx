@@ -1,5 +1,6 @@
-import {RangeChangeEventDetail} from '@ionic/core';
 import {Component, Element, Listen, State, h} from '@stencil/core';
+
+import {RangeChangeEventDetail} from '@ionic/core';
 
 import paletteStore from '../../../stores/palette.store';
 
@@ -120,7 +121,7 @@ export class AppWaves {
       <ion-header>
         <ion-toolbar color="quaternary">
           <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-          <ion-title class="ion-text-uppercase">SVG Waves</ion-title>
+          <ion-title class="ion-text-uppercase">Waves</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -163,7 +164,7 @@ export class AppWaves {
       <ion-list class="ion-no-padding">
         <ion-item-divider class="ion-padding-top">
           <ion-label class="label-waves">Waves</ion-label>
-          <ion-button onClick={() => this.generateWaves()} color="quaternary">
+          <ion-button onClick={() => this.generateWaves()} color="quinary">
             Random
           </ion-button>
           {this.renderMirrorToggle()}
