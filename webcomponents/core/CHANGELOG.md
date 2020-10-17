@@ -1,3 +1,9 @@
+# 6.1.0 (2020-10-17)
+
+### Features
+
+- on fullscreen enter, hide mouse more quickly
+
 # 6.0.0 (2020-10-03)
 
 ### Breaking Changes

@@ -104,6 +104,9 @@ export class AppEditor {
   private destroyBusyListener;
   private destroyAuthListener;
 
+  private deckRef!: HTMLDeckgoDeckElement;
+  private actionsEditorRef!: HTMLAppActionsEditorElement;
+
   constructor() {
     this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
@@ -216,9 +219,7 @@ export class AppEditor {
 
   private updateInlineEditorListener(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-      if (!deck) {
+      if (!this.deckRef) {
         return;
       }
 
@@ -228,7 +229,7 @@ export class AppEditor {
         return;
       }
 
-      (inlineEditor as any).attachTo = deck;
+      (inlineEditor as any).attachTo = this.deckRef;
 
       resolve();
     });
@@ -313,16 +314,14 @@ export class AppEditor {
       return;
     }
 
-    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-    if (!deck) {
+    if (!this.deckRef) {
       return;
     }
 
     if ($event.detail) {
-      await (deck as any).slideNext(false, true);
+      await this.deckRef.slideNext(false, true);
     } else {
-      await (deck as any).slidePrev(false, true);
+      await this.deckRef.slidePrev(false, true);
     }
   }
 
@@ -331,13 +330,11 @@ export class AppEditor {
       return;
     }
 
-    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-    if (!deck) {
+    if (!this.deckRef) {
       return;
     }
 
-    await (deck as any).slideTo($event.detail);
+    await this.deckRef.slideTo($event.detail);
   }
 
   private async copySlide($event: CustomEvent<HTMLElement>) {
@@ -388,14 +385,12 @@ export class AppEditor {
     await modal.present();
   }
 
-  private async getSlideIndex(): Promise<number | null> {
-    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-    if (!deck) {
-      return;
+  private async getSlideIndex(): Promise<number> {
+    if (!this.deckRef) {
+      return -1;
     }
 
-    return (deck as any).getActiveIndex();
+    return this.deckRef.getActiveIndex();
   }
 
   /**
@@ -425,9 +420,9 @@ export class AppEditor {
         return;
       }
 
-      const slideIndex: number | null = await this.getSlideIndex();
+      const slideIndex: number = await this.getSlideIndex();
 
-      if (!slideIndex) {
+      if (slideIndex < 0) {
         resolve();
         return;
       }
@@ -439,18 +434,16 @@ export class AppEditor {
         return;
       }
 
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-      if (!deck || !deck.parentElement) {
+      if (!this.deckRef || !this.deckRef.parentElement) {
         resolve();
         return;
       }
 
-      await (deck as any).slideTo(selectedElementSlideIndex);
+      await this.deckRef.slideTo(selectedElementSlideIndex);
 
       // Selecting an element with "Tab" outside of what's displayed in the viewport will cause a scroll on the parent element, <main/>.
       // This is applied by the browser. Therefore we set it back to the origin, as we takes care of the positioning of the slider.
-      deck.parentElement.scrollTo(0, 0);
+      this.deckRef.parentElement.scrollTo(0, 0);
 
       resolve();
     });
@@ -493,32 +486,23 @@ export class AppEditor {
     });
   }
 
-  private touchToolbar(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
+  private async touchToolbar(element: HTMLElement) {
+    if (!this.actionsEditorRef) {
+      return;
+    }
 
-      if (!actions) {
-        resolve();
-        return;
-      }
-
-      await actions.touch(element);
-
-      resolve();
-    });
+    await this.actionsEditorRef.touch(element);
   }
 
   private toggleFullScreen(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
-
-      if (!deck) {
+      if (!this.deckRef) {
         resolve();
         return;
       }
 
       await this.editorEventsHandler.selectDeck();
-      await (deck as any).toggleFullScreen();
+      await this.deckRef.toggleFullScreen();
       resolve();
     });
   }
@@ -607,8 +591,30 @@ export class AppEditor {
     await this.deckEventsHandler.toggleSlideEditable(!this.presenting);
   }
 
-  private async onSlideChangeContentEditable() {
+  private async onSlideChange() {
     await this.deckEventsHandler.toggleSlideEditable(!this.fullscreen || !this.presenting);
+
+    if (!this.deckRef) {
+      return;
+    }
+
+    const index: number = await this.getSlideIndex();
+
+    if (index < 0) {
+      return;
+    }
+
+    const slideElement: HTMLElement = this.deckRef.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+    if (!slideElement) {
+      return;
+    }
+
+    if (!this.actionsEditorRef) {
+      return;
+    }
+
+    await this.actionsEditorRef.touch(slideElement, false);
   }
 
   render() {
@@ -620,6 +626,7 @@ export class AppEditor {
         <main class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
           {this.renderLoading()}
           <deckgo-deck
+            ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
             embedded={true}
             style={this.style}
             reveal={this.fullscreen && this.presenting}
@@ -629,9 +636,9 @@ export class AppEditor {
             autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
             onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
             onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-            onSlideNextDidChange={() => this.onSlideChangeContentEditable()}
-            onSlidePrevDidChange={() => this.onSlideChangeContentEditable()}
-            onSlideToChange={() => this.onSlideChangeContentEditable()}>
+            onSlideNextDidChange={() => this.onSlideChange()}
+            onSlidePrevDidChange={() => this.onSlideChange()}
+            onSlideToChange={() => this.onSlideChange()}>
             {this.slides}
             {this.background}
             {this.header}
@@ -642,6 +649,7 @@ export class AppEditor {
         </main>
       </ion-content>,
       <app-actions-editor
+        ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
         hideActions={this.hideActions}
         fullscreen={this.fullscreen}
         slides={this.slides}
