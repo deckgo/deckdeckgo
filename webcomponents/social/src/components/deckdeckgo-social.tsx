@@ -65,7 +65,7 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
       return;
     }
 
-    this.url = 'https://medium.com/@' + this.medium;
+    this.url = `https://${this.medium}.medium.com`;
     this.ariaLabel = `medium/${this.medium}`;
   }
 
