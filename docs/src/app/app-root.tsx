@@ -230,11 +230,11 @@ export class AppRoot {
                   <ion-item detail={false} href="/components/inline-editor" routerDirection="forward">
                     <ion-label>WYSIWYG inline editor</ion-label>
                   </ion-item>
-                  <ion-item detail={false} href="/components/youtube" routerDirection="forward">
-                    <ion-label>YouTube</ion-label>
-                  </ion-item>
                   <ion-item detail={false} href="/components/word-cloud" routerDirection="forward">
                     <ion-label>Word Cloud</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/components/youtube" routerDirection="forward">
+                    <ion-label>YouTube</ion-label>
                   </ion-item>
 
                   <ion-item-divider>

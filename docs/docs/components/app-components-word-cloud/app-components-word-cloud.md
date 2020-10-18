@@ -38,7 +38,7 @@ This component could be added to your web application using the following method
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] word cloud component from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
-<script type="module" src="https://unpkg.com/@deckdeckgo/word-cloud@1.0.1/dist/deckdeckgo-word-cloud/deckdeckgo-word-cloud.esm.js"></script>
+<script type="module" src="https://unpkg.com/@deckdeckgo/word-cloud@latest/dist/deckdeckgo-word-cloud/deckdeckgo-word-cloud.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/browse/@deckdeckgo/word-cloud@latest/dist/deckdeckgo-word-cloud/deckdeckgo-word-cloud.js"></script>
 ```
 
@@ -97,28 +97,28 @@ The words have to be provided using the slot `words`.
 
 This component offers the following options which could be set using attributes:
 
-| Attribute | Type    | Default                     | Description                                                                                                                                                                                                                                                                                        |
-| --------- | ------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| editable  | boolean | `false`                     | To set the component has being editable (`contenteditable` will be applied on the `slot` on `click`)|
-| marginTop | number  | 32                          | Margin top in pixels                                                                                |
-| marginBottom | number  | 32                       | Margin bottom in pixels                                                                             |
-| marginLeft   | number  | 32                       | Margin left in pixels                                                                               |
-| marginRight  | number  | 32                       | Margin right in pixels                                                                              |
+| Attribute    | Type    | Default | Description                                                                                          |
+| ------------ | ------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| editable     | boolean | `false` | To set the component has being editable (`contenteditable` will be applied on the `slot` on `click`) |
+| marginTop    | number  | 32      | Margin top in pixels                                                                                 |
+| marginBottom | number  | 32      | Margin bottom in pixels                                                                              |
+| marginLeft   | number  | 32      | Margin left in pixels                                                                                |
+| marginRight  | number  | 32      | Margin right in pixels                                                                               |
 
 ### Events
 
 The `<deckgo-word-cloud/>` component triggers the following event.
 
-| Event           | Description                          | Type                       |
-| --------------- | ------------------------------------ | -------------------------- |
+| Event                | Description                          | Type                       |
+| -------------------- | ------------------------------------ | -------------------------- |
 | `wordCloudDidChange` | Emit the host element when modified. | `CustomEvent<HTMLElement>` |
 
 ### Theming
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable                           | Default                             | Note                                             |
-| --------------------------------------- | ----------------------------------- | ------------------------------------------------ |
-| --deckgo-word-cloud-empty-text          | "Click to add your words"           | Place holder in case `editable` is set to `true` |
+| CSS4 variable                  | Default                   | Note                                             |
+| ------------------------------ | ------------------------- | ------------------------------------------------ |
+| --deckgo-word-cloud-empty-text | "Click to add your words" | Place holder in case `editable` is set to `true` |
 
 [deckdeckgo]: https://deckdeckgo.com
