@@ -258,6 +258,7 @@ export class AppElementStyle {
         colorType={'background'}
         selectedElement={this.selectedElement}
         moreColors={this.moreColors}
+        expanded={false}
         onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       this.renderImage(),
     ];

@@ -102,6 +102,7 @@ export class AppDeck {
           selectedElement={this.deckElement}
           moreColors={this.moreColors}
           deck={true}
+          expanded={false}
           onColorChange={() => this.onDeckChange()}></app-color-text-background>,
         <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>,
       ];
