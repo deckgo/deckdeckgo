@@ -8,7 +8,7 @@ interface Waves {
   fill: string;
   opacity: string;
   preserveAspectRatio?: string;
-  style: Partial<Record<keyof CSSStyleDeclaration, string>>;
+  wave: WavesOrientation;
   path: SvgPath;
 }
 

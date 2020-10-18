@@ -194,14 +194,10 @@ export class ImageHelper {
     const svgns = 'http://www.w3.org/2000/svg';
 
     const svg: SVGSVGElement = document.createElementNS(svgns, 'svg');
-    const {style, path: _path, ...svgAttrs} = waves;
+    const {path: _path, ...svgAttrs} = waves;
 
     Object.keys(svgAttrs).forEach((attr) => {
       svg.setAttribute(attr, svgAttrs[attr]);
-    });
-
-    Object.keys(style).forEach((s) => {
-      svg.style[s] = style[s];
     });
 
     const path: SVGPathElement = document.createElementNS(svgns, 'path');

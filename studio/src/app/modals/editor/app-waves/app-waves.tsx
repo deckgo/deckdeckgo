@@ -71,7 +71,7 @@ export class AppWaves {
     this.waves = {...this.waves, fill: $event.detail.hex};
   }
 
-  private updateNodes($event: CustomEvent<RangeChangeEventDetail>) {
+  private async updateNodes($event: CustomEvent<RangeChangeEventDetail>) {
     if (!$event || !$event.detail || $event.detail.value < 2 || $event.detail.value > 20) {
       return;
     }
@@ -79,12 +79,12 @@ export class AppWaves {
     $event.stopPropagation();
 
     this.nodes = $event.detail.value as number;
-    this.generateWaves();
+    await this.generateWaves();
   }
 
-  private setOrientation(orientation: WavesOrientation) {
+  private async setOrientation(orientation: WavesOrientation) {
     this.orientation = orientation;
-    this.generateWaves(true);
+    await this.generateWaves(true);
   }
 
   private async generateWaves(mirror: boolean = false) {
@@ -100,7 +100,7 @@ export class AppWaves {
       preserveAspectRatio: 'none',
       fill,
       opacity: this.waves ? this.waves.opacity : '1',
-      style: {alignSelf: this.orientation === 'upward' ? 'flex-end' : 'flex-start', verticalAlign: 'middle'},
+      wave: this.orientation,
       path: {d: fullPath},
     };
   }
@@ -187,7 +187,7 @@ export class AppWaves {
           step={2}
           value={this.nodes}
           mode="md"
-          onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateNodes(e)}></ion-range>
+          onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}></ion-range>
       </div>
     );
   }
