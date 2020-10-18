@@ -1,3 +1,11 @@
+<a name="2.8.0"></a>
+
+# 2.8.0 (2020-10-18)
+
+### Features
+
+- position of waves in background
+
 <a name="2.7.0"></a>
 
 # 2.7.0 (2020-10-13)
