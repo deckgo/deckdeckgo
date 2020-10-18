@@ -141,7 +141,7 @@ export class AppWaves {
             {this.renderColor()}
           </app-expansion-panel>
 
-          <ion-button onClick={() => this.selectWave()} color="quaternary">
+          <ion-button onClick={() => this.selectWave()} color="dark" shape="round">
             Add
           </ion-button>
         </ion-content>
@@ -202,7 +202,7 @@ export class AppWaves {
         </ion-item-divider>
         <ion-item class="item-opacity">
           <ion-range
-            color="primary"
+            color="quaternary"
             min={0}
             max={1}
             step={0.01}
@@ -211,7 +211,7 @@ export class AppWaves {
             mode="md"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
         </ion-item>
-        <ion-item class="item-opacity">
+        <div class="color">
           <deckgo-color
             more
             palette={paletteStore.state.palette}
@@ -220,7 +220,7 @@ export class AppWaves {
             color-rgb={this.color}>
             <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
           </deckgo-color>
-        </ion-item>
+        </div>
       </ion-list>
     );
   }
