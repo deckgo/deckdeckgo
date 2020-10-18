@@ -180,14 +180,20 @@ export class AppWaves {
           <ion-icon name="chevron-down"></ion-icon>
         </ion-fab-button>
 
-        <ion-range
-          color="quaternary"
-          min={2}
-          max={20}
-          step={2}
-          value={this.nodes}
-          mode="md"
-          onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}></ion-range>
+        <div class="complexity">
+          <ion-icon role="presentation" src="/assets/icons/waves-simple.svg"></ion-icon>
+
+          <ion-range
+            color="quaternary"
+            min={2}
+            max={20}
+            step={2}
+            value={this.nodes}
+            mode="md"
+            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}></ion-range>
+
+          <ion-icon role="presentation" src="/assets/icons/waves-complex.svg"></ion-icon>
+        </div>
       </div>
     );
   }

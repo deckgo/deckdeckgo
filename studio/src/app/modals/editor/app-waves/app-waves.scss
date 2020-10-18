@@ -4,20 +4,40 @@ app-waves {
 
     div.options {
       display: grid;
-      grid-template-columns: repeat(3, 10%) 70%;
+      grid-template-columns: repeat(2, 10%) calc(10% + 16px) 70%;
       grid-column-gap: 8px;
-      width: calc(100% - 16px);
+      width: calc(100% - 44px);
       padding: 0 16px;
       align-items: center;
 
       ion-fab-button {
         --box-shadow: none;
       }
+
+      div.complexity {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ion-icon {
+          color: var(--ion-color-quaternary);
+          font-size: 2rem;
+        }
+      }
+
+      @media screen and (max-width: 540px) {
+        grid-template-columns: repeat(3, 20%) 40%;
+        width: calc(100% - 28px);
+
+        div.complexity {
+          ion-icon {
+            display: none;
+          }
+        }
+      }
     }
 
     div.color {
-      display: flex;
-      justify-content: center;
       padding: 16px 16px 0;
     }
 
