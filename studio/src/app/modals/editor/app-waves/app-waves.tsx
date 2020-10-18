@@ -16,7 +16,7 @@ export class AppWaves {
   @Element() el: HTMLElement;
 
   @State()
-  private color: string = '56, 128, 255'; // quinary color
+  private color: string = '100, 29, 128'; // quaternary color
 
   @State()
   private nodes: number = 8;
@@ -119,7 +119,7 @@ export class AppWaves {
     return (
       <Fragment>
         <ion-header>
-          <ion-toolbar color="quinary">
+          <ion-toolbar color="quaternary">
             <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
             <ion-title class="ion-text-uppercase">Waves</ion-title>
           </ion-toolbar>
@@ -141,7 +141,7 @@ export class AppWaves {
             {this.renderColor()}
           </app-expansion-panel>
 
-          <ion-button onClick={() => this.selectWave()} color="quinary">
+          <ion-button onClick={() => this.selectWave()} color="quaternary">
             Add
           </ion-button>
         </ion-content>
@@ -160,14 +160,14 @@ export class AppWaves {
   private renderOptions() {
     return (
       <div class="options">
-        <ion-fab-button size="small" onClick={() => this.generateWaves()} color="quinary" aria-label="Randomize">
+        <ion-fab-button size="small" onClick={() => this.generateWaves()} color="quaternary" aria-label="Randomize">
           <ion-icon name="shuffle-outline"></ion-icon>
         </ion-fab-button>
 
         <ion-fab-button
           size="small"
           onClick={() => this.setOrientation('upward')}
-          color={this.orientation === 'upward' ? 'quinary' : 'medium'}
+          color={this.orientation === 'upward' ? 'quaternary' : 'medium'}
           aria-label="Direction up">
           <ion-icon name="chevron-up"></ion-icon>
         </ion-fab-button>
@@ -175,13 +175,13 @@ export class AppWaves {
         <ion-fab-button
           size="small"
           onClick={() => this.setOrientation('downward')}
-          color={this.orientation === 'downward' ? 'quinary' : 'medium'}
+          color={this.orientation === 'downward' ? 'quaternary' : 'medium'}
           aria-label="Direction down">
           <ion-icon name="chevron-down"></ion-icon>
         </ion-fab-button>
 
         <ion-range
-          color="primary"
+          color="quaternary"
           min={2}
           max={20}
           step={2}

@@ -175,7 +175,7 @@ export class AppImage {
     }
 
     return (
-      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quinary">
+      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
         <ion-label>Waves</ion-label>
       </ion-button>
     );
