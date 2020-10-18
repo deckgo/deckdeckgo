@@ -1,0 +1,85 @@
+app-waves {
+  ion-content {
+    --background: var(--ion-color-light);
+
+    div.options {
+      display: grid;
+      grid-template-columns: repeat(2, 10%) calc(10% + 16px) 70%;
+      grid-column-gap: 8px;
+      width: calc(100% - 44px);
+      padding: 0 16px;
+      align-items: center;
+
+      ion-fab-button {
+        --box-shadow: none;
+      }
+
+      div.complexity {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ion-icon {
+          color: var(--ion-color-quaternary);
+          font-size: 2rem;
+        }
+      }
+
+      @media screen and (max-width: 540px) {
+        grid-template-columns: repeat(3, 20%) 40%;
+        width: calc(100% - 28px);
+
+        div.complexity {
+          ion-icon {
+            display: none;
+          }
+        }
+      }
+    }
+
+    div.color {
+      padding: 16px 16px 0;
+    }
+
+    ion-item-divider {
+      --color: black;
+      --background: white;
+      --ion-item-border-color: transparent;
+      --ion-padding: 0;
+
+      .label-waves {
+        flex-grow: 1;
+      }
+    }
+
+    ion-item {
+      --background: white;
+      --border-width: 0;
+      --inner-border-width: 0;
+    }
+
+    deckgo-color {
+      --padding-top: 4px;
+    }
+
+    div.container {
+      background: white;
+      border: 1px solid #dedede;
+      border-radius: 4px;
+
+      overflow: hidden;
+
+      height: 128px;
+
+      svg {
+        height: 100%;
+
+        transition: opacity 0.3s ease;
+
+        path {
+          transition: 0.3s ease;
+        }
+      }
+    }
+  }
+}

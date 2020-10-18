@@ -2,14 +2,14 @@ interface SvgPath {
   d: string;
 }
 
-interface SvgWaves {
+interface Waves {
   viewBox: string;
   width: string;
   fill: string;
   opacity: string;
   preserveAspectRatio?: string;
-  style: Partial<Record<keyof CSSStyleDeclaration, string>>;
+  wave: WavesOrientation;
   path: SvgPath;
 }
 
-type SvgWavesOrientation = 'upward' | 'downward';
+type WavesOrientation = 'upward' | 'downward';

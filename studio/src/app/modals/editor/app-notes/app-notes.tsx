@@ -2,7 +2,7 @@ import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 @Component({
   tag: 'app-notes',
-  styleUrl: 'app-notes.scss'
+  styleUrl: 'app-notes.scss',
 })
 export class AppNotes {
   @Element() el: HTMLElement;
@@ -88,7 +88,7 @@ export class AppNotes {
   render() {
     return [
       <ion-header>
-        <ion-toolbar color="quaternary">
+        <ion-toolbar color="quinary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
               <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
@@ -128,7 +128,7 @@ export class AppNotes {
             <ion-label>Delete</ion-label>
           </ion-button>
         </div>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

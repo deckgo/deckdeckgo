@@ -1,4 +1,4 @@
-export class SvgWavesUtils {
+export class WavesUtils {
   static generateCoordinates(nodes: number): [string, string][] {
     const unit = 500 / nodes;
     const arr = new Array(nodes).fill(0);
@@ -22,11 +22,11 @@ export class SvgWavesUtils {
     return `M0.00,${startY} ${curves}`;
   }
 
-  private static getClosingPath(orientation: SvgWavesOrientation): string {
+  private static getClosingPath(orientation: WavesOrientation): string {
     return orientation === 'upward' ? 'L500.00,150.00 L0.00,150.00' : 'L500.00,0.00 L0.00,0.00';
   }
 
-  static getFullPath(nodes: number, orientation: SvgWavesOrientation, coordinates?: [string, string][]): string {
+  static getFullPath(nodes: number, orientation: WavesOrientation, coordinates?: [string, string][]): string {
     return `${this.getWavesPath(nodes, coordinates)} ${this.getClosingPath(orientation)} Z`;
   }
 }

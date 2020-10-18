@@ -37,10 +37,10 @@ export class AppImage {
   private imageHistoryService: ImageHistoryService;
 
   @State()
-  private imagesHistoryOdd: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+  private imagesHistoryOdd: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
 
   @State()
-  private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[];
+  private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
 
   @State()
   private navigatorOnline: boolean = navigator.onLine;
@@ -55,7 +55,7 @@ export class AppImage {
 
   private initImagesHistory(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      let imagesHistory: (UnsplashPhoto | TenorGif | StorageFile | SvgWaves)[] = await this.imageHistoryService.get();
+      let imagesHistory: (UnsplashPhoto | TenorGif | StorageFile | Waves)[] = await this.imageHistoryService.get();
 
       if (!imagesHistory || imagesHistory.length <= 0) {
         resolve();
@@ -116,7 +116,7 @@ export class AppImage {
           {this.renderStockPhotos()}
           {this.renderGif()}
           {this.renderCustom()}
-          {this.renderSvgWaves()}
+          {this.renderWaves()}
           {this.renderDeleteAction()}
         </div>
 
@@ -168,15 +168,15 @@ export class AppImage {
     );
   }
 
-  private renderSvgWaves() {
+  private renderWaves() {
     if (!this.deck && !this.slide) {
-      // SVG Waves only available for background
+      // Waves only available for background
       return undefined;
     }
 
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
-        <ion-label>SVG Waves</ion-label>
+        <ion-label>Waves</ion-label>
       </ion-button>
     );
   }

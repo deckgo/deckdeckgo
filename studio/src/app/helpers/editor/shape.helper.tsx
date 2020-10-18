@@ -40,7 +40,7 @@ export class ShapeHelper {
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
       await this.openModalRestricted(slideElement);
     } else if (imageAction.action === EditAction.ADD_IMAGE) {
-      await this.appendContentShapeImage(slideElement, imageAction.image);
+      await this.appendContentShapeImage(slideElement, imageAction.image as UnsplashPhoto | TenorGif | StorageFile);
     }
   }
 
@@ -50,7 +50,7 @@ export class ShapeHelper {
     await this.cloneShapeElement(shapeElement);
   }
 
-  private async appendContentShapeImage(slideElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile | SvgWaves) {
+  private async appendContentShapeImage(slideElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile) {
     const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
     if (deckgImg !== undefined) {

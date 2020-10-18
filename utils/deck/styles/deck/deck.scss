@@ -151,6 +151,34 @@ deckgo-deck.papyrus [slot="background"] > deckgo-lazy-img {
   --deckgo-lazy-img-object-fit: cover;
 }
 
+deckgo-deck > svg[wave] {
+  vertical-align: middle;
+}
+
+deckgo-deck:not(.papyrus) [slot="background"] {
+  > svg[wave="upward"] {
+    align-self: flex-end;
+  }
+
+  > svg[wave="downward"] {
+    align-self: flex-start;
+  }
+}
+
+deckgo-deck.papyrus [slot="background"] {
+  > svg[wave] {
+    position: absolute;
+  }
+
+  > svg[wave="upward"] {
+    bottom: 0;
+  }
+
+  > svg[wave="downward"] {
+    top: 0;
+  }
+}
+
 /* Reveal */
 
 deckgo-slide-split deckgo-reveal > * {

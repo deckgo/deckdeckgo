@@ -2,7 +2,7 @@ import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil
 
 @Component({
   tag: 'app-poll-options',
-  styleUrl: 'app-poll-options.scss'
+  styleUrl: 'app-poll-options.scss',
 })
 export class AppPollOptions {
   @Element() el: HTMLElement;
@@ -120,7 +120,7 @@ export class AppPollOptions {
 
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss({
       question: this.question,
-      answers: filterAnswers
+      answers: filterAnswers,
     });
   }
 
@@ -221,7 +221,7 @@ export class AppPollOptions {
   render() {
     return [
       <ion-header>
-        <ion-toolbar color="quinary">
+        <ion-toolbar color="senary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()}>
               <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
@@ -256,7 +256,7 @@ export class AppPollOptions {
         <ion-button disabled={!this.valid || this.editDisabled} color="dark" shape="round" onClick={() => this.save()}>
           <ion-label>Save</ion-label>
         </ion-button>
-      </ion-content>
+      </ion-content>,
     ];
   }
 

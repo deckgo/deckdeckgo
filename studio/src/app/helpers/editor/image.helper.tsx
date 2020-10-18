@@ -9,7 +9,6 @@ import {EditAction} from '../../utils/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../utils/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
-import {SvgWavesHelper} from './svgWaves.helper';
 
 export class ImageHelper {
   constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
@@ -26,7 +25,7 @@ export class ImageHelper {
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
       await this.openCustomModalRestricted(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
     } else if (imageAction.action === EditAction.OPEN_SVG_WAVES) {
-      await this.openModal(selectedElement, slide, deck, 'app-svg-waves');
+      await this.openModal(selectedElement, slide, deck, 'app-waves');
     }
   }
 
@@ -63,7 +62,7 @@ export class ImageHelper {
     await this.openModal(selectedElement, slide, deck, componentTag, action);
   }
 
-  private appendImage(selectedElement: HTMLElement, slide: boolean, deck: boolean, image: UnsplashPhoto | TenorGif | StorageFile | SvgWaves): Promise<void> {
+  private appendImage(selectedElement: HTMLElement, slide: boolean, deck: boolean, image: UnsplashPhoto | TenorGif | StorageFile | Waves): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!selectedElement || !image || !document) {
         resolve();
@@ -73,13 +72,6 @@ export class ImageHelper {
       busyStore.state.deckBusy = true;
 
       if (slide || deck) {
-        if (image.hasOwnProperty('viewBox')) {
-          const svgWavesHelper = new SvgWavesHelper(this.didChange);
-          await svgWavesHelper.appendSvgWaves(selectedElement, image as SvgWaves, deck);
-
-          resolve();
-          return;
-        }
         await this.appendBackgroundImg(selectedElement, image as UnsplashPhoto | TenorGif | StorageFile, deck);
       } else {
         await this.appendContentImg(selectedElement, image as UnsplashPhoto | TenorGif | StorageFile);
@@ -178,41 +170,76 @@ export class ImageHelper {
     });
   }
 
-  private appendBackgroundImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, deck: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const currentSlotElement: HTMLElement = selectedElement.querySelector(":scope > [slot='background']");
+  private async appendBackgroundImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile | Waves, deck: boolean): Promise<void> {
+    const currentSlotElement: HTMLElement = selectedElement.querySelector(":scope > [slot='background']");
 
-      if (currentSlotElement) {
-        selectedElement.removeChild(currentSlotElement);
-      }
+    if (currentSlotElement) {
+      selectedElement.removeChild(currentSlotElement);
+    }
 
-      const div: HTMLElement = document.createElement('div');
-      div.setAttribute('slot', 'background');
+    const div: HTMLElement = document.createElement('div');
+    div.setAttribute('slot', 'background');
 
-      const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
+    console.log('HERE', image);
 
-      const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);
-      div.appendChild(img);
+    if (image.hasOwnProperty('viewBox')) {
+      await this.appendChildSvg(selectedElement, div, image as Waves, deck);
+      return;
+    }
 
-      selectedElement.appendChild(div);
+    await this.appendChildImg(selectedElement, div, image as UnsplashPhoto | TenorGif | StorageFile, deck);
+  }
 
-      if (deck) {
-        // prettier-ignore
-        img.addEventListener('lazyImgDidLoad', async () => {
-            await (selectedElement as any).loadBackground();
-            this.didChange.emit(selectedElement);
-        }, {once: true});
-      } else {
-        selectedElement.setAttribute('custom-background', '');
+  private async appendChildSvg(selectedElement: HTMLElement, div: HTMLElement, waves: Waves, deck: boolean) {
+    const svgns = 'http://www.w3.org/2000/svg';
 
-        // prettier-ignore
-        img.addEventListener('lazyImgDidLoad', async () => {
-            this.didChange.emit(selectedElement);
-        }, {once: true});
-      }
+    const svg: SVGSVGElement = document.createElementNS(svgns, 'svg');
+    const {path: _path, ...svgAttrs} = waves;
 
-      resolve();
+    Object.keys(svgAttrs).forEach((attr) => {
+      svg.setAttribute(attr, svgAttrs[attr]);
     });
+
+    const path: SVGPathElement = document.createElementNS(svgns, 'path');
+    path.setAttribute('d', waves.path.d);
+
+    svg.appendChild(path);
+
+    div.appendChild(svg);
+
+    selectedElement.appendChild(div);
+
+    if (deck) {
+      await (selectedElement as any).loadBackground();
+    } else {
+      selectedElement.setAttribute('custom-background', '');
+    }
+
+    this.didChange.emit(selectedElement);
+  }
+
+  private async appendChildImg(selectedElement: HTMLElement, div: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, deck: boolean) {
+    const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
+
+    const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);
+    div.appendChild(img);
+
+    selectedElement.appendChild(div);
+
+    if (deck) {
+      // prettier-ignore
+      img.addEventListener("lazyImgDidLoad", async () => {
+        await (selectedElement as any).loadBackground();
+        this.didChange.emit(selectedElement);
+      }, { once: true });
+    } else {
+      selectedElement.setAttribute('custom-background', '');
+
+      // prettier-ignore
+      img.addEventListener("lazyImgDidLoad", async () => {
+        this.didChange.emit(selectedElement);
+      }, { once: true });
+    }
   }
 
   deleteSlideAttributeImgSrc(selectedElement: HTMLElement): Promise<void> {
