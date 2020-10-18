@@ -68,6 +68,7 @@ export class AppRoot {
           <ion-route url="/components/drr" component="app-components-drr" />
           <ion-route url="/components/demo" component="app-components-demo" />
           <ion-route url="/components/math" component="app-components-math" />
+          <ion-route url="/components/word-cloud" component="app-components-word-cloud" />
 
           <ion-route url="/deck" component="app-deck-animation" />
           <ion-route url="/deck/animation" component="app-deck-animation" />
@@ -228,6 +229,9 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/components/inline-editor" routerDirection="forward">
                     <ion-label>WYSIWYG inline editor</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/components/word-cloud" routerDirection="forward">
+                    <ion-label>Word Cloud</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/components/youtube" routerDirection="forward">
                     <ion-label>YouTube</ion-label>

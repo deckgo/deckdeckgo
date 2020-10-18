@@ -28,6 +28,8 @@ export namespace Components {
     }
     interface AppComponentsSocial {
     }
+    interface AppComponentsWordCloud {
+    }
     interface AppComponentsYoutube {
     }
     interface AppDeckActions {
@@ -203,6 +205,12 @@ declare global {
     var HTMLAppComponentsSocialElement: {
         prototype: HTMLAppComponentsSocialElement;
         new (): HTMLAppComponentsSocialElement;
+    };
+    interface HTMLAppComponentsWordCloudElement extends Components.AppComponentsWordCloud, HTMLStencilElement {
+    }
+    var HTMLAppComponentsWordCloudElement: {
+        prototype: HTMLAppComponentsWordCloudElement;
+        new (): HTMLAppComponentsWordCloudElement;
     };
     interface HTMLAppComponentsYoutubeElement extends Components.AppComponentsYoutube, HTMLStencilElement {
     }
@@ -528,6 +536,7 @@ declare global {
         "app-components-math": HTMLAppComponentsMathElement;
         "app-components-qrcode": HTMLAppComponentsQrcodeElement;
         "app-components-social": HTMLAppComponentsSocialElement;
+        "app-components-word-cloud": HTMLAppComponentsWordCloudElement;
         "app-components-youtube": HTMLAppComponentsYoutubeElement;
         "app-deck-actions": HTMLAppDeckActionsElement;
         "app-deck-animation": HTMLAppDeckAnimationElement;
@@ -604,6 +613,8 @@ declare namespace LocalJSX {
     interface AppComponentsQrcode {
     }
     interface AppComponentsSocial {
+    }
+    interface AppComponentsWordCloud {
     }
     interface AppComponentsYoutube {
     }
@@ -725,6 +736,7 @@ declare namespace LocalJSX {
         "app-components-math": AppComponentsMath;
         "app-components-qrcode": AppComponentsQrcode;
         "app-components-social": AppComponentsSocial;
+        "app-components-word-cloud": AppComponentsWordCloud;
         "app-components-youtube": AppComponentsYoutube;
         "app-deck-actions": AppDeckActions;
         "app-deck-animation": AppDeckAnimation;
@@ -794,6 +806,7 @@ declare module "@stencil/core" {
             "app-components-math": LocalJSX.AppComponentsMath & JSXBase.HTMLAttributes<HTMLAppComponentsMathElement>;
             "app-components-qrcode": LocalJSX.AppComponentsQrcode & JSXBase.HTMLAttributes<HTMLAppComponentsQrcodeElement>;
             "app-components-social": LocalJSX.AppComponentsSocial & JSXBase.HTMLAttributes<HTMLAppComponentsSocialElement>;
+            "app-components-word-cloud": LocalJSX.AppComponentsWordCloud & JSXBase.HTMLAttributes<HTMLAppComponentsWordCloudElement>;
             "app-components-youtube": LocalJSX.AppComponentsYoutube & JSXBase.HTMLAttributes<HTMLAppComponentsYoutubeElement>;
             "app-deck-actions": LocalJSX.AppDeckActions & JSXBase.HTMLAttributes<HTMLAppDeckActionsElement>;
             "app-deck-animation": LocalJSX.AppDeckAnimation & JSXBase.HTMLAttributes<HTMLAppDeckAnimationElement>;
