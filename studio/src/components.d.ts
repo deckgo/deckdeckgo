@@ -153,7 +153,7 @@ export namespace Components {
         "signIn": EventEmitter<void>;
     }
     interface AppDeckTransition {
-        "deckElement": HTMLElement;
+        "deckElement": HTMLDeckgoDeckElement;
     }
     interface AppDemo {
         "selectedElement": HTMLElement;
@@ -1409,7 +1409,7 @@ declare namespace LocalJSX {
         "signIn"?: EventEmitter<void>;
     }
     interface AppDeckTransition {
-        "deckElement"?: HTMLElement;
+        "deckElement"?: HTMLDeckgoDeckElement;
         "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
         "onTransitionChange"?: (event: CustomEvent<void>) => void;
     }

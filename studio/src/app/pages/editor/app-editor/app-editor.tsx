@@ -588,8 +588,8 @@ export class AppEditor {
   private initMainSize() {
     if (!this.contentRef || isFullscreen() || isMobile()) {
       this.mainSize = {
-        width: 'calc(100% - 32px)',
-        height: 'calc(100% - 32px)',
+        width: isMobile() ? 'calc(100% - 32px)' : '100%',
+        height: isMobile() ? 'calc(100% - 32px)' : '100%',
       };
       return;
     }
@@ -612,6 +612,10 @@ export class AppEditor {
   }
 
   private initSlideSizeObserver() {
+    if (!this.mainRef) {
+      return;
+    }
+
     this.slideResizeObserver = new ResizeObserver(async (_entries) => {
       await this.initSlideSize();
     });

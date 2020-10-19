@@ -929,13 +929,13 @@ export class DeckEventsHandler {
 
   initSlideSize(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = this.el.querySelector('deckgo-deck');
 
       if (!deck) {
         return;
       }
 
-      await (deck as any).initSlideSize();
+      await deck.initSlideSize();
 
       resolve();
     });

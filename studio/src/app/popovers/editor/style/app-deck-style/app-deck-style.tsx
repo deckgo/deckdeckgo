@@ -29,7 +29,7 @@ export class AppDeck {
   private moreColors: boolean = true;
 
   @State()
-  private deckElement: HTMLElement;
+  private deckElement: HTMLDeckgoDeckElement;
 
   private imageHelper: ImageHelper;
 
