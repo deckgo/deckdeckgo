@@ -563,11 +563,9 @@ export class AppEditor {
       return;
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
       this.initMainSize();
-      setTimeout(async () => {
-        await this.initSlideSize();
-      }, 250);
+      await this.initSlideSize();
     }, 100);
   }
 
@@ -618,6 +616,14 @@ export class AppEditor {
 
     this.slideResizeObserver = new ResizeObserver(async (_entries) => {
       await this.initSlideSize();
+
+      const index: number = await this.getSlideIndex();
+
+      if (index < 0) {
+        return;
+      }
+
+      await this.deckRef?.slideTo(index);
     });
 
     this.slideResizeObserver.observe(this.mainRef);
