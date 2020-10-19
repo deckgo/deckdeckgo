@@ -802,7 +802,7 @@ export class AppActionsElement {
       if (window && 'ResizeObserver' in window) {
         if (this.elementResizeObserver && this.selectedElement) {
           this.elementResizeObserver.unobserve(this.selectedElement);
-          this.elementResizeObserver.disconnect;
+          this.elementResizeObserver.disconnect();
         }
       } else {
         this.selectedElement.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);

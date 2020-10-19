@@ -17,19 +17,19 @@ deckgo-deck {
     border: 1px solid var(--ion-color-light);
   }
 
-  h1 {
+  h1:empty {
     min-height: calc(var(--font-size-h1) + 4px);
   }
 
-  h2 {
+  h2:empty {
     min-height: calc(var(--font-size-h2) + 4px);
   }
 
-  h3 {
+  h3:empty {
     min-height: calc(var(--font-size-h3) + 4px);
   }
 
-  section {
+  section:empty {
     min-height: calc(var(--font-size-normal) + 4px);
     margin-top: 16px;
   }

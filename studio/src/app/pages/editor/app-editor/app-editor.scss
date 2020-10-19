@@ -1,6 +1,26 @@
 @use "../../../../global/theme/editor/editor-fullscreen";
 @use "node_modules/@deckdeckgo/deck-utils/css/fullscreen";
 
+ion-nav app-editor ion-content {
+  main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: var(--main-size-width);
+    height: var(--main-size-height);
+
+    max-width: inherit;
+
+    overflow: hidden;
+
+    &.ready {
+      box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
+    }
+  }
+}
+
 app-editor {
   @import "../../../../global/theme/editor/editor-deck";
   @import "../../../../global/theme/editor/editor-deck-placeholder";
@@ -27,19 +47,6 @@ app-editor {
     --padding-start: 16px;
     --padding-end: 16px;
     --padding-bottom: 12px;
-  }
-
-  main {
-    position: relative;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    &.ready {
-      box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
-    }
   }
 
   deckgo-inline-editor {
