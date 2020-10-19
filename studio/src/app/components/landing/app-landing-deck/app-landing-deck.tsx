@@ -67,7 +67,11 @@ export class AppLandingDeck {
 
   render() {
     return (
-      <deckgo-deck embedded={true} onSlideNextDidChange={() => this.updateDeckPosition()} onSlidePrevDidChange={() => this.updateDeckPosition()}>
+      <deckgo-deck
+        embedded={true}
+        direction-mobile="horizontal"
+        onSlideNextDidChange={() => this.updateDeckPosition()}
+        onSlidePrevDidChange={() => this.updateDeckPosition()}>
         <deckgo-slide-split>
           <div slot="start">
             <h1>Make more than presentations</h1>
