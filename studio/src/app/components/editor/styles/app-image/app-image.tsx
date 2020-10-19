@@ -110,7 +110,7 @@ export class AppImage {
   render() {
     return (
       <app-expansion-panel expander={this.expander} expanded={this.expanded}>
-        <ion-label slot="title">Image</ion-label>
+        <ion-label slot="title">Images, GIF or Waves</ion-label>
 
         <div class="image-actions ion-margin">
           {this.renderStockPhotos()}
