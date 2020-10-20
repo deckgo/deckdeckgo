@@ -35,6 +35,8 @@ app-deck-transition {
 
       border: 1px solid var(--ion-color-light);
 
+      --slide-font-size: 1rem;
+
       &.selected {
         &.showcase-direction {
           box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
