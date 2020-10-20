@@ -80,10 +80,6 @@ deckgo-deck ion-label,
 deckgo-deck ion-label[text-wrap].sc-ion-label-md-h,
 deckgo-deck p {
   font-size: 1em;
-
-  @media (min-width: 992px) {
-    font-size: 32px;
-  }
 }
 
 // Font size if user modify sizes inside elements

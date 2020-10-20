@@ -20,7 +20,7 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.0.0",
     "@deckdeckgo/color": "^3.1.0",
-    "@deckdeckgo/core": "^6.1.0",
+    "@deckdeckgo/core": "file:../webcomponents/core",
     "@deckdeckgo/deck-utils": "file:../utils/deck",
     "@deckdeckgo/demo": "^2.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.0.0",

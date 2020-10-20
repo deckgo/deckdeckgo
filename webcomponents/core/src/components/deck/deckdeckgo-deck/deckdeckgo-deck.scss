@@ -74,6 +74,8 @@ div.deckgo-deck {
 
   --slide-width: 100vw;
   --slide-height: 100%;
+
+  font-size: var(--slide-font-size, var(--slide-auto-font-size, 1em));
 }
 
 :host(.vertical),

@@ -37,15 +37,11 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-deck && npm run build-fullscreen",
+    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-deck",
     "build-deck": "npm run build-deck-sass && npm run build-deck-autoprefix && npm run build-deck-cleancss",
     "build-deck-sass": "node-sass --output-style expanded styles/deck/index.scss ./css/deck.css",
     "build-deck-autoprefix": "postcss --use autoprefixer --map false --output ./css/deck.css ./css/deck.css",
-    "build-deck-cleancss": "cleancss -o ./css/deck.min.css ./css/deck.css",
-    "build-fullscreen": "npm run build-fullscreen-sass && npm run build-fullscreen-autoprefix && npm run build-fullscreen-cleancss",
-    "build-fullscreen-sass": "node-sass --output-style expanded styles/fullscreen/index.scss ./css/fullscreen.css",
-    "build-fullscreen-autoprefix": "postcss --use autoprefixer --map false --output ./css/fullscreen.css ./css/fullscreen.css",
-    "build-fullscreen-cleancss": "cleancss -o ./css/fullscreen.min.css ./css/fullscreen.css"
+    "build-deck-cleancss": "cleancss -o ./css/deck.min.css ./css/deck.css"
   },
   "files": [
     "lib",
