@@ -1,4 +1,3 @@
-// import { Component, Prop, h } from '@stencil/core';
 import { Component, h, Host, State, Element, Prop, Event, EventEmitter } from '@stencil/core';
 
 import { Remarkable } from 'remarkable';
@@ -17,61 +16,60 @@ export class DeckgoMdParser {
   private editing: boolean = false;
 
   @Event()
-  private mathDidChange: EventEmitter<HTMLElement>;
+  private markdownDidChange: EventEmitter<HTMLElement>;
 
   private containerRef!: HTMLDivElement;
 
   private parser = new Remarkable();
 
   private parseMarkdownInSlot(): Promise<void> {
-    const mdContent: HTMLElement = this.el.querySelector("[slot='markdown']");
+    const mdContent: HTMLElement = this.el.querySelector("[slot='md-parser']");
 
     if (mdContent) {
       const mdText = mdContent.innerText;
-
-      console.log(this.parser.render(mdText));
-
-      return new Promise<void>(async resolve => {
-        // if (!this.containerRef) {
-        //   resolve();
-        //   return;
-        // }
-
-        if (!mdText || mdText === undefined || mdText === '') {
-          console.log('som tu hehe');
-          this.containerRef.children[0].innerHTML = mdText;
-
-          resolve();
-          return;
-        }
-        resolve();
-
-        // try {
-        //   this.containerRef.children[0].innerHTML = '';
-
-        //   const div: HTMLElement = document.createElement('div');
-
-        //   try {
-        //     if (div.childNodes) {
-        //       this.containerRef.children[0].append(...Array.from(div.childNodes));
-        //     }
-        //   } catch (err) {
-        //     console.error(err);
-        //   }
-
-        //   resolve();
-        // } catch (err) {
-        //   reject(err);
-        // }
-      });
+      const mdContentHTML = this.parser.render(mdText);
+      this.parseMarkdown(mdContentHTML);
     } else {
       return Promise.resolve();
     }
   }
 
+  private parseMarkdown(mdContentHTML: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (!this.containerRef) {
+        resolve();
+        return;
+      }
+
+      if (!mdContentHTML || mdContentHTML === undefined || mdContentHTML === '') {
+        this.containerRef.children[0].innerHTML = '';
+        resolve();
+        return;
+      }
+
+      try {
+        this.containerRef.children[0].innerHTML = '';
+
+        const div: HTMLElement = document.createElement('div');
+
+        try {
+          if (div.childNodes) {
+            this.containerRef.children[0].innerHTML = mdContentHTML;
+          }
+        } catch (err) {
+          this.containerRef.children[0].innerHTML = mdContentHTML;
+          console.error(err);
+        }
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   private applyMarkdown = async () => {
     await this.stopEditing();
-
     await this.parseMarkdownInSlot();
   };
 
@@ -84,13 +82,12 @@ export class DeckgoMdParser {
 
       this.editing = true;
 
-      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='markdown']");
+      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
 
       if (markdownInSlot) {
         setTimeout(() => {
           markdownInSlot.setAttribute('contentEditable', 'true');
           markdownInSlot.addEventListener('blur', this.applyMarkdown, { once: true });
-
           markdownInSlot.focus();
         }, 100);
       }
@@ -103,7 +100,7 @@ export class DeckgoMdParser {
     return new Promise<void>(resolve => {
       this.editing = false;
 
-      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='markdown']");
+      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
 
       if (markdownInSlot) {
         markdownInSlot.removeAttribute('contentEditable');
@@ -112,7 +109,7 @@ export class DeckgoMdParser {
           markdownInSlot.innerHTML = markdownInSlot.innerHTML.trim();
         }
 
-        this.mathDidChange.emit(this.el);
+        this.markdownDidChange.emit(this.el);
       }
 
       resolve();
@@ -121,10 +118,15 @@ export class DeckgoMdParser {
 
   render() {
     return (
-      <Host class={{ 'deckgo-math-edit': this.editing }}>
-        <div class="deckgo-markdown-container" ref={el => (this.containerRef = el as HTMLInputElement)} onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
-          <div class="markdown"></div>
-          <slot name="markdown"></slot>
+      <Host class={{ 'deckgo-markdown-edit': this.editing }}>
+        <div 
+          class="deckgo-markdown-container" 
+          ref={el => (this.containerRef = el as HTMLInputElement)} 
+          onMouseDown={() => this.edit()} 
+          onTouchStart={() => this.edit()}
+        >
+            <div class="md-parser"></div>
+            <slot name="md-parser"></slot>
         </div>
       </Host>
     );
