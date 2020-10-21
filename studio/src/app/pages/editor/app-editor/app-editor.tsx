@@ -73,6 +73,9 @@ export class AppEditor {
   @State()
   private presenting: boolean = false;
 
+  @State()
+  private slideNumber: number = 0;
+
   private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
   private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
   private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
@@ -604,6 +607,8 @@ export class AppEditor {
       return;
     }
 
+    this.slideNumber = index;
+
     const slideElement: HTMLElement = this.deckRef.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
     if (!slideElement) {
@@ -653,6 +658,7 @@ export class AppEditor {
         hideActions={this.hideActions}
         fullscreen={this.fullscreen}
         slides={this.slides}
+        slideNumber={this.slideNumber}
         onSignIn={() => this.signIn()}
         onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
         onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
