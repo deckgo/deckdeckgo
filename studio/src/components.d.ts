@@ -47,6 +47,7 @@ export namespace Components {
         "fullscreen": boolean;
         "hideActions": boolean;
         "selectDeck": () => Promise<void>;
+        "slideNumber": number;
         "slides": JSX.IntrinsicElements[];
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
     }
@@ -74,6 +75,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppBreadcrumbs {
+        "slideNumber": number;
         "step": BreadcrumbsStep;
     }
     interface AppCode {
@@ -1286,6 +1288,7 @@ declare namespace LocalJSX {
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTo"?: (event: CustomEvent<number>) => void;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
+        "slideNumber"?: number;
         "slides"?: JSX.IntrinsicElements[];
     }
     interface AppActionsElement {
@@ -1322,6 +1325,7 @@ declare namespace LocalJSX {
     }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
+        "slideNumber"?: number;
         "step"?: BreadcrumbsStep;
     }
     interface AppCode {

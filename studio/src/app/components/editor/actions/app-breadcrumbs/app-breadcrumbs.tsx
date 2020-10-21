@@ -1,4 +1,4 @@
-import {Component, Prop, h, Host, EventEmitter, Event} from '@stencil/core';
+import {Component, Prop, h, Host, EventEmitter, Event, Fragment} from '@stencil/core';
 
 import store from '../../../../stores/busy.store';
 
@@ -12,6 +12,9 @@ import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
 export class AppBreadcrumbs {
   @Prop()
   step: BreadcrumbsStep = BreadcrumbsStep.DECK;
+
+  @Prop()
+  slideNumber: number;
 
   @Event()
   private stepTo: EventEmitter<HTMLElement | undefined>;
@@ -70,7 +73,15 @@ export class AppBreadcrumbs {
         class={this.step === step ? 'selected' : undefined}
         onClick={() => this.selectStep(step)}
         disabled={store.state.deckBusy}>
-        <ion-label>{step}</ion-label>
+        <ion-label>
+          {step}{' '}
+          {step === 'slide' ? (
+            <Fragment>
+              <small>#</small>
+              {this.slideNumber + 1}
+            </Fragment>
+          ) : null}
+        </ion-label>
       </button>
     );
   }

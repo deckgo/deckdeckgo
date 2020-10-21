@@ -183,15 +183,18 @@ export class RemoteEventsHandler {
       if (type === 'next_slide') {
         const slideAnimation = $event.detail.slideAnimation;
         await deck.slideNext(slideAnimation, false);
+        await this.emitRemoteSlideDidChange();
       } else if (type === 'prev_slide') {
         const slideAnimation = $event.detail.slideAnimation;
         await deck.slidePrev(slideAnimation, false);
+        await this.emitRemoteSlideDidChange();
       } else if (type === 'slide_action') {
         await this.youtubePlayPause($event);
       } else if (type === 'slide_to') {
         const index = $event.detail.index;
         if (index >= 0) {
           await deck.slideTo(index, 0);
+          await this.emitRemoteSlideDidChange();
         }
       } else if (type === 'deck_request') {
         await this.remoteService.addPendingRequests($event.detail);
@@ -676,5 +679,13 @@ export class RemoteEventsHandler {
     }
 
     await deckgoRemoteElement.start(request.fromSocketId);
+  }
+
+  private async emitRemoteSlideDidChange() {
+    const slideDidChange: CustomEvent<void> = new CustomEvent<void>('remoteSlideDidChange', {
+      bubbles: true,
+    });
+
+    this.el.dispatchEvent(slideDidChange);
   }
 }

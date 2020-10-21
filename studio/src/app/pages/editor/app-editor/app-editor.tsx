@@ -73,6 +73,9 @@ export class AppEditor {
   @State()
   private presenting: boolean = false;
 
+  @State()
+  private activeIndex: number = 0;
+
   private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
   private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
   private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
@@ -406,14 +409,6 @@ export class AppEditor {
     await modal.present();
   }
 
-  private async getSlideIndex(): Promise<number> {
-    if (!this.deckRef) {
-      return -1;
-    }
-
-    return this.deckRef.getActiveIndex();
-  }
-
   /**
    * When an element is focused, we check if its related slide index is the current one aka is the element on a previous or next slide.
    * If these index doesn't match, we move the deck to the new slide.
@@ -441,30 +436,24 @@ export class AppEditor {
         return;
       }
 
-      const slideIndex: number = await this.getSlideIndex();
-
-      if (slideIndex < 0) {
+      if (this.activeIndex < 0) {
         resolve();
         return;
       }
 
       const selectedElementSlideIndex: number = Array.prototype.indexOf.call(slide.parentNode.children, slide);
 
-      if (selectedElementSlideIndex === slideIndex) {
+      if (selectedElementSlideIndex === this.activeIndex) {
         resolve();
         return;
       }
 
-      if (!this.deckRef || !this.deckRef.parentElement) {
+      if (!this.deckRef) {
         resolve();
         return;
       }
 
       await this.deckRef.slideTo(selectedElementSlideIndex);
-
-      // Selecting an element with "Tab" outside of what's displayed in the viewport will cause a scroll on the parent element, <main/>.
-      // This is applied by the browser. Therefore we set it back to the origin, as we takes care of the positioning of the slider.
-      this.deckRef.parentElement.scrollTo(0, 0);
 
       resolve();
     });
@@ -693,6 +682,11 @@ export class AppEditor {
     await this.deckEventsHandler.toggleSlideEditable(!this.presenting);
   }
 
+  @Listen('remoteSlideDidChange', {target: 'document'})
+  async onRemoteSlideDidChange() {
+    await this.onSlideChange();
+  }
+
   private async onSlideChange() {
     await this.deckEventsHandler.toggleSlideEditable(!this.fullscreen || !this.presenting);
 
@@ -700,11 +694,13 @@ export class AppEditor {
       return;
     }
 
-    const index: number = await this.getSlideIndex();
+    const index: number = await this.deckRef.getActiveIndex();
 
     if (index < 0) {
       return;
     }
+
+    this.activeIndex = index;
 
     const slideElement: HTMLElement = this.deckRef.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
@@ -758,6 +754,7 @@ export class AppEditor {
         hideActions={this.hideActions}
         fullscreen={this.fullscreen}
         slides={this.slides}
+        slideNumber={this.activeIndex}
         onSignIn={() => this.signIn()}
         onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
         onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}

@@ -1,3 +1,9 @@
+# 6.1.1 (2020-10-21)
+
+### Features
+
+- set position main container after slideTo
+
 # 6.1.0 (2020-10-17)
 
 ### Features

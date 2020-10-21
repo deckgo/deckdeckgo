@@ -19,6 +19,9 @@ export class AppActionsEditor {
   @Prop()
   slides: JSX.IntrinsicElements[] = [];
 
+  @Prop()
+  slideNumber: number;
+
   @Event() private blockSlide: EventEmitter<boolean>;
 
   @Event() private signIn: EventEmitter<void>;
@@ -168,7 +171,10 @@ export class AppActionsEditor {
   private renderSelectedIndicator() {
     return (
       <div class="indicator">
-        <app-breadcrumbs step={this.step} onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+        <app-breadcrumbs
+          step={this.step}
+          slideNumber={this.slideNumber}
+          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
       </div>
     );
   }

@@ -935,6 +935,10 @@ export class DeckdeckgoDeck {
 
     await this.doSwipeSlide(slider, speed);
 
+    // In case we are sliding to a slide which received focus before being displayed (previously outside viewport)
+    // a scroll on the parent element would have been applied by the browser. Therefore we set it back to the origin, as we takes care of the positioning of the slider.
+    slider.parentElement.scrollTo(0, 0);
+
     if (emitEvent) {
       this.slideToChange.emit(index);
     }
