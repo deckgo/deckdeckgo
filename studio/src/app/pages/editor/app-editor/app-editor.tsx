@@ -427,16 +427,12 @@ export class AppEditor {
         return;
       }
 
-      if (!this.deckRef || !this.deckRef.parentElement) {
+      if (!this.deckRef) {
         resolve();
         return;
       }
 
       await this.deckRef.slideTo(selectedElementSlideIndex);
-
-      // Selecting an element with "Tab" outside of what's displayed in the viewport will cause a scroll on the parent element, <main/>.
-      // This is applied by the browser. Therefore we set it back to the origin, as we takes care of the positioning of the slider.
-      this.deckRef.parentElement.scrollTo(0, 0);
 
       resolve();
     });
