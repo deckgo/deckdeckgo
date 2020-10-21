@@ -1,4 +1,4 @@
-import {Component, Prop, h, Host, State, EventEmitter, Event} from '@stencil/core';
+import {Component, Prop, h, Host, EventEmitter, Event, Fragment} from '@stencil/core';
 
 import store from '../../../../stores/busy.store';
 
@@ -76,10 +76,10 @@ export class AppBreadcrumbs {
         <ion-label>
           {step}{' '}
           {step === 'slide' ? (
-            <span>
+            <Fragment>
               <small>#</small>
               {this.slideNumber + 1}
-            </span>
+            </Fragment>
           ) : null}
         </ion-label>
       </button>
