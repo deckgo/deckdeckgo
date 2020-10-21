@@ -606,13 +606,11 @@ export class AppEditor {
     this.slideResizeObserver = new ResizeObserver(async (_entries) => {
       await this.initSlideSize();
 
-      const index: number = await this.getSlideIndex();
-
-      if (index < 0) {
+      if (this.activeIndex < 0) {
         return;
       }
 
-      await this.deckRef?.slideTo(index);
+      await this.deckRef?.slideTo(this.activeIndex);
     });
 
     this.slideResizeObserver.observe(this.mainRef);
