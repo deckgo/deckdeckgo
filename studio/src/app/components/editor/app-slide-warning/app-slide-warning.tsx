@@ -2,6 +2,8 @@ import {Component, h, Host, Listen, State} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
 
+import {debounce} from '@deckdeckgo/utils';
+
 import {ContrastUtils} from '../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
@@ -19,34 +21,43 @@ export class AppSlideWarning {
   @State()
   private warningOverflow: boolean = false;
 
+  private readonly debounceResizeWarningOverflow: () => void = debounce(async () => {
+    this.warningOverflow = await this.hasOverflow();
+  }, 500);
+
   @Listen('slidesDidLoad', {target: 'document'})
   async onSlidesDidLoad() {
-    await this.analyzeContrast();
+    await this.detectWarnings();
   }
 
   @Listen('slideDidUpdate', {target: 'document'})
   async onSlideDidUpdate() {
-    await this.analyzeContrast();
+    await this.detectWarnings();
   }
 
   @Listen('deckDidChange', {target: 'document'})
   async onDeckDidChange() {
-    await this.analyzeContrast();
+    await this.detectWarnings();
   }
 
   @Listen('remoteSlideDidChange', {target: 'document'})
   async onRemoteSlideDidChange() {
-    await this.analyzeContrast();
+    await this.detectWarnings();
   }
 
   @Listen('slideNextDidChange', {target: 'document'})
   @Listen('slidePrevDidChange', {target: 'document'})
   @Listen('slideToChange', {target: 'document'})
   async onSlideNavigate() {
-    await this.analyzeContrast();
+    await this.detectWarnings();
   }
 
-  private async analyzeContrast() {
+  @Listen('resize', {target: 'window'})
+  async onSlideDidChange() {
+    this.debounceResizeWarningOverflow();
+  }
+
+  private async detectWarnings() {
     this.warningLowContrast = await this.hasLowContrast();
     this.warningOverflow = await this.hasOverflow();
   }
