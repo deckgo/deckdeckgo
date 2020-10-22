@@ -31,6 +31,11 @@ export class AppSlideContrast {
     await this.analyzeContrast();
   }
 
+  @Listen('remoteSlideDidChange', {target: 'document'})
+  async onRemoteSlideDidChange() {
+    await this.analyzeContrast();
+  }
+
   @Listen('slideNextDidChange', {target: 'document'})
   @Listen('slidePrevDidChange', {target: 'document'})
   @Listen('slideToChange', {target: 'document'})
