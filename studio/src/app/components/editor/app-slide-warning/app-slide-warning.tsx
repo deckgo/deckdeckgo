@@ -7,14 +7,17 @@ import {NodeUtils} from '../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({
-  tag: 'app-slide-contrast',
-  styleUrl: 'app-slide-contrast.scss',
+  tag: 'app-slide-warning',
+  styleUrl: 'app-slide-warning.scss',
 })
-export class AppSlideContrast {
+export class AppSlideWarning {
   private readonly lowestAACompliantLevel: number = 3;
 
   @State()
-  private warning: boolean = false;
+  private warningLowContrast: boolean = false;
+
+  @State()
+  private warningOverflow: boolean = false;
 
   @Listen('slidesDidLoad', {target: 'document'})
   async onSlidesDidLoad() {
@@ -44,21 +47,50 @@ export class AppSlideContrast {
   }
 
   private async analyzeContrast() {
-    this.warning = await this.hasLowContrast();
+    this.warningLowContrast = await this.hasLowContrast();
+    this.warningOverflow = await this.hasOverflow();
   }
 
-  private async hasLowContrast(): Promise<boolean> {
-    const deck: HTMLElement = document.querySelector('main > deckgo-deck');
+  private async hasOverflow(): Promise<boolean> {
+    const {slide} = await this.getCurrentSlide();
 
-    if (!deck) {
+    if (!slide) {
       return false;
     }
 
-    const index = await (deck as any).getActiveIndex();
+    const slots: NodeListOf<HTMLElement> = slide.querySelectorAll(
+      '[slot="title"]:not(:empty),[slot="content"]:not(:empty),[slot="start"]:not(:empty),[slot="end"]:not(:empty),[slot="author"]:not(:empty),[slot="top"]:not(:empty),[slot="bottom"]:not(:empty)'
+    );
 
-    const slide: HTMLElement = deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+    if (!slots || slots.length <= 0) {
+      return false;
+    }
 
-    if (!slide) {
+    const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
+      return !SlotUtils.isNodeCode(element) && !SlotUtils.isNodeWordCloud(element);
+    });
+
+    if (!filteredSlots || filteredSlots.length <= 0) {
+      return false;
+    }
+
+    const promises: Promise<boolean>[] = Array.from(filteredSlots).map((element: HTMLElement) => this.isOverflown(element, slide));
+
+    const overflows: boolean[] = await Promise.all(promises);
+
+    if (!overflows || overflows.length <= 0) {
+      return false;
+    }
+
+    const hasOverflow: boolean | undefined = overflows.find((overflow: boolean) => overflow);
+
+    return hasOverflow === true;
+  }
+
+  private async hasLowContrast(): Promise<boolean> {
+    const {deck, slide} = await this.getCurrentSlide();
+
+    if (!slide || !deck) {
       return false;
     }
 
@@ -110,16 +142,44 @@ export class AppSlideContrast {
     return lowContrast !== undefined;
   }
 
-  private async calculateRatio(element: HTMLElement, deck: HTMLElement, slide: HTMLElement) {
+  private async calculateRatio(element: HTMLElement, deck: HTMLElement, slide: HTMLElement): Promise<number> {
     const bgColor = await NodeUtils.findColors(element, 'background', deck, slide);
     const color = await NodeUtils.findColors(element, 'color', deck, slide);
 
     return ContrastUtils.calculateContrastRatio(bgColor, color);
   }
 
+  private async isOverflown(element: HTMLElement, slide: HTMLElement): Promise<boolean> {
+    const {scrollHeight, offsetTop} = element;
+
+    return offsetTop < 0 || offsetTop + scrollHeight > slide.scrollHeight;
+  }
+
+  private async getCurrentSlide(): Promise<{deck: HTMLElement | null; slide: HTMLElement | null}> {
+    const deck: HTMLElement = document.querySelector('main > deckgo-deck');
+
+    if (!deck) {
+      return {
+        deck: null,
+        slide: null,
+      };
+    }
+
+    const index = await (deck as any).getActiveIndex();
+
+    return {
+      deck,
+      slide: deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')') as HTMLElement | null,
+    };
+  }
+
   private async openInformation($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-contrast-info',
+      component: 'app-slide-warning-info',
+      componentProps: {
+        lowContrast: this.warningLowContrast,
+        overflow: this.warningOverflow,
+      },
       event: $event,
       mode: 'ios',
       cssClass: 'info',
@@ -132,14 +192,26 @@ export class AppSlideContrast {
     return (
       <Host
         class={{
-          warning: this.warning,
+          warning: this.warningLowContrast || this.warningOverflow,
         }}>
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-label>Low contrast</ion-label>
+          {this.renderMsg()}
           <ion-icon name="warning-outline"></ion-icon>
         </button>
       </Host>
     );
+  }
+
+  private renderMsg() {
+    if (this.warningLowContrast && this.warningOverflow) {
+      return <ion-label>Low contrast + Overflow</ion-label>;
+    } else if (this.warningLowContrast) {
+      return <ion-label>Low contrast</ion-label>;
+    } else if (this.warningOverflow) {
+      return <ion-label>Overflow</ion-label>;
+    } else {
+      return undefined;
+    }
   }
 }
