@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/remote",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-remote/deckdeckgo-remotee.js",
+  "unpkg": "dist/deckdeckgo-remote/deckdeckgo-remotee.esm.js",
   "files": [
     "dist/",
     "README.md",

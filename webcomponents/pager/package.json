@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/pager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A pager for the progression of the presentation can optionally be displayed in form of a progress circle bar. ",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-pager/deckdeckgo-pager.js",
+  "unpkg": "dist/deckdeckgo-pager/deckdeckgo-pager.esm.js",
   "files": [
     "dist/",
     "README.md",
