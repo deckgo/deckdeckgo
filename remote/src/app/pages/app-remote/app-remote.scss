@@ -22,7 +22,7 @@ app-remote {
     .deck-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: calc((100vw - 32px) * 9 / 16) 1fr;
       grid-template-areas:
         "deck deck"
         "prev next";
@@ -30,7 +30,7 @@ app-remote {
       grid-gap: 16px;
 
       @media screen and (orientation: landscape) {
-        grid-template-rows: 4fr 2fr;
+        grid-template-rows: calc((((100vw - 32px) / 2) - 16px) * 9 / 16) 2fr;
       }
 
       .deck {

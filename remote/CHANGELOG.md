@@ -1,3 +1,9 @@
+# 1.10.0 (2020-10-23)
+
+### Features
+
+- preserve aspect ratio 16/9 ([#551](https://github.com/deckgo/deckdeckgo/issues/551))
+
 # 1.9.1 (2020-10-23)
 
 ### Build
