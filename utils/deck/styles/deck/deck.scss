@@ -41,6 +41,10 @@ deckgo-deck deckgo-lazy-img[slot] {
   outline: none;
 }
 
+deckgo-deck deckgo-lazy-img[slot] {
+  overflow: auto;
+}
+
 deckgo-deck li:not(:last-of-type) {
   margin: 0 0 4px;
 }
