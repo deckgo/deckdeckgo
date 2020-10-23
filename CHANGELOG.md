@@ -35,7 +35,7 @@
 
 - charts: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 - color: v3.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
-- core: v6.1.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+- core: v7.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - demo: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/demo/CHANGELOG.md))
 - drag-resize-rotate: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
 - highlight-code: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
