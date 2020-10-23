@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-title",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "The Title template is a simple slide which display a title and content centered in the middle of the presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-title/deckdeckgo-slide-title.js",
+  "unpkg": "dist/deckdeckgo-slide-title/deckdeckgo-slide-title.esm.js",
   "files": [
     "dist/",
     "README.md",

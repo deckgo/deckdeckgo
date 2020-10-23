@@ -61,8 +61,6 @@ export class AppInstallation {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;core@latest&#47;dist&#47;deckdeckgo&#47;deckdeckgo.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;core@latest&#47;dist&#47;deckdeckgo&#47;deckdeckgo.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h2 id="app-installation-install-deckdeckgo-from-npm">Install DeckDeckGo from NPM</h2>

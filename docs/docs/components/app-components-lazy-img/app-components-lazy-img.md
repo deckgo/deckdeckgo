@@ -30,7 +30,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.js"></script>
 ```
 
 ### Install from NPM

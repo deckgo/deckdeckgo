@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-aspect-ratio",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "This template lets you display the content of a slide with the same aspect ratio regardless of the devices.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-aspect-ratio/deckdeckgo-slide-aspect-ratio.js",
+  "unpkg": "dist/deckdeckgo-slide-aspect-ratio/deckdeckgo-slide-aspect-ratio.esm.js",
   "files": [
     "dist/",
     "README.md",

@@ -54,10 +54,7 @@ export class AppEditMarkdown {
           </ul>
           <h2 id="app-edit-markdown-introduction">Introduction</h2>
           <p>
-            When you edit your deck with Markdown, the{' '}
-            <a href="https://github.com/deckgo/deckdeckgo/tree/master/webpack" rel="noopener noreferrer">
-              DeckDeckGo Webpack Markdown Plugin
-            </a>{' '}
+            When you edit your deck with Markdown, the <a href="https://github.com/deckgo/deckdeckgo/tree/master/webpack">DeckDeckGo Webpack Markdown Plugin</a>{' '}
             will convert, at bundle time, your code to HTML and will inject the results in the <code>index.html</code> file. Doing so, your{' '}
             <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation will remain SEO friendly even without server side rendering.
           </p>

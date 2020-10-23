@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/youtube",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A Youtube Web Component player",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-youtube/deckdeckgo-youtube.js",
+  "unpkg": "dist/deckdeckgo-youtube/deckdeckgo-youtube.esm.js",
   "files": [
     "dist/",
     "README.md",

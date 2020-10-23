@@ -39,7 +39,6 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-aspect-ratio@latest/dist/deckdeckgo-slide-aspect-ratio/deckdeckgo-slide-aspect-ratio.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-aspect-ratio@latest/dist/deckdeckgo-slide-aspect-ratio/deckdeckgo-slide-aspect-ratio.js"></script>
 ```
 
 ### From NPM

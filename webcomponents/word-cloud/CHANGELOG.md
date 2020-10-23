@@ -1,3 +1,15 @@
+# 1.0.4 (2020-10-23)
+
+### Build
+
+- Stencil is a dev dependency
+
+# 1.0.3 (2020-10-23)
+
+### Fix
+
+- es5 has been dropped with v2, update `unpkg` reference
+
 # 1.0.2 (2020-10-17)
 
 ### Fix

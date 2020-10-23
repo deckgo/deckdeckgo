@@ -258,8 +258,6 @@ export class AppComponentsCharts {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;charts@latest&#47;dist&#47;deckdeckgo-charts&#47;deckdeckgo-charts.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;charts@latest&#47;dist&#47;deckdeckgo-charts&#47;deckdeckgo-charts.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-charts-install-deckdeckgo-charts-from-npm">Install DeckDeckGo charts from NPM</h3>

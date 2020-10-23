@@ -81,8 +81,6 @@ export class AppComponentsMath {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;math@latest&#47;dist&#47;deckdeckgo-math&#47;deckdeckgo-math.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;math@latest&#47;dist&#47;deckdeckgo-math&#47;deckdeckgo-math.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-math-install-from-npm">Install from NPM</h3>

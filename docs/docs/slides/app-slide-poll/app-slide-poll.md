@@ -58,7 +58,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use this template from a 
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-poll@latest/dist/deckdeckgo-slide-poll/deckdeckgo-slide-poll.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-poll@latest/dist/deckdeckgo-slide-poll/deckdeckgo-slide-poll.js"></script>
 ```
 
 ### From NPM

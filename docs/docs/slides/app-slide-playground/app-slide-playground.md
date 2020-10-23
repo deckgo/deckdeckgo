@@ -42,7 +42,6 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-playground@latest/dist/deckdeckgo-slide-playground/deckdeckgo-slide-playground.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-playground@latest/dist/deckdeckgo-slide-playground/deckdeckgo-slide-playground.js"></script>
 ```
 
 ### From NPM

@@ -78,7 +78,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] Code
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.js"></script>
 ```
 
 ### Install DeckDeckGo Highlight Code from NPM

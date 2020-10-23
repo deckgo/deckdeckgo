@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/qrcode",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A Web Component to generate QR code",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-qrcode/deckdeckgo-qrcode.js",
+  "unpkg": "dist/deckdeckgo-qrcode/deckdeckgo-qrcode.esm.js",
   "files": [
     "dist/",
     "README.md",

@@ -92,8 +92,6 @@ export class AppSlideBigImg {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-big-img@latest&#47;dist&#47;deckdeckgo-slide-big-img&#47;deckdeckgo-slide-big-img.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-big-img@latest&#47;dist&#47;deckdeckgo-slide-big-img&#47;deckdeckgo-slide-big-img.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-big-img-from-npm">From NPM</h3>

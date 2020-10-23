@@ -38,11 +38,8 @@ export class AppComponentsGif {
         <main>
           <h1 id="app-components-gif-gif">GIF</h1>
           <p>
-            The &quot;GIF&quot; component allows you to easily add a GIF, like those provided by{' '}
-            <a href="https://giphy.com" rel="noopener noreferrer">
-              Giphy
-            </a>
-            , in almost any slide of your presentation.
+            The &quot;GIF&quot; component allows you to easily add a GIF, like those provided by <a href="https://giphy.com">Giphy</a>, in almost any slide of
+            your presentation.
           </p>
           <h2 id="app-components-gif-table-of-contents">Table of contents</h2>
           <ul>
@@ -133,7 +130,7 @@ export class AppComponentsGif {
                 <td>fullscreen</td>
                 <td>number</td>
                 <td>false</td>
-                <td>If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen.</td>
+                <td>If set to true, the GIF width and height will be related to the slide width and height respectively will be fullscreen.</td>
               </tr>
             </tbody>
           </table>
@@ -193,7 +190,7 @@ export class AppComponentsGif {
           </table>
           <h2 id="app-components-gif-note">Note</h2>
           <p>
-            Of course, as other images added to a presentation build with <a href="https://deckdeckgo.com">DeckDeckGo</a>, gifs are lazy loaded too.{' '}
+            Of course, as other images added to a presentation build with <a href="https://deckdeckgo.com">DeckDeckGo</a>, gifs are lazy loaded too.
           </p>
         </main>
 

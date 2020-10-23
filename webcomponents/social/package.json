@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/social",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A Web Component to generate social link to your Twitter, Dev, Medium, LinkedIn, GitHub accounts or a custom uri",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-social/deckdeckgo-social.js",
+  "unpkg": "dist/deckdeckgo-social/deckdeckgo-social.esm.js",
   "files": [
     "dist/",
     "README.md",

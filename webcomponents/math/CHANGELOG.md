@@ -1,3 +1,15 @@
+# 2.0.3 (2020-10-23)
+
+### Fix
+
+- `unpkg` default path
+
+# 2.0.2 (2020-10-23)
+
+### Fix
+
+- no `unpkg` reference in `package.json` (`main` will be use)
+
 # 2.0.1 (2020-10-17)
 
 ### Fix

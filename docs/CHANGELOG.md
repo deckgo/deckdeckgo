@@ -1,3 +1,9 @@
+# 2.5.1 (2020-10-23)
+
+### Build
+
+- update dependencies
+
 # 2.5.0 (2020-10-11)
 
 ### Features

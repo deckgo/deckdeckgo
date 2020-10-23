@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/demo",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Display your apps or websites inside an Android or iOS frame.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-demo/deckdeckgo-demo.js",
+  "unpkg": "dist/deckdeckgo-demo/deckdeckgo-demo.esm.js",
   "files": [
     "dist/",
     "README.md",

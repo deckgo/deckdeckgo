@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-video",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "The Video template displays a video and play/stop it on swipe",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-video/deckdeckgo-slide-video.js",
+  "unpkg": "dist/deckdeckgo-slide-video/deckdeckgo-slide-video.esm.js",
   "files": [
     "dist/",
     "README.md",
