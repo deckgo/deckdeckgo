@@ -59,7 +59,7 @@ export class AppSlideWarning {
 
   private async detectWarnings() {
     this.warningLowContrast = await this.hasLowContrast();
-    this.warningOverflow = await this.hasOverflow();
+    this.debounceResizeWarningOverflow();
   }
 
   private async hasOverflow(): Promise<boolean> {
