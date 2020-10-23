@@ -1,3 +1,11 @@
+<a name="3.0.1"></a>
+
+# 3.0.1 (2020-10-23)
+
+### Fix
+
+- lazy img should remain applied with a scroll auto
+
 <a name="3.0.0"></a>
 
 # 3.0.0 (2020-10-23)
