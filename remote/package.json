@@ -42,7 +42,7 @@
     "@deckdeckgo/slide-youtube": "^2.1.1",
     "@deckdeckgo/social": "^3.0.1",
     "@deckdeckgo/utils": "^1.3.0",
-    "@deckdeckgo/word-cloud": "^1.0.3",
+    "@deckdeckgo/word-cloud": "^1.0.4",
     "@deckdeckgo/youtube": "^2.0.1",
     "@ionic/core": "^5.4.1",
     "date-fns": "^2.16.1",

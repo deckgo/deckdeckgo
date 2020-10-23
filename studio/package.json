@@ -43,7 +43,7 @@
     "@deckdeckgo/slide-youtube": "^2.1.1",
     "@deckdeckgo/social": "^3.0.1",
     "@deckdeckgo/utils": "^1.3.0",
-    "@deckdeckgo/word-cloud": "^1.0.3",
+    "@deckdeckgo/word-cloud": "^1.0.4",
     "@deckdeckgo/youtube": "^2.0.1",
     "@ionic/core": "^5.4.1",
     "firebase": "^7.24.0",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@deckdeckgo/types": "^1.1.0",
     "@rollup/plugin-replace": "^2.3.3",
-    "@stencil/core": "^2.1.0",
+    "@stencil/core": "^2.0.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.3.2",
     "@stencil/store": "^1.3.0",
