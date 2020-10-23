@@ -1,3 +1,9 @@
+# 2.0.2 (2020-10-17)
+
+### Fix
+
+- no `unpkg` reference in `package.json` (`main` will be use)
+
 # 2.0.1 (2020-10-17)
 
 ### Fix
