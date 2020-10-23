@@ -93,8 +93,6 @@ export class AppSlideTitle {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-title@latest&#47;dist&#47;deckdeckgo-slide-title&#47;deckdeckgo-slide-title.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-title@latest&#47;dist&#47;deckdeckgo-slide-title&#47;deckdeckgo-slide-title.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-title-from-npm">From NPM</h3>

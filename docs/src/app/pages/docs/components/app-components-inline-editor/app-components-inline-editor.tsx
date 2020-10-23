@@ -115,8 +115,6 @@ export class AppComponentsInlineEditor {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;inline-editor@latest&#47;dist&#47;deckdeckgo-inline-editor&#47;deckdeckgo-inline-editor.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;inline-editor@latest&#47;dist&#47;deckdeckgo-inline-editor&#47;deckdeckgo-inline-editor.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-inline-editor-install-from-npm">Install from NPM</h3>

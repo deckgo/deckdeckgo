@@ -34,7 +34,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] soci
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.js"></script>
 ```
 
 ### Install from NPM

@@ -117,7 +117,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] char
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.js"></script>
 ```
 
 ### Install DeckDeckGo charts from NPM

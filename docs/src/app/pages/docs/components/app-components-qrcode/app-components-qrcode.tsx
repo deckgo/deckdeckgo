@@ -89,8 +89,6 @@ export class AppComponentsQRCode {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;qrcode@latest&#47;dist&#47;deckdeckgo-qrcode&#47;deckdeckgo-qrcode.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;qrcode@latest&#47;dist&#47;deckdeckgo-qrcode&#47;deckdeckgo-qrcode.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-qrcode-install-deckdeckgo-qr-code-from-npm">Install DeckDeckGo QR Code from NPM</h3>

@@ -18,9 +18,9 @@ export class AppComponentsYoutube {
 
       <ion-content class="ion-padding">
         <main>
-          <h1 id="app-components-youtube-youtube">Youtube</h1>
+          <h1 id="app-components-youtube-youtube">YouTube</h1>
           <p>
-            The &quot;YouTube&quot; component allows you to easily add a <a href="https://youtube.com">Youtube</a> video in almost any slide of your
+            The &quot;YouTube&quot; component allows you to easily add a <a href="https://youtube.com">YouTube</a> video in almost any slide of your
             presentation.
           </p>
           <h2 id="app-components-youtube-table-of-contents">Table of contents</h2>
@@ -78,8 +78,6 @@ export class AppComponentsYoutube {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;youtube@latest&#47;dist&#47;deckdeckgo-youtube&#47;deckdeckgo-youtube.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;youtube@latest&#47;dist&#47;deckdeckgo-youtube&#47;deckdeckgo-youtube.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-youtube-install-from-npm">Install from NPM</h3>

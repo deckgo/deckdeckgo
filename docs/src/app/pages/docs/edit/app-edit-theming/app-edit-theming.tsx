@@ -29,10 +29,7 @@ export class AppEditTheming {
           <h2 id="app-edit-theming-theme">Theme</h2>
           <p>
             To create the theme for your deck when you are using the <a href="https://deckdeckgo.com">DeckDeckGo</a> starter kit, use the{' '}
-            <a href="https://ionicframework.com/docs/theming/color-generator" rel="noopener noreferrer">
-              Ionic Color Generator
-            </a>{' '}
-            to pick the colors of your choice.
+            <a href="https://ionicframework.com/docs/theming/color-generator">Ionic Color Generator</a> to pick the colors of your choice.
           </p>
           <p>
             Once done, <code>copy</code> the generated CSS variables and <code>paste</code> them into the <code>src/css/variables.css</code> file of your

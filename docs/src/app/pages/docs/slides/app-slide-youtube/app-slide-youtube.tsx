@@ -28,7 +28,7 @@ export class AppSlideYoutube {
         <main>
           <h1 id="app-slide-youtube-slide-youtube">Slide: YouTube</h1>
           <p>
-            The &quot;Youtube&quot; slide let you add easily a <a href="https://youtube.com">Youtube</a> video to your presentation.
+            The &quot;YouTube&quot; slide let you add easily a <a href="https://youtube.com">YouTube</a> video to your presentation.
           </p>
           <h2 id="app-slide-youtube-table-of-contents">Table of contents</h2>
           <ul>
@@ -110,8 +110,6 @@ export class AppSlideYoutube {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-youtube@latest&#47;dist&#47;deckdeckgo-slide-youtube&#47;deckdeckgo-slide-youtube.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-youtube@latest&#47;dist&#47;deckdeckgo-slide-youtube&#47;deckdeckgo-slide-youtube.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-youtube-from-npm">From NPM</h3>
@@ -148,7 +146,7 @@ export class AppSlideYoutube {
           </p>
           <h2 id="app-slide-youtube-usage">Usage</h2>
           <p>
-            The &quot;Youtube&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-youtube/&gt;</code>.
+            The &quot;YouTube&quot; slide&#39;s Web Component could be integrated using the tag <code>&lt;deckgo-slide-youtube/&gt;</code>.
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -162,7 +160,7 @@ export class AppSlideYoutube {
           </p>
           <h3 id="app-slide-youtube-youtube-component-1">YouTube component</h3>
           <p>
-            The slide &quot;Youtube&quot; relies on the component <code>&lt;deckgo-youtube/&gt;</code> which is described in the components{' '}
+            The slide &quot;YouTube&quot; relies on the component <code>&lt;deckgo-youtube/&gt;</code> which is described in the components{' '}
             <a href="https://github.com/deckgo/deckdeckgo/blob/master/doc/components/components.md">documentation</a>.
           </p>
           <h2 id="app-slide-youtube-attributes">Attributes</h2>

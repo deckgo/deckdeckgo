@@ -28,7 +28,7 @@ export class AppSlideGif {
         <main>
           <h1 id="app-slide-gif-slide-gif">Slide: GIF</h1>
           <p>
-            The &quot;GIF&quot; slide let you add easily a gif, like those provided by <a href="https://giphy.com">Giphy</a>, to your presentation.
+            The &quot;GIF&quot; slide let you add easily a GIF, like those provided by <a href="https://giphy.com">Giphy</a>, to your presentation.
           </p>
           <h2 id="app-slide-gif-table-of-contents">Table of contents</h2>
           <ul>
@@ -105,8 +105,6 @@ export class AppSlideGif {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-gif@latest&#47;dist&#47;deckdeckgo-slide-gif&#47;deckdeckgo-slide-gif.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-gif@latest&#47;dist&#47;deckdeckgo-slide-gif&#47;deckdeckgo-slide-gif.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-gif-from-npm">From NPM</h3>
@@ -188,7 +186,7 @@ export class AppSlideGif {
                 <td>fullscreen</td>
                 <td>number</td>
                 <td>true</td>
-                <td>If set to true, the gif width and height will be related to the slide width and height respectively will be fullscreen.</td>
+                <td>If set to true, the GIF width and height will be related to the slide width and height respectively will be fullscreen.</td>
               </tr>
               <tr>
                 <td>custom-background</td>
