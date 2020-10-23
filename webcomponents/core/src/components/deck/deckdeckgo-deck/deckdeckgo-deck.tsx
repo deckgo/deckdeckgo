@@ -197,12 +197,14 @@ export class DeckdeckgoDeck {
         slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
       }
 
+      await this.initFontSize(slider, sliderSize.height);
+
       resolve();
     });
   }
 
   private initSlideSizeEmbedded(slider: HTMLElement): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(async (resolve) => {
       if (!slider.offsetParent) {
         resolve();
         return;
@@ -222,10 +224,19 @@ export class DeckdeckgoDeck {
           slider.style.removeProperty('--slide-min-height');
           slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
+
+        await this.initFontSize(slider, slider.offsetParent.clientHeight);
       }
 
       resolve();
     });
+  }
+
+  private async initFontSize(slider: HTMLElement, height: number) {
+    // 576px height = font-size 16px or 1em (relative to the font-size of its direct or nearest parent)
+    const fontSize: number = height / 576;
+
+    slider.style.setProperty('--slide-auto-font-size', `${fontSize}em`);
   }
 
   private initKeyboardAssist() {

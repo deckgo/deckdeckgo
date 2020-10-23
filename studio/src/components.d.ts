@@ -124,8 +124,6 @@ export namespace Components {
     }
     interface AppContactForm {
     }
-    interface AppContrastInfo {
-    }
     interface AppCreateSlide {
     }
     interface AppCustomData {
@@ -155,7 +153,7 @@ export namespace Components {
         "signIn": EventEmitter<void>;
     }
     interface AppDeckTransition {
-        "deckElement": HTMLElement;
+        "deckElement": HTMLDeckgoDeckElement;
     }
     interface AppDemo {
         "selectedElement": HTMLElement;
@@ -386,9 +384,13 @@ export namespace Components {
         "redirect": string;
         "redirectId": string;
     }
-    interface AppSlideContrast {
-    }
     interface AppSlideNavigate {
+    }
+    interface AppSlideWarning {
+    }
+    interface AppSlideWarningInfo {
+        "lowContrast": boolean;
+        "overflow": boolean;
     }
     interface AppSlotType {
         "selectedElement": HTMLElement;
@@ -554,12 +556,6 @@ declare global {
     var HTMLAppContactFormElement: {
         prototype: HTMLAppContactFormElement;
         new (): HTMLAppContactFormElement;
-    };
-    interface HTMLAppContrastInfoElement extends Components.AppContrastInfo, HTMLStencilElement {
-    }
-    var HTMLAppContrastInfoElement: {
-        prototype: HTMLAppContrastInfoElement;
-        new (): HTMLAppContrastInfoElement;
     };
     interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {
     }
@@ -1053,17 +1049,23 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
-    interface HTMLAppSlideContrastElement extends Components.AppSlideContrast, HTMLStencilElement {
-    }
-    var HTMLAppSlideContrastElement: {
-        prototype: HTMLAppSlideContrastElement;
-        new (): HTMLAppSlideContrastElement;
-    };
     interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {
     }
     var HTMLAppSlideNavigateElement: {
         prototype: HTMLAppSlideNavigateElement;
         new (): HTMLAppSlideNavigateElement;
+    };
+    interface HTMLAppSlideWarningElement extends Components.AppSlideWarning, HTMLStencilElement {
+    }
+    var HTMLAppSlideWarningElement: {
+        prototype: HTMLAppSlideWarningElement;
+        new (): HTMLAppSlideWarningElement;
+    };
+    interface HTMLAppSlideWarningInfoElement extends Components.AppSlideWarningInfo, HTMLStencilElement {
+    }
+    var HTMLAppSlideWarningInfoElement: {
+        prototype: HTMLAppSlideWarningInfoElement;
+        new (): HTMLAppSlideWarningInfoElement;
     };
     interface HTMLAppSlotTypeElement extends Components.AppSlotType, HTMLStencilElement {
     }
@@ -1149,7 +1151,6 @@ declare global {
         "app-color-word-cloud": HTMLAppColorWordCloudElement;
         "app-contact": HTMLAppContactElement;
         "app-contact-form": HTMLAppContactFormElement;
-        "app-contrast-info": HTMLAppContrastInfoElement;
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
@@ -1232,8 +1233,9 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
-        "app-slide-contrast": HTMLAppSlideContrastElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
+        "app-slide-warning": HTMLAppSlideWarningElement;
+        "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-team": HTMLAppTeamElement;
         "app-terms": HTMLAppTermsElement;
@@ -1376,8 +1378,6 @@ declare namespace LocalJSX {
     }
     interface AppContactForm {
     }
-    interface AppContrastInfo {
-    }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
     }
@@ -1413,7 +1413,7 @@ declare namespace LocalJSX {
         "signIn"?: EventEmitter<void>;
     }
     interface AppDeckTransition {
-        "deckElement"?: HTMLElement;
+        "deckElement"?: HTMLDeckgoDeckElement;
         "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
         "onTransitionChange"?: (event: CustomEvent<void>) => void;
     }
@@ -1665,10 +1665,14 @@ declare namespace LocalJSX {
         "redirect"?: string;
         "redirectId"?: string;
     }
-    interface AppSlideContrast {
-    }
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+    }
+    interface AppSlideWarning {
+    }
+    interface AppSlideWarningInfo {
+        "lowContrast"?: boolean;
+        "overflow"?: boolean;
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
@@ -1720,7 +1724,6 @@ declare namespace LocalJSX {
         "app-color-word-cloud": AppColorWordCloud;
         "app-contact": AppContact;
         "app-contact-form": AppContactForm;
-        "app-contrast-info": AppContrastInfo;
         "app-create-slide": AppCreateSlide;
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
@@ -1803,8 +1806,9 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
-        "app-slide-contrast": AppSlideContrast;
         "app-slide-navigate": AppSlideNavigate;
+        "app-slide-warning": AppSlideWarning;
+        "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
         "app-team": AppTeam;
         "app-terms": AppTerms;
@@ -1844,7 +1848,6 @@ declare module "@stencil/core" {
             "app-color-word-cloud": LocalJSX.AppColorWordCloud & JSXBase.HTMLAttributes<HTMLAppColorWordCloudElement>;
             "app-contact": LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
             "app-contact-form": LocalJSX.AppContactForm & JSXBase.HTMLAttributes<HTMLAppContactFormElement>;
-            "app-contrast-info": LocalJSX.AppContrastInfo & JSXBase.HTMLAttributes<HTMLAppContrastInfoElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
@@ -1927,8 +1930,9 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
-            "app-slide-contrast": LocalJSX.AppSlideContrast & JSXBase.HTMLAttributes<HTMLAppSlideContrastElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
+            "app-slide-warning": LocalJSX.AppSlideWarning & JSXBase.HTMLAttributes<HTMLAppSlideWarningElement>;
+            "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
             "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;

@@ -12,7 +12,7 @@ export class AppDeckTransition {
   @Element() el: HTMLElement;
 
   @Prop()
-  deckElement: HTMLElement;
+  deckElement: HTMLDeckgoDeckElement;
 
   @Event() private transitionChange: EventEmitter<void>;
 
@@ -145,6 +145,8 @@ export class AppDeckTransition {
     this.selectedDirection = direction;
 
     this.transitionChange.emit();
+
+    await this.deckElement.initSlideSize();
   }
 
   private async goToFirstSlide() {

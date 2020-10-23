@@ -104,11 +104,19 @@ export class AppEditor {
   @State()
   private fullscreen: boolean = false;
 
+  @State()
+  private mainSize: {width: string; height: string};
+
   private destroyBusyListener;
   private destroyAuthListener;
 
   private deckRef!: HTMLDeckgoDeckElement;
   private actionsEditorRef!: HTMLAppActionsEditorElement;
+  private contentRef!: HTMLElement;
+  private mainRef!: HTMLElement;
+
+  private mainResizeObserver: ResizeObserverConstructor;
+  private slideResizeObserver: ResizeObserverConstructor;
 
   constructor() {
     this.authService = AuthService.getInstance();
@@ -196,6 +204,8 @@ export class AppEditor {
   }
 
   async componentDidLoad() {
+    await this.initResize();
+
     await this.updateInlineEditorListener();
 
     await this.remoteEventsHandler.init(this.el);
@@ -217,6 +227,17 @@ export class AppEditor {
 
     if (this.destroyAuthListener) {
       this.destroyAuthListener();
+    }
+
+    if (this.slideResizeObserver) {
+      this.slideResizeObserver.unobserve(this.mainRef);
+      this.slideResizeObserver.disconnect();
+    }
+
+    if (this.mainResizeObserver) {
+      this.mainResizeObserver.unobserve(this.contentRef);
+      this.mainResizeObserver.unobserve(this.actionsEditorRef);
+      this.mainResizeObserver.disconnect();
     }
   }
 
@@ -514,11 +535,90 @@ export class AppEditor {
     // Per default, when we switch to the fullscreen mode, we want to present the presentation not edit it
     await this.updatePresenting(this.fullscreen);
 
-    // Wait a bit for the display/repaint of the footer
-    setTimeout(async () => {
-      await this.deckEventsHandler.initSlideSize();
-    }, 100);
+    await this.initSizeOldBrowser();
   };
+
+  private async initResize() {
+    if (window && 'ResizeObserver' in window) {
+      this.initMainSizeObserver();
+      this.initSlideSizeObserver();
+    } else {
+      await this.initSizeOldBrowser();
+    }
+  }
+
+  private async initSizeOldBrowser() {
+    if (window && 'ResizeObserver' in window) {
+      return;
+    }
+
+    setTimeout(async () => {
+      this.initMainSize();
+      await this.initSlideSize();
+    }, 100);
+  }
+
+  private initMainSizeObserver() {
+    this.mainResizeObserver = new ResizeObserver((_entries) => {
+      this.initMainSize();
+    });
+
+    if (this.contentRef) {
+      this.mainResizeObserver.observe(this.contentRef);
+    }
+
+    if (this.actionsEditorRef) {
+      this.mainResizeObserver.observe(this.actionsEditorRef);
+    }
+  }
+
+  private initMainSize() {
+    if (!this.contentRef || isFullscreen() || isMobile()) {
+      this.mainSize = {
+        width: isMobile() ? 'calc(100% - 32px)' : '100%',
+        height: isMobile() ? 'calc(100% - 32px)' : '100%',
+      };
+      return;
+    }
+
+    const maxHeight: number = this.contentRef.offsetHeight - 32;
+
+    const width: number = this.contentRef.offsetWidth - 32;
+    const height: number = (width * 9) / 16;
+
+    this.mainSize =
+      height > maxHeight
+        ? {
+            width: `${(maxHeight * 16) / 9}px`,
+            height: `${maxHeight}px`,
+          }
+        : {
+            width: `${width}px`,
+            height: `${height}px`,
+          };
+  }
+
+  private initSlideSizeObserver() {
+    if (!this.mainRef) {
+      return;
+    }
+
+    this.slideResizeObserver = new ResizeObserver(async (_entries) => {
+      await this.initSlideSize();
+
+      if (this.activeIndex < 0) {
+        return;
+      }
+
+      await this.deckRef?.slideTo(this.activeIndex);
+    });
+
+    this.slideResizeObserver.observe(this.mainRef);
+  }
+
+  private async initSlideSize() {
+    await this.deckEventsHandler.initSlideSize();
+  }
 
   @Listen('signIn', {target: 'document'})
   async signIn() {
@@ -618,8 +718,11 @@ export class AppEditor {
 
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content>
-        <main class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}>
+      <ion-content ref={(el) => (this.contentRef = el as HTMLElement)}>
+        <main
+          ref={(el) => (this.mainRef = el as HTMLElement)}
+          class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
+          style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
           {this.renderLoading()}
           <deckgo-deck
             ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
@@ -641,7 +744,7 @@ export class AppEditor {
             {this.footer}
           </deckgo-deck>
           <deckgo-remote autoConnect={false}></deckgo-remote>
-          <app-slide-contrast></app-slide-contrast>
+          <app-slide-warning></app-slide-warning>
         </main>
       </ion-content>,
       <app-actions-editor

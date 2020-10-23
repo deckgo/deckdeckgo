@@ -1,3 +1,9 @@
+# 7.0.0 (2020-10-23)
+
+### Features
+
+- apply a responsive base font size on the deck according screen height (can be override with a CSS4 variable)
+
 # 6.1.2 (2020-10-23)
 
 ### Fix
