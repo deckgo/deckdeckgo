@@ -23,6 +23,12 @@ import { ItemReorderEventDetail } from "@ionic/core";
 export namespace Components {
     interface AppAbout {
     }
+    interface AppActionAddSlide {
+        "addSlide": EventEmitter;
+        "blockSlide": EventEmitter;
+        "signIn": EventEmitter;
+        "slides": JSX.IntrinsicElements[];
+    }
     interface AppActionBusy {
         "iconSrc": string;
     }
@@ -424,6 +430,12 @@ declare global {
     var HTMLAppAboutElement: {
         prototype: HTMLAppAboutElement;
         new (): HTMLAppAboutElement;
+    };
+    interface HTMLAppActionAddSlideElement extends Components.AppActionAddSlide, HTMLStencilElement {
+    }
+    var HTMLAppActionAddSlideElement: {
+        prototype: HTMLAppActionAddSlideElement;
+        new (): HTMLAppActionAddSlideElement;
     };
     interface HTMLAppActionBusyElement extends Components.AppActionBusy, HTMLStencilElement {
     }
@@ -1129,6 +1141,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "app-about": HTMLAppAboutElement;
+        "app-action-add-slide": HTMLAppActionAddSlideElement;
         "app-action-busy": HTMLAppActionBusyElement;
         "app-action-help": HTMLAppActionHelpElement;
         "app-action-share": HTMLAppActionShareElement;
@@ -1250,6 +1263,12 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AppAbout {
+    }
+    interface AppActionAddSlide {
+        "addSlide"?: EventEmitter;
+        "blockSlide"?: EventEmitter;
+        "signIn"?: EventEmitter;
+        "slides"?: JSX.IntrinsicElements[];
     }
     interface AppActionBusy {
         "iconSrc"?: string;
@@ -1702,6 +1721,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "app-about": AppAbout;
+        "app-action-add-slide": AppActionAddSlide;
         "app-action-busy": AppActionBusy;
         "app-action-help": AppActionHelp;
         "app-action-share": AppActionShare;
@@ -1826,6 +1846,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "app-about": LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
+            "app-action-add-slide": LocalJSX.AppActionAddSlide & JSXBase.HTMLAttributes<HTMLAppActionAddSlideElement>;
             "app-action-busy": LocalJSX.AppActionBusy & JSXBase.HTMLAttributes<HTMLAppActionBusyElement>;
             "app-action-help": LocalJSX.AppActionHelp & JSXBase.HTMLAttributes<HTMLAppActionHelpElement>;
             "app-action-share": LocalJSX.AppActionShare & JSXBase.HTMLAttributes<HTMLAppActionShareElement>;
