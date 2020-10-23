@@ -22,7 +22,6 @@ It's recommended to use [unpkg](https://unpkg.com/) as a CDN for the [DeckDeckGo
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.js"></script>
 ```
 
 ## Install DeckDeckGo from NPM

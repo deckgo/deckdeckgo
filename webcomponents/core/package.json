@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/core",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "description": "Add a presentation to your web application using HTML and Web Components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo/deckdeckgo.js",
+  "unpkg": "dist/deckdeckgo/deckdeckgo.esm.js",
   "files": [
     "dist/",
     "README.md",

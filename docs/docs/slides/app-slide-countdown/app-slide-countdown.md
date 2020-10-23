@@ -43,7 +43,6 @@ It's recommended to use [unpkg](https://unpkg.com/) if you want to use this temp
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.js"></script>
 ```
 
 ### From NPM

@@ -109,8 +109,6 @@ export class AppSlideContent {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-split@latest&#47;dist&#47;deckdeckgo-slide-split&#47;deckdeckgo-slide-split.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;slide-split@latest&#47;dist&#47;deckdeckgo-slide-split&#47;deckdeckgo-slide-split.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-slide-split-from-npm">From NPM</h3>

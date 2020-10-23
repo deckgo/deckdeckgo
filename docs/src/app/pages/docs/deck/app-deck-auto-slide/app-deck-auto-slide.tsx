@@ -19,7 +19,7 @@ export class AppDeckAutoSlide {
       <ion-content class="ion-padding">
         <main>
           <h1 id="app-deck-auto-slide-auto-slide">Auto Slide</h1>
-          <p>The presentations can be configured to swipe slides automatically, without any user inputs. </p>
+          <p>The presentations can be configured to swipe slides automatically, without any user inputs.</p>
           <p>Per default, if activated, the auto slide interval is set to 5000 ms</p>
           <h2 id="app-deck-auto-slide-properties">Properties</h2>
           <p>

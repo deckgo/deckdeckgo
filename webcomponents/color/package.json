@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/color",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "A color picker developed with Web Components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/interface.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-color/deckdeckgo-color.js",
+  "unpkg": "dist/deckdeckgo-color/deckdeckgo-color.esm.js",
   "files": [
     "dist/",
     "README.md",

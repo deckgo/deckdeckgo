@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-split",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "The Split template is a simple slide to display the content in two columns on a slide of your presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-split/deckdeckgo-slide-split.js",
+  "unpkg": "dist/deckdeckgo-slide-split/deckdeckgo-slide-split.esm.js",
   "files": [
     "dist/",
     "README.md",

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/lazy-img",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A dead simple Web Component to lazy load images",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/interface.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.js",
+  "unpkg": "dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js",
   "files": [
     "dist/",
     "README.md",

@@ -189,7 +189,7 @@ export class AppSlidesConcept {
 
           <ul>
             <li>
-              Slide: <a href="/slides/youtube">Youtube</a>
+              Slide: <a href="/slides/youtube">YouTube</a>
             </li>
           </ul>
           <div class="container ion-margin">

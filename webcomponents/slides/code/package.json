@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-code",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "The Code template let you display code in your presentation by referencing an url or including your own code",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-code/deckdeckgo-slide-code.js",
+  "unpkg": "dist/deckdeckgo-slide-code/deckdeckgo-slide-code.esm.js",
   "files": [
     "dist/",
     "README.md",

@@ -40,7 +40,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/color@latest/dist/deckdeckgo-color/deckdeckgo-color.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/color@latest/dist/deckdeckgo-color/deckdeckgo-color.js"></script>
 ```
 
 ### Install from NPM

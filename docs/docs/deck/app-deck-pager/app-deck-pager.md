@@ -25,7 +25,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] page
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/pager@latest/dist/deckdeckgo-pager/deckdeckgo-pager.js"></script>
 ```
 
 ### Install from NPM

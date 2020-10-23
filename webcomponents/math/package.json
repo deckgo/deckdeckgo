@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/math",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A Web Component to write and render math expressions",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,6 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-math/deckdeckgo-math.esm.js",
   "files": [
     "dist/",
     "README.md",

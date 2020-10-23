@@ -39,7 +39,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] word
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/word-cloud@latest/dist/deckdeckgo-word-cloud/deckdeckgo-word-cloud.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/browse/@deckdeckgo/word-cloud@latest/dist/deckdeckgo-word-cloud/deckdeckgo-word-cloud.js"></script>
 ```
 
 ### Install from NPM

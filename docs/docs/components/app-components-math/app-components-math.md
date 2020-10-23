@@ -38,7 +38,6 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/math@latest/dist/deckdeckgo-math/deckdeckgo-math.esm.js"></script>
-<script nomodule="" src="https://unpkg.com/@deckdeckgo/math@latest/dist/deckdeckgo-math/deckdeckgo-math.js"></script>
 ```
 
 ### Install from NPM

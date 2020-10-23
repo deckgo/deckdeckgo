@@ -100,8 +100,6 @@ export class AppComponentsColor {
             <code slot="code">
               &lt;script type=&quot;module&quot;
               src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;color@latest&#47;dist&#47;deckdeckgo-color&#47;deckdeckgo-color.esm.js&quot;&gt;&lt;&#47;script&gt;
-              {'\n'}&lt;script nomodule=&quot;&quot;
-              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;color@latest&#47;dist&#47;deckdeckgo-color&#47;deckdeckgo-color.js&quot;&gt;&lt;&#47;script&gt;
             </code>
           </deckgo-highlight-code>
           <h3 id="app-components-color-install-from-npm">Install from NPM</h3>

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-author",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "The Author template lets you quickly some information about yourself or about the author of the presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-author/deckdeckgo-slide-author.js",
+  "unpkg": "dist/deckdeckgo-slide-author/deckdeckgo-slide-author.esm.js",
   "files": [
     "dist/",
     "README.md",
