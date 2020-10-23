@@ -1,3 +1,12 @@
+<a name="3.0.0"></a>
+
+# 3.0.0 (2020-10-18)
+
+### Features
+
+- the presentation base font is responsive and applied by the core according screen height
+- editable content is resizing according users' entries (no overflow scroll)
+
 <a name="2.8.0"></a>
 
 # 2.8.0 (2020-10-18)

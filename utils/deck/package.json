@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/deck-utils",
-  "version": "2.8.0",
+  "version": "3.0.0",
   "author": "David Dal Busco",
   "description": "Utils and styles for the DeckDeckGo applications",
   "license": "MIT",
