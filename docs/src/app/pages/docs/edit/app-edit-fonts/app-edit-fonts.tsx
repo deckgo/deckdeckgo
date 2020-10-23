@@ -12,18 +12,20 @@ export class AppEditFonts {
         <main>
           <h1 id="app-edit-fonts-fonts">Fonts</h1>
           <p>
-            As any web application, the fonts of your presentation could be easily styled, but <a href="https://deckdeckgo.com">DeckDeckGo</a> goes one step
-            further by downloading and installing <strong>automatically</strong> any <a href="https://fonts.google.com">Google Fonts</a> you would like to use
-            during the setup process (if you are using the starter kit).
-          </p>
-          <h2 id="app-edit-fonts-using-automatically-any-google-fonts">Using automatically any Google Fonts</h2>
-          <p>
-            After you have kick-started your presentation running <code>npm init deckdeckgo</code> in a terminal and provided the information as described in
-            the <a href="https://docs.deckdeckgo.com/docs/introduction">Getting started</a> chapter, the <a href="https://deckdeckgo.com">DeckDeckGo</a> CLI
-            will ask you if you are looking to use Google Fonts, and subsequently will try gathering more information of the required font.
+            According the window or container height in which the deck is provided, <a href="https://deckdeckgo.com">DeckDeckGo</a> will calculate a responsive
+            base font size for the presentation.
           </p>
           <p>
-            Once all the information is accumulated, it will automatically download the fonts, add them to your presentation and even update the settings in the
+            If you wish to overwrite this automatic setting, you can provide a custom size by applying a CSS4 variable <code>--slide-font-size</code> on the
+            main <code>&lt;deckgo-deck/&gt;</code> element.
+          </p>
+          <h2 id="app-edit-fonts-google-fonts">Google Fonts</h2>
+          <p>
+            While using the developer kit, the <a href="https://deckdeckgo.com">DeckDeckGo</a> CLI will prompt you about the optional use of{' '}
+            <a href="https://fonts.google.com">Google Fonts</a>, and subsequently will try gathering more information of the required font.
+          </p>
+          <p>
+            Once all the information accumulated, it will automatically download the fonts, add them to your presentation and even update the settings in the
             CSS stylesheets for you.
           </p>
           <h2 id="app-edit-fonts-example">Example</h2>

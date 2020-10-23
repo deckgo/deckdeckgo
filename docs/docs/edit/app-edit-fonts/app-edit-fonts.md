@@ -1,12 +1,14 @@
 # Fonts
 
-As any web application, the fonts of your presentation could be easily styled, but [DeckDeckGo] goes one step further by downloading and installing **automatically** any [Google Fonts](https://fonts.google.com) you would like to use during the setup process (if you are using the starter kit).
+According the window or container height in which the deck is provided, [DeckDeckGo] will calculate a responsive base font size for the presentation.
 
-## Using automatically any Google Fonts
+If you wish to overwrite this automatic setting, you can provide a custom size by applying a CSS4 variable `--slide-font-size` on the main `<deckgo-deck/>` element.
 
-After you have kick-started your presentation running `npm init deckdeckgo` in a terminal and provided the information as described in the [Getting started](https://docs.deckdeckgo.com/docs/introduction) chapter, the [DeckDeckGo] CLI will ask you if you are looking to use Google Fonts, and subsequently will try gathering more information of the required font.
+## Google Fonts
 
-Once all the information is accumulated, it will automatically download the fonts, add them to your presentation and even update the settings in the CSS stylesheets for you.
+While using the developer kit, the [DeckDeckGo] CLI will prompt you about the optional use of [Google Fonts](https://fonts.google.com), and subsequently will try gathering more information of the required font.
+
+Once all the information accumulated, it will automatically download the fonts, add them to your presentation and even update the settings in the CSS stylesheets for you.
 
 ## Example
 
@@ -24,7 +26,7 @@ The following is an example of the process if you would like to install the Goog
 ❯ Lato
   Search again
   Skip
-  
+
 ? Select charsets (Press <space> to select, <a> to toggle all, <i> to invert selection)
 ❯◉ latin
  ◯ latin-ext
@@ -50,4 +52,4 @@ Have a look at this video where we show how to do it!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/S6qL7JbxJ70" frameborder="0"></iframe>
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com
