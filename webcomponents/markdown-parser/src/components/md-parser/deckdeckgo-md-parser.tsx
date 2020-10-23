@@ -20,14 +20,29 @@ export class DeckgoMdParser {
 
   private containerRef!: HTMLDivElement;
 
+  private parseAfterUpdate: boolean = false;
+
   private parser = new Remarkable();
+
+  async componentDidLoad() {
+    await this.parseMarkdownInSlot();
+  }
+
+  async componentDidUpdate() {
+    if (this.parseAfterUpdate) {
+      await this.parseMarkdownInSlot();
+      this.parseAfterUpdate = false;
+    }
+  }
 
   private parseMarkdownInSlot(): Promise<void> {
     const mdContent: HTMLElement = this.el.querySelector("[slot='md-parser']");
 
     if (mdContent) {
       const mdText = mdContent.innerText;
+      
       const mdContentHTML = this.parser.render(mdText);
+  
       this.parseMarkdown(mdContentHTML);
     } else {
       return Promise.resolve();
@@ -101,6 +116,8 @@ export class DeckgoMdParser {
       this.editing = false;
 
       const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
+      
+      console.log(markdownInSlot);
 
       if (markdownInSlot) {
         markdownInSlot.removeAttribute('contentEditable');
