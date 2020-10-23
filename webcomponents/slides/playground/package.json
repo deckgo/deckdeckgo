@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-playground",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A template to embed playgrounds into your presentations",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/interface.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-playground/deckdeckgo-slide-playground.js",
+  "unpkg": "dist/deckdeckgo-slide-playground/deckdeckgo-slide-playground.esm.js",
   "files": [
     "dist/",
     "README.md",

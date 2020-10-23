@@ -1,3 +1,9 @@
+# 2.0.1 (2020-10-23)
+
+### Fix
+
+- es5 has been dropped with v2, update `unpkg` reference
+
 # 2.1.0 (2020-09-24)
 
 ### Features

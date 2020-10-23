@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-chart",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "The Chart template is handy to plot and animate charts in your presentations",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-slide-chart/deckdeckgo-slide-chart.js",
+  "unpkg": "dist/deckdeckgo-slide-chart/deckdeckgo-slide-chart.esm.js",
   "files": [
     "dist/",
     "README.md",
