@@ -1,6 +1,6 @@
-<a name="2.4.0"></a>
+<a name="3.0.0"></a>
 
-# [2.4.0](https://github.com/deckgo/deckdeckgo/compare/v2.3.0...v2.4.0) (In progress...)
+# [3.0.0](https://github.com/deckgo/deckdeckgo/compare/v2.3.0...v3.0.0) (In progress...)
 
 ### Applications
 
