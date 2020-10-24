@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Fragment, h, Prop, Event} from '@stencil/core';
+import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import paletteStore from '../../../../stores/palette.store';
 
 import {PaletteUtils} from '../../../../utils/editor/palette.utils';
+import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 @Component({
   tag: 'app-color',
@@ -12,16 +13,31 @@ import {PaletteUtils} from '../../../../utils/editor/palette.utils';
 })
 export class AppImage {
   @Prop()
-  color: string;
+  initColor: () => Promise<InitStyleColor>;
 
-  @Prop()
-  colorOpacity: number = 100;
+  @State()
+  private color: string;
+
+  @State()
+  private opacity: number = 100;
 
   @Event()
-  colorDidChange: EventEmitter<{color: string; opacity: number}>;
+  colorDidChange: EventEmitter<string>;
 
   @Event()
   resetColor: EventEmitter<void>;
+
+  async componentWillLoad() {
+    await this.loadColor();
+  }
+
+  @Watch('initColor')
+  async loadColor() {
+    const {rgb, opacity} = await this.initColor();
+
+    this.color = rgb;
+    this.opacity = opacity ? opacity : 100;
+  }
 
   private async selectColor($event: CustomEvent) {
     if (!$event || !$event.detail) {
@@ -34,7 +50,7 @@ export class AppImage {
 
     this.color = $event.detail.rgb;
 
-    this.emitChange();
+    this.emitRgbaColorChange();
   }
 
   private async updateOpacity($event: CustomEvent<RangeChangeEventDetail>) {
@@ -46,16 +62,13 @@ export class AppImage {
 
     const opacity: number = $event.detail.value as number;
 
-    this.colorOpacity = opacity;
+    this.opacity = opacity;
 
-    this.emitChange();
+    this.emitRgbaColorChange();
   }
 
-  private emitChange() {
-    this.colorDidChange.emit({
-      color: this.color,
-      opacity: this.colorOpacity,
-    });
+  private emitRgbaColorChange() {
+    this.colorDidChange.emit(`rgba(${this.color},${ColorUtils.transformOpacity(this.opacity)})`);
   }
 
   private emitReset($event: UIEvent) {
@@ -94,7 +107,7 @@ export class AppImage {
       <Fragment>
         <ion-item-divider class="ion-padding-top">
           <ion-label>
-            Opacity <small>{this.colorOpacity}%</small>
+            Opacity <small>{this.opacity}%</small>
           </ion-label>
         </ion-item-divider>
         <ion-item class="item-opacity">
@@ -103,7 +116,7 @@ export class AppImage {
             min={0}
             max={100}
             disabled={!this.color || this.color === undefined}
-            value={this.colorOpacity}
+            value={this.opacity}
             mode="md"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
         </ion-item>

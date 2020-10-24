@@ -94,26 +94,21 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppColor {
-        "color": string;
-        "colorOpacity": number;
+        "initColor": () => Promise<InitStyleColor>;
     }
     interface AppColorChart {
         "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppColorCode {
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppColorQrcode {
         "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppColorSides {
         "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
         "template": 'split' | 'author';
     }
@@ -122,12 +117,10 @@ export namespace Components {
         "deck": boolean;
         "expanded": boolean;
         "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
     interface AppColorWordCloud {
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppContact {
@@ -151,7 +144,6 @@ export namespace Components {
     }
     interface AppDeckFonts {
         "deckElement": HTMLElement;
-        "moreColors": boolean;
     }
     interface AppDeckHeaderFooter {
         "deckDidChange": EventEmitter<HTMLElement>;
@@ -1370,28 +1362,23 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppColor {
-        "color"?: string;
-        "colorOpacity"?: number;
-        "onColorDidChange"?: (event: CustomEvent<{color: string, opacity: number}>) => void;
+        "initColor"?: () => Promise<InitStyleColor>;
+        "onColorDidChange"?: (event: CustomEvent<string>) => void;
         "onResetColor"?: (event: CustomEvent<void>) => void;
     }
     interface AppColorChart {
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppColorCode {
-        "moreColors"?: boolean;
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppColorQrcode {
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppColorSides {
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
         "template"?: 'split' | 'author';
@@ -1400,13 +1387,11 @@ declare namespace LocalJSX {
         "colorType"?: 'text' | 'background';
         "deck"?: boolean;
         "expanded"?: boolean;
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;
     }
     interface AppColorWordCloud {
-        "moreColors"?: boolean;
         "onWordCloudDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
@@ -1434,7 +1419,6 @@ declare namespace LocalJSX {
     }
     interface AppDeckFonts {
         "deckElement"?: HTMLElement;
-        "moreColors"?: boolean;
         "onFontsChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckHeaderFooter {

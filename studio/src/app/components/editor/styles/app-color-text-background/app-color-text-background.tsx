@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Method, Prop} from '@stencil/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
@@ -12,9 +12,6 @@ export class AppColorTextBackground {
   selectedElement: HTMLElement;
 
   @Prop()
-  moreColors: boolean = true;
-
-  @Prop()
   slide: boolean = false;
 
   @Prop()
@@ -26,114 +23,91 @@ export class AppColorTextBackground {
   @Prop()
   expanded: boolean = true;
 
-  @State()
-  private color: string;
-
-  @State()
-  private colorOpacity: number = 100;
-
   @Event() colorChange: EventEmitter<void>;
 
-  async componentWillLoad() {
-    await this.initCurrentColors();
-  }
+  private initBackground = async (): Promise<InitStyleColor> => {
+    if (!this.selectedElement) {
+      return {
+        rgb: null,
+        opacity: null,
+      };
+    }
 
-  @Watch('colorType')
-  async onColorTypeChange() {
-    await this.initCurrentColors();
-  }
+    return ColorUtils.splitColor(
+      this.selectedElement.style.getPropertyValue('--background')
+        ? this.selectedElement.style.getPropertyValue('--background')
+        : this.selectedElement.style.background
+    );
+  };
+
+  private initColor = async (): Promise<InitStyleColor> => {
+    if (!this.selectedElement) {
+      return {
+        rgb: null,
+        opacity: null,
+      };
+    }
+
+    return ColorUtils.splitColor(
+      this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color
+    );
+  };
 
   @Method()
   async initCurrentColors() {
+    // TODO
+  }
+
+  private async applyColor($event: CustomEvent<string>) {
+    if (this.colorType === 'background') {
+      await this.applyBackground($event?.detail);
+    } else {
+      await this.applyTextColor($event?.detail);
+    }
+  }
+
+  private async resetColor() {
     if (!this.selectedElement) {
       return;
     }
 
-    let styleColor: InitStyleColor;
-
-    // prettier-ignore
     if (this.colorType === 'background') {
-      styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--background') ? this.selectedElement.style.getPropertyValue('--background') : this.selectedElement.style.background);
+      this.selectedElement.style.removeProperty('--background');
+      this.selectedElement.style.removeProperty('background');
     } else {
-      styleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color);
+      this.selectedElement.style.removeProperty('--color');
+      this.selectedElement.style.removeProperty('color');
     }
 
-    this.color = styleColor.rgb;
-    this.colorOpacity = styleColor.opacity;
+    this.colorChange.emit();
   }
 
-  private async applyColor() {
-    if (this.colorType === 'background') {
-      await this.applyBackground();
-    } else {
-      await this.applyTextColor();
+  private async applyTextColor(selectedColor: string) {
+    if (!this.selectedElement || !selectedColor) {
+      return;
     }
+
+    if (this.deck || this.slide) {
+      this.selectedElement.style.setProperty('--color', selectedColor);
+    } else {
+      this.selectedElement.style.color = selectedColor;
+    }
+
+    this.colorChange.emit();
   }
 
-  private resetColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
+  private async applyBackground(selectedColor: string) {
+    if (!this.selectedElement || !selectedColor) {
+      return;
+    }
 
-      if (this.colorType === 'background') {
-        this.selectedElement.style.removeProperty('--background');
-        this.selectedElement.style.removeProperty('background');
-      } else {
-        this.selectedElement.style.removeProperty('--color');
-        this.selectedElement.style.removeProperty('color');
-      }
+    if (this.deck || this.slide) {
+      this.selectedElement.style.setProperty('--background', selectedColor);
+    } else {
+      this.selectedElement.style.background = selectedColor;
+    }
 
-      this.color = null;
-      this.colorOpacity = 100;
-
-      this.colorChange.emit();
-
-      resolve();
-    });
-  }
-
-  private applyTextColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.color) {
-        resolve();
-        return;
-      }
-
-      const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
-
-      if (this.deck || this.slide) {
-        this.selectedElement.style.setProperty('--color', selectedColor);
-      } else {
-        this.selectedElement.style.color = selectedColor;
-      }
-
-      this.colorChange.emit();
-
-      resolve();
-    });
-  }
-
-  private applyBackground(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.color) {
-        resolve();
-        return;
-      }
-
-      const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
-
-      if (this.deck || this.slide) {
-        this.selectedElement.style.setProperty('--background', selectedColor);
-      } else {
-        this.selectedElement.style.background = selectedColor;
-      }
-
-      this.colorChange.emit();
-
-      resolve();
-    });
+    this.colorChange.emit();
   }
 
   render() {
@@ -141,7 +115,10 @@ export class AppColorTextBackground {
       <app-expansion-panel expanded={this.expanded ? 'open' : 'close'}>
         <ion-label slot="title">Color</ion-label>
 
-        <app-color onResetColor={() => this.resetColor()} onColorDidChange={() => this.applyColor()}></app-color>
+        <app-color
+          initColor={this.colorType === 'background' ? this.initBackground : this.initColor}
+          onResetColor={() => this.resetColor()}
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
       </app-expansion-panel>
     );
   }

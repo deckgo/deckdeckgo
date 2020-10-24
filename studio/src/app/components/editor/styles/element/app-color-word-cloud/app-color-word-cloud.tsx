@@ -14,9 +14,6 @@ export class AppColorWordCloud {
   @Prop()
   selectedElement: HTMLElement;
 
-  @Prop()
-  moreColors: boolean = true;
-
   @State()
   private color: string;
 
@@ -202,8 +199,7 @@ export class AppColorWordCloud {
               palette={paletteStore.state.palette}
               class="ion-padding-bottom"
               onColorChange={($event: CustomEvent) => this.selectColor($event, this.setColor)}
-              color-rgb={this.color}
-              more={this.moreColors}>
+              color-rgb={this.color}>
               <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
           </div>

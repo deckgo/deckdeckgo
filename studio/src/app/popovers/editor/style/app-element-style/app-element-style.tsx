@@ -1,7 +1,5 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {isIPad} from '@deckdeckgo/utils';
-
 import {TargetElement} from '../../../../utils/editor/target-element';
 import {SlotType} from '../../../../utils/editor/slot-type';
 import {ImageAction} from '../../../../utils/editor/image-action';
@@ -47,9 +45,6 @@ export class AppElementStyle {
 
   @State()
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
-
-  @State()
-  private moreColors: boolean = true;
 
   @State()
   private qrCode: boolean = false;
@@ -98,8 +93,6 @@ export class AppElementStyle {
       : this.author || this.split
       ? TargetElement.SIDES
       : TargetElement.SLIDE;
-
-    this.moreColors = !isIPad();
   }
 
   private async closePopover() {
@@ -190,31 +183,19 @@ export class AppElementStyle {
 
   private renderStyleOptions() {
     if (this.applyToTargetElement === TargetElement.QR_CODE) {
-      return (
-        <app-color-qrcode selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-qrcode>
-      );
+      return <app-color-qrcode selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()}></app-color-qrcode>;
     } else if (this.applyToTargetElement === TargetElement.CHART) {
-      return (
-        <app-color-chart selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-chart>
-      );
+      return <app-color-chart selectedElement={this.selectedElement} onColorChange={() => this.emitStyleChange()}></app-color-chart>;
     } else if (this.applyToTargetElement === TargetElement.CODE) {
-      return (
-        <app-color-code selectedElement={this.selectedElement} onCodeDidChange={() => this.emitStyleChange()} moreColors={this.moreColors}></app-color-code>
-      );
+      return <app-color-code selectedElement={this.selectedElement} onCodeDidChange={() => this.emitStyleChange()}></app-color-code>;
     } else if (this.applyToTargetElement === TargetElement.WORD_CLOUD) {
-      return (
-        <app-color-word-cloud
-          selectedElement={this.selectedElement}
-          onWordCloudDidChange={() => this.emitStyleChange()}
-          moreColors={this.moreColors}></app-color-word-cloud>
-      );
+      return <app-color-word-cloud selectedElement={this.selectedElement} onWordCloudDidChange={() => this.emitStyleChange()}></app-color-word-cloud>;
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (
         <app-color-sides
           selectedElement={this.selectedElement}
           template={this.author ? 'author' : 'split'}
-          onColorChange={() => this.emitStyleChange()}
-          moreColors={this.moreColors}></app-color-sides>
+          onColorChange={() => this.emitStyleChange()}></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return this.renderBackground();
@@ -236,7 +217,6 @@ export class AppElementStyle {
           expanded={!this.code}
           key={'text'}
           selectedElement={this.selectedElement}
-          moreColors={this.moreColors}
           slide={this.slide}
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       ];
@@ -257,7 +237,6 @@ export class AppElementStyle {
         key={'background'}
         colorType={'background'}
         selectedElement={this.selectedElement}
-        moreColors={this.moreColors}
         expanded={false}
         onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       this.renderImage(),

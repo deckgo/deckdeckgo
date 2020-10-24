@@ -29,9 +29,6 @@ export class AppColorCode {
   @Prop()
   selectedElement: HTMLElement;
 
-  @Prop()
-  moreColors: boolean = true;
-
   @State()
   private codeColorType: CodeColorType = undefined;
 
@@ -403,8 +400,7 @@ export class AppColorCode {
               palette={paletteStore.state.palette}
               class="ion-padding-bottom"
               onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)}
-              color-rgb={this.codeColor}
-              more={this.moreColors}>
+              color-rgb={this.codeColor}>
               <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
           </div>
@@ -519,8 +515,7 @@ export class AppColorCode {
               palette={paletteStore.state.palette}
               class="ion-padding-bottom"
               onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)}
-              color-rgb={this.highlightColor}
-              more={this.moreColors}>
+              color-rgb={this.highlightColor}>
               <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
             </deckgo-color>
           </div>

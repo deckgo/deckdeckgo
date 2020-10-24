@@ -26,9 +26,6 @@ export class AppColorDeckSlide {
   @Prop()
   selectedElement: HTMLElement;
 
-  @Prop()
-  moreColors: boolean = true;
-
   @State()
   private applyColorType: ApplyColorType = ApplyColorType.FILL;
 
@@ -241,7 +238,6 @@ export class AppColorDeckSlide {
       <deckgo-color
         palette={paletteStore.state.palette}
         class="ion-padding-start ion-padding-end ion-padding-bottom"
-        more={this.moreColors}
         onColorChange={($event: CustomEvent) => this.selectColor($event)}
         color-rgb={this.color}>
         <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
