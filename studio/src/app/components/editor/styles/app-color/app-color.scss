@@ -13,7 +13,7 @@ app-color {
       height: 32px;
     }
 
-    button.reset {
+    button {
       border: none;
       font: inherit;
       background: none;
@@ -23,6 +23,41 @@ app-color {
 
       cursor: pointer;
       pointer-events: all;
+
+      &.reset {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    div.input-rgb {
+      display: inline-flex;
+
+      ion-input:not(:last-of-type) {
+        margin-right: 8px;
+      }
+    }
+
+    div.switcher {
+      grid-column-start: 1;
+      grid-column-end: 3;
+
+      justify-self: flex-end;
+
+      font-size: var(--font-size-very-small);
+
+      &.hex {
+        button:last-of-type {
+          color: var(--ion-color-medium);
+        }
+      }
+
+      &.rgb {
+        button:first-of-type {
+          color: var(--ion-color-medium);
+        }
+      }
     }
   }
 

@@ -80,6 +80,12 @@ export class AppImage {
     this.resetColor.emit();
   }
 
+  private switchInputColor($event: UIEvent, switchColor: 'hex' | 'rgb') {
+    $event.stopPropagation();
+
+    paletteStore.state.colorInput = switchColor;
+  }
+
   render() {
     return (
       <Fragment>
@@ -97,10 +103,35 @@ export class AppImage {
     return (
       <div class="color-picker item-input">
         <ion-fab-button size="small" slot="start" arial-label="Color picker"></ion-fab-button>
-        <ion-input required={true} input-mode="text" name="color" placeholder="#000000" arial-label="Color"></ion-input>
+        {this.renderColorInput()}
         <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
+
+        {this.renderColorSwitcher()}
+      </div>
+    );
+  }
+
+  private renderColorInput() {
+    if (paletteStore.state.colorInput === 'hex') {
+      return <ion-input required={true} input-mode="text" name="color" placeholder="#000000" arial-label="Color"></ion-input>;
+    } else {
+      return (
+        <div class="input-rgb">
+          <ion-input required={true} input-mode="text" name="color" placeholder="R" arial-label="Rgb - Red"></ion-input>
+          <ion-input required={true} input-mode="text" name="color" placeholder="G" arial-label="Rgb - Green"></ion-input>
+          <ion-input required={true} input-mode="text" name="color" placeholder="B" arial-label="Rgb - Blue"></ion-input>
+        </div>
+      );
+    }
+  }
+
+  private renderColorSwitcher() {
+    return (
+      <div class={`switcher ${paletteStore.state.colorInput}`}>
+        <button onClick={($event: UIEvent) => this.switchInputColor($event, 'hex')}>hex</button>{' '}
+        <button onClick={($event: UIEvent) => this.switchInputColor($event, 'rgb')}>rgb</button>
       </div>
     );
   }
