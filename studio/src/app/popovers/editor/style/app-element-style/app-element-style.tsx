@@ -108,13 +108,11 @@ export class AppElementStyle {
   }
 
   private async initCurrentColors() {
-    let element: HTMLElement;
-
-    if (this.applyToTargetElement === TargetElement.QR_CODE) {
-      element = this.el.querySelector('app-color-qrcode');
-    } else {
-      element = this.el.querySelector('app-color-text-background');
+    if (this.applyToTargetElement !== TargetElement.QR_CODE) {
+      return;
     }
+
+    let element: HTMLElement = this.el.querySelector('app-color-qrcode');
 
     if (element) {
       await (element as any).initCurrentColors();

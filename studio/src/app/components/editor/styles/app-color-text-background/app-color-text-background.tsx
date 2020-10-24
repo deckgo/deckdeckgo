@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Prop} from '@stencil/core';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
@@ -52,11 +52,6 @@ export class AppColorTextBackground {
       this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color
     );
   };
-
-  @Method()
-  async initCurrentColors() {
-    // TODO
-  }
 
   private async applyColor($event: CustomEvent<string>) {
     if (this.colorType === 'background') {
