@@ -116,7 +116,6 @@ export namespace Components {
         "colorType": 'text' | 'background';
         "deck": boolean;
         "expanded": boolean;
-        "initCurrentColors": () => Promise<void>;
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
