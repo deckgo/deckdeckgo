@@ -1,0 +1,21 @@
+app-color {
+  ion-list {
+    ion-item {
+      ion-fab-button {
+        width: 32px;
+        height: 32px;
+
+        margin: 16px 24px 16px 8px;
+      }
+    }
+  }
+
+  deckgo-color {
+    --deckgo-flex-wrap: nowrap;
+    --deckgo-overflow: scroll;
+
+    --deckgo-button-margin: 10px 6px;
+    --deckgo-button-height: 16px;
+    --deckgo-button-width: 16px;
+  }
+}

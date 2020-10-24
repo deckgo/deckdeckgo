@@ -93,6 +93,10 @@ export namespace Components {
         "currentLanguage": PrismLanguage | undefined;
         "selectedElement": HTMLElement;
     }
+    interface AppColor {
+        "color": string;
+        "colorOpacity": number;
+    }
     interface AppColorChart {
         "initCurrentColors": () => Promise<void>;
         "moreColors": boolean;
@@ -520,6 +524,12 @@ declare global {
     var HTMLAppCodeLanguagesElement: {
         prototype: HTMLAppCodeLanguagesElement;
         new (): HTMLAppCodeLanguagesElement;
+    };
+    interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {
+    }
+    var HTMLAppColorElement: {
+        prototype: HTMLAppColorElement;
+        new (): HTMLAppColorElement;
     };
     interface HTMLAppColorChartElement extends Components.AppColorChart, HTMLStencilElement {
     }
@@ -1156,6 +1166,7 @@ declare global {
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
+        "app-color": HTMLAppColorElement;
         "app-color-chart": HTMLAppColorChartElement;
         "app-color-code": HTMLAppColorCodeElement;
         "app-color-qrcode": HTMLAppColorQrcodeElement;
@@ -1357,6 +1368,12 @@ declare namespace LocalJSX {
         "codeDidChange"?: EventEmitter<HTMLElement>;
         "currentLanguage"?: PrismLanguage | undefined;
         "selectedElement"?: HTMLElement;
+    }
+    interface AppColor {
+        "color"?: string;
+        "colorOpacity"?: number;
+        "onColorDidChange"?: (event: CustomEvent<{color: string, opacity: number}>) => void;
+        "onResetColor"?: (event: CustomEvent<void>) => void;
     }
     interface AppColorChart {
         "moreColors"?: boolean;
@@ -1736,6 +1753,7 @@ declare namespace LocalJSX {
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
+        "app-color": AppColor;
         "app-color-chart": AppColorChart;
         "app-color-code": AppColorCode;
         "app-color-qrcode": AppColorQrcode;
@@ -1861,6 +1879,7 @@ declare module "@stencil/core" {
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
+            "app-color": LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
             "app-color-chart": LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
             "app-color-code": LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
             "app-color-qrcode": LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;
