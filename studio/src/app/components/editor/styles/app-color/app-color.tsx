@@ -74,6 +74,9 @@ export class AppImage {
   private emitReset($event: UIEvent) {
     $event.stopPropagation();
 
+    this.color = null;
+    this.opacity = 100;
+
     this.resetColor.emit();
   }
 
