@@ -2,6 +2,8 @@ import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch} from '@
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import {hexToRgb} from '@deckdeckgo/utils';
+
 import paletteStore from '../../../../stores/palette.store';
 
 import {PaletteUtils} from '../../../../utils/editor/palette.utils';
@@ -86,6 +88,18 @@ export class AppImage {
     paletteStore.state.colorInput = switchColor;
   }
 
+  private async handleHexInput($event: CustomEvent<KeyboardEvent>) {
+    const input: string = ($event.target as InputTargetEvent).value;
+
+    if (!/^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/.test(input)) {
+      return;
+    }
+
+    this.color = await hexToRgb(input);
+
+    this.emitRgbaColorChange();
+  }
+
   render() {
     return (
       <Fragment>
@@ -115,13 +129,23 @@ export class AppImage {
 
   private renderColorInput() {
     if (paletteStore.state.colorInput === 'hex') {
-      return <ion-input required={true} input-mode="text" name="color" placeholder="#000000" arial-label="Color"></ion-input>;
+      return (
+        <ion-input
+          debounce={500}
+          input-mode="tel"
+          max-length={7}
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleHexInput($event)}
+          required={true}
+          name="color"
+          placeholder="#000000"
+          arial-label="Color"></ion-input>
+      );
     } else {
       return (
         <div class="input-rgb">
-          <ion-input required={true} input-mode="text" name="color" placeholder="R" arial-label="Rgb - Red"></ion-input>
-          <ion-input required={true} input-mode="text" name="color" placeholder="G" arial-label="Rgb - Green"></ion-input>
-          <ion-input required={true} input-mode="text" name="color" placeholder="B" arial-label="Rgb - Blue"></ion-input>
+          <ion-input input-mode="tel" debounce={500} max-length={3} min={'0'} max={'255'} name="r" placeholder="R" arial-label="Rgb - Red"></ion-input>
+          <ion-input input-mode="tel" debounce={500} max-length={3} min={'0'} max={'255'} name="g" placeholder="G" arial-label="Rgb - Green"></ion-input>
+          <ion-input input-mode="tel" debounce={500} max-length={3} min={'0'} max={'255'} name="b" placeholder="B" arial-label="Rgb - Blue"></ion-input>
         </div>
       );
     }
