@@ -95,13 +95,13 @@ export class AppImage {
 
   private renderColorPicker() {
     return (
-      <ion-item class="with-padding">
+      <div class="color-picker item-input">
         <ion-fab-button size="small" slot="start" arial-label="Color picker"></ion-fab-button>
         <ion-input required={true} input-mode="text" name="color" placeholder="#000000" arial-label="Color"></ion-input>
-        <button slot="end" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
+        <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
-      </ion-item>
+      </div>
     );
   }
 

@@ -1,12 +1,28 @@
 app-color {
-  ion-list {
-    ion-item {
-      ion-fab-button {
-        width: 32px;
-        height: 32px;
+  div.color-picker {
+    display: grid;
+    align-items: center;
 
-        margin: 16px 24px 16px 8px;
-      }
+    padding: 0 16px;
+
+    grid-template-columns: 48px 1fr 32px;
+    grid-column-gap: 8px;
+
+    ion-fab-button {
+      width: 32px;
+      height: 32px;
+    }
+
+    button.reset {
+      border: none;
+      font: inherit;
+      background: none;
+      padding: 0;
+
+      height: 100%;
+
+      cursor: pointer;
+      pointer-events: all;
     }
   }
 
