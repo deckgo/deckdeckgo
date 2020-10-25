@@ -11,7 +11,7 @@ import {AuthService} from './services/auth/auth.service';
 import {ThemeService} from './services/theme/theme.service';
 import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
-import {ColorService} from './services/palette/color.service';
+import {ColorService} from './services/color/color.service';
 
 @Component({
   tag: 'app-root',
@@ -24,7 +24,7 @@ export class AppRoot {
 
   private themeService: ThemeService;
 
-  private paletteService: ColorService;
+  private colorService: ColorService;
 
   private offlineService: OfflineService;
 
@@ -40,7 +40,7 @@ export class AppRoot {
   constructor() {
     this.authService = AuthService.getInstance();
     this.themeService = ThemeService.getInstance();
-    this.paletteService = ColorService.getInstance();
+    this.colorService = ColorService.getInstance();
     this.offlineService = OfflineService.getInstance();
   }
 
@@ -48,7 +48,7 @@ export class AppRoot {
     if (Build.isBrowser) {
       await this.authService.init();
       await this.themeService.initDarkModePreference();
-      await this.paletteService.init();
+      await this.colorService.init();
       await this.offlineService.init();
     }
   }
