@@ -4,7 +4,7 @@ import {RangeChangeEventDetail} from '@ionic/core';
 
 import {extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
-import paletteStore from '../../../../stores/palette.store';
+import colorStore from '../../../../stores/color.store';
 
 import {PaletteUtils} from '../../../../utils/editor/palette.utils';
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
@@ -127,7 +127,7 @@ export class AppImage {
   private switchInputColor($event: UIEvent, switchColor: 'hex' | 'rgb') {
     $event.stopPropagation();
 
-    paletteStore.state.colorInput = switchColor;
+    colorStore.state.colorInput = switchColor;
   }
 
   private async handleHexInput($event: CustomEvent<KeyboardEvent>) {
@@ -194,7 +194,7 @@ export class AppImage {
   }
 
   private renderColorInput() {
-    if (paletteStore.state.colorInput === 'hex') {
+    if (colorStore.state.colorInput === 'hex') {
       return (
         <ion-input
           debounce={500}
@@ -250,7 +250,7 @@ export class AppImage {
 
   private renderColorSwitcher() {
     return (
-      <div class={`switcher ${paletteStore.state.colorInput}`}>
+      <div class={`switcher ${colorStore.state.colorInput}`}>
         <button onClick={($event: UIEvent) => this.switchInputColor($event, 'hex')}>hex</button>{' '}
         <button onClick={($event: UIEvent) => this.switchInputColor($event, 'rgb')}>rgb</button>
       </div>
@@ -282,7 +282,7 @@ export class AppImage {
   private renderColorHistory() {
     return (
       <deckgo-color
-        palette={paletteStore.state.palette}
+        palette={colorStore.state.palette}
         class="ion-padding-start ion-padding-end ion-padding-bottom"
         more={false}
         label={false}

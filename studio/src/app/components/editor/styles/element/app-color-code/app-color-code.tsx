@@ -4,7 +4,7 @@ import {alertController, RangeChangeEventDetail} from '@ionic/core';
 
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
-import paletteStore from '../../../../../stores/palette.store';
+import colorStore from '../../../../../stores/color.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
@@ -397,7 +397,7 @@ export class AppColorCode {
 
           <div class={this.codeColorType === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
             <deckgo-color
-              palette={paletteStore.state.palette}
+              palette={colorStore.state.palette}
               class="ion-padding-bottom"
               onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)}
               color-rgb={this.codeColor}>
@@ -512,7 +512,7 @@ export class AppColorCode {
 
           <div class={!this.highlightLines || this.highlightLines === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
             <deckgo-color
-              palette={paletteStore.state.palette}
+              palette={colorStore.state.palette}
               class="ion-padding-bottom"
               onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)}
               color-rgb={this.highlightColor}>

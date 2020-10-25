@@ -4,12 +4,12 @@ import {set} from 'idb-keyval';
 
 import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
-interface PaletteStore {
+interface ColorStore {
   palette: DeckdeckgoPalette[];
   colorInput: 'hex' | 'rgb';
 }
 
-const {state, onChange} = createStore<PaletteStore>({
+const {state, onChange} = createStore<ColorStore>({
   palette: [],
   colorInput: 'hex',
 });

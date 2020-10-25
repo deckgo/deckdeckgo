@@ -1,7 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import paletteStore from '../../../../../stores/palette.store';
+import colorStore from '../../../../../stores/color.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
@@ -203,7 +203,7 @@ export class AppColorSides {
         </ion-item>
       </ion-list>,
       <deckgo-color
-        palette={paletteStore.state.palette}
+        palette={colorStore.state.palette}
         class="ion-padding-start ion-padding-end ion-padding-bottom"
         onColorChange={($event: CustomEvent) => this.selectColor($event)}
         color-rgb={this.color}>

@@ -2,7 +2,7 @@ import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import paletteStore from '../../../stores/palette.store';
+import colorStore from '../../../stores/color.store';
 
 import {ColorUtils} from '../../../utils/editor/color.utils';
 import {PaletteUtils} from '../../../utils/editor/palette.utils';
@@ -220,7 +220,7 @@ export class AppWaves {
         <div class="color">
           <deckgo-color
             more
-            palette={paletteStore.state.palette}
+            palette={colorStore.state.palette}
             class="ion-padding-start ion-padding-end ion-padding-bottom"
             onColorChange={($event: CustomEvent) => this.selectColor($event)}
             color-rgb={this.color}>

@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import paletteStore from '../../../../../stores/palette.store';
+import colorStore from '../../../../../stores/color.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
@@ -196,7 +196,7 @@ export class AppColorWordCloud {
 
           <div class="ion-padding-start">
             <deckgo-color
-              palette={paletteStore.state.palette}
+              palette={colorStore.state.palette}
               class="ion-padding-bottom"
               onColorChange={($event: CustomEvent) => this.selectColor($event, this.setColor)}
               color-rgb={this.color}>
