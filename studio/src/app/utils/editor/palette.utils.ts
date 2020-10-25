@@ -4,10 +4,8 @@ import colorStore from '../../stores/color.store';
 
 export class PaletteUtils {
   static async updatePalette(color: DeckdeckgoPaletteColor) {
-    if (colorStore.state.palette.some((palette: DeckdeckgoPalette) => palette.color.hex === color.hex)) {
-      return;
-    }
+    const filteredPalette: DeckdeckgoPalette[] = colorStore.state.palette.filter((palette: DeckdeckgoPalette) => palette.color.hex !== color.hex);
 
-    colorStore.state.palette = [{color}, ...colorStore.state.palette];
+    colorStore.state.palette = [{color}, ...(filteredPalette.length < 20 ? filteredPalette : filteredPalette.slice(0, 19))];
   }
 }

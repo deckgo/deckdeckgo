@@ -81,12 +81,26 @@ app-color {
     }
   }
 
-  deckgo-color {
-    --deckgo-flex-wrap: nowrap;
-    --deckgo-overflow: scroll;
+  div.history {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: scroll;
+    width: 100%;
 
-    --deckgo-button-margin: 10px 6px;
-    --deckgo-button-height: 16px;
-    --deckgo-button-width: 16px;
+    ion-fab-button {
+      width: 16px;
+      height: 16px;
+
+      min-width: 16px;
+
+      margin: 10px 6px;
+
+      &:last-of-type::after {
+        content: "";
+        width: 8px;
+        display: block;
+        padding: 8px;
+      }
+    }
   }
 }

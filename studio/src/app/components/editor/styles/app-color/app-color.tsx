@@ -2,6 +2,8 @@ import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch} from '@
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
+
 import {extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import colorStore from '../../../../stores/color.store';
@@ -75,18 +77,16 @@ export class AppImage {
     };
   }
 
-  private async selectColor($event: CustomEvent) {
-    if (!$event || !$event.detail) {
+  private async selectColor($event: UIEvent, color: DeckdeckgoPaletteColor) {
+    if (!$event || !color) {
       return;
     }
 
     $event.stopPropagation();
 
-    await PaletteUtils.updatePalette($event.detail);
+    await this.initColorStateRgb(color.rgb);
 
-    await this.initColorStateRgb($event.detail.rgb);
-
-    this.emitRgbaColorChange();
+    await this.colorChange();
   }
 
   private async updateOpacity($event: CustomEvent<RangeChangeEventDetail>) {
@@ -100,11 +100,16 @@ export class AppImage {
 
     this.opacity = opacity;
 
-    this.emitRgbaColorChange();
+    await this.colorChange();
   }
 
-  private emitRgbaColorChange() {
+  private async colorChange() {
     this.colorDidChange.emit(`rgba(${this.color.rgb.value},${ColorUtils.transformOpacity(this.opacity)})`);
+
+    await PaletteUtils.updatePalette({
+      hex: this.color.hex,
+      rgb: this.color.rgb.value,
+    });
   }
 
   private emitReset($event: UIEvent) {
@@ -139,7 +144,7 @@ export class AppImage {
 
     await this.initColorStateHex(input);
 
-    this.emitRgbaColorChange();
+    await this.colorChange();
   }
 
   private async handleRgbInput($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') {
@@ -154,14 +159,14 @@ export class AppImage {
     if (this.color.rgb.r >= 0 && this.color.rgb.g >= 0 && this.color.rgb.b >= 0) {
       await this.initColorStateRgb(`${this.color.rgb.r}, ${this.color.rgb.g}, ${this.color.rgb.b}`);
 
-      this.emitRgbaColorChange();
+      await this.colorChange();
     }
   }
 
   private async onColorPickerChange($event) {
     await this.initColorStateHex($event.target.value);
 
-    this.emitRgbaColorChange();
+    await this.colorChange();
   }
 
   render() {
@@ -280,15 +285,17 @@ export class AppImage {
   }
 
   private renderColorHistory() {
-    return (
-      <deckgo-color
-        palette={colorStore.state.palette}
-        class="ion-padding-start ion-padding-end ion-padding-bottom"
-        more={false}
-        label={false}
-        onColorChange={($event: CustomEvent) => this.selectColor($event)}>
-        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-      </deckgo-color>
-    );
+    return <div class="history ion-padding-start ion-padding-end ion-padding-bottom">{this.renderPalette()}</div>;
+  }
+
+  private renderPalette() {
+    return colorStore.state.palette.map((palette: DeckdeckgoPalette) => {
+      return (
+        <ion-fab-button
+          size="small"
+          style={{'--background': palette.color.hex}}
+          onClick={($event: UIEvent) => this.selectColor($event, palette.color)}></ion-fab-button>
+      );
+    });
   }
 }
