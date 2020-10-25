@@ -94,6 +94,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppColor {
+        "defaultColor": string;
         "initColor": () => Promise<InitStyleColor>;
     }
     interface AppColorChart {
@@ -1361,6 +1362,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppColor {
+        "defaultColor"?: string;
         "initColor"?: () => Promise<InitStyleColor>;
         "onColorDidChange"?: (event: CustomEvent<string>) => void;
         "onResetColor"?: (event: CustomEvent<void>) => void;

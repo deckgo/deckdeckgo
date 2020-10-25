@@ -113,6 +113,7 @@ export class AppColorTextBackground {
         <app-color
           initColor={this.colorType === 'background' ? this.initBackground : this.initColor}
           onResetColor={() => this.resetColor()}
+          defaultColor={this.colorType === 'background' ? '#fff' : '#000'}
           onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
       </app-expansion-panel>
     );

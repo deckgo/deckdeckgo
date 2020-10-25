@@ -17,6 +17,9 @@ export class AppImage {
   @Prop()
   initColor: () => Promise<InitStyleColor>;
 
+  @Prop()
+  defaultColor: string;
+
   @State()
   private color: {hex: string; rgb: {value: string; r: number; g: number; b: number}};
 
@@ -169,9 +172,11 @@ export class AppImage {
   }
 
   private renderColorPicker() {
+    const buttonStyle = {'--background': this.color && this.color.rgb && this.color.rgb.value ? `rgb(${this.color.rgb.value})` : this.defaultColor};
+
     return (
       <div class="color-picker item-input">
-        <ion-fab-button size="small" slot="start" arial-label="Color picker"></ion-fab-button>
+        <ion-fab-button size="small" slot="start" arial-label="Color picker" style={buttonStyle}></ion-fab-button>
         {this.renderColorInput()}
         <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
