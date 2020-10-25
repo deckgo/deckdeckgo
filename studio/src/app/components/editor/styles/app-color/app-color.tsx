@@ -2,7 +2,7 @@ import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch} from '@
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import {hexToRgb} from '@deckdeckgo/utils';
+import {extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import paletteStore from '../../../../stores/palette.store';
 
@@ -18,7 +18,7 @@ export class AppImage {
   initColor: () => Promise<InitStyleColor>;
 
   @State()
-  private color: string;
+  private color: {hex: string; rgb: {value: string; r: number; g: number; b: number}} | undefined;
 
   @State()
   private opacity: number = 100;
@@ -37,8 +37,49 @@ export class AppImage {
   async loadColor() {
     const {rgb, opacity} = await this.initColor();
 
-    this.color = rgb;
+    await this.initColorStateRgb(rgb);
+
     this.opacity = opacity ? opacity : 100;
+  }
+
+  private async initColorStateRgb(rgb: string | undefined) {
+    if (!rgb) {
+      this.color = undefined;
+      return;
+    }
+
+    const splitRgb: number[] | undefined = rgb ? extractRgb(rgb) : undefined;
+
+    this.color = {
+      hex: await rgbToHex(rgb),
+      rgb: {
+        value: rgb,
+        r: splitRgb?.[0],
+        g: splitRgb?.[1],
+        b: splitRgb?.[2],
+      },
+    };
+  }
+
+  private async initColorStateHex(hex: string | undefined) {
+    if (!hex) {
+      this.color = undefined;
+      return;
+    }
+
+    const rgb: string | undefined = await hexToRgb(hex);
+
+    const splitRgb: number[] | undefined = rgb ? extractRgb(rgb) : undefined;
+
+    this.color = {
+      hex: hex,
+      rgb: {
+        value: rgb,
+        r: splitRgb?.[0],
+        g: splitRgb?.[1],
+        b: splitRgb?.[2],
+      },
+    };
   }
 
   private async selectColor($event: CustomEvent) {
@@ -50,7 +91,7 @@ export class AppImage {
 
     await PaletteUtils.updatePalette($event.detail);
 
-    this.color = $event.detail.rgb;
+    await this.initColorStateRgb($event.detail.rgb);
 
     this.emitRgbaColorChange();
   }
@@ -70,13 +111,13 @@ export class AppImage {
   }
 
   private emitRgbaColorChange() {
-    this.colorDidChange.emit(`rgba(${this.color},${ColorUtils.transformOpacity(this.opacity)})`);
+    this.colorDidChange.emit(`rgba(${this.color.rgb.value},${ColorUtils.transformOpacity(this.opacity)})`);
   }
 
   private emitReset($event: UIEvent) {
     $event.stopPropagation();
 
-    this.color = null;
+    this.color = undefined;
     this.opacity = 100;
 
     this.resetColor.emit();
@@ -95,7 +136,7 @@ export class AppImage {
       return;
     }
 
-    this.color = await hexToRgb(input);
+    await this.initColorStateHex(input);
 
     this.emitRgbaColorChange();
   }
@@ -136,6 +177,7 @@ export class AppImage {
           max-length={7}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleHexInput($event)}
           required={true}
+          value={this.color?.hex}
           name="color"
           placeholder="#000000"
           arial-label="Color"></ion-input>
@@ -143,9 +185,36 @@ export class AppImage {
     } else {
       return (
         <div class="input-rgb">
-          <ion-input input-mode="tel" debounce={500} max-length={3} min={'0'} max={'255'} name="r" placeholder="R" arial-label="Rgb - Red"></ion-input>
-          <ion-input input-mode="tel" debounce={500} max-length={3} min={'0'} max={'255'} name="g" placeholder="G" arial-label="Rgb - Green"></ion-input>
-          <ion-input input-mode="tel" debounce={500} max-length={3} min={'0'} max={'255'} name="b" placeholder="B" arial-label="Rgb - Blue"></ion-input>
+          <ion-input
+            input-mode="tel"
+            value={this.color?.rgb?.r}
+            debounce={500}
+            max-length={3}
+            min={'0'}
+            max={'255'}
+            name="r"
+            placeholder="R"
+            arial-label="Rgb - Red"></ion-input>
+          <ion-input
+            input-mode="tel"
+            value={this.color?.rgb?.g}
+            debounce={500}
+            max-length={3}
+            min={'0'}
+            max={'255'}
+            name="g"
+            placeholder="G"
+            arial-label="Rgb - Green"></ion-input>
+          <ion-input
+            input-mode="tel"
+            value={this.color?.rgb?.b}
+            debounce={500}
+            max-length={3}
+            min={'0'}
+            max={'255'}
+            name="b"
+            placeholder="B"
+            arial-label="Rgb - Blue"></ion-input>
         </div>
       );
     }
@@ -189,8 +258,7 @@ export class AppImage {
         class="ion-padding-start ion-padding-end ion-padding-bottom"
         more={false}
         label={false}
-        onColorChange={($event: CustomEvent) => this.selectColor($event)}
-        color-rgb={this.color}>
+        onColorChange={($event: CustomEvent) => this.selectColor($event)}>
         <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
       </deckgo-color>
     );
