@@ -172,11 +172,11 @@ export class AppImage {
   }
 
   private renderColorPicker() {
-    const buttonStyle = {'--background': this.color && this.color.rgb && this.color.rgb.value ? `rgb(${this.color.rgb.value})` : this.defaultColor};
+    const colorValue: string = !this.color || !this.color.hex ? this.defaultColor : this.color.hex.charAt(0) === '#' ? this.color.hex : `#${this.color.hex}`;
 
     return (
       <div class="color-picker item-input">
-        <ion-fab-button size="small" slot="start" arial-label="Color picker" style={buttonStyle}></ion-fab-button>
+        <input type="color" slot="start" arial-label="Color picker" value={colorValue}></input>
         {this.renderColorInput()}
         <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>

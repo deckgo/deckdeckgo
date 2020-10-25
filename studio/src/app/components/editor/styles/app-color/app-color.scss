@@ -8,9 +8,29 @@ app-color {
     grid-template-columns: 48px 1fr 32px;
     grid-column-gap: 8px;
 
-    ion-fab-button {
+    input[type="color"] {
+      appearance: none;
+
       width: 32px;
       height: 32px;
+
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+
+      overflow: hidden;
+
+      box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
+
+      cursor: pointer;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+      }
     }
 
     button {
