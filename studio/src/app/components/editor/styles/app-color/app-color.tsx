@@ -18,7 +18,7 @@ export class AppImage {
   initColor: () => Promise<InitStyleColor>;
 
   @State()
-  private color: {hex: string; rgb: {value: string; r: number; g: number; b: number}} | undefined;
+  private color: {hex: string; rgb: {value: string; r: number; g: number; b: number}};
 
   @State()
   private opacity: number = 100;
@@ -43,11 +43,6 @@ export class AppImage {
   }
 
   private async initColorStateRgb(rgb: string | undefined) {
-    if (!rgb) {
-      this.color = undefined;
-      return;
-    }
-
     const splitRgb: number[] | undefined = rgb ? extractRgb(rgb) : undefined;
 
     this.color = {
@@ -62,11 +57,6 @@ export class AppImage {
   }
 
   private async initColorStateHex(hex: string | undefined) {
-    if (!hex) {
-      this.color = undefined;
-      return;
-    }
-
     const rgb: string | undefined = await hexToRgb(hex);
 
     const splitRgb: number[] | undefined = rgb ? extractRgb(rgb) : undefined;
@@ -117,7 +107,15 @@ export class AppImage {
   private emitReset($event: UIEvent) {
     $event.stopPropagation();
 
-    this.color = undefined;
+    this.color = {
+      hex: undefined,
+      rgb: {
+        value: undefined,
+        r: undefined,
+        g: undefined,
+        b: undefined,
+      },
+    };
     this.opacity = 100;
 
     this.resetColor.emit();
@@ -139,6 +137,22 @@ export class AppImage {
     await this.initColorStateHex(input);
 
     this.emitRgbaColorChange();
+  }
+
+  private async handleRgbInput($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') {
+    const input: number = parseInt(($event.target as InputTargetEvent).value);
+
+    if (isNaN(input) || input < 0 || input > 255) {
+      return;
+    }
+
+    this.color.rgb[colorType] = input;
+
+    if (this.color.rgb.r >= 0 && this.color.rgb.g >= 0 && this.color.rgb.b >= 0) {
+      await this.initColorStateRgb(`${this.color.rgb.r}, ${this.color.rgb.g}, ${this.color.rgb.b}`);
+
+      this.emitRgbaColorChange();
+    }
   }
 
   render() {
@@ -190,6 +204,7 @@ export class AppImage {
             value={this.color?.rgb?.r}
             debounce={500}
             max-length={3}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleRgbInput($event, 'r')}
             min={'0'}
             max={'255'}
             name="r"
@@ -200,6 +215,7 @@ export class AppImage {
             value={this.color?.rgb?.g}
             debounce={500}
             max-length={3}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleRgbInput($event, 'g')}
             min={'0'}
             max={'255'}
             name="g"
@@ -210,6 +226,7 @@ export class AppImage {
             value={this.color?.rgb?.b}
             debounce={500}
             max-length={3}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleRgbInput($event, 'b')}
             min={'0'}
             max={'255'}
             name="b"
@@ -242,7 +259,7 @@ export class AppImage {
             color="primary"
             min={0}
             max={100}
-            disabled={!this.color || this.color === undefined}
+            disabled={!this.color || this.color === undefined || !this.color.hex}
             value={this.opacity}
             mode="md"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
