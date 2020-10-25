@@ -158,6 +158,12 @@ export class AppImage {
     }
   }
 
+  private async onColorPickerChange($event) {
+    await this.initColorStateHex($event.target.value);
+
+    this.emitRgbaColorChange();
+  }
+
   render() {
     return (
       <Fragment>
@@ -176,7 +182,7 @@ export class AppImage {
 
     return (
       <div class="color-picker item-input">
-        <input type="color" slot="start" arial-label="Color picker" value={colorValue}></input>
+        <input type="color" slot="start" arial-label="Color picker" value={colorValue} onChange={($event) => this.onColorPickerChange($event)}></input>
         {this.renderColorInput()}
         <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
           <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
