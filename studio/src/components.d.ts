@@ -96,6 +96,7 @@ export namespace Components {
     interface AppColor {
         "defaultColor": string;
         "initColor": () => Promise<InitStyleColor>;
+        "loadColor": () => Promise<void>;
     }
     interface AppColorChart {
         "initCurrentColors": () => Promise<void>;

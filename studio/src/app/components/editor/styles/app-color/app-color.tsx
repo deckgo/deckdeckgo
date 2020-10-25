@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch} from '@stencil/core';
+import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch, Method} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
@@ -50,6 +50,11 @@ export class AppImage {
   }
 
   @Watch('initColor')
+  async onInitColorChange() {
+    await this.loadColor();
+  }
+
+  @Method()
   async loadColor() {
     const {rgb, opacity} = await this.initColor();
 

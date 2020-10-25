@@ -1,11 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {RangeChangeEventDetail} from '@ionic/core';
-
-import colorStore from '../../../../../stores/color.store';
-
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
-import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
 
 @Component({
   tag: 'app-color-word-cloud',
@@ -14,12 +9,6 @@ export class AppColorWordCloud {
   @Prop()
   selectedElement: HTMLElement;
 
-  @State()
-  private color: string;
-
-  @State()
-  private colorOpacity: number = 100;
-
   @Event() wordCloudDidChange: EventEmitter<void>;
 
   @State()
@@ -27,121 +16,43 @@ export class AppColorWordCloud {
 
   private indexes: number[] = [...Array(99).keys()];
 
-  async componentWillLoad() {
-    await this.initColor();
-  }
+  private colorRef!: HTMLAppColorElement;
 
-  private selectColor($event: CustomEvent, colorFunction: Function): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.parentElement) {
-        resolve();
-        return;
-      }
+  private async applyColor($event: CustomEvent<string>) {
+    if (!this.selectedElement || !$event) {
+      return;
+    }
 
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
-
-      $event.stopPropagation();
-
-      await PaletteUtils.updatePalette($event.detail);
-
-      colorFunction($event);
-
-      this.emitChange();
-
-      resolve();
-    });
-  }
-
-  private setColor = async ($event: CustomEvent) => {
-    this.color = $event.detail.rgb ?? $event.detail.hex;
-    await this.applyColor();
-  };
-
-  private applyColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.color) {
-        resolve();
-        return;
-      }
-
-      const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
-
-      this.selectedElement.style.setProperty(this.getStyle(), selectedColor);
-
-      resolve();
-    });
+    this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
   }
 
   private getStyle(): string {
     return `--deckgo-word-count-fill-color-${this.colorIndex}`;
   }
 
-  // prettier-ignore
-  private initColor(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.style) {
-        this.color = undefined;
-        this.colorOpacity = 100;
+  private initColor = async (): Promise<InitStyleColor> => {
+    if (!this.selectedElement) {
+      return {
+        rgb: null,
+        opacity: null,
+      };
+    }
 
-        resolve();
-        return;
-      }
-
-      const styleColor: InitStyleColor = await ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(this.getStyle()));
-
-      this.color = styleColor.rgb;
-      this.colorOpacity = styleColor.opacity;
-
-      resolve();
-    });
-  }
+    return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(this.getStyle()));
+  };
 
   private emitChange() {
     this.wordCloudDidChange.emit();
   }
 
-  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>, opacityFunction: Function): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
-        resolve();
-        return;
-      }
+  private async resetColor() {
+    if (!this.selectedElement) {
+      return;
+    }
 
-      $event.stopPropagation();
+    this.selectedElement.style.removeProperty(this.getStyle());
 
-      const opacity: number = $event.detail.value as number;
-
-      opacityFunction(opacity);
-
-      this.emitChange();
-
-      resolve();
-    });
-  }
-
-  private setOpacity = async (opacity: number) => {
-    this.colorOpacity = opacity;
-    await this.applyColor();
-  };
-
-  private resetColor(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
-
-      this.selectedElement.style.removeProperty(this.getStyle());
-
-      await this.initColor();
-
-      this.emitChange();
-
-      resolve();
-    });
+    this.emitChange();
   }
 
   private async selectColorIndex($event: CustomEvent) {
@@ -153,8 +64,7 @@ export class AppColorWordCloud {
 
     if (!isNaN(input as any)) {
       this.colorIndex = parseInt(input);
-
-      await this.initColor();
+      await this.colorRef?.loadColor();
     }
   }
 
@@ -162,6 +72,7 @@ export class AppColorWordCloud {
     return (
       <app-expansion-panel>
         <ion-label slot="title">Colors</ion-label>
+
         <ion-list>
           <ion-item class="select">
             <ion-label>Series</ion-label>
@@ -176,40 +87,13 @@ export class AppColorWordCloud {
               {this.renderChartIndexes()}
             </ion-select>
           </ion-item>
-
-          <ion-item-divider class="ion-padding-top">
-            <ion-label>
-              Opacity <small>{this.colorOpacity}%</small>
-            </ion-label>
-          </ion-item-divider>
-
-          <ion-item class="item-opacity">
-            <ion-range
-              color="primary"
-              min={0}
-              max={100}
-              disabled={!this.color || this.color === undefined}
-              value={this.colorOpacity}
-              mode="md"
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setOpacity)}></ion-range>
-          </ion-item>
-
-          <div class="ion-padding-start">
-            <deckgo-color
-              palette={colorStore.state.palette}
-              class="ion-padding-bottom"
-              onColorChange={($event: CustomEvent) => this.selectColor($event, this.setColor)}
-              color-rgb={this.color}>
-              <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-            </deckgo-color>
-          </div>
-
-          <ion-item class="action-button ion-margin-bottom">
-            <ion-button shape="round" onClick={() => this.resetColor()} fill="outline" class="delete">
-              <ion-label>Reset color</ion-label>
-            </ion-button>
-          </ion-item>
         </ion-list>
+
+        <app-color
+          ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
+          initColor={this.initColor}
+          onResetColor={() => this.resetColor()}
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
       </app-expansion-panel>
     );
   }
