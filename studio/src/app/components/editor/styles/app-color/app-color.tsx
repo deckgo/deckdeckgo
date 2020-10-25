@@ -22,6 +22,9 @@ export class AppImage {
   @Prop()
   defaultColor: string;
 
+  @Prop()
+  history: boolean = true;
+
   @State()
   private color: {hex: string; rgb: {value: string; r: number; g: number; b: number}};
 
@@ -105,6 +108,10 @@ export class AppImage {
 
   private async colorChange() {
     this.colorDidChange.emit(`rgba(${this.color.rgb.value},${ColorUtils.transformOpacity(this.opacity)})`);
+
+    if (!this.history) {
+      return;
+    }
 
     await PaletteUtils.updatePalette({
       hex: this.color.hex,
@@ -285,6 +292,10 @@ export class AppImage {
   }
 
   private renderColorHistory() {
+    if (!this.history) {
+      return undefined;
+    }
+
     return <div class="history ion-padding-start ion-padding-end ion-padding-bottom">{this.renderPalette()}</div>;
   }
 
