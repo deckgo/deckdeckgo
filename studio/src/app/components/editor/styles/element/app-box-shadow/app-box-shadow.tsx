@@ -183,7 +183,6 @@ export class AppBoxShadow {
 
         <app-color
           class="ion-margin-top"
-          history={false}
           initColor={this.initColor}
           onResetColor={() => this.resetBoxShadow()}
           onColorDidChange={($event: CustomEvent<string>) => this.selectColor($event)}></app-color>

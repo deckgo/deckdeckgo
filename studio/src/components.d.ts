@@ -95,7 +95,6 @@ export namespace Components {
     }
     interface AppColor {
         "defaultColor": string;
-        "history": boolean;
         "initColor": () => Promise<InitStyleColor>;
     }
     interface AppColorChart {
@@ -1364,7 +1363,6 @@ declare namespace LocalJSX {
     }
     interface AppColor {
         "defaultColor"?: string;
-        "history"?: boolean;
         "initColor"?: () => Promise<InitStyleColor>;
         "onColorDidChange"?: (event: CustomEvent<string>) => void;
         "onResetColor"?: (event: CustomEvent<void>) => void;
