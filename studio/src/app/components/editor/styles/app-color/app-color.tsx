@@ -4,7 +4,7 @@ import {RangeChangeEventDetail} from '@ionic/core';
 
 import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
 
-import {extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
+import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import colorStore from '../../../../stores/color.store';
 
@@ -33,6 +33,17 @@ export class AppImage {
 
   @Event()
   resetColor: EventEmitter<void>;
+
+  private readonly debounceHandleHexInput: ($event: CustomEvent<KeyboardEvent>) => void = debounce(async ($event: CustomEvent<KeyboardEvent>) => {
+    await this.handleHexInput($event);
+  }, 500);
+
+  private readonly debounceHandleRgbInput: ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => void = debounce(
+    async ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => {
+      await this.handleRgbInput($event, colorType);
+    },
+    500
+  );
 
   async componentWillLoad() {
     await this.loadColor();
@@ -205,7 +216,7 @@ export class AppImage {
           debounce={500}
           input-mode="tel"
           max-length={7}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleHexInput($event)}
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.debounceHandleHexInput($event)}
           required={true}
           value={this.color?.hex}
           name="color"
@@ -220,7 +231,7 @@ export class AppImage {
             value={this.color?.rgb?.r}
             debounce={500}
             max-length={3}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleRgbInput($event, 'r')}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.debounceHandleRgbInput($event, 'r')}
             min={'0'}
             max={'255'}
             name="r"
@@ -231,7 +242,7 @@ export class AppImage {
             value={this.color?.rgb?.g}
             debounce={500}
             max-length={3}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleRgbInput($event, 'g')}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.debounceHandleRgbInput($event, 'g')}
             min={'0'}
             max={'255'}
             name="g"
@@ -242,7 +253,7 @@ export class AppImage {
             value={this.color?.rgb?.b}
             debounce={500}
             max-length={3}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleRgbInput($event, 'b')}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.debounceHandleRgbInput($event, 'b')}
             min={'0'}
             max={'255'}
             name="b"
