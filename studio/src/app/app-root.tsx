@@ -11,7 +11,7 @@ import {AuthService} from './services/auth/auth.service';
 import {ThemeService} from './services/theme/theme.service';
 import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
-import {PaletteService} from './services/palette/palette.service';
+import {ColorService} from './services/palette/color.service';
 
 @Component({
   tag: 'app-root',
@@ -24,7 +24,7 @@ export class AppRoot {
 
   private themeService: ThemeService;
 
-  private paletteService: PaletteService;
+  private paletteService: ColorService;
 
   private offlineService: OfflineService;
 
@@ -40,7 +40,7 @@ export class AppRoot {
   constructor() {
     this.authService = AuthService.getInstance();
     this.themeService = ThemeService.getInstance();
-    this.paletteService = PaletteService.getInstance();
+    this.paletteService = ColorService.getInstance();
     this.offlineService = OfflineService.getInstance();
   }
 

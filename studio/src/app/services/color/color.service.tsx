@@ -4,18 +4,18 @@ import {get} from 'idb-keyval';
 
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
-export class PaletteService {
-  private static instance: PaletteService;
+export class ColorService {
+  private static instance: ColorService;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!PaletteService.instance) {
-      PaletteService.instance = new PaletteService();
+    if (!ColorService.instance) {
+      ColorService.instance = new ColorService();
     }
-    return PaletteService.instance;
+    return ColorService.instance;
   }
 
   async init() {
