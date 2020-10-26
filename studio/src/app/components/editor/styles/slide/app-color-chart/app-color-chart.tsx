@@ -1,13 +1,9 @@
-import {Component, Element, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
-import {RangeChangeEventDetail} from '@ionic/core';
-
-import colorStore from '../../../../../stores/color.store';
+import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {SlideChartType} from '../../../../../models/data/slide';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {ChartUtils} from '../../../../../utils/editor/chart.utils';
-import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
 
 enum ApplyColorType {
   FILL,
@@ -30,12 +26,6 @@ export class AppColorDeckSlide {
   private applyColorType: ApplyColorType = ApplyColorType.FILL;
 
   @State()
-  private color: string;
-
-  @State()
-  private colorOpacity: number = 100;
-
-  @State()
   private colorIndex: number = 1;
 
   @State()
@@ -45,204 +35,154 @@ export class AppColorDeckSlide {
 
   @Event() colorChange: EventEmitter<void>;
 
+  private colorRef!: HTMLAppColorElement;
+
   async componentWillLoad() {
     this.chartType = await ChartUtils.initSlideChartType(this.selectedElement);
-
-    await this.initCurrentColors();
   }
 
-  @Method()
-  async initCurrentColors() {
+  private initColor = async (): Promise<InitStyleColor> => {
     if (!this.selectedElement) {
-      return;
+      return {
+        rgb: null,
+        opacity: null,
+      };
     }
-
-    const element: HTMLElement = this.selectedElement;
-
-    if (!element) {
-      return;
-    }
-
-    await this.initColor(element);
-  }
-
-  private async initColor(element: HTMLElement) {
-    let styleColor: InitStyleColor;
 
     if (this.applyColorType === ApplyColorType.FILL) {
-      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`));
+      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`));
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`));
+      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`));
     } else if (this.applyColorType === ApplyColorType.AXIS) {
-      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--deckgo-chart-axis-color'));
+      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-axis-color'));
     } else if (this.applyColorType === ApplyColorType.GRID) {
-      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--deckgo-chart-grid-stroke'));
+      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-grid-stroke'));
     } else {
-      styleColor = await ColorUtils.splitColor(element.style.getPropertyValue('--deckgo-chart-text-color'));
+      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-text-color'));
     }
+  };
 
-    this.color = styleColor.rgb;
-    this.colorOpacity = styleColor.opacity;
-  }
-
-  private toggleColorType($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
-
-      this.applyColorType = $event.detail.value;
-
-      await this.initCurrentColors();
-    });
-  }
-
-  private async selectColor($event: CustomEvent) {
-    if (!this.selectedElement || !$event || !$event.detail) {
-      return;
-    }
-
+  private async toggleColorType($event: CustomEvent) {
     if (!$event || !$event.detail) {
       return;
     }
 
-    $event.stopPropagation();
+    this.applyColorType = $event.detail.value;
 
-    await PaletteUtils.updatePalette($event.detail);
-
-    this.color = $event.detail.rgb;
-
-    await this.applyColor();
+    await this.colorRef?.loadColor();
   }
 
-  private applyColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.color) {
-        resolve();
-        return;
-      }
+  private async applyColor($event: CustomEvent<string>) {
+    if (!this.selectedElement || !$event) {
+      return;
+    }
 
-      const selectedColor: string = `rgba(${this.color},${ColorUtils.transformOpacity(this.colorOpacity)})`;
+    const selectedColor: string = $event.detail;
 
-      if (this.applyColorType === ApplyColorType.FILL) {
-        this.selectedElement.style.setProperty(`--deckgo-chart-fill-color-${this.colorIndex}`, selectedColor);
-      } else if (this.applyColorType === ApplyColorType.STROKE) {
-        this.selectedElement.style.setProperty(`--deckgo-chart-stroke-${this.colorIndex}`, selectedColor);
-      } else if (this.applyColorType === ApplyColorType.AXIS) {
-        this.selectedElement.style.setProperty('--deckgo-chart-axis-color', selectedColor);
-      } else if (this.applyColorType === ApplyColorType.GRID) {
-        this.selectedElement.style.setProperty('--deckgo-chart-grid-stroke', selectedColor);
-      } else {
-        this.selectedElement.style.setProperty('--deckgo-chart-text-color', selectedColor);
-      }
+    if (this.applyColorType === ApplyColorType.FILL) {
+      this.selectedElement.style.setProperty(`--deckgo-chart-fill-color-${this.colorIndex}`, selectedColor);
+    } else if (this.applyColorType === ApplyColorType.STROKE) {
+      this.selectedElement.style.setProperty(`--deckgo-chart-stroke-${this.colorIndex}`, selectedColor);
+    } else if (this.applyColorType === ApplyColorType.AXIS) {
+      this.selectedElement.style.setProperty('--deckgo-chart-axis-color', selectedColor);
+    } else if (this.applyColorType === ApplyColorType.GRID) {
+      this.selectedElement.style.setProperty('--deckgo-chart-grid-stroke', selectedColor);
+    } else {
+      this.selectedElement.style.setProperty('--deckgo-chart-text-color', selectedColor);
+    }
 
-      this.colorChange.emit();
-
-      resolve();
-    });
+    this.colorChange.emit();
   }
 
-  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
-        resolve();
-        return;
-      }
+  private async selectColorIndex($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      $event.stopPropagation();
+    const input: string = $event.detail.value;
 
-      const opacity: number = $event.detail.value as number;
+    if (!isNaN(input as any)) {
+      this.colorIndex = parseInt(input);
 
-      this.colorOpacity = opacity;
-
-      await this.applyColor();
-
-      resolve();
-    });
+      await this.colorRef?.loadColor();
+    }
   }
 
-  private selectColorIndex($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private async resetColor() {
+    if (!this.selectedElement) {
+      return;
+    }
 
-      const input: string = $event.detail.value;
+    if (this.applyColorType === ApplyColorType.FILL) {
+      this.selectedElement.style.removeProperty(`--deckgo-chart-fill-color-${this.colorIndex}`);
+    } else if (this.applyColorType === ApplyColorType.STROKE) {
+      this.selectedElement.style.removeProperty(`--deckgo-chart-stroke-${this.colorIndex}`);
+    } else if (this.applyColorType === ApplyColorType.AXIS) {
+      this.selectedElement.style.removeProperty('--deckgo-chart-axis-color');
+    } else if (this.applyColorType === ApplyColorType.GRID) {
+      this.selectedElement.style.removeProperty('--deckgo-chart-grid-stroke');
+    } else {
+      this.selectedElement.style.removeProperty('--deckgo-chart-text-color');
+    }
 
-      if (!isNaN(input as any)) {
-        this.colorIndex = parseInt(input);
-
-        await this.initCurrentColors();
-      }
-    });
+    this.colorChange.emit();
   }
 
   render() {
-    return [
-      <ion-item-divider class="ion-padding-top">
-        <ion-label>Apply a color to</ion-label>
-      </ion-item-divider>,
+    return (
+      <app-expansion-panel>
+        <ion-label slot="title">Colors</ion-label>
 
-      <ion-item class="select">
-        <ion-label>Apply a color to</ion-label>
+        <ion-list>
+          <ion-item-divider class="ion-padding-top">
+            <ion-label>Apply a color to</ion-label>
+          </ion-item-divider>
 
-        <ion-select
-          value={this.applyColorType}
-          placeholder="Apply a color to"
-          onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
-          interface="popover"
-          mode="md"
-          class="ion-padding-start ion-padding-end">
-          {this.renderColorOptions()}
-        </ion-select>
-      </ion-item>,
+          <ion-item class="select">
+            <ion-label>Apply a color to</ion-label>
 
-      <ion-item-divider class="ion-padding-top">
-        <ion-label>Series</ion-label>
-      </ion-item-divider>,
+            <ion-select
+              value={this.applyColorType}
+              placeholder="Apply a color to"
+              onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end">
+              {this.renderColorOptions()}
+            </ion-select>
+          </ion-item>
 
-      <ion-item class="select">
-        <ion-label>Series</ion-label>
+          <ion-item-divider class="ion-padding-top">
+            <ion-label>Series</ion-label>
+          </ion-item-divider>
 
-        <ion-select
-          value={this.colorIndex}
-          placeholder="Series index"
-          disabled={this.applyColorType !== ApplyColorType.FILL && this.applyColorType !== ApplyColorType.STROKE}
-          onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
-          interface="popover"
-          mode="md"
-          class="ion-padding-start ion-padding-end">
-          {this.renderChartIndexes()}
-        </ion-select>
-      </ion-item>,
+          <ion-item class="select">
+            <ion-label>Series</ion-label>
 
-      <ion-item-divider class="ion-padding-top">
-        <ion-label>
-          Opacity <small>{this.colorOpacity}%</small>
-        </ion-label>
-      </ion-item-divider>,
+            <ion-select
+              value={this.colorIndex}
+              placeholder="Series index"
+              disabled={this.applyColorType !== ApplyColorType.FILL && this.applyColorType !== ApplyColorType.STROKE}
+              onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end">
+              {this.renderChartIndexes()}
+            </ion-select>
+          </ion-item>
+        </ion-list>
 
-      <ion-item class="item-opacity">
-        <ion-range
-          color="primary"
-          min={0}
-          max={100}
-          disabled={!this.color || this.color === undefined}
-          value={this.colorOpacity}
-          mode="md"
-          onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
-      </ion-item>,
+        <ion-item-divider class="ion-padding-top">
+          <ion-label>Color</ion-label>
+        </ion-item-divider>
 
-      <deckgo-color
-        palette={colorStore.state.palette}
-        class="ion-padding-start ion-padding-end ion-padding-bottom"
-        onColorChange={($event: CustomEvent) => this.selectColor($event)}
-        color-rgb={this.color}>
-        <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-      </deckgo-color>,
-    ];
+        <app-color
+          ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
+          initColor={this.initColor}
+          onResetColor={() => this.resetColor()}
+          onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
+      </app-expansion-panel>
+    );
   }
 
   private renderColorOptions() {

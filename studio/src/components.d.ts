@@ -99,7 +99,6 @@ export namespace Components {
         "loadColor": () => Promise<void>;
     }
     interface AppColorChart {
-        "initCurrentColors": () => Promise<void>;
         "selectedElement": HTMLElement;
     }
     interface AppColorCode {
