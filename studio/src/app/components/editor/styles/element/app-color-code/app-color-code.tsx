@@ -1,13 +1,10 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {alertController, RangeChangeEventDetail} from '@ionic/core';
+import {alertController} from '@ionic/core';
 
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
-import colorStore from '../../../../../stores/color.store';
-
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
-import {PaletteUtils} from '../../../../../utils/editor/palette.utils';
 
 enum CodeColorType {
   COMMENTS,
@@ -36,12 +33,6 @@ export class AppColorCode {
   private highlightLines: string;
 
   @State()
-  private highlightColor: string;
-
-  @State()
-  private highlightColorOpacity: number = 100;
-
-  @State()
   private terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
   @State()
@@ -49,15 +40,13 @@ export class AppColorCode {
 
   @Event() codeDidChange: EventEmitter<void>;
 
-  private colorRef!: HTMLAppColorElement;
+  private colorCodeRef!: HTMLAppColorElement;
 
   async componentWillLoad() {
-    const promises: Promise<void>[] = [this.initCurrentHiglight(), this.initTerminal()];
-
-    await Promise.all(promises);
+    await this.initTerminal();
   }
 
-  private initColor = async (): Promise<InitStyleColor> => {
+  private initCodeColor = async (): Promise<InitStyleColor> => {
     if (!this.selectedElement) {
       return {
         rgb: null,
@@ -90,19 +79,21 @@ export class AppColorCode {
     return ColorUtils.splitColor(color);
   };
 
-  // prettier-ignore
-  private initCurrentHiglight(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.highlightLines = this.selectedElement?.getAttribute('highlight-lines') ?? null;
-      const color: string = this.selectedElement?.style?.getPropertyValue('--deckgo-highlight-code-line-background') ?? '62,69,100';
+  private initHighlightColor = async (): Promise<InitStyleColor> => {
+    this.highlightLines = this.selectedElement?.getAttribute('highlight-lines') ?? null;
+    const color: string = this.selectedElement?.style?.getPropertyValue('--deckgo-highlight-code-line-background') ?? '62,69,100';
 
-      let styleColor: InitStyleColor = await ColorUtils.splitColor(color);
+    return ColorUtils.splitColor(color);
+  };
 
-      this.highlightColor = styleColor.rgb ?? color;
-      this.highlightColorOpacity = styleColor.opacity;
+  private async resetHighlightColor() {
+    if (!this.selectedElement) {
+      return;
+    }
 
-      resolve();
-    });
+    this.selectedElement.style.removeProperty('--deckgo-highlight-code-line-background');
+
+    this.emitColorChange();
   }
 
   private async initTerminal() {
@@ -117,35 +108,6 @@ export class AppColorCode {
         : DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
   }
 
-  private selectColor($event: CustomEvent, colorFunction: Function): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.parentElement) {
-        resolve();
-        return;
-      }
-
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
-
-      $event.stopPropagation();
-
-      await PaletteUtils.updatePalette($event.detail);
-
-      colorFunction($event);
-
-      this.emitColorChange();
-
-      resolve();
-    });
-  }
-
-  private setHighlightColor = async ($event: CustomEvent) => {
-    this.highlightColor = $event.detail.rgb ?? $event.detail.hex;
-    await this.applyHighlightColor();
-  };
-
   private async applyCodeColor($event: CustomEvent<string>) {
     if (!this.selectedElement || !$event) {
       return;
@@ -156,19 +118,14 @@ export class AppColorCode {
     this.emitColorChange();
   }
 
-  private applyHighlightColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.highlightColor) {
-        resolve();
-        return;
-      }
+  private async applyHighlightColor($event: CustomEvent<string>) {
+    if (!this.selectedElement || !$event) {
+      return;
+    }
 
-      const selectedColor: string = `rgba(${this.highlightColor},${ColorUtils.transformOpacity(this.highlightColorOpacity)})`;
+    this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.detail);
 
-      this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', selectedColor);
-
-      resolve();
-    });
+    this.emitColorChange();
   }
 
   private async toggleColorType($event: CustomEvent) {
@@ -177,7 +134,7 @@ export class AppColorCode {
     }
 
     this.codeColorType = $event.detail.value;
-    await this.colorRef?.loadColor();
+    await this.colorCodeRef?.loadColor();
   }
 
   private getStyle(): string {
@@ -246,30 +203,6 @@ export class AppColorCode {
   private emitColorChange() {
     this.codeDidChange.emit();
   }
-
-  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>, opacityFunction: Function): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
-        resolve();
-        return;
-      }
-
-      $event.stopPropagation();
-
-      const opacity: number = $event.detail.value as number;
-
-      opacityFunction(opacity);
-
-      this.emitColorChange();
-
-      resolve();
-    });
-  }
-
-  private setHighlightOpacity = async (opacity: number) => {
-    this.highlightColorOpacity = opacity;
-    await this.applyHighlightColor();
-  };
 
   private async resetCodeColor() {
     if (!this.selectedElement) {
@@ -341,8 +274,8 @@ export class AppColorCode {
 
         <app-color
           class="ion-margin-top"
-          ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
-          initColor={this.initColor}
+          ref={(el) => (this.colorCodeRef = el as HTMLAppColorElement)}
+          initColor={this.initCodeColor}
           onResetColor={() => this.resetCodeColor()}
           onColorDidChange={($event: CustomEvent<string>) => this.applyCodeColor($event)}></app-color>
       </app-expansion-panel>
@@ -426,34 +359,13 @@ export class AppColorCode {
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
               onIonChange={() => this.highlightSelectedLines()}></ion-input>
           </ion-item>
-
-          <ion-item-divider class="ion-padding-top">
-            <ion-label>
-              Opacity <small>{this.highlightColorOpacity}%</small>
-            </ion-label>
-          </ion-item-divider>
-
-          <ion-item class="item-opacity">
-            <ion-range
-              color="primary"
-              min={0}
-              max={100}
-              disabled={!this.highlightColor || this.highlightColor === undefined || !this.highlightLines || this.highlightLines === undefined}
-              value={this.highlightColorOpacity}
-              mode="md"
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setHighlightOpacity)}></ion-range>
-          </ion-item>
-
-          <div class={!this.highlightLines || this.highlightLines === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
-            <deckgo-color
-              palette={colorStore.state.palette}
-              class="ion-padding-bottom"
-              onColorChange={($event: CustomEvent) => this.selectColor($event, this.setHighlightColor)}
-              color-rgb={this.highlightColor}>
-              <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-            </deckgo-color>
-          </div>
         </ion-list>
+
+        <app-color
+          class="ion-margin-top"
+          initColor={this.initHighlightColor}
+          onResetColor={() => this.resetHighlightColor()}
+          onColorDidChange={($event: CustomEvent<string>) => this.applyHighlightColor($event)}></app-color>
       </app-expansion-panel>
     );
   }
