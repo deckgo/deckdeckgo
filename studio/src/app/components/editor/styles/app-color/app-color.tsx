@@ -8,7 +8,6 @@ import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import colorStore from '../../../../stores/color.store';
 
-import {PaletteUtils} from '../../../../utils/editor/palette.utils';
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 @Component({
@@ -122,7 +121,7 @@ export class AppImage {
   private async colorChange() {
     this.colorDidChange.emit(`rgba(${this.color.rgb.value},${ColorUtils.transformOpacity(this.opacity)})`);
 
-    await PaletteUtils.updatePalette({
+    await ColorUtils.updateColor({
       hex: this.color.hex,
       rgb: this.color.rgb.value,
     });
@@ -305,7 +304,7 @@ export class AppImage {
   }
 
   private renderPalette() {
-    return colorStore.state.palette.map((palette: DeckdeckgoPalette) => {
+    return colorStore.state.history.map((palette: DeckdeckgoPalette) => {
       return (
         <ion-fab-button
           size="small"

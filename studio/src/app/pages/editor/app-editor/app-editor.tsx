@@ -6,6 +6,7 @@ import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
+import colorStore from '../../../stores/color.store';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 
@@ -777,6 +778,7 @@ export class AppEditor {
         onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
         img-anchor="deckgo-lazy-img"
         list={false}
+        palette={colorStore.state.palette}
         align={false}></deckgo-inline-editor>
     );
   }
