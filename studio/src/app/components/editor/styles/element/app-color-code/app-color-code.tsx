@@ -33,12 +33,6 @@ export class AppColorCode {
   private codeColorType: CodeColorType = undefined;
 
   @State()
-  private codeColor: string;
-
-  @State()
-  private codeColorOpacity: number = 100;
-
-  @State()
   private highlightLines: string;
 
   @State()
@@ -55,11 +49,46 @@ export class AppColorCode {
 
   @Event() codeDidChange: EventEmitter<void>;
 
+  private colorRef!: HTMLAppColorElement;
+
   async componentWillLoad() {
-    const promises: Promise<void>[] = [this.initColor(), this.initCurrentHiglight(), this.initTerminal()];
+    const promises: Promise<void>[] = [this.initCurrentHiglight(), this.initTerminal()];
 
     await Promise.all(promises);
   }
+
+  private initColor = async (): Promise<InitStyleColor> => {
+    if (!this.selectedElement) {
+      return {
+        rgb: null,
+        opacity: null,
+      };
+    }
+
+    let color: string;
+
+    if (this.codeColorType === CodeColorType.PUNCTUATION) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ?? '98,114,164';
+    } else if (this.codeColorType === CodeColorType.PROPERTY) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ?? '189,147,249';
+    } else if (this.codeColorType === CodeColorType.SELECTOR) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ?? '80,250,123';
+    } else if (this.codeColorType === CodeColorType.OPERATOR) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ?? '255,121,198';
+    } else if (this.codeColorType === CodeColorType.KEYWORD) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ?? '255,121,198';
+    } else if (this.codeColorType === CodeColorType.FUNCTION) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ?? '255,184,108';
+    } else if (this.codeColorType === CodeColorType.REGEX) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ?? '241,250,140';
+    } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ?? '153,153,153';
+    } else {
+      color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ?? '153,153,153';
+    }
+
+    return ColorUtils.splitColor(color);
+  };
 
   // prettier-ignore
   private initCurrentHiglight(): Promise<void> {
@@ -112,29 +141,19 @@ export class AppColorCode {
     });
   }
 
-  private setCodeColor = async ($event: CustomEvent) => {
-    this.codeColor = $event.detail.rgb ?? $event.detail.hex;
-    await this.applyCodeColor();
-  };
-
   private setHighlightColor = async ($event: CustomEvent) => {
     this.highlightColor = $event.detail.rgb ?? $event.detail.hex;
     await this.applyHighlightColor();
   };
 
-  private applyCodeColor(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.codeColor) {
-        resolve();
-        return;
-      }
+  private async applyCodeColor($event: CustomEvent<string>) {
+    if (!this.selectedElement || !$event) {
+      return;
+    }
 
-      const selectedColor: string = `rgba(${this.codeColor},${ColorUtils.transformOpacity(this.codeColorOpacity)})`;
+    this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
 
-      this.selectedElement.style.setProperty(this.getStyle(), selectedColor);
-
-      resolve();
-    });
+    this.emitColorChange();
   }
 
   private applyHighlightColor(): Promise<void> {
@@ -152,18 +171,13 @@ export class AppColorCode {
     });
   }
 
-  private toggleColorType($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private async toggleColorType($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      this.codeColorType = $event.detail.value;
-      await this.initColor();
-
-      resolve();
-    });
+    this.codeColorType = $event.detail.value;
+    await this.colorRef?.loadColor();
   }
 
   private getStyle(): string {
@@ -186,48 +200,6 @@ export class AppColorCode {
     } else {
       return '--deckgo-highlight-code-token-comment';
     }
-  }
-
-  // prettier-ignore
-  private initColor(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.style) {
-        this.codeColor = undefined;
-        this.codeColorOpacity = 100;
-
-        resolve();
-        return;
-      }
-
-      let color: string;
-
-      if (this.codeColorType === CodeColorType.PUNCTUATION) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-punctuation') ?? '98,114,164';
-      } else if (this.codeColorType === CodeColorType.PROPERTY) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-property') ?? '189,147,249';
-      } else if (this.codeColorType === CodeColorType.SELECTOR) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-selector') ?? '80,250,123';
-      } else if (this.codeColorType === CodeColorType.OPERATOR) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-operator') ?? '255,121,198';
-      } else if (this.codeColorType === CodeColorType.KEYWORD) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-atrule') ?? '255,121,198';
-      } else if (this.codeColorType === CodeColorType.FUNCTION) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-function') ?? '255,184,108';
-      } else if (this.codeColorType === CodeColorType.REGEX) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-regex') ?? '241,250,140';
-      } else if (this.codeColorType === CodeColorType.LINE_NUMBERS) {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-line-numbers') ?? '153,153,153';
-      } else {
-        color = this.selectedElement.style.getPropertyValue('--deckgo-highlight-code-token-comment') ?? '153,153,153';
-      }
-
-      let styleColor: InitStyleColor = await ColorUtils.splitColor(color);
-
-      this.codeColor = styleColor.rgb ?? color;
-      this.codeColorOpacity = styleColor.opacity;
-
-      resolve();
-    });
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
@@ -294,31 +266,19 @@ export class AppColorCode {
     });
   }
 
-  private setCodeOpacity = async (opacity: number) => {
-    this.codeColorOpacity = opacity;
-    await this.applyCodeColor();
-  };
-
   private setHighlightOpacity = async (opacity: number) => {
     this.highlightColorOpacity = opacity;
     await this.applyHighlightColor();
   };
 
-  private resetCodeColor(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
+  private async resetCodeColor() {
+    if (!this.selectedElement) {
+      return;
+    }
 
-      this.selectedElement.style.removeProperty(this.getStyle());
+    this.selectedElement.style.removeProperty(this.getStyle());
 
-      await this.initColor();
-
-      this.emitColorChange();
-
-      resolve();
-    });
+    this.emitColorChange();
   }
 
   private toggle($event: CustomEvent, attribute: 'terminal' | 'theme'): Promise<void> {
@@ -377,40 +337,14 @@ export class AppColorCode {
               <ion-select-option value={CodeColorType.LINE_NUMBERS}>Line numbers</ion-select-option>
             </ion-select>
           </ion-item>
-
-          <ion-item-divider class="ion-padding-top">
-            <ion-label>
-              Opacity <small>{this.codeColorOpacity}%</small>
-            </ion-label>
-          </ion-item-divider>
-
-          <ion-item class="item-opacity">
-            <ion-range
-              color="primary"
-              min={0}
-              max={100}
-              disabled={!this.codeColor || this.codeColor === undefined || this.codeColorType === undefined}
-              value={this.codeColorOpacity}
-              mode="md"
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity($event, this.setCodeOpacity)}></ion-range>
-          </ion-item>
-
-          <div class={this.codeColorType === undefined ? 'ion-padding-start disabled' : 'ion-padding-start'}>
-            <deckgo-color
-              palette={colorStore.state.palette}
-              class="ion-padding-bottom"
-              onColorChange={($event: CustomEvent) => this.selectColor($event, this.setCodeColor)}
-              color-rgb={this.codeColor}>
-              <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-            </deckgo-color>
-          </div>
-
-          <ion-item class="action-button ion-margin-bottom">
-            <ion-button shape="round" onClick={() => this.resetCodeColor()} fill="outline" class="delete">
-              <ion-label>Reset color</ion-label>
-            </ion-button>
-          </ion-item>
         </ion-list>
+
+        <app-color
+          class="ion-margin-top"
+          ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
+          initColor={this.initColor}
+          onResetColor={() => this.resetCodeColor()}
+          onColorDidChange={($event: CustomEvent<string>) => this.applyCodeColor($event)}></app-color>
       </app-expansion-panel>
     );
   }
