@@ -106,7 +106,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppColorQrcode {
-        "initCurrentColors": () => Promise<void>;
         "selectedElement": HTMLElement;
     }
     interface AppColorSides {

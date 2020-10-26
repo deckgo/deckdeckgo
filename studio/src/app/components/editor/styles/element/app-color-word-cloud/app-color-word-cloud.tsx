@@ -24,6 +24,8 @@ export class AppColorWordCloud {
     }
 
     this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
+
+    this.emitChange();
   }
 
   private getStyle(): string {
