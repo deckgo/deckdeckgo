@@ -6,6 +6,6 @@ export class PaletteUtils {
   static async updatePalette(color: DeckdeckgoPaletteColor) {
     const filteredPalette: DeckdeckgoPalette[] = colorStore.state.palette.filter((palette: DeckdeckgoPalette) => palette.color.hex !== color.hex);
 
-    colorStore.state.palette = [{color}, ...(filteredPalette.length < 20 ? filteredPalette : filteredPalette.slice(0, 19))];
+    colorStore.state.palette = [{color}, ...(filteredPalette.length < 22 ? filteredPalette : filteredPalette.slice(0, 21))];
   }
 }

@@ -85,8 +85,7 @@ app-color {
 
   div.history {
     display: flex;
-    flex-wrap: nowrap;
-    overflow: scroll;
+    flex-wrap: wrap;
     width: 100%;
 
     ion-fab-button {
