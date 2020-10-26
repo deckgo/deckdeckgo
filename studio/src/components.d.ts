@@ -109,7 +109,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppColorSides {
-        "initCurrentColors": () => Promise<void>;
         "selectedElement": HTMLElement;
         "template": 'split' | 'author';
     }
