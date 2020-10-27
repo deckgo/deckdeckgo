@@ -1,7 +1,5 @@
 import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {isIPad} from '@deckdeckgo/utils';
-
 import {TargetElement} from '../../../../utils/editor/target-element';
 import {ImageAction} from '../../../../utils/editor/image-action';
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
@@ -26,16 +24,11 @@ export class AppDeck {
   private applyToTargetElement: TargetElement = TargetElement.TEXT;
 
   @State()
-  private moreColors: boolean = true;
-
-  @State()
   private deckElement: HTMLDeckgoDeckElement;
 
   private imageHelper: ImageHelper;
 
   async componentWillLoad() {
-    this.moreColors = !isIPad();
-
     this.deckElement = document ? document.querySelector('deckgo-deck') : undefined;
 
     this.imageHelper = new ImageHelper(this.deckDidChange, this.blockSlide, this.signIn);
@@ -94,13 +87,12 @@ export class AppDeck {
 
   private renderOptions() {
     if (this.applyToTargetElement === TargetElement.TEXT) {
-      return <app-deck-fonts deckElement={this.deckElement} moreColors={this.moreColors} onFontsChange={() => this.onDeckChange()}></app-deck-fonts>;
+      return <app-deck-fonts deckElement={this.deckElement} onFontsChange={() => this.onDeckChange()}></app-deck-fonts>;
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return [
         <app-color-text-background
           colorType={'background'}
           selectedElement={this.deckElement}
-          moreColors={this.moreColors}
           deck={true}
           expanded={false}
           onColorChange={() => this.onDeckChange()}></app-color-text-background>,

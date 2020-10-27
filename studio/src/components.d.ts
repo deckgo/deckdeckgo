@@ -93,23 +93,21 @@ export namespace Components {
         "currentLanguage": PrismLanguage | undefined;
         "selectedElement": HTMLElement;
     }
+    interface AppColor {
+        "defaultColor": string;
+        "initColor": () => Promise<InitStyleColor>;
+        "loadColor": () => Promise<void>;
+    }
     interface AppColorChart {
-        "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppColorCode {
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppColorQrcode {
-        "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppColorSides {
-        "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
         "template": 'split' | 'author';
     }
@@ -117,13 +115,10 @@ export namespace Components {
         "colorType": 'text' | 'background';
         "deck": boolean;
         "expanded": boolean;
-        "initCurrentColors": () => Promise<void>;
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
     interface AppColorWordCloud {
-        "moreColors": boolean;
         "selectedElement": HTMLElement;
     }
     interface AppContact {
@@ -147,7 +142,6 @@ export namespace Components {
     }
     interface AppDeckFonts {
         "deckElement": HTMLElement;
-        "moreColors": boolean;
     }
     interface AppDeckHeaderFooter {
         "deckDidChange": EventEmitter<HTMLElement>;
@@ -520,6 +514,12 @@ declare global {
     var HTMLAppCodeLanguagesElement: {
         prototype: HTMLAppCodeLanguagesElement;
         new (): HTMLAppCodeLanguagesElement;
+    };
+    interface HTMLAppColorElement extends Components.AppColor, HTMLStencilElement {
+    }
+    var HTMLAppColorElement: {
+        prototype: HTMLAppColorElement;
+        new (): HTMLAppColorElement;
     };
     interface HTMLAppColorChartElement extends Components.AppColorChart, HTMLStencilElement {
     }
@@ -1156,6 +1156,7 @@ declare global {
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
+        "app-color": HTMLAppColorElement;
         "app-color-chart": HTMLAppColorChartElement;
         "app-color-code": HTMLAppColorCodeElement;
         "app-color-qrcode": HTMLAppColorQrcodeElement;
@@ -1358,23 +1359,25 @@ declare namespace LocalJSX {
         "currentLanguage"?: PrismLanguage | undefined;
         "selectedElement"?: HTMLElement;
     }
+    interface AppColor {
+        "defaultColor"?: string;
+        "initColor"?: () => Promise<InitStyleColor>;
+        "onColorDidChange"?: (event: CustomEvent<string>) => void;
+        "onResetColor"?: (event: CustomEvent<void>) => void;
+    }
     interface AppColorChart {
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppColorCode {
-        "moreColors"?: boolean;
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppColorQrcode {
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
     interface AppColorSides {
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
         "template"?: 'split' | 'author';
@@ -1383,13 +1386,11 @@ declare namespace LocalJSX {
         "colorType"?: 'text' | 'background';
         "deck"?: boolean;
         "expanded"?: boolean;
-        "moreColors"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;
     }
     interface AppColorWordCloud {
-        "moreColors"?: boolean;
         "onWordCloudDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
@@ -1417,7 +1418,6 @@ declare namespace LocalJSX {
     }
     interface AppDeckFonts {
         "deckElement"?: HTMLElement;
-        "moreColors"?: boolean;
         "onFontsChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckHeaderFooter {
@@ -1736,6 +1736,7 @@ declare namespace LocalJSX {
         "app-breadcrumbs": AppBreadcrumbs;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
+        "app-color": AppColor;
         "app-color-chart": AppColorChart;
         "app-color-code": AppColorCode;
         "app-color-qrcode": AppColorQrcode;
@@ -1861,6 +1862,7 @@ declare module "@stencil/core" {
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
+            "app-color": LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
             "app-color-chart": LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;
             "app-color-code": LocalJSX.AppColorCode & JSXBase.HTMLAttributes<HTMLAppColorCodeElement>;
             "app-color-qrcode": LocalJSX.AppColorQrcode & JSXBase.HTMLAttributes<HTMLAppColorQrcodeElement>;

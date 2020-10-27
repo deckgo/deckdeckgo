@@ -10,9 +10,6 @@ export class AppDeckFonts {
   @Prop()
   deckElement: HTMLElement;
 
-  @Prop()
-  moreColors: boolean = true;
-
   @Event() fontsChange: EventEmitter<void>;
 
   @State()
@@ -65,11 +62,7 @@ export class AppDeckFonts {
 
   render() {
     return [
-      <app-color-text-background
-        selectedElement={this.deckElement}
-        moreColors={this.moreColors}
-        deck={true}
-        onColorChange={() => this.fontsChange.emit()}></app-color-text-background>,
+      <app-color-text-background selectedElement={this.deckElement} deck={true} onColorChange={() => this.fontsChange.emit()}></app-color-text-background>,
       this.renderFonts(),
     ];
   }

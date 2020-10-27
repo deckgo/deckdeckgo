@@ -1,0 +1,107 @@
+app-color {
+  display: block;
+
+  div.color-picker {
+    display: grid;
+    align-items: center;
+
+    padding: 0 16px;
+
+    grid-template-columns: 48px 1fr 32px;
+    grid-column-gap: 8px;
+
+    input[type="color"] {
+      appearance: none;
+
+      width: 32px;
+      height: 32px;
+
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+
+      overflow: hidden;
+
+      box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
+
+      cursor: pointer;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+      }
+    }
+
+    button {
+      border: none;
+      font: inherit;
+      background: none;
+      padding: 0;
+
+      height: 100%;
+
+      cursor: pointer;
+      pointer-events: all;
+
+      &.reset {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    div.input-rgb {
+      display: inline-flex;
+
+      ion-input:not(:last-of-type) {
+        margin-right: 8px;
+      }
+    }
+
+    div.switcher {
+      grid-column-start: 1;
+      grid-column-end: 3;
+
+      justify-self: flex-end;
+
+      font-size: var(--font-size-very-small);
+
+      &.hex {
+        button:last-of-type {
+          color: var(--ion-color-medium);
+        }
+      }
+
+      &.rgb {
+        button:first-of-type {
+          color: var(--ion-color-medium);
+        }
+      }
+    }
+  }
+
+  div.history {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    ion-fab-button {
+      width: 16px;
+      height: 16px;
+
+      min-width: 16px;
+
+      margin: 10px 6px;
+
+      &:last-of-type::after {
+        content: "";
+        width: 8px;
+        display: block;
+        padding: 8px;
+      }
+    }
+  }
+}

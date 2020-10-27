@@ -1,4 +1,7 @@
 ion-radio-group.inline {
+  display: block;
+  margin-top: 8px;
+
   ion-item {
     display: inline-block;
     --inner-border-width: 0;

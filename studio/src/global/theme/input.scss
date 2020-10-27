@@ -1,4 +1,5 @@
-ion-item.item-input {
+ion-item.item-input,
+div.item-input {
   --border-color: transparent;
   --highlight-color-focused: transparent;
 
@@ -16,6 +17,12 @@ ion-item.item-input {
     border-radius: 4px;
 
     --placeholder-opacity: 0.33;
+  }
+}
+
+div.item-input {
+  ion-input[class*="sc-ion-input"] {
+    height: 38px;
   }
 }
 

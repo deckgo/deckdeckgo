@@ -1,3 +1,7 @@
+import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
+
+import colorStore from '../../stores/color.store';
+
 export interface InitStyleColor {
   rgb: string | null;
   opacity: number | null;
@@ -53,5 +57,23 @@ export class ColorUtils {
 
   static transformOpacity(colorOpacity: number): number {
     return colorOpacity === 0 ? 0 : colorOpacity / 100;
+  }
+
+  static async updateColor(color: DeckdeckgoPaletteColor) {
+    return Promise.all([this.updateHistory(color), this.updatePalette(color)]);
+  }
+
+  private static async updateHistory(color: DeckdeckgoPaletteColor) {
+    const filteredHistory: DeckdeckgoPalette[] = colorStore.state.history.filter((palette: DeckdeckgoPalette) => palette.color.hex !== color.hex);
+
+    colorStore.state.history = [{color}, ...(filteredHistory.length < 22 ? filteredHistory : filteredHistory.slice(0, 21))];
+  }
+
+  private static async updatePalette(color: DeckdeckgoPaletteColor) {
+    if (colorStore.state.palette.some((palette: DeckdeckgoPalette) => palette.color.hex === color.hex)) {
+      return;
+    }
+
+    colorStore.state.palette = [{color}, ...(colorStore.state.palette.length < 24 ? colorStore.state.palette : colorStore.state.palette.slice(0, 23))];
   }
 }

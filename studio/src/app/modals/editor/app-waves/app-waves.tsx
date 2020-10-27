@@ -2,10 +2,7 @@ import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import paletteStore from '../../../stores/palette.store';
-
-import {ColorUtils} from '../../../utils/editor/color.utils';
-import {PaletteUtils} from '../../../utils/editor/palette.utils';
+import {ColorUtils, InitStyleColor} from '../../../utils/editor/color.utils';
 import {WavesUtils} from '../../../utils/editor/waves.utils';
 
 @Component({
@@ -47,28 +44,29 @@ export class AppWaves {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
 
-  private updateOpacity($event: CustomEvent<RangeChangeEventDetail>) {
-    if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
-      return;
-    }
+  private initColor = async (): Promise<InitStyleColor> => {
+    return {
+      rgb: this.color,
+      opacity: 100,
+    };
+  };
 
-    $event.stopPropagation();
+  private resetColor() {
+    this.color = '100, 29, 128';
 
-    const opacity: string = String(($event.detail.value as number).toFixed(2));
-    this.waves = {...this.waves, opacity};
+    this.waves = {...this.waves, fill: `rgba(${this.color}, 1)`, opacity: '1'};
   }
 
-  private async selectColor($event: CustomEvent) {
+  private async applyColor($event: CustomEvent<string>) {
     if (!$event || !$event.detail) {
       return;
     }
 
     $event.stopPropagation();
 
-    await PaletteUtils.updatePalette($event.detail);
+    const color: InitStyleColor = await ColorUtils.splitColor($event.detail);
 
-    this.color = $event.detail.rgb;
-    this.waves = {...this.waves, fill: $event.detail.hex};
+    this.waves = {...this.waves, fill: `rgba(${color.rgb}, 1)`, opacity: `${color.opacity / 100}`};
   }
 
   private async updateNodes($event: CustomEvent<RangeChangeEventDetail>) {
@@ -200,34 +198,10 @@ export class AppWaves {
 
   private renderColor() {
     return (
-      <ion-list class="ion-no-padding">
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>
-            Opacity <small>{Math.floor(Number(this.waves.opacity) * 100)}%</small>
-          </ion-label>
-        </ion-item-divider>
-        <ion-item class="item-opacity">
-          <ion-range
-            color="quaternary"
-            min={0}
-            max={1}
-            step={0.01}
-            disabled={!this.waves.fill || this.waves.fill === undefined}
-            value={Number(this.waves.opacity)}
-            mode="md"
-            onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
-        </ion-item>
-        <div class="color">
-          <deckgo-color
-            more
-            palette={paletteStore.state.palette}
-            class="ion-padding-start ion-padding-end ion-padding-bottom"
-            onColorChange={($event: CustomEvent) => this.selectColor($event)}
-            color-rgb={this.color}>
-            <ion-icon src="/assets/icons/ionicons/ellipsis-vertical.svg" slot="more" aria-label="More" class="more"></ion-icon>
-          </deckgo-color>
-        </div>
-      </ion-list>
+      <app-color
+        initColor={this.initColor}
+        onResetColor={() => this.resetColor()}
+        onColorDidChange={($event: CustomEvent<string>) => this.applyColor($event)}></app-color>
     );
   }
 }
