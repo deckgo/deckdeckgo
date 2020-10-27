@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export interface TokenGitHub {
   token: string;
 }

@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export enum SlideTemplate {
   TITLE = 'title',
   CONTENT = 'content',

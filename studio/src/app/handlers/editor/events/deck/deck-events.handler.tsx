@@ -9,7 +9,7 @@ import authStore from '../../../../stores/auth.store';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';

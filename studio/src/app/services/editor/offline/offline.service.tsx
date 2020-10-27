@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 

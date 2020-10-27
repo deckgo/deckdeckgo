@@ -2,6 +2,7 @@ import {Component, Element, Prop, State, Watch, h} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
+import {User as FirebaseUser, UserCredential, AuthCredential, OAuthCredential} from '@firebase/auth-types';
 
 import {del, get, set} from 'idb-keyval';
 
@@ -38,7 +39,7 @@ export class AppSignIn {
   private userService: UserService;
   private deckService: DeckService;
 
-  private firebaseUser: firebase.User;
+  private firebaseUser: FirebaseUser;
 
   constructor() {
     this.deckService = DeckService.getInstance();
@@ -169,8 +170,8 @@ export class AppSignIn {
     });
   };
 
-  private async signInWithCredential(cred: firebase.auth.AuthCredential) {
-    const userCred: firebase.auth.UserCredential = await firebase.auth().signInWithCredential(cred);
+  private async signInWithCredential(cred: AuthCredential) {
+    const userCred: UserCredential = await firebase.auth().signInWithCredential(cred);
 
     this.saveGithubCredentials(userCred);
   }
@@ -256,12 +257,12 @@ export class AppSignIn {
     };
   }
 
-  private saveGithubCredentials(userCred: firebase.auth.UserCredential) {
+  private saveGithubCredentials(userCred: UserCredential) {
     if (!userCred || !userCred.user || !userCred.user.uid) {
       return;
     }
 
-    if (!userCred.credential || userCred.credential.providerId !== 'github.com' || !(userCred.credential as firebase.auth.OAuthCredential).accessToken) {
+    if (!userCred.credential || userCred.credential.providerId !== 'github.com' || !(userCred.credential as OAuthCredential).accessToken) {
       return;
     }
 
@@ -269,7 +270,7 @@ export class AppSignIn {
       id: userCred.user.uid,
       data: {
         github: {
-          token: (userCred.credential as firebase.auth.OAuthCredential).accessToken,
+          token: (userCred.credential as OAuthCredential).accessToken,
         },
       },
     };

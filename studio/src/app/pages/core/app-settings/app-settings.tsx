@@ -3,6 +3,7 @@ import {loadingController, modalController, OverlayEventDetail} from '@ionic/cor
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
+import {User as FirebaseUser} from '@firebase/auth-types';
 
 import themeStore from '../../../stores/theme.store';
 import errorStore from '../../../stores/error.store';
@@ -395,7 +396,7 @@ export class AppHome {
 
         await loading.present();
 
-        const firebaseUser: firebase.User = firebase.auth().currentUser;
+        const firebaseUser: FirebaseUser = firebase.auth().currentUser;
 
         if (firebaseUser) {
           // We need the user token to access the API, therefore delete it here first

@@ -46,7 +46,7 @@
     "@deckdeckgo/word-cloud": "^1.0.4",
     "@deckdeckgo/youtube": "^2.0.1",
     "@ionic/core": "^5.4.1",
-    "firebase": "^7.24.0",
+    "firebase": "^8.0.0",
     "idb-keyval": "^3.2.0",
     "socket.io-client": "^2.3.1",
     "uuid": "^8.3.1",
