@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export interface UserSocial {
   twitter?: string;
   linkedin?: string;

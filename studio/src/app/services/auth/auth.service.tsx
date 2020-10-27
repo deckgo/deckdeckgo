@@ -1,6 +1,6 @@
 import firebase from '@firebase/app';
 import '@firebase/auth';
-import {User as FirebaseUser} from 'firebase';
+import {User as FirebaseUser} from '@firebase/auth-types';
 
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
@@ -44,7 +44,7 @@ export class AuthService {
 
       firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
-      firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser) => {
+      firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser | null) => {
         if (!firebaseUser) {
           authStore.reset();
           await del('deckdeckgo_auth_user');

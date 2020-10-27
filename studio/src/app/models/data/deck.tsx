@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 import {UserSocial} from './user';
 
 export interface DeckDeployData {
