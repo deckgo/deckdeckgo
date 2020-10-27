@@ -44,7 +44,7 @@
 - math: v2.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/math/CHANGELOG.md))
 - qrcode: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/qrcode/CHANGELOG.md))
 - remote: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
-- social: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/CHANGELOG.md))
+- social: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/CHANGELOG.md))
 - youtube: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/youtube/CHANGELOG.md))
 
 ### Others

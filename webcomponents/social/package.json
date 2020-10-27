@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/social",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A Web Component to generate social link to your Twitter, Dev, Medium, LinkedIn, GitHub accounts or a custom uri",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
