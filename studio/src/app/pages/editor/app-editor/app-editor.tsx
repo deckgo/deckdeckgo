@@ -695,7 +695,7 @@ export class AppEditor {
 
     const index: number = await this.deckRef.getActiveIndex();
 
-    if (index < 0) {
+    if (index < 0 || this.activeIndex === index) {
       return;
     }
 
