@@ -1,3 +1,9 @@
+# 2.6.0 (2020-10-27)
+
+### Features
+
+- updated social component
+
 # 2.5.1 (2020-10-23)
 
 ### Build

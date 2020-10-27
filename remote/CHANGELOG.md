@@ -1,3 +1,9 @@
+# 1.11.0 (2020-10-27)
+
+### Features
+
+- updated social component
+
 # 1.10.0 (2020-10-23)
 
 ### Features
