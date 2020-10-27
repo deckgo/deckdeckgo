@@ -191,7 +191,7 @@ export class AppComponentsSocial {
                 <td>string</td>
                 <td></td>
                 <td>
-                  Your Medium username. It will be concatenated automatically with <code>https://medium.com/@</code>
+                  Your Medium username. <code>username</code> will be replaced automatically from <code>https://username.medium.com/</code>
                 </td>
               </tr>
               <tr>
