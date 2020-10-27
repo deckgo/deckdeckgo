@@ -8,9 +8,9 @@ Your notes are going to be automatically `displayed` in the [remote control](htt
 <deckgo-deck>
   <deckgo-slide-title>
     <h1 slot="title">My presentation title</h1>
-    <div slot="notes">A note regarding this particular slide</div>
+    <div slot="notes">A note regarding this particular slide
 
-And another note on a new line about it too.
+And another note on a new line about it too.</div>
   </deckgo-slide-title>
 </deckgo-deck>
 ```

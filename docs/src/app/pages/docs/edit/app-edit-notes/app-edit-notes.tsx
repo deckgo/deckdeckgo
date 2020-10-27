@@ -20,8 +20,8 @@ export class AppEditNotes {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-title&gt;{'\n'} &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'} &lt;div
-              slot=&quot;notes&quot;&gt;A note regarding this particular slide&lt;&#47;div&gt;{'\n'}
-              {'\n'}And another note on a new line about it too.{'\n'} &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
+              slot=&quot;notes&quot;&gt;A note regarding this particular slide{'\n'}
+              {'\n'}And another note on a new line about it too.&lt;&#47;div&gt;{'\n'} &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
           <h2 id="app-edit-notes-publishing-notes">Publishing Notes</h2>
