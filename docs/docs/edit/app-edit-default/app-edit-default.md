@@ -1,11 +1,9 @@
 # HTML
 
-To edit your [DeckDeckGo] presentation you could either use **HTML** or **Markdown**.
+A [DeckDeckGo] presentation shall be edited in **HTML**.
 
-The default language is **HTML**. It's also the recommended language as it offers you more flexibility specially in terms of styling.
+Slides and content have to written in the main `index.html` file of your project.
 
-If you have chosen to edit your presentation using HTML, begin by editing the `index.html` of your project as suggested in the chapter [Concept](/slides/concept).
+Checkout the chapter [Concept](/slides/concept) for more information about the structure.
 
-Whereas if you prefer to edit your talk using **Markdown**, have a look at [the next chapter](/edit/markdown).
-
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com
