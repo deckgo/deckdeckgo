@@ -48,13 +48,26 @@ async function convertDeckAttributes(deck: Deck): Promise<ApiDeckAttributes | un
     return undefined;
   }
 
-  const attributes: ApiDeckAttributes = {
-    ...(deck.data.attributes as ApiDeckAttributes),
-  };
+  const attributes: ApiDeckAttributes = {};
+
+  if (deck.data.attributes.style) {
+    attributes.style = deck.data.attributes.style;
+  }
+
+  if (deck.data.attributes.animation) {
+    attributes.animation = deck.data.attributes.animation;
+  }
+
+  if (deck.data.attributes.direction) {
+    attributes.direction = deck.data.attributes.direction;
+  }
+
+  if (deck.data.attributes.directionMobile) {
+    attributes['direction-mobile'] = deck.data.attributes.directionMobile;
+  }
 
   if (deck.data.attributes.autoSlide) {
-    delete attributes.autoSlide;
-    attributes.autoSlide = 'true';
+    attributes['auto-slide'] = 'true';
   }
 
   return attributes;
