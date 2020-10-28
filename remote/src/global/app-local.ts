@@ -6,6 +6,7 @@ import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/qrcode';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/social';
+import '@deckdeckgo/reveal';
 import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
 import '@deckdeckgo/demo';
