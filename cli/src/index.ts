@@ -90,9 +90,6 @@ async function run() {
     const inquirer = require("inquirer");
 
     inquirer.prompt(questions).then(async (answers: Answers) => {
-      console.log("\nYour inputs:\n");
-      console.log(JSON.stringify(answers, null, "  ") + "\n");
-
       await createPresentation(answers);
 
       console.log("Coolio, Your presentation is initialized.\n");
