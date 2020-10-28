@@ -8,9 +8,9 @@ Make elements and text appear one line at a time in [DeckDeckGo].
 - [Triggers](#app-edit-reveal-triggers)
 - [Exception](#app-edit-reveal-exception)
 - [Edit](#app-edit-reveal-edit)
-    - [Examples](#app-edit-reveal-examples)
+  - [Examples](#app-edit-reveal-examples)
 - [List](#app-edit-reveal-list)
-    - [Examples for list](#app-edit-reveal-examples-for-list)
+  - [Examples for list](#app-edit-reveal-examples-for-list)
 
 ## Introduction
 
@@ -91,25 +91,33 @@ To use it, simply replace the opening tag of your list (`ul`, `ol` or `dl`) with
 
 The following attributes could be applied to the element:
 
-| Property       | Attribute       | Mandatory | Description | Type      | Default                             |
-| -------------- | --------------- | --------- | ----------- | --------- | ----------------------------------- |
-| `listTag`         | `list-tag`          |  | The type of list (`ol` default, `ul` or `dl`) | `string`                | `ol` |
+| Property  | Attribute  | Mandatory | Description                                   | Type     | Default |
+| --------- | ---------- | --------- | --------------------------------------------- | -------- | ------- |
+| `listTag` | `list-tag` |           | The type of list (`ol` default, `ul` or `dl`) | `string` | `ol`    |
 
 ## Theming
 
 The following theming options are also available:
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --reveal-list-style | | The list-style property of the list |
-| --reveal-list-style-image | | The list-style property of the list |
-| --reveal-list-style-position | | The list-style-position property of the list |
-| --reveal-list-margin | | The list-margin property of the list |
-| --reveal-list-padding | | The list-padding property of the list |
-| --reveal-list-background | | The list-background property of the list |
-| --reveal-list-style-type | `disc` | The list-style-type property in case of `ul` container |
-| --reveal-list-style-type | `decimal` | The list-style-type property in case of `ol` container |
-| --reveal-list-style-type | `none` | The list-style-type property in case of `dl` container |
+| CSS4 variable                    | Default                | Note                                                   |
+| -------------------------------- | ---------------------- | ------------------------------------------------------ |
+| --reveal-list-style              |                        | The list-style property of the list                    |
+| --reveal-list-style-image        |                        | The list-style property of the list                    |
+| --reveal-list-style-position     |                        | The list-style-position property of the list           |
+| --reveal-list-margin             |                        | The list-margin property of the list                   |
+| --reveal-list-padding            |                        | The list-padding property of the list                  |
+| --reveal-list-background         |                        | The list-background property of the list               |
+| --reveal-list-style-type         | `disc`                 | The list-style-type property in case of `ul` container |
+| --reveal-list-style-type         | `decimal`              | The list-style-type property in case of `ol` container |
+| --reveal-list-style-type         | `none`                 | The list-style-type property in case of `dl` container |
+| --reveal-opacity-not-loaded      | `0`                    | If not displayed, the component is hidden              |
+| --reveal-opacity-loaded          | `1`                    | The opacity if displayed                               |
+| --reveal-list-opacity-not-loaded | `0`                    | If not displayed, the component is hidden              |
+| --reveal-list-opacity-loaded     | `1`                    | The opacity if displayed                               |
+| --reveal-transition              | `opacity 0.15s linear` | The animation of the component                         |
+| --reveal-list-transition         | `opacity 0.15s linear` | The animation of the component list                    |
+| --reveal-display                 | `block`                | The display property of the component                  |
+| --reveal-list-display            | `opacity 0.15s linear` | The display property of the component list             |
 
 ## Examples for list
 
@@ -130,4 +138,4 @@ Likewise, the component could be used as a child of a `slot` you would pass to a
 </deckgo-deck>
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+[deckdeckgo]: https://deckdeckgo.com
