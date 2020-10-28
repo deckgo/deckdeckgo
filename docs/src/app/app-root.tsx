@@ -29,7 +29,6 @@ export class AppRoot {
 
           <ion-route url="/edit" component="app-concept" />
           <ion-route url="/edit/default" component="app-edit-default" />
-          <ion-route url="/edit/markdown" component="app-edit-markdown" />
           <ion-route url="/edit/lazy" component="app-edit-lazy-loading" />
           <ion-route url="/edit/theming" component="app-edit-theming" />
           <ion-route url="/edit/fonts" component="app-edit-fonts" />
@@ -119,9 +118,6 @@ export class AppRoot {
                   </ion-item-divider>
                   <ion-item detail={false} href="/edit/default" routerDirection="forward">
                     <ion-label>HTML</ion-label>
-                  </ion-item>
-                  <ion-item detail={false} href="/edit/markdown" routerDirection="forward">
-                    <ion-label>Markdown</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/edit/lazy" routerDirection="forward">
                     <ion-label>Lazy loading</ion-label>
