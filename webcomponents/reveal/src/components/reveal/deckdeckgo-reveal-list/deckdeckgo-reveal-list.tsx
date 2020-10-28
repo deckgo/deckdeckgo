@@ -113,6 +113,7 @@ export class DeckdeckgoRevealList {
       <Host
         class={{
           'deckgo-reveal-all': this.focused,
+          'deckgo-reveal-visible': this.visibleIndex > 0,
         }}>
         {<RevealListNthChild index={this.visibleIndex} />}
         {this.renderList()}

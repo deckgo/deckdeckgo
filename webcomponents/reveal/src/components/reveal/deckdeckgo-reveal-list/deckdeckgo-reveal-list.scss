@@ -1,3 +1,15 @@
+:host {
+  display: var(--reveal-list-display, block);
+
+  opacity: var(--reveal-list-opacity-not-loaded, 0);
+
+  transition: var(--reveal-list-transition, opacity 0.15s linear);
+}
+
+:host(.deckgo-reveal-visible) {
+  opacity: var(--reveal-list-opacity-loaded, 1);
+}
+
 :host(:not(.deckgo-reveal-all)) {
   ::slotted(*) {
     visibility: hidden;

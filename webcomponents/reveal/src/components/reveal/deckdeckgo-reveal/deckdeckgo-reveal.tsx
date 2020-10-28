@@ -92,7 +92,10 @@ export class DeckdeckgoReveal {
 
   render() {
     return (
-      <Host>
+      <Host
+        class={{
+          'deckgo-reveal-visible': this.visibleIndex > 0,
+        }}>
         {<RevealNthChild index={this.visibleIndex} />}
         <slot />
       </Host>
