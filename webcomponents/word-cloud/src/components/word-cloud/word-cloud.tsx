@@ -1,4 +1,6 @@
-import {Component, Prop, h, Host, Element, State, Event, EventEmitter} from '@stencil/core';
+import {Component, Prop, h, Host, Element, State, Event, EventEmitter, Method} from '@stencil/core';
+
+import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 import {debounce} from '@deckdeckgo/utils';
 
@@ -12,7 +14,7 @@ import {draw} from '../utils/word-cloud-draw';
   styleUrl: 'word-cloud.scss',
   shadow: true,
 })
-export class DeckdeckgoWordCloud {
+export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
   @Prop() editable: boolean = false;
@@ -61,6 +63,11 @@ export class DeckdeckgoWordCloud {
   private onResizeContent = async () => {
     await this.resizeReload();
   };
+
+  @Method()
+  lazyLoadContent(): Promise<void> {
+    return this.resizeReload();
+  }
 
   private async resizeReload() {
     await this.initSize();

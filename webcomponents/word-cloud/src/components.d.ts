@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoWordCloud {
         "editable": boolean;
+        "lazyLoadContent": () => Promise<void>;
         "marginBottom": number;
         "marginLeft": number;
         "marginRight": number;
