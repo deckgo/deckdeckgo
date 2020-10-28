@@ -254,6 +254,10 @@ export class AppPoll {
 
         <p class="ion-text-center">Enjoy the presentation and watch out the screen for the real-time polling.</p>
 
+        <ion-button type="button" onClick={() => this.cancel()} color="primary" shape="round" class="ion-margin-top">
+          <ion-label>Vote for another poll</ion-label>
+        </ion-button>
+
         <div class="by-deckdeckgo">
           Created with{' '}
           <ion-router-link href="/home" routerDirection="forward">
