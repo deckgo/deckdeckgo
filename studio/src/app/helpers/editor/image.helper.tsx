@@ -180,8 +180,6 @@ export class ImageHelper {
     const div: HTMLElement = document.createElement('div');
     div.setAttribute('slot', 'background');
 
-    console.log('HERE', image);
-
     if (image.hasOwnProperty('viewBox')) {
       await this.appendChildSvg(selectedElement, div, image as Waves, deck);
       return;
