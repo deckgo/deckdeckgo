@@ -1,3 +1,11 @@
+<a name="2.0.0"></a>
+
+# 2.0.0 (2020-10-28)
+
+### Breaking Changes
+
+- deprecate markdown parser
+
 <a name="1.2.0"></a>
 
 # 1.2.0 (2020-08-28)

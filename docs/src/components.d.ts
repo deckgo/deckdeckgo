@@ -58,8 +58,6 @@ export namespace Components {
     }
     interface AppEditLazyLoading {
     }
-    interface AppEditMarkdown {
-    }
     interface AppEditNotes {
     }
     interface AppEditReveal {
@@ -295,12 +293,6 @@ declare global {
     var HTMLAppEditLazyLoadingElement: {
         prototype: HTMLAppEditLazyLoadingElement;
         new (): HTMLAppEditLazyLoadingElement;
-    };
-    interface HTMLAppEditMarkdownElement extends Components.AppEditMarkdown, HTMLStencilElement {
-    }
-    var HTMLAppEditMarkdownElement: {
-        prototype: HTMLAppEditMarkdownElement;
-        new (): HTMLAppEditMarkdownElement;
     };
     interface HTMLAppEditNotesElement extends Components.AppEditNotes, HTMLStencilElement {
     }
@@ -551,7 +543,6 @@ declare global {
         "app-edit-default": HTMLAppEditDefaultElement;
         "app-edit-fonts": HTMLAppEditFontsElement;
         "app-edit-lazy-loading": HTMLAppEditLazyLoadingElement;
-        "app-edit-markdown": HTMLAppEditMarkdownElement;
         "app-edit-notes": HTMLAppEditNotesElement;
         "app-edit-reveal": HTMLAppEditRevealElement;
         "app-edit-rtl": HTMLAppEditRtlElement;
@@ -643,8 +634,6 @@ declare namespace LocalJSX {
     interface AppEditFonts {
     }
     interface AppEditLazyLoading {
-    }
-    interface AppEditMarkdown {
     }
     interface AppEditNotes {
     }
@@ -751,7 +740,6 @@ declare namespace LocalJSX {
         "app-edit-default": AppEditDefault;
         "app-edit-fonts": AppEditFonts;
         "app-edit-lazy-loading": AppEditLazyLoading;
-        "app-edit-markdown": AppEditMarkdown;
         "app-edit-notes": AppEditNotes;
         "app-edit-reveal": AppEditReveal;
         "app-edit-rtl": AppEditRtl;
@@ -821,7 +809,6 @@ declare module "@stencil/core" {
             "app-edit-default": LocalJSX.AppEditDefault & JSXBase.HTMLAttributes<HTMLAppEditDefaultElement>;
             "app-edit-fonts": LocalJSX.AppEditFonts & JSXBase.HTMLAttributes<HTMLAppEditFontsElement>;
             "app-edit-lazy-loading": LocalJSX.AppEditLazyLoading & JSXBase.HTMLAttributes<HTMLAppEditLazyLoadingElement>;
-            "app-edit-markdown": LocalJSX.AppEditMarkdown & JSXBase.HTMLAttributes<HTMLAppEditMarkdownElement>;
             "app-edit-notes": LocalJSX.AppEditNotes & JSXBase.HTMLAttributes<HTMLAppEditNotesElement>;
             "app-edit-reveal": LocalJSX.AppEditReveal & JSXBase.HTMLAttributes<HTMLAppEditRevealElement>;
             "app-edit-rtl": LocalJSX.AppEditRtl & JSXBase.HTMLAttributes<HTMLAppEditRtlElement>;

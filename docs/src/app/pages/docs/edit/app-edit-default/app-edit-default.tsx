@@ -12,18 +12,13 @@ export class AppEditDefault {
         <main>
           <h1 id="app-edit-default-html">HTML</h1>
           <p>
-            To edit your <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation you could either use <strong>HTML</strong> or <strong>Markdown</strong>.
+            A <a href="https://deckdeckgo.com">DeckDeckGo</a> presentation shall be edited in <strong>HTML</strong>.
           </p>
           <p>
-            The default language is <strong>HTML</strong>. It&#39;s also the recommended language as it offers you more flexibility specially in terms of
-            styling.
+            Slides and content have to written in the main <code>index.html</code> file of your project.
           </p>
           <p>
-            If you have chosen to edit your presentation using HTML, begin by editing the <code>index.html</code> of your project as suggested in the chapter{' '}
-            <a href="/slides/concept">Concept</a>.
-          </p>
-          <p>
-            Whereas if you prefer to edit your talk using <strong>Markdown</strong>, have a look at <a href="/edit/markdown">the next chapter</a>.
+            Checkout the chapter <a href="/slides/concept">Concept</a> for more information about the structure.
           </p>
         </main>
 

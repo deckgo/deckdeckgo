@@ -8,12 +8,6 @@ export function downloadStarterMaster() {
   );
 }
 
-export function downloadStarterMarkdown() {
-  return downloadFromURL(
-    `https://github.com/deckgo/starter-kit/archive/markdown.zip`
-  );
-}
-
 export function downloadFontsKey() {
   return downloadFromURL(`https://api.deckdeckgo.com/googlefonts/`);
 }

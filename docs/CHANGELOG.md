@@ -1,3 +1,9 @@
+# 2.7.0 (2020-10-28)
+
+### Features
+
+- markdown has been deprecated in the starter kit
+
 # 2.6.0 (2020-10-27)
 
 ### Features

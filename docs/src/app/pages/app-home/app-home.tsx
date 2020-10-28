@@ -22,12 +22,8 @@ export class AppHome {
 
           <section class="overview" padding-top margin-top>
             <p no-margin>
-              Create a PWA presentation using Web Components,{' '}
-              <a href="https://ionicframework.com" rel="noopener norefferer">
-                Ionic
-              </a>{' '}
-              components and HTML or Markdown 🚀 Cherry on the cake 🍒🎂 DeckDeckGo comes with a <a href="https://deckdeckgo.app">Progressive Web App</a> to
-              remote control your slides 📱
+              Create quickly simple PWA presentations using Templates. Interact with a <a href="https://deckdeckgo.app">remote control</a> and live polls for
+              your audience.
             </p>
 
             <ul>
@@ -38,13 +34,7 @@ export class AppHome {
                 <ion-icon name="checkmark" padding-end></ion-icon>Predefined templates
               </li>
               <li>
-                <ion-icon name="checkmark" padding-end></ion-icon>Web Components
-              </li>
-              <li>
                 <ion-icon name="checkmark" padding-end></ion-icon>Lazy loaded content
-              </li>
-              <li>
-                <ion-icon name="checkmark" padding-end></ion-icon>HTML or Markdown
               </li>
               <li>
                 <ion-icon name="checkmark" padding-end></ion-icon>Free and open source
@@ -69,7 +59,7 @@ export class AppHome {
               <li>
                 <ion-icon name="create"></ion-icon>
                 <h3>Easy editing</h3>
-                <p>HTML or Markdown, templates based, extra components and features, all you need to easily create, showcase and ship your presentation.</p>
+                <p>HTML, templates based, extra components and features, all you need to easily create, showcase and ship your presentation.</p>
               </li>
               <li>
                 <ion-icon name="flash" padding-end></ion-icon>
