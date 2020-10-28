@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>DeckDeckGo</title>
+
+    <script type="module" src="/build/deckdeckgo-reveal.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-reveal.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.esm.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/slide-content@latest/dist/deckdeckgo-slide-content/deckdeckgo-slide-content.esm.js"></script>
+
+    <style>
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <deckgo-deck id="slider">
+      <deckgo-slide-title>
+        <h1 slot="title">Reveal as slot</h1>
+        <deckgo-reveal slot="content" style="background: red">
+          <p contenteditable="true">
+            Hello World EDITABLE EDITABLE HERE <a href="https://ionicframework.com">Ionic</a> 🚀
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+          </p>
+
+          <p>
+            Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+          </p>
+
+          <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+        </deckgo-reveal>
+      </deckgo-slide-title>
+
+      <deckgo-slide-title>
+        <h1 slot="title">Reveal inside slot</h1>
+        <div slot="content">
+          <deckgo-reveal>
+            <p>
+              Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            </p>
+          </deckgo-reveal>
+
+          <deckgo-reveal>
+            <p>
+              Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            </p>
+          </deckgo-reveal>
+
+          <p>
+            Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+            <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+          </p>
+        </div>
+      </deckgo-slide-title>
+
+      <deckgo-slide-content>
+        <h1 slot="title">Reveal after element</h1>
+
+        <div slot="content">
+          <deckgo-reveal-list list-tag="ul" style="list-style-type: square; background: yellow" contenteditable="true">
+            <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+            <li><strong>Ionic</strong> components and icons to create your content</li>
+            <li><strong>Style</strong> your presentation quickly</li>
+            <li>Lightweight and <strong>lazy</strong> loaded images</li>
+            <li>Bundles the presentation with an <strong>offline</strong> support</li>
+          </deckgo-reveal-list>
+
+          <deckgo-reveal-list>
+            <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+            <li><strong>Ionic</strong> components and icons to create your content</li>
+            <li><strong>Style</strong> your presentation quickly</li>
+            <li>Lightweight and <strong>lazy</strong> loaded images</li>
+            <li>Bundles the presentation with an <strong>offline</strong> support</li>
+          </deckgo-reveal-list>
+
+          <deckgo-reveal>
+            <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+
+            <p>
+              <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            </p>
+          </deckgo-reveal>
+        </div>
+      </deckgo-slide-content>
+    </deckgo-deck>
+  </body>
+</html>

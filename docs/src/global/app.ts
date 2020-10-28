@@ -24,6 +24,7 @@ import '@deckdeckgo/qrcode';
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/color';
 import '@deckdeckgo/social';
+import '@deckdeckgo/reveal';
 import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
 import '@deckdeckgo/demo';

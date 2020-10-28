@@ -1,3 +1,13 @@
+# 2.8.0 (2020-10-28)
+
+### Refactoring
+
+- component reveal extracted from core to a standalone component
+
+### Features
+
+- new reveal styling options
+
 # 2.7.0 (2020-10-28)
 
 ### Features

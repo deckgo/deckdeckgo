@@ -8,9 +8,13 @@ Make elements and text appear one line at a time in [DeckDeckGo].
 - [Triggers](#app-edit-reveal-triggers)
 - [Exception](#app-edit-reveal-exception)
 - [Edit](#app-edit-reveal-edit)
-    - [Examples](#app-edit-reveal-examples)
+  - [Examples](#app-edit-reveal-examples)
 - [List](#app-edit-reveal-list)
-    - [Examples for list](#app-edit-reveal-examples-for-list)
+  - [Examples for list](#app-edit-reveal-examples-for-list)
+- [Installation](#app-components-social-installation)
+  - [Using from a CDN](#app-components-social-install-from-a-cdn)
+  - [Install from NPM](#app-components-social-install-from-npm)
+  - [Framework integration](#app-components-social-framework-integration)
 
 ## Introduction
 
@@ -91,25 +95,33 @@ To use it, simply replace the opening tag of your list (`ul`, `ol` or `dl`) with
 
 The following attributes could be applied to the element:
 
-| Property       | Attribute       | Mandatory | Description | Type      | Default                             |
-| -------------- | --------------- | --------- | ----------- | --------- | ----------------------------------- |
-| `listTag`         | `list-tag`          |  | The type of list (`ol` default, `ul` or `dl`) | `string`                | `ol` |
+| Property  | Attribute  | Mandatory | Description                                   | Type     | Default |
+| --------- | ---------- | --------- | --------------------------------------------- | -------- | ------- |
+| `listTag` | `list-tag` |           | The type of list (`ol` default, `ul` or `dl`) | `string` | `ol`    |
 
 ## Theming
 
 The following theming options are also available:
 
-| CSS4 variable                      | Default | Note |
-| -------------------------- |-----------------|-----------------|
-| --reveal-list-style | | The list-style property of the list |
-| --reveal-list-style-image | | The list-style property of the list |
-| --reveal-list-style-position | | The list-style-position property of the list |
-| --reveal-list-margin | | The list-margin property of the list |
-| --reveal-list-padding | | The list-padding property of the list |
-| --reveal-list-background | | The list-background property of the list |
-| --reveal-list-style-type | `disc` | The list-style-type property in case of `ul` container |
-| --reveal-list-style-type | `decimal` | The list-style-type property in case of `ol` container |
-| --reveal-list-style-type | `none` | The list-style-type property in case of `dl` container |
+| CSS4 variable                    | Default                | Note                                                   |
+| -------------------------------- | ---------------------- | ------------------------------------------------------ |
+| --reveal-list-style              |                        | The list-style property of the list                    |
+| --reveal-list-style-image        |                        | The list-style property of the list                    |
+| --reveal-list-style-position     |                        | The list-style-position property of the list           |
+| --reveal-list-margin             |                        | The list-margin property of the list                   |
+| --reveal-list-padding            |                        | The list-padding property of the list                  |
+| --reveal-list-background         |                        | The list-background property of the list               |
+| --reveal-list-style-type         | `disc`                 | The list-style-type property in case of `ul` container |
+| --reveal-list-style-type         | `decimal`              | The list-style-type property in case of `ol` container |
+| --reveal-list-style-type         | `none`                 | The list-style-type property in case of `dl` container |
+| --reveal-opacity-not-loaded      | `0`                    | If not displayed, the component is hidden              |
+| --reveal-opacity-loaded          | `1`                    | The opacity if displayed                               |
+| --reveal-list-opacity-not-loaded | `0`                    | If not displayed, the component is hidden              |
+| --reveal-list-opacity-loaded     | `1`                    | The opacity if displayed                               |
+| --reveal-transition              | `opacity 0.15s linear` | The animation of the component                         |
+| --reveal-list-transition         | `opacity 0.15s linear` | The animation of the component list                    |
+| --reveal-display                 | `block`                | The display property of the component                  |
+| --reveal-list-display            | `opacity 0.15s linear` | The display property of the component list             |
 
 ## Examples for list
 
@@ -130,4 +142,45 @@ Likewise, the component could be used as a child of a `slot` you would pass to a
 </deckgo-deck>
 ```
 
-[DeckDeckGo]: https://deckdeckgo.com
+## Installation
+
+This component could be added to your web application using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+
+### Using from a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] reveal component from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/reveal@latest/dist/deckdeckgo-reveal/deckdeckgo-reveal.esm.js"></script>
+```
+
+### Install from NPM
+
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/reveal) using the following command:
+
+```bash
+npm install @deckdeckgo/reveal
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/reveal';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/reveal/dist/loader';
+deckDeckGoElement();
+```
+
+[deckdeckgo]: https://deckdeckgo.com

@@ -1,3 +1,9 @@
+# 1.12.0 (2020-10-28)
+
+### Refactoring
+
+- component reveal extracted from core to a standalone component
+
 # 1.11.0 (2020-10-27)
 
 ### Features

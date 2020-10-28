@@ -29,6 +29,8 @@ It is largely inspired and based on the awesome [work](https://github.com/ionic-
 
 This component could be added to your web application using the following methods.
 
+> If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+
 ### Using from a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy image component from a CDN. To do so, add the following include script in the main HTML file of your project:

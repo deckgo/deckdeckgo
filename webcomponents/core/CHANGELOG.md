@@ -1,3 +1,9 @@
+# 8.0.0 (2020-10-28)
+
+### Features
+
+- move reveal to standalone components
+
 # 7.0.0 (2020-10-23)
 
 ### Features
