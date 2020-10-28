@@ -44,8 +44,6 @@ Have a look at this video where we demonstrate how to use it!
 
 This component could be added to your web application using the following methods.
 
-> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
-
 ### Using from a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] inline editor from a CDN. To do so, add the following include script in the main HTML file of your project:

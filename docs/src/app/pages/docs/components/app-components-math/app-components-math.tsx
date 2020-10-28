@@ -72,6 +72,12 @@ export class AppComponentsMath {
 
           <h2 id="app-components-math-installation">Installation</h2>
           <p>This component could be added to your web application using the following methods.</p>
+          <blockquote>
+            <p>
+              If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot;
+              chapter.
+            </p>
+          </blockquote>
           <h3 id="app-components-math-using-from-a-cdn">Using from a CDN</h3>
           <p>
             It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> lazy image component

@@ -41,6 +41,20 @@ export class AppEditReveal {
                 </li>
               </ul>
             </li>
+            <li>
+              <a href="#app-components-social-installation">Installation</a>
+              <ul>
+                <li>
+                  <a href="#app-components-social-install-from-a-cdn">Using from a CDN</a>
+                </li>
+                <li>
+                  <a href="#app-components-social-install-from-npm">Install from NPM</a>
+                </li>
+                <li>
+                  <a href="#app-components-social-framework-integration">Framework integration</a>
+                </li>
+              </ul>
+            </li>
           </ul>
           <h2 id="app-edit-reveal-introduction">Introduction</h2>
           <p>
@@ -286,6 +300,52 @@ export class AppEditReveal {
               slot=&quot;content&quot;&gt;{'\n'} &lt;deckgo-reveal-list list-tag=&quot;ul&quot;&gt;{'\n'} &lt;li&gt;Hello World One 🚀&lt;&#47;li&gt;{'\n'}{' '}
               &lt;li&gt;Hello World Two 🚀&lt;&#47;li&gt;{'\n'} &lt;li&gt;Hello World Three 🚀&lt;&#47;li&gt;{'\n'} &lt;&#47;deckgo-reveal-list&gt;{'\n'}{' '}
               &lt;&#47;div&gt;{'\n'} &lt;&#47;deckgo-slide-title&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
+            </code>
+          </deckgo-highlight-code>
+          <h2 id="app-edit-reveal-installation">Installation</h2>
+          <p>This component could be added to your web application using the following methods.</p>
+          <blockquote>
+            <p>
+              If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the &quot;Installation&quot;
+              chapter.
+            </p>
+          </blockquote>
+          <h3 id="app-edit-reveal-using-from-a-cdn">Using from a CDN</h3>
+          <p>
+            It&#39;s recommended to use <a href="https://unpkg.com/">unpkg</a> to use the <a href="https://deckdeckgo.com">DeckDeckGo</a> reveal component from
+            a CDN. To do so, add the following include script in the main HTML file of your project:
+          </p>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">
+              &lt;script type=&quot;module&quot;
+              src=&quot;https:&#47;&#47;unpkg.com&#47;@deckdeckgo&#47;reveal@latest&#47;dist&#47;deckdeckgo-reveal&#47;deckdeckgo-reveal.esm.js&quot;&gt;&lt;&#47;script&gt;
+            </code>
+          </deckgo-highlight-code>
+          <h3 id="app-edit-reveal-install-from-npm">Install from NPM</h3>
+          <p>
+            Install it in your project from <a href="https://www.npmjs.com/package/@deckdeckgo/reveal">npm</a> using the following command:
+          </p>
+          <deckgo-highlight-code language="bash">
+            <code slot="code">npm install @deckdeckgo&#47;reveal</code>
+          </deckgo-highlight-code>
+          <h3 id="app-edit-reveal-framework-integration">Framework integration</h3>
+          <p>
+            The <a href="https://stenciljs.com/docs/overview">Stencil documentation</a> provide examples of framework integration for{' '}
+            <a href="https://stenciljs.com/docs/angular">Angular</a>, <a href="https://stenciljs.com/docs/react">React</a>,{' '}
+            <a href="https://stenciljs.com/docs/vue">Vue</a> and <a href="https://stenciljs.com/docs/ember">Ember</a>.
+          </p>
+          <p>
+            That being said, commonly, you might either <code>import</code> or <code>load</code> it:
+          </p>
+          <h4 id="app-edit-reveal-import">Import</h4>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">import &#039;@deckdeckgo&#47;reveal&#039;;</code>
+          </deckgo-highlight-code>
+          <h4 id="app-edit-reveal-loader">Loader</h4>
+          <deckgo-highlight-code language="javascript">
+            <code slot="code">
+              import &#123; defineCustomElements as deckDeckGoElement &#125; from &#039;@deckdeckgo&#47;reveal&#47;dist&#47;loader&#039;;{'\n'}
+              deckDeckGoElement();
             </code>
           </deckgo-highlight-code>
         </main>

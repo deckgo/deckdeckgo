@@ -11,6 +11,10 @@ Make elements and text appear one line at a time in [DeckDeckGo].
   - [Examples](#app-edit-reveal-examples)
 - [List](#app-edit-reveal-list)
   - [Examples for list](#app-edit-reveal-examples-for-list)
+- [Installation](#app-components-social-installation)
+  - [Using from a CDN](#app-components-social-install-from-a-cdn)
+  - [Install from NPM](#app-components-social-install-from-npm)
+  - [Framework integration](#app-components-social-framework-integration)
 
 ## Introduction
 
@@ -136,6 +140,47 @@ Likewise, the component could be used as a child of a `slot` you would pass to a
     </div>
   </deckgo-slide-title>
 </deckgo-deck>
+```
+
+## Installation
+
+This component could be added to your web application using the following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+
+### Using from a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] reveal component from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/reveal@latest/dist/deckdeckgo-reveal/deckdeckgo-reveal.esm.js"></script>
+```
+
+### Install from NPM
+
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/reveal) using the following command:
+
+```bash
+npm install @deckdeckgo/reveal
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/reveal';
+```
+
+#### Loader
+
+```
+import { defineCustomElements as deckDeckGoElement } from '@deckdeckgo/reveal/dist/loader';
+deckDeckGoElement();
 ```
 
 [deckdeckgo]: https://deckdeckgo.com
