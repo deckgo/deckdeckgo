@@ -38,23 +38,6 @@ export namespace Components {
         "toggleFullScreen": () => Promise<void>;
         "toggleKeyboardAssist": (state: boolean) => Promise<void>;
     }
-    interface DeckgoReveal {
-        "allElementsHidden": boolean;
-        "allElementsRevealed": boolean;
-        "hide": () => Promise<void>;
-        "hideAll": () => Promise<void>;
-        "reveal": () => Promise<void>;
-        "revealAll": () => Promise<void>;
-    }
-    interface DeckgoRevealList {
-        "allElementsHidden": boolean;
-        "allElementsRevealed": boolean;
-        "hide": () => Promise<void>;
-        "hideAll": () => Promise<void>;
-        "listTag": string;
-        "reveal": () => Promise<void>;
-        "revealAll": () => Promise<void>;
-    }
 }
 declare global {
     interface HTMLDeckgoDeckElement extends Components.DeckgoDeck, HTMLStencilElement {
@@ -63,22 +46,8 @@ declare global {
         prototype: HTMLDeckgoDeckElement;
         new (): HTMLDeckgoDeckElement;
     };
-    interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {
-    }
-    var HTMLDeckgoRevealElement: {
-        prototype: HTMLDeckgoRevealElement;
-        new (): HTMLDeckgoRevealElement;
-    };
-    interface HTMLDeckgoRevealListElement extends Components.DeckgoRevealList, HTMLStencilElement {
-    }
-    var HTMLDeckgoRevealListElement: {
-        prototype: HTMLDeckgoRevealListElement;
-        new (): HTMLDeckgoRevealListElement;
-    };
     interface HTMLElementTagNameMap {
         "deckgo-deck": HTMLDeckgoDeckElement;
-        "deckgo-reveal": HTMLDeckgoRevealElement;
-        "deckgo-reveal-list": HTMLDeckgoRevealListElement;
     }
 }
 declare namespace LocalJSX {
@@ -104,19 +73,8 @@ declare namespace LocalJSX {
         "reveal"?: boolean;
         "revealOnMobile"?: boolean;
     }
-    interface DeckgoReveal {
-        "allElementsHidden"?: boolean;
-        "allElementsRevealed"?: boolean;
-    }
-    interface DeckgoRevealList {
-        "allElementsHidden"?: boolean;
-        "allElementsRevealed"?: boolean;
-        "listTag"?: string;
-    }
     interface IntrinsicElements {
         "deckgo-deck": DeckgoDeck;
-        "deckgo-reveal": DeckgoReveal;
-        "deckgo-reveal-list": DeckgoRevealList;
     }
 }
 export { LocalJSX as JSX };
@@ -124,8 +82,6 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-deck": LocalJSX.DeckgoDeck & JSXBase.HTMLAttributes<HTMLDeckgoDeckElement>;
-            "deckgo-reveal": LocalJSX.DeckgoReveal & JSXBase.HTMLAttributes<HTMLDeckgoRevealElement>;
-            "deckgo-reveal-list": LocalJSX.DeckgoRevealList & JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement>;
         }
     }
 }

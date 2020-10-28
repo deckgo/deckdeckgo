@@ -1,8 +1,8 @@
-import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent, Listen} from '@stencil/core';
+import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} from '@stencil/core';
 
 import {DeckdeckgoRevealUtils} from '../deckdeckgo-reveal-utils';
 
-const RevealListNthChild: FunctionalComponent<{index: number}> = ({index}) => {
+const RevealNthChild: FunctionalComponent<{index: number}> = ({index}) => {
   if (index === 0) {
     return undefined;
   }
@@ -11,7 +11,7 @@ const RevealListNthChild: FunctionalComponent<{index: number}> = ({index}) => {
 
   return (
     <style class={`deckgo-reveal-${index}`}>{`
-      :host(:not(.deckgo-reveal-all)) ::slotted(*:nth-child(-n+${index})) {
+      ::slotted(*:nth-child(-n+${index})) {
         visibility: initial;
         opacity: 1;
         transform: none;
@@ -22,11 +22,11 @@ const RevealListNthChild: FunctionalComponent<{index: number}> = ({index}) => {
 };
 
 @Component({
-  tag: 'deckgo-reveal-list',
-  styleUrl: 'deckdeckgo-reveal-list.scss',
-  shadow: true
+  tag: 'deckgo-reveal',
+  styleUrl: 'deckdeckgo-reveal.scss',
+  shadow: true,
 })
-export class DeckdeckgoRevealList {
+export class DeckdeckgoReveal {
   @Element() el: HTMLElement;
 
   @Prop()
@@ -35,14 +35,8 @@ export class DeckdeckgoRevealList {
   @Prop()
   allElementsHidden: boolean = true;
 
-  @Prop()
-  listTag: string = 'ol';
-
   @State()
   private visibleIndex: number = 0;
-
-  @State()
-  private focused: boolean = false;
 
   @Method()
   reveal(): Promise<void> {
@@ -96,37 +90,12 @@ export class DeckdeckgoRevealList {
     });
   }
 
-  @Listen('focus')
-  onFocus() {
-    this.focused = true;
-  }
-
-  @Listen('blur')
-  async onBlur() {
-    this.focused = false;
-
-    await this.revealAll();
-  }
-
   render() {
     return (
-      <Host
-        class={{
-          'deckgo-reveal-all': this.focused
-        }}>
-        {<RevealListNthChild index={this.visibleIndex} />}
-        {this.renderList()}
-      </Host>
-    );
-  }
-
-  private renderList() {
-    const Element: string = this.listTag;
-
-    return (
-      <Element>
+      <Host>
+        {<RevealNthChild index={this.visibleIndex} />}
         <slot />
-      </Element>
+      </Host>
     );
   }
 }
