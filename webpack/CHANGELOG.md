@@ -2,6 +2,8 @@
 
 # 2.0.0 (2020-03-28)
 
+### Breaking Changes
+
 - deprecate markdown parser
 
 <a name="1.0.0"></a>
