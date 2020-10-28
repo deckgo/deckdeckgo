@@ -50,7 +50,10 @@ export interface DeckMeta {
 
 export interface DeckAttributes {
   style?: string;
-  transition?: 'slide' | 'fade' | 'none';
+  animation?: 'slide' | 'fade' | 'none';
+  direction?: 'horizontal' | 'vertical' | 'papyrus';
+  directionMobile?: 'horizontal' | 'vertical' | 'papyrus';
+  autoSlide?: boolean;
 }
 
 export interface DeckClone {
