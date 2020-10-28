@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 
 import {Deck} from '../../model/data/deck';
-import {ApiDeck} from '../../model/api/api.deck';
+import {ApiDeck, ApiDeckAttributes} from '../../model/api/api.deck';
 import {ApiSlide} from '../../model/api/api.slide';
 import {Slide, SlideAttributes, SlideTemplate} from '../../model/data/slide';
 
@@ -20,7 +20,6 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
             ? (deck.data.meta.description as string)
             : deck.data.name,
         owner_id: deck.data.owner_id,
-        attributes: deck.data.attributes,
         background: deck.data.background,
         header: deck.data.header,
         footer: deck.data.footer,
@@ -32,11 +31,33 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
         apiDeck.head_extra = googleFontScript;
       }
 
+      const attributes: ApiDeckAttributes | undefined = await convertDeckAttributes(deck);
+      if (attributes !== undefined) {
+        apiDeck.attributes = attributes;
+      }
+
       resolve(apiDeck);
     } catch (err) {
       reject(err);
     }
   });
+}
+
+async function convertDeckAttributes(deck: Deck): Promise<ApiDeckAttributes | undefined> {
+  if (!deck || !deck.data || !deck.data.attributes) {
+    return undefined;
+  }
+
+  const attributes: ApiDeckAttributes = {
+    ...(deck.data.attributes as ApiDeckAttributes),
+  };
+
+  if (deck.data.attributes.autoSlide) {
+    delete attributes.autoSlide;
+    attributes.autoSlide = 'true';
+  }
+
+  return attributes;
 }
 
 function convertSlides(deck: Deck): Promise<ApiSlide[]> {
