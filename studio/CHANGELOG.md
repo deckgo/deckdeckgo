@@ -1,3 +1,44 @@
+# 3.0.0 (2020-10-28)
+
+### Features
+
+- papyrus and vertical ([#871](https://github.com/deckgo/deckdeckgo/issues/871))
+- waves ([#874](https://github.com/deckgo/deckdeckgo/issues/874))
+- word cloud ([#696](https://github.com/deckgo/deckdeckgo/issues/696))
+- box shadow ([#881](https://github.com/deckgo/deckdeckgo/issues/881))
+- letter spacing ([#888](https://github.com/deckgo/deckdeckgo/issues/888))
+- border radius ([#865](https://github.com/deckgo/deckdeckgo/issues/865))
+- auto slide ([#890](https://github.com/deckgo/deckdeckgo/issues/890))
+- more list style ([#705](https://github.com/deckgo/deckdeckgo/issues/705))
+- aspect ratio set to 16/9 (except on mobile) ([#967](https://github.com/deckgo/deckdeckgo/pull/967))
+- improve poll UX to support multiple polls within the same presentation ([#942](https://github.com/deckgo/deckdeckgo/issues/942))
+- animate style options of revealed elements ([#236](https://github.com/deckgo/deckdeckgo/issues/236))
+- fullscreen enter hide mouse more quickly ([#963](https://github.com/deckgo/deckdeckgo/pull/963))
+- fullscreen editor v2 ([#901](https://github.com/deckgo/deckdeckgo/issues/901))
+- color picker v2 ([#919](https://github.com/deckgo/deckdeckgo/issues/919))
+- save used colors as history ([#902](https://github.com/deckgo/deckdeckgo/issues/902))
+- display regions in services list ([#856](https://github.com/deckgo/deckdeckgo/issues/856))
+- lighthouse metrics and transition fade ([#877](https://github.com/deckgo/deckdeckgo/issues/877))
+
+### Fix
+
+- some non descriptive icon titles are shown when hovering toolbar options ([#822](https://github.com/deckgo/deckdeckgo/issues/822))
+- color picker does not show focus state ([#922](https://github.com/deckgo/deckdeckgo/issues/922))
+- missing CSS overflow hidden in list of fonts ([#882](https://github.com/deckgo/deckdeckgo/issues/882))
+- anonymous user can add up to three slides to give a try to the editor ([#878](https://github.com/deckgo/deckdeckgo/issues/878))
+- improve performance by better detecting all slides effectively loaded ([#884](https://github.com/deckgo/deckdeckgo/issues/884))
+
+### Build
+
+- Workbox v5 ([#691](https://github.com/deckgo/deckdeckgo/issues/691))
+- Firebase JavaScript v8 ([#976](https://github.com/deckgo/deckdeckgo/pull/976))
+- rm www before build ([#879](https://github.com/deckgo/deckdeckgo/issues/879))
+
+### Refactor
+
+- optional chaining ([#920](https://github.com/deckgo/deckdeckgo/issues/920))
+- add rel to links ([#940](https://github.com/deckgo/deckdeckgo/pull/940))
+
 # 2.3.0 (2020-09-06)
 
 ### Features
