@@ -4,8 +4,8 @@ export interface ApiDeckAttributes {
   style?: string;
   animation?: string;
   direction?: string;
-  directionMobile?: string;
-  autoSlide?: string;
+  'direction-mobile'?: string;
+  'auto-slide'?: string;
 }
 
 export interface ApiDeck {
