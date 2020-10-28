@@ -12,6 +12,7 @@
 
 - pager: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/pager/CHANGELOG.md))
 - word-cloud: v1.0.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/word-cloud/CHANGELOG.md))
+- reveal: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/reveal/CHANGELOG.md))
 
 ### Web Components Templates
 
