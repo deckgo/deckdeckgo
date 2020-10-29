@@ -1,3 +1,9 @@
+<a name="3.0.2"></a>
+
+# 3.0.2 (2020-10-29)
+
+- papyrus slotted image height
+
 <a name="3.0.1"></a>
 
 # 3.0.1 (2020-10-23)
