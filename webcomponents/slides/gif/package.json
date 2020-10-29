@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-gif",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "The Gif template lets you show a fullscreen gif referenced by a simple local or remote url",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.2.1"
+    "@deckdeckgo/slide-utils": "^2.3.0"
   },
   "devDependencies": {
     "@stencil/core": "^2.0.3",

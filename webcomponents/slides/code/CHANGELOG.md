@@ -1,3 +1,9 @@
+# 3.0.2 (2020-10-29)
+
+### Fix
+
+- update slide-utils for word-cloud
+
 # 3.0.1 (2020-10-23)
 
 ### Fix
