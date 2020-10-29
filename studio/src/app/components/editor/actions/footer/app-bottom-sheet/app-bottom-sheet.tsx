@@ -40,61 +40,43 @@ export class AppBottomSheet {
   }
 
   private initWindowResize() {
-    if (window) {
-      window.addEventListener('resize', debounce(this.onWindowResize));
-    }
+    window?.addEventListener('resize', debounce(this.onWindowResize));
   }
 
   private removeWindowResize() {
-    if (window) {
-      window.removeEventListener('resize', debounce(this.onWindowResize));
-    }
+    window?.removeEventListener('resize', debounce(this.onWindowResize));
   }
 
   private onWindowResize = async () => {
     await this.initSize();
   };
 
-  private initSize(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.bottomSheetTop = this.bottomSheetMinHeight;
-      this.heightOffset = this.content.offsetHeight || this.el.offsetHeight;
-      this.contentHeight = window.innerHeight || screen.height;
-
-      resolve();
-    });
+  private async initSize() {
+    this.bottomSheetTop = this.bottomSheetMinHeight;
+    this.heightOffset = this.content.offsetHeight || this.el.offsetHeight;
+    this.contentHeight = window.innerHeight || screen.height;
   }
 
-  private init(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.container) {
-        resolve();
-        return;
-      }
+  private async init() {
+    if (!this.container) {
+      return;
+    }
 
-      this.container.addEventListener('mousedown', this.startEvent, {passive: false});
-      this.container.addEventListener('touchstart', this.startEvent, {passive: false});
-      document.addEventListener('mouseup', this.endEvent, {passive: false});
-      document.addEventListener('touchend', this.endEvent, {passive: false});
-
-      resolve();
-    });
+    this.container.addEventListener('mousedown', this.startEvent, {passive: false});
+    this.container.addEventListener('touchstart', this.startEvent, {passive: false});
+    document.addEventListener('mouseup', this.endEvent, {passive: false});
+    document.addEventListener('touchend', this.endEvent, {passive: false});
   }
 
-  private destroy(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.container) {
-        resolve();
-        return;
-      }
+  private async destroy() {
+    if (!this.container) {
+      return;
+    }
 
-      this.container.removeEventListener('mousedown', this.startEvent, true);
-      this.container.removeEventListener('touchstart', this.startEvent, true);
-      document.removeEventListener('mouseup', this.endEvent, true);
-      document.removeEventListener('touchend', this.endEvent, true);
-
-      resolve();
-    });
+    this.container.removeEventListener('mousedown', this.startEvent, true);
+    this.container.removeEventListener('touchstart', this.startEvent, true);
+    document.removeEventListener('mouseup', this.endEvent, true);
+    document.removeEventListener('touchend', this.endEvent, true);
   }
 
   private startEvent = ($event: MouseEvent | TouchEvent) => {
@@ -138,6 +120,16 @@ export class AppBottomSheet {
     this.sheetChanged.emit(this.bottomSheetTop === this.bottomSheetMinHeight ? 'close' : 'open');
   }
 
+  private toggle($event: UIEvent) {
+    $event.stopPropagation();
+
+    this.bottomSheetTop = this.bottomSheetTop === this.bottomSheetMinHeight ? this.content.offsetHeight : this.bottomSheetMinHeight;
+
+    this.startY = undefined;
+
+    this.sheetChanged.emit(this.bottomSheetTop === this.bottomSheetMinHeight ? 'close' : 'open');
+  }
+
   render() {
     return (
       <Host
@@ -146,7 +138,9 @@ export class AppBottomSheet {
           '--contentheight': `${this.contentHeight}px`,
         }}>
         <div class="container" ref={(el) => (this.container = el)}>
-          <div class="sheet-indicator"></div>
+          <button class="sheet-indicator" onClick={($event: UIEvent) => this.toggle($event)}>
+            <div></div>
+          </button>
           <div class="content" ref={(el) => (this.content = el)}>
             <slot></slot>
           </div>

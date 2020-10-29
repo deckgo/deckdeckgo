@@ -41,15 +41,27 @@ app-bottom-sheet {
       padding-top: 32px;
     }
 
-    > div.sheet-indicator {
+    > button.sheet-indicator {
       position: absolute;
-      top: 8px;
+      top: 0;
       left: 50%;
-      transform: translate(0, -50%);
-      width: 16px;
-      height: 4px;
-      background: rgba(var(--ion-color-light-rgb), 0.4);
-      border-radius: 16px;
+
+      padding: 8px;
+
+      outline: none;
+      border: none;
+
+      background: transparent;
+
+      > div {
+        display: block;
+
+        background: rgba(var(--ion-color-light-rgb), 0.4);
+        border-radius: 16px;
+
+        width: 16px;
+        height: 4px;
+      }
     }
   }
 }
