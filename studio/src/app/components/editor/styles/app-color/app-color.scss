@@ -104,4 +104,8 @@ app-color {
       }
     }
   }
+
+  ion-range {
+    --bar-background: var(--ion-color-light);
+  }
 }

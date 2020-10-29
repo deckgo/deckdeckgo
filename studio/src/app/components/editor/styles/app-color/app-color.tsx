@@ -287,12 +287,12 @@ export class AppImage {
         </ion-item-divider>
         <ion-item class="item-opacity">
           <ion-range
-            color="primary"
             min={0}
             max={100}
             disabled={!this.color || this.color === undefined || !this.color.hex}
             value={this.opacity}
             mode="md"
+            style={{'--bar-background-active': this.color.hex}}
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateOpacity(e)}></ion-range>
         </ion-item>
       </Fragment>
