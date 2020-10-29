@@ -471,8 +471,8 @@ presentationsPut env conn _uid pid pinfo = do
     liftIO $ putStrLn $ "PUT PRESENTATION" <> show pid
     liftIO $ putStrLn $ unwords
       [ "PUT presentation"
-      , show pinfo
-      , "(" <> show pid <> ")"
+      , show (pinfo { presentationSlides = [] })
+      , "(with ID " <> show pid <> ")"
       , show _uid
       ]
 
@@ -484,6 +484,8 @@ presentationsPut env conn _uid pid pinfo = do
         liftIO $ putStrLn "Presentation user does not exist in DB"
         Servant.throwError Servant.err404
       Just u -> pure u
+
+    liftIO $ putStrLn $ "Got user from DB: " <> show user
 
     uname <- case userUsername (itemContent user) of
       Nothing -> do
