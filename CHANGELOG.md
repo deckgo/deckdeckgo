@@ -1,6 +1,6 @@
 <a name="3.0.0"></a>
 
-# [3.0.0](https://github.com/deckgo/deckdeckgo/compare/v2.3.0...v3.0.0) (2020-10-28)
+# [3.0.0](https://github.com/deckgo/deckdeckgo/compare/v2.3.0...v3.0.0) (2020-10-29)
 
 ### Applications
 
