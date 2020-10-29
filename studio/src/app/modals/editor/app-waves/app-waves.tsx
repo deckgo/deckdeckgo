@@ -67,6 +67,8 @@ export class AppWaves {
     const color: InitStyleColor = await ColorUtils.splitColor($event.detail);
 
     this.waves = {...this.waves, fill: `rgba(${color.rgb}, 1)`, opacity: `${color.opacity / 100}`};
+
+    this.color = color.rgb;
   }
 
   private async updateNodes($event: CustomEvent<RangeChangeEventDetail>) {
