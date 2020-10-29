@@ -32,6 +32,12 @@ async function updateSelection(container: HTMLElement, action: ExecCommandStyle,
 async function replaceSelection(container: HTMLElement, action: ExecCommandStyle, selection: Selection, containers: string) {
   const range: Range = selection.getRangeAt(0);
 
+  // User selected a all list?
+  if (range.commonAncestorContainer && ['ol', 'ul', 'dl'].some((listType) => listType === range.commonAncestorContainer.nodeName.toLowerCase())) {
+    await updateSelection(range.commonAncestorContainer as HTMLElement, action, containers);
+    return;
+  }
+
   const fragment: DocumentFragment = range.extractContents();
 
   const span: HTMLSpanElement = await createSpan(container, action, containers);
