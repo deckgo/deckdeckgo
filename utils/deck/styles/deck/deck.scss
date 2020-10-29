@@ -154,6 +154,10 @@ deckgo-deck.papyrus [slot="background"] > deckgo-lazy-img {
   --deckgo-lazy-img-object-fit: cover;
 }
 
+deckgo-deck.papyrus deckgo-lazy-img[slot] {
+  --deckgo-lazy-img-height: auto;
+}
+
 deckgo-deck > svg[wave] {
   vertical-align: middle;
 }
