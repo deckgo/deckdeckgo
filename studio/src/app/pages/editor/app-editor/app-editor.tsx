@@ -778,7 +778,7 @@ export class AppEditor {
         onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
         img-anchor="deckgo-lazy-img"
         list={false}
-        palette={colorStore.state.palette}
+        palette={colorStore.state.history}
         align={false}></deckgo-inline-editor>
     );
   }
