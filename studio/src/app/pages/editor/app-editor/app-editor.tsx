@@ -689,29 +689,13 @@ export class AppEditor {
   private async onSlideChange() {
     await this.deckEventsHandler.toggleSlideEditable(!this.fullscreen || !this.presenting);
 
-    if (!this.deckRef) {
-      return;
-    }
-
-    const index: number = await this.deckRef.getActiveIndex();
+    const index: number = await this.deckRef?.getActiveIndex();
 
     if (index < 0 || this.activeIndex === index) {
       return;
     }
 
     this.activeIndex = index;
-
-    const slideElement: HTMLElement = this.deckRef.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
-
-    if (!slideElement) {
-      return;
-    }
-
-    if (!this.actionsEditorRef) {
-      return;
-    }
-
-    await this.actionsEditorRef.touch(slideElement, false);
   }
 
   render() {
