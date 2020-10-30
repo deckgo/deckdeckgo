@@ -7,6 +7,7 @@ import errorStore from '../../../../stores/error.store';
 import feedStore from '../../../../stores/feed.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -59,6 +60,8 @@ export class AppPublishEdit {
 
   @Event() private published: EventEmitter<string>;
 
+  @Event() private contact: EventEmitter<void>;
+
   private publishService: PublishService;
 
   private destroyDeckListener;
@@ -78,7 +81,7 @@ export class AppPublishEdit {
 
     this.destroyDeckListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
-      this.publishing = this.publishing || deck.data.deploy?.api?.status === 'scheduled' || deck.data.deploy?.api?.status === 'failure';
+      this.publishing = this.publishing || deck.data.deploy?.api?.status === 'scheduled';
     });
   }
 
@@ -358,6 +361,15 @@ export class AppPublishEdit {
     this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
   }
 
+  private async navigateContact() {
+    await this.contact.emit();
+
+    navStore.state.nav = {
+      url: '/contact',
+      direction: NavDirection.FORWARD,
+    };
+  }
+
   render() {
     const disable: boolean = this.publishing || this.progress !== undefined;
 
@@ -444,7 +456,22 @@ export class AppPublishEdit {
         </form>
 
         <p class="small">DeckDeckGo will automatically generate the social card for your presentation based on the first slide of your deck.</p>
+
+        {this.renderFailure()}
       </article>
+    );
+  }
+
+  private renderFailure() {
+    if (deckStore.state.deck?.data?.deploy?.api?.status !== 'failure') {
+      return undefined;
+    }
+
+    return (
+      <p class="small error ion-margin-top">
+        <ion-icon name="warning-outline"></ion-icon> Previous publication attempt failed. You can try again. If the problem persists, please{' '}
+        <a onClick={() => this.navigateContact()}>contact</a> us.
+      </p>
     );
   }
 

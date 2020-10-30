@@ -23,6 +23,23 @@ app-publish-edit {
 
   p.small {
     font-size: var(--font-size-small);
+
+    &.error {
+      ion-icon {
+        vertical-align: initial;
+      }
+
+      a {
+        color: var(--ion-color-danger);
+        cursor: pointer;
+
+        border-bottom: 1px solid var(--ion-color-danger);
+
+        &:hover {
+          border-bottom: 1px solid var(--ion-color-danger);
+        }
+      }
+    }
   }
 
   ion-item,

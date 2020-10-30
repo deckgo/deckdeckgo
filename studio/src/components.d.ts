@@ -1634,6 +1634,7 @@ declare namespace LocalJSX {
         "publishedUrl"?: string;
     }
     interface AppPublishEdit {
+        "onContact"?: (event: CustomEvent<void>) => void;
         "onPublished"?: (event: CustomEvent<string>) => void;
     }
     interface AppRandomGif {
