@@ -82,7 +82,7 @@ export async function disconnectRemoteControl() {
   await deckgoRemoteElement.disconnect();
 }
 
-export async function initRemote() {
+export const initRemote = async () => {
   if (process.env.NO_REMOTE || EMBEDDED) {
     return;
   }
@@ -110,7 +110,7 @@ export async function initRemote() {
   await initRemoteSize();
 
   await initDeckMove();
-}
+};
 
 async function initDeck() {
   const deck = document.getElementById('slider');
