@@ -1,6 +1,8 @@
 import {videoStart, videoPause} from './play-pause';
 import {previousSlide, nextSlide, toggleFullScreen} from './slider';
 import {openRemote} from '../modals/remote';
+import {presentSlidePicker} from '../modals/jump-to';
+import {openMenu} from '../modals/menu';
 
 export const initButtons = () => {
   if (!document) {

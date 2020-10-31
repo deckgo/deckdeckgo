@@ -28,7 +28,7 @@ async function buildMenuListActions(): Promise<string> {
 
 customElements.define('menu-list', MenuList);
 
-async function openMenu($event: UIEvent) {
+export async function openMenu($event: UIEvent) {
   $event.preventDefault();
 
   const popover: HTMLIonPopoverElement = document.createElement('ion-popover');

@@ -1,5 +1,3 @@
-EMBEDDED = false;
-
 export const initEmbedded = () => {
   if (!window || !window.location) {
     return;

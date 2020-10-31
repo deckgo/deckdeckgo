@@ -68,7 +68,7 @@ async function jumpToSlide(index: number) {
 
 customElements.define('slides-list', SlidesList);
 
-async function presentSlidePicker() {
+export async function presentSlidePicker() {
   const popover = document.createElement('ion-popover');
   popover.component = 'slides-list';
   popover.translucent = true;

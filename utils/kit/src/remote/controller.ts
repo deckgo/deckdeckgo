@@ -2,9 +2,6 @@ import {playPause} from '../actions/play-pause';
 import {pushStateSlideIndex} from '../dev/history';
 import {initActionPlayPause} from '../actions/actions';
 
-PENDING_REMOTE_REQUESTS = [];
-REMOTE_STATE = 0;
-
 export const remoteEvent = async ($event: CustomEvent) => {
   if (!$event || !$event.detail) {
     return;
