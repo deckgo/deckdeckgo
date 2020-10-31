@@ -4,6 +4,17 @@
   "author": "David Dal Busco",
   "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
   "license": "MIT",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-kit",
+    "build-kit": "npm run build-kit-sass && npm run build-kit-autoprefix && npm run build-kit-cleancss",
+    "build-kit-sass": "node-sass --output-style expanded styles/index.scss ./css/kit.css",
+    "build-kit-autoprefix": "postcss --use autoprefixer --map false --output ./css/kit.css ./css/kit.css",
+    "build-kit-cleancss": "cleancss -o ./css/kit.min.css ./css/kit.css"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/deckgo/deckdeckgo.git"
@@ -41,13 +52,6 @@
     "tslib": "^2.0.1",
     "typescript": "^4.0.3",
     "web-social-share": "^6.4.1"
-  },
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "scripts": {
-    "prepare": "npm run build",
-    "build": "rimraf lib && rollup -c && tsc"
   },
   "files": [
     "lib",

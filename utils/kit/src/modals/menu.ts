@@ -17,11 +17,11 @@ async function buildMenuListActions(): Promise<string> {
 
   if (!EMBEDDED) {
     result +=
-      '<ion-item ion-item button detail="false" id="notes" color="primary" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/clipboard.svg" aria-label="Display slide notes" slot="end"></ion-icon><ion-label>Display slide notes</ion-label></ion-item>';
+      '<ion-item ion-item button detail="false" id="notes" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/clipboard.svg" aria-label="Display slide notes" slot="end"></ion-icon><ion-label>Display slide notes</ion-label></ion-item>';
   }
 
   result +=
-    '<ion-item ion-item button detail="false" id="share" color="primary" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/share.svg" aria-label="Share this presentation" slot="end"></ion-icon><ion-label>Share</ion-label></ion-item>';
+    '<ion-item ion-item button detail="false" id="share" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/share.svg" aria-label="Share this presentation" slot="end"></ion-icon><ion-label>Share</ion-label></ion-item>';
   result +=
     '<ion-item ion-item button detail="false" id="made" style="--border-style: none; --ion-item-background: white;"><ion-icon src="https://deckdeckgo.com/assets/icons/deckdeckgo.svg" aria-label="DeckDeckGo" slot="end"></ion-icon><ion-label>Made with DeckDeckGo</ion-label></ion-item>';
 
