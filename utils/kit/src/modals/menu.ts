@@ -1,3 +1,5 @@
+import {displaySlideNotes} from './notes';
+
 class MenuList extends HTMLElement {
   constructor() {
     super();
@@ -41,6 +43,18 @@ export async function openMenu($event: UIEvent) {
   document.body.appendChild(popover);
 
   await popover.present();
+
+  // attach events
+  const buttonNotes: HTMLButtonElement | null = document.querySelector('ion-popover #notes');
+  buttonNotes?.addEventListener('click', displaySlideNotes);
+
+  const buttonShare: HTMLButtonElement | null = document.querySelector('ion-popover #share');
+  buttonShare?.addEventListener('click', openShare);
+
+  const buttonMade: HTMLButtonElement | null = document.querySelector('ion-popover #made');
+  buttonMade?.addEventListener('click', async () => {
+    await openLink('https://deckdeckgo.com');
+  });
 }
 
 async function openLink(link: string) {
