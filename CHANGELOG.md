@@ -1,3 +1,11 @@
+<a name="3.1.0"></a>
+
+# [3.1.0](https://github.com/deckgo/deckdeckgo/compare/v3.0.0...v3.1.0) (In progress...)
+
+### Others: New
+
+- kit: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
+
 <a name="3.0.0"></a>
 
 # [3.0.0](https://github.com/deckgo/deckdeckgo/compare/v2.3.0...v3.0.0) (2020-10-29)
