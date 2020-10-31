@@ -1,0 +1,64 @@
+button.navigation {
+  background: white;
+  color: #000000;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1), background-color 280ms cubic-bezier(0.4, 0, 0.2, 1), color 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  border-radius: 50%;
+  margin: 8px;
+  width: 40px;
+  height: 40px;
+  contain: strict;
+  outline: none;
+
+  position: relative;
+  overflow: hidden;
+}
+
+button.navigation.activated {
+  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12);
+}
+
+button.navigation ion-icon {
+  font-size: 24px;
+}
+
+button.navigation.hide-on-mobile {
+  display: var(--deckgo-hide-on-mobile);
+}
+
+button.navigation.transparent,
+button.navigation.tertiary {
+  box-shadow: none;
+  width: 60px;
+  height: 60px;
+}
+
+button.navigation.transparent ion-icon,
+button.navigation.tertiary ion-icon {
+  font-size: 36px;
+}
+
+button.navigation.transparent {
+  border: 1px solid var(--ion-color-dark);
+}
+
+button.navigation.tertiary {
+  border: 1px solid var(--ion-color-tertiary);
+  background: var(--ion-color-tertiary);
+  color: var(--ion-color-tertiary-contrast);
+}
+
+@media (max-width: 1024px) {
+  #navigation {
+    display: grid;
+  }
+
+  #previous {
+    grid-row: 5;
+  }
+
+  #next {
+    grid-row: 6;
+  }
+}

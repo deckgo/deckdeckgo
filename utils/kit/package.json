@@ -1,0 +1,77 @@
+{
+  "name": "@deckdeckgo/kit",
+  "version": "1.0.0",
+  "author": "David Dal Busco",
+  "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
+  "license": "MIT",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-kit",
+    "build-kit": "npm run build-kit-sass && npm run build-kit-autoprefix && npm run build-kit-cleancss",
+    "build-kit-sass": "node-sass --output-style expanded styles/index.scss ./css/kit.css",
+    "build-kit-autoprefix": "postcss --use autoprefixer --map false --output ./css/kit.css ./css/kit.css",
+    "build-kit-cleancss": "cleancss -o ./css/kit.min.css ./css/kit.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "dependencies": {
+    "@deckdeckgo/utils": "^1.3.0"
+  },
+  "peerDependencies": {
+    "@deckdeckgo/core": "^8.0.0",
+    "@deckdeckgo/remote": "^2.0.0",
+    "@ionic/core": "^5.0.0",
+    "web-social-share": "^6.0.0"
+  },
+  "devDependencies": {
+    "@deckdeckgo/core": "^8.0.0",
+    "@deckdeckgo/remote": "^2.0.1",
+    "@deckdeckgo/types": "^1.1.0",
+    "@ionic/core": "^5.4.1",
+    "autoprefixer": "^9.7.6",
+    "clean-css-cli": "^4.3.0",
+    "husky": "^4.3.0",
+    "node-sass": "^4.14.1",
+    "postcss-cli": "^7.1.1",
+    "prettier": "2.1.2",
+    "pretty-quick": "^3.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.27.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.3",
+    "web-social-share": "^6.4.1"
+  },
+  "files": [
+    "lib",
+    "README.md",
+    "css"
+  ],
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
