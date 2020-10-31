@@ -116,7 +116,7 @@ function getRemoteControlInfo(connected: boolean) {
 
     <div class="qrcode-container" style="display: flex; justify-content: center;  --deckgo-qrcode-size: 316px;">
         <deckgo-qrcode content="${qrCodeLink}">
-            <ion-icon slot="logo" src="{{DECKDECKGO_BASE_HREF}}assets/icons/deckdeckgo.svg"></ion-icon>
+            <ion-icon slot="logo" src="https://deckdeckgo.com/assets/icons/deckdeckgo.svg"></ion-icon>
         </deckgo-qrcode>
     </div>
     
@@ -161,12 +161,12 @@ function getRemoteControlRequest() {
     <div class="actions" style="display: flex; justify-content: center; align-content: center;">
         <button class="navigation ion-activatable transparent dismiss">
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon src="{{DECKDECKGO_BASE_HREF}}assets/icons/ionicons/close.svg"></ion-icon>
+          <ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
         
         <button class="navigation ion-activatable tertiary connect">
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon src="{{DECKDECKGO_BASE_HREF}}assets/icons/ionicons/checkmark.svg"></ion-icon>
+          <ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/checkmark.svg"></ion-icon>
         </button>
     </div>
     `;

@@ -26,7 +26,7 @@ export const displaySlideNotes = async () => {
     <ion-toolbar color="tertiary">
       <ion-buttons slot="start">
           <ion-button>
-              <ion-icon src="{{DECKDECKGO_BASE_HREF}}assets/icons/ionicons/close.svg" aria-label="Close"></ion-icon>
+              <ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/close.svg" aria-label="Close"></ion-icon>
           </ion-button>
       </ion-buttons>
       <ion-title>${titleText}</ion-title>
