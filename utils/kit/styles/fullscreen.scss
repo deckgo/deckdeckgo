@@ -1,0 +1,27 @@
+@mixin fullscreen() {
+  #{if(&, "&", "*")}:-moz-full-screen {
+    @content;
+  }
+
+  #{if(&, "&", "*")}:-webkit-full-screen {
+    @content;
+  }
+
+  #{if(&, "&", "*")}:-ms-fullscreen {
+    @content;
+  }
+
+  #{if(&, "&", "*")}:fullscreen {
+    @content;
+  }
+}
+
+@include fullscreen() {
+  ion-header {
+    display: none;
+  }
+
+  #navigation {
+    display: inherit;
+  }
+}

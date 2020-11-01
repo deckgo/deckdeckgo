@@ -49,16 +49,6 @@ button.navigation.tertiary {
   color: var(--ion-color-tertiary-contrast);
 }
 
-@media (max-width: 1024px) {
-  #navigation {
-    display: grid;
-  }
-
-  #previous {
-    grid-row: 5;
-  }
-
-  #next {
-    grid-row: 6;
-  }
+#navigation {
+  display: none;
 }
