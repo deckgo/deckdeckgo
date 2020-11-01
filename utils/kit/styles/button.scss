@@ -46,16 +46,17 @@ button#next {
 
   @media screen and (max-width: 768px) {
     top: unset;
+    transform: unset;
     bottom: 16px;
   }
 }
 
 button#previous {
-  left: 16px;
+  left: 8px;
 }
 
 button#next {
-  right: 16px;
+  right: 8px;
 }
 
 button.navigation.hide-on-mobile {
