@@ -26,6 +26,24 @@ async function initSreenshot() {
       navigation.style.display = 'none';
     }
 
+    const previous: HTMLElement | null = document.querySelector('#previous');
+
+    if (previous) {
+      previous.style.display = 'none';
+    }
+
+    const next: HTMLElement | null = document.querySelector('#next');
+
+    if (next) {
+      next.style.display = 'none';
+    }
+
+    const header: HTMLElement | null = document.querySelector('ion-header');
+
+    if (header) {
+      header.style.display = 'none';
+    }
+
     const deck: HTMLElement | null = document.querySelector('deckgo-deck');
     if (deck) {
       deck.style.setProperty('--pager-display', 'none');

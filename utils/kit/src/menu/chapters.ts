@@ -24,7 +24,7 @@ async function buildSlidesListActions(): Promise<string> {
       if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
         const text = getSlideTitle(slide, i);
 
-        result += '<ion-item ion-item button color="primary"><ion-label>' + text + '</ion-label></ion-item>';
+        result += '<ion-item ion-item button><ion-label>' + text + '</ion-label></ion-item>';
 
         i++;
       }
