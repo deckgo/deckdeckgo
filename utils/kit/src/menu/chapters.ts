@@ -1,4 +1,4 @@
-class SlidesList extends HTMLElement {
+class Chapters extends HTMLElement {
   constructor() {
     super();
   }
@@ -6,7 +6,9 @@ class SlidesList extends HTMLElement {
   async connectedCallback() {
     const slidesListActions = await buildSlidesListActions();
 
-    this.innerHTML = '<ion-list><ion-list-header>Jump to slide</ion-list-header>' + slidesListActions + '</ion-list>';
+    this.innerHTML = '<ion-list><ion-list-header><h2>Slides</h2></ion-list-header>' + slidesListActions + '</ion-list>';
+
+    await bindChaptersActions();
   }
 }
 
@@ -58,39 +60,31 @@ function getSlideTitle(slide: HTMLElement, index: number) {
   }
 }
 
-async function jumpToSlide(index: number) {
-  const deck = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
-  await deck?.slideTo(index, 0);
-
-  const popover = document.querySelector('ion-popover.access') as HTMLIonPopoverElement;
-  await popover?.dismiss();
-}
-
-customElements.define('slides-list', SlidesList);
+customElements.define('deckgo-chapters', Chapters);
 
 export async function presentSlidePicker() {
-  const popover = document.createElement('ion-popover');
-  popover.component = 'slides-list';
-  popover.translucent = true;
-  popover.cssClass = 'menu';
-
-  document.body.appendChild(popover);
-
-  await popover.present();
-
-  await bindSlidesListActions();
+  const menuButton = document.querySelector('ion-menu-button');
+  menuButton?.click();
 }
 
-async function bindSlidesListActions() {
+async function bindChaptersActions() {
   if (!document) {
     return;
   }
 
-  const items = document.querySelectorAll('slides-list ion-item.ion-activatable');
+  const items = document.querySelectorAll('deckgo-chapters ion-item');
 
   if (items) {
     items.forEach((item, index) => {
       item.addEventListener('click', async () => await jumpToSlide(index), true);
     });
   }
+}
+
+async function jumpToSlide(index: number) {
+  const deck = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
+  await deck?.slideTo(index, 0);
+
+  const menu = document.querySelector('ion-menu') as HTMLIonMenuElement;
+  await menu?.close();
 }

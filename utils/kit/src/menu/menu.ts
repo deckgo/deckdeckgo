@@ -1,7 +1,7 @@
-import {displaySlideNotes} from './notes';
+import {displaySlideNotes} from '../modals/notes';
 import {toggleFullScreen} from '../actions/slider';
 import {isMobile} from '@deckdeckgo/utils';
-import {openRemote} from './remote';
+import {openRemote} from '../modals/remote';
 
 class MenuList extends HTMLElement {
   constructor() {
