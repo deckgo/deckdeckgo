@@ -17,16 +17,7 @@ export const initButtons = () => {
     attachClickListener('slidePicker', presentSlidePicker);
     attachClickListener('fullScreen', toggleFullScreen);
     attachClickListener('remote', openRemote);
-
-    const deck = document.getElementById('slider');
-
-    if (!deck) {
-      return;
-    }
-
-    deck.addEventListener('deckDidLoad', async () => {
-      await initActions();
-    });
+    attachClickListener('deckMenu', openMenu);
   });
 };
 
@@ -38,18 +29,4 @@ function attachClickListener(selectorId: string, action: ($event: UIEvent) => Pr
   }
 
   element.addEventListener('click', action);
-}
-
-function initActions() {
-  return new Promise(async (resolve) => {
-    const elements: NodeListOf<HTMLElement> = document.querySelectorAll('[slot="actions"]');
-
-    if (elements) {
-      Array.from(elements).forEach((element) => {
-        element.addEventListener('click', openMenu);
-      });
-    }
-
-    resolve();
-  });
 }
