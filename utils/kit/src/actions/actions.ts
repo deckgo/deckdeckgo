@@ -14,17 +14,14 @@ export const initActions = async () => {
   });
 
   slider.addEventListener('slideNextDidChange', async () => {
-    await initActionPlayPause(slider);
     await initNavigation();
   });
 
   slider.addEventListener('slidePrevDidChange', async () => {
-    await initActionPlayPause(slider);
     await initNavigation();
   });
 
   slider.addEventListener('slideToChange', async () => {
-    await initActionPlayPause(slider);
     await initNavigation();
   });
 
@@ -77,43 +74,6 @@ async function initNavigation() {
     next.style.opacity = end ? '0' : '1';
   }
 }
-
-export const initActionPlayPause = (deck: HTMLDeckgoDeckElement) => {
-  return new Promise(async (resolve) => {
-    const playButton = document.getElementById('play');
-    const pauseButton = document.getElementById('pause');
-
-    const index = await deck.getActiveIndex();
-
-    const actionSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
-
-    if (
-      !actionSlideElement ||
-      (actionSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase() && actionSlideElement.tagName !== 'deckgo-slide-video'.toUpperCase())
-    ) {
-      if (playButton) {
-        playButton.style.display = 'none';
-      }
-
-      if (pauseButton) {
-        pauseButton.style.display = 'none';
-      }
-
-      resolve();
-      return;
-    }
-
-    if (playButton) {
-      playButton.style.display = 'initial';
-    }
-
-    if (pauseButton) {
-      pauseButton.style.display = 'none';
-    }
-
-    resolve();
-  });
-};
 
 function handleTabOnKeydown($event: KeyboardEvent, slider: HTMLDeckgoDeckElement) {
   return new Promise(async (resolve) => {

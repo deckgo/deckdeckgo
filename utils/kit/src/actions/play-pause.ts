@@ -27,29 +27,10 @@ export const playPause = (action: 'play' | 'pause', forwardToRemote: boolean): P
       return;
     }
 
-    const playButton = document.getElementById('play');
-    const pauseButton = document.getElementById('pause');
-
     if (action === 'pause') {
       await (actionSlideElement as HTMLSlideVideoElement).pause();
-
-      if (playButton) {
-        playButton.style.display = 'initial';
-      }
-
-      if (pauseButton) {
-        pauseButton.style.display = 'none';
-      }
     } else {
       await (actionSlideElement as HTMLSlideVideoElement).play();
-
-      if (playButton) {
-        playButton.style.display = 'none';
-      }
-
-      if (pauseButton) {
-        pauseButton.style.display = 'initial';
-      }
     }
 
     if (forwardToRemote) {
