@@ -59,6 +59,29 @@ button#next {
   right: 8px;
 }
 
+div.ion-page.papyrus {
+  button#next {
+    right: 50%;
+    transform: rotate(90deg) translate(0px, -50%);
+    border-radius: 50%;
+    bottom: 0;
+    overflow: visible;
+
+    &:before {
+      content: "Scroll";
+      transform: rotate(270deg);
+      font-size: 1rem;
+      position: absolute;
+      right: 32px;
+      padding: 4px;
+    }
+  }
+
+  button#previous {
+    display: none;
+  }
+}
+
 button.navigation.hide-on-mobile {
   display: var(--deckgo-hide-on-mobile, flex);
 }

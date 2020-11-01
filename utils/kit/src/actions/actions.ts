@@ -31,15 +31,59 @@ export const initActions = async () => {
 };
 
 async function initActionButtons() {
+  const mobile = isMobile();
+
   const ionFab: HTMLElement | null = document.querySelector('ion-fab');
 
   if (ionFab) {
-    const mobile = isMobile();
-
     if (mobile) {
       ionFab.style.setProperty('--deckgo-hide-on-mobile', 'none');
     }
   }
+
+  const deck = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
+
+  if (!deck) {
+    return;
+  }
+
+  if (isPapyrus(deck)) {
+    const content: HTMLElement | null = document.querySelector('div.ion-page');
+    content?.classList.add('papyrus');
+
+    if (window && 'IntersectionObserver' in window) {
+      const firstSlide = document.querySelector('.deckgo-slide-container:nth-child(1)') as HTMLElement | null;
+
+      if (!firstSlide) {
+        return;
+      }
+
+      const observer = new IntersectionObserver(handlePapyrusScroll, {
+        threshold: 0.75,
+      });
+
+      observer.observe(firstSlide as Element);
+    }
+  }
+}
+
+function handlePapyrusScroll(entries: IntersectionObserverEntry[]) {
+  if (!entries || entries.length <= 0) {
+    return;
+  }
+
+  const next = document.querySelector('button#next') as HTMLElement | null;
+
+  if (!next) {
+    return;
+  }
+
+  next.style.opacity = entries[0].isIntersecting ? '1' : '0';
+}
+
+function isPapyrus(deck: HTMLDeckgoDeckElement): boolean {
+  const mobile = isMobile();
+  return (deck.direction === 'papyrus' && !mobile) || (deck.directionMobile === 'papyrus' && mobile);
 }
 
 async function initNavigation() {
