@@ -1,4 +1,7 @@
 import {displaySlideNotes} from './notes';
+import {toggleFullScreen} from '../actions/slider';
+import {isMobile} from '@deckdeckgo/utils';
+import {openRemote} from './remote';
 
 class MenuList extends HTMLElement {
   constructor() {
@@ -16,8 +19,18 @@ async function buildMenuListActions(): Promise<string> {
   let result = '';
 
   if (!EMBEDDED) {
+    const mobile = isMobile();
+
+    if (!mobile) {
+      result +=
+        '<ion-item ion-item button detail="false" id="fullScreenMenu" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/expand.svg" aria-label="Enter full screen" slot="end"></ion-icon><ion-label>Enter full screen</ion-label></ion-item>';
+    }
+
     result +=
-      '<ion-item ion-item button detail="false" id="notes" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/clipboard.svg" aria-label="Display slide notes" slot="end"></ion-icon><ion-label>Display slide notes</ion-label></ion-item>';
+      '<ion-item ion-item button detail="false" id="remoteMenu" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/phone-portrait.svg" aria-label="Remote control" slot="end"></ion-icon><ion-label>Remote control</ion-label></ion-item>';
+
+    result +=
+      '<ion-item ion-item button detail="false" id="notes" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/clipboard.svg" aria-label="Display slide notes" slot="end"></ion-icon><ion-label>Slide notes</ion-label></ion-item>';
   }
 
   result +=
@@ -45,6 +58,16 @@ export async function openMenu($event: UIEvent) {
   await popover.present();
 
   // attach events
+  const buttonFullscreen: HTMLButtonElement | null = document.querySelector('ion-popover #fullScreenMenu');
+  buttonFullscreen?.addEventListener('click', async () => {
+    await fullScreenAndClose();
+  });
+
+  const buttonRemote: HTMLButtonElement | null = document.querySelector('ion-popover #remoteMenu');
+  buttonRemote?.addEventListener('click', async () => {
+    await openRemoteAndClose($event);
+  });
+
   const buttonNotes: HTMLButtonElement | null = document.querySelector('ion-popover #notes');
   buttonNotes?.addEventListener('click', displaySlideNotes);
 
@@ -55,6 +78,16 @@ export async function openMenu($event: UIEvent) {
   buttonMade?.addEventListener('click', async () => {
     await openLink('https://deckdeckgo.com');
   });
+}
+
+async function openRemoteAndClose($event: UIEvent) {
+  await ((document.querySelector('ion-popover') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
+  await openRemote($event);
+}
+
+async function fullScreenAndClose() {
+  await ((document.querySelector('ion-popover') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
+  await toggleFullScreen();
 }
 
 async function openLink(link: string) {
