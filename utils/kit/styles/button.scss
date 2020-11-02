@@ -107,3 +107,25 @@ button.navigation.hide-on-mobile {
 #navigation {
   display: none;
 }
+
+button.navigation.transparent,
+button.navigation.primary {
+  width: 60px;
+  height: 60px;
+}
+
+button.navigation.transparent ion-icon,
+button.navigation.primary ion-icon {
+  font-size: 36px;
+}
+
+button.navigation.transparent {
+  border: 1px solid var(--ion-color-dark);
+  margin-right: 16px;
+}
+
+button.navigation.primary {
+  border: 1px solid var(--ion-color-primary);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}

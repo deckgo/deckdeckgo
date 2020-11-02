@@ -8,7 +8,7 @@
 
 ### Others: New
 
-- kit: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
+- kit: v2.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
 
 ### Others
 

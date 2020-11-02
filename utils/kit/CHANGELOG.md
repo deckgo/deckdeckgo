@@ -1,3 +1,9 @@
+# 2.0.2 (2019-11-02)
+
+### Style
+
+- remote control request centered
+
 # 2.0.1 (2019-11-02)
 
 ### Style

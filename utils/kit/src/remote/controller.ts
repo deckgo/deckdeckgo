@@ -1,5 +1,6 @@
 import {playPause} from '../actions/play-pause';
 import {pushStateSlideIndex} from '../dev/history';
+import {openRemote} from '../modals/remote';
 
 export const remoteEvent = async ($event: CustomEvent) => {
   if (!$event || !$event.detail) {
@@ -36,15 +37,9 @@ export const remoteEvent = async ($event: CustomEvent) => {
 };
 
 async function openRemoteToGrantAccess(fromClient: {message: string; fromSocketId: string}) {
-  const buttonPopover: HTMLButtonElement | null = document.querySelector('#remote');
-
-  if (!buttonPopover) {
-    return;
-  }
-
   PENDING_REMOTE_REQUESTS.push(fromClient);
 
-  buttonPopover.click();
+  await openRemote(undefined);
 }
 
 export async function reconnectRemoteControl() {

@@ -1,7 +1,7 @@
 import {disconnectRemoteControl, reconnectRemoteControl} from '../remote/controller';
 
-export const openRemote = async ($event: UIEvent) => {
-  $event.preventDefault();
+export const openRemote = async ($event: UIEvent | undefined) => {
+  $event?.preventDefault();
 
   // See webcomponents service ConnectionState for values
   const connected = REMOTE_STATE > 0 && REMOTE_STATE < 4;
@@ -11,14 +11,14 @@ export const openRemote = async ($event: UIEvent) => {
 
     if (!popover) {
       await closeRemote();
-      await askAccess($event);
+      await askAccess();
     }
   } else {
     await displayRemote($event, connected);
   }
 };
 
-async function displayRemote($event: UIEvent, connected: boolean) {
+async function displayRemote($event: UIEvent | undefined, connected: boolean) {
   const element = document.createElement('div');
   element.innerHTML = `<div class="ion-padding">
     ${getRemoteControlInfo(connected)}
@@ -28,7 +28,10 @@ async function displayRemote($event: UIEvent, connected: boolean) {
   const popover = document.createElement('ion-popover');
   popover.component = element;
 
-  popover.event = $event;
+  if ($event) {
+    popover.event = $event;
+  }
+
   popover.mode = 'ios';
   popover.cssClass = 'info';
 
@@ -53,7 +56,7 @@ async function closeRemote() {
   }
 }
 
-async function askAccess($event: UIEvent) {
+async function askAccess() {
   const element = document.createElement('div');
   element.innerHTML = `<div class="ion-padding">
     ${getRemoteControlRequest()}
@@ -63,7 +66,6 @@ async function askAccess($event: UIEvent) {
   const popover = document.createElement('ion-popover');
   popover.component = element;
 
-  popover.event = $event;
   popover.mode = 'ios';
   popover.cssClass = 'access';
 
@@ -78,7 +80,7 @@ async function askAccess($event: UIEvent) {
 
     await ((document.querySelector('ion-popover.access') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
 
-    await nextPendingRequests($event);
+    await nextPendingRequests();
   });
 
   const buttonConnect: HTMLButtonElement | null = document.querySelector('ion-popover.access button.connect');
@@ -87,7 +89,7 @@ async function askAccess($event: UIEvent) {
 
     await (document.querySelector('ion-popover.access') as HTMLIonPopoverElement).dismiss();
 
-    await nextPendingRequests($event);
+    await nextPendingRequests();
   });
 }
 
@@ -125,7 +127,7 @@ function getRemoteControlInfo(connected: boolean) {
             <ion-label class="ion-text-wrap" style="margin: 0; font-size: 16px;">Remote control on/off</ion-label> 
             <ion-toggle mode="md" slot="end" checked="${
               connected ? 'true' : 'false'
-            }" color="tertiary" style="--background: var(--ion-color-light); --handle-background: white; --handle-background-checked: white;"></ion-toggle>
+            }" color="primary" style="--background: var(--ion-color-light); --handle-background: white; --handle-background-checked: white;"></ion-toggle>
         </ion-item>
     </ion-list>
 
@@ -164,7 +166,7 @@ function getRemoteControlRequest() {
           <ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
         
-        <button class="navigation ion-activatable tertiary connect">
+        <button class="navigation ion-activatable primary connect">
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/checkmark.svg"></ion-icon>
         </button>
@@ -194,7 +196,7 @@ async function grantRemoteConnection() {
   await removeFirstPendingRequest();
 }
 
-async function nextPendingRequests($event: UIEvent) {
+async function nextPendingRequests() {
   if (!PENDING_REMOTE_REQUESTS || PENDING_REMOTE_REQUESTS.length <= 0) {
     return;
   }
@@ -205,5 +207,5 @@ async function nextPendingRequests($event: UIEvent) {
   }
 
   // If we get some more requests pending, we automatically reopen the popover
-  await askAccess($event);
+  await askAccess();
 }
