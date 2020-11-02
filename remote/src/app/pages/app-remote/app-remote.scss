@@ -73,6 +73,10 @@ app-remote {
       }
     }
 
+    .deck-action-button {
+      top: 70%;
+    }
+
     @media screen and (orientation: landscape) {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -84,7 +88,10 @@ app-remote {
       .deck-navigation-button {
         padding-bottom: 16px;
       }
-
+      .deck-action-button {
+        top: 75%;
+        left: 25%;
+      }
       app-notes {
         grid-area: notes;
       }
