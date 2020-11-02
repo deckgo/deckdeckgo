@@ -23,7 +23,7 @@ async function buildMenuListActions(): Promise<string> {
 
     if (!mobile) {
       result +=
-        '<ion-item ion-item button detail="false" id="fullScreenMenu" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/expand.svg" aria-label="Enter full screen" slot="end"></ion-icon><ion-label>Enter full screen</ion-label></ion-item>';
+        '<ion-item ion-item button detail="false" id="fullScreenMenu" style="--border-style: none;"><ion-icon src="https://deckdeckgo.com/assets/icons/ionicons/expand.svg" aria-label="Enter full screen" slot="end"></ion-icon><ion-label>Full screen</ion-label></ion-item>';
     }
 
     result +=
