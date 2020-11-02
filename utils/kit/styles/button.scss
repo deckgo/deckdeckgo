@@ -13,26 +13,12 @@ button.navigation {
   height: 40px;
   font-size: 32px;
 
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
 
   cursor: pointer;
   pointer-events: all;
-
-  &.animate {
-    transition: font-size 300ms, opacity 250ms;
-    opacity: 1;
-
-    width: inherit;
-    height: inherit;
-    font-size: 48px;
-
-    &:hover,
-    &:active {
-      font-size: 64px;
-    }
-  }
 
   border-radius: 50%;
   overflow: hidden;
@@ -59,21 +45,53 @@ button#next {
   right: 8px;
 }
 
+div.ion-page.vertical {
+  button#next,
+  button#previous {
+    right: 16px;
+  }
+
+  button#next {
+    bottom: 0;
+    top: unset;
+
+    ion-icon {
+      transform: rotate(90deg);
+    }
+  }
+
+  button#previous {
+    left: unset;
+    bottom: 48px;
+    top: unset;
+
+    ion-icon {
+      transform: rotate(90deg);
+    }
+  }
+}
+
 div.ion-page.papyrus {
   button#next {
-    right: 50%;
-    transform: rotate(90deg) translate(0px, -50%);
-    border-radius: 50%;
+    right: unset;
+    transform: translate(-50%, 0);
+    top: unset;
     bottom: 0;
     overflow: visible;
+    left: 50%;
+
+    ion-icon {
+      transform: rotate(90deg);
+    }
 
     &:before {
       content: "Scroll";
-      transform: rotate(270deg);
       font-size: 1rem;
       position: absolute;
-      right: 32px;
       padding: 4px;
+      top: 0;
+      left: 0;
+      transform: translate(-4px, -16px);
     }
   }
 
@@ -83,7 +101,7 @@ div.ion-page.papyrus {
 }
 
 button.navigation.hide-on-mobile {
-  display: var(--deckgo-hide-on-mobile, flex);
+  display: var(--deckgo-hide-on-mobile, inline-flex);
 }
 
 #navigation {

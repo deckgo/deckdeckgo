@@ -64,6 +64,13 @@ async function initActionButtons() {
 
       observer.observe(firstSlide as Element);
     }
+
+    return;
+  }
+
+  if (isVertical(deck)) {
+    const content: HTMLElement | null = document.querySelector('div.ion-page');
+    content?.classList.add('vertical');
   }
 }
 
@@ -84,6 +91,11 @@ function handlePapyrusScroll(entries: IntersectionObserverEntry[]) {
 function isPapyrus(deck: HTMLDeckgoDeckElement): boolean {
   const mobile = isMobile();
   return (deck.direction === 'papyrus' && !mobile) || (deck.directionMobile === 'papyrus' && mobile);
+}
+
+function isVertical(deck: HTMLDeckgoDeckElement): boolean {
+  const mobile = isMobile();
+  return (deck.direction === 'vertical' && !mobile) || (deck.directionMobile === 'vertical' && mobile);
 }
 
 async function initNavigation() {
