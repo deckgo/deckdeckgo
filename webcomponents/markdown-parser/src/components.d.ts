@@ -24,7 +24,6 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoMdParser {
         "editable"?: boolean;
-        "onMarkdownDidChange"?: (event: CustomEvent<HTMLElement>) => void;
     }
     interface IntrinsicElements {
         "deckgo-md-parser": DeckgoMdParser;

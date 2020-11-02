@@ -13,6 +13,7 @@
 :host(.deckgo-markdown-edit) {
   ::slotted([slot="md-parser"]) {
     display: block;
+    min-height: 20px;
   }
 
   div.md-parser {

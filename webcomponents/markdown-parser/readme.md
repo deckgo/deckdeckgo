@@ -8,20 +8,16 @@
 
 # DeckDeckGo - Markdown Parser
 
-A Web Component to write and render math expressions.
+A Web Component to write and render basic markdown syntax.
 
 It is developed with [Stencil](https://stenciljs.com) and use [Remarkable](https://github.com/jonschlinkert/remarkable) to parse markdown into HTML.
 
 ## Table of contents
 
-- [Getting Started](#getting-started)
 - [Develop](#develop)
+- [Author](#author)
 - [License](#license)
-<!-- - [Credits](#credits) -->
 
-## Getting Started
-
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com).
 
 ## Develop
 
@@ -33,6 +29,9 @@ cd deckdeckgo/webcomponents/markdown-parser
 npm install
 npm run start
 ```
+
+## Author
+[Christian Petro](https://github.com/Christiak) 🤓
 
 ## License
 

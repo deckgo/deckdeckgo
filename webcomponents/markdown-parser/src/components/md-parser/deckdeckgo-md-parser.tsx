@@ -1,4 +1,4 @@
-import { Component, h, Host, State, Element, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, h, Host, State, Element, Prop } from '@stencil/core';
 
 import { Remarkable } from 'remarkable';
 
@@ -14,9 +14,6 @@ export class DeckgoMdParser {
 
   @State()
   private editing: boolean = false;
-
-  @Event()
-  private markdownDidChange: EventEmitter<HTMLElement>;
 
   private containerRef!: HTMLDivElement;
 
@@ -40,9 +37,7 @@ export class DeckgoMdParser {
 
     if (mdContent) {
       const mdText = mdContent.innerText;
-      
       const mdContentHTML = this.parser.render(mdText);
-  
       this.parseMarkdown(mdContentHTML);
     } else {
       return Promise.resolve();
@@ -72,7 +67,6 @@ export class DeckgoMdParser {
             this.containerRef.children[0].innerHTML = mdContentHTML;
           }
         } catch (err) {
-          this.containerRef.children[0].innerHTML = mdContentHTML;
           console.error(err);
         }
 
@@ -88,7 +82,7 @@ export class DeckgoMdParser {
     await this.parseMarkdownInSlot();
   };
 
-  private edit(): Promise<void> {
+  private startEditing(): Promise<void> {
     return new Promise<void>(resolve => {
       if (!this.editable) {
         resolve();
@@ -117,16 +111,8 @@ export class DeckgoMdParser {
 
       const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
       
-      console.log(markdownInSlot);
-
       if (markdownInSlot) {
         markdownInSlot.removeAttribute('contentEditable');
-
-        if (markdownInSlot.innerHTML) {
-          markdownInSlot.innerHTML = markdownInSlot.innerHTML.trim();
-        }
-
-        this.markdownDidChange.emit(this.el);
       }
 
       resolve();
@@ -139,8 +125,8 @@ export class DeckgoMdParser {
         <div 
           class="deckgo-markdown-container" 
           ref={el => (this.containerRef = el as HTMLInputElement)} 
-          onMouseDown={() => this.edit()} 
-          onTouchStart={() => this.edit()}
+          onMouseDown={() => this.startEditing()} 
+          onTouchStart={() => this.startEditing()}
         >
             <div class="md-parser"></div>
             <slot name="md-parser"></slot>
