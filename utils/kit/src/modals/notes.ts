@@ -32,7 +32,7 @@ export const displaySlideNotes = async () => {
       <ion-title>${titleText}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding" color="primary">
+  <ion-content class="ion-padding">
     <p style="white-space: pre-wrap;">${notesText}</p>
   </ion-content>
   `;

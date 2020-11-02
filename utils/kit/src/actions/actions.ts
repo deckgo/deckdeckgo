@@ -1,4 +1,5 @@
 import {isMobile} from '@deckdeckgo/utils';
+import {contrast} from '../utils/util.color';
 
 export const initActions = async () => {
   const slider: HTMLDeckgoDeckElement | null = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
@@ -9,18 +10,19 @@ export const initActions = async () => {
 
   slider.addEventListener('slidesDidLoad', async () => {
     await initActionButtons();
+    await initNavigation();
   });
 
   slider.addEventListener('slideNextDidChange', async () => {
-    await initActionPlayPause(slider);
+    await initNavigation();
   });
 
   slider.addEventListener('slidePrevDidChange', async () => {
-    await initActionPlayPause(slider);
+    await initNavigation();
   });
 
   slider.addEventListener('slideToChange', async () => {
-    await initActionPlayPause(slider);
+    await initNavigation();
   });
 
   document.addEventListener('keydown', async ($event: KeyboardEvent) => {
@@ -28,68 +30,106 @@ export const initActions = async () => {
   });
 };
 
-function initActionButtons() {
-  return new Promise(async (resolve) => {
-    const ionFab: HTMLElement | null = document.querySelector('ion-fab');
+async function initActionButtons() {
+  const mobile = isMobile();
 
-    if (ionFab) {
-      const mobile = isMobile();
+  const ionFab: HTMLElement | null = document.querySelector('ion-fab');
 
-      if (mobile) {
-        ionFab.style.setProperty('--deckgo-hide-on-mobile', 'none');
+  if (ionFab) {
+    if (mobile) {
+      ionFab.style.setProperty('--deckgo-hide-on-mobile', 'none');
+    }
+  }
+
+  const deck = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
+
+  if (!deck) {
+    return;
+  }
+
+  if (isPapyrus(deck)) {
+    const content: HTMLElement | null = document.querySelector('div.ion-page');
+    content?.classList.add('papyrus');
+
+    if (window && 'IntersectionObserver' in window) {
+      const firstSlide = document.querySelector('.deckgo-slide-container:nth-child(1)') as HTMLElement | null;
+
+      if (!firstSlide) {
+        return;
       }
 
-      // Workaround: https://github.com/deckgo/starter-kit/issues/31
-      if (document.dir === 'rtl') {
-        const ionFabList = ionFab.querySelector('ion-fab-list[side="start"]');
-        if (ionFabList) {
-          ionFabList.setAttribute('side', 'end');
-        }
+      const observer = new IntersectionObserver(handlePapyrusScroll, {
+        threshold: 0.75,
+      });
 
-        ionFab.setAttribute('horizontal', 'start');
-      }
+      observer.observe(firstSlide as Element);
     }
 
-    resolve();
-  });
+    return;
+  }
+
+  if (isVertical(deck)) {
+    const content: HTMLElement | null = document.querySelector('div.ion-page');
+    content?.classList.add('vertical');
+  }
 }
 
-export const initActionPlayPause = (deck: HTMLDeckgoDeckElement) => {
-  return new Promise(async (resolve) => {
-    const playButton = document.getElementById('play');
-    const pauseButton = document.getElementById('pause');
+function handlePapyrusScroll(entries: IntersectionObserverEntry[]) {
+  if (!entries || entries.length <= 0) {
+    return;
+  }
 
-    const index = await deck.getActiveIndex();
+  const next = document.querySelector('button#next') as HTMLElement | null;
 
-    const actionSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+  if (!next) {
+    return;
+  }
 
-    if (
-      !actionSlideElement ||
-      (actionSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase() && actionSlideElement.tagName !== 'deckgo-slide-video'.toUpperCase())
-    ) {
-      if (playButton) {
-        playButton.style.display = 'none';
-      }
+  next.style.opacity = entries[0].isIntersecting ? '1' : '0';
+}
 
-      if (pauseButton) {
-        pauseButton.style.display = 'none';
-      }
+function isPapyrus(deck: HTMLDeckgoDeckElement): boolean {
+  const mobile = isMobile();
+  return (deck.direction === 'papyrus' && !mobile) || (deck.directionMobile === 'papyrus' && mobile);
+}
 
-      resolve();
-      return;
-    }
+function isVertical(deck: HTMLDeckgoDeckElement): boolean {
+  const mobile = isMobile();
+  return (deck.direction === 'vertical' && !mobile) || (deck.directionMobile === 'vertical' && mobile);
+}
 
-    if (playButton) {
-      playButton.style.display = 'initial';
-    }
+async function initNavigation() {
+  const deck = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
 
-    if (pauseButton) {
-      pauseButton.style.display = 'none';
-    }
+  if (!deck) {
+    return;
+  }
 
-    resolve();
-  });
-};
+  const index = await deck.getActiveIndex();
+  const begin = await deck.isBeginning();
+  const end = await deck.isEnd();
+
+  const slide = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+  if (!slide) {
+    return;
+  }
+
+  const style: CSSStyleDeclaration = window.getComputedStyle(slide);
+  const color: string = await contrast(style.backgroundColor);
+
+  document.body.style.setProperty('--button-navigation-color', color);
+
+  const prev = document.querySelector('button#previous') as HTMLElement | null;
+  if (prev) {
+    prev.style.opacity = begin ? '0' : '1';
+  }
+
+  const next = document.querySelector('button#next') as HTMLElement | null;
+  if (next) {
+    next.style.opacity = end ? '0' : '1';
+  }
+}
 
 function handleTabOnKeydown($event: KeyboardEvent, slider: HTMLDeckgoDeckElement) {
   return new Promise(async (resolve) => {

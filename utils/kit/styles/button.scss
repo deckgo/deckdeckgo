@@ -1,64 +1,109 @@
 button.navigation {
-  background: white;
-  color: #000000;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1), background-color 280ms cubic-bezier(0.4, 0, 0.2, 1), color 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-  border-radius: 50%;
-  margin: 8px;
-  width: 40px;
-  height: 40px;
-  contain: strict;
+  border: none;
   outline: none;
 
+  font: inherit;
+  color: var(--button-navigation-color, inherit);
+  background: none;
+  padding: 0;
+
   position: relative;
+
+  width: 40px;
+  height: 40px;
+  font-size: 32px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  pointer-events: all;
+
+  border-radius: 50%;
   overflow: hidden;
 }
 
-button.navigation.activated {
-  box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12);
+button#previous,
+button#next {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+
+  @media screen and (max-width: 768px) {
+    top: unset;
+    transform: unset;
+    bottom: 16px;
+  }
 }
 
-button.navigation ion-icon {
-  font-size: 24px;
+button#previous {
+  left: 8px;
+}
+
+button#next {
+  right: 8px;
+}
+
+div.ion-page.vertical {
+  button#next,
+  button#previous {
+    right: 16px;
+  }
+
+  button#next {
+    bottom: 0;
+    top: unset;
+
+    ion-icon {
+      transform: rotate(90deg);
+    }
+  }
+
+  button#previous {
+    left: unset;
+    bottom: 48px;
+    top: unset;
+
+    ion-icon {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+div.ion-page.papyrus {
+  button#next {
+    right: unset;
+    transform: translate(-50%, 0);
+    top: unset;
+    bottom: 0;
+    overflow: visible;
+    left: 50%;
+
+    ion-icon {
+      transform: rotate(90deg);
+    }
+
+    &:before {
+      content: "Scroll";
+      font-size: 1rem;
+      position: absolute;
+      padding: 4px;
+      top: 0;
+      left: 0;
+      transform: translate(-4px, -16px);
+    }
+  }
+
+  button#previous {
+    display: none;
+  }
 }
 
 button.navigation.hide-on-mobile {
-  display: var(--deckgo-hide-on-mobile);
+  display: var(--deckgo-hide-on-mobile, inline-flex);
 }
 
-button.navigation.transparent,
-button.navigation.tertiary {
-  box-shadow: none;
-  width: 60px;
-  height: 60px;
-}
-
-button.navigation.transparent ion-icon,
-button.navigation.tertiary ion-icon {
-  font-size: 36px;
-}
-
-button.navigation.transparent {
-  border: 1px solid var(--ion-color-dark);
-}
-
-button.navigation.tertiary {
-  border: 1px solid var(--ion-color-tertiary);
-  background: var(--ion-color-tertiary);
-  color: var(--ion-color-tertiary-contrast);
-}
-
-@media (max-width: 1024px) {
-  #navigation {
-    display: grid;
-  }
-
-  #previous {
-    grid-row: 5;
-  }
-
-  #next {
-    grid-row: 6;
-  }
+#navigation {
+  display: none;
 }

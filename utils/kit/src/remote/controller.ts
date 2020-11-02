@@ -1,6 +1,5 @@
 import {playPause} from '../actions/play-pause';
 import {pushStateSlideIndex} from '../dev/history';
-import {initActionPlayPause} from '../actions/actions';
 
 export const remoteEvent = async ($event: CustomEvent) => {
   if (!$event || !$event.detail) {
@@ -19,12 +18,10 @@ export const remoteEvent = async ($event: CustomEvent) => {
     const slideAnimation = $event.detail.slideAnimation;
     await slider.slideNext(slideAnimation, false);
     await pushStateSlideIndex(slider);
-    await initActionPlayPause(slider);
   } else if (type === 'prev_slide') {
     const slideAnimation = $event.detail.slideAnimation;
     await slider.slidePrev(slideAnimation, false);
     await pushStateSlideIndex(slider);
-    await initActionPlayPause(slider);
   } else if (type === 'slide_action') {
     await slidePlayPause($event);
   } else if (type === 'slide_to') {
@@ -32,7 +29,6 @@ export const remoteEvent = async ($event: CustomEvent) => {
     if (index >= 0) {
       await slider.slideTo(index, 0);
       await pushStateSlideIndex(slider);
-      await initActionPlayPause(slider);
     }
   } else if (type === 'deck_request') {
     await openRemoteToGrantAccess($event.detail);

@@ -1,8 +1,8 @@
 import {videoStart, videoPause} from './play-pause';
 import {previousSlide, nextSlide, toggleFullScreen} from './slider';
 import {openRemote} from '../modals/remote';
-import {presentSlidePicker} from '../modals/jump-to';
-import {openMenu} from '../modals/menu';
+import {presentSlidePicker} from '../menu/chapters';
+import {openMenu} from '../menu/menu';
 
 export const initButtons = () => {
   if (!document) {
@@ -17,16 +17,7 @@ export const initButtons = () => {
     attachClickListener('slidePicker', presentSlidePicker);
     attachClickListener('fullScreen', toggleFullScreen);
     attachClickListener('remote', openRemote);
-
-    const deck = document.getElementById('slider');
-
-    if (!deck) {
-      return;
-    }
-
-    deck.addEventListener('deckDidLoad', async () => {
-      await initActions();
-    });
+    attachClickListener('deckMenu', openMenu);
   });
 };
 
@@ -38,18 +29,4 @@ function attachClickListener(selectorId: string, action: ($event: UIEvent) => Pr
   }
 
   element.addEventListener('click', action);
-}
-
-function initActions() {
-  return new Promise(async (resolve) => {
-    const elements: NodeListOf<HTMLElement> = document.querySelectorAll('[slot="actions"]');
-
-    if (elements) {
-      Array.from(elements).forEach((element) => {
-        element.addEventListener('click', openMenu);
-      });
-    }
-
-    resolve();
-  });
 }

@@ -2,9 +2,18 @@
 
 # [3.1.0](https://github.com/deckgo/deckdeckgo/compare/v3.0.0...v3.1.0) (In progress...)
 
+### Applications
+
+- demo: v7.0.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+
 ### Others: New
 
-- kit: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
+- kit: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
+
+### Others
+
+- starter kit: v7.0.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
+- studio kit: v7.0.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 
 <a name="3.0.0"></a>
 
