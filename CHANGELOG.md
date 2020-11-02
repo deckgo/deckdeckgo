@@ -4,7 +4,7 @@
 
 ### Others: New
 
-- kit: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
+- kit: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
 
 <a name="3.0.0"></a>
 
