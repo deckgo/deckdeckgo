@@ -1,0 +1,22 @@
+:host {
+  ::slotted([slot="md-parser"]) {
+    display: none;
+  }
+}
+
+:host([editable]) {
+  div.md-parser:empty:not(:focus):after {
+    content: "Click to add some markdown";
+  }
+}
+
+:host(.deckgo-markdown-edit) {
+  ::slotted([slot="md-parser"]) {
+    display: block;
+    min-height: 20px;
+  }
+
+  div.md-parser {
+    display: none;
+  }
+}
