@@ -102,6 +102,10 @@ app-color {
         display: block;
         padding: 8px;
       }
+
+      &.ion-focused {
+        outline: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
+      }
     }
   }
 
