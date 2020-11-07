@@ -33,6 +33,10 @@ app-color {
       &::-webkit-color-swatch {
         border: none;
       }
+
+      &:focus {
+        outline: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
+      }
     }
 
     button {
@@ -50,6 +54,11 @@ app-color {
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+
+      &:focus {
+        outline: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
+        outline-offset: -1px;
       }
     }
 
@@ -111,5 +120,12 @@ app-color {
 
   ion-range {
     --bar-background: var(--ion-color-light);
+  }
+
+  .item-opacity {
+    &.ion-focused {
+      outline: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
+      outline-offset: -1px;
+    }
   }
 }
