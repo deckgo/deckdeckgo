@@ -56,7 +56,6 @@ export class DeckdeckgoDeck {
   @State()
   private activeIndex: number = 0;
 
-  @State()
   private length: number = 0;
 
   @Event() slidesDidLoad: EventEmitter;
@@ -260,8 +259,13 @@ export class DeckdeckgoDeck {
       return;
     }
 
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
     this.observer = new IntersectionObserver(this.onIntersection, {
-      rootMargin: '100px 0px',
+      rootMargin: '300px',
+      threshold: 0,
     });
 
     slides.forEach((slide: HTMLElement) => {

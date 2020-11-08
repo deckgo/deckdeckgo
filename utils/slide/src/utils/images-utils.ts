@@ -1,4 +1,5 @@
 import {lazyLoadSelectedImages, lazyLoadSelectedLazyImagesComponent} from '@deckdeckgo/utils';
+import {getAllElements} from './element-utils';
 
 export function lazyLoadImages(el: HTMLElement): Promise<void> {
   return new Promise<void>(async (resolve) => {
@@ -15,7 +16,7 @@ export function lazyLoadImages(el: HTMLElement): Promise<void> {
 
 function lazyLoadLazyImgTags(el: HTMLElement): Promise<void> {
   return new Promise<void>(async (resolve) => {
-    const images: HTMLElement[] = getAllImages(el, 'img');
+    const images: HTMLElement[] = getAllElements(el, 'img');
 
     await lazyLoadSelectedImages(images);
 
@@ -25,7 +26,7 @@ function lazyLoadLazyImgTags(el: HTMLElement): Promise<void> {
 
 function lazyLoadLazyImgComponents(el: HTMLElement): Promise<void> {
   return new Promise<void>(async (resolve) => {
-    const images: HTMLElement[] = getAllImages(el, 'deckgo-lazy-img');
+    const images: HTMLElement[] = getAllElements(el, 'deckgo-lazy-img');
 
     await lazyLoadSelectedLazyImagesComponent(images);
 
@@ -35,7 +36,7 @@ function lazyLoadLazyImgComponents(el: HTMLElement): Promise<void> {
 
 export function hideLazyLoadImages(el: HTMLElement): Promise<void> {
   return new Promise<void>((resolve) => {
-    let images: HTMLElement[] = getAllImages(el, 'img');
+    let images: HTMLElement[] = getAllElements(el, 'img');
 
     if (!images) {
       resolve();
@@ -49,11 +50,4 @@ export function hideLazyLoadImages(el: HTMLElement): Promise<void> {
       resolve();
     }
   });
-}
-
-function getAllImages(el: HTMLElement, tag: string): HTMLElement[] {
-  const allSlotedImages: NodeListOf<HTMLElement> = el.querySelectorAll('[slot] ' + tag);
-  const allShadowImages: NodeListOf<HTMLElement> | [] = el.shadowRoot ? el.shadowRoot.querySelectorAll(tag) : [];
-
-  return Array.from(allSlotedImages).concat(Array.from(allShadowImages));
 }

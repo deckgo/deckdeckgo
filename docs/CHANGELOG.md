@@ -1,3 +1,9 @@
+# 2.8.1 (2020-11-08)
+
+### Features
+
+- improve lazy loading images
+
 # 2.8.0 (2020-10-28)
 
 ### Refactoring
