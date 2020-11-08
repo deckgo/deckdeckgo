@@ -92,6 +92,10 @@ app-remote {
   }
 
   deckgo-deck {
+    position: absolute;
+    top: 0;
+    left: 0;
+
     --pager-text-color: black;
     --pager-text-slides-display: block;
     --pager-size: 64px;
