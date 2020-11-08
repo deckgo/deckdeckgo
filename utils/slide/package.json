@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-utils",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "author": "David Dal Busco",
   "description": "Utils and interfaces for the DeckDeckGo slide templates",
   "license": "MIT",

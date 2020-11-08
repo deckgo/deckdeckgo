@@ -1,3 +1,11 @@
+<a name="2.4.0"></a>
+
+# 2.4.0 (2020-11-08)
+
+### Features
+
+- lazy load all img and deckgo/lazy-img children
+
 <a name="2.3.0"></a>
 
 # 2.3.0 (2020-10-28)

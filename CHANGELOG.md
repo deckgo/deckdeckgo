@@ -17,6 +17,7 @@
 
 ### Others
 
+- slide-utils: v2.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
 - starter kit: v7.0.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
 - studio kit: v7.0.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 
