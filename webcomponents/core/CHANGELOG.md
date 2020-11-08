@@ -1,3 +1,14 @@
+# 8.0.1 (2020-11-08)
+
+### Features
+
+- intersection observer more sensitive
+
+### Fix
+
+- no re-render on length change
+- unobserve if observer already defined
+
 # 8.0.0 (2020-10-28)
 
 ### Features
