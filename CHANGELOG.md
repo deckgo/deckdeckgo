@@ -4,7 +4,7 @@
 
 ### Applications
 
-- demo: v7.0.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+- demo: v7.0.1 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 
 ### Web Components Templates
 
@@ -36,8 +36,8 @@
 ### Others
 
 - slide-utils: v2.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
-- starter kit: v7.0.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
-- studio kit: v7.0.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
+- starter kit: v7.0.1 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
+- studio kit: v7.0.1 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 
 <a name="3.0.0"></a>
 
