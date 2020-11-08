@@ -4,6 +4,10 @@
 
 - improve lazy loading images
 
+### Fix
+
+- draw remote canvas position
+
 # 1.12.0 (2020-10-28)
 
 ### Refactoring
