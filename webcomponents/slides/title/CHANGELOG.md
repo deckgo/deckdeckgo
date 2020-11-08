@@ -1,3 +1,9 @@
+# 2.1.3 (2020-11-08)
+
+### Features
+
+- update slide-utils for lazy loading images
+
 # 2.1.2 (2020-10-29)
 
 ### Fix
