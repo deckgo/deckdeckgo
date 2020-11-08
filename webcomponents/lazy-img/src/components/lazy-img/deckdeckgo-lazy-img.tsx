@@ -7,7 +7,7 @@ import {DeckDeckGoCustomLoad} from '../interfaces/custom-load';
 @Component({
   tag: 'deckgo-lazy-img',
   styleUrl: 'deckdeckgo-lazy-img.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckdeckgoLazyImg {
   @Element() el: HTMLElement;
@@ -53,6 +53,9 @@ export class DeckdeckgoLazyImg {
   @Prop()
   customLoader: boolean = false;
 
+  @Prop()
+  loading: 'lazy' | 'eager' = 'eager';
+
   @State()
   private svgContent: string;
 
@@ -76,7 +79,7 @@ export class DeckdeckgoLazyImg {
   }
 
   private async init() {
-    if ('loading' in HTMLImageElement.prototype && !this.svgSrc) {
+    if ('loading' in HTMLImageElement.prototype && !this.svgSrc && this.loading === 'lazy') {
       // In this case, loadImmediately apply the attributes but the platform will takes care of lazy loading the images
       await this.loadImmediately();
     } else if (window && 'IntersectionObserver' in window) {
@@ -94,7 +97,7 @@ export class DeckdeckgoLazyImg {
     return new Promise<void>((resolve) => {
       this.observer = new IntersectionObserver(this.onIntersection, {
         rootMargin: this.observerRootMargin,
-        threshold: this.observerThreshold
+        threshold: this.observerThreshold,
       });
 
       this.observer.observe(this.el.shadowRoot.host);
@@ -159,7 +162,7 @@ export class DeckdeckgoLazyImg {
         this.customLoad.emit({
           imgElement: img,
           imgSrc: this.imgSrc,
-          imgSrcSet: this.imgSrcSet
+          imgSrcSet: this.imgSrcSet,
         });
 
         resolve();
@@ -229,7 +232,7 @@ export class DeckdeckgoLazyImg {
   private renderImage() {
     // prettier-ignore
     // @ts-ignore
-    return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading="lazy" sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
+    return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading={this.loading} sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
                 width={this.imgWidth} height={this.imgHeight}
                 onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>
   }

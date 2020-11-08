@@ -19,6 +19,7 @@ export namespace Components {
         "imgWidth": number;
         "intrinsicsize": string;
         "lazyLoad": () => Promise<void>;
+        "loading": 'lazy' | 'eager';
         "observerRootMargin": string;
         "observerThreshold": number | number[];
         "svgSrc": string;
@@ -47,6 +48,7 @@ declare namespace LocalJSX {
         "imgSrcSet"?: string;
         "imgWidth"?: number;
         "intrinsicsize"?: string;
+        "loading"?: 'lazy' | 'eager';
         "observerRootMargin"?: string;
         "observerThreshold"?: number | number[];
         "onCustomLoad"?: (event: CustomEvent<DeckDeckGoCustomLoad>) => void;
