@@ -1,3 +1,15 @@
+# 3.0.0 (2020-11-08)
+
+### Breaking Changes
+
+Per default, the component uses the intersection observer to lazy load the images.
+If set to `lazy` then it will defer the loading using the native web lazy loading.
+
+### Features
+
+- introduces a new property `loading` set to `eager` per default
+- more sensitive default `observer-threshold` and `observer-root-margin`
+
 # 2.0.1 (2020-10-23)
 
 ### Fix
