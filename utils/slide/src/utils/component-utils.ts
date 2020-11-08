@@ -1,3 +1,5 @@
+import {getAllElements} from './element-utils';
+
 export function lazyLoadComponentContent(el: HTMLElement, tag: string): Promise<void> {
   return new Promise<void>(async (resolve) => {
     const promises: void[] = [];
@@ -16,11 +18,4 @@ export function lazyLoadComponentContent(el: HTMLElement, tag: string): Promise<
 
     resolve();
   });
-}
-
-function getAllElements(el: HTMLElement, tag: string): HTMLElement[] {
-  const allSlottedElements: NodeListOf<HTMLElement> = el.querySelectorAll(tag);
-  const allShadowsElements: NodeListOf<HTMLElement> | [] = el.shadowRoot ? el.shadowRoot.querySelectorAll(tag) : [];
-
-  return Array.from(allSlottedElements).concat(Array.from(allShadowsElements));
 }
