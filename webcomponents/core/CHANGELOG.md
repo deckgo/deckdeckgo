@@ -1,3 +1,9 @@
+# 8.0.2 (2020-11-08)
+
+### Fix
+
+- intersection observer threshold to lazy load next slides content
+
 # 8.0.1 (2020-11-08)
 
 ### Features

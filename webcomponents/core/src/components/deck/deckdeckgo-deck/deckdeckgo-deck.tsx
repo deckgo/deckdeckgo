@@ -264,8 +264,8 @@ export class DeckdeckgoDeck {
     }
 
     this.observer = new IntersectionObserver(this.onIntersection, {
-      rootMargin: '100px',
-      threshold: 0.25,
+      rootMargin: '300px',
+      threshold: 0,
     });
 
     slides.forEach((slide: HTMLElement) => {
