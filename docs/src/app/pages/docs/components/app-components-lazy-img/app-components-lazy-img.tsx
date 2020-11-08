@@ -21,7 +21,7 @@ export class AppComponentsLazyImg {
           <h1 id="app-components-lazy-img-lazy-image">Lazy Image</h1>
           <p>The &quot;Lazy Image&quot; component is a dead simple component to lazy load images.</p>
           <p>
-            It leverages the native lazy-loading when available and the IntersectionObserver API as fallback to lazy load images. It also allows you to trigger
+            It leverages the native lazy-loading and the IntersectionObserver API (default behavior) to lazy load images. It also allows you to trigger
             &quot;manually&quot; their loading.
           </p>
           <p>
@@ -220,6 +220,18 @@ export class AppComponentsLazyImg {
                   for <code>img-src</code> and <code>img-src-set</code>)
                 </td>
                 <td></td>
+              </tr>
+              <tr>
+                <td>loading</td>
+                <td>
+                  <code>eager</code> or <code>lazy</code>
+                </td>
+                <td>
+                  Per default <code>eager</code> because the intersection observer is used to defer the loading.
+                </td>
+                <td>
+                  If set to <code>lazy</code>, the web native lazy capability of the browser, if available, will be used to lazy load the image
+                </td>
               </tr>
             </tbody>
           </table>
