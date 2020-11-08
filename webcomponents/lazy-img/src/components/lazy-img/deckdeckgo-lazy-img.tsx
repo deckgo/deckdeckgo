@@ -27,10 +27,10 @@ export class DeckdeckgoLazyImg {
   imgSizes: string;
 
   @Prop()
-  observerRootMargin: string = '100px 0px';
+  observerRootMargin: string = '300px';
 
   @Prop()
-  observerThreshold: number | number[];
+  observerThreshold: number | number[] = 0.25;
 
   @Prop()
   imgErrorSrc: string;
