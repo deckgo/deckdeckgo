@@ -6,34 +6,34 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface DeckgoMdParser {
+    interface DeckgoMarkdown {
         "editable": boolean;
     }
 }
 declare global {
-    interface HTMLDeckgoMdParserElement extends Components.DeckgoMdParser, HTMLStencilElement {
+    interface HTMLDeckgoMarkdownElement extends Components.DeckgoMarkdown, HTMLStencilElement {
     }
-    var HTMLDeckgoMdParserElement: {
-        prototype: HTMLDeckgoMdParserElement;
-        new (): HTMLDeckgoMdParserElement;
+    var HTMLDeckgoMarkdownElement: {
+        prototype: HTMLDeckgoMarkdownElement;
+        new (): HTMLDeckgoMarkdownElement;
     };
     interface HTMLElementTagNameMap {
-        "deckgo-md-parser": HTMLDeckgoMdParserElement;
+        "deckgo-markdown": HTMLDeckgoMarkdownElement;
     }
 }
 declare namespace LocalJSX {
-    interface DeckgoMdParser {
+    interface DeckgoMarkdown {
         "editable"?: boolean;
     }
     interface IntrinsicElements {
-        "deckgo-md-parser": DeckgoMdParser;
+        "deckgo-markdown": DeckgoMarkdown;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "deckgo-md-parser": LocalJSX.DeckgoMdParser & JSXBase.HTMLAttributes<HTMLDeckgoMdParserElement>;
+            "deckgo-markdown": LocalJSX.DeckgoMarkdown & JSXBase.HTMLAttributes<HTMLDeckgoMarkdownElement>;
         }
     }
 }

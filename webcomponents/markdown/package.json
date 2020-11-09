@@ -7,10 +7,10 @@
   "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",
-  "types": "dist/types/interface.d.ts",
+  "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js",
+  "unpkg": "dist/deckdeckgo-markdown/deckdeckgo-markdown.esm.js",
   "files": [
     "dist/",
     "README.md",
