@@ -54,12 +54,14 @@ export class ToggleSlotUtils {
       return this.createSlotCode(element, 'math');
     } else if (type == SlotType.WORD_CLOUD) {
       return this.createSlotCode(element, 'words');
+    } else if (type == SlotType.MARKDOWN) {
+      return this.createSlotCode(element, 'markdown');
     } else {
       return element;
     }
   }
 
-  private static async createSlotCode(element: HTMLElement, slotName: 'code' | 'math' | 'words'): Promise<HTMLElement> {
+  private static async createSlotCode(element: HTMLElement, slotName: 'code' | 'math' | 'words' | 'markdown'): Promise<HTMLElement> {
     const container: HTMLElement = document.createElement('code');
     container.setAttribute('slot', slotName);
     element.appendChild(container);
@@ -84,7 +86,7 @@ export class ToggleSlotUtils {
       if (!SlotUtils.isSlotTypeEditable(type)) {
         selectedElement.removeAttribute('editable');
         selectedElement.removeAttribute('contenteditable');
-      } else if (type === SlotType.CODE || type == SlotType.MATH || type == SlotType.WORD_CLOUD) {
+      } else if (type === SlotType.CODE || type == SlotType.MATH || type == SlotType.WORD_CLOUD || type === SlotType.MARKDOWN) {
         selectedElement.setAttribute('editable', 'true');
         selectedElement.removeAttribute('contenteditable');
       } else {

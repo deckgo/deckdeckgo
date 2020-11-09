@@ -53,6 +53,8 @@ export class AppActionsElement {
 
   private wordCloud: boolean = false;
 
+  private markdown: boolean = false;
+
   @State()
   private image: boolean = false;
 
@@ -253,6 +255,10 @@ export class AppActionsElement {
 
   private isElementWordcloud(element: HTMLElement): boolean {
     return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.WORD_CLOUD;
+  }
+
+  private isElementMarkdown(element: HTMLElement): boolean {
+    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MARKDOWN;
   }
 
   private isElementShape(element: HTMLElement): 'shape' | 'text' | undefined {
@@ -730,6 +736,7 @@ export class AppActionsElement {
 
       this.math = this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.wordCloud = this.isElementWordcloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
+      this.markdown = this.isElementMarkdown(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.code = this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.image = this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element);
       this.shape = this.isElementShape(element);
@@ -825,6 +832,7 @@ export class AppActionsElement {
         shape: this.shape,
         image: this.image,
         wordCloud: this.wordCloud,
+        markdown: this.markdown,
       },
       mode: 'md',
       showBackdrop: false,

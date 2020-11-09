@@ -33,7 +33,7 @@ export class DeckgoMdParser {
   }
 
   private parseMarkdownInSlot(): Promise<void> {
-    const mdContent: HTMLElement = this.el.querySelector("[slot='md-parser']");
+    const mdContent: HTMLElement = this.el.querySelector("[slot='markdown']");
 
     if (mdContent) {
       const mdText = mdContent.innerText;
@@ -91,7 +91,7 @@ export class DeckgoMdParser {
 
       this.editing = true;
 
-      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
+      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='markdown']");
 
       if (markdownInSlot) {
         setTimeout(() => {
@@ -109,7 +109,7 @@ export class DeckgoMdParser {
     return new Promise<void>((resolve) => {
       this.editing = false;
 
-      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
+      const markdownInSlot: HTMLElement = this.el.querySelector("[slot='markdown']");
 
       if (markdownInSlot) {
         markdownInSlot.removeAttribute('contentEditable');
@@ -127,8 +127,8 @@ export class DeckgoMdParser {
           ref={(el) => (this.containerRef = el as HTMLInputElement)}
           onMouseDown={() => this.startEditing()}
           onTouchStart={() => this.startEditing()}>
-          <div class="md-parser"></div>
-          <slot name="md-parser"></slot>
+          <div class="markdown"></div>
+          <slot name="markdown"></slot>
         </div>
       </Host>
     );

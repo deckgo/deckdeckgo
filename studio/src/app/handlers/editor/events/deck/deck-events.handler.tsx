@@ -19,7 +19,6 @@ import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
-import {SlotType} from '../../../../utils/editor/slot-type';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
@@ -1013,7 +1012,7 @@ export class DeckEventsHandler {
 
     elements.forEach((e: HTMLElement) => {
       if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-        if (e.nodeName.toLowerCase() === SlotType.CODE || e.nodeName.toLowerCase() === SlotType.MATH || e.nodeName.toLowerCase() === SlotType.WORD_CLOUD) {
+        if (SlotUtils.isNodeEditable(e)) {
           e.setAttribute('editable', attrEditableValue);
         } else if (ParseElementsUtils.isElementContentEditable(e)) {
           e.setAttribute('contentEditable', attrEditableValue);
