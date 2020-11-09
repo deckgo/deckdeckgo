@@ -1,4 +1,4 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';

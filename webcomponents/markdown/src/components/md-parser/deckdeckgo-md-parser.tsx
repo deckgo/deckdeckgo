@@ -1,6 +1,6 @@
-import { Component, h, Host, State, Element, Prop } from '@stencil/core';
+import {Component, h, Host, State, Element, Prop} from '@stencil/core';
 
-import { Remarkable } from 'remarkable';
+import {Remarkable} from 'remarkable';
 
 @Component({
   tag: 'deckgo-md-parser',
@@ -83,7 +83,7 @@ export class DeckgoMdParser {
   };
 
   private startEditing(): Promise<void> {
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       if (!this.editable) {
         resolve();
         return;
@@ -96,7 +96,7 @@ export class DeckgoMdParser {
       if (markdownInSlot) {
         setTimeout(() => {
           markdownInSlot.setAttribute('contentEditable', 'true');
-          markdownInSlot.addEventListener('blur', this.applyMarkdown, { once: true });
+          markdownInSlot.addEventListener('blur', this.applyMarkdown, {once: true});
           markdownInSlot.focus();
         }, 100);
       }
@@ -106,11 +106,11 @@ export class DeckgoMdParser {
   }
 
   private stopEditing(): Promise<void> {
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       this.editing = false;
 
       const markdownInSlot: HTMLElement = this.el.querySelector("[slot='md-parser']");
-      
+
       if (markdownInSlot) {
         markdownInSlot.removeAttribute('contentEditable');
       }
@@ -121,15 +121,14 @@ export class DeckgoMdParser {
 
   render() {
     return (
-      <Host class={{ 'deckgo-markdown-edit': this.editing }}>
-        <div 
-          class="deckgo-markdown-container" 
-          ref={el => (this.containerRef = el as HTMLInputElement)} 
-          onMouseDown={() => this.startEditing()} 
-          onTouchStart={() => this.startEditing()}
-        >
-            <div class="md-parser"></div>
-            <slot name="md-parser"></slot>
+      <Host class={{'deckgo-markdown-edit': this.editing}}>
+        <div
+          class="deckgo-markdown-container"
+          ref={(el) => (this.containerRef = el as HTMLInputElement)}
+          onMouseDown={() => this.startEditing()}
+          onTouchStart={() => this.startEditing()}>
+          <div class="md-parser"></div>
+          <slot name="md-parser"></slot>
         </div>
       </Host>
     );

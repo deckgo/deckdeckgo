@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/markdown-parser.esm.js"></script>
+    <script nomodule src="/build/markdown-parser.js"></script>
+  </head>
+
+  <body>
+    <h1>Editable:</h1>
+
+    <!-- prettier-ignore -->
+    <deckgo-md-parser editable="true">
+    <code slot="md-parser">
+# h1 Heading 8-) 
+<br/>
+## h2 Heading
+<br/>
+### h3 Heading
+<br/>
+#### h4 Heading
+<br/>
+##### h5 Heading
+<br/>
+###### h6 Heading
+<br/>
+[Link](https://deckdeckgo.com/)
+<br/>
+<br/>
+This is basic paragraph with some **bold text** and also some *italic text*. 
+<br/>
+<br/>
+This is really ***very*** important text. 
+      </code>
+  </deckgo-md-parser>
+
+    <h1>Editable empty:</h1>
+    <!-- prettier-ignore -->
+    <deckgo-md-parser editable="true">
+    <code slot="md-parser">
+    </code>
+  </deckgo-md-parser>
+
+    <h1>Code example (not editable):</h1>
+    <!-- prettier-ignore -->
+    <deckgo-md-parser editable="false">
+    <code slot="md-parser">
+```javascript
+<br/>
+function fancyAlert(arg) {
+<br/>
+  if(arg) {
+<br/>
+    $.facebox({div:'#foo'})
+<br/>
+  }
+<br/>
+}
+<br/>
+```
+    </code>
+  </deckgo-md-parser>
+
+    <h1>Image:</h1>
+    <deckgo-md-parser editable="true">
+      <code slot="md-parser"> ![Image of Daftpunktocat](https://octodex.github.com/images/daftpunktocat-guy.gif) </code>
+    </deckgo-md-parser>
+  </body>
+</html>
