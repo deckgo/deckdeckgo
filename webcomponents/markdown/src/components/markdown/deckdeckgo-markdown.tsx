@@ -3,8 +3,8 @@ import {Component, h, Host, State, Element, Prop} from '@stencil/core';
 import {Remarkable} from 'remarkable';
 
 @Component({
-  tag: 'deckgo-md-parser',
-  styleUrl: 'deckdeckgo-md-parser.scss',
+  tag: 'deckgo-markdown',
+  styleUrl: 'deckdeckgo-markdown.scss',
   shadow: true,
 })
 export class DeckgoMdParser {
@@ -19,7 +19,7 @@ export class DeckgoMdParser {
 
   private parseAfterUpdate: boolean = false;
 
-  private parser = new Remarkable();
+  private parser: Remarkable = new Remarkable();
 
   async componentDidLoad() {
     await this.parseMarkdownInSlot();

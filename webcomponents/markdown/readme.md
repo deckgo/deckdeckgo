@@ -1,10 +1,10 @@
 [![npm][npm-badge]][npm-badge-url]
 [![license][npm-license]][npm-license-url]
 
-[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/math
-[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/math
-[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/math
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/math/LICENSE
+[npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/markdown
+[npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/markdown
+[npm-license]: https://img.shields.io/npm/l/@deckdeckgo/markdown
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/markdown/LICENSE
 
 # DeckDeckGo - Markdown Parser
 
@@ -24,7 +24,7 @@ To develop and run this Web Component locally, proceed as following:
 
 ```
 git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/markdown-parser
+cd deckdeckgo/webcomponents/markdown
 npm install
 npm run start
 ```

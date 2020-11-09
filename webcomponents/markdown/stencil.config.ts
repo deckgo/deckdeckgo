@@ -5,15 +5,14 @@ import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
-  namespace: 'markdown-parser',
+  namespace: 'deckdeckgo-markdown',
   outputTargets: [
     {
       type: 'dist',
-      esmLoaderPath: '../loader',
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+      serviceWorker: null,
     },
   ],
   plugins: [
