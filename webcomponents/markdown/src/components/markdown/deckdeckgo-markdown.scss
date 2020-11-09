@@ -13,10 +13,38 @@
 :host(.deckgo-markdown-edit) {
   ::slotted([slot="markdown"]) {
     display: block;
-    min-height: 20px;
+    white-space: pre-wrap;
   }
 
   div.markdown {
     display: none;
+  }
+}
+
+div.deckgo-markdown-container {
+  color: var(--deckgo-markdown-color, inherit);
+  background: var(--deckgo-markdown-background);
+  padding: var(--deckgo-markdown-padding, 8px);
+  border-radius: var(--deckgo-markdown-border-radius);
+
+  margin: var(--deckgo-markdown-margin, 0px);
+
+  direction: var(--deckgo-markdown-direction);
+  text-align: var(--deckgo-markdown-text-align);
+
+  display: var(--deckgo-markdown-container-display, block);
+  justify-content: var(--deckgo-markdown-container-justify-content);
+  flex-direction: var(--deckgo-markdown-container-flex-direction);
+  align-items: var(--deckgo-markdown-container-align-items);
+
+  div.markdown {
+    overflow-y: var(--deckgo-markdown-scroll, scroll);
+
+    white-space: var(--deckgo-markdown-pre-wrap);
+
+    font-size: var(--deckgo-markdown-font-size);
+    min-height: var(--deckgo-markdown-min-height, 23px);
+
+    display: var(--deckgo-markdown-display, block);
   }
 }

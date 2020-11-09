@@ -32,49 +32,37 @@ export class DeckgoMdParser {
     }
   }
 
-  private parseMarkdownInSlot(): Promise<void> {
+  private async parseMarkdownInSlot() {
     const mdContent: HTMLElement = this.el.querySelector("[slot='markdown']");
 
     if (mdContent) {
       const mdText = mdContent.innerText;
       const mdContentHTML = this.parser.render(mdText);
-      this.parseMarkdown(mdContentHTML);
-    } else {
-      return Promise.resolve();
+      await this.parseMarkdown(mdContentHTML);
     }
   }
 
-  private parseMarkdown(mdContentHTML: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (!this.containerRef) {
-        resolve();
-        return;
+  private async parseMarkdown(mdContentHTML: string) {
+    if (!this.containerRef) {
+      return;
+    }
+
+    if (!mdContentHTML || mdContentHTML === undefined || mdContentHTML === '') {
+      this.containerRef.children[0].innerHTML = '';
+      return;
+    }
+
+    try {
+      this.containerRef.children[0].innerHTML = '';
+
+      const div: HTMLElement = document.createElement('div');
+
+      if (div.childNodes) {
+        this.containerRef.children[0].innerHTML = mdContentHTML;
       }
-
-      if (!mdContentHTML || mdContentHTML === undefined || mdContentHTML === '') {
-        this.containerRef.children[0].innerHTML = '';
-        resolve();
-        return;
-      }
-
-      try {
-        this.containerRef.children[0].innerHTML = '';
-
-        const div: HTMLElement = document.createElement('div');
-
-        try {
-          if (div.childNodes) {
-            this.containerRef.children[0].innerHTML = mdContentHTML;
-          }
-        } catch (err) {
-          console.error(err);
-        }
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   private applyMarkdown = async () => {
