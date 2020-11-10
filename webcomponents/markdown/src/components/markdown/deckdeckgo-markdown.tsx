@@ -1,7 +1,6 @@
 import {Component, h, Host, State, Element, Prop, EventEmitter, Event} from '@stencil/core';
 
-import marked from 'marked';
-import {changeCodeCreation} from '../utils/markdown.utils';
+import {parseMarkdown} from '../workers/markdown.worker';
 
 @Component({
   tag: 'deckgo-markdown',
@@ -40,13 +39,7 @@ export class DeckgoMdParser {
     if (mdContent) {
       const mdText = mdContent.innerText;
 
-      const renderer = new marked.Renderer();
-      changeCodeCreation(renderer);
-
-      const markdownHtmlContents: string = marked(mdText, {
-        renderer,
-        xhtml: true,
-      });
+      const markdownHtmlContents: string = await parseMarkdown(mdText);
 
       await this.parseMarkdown(markdownHtmlContents);
     }
