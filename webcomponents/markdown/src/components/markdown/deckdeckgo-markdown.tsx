@@ -1,6 +1,7 @@
 import {Component, h, Host, State, Element, Prop} from '@stencil/core';
 
-import {Remarkable} from 'remarkable';
+import marked from 'marked';
+import {changeCodeCreation} from '../utils/markdown.utils';
 
 @Component({
   tag: 'deckgo-markdown',
@@ -19,8 +20,6 @@ export class DeckgoMdParser {
 
   private parseAfterUpdate: boolean = false;
 
-  private parser: Remarkable = new Remarkable();
-
   async componentDidLoad() {
     await this.parseMarkdownInSlot();
   }
@@ -37,8 +36,16 @@ export class DeckgoMdParser {
 
     if (mdContent) {
       const mdText = mdContent.innerText;
-      const mdContentHTML = this.parser.render(mdText);
-      await this.parseMarkdown(mdContentHTML);
+
+      const renderer = new marked.Renderer();
+      changeCodeCreation(renderer);
+
+      const markdownHtmlContents: string = marked(mdText, {
+        renderer,
+        xhtml: true,
+      });
+
+      await this.parseMarkdown(markdownHtmlContents);
     }
   }
 

@@ -22,13 +22,17 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
+  "peerDependencies": {
+    "@deckdeckgo/highlight-code": "^2.1.0"
+  },
   "dependencies": {
-    "remarkable": "^2.0.1"
+    "marked": "^1.2.3"
   },
   "devDependencies": {
     "@stencil/core": "^2.0.3",
     "@stencil/postcss": "^1.0.1",
     "@stencil/sass": "^1.3.2",
+    "@types/marked": "^1.1.0",
     "autoprefixer": "^9.8.6",
     "prettier": "2.1.1",
     "pretty-quick": "^3.0.0"
