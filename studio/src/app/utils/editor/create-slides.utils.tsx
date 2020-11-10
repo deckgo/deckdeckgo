@@ -142,7 +142,7 @@ export class CreateSlidesUtils {
         ) : slotType === SlotType.WORD_CLOUD ? (
           <code slot="words"></code>
         ) : slotType === SlotType.MARKDOWN ? (
-          <code slot="markdown"></code>
+          <div slot="markdown"></div>
         ) : undefined}
       </Element>
     );

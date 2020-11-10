@@ -229,7 +229,8 @@ export class AppActionsElement {
         element.hasAttribute('slot') &&
         element.getAttribute('slot') !== 'code' &&
         element.getAttribute('slot') !== 'math' &&
-        element.getAttribute('slot') !== 'words'
+        element.getAttribute('slot') !== 'words' &&
+        element.getAttribute('slot') !== 'markdown'
       ) {
         resolve(element);
         return;

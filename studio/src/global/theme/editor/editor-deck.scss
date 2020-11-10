@@ -36,7 +36,8 @@ deckgo-deck {
 
   deckgo-math,
   deckgo-markdown {
-    code[slot] {
+    code[slot],
+    div[slot] {
       min-height: 23px;
     }
   }
@@ -44,7 +45,8 @@ deckgo-deck {
   deckgo-math,
   deckgo-word-cloud,
   deckgo-markdown {
-    code {
+    code,
+    div {
       font-family: inherit;
 
       &:focus {

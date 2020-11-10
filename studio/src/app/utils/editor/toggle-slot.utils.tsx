@@ -49,20 +49,24 @@ export class ToggleSlotUtils {
 
   private static async createSlotContainer(element: HTMLElement, type: SlotType): Promise<HTMLElement> {
     if (type == SlotType.CODE) {
-      return this.createSlotCode(element, 'code');
+      return this.createSlot(element, 'code');
     } else if (type == SlotType.MATH) {
-      return this.createSlotCode(element, 'math');
+      return this.createSlot(element, 'math');
     } else if (type == SlotType.WORD_CLOUD) {
-      return this.createSlotCode(element, 'words');
+      return this.createSlot(element, 'words');
     } else if (type == SlotType.MARKDOWN) {
-      return this.createSlotCode(element, 'markdown');
+      return this.createSlot(element, 'markdown', 'div');
     } else {
       return element;
     }
   }
 
-  private static async createSlotCode(element: HTMLElement, slotName: 'code' | 'math' | 'words' | 'markdown'): Promise<HTMLElement> {
-    const container: HTMLElement = document.createElement('code');
+  private static async createSlot(
+    element: HTMLElement,
+    slotName: 'code' | 'math' | 'words' | 'markdown',
+    tagName: 'div' | 'code' = 'code'
+  ): Promise<HTMLElement> {
+    const container: HTMLElement = document.createElement(tagName);
     container.setAttribute('slot', slotName);
     element.appendChild(container);
     return container;
@@ -73,7 +77,7 @@ export class ToggleSlotUtils {
       selectedElement.firstChild &&
       selectedElement.firstChild instanceof HTMLElement &&
       selectedElement.firstChild.nodeName &&
-      selectedElement.firstChild.nodeName.toLowerCase() === 'code'
+      (selectedElement.firstChild.nodeName.toLowerCase() === 'code' || selectedElement.firstChild.nodeName.toLowerCase() === 'div')
     ) {
       return selectedElement.firstChild;
     } else {
