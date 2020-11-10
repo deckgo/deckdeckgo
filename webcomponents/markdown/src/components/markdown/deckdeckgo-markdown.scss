@@ -1,4 +1,7 @@
 :host {
+  display: var(--deckgo-markdown-display, block);
+  overflow: var(--deckgo-markdown-overflow, auto);
+
   ::slotted([slot="markdown"]) {
     display: none;
   }
@@ -22,15 +25,15 @@
 }
 
 div.deckgo-markdown-container {
-  color: var(--deckgo-markdown-color, inherit);
-  background: var(--deckgo-markdown-background);
-  padding: var(--deckgo-markdown-padding, 8px);
-  border-radius: var(--deckgo-markdown-border-radius);
+  color: var(--deckgo-markdown-container-color, inherit);
+  background: var(--deckgo-markdown-container-background);
+  padding: var(--deckgo-markdown-container-padding, 8px);
+  border-radius: var(--deckgo-markdown-container-border-radius);
 
-  margin: var(--deckgo-markdown-margin, 0px);
+  margin: var(--deckgo-markdown-container-margin, 0px);
 
-  direction: var(--deckgo-markdown-direction);
-  text-align: var(--deckgo-markdown-text-align);
+  direction: var(--deckgo-markdown-container-direction);
+  text-align: var(--deckgo-markdown-container-text-align);
 
   display: var(--deckgo-markdown-container-display, block);
   justify-content: var(--deckgo-markdown-container-justify-content);
@@ -38,13 +41,13 @@ div.deckgo-markdown-container {
   align-items: var(--deckgo-markdown-container-align-items);
 
   div.markdown {
-    overflow-y: var(--deckgo-markdown-scroll, scroll);
+    overflow-y: var(---deckgo-markdown-output-scroll, scroll);
 
-    white-space: var(--deckgo-markdown-pre-wrap);
+    white-space: var(--deckgo-markdown-output-pre-wrap);
 
-    font-size: var(--deckgo-markdown-font-size);
-    min-height: var(--deckgo-markdown-min-height, 23px);
+    font-size: var(--deckgo-markdown-output-font-size);
+    min-height: var(--deckgo-markdown-output-min-height, 23px);
 
-    display: var(--deckgo-markdown-display, block);
+    display: var(--deckgo-markdown-output-display, block);
   }
 }
