@@ -78,7 +78,7 @@ export class AppSlideWarning {
     }
 
     const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
-      return !SlotUtils.isNodeCode(element) && !SlotUtils.isNodeWordCloud(element);
+      return !SlotUtils.isNodeEditable(element);
     });
 
     if (!filteredSlots || filteredSlots.length <= 0) {
@@ -114,7 +114,7 @@ export class AppSlideWarning {
     }
 
     const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
-      return !SlotUtils.isNodeCode(element) && !SlotUtils.isNodeWordCloud(element);
+      return !SlotUtils.isNodeEditable(element);
     });
 
     if (!filteredSlots || filteredSlots.length <= 0) {
