@@ -27,10 +27,10 @@
 div.deckgo-markdown-container {
   color: var(--deckgo-markdown-container-color, inherit);
   background: var(--deckgo-markdown-container-background);
-  padding: var(--deckgo-markdown-container-padding, 8px);
+  padding: var(--deckgo-markdown-container-padding);
   border-radius: var(--deckgo-markdown-container-border-radius);
 
-  margin: var(--deckgo-markdown-container-margin, 0px);
+  margin: var(--deckgo-markdown-container-margin);
 
   direction: var(--deckgo-markdown-container-direction);
   text-align: var(--deckgo-markdown-container-text-align);
@@ -41,7 +41,7 @@ div.deckgo-markdown-container {
   align-items: var(--deckgo-markdown-container-align-items);
 
   div.markdown {
-    overflow-y: var(---deckgo-markdown-output-scroll, scroll);
+    overflow-y: var(---deckgo-markdown-output-scroll, auto);
 
     white-space: var(--deckgo-markdown-output-pre-wrap);
 
