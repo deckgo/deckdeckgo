@@ -1,4 +1,4 @@
-import {Component, h, Host, State, Element, Prop} from '@stencil/core';
+import {Component, h, Host, State, Element, Prop, EventEmitter, Event} from '@stencil/core';
 
 import marked from 'marked';
 import {changeCodeCreation} from '../utils/markdown.utils';
@@ -15,6 +15,9 @@ export class DeckgoMdParser {
 
   @State()
   private editing: boolean = false;
+
+  @Event()
+  private markdownDidChange: EventEmitter<HTMLElement>;
 
   private containerRef!: HTMLDivElement;
 
@@ -109,6 +112,8 @@ export class DeckgoMdParser {
       if (markdownInSlot) {
         markdownInSlot.removeAttribute('contentEditable');
       }
+
+      this.markdownDidChange.emit(this.el);
 
       resolve();
     });

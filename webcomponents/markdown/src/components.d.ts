@@ -24,6 +24,7 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoMarkdown {
         "editable"?: boolean;
+        "onMarkdownDidChange"?: (event: CustomEvent<HTMLElement>) => void;
     }
     interface IntrinsicElements {
         "deckgo-markdown": DeckgoMarkdown;
