@@ -13,7 +13,8 @@ deckgo-deck {
   ul,
   deckgo-reveal-list,
   deckgo-math,
-  deckgo-word-cloud {
+  deckgo-word-cloud,
+  deckgo-markdown {
     border: 1px solid var(--ion-color-light);
   }
 
@@ -33,14 +34,16 @@ deckgo-deck {
     }
   }
 
-  deckgo-math {
+  deckgo-math,
+  deckgo-markdown {
     code[slot] {
       min-height: 23px;
     }
   }
 
   deckgo-math,
-  deckgo-word-cloud {
+  deckgo-word-cloud,
+  deckgo-markdown {
     code {
       font-family: inherit;
 
