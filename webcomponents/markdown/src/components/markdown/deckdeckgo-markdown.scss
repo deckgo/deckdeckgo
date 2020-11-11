@@ -63,4 +63,5 @@ code {
 ol,
 ul {
   list-style-position: var(--deckgo-markdown-list-style-position, inside);
+  padding: var(--deckgo-markdown-list-padding, 0);
 }
