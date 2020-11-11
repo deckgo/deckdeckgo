@@ -50,3 +50,17 @@ div.deckgo-markdown-container {
     display: var(--deckgo-markdown-output-display, block);
   }
 }
+
+code {
+  font-family: var(--deckgo-markdown-code-font-family, inherit);
+  font-size: var(--deckgo-markdown-code-font-size);
+  font-weight: var(--deckgo-markdown-code-font-weight);
+  background: var(--deckgo-markdown-code-background, rgba(0, 0, 0, 0.05));
+  padding: var(--deckgo-markdown-code-padding, 2px 4px);
+  margin: var(--deckgo-markdown-code-margin, 0 2px);
+}
+
+ol,
+ul {
+  list-style-position: var(--deckgo-markdown-list-style-position, inside);
+}
