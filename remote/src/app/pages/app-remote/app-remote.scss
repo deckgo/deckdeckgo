@@ -74,7 +74,8 @@ app-remote {
     }
 
     .deck-action-button {
-      top: calc(60% - 8px);
+      top: calc((((100vw - 32px) * 9 / 16) + 32px + 56px - 9rem + 100vh - 48px - 16px) / 2);
+      z-index: 999;
     }
 
     @media screen and (orientation: landscape) {
@@ -89,8 +90,9 @@ app-remote {
         padding-bottom: 16px;
       }
       .deck-action-button {
-        top: 75%;
+        top: calc((((((((100vw - 32px) / 2) - 16px) * 9 / 16))) + 32px + 56px - 9rem + 100vh) / 2);
         left: 25%;
+        z-index: 999;
       }
       app-notes {
         grid-area: notes;
