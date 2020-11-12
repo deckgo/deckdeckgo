@@ -41,6 +41,9 @@ export class AppElementStyle {
   @Prop()
   image: boolean = false;
 
+  @Prop()
+  markdown: boolean = false;
+
   @Event() optionsDidChange: EventEmitter<void>;
 
   @State()
@@ -82,7 +85,7 @@ export class AppElementStyle {
 
     this.applyToTargetElement = this.image
       ? TargetElement.IMAGE
-      : this.code
+      : this.code || this.markdown
       ? TargetElement.CODE
       : this.wordCloud
       ? TargetElement.WORD_CLOUD
@@ -161,7 +164,7 @@ export class AppElementStyle {
 
   private renderSelectTarget() {
     const elementTarget: boolean = !this.slide && this.shape !== 'shape' && !this.image;
-    const transition: boolean = !this.slide && !this.code && !this.math && !this.wordCloud && this.shape === undefined && !this.demo;
+    const transition: boolean = !this.slide && !this.code && !this.markdown && !this.math && !this.wordCloud && this.shape === undefined && !this.demo;
 
     return (
       <app-select-target-element
@@ -170,7 +173,7 @@ export class AppElementStyle {
         background={!this.image}
         qrCode={this.qrCode || this.poll}
         chart={this.chart || this.poll}
-        code={this.code}
+        code={this.code || this.markdown}
         image={this.image}
         sides={this.author || this.split}
         shape={this.shape === 'shape'}

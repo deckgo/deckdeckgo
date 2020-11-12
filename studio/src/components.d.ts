@@ -191,6 +191,7 @@ export namespace Components {
         "image": boolean;
         "imageHelper": ImageHelper;
         "imgDidChange": EventEmitter<HTMLElement>;
+        "markdown": boolean;
         "math": boolean;
         "selectedElement": HTMLElement;
         "shape": 'shape' | 'text' | undefined;
@@ -1474,6 +1475,7 @@ declare namespace LocalJSX {
         "image"?: boolean;
         "imageHelper"?: ImageHelper;
         "imgDidChange"?: EventEmitter<HTMLElement>;
+        "markdown"?: boolean;
         "math"?: boolean;
         "onOptionsDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
