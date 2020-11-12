@@ -5,8 +5,8 @@
 ### Applications
 
 - demo: v7.0.2 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
-- docs: v2.8.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
-- remote: v1.12.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- docs: v2.9.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- remote: v1.13.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### Web Components Templates
 
@@ -26,6 +26,10 @@
 - slide-video: v2.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/video/CHANGELOG.md))
 - slide-youtube: v2.1.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/youtube/CHANGELOG.md))
 
+### Web Components: New
+
+- markdown: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/markdown/CHANGELOG.md))
+
 ### Web Components
 
 - core: v8.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
@@ -37,7 +41,8 @@
 
 ### Others
 
-- slide-utils: v2.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
+- deck-utils: v3.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+- slide-utils: v2.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
 - starter kit: v7.0.1 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
 - studio kit: v7.0.1 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 

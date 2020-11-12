@@ -46,7 +46,8 @@
           *:not([slot="background"]) > deckgo-lazy-img,
           deckgo-reveal[img],
           deckgo-math,
-          deckgo-word-cloud {
+          deckgo-word-cloud,
+          deckgo-markdown {
             border: 1px solid transparent;
 
             &:empty:not(:focus):after {

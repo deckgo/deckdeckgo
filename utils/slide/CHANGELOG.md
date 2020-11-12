@@ -1,3 +1,9 @@
+<a name="2.5.0"></a>
+
+# 2.5.0 (2020-11-12)
+
+- lazy load new `@deckgo/markdown` component in presentations
+
 <a name="2.4.0"></a>
 
 # 2.4.0 (2020-11-08)

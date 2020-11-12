@@ -12,9 +12,13 @@ deckgo-deck section,
 deckgo-deck ol,
 deckgo-deck ul,
 deckgo-deck deckgo-reveal-list,
-deckgo-deck deckgo-highlight-code,
-deckgo-deck deckgo-math {
+deckgo-deck deckgo-math,
+deckgo-deck deckgo-markdown {
   width: 100%;
+}
+
+deckgo-deck deckgo-highlight-code {
+  width: calc(100% - 32px);
 }
 
 deckgo-deck h1,
@@ -24,7 +28,7 @@ deckgo-deck section,
 deckgo-deck ol,
 deckgo-deck ul,
 deckgo-deck deckgo-reveal-list {
-  padding: 8px;
+  padding: 8px 16px;
 }
 
 deckgo-deck h1,
@@ -36,8 +40,9 @@ deckgo-deck ul,
 deckgo-deck deckgo-reveal-list,
 deckgo-deck deckgo-highlight-code,
 deckgo-deck deckgo-math,
+deckgo-deck deckgo-markdown,
 deckgo-deck deckgo-lazy-img[slot] {
-  margin: 16px 0;
+  margin: 8px auto;
   outline: none;
 }
 
@@ -203,8 +208,9 @@ deckgo-deck deckgo-reveal h3,
 deckgo-deck deckgo-reveal section,
 deckgo-deck deckgo-reveal deckgo-highlight-code,
 deckgo-deck deckgo-reveal deckgo-math,
+deckgo-deck deckgo-reveal deckgo-markdown,
 deckgo-deck deckgo-reveal deckgo-lazy-img[slot] {
-  margin: 0;
+  margin: 0 auto;
 }
 
 deckgo-deck ol,

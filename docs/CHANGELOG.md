@@ -1,3 +1,9 @@
+# 2.9.0 (2020-11-12)
+
+### Features
+
+- import new component `@deckgo/markdown`
+
 # 2.8.1 (2020-11-08)
 
 ### Features

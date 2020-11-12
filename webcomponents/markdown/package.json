@@ -1,0 +1,71 @@
+{
+  "name": "@deckdeckgo/markdown",
+  "version": "1.0.0",
+  "description": "A Web Component to render markdown to HTML",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-markdown/deckdeckgo-markdown.esm.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "peerDependencies": {
+    "@deckdeckgo/highlight-code": "^2.1.0",
+    "@deckdeckgo/lazy-img": "^3.0.0"
+  },
+  "dependencies": {
+    "marked": "^1.2.3"
+  },
+  "devDependencies": {
+    "@stencil/core": "^2.0.3",
+    "@stencil/postcss": "^1.0.1",
+    "@stencil/sass": "^1.3.2",
+    "@types/marked": "^1.1.0",
+    "autoprefixer": "^9.8.6",
+    "prettier": "2.1.1",
+    "pretty-quick": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "Christian Petro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "markdown",
+    "markdown-parser",
+    "remarkable",
+    "md",
+    "parse",
+    "parser",
+    "process",
+    "remarkable",
+    "render",
+    "renderer"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

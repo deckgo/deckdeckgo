@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>DeckDeckGo Markdown</title>
+
+    <script type="module" src="/build/deckdeckgo-markdown.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-markdown.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js"></script>
+  </head>
+
+  <body>
+    <h1>Editable:</h1>
+
+    <!-- prettier-ignore -->
+    <deckgo-markdown editable="true" style="height: 2000px; display: block;">
+    <code slot="markdown">
+# h1 Heading 8-)
+<br/>
+## h2 Heading
+<br/>
+### h3 Heading
+<br/>
+#### h4 Heading
+<br/>
+##### h5 Heading
+<br/>
+###### h6 Heading
+<br/>
+[Link](https://deckdeckgo.com/)
+<br/>
+![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100px,20px")
+![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100px")
+![](https://www.nmattia.com/images/autoupdate-notifications.jpg)
+<br/>
+This is basic paragraph with some **bold text** and also some *italic text*.
+<br/>
+This is really ***very*** important text.
+<br/>
+```
+console.log('yolo');
+```
+      </code>
+  </deckgo-markdown>
+
+    <h1>Editable empty:</h1>
+    <!-- prettier-ignore -->
+    <deckgo-markdown editable="true">
+    <code slot="markdown">
+    </code>
+  </deckgo-markdown>
+
+    <h1>Code example (not editable):</h1>
+    <!-- prettier-ignore -->
+    <deckgo-markdown editable="false">
+    <code slot="markdown">
+```javascript
+<br/>
+function fancyAlert(arg) {
+<br/>
+  if(arg) {
+<br/>
+    $.facebox({div:'#foo'})
+<br/>
+  }
+<br/>
+}
+<br/>
+```
+    </code>
+  </deckgo-markdown>
+
+    <h1>Image:</h1>
+    <deckgo-markdown editable="true">
+      <code slot="markdown"> ![Image of Daftpunktocat](https://octodex.github.com/images/daftpunktocat-guy.gif) </code>
+    </deckgo-markdown>
+  </body>
+</html>

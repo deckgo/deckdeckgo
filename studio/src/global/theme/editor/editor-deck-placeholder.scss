@@ -114,4 +114,12 @@ deckgo-deck {
   [highlighted] {
     border: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
   }
+
+  deckgo-reveal[highlighted] {
+    border: none;
+
+    > * {
+      border: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
+    }
+  }
 }

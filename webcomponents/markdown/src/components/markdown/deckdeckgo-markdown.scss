@@ -1,0 +1,67 @@
+:host {
+  display: var(--deckgo-markdown-display, block);
+  overflow: var(--deckgo-markdown-overflow, auto);
+
+  ::slotted([slot="markdown"]) {
+    display: none;
+  }
+}
+
+:host([editable]) {
+  div.markdown:empty:not(:focus):after {
+    content: "Click to add some markdown";
+  }
+}
+
+:host(.deckgo-markdown-edit) {
+  ::slotted([slot="markdown"]) {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  div.markdown {
+    display: none;
+  }
+}
+
+div.deckgo-markdown-container {
+  color: var(--deckgo-markdown-container-color, inherit);
+  background: var(--deckgo-markdown-container-background);
+
+  border-radius: var(--deckgo-markdown-container-border-radius);
+
+  margin: var(--deckgo-markdown-container-margin);
+  padding: var(--deckgo-markdown-container-padding, 8px 16px);
+
+  direction: var(--deckgo-markdown-container-direction);
+  text-align: var(--deckgo-markdown-container-text-align);
+
+  display: var(--deckgo-markdown-container-display, block);
+  justify-content: var(--deckgo-markdown-container-justify-content);
+  flex-direction: var(--deckgo-markdown-container-flex-direction);
+  align-items: var(--deckgo-markdown-container-align-items);
+
+  div.markdown {
+    white-space: var(--deckgo-markdown-output-pre-wrap);
+
+    font-size: var(--deckgo-markdown-output-font-size);
+    min-height: var(--deckgo-markdown-output-min-height, 23px);
+
+    display: var(--deckgo-markdown-output-display, block);
+  }
+}
+
+code {
+  font-family: var(--deckgo-markdown-code-font-family, inherit);
+  font-size: var(--deckgo-markdown-code-font-size);
+  font-weight: var(--deckgo-markdown-code-font-weight);
+  background: var(--deckgo-markdown-code-background, rgba(0, 0, 0, 0.05));
+  padding: var(--deckgo-markdown-code-padding, 2px 4px);
+  margin: var(--deckgo-markdown-code-margin, 0 2px);
+}
+
+ol,
+ul {
+  list-style-position: var(--deckgo-markdown-list-style-position, inside);
+  padding: var(--deckgo-markdown-list-padding, 0);
+}
