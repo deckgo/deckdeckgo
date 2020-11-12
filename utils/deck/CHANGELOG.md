@@ -1,3 +1,9 @@
+<a name="3.1.0"></a>
+
+# 3.1.0 (2020-11-12)
+
+- improvements for the integration of the new `@deckgo/markdown` component in our editor
+
 <a name="3.0.2"></a>
 
 # 3.0.2 (2020-10-29)
