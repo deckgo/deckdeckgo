@@ -8,6 +8,9 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoMarkdown {
         "editable": boolean;
+        "highlightLines": string;
+        "terminal": string;
+        "theme": string;
     }
 }
 declare global {
@@ -24,7 +27,10 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoMarkdown {
         "editable"?: boolean;
+        "highlightLines"?: string;
         "onMarkdownDidChange"?: (event: CustomEvent<HTMLElement>) => void;
+        "terminal"?: string;
+        "theme"?: string;
     }
     interface IntrinsicElements {
         "deckgo-markdown": DeckgoMarkdown;

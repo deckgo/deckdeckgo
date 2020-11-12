@@ -1,12 +1,17 @@
 import marked from 'marked';
 
-import {changeCodeCreation} from './utils/markdown.utils';
+import {changeCodeCreation, ParseMarkdownCodeOptions} from './utils/markdown.utils';
 
-export const parseMarkdown = async (mdText: string) => {
+export interface ParseMarkdownOptions {
+  mdText: string;
+  code: ParseMarkdownCodeOptions;
+}
+
+export const parseMarkdown = async (options: ParseMarkdownOptions) => {
   const renderer = new marked.Renderer();
-  changeCodeCreation(renderer);
+  changeCodeCreation(renderer, options.code);
 
-  return marked(mdText, {
+  return marked(options.mdText, {
     renderer,
     xhtml: true,
   });

@@ -1,6 +1,12 @@
 import marked from 'marked';
 
-export function changeCodeCreation(renderer: marked.Renderer) {
+export interface ParseMarkdownCodeOptions {
+  highlightLines: string;
+  terminal: string;
+  theme: string;
+}
+
+export function changeCodeCreation(renderer: marked.Renderer, options: ParseMarkdownCodeOptions) {
   renderer.code = (code, lang, _escaped) => {
     const hcl = [];
     code = code
@@ -14,7 +20,9 @@ export function changeCodeCreation(renderer: marked.Renderer) {
       })
       .join('\n');
 
-    return `<deckgo-highlight-code language="${lang ? lang : 'javascript'}">
+    const properties: string = generatePropsString(options);
+
+    return `<deckgo-highlight-code language="${lang ? lang : 'javascript'}" ${properties}>
       <code slot="code">${code}</code>
     </deckgo-highlight-code>`;
   };
@@ -31,4 +39,28 @@ function escapeUnsafe(unsafe: string): string {
     .replace(/\\/g, '&#092;')
     .replace(/{/g, '&#123;')
     .replace(/}/g, '&#125;');
+}
+
+function generatePropsString(pluginOptions: ParseMarkdownCodeOptions): string {
+  if (!pluginOptions) {
+    return '';
+  }
+
+  const {terminal, theme, highlightLines} = pluginOptions;
+
+  let str = '';
+
+  if (terminal) {
+    str += `terminal="${pluginOptions.terminal}" `;
+  }
+
+  if (theme) {
+    str += `theme="${pluginOptions.theme}" `;
+  }
+
+  if (highlightLines) {
+    str += `highlight-lines="${pluginOptions.highlightLines}" `;
+  }
+
+  return str;
 }

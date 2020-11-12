@@ -1,4 +1,4 @@
-import {Component, h, Host, State, Element, Prop, EventEmitter, Event} from '@stencil/core';
+import {Component, h, Host, State, Element, Prop, EventEmitter, Event, Watch} from '@stencil/core';
 
 import {parseMarkdown} from '../workers/markdown.worker';
 
@@ -22,6 +22,11 @@ export class DeckgoMdParser {
 
   private parseAfterUpdate: boolean = false;
 
+  // deckgo-highlight styling options
+  @Prop({reflect: true}) highlightLines: string;
+  @Prop({reflect: true}) terminal: string = 'carbon';
+  @Prop({reflect: true}) theme: string = 'dracula';
+
   async componentDidLoad() {
     await this.parseMarkdownInSlot();
   }
@@ -33,13 +38,27 @@ export class DeckgoMdParser {
     }
   }
 
+  @Watch('highlightLines')
+  @Watch('terminal')
+  @Watch('theme')
+  async onCodeOptionsChange() {
+    await this.parseMarkdownInSlot();
+  }
+
   private async parseMarkdownInSlot() {
     const mdContent: HTMLElement = this.el.querySelector("[slot='markdown']");
 
     if (mdContent) {
       const mdText = mdContent.innerText;
 
-      const markdownHtmlContents: string = await parseMarkdown(mdText);
+      const markdownHtmlContents: string = await parseMarkdown({
+        mdText,
+        code: {
+          highlightLines: this.highlightLines,
+          terminal: this.terminal,
+          theme: this.theme,
+        },
+      });
 
       await this.parseMarkdown(markdownHtmlContents);
     }
