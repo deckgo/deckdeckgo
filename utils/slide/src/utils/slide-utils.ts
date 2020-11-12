@@ -107,6 +107,7 @@ export function lazyLoadContent(el: HTMLElement): Promise<void> {
     promises.push(lazyLoadComponentContent(el, 'deckgo-youtube'));
     promises.push(lazyLoadComponentContent(el, 'deckgo-demo'));
     promises.push(lazyLoadComponentContent(el, 'deckgo-word-cloud'));
+    promises.push(lazyLoadComponentContent(el, 'deckgo-markdown'));
 
     await Promise.all(promises);
 

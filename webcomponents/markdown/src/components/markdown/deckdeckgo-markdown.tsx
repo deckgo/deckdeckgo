@@ -1,4 +1,4 @@
-import {Component, h, Host, State, Element, Prop, EventEmitter, Event, Watch} from '@stencil/core';
+import {Component, h, Host, State, Element, Prop, EventEmitter, Event, Watch, Method} from '@stencil/core';
 
 import {parseMarkdown} from '../workers/markdown.worker';
 
@@ -43,6 +43,24 @@ export class DeckgoMdParser {
   @Watch('theme')
   async onCodeOptionsChange() {
     await this.parseMarkdownInSlot();
+  }
+
+  @Method()
+  async lazyLoadContent() {
+    const imgs: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('deckgo-lazy-img');
+
+    if (!imgs || imgs.length <= 0) {
+      return;
+    }
+
+    // any because I rather only have the @deckgo/lazy-img component as peer dependency. Not against improvement though.
+    const promises: Promise<void>[] = Array.from(imgs).map((element: HTMLElement) => (element as any).lazyLoad());
+
+    if (!promises || promises.length <= 0) {
+      return;
+    }
+
+    await Promise.all(promises);
   }
 
   private async parseMarkdownInSlot() {

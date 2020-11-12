@@ -9,6 +9,7 @@ export namespace Components {
     interface DeckgoMarkdown {
         "editable": boolean;
         "highlightLines": string;
+        "lazyLoadContent": () => Promise<void>;
         "terminal": string;
         "theme": string;
     }
