@@ -9,13 +9,15 @@
     <script nomodule src="/build/deckdeckgo-markdown.js"></script>
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/highlight-code@latest/dist/deckdeckgo-highlight-code/deckdeckgo-highlight-code.esm.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js"></script>
   </head>
 
   <body>
     <h1>Editable:</h1>
 
     <!-- prettier-ignore -->
-    <deckgo-markdown editable="true">
+    <deckgo-markdown editable="true" style="height: 2000px; display: block;">
     <code slot="markdown">
 # h1 Heading 8-)
 <br/>
@@ -31,7 +33,9 @@
 <br/>
 [Link](https://deckdeckgo.com/)
 <br/>
-![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100x100")
+![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100pxx20px")
+![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100px")
+![](https://www.nmattia.com/images/autoupdate-notifications.jpg)
 <br/>
 This is basic paragraph with some **bold text** and also some *italic text*.
 <br/>

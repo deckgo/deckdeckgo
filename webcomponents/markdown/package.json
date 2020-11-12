@@ -23,7 +23,8 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "peerDependencies": {
-    "@deckdeckgo/highlight-code": "^2.1.0"
+    "@deckdeckgo/highlight-code": "^2.1.0",
+    "@deckdeckgo/lazy-img": "^3.0.0"
   },
   "dependencies": {
     "marked": "^1.2.3"

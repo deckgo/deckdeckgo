@@ -1,24 +1,26 @@
 import marked from 'marked';
 
 // Source: https://github.com/markedjs/marked/issues/339
-// ![img](../assets/image/some-image.png "=100x100")
-// ![img](../assets/image/some-image.png =250x)
+// ![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100px,20px")
+// ![](https://www.nmattia.com/images/autoupdate-notifications.jpg "=100px")
+// ![](https://www.nmattia.com/images/autoupdate-notifications.jpg)
 
 export function changeImgCreation(renderer: marked.Renderer) {
-  renderer.image = (src, title, alt) => {
-    const exec = /=\s*(\d*)\s*x*\s*(\d*)\s*$/.exec(title);
+  renderer.image = (src: string | null, title: string | null, alt: string) => {
+    const exec = /=\s*(\d*(?:px|em|ex|ch|rem|vw|vh|vmin|vmax|%))\s*,*\s*(\d*(?:px|em|ex|ch|rem|vw|vh|vmin|vmax|%))*\s*$/.exec(title);
 
-    let res: string = '<img src="' + sanitize(src) + '" alt="' + sanitize(alt);
+    let style: string = '';
+    if (exec) {
+      if (exec[1]) {
+        style += `--deckgo-lazy-img-width: ${exec[1].replace(',', '')};`;
+      }
 
-    if (exec && exec[1]) {
-      res += '" height="' + exec[1];
+      if (exec[2]) {
+        style += `--deckgo-lazy-img-height: ${exec[2].replace(',', '')};`;
+      }
     }
 
-    if (exec && exec[2]) {
-      res += '" width="' + exec[2];
-    }
-
-    return res + '">';
+    return `<deckgo-lazy-img img-src="${sanitize(src)}" img-alt="${sanitize(alt)}" style="${style}"></deckgo-lazy-img>`;
   };
 }
 
