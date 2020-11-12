@@ -1,3 +1,9 @@
+# 1.13.0 (2020-11-12)
+
+### Features
+
+- support new component `@deckgo/markdown`
+
 # 1.12.1 (2020-11-08)
 
 ### Features
