@@ -1,3 +1,9 @@
+# 8.1.0 (2020-11-14)
+
+### Features
+
+- no swipe on user select text elements
+
 # 8.0.2 (2020-11-08)
 
 ### Fix
