@@ -1,6 +1,10 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+:host {
+  user-select: none;
+}
+
 div.deckgo-slide {
   flex-direction: column;
   align-items: center;
@@ -10,4 +14,5 @@ div.deckgo-slide {
 ::slotted([slot="title"]),
 ::slotted([slot="content"]) {
   text-align: center;
+  user-select: text;
 }
