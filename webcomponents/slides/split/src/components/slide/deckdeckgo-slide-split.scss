@@ -80,4 +80,5 @@ div.deckgo-slide-split-vertical {
 ::slotted([slot="start"]),
 ::slotted([slot="end"]) {
   z-index: 2;
+  user-select: text;
 }

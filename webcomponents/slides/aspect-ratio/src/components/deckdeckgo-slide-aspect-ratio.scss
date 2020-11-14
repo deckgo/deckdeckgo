@@ -73,3 +73,8 @@ div.deckgo-aspect-ratio-container {
 ::slotted([slot="title"]) {
   display: none;
 }
+
+::slotted([slot="top"]),
+::slotted([slot="bottom"]) {
+  user-select: text;
+}

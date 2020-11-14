@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-aspect-ratio",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "This template lets you display the content of a slide with the same aspect ratio regardless of the devices.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.6.0",
+    "@deckdeckgo/slide-utils": "^2.6.1",
     "@deckdeckgo/utils": "^1.3.0"
   },
   "devDependencies": {

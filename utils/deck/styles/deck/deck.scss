@@ -227,3 +227,8 @@ deckgo-deck ul {
 deckgo-deck ol {
   list-style-type: decimal;
 }
+
+/* User select not inherited in Firefox  */
+deckgo-deck .deckgo-slide-container * {
+  -moz-user-select: text;
+}

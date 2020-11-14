@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-big-img",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Display in your presentation an image fullscreen and highlight specific part of it using the Big Image slide",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.6.0"
+    "@deckdeckgo/slide-utils": "^2.6.1"
   },
   "devDependencies": {
     "@stencil/core": "^2.0.3",

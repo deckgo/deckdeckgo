@@ -1,3 +1,9 @@
+# 3.1.2 (2020-11-14)
+
+### Fix
+
+- cross-browser user selection
+
 # 3.1.1 (2020-11-14)
 
 ### Fix

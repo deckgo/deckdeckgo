@@ -1,3 +1,21 @@
+# 2.2.3 (2020-11-14)
+
+### Fix
+
+- sub slotted selector does not work
+
+# 2.2.3 (2020-11-14)
+
+### Fix
+
+- Firefox user select inheritance
+
+# 2.2.2 (2020-11-14)
+
+### Fix
+
+- cross-browser user selection
+
 # 2.2.1 (2020-11-14)
 
 ### Fix

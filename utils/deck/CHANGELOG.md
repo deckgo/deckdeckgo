@@ -1,12 +1,24 @@
+<a name="3.2.0"></a>
+
+# 3.2.0 (2020-11-14)
+
+### Style
+
+- Firefox workaround
+
 <a name="3.1.0"></a>
 
 # 3.1.0 (2020-11-12)
+
+### Features
 
 - improvements for the integration of the new `@deckgo/markdown` component in our editor
 
 <a name="3.0.2"></a>
 
 # 3.0.2 (2020-10-29)
+
+### Style
 
 - papyrus slotted image height
 

@@ -1,3 +1,9 @@
+# 8.1.1 (2020-11-14)
+
+### Fix
+
+- cross browser `user-select` detection
+
 # 8.1.0 (2020-11-14)
 
 ### Features

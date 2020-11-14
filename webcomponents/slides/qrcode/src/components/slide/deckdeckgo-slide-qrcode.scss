@@ -33,3 +33,8 @@ div.deckgo-slide-qrcode {
 ::slotted([slot="content"]) {
   flex: 1 50%;
 }
+
+::slotted([slot="title"]),
+::slotted([slot="content"]) {
+  user-select: text;
+}

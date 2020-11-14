@@ -1,3 +1,11 @@
+<a name="2.6.1"></a>
+
+# 2.6.1 (2020-11-14)
+
+### Style
+
+- cross-browser user selection
+
 <a name="2.6.0"></a>
 
 # 2.6.0 (2020-11-14)
