@@ -1,3 +1,11 @@
+<a name="2.6.0"></a>
+
+# 2.6.0 (2020-11-14)
+
+### Style
+
+- templates user select set to `text`
+
 <a name="2.5.0"></a>
 
 # 2.5.0 (2020-11-12)

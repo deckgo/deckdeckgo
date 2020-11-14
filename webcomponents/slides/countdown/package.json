@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-countdown",
-  "version": "2.1.3",
+  "version": "2.2.1",
   "description": "The Countdown template display the remaining time until your presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.4.0"
+    "@deckdeckgo/slide-utils": "^2.6.0"
   },
   "devDependencies": {
     "@stencil/core": "^2.0.3",

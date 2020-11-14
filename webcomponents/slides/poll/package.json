@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-poll",
-  "version": "2.1.3",
+  "version": "2.2.1",
   "description": "Interact with your audience, add a live poll to your presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^2.4.0",
+    "@deckdeckgo/slide-utils": "^2.6.0",
     "@deckdeckgo/utils": "^1.3.0",
     "socket.io-client": "^2.3.0"
   },

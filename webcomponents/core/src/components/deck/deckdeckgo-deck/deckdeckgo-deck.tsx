@@ -395,6 +395,9 @@ export class DeckdeckgoDeck {
   }
 
   private start($event: Event) {
+    const css: CSSStyleDeclaration = window.getComputedStyle($event.target as HTMLElement);
+    this.block = css?.userSelect === 'text';
+
     this.startX = unifyEvent($event).clientX;
     this.startY = unifyEvent($event).clientY;
   }

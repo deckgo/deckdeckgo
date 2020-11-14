@@ -1,3 +1,15 @@
+# 3.2.1 (2020-11-14)
+
+### Fix
+
+- publish to npm
+
+# 3.2.0 (2020-11-14)
+
+### Style
+
+- default user select set to `text` instead of `none`
+
 # 3.1.3 (2020-11-08)
 
 ### Features

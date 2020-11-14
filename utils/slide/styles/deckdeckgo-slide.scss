@@ -39,7 +39,7 @@ div.deckgo-slide {
     var(--slide-min-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
   );
 
-  user-select: var(--slide-user-select, none);
+  user-select: var(--slide-user-select, text);
 
   user-drag: none;
   -webkit-user-drag: none;
