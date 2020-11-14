@@ -1,3 +1,9 @@
+# 2.2.3 (2020-11-14)
+
+### Fix
+
+- Firefox user select inheritance
+
 # 2.2.2 (2020-11-14)
 
 ### Fix

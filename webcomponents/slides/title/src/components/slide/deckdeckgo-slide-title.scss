@@ -11,4 +11,9 @@ div.deckgo-slide {
 ::slotted([slot="content"]) {
   text-align: center;
   user-select: text;
+
+  // Firefox inheritance does not work
+  * {
+    -moz-user-select: text;
+  }
 }
