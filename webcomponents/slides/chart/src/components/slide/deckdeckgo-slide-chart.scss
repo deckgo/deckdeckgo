@@ -19,3 +19,7 @@ div.deckgo-chart-container {
 
   overflow: var(--slide-chart-overflow, hidden);
 }
+
+::slotted([slot="title"]) {
+  user-select: text;
+}

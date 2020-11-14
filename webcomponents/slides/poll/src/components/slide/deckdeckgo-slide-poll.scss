@@ -51,8 +51,11 @@ div.deckgo-slide-poll {
 .how-to {
   max-width: var(--slide-poll-how-to-max-width, calc(100% - 64px));
   font-size: var(--slide-poll-how-to-font-size, 0.8em);
-  pointer-events: none;
-  user-select: none;
+  user-select: text;
+
+  * {
+    user-select: text;
+  }
 }
 
 ::slotted([slot="how-to"]) {
@@ -70,4 +73,8 @@ div.deckgo-slide-poll {
   padding: var(--slide-poll-awaiting-votes-padding, 8px);
   pointer-events: none;
   user-select: none;
+}
+
+::slotted([slot="question"]) {
+  user-select: text;
 }

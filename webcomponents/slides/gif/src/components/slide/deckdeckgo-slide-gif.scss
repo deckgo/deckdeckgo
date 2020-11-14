@@ -66,3 +66,9 @@ div.deckgo-gif-container {
     display: none;
   }
 }
+
+::slotted([slot="title"]),
+::slotted([slot="top"]),
+::slotted([slot="bottom"]) {
+  user-select: text;
+}

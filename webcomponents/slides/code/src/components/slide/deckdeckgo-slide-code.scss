@@ -56,3 +56,11 @@ div.deckgo-slide-code-container {
     height: 100%;
   }
 }
+
+deckgo-highlight-code {
+  user-select: var(--code-user-select, text);
+}
+
+::slotted([slot="title"]) {
+  user-select: text;
+}

@@ -22,3 +22,8 @@ div.deckgo-playground-container {
     width: calc(var(--slide-width) - var(--slide-padding-end, 32px) - var(--slide-padding-start, 32px));
   }
 }
+
+::slotted([slot="title"]),
+::slotted([slot="content"]) {
+  user-select: text;
+}

@@ -19,3 +19,8 @@ div.deckgo-video-container {
     var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
   );
 }
+
+::slotted([slot="title"]),
+::slotted([slot="content"]) {
+  user-select: text;
+}

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-content",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "The Content template is a simple slide which display a title and content aligned to the start of the page of the presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

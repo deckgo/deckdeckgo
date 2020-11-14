@@ -10,6 +10,7 @@ div.deckgo-slide {
 ::slotted([slot="title"]),
 ::slotted([slot="content"]) {
   text-align: center;
+  user-select: text;
 }
 
 div.deckgo-countdown-container {

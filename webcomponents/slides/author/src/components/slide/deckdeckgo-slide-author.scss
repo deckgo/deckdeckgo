@@ -121,4 +121,5 @@ div.deckgo-slide-author {
 ::slotted([slot="author"]),
 ::slotted([slot="social-link"]) {
   z-index: 2;
+  user-select: text;
 }
