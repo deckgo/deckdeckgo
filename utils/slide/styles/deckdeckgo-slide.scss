@@ -3,6 +3,8 @@
 
   position: relative;
 
+  user-select: var(--slide-user-select, none);
+
   background: var(--background);
   color: var(--color);
 
@@ -38,8 +40,6 @@ div.deckgo-slide {
   min-height: calc(
     var(--slide-min-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
   );
-
-  user-select: var(--slide-user-select, text);
 
   user-drag: none;
   -webkit-user-drag: none;
