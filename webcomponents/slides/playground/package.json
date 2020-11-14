@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-playground",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A template to embed playgrounds into your presentations",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

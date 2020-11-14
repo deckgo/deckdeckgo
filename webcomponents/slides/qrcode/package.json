@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-qrcode",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "The QR Code template is handy to display a QR Code in presentations which could, for example, point to your deck available as a PWA",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
