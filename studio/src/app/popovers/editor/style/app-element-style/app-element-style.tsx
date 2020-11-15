@@ -152,9 +152,7 @@ export class AppElementStyle {
     return [
       <ion-toolbar>
         <h2>{this.slide ? 'Slide style' : 'Style'}</h2>
-        <button slot="end" class="close-options" onClick={() => this.closePopover()} tabindex={0}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
+        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
       this.renderSelectTarget(),
 

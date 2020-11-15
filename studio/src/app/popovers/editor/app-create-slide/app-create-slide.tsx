@@ -214,14 +214,21 @@ export class AppCreateSlide {
     }, 2000);
   }
 
-  private async selectElement(slotType: SlotType) {
+  private async selectElement(slotType: SlotType | null) {
+    if (this.elements === undefined && !slotType) {
+      return;
+    }
+
     if (this.elements === undefined) {
       this.elements = [slotType];
     } else {
-      this.elements.push(slotType);
-      this.elements = [...this.elements];
+      // We might just want only one element
+      if (slotType) {
+        this.elements.push(slotType);
+        this.elements = [...this.elements];
+      }
 
-      // We've got all the elements, go we can create the slide
+      // We've got all, or at least one, the elements, go we can create the slide
       if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
         await this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true});
       } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
@@ -257,7 +264,7 @@ export class AppCreateSlide {
 
   private renderToolbarTitle() {
     if (this.composeTemplate == undefined) {
-      return <h2>Add a slide</h2>;
+      return <h2>Add a new slide</h2>;
     }
 
     return <h2>{this.composeTemplate === ComposeTemplate.CHART ? 'Select a chart' : 'Compose your slide'}</h2>;
@@ -265,17 +272,13 @@ export class AppCreateSlide {
 
   private renderToolbarAction() {
     if (this.composeTemplate == undefined) {
-      return (
-        <button slot="end" class="close-options" onClick={() => this.closePopoverWithoutResults()} tabindex={0}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
-      );
+      return <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>;
     }
 
     return (
-      <button slot="end" class="close-options" onClick={() => this.backCompose()} tabindex={0}>
+      <app-close-menu slot="start" onClose={() => this.backCompose()}>
         <ion-icon aria-label="Back to all slides" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
-      </button>
+      </app-close-menu>
     );
   }
 
@@ -346,7 +349,9 @@ export class AppCreateSlide {
   }
 
   private renderSlotType() {
-    return <app-slot-type onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
+    const skip: boolean = this.elements !== undefined && (this.composeTemplate === ComposeTemplate.CONTENT || this.composeTemplate === ComposeTemplate.TITLE);
+
+    return <app-slot-type skip={skip} onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
   }
 
   private renderChart() {

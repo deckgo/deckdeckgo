@@ -1,0 +1,21 @@
+app-close-menu {
+  button {
+    background: none;
+    font-size: var(--font-size-h2);
+
+    border-radius: 2px;
+
+    position: relative;
+    overflow: hidden;
+
+    margin: 16px 0px 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

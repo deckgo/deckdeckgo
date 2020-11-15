@@ -11,6 +11,9 @@ export class AppSlotType {
   @Prop()
   selectedElement: HTMLElement;
 
+  @Prop()
+  skip: boolean = false;
+
   @State()
   private currentType: SlotType;
 
@@ -62,8 +65,8 @@ export class AppSlotType {
     });
   }
 
-  private select(type: SlotType) {
-    this.selectType.emit(this.currentType !== type ? type : null);
+  private select(type: SlotType | null) {
+    this.selectType.emit(type && this.currentType !== type ? type : null);
   }
 
   render() {
@@ -100,7 +103,23 @@ export class AppSlotType {
           </ion-item>
         </a>
         {this.renderComplexTypes()}
+
+        {this.renderSkip()}
       </ion-list>
+    );
+  }
+
+  private renderSkip() {
+    if (!this.skip) {
+      return;
+    }
+
+    return (
+      <a class="skip" onClick={() => this.select(null)}>
+        <ion-item>
+          <p>Skip second element</p>
+        </ion-item>
+      </a>
     );
   }
 

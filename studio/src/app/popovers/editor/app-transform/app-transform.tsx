@@ -22,9 +22,7 @@ export class AppTransform {
     return [
       <ion-toolbar>
         <h2>Transform element</h2>
-        <button slot="end" class="close-options" onClick={() => this.closePopover()} tabindex={0}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
+        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
 
       <app-slot-type selectedElement={this.selectedElement} onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>,

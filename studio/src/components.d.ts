@@ -84,6 +84,8 @@ export namespace Components {
         "slideNumber": number;
         "step": BreadcrumbsStep;
     }
+    interface AppCloseMenu {
+    }
     interface AppCode {
         "codeDidChange": EventEmitter<HTMLElement>;
         "selectedElement": HTMLElement;
@@ -395,6 +397,7 @@ export namespace Components {
     }
     interface AppSlotType {
         "selectedElement": HTMLElement;
+        "skip": boolean;
     }
     interface AppTeam {
     }
@@ -503,6 +506,12 @@ declare global {
     var HTMLAppBreadcrumbsElement: {
         prototype: HTMLAppBreadcrumbsElement;
         new (): HTMLAppBreadcrumbsElement;
+    };
+    interface HTMLAppCloseMenuElement extends Components.AppCloseMenu, HTMLStencilElement {
+    }
+    var HTMLAppCloseMenuElement: {
+        prototype: HTMLAppCloseMenuElement;
+        new (): HTMLAppCloseMenuElement;
     };
     interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {
     }
@@ -1155,6 +1164,7 @@ declare global {
         "app-bottom-sheet": HTMLAppBottomSheetElement;
         "app-box-shadow": HTMLAppBoxShadowElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
+        "app-close-menu": HTMLAppCloseMenuElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
         "app-color": HTMLAppColorElement;
@@ -1350,6 +1360,9 @@ declare namespace LocalJSX {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slideNumber"?: number;
         "step"?: BreadcrumbsStep;
+    }
+    interface AppCloseMenu {
+        "onClose"?: (event: CustomEvent<void>) => void;
     }
     interface AppCode {
         "codeDidChange"?: EventEmitter<HTMLElement>;
@@ -1699,6 +1712,7 @@ declare namespace LocalJSX {
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
         "selectedElement"?: HTMLElement;
+        "skip"?: boolean;
     }
     interface AppTeam {
     }
@@ -1737,6 +1751,7 @@ declare namespace LocalJSX {
         "app-bottom-sheet": AppBottomSheet;
         "app-box-shadow": AppBoxShadow;
         "app-breadcrumbs": AppBreadcrumbs;
+        "app-close-menu": AppCloseMenu;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
         "app-color": AppColor;
@@ -1863,6 +1878,7 @@ declare module "@stencil/core" {
             "app-bottom-sheet": LocalJSX.AppBottomSheet & JSXBase.HTMLAttributes<HTMLAppBottomSheetElement>;
             "app-box-shadow": LocalJSX.AppBoxShadow & JSXBase.HTMLAttributes<HTMLAppBoxShadowElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
+            "app-close-menu": LocalJSX.AppCloseMenu & JSXBase.HTMLAttributes<HTMLAppCloseMenuElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
             "app-color": LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;

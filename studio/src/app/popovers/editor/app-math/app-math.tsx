@@ -56,9 +56,7 @@ export class AppMath {
     return [
       <ion-toolbar>
         <h2>Math options</h2>
-        <button slot="end" class="close-options" onClick={() => this.closePopover()} tabindex={0}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
+        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
       <ion-list class="article">
         <ion-item-divider>

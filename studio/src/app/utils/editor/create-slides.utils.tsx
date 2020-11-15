@@ -65,7 +65,7 @@ export class CreateSlidesUtils {
         return;
       }
 
-      if (!elements || elements.length < 2) {
+      if (!elements || elements.length < 1) {
         resolve();
         return;
       }
@@ -73,7 +73,7 @@ export class CreateSlidesUtils {
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-title key={uuid()}>
           {this.createElement(elements[0], 'title')}
-          {this.createElement(elements[1], 'content')}
+          {elements.length >= 2 ? this.createElement(elements[1], 'content') : undefined}
         </deckgo-slide-title>
       );
 
@@ -88,7 +88,7 @@ export class CreateSlidesUtils {
         return;
       }
 
-      if (!elements || elements.length < 2) {
+      if (!elements || elements.length < 1) {
         resolve();
         return;
       }
@@ -96,7 +96,7 @@ export class CreateSlidesUtils {
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-content key={uuid()}>
           {this.createElement(elements[0], 'title')}
-          {this.createElement(elements[1], 'content')}
+          {elements.length >= 2 ? this.createElement(elements[1], 'content') : undefined}
         </deckgo-slide-content>
       );
 
