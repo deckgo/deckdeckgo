@@ -63,5 +63,14 @@ app-slot-type {
         }
       }
     }
+
+    &.skip {
+      padding: 16px 16px 0;
+
+      p {
+        width: 100%;
+        text-align: center;
+      }
+    }
   }
 }

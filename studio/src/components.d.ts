@@ -395,6 +395,7 @@ export namespace Components {
     }
     interface AppSlotType {
         "selectedElement": HTMLElement;
+        "skip": boolean;
     }
     interface AppTeam {
     }
@@ -1699,6 +1700,7 @@ declare namespace LocalJSX {
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
         "selectedElement"?: HTMLElement;
+        "skip"?: boolean;
     }
     interface AppTeam {
     }
