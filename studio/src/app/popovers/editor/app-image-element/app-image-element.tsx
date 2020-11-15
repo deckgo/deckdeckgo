@@ -29,9 +29,7 @@ export class AppImageElement {
     return [
       <ion-toolbar>
         <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
-        <button slot="end" class="close-options" onClick={() => this.closePopoverWithoutResults()} tabindex={0}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
+        <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>
       </ion-toolbar>,
       <app-image
         expander={false}

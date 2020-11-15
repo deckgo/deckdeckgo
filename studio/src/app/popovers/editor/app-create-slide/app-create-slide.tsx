@@ -272,17 +272,13 @@ export class AppCreateSlide {
 
   private renderToolbarAction() {
     if (this.composeTemplate == undefined) {
-      return (
-        <button slot="end" class="close-options" onClick={() => this.closePopoverWithoutResults()} tabindex={0}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
-      );
+      return <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>;
     }
 
     return (
-      <button slot="end" class="close-options" onClick={() => this.backCompose()} tabindex={0}>
+      <app-close-menu slot="start" onClose={() => this.backCompose()}>
         <ion-icon aria-label="Back to all slides" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
-      </button>
+      </app-close-menu>
     );
   }
 
