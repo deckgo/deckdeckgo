@@ -22,7 +22,7 @@
 
 :host(.deckgo-markdown-edit) {
   ::slotted([slot="markdown"]) {
-    display: block;
+    display: inline-block;
     white-space: pre-wrap;
   }
 

@@ -3,6 +3,7 @@
 ### Style
 
 - improve font styling
+- preserve new lines if `editable`
 
 # 1.0.0 (2020-11-12)
 
