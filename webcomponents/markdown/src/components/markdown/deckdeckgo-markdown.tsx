@@ -63,6 +63,11 @@ export class DeckgoMdParser {
     await Promise.all(promises);
   }
 
+  @Method()
+  async getContainer(): Promise<HTMLDivElement | undefined> {
+    return this.containerRef;
+  }
+
   private async parseMarkdownInSlot() {
     const mdContent: HTMLElement = this.el.querySelector("[slot='markdown']");
 
