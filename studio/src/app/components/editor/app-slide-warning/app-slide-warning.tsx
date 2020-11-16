@@ -78,7 +78,7 @@ export class AppSlideWarning {
     }
 
     const filteredSlots: HTMLElement[] = Array.from(slots).filter((element: HTMLElement) => {
-      return !SlotUtils.isNodeEditable(element);
+      return !SlotUtils.isNodeEditable(element) || SlotUtils.isNodeMarkdown(element);
     });
 
     if (!filteredSlots || filteredSlots.length <= 0) {
@@ -161,6 +161,19 @@ export class AppSlideWarning {
   }
 
   private async isOverflown(element: HTMLElement, slide: HTMLElement): Promise<boolean> {
+    if (typeof (element as any).getContainer === 'function') {
+      const shadowedContainer: HTMLElement | null = await (element as any).getContainer();
+      return element && shadowedContainer.offsetHeight > element.clientHeight;
+    }
+
+    return this.isHTMLElementOverflown(element, slide);
+  }
+
+  private async isHTMLElementOverflown(element: HTMLElement | null, slide: HTMLElement): Promise<boolean> {
+    if (!element) {
+      return false;
+    }
+
     const {scrollHeight, offsetTop} = element;
 
     return offsetTop < 0 || offsetTop + scrollHeight > slide.scrollHeight;

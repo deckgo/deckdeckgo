@@ -2,6 +2,8 @@
   display: var(--deckgo-markdown-display, block);
   overflow: var(--deckgo-markdown-overflow, auto);
 
+  font-size: var(--deckgo-markdown-font-size, inherit);
+
   ::slotted([slot="markdown"]) {
     display: none;
   }
@@ -9,13 +11,18 @@
 
 :host([editable]) {
   div.markdown:empty:not(:focus):after {
-    content: "Click to add some markdown";
+    content: var(--deckgo-markdown-empty-text, "Click to add content using Markdown");
+    font-size: var(--deckgo-markdown-empty-font-size, 1.4em);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
 :host(.deckgo-markdown-edit) {
   ::slotted([slot="markdown"]) {
-    display: block;
+    display: inline-block;
     white-space: pre-wrap;
   }
 
@@ -41,10 +48,12 @@ div.deckgo-markdown-container {
   flex-direction: var(--deckgo-markdown-container-flex-direction);
   align-items: var(--deckgo-markdown-container-align-items);
 
-  div.markdown {
-    white-space: var(--deckgo-markdown-output-pre-wrap);
+  font-size: var(--deckgo-markdown-container-font-size, inherit);
 
-    font-size: var(--deckgo-markdown-output-font-size);
+  position: var(--deckgo-markdown-container-position, relative);
+
+  div.markdown {
+    font-size: var(--deckgo-markdown-output-font-size, inherit);
     min-height: var(--deckgo-markdown-output-min-height, 23px);
 
     display: var(--deckgo-markdown-output-display, block);
@@ -64,4 +73,68 @@ ol,
 ul {
   list-style-position: var(--deckgo-markdown-list-style-position, inside);
   padding: var(--deckgo-markdown-list-padding, 0);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--deckgo-markdown-title-font-weight, 700);
+}
+
+h4,
+h5,
+h6,
+strong {
+  font-weight: var(--deckgo-markdown-sub-title-font-weight, 500);
+}
+
+* {
+  font-weight: var(--deckgo-markdown-font-weight, 300);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  &:first-child {
+    margin-top: var(--deckgo-markdown-first-child-margin-top, 0);
+  }
+
+  &:last-child {
+    margin-bottom: var(--deckgo-markdown-last-child-margin-bottom, 0);
+  }
+}
+
+a {
+  font-weight: var(--deckgo-markdown-link-font-weight, inherit);
+  font-size: var(--deckgo-markdown-link-font-size, inherit);
+  color: var(--deckgo-markdown-link-color, inherit);
+  text-decoration: var(--deckgo-markdown-link-text-decoration, underline);
+}
+
+// Font size
+
+h1 {
+  --font-size-h1: 3em;
+
+  @media (max-width: 768px) {
+    --font-size-h1: 2.4em;
+  }
+
+  font-size: var(var(--font-size-h1), var(--deckgo-markdown-h1-font-size));
+}
+
+h2 {
+  font-size: var(--deckgo-markdown-h2-font-size, 2em);
+}
+
+* {
+  font-size: var(--deckgo-markdown-text-font-size, 1.4em);
+}
+
+p {
+  white-space: var(--deckgo-markdown-paragraph-white-space, pre-line);
 }

@@ -1,3 +1,11 @@
+<a name="3.2.1"></a>
+
+# 3.2.1 (2020-11-15)
+
+### Style
+
+- markdown style is shadowed
+
 <a name="3.2.0"></a>
 
 # 3.2.0 (2020-11-14)

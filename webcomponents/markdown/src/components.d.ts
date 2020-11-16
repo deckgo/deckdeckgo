@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoMarkdown {
         "editable": boolean;
+        "getContainer": () => Promise<HTMLDivElement | undefined>;
         "highlightLines": string;
         "lazyLoadContent": () => Promise<void>;
         "terminal": string;
