@@ -731,6 +731,7 @@ export class AppEditor {
           <deckgo-remote autoConnect={false}></deckgo-remote>
           <app-slide-warning></app-slide-warning>
         </main>
+        <app-slide-preview></app-slide-preview>
       </ion-content>,
       <app-actions-editor
         ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}

@@ -1,0 +1,43 @@
+@use "../../../../../global/theme/editor/editor-mixin";
+
+app-slide-preview {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  transition: opacity 0.5s;
+
+  visibility: initial;
+  opacity: 1;
+
+  article {
+    position: relative;
+
+    width: 200px;
+    height: calc(200px * 9 / 16);
+
+    overflow: hidden;
+
+    @include editor-mixin.panel;
+
+    deckgo-deck {
+      --slide-padding-start: 4px;
+      --slide-padding-top: 8px;
+      --slide-padding-end: 4px;
+      --slide-padding-bottom: 8px;
+
+      --slide-split-padding-start: 4px;
+      --slide-split-padding-top: 8px;
+      --slide-split-padding-end: 4px;
+      --slide-split-padding-bottom: 8px;
+
+      .deckgo-slide-container {
+        > * {
+          margin: 0;
+          padding: 0;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+}
