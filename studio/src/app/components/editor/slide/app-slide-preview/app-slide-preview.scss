@@ -10,6 +10,11 @@ app-slide-preview {
   visibility: initial;
   opacity: 1;
 
+  &:not(.preview) {
+    visibility: hidden;
+    opacity: 0;
+  }
+
   article {
     position: relative;
 

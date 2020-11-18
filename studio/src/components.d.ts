@@ -1713,6 +1713,7 @@ declare namespace LocalJSX {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
     interface AppSlidePreview {
+        "onPreviewAttached"?: (event: CustomEvent<void>) => void;
     }
     interface AppSlideWarning {
     }
