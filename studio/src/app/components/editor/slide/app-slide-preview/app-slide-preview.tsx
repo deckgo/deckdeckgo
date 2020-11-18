@@ -1,5 +1,7 @@
 import {Component, h, Host, Listen, State, Event, EventEmitter, Element} from '@stencil/core';
 
+import {cleanContent} from '@deckdeckgo/deck-utils';
+
 @Component({
   tag: 'app-slide-preview',
   styleUrl: 'app-slide-preview.scss',
@@ -65,7 +67,9 @@ export class AppSlidePreview {
       return;
     }
 
-    this.deckPreviewRef?.replaceChild(slide.cloneNode(true), this.deckPreviewRef.firstChild);
+    const content: string = await cleanContent(slide.outerHTML);
+
+    this.deckPreviewRef.innerHTML = content;
   }
 
   private async blockSlide() {
@@ -89,9 +93,11 @@ export class AppSlidePreview {
     }
 
     return (
-      <deckgo-deck embedded={true} keyboard={false} ref={(el) => (this.deckPreviewRef = el as HTMLDeckgoDeckElement)} onSlidesDidLoad={() => this.blockSlide()}>
-        <div>{/* Placeholder for replace first child */}</div>
-      </deckgo-deck>
+      <deckgo-deck
+        embedded={true}
+        keyboard={false}
+        ref={(el) => (this.deckPreviewRef = el as HTMLDeckgoDeckElement)}
+        onSlidesDidLoad={() => this.blockSlide()}></deckgo-deck>
     );
   }
 }

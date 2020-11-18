@@ -141,8 +141,8 @@ export class AppEditor {
   }
 
   async init() {
-    await this.deckEventsHandler.init(this.el);
-    await this.editorEventsHandler.init(this.el);
+    await this.deckEventsHandler.init(this.mainRef);
+    await this.editorEventsHandler.init(this.mainRef);
 
     await this.initOffline();
 
