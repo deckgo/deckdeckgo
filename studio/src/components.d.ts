@@ -390,6 +390,7 @@ export namespace Components {
     interface AppSlideNavigate {
     }
     interface AppSlidePreview {
+        "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlideWarning {
     }
@@ -1713,6 +1714,7 @@ declare namespace LocalJSX {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
     interface AppSlidePreview {
+        "deckRef": HTMLDeckgoDeckElement;
         "onPreviewAttached"?: (event: CustomEvent<void>) => void;
     }
     interface AppSlideWarning {

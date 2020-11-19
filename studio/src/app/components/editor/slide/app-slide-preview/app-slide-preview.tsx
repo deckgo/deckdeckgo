@@ -1,6 +1,7 @@
-import {Component, h, Host, Listen, State, Event, EventEmitter, Element} from '@stencil/core';
+import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} from '@stencil/core';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
+import {debounce} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'app-slide-preview',
@@ -9,6 +10,9 @@ import {cleanContent} from '@deckdeckgo/deck-utils';
 export class AppSlidePreview {
   @Element() el: HTMLElement;
 
+  @Prop()
+  deckRef!: HTMLDeckgoDeckElement;
+
   @State()
   private preview: boolean = false;
 
@@ -16,21 +20,18 @@ export class AppSlidePreview {
 
   @Event({bubbles: false}) private previewAttached: EventEmitter<void>;
 
+  private readonly debounceUpdatePreview: () => void;
+
+  constructor() {
+    this.debounceUpdatePreview = debounce(async () => {
+      await this.updatePreview();
+    }, 250);
+  }
+
   componentDidUpdate() {
     if (this.preview) {
       this.previewAttached.emit();
     }
-  }
-
-  @Listen('slideDidUpdate', {target: 'document'})
-  async onSlideDidUpdate($event: CustomEvent<HTMLElement>) {
-    if (!$event || !$event.detail) {
-      return;
-    }
-
-    const slide: HTMLElement = $event.detail;
-
-    await this.updateSlide(slide);
   }
 
   @Listen('elementFocus', {target: 'document'})
@@ -47,17 +48,21 @@ export class AppSlidePreview {
       await this.initDeckPreview();
 
       this.el.addEventListener('previewAttached', async () => await this.updateSlide(selectedElement.parentElement), {once: true});
+
+      this.deckRef.addEventListener('keypress', () => this.debounceUpdatePreview(), {passive: true});
+      this.deckRef.addEventListener('paste', () => this.debounceUpdatePreview(), {passive: true});
+    } else {
+      this.deckRef.removeEventListener('keypress', () => this.debounceUpdatePreview(), true);
+      this.deckRef.removeEventListener('paste', () => this.debounceUpdatePreview(), true);
     }
   }
 
   async initDeckPreview() {
-    const deck: HTMLElement = document.querySelector('main > deckgo-deck');
-
-    if (!deck) {
+    if (!this.deckRef) {
       return;
     }
 
-    this.deckPreviewRef?.setAttribute('style', deck.style.cssText);
+    this.deckPreviewRef?.setAttribute('style', this.deckRef.style.cssText);
 
     await this.deckPreviewRef?.initSlideSize();
   }
@@ -74,6 +79,18 @@ export class AppSlidePreview {
 
   private async blockSlide() {
     await this.deckPreviewRef?.blockSlide(true);
+  }
+
+  private async updatePreview() {
+    const index = await this.deckRef?.getActiveIndex();
+
+    if (index < 0) {
+      return;
+    }
+
+    const slideElement: HTMLElement | undefined = this.deckRef?.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+
+    await this.updateSlide(slideElement);
   }
 
   render() {
