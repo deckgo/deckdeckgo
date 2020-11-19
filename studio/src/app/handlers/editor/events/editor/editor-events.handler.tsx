@@ -1,11 +1,11 @@
 export class EditorEventsHandler {
-  private el: HTMLElement;
+  private mainRef: HTMLElement;
 
   init(el: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.el = el;
+      this.mainRef = el;
 
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
       if (deck) {
         deck.addEventListener('keyup', this.onKeyUp, false);
@@ -21,7 +21,7 @@ export class EditorEventsHandler {
   }
 
   destroy() {
-    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+    const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
     if (deck) {
       deck.removeEventListener('keyup', this.onKeyUp, true);
@@ -47,7 +47,7 @@ export class EditorEventsHandler {
 
   private touchToolbar(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
+      const actions: HTMLAppActionsEditorElement = this.mainRef.querySelector('app-actions-editor');
 
       if (!actions) {
         resolve();
@@ -62,7 +62,7 @@ export class EditorEventsHandler {
 
   selectDeck(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppActionsEditorElement = this.el.querySelector('app-actions-editor');
+      const actions: HTMLAppActionsEditorElement = this.mainRef.querySelector('app-actions-editor');
 
       if (actions) {
         await actions.selectDeck();
@@ -78,7 +78,7 @@ export class EditorEventsHandler {
 
   blockSlide(blockState: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
       if (!deck) {
         resolve();
