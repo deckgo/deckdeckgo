@@ -162,14 +162,8 @@ export class AppActionsElement {
   }
 
   @Method()
-  blurSelectedElement(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.selectedElement) {
-        this.selectedElement.blur();
-      }
-
-      resolve();
-    });
+  async blurSelectedElement() {
+    this.selectedElement?.blur();
   }
 
   private select(element: HTMLElement, autoOpen: boolean): Promise<void> {
@@ -200,17 +194,15 @@ export class AppActionsElement {
   }
 
   @Method()
-  unSelect(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.selectedElement) {
-        this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
-        await this.detachMoveToolbarOnElement();
+  async unSelect() {
+    if (!this.selectedElement) {
+      return;
+    }
 
-        await this.reset();
-      }
+    this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
+    await this.detachMoveToolbarOnElement();
 
-      resolve();
-    });
+    await this.reset();
   }
 
   private findSelectedElement(element: HTMLElement): Promise<HTMLElement> {

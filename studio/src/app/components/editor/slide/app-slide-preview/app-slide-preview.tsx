@@ -2,6 +2,7 @@ import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} f
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
 import {debounce} from '@deckdeckgo/utils';
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-slide-preview',
@@ -25,13 +26,25 @@ export class AppSlidePreview {
   constructor() {
     this.debounceUpdatePreview = debounce(async () => {
       await this.updatePreview();
-    }, 250);
+    }, 500);
   }
 
   componentDidUpdate() {
     if (this.preview) {
       this.previewAttached.emit();
     }
+  }
+
+  @Listen('slideDidUpdate', {target: 'document'})
+  async onSlideDidUpdate() {
+    if (this.preview) {
+      this.debounceUpdatePreview();
+    }
+  }
+
+  @Listen('resetted', {target: 'document'})
+  async onResetElement() {
+    this.preview = false;
   }
 
   @Listen('elementFocus', {target: 'document'})
@@ -42,7 +55,9 @@ export class AppSlidePreview {
 
     const selectedElement: HTMLElement = $event.detail;
 
-    this.preview = selectedElement?.parentElement?.nodeName?.toLowerCase().indexOf('deckgo-slide') >= 0;
+    this.preview = selectedElement?.parentElement?.nodeName?.toLowerCase().indexOf('deckgo-slide') >= 0 && SlotUtils.isNodeEditable(selectedElement);
+
+    console.log(selectedElement);
 
     if (this.preview) {
       await this.initDeckPreview();
