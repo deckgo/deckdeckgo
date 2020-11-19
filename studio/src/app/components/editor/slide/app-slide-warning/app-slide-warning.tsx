@@ -4,9 +4,9 @@ import {popoverController} from '@ionic/core';
 
 import {debounce} from '@deckdeckgo/utils';
 
-import {ContrastUtils} from '../../../utils/editor/contrast.utils';
-import {NodeUtils} from '../../../utils/editor/node.utils';
-import {SlotUtils} from '../../../utils/editor/slot.utils';
+import {ContrastUtils} from '../../../../utils/editor/contrast.utils';
+import {NodeUtils} from '../../../../utils/editor/node.utils';
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-slide-warning',
