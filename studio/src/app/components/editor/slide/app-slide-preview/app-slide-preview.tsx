@@ -55,7 +55,10 @@ export class AppSlidePreview {
 
     const selectedElement: HTMLElement = $event.detail;
 
-    this.preview = selectedElement?.parentElement?.nodeName?.toLowerCase().indexOf('deckgo-slide') >= 0 && SlotUtils.isNodeEditable(selectedElement);
+    this.preview =
+      selectedElement?.parentElement?.nodeName?.toLowerCase().indexOf('deckgo-slide') >= 0 &&
+      SlotUtils.isNodeEditable(selectedElement) &&
+      !SlotUtils.isNodeWordCloud(selectedElement);
 
     console.log(selectedElement);
 
