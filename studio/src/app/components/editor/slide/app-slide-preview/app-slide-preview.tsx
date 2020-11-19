@@ -60,8 +60,6 @@ export class AppSlidePreview {
       SlotUtils.isNodeEditable(selectedElement) &&
       !SlotUtils.isNodeWordCloud(selectedElement);
 
-    console.log(selectedElement);
-
     if (this.preview) {
       await this.initDeckPreview();
 
