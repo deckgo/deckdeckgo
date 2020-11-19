@@ -228,20 +228,20 @@ If the code is displayed as an "ubuntu" terminal card (`terminal` property equal
 | --deckgo-highlight-code-ubuntu-header-button-height              | 12px                                             | The height of a button of the card header.         |
 | --deckgo-highlight-code-ubuntu-header-button-border-radius       | 50%                                              | The border-radius of a button of the card header.  |
 | --deckgo-highlight-code-ubuntu-header-button-margin              | 0 6px 0 0                                        | The margin of a button of the card header.         |
-| --deckgo-highlight-code-carbon-header-button-font-size           | 7px                                              | The font-size of a button of the card header.      |
-| --deckgo-highlight-code-carbon-header-button-color               | black                                            | The color of a button of the card header.          |
-| --deckgo-highlight-code-carbon-header-button-text-shadow         | 0px 1px 0px rgba(255, 255, 255, 0.2)             | The text-shadow of a button of the card header.    |
-| --deckgo-highlight-code-carbon-header-button-box-shadow          | 0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642 | The box-shadow of a button of the card header.     |
-| --deckgo-highlight-code-carbon-header-button-close-background    | linear-gradient(#f37458 0%, #de4c12 100%)        | The close button background of the card header.    |
-| --deckgo-highlight-code-carbon-header-button-close-border        |                                                  | The close button border of the card header.        |
-| --deckgo-highlight-code-carbon-header-button-minimize-background | linear-gradient(#7d7871 0%, #595953 100%)        | The minimize button background of the card header. |
-| --deckgo-highlight-code-carbon-header-button-minimize-border     |                                                  | The minimize button border of the card header.     |
-| --deckgo-highlight-code-carbon-header-button-maximize-background | linear-gradient(#7d7871 0%, #595953 100%)        | The maximize button background of the card header. |
-| --deckgo-highlight-code-carbon-header-button-maximize-border     |                                                  | The maximize button border of the card header.     |
-| --deckgo-highlight-code-carbon-header-user-color                 | #d5d0ce                                          | The user's color of the card header.               |
-| --deckgo-highlight-code-carbon-header-user-font-size             | 12px                                             | The user's font-size of the card header.           |
-| --deckgo-highlight-code-carbon-header-user-line-height           | 14px                                             | The user's line-height of the card header.         |
-| --deckgo-highlight-code-carbon-header-user-margin                | 0 0 1px 4px                                      | The user's margin of the card header.              |
+| --deckgo-highlight-code-ubuntu-header-button-font-size           | 7px                                              | The font-size of a button of the card header.      |
+| --deckgo-highlight-code-ubuntu-header-button-color               | black                                            | The color of a button of the card header.          |
+| --deckgo-highlight-code-ubuntu-header-button-text-shadow         | 0px 1px 0px rgba(255, 255, 255, 0.2)             | The text-shadow of a button of the card header.    |
+| --deckgo-highlight-code-ubuntu-header-button-box-shadow          | 0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642 | The box-shadow of a button of the card header.     |
+| --deckgo-highlight-code-ubuntu-header-button-close-background    | linear-gradient(#f37458 0%, #de4c12 100%)        | The close button background of the card header.    |
+| --deckgo-highlight-code-ubuntu-header-button-close-border        |                                                  | The close button border of the card header.        |
+| --deckgo-highlight-code-ubuntu-header-button-minimize-background | linear-gradient(#7d7871 0%, #595953 100%)        | The minimize button background of the card header. |
+| --deckgo-highlight-code-ubuntu-header-button-minimize-border     |                                                  | The minimize button border of the card header.     |
+| --deckgo-highlight-code-ubuntu-header-button-maximize-background | linear-gradient(#7d7871 0%, #595953 100%)        | The maximize button background of the card header. |
+| --deckgo-highlight-code-ubuntu-header-button-maximize-border     |                                                  | The maximize button border of the card header.     |
+| --deckgo-highlight-code-ubuntu-header-user-color                 | #d5d0ce                                          | The user's color of the card header.               |
+| --deckgo-highlight-code-ubuntu-header-user-font-size             | 12px                                             | The user's font-size of the card header.           |
+| --deckgo-highlight-code-ubuntu-header-user-line-height           | 14px                                             | The user's line-height of the card header.         |
+| --deckgo-highlight-code-ubuntu-header-user-margin                | 0 0 1px 4px                                      | The user's margin of the card header.              |
 
 ### Methods
 

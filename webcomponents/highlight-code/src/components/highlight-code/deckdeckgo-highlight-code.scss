@@ -18,6 +18,10 @@
 }
 
 :host([editable]) {
+  div.deckgo-highlight-code-container {
+    cursor: text;
+  }
+
   code:empty:not(:focus):after {
     content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
   }
@@ -259,38 +263,46 @@ div.ubuntu {
     align-items: center;
     justify-content: center;
 
-    width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
-    height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
-    border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
-    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 0 4px 0 0);
+    width: var(--deckgo-highlight-code-ubuntu-header-button-width, 12px);
+    height: var(--deckgo-highlight-code-ubuntu-header-button-height, 12px);
+    border-radius: var(--deckgo-highlight-code-ubuntu-header-button-border-radius, 50%);
+    margin: var(--deckgo-highlight-code-ubuntu-header-button-margin, 0 4px 0 0);
 
-    font-size: var(--deckgo-highlight-code-carbon-header-button-font-size, 7px);
+    font-size: var(--deckgo-highlight-code-ubuntu-header-button-font-size, 7px);
 
-    color: var(--deckgo-highlight-code-carbon-header-button-color, black);
+    color: var(--deckgo-highlight-code-ubuntu-header-button-color, black);
 
-    text-shadow: var(--deckgo-highlight-code-carbon-header-button-text-shadow, 0px 1px 0px rgba(255, 255, 255, 0.2));
-    box-shadow: var(--deckgo-highlight-code-carbon-header-button-box-shadow, 0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642);
+    text-shadow: var(--deckgo-highlight-code-ubuntu-header-button-text-shadow, 0px 1px 0px rgba(255, 255, 255, 0.2));
+    box-shadow: var(--deckgo-highlight-code-ubuntu-header-button-box-shadow, 0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642);
 
     &.close {
-      background: var(--deckgo-highlight-code-carbon-header-button-close-background, linear-gradient(#f37458 0%, #de4c12 100%));
-      border: var(--deckgo-highlight-code-carbon-header-button-close-border);
+      background: var(--deckgo-highlight-code-ubuntu-header-button-close-background, linear-gradient(#f37458 0%, #de4c12 100%));
+      border: var(--deckgo-highlight-code-ubuntu-header-button-close-border);
     }
 
     &.minimize {
-      background: var(--deckgo-highlight-code-carbon-header-button-minimize-background, linear-gradient(#7d7871 0%, #595953 100%));
-      border: var(--deckgo-highlight-code-carbon-header-button-minimize-border);
+      background: var(--deckgo-highlight-code-ubuntu-header-button-minimize-background, linear-gradient(#7d7871 0%, #595953 100%));
+      border: var(--deckgo-highlight-code-ubuntu-header-button-minimize-border);
     }
 
     &.maximize {
-      background: var(--deckgo-highlight-code-carbon-header-button-maximize-background, linear-gradient(#7d7871 0%, #595953 100%));
-      border: var(--deckgo-highlight-code-carbon-header-button-maximize-border);
+      background: var(--deckgo-highlight-code-ubuntu-header-button-maximize-background, linear-gradient(#7d7871 0%, #595953 100%));
+      border: var(--deckgo-highlight-code-ubuntu-header-button-maximize-border);
+    }
+
+    &.close,
+    &.minimize,
+    &.maximize {
+      span {
+        display: var(--deckgo-highlight-code-ubuntu-header-button-span-display, inherit);
+      }
     }
   }
 
   > p {
-    color: var(--deckgo-highlight-code-carbon-header-user-color, #d5d0ce);
-    font-size: var(--deckgo-highlight-code-carbon-header-user-font-size, 12px);
-    line-height: var(--deckgo-highlight-code-carbon-header-user-line-height, 14px);
-    margin: var(--deckgo-highlight-code-carbon-header-user-margin, 0 0 1px 4px);
+    color: var(--deckgo-highlight-code-ubuntu-header-user-color, #d5d0ce);
+    font-size: var(--deckgo-highlight-code-ubuntu-header-user-font-size, 12px);
+    line-height: var(--deckgo-highlight-code-ubuntu-header-user-line-height, 14px);
+    margin: var(--deckgo-highlight-code-ubuntu-header-user-margin, 0 0 1px 4px);
   }
 }

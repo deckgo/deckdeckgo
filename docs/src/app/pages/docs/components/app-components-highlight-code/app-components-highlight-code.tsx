@@ -780,72 +780,72 @@ export class AppComponentsHighlightCode {
                 <td>The margin of a button of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-font-size</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-font-size</td>
                 <td>7px</td>
                 <td>The font-size of a button of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-color</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-color</td>
                 <td>black</td>
                 <td>The color of a button of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-text-shadow</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-text-shadow</td>
                 <td>0px 1px 0px rgba(255, 255, 255, 0.2)</td>
                 <td>The text-shadow of a button of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-box-shadow</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-box-shadow</td>
                 <td>0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642</td>
                 <td>The box-shadow of a button of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-close-background</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-close-background</td>
                 <td>linear-gradient(#f37458 0%, #de4c12 100%)</td>
                 <td>The close button background of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-close-border</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-close-border</td>
                 <td></td>
                 <td>The close button border of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-minimize-background</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-minimize-background</td>
                 <td>linear-gradient(#7d7871 0%, #595953 100%)</td>
                 <td>The minimize button background of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-minimize-border</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-minimize-border</td>
                 <td></td>
                 <td>The minimize button border of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-maximize-background</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-maximize-background</td>
                 <td>linear-gradient(#7d7871 0%, #595953 100%)</td>
                 <td>The maximize button background of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-button-maximize-border</td>
+                <td>--deckgo-highlight-code-ubuntu-header-button-maximize-border</td>
                 <td></td>
                 <td>The maximize button border of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-user-color</td>
+                <td>--deckgo-highlight-code-ubuntu-header-user-color</td>
                 <td>#d5d0ce</td>
                 <td>The user&#39;s color of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-user-font-size</td>
+                <td>--deckgo-highlight-code-ubuntu-header-user-font-size</td>
                 <td>12px</td>
                 <td>The user&#39;s font-size of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-user-line-height</td>
+                <td>--deckgo-highlight-code-ubuntu-header-user-line-height</td>
                 <td>14px</td>
                 <td>The user&#39;s line-height of the card header.</td>
               </tr>
               <tr>
-                <td>--deckgo-highlight-code-carbon-header-user-margin</td>
+                <td>--deckgo-highlight-code-ubuntu-header-user-margin</td>
                 <td>0 0 1px 4px</td>
                 <td>The user&#39;s margin of the card header.</td>
               </tr>

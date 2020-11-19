@@ -21,14 +21,15 @@ ion-nav app-editor ion-content {
 }
 
 app-editor {
-  @import "../../../../global/theme/editor/editor-deck";
-  @import "../../../../global/theme/editor/editor-deck-placeholder";
-  @import "../../../../global/theme/editor/editor-deck-social";
   @import "../../../../global/theme/editor/editor-deck-header-footer";
-
+  @import "../../../../global/theme/editor/editor-deck-social";
+  @import "../../../../global/theme/editor/editor-deck-transition";
   @import "../../../../global/theme/editor/editor-loading";
 
-  @import "../../../../global/theme/editor/editor-deck-transition";
+  main {
+    @import "../../../../global/theme/editor/editor-deck";
+    @import "../../../../global/theme/editor/editor-deck-placeholder";
+  }
 
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 

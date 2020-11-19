@@ -1,3 +1,10 @@
+# 1.1.1 (2020-11-19)
+
+### Style
+
+- cursor text if set as editable
+- editable zone clickable on the all width
+
 # 1.1.0 (2020-11-16)
 
 ### Features

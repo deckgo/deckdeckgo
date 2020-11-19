@@ -36,6 +36,24 @@ app-slide-preview {
       --slide-split-padding-end: 4px;
       --slide-split-padding-bottom: 8px;
 
+      --deckgo-highlight-code-carbon-header-padding: 2px 8px;
+      --deckgo-highlight-code-carbon-header-button-width: 2px;
+      --deckgo-highlight-code-carbon-header-button-height: 2px;
+      --deckgo-highlight-code-margin: 0 0 4px;
+      --deckgo-highlight-code-padding: 0 8px;
+
+      --deckgo-highlight-code-carbon-margin: 8px 0;
+      --deckgo-highlight-code-ubuntu-margin: 8px 0;
+
+      --deckgo-highlight-code-carbon-box-shadow: rgba(0, 0, 0, 0.55) 0 2px 4px;
+
+      --deckgo-highlight-code-ubuntu-header-height: 8px;
+      --deckgo-highlight-code-ubuntu-header-button-width: 4px;
+      --deckgo-highlight-code-ubuntu-header-button-height: 4px;
+      --deckgo-highlight-code-ubuntu-header-button-span-display: none;
+
+      --deckgo-markdown-container-padding: 4px 8px;
+
       .deckgo-slide-container {
         > * {
           margin: 0;
