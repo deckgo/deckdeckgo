@@ -14,7 +14,7 @@ export class ParseElementsUtils {
       }
 
       if (element.nodeType === 3) {
-        resolve(element.textContent + '\n');
+        resolve(element.textContent);
         return;
       }
 
