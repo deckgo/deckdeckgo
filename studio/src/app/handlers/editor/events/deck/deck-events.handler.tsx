@@ -52,49 +52,49 @@ export class DeckEventsHandler {
   async init(el: HTMLElement) {
     this.mainRef = el;
 
+    this.mainRef.addEventListener('input', this.onInputChange, false);
+    this.mainRef.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
+    this.mainRef.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
+    this.mainRef.addEventListener('codeDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('mathDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('markdownDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('imgDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('linkCreated', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('drrDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('notesDidChange', this.onSlideChange, false);
+
     if (!document) {
       return;
     }
 
-    document.addEventListener('input', this.onInputChange, false);
-    document.addEventListener('slideDidChange', this.onSlideChange, false);
-    document.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
-    document.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
-    document.addEventListener('slideDelete', this.onSlideDelete, false);
-    document.addEventListener('codeDidChange', this.onCustomEventChange, false);
-    document.addEventListener('mathDidChange', this.onCustomEventChange, false);
-    document.addEventListener('markdownDidChange', this.onCustomEventChange, false);
-    document.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
-    document.addEventListener('imgDidChange', this.onCustomEventChange, false);
-    document.addEventListener('linkCreated', this.onCustomEventChange, false);
     document.addEventListener('styleDidChange', this.onCustomEventChange, false);
-    document.addEventListener('drrDidChange', this.onCustomEventChange, false);
-    document.addEventListener('notesDidChange', this.onSlideChange, false);
-
+    document.addEventListener('slideDidChange', this.onSlideChange, false);
+    document.addEventListener('slideDelete', this.onSlideDelete, false);
     document.addEventListener('deckDidChange', this.onDeckChange, false);
     document.addEventListener('deckNeedChange', this.onDeckNeedChange, false);
   }
 
   destroy() {
+    this.mainRef.removeEventListener('input', this.onInputChange, true);
+    this.mainRef.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
+    this.mainRef.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
+    this.mainRef.removeEventListener('codeDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('mathDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('markdownDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('wordCloudDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('imgDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('linkCreated', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('drrDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('notesDidChange', this.onSlideChange, true);
+
     if (!document) {
       return;
     }
 
-    document.removeEventListener('input', this.onInputChange, true);
-    document.removeEventListener('slideDidChange', this.onSlideChange, true);
-    document.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
-    document.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
-    document.removeEventListener('slideDelete', this.onSlideDelete, true);
-    document.removeEventListener('codeDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('mathDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('markdownDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('wordCloudDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('imgDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('linkCreated', this.onCustomEventChange, true);
     document.removeEventListener('styleDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('drrDidChange', this.onCustomEventChange, true);
-    document.removeEventListener('notesDidChange', this.onSlideChange, true);
-
+    document.removeEventListener('slideDidChange', this.onSlideChange, true);
+    document.removeEventListener('slideDelete', this.onSlideDelete, true);
     document.removeEventListener('deckDidChange', this.onDeckChange, true);
     document.removeEventListener('deckNeedChange', this.onDeckNeedChange, true);
   }
