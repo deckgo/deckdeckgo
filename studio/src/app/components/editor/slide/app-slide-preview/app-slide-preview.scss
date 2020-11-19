@@ -18,8 +18,14 @@ app-slide-preview {
   article {
     position: relative;
 
-    width: 200px;
-    height: calc(200px * 9 / 16);
+    --preview-width: 200px;
+
+    width: var(--preview-width);
+    height: calc(var(--preview-width) * 9 / 16);
+
+    @media screen and (max-width: 768px) {
+      --preview-width: 128px;
+    }
 
     overflow: hidden;
 
