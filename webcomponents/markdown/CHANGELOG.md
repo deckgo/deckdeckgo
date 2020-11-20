@@ -1,3 +1,9 @@
+# 2.0.0 (2020-11-20)
+
+### Features
+
+- image width and height can be provided as "width:100px,height:20px"
+
 # 1.1.1 (2020-11-19)
 
 ### Style

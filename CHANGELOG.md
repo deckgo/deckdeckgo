@@ -28,7 +28,7 @@
 
 ### Web Components: New
 
-- markdown: v1.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/markdown/CHANGELOG.md))
+- markdown: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/markdown/CHANGELOG.md))
 
 ### Web Components
 
