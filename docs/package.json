@@ -23,7 +23,7 @@
     "@deckdeckgo/highlight-code": "^2.2.1",
     "@deckdeckgo/inline-editor": "^3.0.2",
     "@deckdeckgo/lazy-img": "^3.0.0",
-    "@deckdeckgo/markdown": "^1.1.1",
+    "@deckdeckgo/markdown": "^2.0.0",
     "@deckdeckgo/math": "^2.0.3",
     "@deckdeckgo/qrcode": "^2.0.1",
     "@deckdeckgo/reveal": "^1.0.0",
