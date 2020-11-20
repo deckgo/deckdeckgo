@@ -1,7 +1,8 @@
 import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} from '@stencil/core';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
-import {debounce} from '@deckdeckgo/utils';
+import {debounce, isIPad} from '@deckdeckgo/utils';
+
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 @Component({
@@ -17,6 +18,9 @@ export class AppSlidePreview {
   @State()
   private preview: boolean = false;
 
+  @State()
+  private top: string = '8px';
+
   private deckPreviewRef!: HTMLDeckgoDeckElement;
 
   @Event({bubbles: false}) private previewAttached: EventEmitter<void>;
@@ -27,6 +31,14 @@ export class AppSlidePreview {
     this.debounceUpdatePreview = debounce(async () => {
       await this.updatePreview();
     }, 500);
+  }
+
+  @Listen('ionKeyboardDidShow', {target: 'window'})
+  onKeyboardDidShow($event: CustomEvent<{keyboardHeight: number}>) {
+    if (!isIPad()) {
+      return;
+    }
+    this.top = `calc(100vh - ${$event.detail.keyboardHeight}px)`;
   }
 
   componentDidUpdate() {
@@ -112,6 +124,7 @@ export class AppSlidePreview {
   render() {
     return (
       <Host
+        style={{top: this.top}}
         class={{
           preview: this.preview,
         }}>
