@@ -2,6 +2,7 @@
 
 app-slide-preview {
   position: absolute;
+  top: var(--ios-top, 8px);
   right: 8px;
 
   transition: opacity 0.5s;

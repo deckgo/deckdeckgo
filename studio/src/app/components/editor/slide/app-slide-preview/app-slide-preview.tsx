@@ -1,7 +1,7 @@
 import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} from '@stencil/core';
 
 import {cleanContent} from '@deckdeckgo/deck-utils';
-import {debounce, isIPad} from '@deckdeckgo/utils';
+import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
@@ -19,7 +19,7 @@ export class AppSlidePreview {
   private preview: boolean = false;
 
   @State()
-  private top: string = '8px';
+  private iosPositionTop: string | undefined = undefined;
 
   private deckPreviewRef!: HTMLDeckgoDeckElement;
 
@@ -34,12 +34,7 @@ export class AppSlidePreview {
   }
 
   @Listen('ionKeyboardDidShow', {target: 'window'})
-  onKeyboardDidShow($event: CustomEvent<{keyboardHeight: number}>) {
-    if (!isIPad()) {
-      return;
-    }
-    this.top = `calc(100vh - ${$event.detail.keyboardHeight}px)`;
-  }
+  onKeyboardDidShow(_$event: CustomEvent<{keyboardHeight: number}>) {}
 
   componentDidUpdate() {
     if (this.preview) {
@@ -67,6 +62,8 @@ export class AppSlidePreview {
 
     const selectedElement: HTMLElement = $event.detail;
 
+    await this.stickyIOS(selectedElement);
+
     this.preview =
       selectedElement?.parentElement?.nodeName?.toLowerCase().indexOf('deckgo-slide') >= 0 &&
       SlotUtils.isNodeEditable(selectedElement) &&
@@ -82,6 +79,12 @@ export class AppSlidePreview {
     } else {
       this.deckRef.removeEventListener('keypress', () => this.debounceUpdatePreview(), true);
       this.deckRef.removeEventListener('paste', () => this.debounceUpdatePreview(), true);
+    }
+  }
+
+  private async stickyIOS(selectedElement: HTMLElement) {
+    if (isIOS()) {
+      this.iosPositionTop = isLandscape() ? `calc(${selectedElement.offsetTop}px - (128px * 9 / 16) - 32px)` : undefined;
     }
   }
 
@@ -122,9 +125,11 @@ export class AppSlidePreview {
   }
 
   render() {
+    const style = {...(this.iosPositionTop && {'--ios-top': this.iosPositionTop})};
+
     return (
       <Host
-        style={{top: this.top}}
+        style={style}
         class={{
           preview: this.preview,
         }}>
