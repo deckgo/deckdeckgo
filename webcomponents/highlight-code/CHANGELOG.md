@@ -1,3 +1,16 @@
+# 2.2.1 (2020-11-19)
+
+### Style
+
+- cursor text if set as editable
+
+# 2.2.0 (2020-11-19)
+
+### Style
+
+- new style to hide characters in ubuntu bar buttons
+- ubuntu styling options variables renamed
+
 # 2.1.1 (2020-10-23)
 
 ### Fix

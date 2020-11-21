@@ -389,6 +389,9 @@ export namespace Components {
     }
     interface AppSlideNavigate {
     }
+    interface AppSlidePreview {
+        "deckRef": HTMLDeckgoDeckElement;
+    }
     interface AppSlideWarning {
     }
     interface AppSlideWarningInfo {
@@ -1077,6 +1080,12 @@ declare global {
         prototype: HTMLAppSlideNavigateElement;
         new (): HTMLAppSlideNavigateElement;
     };
+    interface HTMLAppSlidePreviewElement extends Components.AppSlidePreview, HTMLStencilElement {
+    }
+    var HTMLAppSlidePreviewElement: {
+        prototype: HTMLAppSlidePreviewElement;
+        new (): HTMLAppSlidePreviewElement;
+    };
     interface HTMLAppSlideWarningElement extends Components.AppSlideWarning, HTMLStencilElement {
     }
     var HTMLAppSlideWarningElement: {
@@ -1259,6 +1268,7 @@ declare global {
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
+        "app-slide-preview": HTMLAppSlidePreviewElement;
         "app-slide-warning": HTMLAppSlideWarningElement;
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
@@ -1703,6 +1713,10 @@ declare namespace LocalJSX {
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
+    interface AppSlidePreview {
+        "deckRef": HTMLDeckgoDeckElement;
+        "onPreviewAttached"?: (event: CustomEvent<void>) => void;
+    }
     interface AppSlideWarning {
     }
     interface AppSlideWarningInfo {
@@ -1846,6 +1860,7 @@ declare namespace LocalJSX {
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
         "app-slide-navigate": AppSlideNavigate;
+        "app-slide-preview": AppSlidePreview;
         "app-slide-warning": AppSlideWarning;
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
@@ -1973,6 +1988,7 @@ declare module "@stencil/core" {
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
+            "app-slide-preview": LocalJSX.AppSlidePreview & JSXBase.HTMLAttributes<HTMLAppSlidePreviewElement>;
             "app-slide-warning": LocalJSX.AppSlideWarning & JSXBase.HTMLAttributes<HTMLAppSlideWarningElement>;
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;

@@ -47,12 +47,12 @@ export class SlotUtils {
     return selectedElement?.nodeName?.toLowerCase() === SlotType.DRAG_RESIZE_ROTATE;
   }
 
-  static isNodeEditable(element: HTMLElement): boolean {
+  static isNodeEditable(element?: HTMLElement): boolean {
     return (
-      element.nodeName.toLowerCase() === SlotType.CODE ||
-      element.nodeName.toLowerCase() === SlotType.MATH ||
-      element.nodeName.toLowerCase() === SlotType.WORD_CLOUD ||
-      element.nodeName.toLowerCase() === SlotType.MARKDOWN
+      element?.nodeName?.toLowerCase() === SlotType.CODE ||
+      element?.nodeName?.toLowerCase() === SlotType.MATH ||
+      element?.nodeName?.toLowerCase() === SlotType.WORD_CLOUD ||
+      element?.nodeName?.toLowerCase() === SlotType.MARKDOWN
     );
   }
 }

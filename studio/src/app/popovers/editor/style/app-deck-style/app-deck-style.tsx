@@ -29,7 +29,7 @@ export class AppDeck {
   private imageHelper: ImageHelper;
 
   async componentWillLoad() {
-    this.deckElement = document ? document.querySelector('deckgo-deck') : undefined;
+    this.deckElement = document?.querySelector('app-editor main deckgo-deck');
 
     this.imageHelper = new ImageHelper(this.deckDidChange, this.blockSlide, this.signIn);
   }

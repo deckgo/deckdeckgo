@@ -10,13 +10,18 @@
 }
 
 :host([editable]) {
+  div.deckgo-markdown-container {
+    cursor: text;
+  }
+
   div.markdown:empty:not(:focus):after {
-    content: var(--deckgo-markdown-empty-text, "Click to add content using Markdown");
+    content: var(--deckgo-markdown-empty-text, "Click to add markdown content");
     font-size: var(--deckgo-markdown-empty-font-size, 1.4em);
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 100%;
   }
 }
 
@@ -24,6 +29,7 @@
   ::slotted([slot="markdown"]) {
     display: inline-block;
     white-space: pre-wrap;
+    width: 100%;
   }
 
   div.markdown {

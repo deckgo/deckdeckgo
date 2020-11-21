@@ -1,3 +1,36 @@
+<a name="1.7.0"></a>
+
+# 1.7.0 (2020-11-21)
+
+### Features
+
+- isLandscape and isPortrait
+
+<a name="1.6.0"></a>
+
+# 1.6.0 (2020-11-20)
+
+### Fix
+
+- is mobile based on matchMedia
+- isIos including new iPads
+
+<a name="1.5.0"></a>
+
+# 1.5.0 (2020-11-20)
+
+### Fix
+
+- update is mobile
+
+<a name="1.4.0"></a>
+
+# 1.4.0 (2020-11-20)
+
+### Fix
+
+- detection iPad for iOS >= 13
+
 <a name="1.3.0"></a>
 
 # 1.3.0 (2020-08-15)

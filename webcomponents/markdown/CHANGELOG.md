@@ -1,3 +1,22 @@
+# 2.0.1 (2020-11-21)
+
+### Style
+
+- editable after placeholder
+
+# 2.0.0 (2020-11-20)
+
+### Features
+
+- image width and height can be provided as "width:100px,height:20px"
+
+# 1.1.1 (2020-11-19)
+
+### Style
+
+- cursor text if set as editable
+- editable zone clickable on the all width
+
 # 1.1.0 (2020-11-16)
 
 ### Features

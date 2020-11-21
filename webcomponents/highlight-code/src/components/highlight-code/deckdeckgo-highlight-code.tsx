@@ -675,6 +675,10 @@ export class DeckdeckgoHighlightCode {
   private renderUbuntuCircle(mode: 'close' | 'minimize' | 'maximize') {
     const symbol: string = mode === 'close' ? '&#10005;' : mode === 'minimize' ? '&#9472;' : '&#9723;';
 
-    return <div class={mode} innerHTML={symbol}></div>;
+    return (
+      <div class={mode}>
+        <span innerHTML={symbol}></span>
+      </div>
+    );
   }
 }

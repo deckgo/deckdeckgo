@@ -141,8 +141,8 @@ export class AppEditor {
   }
 
   async init() {
-    await this.deckEventsHandler.init(this.el);
-    await this.editorEventsHandler.init(this.el);
+    await this.deckEventsHandler.init(this.mainRef);
+    await this.editorEventsHandler.init(this.mainRef);
 
     await this.initOffline();
 
@@ -731,6 +731,7 @@ export class AppEditor {
           <deckgo-remote autoConnect={false}></deckgo-remote>
           <app-slide-warning></app-slide-warning>
         </main>
+        <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
       </ion-content>,
       <app-actions-editor
         ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}

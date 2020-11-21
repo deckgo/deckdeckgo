@@ -26,7 +26,7 @@ import {SlideService} from '../../../../services/data/slide/slide.service';
 import {DeckAction} from '../../../../utils/editor/deck-action';
 
 export class DeckEventsHandler {
-  private el: HTMLElement;
+  private mainRef: HTMLElement;
 
   private deckService: DeckService;
   private slideService: SlideService;
@@ -49,54 +49,54 @@ export class DeckEventsHandler {
     }, 500);
   }
 
-  init(el: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.el = el;
+  async init(el: HTMLElement) {
+    this.mainRef = el;
 
-      this.el.addEventListener('input', this.onInputChange, false);
-      this.el.addEventListener('slideDidChange', this.onSlideChange, false);
-      this.el.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
-      this.el.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
-      this.el.addEventListener('slideDelete', this.onSlideDelete, false);
-      this.el.addEventListener('codeDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('mathDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('markdownDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('imgDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('linkCreated', this.onCustomEventChange, false);
-      this.el.addEventListener('styleDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('drrDidChange', this.onCustomEventChange, false);
-      this.el.addEventListener('notesDidChange', this.onSlideChange, false);
+    this.mainRef.addEventListener('input', this.onInputChange, false);
+    this.mainRef.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
+    this.mainRef.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
+    this.mainRef.addEventListener('codeDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('mathDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('markdownDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('imgDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('linkCreated', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('drrDidChange', this.onCustomEventChange, false);
+    this.mainRef.addEventListener('notesDidChange', this.onSlideChange, false);
 
-      if (document) {
-        document.addEventListener('deckDidChange', this.onDeckChange, false);
-        document.addEventListener('deckNeedChange', this.onDeckNeedChange, false);
-      }
+    if (!document) {
+      return;
+    }
 
-      resolve();
-    });
+    document.addEventListener('styleDidChange', this.onCustomEventChange, false);
+    document.addEventListener('slideDidChange', this.onSlideChange, false);
+    document.addEventListener('slideDelete', this.onSlideDelete, false);
+    document.addEventListener('deckDidChange', this.onDeckChange, false);
+    document.addEventListener('deckNeedChange', this.onDeckNeedChange, false);
   }
 
   destroy() {
-    this.el.removeEventListener('input', this.onInputChange, true);
-    this.el.removeEventListener('slideDidChange', this.onSlideChange, true);
-    this.el.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
-    this.el.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
-    this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
-    this.el.removeEventListener('codeDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('mathDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('markdownDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('wordCloudDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('imgDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('linkCreated', this.onCustomEventChange, true);
-    this.el.removeEventListener('styleDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('drrDidChange', this.onCustomEventChange, true);
-    this.el.removeEventListener('notesDidChange', this.onSlideChange, true);
+    this.mainRef.removeEventListener('input', this.onInputChange, true);
+    this.mainRef.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
+    this.mainRef.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
+    this.mainRef.removeEventListener('codeDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('mathDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('markdownDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('wordCloudDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('imgDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('linkCreated', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('drrDidChange', this.onCustomEventChange, true);
+    this.mainRef.removeEventListener('notesDidChange', this.onSlideChange, true);
 
-    if (document) {
-      document.removeEventListener('deckDidChange', this.onDeckChange, true);
-      document.removeEventListener('deckNeedChange', this.onDeckNeedChange, true);
+    if (!document) {
+      return;
     }
+
+    document.removeEventListener('styleDidChange', this.onCustomEventChange, true);
+    document.removeEventListener('slideDidChange', this.onSlideChange, true);
+    document.removeEventListener('slideDelete', this.onSlideDelete, true);
+    document.removeEventListener('deckDidChange', this.onDeckChange, true);
+    document.removeEventListener('deckNeedChange', this.onDeckNeedChange, true);
   }
 
   private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -272,7 +272,7 @@ export class DeckEventsHandler {
         };
 
         // Retrieve text and background color style randomly generated in the editor
-        const deckElement: HTMLElement = this.el.querySelector('deckgo-deck');
+        const deckElement: HTMLElement = this.mainRef.querySelector('deckgo-deck');
         if (deckElement) {
           const attributes: DeckAttributes = await this.getDeckAttributes(deckElement, false);
           deck.attributes = attributes;
@@ -559,7 +559,7 @@ export class DeckEventsHandler {
 
   private deleteSlideElement(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
       if (!deck) {
         resolve();
@@ -899,7 +899,7 @@ export class DeckEventsHandler {
 
   private slideToLastSlide(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
       if (!deck || !deck.children || deck.children.length <= 0) {
         resolve();
@@ -930,7 +930,7 @@ export class DeckEventsHandler {
 
   initSlideSize(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLDeckgoDeckElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
 
       if (!deck) {
         return;
@@ -978,14 +978,14 @@ export class DeckEventsHandler {
         detail: element,
       });
 
-      this.el.dispatchEvent(slideDidUpdate);
+      this.mainRef.dispatchEvent(slideDidUpdate);
 
       resolve();
     });
   }
 
   async toggleSlideEditable(editable: boolean) {
-    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+    const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
     if (!deck) {
       return;

@@ -1,0 +1,73 @@
+@use "../../../../../global/theme/editor/editor-mixin";
+
+app-slide-preview {
+  position: absolute;
+  top: var(--ios-top, 8px);
+  right: 8px;
+
+  transition: opacity 0.5s;
+
+  visibility: initial;
+  opacity: 1;
+
+  &:not(.preview) {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  article {
+    position: relative;
+
+    --preview-width: 200px;
+
+    width: var(--preview-width);
+    height: calc(var(--preview-width) * 9 / 16);
+
+    @media screen and (max-width: 768px) {
+      --preview-width: 128px;
+    }
+
+    overflow: hidden;
+
+    @include editor-mixin.panel;
+
+    deckgo-deck {
+      --slide-padding-start: 4px;
+      --slide-padding-top: 8px;
+      --slide-padding-end: 4px;
+      --slide-padding-bottom: 8px;
+
+      --slide-split-padding-start: 4px;
+      --slide-split-padding-top: 8px;
+      --slide-split-padding-end: 4px;
+      --slide-split-padding-bottom: 8px;
+
+      --deckgo-highlight-code-carbon-header-padding: 2px 8px;
+      --deckgo-highlight-code-carbon-header-button-width: 2px;
+      --deckgo-highlight-code-carbon-header-button-height: 2px;
+      --deckgo-highlight-code-margin: 0 0 4px;
+      --deckgo-highlight-code-padding: 0 8px;
+
+      --deckgo-highlight-code-carbon-margin: 8px 0;
+      --deckgo-highlight-code-ubuntu-margin: 8px 0;
+
+      --deckgo-highlight-code-carbon-box-shadow: rgba(0, 0, 0, 0.55) 0 2px 4px;
+      --deckgo-highlight-code-ubuntu-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+
+      --deckgo-highlight-code-ubuntu-header-height: 8px;
+      --deckgo-highlight-code-ubuntu-header-button-width: 4px;
+      --deckgo-highlight-code-ubuntu-header-button-height: 4px;
+      --deckgo-highlight-code-ubuntu-header-button-span-display: none;
+
+      --deckgo-markdown-container-padding: 4px 8px;
+
+      .deckgo-slide-container {
+        > * {
+          margin: 0;
+          padding: 0;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+}

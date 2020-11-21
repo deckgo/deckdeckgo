@@ -115,7 +115,7 @@ export class AppPublishEdit {
         return;
       }
 
-      const slide: HTMLElement = document.querySelector('deckgo-deck > *:first-child');
+      const slide: HTMLElement = document.querySelector('app-editor main deckgo-deck > *:first-child');
 
       if (slide?.tagName?.toLowerCase().indexOf('deckgo-slide') > -1) {
         const contentElement: HTMLElement = slide.querySelector('[slot="content"]');

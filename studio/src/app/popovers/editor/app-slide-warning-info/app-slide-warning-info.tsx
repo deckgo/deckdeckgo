@@ -40,7 +40,7 @@ export class AppSlideWarningInfo {
     return (
       <Fragment>
         <h2>Overflow</h2>
-        <p>Part of your content seems to be placed outside the slide's safe area (16/9).</p>
+        <p>Part of your content may be placed outside the slide's safe area (16/9).</p>
         <p>It may not be visible on all display sizes.</p>
       </Fragment>
     );

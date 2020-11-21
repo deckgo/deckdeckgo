@@ -252,7 +252,7 @@ export class AppDashboard {
   private blockSlide($event: CustomEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if ($event && $event.target) {
-        await ($event.target as any).blockSlide(true);
+        await ($event.target as HTMLDeckgoDeckElement).blockSlide(true);
       }
 
       resolve();

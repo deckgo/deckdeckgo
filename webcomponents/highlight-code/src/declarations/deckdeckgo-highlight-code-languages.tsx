@@ -171,6 +171,7 @@ export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages 
   powershell: {title: 'PowerShell'},
   processing: {title: 'Processing'},
   prolog: {title: 'Prolog'},
+  promql: {title: 'PromQL'},
   properties: {title: '.properties'},
   protobuf: {title: 'Protocol Buffers'},
   pug: {title: 'Pug', require: ['markup']},
