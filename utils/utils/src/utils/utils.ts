@@ -76,3 +76,17 @@ export function isRTL(): boolean {
   const htmlDir: string | null = document.documentElement.getAttribute('dir');
   return htmlDir !== null && htmlDir === 'rtl';
 }
+
+// Source: Ionic ionic-framework/angular/src/providers/platform.ts
+
+export function isLandscape(): boolean {
+  return !isPortrait();
+}
+
+export function isPortrait(): boolean {
+  if (!window) {
+    return false;
+  }
+
+  return window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+}

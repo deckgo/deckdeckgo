@@ -1,3 +1,11 @@
+<a name="1.7.0"></a>
+
+# 1.7.0 (2020-11-21)
+
+### Features
+
+- isLandscape and isPortrait
+
 <a name="1.6.0"></a>
 
 # 1.6.0 (2020-11-20)
