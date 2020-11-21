@@ -1,3 +1,9 @@
+# 2.0.1 (2020-11-21)
+
+### Style
+
+- editable after placeholder
+
 # 2.0.0 (2020-11-20)
 
 ### Features
