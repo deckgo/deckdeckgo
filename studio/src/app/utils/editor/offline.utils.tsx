@@ -6,31 +6,18 @@ import {DeckAttributes} from '../../models/data/deck';
 import {FirestoreUtils} from './firestore.utils';
 
 export class OfflineUtils {
-  static cleanAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
-    return new Promise<SlideAttributes | DeckAttributes>((resolve) => {
-      if (!attributes || attributes === undefined) {
-        resolve(null);
-        return;
-      }
+  static async cleanAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
+    if (!attributes || attributes === undefined) {
+      return null;
+    }
 
-      const keys: string[] = Object.keys(attributes);
+    const keys: string[] = Object.keys(attributes);
 
-      if (!keys || keys.length <= 0) {
-        resolve(null);
-        return;
-      }
+    if (!keys || keys.length <= 0) {
+      return null;
+    }
 
-      keys.forEach((key: string) => {
-        const attr = attributes[key];
-
-        // Replace Firestore "to delete fields" with null values
-        if (FirestoreUtils.shouldAttributeBeCleaned(attr)) {
-          attributes[key] = null;
-        }
-      });
-
-      resolve(attributes);
-    });
+    return FirestoreUtils.filterDelete(attributes, true);
   }
 
   static prepareAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {

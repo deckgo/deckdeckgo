@@ -1,5 +1,5 @@
 export class FirestoreUtils {
-  static filterDelete<T>(obj: T): T {
+  static filterDelete<T>(obj: T, replaceWithNull: boolean = false): T {
     if (typeof obj !== 'object' || Array.isArray(obj)) {
       return obj;
     }
@@ -13,6 +13,8 @@ export class FirestoreUtils {
           // We don't want to keep empty leaf {}
           if (Object.keys(value).length > 0) {
             res[key] = value;
+          } else if (replaceWithNull) {
+            res[key] = null;
           }
         } else {
           res[key] = value;
