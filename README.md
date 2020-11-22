@@ -3,11 +3,11 @@
   
   <br/>
   
-  <p><strong>DeckDeckGo</strong> - The open source web editor for presentations. 🚀</p>
+  <p><strong>DeckDeckGo</strong> - The open source web editor for presentations</p>
   
-  <p>Create a PWA presentation using either our <a href="https://deckdeckgo.com">online editor</a> or our developer kit with HTML or Markdown.</p>
+  <p>Create slides with our <a href="https://deckdeckgo.com">online editor</a> or developer kit 🔥.</p>
   
-  <p>Cherry on the cake 🍒🎂 DeckDeckGo comes with a Progressive Web App to <a href="https://deckdeckgo.app">remote control</a> your slides. 📱</p>
+  <p>Interact with your decks through a <a href="https://deckdeckgo.app">remote control</a> 📱.</p>
   
   <br/>
   
@@ -23,6 +23,7 @@
 ## Table of contents
 
 - [Getting Started](#getting-started)
+- [Features](#features)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Progressive Web Apps](#progressive-web-apps)
@@ -31,7 +32,23 @@
 
 ## Getting Started
 
-Start your new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or as a developer by following the quick [Getting Started guide](https://docs.deckdeckgo.com/docs).
+Start your new presentation using our 👉 [online Editor](https://deckdeckgo.com) 👈 or with our developer kit by following the quick [Getting Started guide](https://docs.deckdeckgo.com/docs).
+
+## Features
+
+We are constantly developing new features and are always happy to hear about cool ideas.
+
+- Create, present and share your slides as Progressive Web Apps
+- Interact with your audience with live polls
+- Use predefined rich and responsive templates
+- Search Unsplash and Tenor GIFs
+- Integrate easily Youtube video
+- Showcase your best developer code snippets
+- Interact with your presentations with a remote control
+- Present and work offline
+- Push the source code of your online slides to GitHub
+
+And many more features...
 
 ## Documentation
 
