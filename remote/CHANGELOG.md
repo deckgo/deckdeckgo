@@ -4,6 +4,11 @@
 
 - support new component `@deckgo/markdown`
 
+### Fix
+
+- wrong position of the "play" button in the remote ([#991](https://github.com/deckgo/deckdeckgo/issues/991))
+- drawing not possible ([#995](https://github.com/deckgo/deckdeckgo/issues/995))
+
 # 1.12.1 (2020-11-08)
 
 ### Features

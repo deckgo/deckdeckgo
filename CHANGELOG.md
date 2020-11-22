@@ -1,12 +1,13 @@
 <a name="3.1.0"></a>
 
-# [3.1.0](https://github.com/deckgo/deckdeckgo/compare/v3.0.0...v3.1.0) (In progress...)
+# [3.1.0](https://github.com/deckgo/deckdeckgo/compare/v3.0.0...v3.1.0) (2020-11-22)
 
 ### Applications
 
 - demo: v7.1.1 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 - docs: v2.9.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
 - remote: v1.13.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v3.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components Templates
 

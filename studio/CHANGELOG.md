@@ -1,3 +1,22 @@
+# 3.1.0 (2020-11-22)
+
+### Features
+
+- markdown ([#996](https://github.com/deckgo/deckdeckgo/issues/996))
+- preview slide when editing markdown, code and math ([#1013](https://github.com/deckgo/deckdeckgo/pull/1013))
+- backup firestore once a day ([#1016](https://github.com/deckgo/deckdeckgo/pull/1016))
+- optionally skip second element in create slide title or content ([#1010](https://github.com/deckgo/deckdeckgo/pull/1010))
+- text made selectable in published slides ([#1008](https://github.com/deckgo/deckdeckgo/pull/1008), [#1006](https://github.com/deckgo/deckdeckgo/pull/1006) and [#1009](https://github.com/deckgo/deckdeckgo/pull/1009))
+- allow any https images ([#1004](https://github.com/deckgo/deckdeckgo/pull/1004))
+- improve img lazy loading ([#1000](https://github.com/deckgo/deckdeckgo/pull/1000))
+- improve font color focus state ([#999](https://github.com/deckgo/deckdeckgo/pull/999))
+- colors in studio do not show focus outline ([#997](https://github.com/deckgo/deckdeckgo/issues/997))
+- display information if publish failed ([#989](https://github.com/deckgo/deckdeckgo/pull/989))
+
+### Fix
+
+- offline user was not able to go back online ([#1014](https://github.com/deckgo/deckdeckgo/issues/1014))
+
 # 3.0.0 (2020-10-29)
 
 ### Features
