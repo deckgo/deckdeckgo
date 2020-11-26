@@ -15,6 +15,14 @@ app-remote-connect {
     }
   }
 
+  p:first-of-type {
+    margin-top: 8px;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
   p.no-padding-bottom {
     margin-bottom: 0;
   }

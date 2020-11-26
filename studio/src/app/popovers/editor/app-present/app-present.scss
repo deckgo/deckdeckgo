@@ -1,0 +1,5 @@
+app-present {
+  p.title:not(:first-of-type) {
+    padding-top: 8px;
+  }
+}

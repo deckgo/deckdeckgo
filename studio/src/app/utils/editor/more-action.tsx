@@ -1,9 +1,8 @@
 export enum MoreAction {
-  FULLSCREEN,
+  PRESENT,
   JUMP_TO,
   SHARE,
   PUBLISH,
-  STYLE,
   EMBED,
   COPY,
   NOTES,
@@ -11,4 +10,5 @@ export enum MoreAction {
   HELP,
   OFFLINE,
   IMAGES,
+  REMOTE,
 }

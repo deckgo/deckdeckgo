@@ -1,10 +1,10 @@
 import {Component, Element, h, State} from '@stencil/core';
 
-import remoteStore from '../../../../stores/remote.store';
+import remoteStore from '../../../stores/remote.store';
 
 import {DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
-import {RemoteService} from '../../../../services/editor/remote/remote.service';
+import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-remote-request',

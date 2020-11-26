@@ -330,6 +330,9 @@ export namespace Components {
         "description": boolean;
         "help": boolean;
     }
+    interface AppPresent {
+        "fullscreen": boolean;
+    }
     interface AppPress {
     }
     interface AppPrivacy {
@@ -960,6 +963,12 @@ declare global {
         prototype: HTMLAppPopularElement;
         new (): HTMLAppPopularElement;
     };
+    interface HTMLAppPresentElement extends Components.AppPresent, HTMLStencilElement {
+    }
+    var HTMLAppPresentElement: {
+        prototype: HTMLAppPresentElement;
+        new (): HTMLAppPresentElement;
+    };
     interface HTMLAppPressElement extends Components.AppPress, HTMLStencilElement {
     }
     var HTMLAppPressElement: {
@@ -1248,6 +1257,7 @@ declare global {
         "app-poll": HTMLAppPollElement;
         "app-poll-options": HTMLAppPollOptionsElement;
         "app-popular": HTMLAppPopularElement;
+        "app-present": HTMLAppPresentElement;
         "app-press": HTMLAppPressElement;
         "app-privacy": HTMLAppPrivacyElement;
         "app-publish": HTMLAppPublishElement;
@@ -1649,6 +1659,10 @@ declare namespace LocalJSX {
         "description"?: boolean;
         "help"?: boolean;
     }
+    interface AppPresent {
+        "fullscreen"?: boolean;
+        "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
+    }
     interface AppPress {
     }
     interface AppPrivacy {
@@ -1840,6 +1854,7 @@ declare namespace LocalJSX {
         "app-poll": AppPoll;
         "app-poll-options": AppPollOptions;
         "app-popular": AppPopular;
+        "app-present": AppPresent;
         "app-press": AppPress;
         "app-privacy": AppPrivacy;
         "app-publish": AppPublish;
@@ -1968,6 +1983,7 @@ declare module "@stencil/core" {
             "app-poll": LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
             "app-poll-options": LocalJSX.AppPollOptions & JSXBase.HTMLAttributes<HTMLAppPollOptionsElement>;
             "app-popular": LocalJSX.AppPopular & JSXBase.HTMLAttributes<HTMLAppPopularElement>;
+            "app-present": LocalJSX.AppPresent & JSXBase.HTMLAttributes<HTMLAppPresentElement>;
             "app-press": LocalJSX.AppPress & JSXBase.HTMLAttributes<HTMLAppPressElement>;
             "app-privacy": LocalJSX.AppPrivacy & JSXBase.HTMLAttributes<HTMLAppPrivacyElement>;
             "app-publish": LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
