@@ -144,6 +144,8 @@ export class AppActionsDeck {
           await this.openEmbed();
         } else if (detail.data.action === MoreAction.OFFLINE) {
           await this.goOnlineOffline();
+        } else if (detail.data.action === MoreAction.BACKUP) {
+          await this.backupOfflineData();
         }
       }
     });

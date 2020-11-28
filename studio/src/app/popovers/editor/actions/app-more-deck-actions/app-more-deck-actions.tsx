@@ -39,6 +39,10 @@ export class AppMoreDeckActions {
           <p>{this.offline ? 'Go Online' : 'Go Offline'}</p>
         </a>
 
+        <a onClick={() => this.closePopover(MoreAction.BACKUP)} aria-label="Backup">
+          <p>Backup</p>
+        </a>
+
         <app-action-help link={true} onHelpSelected={() => this.closePopover(MoreAction.HELP)}></app-action-help>
       </div>
     );
