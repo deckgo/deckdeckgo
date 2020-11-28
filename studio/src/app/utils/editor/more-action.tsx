@@ -11,4 +11,5 @@ export enum MoreAction {
   OFFLINE,
   IMAGES,
   REMOTE,
+  BACKUP,
 }
