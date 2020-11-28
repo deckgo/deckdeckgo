@@ -46,6 +46,14 @@ export class DeckOfflineService {
           deck.data.background = null;
         }
 
+        if (deck.data.header && FirestoreUtils.shouldAttributeBeCleaned(deck.data.header)) {
+          deck.data.header = null;
+        }
+
+        if (deck.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deck.data.footer)) {
+          deck.data.footer = null;
+        }
+
         deck.data.attributes = (await OfflineUtils.cleanAttributes(deck.data.attributes)) as DeckAttributes;
 
         await set(`/decks/${deck.id}`, deck);
