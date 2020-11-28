@@ -357,6 +357,14 @@ export class OfflineService {
           deckStore.state.deck.data.background = null;
         }
 
+        if (deckStore.state.deck.data.header && FirestoreUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.header)) {
+          deckStore.state.deck.data.header = null;
+        }
+
+        if (deckStore.state.deck.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.footer)) {
+          deckStore.state.deck.data.footer = null;
+        }
+
         await set(`/decks/${deckStore.state.deck.id}`, deckStore.state.deck);
 
         this.progress(0.5);
@@ -689,6 +697,16 @@ export class OfflineService {
         if (deck.data.background === null) {
           // @ts-ignore
           deck.data.background = firebase.firestore.FieldValue.delete();
+        }
+
+        if (deck.data.header === null) {
+          // @ts-ignore
+          deck.data.header = firebase.firestore.FieldValue.delete();
+        }
+
+        if (deck.data.footer === null) {
+          // @ts-ignore
+          deck.data.footer = firebase.firestore.FieldValue.delete();
         }
 
         const persistedDeck: Deck = await this.deckOnlineService.update(deck);

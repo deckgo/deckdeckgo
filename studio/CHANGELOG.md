@@ -1,3 +1,10 @@
+# 3.2.0 (2020-11-28)
+
+### Fix
+
+- offline header and footer if not defined
+- offline firestore delete fields comparison
+
 # 3.1.0 (2020-11-22)
 
 ### Features
