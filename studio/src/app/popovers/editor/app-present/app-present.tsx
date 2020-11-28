@@ -1,7 +1,12 @@
 import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment} from '@stencil/core';
 
 import {isIPad, isMobile} from '@deckdeckgo/utils';
+
+import remoteStore from '../../../stores/remote.store';
+
 import {MoreAction} from '../../../utils/editor/more-action';
+
+import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-present',
@@ -19,6 +24,12 @@ export class AppRemoteRequest {
   @Event()
   toggleFullScreen: EventEmitter<void>;
 
+  private remoteService: RemoteService;
+
+  constructor() {
+    this.remoteService = RemoteService.getInstance();
+  }
+
   componentWillLoad() {
     this.fullscreenEnable = !isIPad() && !isMobile();
   }
@@ -34,6 +45,22 @@ export class AppRemoteRequest {
     await this.closePopover();
   }
 
+  private async openPresenter() {
+    const room: string | null = await this.remoteService.getRoom();
+
+    if (!room || room === '') {
+      return;
+    }
+
+    window?.open(`https://deckdeckgo.app/remote/${room}`, '_blank');
+
+    await this.closePopover();
+  }
+
+  private async toggleRemoteEnabled() {
+    await this.remoteService.switch(!remoteStore.state.remote);
+  }
+
   render() {
     return (
       <div class="ion-padding">
@@ -42,19 +69,49 @@ export class AppRemoteRequest {
         {this.renderRemoteControl()}
 
         {this.renderPresenterView()}
+
+        <ion-list>
+          <ion-item>
+            {this.renderLabel()}
+            <ion-toggle slot="end" mode="md" color="dark" checked={remoteStore.state.remote} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+          </ion-item>
+        </ion-list>
       </div>
     );
+  }
+
+  private renderLabel() {
+    if (remoteStore.state.remote) {
+      return (
+        <ion-label>
+          <small>Remote control is enabled</small>
+        </ion-label>
+      );
+    } else {
+      return (
+        <ion-label>
+          <small>Remote control is disabled</small>
+        </ion-label>
+      );
+    }
   }
 
   private renderPresenterView() {
     return (
       <Fragment>
-        <p class="title">
+        <p class={remoteStore.state.remote ? 'title' : 'title disabled'}>
           <strong>Presenter view</strong>
         </p>
-        <p>Use all the remote features on this device with a control panel.</p>
+        <p class={remoteStore.state.remote ? '' : 'disabled'}>Use all the remote features on this device with a control panel.</p>
 
-        <ion-button type="submit" color="medium" size="small" shape="round" class="ion-margin-bottom">
+        <ion-button
+          type="submit"
+          color="medium"
+          size="small"
+          shape="round"
+          class="ion-margin-bottom"
+          disabled={!remoteStore.state.remote}
+          onClick={() => this.openPresenter()}>
           <ion-label>Open presenter view</ion-label>
         </ion-button>
       </Fragment>
@@ -64,12 +121,20 @@ export class AppRemoteRequest {
   private renderRemoteControl() {
     return (
       <Fragment>
-        <p class="title">
+        <p class={remoteStore.state.remote ? 'title' : 'title disabled'}>
           <strong>Remote control</strong>
         </p>
-        <p>Control your presentation from your phone or tablet where you can also see your notes, set a timer and draw over your slides.</p>
+        <p class={remoteStore.state.remote ? '' : 'disabled'}>
+          Control your presentation from your phone or tablet where you can also see your notes, set a timer and draw over your slides.
+        </p>
 
-        <ion-button type="submit" color="medium" size="small" shape="round" onClick={() => this.closePopover(MoreAction.REMOTE)}>
+        <ion-button
+          type="submit"
+          color="medium"
+          size="small"
+          shape="round"
+          disabled={!remoteStore.state.remote}
+          onClick={() => this.closePopover(MoreAction.REMOTE)}>
           <ion-label>Connect</ion-label>
         </ion-button>
       </Fragment>

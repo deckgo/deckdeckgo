@@ -84,10 +84,6 @@ export class AppRemoteConnect {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private async toggleRemoteEnabled() {
-    await this.remoteService.switch(!remoteStore.state.remote);
-  }
-
   private initQRCodeURI(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const room: string = await this.remoteService.getRoom();
@@ -114,7 +110,7 @@ export class AppRemoteConnect {
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-          <p>Remote control your presentation with your phone or any devices.</p>
+          <p>Control your presentation from your phone, tablet or any devices where you can also see your notes, set a timer and draw over your slides.</p>
           <p class="no-padding-bottom">
             Scan the QR-Code or get the Progressive Web Apps at{' '}
             <a href="https://deckdeckgo.app" target="_blank" rel="noopener noreferrer">
@@ -122,40 +118,13 @@ export class AppRemoteConnect {
             </a>
           </p>
 
-          <div class="qrcode-container">
+          <div class="qrcode-container" style={remoteStore.state.remote ? {} : {opacity: '0.4'}}>
             <deckgo-qrcode content={this.qrCodeURI}>
               <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
             </deckgo-qrcode>
           </div>
-
-          <ion-list>
-            <ion-item>
-              {this.renderLabel()}
-              <ion-toggle slot="end" mode="md" checked={remoteStore.state.remote} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
-            </ion-item>
-          </ion-list>
-
-          <p>
-            <small>If you can't connect or loose the connection, toggle off and on the remote to restart.</small>
-          </p>
         </ion-content>
       </Fragment>
     );
-  }
-
-  private renderLabel() {
-    if (remoteStore.state.remote) {
-      return (
-        <ion-label>
-          Remote control is currently <strong>enabled</strong>
-        </ion-label>
-      );
-    } else {
-      return (
-        <ion-label>
-          Remote control is currently <strong>disabled</strong>
-        </ion-label>
-      );
-    }
   }
 }

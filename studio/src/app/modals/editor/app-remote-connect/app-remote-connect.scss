@@ -1,22 +1,6 @@
 app-remote-connect {
-  ion-list {
-    ion-item {
-      --border-color: transparent;
-      --padding-start: 0;
-      --inner-padding-end: 0;
-
-      ion-label[class*="sc-ion-label"] {
-        font-size: var(--font-size-normal);
-
-        &.disabled {
-          opacity: 0.2;
-        }
-      }
-    }
-  }
-
   p:first-of-type {
-    margin-top: 8px;
+    margin-top: 0;
   }
 
   p:last-of-type {

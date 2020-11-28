@@ -2,4 +2,16 @@ app-present {
   p.title:not(:first-of-type) {
     padding-top: 8px;
   }
+
+  p.disabled {
+    opacity: 0.4;
+  }
+
+  ion-list {
+    ion-item {
+      --border-color: transparent;
+      --padding-start: 0;
+      --inner-padding-end: 0;
+    }
+  }
 }

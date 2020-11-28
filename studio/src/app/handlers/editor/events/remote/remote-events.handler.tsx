@@ -444,7 +444,7 @@ export class RemoteEventsHandler {
 
   private disconnect(): Promise<void> {
     return new Promise(async (resolve) => {
-      const deckgoRemoteElement: any = this.el.querySelector('deckgo-remote');
+      const deckgoRemoteElement: HTMLDeckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
       if (!deckgoRemoteElement) {
         resolve();
