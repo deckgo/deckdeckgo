@@ -1,9 +1,14 @@
 # 3.2.0 (2020-11-28)
 
+### Features
+
+- fullscreen and remote together under a new "present" panel ([#1020](https://github.com/deckgo/deckdeckgo/pull/1020))
+- offline: download backup ([#1015](https://github.com/deckgo/deckdeckgo/issues/1015))
+
 ### Fix
 
-- offline header and footer if not defined
-- offline firestore delete fields comparison
+- offline: header and footer if not defined
+- offline: firestore delete fields comparison
 
 # 3.1.0 (2020-11-22)
 

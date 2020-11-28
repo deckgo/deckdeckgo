@@ -1,3 +1,9 @@
+<a name="3.2.0"></a>
+
+# [3.2.0](https://github.com/deckgo/deckdeckgo/compare/v3.1.0...v3.2.0) (2020-11-28)
+
+- - studio: v3.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 <a name="3.1.0"></a>
 
 # [3.1.0](https://github.com/deckgo/deckdeckgo/compare/v3.0.0...v3.1.0) (2020-11-22)
