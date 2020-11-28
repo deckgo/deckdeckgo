@@ -1,6 +1,8 @@
 import {Build, Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
 
-import {ItemReorderEventDetail, modalController, OverlayEventDetail} from '@ionic/core';
+import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+
+import {get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
@@ -505,17 +507,37 @@ export class AppEditor {
     await this.actionsEditorRef.touch(element);
   }
 
-  private toggleFullScreen(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.deckRef) {
-        resolve();
-        return;
-      }
+  @Listen('toggleFullScreen', {target: 'window'})
+  async onToggleFullScreen() {
+    if (!this.deckRef) {
+      return;
+    }
 
-      await this.editorEventsHandler.selectDeck();
-      await this.deckRef.toggleFullScreen();
-      resolve();
+    await this.editorEventsHandler.selectDeck();
+    await this.deckRef.toggleFullScreen();
+
+    await this.openFullscreenInfo();
+  }
+
+  private async openFullscreenInfo() {
+    const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_fullscreen_info');
+
+    if (infoDisplayedOnce) {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-fullscreen-info',
+      mode: 'ios',
+      cssClass: 'info',
+      showBackdrop: true,
     });
+
+    popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+      await set('deckdeckgo_display_fullscreen_info', true);
+    });
+
+    await popover.present();
   }
 
   private initWindowResize() {
@@ -743,7 +765,6 @@ export class AppEditor {
         onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
         onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
         onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
-        onToggleFullScreen={() => this.toggleFullScreen()}
         onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
         onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
         onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>,

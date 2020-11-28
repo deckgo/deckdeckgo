@@ -1,0 +1,26 @@
+app-remote-connect {
+  p:first-of-type {
+    margin-top: 0;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  p.no-padding-bottom {
+    margin-bottom: 0;
+  }
+
+  div.qrcode-container {
+    display: flex;
+    justify-content: center;
+
+    deckgo-qrcode {
+      --deckgo-qrcode-size: 316px;
+    }
+
+    ion-icon {
+      color: transparent;
+    }
+  }
+}

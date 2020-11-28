@@ -1,10 +1,7 @@
-import {Component, Element, Event, EventEmitter, h, JSX, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
-import {isIPad} from '@deckdeckgo/utils';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
-
-import {get, set} from 'idb-keyval';
 
 import offlineStore from '../../../../../stores/offline.store';
 import remoteStore from '../../../../../stores/remote.store';
@@ -54,17 +51,12 @@ export class AppActionsDeck {
   @Event()
   private selectDeck: EventEmitter<void>;
 
-  @State()
-  private fullscreenEnable: boolean = true;
-
   private destroyListener;
 
   async componentWillLoad() {
-    this.fullscreenEnable = !isIPad();
-
     this.destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
       if (requests && requests.length > 0) {
-        await this.clickToOpenRemote();
+        await this.openRemoteControlRequest();
       }
 
       this.destroyListener();
@@ -91,15 +83,22 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  private async openRemoteControl($event: UIEvent, component: string) {
+  private async openRemoteControlRequest() {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: component,
-      event: $event,
+      component: 'app-remote-request',
       mode: 'ios',
       cssClass: 'info',
     });
 
     await popover.present();
+  }
+
+  private async openRemoteControlConnect() {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-remote-connect',
+    });
+
+    await modal.present();
   }
 
   private async openEmbed() {
@@ -126,8 +125,8 @@ export class AppActionsDeck {
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data) {
-        if (detail.data.action === MoreAction.FULLSCREEN) {
-          await this.toggleFullScreenMode();
+        if (detail.data.action === MoreAction.PRESENT) {
+          await this.openPresent($event);
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.SHARE) {
@@ -138,8 +137,6 @@ export class AppActionsDeck {
           };
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
-        } else if (detail.data.action === MoreAction.STYLE) {
-          await this.openDeckStyle();
         } else if (detail.data.action === MoreAction.EMBED) {
           await this.openEmbed();
         } else if (detail.data.action === MoreAction.OFFLINE) {
@@ -151,35 +148,8 @@ export class AppActionsDeck {
     await popover.present();
   }
 
-  private toggleFullScreenMode(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toggleFullScreen.emit();
-
-      await this.openFullscreenInfo();
-
-      resolve();
-    });
-  }
-
-  private async openFullscreenInfo() {
-    const infoDisplayedOnce: boolean = await get<boolean>('deckdeckgo_display_fullscreen_info');
-
-    if (infoDisplayedOnce) {
-      return;
-    }
-
-    const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-fullscreen-info',
-      mode: 'ios',
-      cssClass: 'info',
-      showBackdrop: true,
-    });
-
-    popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-      await set('deckdeckgo_display_fullscreen_info', true);
-    });
-
-    await popover.present();
+  private async toggleFullScreenMode() {
+    this.toggleFullScreen.emit();
   }
 
   async openDeckStyle() {
@@ -212,40 +182,36 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  private async clickToOpenRemote() {
-    if (remoteStore.state.connectionState !== ConnectionState.CONNECTED) {
-      let button: HTMLElement = this.el.querySelector('button.open-remote');
-
-      if (!button) {
-        return;
-      }
-
-      const style: CSSStyleDeclaration = window.getComputedStyle(button);
-
-      // Actions are grouped in a popover on small devices?
-      if (style.display === 'none') {
-        button = this.el.querySelector('button.open-remote-small-devices');
-
-        if (!button) {
-          return;
-        }
-      }
-
-      // We click to button as we want to pass $event to the popover to stick it next to the button
-      button.click();
-    }
-  }
-
-  private async openRemote($event: UIEvent) {
+  private async openRemote() {
     const connected: boolean =
       remoteStore.state.connectionState !== ConnectionState.DISCONNECTED && remoteStore.state.connectionState !== ConnectionState.NOT_CONNECTED;
 
     if (connected && remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length > 0) {
       await this.closeRemote();
-      await this.openRemoteControl($event, 'app-remote-request');
+      await this.openRemoteControlRequest();
     } else {
-      await this.openRemoteControl($event, 'app-remote-connect');
+      await this.openRemoteControlConnect();
     }
+  }
+
+  private async openPresent($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-present',
+      componentProps: {
+        fullscreen: this.fullscreen,
+      },
+      event: $event,
+      mode: 'ios',
+      cssClass: 'info',
+    });
+
+    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail?.data.action === MoreAction.REMOTE) {
+        await this.openRemote();
+      }
+    });
+
+    await popover.present();
   }
 
   private async closeRemote() {
@@ -294,32 +260,32 @@ export class AppActionsDeck {
             aria-label="Slides"
             onClick={() => this.openSlideNavigate()}
             color="primary"
-            class="ion-activatable">
+            class="ion-activatable wider-devices">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/md-list.svg"></ion-icon>
             <ion-label aria-hidden="true">Slides</ion-label>
           </button>
 
-          <app-action-busy aria-label="Style" iconSrc="/assets/icons/ionicons/brush.svg" class="wider-devices" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy aria-label="Style" iconSrc="/assets/icons/ionicons/brush.svg" onActionReady={() => this.openDeckStyle()}>
             <ion-label aria-hidden="true">Style</ion-label>
           </app-action-busy>
+        </ion-buttons>
 
-          {this.renderFullscreenButton()}
+        <ion-buttons slot="end">
+          {this.renderExitFullscreenButton()}
 
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
             aria-label="Remote"
-            onClick={($event: UIEvent) => this.openRemote($event)}
+            onClick={($event: UIEvent) => this.openPresent($event)}
             color="primary"
             class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
-            <ion-label aria-hidden="true">Remote</ion-label>
+            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/play.svg"></ion-icon>
+            <ion-label aria-hidden="true">Present</ion-label>
           </button>
-        </ion-buttons>
 
-        <ion-buttons slot="end">
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
           <button
@@ -339,18 +305,6 @@ export class AppActionsDeck {
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            aria-label="Remote"
-            onClick={($event: UIEvent) => this.openRemote($event)}
-            color="primary"
-            class="small-devices open-remote-small-devices ion-activatable">
-            <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/phone-portrait.svg"></ion-icon>
-            <ion-label aria-hidden="true">Remote</ion-label>
-          </button>
-
-          <button
-            onMouseDown={($event) => $event.stopPropagation()}
-            onTouchStart={($event) => $event.stopPropagation()}
             onClick={(e: UIEvent) => this.openMoreActions(e)}
             color="primary"
             class="small-devices ion-activatable">
@@ -363,29 +317,21 @@ export class AppActionsDeck {
     );
   }
 
-  private renderFullscreenButton() {
-    if (this.fullscreenEnable) {
-      return (
-        <button
-          onMouseDown={($event) => $event.stopPropagation()}
-          onTouchStart={($event) => $event.stopPropagation()}
-          onClick={() => this.toggleFullScreenMode()}
-          color="primary"
-          class="wider-devices ion-activatable">
-          <ion-ripple-effect></ion-ripple-effect>
-          {this.renderFullscreen()}
-        </button>
-      );
-    } else {
+  private renderExitFullscreenButton() {
+    if (!this.fullscreen) {
       return undefined;
     }
-  }
 
-  private renderFullscreen() {
-    if (this.fullscreen) {
-      return [<ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon>, <ion-label aria-hidden="true">Exit fullscreen</ion-label>];
-    } else {
-      return [<ion-icon aria-hidden="true" src="/assets/icons/ionicons/expand.svg"></ion-icon>, <ion-label aria-hidden="true">Fullscreen</ion-label>];
-    }
+    return (
+      <button
+        onMouseDown={($event) => $event.stopPropagation()}
+        onTouchStart={($event) => $event.stopPropagation()}
+        onClick={() => this.toggleFullScreenMode()}
+        color="primary"
+        class="wider-devices ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon> <ion-label aria-hidden="true">Exit fullscreen</ion-label>
+      </button>
+    );
   }
 }
