@@ -237,7 +237,11 @@
     {"src": "/icons/word-cloud.svg", "ariaLabel": "Word Cloud"},
     {"src": "/icons/ionicons/color-wand.svg", "ariaLabel": "Transform element"},
     {"src": "/icons/ionicons/chevron-down.svg", "ariaLabel": "Chevron down"},
+    {"src": "/icons/ionicons/chevron-back.svg", "ariaLabel": "Chevron back"},
+    {"src": "/icons/ionicons/chevron-forward.svg", "ariaLabel": "Chevron forward"},
     {"src": "/icons/ionicons/settings.svg", "ariaLabel": "Settings"},
-    {"src": "/icons/text.svg", "ariaLabel": "Text"}
+    {"src": "/icons/text.svg", "ariaLabel": "Text"},
+    {"src": "/icons/ionicons/play.svg", "ariaLabel": "Present"},
+    {"src": "/icons/ionicons/download.svg", "ariaLabel": "Backup"}
   ]
 }

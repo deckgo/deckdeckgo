@@ -8,8 +8,11 @@ import remoteStore from '../../../../../stores/remote.store';
 import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
+import errorStore from '../../../../../stores/error.store';
 
 import {MoreAction} from '../../../../../utils/editor/more-action';
+
+import {BackupOfflineService} from '../../../../../services/editor/backup/backup.offline.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -226,6 +229,14 @@ export class AppActionsDeck {
     }
   }
 
+  private async backupOfflineData() {
+    try {
+      await BackupOfflineService.getInstance().backup();
+    } catch (err) {
+      errorStore.state.error = `Something went wrong. ${err}.`;
+    }
+  }
+
   render() {
     return (
       <ion-toolbar>
@@ -300,6 +311,8 @@ export class AppActionsDeck {
             {offlineStore.state.offline ? <ion-label aria-hidden="true">Go online</ion-label> : <ion-label aria-hidden="true">Go offline</ion-label>}
           </button>
 
+          {this.renderBackup()}
+
           <app-action-help class="wider-devices"></app-action-help>
 
           <button
@@ -331,6 +344,25 @@ export class AppActionsDeck {
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon> <ion-label aria-hidden="true">Exit fullscreen</ion-label>
+      </button>
+    );
+  }
+
+  private renderBackup() {
+    if (!offlineStore.state.offline) {
+      return undefined;
+    }
+
+    return (
+      <button
+        onMouseDown={($event) => $event.stopPropagation()}
+        onTouchStart={($event) => $event.stopPropagation()}
+        aria-label="Backup"
+        onClick={() => this.backupOfflineData()}
+        color="primary"
+        class="wider-devices ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon> <ion-label aria-hidden="true">Backup</ion-label>
       </button>
     );
   }
