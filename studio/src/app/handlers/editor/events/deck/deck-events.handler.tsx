@@ -1018,8 +1018,10 @@ export class DeckEventsHandler {
           e.setAttribute('editable', attrEditableValue);
         } else if (ParseElementsUtils.isElementContentEditable(e)) {
           e.setAttribute('contentEditable', attrEditableValue);
+          e.setAttribute('spellcheck', attrEditableValue);
         } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
           e.firstElementChild.setAttribute('contentEditable', attrEditableValue);
+          e.firstElementChild.setAttribute('spellcheck', attrEditableValue);
         }
       }
     });
