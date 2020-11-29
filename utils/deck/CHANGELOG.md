@@ -1,3 +1,11 @@
+<a name="3.3.0"></a>
+
+# 3.3.0 (2020-11-29)
+
+### Features
+
+- clean `spellcheck` with `cleanContent` function
+
 <a name="3.2.1"></a>
 
 # 3.2.1 (2020-11-15)
