@@ -133,6 +133,8 @@ export namespace Components {
     }
     interface AppCustomImages {
     }
+    interface AppCustomization {
+    }
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
@@ -337,6 +339,8 @@ export namespace Components {
     }
     interface AppPrivacy {
     }
+    interface AppProfile {
+    }
     interface AppPublish {
     }
     interface AppPublishDone {
@@ -375,8 +379,6 @@ export namespace Components {
         "transition": boolean;
     }
     interface AppServices {
-    }
-    interface AppSettings {
     }
     interface AppShape {
         "selectedElement": HTMLElement;
@@ -602,6 +604,12 @@ declare global {
     var HTMLAppCustomImagesElement: {
         prototype: HTMLAppCustomImagesElement;
         new (): HTMLAppCustomImagesElement;
+    };
+    interface HTMLAppCustomizationElement extends Components.AppCustomization, HTMLStencilElement {
+    }
+    var HTMLAppCustomizationElement: {
+        prototype: HTMLAppCustomizationElement;
+        new (): HTMLAppCustomizationElement;
     };
     interface HTMLAppDashboardElement extends Components.AppDashboard, HTMLStencilElement {
     }
@@ -981,6 +989,12 @@ declare global {
         prototype: HTMLAppPrivacyElement;
         new (): HTMLAppPrivacyElement;
     };
+    interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {
+    }
+    var HTMLAppProfileElement: {
+        prototype: HTMLAppProfileElement;
+        new (): HTMLAppProfileElement;
+    };
     interface HTMLAppPublishElement extends Components.AppPublish, HTMLStencilElement {
     }
     var HTMLAppPublishElement: {
@@ -1052,12 +1066,6 @@ declare global {
     var HTMLAppServicesElement: {
         prototype: HTMLAppServicesElement;
         new (): HTMLAppServicesElement;
-    };
-    interface HTMLAppSettingsElement extends Components.AppSettings, HTMLStencilElement {
-    }
-    var HTMLAppSettingsElement: {
-        prototype: HTMLAppSettingsElement;
-        new (): HTMLAppSettingsElement;
     };
     interface HTMLAppShapeElement extends Components.AppShape, HTMLStencilElement {
     }
@@ -1197,6 +1205,7 @@ declare global {
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
+        "app-customization": HTMLAppCustomizationElement;
         "app-dashboard": HTMLAppDashboardElement;
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
         "app-deck-delete": HTMLAppDeckDeleteElement;
@@ -1260,6 +1269,7 @@ declare global {
         "app-present": HTMLAppPresentElement;
         "app-press": HTMLAppPressElement;
         "app-privacy": HTMLAppPrivacyElement;
+        "app-profile": HTMLAppProfileElement;
         "app-publish": HTMLAppPublishElement;
         "app-publish-done": HTMLAppPublishDoneElement;
         "app-publish-edit": HTMLAppPublishEditElement;
@@ -1272,7 +1282,6 @@ declare global {
         "app-section-footer": HTMLAppSectionFooterElement;
         "app-select-target-element": HTMLAppSelectTargetElementElement;
         "app-services": HTMLAppServicesElement;
-        "app-settings": HTMLAppSettingsElement;
         "app-shape": HTMLAppShapeElement;
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
@@ -1438,6 +1447,8 @@ declare namespace LocalJSX {
     interface AppCustomData {
     }
     interface AppCustomImages {
+    }
+    interface AppCustomization {
     }
     interface AppDashboard {
     }
@@ -1667,6 +1678,8 @@ declare namespace LocalJSX {
     }
     interface AppPrivacy {
     }
+    interface AppProfile {
+    }
     interface AppPublish {
     }
     interface AppPublishDone {
@@ -1709,8 +1722,6 @@ declare namespace LocalJSX {
         "transition"?: boolean;
     }
     interface AppServices {
-    }
-    interface AppSettings {
     }
     interface AppShape {
         "selectedElement"?: HTMLElement;
@@ -1794,6 +1805,7 @@ declare namespace LocalJSX {
         "app-create-slide": AppCreateSlide;
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
+        "app-customization": AppCustomization;
         "app-dashboard": AppDashboard;
         "app-dashboard-deck-actions": AppDashboardDeckActions;
         "app-deck-delete": AppDeckDelete;
@@ -1857,6 +1869,7 @@ declare namespace LocalJSX {
         "app-present": AppPresent;
         "app-press": AppPress;
         "app-privacy": AppPrivacy;
+        "app-profile": AppProfile;
         "app-publish": AppPublish;
         "app-publish-done": AppPublishDone;
         "app-publish-edit": AppPublishEdit;
@@ -1869,7 +1882,6 @@ declare namespace LocalJSX {
         "app-section-footer": AppSectionFooter;
         "app-select-target-element": AppSelectTargetElement;
         "app-services": AppServices;
-        "app-settings": AppSettings;
         "app-shape": AppShape;
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
@@ -1923,6 +1935,7 @@ declare module "@stencil/core" {
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
+            "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
             "app-dashboard": LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
@@ -1986,6 +1999,7 @@ declare module "@stencil/core" {
             "app-present": LocalJSX.AppPresent & JSXBase.HTMLAttributes<HTMLAppPresentElement>;
             "app-press": LocalJSX.AppPress & JSXBase.HTMLAttributes<HTMLAppPressElement>;
             "app-privacy": LocalJSX.AppPrivacy & JSXBase.HTMLAttributes<HTMLAppPrivacyElement>;
+            "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-publish": LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
             "app-publish-done": LocalJSX.AppPublishDone & JSXBase.HTMLAttributes<HTMLAppPublishDoneElement>;
             "app-publish-edit": LocalJSX.AppPublishEdit & JSXBase.HTMLAttributes<HTMLAppPublishEditElement>;
@@ -1998,7 +2012,6 @@ declare module "@stencil/core" {
             "app-section-footer": LocalJSX.AppSectionFooter & JSXBase.HTMLAttributes<HTMLAppSectionFooterElement>;
             "app-select-target-element": LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
             "app-services": LocalJSX.AppServices & JSXBase.HTMLAttributes<HTMLAppServicesElement>;
-            "app-settings": LocalJSX.AppSettings & JSXBase.HTMLAttributes<HTMLAppSettingsElement>;
             "app-shape": LocalJSX.AppShape & JSXBase.HTMLAttributes<HTMLAppShapeElement>;
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
