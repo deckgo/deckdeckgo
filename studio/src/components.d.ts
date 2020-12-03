@@ -418,7 +418,7 @@ export namespace Components {
         "username": string;
     }
     interface AppUserInfo {
-        "avatarColSize": number;
+        "displayAvatar": boolean;
     }
     interface AppUserMenu {
     }
@@ -1764,7 +1764,7 @@ declare namespace LocalJSX {
         "username"?: string;
     }
     interface AppUserInfo {
-        "avatarColSize"?: number;
+        "displayAvatar"?: boolean;
     }
     interface AppUserMenu {
     }

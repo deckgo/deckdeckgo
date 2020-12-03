@@ -5,14 +5,17 @@ app-user-info {
 
   ion-grid {
     --deckgo-avatar-size: 3rem;
-    height: 96px;
+
+    &.avatar {
+      height: 96px;
+    }
 
     ion-row {
       height: 100%;
     }
 
-    padding: var(--deckgo-user-info-padding, 16px 8px);
-    margin: var(--deckgo-user-info-margin, 16px 0 0 0);
+    padding: var(--deckgo-user-info-padding, 16px 14px 0);
+    margin: var(--deckgo-user-info-margin, 0);
 
     ion-col {
       display: flex;

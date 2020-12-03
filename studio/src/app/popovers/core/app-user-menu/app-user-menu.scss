@@ -1,16 +1,14 @@
 app-user-menu {
-  ion-grid {
-    margin-top: 12px;
-  }
-
   hr {
     background: var(--ion-color-light);
-    width: 80%;
+    margin-top: 12px;
+    width: 88%;
   }
 
   ion-list.list-ios {
+    margin-top: 0;
     margin-bottom: 0;
-    padding-top: 8px;
+    padding-top: 0;
     padding-bottom: 8px;
   }
 
