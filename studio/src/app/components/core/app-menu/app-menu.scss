@@ -12,5 +12,33 @@ ion-menu {
         }
       }
     }
+
+    app-expansion-panel {
+      border: 0;
+      box-shadow: none;
+      border-radius: 0;
+      margin: 4px 0 0;
+
+      > article {
+        background: transparent;
+
+        ion-icon[slot="icon"] {
+          font-size: 24px;
+          margin: 0;
+
+          &.ios {
+            font-size: 1.6em;
+          }
+        }
+      }
+
+      ion-list.settings {
+        padding: 0;
+
+        ion-item {
+          --padding-start: 32px;
+        }
+      }
+    }
   }
 }
