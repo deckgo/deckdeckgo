@@ -10,17 +10,20 @@ import apiUserStore from '../../../stores/api.user.store';
 })
 export class AppUserInfo {
   @Prop()
-  avatarColSize: number = 4;
+  displayAvatar: boolean = false;
 
   render() {
     if (authStore.state.authUser) {
       return (
-        <ion-grid>
+        <ion-grid class={this.displayAvatar ? 'avatar' : ''}>
           <ion-row class="ion-align-items-center">
-            <ion-col size={'' + this.avatarColSize}>
-              <app-avatar src={userStore.state.photoUrl} aria-hidden="true"></app-avatar>
-            </ion-col>
-            <ion-col size={'' + (12 - this.avatarColSize)} class="user-info">
+            {this.displayAvatar ? (
+              <ion-col size="3">
+                <app-avatar src={userStore.state.photoUrl} aria-hidden="true"></app-avatar>
+              </ion-col>
+            ) : undefined}
+
+            <ion-col size={this.displayAvatar ? '9' : '12'} class="user-info">
               <ion-label>{userStore.state.name}</ion-label>
               <ion-label>
                 {!authStore.state.authUser.anonymous && apiUserStore.state.apiUser && apiUserStore.state.apiUser.username

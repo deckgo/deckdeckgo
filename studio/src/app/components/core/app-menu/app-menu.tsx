@@ -54,8 +54,8 @@ export class AppMenu {
   private renderUser() {
     if (authStore.state.loggedIn) {
       return (
-        <ion-item class="user ion-margin-bottom">
-          <app-user-info avatarColSize={3}></app-user-info>
+        <ion-item class="user">
+          <app-user-info displayAvatar={true}></app-user-info>
         </ion-item>
       );
     } else {
