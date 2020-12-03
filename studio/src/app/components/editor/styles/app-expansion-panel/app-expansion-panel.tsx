@@ -21,7 +21,9 @@ export class AppExpansionPanel {
     }
   }
 
-  private toggle() {
+  private toggle($event: UIEvent) {
+    $event.stopPropagation();
+
     if (this.expanded === 'close') {
       this.expand();
     } else {
@@ -72,11 +74,15 @@ export class AppExpansionPanel {
   render() {
     return (
       <article class={this.expanded}>
-        <ion-item button onClick={() => this.toggle()} class={this.expander ? undefined : 'hidden'}>
+        <ion-item button onClick={($event: UIEvent) => this.toggle($event)} class={this.expander ? undefined : 'hidden'}>
           <div>
             <slot name="title"></slot>
           </div>
-          <ion-icon slot="start" src="/assets/icons/ionicons/chevron-down.svg"></ion-icon>
+          <div slot="start">
+            <slot name="icon">
+              <ion-icon src="/assets/icons/ionicons/chevron-down.svg"></ion-icon>
+            </slot>
+          </div>
           <div slot="end">
             <slot name="info"></slot>
           </div>

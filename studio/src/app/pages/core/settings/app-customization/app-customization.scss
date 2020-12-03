@@ -1,0 +1,18 @@
+app-customization {
+  main {
+    background: white;
+
+    ion-list.dark-light-list {
+      padding-bottom: 0;
+
+      ion-item {
+        --padding-start: 0;
+        --border-color: transparent;
+
+        ion-toggle {
+          padding-right: 8px;
+        }
+      }
+    }
+  }
+}

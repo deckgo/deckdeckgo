@@ -123,10 +123,21 @@ export class AppMenu {
 
   private renderSettings() {
     return (
-      <ion-item button class="home" href="/settings" routerDirection="forward">
-        <ion-icon lazy={true} name="settings-outline" slot="start"></ion-icon>
-        <ion-label>Settings</ion-label>
-      </ion-item>
+      <app-expansion-panel expanded="close">
+        <ion-label slot="title">Settings</ion-label>
+        <ion-icon lazy={true} name="settings-outline" slot="icon"></ion-icon>
+
+        <ion-list class="settings">
+          <ion-item button class="home" href="/settings/profile" routerDirection="forward">
+            <ion-label>Profile</ion-label>
+            <ion-icon lazy={true} name="person-outline" slot="start"></ion-icon>
+          </ion-item>
+          <ion-item button class="home" href="/settings/customization" routerDirection="forward">
+            <ion-label>Customization</ion-label>
+            <ion-icon lazy={true} name="color-palette-outline" slot="start"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </app-expansion-panel>
     );
   }
 }

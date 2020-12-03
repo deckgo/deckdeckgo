@@ -184,7 +184,9 @@ export class AppRoot {
           <ion-route url="/editor" component="app-editor" />
           <ion-route url="/editor/:deckId" component="app-editor" />
 
-          <ion-route url="/settings" component="app-settings" />
+          <ion-route url="/settings" component="app-profile" />
+          <ion-route url="/settings/profile" component="app-profile" />
+          <ion-route url="/settings/customization" component="app-customization" />
 
           <ion-route url="/dashboard" component="app-dashboard" />
 

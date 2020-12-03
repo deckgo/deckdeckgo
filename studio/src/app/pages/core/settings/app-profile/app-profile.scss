@@ -1,4 +1,4 @@
-app-settings {
+app-profile {
   main {
     background: white;
 
@@ -47,23 +47,6 @@ app-settings {
 
     h1.danger-zone {
       margin-top: 64px;
-    }
-
-    h1.profile {
-      margin-top: 48px;
-    }
-
-    ion-list.dark-light-list {
-      padding-bottom: 0;
-
-      ion-item {
-        --padding-start: 0;
-        --border-color: transparent;
-
-        ion-toggle {
-          padding-right: 8px;
-        }
-      }
     }
   }
 }

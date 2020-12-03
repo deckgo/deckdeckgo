@@ -5,33 +5,31 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from '@firebase/auth-types';
 
-import themeStore from '../../../stores/theme.store';
-import errorStore from '../../../stores/error.store';
-import navStore, {NavDirection} from '../../../stores/nav.store';
-import authStore from '../../../stores/auth.store';
-import userStore from '../../../stores/user.store';
-import apiUserStore from '../../../stores/api.user.store';
+import errorStore from '../../../../stores/error.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
+import authStore from '../../../../stores/auth.store';
+import userStore from '../../../../stores/user.store';
+import apiUserStore from '../../../../stores/api.user.store';
 
-import {ApiUser} from '../../../models/api/api.user';
-import {User} from '../../../models/data/user';
+import {ApiUser} from '../../../../models/api/api.user';
+import {User} from '../../../../models/data/user';
 
-import {UserUtils} from '../../../utils/core/user-utils';
+import {UserUtils} from '../../../../utils/core/user-utils';
 
-import {ApiUserService} from '../../../services/api/user/api.user.service';
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-import {UserService} from '../../../services/data/user/user.service';
-import {StorageService} from '../../../services/storage/storage.service';
-import {ApiUserFactoryService} from '../../../services/api/user/api.user.factory.service';
-import {ThemeService} from '../../../services/theme/theme.service';
+import {ApiUserService} from '../../../../services/api/user/api.user.service';
+import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
+import {UserService} from '../../../../services/data/user/user.service';
+import {StorageService} from '../../../../services/storage/storage.service';
+import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {EnvironmentDeckDeckGoConfig} from '../../../../services/core/environment/environment-config';
+import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 @Component({
-  tag: 'app-settings',
-  styleUrl: 'app-settings.scss',
+  tag: 'app-profile',
+  styleUrl: 'app-profile.scss',
 })
-export class AppHome {
+export class AppProfile {
   @Element() el: HTMLElement;
 
   @State()
@@ -64,8 +62,6 @@ export class AppHome {
 
   private storageService: StorageService;
 
-  private themeService: ThemeService;
-
   @State()
   private twitter: string = undefined;
 
@@ -94,7 +90,6 @@ export class AppHome {
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = UserService.getInstance();
     this.storageService = StorageService.getInstance();
-    this.themeService = ThemeService.getInstance();
   }
 
   async componentDidLoad() {
@@ -457,7 +452,7 @@ export class AppHome {
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
         <main class="ion-padding">
-          {this.renderDarkLightToggle()}
+          <h1>Profile</h1>
           {this.renderGuardedContent()}
         </main>
       </ion-content>,
@@ -485,7 +480,6 @@ export class AppHome {
 
   private renderUserContent() {
     return [
-      <h1 class="profile">Profile</h1>,
       <form onSubmit={(e: Event) => this.handleSubmit(e)}>
         <ion-list class="inputs-list">
           {this.renderName()}
@@ -551,24 +545,6 @@ export class AppHome {
           disabled={this.saving}
           onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
       </div>,
-    ];
-  }
-
-  async toggleTheme() {
-    await this.themeService.switch(!themeStore.state.darkTheme);
-  }
-
-  private renderDarkLightToggle() {
-    return [
-      <h1>Settings</h1>,
-      <ion-list class="inputs-list dark-light-list">
-        <ion-item>
-          <ion-label>
-            {themeStore.state.darkTheme ? 'Dark' : 'Light'} theme {themeStore.state.darkTheme ? '🌑' : '☀️'}
-          </ion-label>
-          <ion-toggle slot="end" checked={themeStore.state.darkTheme} mode="md" color="medium" onIonChange={() => this.toggleTheme()}></ion-toggle>
-        </ion-item>
-      </ion-list>,
     ];
   }
 

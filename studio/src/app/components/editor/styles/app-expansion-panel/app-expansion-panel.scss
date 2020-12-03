@@ -23,8 +23,11 @@ app-expansion-panel {
         display: none;
       }
 
-      > ion-icon {
-        margin: 12px 8px 12px 0;
+      div[slot="start"] {
+        margin: 8px 8px 8px 0;
+      }
+
+      ion-icon {
         color: black;
         font-size: var(--font-size-small);
 
@@ -40,7 +43,7 @@ app-expansion-panel {
 
     &.close {
       > ion-item {
-        > ion-icon {
+        ion-icon {
           transform: rotate(-90deg);
         }
 
