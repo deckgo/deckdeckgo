@@ -1,0 +1,14 @@
+[
+  {
+    "name": "deckgo-slide-title",
+    "slots": [
+      {
+        "name": "title"
+      },
+      {
+        "name": "content"
+      }
+    ],
+    "license": "MIT"
+  }
+]

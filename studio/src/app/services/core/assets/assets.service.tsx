@@ -15,6 +15,7 @@ export class AssetsService {
     return AssetsService.instance;
   }
 
+  // TODO: should / can be a store
   async assets(): Promise<Assets> {
     if (this.assetsList === undefined) {
       this.assetsList = await this.init();

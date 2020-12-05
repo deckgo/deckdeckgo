@@ -190,7 +190,7 @@ export class AppActionsElement {
   }
 
   private isImgNotDefined(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG && !element.hasAttribute('img-src');
+    return element?.nodeName?.toLowerCase() === SlotType.IMG && !element.hasAttribute('img-src');
   }
 
   @Method()
@@ -235,23 +235,23 @@ export class AppActionsElement {
   }
 
   private isElementSlide(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase().indexOf('deckgo-slide') > -1;
+    return element?.nodeName?.toLowerCase().indexOf('deckgo-slide') > -1;
   }
 
   private isElementCode(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.CODE;
+    return element?.nodeName?.toLowerCase() === SlotType.CODE;
   }
 
   private isElementMath(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MATH;
+    return element?.nodeName?.toLowerCase() === SlotType.MATH;
   }
 
   private isElementWordcloud(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.WORD_CLOUD;
+    return element?.nodeName?.toLowerCase() === SlotType.WORD_CLOUD;
   }
 
   private isElementMarkdown(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.MARKDOWN;
+    return element?.nodeName?.toLowerCase() === SlotType.MARKDOWN;
   }
 
   private isElementShape(element: HTMLElement): 'shape' | 'text' | undefined {
@@ -263,7 +263,7 @@ export class AppActionsElement {
   }
 
   private isElementImage(element: HTMLElement): boolean {
-    return element && element.nodeName && element.nodeName.toLowerCase() === SlotType.IMG;
+    return element?.nodeName?.toLowerCase() === SlotType.IMG;
   }
 
   private cleanOnPaste = async ($event) => {

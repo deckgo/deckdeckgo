@@ -1,12 +1,16 @@
-import {Component, Element, Event, EventEmitter, h, JSX, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
+
+import {SegmentChangeEventDetail} from '@ionic/core';
 
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
+import templatesStore from '../../../stores/templates.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
 import {Deck} from '../../../models/data/deck';
+import {Template} from '../../../models/data/template';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
@@ -42,6 +46,9 @@ export class AppCreateSlide {
 
   @State()
   private elements: SlotType[] | undefined = undefined;
+
+  @State()
+  private templatesCategory: 'default' | 'community' | 'user' = 'default';
 
   @Event() signIn: EventEmitter<void>;
 
@@ -250,16 +257,46 @@ export class AppCreateSlide {
   }
 
   render() {
-    return [
-      <ion-toolbar>
-        {this.renderToolbarTitle()}
-        {this.renderToolbarAction()}
-      </ion-toolbar>,
-      <div class={`container ion-margin-bottom ${this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''}`}>
-        {this.renderTemplates()}
-        {this.renderCompose()}
-      </div>,
-    ];
+    return (
+      <Fragment>
+        <ion-toolbar>
+          {this.renderToolbarTitle()}
+          {this.renderToolbarAction()}
+        </ion-toolbar>
+
+        {this.renderTemplatesCategory()}
+
+        <div class={`container ion-margin-bottom ${this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''}`}>
+          {this.renderTemplatesDefault()}
+          {this.renderTemplatesCommunity()}
+          {this.renderCompose()}
+        </div>
+      </Fragment>
+    );
+  }
+
+  private renderTemplatesCategory() {
+    return (
+      <ion-segment
+        mode="md"
+        value={this.templatesCategory}
+        color="dark"
+        class="ion-padding-bottom"
+        onIonChange={($event: CustomEvent<SegmentChangeEventDetail>) => (this.templatesCategory = $event?.detail?.value as 'default' | 'community' | 'user')}
+        disabled={this.composeTemplate !== undefined}>
+        <ion-segment-button mode="md" value="default">
+          <ion-label>Default</ion-label>
+        </ion-segment-button>
+
+        <ion-segment-button mode="md" value="community">
+          <ion-label>Community</ion-label>
+        </ion-segment-button>
+
+        <ion-segment-button mode="md" value="user">
+          <ion-label>Yours</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    );
   }
 
   private renderToolbarTitle() {
@@ -282,46 +319,85 @@ export class AppCreateSlide {
     );
   }
 
-  private renderTemplates() {
+  private renderTemplatesCommunity() {
     if (this.composeTemplate !== undefined) {
       return undefined;
     }
 
-    return [
-      this.renderTitle(),
-      this.renderContent(),
+    if (this.templatesCategory !== 'community') {
+      return undefined;
+    }
 
-      this.renderSplit(),
-      this.renderVertical(),
+    if (templatesStore.state.community.length <= 0) {
+      return (
+        <Fragment>
+          <ion-label class="row">Share a template with the community. Follow this guide to get started.</ion-label>
 
-      this.renderDemo(),
-      this.renderPlayground(),
+          <ion-button
+            class="ion-margin-top"
+            shape="round"
+            href="/settings/templates"
+            routerDirection="forward"
+            mode="md"
+            color="primary"
+            onClick={() => this.closePopoverWithoutResults()}>
+            <ion-label>Share a template</ion-label>
+          </ion-button>
+        </Fragment>
+      );
+    }
 
-      this.renderYoutube(),
+    return templatesStore.state.community.map((_template: Template) => {
+      return this.renderTitle();
+    });
+  }
 
-      this.renderShapes(),
+  private renderTemplatesDefault() {
+    if (this.composeTemplate !== undefined) {
+      return undefined;
+    }
 
-      <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
-        <deckgo-slide-poll
-          class="showcase"
-          poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
-          poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
-          count-answers={3}
-          connectPollSocket={false}>
-          <p slot="question">Engage Your Audience / Poll</p>
-          <p slot="answer-1">Yes</p>
-          <p slot="answer-2">No</p>
-          <p slot="answer-3">Don't know</p>
-          <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
-        </deckgo-slide-poll>
-      </div>,
+    if (this.templatesCategory !== 'default') {
+      return undefined;
+    }
 
-      this.renderGif(),
-      this.renderChart(),
+    return (
+      <Fragment>
+        {this.renderTitle()}
+        {this.renderContent()}
 
-      this.renderQRCode(),
-      this.renderAuthor(),
-    ];
+        {this.renderSplit()}
+        {this.renderVertical()}
+
+        {this.renderDemo()}
+        {this.renderPlayground()}
+
+        {this.renderYoutube()}
+
+        {this.renderShapes()}
+
+        <div class="item" custom-tappable onClick={() => this.closePopover(SlideTemplate.POLL)}>
+          <deckgo-slide-poll
+            class="showcase"
+            poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
+            poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
+            count-answers={3}
+            connectPollSocket={false}>
+            <p slot="question">Engage Your Audience / Poll</p>
+            <p slot="answer-1">Yes</p>
+            <p slot="answer-2">No</p>
+            <p slot="answer-3">Don't know</p>
+            <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
+          </deckgo-slide-poll>
+        </div>
+
+        {this.renderGif()}
+        {this.renderChart()}
+
+        {this.renderQRCode()}
+        {this.renderAuthor()}
+      </Fragment>
+    );
   }
 
   private renderCompose() {

@@ -20,6 +20,7 @@ import { ListStyle } from "./app/utils/editor/list-style-type";
 import { TargetElement } from "./app/utils/editor/target-element";
 import { MoreAction } from "./app/utils/editor/more-action";
 import { ItemReorderEventDetail } from "@ionic/core";
+import { Template } from "./app/models/data/template";
 export namespace Components {
     interface AppAbout {
     }
@@ -408,6 +409,11 @@ export namespace Components {
         "skip": boolean;
     }
     interface AppTeam {
+    }
+    interface AppTemplate {
+        "template": Template | undefined;
+    }
+    interface AppTemplates {
     }
     interface AppTerms {
     }
@@ -1127,6 +1133,18 @@ declare global {
         prototype: HTMLAppTeamElement;
         new (): HTMLAppTeamElement;
     };
+    interface HTMLAppTemplateElement extends Components.AppTemplate, HTMLStencilElement {
+    }
+    var HTMLAppTemplateElement: {
+        prototype: HTMLAppTemplateElement;
+        new (): HTMLAppTemplateElement;
+    };
+    interface HTMLAppTemplatesElement extends Components.AppTemplates, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesElement: {
+        prototype: HTMLAppTemplatesElement;
+        new (): HTMLAppTemplatesElement;
+    };
     interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {
     }
     var HTMLAppTermsElement: {
@@ -1292,6 +1310,8 @@ declare global {
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-team": HTMLAppTeamElement;
+        "app-template": HTMLAppTemplateElement;
+        "app-templates": HTMLAppTemplatesElement;
         "app-terms": HTMLAppTermsElement;
         "app-transform": HTMLAppTransformElement;
         "app-user-delete": HTMLAppUserDeleteElement;
@@ -1755,6 +1775,11 @@ declare namespace LocalJSX {
     }
     interface AppTeam {
     }
+    interface AppTemplate {
+        "template"?: Template | undefined;
+    }
+    interface AppTemplates {
+    }
     interface AppTerms {
     }
     interface AppTransform {
@@ -1892,6 +1917,8 @@ declare namespace LocalJSX {
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
         "app-team": AppTeam;
+        "app-template": AppTemplate;
+        "app-templates": AppTemplates;
         "app-terms": AppTerms;
         "app-transform": AppTransform;
         "app-user-delete": AppUserDelete;
@@ -2022,6 +2049,8 @@ declare module "@stencil/core" {
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
+            "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
+            "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;
             "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;

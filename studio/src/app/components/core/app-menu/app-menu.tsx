@@ -136,6 +136,10 @@ export class AppMenu {
             <ion-label>Customization</ion-label>
             <ion-icon lazy={true} name="color-palette-outline" slot="start"></ion-icon>
           </ion-item>
+          <ion-item button class="home" href="/settings/templates" routerDirection="forward">
+            <ion-label>Templates</ion-label>
+            <ion-icon lazy={true} name="reader-outline" slot="start"></ion-icon>
+          </ion-item>
         </ion-list>
       </app-expansion-panel>
     );

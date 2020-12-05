@@ -1,4 +1,4 @@
-import {Component, h, JSX, State} from '@stencil/core';
+import {Component, Fragment, h, JSX, State} from '@stencil/core';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
@@ -459,7 +459,12 @@ export class AppDashboard {
     if (this.filteredDecks.length > 0) {
       return <h1>Your presentations</h1>;
     } else {
-      return <h1>You don't have any presentation yet</h1>;
+      return (
+        <Fragment>
+          <h1>Your presentations</h1>
+          <ion-label>You don't have any presentation yet, create your first slides now.</ion-label>
+        </Fragment>
+      );
     }
   }
 
@@ -486,8 +491,8 @@ export class AppDashboard {
         <ion-grid>
           <ion-row class="ion-justify-content-center">
             <ion-column>
-              <ion-button slot="end" shape="round" fill="outline" onClick={() => this.navigateEditor()} class="ion-margin-top">
-                <ion-label>Start one now 🚀</ion-label>
+              <ion-button slot="end" shape="round" onClick={() => this.navigateEditor()} class="ion-margin-top">
+                <ion-label>Start one now</ion-label>
               </ion-button>
             </ion-column>
           </ion-row>
