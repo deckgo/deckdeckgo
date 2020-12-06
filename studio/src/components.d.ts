@@ -413,6 +413,9 @@ export namespace Components {
     interface AppTemplate {
         "template": Template | undefined;
     }
+    interface AppTemplateShowcase {
+        "template": Template;
+    }
     interface AppTemplates {
     }
     interface AppTerms {
@@ -1139,6 +1142,12 @@ declare global {
         prototype: HTMLAppTemplateElement;
         new (): HTMLAppTemplateElement;
     };
+    interface HTMLAppTemplateShowcaseElement extends Components.AppTemplateShowcase, HTMLStencilElement {
+    }
+    var HTMLAppTemplateShowcaseElement: {
+        prototype: HTMLAppTemplateShowcaseElement;
+        new (): HTMLAppTemplateShowcaseElement;
+    };
     interface HTMLAppTemplatesElement extends Components.AppTemplates, HTMLStencilElement {
     }
     var HTMLAppTemplatesElement: {
@@ -1311,6 +1320,7 @@ declare global {
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-team": HTMLAppTeamElement;
         "app-template": HTMLAppTemplateElement;
+        "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
         "app-terms": HTMLAppTermsElement;
         "app-transform": HTMLAppTransformElement;
@@ -1778,6 +1788,9 @@ declare namespace LocalJSX {
     interface AppTemplate {
         "template"?: Template | undefined;
     }
+    interface AppTemplateShowcase {
+        "template"?: Template;
+    }
     interface AppTemplates {
     }
     interface AppTerms {
@@ -1918,6 +1931,7 @@ declare namespace LocalJSX {
         "app-slot-type": AppSlotType;
         "app-team": AppTeam;
         "app-template": AppTemplate;
+        "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
         "app-terms": AppTerms;
         "app-transform": AppTransform;
@@ -2050,6 +2064,7 @@ declare module "@stencil/core" {
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
+            "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;
             "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;

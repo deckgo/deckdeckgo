@@ -129,7 +129,9 @@ export class AppTemplates {
       return <ion-label>You don't have any templates yet. Follow this guide to get started and add your first template afterwards.</ion-label>;
     }
 
-    return <div>TODO</div>;
+    return this.templates.map((template: Template) => {
+      return <app-template-showcase template={template} key={template.id}></app-template-showcase>;
+    });
   }
 
   private renderAction() {

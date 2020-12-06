@@ -1,4 +1,4 @@
-import {Component, Element, Fragment, h, Listen, Prop} from '@stencil/core';
+import {Component, Element, Fragment, h, Listen, Prop, State} from '@stencil/core';
 
 import authStore from '../../../stores/auth.store';
 
@@ -14,7 +14,10 @@ export class AppTemplate {
   @Prop()
   template: Template | undefined;
 
+  @State()
   private templateData: TemplateData | undefined;
+
+  private inputFileRef!: HTMLInputElement;
 
   async componentWillLoad() {
     if (!this.template || !this.template.data) {
@@ -59,6 +62,54 @@ export class AppTemplate {
     this.templateData.cdn = ($event.target as InputTargetEvent).value;
   }
 
+  private async onTagInput($event: CustomEvent<KeyboardEvent>) {
+    if (!this.templateData) {
+      return;
+    }
+
+    this.templateData = {
+      ...this.templateData,
+      tag: ($event.target as InputTargetEvent).value,
+    };
+  }
+
+  private async onFileInput() {
+    if (!this.inputFileRef || !this.templateData?.tag) {
+      return;
+    }
+
+    if (this.inputFileRef.files && this.inputFileRef.files.length > 0) {
+      const jsonContent: string = await this.load(this.inputFileRef.files[0]);
+
+      const components: TemplateData[] = JSON.parse(jsonContent);
+      if (components && components.length > 0) {
+        const cmp: TemplateData | undefined = components.find((cmp: TemplateData) => cmp.tag === this.templateData.tag);
+        this.templateData = {
+          ...this.templateData,
+          ...(cmp && cmp.slots && {slots: cmp.slots}),
+        };
+      }
+    }
+  }
+
+  private load(myFile: File): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const fileReader: FileReader = new FileReader();
+
+      if (fileReader && myFile) {
+        fileReader.readAsText(myFile);
+        fileReader.onload = () => {
+          resolve(fileReader.result as string);
+        };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      } else {
+        reject('No file provided');
+      }
+    });
+  }
+
   render() {
     return (
       <Fragment>
@@ -88,6 +139,32 @@ export class AppTemplate {
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}></ion-input>
               </ion-item>
+
+              <ion-item class="item-title">
+                <ion-label>Tag</ion-label>
+              </ion-item>
+
+              <ion-item>
+                <ion-input
+                  value={this.templateData?.tag}
+                  debounce={500}
+                  minlength={3}
+                  required={true}
+                  input-mode="text"
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}></ion-input>
+              </ion-item>
+
+              <ion-item class="item-title">
+                <ion-label>Definition</ion-label>
+              </ion-item>
+
+              <input
+                ref={(el) => (this.inputFileRef = el as HTMLInputElement)}
+                type="file"
+                accept="application/json"
+                disabled={!this.templateData || !this.templateData.tag}
+                onChange={() => this.onFileInput()}
+              />
             </ion-list>
 
             <ion-button type="submit" color="primary" class="ion-margin-top" shape="round">
