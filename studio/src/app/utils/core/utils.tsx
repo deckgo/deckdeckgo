@@ -1,23 +1,33 @@
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
+export interface InjectScript {
+  id: string;
+  src: string;
+  module?: boolean;
+}
+
 export class Utils {
-  static injectJS(id: string, src: string): Promise<string> {
+  static injectJS(scr: InjectScript): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       if (!document) {
         resolve();
         return;
       }
 
-      if (document.getElementById(id)) {
+      if (document.getElementById(scr.id)) {
         resolve('JS already loaded.');
         return;
       }
       const script = document.createElement('script');
 
-      script.id = id;
+      script.id = scr.id;
       script.async = true;
       script.defer = true;
-      script.src = src;
+      script.src = scr.src;
+
+      if (scr.module) {
+        script.type = 'module';
+      }
 
       script.addEventListener('load', () => resolve('JS loaded.'));
 

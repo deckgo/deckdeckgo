@@ -17,6 +17,9 @@ export class AppTemplate {
   @State()
   private templateData: TemplateData | undefined;
 
+  @State()
+  private valid: boolean = false;
+
   private inputFileRef!: HTMLInputElement;
 
   async componentWillLoad() {
@@ -32,6 +35,8 @@ export class AppTemplate {
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
+
+    await this.validateCDNInput();
   }
 
   @Listen('popstate', {target: 'window'})
@@ -110,6 +115,16 @@ export class AppTemplate {
     });
   }
 
+  private async validateCDNInput() {
+    try {
+      const url: URL = new URL(this.templateData.cdn);
+
+      this.valid = /unpkg\.com|cdnjs\.cloudflare\.com/g.test(url.hostname);
+    } catch (err) {
+      this.valid = false;
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -137,7 +152,8 @@ export class AppTemplate {
                   minlength={3}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}></ion-input>
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}
+                  onIonChange={() => this.validateCDNInput()}></ion-input>
               </ion-item>
 
               <ion-item class="item-title">
@@ -167,7 +183,7 @@ export class AppTemplate {
               />
             </ion-list>
 
-            <ion-button type="submit" color="primary" class="ion-margin-top" shape="round">
+            <ion-button type="submit" color="primary" class="ion-margin-top" shape="round" disabled={!this.valid}>
               <ion-label>Save</ion-label>
             </ion-button>
           </form>
