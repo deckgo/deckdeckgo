@@ -2,6 +2,9 @@ import {Component, Method, Prop, h, Event, EventEmitter, Host, State} from '@ste
 
 import {DeckdeckgoSlide} from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - Add a title - h1,h2,h3,section
+ */
 @Component({
   tag: 'deckgo-slide-countdown',
   styleUrl: 'deckdeckgo-slide-countdown.scss',
@@ -39,7 +42,7 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   private mSeconds = 0;
 
   private mTotalSeconds = 0;
-  private mCountdownInterval = -1;
+  private mCountdownInterval: NodeJS.Timeout | undefined = undefined;
 
   async componentDidLoad() {
     await this.clearUp();
@@ -97,10 +100,10 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
    */
   private clearUp(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (this.mCountdownInterval > -1) {
+      if (this.mCountdownInterval) {
         clearInterval(this.mCountdownInterval);
 
-        this.mCountdownInterval = -1;
+        this.mCountdownInterval = undefined;
       }
 
       resolve();
@@ -177,7 +180,7 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
           --this.mTotalSeconds;
         } else {
           clearInterval(this.mCountdownInterval);
-          this.mCountdownInterval = -1;
+          this.mCountdownInterval = undefined;
         }
       }, 1000);
 
