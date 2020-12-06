@@ -119,7 +119,7 @@ export class AppTemplate {
     try {
       const url: URL = new URL(this.templateData.cdn);
 
-      this.valid = /unpkg\.com|cdnjs\.cloudflare\.com/g.test(url.hostname);
+      this.valid = /unpkg\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net/g.test(url.hostname);
     } catch (err) {
       this.valid = false;
     }
