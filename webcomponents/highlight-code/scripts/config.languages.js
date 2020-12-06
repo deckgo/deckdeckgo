@@ -10,6 +10,7 @@ const langInterfaces = `export interface DeckdeckgoHighlightCodeLanguageAlias {
 export interface DeckdeckgoHighlightCodeLanguage {
   title: string;
   require?: string[];
+  main?:string
 }
 
 export interface DeckdeckgoHighlightCodeLanguages {
@@ -43,6 +44,20 @@ async function getLanguages() {
         filteredLanguages[key] = {
           title: languages[key].title,
         };
+
+        if (languages[key].alias && Array.isArray(languages[key].alias) && languages[key].alias.length > 0) {
+          languages[key].alias.forEach((alias) => {
+            filteredLanguages[alias] = {
+              title: (languages[key].aliasTitles && languages[key].aliasTitles[alias]) || alias,
+              main: key,
+            };
+          });
+        } else if (languages[key].alias && languages[key].alias.length > 0) {
+          filteredLanguages[languages[key].alias] = {
+            title: (languages[key].aliasTitles && languages[key].aliasTitles[languages[key].alias]) || languages[key].alias,
+            main: key,
+          };
+        }
 
         if (languages[key].require && Array.isArray(languages[key].require) && languages[key].require.length > 0) {
           filteredLanguages[key].require = languages[key].require.filter((req) => req !== 'clike' && req !== 'javascript');

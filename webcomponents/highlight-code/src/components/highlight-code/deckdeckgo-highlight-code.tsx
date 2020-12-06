@@ -109,10 +109,13 @@ export class DeckdeckgoHighlightCode {
   }
 
   private async fetchOrParse() {
-    if (this.src) {
-      await this.fetchCode();
-    } else {
-      await this.parseSlottedCode();
+    const definition = deckdeckgoHighlightCodeLanguages[this.language];
+    if (definition) {
+      if (this.src) {
+        await this.fetchCode();
+      } else {
+        await this.parseSlottedCode();
+      }
     }
   }
 
@@ -140,11 +143,16 @@ export class DeckdeckgoHighlightCode {
   private async loadLanguages(reload: boolean = false) {
     this.loaded = false;
 
-    await this.initLanguagesToLoad();
+    const definition = deckdeckgoHighlightCodeLanguages[this.language];
+    if (definition) {
+      await this.initLanguagesToLoad();
 
-    await this.loadLanguagesRequire();
+      await this.loadLanguagesRequire();
 
-    await this.loadScript(this.language, reload);
+      await this.loadScript(this.language, reload);
+    } else {
+      console.error(`Language ${this.language} is not supported`);
+    }
   }
 
   private async initLanguagesToLoad() {
@@ -153,7 +161,6 @@ export class DeckdeckgoHighlightCode {
     }
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
-
     this.languagesToLoad = definition.require && definition.require.length > 0 ? [this.language, ...definition.require] : [this.language];
   }
 
@@ -212,9 +219,11 @@ export class DeckdeckgoHighlightCode {
         // if the language definition doesn't exist or if unpkg is down, display code anyway
         this.prismLanguageLoaded.emit(lang);
       };
+      const definition = deckdeckgoHighlightCodeLanguages[this.language];
 
-      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + lang + '.js';
-      script.setAttribute('deckdeckgo-prism', lang);
+      let language = definition.main ? definition.main : lang;
+      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
+      script.setAttribute('deckdeckgo-prism', language);
       script.defer = true;
 
       document.head.appendChild(script);
