@@ -34,5 +34,22 @@ app-template-showcase {
       --slide-padding-bottom-default: 0;
       --slide-padding-start-default: 0;
     }
+
+    div.spinner {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background: var(--ion-color-light);
+
+      ion-label {
+        margin: 8px;
+        font-size: var(--font-size-small);
+      }
+    }
   }
 }
