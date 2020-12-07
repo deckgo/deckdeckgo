@@ -5,12 +5,10 @@ import {SegmentChangeEventDetail} from '@ionic/core';
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
-import templatesStore from '../../../stores/templates.store';
 
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
 import {Deck} from '../../../models/data/deck';
-import {Template} from '../../../models/data/template';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
@@ -269,6 +267,7 @@ export class AppCreateSlide {
         <div class={`container ion-margin-bottom ${this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''}`}>
           {this.renderTemplatesDefault()}
           {this.renderTemplatesCommunity()}
+          {this.renderTemplatesUser()}
           {this.renderCompose()}
         </div>
       </Fragment>
@@ -328,28 +327,19 @@ export class AppCreateSlide {
       return undefined;
     }
 
-    if (templatesStore.state.community.length <= 0) {
-      return (
-        <Fragment>
-          <ion-label class="row">Share a template with the community. Follow this guide to get started.</ion-label>
+    return <app-templates-community onNavigateTemplates={() => this.closePopoverWithoutResults()}></app-templates-community>;
+  }
 
-          <ion-button
-            class="ion-margin-top"
-            shape="round"
-            href="/settings/templates"
-            routerDirection="forward"
-            mode="md"
-            color="primary"
-            onClick={() => this.closePopoverWithoutResults()}>
-            <ion-label>Share a template</ion-label>
-          </ion-button>
-        </Fragment>
-      );
+  private renderTemplatesUser() {
+    if (this.composeTemplate !== undefined) {
+      return undefined;
     }
 
-    return templatesStore.state.community.map((_template: Template) => {
-      return this.renderTitle();
-    });
+    if (this.templatesCategory !== 'user') {
+      return undefined;
+    }
+
+    return <app-templates-user onNavigateTemplates={() => this.closePopoverWithoutResults()}></app-templates-user>;
   }
 
   private renderTemplatesDefault() {

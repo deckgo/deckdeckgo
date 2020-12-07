@@ -418,6 +418,10 @@ export namespace Components {
     }
     interface AppTemplates {
     }
+    interface AppTemplatesCommunity {
+    }
+    interface AppTemplatesUser {
+    }
     interface AppTerms {
     }
     interface AppTransform {
@@ -1154,6 +1158,18 @@ declare global {
         prototype: HTMLAppTemplatesElement;
         new (): HTMLAppTemplatesElement;
     };
+    interface HTMLAppTemplatesCommunityElement extends Components.AppTemplatesCommunity, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesCommunityElement: {
+        prototype: HTMLAppTemplatesCommunityElement;
+        new (): HTMLAppTemplatesCommunityElement;
+    };
+    interface HTMLAppTemplatesUserElement extends Components.AppTemplatesUser, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesUserElement: {
+        prototype: HTMLAppTemplatesUserElement;
+        new (): HTMLAppTemplatesUserElement;
+    };
     interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {
     }
     var HTMLAppTermsElement: {
@@ -1322,6 +1338,8 @@ declare global {
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
+        "app-templates-community": HTMLAppTemplatesCommunityElement;
+        "app-templates-user": HTMLAppTemplatesUserElement;
         "app-terms": HTMLAppTermsElement;
         "app-transform": HTMLAppTransformElement;
         "app-user-delete": HTMLAppUserDeleteElement;
@@ -1793,6 +1811,12 @@ declare namespace LocalJSX {
     }
     interface AppTemplates {
     }
+    interface AppTemplatesCommunity {
+        "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppTemplatesUser {
+        "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
+    }
     interface AppTerms {
     }
     interface AppTransform {
@@ -1933,6 +1957,8 @@ declare namespace LocalJSX {
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
+        "app-templates-community": AppTemplatesCommunity;
+        "app-templates-user": AppTemplatesUser;
         "app-terms": AppTerms;
         "app-transform": AppTransform;
         "app-user-delete": AppUserDelete;
@@ -2066,6 +2092,8 @@ declare module "@stencil/core" {
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;
+            "app-templates-community": LocalJSX.AppTemplatesCommunity & JSXBase.HTMLAttributes<HTMLAppTemplatesCommunityElement>;
+            "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
