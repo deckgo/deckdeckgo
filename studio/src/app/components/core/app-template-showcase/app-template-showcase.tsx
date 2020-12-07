@@ -20,16 +20,22 @@ export class AppTemplateShowcase {
     });
   }
 
+  private async blockSlide($event: CustomEvent) {
+    await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
+  }
+
   render() {
     const Element = this.template.data.tag;
     return (
-      <article>
-        <Element>
-          {this.template.data.slots.map((slot: TemplateDataSlot) => {
-            return <h1 slot={slot.name}>Hello</h1>;
-          })}
-        </Element>
-      </article>
+      <ion-card class="ion-no-margin">
+        <deckgo-deck embedded={true} keyboard={false} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
+          <Element>
+            {this.template.data.slots.map((slot: TemplateDataSlot) => {
+              return <h1 slot={slot.name}>Hello</h1>;
+            })}
+          </Element>
+        </deckgo-deck>
+      </ion-card>
     );
   }
 }

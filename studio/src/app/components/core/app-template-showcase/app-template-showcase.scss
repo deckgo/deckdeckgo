@@ -1,9 +1,38 @@
 app-template-showcase {
-  article {
-    min-height: 7rem;
-    height: fit-content;
-    overflow: hidden;
+  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+
+  ion-card {
+    position: relative;
+
+    height: 24vh;
+
+    cursor: pointer;
+
+    @media screen and (min-width: 540px) {
+      height: 38vh;
+    }
 
     background: white;
+
+    deckgo-deck {
+      --background: white;
+      --color: black;
+
+      --font-size-very-small: 4px;
+      --font-size-small: 8px;
+      --font-size-normal: 10px;
+
+      --font-size-h1: 18px;
+      --font-size-h2: 10px;
+      --font-size-h3: 7px;
+
+      --slide-width: 100%;
+      --slide-height: 100%;
+
+      --slide-padding-top-default: 0;
+      --slide-padding-end-default: 0;
+      --slide-padding-bottom-default: 0;
+      --slide-padding-start-default: 0;
+    }
   }
 }

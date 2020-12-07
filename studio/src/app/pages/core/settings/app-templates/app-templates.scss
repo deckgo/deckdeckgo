@@ -7,5 +7,15 @@ app-templates {
       display: flex;
       justify-content: center;
     }
+
+    div.container {
+      display: grid;
+      grid-gap: 16px;
+      grid-template-columns: repeat(auto-fill, 1fr);
+
+      @media screen and (min-width: 540px) {
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      }
+    }
   }
 }
