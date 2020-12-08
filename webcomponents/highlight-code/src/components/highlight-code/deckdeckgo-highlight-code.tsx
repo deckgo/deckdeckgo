@@ -109,13 +109,13 @@ export class DeckdeckgoHighlightCode {
   }
 
   private async fetchOrParse() {
-    const definition = deckdeckgoHighlightCodeLanguages[this.language];
-    if (definition) {
-      if (this.src) {
-        await this.fetchCode();
-      } else {
-        await this.parseSlottedCode();
-      }
+    if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
+      return;
+    }
+    if (this.src) {
+      await this.fetchCode();
+    } else {
+      await this.parseSlottedCode();
     }
   }
 
@@ -142,17 +142,15 @@ export class DeckdeckgoHighlightCode {
 
   private async loadLanguages(reload: boolean = false) {
     this.loaded = false;
-
-    const definition = deckdeckgoHighlightCodeLanguages[this.language];
-    if (definition) {
-      await this.initLanguagesToLoad();
-
-      await this.loadLanguagesRequire();
-
-      await this.loadScript(this.language, reload);
-    } else {
+    if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
       console.error(`Language ${this.language} is not supported`);
+      return;
     }
+    await this.initLanguagesToLoad();
+
+    await this.loadLanguagesRequire();
+
+    await this.loadScript(this.language, reload);
   }
 
   private async initLanguagesToLoad() {

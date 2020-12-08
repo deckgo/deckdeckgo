@@ -28,6 +28,13 @@ async function getLanguages() {
 
   return content.languages;
 }
+function getLanguageRequire(language) {
+  if (language.require && Array.isArray(language.require) && language.require.length > 0) {
+    return language.require.filter((req) => req !== 'clike' && req !== 'javascript');
+  } else if (language.require && language.require !== 'clike' && language.require !== 'javascript') {
+    return [language.require];
+  }
+}
 
 (async () => {
   try {
@@ -50,20 +57,17 @@ async function getLanguages() {
             filteredLanguages[alias] = {
               title: (languages[key].aliasTitles && languages[key].aliasTitles[alias]) || alias,
               main: key,
+              require: getLanguageRequire(languages[key]),
             };
           });
         } else if (languages[key].alias && languages[key].alias.length > 0) {
           filteredLanguages[languages[key].alias] = {
             title: (languages[key].aliasTitles && languages[key].aliasTitles[languages[key].alias]) || languages[key].alias,
             main: key,
+            require: getLanguageRequire(languages[key]),
           };
         }
-
-        if (languages[key].require && Array.isArray(languages[key].require) && languages[key].require.length > 0) {
-          filteredLanguages[key].require = languages[key].require.filter((req) => req !== 'clike' && req !== 'javascript');
-        } else if (languages[key].require && languages[key].require !== 'clike' && languages[key].require !== 'javascript') {
-          filteredLanguages[key].require = [languages[key].require];
-        }
+        filteredLanguages[key].require = getLanguageRequire(languages[key]);
       });
 
     const languagesEnum = `${langInterfaces}
