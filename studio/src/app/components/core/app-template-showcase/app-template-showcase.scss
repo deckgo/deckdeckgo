@@ -1,18 +1,19 @@
+@use "../../../../global/theme/editor/editor-mixin";
+
 app-template-showcase {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 
-  ion-card {
+  article {
     position: relative;
+    overflow: hidden;
 
-    height: 24vh;
+    height: 7rem;
 
     cursor: pointer;
 
-    @media screen and (min-width: 540px) {
-      height: 38vh;
-    }
-
     background: white;
+
+    @include editor-mixin.panel;
 
     deckgo-deck {
       --background: white;
@@ -29,10 +30,12 @@ app-template-showcase {
       --slide-width: 100%;
       --slide-height: 100%;
 
-      --slide-padding-top-default: 0;
-      --slide-padding-end-default: 0;
-      --slide-padding-bottom-default: 0;
-      --slide-padding-start-default: 0;
+      > .deckgo-slide-container {
+        --slide-padding-top-default: 4px;
+        --slide-padding-end-default: 4px;
+        --slide-padding-bottom-default: 4px;
+        --slide-padding-start-default: 4px;
+      }
     }
 
     div.spinner {
@@ -50,6 +53,13 @@ app-template-showcase {
         margin: 8px;
         font-size: var(--font-size-small);
       }
+    }
+
+    ion-skeleton-text {
+      background: rgba(var(--ion-color-medium-rgb), 0.8);
+      height: 12px;
+      margin: 8px 2px;
+      border-radius: 8px;
     }
   }
 }

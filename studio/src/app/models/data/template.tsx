@@ -9,8 +9,8 @@ export interface TemplateDataSlot {
 export interface TemplateData {
   owner_id: string;
 
+  tag: string;
   cdn?: string;
-  tag?: string;
   slots?: TemplateDataSlot[];
 
   created_at?: firebase.firestore.Timestamp;

@@ -11,11 +11,7 @@ app-templates {
     div.container {
       display: grid;
       grid-gap: 16px;
-      grid-template-columns: repeat(auto-fill, 1fr);
-
-      @media screen and (min-width: 540px) {
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      }
+      grid-template-columns: repeat(auto-fill, minmax(calc(7rem * 16 / 9), 1fr));
     }
   }
 }

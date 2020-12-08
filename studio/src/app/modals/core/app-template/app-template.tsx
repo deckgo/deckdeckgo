@@ -15,7 +15,7 @@ export class AppTemplate {
   template: Template | undefined;
 
   @State()
-  private templateData: TemplateData | undefined;
+  private templateData: Partial<TemplateData> | undefined;
 
   @State()
   private valid: boolean = false;

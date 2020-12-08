@@ -30,7 +30,7 @@ export class AppTemplateShowcase {
   }
 
   render() {
-    return <ion-card class="ion-no-margin">{this.loaded ? this.renderTemplate() : this.renderSpinner()}</ion-card>;
+    return <article>{this.loaded ? this.renderTemplate() : this.renderSpinner()}</article>;
   }
 
   private renderTemplate() {
@@ -40,7 +40,7 @@ export class AppTemplateShowcase {
       <deckgo-deck embedded={true} keyboard={false} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
         <Element>
           {this.template.data.slots.map((slot: TemplateDataSlot) => {
-            return <h1 slot={slot.name}>Hello</h1>;
+            return <ion-skeleton-text slot={slot.name} style={{width: '60%'}}></ion-skeleton-text>;
           })}
         </Element>
       </deckgo-deck>
