@@ -167,7 +167,7 @@ export class DeckdeckgoHighlightCode {
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
     if (definition.require) {
-      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript)));
+      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript, false, true)));
     }
 
     if (promises.length <= 0) {
@@ -177,7 +177,7 @@ export class DeckdeckgoHighlightCode {
     await Promise.all(promises);
   }
 
-  private loadScript(lang: string, reload: boolean = false): Promise<void> {
+  private loadScript(lang: string, reload: boolean = false, requireScript: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!document || !lang || lang === '') {
         resolve();
@@ -219,7 +219,8 @@ export class DeckdeckgoHighlightCode {
       };
       const definition = deckdeckgoHighlightCodeLanguages[this.language];
 
-      let language = definition.main ? definition.main : lang;
+      let language = !requireScript && definition.main ? definition.main : lang;
+
       script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
       script.setAttribute('deckdeckgo-prism', language);
       script.defer = true;
