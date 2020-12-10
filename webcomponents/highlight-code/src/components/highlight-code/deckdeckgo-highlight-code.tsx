@@ -227,7 +227,7 @@ export class DeckdeckgoHighlightCode {
 
       document.head.appendChild(script);
 
-      resolve();
+      script.addEventListener('load', () => resolve(), {once: true});
     });
   }
 

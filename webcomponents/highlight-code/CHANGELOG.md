@@ -8,6 +8,7 @@
 
 - support alias (such as `html` for `markup`)
 - load alias required scripts
+- required scripts loading race condition
 
 # 2.2.1 (2020-11-19)
 
