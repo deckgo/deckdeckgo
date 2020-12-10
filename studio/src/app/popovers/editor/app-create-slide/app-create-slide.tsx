@@ -6,7 +6,7 @@ import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
 
-import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
+import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate, SlideType} from '../../../models/data/slide';
 
 import {Deck} from '../../../models/data/deck';
 import {Template} from '../../../models/data/template';
@@ -25,7 +25,7 @@ enum ComposeTemplateType {
   SPLIT_HORIZONTAL,
   SPLIT_VERTICAL,
   CHART,
-  USERS,
+  USER,
 }
 
 interface ComposeTemplate {
@@ -159,14 +159,14 @@ export class AppCreateSlide {
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
-  private async addRestrictedSlide(template: SlideTemplate) {
+  private async addRestrictedSlide(template: SlideTemplate | Template, type: SlideType = SlideType.DEFAULT) {
     if (authStore.state.anonymous) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template}, null, userStore.state.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements: this.elements, type}, null, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
@@ -185,11 +185,11 @@ export class AppCreateSlide {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private async closePopover(template: SlideTemplate, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
+  private async closePopover(template: SlideTemplate | Template, slide?: JSX.IntrinsicElements, attributes?: SlideAttributes) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      template: template,
-      slide: slide,
-      attributes: attributes,
+      template,
+      slide,
+      attributes,
     });
   }
 
@@ -237,7 +237,7 @@ export class AppCreateSlide {
     if (this.elements === undefined) {
       this.elements = [slotType];
 
-      if (this.composeTemplate?.type !== ComposeTemplateType.USERS || this.composeTemplate?.template?.data?.slots?.length > 1) {
+      if (this.composeTemplate?.type !== ComposeTemplateType.USER || this.composeTemplate?.template?.data?.slots?.length > 1) {
         return;
       }
     }
@@ -247,7 +247,7 @@ export class AppCreateSlide {
       this.elements.push(slotType);
       this.elements = [...this.elements];
 
-      if (this.composeTemplate?.type === ComposeTemplateType.USERS && this.elements.length < this.composeTemplate?.template?.data?.slots?.length - 1) {
+      if (this.composeTemplate?.type === ComposeTemplateType.USER && this.elements.length < this.composeTemplate?.template?.data?.slots?.length - 1) {
         return;
       }
     }
@@ -259,7 +259,8 @@ export class AppCreateSlide {
       await this.addSlideSplit(SlideTemplate.SPLIT);
     } else if (this.composeTemplate?.type === ComposeTemplateType.CONTENT) {
       await this.addSlide(SlideTemplate.CONTENT);
-    } else if (this.composeTemplate?.type === ComposeTemplateType.USERS) {
+    } else if (this.composeTemplate?.type === ComposeTemplateType.USER) {
+      await this.addRestrictedSlide(this.composeTemplate.template, SlideType.USER);
     } else {
       await this.addSlide(SlideTemplate.TITLE);
     }
@@ -365,7 +366,7 @@ export class AppCreateSlide {
       <app-templates-user
         onSelectedTemplate={($event: CustomEvent<Template>) =>
           (this.composeTemplate = {
-            type: ComposeTemplateType.USERS,
+            type: ComposeTemplateType.USER,
             template: $event.detail,
           })
         }
@@ -440,7 +441,7 @@ export class AppCreateSlide {
       return this.renderSplit();
     } else if (this.composeTemplate?.type === ComposeTemplateType.SPLIT_VERTICAL) {
       return this.renderVertical();
-    } else if (this.composeTemplate?.type === ComposeTemplateType.USERS) {
+    } else if (this.composeTemplate?.type === ComposeTemplateType.USER) {
       return <app-template-showcase template={this.composeTemplate.template}></app-template-showcase>;
     } else {
       return this.renderTitle();
@@ -452,7 +453,7 @@ export class AppCreateSlide {
       this.elements !== undefined &&
       (this.composeTemplate?.type === ComposeTemplateType.CONTENT ||
         this.composeTemplate?.type === ComposeTemplateType.TITLE ||
-        this.composeTemplate?.type === ComposeTemplateType.USERS);
+        this.composeTemplate?.type === ComposeTemplateType.USER);
 
     return <app-slot-type skip={skip} onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
   }

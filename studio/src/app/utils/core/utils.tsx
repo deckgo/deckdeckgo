@@ -29,10 +29,10 @@ export class Utils {
         script.type = 'module';
       }
 
-      script.addEventListener('load', () => resolve('JS loaded.'));
+      script.addEventListener('load', () => resolve('JS loaded.'), {once: true});
 
-      script.addEventListener('error', () => reject('Error loading script.'));
-      script.addEventListener('abort', () => reject('Script loading aborted.'));
+      script.addEventListener('error', () => reject('Error loading script.'), {once: true});
+      script.addEventListener('abort', () => reject('Script loading aborted.'), {once: true});
 
       document.head.appendChild(script);
     });
@@ -55,10 +55,10 @@ export class Utils {
       link.setAttribute('rel', 'stylesheet');
       link.setAttribute('href', src);
 
-      link.addEventListener('load', () => resolve('CSS loaded.'));
+      link.addEventListener('load', () => resolve('CSS loaded.'), {once: true});
 
-      link.addEventListener('error', () => reject('Error loading css.'));
-      link.addEventListener('abort', () => reject('CSS loading aborted.'));
+      link.addEventListener('error', () => reject('Error loading css.'), {once: true});
+      link.addEventListener('abort', () => reject('CSS loading aborted.'), {once: true});
       document.head.appendChild(link);
     });
   }
