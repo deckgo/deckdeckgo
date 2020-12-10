@@ -1816,6 +1816,7 @@ declare namespace LocalJSX {
     }
     interface AppTemplatesUser {
         "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
+        "onSelectedTemplate"?: (event: CustomEvent<Template>) => void;
     }
     interface AppTerms {
     }

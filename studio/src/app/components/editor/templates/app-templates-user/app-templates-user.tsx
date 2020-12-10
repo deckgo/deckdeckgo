@@ -18,6 +18,9 @@ export class AppTemplatesUser {
   @Event()
   navigateTemplates: EventEmitter<void>;
 
+  @Event()
+  selectedTemplate: EventEmitter<Template>;
+
   constructor() {
     this.templateService = TemplateService.getInstance();
   }
@@ -54,7 +57,13 @@ export class AppTemplatesUser {
 
   private renderTemplates() {
     return this.templates.map((template: Template) => {
-      return <app-template-showcase template={template} key={template.id}></app-template-showcase>;
+      return (
+        <app-template-showcase
+          template={template}
+          key={template.id}
+          custom-tappable
+          onClick={() => this.selectedTemplate.emit(template)}></app-template-showcase>
+      );
     });
   }
 }

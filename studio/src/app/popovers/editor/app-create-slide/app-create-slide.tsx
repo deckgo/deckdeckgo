@@ -9,6 +9,7 @@ import userStore from '../../../stores/user.store';
 import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '../../../models/data/slide';
 
 import {Deck} from '../../../models/data/deck';
+import {Template} from '../../../models/data/template';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {SlotType} from '../../../utils/editor/slot-type';
@@ -18,12 +19,18 @@ import {AssetsService} from '../../../services/core/assets/assets.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
 
-enum ComposeTemplate {
+enum ComposeTemplateType {
   TITLE,
   CONTENT,
   SPLIT_HORIZONTAL,
   SPLIT_VERTICAL,
   CHART,
+  USERS,
+}
+
+interface ComposeTemplate {
+  type: ComposeTemplateType;
+  template?: Template;
 }
 
 @Component({
@@ -202,7 +209,9 @@ export class AppCreateSlide {
   }
 
   private async selectUnselectCharts() {
-    this.composeTemplate = ComposeTemplate.CHART;
+    this.composeTemplate = {
+      type: ComposeTemplateType.CHART,
+    };
 
     this.unsubscribeTimer();
 
@@ -224,25 +233,35 @@ export class AppCreateSlide {
       return;
     }
 
+    // First element
     if (this.elements === undefined) {
       this.elements = [slotType];
-    } else {
-      // We might just want only one element
-      if (slotType) {
-        this.elements.push(slotType);
-        this.elements = [...this.elements];
-      }
 
-      // We've got all, or at least one, the elements, go we can create the slide
-      if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
-        await this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true});
-      } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
-        await this.addSlideSplit(SlideTemplate.SPLIT);
-      } else if (this.composeTemplate === ComposeTemplate.CONTENT) {
-        await this.addSlide(SlideTemplate.CONTENT);
-      } else {
-        await this.addSlide(SlideTemplate.TITLE);
+      if (this.composeTemplate?.type !== ComposeTemplateType.USERS || this.composeTemplate?.template?.data?.slots?.length > 1) {
+        return;
       }
+    }
+
+    // We might just want only one element
+    if (slotType) {
+      this.elements.push(slotType);
+      this.elements = [...this.elements];
+
+      if (this.composeTemplate?.type === ComposeTemplateType.USERS && this.elements.length < this.composeTemplate?.template?.data?.slots?.length - 1) {
+        return;
+      }
+    }
+
+    // We've got all, or at least one, the elements, go we can create the slide
+    if (this.composeTemplate?.type === ComposeTemplateType.SPLIT_VERTICAL) {
+      await this.addSlideSplit(SlideTemplate.SPLIT, {vertical: true});
+    } else if (this.composeTemplate?.type === ComposeTemplateType.SPLIT_HORIZONTAL) {
+      await this.addSlideSplit(SlideTemplate.SPLIT);
+    } else if (this.composeTemplate?.type === ComposeTemplateType.CONTENT) {
+      await this.addSlide(SlideTemplate.CONTENT);
+    } else if (this.composeTemplate?.type === ComposeTemplateType.USERS) {
+    } else {
+      await this.addSlide(SlideTemplate.TITLE);
     }
   }
 
@@ -264,7 +283,10 @@ export class AppCreateSlide {
 
         {this.renderTemplatesCategory()}
 
-        <div class={`container ion-margin-bottom ${this.composeTemplate !== undefined && this.composeTemplate !== ComposeTemplate.CHART ? ' compose' : ''}`}>
+        <div
+          class={`container ion-margin-bottom ${
+            this.composeTemplate !== undefined && this.composeTemplate?.type !== ComposeTemplateType.CHART ? ' compose' : ''
+          }`}>
           {this.renderTemplatesDefault()}
           {this.renderTemplatesCommunity()}
           {this.renderTemplatesUser()}
@@ -303,7 +325,7 @@ export class AppCreateSlide {
       return <h2>Add a new slide</h2>;
     }
 
-    return <h2>{this.composeTemplate === ComposeTemplate.CHART ? 'Select a chart' : 'Compose your slide'}</h2>;
+    return <h2>{this.composeTemplate?.type === ComposeTemplateType.CHART ? 'Select a chart' : 'Compose your slide'}</h2>;
   }
 
   private renderToolbarAction() {
@@ -339,7 +361,16 @@ export class AppCreateSlide {
       return undefined;
     }
 
-    return <app-templates-user onNavigateTemplates={() => this.closePopoverWithoutResults()}></app-templates-user>;
+    return (
+      <app-templates-user
+        onSelectedTemplate={($event: CustomEvent<Template>) =>
+          (this.composeTemplate = {
+            type: ComposeTemplateType.USERS,
+            template: $event.detail,
+          })
+        }
+        onNavigateTemplates={() => this.closePopoverWithoutResults()}></app-templates-user>
+    );
   }
 
   private renderTemplatesDefault() {
@@ -395,7 +426,7 @@ export class AppCreateSlide {
       return undefined;
     }
 
-    if (this.composeTemplate === ComposeTemplate.CHART) {
+    if (this.composeTemplate?.type === ComposeTemplateType.CHART) {
       return this.renderCharts();
     }
 
@@ -403,19 +434,25 @@ export class AppCreateSlide {
   }
 
   private renderComposeSlide() {
-    if (this.composeTemplate === ComposeTemplate.CONTENT) {
+    if (this.composeTemplate?.type === ComposeTemplateType.CONTENT) {
       return this.renderContent();
-    } else if (this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL) {
+    } else if (this.composeTemplate?.type === ComposeTemplateType.SPLIT_HORIZONTAL) {
       return this.renderSplit();
-    } else if (this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL) {
+    } else if (this.composeTemplate?.type === ComposeTemplateType.SPLIT_VERTICAL) {
       return this.renderVertical();
+    } else if (this.composeTemplate?.type === ComposeTemplateType.USERS) {
+      return <app-template-showcase template={this.composeTemplate.template}></app-template-showcase>;
     } else {
       return this.renderTitle();
     }
   }
 
   private renderSlotType() {
-    const skip: boolean = this.elements !== undefined && (this.composeTemplate === ComposeTemplate.CONTENT || this.composeTemplate === ComposeTemplate.TITLE);
+    const skip: boolean =
+      this.elements !== undefined &&
+      (this.composeTemplate?.type === ComposeTemplateType.CONTENT ||
+        this.composeTemplate?.type === ComposeTemplateType.TITLE ||
+        this.composeTemplate?.type === ComposeTemplateType.USERS);
 
     return <app-slot-type skip={skip} onSelectType={($event: CustomEvent<SlotType>) => this.selectElement($event.detail)}></app-slot-type>;
   }
@@ -667,11 +704,18 @@ export class AppCreateSlide {
   }
 
   private renderTitle() {
-    const classTitle = this.composeTemplate === ComposeTemplate.TITLE && this.elements === undefined ? 'highlight' : undefined;
-    const classContent = this.composeTemplate === ComposeTemplate.TITLE && this.elements !== undefined ? 'highlight' : undefined;
+    const classTitle = this.composeTemplate?.type === ComposeTemplateType.TITLE && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeTemplate?.type === ComposeTemplateType.TITLE && this.elements !== undefined ? 'highlight' : undefined;
 
     return (
-      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.TITLE)}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() =>
+          (this.composeTemplate = {
+            type: ComposeTemplateType.TITLE,
+          })
+        }>
         <deckgo-slide-title class="showcase">
           <p slot="title">
             <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
@@ -686,11 +730,18 @@ export class AppCreateSlide {
   }
 
   private renderContent() {
-    const classTitle = this.composeTemplate === ComposeTemplate.CONTENT && this.elements === undefined ? 'highlight' : undefined;
-    const classContent = this.composeTemplate === ComposeTemplate.CONTENT && this.elements !== undefined ? 'highlight' : undefined;
+    const classTitle = this.composeTemplate?.type === ComposeTemplateType.CONTENT && this.elements === undefined ? 'highlight' : undefined;
+    const classContent = this.composeTemplate?.type === ComposeTemplateType.CONTENT && this.elements !== undefined ? 'highlight' : undefined;
 
     return (
-      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.CONTENT)}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() =>
+          (this.composeTemplate = {
+            type: ComposeTemplateType.CONTENT,
+          })
+        }>
         <deckgo-slide-content class="showcase">
           <p slot="title">
             <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>
@@ -706,11 +757,18 @@ export class AppCreateSlide {
   }
 
   private renderSplit() {
-    const classStart = this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL && this.elements === undefined ? 'highlight' : undefined;
-    const classEnd = this.composeTemplate === ComposeTemplate.SPLIT_HORIZONTAL && this.elements !== undefined ? 'highlight' : undefined;
+    const classStart = this.composeTemplate?.type === ComposeTemplateType.SPLIT_HORIZONTAL && this.elements === undefined ? 'highlight' : undefined;
+    const classEnd = this.composeTemplate?.type === ComposeTemplateType.SPLIT_HORIZONTAL && this.elements !== undefined ? 'highlight' : undefined;
 
     return (
-      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.SPLIT_HORIZONTAL)}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() =>
+          (this.composeTemplate = {
+            type: ComposeTemplateType.SPLIT_HORIZONTAL,
+          })
+        }>
         <deckgo-slide-split class="showcase">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
@@ -728,11 +786,18 @@ export class AppCreateSlide {
   }
 
   private renderVertical() {
-    const classStart = this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL && this.elements === undefined ? 'highlight' : undefined;
-    const classEnd = this.composeTemplate === ComposeTemplate.SPLIT_VERTICAL && this.elements !== undefined ? 'highlight' : undefined;
+    const classStart = this.composeTemplate?.type === ComposeTemplateType.SPLIT_VERTICAL && this.elements === undefined ? 'highlight' : undefined;
+    const classEnd = this.composeTemplate?.type === ComposeTemplateType.SPLIT_VERTICAL && this.elements !== undefined ? 'highlight' : undefined;
 
     return (
-      <div class="item" custom-tappable onClick={() => (this.composeTemplate = ComposeTemplate.SPLIT_VERTICAL)}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() =>
+          (this.composeTemplate = {
+            type: ComposeTemplateType.SPLIT_VERTICAL,
+          })
+        }>
         <deckgo-slide-split vertical={true} class="showcase">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>
