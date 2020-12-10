@@ -32,6 +32,15 @@ export class AppPress {
           <h1 class="ion-padding-top">Featured Stories</h1>
 
           <article class="ion-margin-top">
+            <a href="https://www.goodfirms.co/blog/best-free-open-source-presentation-software" rel="noopener noreferrer">
+              The Best 7 Free and Open Source Presentation Software
+            </a>
+            <span>
+              <small>2020-12-10</small>
+            </span>
+          </article>
+
+          <article class="ion-margin-top">
             <a href="https://medium.com/swlh/deckdeckgo-why-building-presentation-with-web-standards-makes-sense-1b6062a84fa" rel="noopener noreferrer">
               Why building presentations with web standards makes sense
             </a>
