@@ -14,20 +14,17 @@ import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/envir
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
 export class ParseSlidesUtils {
-  static parseSlide(deck: Deck, slide: Slide, contentEditable: boolean, ignoreSlideId: boolean = false): Promise<JSX.IntrinsicElements> {
-    return new Promise<JSX.IntrinsicElements>(async (resolve) => {
-      if (!document || !slide || !slide.data || !slide.data.template) {
-        resolve(null);
-        return;
-      }
+  static async parseSlide(deck: Deck, slide: Slide, contentEditable: boolean, ignoreSlideId: boolean = false): Promise<JSX.IntrinsicElements> {
+    if (!document || !slide || !slide.data || !slide.data.template) {
+      return null;
+    }
 
-      if (SlideTemplate[slide.data.template.toUpperCase()]) {
-        // prettier-ignore
-        resolve(await this.parseSlideElement(deck, slide, `deckgo-slide-${SlideTemplate[slide.data.template.toUpperCase()].toLowerCase()}`, contentEditable, ignoreSlideId));
-      } else {
-        resolve(null);
-      }
-    });
+    const template: SlideTemplate | undefined = SlideTemplate[slide.data.template.toUpperCase()];
+    const slideTag: string = template ? `deckgo-slide-${template.toLowerCase()}` : slide.data.template;
+
+    // TODO: Load module JS
+
+    return this.parseSlideElement(deck, slide, slideTag, contentEditable, ignoreSlideId);
   }
 
   private static parseSlideElement(
