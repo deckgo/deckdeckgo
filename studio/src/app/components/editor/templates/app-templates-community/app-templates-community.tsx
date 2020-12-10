@@ -12,7 +12,7 @@ export class AppTemplatesCommunity {
   navigateTemplates: EventEmitter<void>;
 
   render() {
-    if (templatesStore.state.community.length <= 0) {
+    if (templatesStore.state.user.length <= 0) {
       return (
         <Fragment>
           <ion-label>Share a template with the community. Follow this guide to get started.</ion-label>
@@ -31,7 +31,7 @@ export class AppTemplatesCommunity {
       );
     }
 
-    return templatesStore.state.community.map((_template: Template) => {
+    return templatesStore.state.user.map((_template: Template) => {
       return <div>TODO</div>;
     });
   }

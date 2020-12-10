@@ -1,14 +1,16 @@
-import {Component, Fragment, h, State} from '@stencil/core';
+import {Component, Fragment, h} from '@stencil/core';
+
+import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import authStore from '../../../../stores/auth.store';
 import errorStore from '../../../../stores/error.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
+import templatesStore from '../../../../stores/templates.store';
 
 import {Template} from '../../../../models/data/template';
+import {AuthUser} from '../../../../models/auth/auth.user';
 
 import {TemplateService} from '../../../../services/data/template/template.service';
-import {AuthUser} from '../../../../models/auth/auth.user';
-import {modalController, OverlayEventDetail} from '@ionic/core';
 
 @Component({
   tag: 'app-templates',
@@ -16,9 +18,6 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 })
 export class AppTemplates {
   private templateService: TemplateService;
-
-  @State()
-  private templates: Template[] | undefined;
 
   private destroyListener;
 
@@ -42,8 +41,7 @@ export class AppTemplates {
     this.destroyListener();
 
     try {
-      const userTemplates: Template[] = await this.templateService.getUserTemplates(authStore.state.authUser.uid);
-      this.templates = [...userTemplates];
+      await this.templateService.init();
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
@@ -74,10 +72,12 @@ export class AppTemplates {
     try {
       if (template.id) {
         const updatedTemplate: Template = await this.templateService.update(template);
-        this.templates = [...this.templates.map((mapTemplate: Template) => (mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate))];
+        templatesStore.state.user = [
+          ...templatesStore.state.user.map((mapTemplate: Template) => (mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate)),
+        ];
       } else {
         const createdTemplate: Template = await this.templateService.create(template.data);
-        this.templates = [createdTemplate, ...this.templates];
+        templatesStore.state.user = [createdTemplate, ...templatesStore.state.user];
       }
     } catch (err) {
       errorStore.state.error = 'Template can not be saved.';
@@ -121,11 +121,7 @@ export class AppTemplates {
   }
 
   private renderContent() {
-    if (!this.templates) {
-      return undefined;
-    }
-
-    if (this.templates.length === 0) {
+    if (templatesStore.state.user.length === 0) {
       return <ion-label>You don't have any templates yet. Follow this guide to get started and add your first template afterwards.</ion-label>;
     }
 
@@ -133,16 +129,12 @@ export class AppTemplates {
   }
 
   private renderTemplates() {
-    return this.templates.map((template: Template) => {
+    return templatesStore.state.user.map((template: Template) => {
       return <app-template-showcase template={template} key={template.id}></app-template-showcase>;
     });
   }
 
   private renderAction() {
-    if (!this.templates) {
-      return undefined;
-    }
-
     return (
       <div class="action">
         <ion-button slot="end" shape="round" onClick={() => this.editTemplate()} class="ion-margin-top">

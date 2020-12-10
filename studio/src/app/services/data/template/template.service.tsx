@@ -1,10 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
-
 import templatesStore from '../../../stores/templates.store';
+import authStore from '../../../stores/auth.store';
 
 import {Template, TemplateData} from '../../../models/data/template';
 
@@ -23,29 +21,33 @@ export class TemplateService {
   }
 
   async init() {
-    if (templatesStore.state.community?.length > 0) {
+    if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
+      return;
+    }
+
+    if (templatesStore.state.user?.length > 0) {
       return;
     }
 
     try {
-      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      const templates: Template[] = await this.getUserTemplates();
 
-      const res: Response = await fetch(`${config.globalAssetsUrl}/templates.json`);
-
-      if (!res) {
+      if (!templates) {
         return undefined;
       }
 
-      // templatesStore.state.community = await res.json();
+      templatesStore.state.user = [...templates];
     } catch (err) {
       console.error(err);
     }
   }
 
-  getUserTemplates(userId: string): Promise<Template[]> {
+  private getUserTemplates(): Promise<Template[]> {
     return new Promise<Template[]>(async (resolve, reject) => {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+        const userId: string = authStore.state.authUser.uid;
 
         const snapshot: firebase.firestore.QuerySnapshot = await firestore
           .collection('templates')

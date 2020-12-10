@@ -3,11 +3,11 @@ import {createStore} from '@stencil/store';
 import {Template} from '../models/data/template';
 
 interface Templates {
-  community: Template[];
+  user: Template[];
 }
 
 const {state} = createStore<Templates>({
-  community: [],
+  user: [],
 } as Templates);
 
 export default {state};
