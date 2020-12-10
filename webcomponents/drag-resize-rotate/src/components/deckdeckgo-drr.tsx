@@ -435,8 +435,17 @@ export class DeckdeckgoDragResizeRotate {
       h = htmp;
     }
 
-    const l: number = matrix.c * q_x + matrix.a * p_x;
-    const t: number = matrix.d * q_y + matrix.b * p_y;
+    let l: number = matrix.c * q_x + matrix.a * p_x;
+    let t: number = matrix.d * q_y + matrix.b * p_y;
+
+    l = l < 0 ? 0 : l;
+    t = t < 0 ? 0 : t;
+
+    const maxLeft: number = this.parentWidth - l;
+    const maxTop: number = this.parentHeight - t;
+
+    w = w > maxLeft ? maxLeft : w;
+    h = h > maxTop ? maxTop : h;
 
     this.left = this.convertToUnit(l, 'width');
     this.width = this.convertToUnit(w, 'width');
