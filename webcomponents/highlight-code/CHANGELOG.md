@@ -1,3 +1,14 @@
+# 2.2.2 (2020-12-10)
+
+### Features
+
+- display a `console.error` if the language is not supported
+
+### Fix
+
+- support alias (such as `html` for `markup`)
+- load alias required scripts
+
 # 2.2.1 (2020-11-19)
 
 ### Style
