@@ -9,15 +9,6 @@
     <script nomodule src="/build/deckdeckgo-highlight-code.js"></script>
   </head>
   <body>
-    <deckgo-highlight-code language="t4">
-      <code slot="code">
-        <html>
-          <body>
-            The date and time now is: <#= DateTime.Now #>
-          </body>
-        </html>
-      </code>
-    </deckgo-highlight-code>
     <h1>Editable:</h1>
 
     <!-- prettier-ignore -->
@@ -217,9 +208,9 @@ public static void main(String args[]) {
     <h1>Without dots</h1>
 
     <!-- prettier-ignore -->
-    <deckgo-highlight-code 
-      language="java" 
-      highlight-lines="0,2 6,6" 
+    <deckgo-highlight-code
+      language="java"
+      highlight-lines="0,2 6,6"
       style="--deckgo-highlight-code-carbon-toolbar-display: none; --deckgo-highlight-code-carbon-header-padding: 0; --deckgo-highlight-code-carbon-header-margin: 16px 0 0 0;"
     >
   <code slot="code">interface NumericTest {
@@ -263,6 +254,21 @@ program = [
 }</code>
 </deckgo-highlight-code>
 
+    <h1>Load extra scripts</h1>
+
+    <p>Main language:</p>
+
+    <!-- prettier-ignore -->
+    <deckgo-highlight-code language="php">
+      <code slot="code">'Hello World'</code>
+    </deckgo-highlight-code>
+
+    <p>Alias language:</p>
+
+    <deckgo-highlight-code language="t4">
+      <code slot="code"> The date and time now is: <#= DateTime.Now #> </code>
+    </deckgo-highlight-code>
+
     <h1>Src file:</h1>
 
     <deckgo-highlight-code
@@ -271,12 +277,6 @@ program = [
       terminal="none"
       src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx"
     >
-    </deckgo-highlight-code>
-
-    <h1>Load extra scripts</h1>
-    <!-- prettier-ignore -->
-    <deckgo-highlight-code language="php">
-      <code slot="code">'Hello World'</code>
     </deckgo-highlight-code>
   </body>
 </html>
