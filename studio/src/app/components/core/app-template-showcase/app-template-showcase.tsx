@@ -3,6 +3,7 @@ import {Component, Prop, h, State} from '@stencil/core';
 import {Template, TemplateDataSlot} from '../../../models/data/template';
 
 import {Utils} from '../../../utils/core/utils';
+import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 @Component({
   tag: 'app-template-showcase',
@@ -21,6 +22,8 @@ export class AppTemplateShowcase {
       src: this.template.data.cdn,
       module: true,
     });
+
+    await TemplateUtils.loadScript(this.template);
 
     this.loaded = true;
   }

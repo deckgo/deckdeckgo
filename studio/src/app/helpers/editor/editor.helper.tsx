@@ -8,18 +8,21 @@ import {Slide} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
+import {TemplateUtils} from '../../utils/editor/template.utils';
 
 import {DeckService} from '../../services/data/deck/deck.service';
 import {SlideService} from '../../services/data/slide/slide.service';
+import {TemplateService} from '../../services/data/template/template.service';
 
 export class EditorHelper {
   private slideService: SlideService;
   private deckService: DeckService;
+  private templateService: TemplateService;
 
   constructor() {
     this.slideService = SlideService.getInstance();
-
     this.deckService = DeckService.getInstance();
+    this.templateService = TemplateService.getInstance();
   }
 
   loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
@@ -47,6 +50,8 @@ export class EditorHelper {
           resolve([]);
           return;
         }
+
+        await this.templateService.init();
 
         const promises: Promise<any>[] = [];
         deck.data.slides.forEach((slideId: string) => {
@@ -78,6 +83,9 @@ export class EditorHelper {
     return new Promise<any>(async (resolve) => {
       try {
         const slide: Slide = await this.slideService.get(deck.id, slideId);
+
+        await TemplateUtils.loadSlideTemplate(slide);
+
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, true);
 
         resolve(element);

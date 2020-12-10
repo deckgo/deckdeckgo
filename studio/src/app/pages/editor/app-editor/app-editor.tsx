@@ -287,7 +287,7 @@ export class AppEditor {
         return;
       }
 
-      const slides: any[] = await this.editorHelper.loadDeckAndRetrieveSlides(this.deckId);
+      const slides: JSX.IntrinsicElements[] = await this.editorHelper.loadDeckAndRetrieveSlides(this.deckId);
 
       if (slides && slides.length > 0) {
         this.slides = [...slides];

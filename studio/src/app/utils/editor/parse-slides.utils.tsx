@@ -22,8 +22,6 @@ export class ParseSlidesUtils {
     const template: SlideTemplate | undefined = SlideTemplate[slide.data.template.toUpperCase()];
     const slideTag: string = template ? `deckgo-slide-${template.toLowerCase()}` : slide.data.template;
 
-    // TODO: Load module JS
-
     return this.parseSlideElement(deck, slide, slideTag, contentEditable, ignoreSlideId);
   }
 

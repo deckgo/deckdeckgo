@@ -16,7 +16,7 @@ import {QRCodeUtils} from './qrcode.utils';
 import {SocialUtils} from './social.utils';
 import {SlotType} from './slot-type';
 
-import {Utils} from '../core/utils';
+import {TemplateUtils} from './template.utils';
 
 export interface InitTemplate {
   template: SlideTemplate | Template;
@@ -301,11 +301,7 @@ export class CreateSlidesUtils {
       return;
     }
 
-    await Utils.injectJS({
-      id: `${template.data.tag}-script`,
-      src: template.data.cdn,
-      module: true,
-    });
+    await TemplateUtils.loadScript(template);
 
     const Element = template.data.tag;
 
