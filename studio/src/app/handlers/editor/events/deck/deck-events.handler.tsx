@@ -13,7 +13,16 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideSplitType, SlideTemplate} from '../../../../models/data/slide';
+import {
+  Slide,
+  SlideAttributes,
+  SlideAttributesYAxisDomain,
+  SlideChartType,
+  SlideData,
+  SlideSplitType,
+  SlideTemplate,
+  SlideType,
+} from '../../../../models/data/slide';
 
 import {Utils} from '../../../../utils/core/utils';
 import {Resources} from '../../../../utils/core/resources';
@@ -231,9 +240,7 @@ export class DeckEventsHandler {
 
   private postSlide(deck: Deck, slide: HTMLElement): Promise<Slide> {
     return new Promise<Slide>(async (resolve) => {
-      const slideData: SlideData = {
-        template: this.getSlideTemplate(slide),
-      };
+      const slideData: SlideData = this.initSlideData(slide);
 
       const content: string = await this.cleanSlideContent(slide);
       if (content && content.length > 0) {
@@ -472,9 +479,7 @@ export class DeckEventsHandler {
 
         const slideUpdate: Slide = {
           id: slide.getAttribute('slide_id'),
-          data: {
-            template: this.getSlideTemplate(slide),
-          },
+          data: this.initSlideData(slide),
         };
 
         const content: string = await this.cleanSlideContent(slide);
@@ -889,12 +894,21 @@ export class DeckEventsHandler {
     });
   }
 
-  private getSlideTemplate(slide: HTMLElement): SlideTemplate {
-    const templateKey: string = Object.keys(SlideTemplate).find((key: string) => {
+  private getSlideTemplate(slide: HTMLElement): SlideTemplate | undefined {
+    const templateKey: string | undefined = Object.keys(SlideTemplate).find((key: string) => {
       return slide.nodeName.toLowerCase().indexOf(SlideTemplate[key]) > -1;
     });
 
     return SlideTemplate[templateKey];
+  }
+
+  private initSlideData(slide: HTMLElement): SlideData {
+    const template: SlideTemplate | undefined = this.getSlideTemplate(slide);
+
+    return {
+      template: template || slide.nodeName?.toLowerCase(),
+      ...(!template && {type: SlideType.USER}),
+    };
   }
 
   private slideToLastSlide(): Promise<void> {
