@@ -92,6 +92,7 @@ export class AppTemplate {
         this.templateData = {
           ...this.templateData,
           ...(cmp && cmp.slots && {slots: cmp.slots}),
+          ...(cmp && cmp.props && {props: cmp.props}),
         };
       }
     }

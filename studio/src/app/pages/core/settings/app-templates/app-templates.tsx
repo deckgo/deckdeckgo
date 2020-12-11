@@ -54,9 +54,12 @@ export class AppTemplates {
     };
   }
 
-  private async editTemplate() {
+  private async editTemplate(template?: Template) {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-template',
+      componentProps: {
+        template,
+      },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -130,7 +133,7 @@ export class AppTemplates {
 
   private renderTemplates() {
     return templatesStore.state.user.map((template: Template) => {
-      return <app-template-showcase template={template} key={template.id}></app-template-showcase>;
+      return <app-template-showcase template={template} key={template.id} onClick={() => this.editTemplate(template)}></app-template-showcase>;
     });
   }
 
