@@ -26,7 +26,10 @@ export class DeckdeckgoSlideCountdown implements DeckdeckgoSlide {
   @Prop()
   seconds = 0;
 
-  @Prop()
+  /**
+   * A date formatted such as for example 2021-08-27T23:25:59.000+02:00
+   */
+  @Prop({reflect: true})
   until: string;
 
   @State()

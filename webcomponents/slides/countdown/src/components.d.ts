@@ -18,6 +18,9 @@ export namespace Components {
         "seconds": number;
         "start": () => Promise<void>;
         "stop": () => Promise<void>;
+        /**
+          * A date formatted such as for example 2021-08-27T23:25:59.000+02:00
+         */
         "until": string;
     }
 }
@@ -39,6 +42,9 @@ declare namespace LocalJSX {
         "minutes"?: number;
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "seconds"?: number;
+        /**
+          * A date formatted such as for example 2021-08-27T23:25:59.000+02:00
+         */
         "until"?: string;
     }
     interface IntrinsicElements {

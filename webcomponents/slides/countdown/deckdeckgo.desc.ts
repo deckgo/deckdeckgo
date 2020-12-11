@@ -1,5 +1,5 @@
 import {JsonDocs} from '@stencil/core/internal';
-import {JsonDocsComponent, JsonDocsSlot} from '@stencil/core/internal/stencil-public-docs';
+import {JsonDocsComponent, JsonDocsProp, JsonDocsSlot} from '@stencil/core/internal/stencil-public-docs';
 
 import * as fs from 'fs';
 
@@ -7,6 +7,12 @@ interface DeckDeckGoSlot {
   name: string;
   placeholder?: string;
   types?: string[];
+}
+
+interface DeckDeckGoProp {
+  name: string;
+  type: string;
+  placeholder?: string;
 }
 
 const parseSlots = (slots: JsonDocsSlot[] | undefined): DeckDeckGoSlot[] | undefined => {
@@ -26,6 +32,22 @@ const parseSlots = (slots: JsonDocsSlot[] | undefined): DeckDeckGoSlot[] | undef
   });
 };
 
+const parseProps = (props: JsonDocsProp[] | undefined): DeckDeckGoProp[] | undefined => {
+  if (!props || props.length <= 0) {
+    return undefined;
+  }
+
+  return props
+    .filter((prop: JsonDocsProp) => prop.reflectToAttr && ['string', 'number', 'boolean'].includes(prop.type))
+    .map((prop: JsonDocsProp) => {
+      return {
+        name: prop.attr,
+        type: prop.type,
+        ...(prop.docs && {placeholder: prop.docs}),
+      };
+    });
+};
+
 export const generateDesc = (docs: JsonDocs) => {
   if (!docs || !docs.components) {
     console.warn('No docs or components provided.');
@@ -33,10 +55,11 @@ export const generateDesc = (docs: JsonDocs) => {
 
   const components = docs.components.map((cmp: JsonDocsComponent) => {
     const slots: DeckDeckGoSlot[] | undefined = parseSlots(cmp.slots);
+    const props: DeckDeckGoProp[] | undefined = parseProps(cmp.props);
 
     return {
       tag: cmp.tag,
-      props: cmp.props,
+      ...(props && {props}),
       ...(slots && {slots}),
     };
   });

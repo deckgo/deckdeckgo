@@ -3,88 +3,9 @@
     "tag": "deckgo-slide-countdown",
     "props": [
       {
-        "name": "days",
-        "type": "number",
-        "mutable": false,
-        "attr": "days",
-        "reflectToAttr": false,
-        "docs": "",
-        "docsTags": [],
-        "default": "0",
-        "values": [
-          {
-            "type": "number"
-          }
-        ],
-        "optional": false,
-        "required": false
-      },
-      {
-        "name": "hours",
-        "type": "number",
-        "mutable": false,
-        "attr": "hours",
-        "reflectToAttr": false,
-        "docs": "",
-        "docsTags": [],
-        "default": "0",
-        "values": [
-          {
-            "type": "number"
-          }
-        ],
-        "optional": false,
-        "required": false
-      },
-      {
-        "name": "minutes",
-        "type": "number",
-        "mutable": false,
-        "attr": "minutes",
-        "reflectToAttr": false,
-        "docs": "",
-        "docsTags": [],
-        "default": "0",
-        "values": [
-          {
-            "type": "number"
-          }
-        ],
-        "optional": false,
-        "required": false
-      },
-      {
-        "name": "seconds",
-        "type": "number",
-        "mutable": false,
-        "attr": "seconds",
-        "reflectToAttr": false,
-        "docs": "",
-        "docsTags": [],
-        "default": "0",
-        "values": [
-          {
-            "type": "number"
-          }
-        ],
-        "optional": false,
-        "required": false
-      },
-      {
         "name": "until",
         "type": "string",
-        "mutable": false,
-        "attr": "until",
-        "reflectToAttr": false,
-        "docs": "",
-        "docsTags": [],
-        "values": [
-          {
-            "type": "string"
-          }
-        ],
-        "optional": false,
-        "required": false
+        "placeholder": "A date formatted such as for example 2021-08-27T23:25:59.000+02:00"
       }
     ],
     "slots": [
