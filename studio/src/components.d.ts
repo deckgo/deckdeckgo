@@ -21,6 +21,8 @@ import { TargetElement } from "./app/utils/editor/target-element";
 import { MoreAction } from "./app/utils/editor/more-action";
 import { ItemReorderEventDetail } from "@ionic/core";
 import { Template } from "./app/models/data/template";
+import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
+import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
     interface AppAbout {
     }
@@ -418,7 +420,24 @@ export namespace Components {
     }
     interface AppTemplates {
     }
+    interface AppTemplatesCharts {
+    }
     interface AppTemplatesCommunity {
+    }
+    interface AppTemplatesContent {
+        "highlight": boolean;
+        "highlightIndex": number | undefined;
+    }
+    interface AppTemplatesDefault {
+    }
+    interface AppTemplatesSplit {
+        "highlight": boolean;
+        "highlightIndex": number | undefined;
+        "vertical": boolean;
+    }
+    interface AppTemplatesTitle {
+        "highlight": boolean;
+        "highlightIndex": number | undefined;
     }
     interface AppTemplatesUser {
     }
@@ -1158,11 +1177,41 @@ declare global {
         prototype: HTMLAppTemplatesElement;
         new (): HTMLAppTemplatesElement;
     };
+    interface HTMLAppTemplatesChartsElement extends Components.AppTemplatesCharts, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesChartsElement: {
+        prototype: HTMLAppTemplatesChartsElement;
+        new (): HTMLAppTemplatesChartsElement;
+    };
     interface HTMLAppTemplatesCommunityElement extends Components.AppTemplatesCommunity, HTMLStencilElement {
     }
     var HTMLAppTemplatesCommunityElement: {
         prototype: HTMLAppTemplatesCommunityElement;
         new (): HTMLAppTemplatesCommunityElement;
+    };
+    interface HTMLAppTemplatesContentElement extends Components.AppTemplatesContent, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesContentElement: {
+        prototype: HTMLAppTemplatesContentElement;
+        new (): HTMLAppTemplatesContentElement;
+    };
+    interface HTMLAppTemplatesDefaultElement extends Components.AppTemplatesDefault, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesDefaultElement: {
+        prototype: HTMLAppTemplatesDefaultElement;
+        new (): HTMLAppTemplatesDefaultElement;
+    };
+    interface HTMLAppTemplatesSplitElement extends Components.AppTemplatesSplit, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesSplitElement: {
+        prototype: HTMLAppTemplatesSplitElement;
+        new (): HTMLAppTemplatesSplitElement;
+    };
+    interface HTMLAppTemplatesTitleElement extends Components.AppTemplatesTitle, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesTitleElement: {
+        prototype: HTMLAppTemplatesTitleElement;
+        new (): HTMLAppTemplatesTitleElement;
     };
     interface HTMLAppTemplatesUserElement extends Components.AppTemplatesUser, HTMLStencilElement {
     }
@@ -1338,7 +1387,12 @@ declare global {
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
+        "app-templates-charts": HTMLAppTemplatesChartsElement;
         "app-templates-community": HTMLAppTemplatesCommunityElement;
+        "app-templates-content": HTMLAppTemplatesContentElement;
+        "app-templates-default": HTMLAppTemplatesDefaultElement;
+        "app-templates-split": HTMLAppTemplatesSplitElement;
+        "app-templates-title": HTMLAppTemplatesTitleElement;
         "app-templates-user": HTMLAppTemplatesUserElement;
         "app-terms": HTMLAppTermsElement;
         "app-transform": HTMLAppTransformElement;
@@ -1811,8 +1865,32 @@ declare namespace LocalJSX {
     }
     interface AppTemplates {
     }
+    interface AppTemplatesCharts {
+        "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate; attributes: SlideAttributes}>) => void;
+    }
     interface AppTemplatesCommunity {
         "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppTemplatesContent {
+        "highlight"?: boolean;
+        "highlightIndex"?: number | undefined;
+    }
+    interface AppTemplatesDefault {
+        "onAddSlideAspectRatio"?: (event: CustomEvent<void>) => void;
+        "onAddSlideAuthor"?: (event: CustomEvent<void>) => void;
+        "onAddSlideQRCode"?: (event: CustomEvent<void>) => void;
+        "onComposeTemplate"?: (event: CustomEvent<InitTemplate>) => void;
+        "onSelectCharts"?: (event: CustomEvent<void>) => void;
+        "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate | Template; attributes?: SlideAttributes}>) => void;
+    }
+    interface AppTemplatesSplit {
+        "highlight"?: boolean;
+        "highlightIndex"?: number | undefined;
+        "vertical"?: boolean;
+    }
+    interface AppTemplatesTitle {
+        "highlight"?: boolean;
+        "highlightIndex"?: number | undefined;
     }
     interface AppTemplatesUser {
         "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
@@ -1958,7 +2036,12 @@ declare namespace LocalJSX {
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
+        "app-templates-charts": AppTemplatesCharts;
         "app-templates-community": AppTemplatesCommunity;
+        "app-templates-content": AppTemplatesContent;
+        "app-templates-default": AppTemplatesDefault;
+        "app-templates-split": AppTemplatesSplit;
+        "app-templates-title": AppTemplatesTitle;
         "app-templates-user": AppTemplatesUser;
         "app-terms": AppTerms;
         "app-transform": AppTransform;
@@ -2093,7 +2176,12 @@ declare module "@stencil/core" {
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;
+            "app-templates-charts": LocalJSX.AppTemplatesCharts & JSXBase.HTMLAttributes<HTMLAppTemplatesChartsElement>;
             "app-templates-community": LocalJSX.AppTemplatesCommunity & JSXBase.HTMLAttributes<HTMLAppTemplatesCommunityElement>;
+            "app-templates-content": LocalJSX.AppTemplatesContent & JSXBase.HTMLAttributes<HTMLAppTemplatesContentElement>;
+            "app-templates-default": LocalJSX.AppTemplatesDefault & JSXBase.HTMLAttributes<HTMLAppTemplatesDefaultElement>;
+            "app-templates-split": LocalJSX.AppTemplatesSplit & JSXBase.HTMLAttributes<HTMLAppTemplatesSplitElement>;
+            "app-templates-title": LocalJSX.AppTemplatesTitle & JSXBase.HTMLAttributes<HTMLAppTemplatesTitleElement>;
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;

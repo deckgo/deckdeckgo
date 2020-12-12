@@ -22,6 +22,7 @@ export interface InitTemplate {
   template: SlideTemplate | Template;
   type?: SlideType;
   elements?: SlotType[];
+  attributes?: SlideAttributes;
 }
 
 export class CreateSlidesUtils {
@@ -95,7 +96,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  static createSlideSplit(elements: SlotType[], attributes: SlideAttributes = undefined): Promise<JSX.IntrinsicElements | undefined> {
+  static createSlideSplit(elements: SlotType[], attributes?: SlideAttributes): Promise<JSX.IntrinsicElements | undefined> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!elements || elements.length < 2) {
         resolve(undefined);
