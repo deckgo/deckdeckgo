@@ -12,6 +12,7 @@ import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
 import { DeckAction } from "./app/utils/editor/deck-action";
+import { SelectedElementDescription, SelectedSlideDescription } from "./app/utils/editor/selected-element";
 import { EditAction } from "./app/utils/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/utils/editor/image-action";
@@ -170,10 +171,8 @@ export namespace Components {
     interface AppDiscover {
     }
     interface AppEditSlide {
-        "author": boolean;
-        "chart": boolean;
-        "qrCode": boolean;
         "selectedElement": HTMLElement;
+        "slideDescription": SelectedSlideDescription;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
@@ -194,16 +193,10 @@ export namespace Components {
     interface AppElementDelete {
     }
     interface AppElementStyle {
-        "code": boolean;
-        "image": boolean;
         "imageHelper": ImageHelper;
         "imgDidChange": EventEmitter<HTMLElement>;
-        "markdown": boolean;
-        "math": boolean;
+        "selectedDescription": SelectedElementDescription;
         "selectedElement": HTMLElement;
-        "shape": 'shape' | 'text' | undefined;
-        "slide": boolean;
-        "wordCloud": boolean;
     }
     interface AppEmbed {
     }
@@ -375,7 +368,6 @@ export namespace Components {
         "headerFooter": boolean;
         "image": boolean;
         "qrCode": boolean;
-        "shape": boolean;
         "sides": boolean;
         "slide": boolean;
         "textTarget": boolean;
@@ -1591,10 +1583,8 @@ declare namespace LocalJSX {
     interface AppDiscover {
     }
     interface AppEditSlide {
-        "author"?: boolean;
-        "chart"?: boolean;
-        "qrCode"?: boolean;
         "selectedElement"?: HTMLElement;
+        "slideDescription"?: SelectedSlideDescription;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
@@ -1617,17 +1607,11 @@ declare namespace LocalJSX {
     interface AppElementDelete {
     }
     interface AppElementStyle {
-        "code"?: boolean;
-        "image"?: boolean;
         "imageHelper"?: ImageHelper;
         "imgDidChange"?: EventEmitter<HTMLElement>;
-        "markdown"?: boolean;
-        "math"?: boolean;
         "onOptionsDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedDescription"?: SelectedElementDescription;
         "selectedElement"?: HTMLElement;
-        "shape"?: 'shape' | 'text' | undefined;
-        "slide"?: boolean;
-        "wordCloud"?: boolean;
     }
     interface AppEmbed {
     }
@@ -1817,7 +1801,6 @@ declare namespace LocalJSX {
         "image"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
-        "shape"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
         "textTarget"?: boolean;

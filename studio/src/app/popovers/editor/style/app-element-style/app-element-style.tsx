@@ -3,9 +3,9 @@ import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/
 import {TargetElement} from '../../../../utils/editor/target-element';
 import {SlotType} from '../../../../utils/editor/slot-type';
 import {ImageAction} from '../../../../utils/editor/image-action';
-import {ListUtils} from '../../../../utils/editor/list.utils';
 
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import {SelectedElementDescription} from '../../../../utils/editor/selected-element';
 
 @Component({
   tag: 'app-element-style',
@@ -15,10 +15,10 @@ export class AppElementStyle {
   @Element() el: HTMLElement;
 
   @Prop()
-  slide: boolean = false;
+  selectedElement: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedDescription: SelectedElementDescription;
 
   @Prop()
   imgDidChange: EventEmitter<HTMLElement>;
@@ -26,74 +26,26 @@ export class AppElementStyle {
   @Prop()
   imageHelper: ImageHelper;
 
-  @Prop()
-  code: boolean = false;
-
-  @Prop()
-  math: boolean = false;
-
-  @Prop()
-  wordCloud: boolean = false;
-
-  @Prop()
-  shape: 'shape' | 'text' | undefined = undefined;
-
-  @Prop()
-  image: boolean = false;
-
-  @Prop()
-  markdown: boolean = false;
-
   @Event() optionsDidChange: EventEmitter<void>;
 
   @State()
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
 
   @State()
-  private qrCode: boolean = false;
-
-  @State()
-  private chart: boolean = false;
-
-  @State()
-  private poll: boolean = false;
-
-  @State()
-  private author: boolean = false;
-
-  @State()
-  private split: boolean = false;
-
-  @State()
-  private demo: boolean = false;
-
-  @State()
   private list: SlotType.OL | SlotType.UL | undefined;
 
   async componentWillLoad() {
-    if (this.slide) {
-      this.qrCode = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-qrcode'.toUpperCase();
-      this.chart = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-chart'.toUpperCase();
-      this.poll = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-poll'.toUpperCase();
-      this.author = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-author'.toUpperCase();
-      this.split = this.selectedElement.tagName?.toUpperCase() === 'deckgo-slide-split'.toUpperCase();
-    }
-
-    this.demo = this.selectedElement.nodeName?.toLocaleLowerCase() === SlotType.DEMO;
-
-    this.list = await ListUtils.isElementList(this.selectedElement);
-
-    this.applyToTargetElement = this.image
+    this.applyToTargetElement = this.selectedDescription.slot.image
       ? TargetElement.IMAGE
-      : this.code || this.markdown
+      : this.selectedDescription.slot.code || this.selectedDescription.slot.markdown
       ? TargetElement.CODE
-      : this.wordCloud
+      : this.selectedDescription.slot.wordCloud
       ? TargetElement.WORD_CLOUD
-      : this.qrCode || this.poll
+      : this.selectedDescription.slide.qrCode || this.selectedDescription.slide.poll
       ? TargetElement.QR_CODE
-      : this.chart
+      : this.selectedDescription.slide.chart
       ? TargetElement.CHART
-      : this.author || this.split
+      : this.selectedDescription.slide.author || this.selectedDescription.slide.split
       ? TargetElement.SIDES
       : TargetElement.SLIDE;
   }
@@ -127,7 +79,7 @@ export class AppElementStyle {
   }
 
   private async onImageAction($event: CustomEvent<ImageAction>) {
-    if (!this.slide) {
+    if (this.selectedDescription.type === 'element') {
       return;
     }
 
@@ -151,7 +103,7 @@ export class AppElementStyle {
   render() {
     return [
       <ion-toolbar>
-        <h2>{this.slide ? 'Slide style' : 'Style'}</h2>
+        <h2>{this.selectedDescription.type === 'slide' ? 'Slide style' : 'Style'}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
       this.renderSelectTarget(),
@@ -161,20 +113,30 @@ export class AppElementStyle {
   }
 
   private renderSelectTarget() {
-    const elementTarget: boolean = !this.slide && this.shape !== 'shape' && !this.image;
-    const transition: boolean = !this.slide && !this.code && !this.markdown && !this.math && !this.wordCloud && this.shape === undefined && !this.demo;
+    if (this.selectedDescription.slot.shape === 'shape') {
+      return;
+    }
+
+    const elementTarget: boolean = this.selectedDescription.type === 'element' && !this.selectedDescription.slot.image;
+    const transition: boolean =
+      this.selectedDescription.type === 'element' &&
+      !this.selectedDescription.slot.code &&
+      !this.selectedDescription.slot.markdown &&
+      !this.selectedDescription.slot.math &&
+      !this.selectedDescription.slot.wordCloud &&
+      this.selectedDescription.slot.shape === undefined &&
+      !this.selectedDescription.slot.demo;
 
     return (
       <app-select-target-element
         textTarget={elementTarget}
-        slide={this.slide}
-        background={!this.image}
-        qrCode={this.qrCode || this.poll}
-        chart={this.chart || this.poll}
-        code={this.code || this.markdown}
-        image={this.image}
-        sides={this.author || this.split}
-        shape={this.shape === 'shape'}
+        slide={this.selectedDescription.type === 'slide'}
+        background={!this.selectedDescription.slot.image}
+        qrCode={this.selectedDescription.slide.qrCode || this.selectedDescription.slide.poll}
+        chart={this.selectedDescription.slide.chart || this.selectedDescription.slide.poll}
+        code={this.selectedDescription.slot.code || this.selectedDescription.slot.markdown}
+        image={this.selectedDescription.slot.image}
+        sides={this.selectedDescription.slide.author || this.selectedDescription.slide.split}
         transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );
@@ -193,7 +155,7 @@ export class AppElementStyle {
       return (
         <app-color-sides
           selectedElement={this.selectedElement}
-          template={this.author ? 'author' : 'split'}
+          template={this.selectedDescription.slide.author ? 'author' : 'split'}
           onColorChange={() => this.emitStyleChange()}></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
@@ -213,17 +175,17 @@ export class AppElementStyle {
         this.renderLetterSpacing(),
         this.renderList(),
         <app-color-text-background
-          expanded={!this.code}
+          expanded={!this.selectedDescription.slot.code}
           key={'text'}
           selectedElement={this.selectedElement}
-          slide={this.slide}
+          slide={this.selectedDescription.type === 'slide'}
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       ];
     }
   }
 
   private renderLetterSpacing() {
-    if (this.code) {
+    if (this.selectedDescription.slot.code) {
       return undefined;
     }
 
@@ -241,7 +203,7 @@ export class AppElementStyle {
       this.renderImage(),
     ];
 
-    if (!this.slide) {
+    if (this.selectedDescription.type === 'element') {
       background.push(<app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>);
       background.push(<app-box-shadow selectedElement={this.selectedElement} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>);
     }
@@ -250,7 +212,7 @@ export class AppElementStyle {
   }
 
   private renderImage() {
-    if (!this.slide) {
+    if (this.selectedDescription.type === 'element') {
       return undefined;
     }
 
@@ -270,14 +232,14 @@ export class AppElementStyle {
   }
 
   private renderFontSize() {
-    if (!this.code && !this.math) {
+    if (!this.selectedDescription.slot.code && !this.selectedDescription.slot.math) {
       return undefined;
     }
 
     return (
       <app-font-size
         selectedElement={this.selectedElement}
-        selector={this.math ? '--deckgo-math-font-size' : '--deckgo-highlight-code-font-size'}
+        selector={this.selectedDescription.slot.math ? '--deckgo-math-font-size' : '--deckgo-highlight-code-font-size'}
         onCodeDidChange={() => this.emitStyleChange()}></app-font-size>
     );
   }
