@@ -1,6 +1,10 @@
-<a name="3.3.0"></a>
+<a name="3.2.1"></a>
 
-# [3.3.0](https://github.com/deckgo/deckdeckgo/compare/v3.2.0...v3.3.0) (In progress...)
+# [3.2.1](https://github.com/deckgo/deckdeckgo/compare/v3.2.0...v3.2.1) (2020-12-16)
+
+### Applications
+
+- studio: v3.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
 
@@ -13,6 +17,8 @@
 <a name="3.2.0"></a>
 
 # [3.2.0](https://github.com/deckgo/deckdeckgo/compare/v3.1.0...v3.2.0) (2020-11-28)
+
+### Applications
 
 - studio: v3.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
