@@ -1,3 +1,11 @@
+<a name="4.0.0"></a>
+
+# [4.0.0](https://github.com/deckgo/deckdeckgo/compare/v3.2.1...v4.0.0) (In progress...)
+
+### New Applications
+
+- site: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/site/CHANGELOG.md))
+
 <a name="3.2.1"></a>
 
 # [3.2.1](https://github.com/deckgo/deckdeckgo/compare/v3.2.0...v3.2.1) (2020-12-16)
