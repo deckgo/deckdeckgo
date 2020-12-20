@@ -79,8 +79,8 @@ export const EnterpriseHero = () => {
               <FormattedMessage id="enterprise.hero.templates.uptodate" />
             </p>
 
-            <button type="button" className={styles.discover}>
-              <FormattedMessage id="enterprise.hero.templates.discover" />{' '}
+            <button type="button" className={styles.discover} onClick={scrollTo}>
+              <FormattedMessage id="enterprise.hero.get.in.touch" />{' '}
               <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 512 512">
                 <polyline
                   points="268 112 412 256 268 400"
