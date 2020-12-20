@@ -74,7 +74,7 @@ const Navigation = ({data, fix, lang, dark}) => {
         </nav>
       </header>
 
-      <Menu ref={menuRef} />
+      <Menu ref={menuRef} lang={lang} />
     </>
   );
 

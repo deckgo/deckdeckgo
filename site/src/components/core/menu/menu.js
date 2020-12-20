@@ -4,8 +4,9 @@ import {Link} from 'gatsby';
 import {FormattedMessage} from 'react-intl';
 
 import styles from './menu.module.scss';
+import {Links} from '../links/links';
 
-export const Menu = forwardRef((props, ref) => {
+export const Menu = forwardRef(({lang}, ref) => {
   useImperativeHandle(ref, () => ({
     open() {
       display();
@@ -24,9 +25,35 @@ export const Menu = forwardRef((props, ref) => {
 
   return (
     <div role="button" tabIndex="0" className={`${styles.menu} ${open ? `${styles.open}` : ''}`} onClick={() => hide()} onKeyDown={() => hide()}>
-      <Link to="/">
-        <h1>Home</h1>
+      <Link to={`/${lang}/`}>
+        <h2>DeckDeckGo</h2>
       </Link>
+
+      <Link to={`/${lang}/discover`}>
+        <h2>
+          <FormattedMessage id="nav.discover" />
+        </h2>
+      </Link>
+
+      <Link to={`/${lang}/enterprise`}>
+        <h2>
+          <FormattedMessage id="nav.enterprise" />
+        </h2>
+      </Link>
+
+      <a href="https://app.deckdeckgo.com/sigin" rel="noopener noreferrer">
+        <h2>
+          <FormattedMessage id="nav.signin" />
+        </h2>
+      </a>
+
+      <a href="https://app.deckdeckgo.com" rel="noopener noreferrer">
+        <h2>
+          <FormattedMessage id="nav.write.presentation" />
+        </h2>
+      </a>
+
+      <Links lang={lang} action={false} display="flex"></Links>
     </div>
   );
 });

@@ -7,6 +7,11 @@
   background: #ffffff;
   z-index: 1031;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   visibility: hidden;
   opacity: 0;
 
