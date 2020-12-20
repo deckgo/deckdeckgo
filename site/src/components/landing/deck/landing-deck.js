@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {FormattedMessage, useIntl} from 'react-intl';
 
+import {isIPad, isMobile, isPortrait} from '@deckdeckgo/utils';
+
 import styles from './landing-deck.module.scss';
 import {LinkButton} from '../../core/buttons/link-button';
 
@@ -13,6 +15,8 @@ export const LandingDeck = () => {
   const [deckIsBeginning, setIsBeginning] = useState(true);
   const [deckIsEnd, setIsEnd] = useState(false);
   const [deckLoaded, setDeckLoaded] = useState(false);
+
+  const mobile = typeof window !== 'undefined' ? isMobile() && !isIPad() : false;
 
   useEffect(() => {
     if (!deck || !deck.current) {
@@ -56,7 +60,7 @@ export const LandingDeck = () => {
   return (
     <section>
       <main className={styles.main}>
-        <article className={`${styles.container} ${deckLoaded ? 'loaded' : ''}`}>{renderDeck()}</article>
+        <article className={`${styles.container} ${deckLoaded ? 'loaded' : ''} ${mobile ? 'mobile' : ''}`}>{renderDeck()}</article>
 
         {renderSlideNavigation(deckIsBeginning || deckIsEnd ? 'light' : 'dark')}
       </main>

@@ -32,6 +32,10 @@
     visibility: visible;
   }
 
+  &:global(.mobile) {
+    pointer-events: none;
+  }
+
   @include deck.container;
 
   @media (min-width: 992px) {
@@ -131,11 +135,11 @@
     color: var(--color-dark);
 
     &:global(.next) {
-      left: calc(50% + 32px);
+      left: calc(50% + 16px);
     }
 
     &:global(.prev) {
-      left: calc(50% - 32px);
+      left: calc(50% - 64px);
     }
 
     svg {
