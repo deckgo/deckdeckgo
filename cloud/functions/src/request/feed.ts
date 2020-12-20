@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
 
 import {Deck, DeckMeta, DeckMetaAuthor} from '../model/data/deck';
 
@@ -9,6 +10,8 @@ interface FeedData {
   title: string;
 
   pathname: string;
+
+  screenshot: string;
 
   description?: string;
   tags?: string[];
@@ -35,15 +38,21 @@ export async function feedDecks(request: functions.Request, response: functions.
   try {
     const decks: Deck[] = await findPublishedDecks();
 
+    const bucket = admin.storage().bucket();
+    const presentationUrl: string = functions.config().deckdeckgo.presentation.url;
+
     const feed: Feed[] = decks
       .map((deck: Deck) => {
         const meta: DeckMeta = deck.data.meta as DeckMeta;
+
+        const path: string[] = meta.pathname.split('/');
 
         return {
           id: deck.id,
           data: {
             title: meta.title,
-            pathname: meta.pathname,
+            pathname: `${presentationUrl}${meta.pathname}`,
+            screenshot: `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${deck.data.owner_id}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?alt=media`,
             published_at: getDateObj(meta.published_at) as Date,
             ...(meta.description && {description: meta.description as string}),
             ...(meta.tags && {tags: meta.tags as string[]}),
