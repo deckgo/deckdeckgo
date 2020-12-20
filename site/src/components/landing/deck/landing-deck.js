@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {FormattedMessage, useIntl} from 'react-intl';
 
-import {isIPad, isMobile, isPortrait} from '@deckdeckgo/utils';
+import {isIPad, isMobile} from '@deckdeckgo/utils';
 
 import styles from './landing-deck.module.scss';
 import {LinkButton} from '../../core/buttons/link-button';
