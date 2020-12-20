@@ -21,6 +21,12 @@ module.exports = {
     },
     'gatsby-plugin-sharp',
     'gatsby-plugin-react-helmet',
+    {
+      resolve: `gatsby-plugin-react-helmet-canonical-urls`,
+      options: {
+        siteUrl: `https://deckdeckgo.com`,
+      },
+    },
     'gatsby-plugin-sitemap',
     'gatsby-plugin-offline',
     'gatsby-transformer-sharp',
@@ -52,5 +58,6 @@ module.exports = {
         icon: `static/assets/deckdeckgo.png`, // This path is relative to the root of the site.
       },
     },
+    `gatsby-plugin-robots-txt`,
   ],
 };
