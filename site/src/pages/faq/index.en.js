@@ -5,6 +5,7 @@ import Layout from '../../components/core/layout/en';
 import {Footer} from '../../components/core/footer/footer';
 
 import styles from '../../themes/templates/template.module.scss';
+import {Link} from 'gatsby';
 
 const FaqPage = (props) => {
   return (
@@ -16,22 +17,20 @@ const FaqPage = (props) => {
           <h3>Why DeckDeckGo?</h3>
 
           <p>
-            To be honest, it's difficult to really shorten what drives us to invest our spare time in DeckDeckGo. Maybe "we are just nerds who like to develop
-            ideas and learn by doing" or maybe "we are just crazy and we underestimated a bit the complexity of this project".
+            To be honest, it's difficult to really shorten what drives us. Maybe "we are just nerds who like to develop ideas and learn by doing" or maybe "we
+            are just crazy and we underestimated a bit the complexity of this project" but, in all cases, we love to develop DeckDeckGo.
           </p>
 
           <p>
-            Earlier this year (2018) I published an{' '}
-            <a href="https://dev.to/daviddalbusco/we-are-developing-an-open-source-editor-for-presentations-1bng" target="_blank" rel="noopener noreferrer">
+            Early 2018, I published an{' '}
+            <a
+              href="https://dev.to/daviddalbusco/we-are-developing-an-open-source-editor-for-presentations-1bng"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{textDecoration: 'underline'}}>
               article
             </a>{' '}
             to present our project and ourselves, you might find more answers in it if you wish to have a more concrete answer.
-          </p>
-
-          <h3>Is DeckDeckGo a company's business or a side project?</h3>
-
-          <p>
-            It's a <strong>side project</strong>, we have developed DeckDeckGo during our spare time, coding it at nights and on weekends.
           </p>
 
           <h3>Why open source?</h3>
@@ -47,9 +46,7 @@ const FaqPage = (props) => {
             issues and might want to contribute to give us a hand.
           </p>
 
-          <p>
-            <strong>Sharing is caring</strong>
-          </p>
+          <p>Sharing is caring.</p>
 
           <h3>Why templates? Why can't I do all the styling I wish in my presentations?</h3>
 
@@ -59,11 +56,24 @@ const FaqPage = (props) => {
             displayed regardless of the devices or format or in a responsive way.
           </p>
 
-          <p>Moreover, we are not designers. We just try our best to create templates which looks good.</p>
+          <p>
+            That being said, for our{' '}
+            <Link to="/en/enterprise/" style={{textDecoration: 'underline'}}>
+              enterprise
+            </Link>{' '}
+            we do offer templates and options that match their CI/CD. In addition, we are in the making to open our online editor to custom users and community
+            templates.
+          </p>
 
           <h3>How could I print? How could I export to PDF?</h3>
 
-          <p>You can't (but we do understand that you might wish to).</p>
+          <p>
+            You can't (but we do understand that you might wish to if you are a{' '}
+            <Link to="/en/enterprise/" style={{textDecoration: 'underline'}}>
+              company
+            </Link>
+            ).
+          </p>
 
           <p>
             With DeckDeckGo each presentations are shared as standalone applications. It's a bit another concept and we think that it is quite interesting to
@@ -76,10 +86,14 @@ const FaqPage = (props) => {
 
           <p>
             No problemo. This editor use separate Web Components we open sourced too as core engine. Therefore, if you wish to code your own presentations using
-            our libraries, HTML or Markdown, of course you could. Run <strong>npm init deckdeckgo</strong> to get started.
+            our libraries HTML of course you can. Run{' '}
+            <span style={{background: 'var(--color-dark)', color: 'var(--color-dark-contrast)', padding: '0 4px', borderRadius: '2px'}}>
+              npm init deckdeckgo
+            </span>{' '}
+            to get started.
           </p>
 
-          <h3>I just scanned a QR code and I landed on the homepage, what the heck happened?</h3>
+          <h3>I just scanned a QR code in my presentation and I landed on the homepage, what the heck happened?</h3>
 
           <p>
             The QR codes you add to your presentations are by default linked with the homepage. As soon as you share them, their content will automatically be
