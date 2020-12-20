@@ -59,6 +59,12 @@
     height: 42px;
     margin-right: 8px;
   }
+
+  span {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    font-weight: var(--font-weight-h3);
+  }
 }
 
 .start {
