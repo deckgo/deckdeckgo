@@ -13,7 +13,7 @@ export const Feed = () => {
           id
           data {
             title
-            pathname
+            url
             screenshot
             published_at
             description

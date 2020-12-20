@@ -2,6 +2,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+const fs = require('fs');
 const fetch = require('node-fetch');
 const {createRemoteFileNode} = require(`gatsby-source-filesystem`);
 
@@ -25,12 +26,39 @@ exports.onCreateNode = async ({node, actions: {createNode}, createNodeId, getCac
 exports.sourceNodes = async ({boundActionCreators, createNodeId, createContentDigest}) => {
   const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development';
 
+  if (activeEnv !== 'production' || !process.env.FIREBASE_FUNCTIONS_URL || !process.env.FEED_TOKEN) {
+    const feed = JSON.parse(fs.readFileSync('./decks.sample.json'));
+    createNodes(boundActionCreators, createNodeId, createContentDigest, feed);
+
+    return;
+  }
+
+  try {
+    const rawResponse = await fetch(`${process.env.FIREBASE_FUNCTIONS_URL}/feed`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.FEED_TOKEN}`,
+      },
+    });
+
+    if (!rawResponse || !rawResponse.ok) {
+      console.error('Cannot fetch feed data.');
+      return;
+    }
+
+    const feed = await rawResponse.json();
+    createNodes(boundActionCreators, createNodeId, createContentDigest, feed);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/creating-a-source-plugin/
+function createNodes(boundActionCreators, createNodeId, createContentDigest, feed) {
   const {createNode} = boundActionCreators;
 
-  const fs = require('fs');
-  const feed = JSON.parse(fs.readFileSync('./tmp.json'));
-
-  // https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/creating-a-source-plugin/
   feed.forEach((entry) =>
     createNode({
       ...entry,
@@ -44,35 +72,4 @@ exports.sourceNodes = async ({boundActionCreators, createNodeId, createContentDi
       },
     })
   );
-
-  // if (activeEnv !== 'production') {
-  //   return;
-  // }
-  //
-  // if (!process.env.FIREBASE_FUNCTIONS_URL || !process.env.FEED_TOKEN) {
-  //   return;
-  // }
-  //
-  // try {
-  //   const rawResponse = await fetch(`${process.env.FIREBASE_FUNCTIONS_URL}/feed`, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${process.env.FEED_TOKEN}`,
-  //     },
-  //   });
-  //
-  //   if (!rawResponse || !rawResponse.ok) {
-  //     console.error('Cannot fetch feed data.');
-  //     return;
-  //   }
-  //
-  //   const feed = await rawResponse.json();
-  //
-  //   const fs = require('fs');
-  //   fs.writeFileSync('./tmp.json', JSON.stringify(feed));
-  // } catch (err) {
-  //   console.error(err);
-  // }
-};
+}

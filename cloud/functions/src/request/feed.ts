@@ -9,7 +9,7 @@ import {getDateObj} from '../utils/utils';
 interface FeedData {
   title: string;
 
-  pathname: string;
+  url: string;
 
   screenshot: string;
 
@@ -51,7 +51,7 @@ export async function feedDecks(request: functions.Request, response: functions.
           id: deck.id,
           data: {
             title: meta.title,
-            pathname: `${presentationUrl}${meta.pathname}`,
+            url: `${presentationUrl}${meta.pathname}`,
             screenshot: `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${deck.data.owner_id}%2Fpresentations%2F${path[2]}%2Fdeckdeckgo.png?alt=media`,
             published_at: getDateObj(meta.published_at) as Date,
             ...(meta.description && {description: meta.description as string}),
