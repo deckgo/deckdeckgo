@@ -1,25 +1,42 @@
 import React from 'react';
-
-import {FormattedMessage} from 'react-intl';
+import {graphql, useStaticQuery} from 'gatsby';
 
 import styles from './feed.module.scss';
+
 import {Card} from '../card/card';
 
 export const Feed = () => {
+  const data = useStaticQuery(graphql`
+    query FeedQuery {
+      allFeed {
+        nodes {
+          id
+          data {
+            title
+            pathname
+            screenshot
+            published_at
+            description
+          }
+          remoteImage {
+            childImageSharp {
+              id
+              fluid {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+
   return (
     <section>
       <main className={styles.main}>
-        <Card></Card>
-
-        <Card></Card>
-
-        <Card></Card>
-
-        <Card></Card>
-
-        <Card></Card>
-
-        <Card></Card>
+        {data.allFeed.nodes.map((feed) => (
+          <Card key={feed.id} feed={feed} />
+        ))}
       </main>
     </section>
   );
