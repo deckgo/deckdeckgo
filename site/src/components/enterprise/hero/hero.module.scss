@@ -86,4 +86,9 @@
 .discover {
   color: var(--color-primary);
   padding: 0;
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+  }
 }

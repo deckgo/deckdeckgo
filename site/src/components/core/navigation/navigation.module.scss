@@ -59,6 +59,12 @@
     height: 42px;
     margin-right: 8px;
   }
+
+  span {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    font-weight: var(--font-weight-h3);
+  }
 }
 
 .start {
@@ -74,10 +80,6 @@
     margin-right: 1.25rem;
   }
 
-  a {
-    text-decoration: none;
-  }
-
   @media (max-width: 991px) {
     display: none;
   }
@@ -87,10 +89,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  a {
-    text-decoration: none;
-  }
 
   a:first-of-type {
     margin-right: 1.45rem;

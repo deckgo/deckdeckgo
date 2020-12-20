@@ -49,10 +49,15 @@ a {
   color: inherit;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
+  text-decoration: none;
 }
 a:active,
 a:hover {
   outline-width: 0;
+}
+a:hover,
+a:focus {
+  text-decoration: underline;
 }
 abbr[title] {
   border-bottom: none;

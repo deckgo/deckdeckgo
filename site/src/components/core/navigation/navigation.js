@@ -83,7 +83,7 @@ const Navigation = ({data, fix, lang, dark}) => {
       <Link to={`/${lang}/`} className={styles.home}>
         <Img fluid={data.placeholderImage.childImageSharp.fluid} />
 
-        <h3 style={{margin: 0}}>{data.site.siteMetadata.title}</h3>
+        <span style={{margin: 0}}>{data.site.siteMetadata.title}</span>
       </Link>
     );
   }
