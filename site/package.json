@@ -8,6 +8,7 @@
     "gatsby"
   ],
   "scripts": {
+    "prebuild": "node ./copy-index.js",
     "develop": "gatsby develop",
     "start": "gatsby develop",
     "build": "gatsby build",
