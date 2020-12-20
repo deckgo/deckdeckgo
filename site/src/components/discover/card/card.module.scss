@@ -1,0 +1,18 @@
+@use "../../../themes/mixins/deck";
+
+.figure {
+  display: flex;
+  justify-content: center;
+
+  @include deck.container;
+
+  margin: auto;
+  width: 16vw;
+
+  overflow: hidden;
+}
+
+.screenshot {
+  width: 100%;
+  height: calc(16vw / 16 * 9);
+}
