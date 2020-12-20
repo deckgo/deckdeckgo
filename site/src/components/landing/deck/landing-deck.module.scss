@@ -22,6 +22,16 @@
   width: calc(540px * 16 / 9);
   height: 540px;
 
+  opacity: 0;
+  visibility: hidden;
+
+  transition: opacity 0.15s ease-out;
+
+  &:global(.loaded) {
+    opacity: 1;
+    visibility: visible;
+  }
+
   @include deck.container;
 
   @media (min-width: 992px) {

@@ -12,6 +12,7 @@ export const LandingDeck = () => {
 
   const [deckIsBeginning, setIsBeginning] = useState(true);
   const [deckIsEnd, setIsEnd] = useState(false);
+  const [deckLoaded, setDeckLoaded] = useState(false);
 
   useEffect(() => {
     if (!deck || !deck.current) {
@@ -22,12 +23,18 @@ export const LandingDeck = () => {
 
     deckRef.addEventListener('slideNextDidChange', updateDeckPosition, {passive: true});
     deckRef.addEventListener('slidePrevDidChange', updateDeckPosition, {passive: true});
+    deckRef.addEventListener('deckDidLoad', markDeckLoaded, {once: true});
 
     return () => {
       deckRef.removeEventListener('slideNextDidChange', updateDeckPosition, false);
       deckRef.removeEventListener('slidePrevDidChange', updateDeckPosition, false);
+      deckRef.removeEventListener('deckDidLoad', markDeckLoaded, false);
     };
   }, [deck]);
+
+  const markDeckLoaded = () => {
+    setDeckLoaded(true);
+  };
 
   async function updateDeckPosition() {
     if (!deck) {
@@ -49,7 +56,7 @@ export const LandingDeck = () => {
   return (
     <section>
       <main className={styles.main}>
-        <article className={styles.container}>{renderDeck()}</article>
+        <article className={`${styles.container} ${deckLoaded ? 'loaded' : ''}`}>{renderDeck()}</article>
 
         {renderSlideNavigation(deckIsBeginning || deckIsEnd ? 'light' : 'dark')}
       </main>
@@ -58,12 +65,7 @@ export const LandingDeck = () => {
 
   function renderDeck() {
     return (
-      <deckgo-deck
-        ref={deck}
-        embedded={true}
-        direction-mobile="horizontal"
-        onSlideNextDidChange={() => updateDeckPosition()}
-        onSlidePrevDidChange={() => updateDeckPosition()}>
+      <deckgo-deck ref={deck} embedded={true} direction-mobile="horizontal">
         <deckgo-slide-title
           style={{'--background': 'linear-gradient(to top right, var(--color-quinary), var(--color-tertiary))', '--color': 'var(--color-primary-contrast)'}}>
           <h2 slot="title" style={{fontSize: 'var(--font-size-h1)', lineHeight: 'var(--line-height-h1)'}}>
