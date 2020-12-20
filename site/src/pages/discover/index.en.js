@@ -12,7 +12,7 @@ import discoverStyles from './discover.module.scss';
 
 const DiscoverPage = (props) => {
   return (
-    <Layout location={props.location}>
+    <Layout location={props.location} sticky={false}>
       <section>
         <main className={`${styles.main} ${discoverStyles.main}`}>
           <h1>

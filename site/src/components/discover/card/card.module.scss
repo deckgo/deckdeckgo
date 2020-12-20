@@ -6,8 +6,13 @@
 
   @include deck.container;
 
-  margin: 0;
-  width: 16vw;
-
+  position: relative;
   overflow: hidden;
+
+  margin: 0;
+
+  :global(div.gatsby-image-wrapper) {
+    width: 100%;
+    height: 100%;
+  }
 }
