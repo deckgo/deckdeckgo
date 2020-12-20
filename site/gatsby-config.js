@@ -21,12 +21,6 @@ module.exports = {
     },
     'gatsby-plugin-sharp',
     'gatsby-plugin-react-helmet',
-    {
-      resolve: `gatsby-plugin-react-helmet-canonical-urls`,
-      options: {
-        siteUrl: `https://deckdeckgo.com`,
-      },
-    },
     'gatsby-plugin-sitemap',
     'gatsby-plugin-offline',
     'gatsby-transformer-sharp',
