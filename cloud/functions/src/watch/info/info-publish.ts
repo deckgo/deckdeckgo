@@ -8,6 +8,7 @@ import {Deck, DeckData} from '../../model/data/deck';
 import {TaskData} from '../../model/data/task';
 
 import {findDeck} from '../../utils/data/deck-utils';
+import {getDateObj} from '../../utils/utils';
 
 export async function infoPublish(snap: DocumentSnapshot, _context: functions.EventContext) {
   const infoMailSkip: string = functions.config().info.mail.skip;
@@ -56,28 +57,6 @@ async function isFirstTimePublished(task: TaskData, deckData: DeckData): Promise
   }
 
   return taskCreateAt.getTime() < deckPublishedAt.getTime();
-}
-
-function getDateObj(myDate: any): Date | null {
-  if (myDate === null) {
-    return null;
-  }
-
-  if (myDate instanceof String || typeof myDate === 'string') {
-    return new Date('' + myDate);
-  }
-
-  // A Firebase Timestamp format
-  if (myDate && typeof myDate.toDate === 'function' && (myDate.seconds >= 0 || myDate.seconds < 0) && (myDate.nanoseconds >= 0 || myDate.nanoseconds < 0)) {
-    return new Date(myDate.toDate());
-  }
-
-  // A Firebase Timestamp format which for some reason has no mapped function
-  if (myDate && (myDate.seconds >= 0 || myDate.seconds < 0) && (myDate.nanoseconds >= 0 || myDate.nanoseconds < 0)) {
-    return new Date(myDate.seconds * 1000);
-  }
-
-  return myDate;
 }
 
 function sendInfo(deckId: string, deckData: DeckData, task: TaskData): Promise<string> {

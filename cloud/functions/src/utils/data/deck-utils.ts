@@ -46,3 +46,36 @@ export function updateDeck(deckId: string, deckData: Partial<DeckData>): Promise
     }
   });
 }
+
+export function findPublishedDecks(): Promise<Deck[]> {
+  return new Promise<Deck[]>(async (resolve, reject) => {
+    try {
+      const snapshot: admin.firestore.QuerySnapshot = await admin
+        .firestore()
+        .collection('decks')
+        .where('meta.feed', '==', true)
+        .orderBy('meta.published_at', 'desc')
+        .get();
+
+      if (!snapshot || !snapshot.docs) {
+        resolve([]);
+        return;
+      }
+
+      const decks: Deck[] = snapshot.docs.map((doc) => {
+        const id = doc.id;
+        const ref = doc.ref;
+
+        return {
+          id: id,
+          ref: ref,
+          data: doc.data(),
+        } as Deck;
+      });
+
+      resolve(decks);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}

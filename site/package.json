@@ -45,7 +45,9 @@
     "react-intl": "^5.10.7"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "husky": "^4.3.6",
+    "node-fetch": "^2.6.1",
     "prettier": "2.2.1",
     "pretty-quick": "^3.1.0",
     "sass": "^1.30.0"
