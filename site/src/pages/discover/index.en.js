@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import {FormattedMessage} from 'react-intl';
+
 import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
@@ -13,9 +15,13 @@ const DiscoverPage = (props) => {
     <Layout location={props.location}>
       <section>
         <main className={`${styles.main} ${discoverStyles.main}`}>
-          <h1>Discover</h1>
+          <h1>
+            <FormattedMessage id="discover.title" />
+          </h1>
 
-          <p>These are decks made with DeckDeckGo.</p>
+          <p>
+            <FormattedMessage id="discover.made.with.deckdeckdo" />
+          </p>
         </main>
       </section>
 
