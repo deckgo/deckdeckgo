@@ -80,10 +80,6 @@
     margin-right: 1.25rem;
   }
 
-  a {
-    text-decoration: none;
-  }
-
   @media (max-width: 991px) {
     display: none;
   }
@@ -93,10 +89,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  a {
-    text-decoration: none;
-  }
 
   a:first-of-type {
     margin-right: 1.45rem;

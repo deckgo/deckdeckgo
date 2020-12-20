@@ -25,7 +25,10 @@
   justify-content: center;
   align-items: center;
 
-  text-decoration: none;
+  &:focus,
+  &:hover {
+    text-decoration: none;
+  }
 
   &[color="dark"] {
     background: var(--color-dark);
