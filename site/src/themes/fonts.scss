@@ -1,0 +1,60 @@
+/* open-sans-300 - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/assets/fonts/open-sans-v17-latin-300.eot"); /* IE9 Compat Modes */
+  src: local("Open Sans Light"), local("OpenSans-Light"), url("/assets/fonts/open-sans-v17-latin-300.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-300.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-300.woff") format("woff"),
+    /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-300.ttf") format("truetype"),
+    /* Safari, Android, iOS */ url("/assets/fonts/open-sans-v17-latin-300.svg#OpenSans") format("svg"); /* Legacy iOS */
+}
+
+/* open-sans-regular - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/open-sans-v17-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local("Open Sans Regular"), local("OpenSans-Regular"), url("/assets/fonts/open-sans-v17-latin-regular.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-regular.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-regular.woff") format("woff"),
+    /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-regular.ttf") format("truetype"),
+    /* Safari, Android, iOS */ url("/assets/fonts/open-sans-v17-latin-regular.svg#OpenSans") format("svg"); /* Legacy iOS */
+}
+
+/* open-sans-700 - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/open-sans-v17-latin-700.eot"); /* IE9 Compat Modes */
+  src: local("Open Sans Bold"), local("OpenSans-Bold"), url("/assets/fonts/open-sans-v17-latin-700.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-700.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-700.woff") format("woff"),
+    /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-700.ttf") format("truetype"),
+    /* Safari, Android, iOS */ url("/assets/fonts/open-sans-v17-latin-700.svg#OpenSans") format("svg"); /* Legacy iOS */
+}
+
+:root {
+  font-family: "Open Sans", sans-serif;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --font-size-h1: 2.85rem;
+  --line-height-h1: 2.625rem;
+  --font-weight-h1: 700;
+
+  --font-size-h2: 1.75rem;
+  --line-height-h2: 1.9166666666666667rem;
+  --font-weight-h2: 700;
+
+  --font-size-h3: 1.4166666666666667rem;
+  --line-height-h3: 1.5833333333333333rem;
+  --font-weight-h3: 700;
+}

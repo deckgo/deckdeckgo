@@ -1,0 +1,17 @@
+@use "../../../themes/mixins/main";
+
+.main {
+  @include main.main;
+}
+
+.video {
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.remote {
+  @media (max-width: 992px) {
+    flex-direction: column-reverse;
+  }
+}

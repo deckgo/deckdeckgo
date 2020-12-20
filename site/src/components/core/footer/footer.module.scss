@@ -1,0 +1,16 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  background: var(--color-light);
+
+  padding: 2.75rem 0 1.45rem;
+
+  &:global(.action) {
+    padding: 5.75rem 0 1.45rem;
+  }
+}

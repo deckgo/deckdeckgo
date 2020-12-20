@@ -1,0 +1,14 @@
+@use "../mixins/main";
+
+.main {
+  @include main.title;
+  @include main.page;
+
+  h1 {
+    margin-bottom: 1.75rem;
+  }
+
+  h3 {
+    margin-bottom: 1.25rem;
+  }
+}
