@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 
 import {FormattedMessage, useIntl} from 'react-intl';
 
@@ -8,6 +8,7 @@ import Img from 'gatsby-image';
 import styles from './navigation.module.scss';
 
 import {LinkButton} from '../buttons/link-button';
+import {Menu} from '../menu/menu';
 
 const Navigation = ({data, fix, lang, dark}) => {
   const intl = useIntl();
@@ -37,11 +38,17 @@ const Navigation = ({data, fix, lang, dark}) => {
     }
   };
 
+  const menuRef = createRef();
+
+  const openMenu = () => {
+    menuRef.current.open();
+  };
+
   return (
     <>
       <header className={`${styles.header} ` + (fix ? `${styles.fix}` : scrolled ? `${styles.fix} animated` : '') + `${dark ? ` ${styles.dark}` : ''}`}>
         <nav className={styles.nav}>
-          <button className={styles.menu} aria-label={intl.formatMessage({id: 'nav.menu'})}>
+          <button className={styles.menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
             <img loading="lazy" src={`/assets/icons/ionicons/menu${dark ? '-dark' : ''}.svg`} aria-hidden="true" alt="" style={{width: '2rem'}} />
           </button>
 
@@ -66,6 +73,8 @@ const Navigation = ({data, fix, lang, dark}) => {
           </div>
         </nav>
       </header>
+
+      <Menu ref={menuRef} />
     </>
   );
 

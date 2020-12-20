@@ -1,0 +1,25 @@
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #ffffff;
+  z-index: 1031;
+
+  visibility: hidden;
+  opacity: 0;
+
+  transition: all 0.35s;
+
+  cursor: pointer;
+
+  &.open {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  a {
+    pointer-events: all;
+  }
+}
