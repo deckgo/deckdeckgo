@@ -40,41 +40,13 @@ export class AppNavigation {
 
     return (
       <div class={titleClass}>
-        <ion-router-link onClick={() => this.closeMenu()} href="/home" routerDirection="forward" class="nav">
+        <ion-router-link onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="nav">
           {this.renderLogo()}
         </ion-router-link>
-
-        {this.renderFeed()}
-
-        {this.renderEnterprise()}
 
         <ion-label class="deck-name">{store.state.name}</ion-label>
       </div>
     );
-  }
-
-  private renderFeed() {
-    if (this.presentation || this.publish) {
-      return (
-        <ion-router-link href="/discover" routerDirection="forward" class="nav discover">
-          <ion-label>Discover</ion-label>
-        </ion-router-link>
-      );
-    } else {
-      return undefined;
-    }
-  }
-
-  private renderEnterprise() {
-    if (this.presentation || this.publish) {
-      return (
-        <ion-router-link href="/enterprise" routerDirection="forward" class="nav">
-          <ion-label>Enterprise</ion-label>
-        </ion-router-link>
-      );
-    } else {
-      return undefined;
-    }
   }
 
   private renderTitleOffline() {
