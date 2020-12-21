@@ -1,17 +1,14 @@
-import {Component, h, Prop} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-footer',
-  styleUrl: 'app-footer.scss',
+  tag: 'app-links',
+  styleUrl: 'app-links.scss',
   shadow: false,
 })
-export class AppFooter {
-  @Prop()
-  display: 'menu' | 'landing' = 'menu';
-
+export class AppLinks {
   render() {
     return (
-      <div class={`ion-padding-start ion-padding-end ion-margin-bottom footer-container footer-${this.display}`}>
+      <div class={`ion-padding-start ion-padding-end ion-margin-bottom footer-container footer-menu`}>
         <section>
           <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 

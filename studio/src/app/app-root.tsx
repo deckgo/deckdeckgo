@@ -196,7 +196,7 @@ export class AppRoot {
             <ion-menu-toggle autoHide={false}>
               <app-menu></app-menu>
 
-              <app-footer></app-footer>
+              <app-links></app-links>
             </ion-menu-toggle>
           </ion-content>
         </ion-menu>

@@ -202,9 +202,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "selector": '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
     }
-    interface AppFooter {
-        "display": 'menu' | 'landing';
-    }
     interface AppFullscreenInfo {
     }
     interface AppGetHelp {
@@ -236,6 +233,8 @@ export namespace Components {
     }
     interface AppLetterSpacing {
         "selectedElement": HTMLElement;
+    }
+    interface AppLinks {
     }
     interface AppList {
         "selectedElement": HTMLElement;
@@ -645,12 +644,6 @@ declare global {
         prototype: HTMLAppFontSizeElement;
         new (): HTMLAppFontSizeElement;
     };
-    interface HTMLAppFooterElement extends Components.AppFooter, HTMLStencilElement {
-    }
-    var HTMLAppFooterElement: {
-        prototype: HTMLAppFooterElement;
-        new (): HTMLAppFooterElement;
-    };
     interface HTMLAppFullscreenInfoElement extends Components.AppFullscreenInfo, HTMLStencilElement {
     }
     var HTMLAppFullscreenInfoElement: {
@@ -710,6 +703,12 @@ declare global {
     var HTMLAppLetterSpacingElement: {
         prototype: HTMLAppLetterSpacingElement;
         new (): HTMLAppLetterSpacingElement;
+    };
+    interface HTMLAppLinksElement extends Components.AppLinks, HTMLStencilElement {
+    }
+    var HTMLAppLinksElement: {
+        prototype: HTMLAppLinksElement;
+        new (): HTMLAppLinksElement;
     };
     interface HTMLAppListElement extends Components.AppList, HTMLStencilElement {
     }
@@ -1015,7 +1014,6 @@ declare global {
         "app-embed": HTMLAppEmbedElement;
         "app-expansion-panel": HTMLAppExpansionPanelElement;
         "app-font-size": HTMLAppFontSizeElement;
-        "app-footer": HTMLAppFooterElement;
         "app-fullscreen-info": HTMLAppFullscreenInfoElement;
         "app-get-help": HTMLAppGetHelpElement;
         "app-gif": HTMLAppGifElement;
@@ -1026,6 +1024,7 @@ declare global {
         "app-image-element": HTMLAppImageElementElement;
         "app-image-style": HTMLAppImageStyleElement;
         "app-letter-spacing": HTMLAppLetterSpacingElement;
+        "app-links": HTMLAppLinksElement;
         "app-list": HTMLAppListElement;
         "app-logo": HTMLAppLogoElement;
         "app-math": HTMLAppMathElement;
@@ -1297,9 +1296,6 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "selector"?: '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
     }
-    interface AppFooter {
-        "display"?: 'menu' | 'landing';
-    }
     interface AppFullscreenInfo {
     }
     interface AppGetHelp {
@@ -1339,6 +1335,8 @@ declare namespace LocalJSX {
     interface AppLetterSpacing {
         "onLetterSpacingDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
+    }
+    interface AppLinks {
     }
     interface AppList {
         "onListStyleChanged"?: (event: CustomEvent<ListStyle>) => void;
@@ -1534,7 +1532,6 @@ declare namespace LocalJSX {
         "app-embed": AppEmbed;
         "app-expansion-panel": AppExpansionPanel;
         "app-font-size": AppFontSize;
-        "app-footer": AppFooter;
         "app-fullscreen-info": AppFullscreenInfo;
         "app-get-help": AppGetHelp;
         "app-gif": AppGif;
@@ -1545,6 +1542,7 @@ declare namespace LocalJSX {
         "app-image-element": AppImageElement;
         "app-image-style": AppImageStyle;
         "app-letter-spacing": AppLetterSpacing;
+        "app-links": AppLinks;
         "app-list": AppList;
         "app-logo": AppLogo;
         "app-math": AppMath;
@@ -1639,7 +1637,6 @@ declare module "@stencil/core" {
             "app-embed": LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
             "app-expansion-panel": LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
             "app-font-size": LocalJSX.AppFontSize & JSXBase.HTMLAttributes<HTMLAppFontSizeElement>;
-            "app-footer": LocalJSX.AppFooter & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
             "app-fullscreen-info": LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
             "app-get-help": LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
             "app-gif": LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
@@ -1650,6 +1647,7 @@ declare module "@stencil/core" {
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
             "app-letter-spacing": LocalJSX.AppLetterSpacing & JSXBase.HTMLAttributes<HTMLAppLetterSpacingElement>;
+            "app-links": LocalJSX.AppLinks & JSXBase.HTMLAttributes<HTMLAppLinksElement>;
             "app-list": LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
             "app-logo": LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
             "app-math": LocalJSX.AppMath & JSXBase.HTMLAttributes<HTMLAppMathElement>;
