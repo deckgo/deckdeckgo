@@ -75,14 +75,14 @@ export class AppMenu {
     if (authStore.state.loggedIn) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
-          <ion-icon lazy={true} name="log-out-outline" slot="start"></ion-icon>
+          <ion-icon lazy={true} name="log-out-outline" slot="start" style={{transform: 'translate(2px, 0px)'}}></ion-icon>
           <ion-label>Sign out</ion-label>
         </ion-item>
       );
     } else {
       return (
         <ion-item button onClick={() => this.signIn()}>
-          <ion-icon lazy={true} name="log-in-outline" slot="start"></ion-icon>
+          <ion-icon lazy={true} name="log-in-outline" slot="start" style={{transform: 'translate(-3px, 0px)'}}></ion-icon>
           <ion-label>Sign in</ion-label>
         </ion-item>
       );
