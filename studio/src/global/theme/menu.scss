@@ -53,7 +53,7 @@ ion-menu {
           }
         }
 
-        --color: var(--ion-color-medium);
+        --color: var(--ion-color-dark);
         --background-activated: var(--ion-color-light);
         --background-hover: var(--ion-color-light);
 
@@ -62,14 +62,9 @@ ion-menu {
           margin-bottom: 6px;
         }
 
-        ion-icon,
-        app-logo {
-          color: var(--ion-color-medium);
+        ion-icon {
+          color: inherit;
           margin: 8px 8px 8px 0;
-        }
-
-        app-logo {
-          --deckgo-logo-size: 1.4rem;
         }
 
         app-avatar {
@@ -84,6 +79,23 @@ ion-menu {
       --background-hover: var(--ion-color-primary);
       --color: var(--ion-color-primary-contrast);
       --color-activated: var(--ion-color-primary-contrast);
+    }
+  }
+}
+
+body.dark {
+  app-menu {
+    ion-list {
+      background: var(--ion-color-dark);
+
+      ion-item.ion-activatable:not(.deck) {
+        --background: transparent;
+        --color: var(--ion-color-dark-contrast);
+
+        ion-icon {
+          color: var(--ion-color-dark-contrast);
+        }
+      }
     }
   }
 }

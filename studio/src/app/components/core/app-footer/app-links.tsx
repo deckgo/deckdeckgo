@@ -8,7 +8,7 @@ import {Component, h} from '@stencil/core';
 export class AppLinks {
   render() {
     return (
-      <div class={`ion-padding-start ion-padding-end ion-margin-bottom footer-container footer-menu`}>
+      <div class={`ion-padding-start ion-padding-end ion-padding-bottom links-container links-menu`}>
         <section>
           <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 

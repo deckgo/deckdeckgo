@@ -1,18 +1,18 @@
 app-links {
   display: block;
 
-  div.footer-container {
+  div.links-container {
     font-size: var(--font-size-small);
 
-    &.footer-container {
-      margin-top: 8px;
+    &.links-container {
+      padding-top: 8px;
     }
 
     section > ion-label {
       display: inline-block;
       padding-bottom: 6px;
 
-      color: black;
+      color: var(--ion-color-dark);
       font-weight: 700;
     }
 
@@ -42,12 +42,26 @@ app-links {
       }
 
       ion-icon {
-        color: var(--ion-color-dark);
+        color: inherit;
         font-size: 1.2rem;
 
         &:not(last-of-type) {
           margin-right: 8px;
         }
+      }
+    }
+  }
+}
+
+body.dark {
+  app-links {
+    div.links-container {
+      background: var(--ion-color-dark);
+
+      section > ion-label,
+      a,
+      ion-router-link {
+        color: var(--ion-color-dark-contrast);
       }
     }
   }
