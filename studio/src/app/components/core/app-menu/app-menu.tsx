@@ -65,7 +65,7 @@ export class AppMenu {
   private renderDashboard() {
     return (
       <ion-item button class="home" href="/dashboard" routerDirection="forward">
-        <ion-icon lazy={true} name="library-outline" slot="start"></ion-icon>
+        <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
         <ion-label>Dashboard</ion-label>
       </ion-item>
     );
