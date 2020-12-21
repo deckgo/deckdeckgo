@@ -21,8 +21,6 @@ import { TargetElement } from "./app/utils/editor/target-element";
 import { MoreAction } from "./app/utils/editor/more-action";
 import { ItemReorderEventDetail } from "@ionic/core";
 export namespace Components {
-    interface AppAbout {
-    }
     interface AppActionAddSlide {
         "addSlide": EventEmitter;
         "blockSlide": EventEmitter;
@@ -123,10 +121,6 @@ export namespace Components {
     interface AppColorWordCloud {
         "selectedElement": HTMLElement;
     }
-    interface AppContact {
-    }
-    interface AppContactForm {
-    }
     interface AppCreateSlide {
     }
     interface AppCustomData {
@@ -161,10 +155,6 @@ export namespace Components {
     }
     interface AppDemo {
         "selectedElement": HTMLElement;
-    }
-    interface AppDeveloper {
-    }
-    interface AppDiscover {
     }
     interface AppEditSlide {
         "author": boolean;
@@ -204,21 +194,9 @@ export namespace Components {
     }
     interface AppEmbed {
     }
-    interface AppEnterprise {
-    }
     interface AppExpansionPanel {
         "expanded": 'open' | 'close';
         "expander": boolean;
-    }
-    interface AppFaq {
-    }
-    interface AppFeatures {
-    }
-    interface AppFeed {
-    }
-    interface AppFeedCard {
-        "compact": boolean;
-        "deck": Deck;
     }
     interface AppFeedCardTags {
         "disableRemove": boolean;
@@ -242,8 +220,6 @@ export namespace Components {
     }
     interface AppGoOnline {
     }
-    interface AppHome {
-    }
     interface AppImage {
         "deck": boolean;
         "deleteBackground": boolean;
@@ -262,12 +238,6 @@ export namespace Components {
     }
     interface AppImageStyle {
         "selectedElement": HTMLElement;
-    }
-    interface AppLanding {
-    }
-    interface AppLandingContent {
-    }
-    interface AppLandingDeck {
     }
     interface AppLetterSpacing {
         "selectedElement": HTMLElement;
@@ -304,15 +274,11 @@ export namespace Components {
         "publish": boolean;
         "signIn": boolean;
     }
-    interface AppNewsletter {
-    }
     interface AppNotes {
         "selectedElement": HTMLElement;
     }
     interface AppOffline {
         "offline": boolean;
-    }
-    interface AppOpensource {
     }
     interface AppPhoto {
     }
@@ -328,16 +294,8 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
-    interface AppPopular {
-        "description": boolean;
-        "help": boolean;
-    }
     interface AppPresent {
         "fullscreen": boolean;
-    }
-    interface AppPress {
-    }
-    interface AppPrivacy {
     }
     interface AppProfile {
     }
@@ -351,8 +309,6 @@ export namespace Components {
     interface AppRandomGif {
         "keyword": string;
     }
-    interface AppRemote {
-    }
     interface AppRemoteConnect {
     }
     interface AppRemoteRequest {
@@ -361,9 +317,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppRoot {
-    }
-    interface AppSectionFooter {
-        "action": boolean;
     }
     interface AppSelectTargetElement {
         "background": boolean;
@@ -377,8 +330,6 @@ export namespace Components {
         "slide": boolean;
         "textTarget": boolean;
         "transition": boolean;
-    }
-    interface AppServices {
     }
     interface AppShape {
         "selectedElement": HTMLElement;
@@ -407,10 +358,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "skip": boolean;
     }
-    interface AppTeam {
-    }
-    interface AppTerms {
-    }
     interface AppTransform {
         "selectedElement": HTMLElement;
     }
@@ -424,19 +371,11 @@ export namespace Components {
     }
     interface AppWaves {
     }
-    interface AppWelcome {
-    }
     interface AppYoutube {
         "selectedElement": HTMLElement;
     }
 }
 declare global {
-    interface HTMLAppAboutElement extends Components.AppAbout, HTMLStencilElement {
-    }
-    var HTMLAppAboutElement: {
-        prototype: HTMLAppAboutElement;
-        new (): HTMLAppAboutElement;
-    };
     interface HTMLAppActionAddSlideElement extends Components.AppActionAddSlide, HTMLStencilElement {
     }
     var HTMLAppActionAddSlideElement: {
@@ -575,18 +514,6 @@ declare global {
         prototype: HTMLAppColorWordCloudElement;
         new (): HTMLAppColorWordCloudElement;
     };
-    interface HTMLAppContactElement extends Components.AppContact, HTMLStencilElement {
-    }
-    var HTMLAppContactElement: {
-        prototype: HTMLAppContactElement;
-        new (): HTMLAppContactElement;
-    };
-    interface HTMLAppContactFormElement extends Components.AppContactForm, HTMLStencilElement {
-    }
-    var HTMLAppContactFormElement: {
-        prototype: HTMLAppContactFormElement;
-        new (): HTMLAppContactFormElement;
-    };
     interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {
     }
     var HTMLAppCreateSlideElement: {
@@ -659,18 +586,6 @@ declare global {
         prototype: HTMLAppDemoElement;
         new (): HTMLAppDemoElement;
     };
-    interface HTMLAppDeveloperElement extends Components.AppDeveloper, HTMLStencilElement {
-    }
-    var HTMLAppDeveloperElement: {
-        prototype: HTMLAppDeveloperElement;
-        new (): HTMLAppDeveloperElement;
-    };
-    interface HTMLAppDiscoverElement extends Components.AppDiscover, HTMLStencilElement {
-    }
-    var HTMLAppDiscoverElement: {
-        prototype: HTMLAppDiscoverElement;
-        new (): HTMLAppDiscoverElement;
-    };
     interface HTMLAppEditSlideElement extends Components.AppEditSlide, HTMLStencilElement {
     }
     var HTMLAppEditSlideElement: {
@@ -719,41 +634,11 @@ declare global {
         prototype: HTMLAppEmbedElement;
         new (): HTMLAppEmbedElement;
     };
-    interface HTMLAppEnterpriseElement extends Components.AppEnterprise, HTMLStencilElement {
-    }
-    var HTMLAppEnterpriseElement: {
-        prototype: HTMLAppEnterpriseElement;
-        new (): HTMLAppEnterpriseElement;
-    };
     interface HTMLAppExpansionPanelElement extends Components.AppExpansionPanel, HTMLStencilElement {
     }
     var HTMLAppExpansionPanelElement: {
         prototype: HTMLAppExpansionPanelElement;
         new (): HTMLAppExpansionPanelElement;
-    };
-    interface HTMLAppFaqElement extends Components.AppFaq, HTMLStencilElement {
-    }
-    var HTMLAppFaqElement: {
-        prototype: HTMLAppFaqElement;
-        new (): HTMLAppFaqElement;
-    };
-    interface HTMLAppFeaturesElement extends Components.AppFeatures, HTMLStencilElement {
-    }
-    var HTMLAppFeaturesElement: {
-        prototype: HTMLAppFeaturesElement;
-        new (): HTMLAppFeaturesElement;
-    };
-    interface HTMLAppFeedElement extends Components.AppFeed, HTMLStencilElement {
-    }
-    var HTMLAppFeedElement: {
-        prototype: HTMLAppFeedElement;
-        new (): HTMLAppFeedElement;
-    };
-    interface HTMLAppFeedCardElement extends Components.AppFeedCard, HTMLStencilElement {
-    }
-    var HTMLAppFeedCardElement: {
-        prototype: HTMLAppFeedCardElement;
-        new (): HTMLAppFeedCardElement;
     };
     interface HTMLAppFeedCardTagsElement extends Components.AppFeedCardTags, HTMLStencilElement {
     }
@@ -803,12 +688,6 @@ declare global {
         prototype: HTMLAppGoOnlineElement;
         new (): HTMLAppGoOnlineElement;
     };
-    interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {
-    }
-    var HTMLAppHomeElement: {
-        prototype: HTMLAppHomeElement;
-        new (): HTMLAppHomeElement;
-    };
     interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {
     }
     var HTMLAppImageElement: {
@@ -832,24 +711,6 @@ declare global {
     var HTMLAppImageStyleElement: {
         prototype: HTMLAppImageStyleElement;
         new (): HTMLAppImageStyleElement;
-    };
-    interface HTMLAppLandingElement extends Components.AppLanding, HTMLStencilElement {
-    }
-    var HTMLAppLandingElement: {
-        prototype: HTMLAppLandingElement;
-        new (): HTMLAppLandingElement;
-    };
-    interface HTMLAppLandingContentElement extends Components.AppLandingContent, HTMLStencilElement {
-    }
-    var HTMLAppLandingContentElement: {
-        prototype: HTMLAppLandingContentElement;
-        new (): HTMLAppLandingContentElement;
-    };
-    interface HTMLAppLandingDeckElement extends Components.AppLandingDeck, HTMLStencilElement {
-    }
-    var HTMLAppLandingDeckElement: {
-        prototype: HTMLAppLandingDeckElement;
-        new (): HTMLAppLandingDeckElement;
     };
     interface HTMLAppLetterSpacingElement extends Components.AppLetterSpacing, HTMLStencilElement {
     }
@@ -911,12 +772,6 @@ declare global {
         prototype: HTMLAppNavigationActionsElement;
         new (): HTMLAppNavigationActionsElement;
     };
-    interface HTMLAppNewsletterElement extends Components.AppNewsletter, HTMLStencilElement {
-    }
-    var HTMLAppNewsletterElement: {
-        prototype: HTMLAppNewsletterElement;
-        new (): HTMLAppNewsletterElement;
-    };
     interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {
     }
     var HTMLAppNotesElement: {
@@ -928,12 +783,6 @@ declare global {
     var HTMLAppOfflineElement: {
         prototype: HTMLAppOfflineElement;
         new (): HTMLAppOfflineElement;
-    };
-    interface HTMLAppOpensourceElement extends Components.AppOpensource, HTMLStencilElement {
-    }
-    var HTMLAppOpensourceElement: {
-        prototype: HTMLAppOpensourceElement;
-        new (): HTMLAppOpensourceElement;
     };
     interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {
     }
@@ -965,29 +814,11 @@ declare global {
         prototype: HTMLAppPollOptionsElement;
         new (): HTMLAppPollOptionsElement;
     };
-    interface HTMLAppPopularElement extends Components.AppPopular, HTMLStencilElement {
-    }
-    var HTMLAppPopularElement: {
-        prototype: HTMLAppPopularElement;
-        new (): HTMLAppPopularElement;
-    };
     interface HTMLAppPresentElement extends Components.AppPresent, HTMLStencilElement {
     }
     var HTMLAppPresentElement: {
         prototype: HTMLAppPresentElement;
         new (): HTMLAppPresentElement;
-    };
-    interface HTMLAppPressElement extends Components.AppPress, HTMLStencilElement {
-    }
-    var HTMLAppPressElement: {
-        prototype: HTMLAppPressElement;
-        new (): HTMLAppPressElement;
-    };
-    interface HTMLAppPrivacyElement extends Components.AppPrivacy, HTMLStencilElement {
-    }
-    var HTMLAppPrivacyElement: {
-        prototype: HTMLAppPrivacyElement;
-        new (): HTMLAppPrivacyElement;
     };
     interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {
     }
@@ -1019,12 +850,6 @@ declare global {
         prototype: HTMLAppRandomGifElement;
         new (): HTMLAppRandomGifElement;
     };
-    interface HTMLAppRemoteElement extends Components.AppRemote, HTMLStencilElement {
-    }
-    var HTMLAppRemoteElement: {
-        prototype: HTMLAppRemoteElement;
-        new (): HTMLAppRemoteElement;
-    };
     interface HTMLAppRemoteConnectElement extends Components.AppRemoteConnect, HTMLStencilElement {
     }
     var HTMLAppRemoteConnectElement: {
@@ -1049,23 +874,11 @@ declare global {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
-    interface HTMLAppSectionFooterElement extends Components.AppSectionFooter, HTMLStencilElement {
-    }
-    var HTMLAppSectionFooterElement: {
-        prototype: HTMLAppSectionFooterElement;
-        new (): HTMLAppSectionFooterElement;
-    };
     interface HTMLAppSelectTargetElementElement extends Components.AppSelectTargetElement, HTMLStencilElement {
     }
     var HTMLAppSelectTargetElementElement: {
         prototype: HTMLAppSelectTargetElementElement;
         new (): HTMLAppSelectTargetElementElement;
-    };
-    interface HTMLAppServicesElement extends Components.AppServices, HTMLStencilElement {
-    }
-    var HTMLAppServicesElement: {
-        prototype: HTMLAppServicesElement;
-        new (): HTMLAppServicesElement;
     };
     interface HTMLAppShapeElement extends Components.AppShape, HTMLStencilElement {
     }
@@ -1121,18 +934,6 @@ declare global {
         prototype: HTMLAppSlotTypeElement;
         new (): HTMLAppSlotTypeElement;
     };
-    interface HTMLAppTeamElement extends Components.AppTeam, HTMLStencilElement {
-    }
-    var HTMLAppTeamElement: {
-        prototype: HTMLAppTeamElement;
-        new (): HTMLAppTeamElement;
-    };
-    interface HTMLAppTermsElement extends Components.AppTerms, HTMLStencilElement {
-    }
-    var HTMLAppTermsElement: {
-        prototype: HTMLAppTermsElement;
-        new (): HTMLAppTermsElement;
-    };
     interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {
     }
     var HTMLAppTransformElement: {
@@ -1163,12 +964,6 @@ declare global {
         prototype: HTMLAppWavesElement;
         new (): HTMLAppWavesElement;
     };
-    interface HTMLAppWelcomeElement extends Components.AppWelcome, HTMLStencilElement {
-    }
-    var HTMLAppWelcomeElement: {
-        prototype: HTMLAppWelcomeElement;
-        new (): HTMLAppWelcomeElement;
-    };
     interface HTMLAppYoutubeElement extends Components.AppYoutube, HTMLStencilElement {
     }
     var HTMLAppYoutubeElement: {
@@ -1176,7 +971,6 @@ declare global {
         new (): HTMLAppYoutubeElement;
     };
     interface HTMLElementTagNameMap {
-        "app-about": HTMLAppAboutElement;
         "app-action-add-slide": HTMLAppActionAddSlideElement;
         "app-action-busy": HTMLAppActionBusyElement;
         "app-action-help": HTMLAppActionHelpElement;
@@ -1200,8 +994,6 @@ declare global {
         "app-color-sides": HTMLAppColorSidesElement;
         "app-color-text-background": HTMLAppColorTextBackgroundElement;
         "app-color-word-cloud": HTMLAppColorWordCloudElement;
-        "app-contact": HTMLAppContactElement;
-        "app-contact-form": HTMLAppContactFormElement;
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
@@ -1214,8 +1006,6 @@ declare global {
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-demo": HTMLAppDemoElement;
-        "app-developer": HTMLAppDeveloperElement;
-        "app-discover": HTMLAppDiscoverElement;
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
         "app-edit-slide-chart": HTMLAppEditSlideChartElement;
@@ -1224,12 +1014,7 @@ declare global {
         "app-element-delete": HTMLAppElementDeleteElement;
         "app-element-style": HTMLAppElementStyleElement;
         "app-embed": HTMLAppEmbedElement;
-        "app-enterprise": HTMLAppEnterpriseElement;
         "app-expansion-panel": HTMLAppExpansionPanelElement;
-        "app-faq": HTMLAppFaqElement;
-        "app-features": HTMLAppFeaturesElement;
-        "app-feed": HTMLAppFeedElement;
-        "app-feed-card": HTMLAppFeedCardElement;
         "app-feed-card-tags": HTMLAppFeedCardTagsElement;
         "app-font-size": HTMLAppFontSizeElement;
         "app-footer": HTMLAppFooterElement;
@@ -1238,14 +1023,10 @@ declare global {
         "app-gif": HTMLAppGifElement;
         "app-go-offline": HTMLAppGoOfflineElement;
         "app-go-online": HTMLAppGoOnlineElement;
-        "app-home": HTMLAppHomeElement;
         "app-image": HTMLAppImageElement;
         "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
         "app-image-style": HTMLAppImageStyleElement;
-        "app-landing": HTMLAppLandingElement;
-        "app-landing-content": HTMLAppLandingContentElement;
-        "app-landing-deck": HTMLAppLandingDeckElement;
         "app-letter-spacing": HTMLAppLetterSpacingElement;
         "app-list": HTMLAppListElement;
         "app-logo": HTMLAppLogoElement;
@@ -1256,32 +1037,24 @@ declare global {
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
         "app-navigation-actions": HTMLAppNavigationActionsElement;
-        "app-newsletter": HTMLAppNewsletterElement;
         "app-notes": HTMLAppNotesElement;
         "app-offline": HTMLAppOfflineElement;
-        "app-opensource": HTMLAppOpensourceElement;
         "app-photo": HTMLAppPhotoElement;
         "app-playground": HTMLAppPlaygroundElement;
         "app-playground-placeholder": HTMLAppPlaygroundPlaceholderElement;
         "app-poll": HTMLAppPollElement;
         "app-poll-options": HTMLAppPollOptionsElement;
-        "app-popular": HTMLAppPopularElement;
         "app-present": HTMLAppPresentElement;
-        "app-press": HTMLAppPressElement;
-        "app-privacy": HTMLAppPrivacyElement;
         "app-profile": HTMLAppProfileElement;
         "app-publish": HTMLAppPublishElement;
         "app-publish-done": HTMLAppPublishDoneElement;
         "app-publish-edit": HTMLAppPublishEditElement;
         "app-random-gif": HTMLAppRandomGifElement;
-        "app-remote": HTMLAppRemoteElement;
         "app-remote-connect": HTMLAppRemoteConnectElement;
         "app-remote-request": HTMLAppRemoteRequestElement;
         "app-reveal": HTMLAppRevealElement;
         "app-root": HTMLAppRootElement;
-        "app-section-footer": HTMLAppSectionFooterElement;
         "app-select-target-element": HTMLAppSelectTargetElementElement;
-        "app-services": HTMLAppServicesElement;
         "app-shape": HTMLAppShapeElement;
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
@@ -1291,20 +1064,15 @@ declare global {
         "app-slide-warning": HTMLAppSlideWarningElement;
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
-        "app-team": HTMLAppTeamElement;
-        "app-terms": HTMLAppTermsElement;
         "app-transform": HTMLAppTransformElement;
         "app-user-delete": HTMLAppUserDeleteElement;
         "app-user-info": HTMLAppUserInfoElement;
         "app-user-menu": HTMLAppUserMenuElement;
         "app-waves": HTMLAppWavesElement;
-        "app-welcome": HTMLAppWelcomeElement;
         "app-youtube": HTMLAppYoutubeElement;
     }
 }
 declare namespace LocalJSX {
-    interface AppAbout {
-    }
     interface AppActionAddSlide {
         "addSlide"?: EventEmitter;
         "blockSlide"?: EventEmitter;
@@ -1437,10 +1205,6 @@ declare namespace LocalJSX {
         "onWordCloudDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
-    interface AppContact {
-    }
-    interface AppContactForm {
-    }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
     }
@@ -1484,10 +1248,6 @@ declare namespace LocalJSX {
     interface AppDemo {
         "selectedElement"?: HTMLElement;
     }
-    interface AppDeveloper {
-    }
-    interface AppDiscover {
-    }
     interface AppEditSlide {
         "author"?: boolean;
         "chart"?: boolean;
@@ -1529,21 +1289,9 @@ declare namespace LocalJSX {
     }
     interface AppEmbed {
     }
-    interface AppEnterprise {
-    }
     interface AppExpansionPanel {
         "expanded"?: 'open' | 'close';
         "expander"?: boolean;
-    }
-    interface AppFaq {
-    }
-    interface AppFeatures {
-    }
-    interface AppFeed {
-    }
-    interface AppFeedCard {
-        "compact"?: boolean;
-        "deck"?: Deck;
     }
     interface AppFeedCardTags {
         "disableRemove"?: boolean;
@@ -1573,8 +1321,6 @@ declare namespace LocalJSX {
         "onDoneOnline"?: (event: CustomEvent<void>) => void;
         "onInProgress"?: (event: CustomEvent<boolean>) => void;
     }
-    interface AppHome {
-    }
     interface AppImage {
         "deck"?: boolean;
         "deleteBackground"?: boolean;
@@ -1596,12 +1342,6 @@ declare namespace LocalJSX {
     interface AppImageStyle {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "selectedElement"?: HTMLElement;
-    }
-    interface AppLanding {
-    }
-    interface AppLandingContent {
-    }
-    interface AppLandingDeck {
     }
     interface AppLetterSpacing {
         "onLetterSpacingDidChange"?: (event: CustomEvent<void>) => void;
@@ -1642,15 +1382,11 @@ declare namespace LocalJSX {
         "publish"?: boolean;
         "signIn"?: boolean;
     }
-    interface AppNewsletter {
-    }
     interface AppNotes {
         "selectedElement"?: HTMLElement;
     }
     interface AppOffline {
         "offline"?: boolean;
-    }
-    interface AppOpensource {
     }
     interface AppPhoto {
     }
@@ -1666,17 +1402,9 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
-    interface AppPopular {
-        "description"?: boolean;
-        "help"?: boolean;
-    }
     interface AppPresent {
         "fullscreen"?: boolean;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
-    }
-    interface AppPress {
-    }
-    interface AppPrivacy {
     }
     interface AppProfile {
     }
@@ -1692,8 +1420,6 @@ declare namespace LocalJSX {
     interface AppRandomGif {
         "keyword"?: string;
     }
-    interface AppRemote {
-    }
     interface AppRemoteConnect {
     }
     interface AppRemoteRequest {
@@ -1703,9 +1429,6 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppRoot {
-    }
-    interface AppSectionFooter {
-        "action"?: boolean;
     }
     interface AppSelectTargetElement {
         "background"?: boolean;
@@ -1720,8 +1443,6 @@ declare namespace LocalJSX {
         "slide"?: boolean;
         "textTarget"?: boolean;
         "transition"?: boolean;
-    }
-    interface AppServices {
     }
     interface AppShape {
         "selectedElement"?: HTMLElement;
@@ -1753,10 +1474,6 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "skip"?: boolean;
     }
-    interface AppTeam {
-    }
-    interface AppTerms {
-    }
     interface AppTransform {
         "selectedElement"?: HTMLElement;
     }
@@ -1770,13 +1487,10 @@ declare namespace LocalJSX {
     }
     interface AppWaves {
     }
-    interface AppWelcome {
-    }
     interface AppYoutube {
         "selectedElement"?: HTMLElement;
     }
     interface IntrinsicElements {
-        "app-about": AppAbout;
         "app-action-add-slide": AppActionAddSlide;
         "app-action-busy": AppActionBusy;
         "app-action-help": AppActionHelp;
@@ -1800,8 +1514,6 @@ declare namespace LocalJSX {
         "app-color-sides": AppColorSides;
         "app-color-text-background": AppColorTextBackground;
         "app-color-word-cloud": AppColorWordCloud;
-        "app-contact": AppContact;
-        "app-contact-form": AppContactForm;
         "app-create-slide": AppCreateSlide;
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
@@ -1814,8 +1526,6 @@ declare namespace LocalJSX {
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
         "app-demo": AppDemo;
-        "app-developer": AppDeveloper;
-        "app-discover": AppDiscover;
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
         "app-edit-slide-chart": AppEditSlideChart;
@@ -1824,12 +1534,7 @@ declare namespace LocalJSX {
         "app-element-delete": AppElementDelete;
         "app-element-style": AppElementStyle;
         "app-embed": AppEmbed;
-        "app-enterprise": AppEnterprise;
         "app-expansion-panel": AppExpansionPanel;
-        "app-faq": AppFaq;
-        "app-features": AppFeatures;
-        "app-feed": AppFeed;
-        "app-feed-card": AppFeedCard;
         "app-feed-card-tags": AppFeedCardTags;
         "app-font-size": AppFontSize;
         "app-footer": AppFooter;
@@ -1838,14 +1543,10 @@ declare namespace LocalJSX {
         "app-gif": AppGif;
         "app-go-offline": AppGoOffline;
         "app-go-online": AppGoOnline;
-        "app-home": AppHome;
         "app-image": AppImage;
         "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
         "app-image-style": AppImageStyle;
-        "app-landing": AppLanding;
-        "app-landing-content": AppLandingContent;
-        "app-landing-deck": AppLandingDeck;
         "app-letter-spacing": AppLetterSpacing;
         "app-list": AppList;
         "app-logo": AppLogo;
@@ -1856,32 +1557,24 @@ declare namespace LocalJSX {
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
         "app-navigation-actions": AppNavigationActions;
-        "app-newsletter": AppNewsletter;
         "app-notes": AppNotes;
         "app-offline": AppOffline;
-        "app-opensource": AppOpensource;
         "app-photo": AppPhoto;
         "app-playground": AppPlayground;
         "app-playground-placeholder": AppPlaygroundPlaceholder;
         "app-poll": AppPoll;
         "app-poll-options": AppPollOptions;
-        "app-popular": AppPopular;
         "app-present": AppPresent;
-        "app-press": AppPress;
-        "app-privacy": AppPrivacy;
         "app-profile": AppProfile;
         "app-publish": AppPublish;
         "app-publish-done": AppPublishDone;
         "app-publish-edit": AppPublishEdit;
         "app-random-gif": AppRandomGif;
-        "app-remote": AppRemote;
         "app-remote-connect": AppRemoteConnect;
         "app-remote-request": AppRemoteRequest;
         "app-reveal": AppReveal;
         "app-root": AppRoot;
-        "app-section-footer": AppSectionFooter;
         "app-select-target-element": AppSelectTargetElement;
-        "app-services": AppServices;
         "app-shape": AppShape;
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
@@ -1891,14 +1584,11 @@ declare namespace LocalJSX {
         "app-slide-warning": AppSlideWarning;
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
-        "app-team": AppTeam;
-        "app-terms": AppTerms;
         "app-transform": AppTransform;
         "app-user-delete": AppUserDelete;
         "app-user-info": AppUserInfo;
         "app-user-menu": AppUserMenu;
         "app-waves": AppWaves;
-        "app-welcome": AppWelcome;
         "app-youtube": AppYoutube;
     }
 }
@@ -1906,7 +1596,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "app-about": LocalJSX.AppAbout & JSXBase.HTMLAttributes<HTMLAppAboutElement>;
             "app-action-add-slide": LocalJSX.AppActionAddSlide & JSXBase.HTMLAttributes<HTMLAppActionAddSlideElement>;
             "app-action-busy": LocalJSX.AppActionBusy & JSXBase.HTMLAttributes<HTMLAppActionBusyElement>;
             "app-action-help": LocalJSX.AppActionHelp & JSXBase.HTMLAttributes<HTMLAppActionHelpElement>;
@@ -1930,8 +1619,6 @@ declare module "@stencil/core" {
             "app-color-sides": LocalJSX.AppColorSides & JSXBase.HTMLAttributes<HTMLAppColorSidesElement>;
             "app-color-text-background": LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
             "app-color-word-cloud": LocalJSX.AppColorWordCloud & JSXBase.HTMLAttributes<HTMLAppColorWordCloudElement>;
-            "app-contact": LocalJSX.AppContact & JSXBase.HTMLAttributes<HTMLAppContactElement>;
-            "app-contact-form": LocalJSX.AppContactForm & JSXBase.HTMLAttributes<HTMLAppContactFormElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
@@ -1944,8 +1631,6 @@ declare module "@stencil/core" {
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
-            "app-developer": LocalJSX.AppDeveloper & JSXBase.HTMLAttributes<HTMLAppDeveloperElement>;
-            "app-discover": LocalJSX.AppDiscover & JSXBase.HTMLAttributes<HTMLAppDiscoverElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
             "app-edit-slide-chart": LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
@@ -1954,12 +1639,7 @@ declare module "@stencil/core" {
             "app-element-delete": LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
             "app-element-style": LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
             "app-embed": LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
-            "app-enterprise": LocalJSX.AppEnterprise & JSXBase.HTMLAttributes<HTMLAppEnterpriseElement>;
             "app-expansion-panel": LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
-            "app-faq": LocalJSX.AppFaq & JSXBase.HTMLAttributes<HTMLAppFaqElement>;
-            "app-features": LocalJSX.AppFeatures & JSXBase.HTMLAttributes<HTMLAppFeaturesElement>;
-            "app-feed": LocalJSX.AppFeed & JSXBase.HTMLAttributes<HTMLAppFeedElement>;
-            "app-feed-card": LocalJSX.AppFeedCard & JSXBase.HTMLAttributes<HTMLAppFeedCardElement>;
             "app-feed-card-tags": LocalJSX.AppFeedCardTags & JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement>;
             "app-font-size": LocalJSX.AppFontSize & JSXBase.HTMLAttributes<HTMLAppFontSizeElement>;
             "app-footer": LocalJSX.AppFooter & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
@@ -1968,14 +1648,10 @@ declare module "@stencil/core" {
             "app-gif": LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
             "app-go-offline": LocalJSX.AppGoOffline & JSXBase.HTMLAttributes<HTMLAppGoOfflineElement>;
             "app-go-online": LocalJSX.AppGoOnline & JSXBase.HTMLAttributes<HTMLAppGoOnlineElement>;
-            "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
             "app-image": LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
             "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
-            "app-landing": LocalJSX.AppLanding & JSXBase.HTMLAttributes<HTMLAppLandingElement>;
-            "app-landing-content": LocalJSX.AppLandingContent & JSXBase.HTMLAttributes<HTMLAppLandingContentElement>;
-            "app-landing-deck": LocalJSX.AppLandingDeck & JSXBase.HTMLAttributes<HTMLAppLandingDeckElement>;
             "app-letter-spacing": LocalJSX.AppLetterSpacing & JSXBase.HTMLAttributes<HTMLAppLetterSpacingElement>;
             "app-list": LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
             "app-logo": LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
@@ -1986,32 +1662,24 @@ declare module "@stencil/core" {
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
-            "app-newsletter": LocalJSX.AppNewsletter & JSXBase.HTMLAttributes<HTMLAppNewsletterElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
             "app-offline": LocalJSX.AppOffline & JSXBase.HTMLAttributes<HTMLAppOfflineElement>;
-            "app-opensource": LocalJSX.AppOpensource & JSXBase.HTMLAttributes<HTMLAppOpensourceElement>;
             "app-photo": LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
             "app-playground": LocalJSX.AppPlayground & JSXBase.HTMLAttributes<HTMLAppPlaygroundElement>;
             "app-playground-placeholder": LocalJSX.AppPlaygroundPlaceholder & JSXBase.HTMLAttributes<HTMLAppPlaygroundPlaceholderElement>;
             "app-poll": LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
             "app-poll-options": LocalJSX.AppPollOptions & JSXBase.HTMLAttributes<HTMLAppPollOptionsElement>;
-            "app-popular": LocalJSX.AppPopular & JSXBase.HTMLAttributes<HTMLAppPopularElement>;
             "app-present": LocalJSX.AppPresent & JSXBase.HTMLAttributes<HTMLAppPresentElement>;
-            "app-press": LocalJSX.AppPress & JSXBase.HTMLAttributes<HTMLAppPressElement>;
-            "app-privacy": LocalJSX.AppPrivacy & JSXBase.HTMLAttributes<HTMLAppPrivacyElement>;
             "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-publish": LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
             "app-publish-done": LocalJSX.AppPublishDone & JSXBase.HTMLAttributes<HTMLAppPublishDoneElement>;
             "app-publish-edit": LocalJSX.AppPublishEdit & JSXBase.HTMLAttributes<HTMLAppPublishEditElement>;
             "app-random-gif": LocalJSX.AppRandomGif & JSXBase.HTMLAttributes<HTMLAppRandomGifElement>;
-            "app-remote": LocalJSX.AppRemote & JSXBase.HTMLAttributes<HTMLAppRemoteElement>;
             "app-remote-connect": LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
             "app-remote-request": LocalJSX.AppRemoteRequest & JSXBase.HTMLAttributes<HTMLAppRemoteRequestElement>;
             "app-reveal": LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
-            "app-section-footer": LocalJSX.AppSectionFooter & JSXBase.HTMLAttributes<HTMLAppSectionFooterElement>;
             "app-select-target-element": LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
-            "app-services": LocalJSX.AppServices & JSXBase.HTMLAttributes<HTMLAppServicesElement>;
             "app-shape": LocalJSX.AppShape & JSXBase.HTMLAttributes<HTMLAppShapeElement>;
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
@@ -2021,14 +1689,11 @@ declare module "@stencil/core" {
             "app-slide-warning": LocalJSX.AppSlideWarning & JSXBase.HTMLAttributes<HTMLAppSlideWarningElement>;
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
-            "app-team": LocalJSX.AppTeam & JSXBase.HTMLAttributes<HTMLAppTeamElement>;
-            "app-terms": LocalJSX.AppTerms & JSXBase.HTMLAttributes<HTMLAppTermsElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
             "app-user-info": LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;
             "app-user-menu": LocalJSX.AppUserMenu & JSXBase.HTMLAttributes<HTMLAppUserMenuElement>;
             "app-waves": LocalJSX.AppWaves & JSXBase.HTMLAttributes<HTMLAppWavesElement>;
-            "app-welcome": LocalJSX.AppWelcome & JSXBase.HTMLAttributes<HTMLAppWelcomeElement>;
             "app-youtube": LocalJSX.AppYoutube & JSXBase.HTMLAttributes<HTMLAppYoutubeElement>;
         }
     }
