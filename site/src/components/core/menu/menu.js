@@ -41,13 +41,13 @@ export const Menu = forwardRef(({lang}, ref) => {
         </h2>
       </Link>
 
-      <a href="https://app.deckdeckgo.com/sigin" rel="noopener noreferrer">
+      <a href="https://app.deckdeckgo.com/signin" rel="noopener noreferrer">
         <h2>
           <FormattedMessage id="nav.signin" />
         </h2>
       </a>
 
-      <a href="https://app.deckdeckgo.com" rel="noopener noreferrer">
+      <a href="https://app.deckdeckgo.com/editor" rel="noopener noreferrer">
         <h2>
           <FormattedMessage id="nav.write.presentation" />
         </h2>

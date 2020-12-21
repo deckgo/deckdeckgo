@@ -80,7 +80,11 @@ export const LandingDeck = () => {
               <FormattedMessage id="hero.deck.slide1.content" />
             </div>
 
-            <LinkButton style={{marginTop: '1.25rem'}} targetUrl="https://app.deckdeckgo.com" msgId="hero.deck.slide1.get.started" color="light"></LinkButton>
+            <LinkButton
+              style={{marginTop: '1.25rem'}}
+              targetUrl="https://app.deckdeckgo.com/editor"
+              msgId="hero.deck.slide1.get.started"
+              color="light"></LinkButton>
           </div>
 
           {renderSlideBackground()}
@@ -214,7 +218,7 @@ function Example() {
 
             <LinkButton
               style={{marginTop: '1.25rem'}}
-              targetUrl="https://app.deckdeckgo.com"
+              targetUrl="https://app.deckdeckgo.com/editor"
               msgId="hero.deck.slide9.start.presentation"
               color="light"></LinkButton>
           </div>

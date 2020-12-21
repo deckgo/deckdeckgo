@@ -65,11 +65,11 @@ const Navigation = ({data, fix, lang, dark}) => {
           </div>
 
           <div className={styles.end}>
-            <a href="https://app.deckdeckgo.com/sigin" rel="noopener noreferrer">
+            <a href="https://app.deckdeckgo.com/signin" rel="noopener noreferrer">
               <FormattedMessage id="nav.signin" />
             </a>
 
-            <LinkButton targetUrl="https://app.deckdeckgo.com" msgId="nav.write.presentation" color="primary"></LinkButton>
+            <LinkButton targetUrl="https://app.deckdeckgo.com/editor" msgId="nav.write.presentation" color="primary"></LinkButton>
           </div>
         </nav>
       </header>
