@@ -34,6 +34,10 @@
 
   &:global(.mobile) {
     pointer-events: none;
+
+    a {
+      pointer-events: all;
+    }
   }
 
   @include deck.container;
