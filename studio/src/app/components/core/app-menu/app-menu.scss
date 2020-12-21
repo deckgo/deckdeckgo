@@ -43,3 +43,11 @@ ion-menu {
     }
   }
 }
+
+body.dark {
+  ion-menu {
+    app-user-info {
+      color: var(--ion-color-dark-contrast);
+    }
+  }
+}
