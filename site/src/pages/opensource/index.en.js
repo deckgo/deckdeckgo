@@ -30,7 +30,7 @@ const OpenSourcePage = (props) => {
 
           <p>
             The open source code of DeckDeckGo is available on&nbsp;
-            <a href="http://github.com/deckgo" rel="noopener noreferrer">
+            <a href="http://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
               GitHub
             </a>
             .
