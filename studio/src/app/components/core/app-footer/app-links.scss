@@ -1,24 +1,3 @@
-@mixin footerColorDark() {
-  section > ion-label {
-    color: black;
-  }
-
-  ion-router-link {
-    color: var(--ion-color-medium);
-
-    &:hover,
-    &.active {
-      color: var(--ion-color-medium);
-    }
-  }
-
-  div.social {
-    ion-icon {
-      color: var(--ion-color-medium);
-    }
-  }
-}
-
 app-links {
   display: block;
 
@@ -30,63 +9,44 @@ app-links {
     }
 
     section > ion-label {
-      display: block;
+      display: inline-block;
       padding-bottom: 6px;
 
       color: black;
       font-weight: 700;
     }
 
+    a,
     ion-router-link {
       padding: 4px 0;
       display: block;
-      width: max-content;
+      width: 100%;
       font-weight: 300;
 
-      color: var(--ion-color-medium);
+      color: var(--ion-color-dark);
+      text-decoration: none;
 
       &:hover,
       &.active {
-        color: var(--ion-color-medium);
+        color: var(--ion-color-dark);
 
         border-bottom-color: transparent;
       }
     }
 
     div.social {
+      display: flex;
+
+      a {
+        width: max-content;
+      }
+
       ion-icon {
-        color: var(--ion-color-medium);
-        font-size: 1rem;
+        color: var(--ion-color-dark);
+        font-size: 1.2rem;
 
         &:not(last-of-type) {
-          margin-right: 4px;
-        }
-      }
-    }
-  }
-}
-
-body.dark {
-  ion-menu-toggle {
-    app-links {
-      div.footer-container {
-        section > ion-label {
-          color: var(--ion-color-dark-menu-contrast);
-        }
-
-        ion-router-link {
-          color: var(--ion-color-dark-menu-contrast);
-
-          &:hover,
-          &.active {
-            color: var(--ion-color-dark-menu-contrast);
-          }
-        }
-
-        div.social {
-          ion-icon {
-            color: var(--ion-color-dark-menu-contrast);
-          }
+          margin-right: 8px;
         }
       }
     }

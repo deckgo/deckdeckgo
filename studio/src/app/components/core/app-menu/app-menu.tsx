@@ -1,4 +1,4 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, Fragment, h} from '@stencil/core';
 
 import navStore from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
@@ -41,12 +41,11 @@ export class AppMenu {
       <ion-list>
         {this.renderUser()}
 
-        {this.renderHome()}
-        {this.renderDiscover()}
-        {this.renderEnterprise()}
         {this.renderDashboard()}
         {this.renderSettings()}
         {this.renderSignInOut()}
+
+        {this.renderInteract()}
       </ion-list>
     );
   }
@@ -64,16 +63,12 @@ export class AppMenu {
   }
 
   private renderDashboard() {
-    if (authStore.state.loggedIn) {
-      return (
-        <ion-item button class="home" href="/dashboard" routerDirection="forward">
-          <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
-          <ion-label>Dashboard</ion-label>
-        </ion-item>
-      );
-    } else {
-      return undefined;
-    }
+    return (
+      <ion-item button class="home" href="/dashboard" routerDirection="forward">
+        <ion-icon lazy={true} name="library-outline" slot="start"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-item>
+    );
   }
 
   private renderSignInOut() {
@@ -94,30 +89,19 @@ export class AppMenu {
     }
   }
 
-  private renderHome() {
+  private renderInteract() {
     return (
-      <ion-item button class="home" href="/home" routerDirection="forward">
-        <app-logo slot="start"></app-logo>
-        <ion-label>DeckDeckGo</ion-label>
-      </ion-item>
-    );
-  }
+      <Fragment>
+        <ion-item button class="home" href="/poll" routerDirection="forward">
+          <ion-icon lazy={true} name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+          <ion-label>Poll</ion-label>
+        </ion-item>
 
-  private renderDiscover() {
-    return (
-      <ion-item button class="home" href="/discover" routerDirection="forward">
-        <ion-icon lazy={true} name="search-outline" slot="start"></ion-icon>
-        <ion-label>Discover</ion-label>
-      </ion-item>
-    );
-  }
-
-  private renderEnterprise() {
-    return (
-      <ion-item button class="home" href="/enterprise" routerDirection="forward">
-        <ion-icon lazy={true} name="business-outline" slot="start"></ion-icon>
-        <ion-label>Enterprise</ion-label>
-      </ion-item>
+        <ion-item button class="home" href="https://deckdeckgo.app" target="_blank">
+          <ion-icon lazy={true} name="phone-portrait-outline" slot="start"></ion-icon>
+          <ion-label>Remote control</ion-label>
+        </ion-item>
+      </Fragment>
     );
   }
 

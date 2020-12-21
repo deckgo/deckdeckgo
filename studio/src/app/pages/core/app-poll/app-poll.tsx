@@ -185,14 +185,7 @@ export class AppPoll {
       return undefined;
     }
 
-    return [
-      <h1>Vote now!</h1>,
-      <p>Scan the QR-Code displayed on screen or enter the code to make your voice heard.</p>,
-      this.renderJoinPollForm(),
-      <h2 class="ion-padding-top">Live interactive audience participation</h2>,
-      <p>Engage your audience or class in real time.</p>,
-      <p>Involve them to contribute to your presentations with their smartphones and show the results live.</p>,
-    ];
+    return [<h1>Vote now!</h1>, <p>Scan the QR-Code displayed on screen or enter the code to make your voice heard.</p>, this.renderJoinPollForm()];
   }
 
   private renderJoinPollForm() {

@@ -12,73 +12,69 @@ export class AppLinks {
         <section>
           <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 
-          <ion-router-link href="/about" routerDirection="forward">
+          <a href="https://deckdeckgo.com/discover" rel="noopener norefferer" target="_blank">
+            <ion-label>Discover</ion-label>
+          </a>
+
+          <a href="https://deckdeckgo.com/enterprise" rel="noopener norefferer" target="_blank">
+            <ion-label>Enterprise</ion-label>
+          </a>
+
+          <a href="https://deckdeckgo.com/about" rel="noopener norefferer" target="_blank">
             <ion-label>About</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/team" routerDirection="forward">
+          <a href="https://deckdeckgo.com/team" rel="noopener norefferer" target="_blank">
             <ion-label>Team</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/newsletter" routerDirection="forward">
+          <a href="https://deckdeckgo.com/newsletter" rel="noopener norefferer" target="_blank">
             <ion-label>Newsletter</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/contact" routerDirection="forward">
+          <a href="https://deckdeckgo.com/contact" rel="noopener norefferer" target="_blank">
             <ion-label>Contact</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/press" routerDirection="forward">
+          <a href="https://deckdeckgo.com/press" rel="noopener norefferer" target="_blank">
             <ion-label>Press</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/faq" routerDirection="forward">
+          <a href="https://deckdeckgo.com/faq" rel="noopener norefferer" target="_blank">
             <ion-label>FAQ</ion-label>
-          </ion-router-link>
-        </section>
-
-        <section>
-          <ion-label class="ion-padding-top">Interact</ion-label>
-
-          <ion-router-link href="/poll" routerDirection="forward">
-            <ion-label>Poll</ion-label>
-          </ion-router-link>
-
-          <ion-router-link href="/remote" routerDirection="forward">
-            <ion-label>Remote control</ion-label>
-          </ion-router-link>
+          </a>
         </section>
 
         <section>
           <ion-label class="ion-padding-top">Developers</ion-label>
 
-          <ion-router-link href="/opensource" routerDirection="forward">
+          <a href="https://deckdeckgo.com/opensource" rel="noopener norefferer" target="_blank">
             <ion-label>Open source</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/services" routerDirection="forward">
+          <a href="https://deckdeckgo.com/services" rel="noopener norefferer" target="_blank">
             <ion-label>Services</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/developer" routerDirection="forward">
+          <a href="https://deckdeckgo.com/developer" rel="noopener norefferer" target="_blank">
             <ion-label>Developer</ion-label>
-          </ion-router-link>
+          </a>
         </section>
 
         <section>
           <ion-label class="ion-padding-top">Terms</ion-label>
 
-          <ion-router-link href="/terms" routerDirection="forward">
+          <a href="https://deckdeckgo.com/terms" rel="noopener norefferer" target="_blank">
             <ion-label>Terms of use</ion-label>
-          </ion-router-link>
+          </a>
 
-          <ion-router-link href="/privacy" routerDirection="forward">
+          <a href="https://deckdeckgo.com/privacy" rel="noopener norefferer" target="_blank">
             <ion-label>Privacy Policy</ion-label>
-          </ion-router-link>
+          </a>
         </section>
 
         <div class="social ion-padding-top ion-margin-top">
-          <a href="https://twitter.com/deckdeckgo" rel="noopener norefferer">
+          <a href="https://twitter.com/deckdeckgo" rel="noopener norefferer" target="_blank">
             <ion-icon name="logo-twitter"></ion-icon>
           </a>
           <a href="https://github.com/deckgo" rel="noopener noreferrer">
