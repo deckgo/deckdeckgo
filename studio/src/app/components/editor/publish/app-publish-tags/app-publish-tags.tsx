@@ -1,16 +1,13 @@
 import {Component, EventEmitter, Prop, Event, h} from '@stencil/core';
 
 @Component({
-  tag: 'app-feed-card-tags',
-  styleUrl: 'app-feed-card-tags.scss',
-  shadow: false
+  tag: 'app-publish-tags',
+  styleUrl: 'app-publish-tags.scss',
+  shadow: false,
 })
-export class AppFeedCardTags {
+export class AppPublishTags {
   @Prop()
   tags: string[] = [];
-
-  @Prop()
-  editable: boolean = false;
 
   @Prop()
   disableRemove: boolean = false;
@@ -35,10 +32,7 @@ export class AppFeedCardTags {
         return (
           <div class="chips">
             {this.renderCloseTags(tag)}
-            <ion-label>
-              {this.editable ? '' : '#'}
-              {tag}
-            </ion-label>
+            <ion-label>{tag}</ion-label>
           </div>
         );
       });
@@ -46,14 +40,10 @@ export class AppFeedCardTags {
   }
 
   private renderCloseTags(tag: string) {
-    if (this.editable) {
-      return (
-        <button onClick={($event: UIEvent) => this.remove($event, tag)} disabled={this.disableRemove}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
-        </button>
-      );
-    } else {
-      return undefined;
-    }
+    return (
+      <button onClick={($event: UIEvent) => this.remove($event, tag)} disabled={this.disableRemove}>
+        <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+      </button>
+    );
   }
 }

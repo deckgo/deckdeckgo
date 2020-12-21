@@ -439,11 +439,7 @@ export class AppPublishEdit {
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
             </ion-item>
 
-            <app-feed-card-tags
-              tags={this.tags}
-              editable={true}
-              disable-remove={disable}
-              onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
+            <app-publish-tags tags={this.tags} disable-remove={disable} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-publish-tags>
           </ion-list>
 
           {this.renderGitHub(disable)}

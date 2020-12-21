@@ -198,11 +198,6 @@ export namespace Components {
         "expanded": 'open' | 'close';
         "expander": boolean;
     }
-    interface AppFeedCardTags {
-        "disableRemove": boolean;
-        "editable": boolean;
-        "tags": string[];
-    }
     interface AppFontSize {
         "selectedElement": HTMLElement;
         "selector": '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
@@ -305,6 +300,10 @@ export namespace Components {
         "publishedUrl": string;
     }
     interface AppPublishEdit {
+    }
+    interface AppPublishTags {
+        "disableRemove": boolean;
+        "tags": string[];
     }
     interface AppRandomGif {
         "keyword": string;
@@ -640,12 +639,6 @@ declare global {
         prototype: HTMLAppExpansionPanelElement;
         new (): HTMLAppExpansionPanelElement;
     };
-    interface HTMLAppFeedCardTagsElement extends Components.AppFeedCardTags, HTMLStencilElement {
-    }
-    var HTMLAppFeedCardTagsElement: {
-        prototype: HTMLAppFeedCardTagsElement;
-        new (): HTMLAppFeedCardTagsElement;
-    };
     interface HTMLAppFontSizeElement extends Components.AppFontSize, HTMLStencilElement {
     }
     var HTMLAppFontSizeElement: {
@@ -844,6 +837,12 @@ declare global {
         prototype: HTMLAppPublishEditElement;
         new (): HTMLAppPublishEditElement;
     };
+    interface HTMLAppPublishTagsElement extends Components.AppPublishTags, HTMLStencilElement {
+    }
+    var HTMLAppPublishTagsElement: {
+        prototype: HTMLAppPublishTagsElement;
+        new (): HTMLAppPublishTagsElement;
+    };
     interface HTMLAppRandomGifElement extends Components.AppRandomGif, HTMLStencilElement {
     }
     var HTMLAppRandomGifElement: {
@@ -1015,7 +1014,6 @@ declare global {
         "app-element-style": HTMLAppElementStyleElement;
         "app-embed": HTMLAppEmbedElement;
         "app-expansion-panel": HTMLAppExpansionPanelElement;
-        "app-feed-card-tags": HTMLAppFeedCardTagsElement;
         "app-font-size": HTMLAppFontSizeElement;
         "app-footer": HTMLAppFooterElement;
         "app-fullscreen-info": HTMLAppFullscreenInfoElement;
@@ -1049,6 +1047,7 @@ declare global {
         "app-publish": HTMLAppPublishElement;
         "app-publish-done": HTMLAppPublishDoneElement;
         "app-publish-edit": HTMLAppPublishEditElement;
+        "app-publish-tags": HTMLAppPublishTagsElement;
         "app-random-gif": HTMLAppRandomGifElement;
         "app-remote-connect": HTMLAppRemoteConnectElement;
         "app-remote-request": HTMLAppRemoteRequestElement;
@@ -1293,12 +1292,6 @@ declare namespace LocalJSX {
         "expanded"?: 'open' | 'close';
         "expander"?: boolean;
     }
-    interface AppFeedCardTags {
-        "disableRemove"?: boolean;
-        "editable"?: boolean;
-        "onRemoveTag"?: (event: CustomEvent<string>) => void;
-        "tags"?: string[];
-    }
     interface AppFontSize {
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
@@ -1416,6 +1409,11 @@ declare namespace LocalJSX {
     interface AppPublishEdit {
         "onContact"?: (event: CustomEvent<void>) => void;
         "onPublished"?: (event: CustomEvent<string>) => void;
+    }
+    interface AppPublishTags {
+        "disableRemove"?: boolean;
+        "onRemoveTag"?: (event: CustomEvent<string>) => void;
+        "tags"?: string[];
     }
     interface AppRandomGif {
         "keyword"?: string;
@@ -1535,7 +1533,6 @@ declare namespace LocalJSX {
         "app-element-style": AppElementStyle;
         "app-embed": AppEmbed;
         "app-expansion-panel": AppExpansionPanel;
-        "app-feed-card-tags": AppFeedCardTags;
         "app-font-size": AppFontSize;
         "app-footer": AppFooter;
         "app-fullscreen-info": AppFullscreenInfo;
@@ -1569,6 +1566,7 @@ declare namespace LocalJSX {
         "app-publish": AppPublish;
         "app-publish-done": AppPublishDone;
         "app-publish-edit": AppPublishEdit;
+        "app-publish-tags": AppPublishTags;
         "app-random-gif": AppRandomGif;
         "app-remote-connect": AppRemoteConnect;
         "app-remote-request": AppRemoteRequest;
@@ -1640,7 +1638,6 @@ declare module "@stencil/core" {
             "app-element-style": LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
             "app-embed": LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
             "app-expansion-panel": LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
-            "app-feed-card-tags": LocalJSX.AppFeedCardTags & JSXBase.HTMLAttributes<HTMLAppFeedCardTagsElement>;
             "app-font-size": LocalJSX.AppFontSize & JSXBase.HTMLAttributes<HTMLAppFontSizeElement>;
             "app-footer": LocalJSX.AppFooter & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
             "app-fullscreen-info": LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
@@ -1674,6 +1671,7 @@ declare module "@stencil/core" {
             "app-publish": LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
             "app-publish-done": LocalJSX.AppPublishDone & JSXBase.HTMLAttributes<HTMLAppPublishDoneElement>;
             "app-publish-edit": LocalJSX.AppPublishEdit & JSXBase.HTMLAttributes<HTMLAppPublishEditElement>;
+            "app-publish-tags": LocalJSX.AppPublishTags & JSXBase.HTMLAttributes<HTMLAppPublishTagsElement>;
             "app-random-gif": LocalJSX.AppRandomGif & JSXBase.HTMLAttributes<HTMLAppRandomGifElement>;
             "app-remote-connect": LocalJSX.AppRemoteConnect & JSXBase.HTMLAttributes<HTMLAppRemoteConnectElement>;
             "app-remote-request": LocalJSX.AppRemoteRequest & JSXBase.HTMLAttributes<HTMLAppRemoteRequestElement>;
