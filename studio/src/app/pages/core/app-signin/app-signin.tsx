@@ -4,9 +4,6 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser, UserCredential, AuthCredential, OAuthCredential} from '@firebase/auth-types';
 
-import {del, get, set} from 'idb-keyval';
-
-import deckStore from '../../../stores/deck.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import tokenStore from '../../../stores/token.store';
@@ -72,8 +69,8 @@ export class AppSignIn {
 
     const appUrl: string = deckDeckGoConfig.appUrl;
 
-    const redirectUrl: string = await get<string>('deckdeckgo_redirect');
-    const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+    const redirectUrl: string = localStorage.getItem('deckdeckgo_redirect');
+    const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
     const signInOptions = [];
 
@@ -106,6 +103,13 @@ export class AppSignIn {
           this.signInInProgress = true;
 
           this.saveGithubCredentials(authResult);
+
+          // If success and login with email, as we don't have RELOADED the view and therefore not read again redirectUrl and mergeInfo
+          // We process with a redirect followed by a realod
+          if (authResult?.additionalUserInfo?.providerId === 'password') {
+            this.navigateRedirect();
+            return;
+          }
 
           // HACK: so signInSuccessWithAuthResult doesn't like promises, so we save the navigation information before and run the redirect not asynchronously
           // Ultimately I would like to transfer here the userService.updateMergedUser if async would be supported
@@ -148,13 +152,13 @@ export class AppSignIn {
       // The credential the user tried to sign in with.
       const cred = error.credential;
 
-      const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+      const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
       if (!mergeInfo || !mergeInfo.deckId || !mergeInfo.userToken || !mergeInfo.userId) {
         // Should not happens but at least  don't get stuck
         await this.signInWithCredential(cred);
 
-        await this.navigateRedirect();
+        this.navigateRedirect();
 
         resolve();
         return;
@@ -199,42 +203,40 @@ export class AppSignIn {
       await this.firebaseUser.delete();
     }
 
-    await this.navigateRedirect();
+    this.navigateRedirect();
   }
 
-  private saveRedirect(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+  private async saveRedirect() {
+    const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
-      if (mergeInfo && mergeInfo.userId && mergeInfo.userToken) {
-        resolve();
-        return;
-      }
+    if (mergeInfo && mergeInfo.userId && mergeInfo.userToken) {
+      return;
+    }
 
-      await set('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
+    localStorage.setItem('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
 
-      let token: string | null = null;
-      if (authStore.state.authUser) {
-        token = await firebase.auth().currentUser.getIdToken();
-      }
+    let token: string | null = null;
+    if (authStore.state.authUser) {
+      token = await firebase.auth().currentUser.getIdToken();
+    }
 
-      await set('deckdeckgo_redirect_info', {
-        deckId: deckStore.state.deck ? deckStore.state.deck.id : null,
+    localStorage.setItem(
+      'deckdeckgo_redirect_info',
+      JSON.stringify({
+        deckId: this.redirectId ? this.redirectId : null,
         userId: authStore.state.authUser ? authStore.state.authUser.uid : null,
         userToken: token,
         anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true,
-      });
-
-      resolve();
-    });
+      })
+    );
   }
 
-  private async navigateRedirect() {
-    const redirectUrl: string = await get<string>('deckdeckgo_redirect');
-    const mergeInfo: MergeInformation = await get<MergeInformation>('deckdeckgo_redirect_info');
+  private navigateRedirect() {
+    const redirectUrl: string = localStorage.getItem('deckdeckgo_redirect');
+    const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
-    await del('deckdeckgo_redirect');
-    await del('deckdeckgo_redirect_info');
+    localStorage.removeItem('deckdeckgo_redirect');
+    localStorage.removeItem('deckdeckgo_redirect_info');
 
     this.navigateRoot(redirectUrl, NavDirection.RELOAD, mergeInfo);
   }
