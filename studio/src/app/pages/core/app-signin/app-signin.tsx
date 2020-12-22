@@ -96,9 +96,9 @@ export class AppSignIn {
       // tosUrl and privacyPolicyUrl accept either url string or a callback
       // function.
       // Terms of service url/callback.
-      tosUrl: appUrl + '/terms',
+      tosUrl: 'https://deckdeckgo.com/terms',
       // Privacy policy url/callback.
-      privacyPolicyUrl: appUrl + '/privacy',
+      privacyPolicyUrl: 'https://deckdeckgo.com/privacy',
       credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
       autoUpgradeAnonymousUsers: true,
       callbacks: {
