@@ -92,5 +92,13 @@ app-dashboard {
         grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       }
     }
+
+    div.toolbar-actions {
+      width: 100%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

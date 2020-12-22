@@ -66,18 +66,12 @@ app-signin {
   p.firebaseui-tos {
     color: black;
     font-family: var(--ion-font-family, inherit);
-
-    a,
-    a:hover,
-    a:active,
-    a:focus {
-      text-decoration: none;
-    }
+    padding-top: 16px;
   }
 
   a.firebaseui-link {
-    text-decoration: none;
-    color: var(--ion-color-primary);
+    text-decoration: underline;
+    color: black;
   }
 
   div.mdl-shadow--2dp {

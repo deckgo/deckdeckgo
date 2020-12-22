@@ -451,7 +451,7 @@ export class AppProfile {
     return [
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
-        <main class="ion-padding">
+        <main class="ion-padding fit">
           <h1>Profile</h1>
           {this.renderGuardedContent()}
         </main>

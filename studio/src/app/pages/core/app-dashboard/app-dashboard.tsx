@@ -1,4 +1,4 @@
-import {Component, h, JSX, State} from '@stencil/core';
+import {Component, Fragment, h, JSX, State} from '@stencil/core';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
@@ -415,56 +415,64 @@ export class AppDashboard {
   };
 
   render() {
-    return [<app-navigation presentation={true}></app-navigation>, <ion-content class="ion-padding">{this.renderGuardedContent()}</ion-content>];
-  }
-
-  private renderGuardedContent() {
-    if (!authStore.state.authUser) {
-      return this.renderNotLoggedInContent();
-    } else {
-      return this.renderContent();
-    }
-  }
-
-  private renderNotLoggedInContent() {
     return (
-      <main class="ion-padding">
-        <h1>Oh, hi! Good to have you.</h1>
-        <p class="ion-padding-top">
-          <button type="button" class="app-button" onClick={() => this.signIn()}>
-            Sign in
-          </button>
-          to access to your presentations.
-        </p>
-      </main>
+      <Fragment>
+        <app-navigation presentation={true}></app-navigation>
+        <ion-content class="ion-padding">{this.renderContent()}</ion-content>
+      </Fragment>
     );
   }
 
   private renderContent() {
-    if (!this.filteredDecks) {
-      return undefined;
-    }
-
     return (
-      <main class="ion-padding">
+      <main class="ion-padding fit">
         {this.renderTitle()}
-        {this.renderDecksFilter()}
-        {this.renderCreateButton()}
-        {this.renderDecks()}
+
+        {this.renderGuardedContent()}
       </main>
     );
   }
 
+  private renderGuardedContent() {
+    if (authStore.state.anonymous) {
+      return (
+        <Fragment>
+          {this.renderNotLoggedInText()}
+          {this.renderCreateButton()}
+        </Fragment>
+      );
+    } else {
+      return (
+        <Fragment>
+          {this.renderDecksFilter()}
+
+          {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton()}
+
+          {this.renderDecks()}
+        </Fragment>
+      );
+    }
+  }
+
+  private renderNotLoggedInText() {
+    return (
+      <p>
+        You can give a try to DeckDeckGo by creating a presentation containing up to 3 slides. Afterwards we will kindly ask you to{' '}
+        <a onClick={() => this.signIn()}>sign in</a>. We think it's safer that way, because your data are saved in the cloud.
+      </p>
+    );
+  }
+
   private renderTitle() {
-    if (this.filteredDecks.length > 0) {
+    if (!authStore.state.anonymous) {
       return <h1>Your presentations</h1>;
     } else {
-      return <h1>You don't have any presentation yet</h1>;
+      return <h1>Oh, hi 👋! Good to have you</h1>;
     }
   }
 
   private renderDecksFilter() {
-    if (this.filteredDecks.length > 0) {
+    if (this.filteredDecks?.length > 0) {
       return (
         <ion-searchbar
           debounce={500}
@@ -475,27 +483,19 @@ export class AppDashboard {
           class="ion-no-padding ion-margin-top ion-margin-bottom"
         />
       );
-    } else {
-      return undefined;
     }
+
+    return <p>You don't have any slides yet. Go for it, create your first deck now!</p>;
   }
 
   private renderCreateButton() {
-    if (this.filteredDecks.length === 0) {
-      return (
-        <ion-grid>
-          <ion-row class="ion-justify-content-center">
-            <ion-column>
-              <ion-button slot="end" shape="round" fill="outline" onClick={() => this.navigateEditor()} class="ion-margin-top">
-                <ion-label>Start one now 🚀</ion-label>
-              </ion-button>
-            </ion-column>
-          </ion-row>
-        </ion-grid>
-      );
-    } else {
-      return undefined;
-    }
+    return (
+      <div class="toolbar-actions ion-margin-top">
+        <ion-button slot="end" shape="round" color="primary" onClick={() => this.navigateEditor()}>
+          <ion-label>Write a presentation</ion-label>
+        </ion-button>
+      </div>
+    );
   }
 
   private renderDecks() {

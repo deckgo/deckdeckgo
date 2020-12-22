@@ -103,23 +103,13 @@ ol {
   padding: 0 0 0 16px;
 }
 
+a,
 p a,
 ul a,
 ol a,
 td a,
 ion-router-link,
 .app-button {
-  text-decoration: none;
-  transition: border 0.3s;
-  border-bottom: 1px solid transparent;
-  font-weight: 400;
-}
-
-p a:hover,
-ul a:hover,
-ol a:hover,
-td a:hover,
-ion-router-link:hover,
-.app-button:hover {
-  border-bottom-color: var(--ion-color-primary);
+  color: inherit;
+  text-decoration: underline;
 }

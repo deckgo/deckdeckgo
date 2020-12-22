@@ -280,7 +280,7 @@ export class AppSignIn {
     return [
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
-        <main class="ion-padding">
+        <main class="ion-padding fit">
           {this.renderBackButton()}
 
           {this.renderMsg()}
@@ -310,7 +310,7 @@ export class AppSignIn {
     } else {
       return (
         <ion-buttons class="back">
-          <ion-button onClick={() => this.navigateBack()} color="primary">
+          <ion-button onClick={() => this.navigateBack()} color="dark">
             <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
           </ion-button>
         </ion-buttons>
