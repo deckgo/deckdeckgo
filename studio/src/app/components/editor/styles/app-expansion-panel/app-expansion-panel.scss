@@ -1,4 +1,4 @@
-@use "../../../../../global/theme/editor/editor-mixin";
+@use "../../../../../global/theme/mixins/editor";
 
 app-expansion-panel {
   display: block;
@@ -6,7 +6,7 @@ app-expansion-panel {
   margin-bottom: 16px;
   overflow: hidden;
 
-  @include editor-mixin.panel;
+  @include editor.panel;
 
   article {
     background: white;
