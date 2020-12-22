@@ -3,6 +3,8 @@ import {Component, Element, Fragment, h} from '@stencil/core';
 import navStore from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 
+import {signIn} from '../../../utils/core/signin.utils';
+
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection} from '../../../stores/nav.store';
 
@@ -21,10 +23,7 @@ export class AppMenu {
   }
 
   private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
+    signIn();
   }
 
   private async signOut() {
@@ -112,11 +111,11 @@ export class AppMenu {
         <ion-icon lazy={true} name="settings-outline" slot="icon"></ion-icon>
 
         <ion-list class="settings">
-          <ion-item button class="home" href="/settings/profile" routerDirection="forward">
+          <ion-item button class="home" href="/profile" routerDirection="forward">
             <ion-label>Profile</ion-label>
             <ion-icon lazy={true} name="person-outline" slot="start"></ion-icon>
           </ion-item>
-          <ion-item button class="home" href="/settings/customization" routerDirection="forward">
+          <ion-item button class="home" href="/customization" routerDirection="forward">
             <ion-label>Customization</ion-label>
             <ion-icon lazy={true} name="color-palette-outline" slot="start"></ion-icon>
           </ion-item>

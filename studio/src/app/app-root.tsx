@@ -169,6 +169,9 @@ export class AppRoot {
     await this.shareRef.openShare();
   }
 
+  /**
+   * Note: Routes need to be flat as we path the return and deckId (redirect and redirectId) to the signin route. So no /settings/something but /something.
+   */
   render() {
     return [
       <ion-app class={this.loading ? 'loading' : undefined}>
@@ -178,9 +181,8 @@ export class AppRoot {
           <ion-route url="/editor" component="app-editor" />
           <ion-route url="/editor/:deckId" component="app-editor" />
 
-          <ion-route url="/settings" component="app-profile" />
-          <ion-route url="/settings/profile" component="app-profile" />
-          <ion-route url="/settings/customization" component="app-customization" />
+          <ion-route url="/profile" component="app-profile" />
+          <ion-route url="/customization" component="app-customization" />
 
           <ion-route url="/dashboard" component="app-dashboard" />
 

@@ -15,6 +15,7 @@ import {ApiUser} from '../../../../models/api/api.user';
 import {User} from '../../../../models/data/user';
 
 import {UserUtils} from '../../../../utils/core/user-utils';
+import {signIn} from '../../../../utils/core/signin.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
@@ -160,13 +161,6 @@ export class AppProfile {
     this.medium = this.user.data.social.medium;
     this.github = this.user.data.social.github;
     this.custom = this.user.data.social.custom;
-  }
-
-  private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
   }
 
   @Listen('keydown')
@@ -470,7 +464,7 @@ export class AppProfile {
   private renderNotLoggedInContent() {
     return [
       <p>
-        <button type="button" class="app-button" onClick={() => this.signIn()}>
+        <button type="button" class="app-button" onClick={() => signIn()}>
           Sign in
         </button>
         to access your profile and settings.

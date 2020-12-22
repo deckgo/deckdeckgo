@@ -8,6 +8,8 @@ import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 import {AuthUser} from '../../../models/auth/auth.user';
 
+import {signIn} from '../../../utils/core/signin.utils';
+
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
@@ -234,13 +236,6 @@ export class AppDashboard {
     });
   }
 
-  private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
-  }
-
   private async filterDecksOnChange(e: CustomEvent) {
     if (e && e.detail) {
       await this.filterDecks(e.detail.value);
@@ -458,7 +453,7 @@ export class AppDashboard {
     return (
       <p>
         You can give a try to DeckDeckGo by creating a presentation containing up to 3 slides. Afterwards we will kindly ask you to{' '}
-        <a onClick={() => this.signIn()}>sign in</a>. We think it's safer that way, because your data are saved in the cloud.
+        <a onClick={() => signIn()}>sign in</a>. We think it's safer that way, because your data are saved in the cloud.
       </p>
     );
   }
