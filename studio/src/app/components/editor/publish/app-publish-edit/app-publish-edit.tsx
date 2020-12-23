@@ -4,7 +4,6 @@ import {debounce} from '@deckdeckgo/utils';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
-import feedStore from '../../../../stores/feed.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
@@ -190,9 +189,6 @@ export class AppPublishEdit {
     const destroyDeckDeployListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
       if (deck?.data?.deploy?.api?.status === 'successful') {
         destroyDeckDeployListener();
-
-        // In case the user would have browse the feed before, reset it to fetch is updated or new presentation
-        feedStore.reset();
 
         await this.delayNavigation(currentDeck.data.api_id !== deckStore.state.deck.data.api_id);
       }
@@ -443,11 +439,7 @@ export class AppPublishEdit {
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
             </ion-item>
 
-            <app-feed-card-tags
-              tags={this.tags}
-              editable={true}
-              disable-remove={disable}
-              onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-feed-card-tags>
+            <app-publish-tags tags={this.tags} disable-remove={disable} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-publish-tags>
           </ion-list>
 
           {this.renderGitHub(disable)}

@@ -6,7 +6,6 @@ import {get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
-import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import colorStore from '../../../stores/color.store';
 
@@ -30,6 +29,7 @@ import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-even
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
 import {SlotType} from '../../../utils/editor/slot-type';
+import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -645,10 +645,7 @@ export class AppEditor {
 
   @Listen('signIn', {target: 'document'})
   async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
+    navigateSignIn();
   }
 
   private stickyToolbarActivated($event: CustomEvent) {
@@ -793,11 +790,7 @@ export class AppEditor {
     if (this.slidesFetched) {
       return undefined;
     } else {
-      return (
-        <div class="spinner">
-          <ion-spinner color="primary"></ion-spinner>
-        </div>
-      );
+      return <app-spinner></app-spinner>;
     }
   }
 }

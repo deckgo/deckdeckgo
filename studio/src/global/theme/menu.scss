@@ -53,7 +53,7 @@ ion-menu {
           }
         }
 
-        --color: var(--ion-color-medium);
+        --color: var(--ion-color-dark);
         --background-activated: var(--ion-color-light);
         --background-hover: var(--ion-color-light);
 
@@ -62,14 +62,9 @@ ion-menu {
           margin-bottom: 6px;
         }
 
-        ion-icon,
-        app-logo {
-          color: var(--ion-color-medium);
+        ion-icon {
+          color: inherit;
           margin: 8px 8px 8px 0;
-        }
-
-        app-logo {
-          --deckgo-logo-size: 1.4rem;
         }
 
         app-avatar {
@@ -89,49 +84,17 @@ ion-menu {
 }
 
 body.dark {
-  ion-menu {
-    --background: var(--ion-color-dark-menu);
-    --ion-background-color: var(--ion-color-dark-menu);
+  app-menu {
+    ion-list {
+      background: var(--ion-color-dark);
 
-    ion-item-divider {
-      color: var(--ion-color-dark-menu-contrast);
-    }
+      ion-item.ion-activatable:not(.deck) {
+        --background: transparent;
+        --color: var(--ion-color-dark-contrast);
 
-    ion-content {
-      border-right: 1px solid rgba(0, 0, 0, 0.13);
-
-      ion-list {
-        ion-item-divider {
-          background: var(--ion-color-dark-menu);
-          --color: var(--ion-color-dark-menu-contrast);
+        ion-icon {
+          color: var(--ion-color-dark-contrast);
         }
-
-        ion-item {
-          --color: var(--ion-color-dark-menu-contrast);
-
-          --background-activated: var(--ion-color-dark-menu);
-          --background-hover: var(--ion-color-dark-menu);
-
-          ion-icon {
-            color: var(--ion-color-dark-menu-contrast);
-          }
-
-          &.ion-activatable:not(.deck) {
-            --color: var(--ion-color-dark-menu-contrast);
-
-            ion-icon {
-              color: var(--ion-color-dark-menu-contrast);
-            }
-          }
-        }
-      }
-
-      ion-button {
-        --background: var(--ion-color-primary);
-        --background-focused: var(--ion-color-primary);
-        --background-hover: var(--ion-color-primary);
-        --color: white;
-        --color-activated: white;
       }
     }
   }

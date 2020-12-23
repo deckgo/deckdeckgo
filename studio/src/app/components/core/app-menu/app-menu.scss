@@ -9,6 +9,7 @@ ion-menu {
 
         &.user {
           min-height: 32px;
+          --background: transparent;
         }
       }
     }
@@ -39,6 +40,14 @@ ion-menu {
           --padding-start: 32px;
         }
       }
+    }
+  }
+}
+
+body.dark {
+  ion-menu {
+    app-user-info {
+      color: var(--ion-color-dark-contrast);
     }
   }
 }

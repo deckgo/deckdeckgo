@@ -1,8 +1,22 @@
+@use "../../../../global/theme/mixins/deck";
+
 app-dashboard {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 
   main {
     background: white;
+
+    &.anonymous {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h1,
+      p {
+        max-width: 720px;
+        text-align: center;
+      }
+    }
 
     ion-router-link {
       padding-right: 4px;
@@ -20,26 +34,9 @@ app-dashboard {
     }
 
     deckgo-deck {
-      --background: white;
-      --color: black;
+      background: white;
 
-      font-size: 8px;
-
-      --font-size-very-small: 4px;
-      --font-size-small: 8px;
-      --font-size-normal: 10px;
-
-      --font-size-h1: 18px;
-      --font-size-h2: 10px;
-      --font-size-h3: 7px;
-
-      --slide-width: 100%;
-      --slide-height: 100%;
-
-      --slide-padding-top-default: 0;
-      --slide-padding-end-default: 0;
-      --slide-padding-bottom-default: 0;
-      --slide-padding-start-default: 0;
+      @include deck.padding;
     }
 
     ion-searchbar[class*="sc-ion-searchbar"] {
@@ -54,19 +51,32 @@ app-dashboard {
     div.container {
       display: grid;
       grid-gap: 16px;
-      grid-template-columns: repeat(auto-fill, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+
+      --card-width: calc((100vw - 64px - 48px) / 4);
+
+      @media (max-width: 992px) {
+        grid-template-columns: repeat(3, 1fr);
+        --card-width: calc((100vw - 64px - 48px) / 3);
+      }
+
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+        --card-width: calc((100vw - 64px - 48px) / 2);
+      }
+
+      @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+        --card-width: calc(100vw - 64px);
+      }
 
       ion-card.item {
         position: relative;
 
-        width: 100%;
-        height: 24vh;
+        width: var(--card-width);
+        height: calc(var(--card-width) * 9 / 16);
 
         cursor: pointer;
-
-        @media screen and (min-width: 540px) {
-          height: 38vh;
-        }
 
         app-dashboard-deck-actions {
           position: absolute;
@@ -87,10 +97,16 @@ app-dashboard {
           }
         }
       }
+    }
 
-      @media screen and (min-width: 540px) {
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      }
+    div.toolbar-actions {
+      width: 100%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding-top: 4px;
     }
   }
 }

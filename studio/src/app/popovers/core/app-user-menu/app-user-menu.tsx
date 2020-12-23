@@ -64,8 +64,8 @@ export class AppUserMenu {
         </ion-item>
 
         <ion-item onClick={() => this.closePopover()}>
-          <ion-router-link href="/settings" routerDirection="forward">
-            <ion-label>Settings</ion-label>
+          <ion-router-link href="/profile" routerDirection="forward">
+            <ion-label>Profile</ion-label>
           </ion-router-link>
         </ion-item>
 

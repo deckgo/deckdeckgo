@@ -8,6 +8,10 @@ ion-modal.fullscreen {
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
+
+      &.fit {
+        min-height: 100%;
+      }
     }
   }
 }

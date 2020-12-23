@@ -169,43 +169,26 @@ export class AppRoot {
     await this.shareRef.openShare();
   }
 
+  /**
+   * Note: Routes need to be flat as we path the return and deckId (redirect and redirectId) to the signin route. So no /settings/something but /something.
+   */
   render() {
     return [
       <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
-          <ion-route url="/" component="app-welcome" />
-
-          <ion-route url="/home" component="app-home" />
-
-          <ion-route url="/discover" component="app-discover" />
-
-          <ion-route url="/enterprise" component="app-enterprise" />
+          <ion-route url="/" component="app-dashboard" />
 
           <ion-route url="/editor" component="app-editor" />
           <ion-route url="/editor/:deckId" component="app-editor" />
 
-          <ion-route url="/settings" component="app-profile" />
-          <ion-route url="/settings/profile" component="app-profile" />
-          <ion-route url="/settings/customization" component="app-customization" />
+          <ion-route url="/profile" component="app-profile" />
+          <ion-route url="/customization" component="app-customization" />
 
           <ion-route url="/dashboard" component="app-dashboard" />
 
           <ion-route url="/signin" component="app-signin" />
           <ion-route url="/signin/:redirect" component="app-signin" />
-
-          <ion-route url="/about" component="app-about" />
-          <ion-route url="/faq" component="app-faq" />
-          <ion-route url="/team" component="app-team" />
-          <ion-route url="/opensource" component="app-opensource" />
-          <ion-route url="/privacy" component="app-privacy" />
-          <ion-route url="/terms" component="app-terms" />
-          <ion-route url="/services" component="app-services" />
-          <ion-route url="/developer" component="app-developer" />
-          <ion-route url="/contact" component="app-contact" />
-          <ion-route url="/newsletter" component="app-newsletter" />
-          <ion-route url="/press" component="app-press" />
-
-          <ion-route url="/remote" component="app-remote" />
+          <ion-route url="/signin/:redirect/:redirectId" component="app-signin" />
 
           <ion-route url="/poll" component="app-poll" />
           <ion-route url="/poll/:pollKey" component="app-poll" />
@@ -216,7 +199,7 @@ export class AppRoot {
             <ion-menu-toggle autoHide={false}>
               <app-menu></app-menu>
 
-              <app-footer></app-footer>
+              <app-links></app-links>
             </ion-menu-toggle>
           </ion-content>
         </ion-menu>
