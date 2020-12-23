@@ -142,7 +142,7 @@ export class AppDashboard {
       const promises: Promise<void>[] = [];
 
       this.decks.forEach((deck: DeckAndFirstSlide) => {
-        if (deck.deck?.data?.clone !== undefined) {
+        if (deck?.deck?.data?.clone !== undefined) {
           promises.push(this.deckDashboardService.snapshot(deck.deck, this.watchClonedDeck));
         }
       });
@@ -425,15 +425,6 @@ export class AppDashboard {
   };
 
   render() {
-    return (
-      <Fragment>
-        <app-navigation presentation={true}></app-navigation>
-        <ion-content class="ion-padding">{this.renderContent()}</ion-content>
-      </Fragment>
-    );
-  }
-
-  private renderContent() {
     if (this.loading) {
       return this.renderLoading();
     }

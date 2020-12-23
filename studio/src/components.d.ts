@@ -134,6 +134,8 @@ export namespace Components {
     interface AppDashboardDeckActions {
         "deck": Deck;
     }
+    interface AppDashboardPage {
+    }
     interface AppDeckDelete {
         "deckName": string;
         "published": string;
@@ -338,6 +340,10 @@ export namespace Components {
     interface AppShareOptions {
     }
     interface AppSignin {
+        "redirect": string;
+        "redirectId": string;
+    }
+    interface AppSigninPage {
         "redirect": string;
         "redirectId": string;
     }
@@ -549,6 +555,12 @@ declare global {
     var HTMLAppDashboardDeckActionsElement: {
         prototype: HTMLAppDashboardDeckActionsElement;
         new (): HTMLAppDashboardDeckActionsElement;
+    };
+    interface HTMLAppDashboardPageElement extends Components.AppDashboardPage, HTMLStencilElement {
+    }
+    var HTMLAppDashboardPageElement: {
+        prototype: HTMLAppDashboardPageElement;
+        new (): HTMLAppDashboardPageElement;
     };
     interface HTMLAppDeckDeleteElement extends Components.AppDeckDelete, HTMLStencilElement {
     }
@@ -904,6 +916,12 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
+    interface HTMLAppSigninPageElement extends Components.AppSigninPage, HTMLStencilElement {
+    }
+    var HTMLAppSigninPageElement: {
+        prototype: HTMLAppSigninPageElement;
+        new (): HTMLAppSigninPageElement;
+    };
     interface HTMLAppSlideNavigateElement extends Components.AppSlideNavigate, HTMLStencilElement {
     }
     var HTMLAppSlideNavigateElement: {
@@ -1006,6 +1024,7 @@ declare global {
         "app-customization": HTMLAppCustomizationElement;
         "app-dashboard": HTMLAppDashboardElement;
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
+        "app-dashboard-page": HTMLAppDashboardPageElement;
         "app-deck-delete": HTMLAppDeckDeleteElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
@@ -1065,6 +1084,7 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
+        "app-signin-page": HTMLAppSigninPageElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slide-preview": HTMLAppSlidePreviewElement;
         "app-slide-warning": HTMLAppSlideWarningElement;
@@ -1227,6 +1247,8 @@ declare namespace LocalJSX {
         "deck"?: Deck;
         "onDeckCloned"?: (event: CustomEvent<DeckDashboardCloneResult>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
+    }
+    interface AppDashboardPage {
     }
     interface AppDeckDelete {
         "deckName"?: string;
@@ -1461,6 +1483,10 @@ declare namespace LocalJSX {
         "redirect"?: string;
         "redirectId"?: string;
     }
+    interface AppSigninPage {
+        "redirect"?: string;
+        "redirectId"?: string;
+    }
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
@@ -1527,6 +1553,7 @@ declare namespace LocalJSX {
         "app-customization": AppCustomization;
         "app-dashboard": AppDashboard;
         "app-dashboard-deck-actions": AppDashboardDeckActions;
+        "app-dashboard-page": AppDashboardPage;
         "app-deck-delete": AppDeckDelete;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
@@ -1586,6 +1613,7 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
+        "app-signin-page": AppSigninPage;
         "app-slide-navigate": AppSlideNavigate;
         "app-slide-preview": AppSlidePreview;
         "app-slide-warning": AppSlideWarning;
@@ -1633,6 +1661,7 @@ declare module "@stencil/core" {
             "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
             "app-dashboard": LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
+            "app-dashboard-page": LocalJSX.AppDashboardPage & JSXBase.HTMLAttributes<HTMLAppDashboardPageElement>;
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
@@ -1692,6 +1721,7 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
+            "app-signin-page": LocalJSX.AppSigninPage & JSXBase.HTMLAttributes<HTMLAppSigninPageElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slide-preview": LocalJSX.AppSlidePreview & JSXBase.HTMLAttributes<HTMLAppSlidePreviewElement>;
             "app-slide-warning": LocalJSX.AppSlideWarning & JSXBase.HTMLAttributes<HTMLAppSlideWarningElement>;
