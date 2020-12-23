@@ -344,6 +344,8 @@ export namespace Components {
         "redirectId": string;
     }
     interface AppSigninPage {
+        "redirect": string;
+        "redirectId": string;
     }
     interface AppSlideNavigate {
     }
@@ -1482,6 +1484,8 @@ declare namespace LocalJSX {
         "redirectId"?: string;
     }
     interface AppSigninPage {
+        "redirect"?: string;
+        "redirectId"?: string;
     }
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
