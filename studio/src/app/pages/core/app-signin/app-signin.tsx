@@ -113,7 +113,7 @@ export class AppSignIn {
 
           // HACK: so signInSuccessWithAuthResult doesn't like promises, so we save the navigation information before and run the redirect not asynchronously
           // Ultimately I would like to transfer here the userService.updateMergedUser if async would be supported
-          this.navigateRoot(redirectUrl, NavDirection.ROOT, mergeInfo);
+          this.navigateRoot(redirectUrl, 'success', NavDirection.ROOT, mergeInfo);
 
           return false;
         },
@@ -158,7 +158,7 @@ export class AppSignIn {
         // Should not happens but at least  don't get stuck
         await this.signInWithCredential(cred);
 
-        this.navigateRedirect();
+        this.navigateRedirect('failure');
 
         resolve();
         return;
@@ -231,24 +231,24 @@ export class AppSignIn {
     );
   }
 
-  private navigateRedirect() {
+  private navigateRedirect(redirectStatus: 'success' | 'failure' = 'success') {
     const redirectUrl: string = localStorage.getItem('deckdeckgo_redirect');
     const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
     localStorage.removeItem('deckdeckgo_redirect');
     localStorage.removeItem('deckdeckgo_redirect_info');
 
-    this.navigateRoot(redirectUrl, NavDirection.RELOAD, mergeInfo);
+    this.navigateRoot(redirectUrl, redirectStatus, NavDirection.RELOAD, mergeInfo);
   }
 
-  private navigateRoot(redirectUrl: string, direction: NavDirection, mergeInfo: MergeInformation) {
+  private navigateRoot(redirectUrl: string, redirectStatus: 'success' | 'failure', direction: NavDirection, mergeInfo: MergeInformation) {
     // TODO: That's ugly
     // prettier-ignore
     const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
 
     // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
     navStore.state.nav = {
-      url,
+      url: url + `?signin=${redirectStatus}`,
       direction,
     };
   }

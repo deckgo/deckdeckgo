@@ -3,6 +3,8 @@ import {Component, Fragment, h, JSX, State} from '@stencil/core';
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
 import authStore from '../../../stores/auth.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
+import errorStore from '../../../stores/error.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
@@ -19,7 +21,6 @@ import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
-import navStore, {NavDirection} from '../../../stores/nav.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -37,6 +38,9 @@ interface DeckAndFirstSlide {
 export class AppDashboard {
   @State()
   private filteredDecks: DeckAndFirstSlide[] = null;
+
+  @State()
+  private loading: boolean;
 
   private decks: DeckAndFirstSlide[] = null;
 
@@ -59,6 +63,9 @@ export class AppDashboard {
   async componentWillLoad() {
     await this.imageEventsHandler.init();
     await this.chartEventsHandler.init();
+
+    const params = new URLSearchParams(window.location.search);
+    this.loading = params.get('signin') === 'success';
   }
 
   async componentDidLoad() {
@@ -76,12 +83,18 @@ export class AppDashboard {
 
     this.destroyListener();
 
-    const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
-    this.decks = await this.fetchFirstSlides(userDecks);
-    await this.filterDecks(null);
+    try {
+      const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
+      this.decks = await this.fetchFirstSlides(userDecks);
+      await this.filterDecks(null);
 
-    // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
-    await this.initWatchForClonedDecks();
+      // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
+      await this.initWatchForClonedDecks();
+    } catch (err) {
+      errorStore.state.error = 'Cannot init your dashboard.';
+    }
+
+    this.loading = false;
   }
 
   disconnectedCallback() {
@@ -419,11 +432,23 @@ export class AppDashboard {
   }
 
   private renderContent() {
+    if (this.loading) {
+      return this.renderLoading();
+    }
+
     if (authStore.state.anonymous) {
       return this.renderAnonymousContent();
     }
 
     return this.renderGuardedContent();
+  }
+
+  private renderLoading() {
+    return (
+      <main class="ion-padding fit loading">
+        <ion-spinner color="medium"></ion-spinner>
+      </main>
+    );
   }
 
   private renderAnonymousContent() {
