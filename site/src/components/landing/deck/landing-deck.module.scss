@@ -151,13 +151,8 @@
       height: 48px;
     }
 
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.5s ease-out;
-
     &:global(.hide) {
-      opacity: 0;
-      visibility: hidden;
+      color: rgba(var(--color-dark-rgb), 0.2);
     }
   }
 
@@ -183,6 +178,15 @@
         height: 64px;
 
         opacity: 0.82;
+      }
+
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.5s ease-out;
+
+      &:global(.hide) {
+        opacity: 0;
+        visibility: hidden;
       }
     }
   }
