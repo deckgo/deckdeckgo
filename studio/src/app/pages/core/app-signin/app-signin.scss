@@ -48,6 +48,7 @@ app-signin {
 
   .mdl-button--raised.mdl-button--colored {
     background: var(--ion-color-primary);
+    border-radius: 64px;
 
     &:hover,
     &:active {
@@ -61,6 +62,8 @@ app-signin {
 
   .firebaseui-idp-button {
     font-family: var(--ion-font-family, inherit);
+    border-radius: 64px;
+    padding: 8px 16px 8px 30px;
   }
 
   p.firebaseui-tos {
