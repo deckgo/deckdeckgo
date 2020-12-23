@@ -39,9 +39,13 @@ export const Links = ({lang, action, display = 'grid'}) => {
       <section>
         {display === 'grid' ? (
           <p className={styles.sectionTitle}>
-            <FormattedMessage id="footer.link.title.interact" />
+            <FormattedMessage id="footer.link.title.apps" />
           </p>
         ) : undefined}
+
+        <a href="https://app.deckdeckgo.com" rel="noopener norefferer">
+          <FormattedMessage id="footer.link.editor" />
+        </a>
 
         <a href="https://app.deckdeckgo.com/poll" rel="noopener norefferer">
           <FormattedMessage id="footer.link.poll" />
