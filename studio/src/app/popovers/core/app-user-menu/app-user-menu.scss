@@ -21,11 +21,7 @@ app-user-menu {
     ion-router-link {
       color: inherit;
       font-weight: inherit;
-
-      &:hover,
-      &.active {
-        border-bottom: 1px solid transparent;
-      }
+      text-decoration: none;
     }
 
     &:hover,

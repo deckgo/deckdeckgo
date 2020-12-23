@@ -1,0 +1,26 @@
+@mixin main() {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+
+  padding-top: 7.75rem;
+  padding-bottom: 7.75rem;
+
+  grid-gap: 2.45rem;
+
+  align-items: center;
+
+  @media (max-width: 992px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@mixin title() {
+  margin: 2.75rem auto 0;
+  padding-top: 4.75rem;
+}
+
+@mixin page() {
+  margin-bottom: 4.25rem;
+}

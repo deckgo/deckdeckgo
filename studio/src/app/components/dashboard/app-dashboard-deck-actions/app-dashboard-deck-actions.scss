@@ -6,14 +6,10 @@ a {
   cursor: pointer;
   pointer-events: initial;
 
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
   user-select: none;
 
   border-radius: 50%;
-  border: 1px solid var(--ion-color-primary);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
 
   width: 2rem;
   height: 2rem;
@@ -28,7 +24,7 @@ a {
 
   ion-icon {
     font-size: 1.2rem;
-    color: var(--ion-color-primary);
+    color: var(--ion-color-dark);
   }
 
   &.disabled {

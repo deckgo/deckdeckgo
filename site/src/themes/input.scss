@@ -1,0 +1,14 @@
+input,
+textarea {
+  width: 100%;
+  padding: 8px 0;
+  margin: 0.45rem 0;
+  text-indent: 16px;
+  background: var(--color-light);
+  border: 1px solid #dedede;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: none;
+}

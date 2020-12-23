@@ -3,9 +3,10 @@ import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 import {popoverController} from '@ionic/core';
 
 import themeStore from '../../../stores/theme.store';
-import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
+
+import {signIn} from '../../../utils/core/signin.utils';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -29,13 +30,6 @@ export class AppNavigationActions {
     await popover.present();
   }
 
-  private async navigateSignIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
-  }
-
   render() {
     return (
       <div>
@@ -52,7 +46,7 @@ export class AppNavigationActions {
       return undefined;
     } else if (this.presentation || this.publish) {
       return (
-        <button class="wide-device ion-padding-start ion-padding-end signin" onClick={() => this.navigateSignIn()} tabindex={0}>
+        <button class="wide-device ion-padding-start ion-padding-end signin" onClick={() => signIn()} tabindex={0}>
           <ion-label>Sign in</ion-label>
         </button>
       );

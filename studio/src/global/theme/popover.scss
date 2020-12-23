@@ -40,3 +40,10 @@ ion-popover.select-popover {
     }
   }
 }
+
+ion-popover {
+  a,
+  ion-router-link {
+    text-decoration: none;
+  }
+}

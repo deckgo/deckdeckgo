@@ -10,6 +10,7 @@ const langInterfaces = `export interface DeckdeckgoHighlightCodeLanguageAlias {
 export interface DeckdeckgoHighlightCodeLanguage {
   title: string;
   require?: string[];
+  main?:string
 }
 
 export interface DeckdeckgoHighlightCodeLanguages {
@@ -26,6 +27,13 @@ async function getLanguages() {
   const content = await response.json();
 
   return content.languages;
+}
+function getLanguageRequire(language) {
+  if (language.require && Array.isArray(language.require) && language.require.length > 0) {
+    return language.require.filter((req) => req !== 'clike' && req !== 'javascript');
+  } else if (language.require && language.require !== 'clike' && language.require !== 'javascript') {
+    return [language.require];
+  }
 }
 
 (async () => {
@@ -44,11 +52,22 @@ async function getLanguages() {
           title: languages[key].title,
         };
 
-        if (languages[key].require && Array.isArray(languages[key].require) && languages[key].require.length > 0) {
-          filteredLanguages[key].require = languages[key].require.filter((req) => req !== 'clike' && req !== 'javascript');
-        } else if (languages[key].require && languages[key].require !== 'clike' && languages[key].require !== 'javascript') {
-          filteredLanguages[key].require = [languages[key].require];
+        if (languages[key].alias && Array.isArray(languages[key].alias) && languages[key].alias.length > 0) {
+          languages[key].alias.forEach((alias) => {
+            filteredLanguages[alias] = {
+              title: (languages[key].aliasTitles && languages[key].aliasTitles[alias]) || alias,
+              main: key,
+              require: getLanguageRequire(languages[key]),
+            };
+          });
+        } else if (languages[key].alias && languages[key].alias.length > 0) {
+          filteredLanguages[languages[key].alias] = {
+            title: (languages[key].aliasTitles && languages[key].aliasTitles[languages[key].alias]) || languages[key].alias,
+            main: key,
+            require: getLanguageRequire(languages[key]),
+          };
         }
+        filteredLanguages[key].require = getLanguageRequire(languages[key]);
       });
 
     const languagesEnum = `${langInterfaces}

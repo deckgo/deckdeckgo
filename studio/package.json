@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-studio",
-  "version": "3.1.0",
+  "version": "3.2.1",
   "author": "David Dal Busco",
   "description": "The web open source editor for presentations",
   "license": "AGPL-3.0-or-later",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "prebuild": "node ./scripts/rm-www.js",
-    "build": "stencil build --prerender",
+    "build": "stencil build",
     "build:staging": "npm run build -- --staging",
     "postbuild": "./scripts/config.index.js",
     "start": "stencil build --dev --watch --serve",

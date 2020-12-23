@@ -20,7 +20,7 @@ export class AppTemplatesCommunity {
           <ion-button
             class="ion-margin-top"
             shape="round"
-            href="/settings/templates"
+            href="/templates"
             routerDirection="forward"
             mode="md"
             color="primary"

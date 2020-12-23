@@ -109,6 +109,9 @@ export class DeckdeckgoHighlightCode {
   }
 
   private async fetchOrParse() {
+    if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
+      return;
+    }
     if (this.src) {
       await this.fetchCode();
     } else {
@@ -139,7 +142,10 @@ export class DeckdeckgoHighlightCode {
 
   private async loadLanguages(reload: boolean = false) {
     this.loaded = false;
-
+    if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
+      console.error(`Language ${this.language} is not supported`);
+      return;
+    }
     await this.initLanguagesToLoad();
 
     await this.loadLanguagesRequire();
@@ -153,7 +159,6 @@ export class DeckdeckgoHighlightCode {
     }
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
-
     this.languagesToLoad = definition.require && definition.require.length > 0 ? [this.language, ...definition.require] : [this.language];
   }
 
@@ -162,7 +167,7 @@ export class DeckdeckgoHighlightCode {
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
     if (definition.require) {
-      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript)));
+      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript, false, true)));
     }
 
     if (promises.length <= 0) {
@@ -172,7 +177,7 @@ export class DeckdeckgoHighlightCode {
     await Promise.all(promises);
   }
 
-  private loadScript(lang: string, reload: boolean = false): Promise<void> {
+  private loadScript(lang: string, reload: boolean = false, requireScript: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!document || !lang || lang === '') {
         resolve();
@@ -212,14 +217,17 @@ export class DeckdeckgoHighlightCode {
         // if the language definition doesn't exist or if unpkg is down, display code anyway
         this.prismLanguageLoaded.emit(lang);
       };
+      const definition = deckdeckgoHighlightCodeLanguages[this.language];
 
-      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + lang + '.js';
-      script.setAttribute('deckdeckgo-prism', lang);
+      let language = !requireScript && definition.main ? definition.main : lang;
+
+      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
+      script.setAttribute('deckdeckgo-prism', language);
       script.defer = true;
 
       document.head.appendChild(script);
 
-      resolve();
+      script.addEventListener('load', () => resolve(), {once: true});
     });
   }
 

@@ -1,4 +1,6 @@
 # robotstxt.org/
 
-User-agent: * 
-Disallow:
+User-agent: *
+Allow: /
+Sitemap: https://deckdeckgo.com/sitemap.xml
+Host: https://deckdeckgo.com

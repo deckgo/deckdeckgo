@@ -66,27 +66,27 @@
   --font-size-very-small: 10px;
   --font-size-small: 12px;
   --font-size-normal: 15px;
-
-  --font-size-h1: 28px;
-  --font-size-h2: 20px;
-  --font-size-h3: 17px;
 }
 
 h1,
 h1 a {
-  font-size: var(--font-size-h1);
+  font-size: 3.85rem;
   font-weight: 700;
+
+  @media screen and (max-width: 768px) {
+    font-size: 2.45rem;
+  }
 }
 
 h2,
 h2 a {
-  font-size: var(--font-size-h2);
+  font-size: 1.75rem;
   font-weight: 700;
 }
 
 h3,
 h3 a {
-  font-size: var(--font-size-h3);
+  font-size: 1.4166666666666667rem;
   font-weight: 700;
 }
 
@@ -103,23 +103,13 @@ ol {
   padding: 0 0 0 16px;
 }
 
+a,
 p a,
 ul a,
 ol a,
 td a,
 ion-router-link,
 .app-button {
-  text-decoration: none;
-  transition: border 0.3s;
-  border-bottom: 1px solid transparent;
-  font-weight: 400;
-}
-
-p a:hover,
-ul a:hover,
-ol a:hover,
-td a:hover,
-ion-router-link:hover,
-.app-button:hover {
-  border-bottom-color: var(--ion-color-primary);
+  color: inherit;
+  text-decoration: underline;
 }

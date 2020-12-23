@@ -23,7 +23,7 @@ export class AppCustomization {
     return [
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
-        <main class="ion-padding">{this.renderDarkLightToggle()}</main>
+        <main class="ion-padding fit">{this.renderDarkLightToggle()}</main>
       </ion-content>,
     ];
   }

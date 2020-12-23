@@ -1,4 +1,4 @@
-@use "../../../../global/theme/editor/editor-mixin";
+@use "../../../../global/theme/mixins/editor";
 
 app-create-slide {
   ion-toolbar {
@@ -50,7 +50,7 @@ app-create-slide {
 
       background: white;
 
-      @include editor-mixin.panel;
+      @include editor.panel;
 
       --slide-width: 100%;
 

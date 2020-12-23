@@ -65,7 +65,7 @@ export class AppDeckHeaderFooter {
     this.navigateSettings.emit();
 
     navStore.state.nav = {
-      url: '/settings',
+      url: '/profile',
       direction: NavDirection.FORWARD,
     };
   }

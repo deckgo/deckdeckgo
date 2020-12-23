@@ -1,4 +1,4 @@
-@use "./editor/editor-mixin";
+@use "mixins/editor";
 
 // Fix pre-rendering
 ion-list.ion-no-padding {
@@ -7,6 +7,6 @@ ion-list.ion-no-padding {
 
 ion-popover.popover-menu {
   ion-list.article {
-    @include editor-mixin.panel;
+    @include editor.panel;
   }
 }

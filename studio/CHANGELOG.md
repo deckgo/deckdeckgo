@@ -1,3 +1,14 @@
+# 3.2.1 (2020-12-16)
+
+### Features
+
+- disable spellcheck in fullscreen ([#264](https://github.com/deckgo/deckdeckgo/issues/264))
+- split settings in two routes customization and profile ([#1028](https://github.com/deckgo/deckdeckgo/pull/1028))
+- goodfirms featured story ([#1033](https://github.com/deckgo/deckdeckgo/pull/1033))
+- avatar display and size in menu ([#1029](https://github.com/deckgo/deckdeckgo/pull/1029))
+- display brand name in navigation offline ([#1025](https://github.com/deckgo/deckdeckgo/pull/1025))
+- update robots.txt ([#1030](https://github.com/deckgo/deckdeckgo/issues/1030))
+
 # 3.2.0 (2020-11-28)
 
 ### Features

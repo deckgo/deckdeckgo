@@ -131,7 +131,7 @@ export class AppPoll {
     return [
       <app-navigation presentation={true}></app-navigation>,
       <ion-content class="ion-padding">
-        <main class="ion-padding" style={this.hasVoted ? {height: '100%'} : undefined}>
+        <main class="ion-padding fit" style={this.hasVoted ? {height: '100%'} : undefined}>
           {this.renderPoll()}
           {this.renderJoinPoll()}
           {this.renderHasVoted()}
@@ -185,14 +185,7 @@ export class AppPoll {
       return undefined;
     }
 
-    return [
-      <h1>Vote now!</h1>,
-      <p>Scan the QR-Code displayed on screen or enter the code to make your voice heard.</p>,
-      this.renderJoinPollForm(),
-      <h2 class="ion-padding-top">Live interactive audience participation</h2>,
-      <p>Engage your audience or class in real time.</p>,
-      <p>Involve them to contribute to your presentations with their smartphones and show the results live.</p>,
-    ];
+    return [<h1>Vote now!</h1>, <p>Scan the QR-Code displayed on screen or enter the code to make your voice heard.</p>, this.renderJoinPollForm()];
   }
 
   private renderJoinPollForm() {
@@ -260,7 +253,7 @@ export class AppPoll {
 
         <div class="by-deckdeckgo">
           Created with{' '}
-          <ion-router-link href="/home" routerDirection="forward">
+          <ion-router-link href="/" routerDirection="forward">
             <div>
               <app-logo></app-logo> DeckDeckGo
             </div>

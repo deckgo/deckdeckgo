@@ -1,0 +1,53 @@
+app-publish-tags {
+  :host {
+    display: flex;
+    flex-wrap: wrap;
+
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  div.chips {
+    background: var(--card-tags-background, rgba(var(--ion-color-medium-rgb), 0.08));
+    color: var(--card-tags-color, var(--ion-color-medium));
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--card-tags-padding, 2px 8px);
+    margin: var(--card-tags-margin, 4px 2px);
+
+    font-size: var(--card-tags-font-size, var(--font-size-normal));
+
+    ion-icon {
+      padding: 4px 0;
+    }
+
+    ion-label {
+      padding: 0px 4px;
+      margin-bottom: 2px;
+
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    button {
+      padding: 0;
+      border: none;
+      outline: none;
+      font: inherit;
+      color: inherit;
+      background: none;
+      display: inline-flex;
+
+      cursor: pointer;
+
+      &[disabled] {
+        color: rgba(var(--ion-color-tertiary-rgb), 0.2);
+        cursor: inherit;
+      }
+    }
+  }
+}

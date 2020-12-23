@@ -40,9 +40,9 @@ import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment
 setupDeckGoConfig({
   deckdeckgo: {
     prod: true,
-    appUrl: 'https://deckdeckgo.com',
-    globalAssetsUrl: 'https://deckdeckgo.com/assets',
-    pollUrl: 'https://deckdeckgo.com/poll',
+    appUrl: 'https://app.deckdeckgo.com',
+    globalAssetsUrl: 'https://app.deckdeckgo.com/assets',
+    pollUrl: 'https://app.deckdeckgo.com/poll',
     apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>',

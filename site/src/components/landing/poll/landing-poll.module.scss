@@ -1,0 +1,46 @@
+@use "../../../themes/mixins/deck";
+
+.section {
+  background: linear-gradient(to bottom right, var(--color-quinary), var(--color-tertiary));
+  color: var(--color-primary-contrast);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+
+  background: transparent;
+
+  padding: 5.75rem 0;
+
+  :global(p) {
+    max-width: 75%;
+    align-self: center;
+  }
+}
+
+.deck {
+  @include deck.container;
+
+  background: var(--color-light);
+  color: var(--color-dark);
+
+  padding: 1.45rem;
+  margin: 1.25rem 0;
+
+  --slide-width: 100%;
+  --slide-height: 520px;
+
+  --slide-padding-top: 8px;
+  --slide-padding-start: 16px;
+  --slide-padding-end: 16px;
+  --slide-padding-bottom: 8px;
+
+  --slide-poll-how-to-font-size: 1rem;
+
+  @media (max-width: 576px) {
+    margin: 1.25rem;
+  }
+}

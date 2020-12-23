@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ZXMB7oWOHGtDaju3jt39",
+    "data": {
+      "title": "Write like a wizard",
+      "url": "https://beta.deckdeckgo.io/contact3329/write-like-a-wizard/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/vQulkNeE9lhg3RSKhyjwnyOnr723%2Fpresentations%2Fwrite-like-a-wizard%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-12-18T13:48:51.411Z",
+      "description": "Use the magic of modern technology for your writing: tech stacks and workflows",
+      "author": {"name": "Martin Maga", "photo_url": "https://avatars0.githubusercontent.com/u/24781788?v=4"}
+    }
+  },
+  {
+    "id": "o0OFGSDqCa2MdYQJOux0",
+    "data": {
+      "title": "Les licenses artistiques libres",
+      "url": "https://beta.deckdeckgo.io/vincianechatel/les-licendes-artistiques-libres/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/LzTddg8FUAhOEH0fv7hrd0UvvXU2%2Fpresentations%2Fles-licendes-artistiques-libres%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-12-11T13:00:47.158Z",
+      "description": "Pourquoi ? Comment ?",
+      "author": {"photo_url": "https://lh3.googleusercontent.com/a-/AOh14GhGAuqdrZXIqRG7qoERGSbSfkDnFJ8jmlZqC0uI=s96-c", "name": "Vinciane Chatel"}
+    }
+  },
+  {
+    "id": "se1jz4ETohc4Uff9vG9K",
+    "data": {
+      "title": "lab6-uml",
+      "url": "https://beta.deckdeckgo.io/Br1ght0ne/lab6-uml/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/twuPLsSMNeh27oE15hIUZqyqd7G2%2Fpresentations%2Flab6-uml%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-12-02T15:51:50.322Z",
+      "description": "Oleksii Filonenko, PP-42",
+      "author": {
+        "photo_url": "https://avatars1.githubusercontent.com/u/12615679?v=4",
+        "social": {"dev": "brightone", "custom": "https://blog.brightone.cloud", "github": "Br1ght0ne", "twitter": "Br1ght0ne"},
+        "name": "Oleksii Filonenko"
+      }
+    }
+  },
+  {
+    "id": "QLAekYrxR4XanlrJTZ86",
+    "data": {
+      "title": "mfw div spamming",
+      "url": "https://beta.deckdeckgo.io/yuri/mfw-div-spamming/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/v97OWXYklAa5AxeW6EhjcPInh3x1%2Fpresentations%2Fmfw-div-spamming%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-12-01T15:27:17.881Z",
+      "description": "Semantic HTML Elements und Accessibility",
+      "author": {
+        "photo_url": "https://lh3.googleusercontent.com/a-/AOh14GiK0HLHhhS2batB0sGodtVolhNoo0y_hotToF7PGA",
+        "name": "Yuri Becker",
+        "social": {"github": "yuri-becker", "custom": "https://yuri.li", "medium": "yuri.li"}
+      }
+    }
+  },
+  {
+    "id": "hHk4kzHODvKrdCs5nWXv",
+    "data": {
+      "title": "Hannukah",
+      "url": "https://beta.deckdeckgo.io/pavel/hannukah/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/GMRcBdNhpmVS8uoFH8sEPeU7Rr93%2Fpresentations%2Fhannukah%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-12-01T10:25:05.353Z",
+      "description": "The Festival of Lights",
+      "author": {
+        "photo_url": "https://lh6.googleusercontent.com/-i2udm531yTs/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclKIAzxnlen89tLFFQ4X_w_bK-WGw/s96-c/photo.jpg",
+        "name": "Pavel Kats"
+      }
+    }
+  },
+  {
+    "id": "z32Ahbsh7TVdPaxkSfIh",
+    "data": {
+      "title": "Course Conversion From MOODLE to Canvas",
+      "url": "https://beta.deckdeckgo.io/aschaeffer19/course-conversion-from-moodle-to-canvas/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/y0O5mQQK7Cfg1epMxKfOXe37wzf2%2Fpresentations%2Fcourse-conversion-from-moodle-to-canvas%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-11-30T07:13:34.000Z",
+      "description": "Slide show made using DeckDeckGo for CSE 617 Open Source Tools Final Project\n\n.gifs made with Kapture https://getkap.co/\n\nSlideshow made with DeckDeckGo https://deckdeckgo.com/\n\nThis is the final project for my fall term 2020 CSE 617 Open Source Tools class at Western Oregon University! The objective was to make an informative document using all open source tools. Feel free to use or edit any of the content for your own purposes!\n\nBest,\n\nAdam",
+      "tags": ["MOODLE", "Canvas"],
+      "author": {"photo_url": "https://lh3.googleusercontent.com/a-/AOh14Gjp0JpA1sXAuK215NBomSHv3PrPvrqfN2YT4JmN=s96-c", "name": "Adam Schaeffer"}
+    }
+  },
+  {
+    "id": "Y3g6MlcvTz0OJ23zHAas",
+    "data": {
+      "title": "Who.....👍",
+      "url": "https://beta.deckdeckgo.io/banyaplara/who/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/SlGFQLDQMNNmYEFxv3sOHT6hOFx1%2Fpresentations%2Fwho%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-11-29T05:02:45.707Z",
+      "description": "Its simple testing the tool",
+      "author": {"photo_url": "https://lh3.googleusercontent.com/a-/AOh14GgNiqSgkWL5K4N0OW7W_XjK2yFhB3sWnz4ULKlUtaA=s96-c", "name": "Rakesh Gunderi"}
+    }
+  },
+  {
+    "id": "pwju29cfMnQN2PbGpqgF",
+    "data": {
+      "title": "lab7-patterns",
+      "url": "https://beta.deckdeckgo.io/Br1ght0ne/lab7-patterns/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/twuPLsSMNeh27oE15hIUZqyqd7G2%2Fpresentations%2Flab7-patterns%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-11-27T07:28:21.000Z",
+      "description": "Oleksii Filonenko, PP-42",
+      "author": {
+        "name": "Oleksii Filonenko",
+        "photo_url": "https://avatars1.githubusercontent.com/u/12615679?v=4",
+        "social": {"dev": "brightone", "twitter": "Br1ght0ne", "github": "Br1ght0ne", "custom": "https://blog.brightone.cloud"}
+      }
+    }
+  },
+  {
+    "id": "fSml57zceeSycUBCvQRw",
+    "data": {
+      "title": "lab2-srs",
+      "url": "https://beta.deckdeckgo.io/Br1ght0ne/lab2-srs/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/twuPLsSMNeh27oE15hIUZqyqd7G2%2Fpresentations%2Flab2-srs%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-11-27T07:24:46.000Z",
+      "description": "Oleksii Filonenko, PP-42\n",
+      "author": {
+        "photo_url": "https://avatars1.githubusercontent.com/u/12615679?v=4",
+        "social": {"dev": "brightone", "custom": "https://blog.brightone.cloud", "twitter": "Br1ght0ne", "github": "Br1ght0ne"},
+        "name": "Oleksii Filonenko"
+      }
+    }
+  },
+  {
+    "id": "VupDECYJJeLttbaWKocg",
+    "data": {
+      "title": "Buying a Car",
+      "url": "https://beta.deckdeckgo.io/tytnemt/buying-a-car/",
+      "screenshot": "https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/o/2fKKoMs2DcgcKC0A8pKnM4gA97r2%2Fpresentations%2Fbuying-a-car%2Fdeckdeckgo.png?alt=media",
+      "published_at": "2020-11-26T13:31:06.452Z",
+      "description": "Tyler HensonSnow CollegeFacets of Food11/22/2020",
+      "author": {"name": "Tyler Henson", "photo_url": "https://avatars3.githubusercontent.com/u/75002243?v=4"}
+    }
+  }
+]

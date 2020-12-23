@@ -11,6 +11,7 @@ import {applyWatchUserCreate, applyWatchUserDelete, applyWatchUserUpdate} from '
 import {applyWatchTaskCreate} from './watch/watch-task';
 
 import {publishTask} from './request/publish';
+import {feedDecks} from './request/feed';
 
 const runtimeOpts = {
   timeoutSeconds: 120,
@@ -30,3 +31,5 @@ export const watchUserDelete = functions.auth.user().onDelete(applyWatchUserDele
 export const watchUserCreate = functions.auth.user().onCreate(applyWatchUserCreate);
 
 export const publish = functions.https.onRequest(publishTask);
+
+export const feed = functions.https.onRequest(feedDecks);

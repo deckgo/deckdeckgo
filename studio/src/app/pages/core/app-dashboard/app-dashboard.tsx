@@ -3,10 +3,14 @@ import {Component, Fragment, h, JSX, State} from '@stencil/core';
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
 import authStore from '../../../stores/auth.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
+import errorStore from '../../../stores/error.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 import {AuthUser} from '../../../models/auth/auth.user';
+
+import {signIn} from '../../../utils/core/signin.utils';
 
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 
@@ -17,7 +21,6 @@ import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
-import navStore, {NavDirection} from '../../../stores/nav.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -35,6 +38,9 @@ interface DeckAndFirstSlide {
 export class AppDashboard {
   @State()
   private filteredDecks: DeckAndFirstSlide[] = null;
+
+  @State()
+  private loading: boolean;
 
   private decks: DeckAndFirstSlide[] = null;
 
@@ -57,6 +63,9 @@ export class AppDashboard {
   async componentWillLoad() {
     await this.imageEventsHandler.init();
     await this.chartEventsHandler.init();
+
+    const params = new URLSearchParams(window.location.search);
+    this.loading = params.get('signin') === 'success';
   }
 
   async componentDidLoad() {
@@ -68,18 +77,26 @@ export class AppDashboard {
   }
 
   private async initDashboard() {
-    if (!authStore.state.authUser) {
+    if (!authStore.state.authUser || authStore.state.anonymous) {
       return;
     }
 
     this.destroyListener();
 
-    const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
-    this.decks = await this.fetchFirstSlides(userDecks);
-    await this.filterDecks(null);
+    this.loading = true;
 
-    // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
-    await this.initWatchForClonedDecks();
+    try {
+      const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
+      this.decks = await this.fetchFirstSlides(userDecks);
+      await this.filterDecks(null);
+
+      // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
+      await this.initWatchForClonedDecks();
+    } catch (err) {
+      errorStore.state.error = 'Cannot init your dashboard.';
+    }
+
+    this.loading = false;
   }
 
   disconnectedCallback() {
@@ -232,13 +249,6 @@ export class AppDashboard {
 
       resolve();
     });
-  }
-
-  private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
   }
 
   private async filterDecksOnChange(e: CustomEvent) {
@@ -415,61 +425,69 @@ export class AppDashboard {
   };
 
   render() {
-    return [<app-navigation presentation={true}></app-navigation>, <ion-content class="ion-padding">{this.renderGuardedContent()}</ion-content>];
-  }
-
-  private renderGuardedContent() {
-    if (!authStore.state.authUser) {
-      return this.renderNotLoggedInContent();
-    } else {
-      return this.renderContent();
-    }
-  }
-
-  private renderNotLoggedInContent() {
     return (
-      <main class="ion-padding">
-        <h1>Oh, hi! Good to have you.</h1>
-        <p class="ion-padding-top">
-          <button type="button" class="app-button" onClick={() => this.signIn()}>
-            Sign in
-          </button>
-          to access to your presentations.
-        </p>
-      </main>
+      <Fragment>
+        <app-navigation presentation={true}></app-navigation>
+        <ion-content class="ion-padding">{this.renderContent()}</ion-content>
+      </Fragment>
     );
   }
 
   private renderContent() {
-    if (!this.filteredDecks) {
-      return undefined;
+    if (this.loading) {
+      return this.renderLoading();
     }
 
+    if (authStore.state.anonymous) {
+      return this.renderAnonymousContent();
+    }
+
+    return this.renderGuardedContent();
+  }
+
+  private renderLoading() {
+    return <app-spinner></app-spinner>;
+  }
+
+  private renderAnonymousContent() {
     return (
-      <main class="ion-padding">
-        {this.renderTitle()}
+      <main class="ion-padding fit anonymous">
+        <h1>Welcome to DeckDeckGo 👋</h1>
+
+        {this.renderNotLoggedInText()}
+        {this.renderCreateButton(true)}
+      </main>
+    );
+  }
+
+  private renderGuardedContent() {
+    return (
+      <main class="ion-padding fit">
+        <h1>Your presentations</h1>
+
         {this.renderDecksFilter()}
-        {this.renderCreateButton()}
+
+        {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
+
         {this.renderDecks()}
       </main>
     );
   }
 
-  private renderTitle() {
-    if (this.filteredDecks.length > 0) {
-      return <h1>Your presentations</h1>;
-    } else {
-      return (
-        <Fragment>
-          <h1>Your presentations</h1>
-          <ion-label>You don't have any presentation yet, create your first slides now.</ion-label>
-        </Fragment>
-      );
-    }
+  private renderNotLoggedInText() {
+    return (
+      <Fragment>
+        <p>
+          You can try right now our editor for slides but, we will kindly ask you to <a onClick={() => signIn()}>sign in</a> after three slides. We think it's
+          safer that way, because your content is saved in the cloud.
+        </p>
+        <p class="ion-no-margin">DeckDeckGo is free and open source 😃.</p>
+      </Fragment>
+    );
   }
 
   private renderDecksFilter() {
-    if (this.filteredDecks.length > 0) {
+    if (this.filteredDecks?.length > 0) {
       return (
         <ion-searchbar
           debounce={500}
@@ -480,27 +498,25 @@ export class AppDashboard {
           class="ion-no-padding ion-margin-top ion-margin-bottom"
         />
       );
-    } else {
-      return undefined;
     }
+
+    return <p>You don't have any slides yet. Go for it, create your first deck now!</p>;
   }
 
-  private renderCreateButton() {
-    if (this.filteredDecks.length === 0) {
-      return (
-        <ion-grid>
-          <ion-row class="ion-justify-content-center">
-            <ion-column>
-              <ion-button slot="end" shape="round" onClick={() => this.navigateEditor()} class="ion-margin-top">
-                <ion-label>Start one now</ion-label>
-              </ion-button>
-            </ion-column>
-          </ion-row>
-        </ion-grid>
-      );
-    } else {
-      return undefined;
-    }
+  private renderCreateButton(withSignIn: boolean) {
+    return (
+      <div class="toolbar-actions ion-margin-top">
+        {withSignIn ? (
+          <ion-button shape="round" color="light" onClick={() => signIn()} style={{'margin-right': '8px'}}>
+            <ion-label>Sign in</ion-label>
+          </ion-button>
+        ) : undefined}
+
+        <ion-button shape="round" color="primary" onClick={() => this.navigateEditor()}>
+          <ion-label>Write a presentation</ion-label>
+        </ion-button>
+      </div>
+    );
   }
 
   private renderDecks() {

@@ -1,7 +1,9 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, Fragment, h} from '@stencil/core';
 
 import navStore from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
+
+import {signIn} from '../../../utils/core/signin.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {NavDirection} from '../../../stores/nav.store';
@@ -21,10 +23,7 @@ export class AppMenu {
   }
 
   private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
+    signIn();
   }
 
   private async signOut() {
@@ -41,12 +40,11 @@ export class AppMenu {
       <ion-list>
         {this.renderUser()}
 
-        {this.renderHome()}
-        {this.renderDiscover()}
-        {this.renderEnterprise()}
         {this.renderDashboard()}
         {this.renderSettings()}
         {this.renderSignInOut()}
+
+        {this.renderInteract()}
       </ion-list>
     );
   }
@@ -64,60 +62,45 @@ export class AppMenu {
   }
 
   private renderDashboard() {
-    if (authStore.state.loggedIn) {
-      return (
-        <ion-item button class="home" href="/dashboard" routerDirection="forward">
-          <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
-          <ion-label>Dashboard</ion-label>
-        </ion-item>
-      );
-    } else {
-      return undefined;
-    }
+    return (
+      <ion-item button class="home" href="/dashboard" routerDirection="forward">
+        <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-item>
+    );
   }
 
   private renderSignInOut() {
     if (authStore.state.loggedIn) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
-          <ion-icon lazy={true} name="log-out-outline" slot="start"></ion-icon>
+          <ion-icon lazy={true} name="log-out-outline" slot="start" style={{transform: 'translate(2px, 0px)'}}></ion-icon>
           <ion-label>Sign out</ion-label>
         </ion-item>
       );
     } else {
       return (
         <ion-item button onClick={() => this.signIn()}>
-          <ion-icon lazy={true} name="log-in-outline" slot="start"></ion-icon>
+          <ion-icon lazy={true} name="log-in-outline" slot="start" style={{transform: 'translate(-3px, 0px)'}}></ion-icon>
           <ion-label>Sign in</ion-label>
         </ion-item>
       );
     }
   }
 
-  private renderHome() {
+  private renderInteract() {
     return (
-      <ion-item button class="home" href="/home" routerDirection="forward">
-        <app-logo slot="start"></app-logo>
-        <ion-label>DeckDeckGo</ion-label>
-      </ion-item>
-    );
-  }
+      <Fragment>
+        <ion-item button class="home" href="/poll" routerDirection="forward">
+          <ion-icon lazy={true} name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+          <ion-label>Poll</ion-label>
+        </ion-item>
 
-  private renderDiscover() {
-    return (
-      <ion-item button class="home" href="/discover" routerDirection="forward">
-        <ion-icon lazy={true} name="search-outline" slot="start"></ion-icon>
-        <ion-label>Discover</ion-label>
-      </ion-item>
-    );
-  }
-
-  private renderEnterprise() {
-    return (
-      <ion-item button class="home" href="/enterprise" routerDirection="forward">
-        <ion-icon lazy={true} name="business-outline" slot="start"></ion-icon>
-        <ion-label>Enterprise</ion-label>
-      </ion-item>
+        <ion-item button class="home" href="https://deckdeckgo.app" target="_blank">
+          <ion-icon lazy={true} name="phone-portrait-outline" slot="start"></ion-icon>
+          <ion-label>Remote control</ion-label>
+        </ion-item>
+      </Fragment>
     );
   }
 
@@ -128,15 +111,15 @@ export class AppMenu {
         <ion-icon lazy={true} name="settings-outline" slot="icon"></ion-icon>
 
         <ion-list class="settings">
-          <ion-item button class="home" href="/settings/profile" routerDirection="forward">
+          <ion-item button class="home" href="/profile" routerDirection="forward">
             <ion-label>Profile</ion-label>
             <ion-icon lazy={true} name="person-outline" slot="start"></ion-icon>
           </ion-item>
-          <ion-item button class="home" href="/settings/customization" routerDirection="forward">
+          <ion-item button class="home" href="/customization" routerDirection="forward">
             <ion-label>Customization</ion-label>
             <ion-icon lazy={true} name="color-palette-outline" slot="start"></ion-icon>
           </ion-item>
-          <ion-item button class="home" href="/settings/templates" routerDirection="forward">
+          <ion-item button class="home" href="/templates" routerDirection="forward">
             <ion-label>Templates</ion-label>
             <ion-icon lazy={true} name="reader-outline" slot="start"></ion-icon>
           </ion-item>
