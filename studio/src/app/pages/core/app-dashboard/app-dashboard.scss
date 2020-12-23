@@ -6,6 +6,18 @@ app-dashboard {
   main {
     background: white;
 
+    &.anonymous {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h1,
+      p {
+        max-width: 720px;
+        text-align: center;
+      }
+    }
+
     ion-router-link {
       padding-right: 4px;
     }
@@ -93,6 +105,8 @@ app-dashboard {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      padding-top: 4px;
     }
   }
 }

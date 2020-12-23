@@ -292,7 +292,7 @@ export class AppSignIn {
           <div id="firebaseui-auth-container"></div>
 
           <p class="ion-text-center ion-padding-start ion-padding-end">
-            <small>DeckDeckGo is free and open source 🖖</small>
+            <small>DeckDeckGo is free and open source 😃.</small>
           </p>
         </main>
       </ion-content>,

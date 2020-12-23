@@ -419,51 +419,48 @@ export class AppDashboard {
   }
 
   private renderContent() {
-    return (
-      <main class="ion-padding fit">
-        {this.renderTitle()}
+    if (authStore.state.anonymous) {
+      return this.renderAnonymousContent();
+    }
 
-        {this.renderGuardedContent()}
+    return this.renderGuardedContent();
+  }
+
+  private renderAnonymousContent() {
+    return (
+      <main class="ion-padding fit anonymous">
+        <h1>Welcome to DeckDeckGo 👋</h1>
+
+        {this.renderNotLoggedInText()}
+        {this.renderCreateButton(true)}
       </main>
     );
   }
 
   private renderGuardedContent() {
-    if (authStore.state.anonymous) {
-      return (
-        <Fragment>
-          {this.renderNotLoggedInText()}
-          {this.renderCreateButton()}
-        </Fragment>
-      );
-    } else {
-      return (
-        <Fragment>
-          {this.renderDecksFilter()}
+    return (
+      <main class="ion-padding fit">
+        <h1>Your presentations</h1>
 
-          {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton()}
+        {this.renderDecksFilter()}
 
-          {this.renderDecks()}
-        </Fragment>
-      );
-    }
+        {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
+
+        {this.renderDecks()}
+      </main>
+    );
   }
 
   private renderNotLoggedInText() {
     return (
-      <p>
-        You can give a try to DeckDeckGo by creating a presentation containing up to 3 slides. Afterwards we will kindly ask you to{' '}
-        <a onClick={() => signIn()}>sign in</a>. We think it's safer that way, because your data are saved in the cloud.
-      </p>
+      <Fragment>
+        <p>
+          You can try right now our editor for slides but, we will kindly ask you to <a onClick={() => signIn()}>sign in</a> after three slides. We think it's
+          safer that way, because your content is saved in the cloud.
+        </p>
+        <p class="ion-no-margin">DeckDeckGo is free and open source 😃.</p>
+      </Fragment>
     );
-  }
-
-  private renderTitle() {
-    if (!authStore.state.anonymous) {
-      return <h1>Your presentations</h1>;
-    } else {
-      return <h1>Oh, hi 👋! Good to have you</h1>;
-    }
   }
 
   private renderDecksFilter() {
@@ -483,10 +480,16 @@ export class AppDashboard {
     return <p>You don't have any slides yet. Go for it, create your first deck now!</p>;
   }
 
-  private renderCreateButton() {
+  private renderCreateButton(withSignIn: boolean) {
     return (
       <div class="toolbar-actions ion-margin-top">
-        <ion-button slot="end" shape="round" color="primary" onClick={() => this.navigateEditor()}>
+        {withSignIn ? (
+          <ion-button shape="round" color="light" onClick={() => signIn()} style={{'margin-right': '8px'}}>
+            <ion-label>Sign in</ion-label>
+          </ion-button>
+        ) : undefined}
+
+        <ion-button shape="round" color="primary" onClick={() => this.navigateEditor()}>
           <ion-label>Write a presentation</ion-label>
         </ion-button>
       </div>
