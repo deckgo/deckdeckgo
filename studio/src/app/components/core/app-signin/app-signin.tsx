@@ -217,7 +217,7 @@ export class AppSignIn {
 
     let token: string | null = null;
     if (authStore.state.authUser) {
-      token = await firebase.auth().currentUser.getIdToken();
+      token = await firebase.auth().currentUser?.getIdToken();
     }
 
     localStorage.setItem(
@@ -280,22 +280,19 @@ export class AppSignIn {
 
   render() {
     return [
-      <app-navigation></app-navigation>,
-      <ion-content class="ion-padding fullscreen-padding">
-        <main class="ion-padding fit">
-          {this.renderBackButton()}
+      <main class="ion-padding fit">
+        {this.renderBackButton()}
 
-          {this.renderMsg()}
+        {this.renderMsg()}
 
-          {this.renderGitHub()}
+        {this.renderGitHub()}
 
-          <div id="firebaseui-auth-container"></div>
+        <div id="firebaseui-auth-container"></div>
 
-          <p class="ion-text-center ion-padding-start ion-padding-end">
-            <small>DeckDeckGo is free and open source 😃.</small>
-          </p>
-        </main>
-      </ion-content>,
+        <p class="ion-text-center ion-padding-start ion-padding-end">
+          <small>DeckDeckGo is free and open source 😃.</small>
+        </p>
+      </main>,
     ];
   }
 
