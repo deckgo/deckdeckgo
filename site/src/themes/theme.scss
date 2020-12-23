@@ -72,10 +72,6 @@ strong {
 dfn {
   font-style: italic;
 }
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
 mark {
   background-color: #ff0;
   color: #000;
@@ -243,6 +239,7 @@ h1 {
   font-size: var(--font-size-h1);
   line-height: var(--line-height-h1);
   font-weight: var(--font-weight-h1);
+  letter-spacing: -0.036em;
 }
 h2 {
   padding: 0;

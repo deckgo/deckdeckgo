@@ -147,12 +147,12 @@ export class AppSlotType {
           <ion-label>Code</ion-label>
         </ion-item>
       </a>,
-      <a onClick={() => this.select(SlotType.MARKDOWN)} class={this.currentType === SlotType.MARKDOWN ? 'current' : ''}>
-        <ion-item>
-          <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>
-          <ion-label>Markdown</ion-label>
-        </ion-item>
-      </a>,
+      // <a onClick={() => this.select(SlotType.MARKDOWN)} class={this.currentType === SlotType.MARKDOWN ? 'current' : ''}>
+      //   <ion-item>
+      //     <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>
+      //     <ion-label>Markdown</ion-label>
+      //   </ion-item>
+      // </a>,
       <a onClick={() => this.select(SlotType.MATH)} class={this.currentType === SlotType.MATH ? 'current' : ''}>
         <ion-item>
           <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>

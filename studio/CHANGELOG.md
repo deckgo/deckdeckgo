@@ -1,3 +1,9 @@
+# 4.0.0 (2020-12-23)
+
+### Features
+
+- remove landing, discover, feed and all static pages from studio to split the site (landing) and editor (app) in two separate applications
+
 # 3.2.1 (2020-12-16)
 
 ### Features

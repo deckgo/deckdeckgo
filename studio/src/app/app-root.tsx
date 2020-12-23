@@ -180,7 +180,7 @@ export class AppRoot {
     return [
       <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
-          <ion-route url="/" component="app-dashboard" />
+          <ion-route url="/" component="app-dashboard-page" />
 
           <ion-route url="/editor" component="app-editor" />
           <ion-route url="/editor/:deckId" component="app-editor" />
@@ -189,11 +189,11 @@ export class AppRoot {
           <ion-route url="/customization" component="app-customization" />
           <ion-route url="/templates" component="app-templates" />
 
-          <ion-route url="/dashboard" component="app-dashboard" />
+          <ion-route url="/dashboard" component="app-dashboard-page" />
 
-          <ion-route url="/signin" component="app-signin" />
-          <ion-route url="/signin/:redirect" component="app-signin" />
-          <ion-route url="/signin/:redirect/:redirectId" component="app-signin" />
+          <ion-route url="/signin" component="app-signin-page" />
+          <ion-route url="/signin/:redirect" component="app-signin-page" />
+          <ion-route url="/signin/:redirect/:redirectId" component="app-signin-page" />
 
           <ion-route url="/poll" component="app-poll" />
           <ion-route url="/poll/:pollKey" component="app-poll" />

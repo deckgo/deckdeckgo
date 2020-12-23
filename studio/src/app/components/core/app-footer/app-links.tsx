@@ -12,35 +12,39 @@ export class AppLinks {
         <section>
           <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 
-          <a href="https://deckdeckgo.com/discover" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/" rel="noopener norefferer" target="_blank">
+            <ion-label>Home</ion-label>
+          </a>
+
+          <a href="https://deckdeckgo.com/en/discover" rel="noopener norefferer" target="_blank">
             <ion-label>Discover</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/enterprise" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/enterprise" rel="noopener norefferer" target="_blank">
             <ion-label>Enterprise</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/about" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/about" rel="noopener norefferer" target="_blank">
             <ion-label>About</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/team" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/team" rel="noopener norefferer" target="_blank">
             <ion-label>Team</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/newsletter" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/newsletter" rel="noopener norefferer" target="_blank">
             <ion-label>Newsletter</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/contact" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/contact" rel="noopener norefferer" target="_blank">
             <ion-label>Contact</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/press" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/press" rel="noopener norefferer" target="_blank">
             <ion-label>Press</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/faq" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/faq" rel="noopener norefferer" target="_blank">
             <ion-label>FAQ</ion-label>
           </a>
         </section>
@@ -48,15 +52,15 @@ export class AppLinks {
         <section>
           <ion-label class="ion-padding-top">Developers</ion-label>
 
-          <a href="https://deckdeckgo.com/opensource" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/opensource" rel="noopener norefferer" target="_blank">
             <ion-label>Open source</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/services" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/services" rel="noopener norefferer" target="_blank">
             <ion-label>Services</ion-label>
           </a>
 
-          <a href="https://deckdeckgo.com/developer" rel="noopener norefferer" target="_blank">
+          <a href="https://deckdeckgo.com/en/developer" rel="noopener norefferer" target="_blank">
             <ion-label>Developer</ion-label>
           </a>
         </section>

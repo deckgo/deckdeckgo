@@ -13,13 +13,16 @@ app-slot-type {
 
   ion-list {
     ion-item {
-      h1,
+      h1 {
+        font-size: 28px;
+      }
+
       h2 {
-        font-weight: 400;
+        font-size: 20px;
       }
 
       h3 {
-        font-weight: 400;
+        font-size: 17px;
       }
 
       h1,
