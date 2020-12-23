@@ -77,11 +77,13 @@ export class AppDashboard {
   }
 
   private async initDashboard() {
-    if (!authStore.state.authUser) {
+    if (!authStore.state.authUser || authStore.state.anonymous) {
       return;
     }
 
     this.destroyListener();
+
+    this.loading = true;
 
     try {
       const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
