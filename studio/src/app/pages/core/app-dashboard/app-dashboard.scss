@@ -18,13 +18,6 @@ app-dashboard {
       }
     }
 
-    &.loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
     ion-router-link {
       padding-right: 4px;
     }

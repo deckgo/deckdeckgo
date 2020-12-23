@@ -790,11 +790,7 @@ export class AppEditor {
     if (this.slidesFetched) {
       return undefined;
     } else {
-      return (
-        <div class="spinner">
-          <ion-spinner color="primary"></ion-spinner>
-        </div>
-      );
+      return <app-spinner></app-spinner>;
     }
   }
 }

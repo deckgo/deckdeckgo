@@ -356,6 +356,8 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "skip": boolean;
     }
+    interface AppSpinner {
+    }
     interface AppTransform {
         "selectedElement": HTMLElement;
     }
@@ -932,6 +934,12 @@ declare global {
         prototype: HTMLAppSlotTypeElement;
         new (): HTMLAppSlotTypeElement;
     };
+    interface HTMLAppSpinnerElement extends Components.AppSpinner, HTMLStencilElement {
+    }
+    var HTMLAppSpinnerElement: {
+        prototype: HTMLAppSpinnerElement;
+        new (): HTMLAppSpinnerElement;
+    };
     interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {
     }
     var HTMLAppTransformElement: {
@@ -1062,6 +1070,7 @@ declare global {
         "app-slide-warning": HTMLAppSlideWarningElement;
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
+        "app-spinner": HTMLAppSpinnerElement;
         "app-transform": HTMLAppTransformElement;
         "app-user-delete": HTMLAppUserDeleteElement;
         "app-user-info": HTMLAppUserInfoElement;
@@ -1470,6 +1479,8 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "skip"?: boolean;
     }
+    interface AppSpinner {
+    }
     interface AppTransform {
         "selectedElement"?: HTMLElement;
     }
@@ -1580,6 +1591,7 @@ declare namespace LocalJSX {
         "app-slide-warning": AppSlideWarning;
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
+        "app-spinner": AppSpinner;
         "app-transform": AppTransform;
         "app-user-delete": AppUserDelete;
         "app-user-info": AppUserInfo;
@@ -1685,6 +1697,7 @@ declare module "@stencil/core" {
             "app-slide-warning": LocalJSX.AppSlideWarning & JSXBase.HTMLAttributes<HTMLAppSlideWarningElement>;
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
+            "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
             "app-user-info": LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;

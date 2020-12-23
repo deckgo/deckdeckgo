@@ -446,11 +446,7 @@ export class AppDashboard {
   }
 
   private renderLoading() {
-    return (
-      <main class="ion-padding fit loading">
-        <ion-spinner color="medium"></ion-spinner>
-      </main>
-    );
+    return <app-spinner></app-spinner>;
   }
 
   private renderAnonymousContent() {
