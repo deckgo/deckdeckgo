@@ -23,12 +23,12 @@ exports.onCreateNode = async ({node, actions: {createNode}, createNodeId, getCac
   }
 };
 
-exports.sourceNodes = async ({boundActionCreators, createNodeId, createContentDigest}) => {
+exports.sourceNodes = async ({actions, createNodeId, createContentDigest}) => {
   const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development';
 
   if (activeEnv !== 'production' || !process.env.FIREBASE_FUNCTIONS_URL || !process.env.FEED_TOKEN) {
     const feed = JSON.parse(fs.readFileSync('./decks.sample.json'));
-    createNodes(boundActionCreators, createNodeId, createContentDigest, feed);
+    createNodes(actions, createNodeId, createContentDigest, feed);
 
     return;
   }
@@ -49,15 +49,15 @@ exports.sourceNodes = async ({boundActionCreators, createNodeId, createContentDi
     }
 
     const feed = await rawResponse.json();
-    createNodes(boundActionCreators, createNodeId, createContentDigest, feed);
+    createNodes(actions, createNodeId, createContentDigest, feed);
   } catch (err) {
     console.error(err);
   }
 };
 
 // https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/creating-a-source-plugin/
-function createNodes(boundActionCreators, createNodeId, createContentDigest, feed) {
-  const {createNode} = boundActionCreators;
+function createNodes(actions, createNodeId, createContentDigest, feed) {
+  const {createNode} = actions;
 
   feed.forEach((entry) =>
     createNode({
