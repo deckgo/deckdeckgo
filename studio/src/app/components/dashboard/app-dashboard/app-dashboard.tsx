@@ -542,7 +542,13 @@ export class AppDashboard {
       return undefined;
     } else {
       return (
-        <deckgo-deck embedded={true} keyboard={false} style={deck.style} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
+        <deckgo-deck
+          embedded={true}
+          keyboard={false}
+          direction="horizontal"
+          direction-mobile="horizontal"
+          style={deck.style}
+          onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
           {deck.slide}
           {deck.background}
           {deck.header}
