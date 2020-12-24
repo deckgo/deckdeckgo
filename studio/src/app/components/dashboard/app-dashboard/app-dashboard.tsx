@@ -259,14 +259,8 @@ export class AppDashboard {
     }
   }
 
-  private blockSlide($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if ($event && $event.target) {
-        await ($event.target as HTMLDeckgoDeckElement).blockSlide(true);
-      }
-
-      resolve();
-    });
+  private async blockSlide($event: CustomEvent) {
+    await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
   }
 
   private navigateDeck(deck: DeckAndFirstSlide) {

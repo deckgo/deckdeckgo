@@ -36,6 +36,8 @@ app-dashboard {
     deckgo-deck {
       background: white;
 
+      pointer-events: none;
+
       @include deck.padding;
     }
 
