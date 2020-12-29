@@ -434,6 +434,17 @@ export class DeckdeckgoDragResizeRotate {
       w = wtmp;
       h = htmp;
     }
+    if($event.shiftKey){
+        const diffW: number = w / this.width;
+        const diffH: number = h / this.height;
+        const absDiffW: number = Math.abs(delta.x);
+        const absDiffH: number = Math.abs(delta.y);
+        if(absDiffW>absDiffH){
+           h = this.height * diffW;
+        }else if(absDiffW<absDiffH){
+            w = this.width * diffH;
+        }
+    }
 
     const l: number = matrix.c * q_x + matrix.a * p_x;
     const t: number = matrix.d * q_y + matrix.b * p_y;
