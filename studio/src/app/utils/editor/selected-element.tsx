@@ -1,4 +1,4 @@
-import {SlideSplitType} from '../../models/data/slide';
+import {SlideSplitType, SlideType} from '../../models/data/slide';
 
 import {SlotType} from './slot-type';
 import {SlotUtils} from './slot.utils';
@@ -17,6 +17,7 @@ export interface SelectedSlotDescription {
 
 export interface SelectedSlideDescription {
   nodeName: string | undefined;
+  type: SlideType;
   demo: boolean;
   qrCode: boolean;
   chart: boolean;
@@ -29,9 +30,9 @@ export interface SelectedSlideDescription {
 }
 
 export interface SelectedElementDescription {
-  type: 'slide' | 'element'; // true = is a slide, false = it's an element / slot
-  slide: SelectedSlideDescription;
-  slot: SelectedSlotDescription;
+  type: 'slide' | 'element';
+  slide?: SelectedSlideDescription;
+  slot?: SelectedSlotDescription;
 }
 
 export class SelectedElement {
@@ -51,7 +52,7 @@ export class SelectedElement {
     return element?.nodeName?.toLowerCase() === SlotType.MATH;
   }
 
-  private static isElementWordcloud(element: HTMLElement): boolean {
+  private static isElementWordCloud(element: HTMLElement): boolean {
     return element?.nodeName?.toLowerCase() === SlotType.WORD_CLOUD;
   }
 
@@ -72,35 +73,41 @@ export class SelectedElement {
   }
 
   static initDescription(element: HTMLElement | undefined): SelectedElementDescription {
-    let options: Partial<SelectedElementDescription> = {
-      type: this.isElementSlide(element),
-      slot: {
-        math: this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-        wordCloud: this.isElementWordcloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-        markdown: this.isElementMarkdown(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-        code: this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-        image: this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
-        shape: this.isElementShape(element),
-        demo: this.isElementDemo(element),
-        list: ListUtils.isElementList(element),
-      },
-    };
+    const type: 'element' | 'slide' = this.isElementSlide(element);
 
-    const nodeName: string | undefined = options.type === 'slide' ? element?.nodeName.toLowerCase() : undefined;
+    if (type === 'element') {
+      return {
+        type,
+        slot: {
+          math: this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          wordCloud: this.isElementWordCloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          markdown: this.isElementMarkdown(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          code: this.isElementCode(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          image: this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
+          shape: this.isElementShape(element),
+          demo: this.isElementDemo(element),
+          list: ListUtils.isElementList(element),
+        },
+      };
+    }
+
+    const nodeName: string | undefined = element?.nodeName.toLowerCase();
 
     return {
-      ...(options as SelectedElementDescription),
+      type,
       slide: {
         nodeName,
-        demo: options.type === 'slide' && nodeName === 'deckgo-slide-split' && element?.getAttribute('type') === SlideSplitType.DEMO,
-        qrCode: options.type === 'slide' && nodeName === 'deckgo-slide-qrcode',
-        chart: options.type === 'slide' && nodeName === 'deckgo-slide-chart',
-        author: options.type === 'slide' && nodeName === 'deckgo-slide-author',
-        aspectRatio: options.type === 'slide' && nodeName === 'deckgo-slide-aspect-ratio',
-        poll: options.type === 'slide' && nodeName === 'deckgo-slide-poll',
-        split: options.type === 'slide' && nodeName === 'deckgo-slide-split' && element?.getAttribute('type') !== SlideSplitType.DEMO,
-        youtube: options.type === 'slide' && nodeName === 'deckgo-slide-youtube',
-        playground: options.type === 'slide' && nodeName === 'deckgo-slide-playground',
+        // TODO: reserved keywords
+        type: SlideType.DEFAULT,
+        demo: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') === SlideSplitType.DEMO,
+        qrCode: nodeName === 'deckgo-slide-qrcode',
+        chart: nodeName === 'deckgo-slide-chart',
+        author: nodeName === 'deckgo-slide-author',
+        aspectRatio: nodeName === 'deckgo-slide-aspect-ratio',
+        poll: nodeName === 'deckgo-slide-poll',
+        split: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') !== SlideSplitType.DEMO,
+        youtube: nodeName === 'deckgo-slide-youtube',
+        playground: nodeName === 'deckgo-slide-playground',
       },
     };
   }
