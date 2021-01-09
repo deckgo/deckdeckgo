@@ -1,4 +1,4 @@
-@use "../../../../global/theme/editor/editor-mixin";
+@use "../../../../global/theme/mixins/editor";
 
 app-template-showcase {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
@@ -13,7 +13,7 @@ app-template-showcase {
 
     background: white;
 
-    @include editor-mixin.panel;
+    @include editor.panel;
 
     deckgo-deck {
       --background: white;
