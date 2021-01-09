@@ -259,14 +259,8 @@ export class AppDashboard {
     }
   }
 
-  private blockSlide($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if ($event && $event.target) {
-        await ($event.target as HTMLDeckgoDeckElement).blockSlide(true);
-      }
-
-      resolve();
-    });
+  private async blockSlide($event: CustomEvent) {
+    await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
   }
 
   private navigateDeck(deck: DeckAndFirstSlide) {
@@ -542,7 +536,13 @@ export class AppDashboard {
       return undefined;
     } else {
       return (
-        <deckgo-deck embedded={true} keyboard={false} style={deck.style} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
+        <deckgo-deck
+          embedded={true}
+          keyboard={false}
+          direction="horizontal"
+          direction-mobile="horizontal"
+          style={deck.style}
+          onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
           {deck.slide}
           {deck.background}
           {deck.header}
