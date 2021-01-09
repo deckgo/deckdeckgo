@@ -8,12 +8,13 @@ labels: feature
 
 <!-- Please check the one that applies to this issue using `x` and remove the others. -->
 
-- [ ] Studio
+- [ ] Studio (online editor)
 - [ ] Remote control
+- [ ] Poll
+- [ ] Site
 - [ ] Documentation
 - [ ] Demo
 - [ ] Starter kit
-- [ ] Poll
 - [ ] Web Components
 - [ ] Templates
 
