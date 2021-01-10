@@ -191,7 +191,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (SelectedElementUtils.isElementSlide(element)) {
+      if (SelectedElementUtils.isElementSlide(element) === 'slide') {
         resolve(element);
         return;
       }
@@ -297,7 +297,7 @@ export class AppActionsElement {
 
   @Method()
   async reset() {
-    await this.initSelectedElement(null);
+    await this.initSelectedElement(undefined);
 
     this.resetted.emit();
   }
@@ -679,9 +679,9 @@ export class AppActionsElement {
 
     this.selectedElement = element;
 
-    if (element) {
-      this.selectedDescription = SelectedElementUtils.initDescription(element);
+    this.selectedDescription = SelectedElementUtils.initDescription(element);
 
+    if (element) {
       element.addEventListener('paste', this.cleanOnPaste, false);
 
       await this.attachResizeSlideContent();
