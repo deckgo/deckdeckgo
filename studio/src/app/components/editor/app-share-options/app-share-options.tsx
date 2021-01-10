@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, Host} from '@stencil/core';
 
 import store from '../../../stores/deck.store';
 
-import {MoreAction} from '../../../utils/editor/more-action';
+import {MoreAction} from '../../../types/editor/more-action';
 
 @Component({
   tag: 'app-share-options',

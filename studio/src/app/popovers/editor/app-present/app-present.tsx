@@ -4,7 +4,7 @@ import {isIPad, isMobile} from '@deckdeckgo/utils';
 
 import remoteStore from '../../../stores/remote.store';
 
-import {MoreAction} from '../../../utils/editor/more-action';
+import {MoreAction} from '../../../types/editor/more-action';
 
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 

@@ -8,17 +8,17 @@ import offlineStore from '../../../stores/offline.store';
 import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
 
-import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotType} from '../../../types/editor/slot-type';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
-import {ServiceWorkerUtils} from '../../../utils/core/service-worker-utils';
+import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
 import {AssetsService} from '../../core/assets/assets.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {StorageOnlineService} from '../../storage/storage.online.service';
 import {FontsService} from '../fonts/fonts.service';

@@ -28,13 +28,13 @@ import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-even
 
 import {EditorHelper} from '../../../helpers/editor/editor.helper';
 
-import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotType} from '../../../types/editor/slot-type';
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 
-import {EnvironmentGoogleConfig} from '../../../services/core/environment/environment-config';
+import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {OfflineService} from '../../../services/editor/offline/offline.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';

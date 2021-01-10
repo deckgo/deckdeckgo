@@ -1,6 +1,7 @@
 import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
 
-import {EditAction} from '../../../../utils/editor/edit-action';
+import {EditAction} from '../../../../types/editor/edit-action';
+
 import {SelectedSlideDescription} from '../../../../utils/editor/selected-element.utils';
 
 @Component({

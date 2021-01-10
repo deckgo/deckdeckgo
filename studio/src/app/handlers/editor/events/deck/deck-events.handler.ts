@@ -32,7 +32,7 @@ import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils'
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
-import {DeckAction} from '../../../../utils/editor/deck-action';
+import {DeckAction} from '../../../../types/editor/deck-action';
 
 export class DeckEventsHandler {
   private mainRef: HTMLElement;

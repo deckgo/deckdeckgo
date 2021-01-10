@@ -1,4 +1,4 @@
-import {EnvironmentDeckDeckGoConfig} from '../../core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import {ApiUserService} from './api.user.service';

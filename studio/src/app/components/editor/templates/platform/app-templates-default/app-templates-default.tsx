@@ -8,9 +8,9 @@ import {Template} from '../../../../../models/data/template';
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 
 import {EnvironmentConfigService} from '../../../../../services/core/environment/environment-config.service';
-import {EnvironmentDeckDeckGoConfig} from '../../../../../services/core/environment/environment-config';
-
 import {AssetsService} from '../../../../../services/core/assets/assets.service';
+
+import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
 @Component({
   tag: 'app-templates-default',

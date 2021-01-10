@@ -6,7 +6,7 @@ import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
 import {DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';

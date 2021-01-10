@@ -12,7 +12,8 @@ import {Deck} from '../../../models/data/deck';
 import {Template} from '../../../models/data/template';
 
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
-import {SlotType} from '../../../utils/editor/slot-type';
+
+import {SlotType} from '../../../types/editor/slot-type';
 
 @Component({
   tag: 'app-create-slide',

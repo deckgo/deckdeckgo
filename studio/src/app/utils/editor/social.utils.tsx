@@ -1,6 +1,6 @@
 import {h, JSX} from '@stencil/core';
 
-import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
 import {User, UserSocial} from '../../models/data/user';

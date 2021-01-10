@@ -10,13 +10,13 @@ import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
 
 import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
-import {SlotType} from '../../../../../utils/editor/slot-type';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
-import {EditAction} from '../../../../../utils/editor/edit-action';
-import {MoreAction} from '../../../../../utils/editor/more-action';
-import {DemoAction} from '../../../../../utils/editor/demo-action';
-import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
+import {SlotType} from '../../../../../types/editor/slot-type';
+import {EditAction} from '../../../../../types/editor/edit-action';
+import {MoreAction} from '../../../../../types/editor/more-action';
+import {DemoAction} from '../../../../../types/editor/demo-action';
+import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElementUtils, SelectedElementDescription} from '../../../../../utils/editor/selected-element.utils';
 
 @Component({

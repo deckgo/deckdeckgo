@@ -35,7 +35,7 @@ import '@deckdeckgo/slide-poll';
 import '@deckdeckgo/slide-aspect-ratio';
 import '@deckdeckgo/slide-playground';
 
-import {setupConfig as setupDeckGoConfig} from '../app/services/core/environment/environment-config';
+import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
 
 setupDeckGoConfig({
   deckdeckgo: {

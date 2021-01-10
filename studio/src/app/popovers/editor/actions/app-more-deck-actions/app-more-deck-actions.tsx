@@ -1,6 +1,6 @@
 import {Component, Element, h, Prop} from '@stencil/core';
 
-import {MoreAction} from '../../../../utils/editor/more-action';
+import {MoreAction} from '../../../../types/editor/more-action';
 
 @Component({
   tag: 'app-more-deck-actions',

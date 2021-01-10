@@ -1,4 +1,4 @@
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 
 export class SlotUtils {
   static isNodeReveal(selectedElement: HTMLElement): boolean {

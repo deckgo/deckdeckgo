@@ -1,6 +1,6 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
-import {DemoAction} from '../../../utils/editor/demo-action';
+import {DemoAction} from '../../../types/editor/demo-action';
 
 @Component({
   tag: 'app-demo',

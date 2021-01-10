@@ -14,7 +14,7 @@ import {UserSocial} from '../../../models/data/user';
 import {DeckService} from '../../data/deck/deck.service';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
-import {EnvironmentFirebaseConfig} from '../../core/environment/environment-config';
+import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';
 
 export class PublishService {
   private static instance: PublishService;

@@ -5,8 +5,8 @@ import {modalController, OverlayEventDetail, popoverController} from '@ionic/cor
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
-import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
-import {DemoAction} from '../../../../../utils/editor/demo-action';
+import {PlaygroundAction} from '../../../../../types/editor/playground-action';
+import {DemoAction} from '../../../../../types/editor/demo-action';
 
 import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
 

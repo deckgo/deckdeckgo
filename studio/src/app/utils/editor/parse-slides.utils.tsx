@@ -10,7 +10,7 @@ import {QRCodeUtils} from './qrcode.utils';
 
 import {Slide, SlideTemplate} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
-import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
 export class ParseSlidesUtils {

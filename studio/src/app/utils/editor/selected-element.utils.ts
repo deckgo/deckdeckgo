@@ -1,6 +1,7 @@
 import {SlideSplitType, SlideType} from '../../models/data/slide';
 
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
+
 import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
 
