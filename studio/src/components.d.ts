@@ -354,6 +354,7 @@ export namespace Components {
     interface AppSlotType {
         "selectedElement": HTMLElement;
         "skip": boolean;
+        "slotTypes": SlotType[] | undefined;
     }
     interface AppSpinner {
     }
@@ -1585,6 +1586,7 @@ declare namespace LocalJSX {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
         "selectedElement"?: HTMLElement;
         "skip"?: boolean;
+        "slotTypes"?: SlotType[] | undefined;
     }
     interface AppSpinner {
     }

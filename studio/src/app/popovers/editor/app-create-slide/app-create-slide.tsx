@@ -33,13 +33,13 @@ export class AppCreateSlide {
 
   @Event() signIn: EventEmitter<void>;
 
-  private async addSlide(template: SlideTemplate, deck?: Deck) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template: template, elements: this.elements}, deck, userStore.state.user);
+  private async addSlide(template: SlideTemplate, deck?: Deck, elements?: SlotType[]) {
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements}, deck, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
-  private async addSlideSplit(template: SlideTemplate, attributes?: SlideAttributes) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(this.elements, attributes);
+  private async addSlideSplit(template: SlideTemplate, attributes?: SlideAttributes, elements?: SlotType[]) {
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlideSplit(elements, attributes);
     await this.closePopover(template, slide);
   }
 
@@ -48,14 +48,14 @@ export class AppCreateSlide {
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
-  private async addRestrictedSlide(template: SlideTemplate | Template, type: SlideType = SlideType.DEFAULT) {
+  private async addRestrictedSlide(template: SlideTemplate | Template, type: SlideType = SlideType.DEFAULT, elements?: SlotType[]) {
     if (authStore.state.anonymous) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements: this.elements, type}, null, userStore.state.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements, type}, null, userStore.state.user);
     await this.closePopover(template, slide);
   }
 
@@ -100,34 +100,40 @@ export class AppCreateSlide {
 
     const slideTemplate: SlideTemplate | undefined = this.getSlideTemplate();
 
+    const customSlotsCount: number | undefined = (this.composeTemplate?.template as Template)?.data?.slots?.length;
+
+    // We want to rerender only when needed and not when the last slot is selected
+    let elements: SlotType[] = this.elements ? [...this.elements] : undefined;
+
     // First element
     if (this.elements === undefined) {
-      this.elements = [slotType];
+      elements = [slotType];
 
-      if (slideTemplate !== undefined || (this.composeTemplate?.template as Template)?.data?.slots?.length > 1) {
+      if (slideTemplate !== undefined || customSlotsCount > 1) {
+        this.elements = [...elements];
         return;
       }
     }
 
     // We might just want only one element
-    if (slotType) {
-      this.elements.push(slotType);
-      this.elements = [...this.elements];
+    if (slotType && customSlotsCount > 1) {
+      elements.push(slotType);
 
       if (this.composeTemplate.type === SlideType.USER && this.elements.length < (this.composeTemplate?.template as Template)?.data?.slots?.length - 1) {
+        this.elements = [...this.elements];
         return;
       }
     }
 
     // We've got all, or at least one, the elements, go we can create the slide
     if (this.composeTemplate.template === SlideTemplate.SPLIT) {
-      await this.addSlideSplit(SlideTemplate.SPLIT, this.composeTemplate.attributes);
+      await this.addSlideSplit(SlideTemplate.SPLIT, this.composeTemplate.attributes, elements);
     } else if (this.composeTemplate.template === SlideTemplate.CONTENT) {
-      await this.addSlide(SlideTemplate.CONTENT);
+      await this.addSlide(SlideTemplate.CONTENT, undefined, elements);
     } else if (this.composeTemplate.type === SlideType.USER) {
-      await this.addRestrictedSlide(this.composeTemplate.template, SlideType.USER);
+      await this.addRestrictedSlide(this.composeTemplate.template, SlideType.USER, elements);
     } else {
-      await this.addSlide(SlideTemplate.TITLE);
+      await this.addSlide(SlideTemplate.TITLE, undefined, elements);
     }
   }
 
@@ -309,6 +315,21 @@ export class AppCreateSlide {
 
     const skip: boolean = this.elements !== undefined && slideTemplate !== SlideTemplate.SPLIT;
 
-    return <app-slot-type skip={skip} onSelectType={($event: CustomEvent<SlotType>) => this.selectSlideSlottedElements($event.detail)}></app-slot-type>;
+    const slotTypes: SlotType[] | undefined = this.slotTypes();
+
+    return (
+      <app-slot-type
+        skip={skip}
+        slotTypes={slotTypes}
+        onSelectType={($event: CustomEvent<SlotType>) => this.selectSlideSlottedElements($event.detail)}></app-slot-type>
+    );
+  }
+
+  private slotTypes(): SlotType[] | undefined {
+    if (!this.composeTemplate || !this.composeTemplate.type || this.composeTemplate.type === SlideType.DEFAULT) {
+      return undefined;
+    }
+
+    return (this.composeTemplate.template as Template).data.slots?.[this.elements ? this.elements.length : 0].types as SlotType[];
   }
 }
