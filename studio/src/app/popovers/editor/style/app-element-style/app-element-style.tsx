@@ -5,7 +5,7 @@ import {SlotType} from '../../../../types/editor/slot-type';
 import {ImageAction} from '../../../../types/editor/image-action';
 
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
-import {SelectedElementDescription} from '../../../../utils/editor/selected-element.utils';
+import {SelectedElement} from '../../../../types/editor/selected-element';
 
 @Component({
   tag: 'app-element-style',
@@ -18,7 +18,7 @@ export class AppElementStyle {
   selectedElement: HTMLElement;
 
   @Prop()
-  selectedDescription: SelectedElementDescription;
+  selectedDescription: SelectedElement;
 
   @Prop()
   imgDidChange: EventEmitter<HTMLElement>;

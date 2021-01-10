@@ -2,7 +2,7 @@ import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 
-import {SelectedSlideDescription} from '../../../../utils/editor/selected-element.utils';
+import {SelectedSlide} from '../../../../types/editor/selected-element';
 
 @Component({
   tag: 'app-edit-slide',
@@ -15,7 +15,7 @@ export class AppEditSlide {
   selectedElement: HTMLElement;
 
   @Prop()
-  slideDescription: SelectedSlideDescription;
+  slideDescription: SelectedSlide;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;

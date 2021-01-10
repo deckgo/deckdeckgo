@@ -1,40 +1,10 @@
 import {SlideSplitType, SlideType} from '../../models/data/slide';
 
 import {SlotType} from '../../types/editor/slot-type';
+import {SelectedElement} from '../../types/editor/selected-element';
 
 import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
-
-export interface SelectedSlotDescription {
-  code: boolean;
-  math: boolean;
-  wordCloud: boolean;
-  markdown: boolean;
-  image: boolean;
-  shape: 'shape' | 'text' | undefined;
-  demo: boolean;
-  list: SlotType.OL | SlotType.UL | undefined;
-}
-
-export interface SelectedSlideDescription {
-  nodeName: string | undefined;
-  type: SlideType;
-  demo: boolean;
-  qrCode: boolean;
-  chart: boolean;
-  author: boolean;
-  aspectRatio: boolean;
-  poll: boolean;
-  split: boolean;
-  youtube: boolean;
-  playground: boolean;
-}
-
-export interface SelectedElementDescription {
-  type: 'slide' | 'element';
-  slide?: SelectedSlideDescription;
-  slot?: SelectedSlotDescription;
-}
 
 export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {
@@ -73,7 +43,7 @@ export class SelectedElementUtils {
     return element?.nodeName?.toLowerCase() === SlotType.IMG;
   }
 
-  static initDescription(element: HTMLElement | undefined): SelectedElementDescription {
+  static initDescription(element: HTMLElement | undefined): SelectedElement {
     const type: 'element' | 'slide' = this.isElementSlide(element);
 
     if (type === 'element') {

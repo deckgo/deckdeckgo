@@ -17,7 +17,8 @@ import {EditAction} from '../../../../../types/editor/edit-action';
 import {MoreAction} from '../../../../../types/editor/more-action';
 import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
-import {SelectedElementUtils, SelectedElementDescription} from '../../../../../utils/editor/selected-element.utils';
+import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
+import {SelectedElement} from '../../../../../types/editor/selected-element';
 
 @Component({
   tag: 'app-actions-element',
@@ -36,7 +37,7 @@ export class AppActionsElement {
   private selectedElement: HTMLElement | undefined;
 
   @State()
-  private selectedDescription: SelectedElementDescription | undefined;
+  private selectedDescription: SelectedElement | undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
