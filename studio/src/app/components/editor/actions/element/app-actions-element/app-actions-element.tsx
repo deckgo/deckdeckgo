@@ -17,7 +17,7 @@ import {EditAction} from '../../../../../utils/editor/edit-action';
 import {MoreAction} from '../../../../../utils/editor/more-action';
 import {DemoAction} from '../../../../../utils/editor/demo-action';
 import {PlaygroundAction} from '../../../../../utils/editor/playground-action';
-import {SelectedElement, SelectedElementDescription} from '../../../../../utils/editor/selected-element';
+import {SelectedElementUtils, SelectedElementDescription} from '../../../../../utils/editor/selected-element.utils';
 
 @Component({
   tag: 'app-actions-element',
@@ -189,7 +189,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (SelectedElement.isElementSlide(element)) {
+      if (SelectedElementUtils.isElementSlide(element)) {
         resolve(element);
         return;
       }
@@ -677,7 +677,7 @@ export class AppActionsElement {
 
     this.selectedElement = element;
 
-    this.selectedDescription = SelectedElement.initDescription(element);
+    this.selectedDescription = SelectedElementUtils.initDescription(element);
 
     if (element) {
       element.addEventListener('paste', this.cleanOnPaste, false);

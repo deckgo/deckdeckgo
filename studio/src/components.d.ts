@@ -12,7 +12,7 @@ import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
 import { DeckAction } from "./app/utils/editor/deck-action";
-import { SelectedElementDescription, SelectedSlideDescription } from "./app/utils/editor/selected-element";
+import { SelectedElementDescription, SelectedSlideDescription } from "./app/utils/editor/selected-element.utils";
 import { EditAction } from "./app/utils/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/utils/editor/image-action";

@@ -5,7 +5,7 @@ import {SlotType} from '../../../../utils/editor/slot-type';
 import {ImageAction} from '../../../../utils/editor/image-action';
 
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
-import {SelectedElementDescription} from '../../../../utils/editor/selected-element';
+import {SelectedElementDescription} from '../../../../utils/editor/selected-element.utils';
 
 @Component({
   tag: 'app-element-style',

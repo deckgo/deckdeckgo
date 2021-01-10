@@ -35,7 +35,7 @@ export interface SelectedElementDescription {
   slot?: SelectedSlotDescription;
 }
 
-export class SelectedElement {
+export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {
     return element?.nodeName?.toLowerCase().indexOf('deckgo-slide') > -1 ? 'slide' : 'element';
   }
