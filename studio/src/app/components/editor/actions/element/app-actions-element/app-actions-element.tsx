@@ -385,7 +385,7 @@ export class AppActionsElement {
 
       store.state.deckBusy = true;
 
-      this.slideCopy.emit(this.selectedElement);
+      this.slideCopy.emit(this.selectedElement.element);
 
       await this.reset();
 
