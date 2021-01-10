@@ -1,6 +1,6 @@
 import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, Method, Prop, State, Listen} from '@stencil/core';
 
-import {BreadcrumbsStep} from '../../../../../utils/editor/breadcrumbs-type';
+import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
 @Component({
   tag: 'app-actions-editor',

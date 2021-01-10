@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
 
-import {TargetElement} from '../../../utils/editor/target-element';
+import {TargetElement} from '../../../types/editor/target-element';
 
 @Component({
   tag: 'app-select-target-element',

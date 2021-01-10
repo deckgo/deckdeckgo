@@ -5,11 +5,11 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 import busyStore from '../../stores/busy.store';
 import authStore from '../../stores/auth.store';
 
-import {ShapeAction, ShapeActionSVG} from '../../utils/editor/shape-action';
-import {ImageAction} from '../../utils/editor/image-action';
-import {SlotType} from '../../utils/editor/slot-type';
+import {ShapeAction, ShapeActionSVG} from '../../types/editor/shape-action';
+import {ImageAction} from '../../types/editor/image-action';
+import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
-import {EditAction} from '../../utils/editor/edit-action';
+import {EditAction} from '../../types/editor/edit-action';
 
 export class ShapeHelper {
   constructor(private didChange: EventEmitter<HTMLElement>, private signIn: EventEmitter<void>) {}

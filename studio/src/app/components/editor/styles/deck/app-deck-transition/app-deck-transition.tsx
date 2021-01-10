@@ -2,7 +2,7 @@ import {Component, Element, Event, EventEmitter, Prop, h, State} from '@stencil/
 
 import deckStore from '../../../../../stores/deck.store';
 
-import {DeckAction} from '../../../../../utils/editor/deck-action';
+import {DeckAction} from '../../../../../types/editor/deck-action';
 
 @Component({
   tag: 'app-deck-transition',

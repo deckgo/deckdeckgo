@@ -1,6 +1,6 @@
 import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
 
-import {EditAction} from '../../../../utils/editor/edit-action';
+import {EditAction} from '../../../../types/editor/edit-action';
 
 @Component({
   tag: 'app-edit-slide',

@@ -14,7 +14,7 @@ import apiUserStore from '../../../../stores/api.user.store';
 import {ApiUser} from '../../../../models/api/api.user';
 import {User} from '../../../../models/data/user';
 
-import {UserUtils} from '../../../../utils/core/user-utils';
+import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';

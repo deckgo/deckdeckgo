@@ -1,8 +1,8 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {TargetElement} from '../../../../utils/editor/target-element';
-import {SlotType} from '../../../../utils/editor/slot-type';
-import {ImageAction} from '../../../../utils/editor/image-action';
+import {TargetElement} from '../../../../types/editor/target-element';
+import {SlotType} from '../../../../types/editor/slot-type';
+import {ImageAction} from '../../../../types/editor/image-action';
 import {ListUtils} from '../../../../utils/editor/list.utils';
 
 import {ImageHelper} from '../../../../helpers/editor/image.helper';

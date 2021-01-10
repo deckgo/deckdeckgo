@@ -2,7 +2,7 @@ import {Component, Prop, h, Host, EventEmitter, Event, Fragment} from '@stencil/
 
 import store from '../../../../stores/busy.store';
 
-import {BreadcrumbsStep} from '../../../../utils/editor/breadcrumbs-type';
+import {BreadcrumbsStep} from '../../../../types/editor/breadcrumbs-step';
 
 @Component({
   tag: 'app-breadcrumbs',

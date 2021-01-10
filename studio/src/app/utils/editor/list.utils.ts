@@ -1,6 +1,6 @@
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 import {SlotUtils} from './slot.utils';
-import {ListStyle, mapHtmlListStyleTypeToListStyle} from './list-style-type';
+import {ListStyle} from '../../types/editor/list-style';
 
 export class ListUtils {
   static async isElementList(element: HTMLElement): Promise<SlotType.OL | SlotType.UL | undefined> {
@@ -21,8 +21,33 @@ export class ListUtils {
     }
 
     if (element?.nodeName?.toLowerCase() === SlotType.OL || element?.nodeName?.toLowerCase() === SlotType.UL) {
-      const listStyle = mapHtmlListStyleTypeToListStyle(element.style.listStyleType);
+      const listStyle = this.mapHtmlListStyleTypeToListStyle(element.style.listStyleType);
       return listStyle === undefined ? (element.nodeName.toLowerCase() === SlotType.OL ? ListStyle.DECIMAL : ListStyle.BULLET) : listStyle;
+    }
+  }
+
+  private static mapHtmlListStyleTypeToListStyle(listType: string): ListStyle | undefined {
+    switch (listType) {
+      case 'decimal':
+        return ListStyle.DECIMAL;
+      case 'decimal-leading-zero':
+        return ListStyle.DECIMAL_LEADING;
+      case 'upper-roman':
+        return ListStyle.ROMAN_UPPER;
+      case 'lower-roman':
+        return ListStyle.ROMAN_LOWER;
+      case 'lower-latin':
+        return ListStyle.LATIN_LOWER;
+      case 'upper-latin':
+        return ListStyle.LATIN_UPPER;
+      case 'disc':
+        return ListStyle.BULLET;
+      case 'circle':
+        return ListStyle.CIRCLE;
+      case 'square':
+        return ListStyle.SQUARE;
+      default:
+        return undefined;
     }
   }
 }

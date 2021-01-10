@@ -14,7 +14,7 @@ import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
 import {SocialUtils} from './social.utils';
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 
 export interface InitTemplate {
   template: SlideTemplate;

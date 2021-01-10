@@ -1,5 +1,5 @@
 import {SlotUtils} from './slot.utils';
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 
 export class RevealSlotUtils {
   static toggleReveal(selectedElement: HTMLElement, reveal: boolean): Promise<HTMLElement> {

@@ -1,6 +1,6 @@
 import {Component, Element, Prop, h} from '@stencil/core';
 
-import {ImageAction} from '../../../utils/editor/image-action';
+import {ImageAction} from '../../../types/editor/image-action';
 
 @Component({
   tag: 'app-image-element',

@@ -9,7 +9,7 @@ import {SlideAttributes, SlideChartType, SlideSplitType, SlideTemplate} from '..
 import {Deck} from '../../../models/data/deck';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotType} from '../../../types/editor/slot-type';
 
 import {AssetsService} from '../../../services/core/assets/assets.service';
 

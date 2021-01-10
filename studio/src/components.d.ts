@@ -6,19 +6,19 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
-import { BreadcrumbsStep } from "./app/utils/editor/breadcrumbs-type";
+import { BreadcrumbsStep } from "./app/types/editor/breadcrumbs-step";
 import { PrismLanguage } from "./app/services/editor/prism/prism.service";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
-import { DeckAction } from "./app/utils/editor/deck-action";
-import { EditAction } from "./app/utils/editor/edit-action";
+import { DeckAction } from "./app/types/editor/deck-action";
+import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
-import { ImageAction } from "./app/utils/editor/image-action";
-import { SlotType } from "./app/utils/editor/slot-type";
-import { ListStyle } from "./app/utils/editor/list-style-type";
-import { TargetElement } from "./app/utils/editor/target-element";
-import { MoreAction } from "./app/utils/editor/more-action";
+import { ImageAction } from "./app/types/editor/image-action";
+import { SlotType } from "./app/types/editor/slot-type";
+import { ListStyle } from "./app/types/editor/list-style";
+import { TargetElement } from "./app/types/editor/target-element";
+import { MoreAction } from "./app/types/editor/more-action";
 import { ItemReorderEventDetail } from "@ionic/core";
 export namespace Components {
     interface AppActionAddSlide {

@@ -10,7 +10,7 @@ import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
 import errorStore from '../../../../../stores/error.store';
 
-import {MoreAction} from '../../../../../utils/editor/more-action';
+import {MoreAction} from '../../../../../types/editor/more-action';
 
 import {BackupOfflineService} from '../../../../../services/editor/backup/backup.offline.service';
 

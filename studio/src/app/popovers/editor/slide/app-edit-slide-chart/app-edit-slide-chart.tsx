@@ -2,7 +2,7 @@ import {Component, Element, Event, EventEmitter, h, Prop, State, Host} from '@st
 
 import {SlideAttributesYAxisDomain, SlideChartType} from '../../../../models/data/slide';
 
-import {EditAction} from '../../../../utils/editor/edit-action';
+import {EditAction} from '../../../../types/editor/edit-action';
 import {ChartUtils} from '../../../../utils/editor/chart.utils';
 
 @Component({
