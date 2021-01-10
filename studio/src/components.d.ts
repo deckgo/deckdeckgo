@@ -12,7 +12,7 @@ import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
-import { SelectedElement } from "./app/types/editor/selected-element";
+import { SelectedElement, SelectedSlide } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/types/editor/image-action";
@@ -163,7 +163,8 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppEditSlide {
-        "selectedElement": SelectedElement;
+        "selectedElement": HTMLElement;
+        "slideDescription": SelectedSlide;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
@@ -186,7 +187,8 @@ export namespace Components {
     interface AppElementStyle {
         "imageHelper": ImageHelper;
         "imgDidChange": EventEmitter<HTMLElement>;
-        "selectedElement": SelectedElement;
+        "selectedDescription": SelectedElement;
+        "selectedElement": HTMLElement;
     }
     interface AppEmbed {
     }
@@ -1370,7 +1372,8 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppEditSlide {
-        "selectedElement"?: SelectedElement;
+        "selectedElement"?: HTMLElement;
+        "slideDescription"?: SelectedSlide;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
@@ -1396,7 +1399,8 @@ declare namespace LocalJSX {
         "imageHelper"?: ImageHelper;
         "imgDidChange"?: EventEmitter<HTMLElement>;
         "onOptionsDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: SelectedElement;
+        "selectedDescription"?: SelectedElement;
+        "selectedElement"?: HTMLElement;
     }
     interface AppEmbed {
     }

@@ -2,7 +2,7 @@ import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 
-import {SelectedElement} from '../../../../types/editor/selected-element';
+import {SelectedSlide} from '../../../../types/editor/selected-element';
 
 @Component({
   tag: 'app-edit-slide',
@@ -12,7 +12,10 @@ export class AppEditSlide {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: SelectedElement;
+  selectedElement: HTMLElement;
+
+  @Prop()
+  slideDescription: SelectedSlide;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -44,11 +47,11 @@ export class AppEditSlide {
   }
 
   private renderTitle() {
-    if (this.selectedElement.slide?.qrCode) {
+    if (this.slideDescription.qrCode) {
       return <h2>QR code options</h2>;
-    } else if (this.selectedElement.slide?.chart) {
+    } else if (this.slideDescription.chart) {
       return <h2>Chart options</h2>;
-    } else if (this.selectedElement.slide?.author) {
+    } else if (this.slideDescription.author) {
       return <h2>Author options</h2>;
     } else {
       return <h2>Slide options</h2>;
@@ -56,22 +59,22 @@ export class AppEditSlide {
   }
 
   private renderOptions() {
-    if (this.selectedElement.slide?.qrCode) {
+    if (this.slideDescription.qrCode) {
       return (
         <app-edit-slide-qrcode
-          selectedElement={this.selectedElement.element}
+          selectedElement={this.selectedElement}
           slideDidChange={this.slideDidChange}
           onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-qrcode>
       );
-    } else if (this.selectedElement.slide?.chart) {
+    } else if (this.slideDescription.chart) {
       return (
         <app-edit-slide-chart
-          selectedElement={this.selectedElement.element}
+          selectedElement={this.selectedElement}
           slideDidChange={this.slideDidChange}
           onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>
       );
-    } else if (this.selectedElement.slide?.author) {
-      return <app-edit-slide-author selectedElement={this.selectedElement.element} slideDidChange={this.slideDidChange}></app-edit-slide-author>;
+    } else if (this.slideDescription.author) {
+      return <app-edit-slide-author selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-author>;
     } else {
       return undefined;
     }

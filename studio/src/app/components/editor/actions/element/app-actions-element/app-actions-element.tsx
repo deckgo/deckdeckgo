@@ -11,13 +11,13 @@ import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
 import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
+import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {EditAction} from '../../../../../types/editor/edit-action';
 import {MoreAction} from '../../../../../types/editor/more-action';
 import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
-import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
 @Component({
@@ -34,8 +34,11 @@ export class AppActionsElement {
   @Prop()
   elementFocus: EventEmitter;
 
+  // Important: it should not be a state
+  private selectedElement: HTMLElement | undefined;
+
   @State()
-  private selectedElement: SelectedElement | undefined;
+  private selectedDescription: SelectedElement | undefined;
 
   @Event() private blockSlide: EventEmitter<boolean>;
 
@@ -105,11 +108,11 @@ export class AppActionsElement {
 
   @Listen('toggleReveal', {target: 'document'})
   async onToggleReveal($event: CustomEvent<boolean>) {
-    if (!this.selectedElement?.element?.parentElement || !$event) {
+    if (!this.selectedElement || !this.selectedElement.parentElement || !$event) {
       return;
     }
 
-    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement.element, $event.detail);
+    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement, $event.detail);
 
     await this.replaceSlot(element);
   }
@@ -139,7 +142,7 @@ export class AppActionsElement {
 
   @Method()
   async blurSelectedElement() {
-    this.selectedElement?.element?.blur();
+    this.selectedElement?.blur();
   }
 
   private select(element: HTMLElement, autoOpen: boolean): Promise<void> {
@@ -159,7 +162,7 @@ export class AppActionsElement {
         await this.openImage();
       }
 
-      this.blockSlide.emit(this.selectedElement?.type === 'element');
+      this.blockSlide.emit(this.selectedDescription?.type === 'element');
 
       resolve();
     });
@@ -175,7 +178,7 @@ export class AppActionsElement {
       return;
     }
 
-    this.selectedElement.element.removeEventListener('paste', this.cleanOnPaste, true);
+    this.selectedElement.removeEventListener('paste', this.cleanOnPaste, true);
     await this.detachMoveToolbarOnElement();
 
     await this.reset();
@@ -317,23 +320,23 @@ export class AppActionsElement {
 
   private deleteElement(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedElement || !this.selectedDescription) {
         resolve();
         return;
       }
 
-      if (store.state.deckBusy && this.selectedElement?.type === 'slide') {
+      if (store.state.deckBusy && this.selectedDescription?.type === 'slide') {
         resolve();
         return;
       }
 
       store.state.deckBusy = true;
 
-      if (this.selectedElement.type === 'slide') {
-        this.slideDelete.emit(this.selectedElement.element);
+      if (this.selectedDescription.type === 'slide') {
+        this.slideDelete.emit(this.selectedElement);
       } else {
-        const parent: HTMLElement = this.selectedElement.element.parentElement;
-        this.selectedElement.element.parentElement.removeChild(this.selectedElement.element);
+        const parent: HTMLElement = this.selectedElement.parentElement;
+        this.selectedElement.parentElement.removeChild(this.selectedElement);
         this.slideDidChange.emit(parent);
 
         await this.resizeSlideContent(parent);
@@ -346,7 +349,7 @@ export class AppActionsElement {
   }
 
   private async clone() {
-    if (this.selectedElement?.slot?.shape !== undefined) {
+    if (this.selectedDescription?.slot?.shape !== undefined) {
       await this.cloneShape();
     } else {
       await this.cloneSlide();
@@ -360,12 +363,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.deckBusy || this.selectedElement?.slot?.shape === undefined) {
+      if (store.state.deckBusy || this.selectedDescription?.slot?.shape === undefined) {
         resolve();
         return;
       }
 
-      await this.shapeHelper.cloneShape(this.selectedElement.element);
+      await this.shapeHelper.cloneShape(this.selectedElement);
 
       resolve();
     });
@@ -378,14 +381,14 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.deckBusy || this.selectedElement?.type === 'element') {
+      if (store.state.deckBusy || this.selectedDescription?.type === 'element') {
         resolve();
         return;
       }
 
       store.state.deckBusy = true;
 
-      this.slideCopy.emit(this.selectedElement.element);
+      this.slideCopy.emit(this.selectedElement);
 
       await this.reset();
 
@@ -394,14 +397,14 @@ export class AppActionsElement {
   }
 
   private async openTransform() {
-    if (this.selectedElement?.type === 'slide') {
+    if (this.selectedDescription?.type === 'slide') {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-transform',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement,
       },
       mode: 'md',
       showBackdrop: false,
@@ -419,8 +422,8 @@ export class AppActionsElement {
 
   private async openEditSlide() {
     if (
-      this.selectedElement?.type === 'element' ||
-      (!this.selectedElement?.slide?.qrCode && !this.selectedElement?.slide?.chart && !this.selectedElement?.slide?.author)
+      this.selectedDescription?.type === 'element' ||
+      (!this.selectedDescription?.slide?.qrCode && !this.selectedDescription?.slide?.chart && !this.selectedDescription?.slide?.author)
     ) {
       return;
     }
@@ -429,6 +432,7 @@ export class AppActionsElement {
       component: 'app-edit-slide',
       componentProps: {
         selectedElement: this.selectedElement,
+        slideDescription: this.selectedDescription?.slide,
         slideDidChange: this.slideDidChange,
       },
       mode: 'md',
@@ -442,16 +446,16 @@ export class AppActionsElement {
           await this.deleteLogo();
         } else if (detail.data.action === EditAction.OPEN_CUSTOM_LOGO) {
           await this.imageHelper.openCustomModalRestricted(
-            this.selectedElement.element,
-            this.selectedElement?.type === 'slide',
+            this.selectedElement,
+            this.selectedDescription?.type === 'slide',
             false,
             'app-custom-images',
             detail.data.action
           );
         } else if (detail.data.action === EditAction.OPEN_DATA) {
           await this.imageHelper.openCustomModalRestricted(
-            this.selectedElement.element,
-            this.selectedElement?.type === 'slide',
+            this.selectedElement,
+            this.selectedDescription?.type === 'slide',
             false,
             'app-custom-data',
             detail.data.action
@@ -464,14 +468,14 @@ export class AppActionsElement {
   }
 
   private async openShape(component: 'app-shape' | 'app-image-element') {
-    if (this.selectedElement?.type === 'element' || !this.selectedElement?.slide?.aspectRatio) {
+    if (this.selectedDescription?.type === 'element' || !this.selectedDescription?.slide?.aspectRatio) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: component,
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement,
       },
       mode: 'md',
       showBackdrop: false,
@@ -481,7 +485,7 @@ export class AppActionsElement {
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
         await this.shapeHelper.appendShape(
-          this.selectedElement.element,
+          this.selectedElement,
           component === 'app-image-element'
             ? {
                 img: detail.data,
@@ -495,15 +499,15 @@ export class AppActionsElement {
   }
 
   private async appendText() {
-    await this.shapeHelper.appendText(this.selectedElement.element);
+    await this.shapeHelper.appendText(this.selectedElement);
   }
 
   private async getImagePopover(): Promise<HTMLIonPopoverElement> {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-image-element',
       componentProps: {
-        selectedElement: this.selectedElement.element,
-        slide: this.selectedElement?.type === 'slide',
+        selectedElement: this.selectedElement,
+        slide: this.selectedDescription?.type === 'slide',
       },
       mode: 'md',
       showBackdrop: false,
@@ -514,7 +518,7 @@ export class AppActionsElement {
   }
 
   private async openEditPollSlide() {
-    if (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.poll) {
+    if (this.selectedDescription?.type === 'element' || this.selectedDescription?.slide?.poll) {
       return;
     }
 
@@ -536,14 +540,14 @@ export class AppActionsElement {
   }
 
   private async openCode() {
-    if (!this.selectedElement?.slot?.code) {
+    if (!this.selectedDescription?.slot?.code) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-code',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement,
         codeDidChange: this.codeDidChange,
       },
       mode: 'md',
@@ -554,14 +558,14 @@ export class AppActionsElement {
     await popover.present();
   }
   private async openMath() {
-    if (!this.selectedElement?.slot?.math) {
+    if (!this.selectedDescription?.slot?.math) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-math',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement,
         mathDidChange: this.mathDidChange,
       },
       mode: 'md',
@@ -579,7 +583,7 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component,
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement,
       },
     });
 
@@ -600,13 +604,13 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-notes',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement,
       },
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data && this.selectedElement) {
-        this.notesDidChange.emit(this.selectedElement.element);
+        this.notesDidChange.emit(this.selectedElement);
       }
 
       this.blockSlide.emit(false);
@@ -619,12 +623,12 @@ export class AppActionsElement {
 
   private transformSlotType(type: SlotType): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement) {
+      if (!this.selectedElement || !this.selectedElement.parentElement) {
         resolve();
         return;
       }
 
-      const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement.element, type);
+      const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement, type);
 
       await this.replaceSlot(element);
 
@@ -634,12 +638,12 @@ export class AppActionsElement {
 
   private replaceSlot(element: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement || !element) {
+      if (!this.selectedElement || !this.selectedElement.parentElement || !element) {
         resolve();
         return;
       }
 
-      this.selectedElement.element.parentElement.replaceChild(element, this.selectedElement.element);
+      this.selectedElement.parentElement.replaceChild(element, this.selectedElement);
 
       await this.initSelectedElement(element);
 
@@ -655,13 +659,13 @@ export class AppActionsElement {
 
   private emitChange(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement) {
+      if (!this.selectedElement || !this.selectedElement.parentElement) {
         resolve();
         return;
       }
 
       // If not slide, then parent is the container slide
-      this.slideDidChange.emit(this.selectedElement?.type === 'slide' ? this.selectedElement.element : this.selectedElement.element.parentElement);
+      this.slideDidChange.emit(this.selectedDescription?.type === 'slide' ? this.selectedElement : this.selectedElement.parentElement);
 
       resolve();
     });
@@ -673,14 +677,11 @@ export class AppActionsElement {
       await this.highlightElement(false);
     }
 
-    this.selectedElement = element
-      ? {
-          element,
-          ...(SelectedElementUtils.initDescription(element) as SelectedElement),
-        }
-      : undefined;
+    this.selectedElement = element;
 
     if (element) {
+      this.selectedDescription = SelectedElementUtils.initDescription(element);
+
       element.addEventListener('paste', this.cleanOnPaste, false);
 
       await this.attachResizeSlideContent();
@@ -694,15 +695,15 @@ export class AppActionsElement {
   private highlightElement(highlight: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       // No highlight on deck
-      if (!this.selectedElement || this.selectedElement?.type === 'slide') {
+      if (!this.selectedElement || this.selectedDescription?.type === 'slide') {
         resolve();
         return;
       }
 
       if (highlight) {
-        this.selectedElement.element.setAttribute('highlighted', '');
+        this.selectedElement.setAttribute('highlighted', '');
       } else {
-        this.selectedElement.element.removeAttribute('highlighted');
+        this.selectedElement.removeAttribute('highlighted');
       }
 
       resolve();
@@ -729,10 +730,10 @@ export class AppActionsElement {
         }
       });
 
-      this.elementResizeObserver.observe(this.selectedElement.element);
+      this.elementResizeObserver.observe(this.selectedElement);
     } else {
       // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
-      this.selectedElement.element.addEventListener('focusout', () => this.debounceResizeSlideContent(), {passive: true});
+      this.selectedElement.addEventListener('focusout', () => this.debounceResizeSlideContent(), {passive: true});
     }
   }
 
@@ -740,11 +741,11 @@ export class AppActionsElement {
     return new Promise<void>((resolve) => {
       if (window && 'ResizeObserver' in window) {
         if (this.elementResizeObserver && this.selectedElement) {
-          this.elementResizeObserver.unobserve(this.selectedElement.element);
+          this.elementResizeObserver.unobserve(this.selectedElement);
           this.elementResizeObserver.disconnect();
         }
       } else {
-        this.selectedElement.element.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);
+        this.selectedElement.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);
       }
 
       resolve();
@@ -758,10 +759,11 @@ export class AppActionsElement {
         selectedElement: this.selectedElement,
         imgDidChange: this.imgDidChange,
         imageHelper: this.imageHelper,
+        selectedDescription: this.selectedDescription,
       },
       mode: 'md',
       showBackdrop: false,
-      cssClass: `popover-menu ${this.selectedElement?.slide?.poll ? 'popover-menu-wide' : ''}`,
+      cssClass: `popover-menu ${this.selectedDescription?.slide?.poll ? 'popover-menu-wide' : ''}`,
     });
 
     await popover.present();
@@ -772,7 +774,7 @@ export class AppActionsElement {
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
-        await this.imageHelper.imageAction(this.selectedElement.element, this.selectedElement?.type === 'slide', false, detail.data);
+        await this.imageHelper.imageAction(this.selectedElement, this.selectedDescription?.type === 'slide', false, detail.data);
       }
     });
 
@@ -780,12 +782,12 @@ export class AppActionsElement {
   }
 
   private async deleteLogo() {
-    await this.imageHelper.deleteSlideAttributeImgSrc(this.selectedElement.element);
+    await this.imageHelper.deleteSlideAttributeImgSrc(this.selectedElement);
   }
 
   private updateYoutube = (youtubeUrl: string): Promise<void> => {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement?.slide?.youtube) {
+      if (!this.selectedElement || !this.selectedDescription?.slide?.youtube) {
         resolve();
         return;
       }
@@ -795,15 +797,15 @@ export class AppActionsElement {
         return;
       }
 
-      this.selectedElement.element.setAttribute('src', youtubeUrl);
-      this.slideDidChange.emit(this.selectedElement.element);
+      this.selectedElement.setAttribute('src', youtubeUrl);
+      this.slideDidChange.emit(this.selectedElement);
 
       resolve();
     });
   };
 
   private updatePlayground = async (playground: PlaygroundAction) => {
-    if (!this.selectedElement || !this.selectedElement?.slide?.playground) {
+    if (!this.selectedElement || !this.selectedDescription?.slide?.playground) {
       return;
     }
 
@@ -815,19 +817,19 @@ export class AppActionsElement {
       return;
     }
 
-    this.selectedElement.element.setAttribute('src', playground.src);
+    this.selectedElement.setAttribute('src', playground.src);
 
     if (playground.theme) {
-      this.selectedElement.element.setAttribute('theme', playground.theme);
+      this.selectedElement.setAttribute('theme', playground.theme);
     } else {
-      this.selectedElement.element.removeAttribute('theme');
+      this.selectedElement.removeAttribute('theme');
     }
 
-    this.slideDidChange.emit(this.selectedElement.element);
+    this.slideDidChange.emit(this.selectedElement);
   };
 
   private updateSlideDemo = async (demoAttr: DemoAction): Promise<void> => {
-    if (!this.selectedElement || !this.selectedElement?.slide?.demo) {
+    if (!this.selectedElement || !this.selectedDescription?.slide?.demo) {
       return;
     }
 
@@ -835,7 +837,7 @@ export class AppActionsElement {
       return;
     }
 
-    const demo: HTMLElement = this.selectedElement.element.querySelector('deckgo-demo');
+    const demo: HTMLElement = this.selectedElement.querySelector('deckgo-demo');
 
     if (!demo) {
       return;
@@ -844,7 +846,7 @@ export class AppActionsElement {
     demo.setAttribute('src', demoAttr.src);
     demo.setAttribute('mode', demoAttr.mode);
 
-    this.slideDidChange.emit(this.selectedElement.element);
+    this.slideDidChange.emit(this.selectedElement);
   };
 
   private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
@@ -854,7 +856,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (SlotUtils.isNodeRevealList(this.selectedElement.element)) {
+      if (SlotUtils.isNodeRevealList(this.selectedElement)) {
         await this.updateRevealListAttribute(destinationListType);
       } else {
         await this.transformSlotType(destinationListType);
@@ -871,7 +873,7 @@ export class AppActionsElement {
         return;
       }
 
-      this.selectedElement.element.setAttribute('list-tag', type);
+      this.selectedElement.setAttribute('list-tag', type);
 
       await this.emitChange();
 
@@ -890,9 +892,9 @@ export class AppActionsElement {
 
       const element: HTMLElement = slideElement
         ? slideElement
-        : this.selectedElement?.type === 'slide'
-        ? this.selectedElement.element
-        : this.selectedElement.element.parentElement;
+        : this.selectedDescription?.type === 'slide'
+        ? this.selectedElement
+        : this.selectedElement.parentElement;
 
       if (!element) {
         resolve();
@@ -909,13 +911,13 @@ export class AppActionsElement {
 
   private isSlideEditable() {
     return (
-      this.selectedElement?.slide?.qrCode ||
-      this.selectedElement?.slide?.chart ||
-      this.selectedElement?.slide?.poll ||
-      this.selectedElement?.slide?.youtube ||
-      this.selectedElement?.slide?.playground ||
-      this.selectedElement?.slide?.author ||
-      this.selectedElement?.slide?.demo
+      this.selectedDescription?.slide?.qrCode ||
+      this.selectedDescription?.slide?.chart ||
+      this.selectedDescription?.slide?.poll ||
+      this.selectedDescription?.slide?.youtube ||
+      this.selectedDescription?.slide?.playground ||
+      this.selectedDescription?.slide?.author ||
+      this.selectedDescription?.slide?.demo
     );
   }
 
@@ -927,9 +929,9 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-element-actions',
       componentProps: {
-        notes: this.selectedElement?.type === 'slide',
-        copy: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
-        images: this.selectedElement?.slide?.aspectRatio,
+        notes: this.selectedDescription?.type === 'slide',
+        copy: this.selectedDescription?.type === 'slide' || this.selectedDescription?.slot?.shape !== undefined,
+        images: this.selectedDescription?.slide?.aspectRatio,
       },
       event: $event,
       mode: 'ios',
@@ -980,7 +982,7 @@ export class AppActionsElement {
       <button
         onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
         aria-label="Delete"
-        disabled={store.state.deckBusy && this.selectedElement?.type === 'slide'}
+        disabled={store.state.deckBusy && this.selectedDescription?.type === 'slide'}
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/trash-bin.svg"></ion-icon>
@@ -990,7 +992,7 @@ export class AppActionsElement {
   }
 
   private renderNotes() {
-    const classElement: string | undefined = `wider-devices ion-activatable ${this.selectedElement?.type === 'slide' ? '' : 'hidden'}`;
+    const classElement: string | undefined = `wider-devices ion-activatable ${this.selectedDescription?.type === 'slide' ? '' : 'hidden'}`;
 
     return (
       <button
@@ -998,7 +1000,7 @@ export class AppActionsElement {
         aria-label="Notes"
         disabled={store.state.deckBusy}
         class={classElement}
-        tabindex={this.selectedElement?.type === 'slide' ? 0 : -1}>
+        tabindex={this.selectedDescription?.type === 'slide' ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/create.svg"></ion-icon>
         <ion-label aria-hidden="true">Notes</ion-label>
@@ -1007,7 +1009,7 @@ export class AppActionsElement {
   }
 
   private renderCopy() {
-    const displayed: boolean = this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined;
+    const displayed: boolean = this.selectedDescription?.type === 'slide' || this.selectedDescription?.slot?.shape !== undefined;
     const classSlide: string | undefined = `wider-devices ion-activatable ${displayed ? '' : 'hidden'}`;
 
     return (
@@ -1030,19 +1032,19 @@ export class AppActionsElement {
   }
 
   private renderEdit() {
-    const displayed: boolean = this.selectedElement?.type === 'slide' && this.isSlideEditable();
+    const displayed: boolean = this.selectedDescription?.type === 'slide' && this.isSlideEditable();
     const classSlide: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
       <button
         onClick={() =>
-          this.selectedElement?.slide?.poll
+          this.selectedDescription?.slide?.poll
             ? this.openEditPollSlide()
-            : this.selectedElement?.slide?.youtube
+            : this.selectedDescription?.slide?.youtube
             ? this.openEditModalSlide('app-youtube', this.updateYoutube)
-            : this.selectedElement?.slide?.playground
+            : this.selectedDescription?.slide?.playground
             ? this.openEditModalSlide('app-playground', this.updatePlayground)
-            : this.selectedElement?.slide?.demo
+            : this.selectedDescription?.slide?.demo
             ? this.openEditModalSlide('app-demo', this.updateSlideDemo)
             : this.openEditSlide()
         }
@@ -1057,7 +1059,7 @@ export class AppActionsElement {
   }
 
   private renderTransform() {
-    const displayed: boolean = this.selectedElement?.type === 'element' && this.selectedElement?.slot?.shape === undefined;
+    const displayed: boolean = this.selectedDescription?.type === 'element' && this.selectedDescription?.slot?.shape === undefined;
     const classToggle: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
@@ -1070,7 +1072,7 @@ export class AppActionsElement {
   }
 
   private renderAspectRatio() {
-    const displayed: boolean = this.selectedElement?.slide?.aspectRatio;
+    const displayed: boolean = this.selectedDescription?.slide?.aspectRatio;
     const classSlide: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return [
@@ -1093,10 +1095,10 @@ export class AppActionsElement {
   }
 
   private renderCodeOptions() {
-    const classSlideCode: string | undefined = `ion-activatable${this.selectedElement?.slot?.code ? '' : ' hidden'}`;
+    const classSlideCode: string | undefined = `ion-activatable${this.selectedDescription?.slot?.code ? '' : ' hidden'}`;
 
     return (
-      <button onClick={() => this.openCode()} aria-label="Code options" class={classSlideCode} tabindex={this.selectedElement?.slot?.code ? 0 : -1}>
+      <button onClick={() => this.openCode()} aria-label="Code options" class={classSlideCode} tabindex={this.selectedDescription?.slot?.code ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label aria-hidden="true">Options</ion-label>
@@ -1104,10 +1106,10 @@ export class AppActionsElement {
     );
   }
   private renderMathOptions() {
-    const classSlideMath: string | undefined = `ion-activatable${this.selectedElement?.slot?.math ? '' : ' hidden'}`;
+    const classSlideMath: string | undefined = `ion-activatable${this.selectedDescription?.slot?.math ? '' : ' hidden'}`;
 
     return (
-      <button onClick={() => this.openMath()} aria-label="Math options" class={classSlideMath} tabindex={this.selectedElement?.slot?.math ? 0 : -1}>
+      <button onClick={() => this.openMath()} aria-label="Math options" class={classSlideMath} tabindex={this.selectedDescription?.slot?.math ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/settings.svg"></ion-icon>
         <ion-label aria-hidden="true">Options</ion-label>
@@ -1116,10 +1118,10 @@ export class AppActionsElement {
   }
 
   private renderImages() {
-    const classImage: string | undefined = `ion-activatable${this.selectedElement?.slot?.image ? '' : ' hidden'}`;
+    const classImage: string | undefined = `ion-activatable${this.selectedDescription?.slot?.image ? '' : ' hidden'}`;
 
     return (
-      <button onClick={() => this.openImage()} aria-label="Image" class={classImage} tabindex={this.selectedElement?.slot?.image ? 0 : -1}>
+      <button onClick={() => this.openImage()} aria-label="Image" class={classImage} tabindex={this.selectedDescription?.slot?.image ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label aria-hidden="true">Image</ion-label>
