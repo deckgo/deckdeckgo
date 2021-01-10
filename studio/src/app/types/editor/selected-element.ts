@@ -27,6 +27,7 @@ export interface SelectedSlide {
 }
 
 export interface SelectedElement {
+  element: HTMLElement;
   type: 'slide' | 'element';
   slide?: SelectedSlide;
   slot?: SelectedSlot;

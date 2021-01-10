@@ -43,11 +43,7 @@ export class SelectedElementUtils {
     return element?.nodeName?.toLowerCase() === SlotType.IMG;
   }
 
-  static initDescription(element: HTMLElement | undefined): SelectedElement | undefined {
-    if (!element) {
-      return undefined;
-    }
-
+  static initDescription(element: HTMLElement): Partial<SelectedElement> {
     const type: 'element' | 'slide' = this.isElementSlide(element);
 
     if (type === 'element') {
