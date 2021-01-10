@@ -11,7 +11,7 @@ import tokenStore from '../../../stores/token.store';
 import {AuthUser} from '../../../models/auth/auth.user';
 
 import {Utils} from '../../../utils/core/utils';
-import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {UserService} from '../../../services/data/user/user.service';

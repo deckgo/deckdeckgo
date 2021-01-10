@@ -2,7 +2,7 @@ import {h} from '@stencil/core';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 import {SlotUtils} from './slot.utils';
 
 export class ParseElementsUtils {

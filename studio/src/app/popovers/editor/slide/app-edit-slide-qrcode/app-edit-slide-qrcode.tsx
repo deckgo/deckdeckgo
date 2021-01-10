@@ -5,7 +5,7 @@ import {alertController} from '@ionic/core';
 import store from '../../../../stores/deck.store';
 
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
-import {EditAction} from '../../../../utils/editor/edit-action';
+import {EditAction} from '../../../../types/editor/edit-action';
 
 @Component({
   tag: 'app-edit-slide-qrcode',
@@ -81,10 +81,10 @@ export class AppEditSlideQRCode {
         // https://stackoverflow.com/a/14582229/5404186
         const pattern: RegExp = new RegExp(
           '^(https?:\\/\\/)?' + // protocol
-          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-          '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-          '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
             '(\\#[-a-z\\d_]*)?$',
           'i'
         ); // fragment locator

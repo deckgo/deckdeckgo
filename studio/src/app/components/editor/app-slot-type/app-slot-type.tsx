@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {SlotType} from '../../../utils/editor/slot-type';
+import {SlotType} from '../../../types/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 
 @Component({

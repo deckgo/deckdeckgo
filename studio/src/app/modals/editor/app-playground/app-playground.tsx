@@ -1,7 +1,7 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
-import {PlaygroundAction} from '../../../utils/editor/playground-action';
+import {PlaygroundAction} from '../../../types/editor/playground-action';
 
 @Component({
   tag: 'app-playground',

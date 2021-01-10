@@ -1,7 +1,7 @@
 import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {TargetElement} from '../../../../utils/editor/target-element';
-import {ImageAction} from '../../../../utils/editor/image-action';
+import {TargetElement} from '../../../../types/editor/target-element';
+import {ImageAction} from '../../../../types/editor/image-action';
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
 @Component({

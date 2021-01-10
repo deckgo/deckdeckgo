@@ -4,10 +4,10 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 import busyStore from '../../stores/busy.store';
 import authStore from '../../stores/auth.store';
 
-import {ImageAction} from '../../utils/editor/image-action';
-import {EditAction} from '../../utils/editor/edit-action';
+import {ImageAction} from '../../types/editor/image-action';
+import {EditAction} from '../../types/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
-import {SlotType} from '../../utils/editor/slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 
 export class ImageHelper {

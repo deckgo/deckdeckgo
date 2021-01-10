@@ -1,6 +1,6 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {AssetsService} from '../../../services/core/assets/assets.service';
 

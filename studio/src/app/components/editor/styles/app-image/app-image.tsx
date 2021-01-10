@@ -2,8 +2,8 @@ import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/
 
 import {alertController} from '@ionic/core';
 
-import {EditAction} from '../../../../utils/editor/edit-action';
-import {ImageAction} from '../../../../utils/editor/image-action';
+import {EditAction} from '../../../../types/editor/edit-action';
+import {ImageAction} from '../../../../types/editor/image-action';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 

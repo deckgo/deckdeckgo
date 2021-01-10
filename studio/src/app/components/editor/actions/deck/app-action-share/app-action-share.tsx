@@ -5,7 +5,7 @@ import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
 
-import {MoreAction} from '../../../../../utils/editor/more-action';
+import {MoreAction} from '../../../../../types/editor/more-action';
 
 @Component({
   tag: 'app-action-share',

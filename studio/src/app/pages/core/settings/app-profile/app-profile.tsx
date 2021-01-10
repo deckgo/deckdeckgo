@@ -14,7 +14,7 @@ import apiUserStore from '../../../../stores/api.user.store';
 import {ApiUser} from '../../../../models/api/api.user';
 import {User} from '../../../../models/data/user';
 
-import {UserUtils} from '../../../../utils/core/user-utils';
+import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
@@ -23,7 +23,7 @@ import {UserService} from '../../../../services/data/user/user.service';
 import {StorageService} from '../../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 @Component({

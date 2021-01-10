@@ -1,6 +1,6 @@
 import {Utils} from '../../../utils/core/utils';
 
-import {EnvironmentGoogleConfig} from '../../core/environment/environment-config';
+import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import {AssetsService} from '../../core/assets/assets.service';

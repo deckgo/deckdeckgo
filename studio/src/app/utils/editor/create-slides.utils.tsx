@@ -6,7 +6,7 @@ import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
 import {SlideAttributes, SlideTemplate} from '../../models/data/slide';
 
-import {EnvironmentDeckDeckGoConfig} from '../../services/core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
 import {User} from '../../models/data/user';
@@ -14,7 +14,7 @@ import {Deck} from '../../models/data/deck';
 
 import {QRCodeUtils} from './qrcode.utils';
 import {SocialUtils} from './social.utils';
-import {SlotType} from './slot-type';
+import {SlotType} from '../../types/editor/slot-type';
 
 export interface InitTemplate {
   template: SlideTemplate;

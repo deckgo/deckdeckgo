@@ -74,7 +74,7 @@ export class PrismService {
             if (value.title && value.title !== '') {
               this.languages.push({
                 language: key,
-                title: value.title
+                title: value.title,
               });
             }
           }
@@ -96,8 +96,8 @@ export class PrismService {
     this.languages = [
       {
         language: 'javascript',
-        title: 'Javascript'
-      }
+        title: 'Javascript',
+      },
     ];
   }
 }
