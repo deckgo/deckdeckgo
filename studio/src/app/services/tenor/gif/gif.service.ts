@@ -4,7 +4,7 @@ import {get, set} from 'idb-keyval';
 
 import store from '../../../stores/error.store';
 
-import {EnvironmentTenorConfig} from '../../core/environment/environment-config';
+import {EnvironmentTenorConfig} from '../../../types/core/environment-config';
 
 export class GifService {
   private static instance: GifService;

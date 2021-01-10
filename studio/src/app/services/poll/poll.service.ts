@@ -4,7 +4,7 @@ import store from '../../stores/poll.store';
 
 import {DeckdeckgoPoll} from '@deckdeckgo/types';
 
-import {EnvironmentDeckDeckGoConfig} from '../core/environment/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
 export class PollService {
