@@ -10,7 +10,7 @@ import navStore, {NavDirection} from '../../../../stores/nav.store';
 
 import {Deck} from '../../../../models/data/deck';
 
-import {Resources} from '../../../../utils/core/resources';
+import {Constants} from '../../../../types/core/constants';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
@@ -230,7 +230,7 @@ export class AppPublishEdit {
       let title: string = ($event.target as InputTargetEvent).value;
       if (title && title !== undefined && title !== '') {
         if (!this.validCaption(title)) {
-          title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+          title = title.substr(0, Constants.DECK.TITLE_MAX_LENGTH);
         }
       }
 
@@ -247,7 +247,7 @@ export class AppPublishEdit {
   }
 
   private validCaption(title: string): boolean {
-    if (!title || title === undefined || title == '' || title.length > Resources.Constants.DECK.TITLE_MAX_LENGTH) {
+    if (!title || title === undefined || title == '' || title.length > Constants.DECK.TITLE_MAX_LENGTH) {
       return false;
     }
 
@@ -269,12 +269,7 @@ export class AppPublishEdit {
   }
 
   private validDescription(): boolean {
-    return (
-      !this.description ||
-      this.description === undefined ||
-      this.description === '' ||
-      this.description.length < Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH
-    );
+    return !this.description || this.description === undefined || this.description === '' || this.description.length < Constants.DECK.DESCRIPTION_MAX_LENGTH;
   }
 
   private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -397,7 +392,7 @@ export class AppPublishEdit {
                 debounce={500}
                 minlength={3}
                 disabled={disable}
-                maxlength={Resources.Constants.DECK.TITLE_MAX_LENGTH}
+                maxlength={Constants.DECK.TITLE_MAX_LENGTH}
                 required={true}
                 input-mode="text"
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onCaptionInput(e)}
@@ -405,8 +400,8 @@ export class AppPublishEdit {
             </ion-item>
 
             <p class={`small ${this.valid ? undefined : 'error'}`}>
-              The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than{' '}
-              {Resources.Constants.DECK.TITLE_MAX_LENGTH} characters.
+              The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than {Constants.DECK.TITLE_MAX_LENGTH}{' '}
+              characters.
             </p>
 
             <ion-item class="item-title">
@@ -419,7 +414,7 @@ export class AppPublishEdit {
                 value={this.description}
                 debounce={500}
                 disabled={disable}
-                maxlength={Resources.Constants.DECK.DESCRIPTION_MAX_LENGTH}
+                maxlength={Constants.DECK.DESCRIPTION_MAX_LENGTH}
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onDescriptionInput(e)}
                 onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
             </ion-item>

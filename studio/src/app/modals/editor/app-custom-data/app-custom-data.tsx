@@ -1,12 +1,12 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {Resources} from '../../../utils/core/resources';
+import {Constants} from '../../../types/core/constants';
 
 import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
   tag: 'app-custom-data',
-  styleUrl: 'app-custom-data.scss'
+  styleUrl: 'app-custom-data.scss',
 })
 export class AppCustomData {
   @Element() el: HTMLElement;
@@ -98,7 +98,7 @@ export class AppCustomData {
 
       this.paginationNext = list.nextPageToken;
 
-      this.disableInfiniteScroll = list.items.length < Resources.Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
+      this.disableInfiniteScroll = list.items.length < Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
 
       this.loading = false;
 
@@ -183,7 +183,7 @@ export class AppCustomData {
         <ion-toolbar>
           <div class={this.uploading ? 'uploading' : undefined}>{this.renderToolbarAction()}</div>
         </ion-toolbar>
-      </ion-footer>
+      </ion-footer>,
     ];
   }
 

@@ -1,13 +1,13 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {Resources} from '../../../utils/core/resources';
+import {Constants} from '../../../types/core/constants';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
   tag: 'app-custom-images',
-  styleUrl: 'app-custom-images.scss'
+  styleUrl: 'app-custom-images.scss',
 })
 export class AppCustomImages {
   @Element() el: HTMLElement;
@@ -114,7 +114,7 @@ export class AppCustomImages {
 
       this.paginationNext = list.nextPageToken;
 
-      this.disableInfiniteScroll = list.items.length < Resources.Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
+      this.disableInfiniteScroll = list.items.length < Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
 
       this.loading = false;
 
@@ -205,7 +205,7 @@ export class AppCustomImages {
         <ion-toolbar>
           <div class={this.uploading ? 'uploading' : undefined}>{this.renderToolbarAction()}</div>
         </ion-toolbar>
-      </ion-footer>
+      </ion-footer>,
     ];
   }
 

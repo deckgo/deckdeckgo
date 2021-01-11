@@ -2,7 +2,7 @@ import {JSX} from '@stencil/core';
 
 import authStore from '../../../stores/auth.store';
 
-import {Resources} from '../../../utils/core/resources';
+import {Constants} from '../../../types/core/constants';
 
 export class AnonymousService {
   private static instance: AnonymousService;
@@ -35,7 +35,7 @@ export class AnonymousService {
         return;
       }
 
-      resolve(slides.length < Resources.Constants.DECK.MIN_SLIDES);
+      resolve(slides.length < Constants.DECK.MIN_SLIDES);
     });
   }
 

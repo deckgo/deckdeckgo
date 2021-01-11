@@ -24,9 +24,9 @@ import {
   SlideType,
 } from '../../../../models/data/slide';
 
-import {Utils} from '../../../../utils/core/utils';
-import {Resources} from '../../../../utils/core/resources';
+import {Constants} from '../../../../types/core/constants';
 
+import {Utils} from '../../../../utils/core/utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 
@@ -409,8 +409,8 @@ export class DeckEventsHandler {
 
         // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
 
-        if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
-          title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+        if (title.length >= Constants.DECK.TITLE_MAX_LENGTH) {
+          title = title.substr(0, Constants.DECK.TITLE_MAX_LENGTH);
         }
 
         currentDeck.data.name = title;
