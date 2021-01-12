@@ -8,7 +8,7 @@ export interface TemplateDataSlot {
 
 export interface TemplateDataProp {
   name: string;
-  type: string;
+  type: 'string' | 'number' | 'boolean';
   placeholder?: string;
 }
 

@@ -20,6 +20,8 @@ import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
+import {SlideType} from '../../../../../models/data/slide';
+
 @Component({
   tag: 'app-actions-element',
   styleUrl: 'app-actions-element.scss',
@@ -420,7 +422,10 @@ export class AppActionsElement {
   private async openEditSlide() {
     if (
       this.selectedElement?.type === 'element' ||
-      (!this.selectedElement?.slide?.qrCode && !this.selectedElement?.slide?.chart && !this.selectedElement?.slide?.author)
+      (!this.selectedElement?.slide?.qrCode &&
+        !this.selectedElement?.slide?.chart &&
+        !this.selectedElement?.slide?.author &&
+        this.selectedElement?.slide?.type === SlideType.DEFAULT)
     ) {
       return;
     }
@@ -915,7 +920,8 @@ export class AppActionsElement {
       this.selectedElement?.slide?.youtube ||
       this.selectedElement?.slide?.playground ||
       this.selectedElement?.slide?.author ||
-      this.selectedElement?.slide?.demo
+      this.selectedElement?.slide?.demo ||
+      this.selectedElement?.slide?.type !== SlideType.DEFAULT
     );
   }
 
@@ -1044,6 +1050,8 @@ export class AppActionsElement {
             ? this.openEditModalSlide('app-playground', this.updatePlayground)
             : this.selectedElement?.slide?.demo
             ? this.openEditModalSlide('app-demo', this.updateSlideDemo)
+            : this.selectedElement?.slide?.type !== SlideType.DEFAULT
+            ? this.openEditSlide()
             : this.openEditSlide()
         }
         aria-label="Edit slide options"

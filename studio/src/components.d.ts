@@ -174,6 +174,10 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
+    interface AppEditSlideDynamic {
+        "selectedElement": SelectedElement;
+        "slideDidChange": EventEmitter<HTMLElement>;
+    }
     interface AppEditSlideQrcode {
         "selectedElement": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
@@ -638,6 +642,12 @@ declare global {
     var HTMLAppEditSlideChartElement: {
         prototype: HTMLAppEditSlideChartElement;
         new (): HTMLAppEditSlideChartElement;
+    };
+    interface HTMLAppEditSlideDynamicElement extends Components.AppEditSlideDynamic, HTMLStencilElement {
+    }
+    var HTMLAppEditSlideDynamicElement: {
+        prototype: HTMLAppEditSlideDynamicElement;
+        new (): HTMLAppEditSlideDynamicElement;
     };
     interface HTMLAppEditSlideQrcodeElement extends Components.AppEditSlideQrcode, HTMLStencilElement {
     }
@@ -1117,6 +1127,7 @@ declare global {
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
         "app-edit-slide-chart": HTMLAppEditSlideChartElement;
+        "app-edit-slide-dynamic": HTMLAppEditSlideDynamicElement;
         "app-edit-slide-qrcode": HTMLAppEditSlideQrcodeElement;
         "app-editor": HTMLAppEditorElement;
         "app-element-delete": HTMLAppElementDeleteElement;
@@ -1381,6 +1392,10 @@ declare namespace LocalJSX {
     interface AppEditSlideChart {
         "onAction"?: (event: CustomEvent<EditAction>) => void;
         "selectedElement"?: HTMLElement;
+        "slideDidChange"?: EventEmitter<HTMLElement>;
+    }
+    interface AppEditSlideDynamic {
+        "selectedElement"?: SelectedElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideQrcode {
@@ -1685,6 +1700,7 @@ declare namespace LocalJSX {
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
         "app-edit-slide-chart": AppEditSlideChart;
+        "app-edit-slide-dynamic": AppEditSlideDynamic;
         "app-edit-slide-qrcode": AppEditSlideQrcode;
         "app-editor": AppEditor;
         "app-element-delete": AppElementDelete;
@@ -1803,6 +1819,7 @@ declare module "@stencil/core" {
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
             "app-edit-slide-chart": LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
+            "app-edit-slide-dynamic": LocalJSX.AppEditSlideDynamic & JSXBase.HTMLAttributes<HTMLAppEditSlideDynamicElement>;
             "app-edit-slide-qrcode": LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
             "app-editor": LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
             "app-element-delete": LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
