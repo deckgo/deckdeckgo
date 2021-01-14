@@ -57,6 +57,15 @@ export const generateDesc = (docs: JsonDocs) => {
     const slots: DeckDeckGoSlot[] | undefined = parseSlots(cmp.slots);
     const props: DeckDeckGoProp[] | undefined = parseProps(cmp.props);
 
+    const propType: DeckDeckGoProp | undefined = props?.find((prop: DeckDeckGoProp) => prop.name === 'type');
+    if (propType) {
+      throw new Error('The property "type" is a reserved keyword. Rename it to resolve the issue.');
+    }
+
+    if (/(?:deckgo|deckdeckgo|ddg)/.test(cmp.tag)) {
+      throw new Error('Your tag name should not contains one of the following keywords: deckgo, deckdeckgo or ddg');
+    }
+
     return {
       tag: cmp.tag,
       ...(props && {props}),
