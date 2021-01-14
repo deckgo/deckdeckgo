@@ -6,21 +6,8 @@
   }
 }
 
-:host(.deckgo-highlight-code-edit) {
-  ::slotted([slot="code"]) {
-    display: block;
-    white-space: pre-wrap;
-  }
-
-  code {
-    display: none;
-  }
-}
-
 :host([editable]) {
-  div.deckgo-highlight-code-container {
-    cursor: text;
-  }
+  cursor: text;
 
   code:empty:not(:focus):after {
     content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
@@ -220,7 +207,7 @@ div.deckgo-highlight-code-container {
 div.carbon {
   display: flex;
   justify-content: flex-start;
-  padding: var(--deckgo-highlight-code-carbon-header-padding, 16px);
+  padding: var(--deckgo-highlight-code-carbon-header-padding, 8px 16px);
   margin: var(--deckgo-highlight-code-carbon-header-margin, 0);
 
   > div {
@@ -228,7 +215,7 @@ div.carbon {
     width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
     height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
     border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
-    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 0 6px 0 0);
+    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 8px 6px 8px 0);
 
     &.red {
       background: var(--deckgo-highlight-code-carbon-header-button-red-background, #ff5f56);

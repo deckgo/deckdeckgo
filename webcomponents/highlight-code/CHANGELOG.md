@@ -1,3 +1,19 @@
+# 2.3.1 (2021-01-14)
+
+### Style
+
+- carbon toolbar spacing if not displayed
+
+# 2.3.0 (2021-01-14)
+
+### Features
+
+Some new features related to the `editable` mode:
+
+- make the shadowed `code` editable instead of `slot` (less quirky ui)
+- on click on the host component, focus the editable `code`
+- tab support
+
 # 2.2.2 (2020-12-10)
 
 ### Features

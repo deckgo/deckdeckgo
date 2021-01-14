@@ -99,7 +99,7 @@ export class AppSlidePreview {
   }
 
   async updateSlide(slide: HTMLElement | undefined) {
-    if (!slide) {
+    if (!slide || !this.deckPreviewRef) {
       return;
     }
 

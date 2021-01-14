@@ -193,12 +193,12 @@ Furthermore the following styles apply if the code is displayed as a "carbon" te
 | --deckgo-highlight-code-carbon-color                           | white                          | The color property of the host container.               |
 | --deckgo-highlight-code-carbon-box-shadow                      | rgba(0, 0, 0, 0.55) 0 8px 16px | The box-shadow property of the host container.          |
 | --deckgo-highlight-code-carbon-margin                          | 16px 0                         | The margin property of the host container.              |
-| --deckgo-highlight-code-carbon-header-padding                  | 16px                           | The padding property of the card header.                |
+| --deckgo-highlight-code-carbon-header-padding                  | 8px 16px                       | The padding property of the card header.                |
 | --deckgo-highlight-code-carbon-header-margin                   | 0                              | The margin property of the card header.                 |
 | --deckgo-highlight-code-carbon-header-button-width             | 12px                           | The width of a button of the card header.               |
 | --deckgo-highlight-code-carbon-header-button-height            | 12px                           | The height of a button of the card header.              |
 | --deckgo-highlight-code-carbon-header-button-border-radius     | 50%                            | The border-radius of a button of the card header.       |
-| --deckgo-highlight-code-carbon-header-button-margin            | 0 6px 0 0                      | The margin of a button of the card header.              |
+| --deckgo-highlight-code-carbon-header-button-margin            | 8px 6px 8px 0                  | The margin of a button of the card header.              |
 | --deckgo-highlight-code-carbon-header-button-red-background    | #FF5F56                        | The background of the first button of the card header.  |
 | --deckgo-highlight-code-carbon-header-button-red-border        | 0.5px solid #E0443E            | The border of the first button of the card header.      |
 | --deckgo-highlight-code-carbon-header-button-yellow-background | #FFBD2E                        | The background of the second button of the card header. |
