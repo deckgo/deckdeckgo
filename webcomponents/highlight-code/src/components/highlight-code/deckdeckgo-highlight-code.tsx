@@ -559,6 +559,14 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
+  private edit() {
+    if (!this.editable) {
+      return;
+    }
+
+    this.refCode?.focus();
+  }
+
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
@@ -570,7 +578,7 @@ export class DeckdeckgoHighlightCode {
     }
 
     return (
-      <Host class={hostClass}>
+      <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
         <div class="deckgo-highlight-code-container">

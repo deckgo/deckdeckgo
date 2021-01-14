@@ -2,7 +2,10 @@
 
 ### Features
 
-- in `editable` mode, make the shadowed `code` editable instead of `slot` (less quirky ui)
+Some new features related to the `editable` mode:
+
+- make the shadowed `code` editable instead of `slot` (less quirky ui)
+- on click on the host component, focus the editable `code`
 
 # 2.2.2 (2020-12-10)
 
