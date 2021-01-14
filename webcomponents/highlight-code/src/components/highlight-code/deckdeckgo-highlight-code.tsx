@@ -567,6 +567,14 @@ export class DeckdeckgoHighlightCode {
     this.refCode?.focus();
   }
 
+  private catchTab = async ($event: KeyboardEvent) => {
+    if ($event && $event.key === 'Tab') {
+      $event.preventDefault();
+
+      document.execCommand('insertHTML', false, '&#009');
+    }
+  };
+
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
@@ -582,7 +590,11 @@ export class DeckdeckgoHighlightCode {
         {this.renderCarbon()}
         {this.renderUbuntu()}
         <div class="deckgo-highlight-code-container">
-          <code contentEditable={this.editable} onBlur={() => this.applyCode()} ref={(el: HTMLElement | null) => (this.refCode = el as HTMLElement)}></code>
+          <code
+            contentEditable={this.editable}
+            onBlur={() => this.applyCode()}
+            onKeyDown={($event: KeyboardEvent) => this.catchTab($event)}
+            ref={(el: HTMLElement | null) => (this.refCode = el as HTMLElement)}></code>
           <slot name="code"></slot>
         </div>
       </Host>
