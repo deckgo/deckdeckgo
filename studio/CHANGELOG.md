@@ -9,6 +9,10 @@
 
 - undefined reference in preview
 
+### Refactor
+
+- rename files with `.ts` instead of `.tsx`
+
 # 4.0.0 (2020-12-23)
 
 ### Features
