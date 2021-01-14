@@ -1,3 +1,9 @@
+# 2.3.0 (2021-01-14)
+
+### Features
+
+- in `editable` mode, make the shadowed `code` editable instead of `slot` (less quirky ui)
+
 # 2.2.2 (2020-12-10)
 
 ### Features
