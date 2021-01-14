@@ -307,7 +307,7 @@ export class CreateSlidesUtils {
     const Element = template.data.tag;
 
     const slide: JSX.IntrinsicElements = (
-      <Element key={uuid()}>
+      <Element key={uuid()} type="user">
         {!elements || elements.length <= 0
           ? undefined
           : elements.map((element: SlotType, i: number) => {

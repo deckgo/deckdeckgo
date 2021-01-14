@@ -7,7 +7,4 @@ export const Constants = {
   STORAGE: {
     MAX_QUERY_RESULTS: 20,
   },
-  TEMPLATE: {
-    DECKGO_TAGS: /(?:deckgo|deckdeckgo|ddg)/,
-  },
 };

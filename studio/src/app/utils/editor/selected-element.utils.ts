@@ -5,7 +5,6 @@ import {SelectedElement} from '../../types/editor/selected-element';
 
 import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
-import {Constants} from '../../types/core/constants';
 
 export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {
@@ -69,7 +68,7 @@ export class SelectedElementUtils {
       type,
       slide: {
         nodeName,
-        type: nodeName && !Constants.TEMPLATE.DECKGO_TAGS.test(nodeName) ? SlideType.USER : SlideType.DEFAULT,
+        type: element.hasAttribute('type') ? SlideType[element.getAttribute('type')] : SlideType.DEFAULT,
         demo: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') === SlideSplitType.DEMO,
         qrCode: nodeName === 'deckgo-slide-qrcode',
         chart: nodeName === 'deckgo-slide-chart',

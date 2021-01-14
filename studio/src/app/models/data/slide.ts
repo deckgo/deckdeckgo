@@ -61,6 +61,8 @@ export interface SlideAttributes {
   customLoader?: boolean;
 
   theme?: string;
+
+  [key: string]: string | number | boolean;
 }
 
 export interface SlideData {
