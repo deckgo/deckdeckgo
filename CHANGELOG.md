@@ -3,6 +3,7 @@
 ### Applications
 
 - docs: v2.9.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- site: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/site/CHANGELOG.md))
 - studio: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
