@@ -1,3 +1,9 @@
+<a name="4.1.0"></a>
+
+### Web Components
+
+- highlight-code: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
 <a name="4.0.0"></a>
 
 # [4.0.0](https://github.com/deckgo/deckdeckgo/compare/v3.2.1...v4.0.0) (2020-12-23)
