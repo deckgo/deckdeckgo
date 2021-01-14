@@ -625,7 +625,7 @@ export class AppComponentsHighlightCode {
               </tr>
               <tr>
                 <td>--deckgo-highlight-code-carbon-header-padding</td>
-                <td>16px</td>
+                <td>8px 16px</td>
                 <td>The padding property of the card header.</td>
               </tr>
               <tr>
@@ -650,7 +650,7 @@ export class AppComponentsHighlightCode {
               </tr>
               <tr>
                 <td>--deckgo-highlight-code-carbon-header-button-margin</td>
-                <td>0 6px 0 0</td>
+                <td>8px 6px 8px 0</td>
                 <td>The margin of a button of the card header.</td>
               </tr>
               <tr>

@@ -1,3 +1,9 @@
+# 2.3.1 (2021-01-14)
+
+### Style
+
+- carbon toolbar spacing if not displayed
+
 # 2.3.0 (2021-01-14)
 
 ### Features
