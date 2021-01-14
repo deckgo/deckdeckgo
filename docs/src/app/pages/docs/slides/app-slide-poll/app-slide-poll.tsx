@@ -89,14 +89,14 @@ export class AppSlidePoll {
           <h2 id="app-slide-poll-layout">Layout</h2>
           <div class="container ion-margin">
             <deckgo-deck embedded={true}>
-              <deckgo-slide-poll poll-link="https://deckdeckgo.com/poll" socket-url="https://api.deckdeckgo.com">
+              <deckgo-slide-poll poll-link="https://app.deckdeckgo.com/poll" socket-url="https://api.deckdeckgo.com">
                 <h1 slot="question">Do you like my presentation so far?</h1>
                 <p slot="answer-1">It is super</p>
                 <p slot="answer-2">Meh</p>
                 <p slot="answer-3">I could'nt care less</p>
                 <p slot="answer-4">Tell me why</p>
                 <p slot="how-to">
-                  Go to <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a> and use the code {0}
+                  Go to <a href="https://app.deckdeckgo.com/poll">app.deckdeckgo.com/poll</a> and use the code {0}
                 </p>
                 <p slot="awaiting-votes">Awaiting first votes</p>
                 <p slot="answer-5">Ain't nothin' but a heartache</p>
@@ -226,7 +226,7 @@ export class AppSlidePoll {
                 <td>pollLink</td>
                 <td>string</td>
                 <td>
-                  <code>https://deckdeckgo.com/poll</code>
+                  <code>https://app.deckdeckgo.com/poll</code>
                 </td>
                 <td>
                   The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will
