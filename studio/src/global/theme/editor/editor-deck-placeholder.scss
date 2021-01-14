@@ -115,6 +115,10 @@ deckgo-deck {
     border: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
   }
 
+  deckgo-highlight-code[highlighted] {
+    border: none;
+  }
+
   deckgo-reveal[highlighted] {
     border: none;
 

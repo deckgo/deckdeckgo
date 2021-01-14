@@ -1,3 +1,10 @@
+# 2.9.1 (2021-01-14)
+
+### Docs
+
+- update highlight code padding values
+- poll url
+
 # 2.9.0 (2020-11-12)
 
 ### Features

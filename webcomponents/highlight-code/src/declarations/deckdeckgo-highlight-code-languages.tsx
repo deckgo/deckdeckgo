@@ -300,6 +300,7 @@ export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages 
   unrealscript: {title: 'UnrealScript'},
   uscript: {title: 'uscript', main: 'unrealscript'},
   uc: {title: 'uc', main: 'unrealscript'},
+  v: {title: 'V'},
   vala: {title: 'Vala'},
   vbnet: {title: 'VB.Net', require: ['basic']},
   velocity: {title: 'Velocity', require: ['markup']},

@@ -42,11 +42,11 @@ export class DeckdeckgoHighlightCode {
 
   @Prop({reflect: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
-  @State() editing: boolean = false;
-
   private anchorOffsetTop: number = 0;
 
   private fetchOrParseAfterUpdate: boolean = false;
+
+  private refCode!: HTMLElement;
 
   @State()
   private themeStyle: string | undefined;
@@ -539,91 +539,44 @@ export class DeckdeckgoHighlightCode {
     return line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
   }
 
-  private edit(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.editable) {
-        resolve();
-        return;
-      }
+  private applyCode = async () => {
+    if (!this.editable) {
+      return;
+    }
 
-      this.editing = true;
+    await this.copyCodeToSlot();
 
-      const slottedCode: HTMLElement = this.el.querySelector("[slot='code']");
+    await this.parseSlottedCode();
 
-      if (slottedCode) {
-        setTimeout(() => {
-          slottedCode.setAttribute('contentEditable', 'true');
-          slottedCode.addEventListener('blur', this.applyCode, {once: true});
-          slottedCode.addEventListener('keydown', this.catchNewLine);
+    this.codeDidChange.emit(this.el);
+  };
 
-          slottedCode.focus();
-        }, 100);
-      }
+  private async copyCodeToSlot() {
+    const code: HTMLElement | null = this.el.querySelector("[slot='code']");
 
-      resolve();
-    });
+    if (code) {
+      code.innerHTML = this.refCode?.innerText?.replace(/(?:\n\n)/g, '\n').replace(/\u200B/g, '');
+    }
   }
 
-  private catchNewLine = async ($event: KeyboardEvent) => {
-    if ($event && $event.key === 'Enter') {
+  private edit() {
+    if (!this.editable) {
+      return;
+    }
+
+    this.refCode?.focus();
+  }
+
+  private catchTab = async ($event: KeyboardEvent) => {
+    if ($event && $event.key === 'Tab') {
       $event.preventDefault();
 
-      const selection: Selection = await this.getSelection();
-      if (selection && selection.focusNode && selection.focusNode.textContent && selection.focusOffset > 0) {
-        const charCode: number = selection.focusNode.textContent.charCodeAt(window.getSelection().focusOffset);
-
-        document.execCommand('insertHTML', false, charCode === 10 || charCode === 13 ? '\n' : '\n\n');
-      } else {
-        document.execCommand('insertHTML', false, '\n\n');
-      }
+      document.execCommand('insertHTML', false, '&#009');
     }
   };
 
-  private getSelection(): Promise<Selection> {
-    return new Promise<Selection>((resolve) => {
-      let selectedSelection: Selection = null;
-
-      if (window && window.getSelection) {
-        selectedSelection = window.getSelection();
-      } else if (document && document.getSelection) {
-        selectedSelection = document.getSelection();
-      } else if (document && (document as any).selection) {
-        selectedSelection = (document as any).selection.createRange().text;
-      }
-
-      resolve(selectedSelection);
-    });
-  }
-
-  private applyCode = async () => {
-    await this.stopEditing();
-
-    await this.parseSlottedCode();
-  };
-
-  private stopEditing(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.editing = false;
-
-      const slottedCode: HTMLElement = this.el.querySelector("[slot='code']");
-
-      if (slottedCode) {
-        slottedCode.removeAttribute('contentEditable');
-
-        if (slottedCode.innerHTML) {
-          slottedCode.innerHTML = slottedCode.innerHTML.trim();
-        }
-
-        this.codeDidChange.emit(this.el);
-      }
-
-      resolve();
-    });
-  }
-
   render() {
     const hostClass = {
-      'deckgo-highlight-code-edit': this.editing,
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
       'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
     };
@@ -633,11 +586,15 @@ export class DeckdeckgoHighlightCode {
     }
 
     return (
-      <Host class={hostClass}>
+      <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
-        <div class="deckgo-highlight-code-container" onMouseDown={() => this.edit()} onTouchStart={() => this.edit()}>
-          <code></code>
+        <div class="deckgo-highlight-code-container">
+          <code
+            contentEditable={this.editable}
+            onBlur={() => this.applyCode()}
+            onKeyDown={($event: KeyboardEvent) => this.catchTab($event)}
+            ref={(el: HTMLElement | null) => (this.refCode = el as HTMLElement)}></code>
           <slot name="code"></slot>
         </div>
       </Host>

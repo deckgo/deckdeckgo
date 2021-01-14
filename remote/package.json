@@ -36,7 +36,7 @@
     "@deckdeckgo/slide-countdown": "^2.2.2",
     "@deckdeckgo/slide-gif": "^3.2.2",
     "@deckdeckgo/slide-playground": "^2.2.2",
-    "@deckdeckgo/slide-poll": "^2.2.2",
+    "@deckdeckgo/slide-poll": "^2.2.3",
     "@deckdeckgo/slide-qrcode": "^2.2.2",
     "@deckdeckgo/slide-split": "^2.2.2",
     "@deckdeckgo/slide-title": "^2.2.4",

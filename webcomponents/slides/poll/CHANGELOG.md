@@ -1,3 +1,9 @@
+# 2.2.3 (2020-01-14)
+
+### Fix
+
+- new url `https://app.deckdeckgo.com/poll`
+
 # 2.2.2 (2020-11-14)
 
 ### Fix

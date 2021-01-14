@@ -1,6 +1,6 @@
 {
   "name": "site",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "DeckDeckGo",
   "author": "peterpeterparker",
@@ -22,7 +22,7 @@
     "@deckdeckgo/highlight-code": "^2.2.2",
     "@deckdeckgo/qrcode": "^2.0.1",
     "@deckdeckgo/slide-author": "^2.2.2",
-    "@deckdeckgo/slide-poll": "^2.2.2",
+    "@deckdeckgo/slide-poll": "^2.2.3",
     "@deckdeckgo/slide-split": "^2.2.2",
     "@deckdeckgo/slide-title": "^2.2.4",
     "@deckdeckgo/utils": "^1.7.0",

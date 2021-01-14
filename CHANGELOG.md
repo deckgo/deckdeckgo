@@ -1,3 +1,19 @@
+<a name="4.1.0"></a>
+
+### Applications
+
+- docs: v2.9.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- site: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/site/CHANGELOG.md))
+- studio: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+
+- highlight-code: v2.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
+### Web Components: Templates
+
+- slide-poll: v2.2.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/poll/CHANGELOG.md))
+
 <a name="4.0.0"></a>
 
 # [4.0.0](https://github.com/deckgo/deckdeckgo/compare/v3.2.1...v4.0.0) (2020-12-23)
