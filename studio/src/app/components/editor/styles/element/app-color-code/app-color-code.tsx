@@ -38,6 +38,9 @@ export class AppColorCode {
   @State()
   private theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
+  @State()
+  private toolbar: boolean = true;
+
   @Event() codeDidChange: EventEmitter<void>;
 
   private colorCodeRef!: HTMLAppColorElement;
@@ -93,7 +96,7 @@ export class AppColorCode {
 
     this.selectedElement.style.removeProperty('--deckgo-highlight-code-line-background');
 
-    this.emitColorChange();
+    this.emitCodeChange();
   }
 
   private async initTerminal() {
@@ -106,6 +109,8 @@ export class AppColorCode {
       this.selectedElement && this.selectedElement.hasAttribute('theme')
         ? (this.selectedElement.getAttribute('theme') as DeckdeckgoHighlightCodeCarbonTheme)
         : DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+
+    this.toolbar = this.selectedElement?.style.getPropertyValue('--deckgo-highlight-code-carbon-toolbar-display') !== 'none';
   }
 
   private async applyCodeColor($event: CustomEvent<string>) {
@@ -115,7 +120,7 @@ export class AppColorCode {
 
     this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
 
-    this.emitColorChange();
+    this.emitCodeChange();
   }
 
   private async applyHighlightColor($event: CustomEvent<string>) {
@@ -125,7 +130,7 @@ export class AppColorCode {
 
     this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.detail);
 
-    this.emitColorChange();
+    this.emitCodeChange();
   }
 
   private async toggleColorType($event: CustomEvent) {
@@ -182,7 +187,7 @@ export class AppColorCode {
       // Reload component with new lines to highlight
       await (this.selectedElement as any).load();
 
-      this.emitColorChange();
+      this.emitCodeChange();
 
       resolve();
     });
@@ -200,7 +205,7 @@ export class AppColorCode {
     return await alert.present();
   }
 
-  private emitColorChange() {
+  private emitCodeChange() {
     this.codeDidChange.emit();
   }
 
@@ -211,7 +216,7 @@ export class AppColorCode {
 
     this.selectedElement.style.removeProperty(this.getStyle());
 
-    this.emitColorChange();
+    this.emitCodeChange();
   }
 
   private toggle($event: CustomEvent, attribute: 'terminal' | 'theme'): Promise<void> {
@@ -238,6 +243,22 @@ export class AppColorCode {
 
       resolve();
     });
+  }
+
+  private async toggleToolbar() {
+    if (!this.selectedElement) {
+      return;
+    }
+
+    this.toolbar = !this.toolbar;
+
+    if (this.toolbar) {
+      this.selectedElement.style.removeProperty('--deckgo-highlight-code-carbon-toolbar-display');
+    } else {
+      this.selectedElement.style.setProperty('--deckgo-highlight-code-carbon-toolbar-display', 'none');
+    }
+
+    this.emitCodeChange();
   }
 
   render() {
@@ -337,6 +358,15 @@ export class AppColorCode {
                 );
               })}
             </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Display toolbar</ion-label>
+            <ion-checkbox
+              disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
+              slot="end"
+              checked={this.toolbar}
+              onIonChange={() => this.toggleToolbar()}></ion-checkbox>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

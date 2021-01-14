@@ -2,6 +2,7 @@
 
 ### Features
 
+- add option to not display the toolbar on code block
 - highlight code editing less quirky
 - do not supercharge paste action anymore
 
