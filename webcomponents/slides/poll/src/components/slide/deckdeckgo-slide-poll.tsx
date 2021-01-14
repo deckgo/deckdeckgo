@@ -29,7 +29,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   @Prop() connectPollSocket: boolean = true;
 
-  @Prop({reflect: true}) pollLink: string = 'https://deckdeckgo.com/poll';
+  @Prop({reflect: true}) pollLink: string = 'https://app.deckdeckgo.com/poll';
 
   @Prop({reflect: true, mutable: true})
   pollKey: string;

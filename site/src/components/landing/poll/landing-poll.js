@@ -112,7 +112,7 @@ export const LandingPoll = () => {
             <FormattedMessage
               id="hero.poll.description.slide.howto"
               values={{
-                pollLink: <a href="https://deckdeckgo.com/poll">deckdeckgo.com/poll</a>,
+                pollLink: <a href="https://app.deckdeckgo.com/poll">app.deckdeckgo.com/poll</a>,
               }}
             />{' '}
             {'{0}'}
