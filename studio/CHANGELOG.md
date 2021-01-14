@@ -1,3 +1,14 @@
+# 4.1.0 (2020-01-14)
+
+### Features
+
+- highlight code editing less quirky
+- do not supercharge paste action anymore
+
+### Fix
+
+- undefined reference in preview
+
 # 4.0.0 (2020-12-23)
 
 ### Features

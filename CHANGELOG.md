@@ -1,5 +1,9 @@
 <a name="4.1.0"></a>
 
+### Applications
+
+- studio: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 ### Web Components
 
 - highlight-code: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
