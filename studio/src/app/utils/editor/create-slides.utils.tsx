@@ -309,7 +309,7 @@ export class CreateSlidesUtils {
           {...answerSlots}
 
           <div slot="how-to">
-            Go to <a href={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}>deckdeckgo.com/poll</a> and use the code {'{0}'}
+            Go to <a href={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}>app.deckdeckgo.com/poll</a> and use the code {'{0}'}
           </div>
           <div slot="awaiting-votes">Awaiting votes</div>
         </deckgo-slide-poll>
