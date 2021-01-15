@@ -1,6 +1,7 @@
 import {Component, Element, Fragment, h, Listen, Prop, State} from '@stencil/core';
 
 import authStore from '../../../stores/auth.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 
 import {Template, TemplateData} from '../../../models/data/template';
 
@@ -18,7 +19,10 @@ export class AppTemplate {
   private templateData: Partial<TemplateData> | undefined;
 
   @State()
-  private valid: boolean = false;
+  private validCdn: boolean = false;
+
+  @State()
+  private validTag: boolean = false;
 
   private inputFileRef!: HTMLInputElement;
 
@@ -65,6 +69,8 @@ export class AppTemplate {
     }
 
     this.templateData.cdn = ($event.target as InputTargetEvent).value;
+
+    this.templateData = {...this.templateData};
   }
 
   private async onTagInput($event: CustomEvent<KeyboardEvent>) {
@@ -120,13 +126,29 @@ export class AppTemplate {
     try {
       const url: URL = new URL(this.templateData.cdn);
 
-      this.valid = /unpkg\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net/g.test(url.hostname);
+      this.validCdn = /unpkg\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net/g.test(url.hostname);
     } catch (err) {
-      this.valid = false;
+      this.validCdn = false;
     }
   }
 
+  private async validateTag() {
+    this.validTag = /(?:deckgo|deckdeckgo|ddg)/.test(this.templateData.tag);
+  }
+
+  private async navigateContact() {
+    navStore.state.nav = {
+      url: '/contact',
+      direction: NavDirection.FORWARD,
+    };
+
+    await this.closeModal();
+  }
+
   render() {
+    const errorCdn: string | undefined = !this.validCdn && this.templateData?.cdn !== undefined ? 'error' : undefined;
+    const errorTag: string | undefined = !this.validTag && this.templateData?.tag !== undefined ? 'error' : undefined;
+
     return (
       <Fragment>
         <ion-header>
@@ -142,7 +164,7 @@ export class AppTemplate {
         <ion-content class="ion-padding">
           <form onSubmit={(e: Event) => this.handleSubmit(e)}>
             <ion-list class="inputs-list">
-              <ion-item class="item-title">
+              <ion-item class={`item-title ${errorCdn}`}>
                 <ion-label>CDN</ion-label>
               </ion-item>
 
@@ -157,7 +179,11 @@ export class AppTemplate {
                   onIonChange={() => this.validateCDNInput()}></ion-input>
               </ion-item>
 
-              <ion-item class="item-title">
+              <p class={`small ${errorCdn}`}>
+                We support Unpkg, Cloudfare and jsDelivr. If you would like to use another CDN, <a onClick={() => this.navigateContact()}>get in touch</a>.
+              </p>
+
+              <ion-item class={`item-title ${errorTag}`}>
                 <ion-label>Tag</ion-label>
               </ion-item>
 
@@ -168,8 +194,11 @@ export class AppTemplate {
                   minlength={3}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}></ion-input>
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}
+                  onIonChange={() => this.validateTag()}></ion-input>
               </ion-item>
+
+              <p class={`small ${errorTag}`}>The tag should not contain any of the reserved keywords "deckdeckgo", "deckgo" or "ddg".</p>
 
               <ion-item class="item-title">
                 <ion-label>Definition</ion-label>
@@ -184,7 +213,7 @@ export class AppTemplate {
               />
             </ion-list>
 
-            <ion-button type="submit" color="primary" class="ion-margin-top" shape="round" disabled={!this.valid}>
+            <ion-button type="submit" color="primary" class="ion-margin-top" shape="round" disabled={!this.validCdn || !this.validTag}>
               <ion-label>Save</ion-label>
             </ion-button>
           </form>

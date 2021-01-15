@@ -353,7 +353,7 @@ export class AppPublishEdit {
   }
 
   private async navigateContact() {
-    await this.contact.emit();
+    this.contact.emit();
 
     navStore.state.nav = {
       url: '/contact',
