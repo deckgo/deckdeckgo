@@ -33,7 +33,12 @@ export class AppTemplateShowcase {
   }
 
   render() {
-    return <article>{this.loaded ? this.renderTemplate() : this.renderSpinner()}</article>;
+    return (
+      <article>
+        {this.loaded ? this.renderTemplate() : this.renderSpinner()}
+        {this.loaded ? this.renderEdit() : undefined}
+      </article>
+    );
   }
 
   private renderTemplate() {
@@ -56,6 +61,14 @@ export class AppTemplateShowcase {
         <ion-spinner color="medium"></ion-spinner>
         <ion-label>Loading...</ion-label>
       </div>
+    );
+  }
+
+  private renderEdit() {
+    return (
+      <button>
+        <ion-icon name="pencil"></ion-icon>
+      </button>
     );
   }
 }

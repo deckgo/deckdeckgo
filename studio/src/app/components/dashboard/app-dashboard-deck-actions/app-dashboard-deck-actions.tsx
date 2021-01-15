@@ -146,16 +146,19 @@ export class AppDashboardDeckActions {
 
     return (
       <Host>
-        <a onClick={($event: UIEvent) => this.cloneDeck($event)} title="Clone presentation" class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+        <button
+          onClick={($event: UIEvent) => this.cloneDeck($event)}
+          title="Clone presentation"
+          class={this.actionInProgress || disabled ? 'disabled' : undefined}>
           <ion-icon name="copy"></ion-icon>
-        </a>
+        </button>
 
-        <a
+        <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title="Delete presentation"
           class={this.actionInProgress || disabled ? 'disabled' : undefined}>
           <ion-icon name="trash"></ion-icon>
-        </a>
+        </button>
       </Host>
     );
   }

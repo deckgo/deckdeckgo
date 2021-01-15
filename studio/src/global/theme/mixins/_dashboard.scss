@@ -1,0 +1,38 @@
+@mixin edit {
+  cursor: pointer;
+  pointer-events: initial;
+
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+
+  user-select: none;
+
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
+
+  width: 2rem;
+  height: 2rem;
+
+  margin: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+
+  ion-icon {
+    font-size: 1.2rem;
+    color: var(--ion-color-dark);
+  }
+
+  &.disabled {
+    border: 1px solid var(--ion-color-light);
+
+    ion-icon {
+      color: var(--ion-color-light);
+    }
+  }
+}

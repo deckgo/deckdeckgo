@@ -1,4 +1,5 @@
 @use "../../../../global/theme/mixins/editor";
+@use "../../../../global/theme/mixins/dashboard";
 
 app-template-showcase {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
@@ -60,6 +61,14 @@ app-template-showcase {
       height: 12px;
       margin: 8px 2px;
       border-radius: 8px;
+    }
+
+    button {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+
+      @include dashboard.edit;
     }
   }
 }
