@@ -97,7 +97,7 @@ export class AppMenu {
           <ion-label>Poll</ion-label>
         </ion-item>
 
-        <ion-item button class="home" href="https://deckdeckgo.app" target="_blank">
+        <ion-item button class="home remote" href="https://deckdeckgo.app" target="_blank">
           <ion-icon lazy={true} name="phone-portrait-outline" slot="start"></ion-icon>
           <ion-label>Remote control</ion-label>
         </ion-item>
