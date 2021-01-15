@@ -1,3 +1,5 @@
+@use "../../../../../global/theme/mixins/dashboard";
+
 app-templates {
   main {
     background: white;
@@ -9,9 +11,10 @@ app-templates {
     }
 
     div.container {
-      display: grid;
-      grid-gap: 16px;
-      grid-template-columns: repeat(auto-fill, minmax(calc(7rem * 16 / 9), 1fr));
+      @include dashboard.grid;
+
+      --template-showcase-width: var(--card-width);
+      --template-showcase-height: calc(var(--card-width) * 9 / 16);
     }
   }
 }

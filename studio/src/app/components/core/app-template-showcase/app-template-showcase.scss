@@ -8,7 +8,8 @@ app-template-showcase {
     position: relative;
     overflow: hidden;
 
-    height: 7rem;
+    width: var(--template-showcase-width);
+    height: var(--template-showcase-height, 7rem);
 
     cursor: pointer;
 

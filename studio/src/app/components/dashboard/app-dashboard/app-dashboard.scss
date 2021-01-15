@@ -1,4 +1,5 @@
 @use "../../../../global/theme/mixins/deck";
+@use "../../../../global/theme/mixins/dashboard";
 
 app-dashboard {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
@@ -51,26 +52,7 @@ app-dashboard {
     }
 
     div.container {
-      display: grid;
-      grid-gap: 16px;
-      grid-template-columns: repeat(4, 1fr);
-
-      --card-width: calc((100vw - 64px - 48px) / 4);
-
-      @media (max-width: 992px) {
-        grid-template-columns: repeat(3, 1fr);
-        --card-width: calc((100vw - 64px - 48px) / 3);
-      }
-
-      @media (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-        --card-width: calc((100vw - 64px - 48px) / 2);
-      }
-
-      @media (max-width: 576px) {
-        grid-template-columns: 1fr;
-        --card-width: calc(100vw - 64px);
-      }
+      @include dashboard.grid;
 
       ion-card.item {
         position: relative;
