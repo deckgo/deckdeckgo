@@ -51,7 +51,7 @@ We are constantly developing new features and, are always happy to hear about co
 
 ## Documentation
 
-The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
+The developers' documentation is available [online](https://docs.deckdeckgo.com).
 
 ## Contributing
 
