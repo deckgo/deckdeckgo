@@ -26,6 +26,7 @@
 - [Features](#features)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
+- [Community](#community)
 - [Progressive Web Apps](#progressive-web-apps)
 - [Web Components](#web-components)
 - [Others](#others)
@@ -36,7 +37,7 @@ Start your new presentation using our 👉 [online Editor](https://deckdeckgo.co
 
 ## Features
 
-We are constantly developing new features and are always happy to hear about cool ideas.
+We are constantly developing new features and, are always happy to hear about cool ideas.
 
 - Create, present and share your slides as Progressive Web Apps
 - Interact with your audience with live polls
@@ -48,8 +49,6 @@ We are constantly developing new features and are always happy to hear about coo
 - Present and work offline
 - Push the source code of your online slides to GitHub
 
-And many more...
-
 ## Documentation
 
 The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
@@ -57,6 +56,12 @@ The developers' documentation is available online at [https://docs.deckdeckgo.co
 ## Contributing
 
 Are you interested to contribute to our open source project? That would be awesome 👍 Have a look to our contributing [guide](CONTRIBUTING.md) to get started.
+
+## Community
+
+Templates and tools that are driven by the community of DeckDeckGo developers and maintainers are gathered together in a dedicated GitHub [org](https://github.com/deckgo-community).
+
+If you would like to add your contribution, get in [touch](https://deckdeckgo.com/en/contact).
 
 ## Progressive Web Apps
 
