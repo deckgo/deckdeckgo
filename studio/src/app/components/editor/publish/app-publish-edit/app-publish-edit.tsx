@@ -6,7 +6,6 @@ import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
-import navStore, {NavDirection} from '../../../../stores/nav.store';
 
 import {Deck} from '../../../../models/data/deck';
 
@@ -58,8 +57,6 @@ export class AppPublishEdit {
   private readonly debounceUpdateDeck: () => void;
 
   @Event() private published: EventEmitter<string>;
-
-  @Event() private contact: EventEmitter<void>;
 
   private publishService: PublishService;
 
@@ -357,15 +354,6 @@ export class AppPublishEdit {
     this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
   }
 
-  private async navigateContact() {
-    await this.contact.emit();
-
-    navStore.state.nav = {
-      url: '/contact',
-      direction: NavDirection.FORWARD,
-    };
-  }
-
   render() {
     const disable: boolean = this.publishing || this.progress !== undefined;
 
@@ -462,7 +450,10 @@ export class AppPublishEdit {
     return (
       <p class="small error ion-margin-top">
         <ion-icon name="warning-outline"></ion-icon> Previous publication attempt failed. You can try again. If the problem persists, please{' '}
-        <a onClick={() => this.navigateContact()}>contact</a> us.
+        <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
+          contact
+        </a>{' '}
+        us.
       </p>
     );
   }

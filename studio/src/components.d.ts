@@ -367,6 +367,8 @@ export namespace Components {
     interface AppTransform {
         "selectedElement": HTMLElement;
     }
+    interface AppUnpublish {
+    }
     interface AppUserDelete {
         "username": string;
     }
@@ -964,6 +966,12 @@ declare global {
         prototype: HTMLAppTransformElement;
         new (): HTMLAppTransformElement;
     };
+    interface HTMLAppUnpublishElement extends Components.AppUnpublish, HTMLStencilElement {
+    }
+    var HTMLAppUnpublishElement: {
+        prototype: HTMLAppUnpublishElement;
+        new (): HTMLAppUnpublishElement;
+    };
     interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {
     }
     var HTMLAppUserDeleteElement: {
@@ -1092,6 +1100,7 @@ declare global {
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
         "app-transform": HTMLAppTransformElement;
+        "app-unpublish": HTMLAppUnpublishElement;
         "app-user-delete": HTMLAppUserDeleteElement;
         "app-user-info": HTMLAppUserInfoElement;
         "app-user-menu": HTMLAppUserMenuElement;
@@ -1436,7 +1445,6 @@ declare namespace LocalJSX {
         "publishedUrl"?: string;
     }
     interface AppPublishEdit {
-        "onContact"?: (event: CustomEvent<void>) => void;
         "onPublished"?: (event: CustomEvent<string>) => void;
     }
     interface AppPublishTags {
@@ -1509,6 +1517,8 @@ declare namespace LocalJSX {
     }
     interface AppTransform {
         "selectedElement"?: HTMLElement;
+    }
+    interface AppUnpublish {
     }
     interface AppUserDelete {
         "username"?: string;
@@ -1621,6 +1631,7 @@ declare namespace LocalJSX {
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
         "app-transform": AppTransform;
+        "app-unpublish": AppUnpublish;
         "app-user-delete": AppUserDelete;
         "app-user-info": AppUserInfo;
         "app-user-menu": AppUserMenu;
@@ -1729,6 +1740,7 @@ declare module "@stencil/core" {
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
+            "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
             "app-user-info": LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;
             "app-user-menu": LocalJSX.AppUserMenu & JSXBase.HTMLAttributes<HTMLAppUserMenuElement>;

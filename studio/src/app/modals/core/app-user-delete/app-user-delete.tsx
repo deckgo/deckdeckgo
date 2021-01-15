@@ -1,7 +1,5 @@
 import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 
-import navStore, {NavDirection} from '../../../stores/nav.store';
-
 import {UserUtils} from '../../../utils/core/user.utils';
 
 @Component({
@@ -50,15 +48,6 @@ export class AppUserDelete {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(true);
   }
 
-  private async navigateContact() {
-    await this.closeModal();
-
-    navStore.state.nav = {
-      url: '/contact',
-      direction: NavDirection.FORWARD,
-    };
-  }
-
   render() {
     return [
       <ion-header>
@@ -93,10 +82,7 @@ export class AppUserDelete {
           </ion-button>
         </form>
 
-        <p class="ion-padding-top note">
-          Please note that currently, your presentations are not automatically removed from internet. If you wish to unpublish them, drop us a message on one of
-          our <a onClick={() => this.navigateContact()}>contact</a> channels.
-        </p>
+        <app-unpublish></app-unpublish>
       </ion-content>,
     ];
   }

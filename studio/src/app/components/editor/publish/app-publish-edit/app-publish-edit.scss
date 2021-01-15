@@ -31,13 +31,6 @@ app-publish-edit {
 
       a {
         color: var(--ion-color-danger);
-        cursor: pointer;
-
-        border-bottom: 1px solid var(--ion-color-danger);
-
-        &:hover {
-          border-bottom: 1px solid var(--ion-color-danger);
-        }
       }
     }
   }
