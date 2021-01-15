@@ -42,9 +42,10 @@ export class AppMenu {
 
         {this.renderDashboard()}
         {this.renderSettings()}
-        {this.renderSignInOut()}
 
         {this.renderInteract()}
+
+        {this.renderSignInOut()}
       </ion-list>
     );
   }
