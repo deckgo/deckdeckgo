@@ -105,7 +105,7 @@ export class AppPublish {
     if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
       return <app-publish-done publishedUrl={this.publishedUrl}></app-publish-done>;
     } else {
-      return <app-publish-edit onPublished={($event: CustomEvent) => this.published($event)} onContact={() => this.closeModal()}></app-publish-edit>;
+      return <app-publish-edit onPublished={($event: CustomEvent) => this.published($event)}></app-publish-edit>;
     }
   }
 }
