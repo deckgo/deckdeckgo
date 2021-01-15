@@ -161,64 +161,66 @@ export class AppTemplate {
             <ion-title class="ion-text-uppercase">Template</ion-title>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding">
-          <form onSubmit={(e: Event) => this.handleSubmit(e)}>
-            <ion-list class="inputs-list">
-              <ion-item class={`item-title ${errorCdn}`}>
-                <ion-label>
-                  CDN - ES Modules <span>1</span>
-                </ion-label>
-              </ion-item>
+        <ion-content class="ion-padding" color="light">
+          <main class="ion-padding">
+            <form onSubmit={(e: Event) => this.handleSubmit(e)}>
+              <ion-list class="inputs-list">
+                <ion-item class={`item-title ${errorCdn}`}>
+                  <ion-label>
+                    CDN - ES Modules <span>1</span>
+                  </ion-label>
+                </ion-item>
 
-              <ion-item>
-                <ion-input
-                  value={this.templateData?.cdn}
-                  debounce={500}
-                  minlength={3}
-                  required={true}
-                  input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}
-                  onIonChange={() => this.validateCDNInput()}></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-input
+                    value={this.templateData?.cdn}
+                    debounce={500}
+                    minlength={3}
+                    required={true}
+                    input-mode="text"
+                    onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCdnInput($event)}
+                    onIonChange={() => this.validateCDNInput()}></ion-input>
+                </ion-item>
 
-              <ion-item class={`item-title ${errorTag}`}>
-                <ion-label>
-                  Tag <span>2</span>
-                </ion-label>
-              </ion-item>
+                <ion-item class={`item-title ${errorTag}`}>
+                  <ion-label>
+                    Tag <span>2</span>
+                  </ion-label>
+                </ion-item>
 
-              <ion-item>
-                <ion-input
-                  value={this.templateData?.tag}
-                  debounce={500}
-                  minlength={3}
-                  required={true}
-                  input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}
-                  onIonChange={() => this.validateTag()}></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-input
+                    value={this.templateData?.tag}
+                    debounce={500}
+                    minlength={3}
+                    required={true}
+                    input-mode="text"
+                    onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}
+                    onIonChange={() => this.validateTag()}></ion-input>
+                </ion-item>
 
-              <ion-item class="item-title">
-                <ion-label>
-                  Definition <span>3</span>
-                </ion-label>
-              </ion-item>
+                <ion-item class="item-title">
+                  <ion-label>
+                    Definition <span>3</span>
+                  </ion-label>
+                </ion-item>
 
-              <input
-                ref={(el) => (this.inputFileRef = el as HTMLInputElement)}
-                type="file"
-                accept="application/json"
-                disabled={!this.templateData || !this.templateData.tag}
-                onChange={() => this.onFileInput()}
-              />
-            </ion-list>
+                <input
+                  ref={(el) => (this.inputFileRef = el as HTMLInputElement)}
+                  type="file"
+                  accept="application/json"
+                  disabled={!this.templateData || !this.templateData.tag}
+                  onChange={() => this.onFileInput()}
+                />
+              </ion-list>
 
-            <ion-button type="submit" color="primary" class="ion-margin-top" shape="round" disabled={!this.validCdn || !this.validTag}>
-              <ion-label>Save</ion-label>
-            </ion-button>
-          </form>
+              <ion-button type="submit" color="primary" class="ion-margin-top" shape="round" disabled={!this.validCdn || !this.validTag}>
+                <ion-label>Save</ion-label>
+              </ion-button>
+            </form>
 
-          {this.renderNotes(errorCdn, errorTag)}
+            {this.renderNotes(errorCdn, errorTag)}
+          </main>
         </ion-content>
       </Fragment>
     );

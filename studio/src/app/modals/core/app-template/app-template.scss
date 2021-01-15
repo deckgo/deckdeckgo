@@ -1,4 +1,9 @@
 app-template {
+  main {
+    height: 100%;
+    background: white;
+  }
+
   p.small {
     font-size: var(--font-size-small);
   }

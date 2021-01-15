@@ -60,6 +60,7 @@ export class AppTemplates {
       componentProps: {
         template,
       },
+      cssClass: 'fullscreen',
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
