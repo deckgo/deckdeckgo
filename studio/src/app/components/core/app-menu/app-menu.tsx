@@ -42,9 +42,10 @@ export class AppMenu {
 
         {this.renderDashboard()}
         {this.renderSettings()}
-        {this.renderSignInOut()}
 
         {this.renderInteract()}
+
+        {this.renderSignInOut()}
       </ion-list>
     );
   }
@@ -74,7 +75,7 @@ export class AppMenu {
     if (authStore.state.loggedIn) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
-          <ion-icon lazy={true} name="log-out-outline" slot="start" style={{transform: 'translate(2px, 0px)'}}></ion-icon>
+          <ion-icon lazy={true} name="log-out-outline" slot="start" style={{transform: 'translate(3px, 0px)'}}></ion-icon>
           <ion-label>Sign out</ion-label>
         </ion-item>
       );
@@ -96,7 +97,7 @@ export class AppMenu {
           <ion-label>Poll</ion-label>
         </ion-item>
 
-        <ion-item button class="home" href="https://deckdeckgo.app" target="_blank">
+        <ion-item button class="home remote" href="https://deckdeckgo.app" target="_blank">
           <ion-icon lazy={true} name="phone-portrait-outline" slot="start"></ion-icon>
           <ion-label>Remote control</ion-label>
         </ion-item>

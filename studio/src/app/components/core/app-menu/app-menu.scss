@@ -11,6 +11,10 @@ ion-menu {
           min-height: 32px;
           --background: transparent;
         }
+
+        &.remote {
+          margin: 2px 0;
+        }
       }
     }
 
@@ -18,7 +22,8 @@ ion-menu {
       border: 0;
       box-shadow: none;
       border-radius: 0;
-      margin: 4px 0 0;
+      margin: 0;
+      height: 40px;
 
       > article {
         background: transparent;
