@@ -2,4 +2,36 @@ app-template {
   p.small {
     font-size: var(--font-size-small);
   }
+
+  ion-list {
+    input {
+      margin-top: 4px;
+    }
+  }
+
+  ion-item.item-title {
+    ion-label > span {
+      font-size: var(--font-size-very-small);
+      vertical-align: text-top;
+    }
+  }
+
+  div.notes {
+    margin-top: 32px;
+
+    mark {
+      background: var(--ion-color-light);
+      padding: 0 2px;
+      border-radius: 1px;
+      color: inherit;
+    }
+
+    p {
+      span {
+        font-size: var(--font-size-very-small);
+        margin-right: 1px;
+        vertical-align: text-top;
+      }
+    }
+  }
 }

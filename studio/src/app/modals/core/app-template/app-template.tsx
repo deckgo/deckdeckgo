@@ -146,8 +146,8 @@ export class AppTemplate {
   }
 
   render() {
-    const errorCdn: string | undefined = !this.validCdn && this.templateData?.cdn !== undefined ? 'error' : undefined;
-    const errorTag: string | undefined = !this.validTag && this.templateData?.tag !== undefined ? 'error' : undefined;
+    const errorCdn: string | undefined = !this.validCdn && this.templateData?.cdn !== '' && this.templateData?.cdn !== undefined ? 'error' : '';
+    const errorTag: string | undefined = !this.validTag && this.templateData?.tag !== '' && this.templateData?.tag !== undefined ? 'error' : '';
 
     return (
       <Fragment>
@@ -165,7 +165,9 @@ export class AppTemplate {
           <form onSubmit={(e: Event) => this.handleSubmit(e)}>
             <ion-list class="inputs-list">
               <ion-item class={`item-title ${errorCdn}`}>
-                <ion-label>CDN</ion-label>
+                <ion-label>
+                  CDN - ES Modules <span>1</span>
+                </ion-label>
               </ion-item>
 
               <ion-item>
@@ -179,12 +181,10 @@ export class AppTemplate {
                   onIonChange={() => this.validateCDNInput()}></ion-input>
               </ion-item>
 
-              <p class={`small ${errorCdn}`}>
-                We support Unpkg, Cloudfare and jsDelivr. If you would like to use another CDN, <a onClick={() => this.navigateContact()}>get in touch</a>.
-              </p>
-
               <ion-item class={`item-title ${errorTag}`}>
-                <ion-label>Tag</ion-label>
+                <ion-label>
+                  Tag <span>2</span>
+                </ion-label>
               </ion-item>
 
               <ion-item>
@@ -198,10 +198,10 @@ export class AppTemplate {
                   onIonChange={() => this.validateTag()}></ion-input>
               </ion-item>
 
-              <p class={`small ${errorTag}`}>The tag should not contain any of the reserved keywords "deckdeckgo", "deckgo" or "ddg".</p>
-
               <ion-item class="item-title">
-                <ion-label>Definition</ion-label>
+                <ion-label>
+                  Definition <span>3</span>
+                </ion-label>
               </ion-item>
 
               <input
@@ -217,8 +217,32 @@ export class AppTemplate {
               <ion-label>Save</ion-label>
             </ion-button>
           </form>
+
+          {this.renderNotes(errorCdn, errorTag)}
         </ion-content>
       </Fragment>
+    );
+  }
+
+  private renderNotes(errorCdn: string, errorTag: string) {
+    return (
+      <div class="notes">
+        <p class={`small`}>
+          <span>1</span> URL to the ES Modules as for example <mark>https://unpkg.com/my-component@latest/dist/my-component/my-component.esm.js</mark>.
+        </p>
+
+        <p class={`small ${errorCdn}`}>
+          We support Unpkg, Cloudfare and jsDelivr. If you would like to use another CDN, <a onClick={() => this.navigateContact()}>get in touch</a>.
+        </p>
+
+        <p class={`small ${errorTag}`}>
+          <span>2</span> The tag should not contain any of the reserved keywords <mark>deckdeckgo</mark>, <mark>deckgo</mark> or <mark>ddg</mark>.
+        </p>
+
+        <p class={`small`}>
+          <span>3</span> Upload the definition which was automatically generated when you built your template <mark>./src/components.desc.json</mark>.
+        </p>
+      </div>
     );
   }
 }
