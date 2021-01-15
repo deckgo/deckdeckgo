@@ -268,6 +268,8 @@ export namespace Components {
         "publish": boolean;
         "signIn": boolean;
     }
+    interface AppNoTemplates {
+    }
     interface AppNotes {
         "selectedElement": HTMLElement;
     }
@@ -813,6 +815,12 @@ declare global {
         prototype: HTMLAppNavigationActionsElement;
         new (): HTMLAppNavigationActionsElement;
     };
+    interface HTMLAppNoTemplatesElement extends Components.AppNoTemplates, HTMLStencilElement {
+    }
+    var HTMLAppNoTemplatesElement: {
+        prototype: HTMLAppNoTemplatesElement;
+        new (): HTMLAppNoTemplatesElement;
+    };
     interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {
     }
     var HTMLAppNotesElement: {
@@ -1163,6 +1171,7 @@ declare global {
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
         "app-navigation-actions": HTMLAppNavigationActionsElement;
+        "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
         "app-offline": HTMLAppOfflineElement;
         "app-photo": HTMLAppPhotoElement;
@@ -1511,6 +1520,8 @@ declare namespace LocalJSX {
         "publish"?: boolean;
         "signIn"?: boolean;
     }
+    interface AppNoTemplates {
+    }
     interface AppNotes {
         "selectedElement"?: HTMLElement;
     }
@@ -1738,6 +1749,7 @@ declare namespace LocalJSX {
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
         "app-navigation-actions": AppNavigationActions;
+        "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
         "app-offline": AppOffline;
         "app-photo": AppPhoto;
@@ -1858,6 +1870,7 @@ declare module "@stencil/core" {
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
+            "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
             "app-offline": LocalJSX.AppOffline & JSXBase.HTMLAttributes<HTMLAppOfflineElement>;
             "app-photo": LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;

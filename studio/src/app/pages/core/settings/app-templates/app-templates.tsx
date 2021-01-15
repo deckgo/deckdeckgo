@@ -92,7 +92,7 @@ export class AppTemplates {
     return [
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
-        <main class="ion-padding">
+        <main class="ion-padding fit">
           <h1>Templates</h1>
           {this.renderGuardedContent()}
         </main>
@@ -119,17 +119,17 @@ export class AppTemplates {
         <button type="button" class="app-button" onClick={() => this.signIn()}>
           Sign in
         </button>
-        to upload and share templates.
+        to use your own templates.
       </p>,
     ];
   }
 
   private renderContent() {
     if (templatesStore.state.user.length === 0) {
-      return <ion-label>You don't have any templates yet. Follow this guide to get started and add your first template afterwards.</ion-label>;
+      return <app-no-templates></app-no-templates>;
     }
 
-    return <div class="container">{this.renderTemplates()}</div>;
+    return <div class="container ion-margin-top">{this.renderTemplates()}</div>;
   }
 
   private renderTemplates() {
@@ -140,8 +140,8 @@ export class AppTemplates {
 
   private renderAction() {
     return (
-      <div class="action">
-        <ion-button slot="end" shape="round" onClick={() => this.editTemplate()} class="ion-margin-top">
+      <div class="action ion-margin-top">
+        <ion-button slot="end" shape="round" onClick={() => this.editTemplate()}>
           <ion-label>Add a template</ion-label>
         </ion-button>
       </div>
