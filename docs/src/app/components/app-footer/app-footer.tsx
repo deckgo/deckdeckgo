@@ -16,6 +16,9 @@ export class AppFooter {
         <div class={containerClass}>
           {this.renderStart()}
           <div class="end">
+            <a href="https://deckdeckgo.com">
+              <app-logo></app-logo>
+            </a>
             <a href="https://twitter.com/deckdeckgo">
               <ion-icon name="logo-twitter"></ion-icon>
             </a>

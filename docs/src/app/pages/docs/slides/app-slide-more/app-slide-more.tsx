@@ -17,7 +17,7 @@ export class AppSlideMore {
             and documentations about their usages.
           </p>
           <p>
-            If you want to add your contributions to the community, <a href="https://deckdeckgo.com/contact">get in touch</a>.
+            If you want to add your contributions to the community, <a href="/misc/contact">get in touch</a>.
           </p>
         </main>
 

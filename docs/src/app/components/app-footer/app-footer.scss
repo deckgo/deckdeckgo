@@ -25,6 +25,10 @@ footer {
       a {
         padding-right: 8px;
 
+        &:first-of-type {
+          --deckgo-logo-size: 16px;
+        }
+
         ion-icon {
           color: var(--ion-text-color, #000);
         }
