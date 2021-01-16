@@ -27,7 +27,7 @@ export class AppRoot {
           <ion-route url="/docs/publishing" component="app-publishing" />
           <ion-route url="/docs/remote" component="app-remote-control" />
 
-          <ion-route url="/edit" component="app-concept" />
+          <ion-route url="/edit" component="app-introduction" />
           <ion-route url="/edit/default" component="app-edit-default" />
           <ion-route url="/edit/lazy" component="app-edit-lazy-loading" />
           <ion-route url="/edit/theming" component="app-edit-theming" />
@@ -36,25 +36,23 @@ export class AppRoot {
           <ion-route url="/edit/rtl" component="app-edit-rtl" />
           <ion-route url="/edit/notes" component="app-edit-notes" />
 
-          <ion-route url="/slides" component="app-concept" />
-          <ion-route url="/slides/concept" component="app-slides-concept" />
+          <ion-route url="/slides" component="app-introduction" />
+          <ion-route url="/slides/introduction" component="app-slides-introduction" />
           <ion-route url="/slides/title" component="app-slide-title" />
           <ion-route url="/slides/content" component="app-slide-content" />
           <ion-route url="/slides/split" component="app-slide-split" />
           <ion-route url="/slides/gif" component="app-slide-gif" />
-          <ion-route url="/slides/bigimg" component="app-slide-big-img" />
           <ion-route url="/slides/chart" component="app-slide-chart" />
           <ion-route url="/slides/youtube" component="app-slide-youtube" />
-          <ion-route url="/slides/video" component="app-slide-video" />
           <ion-route url="/slides/code" component="app-slide-code" />
           <ion-route url="/slides/author" component="app-slide-author" />
           <ion-route url="/slides/qrcode" component="app-slide-qrcode" />
-          <ion-route url="/slides/countdown" component="app-slide-countdown" />
           <ion-route url="/slides/poll" component="app-slide-poll" />
           <ion-route url="/slides/aspectratio" component="app-slide-aspect-ratio" />
           <ion-route url="/slides/playground" component="app-slide-playground" />
+          <ion-route url="/slides/more" component="app-slide-more" />
 
-          <ion-route url="/components" component="app-concept" />
+          <ion-route url="/components" component="app-components-charts" />
           <ion-route url="/components/charts" component="app-components-charts" />
           <ion-route url="/components/gif" component="app-components-gif" />
           <ion-route url="/components/code" component="app-components-highlight-code" />
@@ -141,8 +139,8 @@ export class AppRoot {
                   <ion-item-divider>
                     <ion-label>Templates</ion-label>
                   </ion-item-divider>
-                  <ion-item detail={false} href="/slides/concept" routerDirection="forward">
-                    <ion-label>Concept</ion-label>
+                  <ion-item detail={false} href="/slides/introduction" routerDirection="forward">
+                    <ion-label>Introduction</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/title" routerDirection="forward">
                     <ion-label>Title</ion-label>
@@ -156,17 +154,11 @@ export class AppRoot {
                   <ion-item detail={false} href="/slides/gif" routerDirection="forward">
                     <ion-label>GIF</ion-label>
                   </ion-item>
-                  <ion-item detail={false} href="/slides/bigimg" routerDirection="forward">
-                    <ion-label>Big Image</ion-label>
-                  </ion-item>
                   <ion-item detail={false} href="/slides/chart" routerDirection="forward">
                     <ion-label>Chart</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/youtube" routerDirection="forward">
                     <ion-label>YouTube</ion-label>
-                  </ion-item>
-                  <ion-item detail={false} href="/slides/video" routerDirection="forward">
-                    <ion-label>Video</ion-label>
                   </ion-item>
                   <ion-item detail={false} href="/slides/code" routerDirection="forward">
                     <ion-label>Code</ion-label>
@@ -177,9 +169,6 @@ export class AppRoot {
                   <ion-item detail={false} href="/slides/qrcode" routerDirection="forward">
                     <ion-label>QR Code</ion-label>
                   </ion-item>
-                  <ion-item detail={false} href="/slides/countdown" routerDirection="forward">
-                    <ion-label>Countdown</ion-label>
-                  </ion-item>
                   <ion-item detail={false} href="/slides/poll" routerDirection="forward">
                     <ion-label>Poll</ion-label>
                   </ion-item>
@@ -188,6 +177,9 @@ export class AppRoot {
                   </ion-item>
                   <ion-item detail={false} href="/slides/playground" routerDirection="forward">
                     <ion-label>Playground</ion-label>
+                  </ion-item>
+                  <ion-item detail={false} href="/slides/more" routerDirection="forward">
+                    <ion-label>More</ion-label>
                   </ion-item>
 
                   <ion-item-divider>

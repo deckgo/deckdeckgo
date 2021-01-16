@@ -3,7 +3,7 @@ import {Component, Prop, h} from '@stencil/core';
 @Component({
   tag: 'app-footer',
   styleUrl: 'app-footer.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppFooter {
   @Prop() start: boolean = false;
@@ -16,6 +16,9 @@ export class AppFooter {
         <div class={containerClass}>
           {this.renderStart()}
           <div class="end">
+            <a href="https://deckdeckgo.com">
+              <app-logo></app-logo>
+            </a>
             <a href="https://twitter.com/deckdeckgo">
               <ion-icon name="logo-twitter"></ion-icon>
             </a>

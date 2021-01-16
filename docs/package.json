@@ -7,7 +7,7 @@
     "dist/"
   ],
   "scripts": {
-    "docs": "tsc --p ./scripts && node ./.deckgo/markdown-to-html",
+    "docs": "tsc --p ./scripts && node ./.deckgo/markdown-to-html && npx prettier --write src/",
     "build": "npm run docs && stencil build --prerender",
     "start": "npm run docs && stencil build --dev --watch --serve",
     "test": "npm run docs && stencil test --spec --e2e",
