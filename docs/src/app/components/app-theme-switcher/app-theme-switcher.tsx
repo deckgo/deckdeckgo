@@ -4,7 +4,7 @@ import {set, get} from 'idb-keyval';
 
 @Component({
   tag: 'app-theme-switcher',
-  styleUrl: 'app-theme-switcher.scss'
+  styleUrl: 'app-theme-switcher.scss',
 })
 export class AppThemeSwitcher {
   @State()

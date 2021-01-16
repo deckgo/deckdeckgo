@@ -2,7 +2,7 @@ import {Component, Element, Listen, h} from '@stencil/core';
 
 @Component({
   tag: 'app-navigation-modal',
-  styleUrl: 'app-navigation-modal.scss'
+  styleUrl: 'app-navigation-modal.scss',
 })
 export class AppNavigationModal {
   @Element() el: HTMLElement;
@@ -45,7 +45,7 @@ export class AppNavigationModal {
             <app-theme-switcher></app-theme-switcher>
           </div>
         </div>
-      </ion-content>
+      </ion-content>,
     ];
   }
 }

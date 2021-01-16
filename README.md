@@ -26,6 +26,7 @@
 - [Features](#features)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
+- [Community](#community)
 - [Progressive Web Apps](#progressive-web-apps)
 - [Web Components](#web-components)
 - [Others](#others)
@@ -36,7 +37,7 @@ Start your new presentation using our 👉 [online Editor](https://deckdeckgo.co
 
 ## Features
 
-We are constantly developing new features and are always happy to hear about cool ideas.
+We are constantly developing new features and, are always happy to hear about cool ideas.
 
 - Create, present and share your slides as Progressive Web Apps
 - Interact with your audience with live polls
@@ -48,15 +49,19 @@ We are constantly developing new features and are always happy to hear about coo
 - Present and work offline
 - Push the source code of your online slides to GitHub
 
-And many more...
-
 ## Documentation
 
-The developers' documentation is available online at [https://docs.deckdeckgo.com](https://docs.deckdeckgo.com).
+The developers' documentation is available [online](https://docs.deckdeckgo.com).
 
 ## Contributing
 
 Are you interested to contribute to our open source project? That would be awesome 👍 Have a look to our contributing [guide](CONTRIBUTING.md) to get started.
+
+## Community
+
+Templates and tools that are driven by the community of DeckDeckGo developers and maintainers are gathered together in a dedicated GitHub [org](https://github.com/deckgo-community).
+
+If you would like to add your contribution, get in [touch](https://deckdeckgo.com/en/contact).
 
 ## Progressive Web Apps
 
@@ -96,18 +101,15 @@ Are you interested to contribute to our open source project? That would be aweso
 | ---------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------------------------: | :-----------------------------------------------------------: |
 | **Author**       | [`@deckdeckgo/slide-author`](https://www.npmjs.com/package/@deckdeckgo/slide-author)             | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-author/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-author)             |    [`README`](webcomponents/slides/author/README.md)    |    [`CHANGELOG`](webcomponents/slides/author/CHANGELOG.md)    |
 | **Aspect Ratio** | [`@deckdeckgo/slide-aspect-ratio`](https://www.npmjs.com/package/@deckdeckgo/slide-aspect-ratio) | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-aspect-ratio/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-aspect-ratio) | [`README`](webcomponents/slides/aspect-ratio/README.md) | [`CHANGELOG`](webcomponents/slides/aspect-ratio/CHANGELOG.md) |
-| **Big Image**    | [`@deckdeckgo/slide-big-img`](https://www.npmjs.com/package/@deckdeckgo/slide-big-img)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-big-img/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-big-img)           |   [`README`](webcomponents/slides/big-img/README.md)    |   [`CHANGELOG`](webcomponents/slides/big-img/CHANGELOG.md)    |
 | **Chart**        | [`@deckdeckgo/slide-chart`](https://www.npmjs.com/package/@deckdeckgo/slide-chart)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-chart/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-chart)               |    [`README`](webcomponents/slides/chart/README.md)     |    [`CHANGELOG`](webcomponents/slides/chart/CHANGELOG.md)     |
 | **Code**         | [`@deckdeckgo/slide-code`](https://www.npmjs.com/package/@deckdeckgo/slide-code)                 | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-code/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-code)                 |     [`README`](webcomponents/slides/code/README.md)     |     [`CHANGELOG`](webcomponents/slides/code/CHANGELOG.md)     |
 | **Content**      | [`@deckdeckgo/slide-content`](https://www.npmjs.com/package/@deckdeckgo/slide-content)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-content/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-content)           |   [`README`](webcomponents/slides/content/README.md)    |   [`CHANGELOG`](webcomponents/slides/content/CHANGELOG.md)    |
-| **Countdown**    | [`@deckdeckgo/slide-countdown`](https://www.npmjs.com/package/@deckdeckgo/slide-countdown)       | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-countdown/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-countdown)       |  [`README`](webcomponents/slides/countdown/README.md)   |  [`CHANGELOG`](webcomponents/slides/countdown/CHANGELOG.md)   |
 | **Gif**          | [`@deckdeckgo/slide-gif`](https://www.npmjs.com/package/@deckdeckgo/slide-gif)                   | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-gif/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-gif)                   |     [`README`](webcomponents/slides/gif/README.md)      |     [`CHANGELOG`](webcomponents/slides/gif/CHANGELOG.md)      |
 | **Playground**   | [`@deckdeckgo/slide-playground`](https://www.npmjs.com/package/@deckdeckgo/slide-playground)     | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-playground/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-playground)     |  [`README`](webcomponents/slides/playground/README.md)  |  [`CHANGELOG`](webcomponents/slides/playground/CHANGELOG.md)  |
 | **Poll**         | [`@deckdeckgo/slide-poll`](https://www.npmjs.com/package/@deckdeckgo/slide-poll)                 | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-poll/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-poll)                 |     [`README`](webcomponents/slides/poll/README.md)     |     [`CHANGELOG`](webcomponents/slides/poll/CHANGELOG.md)     |
 | **QR Code**      | [`@deckdeckgo/slide-qrcode`](https://www.npmjs.com/package/@deckdeckgo/slide-qrcode)             | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-qrcode/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-qrcode)             |    [`README`](webcomponents/slides/qrcode/README.md)    |    [`CHANGELOG`](webcomponents/slides/qrcode/CHANGELOG.md)    |
 | **Split**        | [`@deckdeckgo/slide-split`](https://www.npmjs.com/package/@deckdeckgo/slide-split)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-split/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-split)               |    [`README`](webcomponents/slides/split/README.md)     |    [`CHANGELOG`](webcomponents/slides/split/CHANGELOG.md)     |
 | **Title**        | [`@deckdeckgo/slide-title`](https://www.npmjs.com/package/@deckdeckgo/slide-title)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-title/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-title)               |    [`README`](webcomponents/slides/title/README.md)     |    [`CHANGELOG`](webcomponents/slides/title/CHANGELOG.md)     |
-| **Video**        | [`@deckdeckgo/slide-video`](https://www.npmjs.com/package/@deckdeckgo/slide-video)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-video/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-video)               |    [`README`](webcomponents/slides/video/README.md)     |    [`CHANGELOG`](webcomponents/slides/video/CHANGELOG.md)     |
 | **YouTube**      | [`@deckdeckgo/slide-youtube`](https://www.npmjs.com/package/@deckdeckgo/slide-youtube)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-youtube)           |   [`README`](webcomponents/slides/youtube/README.md)    |   [`CHANGELOG`](webcomponents/slides/youtube/CHANGELOG.md)    |
 
 ## Utils for the Web Components

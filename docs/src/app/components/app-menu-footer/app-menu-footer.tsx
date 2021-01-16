@@ -3,7 +3,7 @@ import {Component, h} from '@stencil/core';
 @Component({
   tag: 'app-menu-footer',
   styleUrl: 'app-menu-footer.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppMenuFooter {
   render() {
