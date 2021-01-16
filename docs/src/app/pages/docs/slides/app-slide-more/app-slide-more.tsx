@@ -16,6 +16,9 @@ export class AppSlideMore {
             Developers and maintainers contributions are gathered in a <a href="https://github.com/deckgo-community">GitHub org</a>. Find there more templates
             and documentations about their usages.
           </p>
+          <p>
+            If you want to add your contributions to the community, <a href="https://deckdeckgo.com/contact">get in touch</a>.
+          </p>
         </main>
 
         <app-footer></app-footer>
