@@ -3,7 +3,7 @@ import {Component, Prop, h} from '@stencil/core';
 @Component({
   tag: 'app-footer',
   styleUrl: 'app-footer.scss',
-  shadow: true
+  shadow: true,
 })
 export class AppFooter {
   @Prop() start: boolean = false;
