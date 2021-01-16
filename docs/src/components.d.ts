@@ -106,17 +106,15 @@ export namespace Components {
     }
     interface AppSlideAuthor {
     }
-    interface AppSlideBigImg {
-    }
     interface AppSlideChart {
     }
     interface AppSlideCode {
     }
     interface AppSlideContent {
     }
-    interface AppSlideCountdown {
-    }
     interface AppSlideGif {
+    }
+    interface AppSlideMore {
     }
     interface AppSlidePlayground {
     }
@@ -128,11 +126,9 @@ export namespace Components {
     }
     interface AppSlideTitle {
     }
-    interface AppSlideVideo {
-    }
     interface AppSlideYoutube {
     }
-    interface AppSlidesConcept {
+    interface AppSlidesIntroduction {
     }
     interface AppThemeSwitcher {
     }
@@ -426,12 +422,6 @@ declare global {
         prototype: HTMLAppSlideAuthorElement;
         new (): HTMLAppSlideAuthorElement;
     };
-    interface HTMLAppSlideBigImgElement extends Components.AppSlideBigImg, HTMLStencilElement {
-    }
-    var HTMLAppSlideBigImgElement: {
-        prototype: HTMLAppSlideBigImgElement;
-        new (): HTMLAppSlideBigImgElement;
-    };
     interface HTMLAppSlideChartElement extends Components.AppSlideChart, HTMLStencilElement {
     }
     var HTMLAppSlideChartElement: {
@@ -450,17 +440,17 @@ declare global {
         prototype: HTMLAppSlideContentElement;
         new (): HTMLAppSlideContentElement;
     };
-    interface HTMLAppSlideCountdownElement extends Components.AppSlideCountdown, HTMLStencilElement {
-    }
-    var HTMLAppSlideCountdownElement: {
-        prototype: HTMLAppSlideCountdownElement;
-        new (): HTMLAppSlideCountdownElement;
-    };
     interface HTMLAppSlideGifElement extends Components.AppSlideGif, HTMLStencilElement {
     }
     var HTMLAppSlideGifElement: {
         prototype: HTMLAppSlideGifElement;
         new (): HTMLAppSlideGifElement;
+    };
+    interface HTMLAppSlideMoreElement extends Components.AppSlideMore, HTMLStencilElement {
+    }
+    var HTMLAppSlideMoreElement: {
+        prototype: HTMLAppSlideMoreElement;
+        new (): HTMLAppSlideMoreElement;
     };
     interface HTMLAppSlidePlaygroundElement extends Components.AppSlidePlayground, HTMLStencilElement {
     }
@@ -492,23 +482,17 @@ declare global {
         prototype: HTMLAppSlideTitleElement;
         new (): HTMLAppSlideTitleElement;
     };
-    interface HTMLAppSlideVideoElement extends Components.AppSlideVideo, HTMLStencilElement {
-    }
-    var HTMLAppSlideVideoElement: {
-        prototype: HTMLAppSlideVideoElement;
-        new (): HTMLAppSlideVideoElement;
-    };
     interface HTMLAppSlideYoutubeElement extends Components.AppSlideYoutube, HTMLStencilElement {
     }
     var HTMLAppSlideYoutubeElement: {
         prototype: HTMLAppSlideYoutubeElement;
         new (): HTMLAppSlideYoutubeElement;
     };
-    interface HTMLAppSlidesConceptElement extends Components.AppSlidesConcept, HTMLStencilElement {
+    interface HTMLAppSlidesIntroductionElement extends Components.AppSlidesIntroduction, HTMLStencilElement {
     }
-    var HTMLAppSlidesConceptElement: {
-        prototype: HTMLAppSlidesConceptElement;
-        new (): HTMLAppSlidesConceptElement;
+    var HTMLAppSlidesIntroductionElement: {
+        prototype: HTMLAppSlidesIntroductionElement;
+        new (): HTMLAppSlidesIntroductionElement;
     };
     interface HTMLAppThemeSwitcherElement extends Components.AppThemeSwitcher, HTMLStencilElement {
     }
@@ -565,20 +549,18 @@ declare global {
         "app-running": HTMLAppRunningElement;
         "app-slide-aspect-ratio": HTMLAppSlideAspectRatioElement;
         "app-slide-author": HTMLAppSlideAuthorElement;
-        "app-slide-big-img": HTMLAppSlideBigImgElement;
         "app-slide-chart": HTMLAppSlideChartElement;
         "app-slide-code": HTMLAppSlideCodeElement;
         "app-slide-content": HTMLAppSlideContentElement;
-        "app-slide-countdown": HTMLAppSlideCountdownElement;
         "app-slide-gif": HTMLAppSlideGifElement;
+        "app-slide-more": HTMLAppSlideMoreElement;
         "app-slide-playground": HTMLAppSlidePlaygroundElement;
         "app-slide-poll": HTMLAppSlidePollElement;
         "app-slide-qrcode": HTMLAppSlideQrcodeElement;
         "app-slide-split": HTMLAppSlideSplitElement;
         "app-slide-title": HTMLAppSlideTitleElement;
-        "app-slide-video": HTMLAppSlideVideoElement;
         "app-slide-youtube": HTMLAppSlideYoutubeElement;
-        "app-slides-concept": HTMLAppSlidesConceptElement;
+        "app-slides-introduction": HTMLAppSlidesIntroductionElement;
         "app-theme-switcher": HTMLAppThemeSwitcherElement;
     }
 }
@@ -683,17 +665,15 @@ declare namespace LocalJSX {
     }
     interface AppSlideAuthor {
     }
-    interface AppSlideBigImg {
-    }
     interface AppSlideChart {
     }
     interface AppSlideCode {
     }
     interface AppSlideContent {
     }
-    interface AppSlideCountdown {
-    }
     interface AppSlideGif {
+    }
+    interface AppSlideMore {
     }
     interface AppSlidePlayground {
     }
@@ -705,11 +685,9 @@ declare namespace LocalJSX {
     }
     interface AppSlideTitle {
     }
-    interface AppSlideVideo {
-    }
     interface AppSlideYoutube {
     }
-    interface AppSlidesConcept {
+    interface AppSlidesIntroduction {
     }
     interface AppThemeSwitcher {
     }
@@ -762,20 +740,18 @@ declare namespace LocalJSX {
         "app-running": AppRunning;
         "app-slide-aspect-ratio": AppSlideAspectRatio;
         "app-slide-author": AppSlideAuthor;
-        "app-slide-big-img": AppSlideBigImg;
         "app-slide-chart": AppSlideChart;
         "app-slide-code": AppSlideCode;
         "app-slide-content": AppSlideContent;
-        "app-slide-countdown": AppSlideCountdown;
         "app-slide-gif": AppSlideGif;
+        "app-slide-more": AppSlideMore;
         "app-slide-playground": AppSlidePlayground;
         "app-slide-poll": AppSlidePoll;
         "app-slide-qrcode": AppSlideQrcode;
         "app-slide-split": AppSlideSplit;
         "app-slide-title": AppSlideTitle;
-        "app-slide-video": AppSlideVideo;
         "app-slide-youtube": AppSlideYoutube;
-        "app-slides-concept": AppSlidesConcept;
+        "app-slides-introduction": AppSlidesIntroduction;
         "app-theme-switcher": AppThemeSwitcher;
     }
 }
@@ -831,20 +807,18 @@ declare module "@stencil/core" {
             "app-running": LocalJSX.AppRunning & JSXBase.HTMLAttributes<HTMLAppRunningElement>;
             "app-slide-aspect-ratio": LocalJSX.AppSlideAspectRatio & JSXBase.HTMLAttributes<HTMLAppSlideAspectRatioElement>;
             "app-slide-author": LocalJSX.AppSlideAuthor & JSXBase.HTMLAttributes<HTMLAppSlideAuthorElement>;
-            "app-slide-big-img": LocalJSX.AppSlideBigImg & JSXBase.HTMLAttributes<HTMLAppSlideBigImgElement>;
             "app-slide-chart": LocalJSX.AppSlideChart & JSXBase.HTMLAttributes<HTMLAppSlideChartElement>;
             "app-slide-code": LocalJSX.AppSlideCode & JSXBase.HTMLAttributes<HTMLAppSlideCodeElement>;
             "app-slide-content": LocalJSX.AppSlideContent & JSXBase.HTMLAttributes<HTMLAppSlideContentElement>;
-            "app-slide-countdown": LocalJSX.AppSlideCountdown & JSXBase.HTMLAttributes<HTMLAppSlideCountdownElement>;
             "app-slide-gif": LocalJSX.AppSlideGif & JSXBase.HTMLAttributes<HTMLAppSlideGifElement>;
+            "app-slide-more": LocalJSX.AppSlideMore & JSXBase.HTMLAttributes<HTMLAppSlideMoreElement>;
             "app-slide-playground": LocalJSX.AppSlidePlayground & JSXBase.HTMLAttributes<HTMLAppSlidePlaygroundElement>;
             "app-slide-poll": LocalJSX.AppSlidePoll & JSXBase.HTMLAttributes<HTMLAppSlidePollElement>;
             "app-slide-qrcode": LocalJSX.AppSlideQrcode & JSXBase.HTMLAttributes<HTMLAppSlideQrcodeElement>;
             "app-slide-split": LocalJSX.AppSlideSplit & JSXBase.HTMLAttributes<HTMLAppSlideSplitElement>;
             "app-slide-title": LocalJSX.AppSlideTitle & JSXBase.HTMLAttributes<HTMLAppSlideTitleElement>;
-            "app-slide-video": LocalJSX.AppSlideVideo & JSXBase.HTMLAttributes<HTMLAppSlideVideoElement>;
             "app-slide-youtube": LocalJSX.AppSlideYoutube & JSXBase.HTMLAttributes<HTMLAppSlideYoutubeElement>;
-            "app-slides-concept": LocalJSX.AppSlidesConcept & JSXBase.HTMLAttributes<HTMLAppSlidesConceptElement>;
+            "app-slides-introduction": LocalJSX.AppSlidesIntroduction & JSXBase.HTMLAttributes<HTMLAppSlidesIntroductionElement>;
             "app-theme-switcher": LocalJSX.AppThemeSwitcher & JSXBase.HTMLAttributes<HTMLAppThemeSwitcherElement>;
         }
     }

@@ -1,8 +1,10 @@
-# Concept
+# Introduction
 
-[DeckDeckGo] is a deck of slides where each slide is based on a template which has its own layout and behaviour. Their content could be edited and structured using `slots` and other attributes.
+[DeckDeckGo] is a deck of slides. Each of these is based on a template which has its own layout and behaviour and not other limit than what the web can offer.
 
-The parent deck should be declared using the tag `<deckgo-deck/>` and each slide should be added as its children.
+Their content could be edited and structured using `slots` and other attributes.
+
+The deck itself is declared using the tag `<deckgo-deck/>` and each slides can be added as its children.
 
 ```
 <deckgo-deck>
@@ -23,13 +25,15 @@ In the previous example, the presentation contains two slides. The first slide u
 
 # Installation
 
-The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides, these have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
+The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides. These have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
 
-> If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.
+> If you are using the Starter Kit, all default templates, these listed here behind, are pre-installed and pre-imported.
 
 # Templates
 
-[DeckDeckGo] provide the following templates:
+[DeckDeckGo] provides a set of default templates. More templates are also available thanks to the wonderful work of the [community](https://github.com/deckgo-community).
+
+## Default Templates
 
 - Slide: [Title](/slides/title)
 
@@ -85,19 +89,6 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
   </deckgo-deck>
 </div>
 
-- Slide: [Big Image](/slides/bigimg)
-
-<div class="container ion-margin">
-  <deckgo-deck embedded={true}>
-    <deckgo-slide-big-img
-             img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo-h.jpg"
-             img-divisions="900;1500;2200"
-             axis="x"
-             reverse>
-    </deckgo-slide-big-img>
-  </deckgo-deck>
-</div>
-
 - Slide: [Chart](/slides/chart)
 
 <div class="container ion-margin">
@@ -125,17 +116,6 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
     <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
       <h1 slot="title">slot="title"</h1>
     </deckgo-slide-youtube>
-  </deckgo-deck>
-</div>
-
-- Slide: [Video](/slides/video)
-
-<div class="container ion-margin">
-  <deckgo-deck embedded={true}>
-    <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-      <h1 slot="title">A GIF as video</h1>
-      <button slot="actions" onClick={() => this.playPauseVideo()}>Play/pause</button>
-    </deckgo-slide-video>
   </deckgo-deck>
 </div>
 
@@ -170,19 +150,6 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
         <h1 slot="title">slot="title"</h1>
         <p slot="content">slot="content"</p>
     </deckgo-slide-qrcode>
-  </deckgo-deck>
-</div>
-
-- Slide: [Countdown](/slides/countdown)
-
-<div class="container ion-margin">
-  <deckgo-deck embedded={true}>
-    <deckgo-slide-countdown hours={1} minutes={0} seconds={5}>
-        <h1 slot="title">slot="title"</h1>
-        <p slot="hours">slot="hours"</p>
-        <p slot="minutes">slot="minutes"</p>
-        <p slot="seconds">slot="seconds"</p>
-    </deckgo-slide-countdown>
   </deckgo-deck>
 </div>
 
@@ -222,5 +189,9 @@ The core component of [DeckDeckGo](`<deckgo-deck/>`) does not contain any slides
     </deckgo-slide-playground>
   </deckgo-deck>
 </div>
+
+## Community
+
+Developers and maintainers contributions are gathered in a [GitHub org](https://github.com/deckgo-community). Find there more templates and documentations about their usages.
 
 [deckdeckgo]: https://deckdeckgo.com

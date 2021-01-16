@@ -3,10 +3,10 @@ import {Component, Element, h, Listen} from '@stencil/core';
 import {DeckdeckgoDocsUtils} from '../../../../utils/deckdeckgo-docs-utils';
 
 @Component({
-  tag: 'app-slides-concept',
-  styleUrl: 'app-slides-concept.scss',
+  tag: 'app-slides-introduction',
+  styleUrl: 'app-slides-introduction.scss',
 })
-export class AppSlidesConcept {
+export class AppSlidesIntroduction {
   @Element() el: HTMLElement;
 
   async componentDidLoad() {
@@ -15,9 +15,7 @@ export class AppSlidesConcept {
 
   @Listen('slidesDidLoad')
   async onSlidesDidLoad($event: CustomEvent) {
-    if ($event) {
-      await DeckdeckgoDocsUtils.initSlideSize($event.target as HTMLElement);
-    }
+    setTimeout(async () => await DeckdeckgoDocsUtils.initSlideSize($event?.target as HTMLElement), 250);
   }
 
   playPauseVideo(): Promise<void> {
@@ -41,13 +39,16 @@ export class AppSlidesConcept {
 
       <ion-content class="ion-padding">
         <main>
-          <h1 id="app-slides-concept-concept">Concept</h1>
+          <h1 id="app-slides-introduction-introduction">Introduction</h1>
           <p>
-            <a href="https://deckdeckgo.com">DeckDeckGo</a> is a deck of slides where each slide is based on a template which has its own layout and behaviour.
+            <a href="https://deckdeckgo.com">DeckDeckGo</a> is a deck of slides. Each of these is based on a template which has its own layout and behaviour and
+            not other limit than what the web can offer.
+          </p>
+          <p>
             Their content could be edited and structured using <code>slots</code> and other attributes.
           </p>
           <p>
-            The parent deck should be declared using the tag <code>&lt;deckgo-deck/&gt;</code> and each slide should be added as its children.
+            The deck itself is declared using the tag <code>&lt;deckgo-deck/&gt;</code> and each slides can be added as its children.
           </p>
           <deckgo-highlight-code language="javascript">
             <code slot="code">
@@ -61,18 +62,20 @@ export class AppSlidesConcept {
             In the previous example, the presentation contains two slides. The first slide use the template <code>deckgo-slide-title</code> and the second slide
             use the template <code>deckgo-slide-content</code>.
           </p>
-          <h1 id="app-slides-concept-installation">Installation</h1>
+          <h1 id="app-slides-introduction-installation">Installation</h1>
           <p>
-            The core component of <a href="%60%3Cdeckgo-deck/%3E%60">DeckDeckGo</a> does not contain any slides, these have to be explicitly installed and
+            The core component of <a href="%60%3Cdeckgo-deck/%3E%60">DeckDeckGo</a> does not contain any slides. These have to be explicitly installed and
             imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations for the best performances.
           </p>
           <blockquote>
-            <p>If you are using the Starter Kit, per default, all our templates, these listed here behind, are pre-installed and pre-imported.</p>
+            <p>If you are using the Starter Kit, all default templates, these listed here behind, are pre-installed and pre-imported.</p>
           </blockquote>
-          <h1 id="app-slides-concept-templates">Templates</h1>
+          <h1 id="app-slides-introduction-templates">Templates</h1>
           <p>
-            <a href="https://deckdeckgo.com">DeckDeckGo</a> provide the following templates:
+            <a href="https://deckdeckgo.com">DeckDeckGo</a> provides a set of default templates. More templates are also available thanks to the wonderful work
+            of the <a href="https://github.com/deckgo-community">community</a>.
           </p>
+          <h2 id="app-slides-introduction-default-templates">Default Templates</h2>
           <ul>
             <li>
               Slide: <a href="/slides/title">Title</a>
@@ -137,21 +140,6 @@ export class AppSlidesConcept {
 
           <ul>
             <li>
-              Slide: <a href="/slides/bigimg">Big Image</a>
-            </li>
-          </ul>
-          <div class="container ion-margin">
-            <deckgo-deck embedded={true}>
-              <deckgo-slide-big-img
-                img-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/slides/big-img/showcase/big-deckdeckgo-h.jpg"
-                img-divisions="900;1500;2200"
-                axis="x"
-                reverse></deckgo-slide-big-img>
-            </deckgo-deck>
-          </div>
-
-          <ul>
-            <li>
               Slide: <a href="/slides/chart">Chart</a>
             </li>
           </ul>
@@ -197,22 +185,6 @@ export class AppSlidesConcept {
               <deckgo-slide-youtube src="https://www.youtube.com/watch?v=oUOjJIfPIjw">
                 <h1 slot="title">slot="title"</h1>
               </deckgo-slide-youtube>
-            </deckgo-deck>
-          </div>
-
-          <ul>
-            <li>
-              Slide: <a href="/slides/video">Video</a>
-            </li>
-          </ul>
-          <div class="container ion-margin">
-            <deckgo-deck embedded={true}>
-              <deckgo-slide-video src="https://media.giphy.com/media/vv41HlvfogHAY/giphy.mp4">
-                <h1 slot="title">A GIF as video</h1>
-                <button slot="actions" onClick={() => this.playPauseVideo()}>
-                  Play/pause
-                </button>
-              </deckgo-slide-video>
             </deckgo-deck>
           </div>
 
@@ -269,22 +241,6 @@ export class AppSlidesConcept {
 
           <ul>
             <li>
-              Slide: <a href="/slides/countdown">Countdown</a>
-            </li>
-          </ul>
-          <div class="container ion-margin">
-            <deckgo-deck embedded={true}>
-              <deckgo-slide-countdown hours={1} minutes={0} seconds={5}>
-                <h1 slot="title">slot="title"</h1>
-                <p slot="hours">slot="hours"</p>
-                <p slot="minutes">slot="minutes"</p>
-                <p slot="seconds">slot="seconds"</p>
-              </deckgo-slide-countdown>
-            </deckgo-deck>
-          </div>
-
-          <ul>
-            <li>
               Slide: <a href="/slides/poll">Poll</a>
             </li>
           </ul>
@@ -330,6 +286,12 @@ export class AppSlidesConcept {
               </deckgo-slide-playground>
             </deckgo-deck>
           </div>
+
+          <h2 id="app-slides-introduction-community">Community</h2>
+          <p>
+            Developers and maintainers contributions are gathered in a <a href="https://github.com/deckgo-community">GitHub org</a>. Find there more templates
+            and documentations about their usages.
+          </p>
         </main>
 
         <app-footer></app-footer>
