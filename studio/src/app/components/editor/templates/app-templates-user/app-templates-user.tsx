@@ -2,7 +2,8 @@ import {Component, Event, EventEmitter, Fragment, h} from '@stencil/core';
 
 import errorStore from '../../../../stores/error.store';
 import templatesStore from '../../../../stores/templates.store';
-import navStore, {NavDirection} from '../../../../stores/nav.store';
+
+import {signIn} from '../../../../utils/core/signin.utils';
 
 import {Template} from '../../../../models/data/template';
 import {TemplateService} from '../../../../services/data/template/template.service';
@@ -38,10 +39,7 @@ export class AppTemplatesUser {
   }
 
   private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
+    signIn();
 
     this.navigateSignIn.emit();
   }

@@ -4,11 +4,12 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import authStore from '../../../../stores/auth.store';
 import errorStore from '../../../../stores/error.store';
-import navStore, {NavDirection} from '../../../../stores/nav.store';
 import templatesStore from '../../../../stores/templates.store';
 
 import {Template} from '../../../../models/data/template';
 import {AuthUser} from '../../../../models/auth/auth.user';
+
+import {signIn} from '../../../../utils/core/signin.utils';
 
 import {TemplateService} from '../../../../services/data/template/template.service';
 
@@ -45,13 +46,6 @@ export class AppTemplates {
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
-  }
-
-  private async signIn() {
-    navStore.state.nav = {
-      url: '/signin' + (window.location?.pathname ?? ''),
-      direction: NavDirection.FORWARD,
-    };
   }
 
   private async editTemplate(template?: Template) {
@@ -116,7 +110,7 @@ export class AppTemplates {
   private renderNotLoggedInContent() {
     return [
       <p>
-        <button type="button" class="app-button" onClick={() => this.signIn()}>
+        <button type="button" class="app-button" onClick={() => signIn()}>
           Sign in
         </button>
         to use your own templates.
