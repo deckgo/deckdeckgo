@@ -31,10 +31,8 @@ export class AppEditSlideDynamic {
   async componentWillLoad() {
     this.template = templatesStore.state.user.find((template: Template) => template.data.tag === this.selectedElement.slide?.nodeName);
 
-    console.log(this.template, this.selectedElement);
-
     this.stringProperties = this.template?.data?.props
-      ?.filter((prop: TemplateDataProp) => prop.type === 'string')
+      ?.filter((prop: TemplateDataProp) => prop.type === 'string' || prop.type === 'number')
       .map((prop: TemplateDataProp) => {
         return {
           prop,
