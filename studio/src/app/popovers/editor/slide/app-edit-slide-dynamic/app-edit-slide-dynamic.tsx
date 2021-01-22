@@ -1,4 +1,4 @@
-import {Component, Prop, h, EventEmitter, State, Fragment} from '@stencil/core';
+import {Component, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 
 import {InputChangeEventDetail} from '@ionic/core';
 
@@ -7,6 +7,7 @@ import templatesStore from '../../../../stores/templates.store';
 import {SelectedElement} from '../../../../types/editor/selected-element';
 
 import {Template, TemplateDataProp} from '../../../../models/data/template';
+import {SlideType} from '../../../../models/data/slide';
 
 interface Property {
   prop: TemplateDataProp;
@@ -29,7 +30,7 @@ export class AppEditSlideDynamic {
   private template: Template | undefined;
 
   async componentWillLoad() {
-    this.template = templatesStore.state.user.find((template: Template) => template.data.tag === this.selectedElement.slide?.nodeName);
+    this.template = this.getTemplates().find((template: Template) => template.data.tag === this.selectedElement.slide?.nodeName);
 
     this.stringProperties = this.template?.data?.props
       ?.filter((prop: TemplateDataProp) => prop.type === 'string' || prop.type === 'number')
@@ -39,6 +40,10 @@ export class AppEditSlideDynamic {
           value: this.selectedElement.element.getAttribute(prop.name),
         };
       });
+  }
+
+  private getTemplates(): Template[] {
+    return this.selectedElement?.slide?.type === SlideType.USER ? templatesStore.state.user : templatesStore.state.community;
   }
 
   private async onInputCustomUrlChange($event: CustomEvent<InputChangeEventDetail>, prop: TemplateDataProp) {
