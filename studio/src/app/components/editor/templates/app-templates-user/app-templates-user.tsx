@@ -16,7 +16,7 @@ export class AppTemplatesUser {
   private templateService: TemplateService;
 
   @Event()
-  navigateTemplates: EventEmitter<void>;
+  navigateSignIn: EventEmitter<void>;
 
   @Event()
   selectedTemplate: EventEmitter<Template>;
@@ -42,6 +42,8 @@ export class AppTemplatesUser {
       url: '/signin' + (window.location?.pathname ?? ''),
       direction: NavDirection.FORWARD,
     };
+
+    this.navigateSignIn.emit();
   }
 
   render() {
@@ -54,7 +56,7 @@ export class AppTemplatesUser {
 
   private renderNotLoggedIn() {
     return (
-      <Fragment>
+      <div class="info ion-padding-start ion-padding-end">
         <p>DeckDeckGo provides a set of default and community templates for your slides but, you can also use your own.</p>
 
         <p>
@@ -63,7 +65,7 @@ export class AppTemplatesUser {
           </button>
           to add yours.
         </p>
-      </Fragment>
+      </div>
     );
   }
 

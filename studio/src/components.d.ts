@@ -1638,7 +1638,6 @@ declare namespace LocalJSX {
         "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate; attributes: SlideAttributes}>) => void;
     }
     interface AppTemplatesCommunity {
-        "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
     }
     interface AppTemplatesContent {
         "highlight"?: boolean;
@@ -1662,7 +1661,7 @@ declare namespace LocalJSX {
         "highlightIndex"?: number | undefined;
     }
     interface AppTemplatesUser {
-        "onNavigateTemplates"?: (event: CustomEvent<void>) => void;
+        "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
         "onSelectedTemplate"?: (event: CustomEvent<Template>) => void;
     }
     interface AppTransform {

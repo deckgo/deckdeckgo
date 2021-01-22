@@ -220,9 +220,7 @@ export class AppCreateSlide {
       return undefined;
     }
 
-    return (
-      <app-templates-community class="container ion-margin-bottom" onNavigateTemplates={() => this.closePopoverWithoutResults()}></app-templates-community>
-    );
+    return <app-templates-community class="container ion-margin-bottom"></app-templates-community>;
   }
 
   private renderTemplatesUser() {
@@ -243,7 +241,7 @@ export class AppCreateSlide {
             type: SlideType.USER,
           })
         }
-        onNavigateTemplates={() => this.closePopoverWithoutResults()}></app-templates-user>
+        onNavigateSignIn={() => this.closePopoverWithoutResults()}></app-templates-user>
     );
   }
 

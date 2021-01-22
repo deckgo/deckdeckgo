@@ -1,7 +1,12 @@
+@use "../../../../../global/theme/mixins/editor";
+
 app-templates-user {
-  p {
+  div.info {
+    background: white;
+
+    @include editor.panel;
+
     grid-column-start: 1;
     grid-column-end: 3;
-    margin: 0;
   }
 }
