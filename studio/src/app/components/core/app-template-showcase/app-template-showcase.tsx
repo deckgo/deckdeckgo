@@ -2,7 +2,6 @@ import {Component, Prop, h, State} from '@stencil/core';
 
 import {Template, TemplateDataSlot} from '../../../models/data/template';
 
-import {Utils} from '../../../utils/core/utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 @Component({
@@ -20,12 +19,6 @@ export class AppTemplateShowcase {
   private loaded: boolean = false;
 
   async componentDidLoad() {
-    await Utils.injectJS({
-      id: `${this.template.data.tag}-script`,
-      src: this.template.data.cdn,
-      module: true,
-    });
-
     await TemplateUtils.loadScript(this.template);
 
     this.loaded = true;
