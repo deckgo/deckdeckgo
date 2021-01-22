@@ -43,7 +43,7 @@ export class AppEditSlideDynamic {
   }
 
   private getTemplates(): Template[] {
-    return this.selectedElement?.slide?.type === SlideType.USER ? templatesStore.state.user : templatesStore.state.community;
+    return this.selectedElement?.slide?.type === SlideType.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
   }
 
   private async onInputCustomUrlChange($event: CustomEvent<InputChangeEventDetail>, prop: TemplateDataProp) {
