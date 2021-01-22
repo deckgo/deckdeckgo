@@ -26,7 +26,6 @@ export const Menu = forwardRef(({lang}, ref) => {
   return (
     <div role="button" tabIndex="0" className={`${styles.menu} ${open ? `${styles.open}` : ''}`} onClick={() => hide()} onKeyDown={() => hide()}>
       <img
-        className="close"
         loading="lazy"
         src="/assets/icons/ionicons/close.svg"
         aria-hidden="true"
