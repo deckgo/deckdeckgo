@@ -13,6 +13,9 @@ export class AppTemplateShowcase {
   @Prop()
   template: Template;
 
+  @Prop()
+  editable: boolean = false;
+
   @State()
   private loaded: boolean = false;
 
@@ -65,6 +68,10 @@ export class AppTemplateShowcase {
   }
 
   private renderEdit() {
+    if (!this.editable) {
+      return undefined;
+    }
+
     return (
       <button>
         <ion-icon name="pencil"></ion-icon>

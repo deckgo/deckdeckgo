@@ -134,7 +134,7 @@ export class AppTemplates {
 
   private renderTemplates() {
     return templatesStore.state.user.map((template: Template) => {
-      return <app-template-showcase template={template} key={template.id} onClick={() => this.editTemplate(template)}></app-template-showcase>;
+      return <app-template-showcase template={template} editable={true} key={template.id} onClick={() => this.editTemplate(template)}></app-template-showcase>;
     });
   }
 

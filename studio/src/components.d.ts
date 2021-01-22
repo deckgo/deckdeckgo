@@ -368,6 +368,7 @@ export namespace Components {
         "template": Template | undefined;
     }
     interface AppTemplateShowcase {
+        "editable": boolean;
         "template": Template;
     }
     interface AppTemplates {
@@ -1628,6 +1629,7 @@ declare namespace LocalJSX {
         "template"?: Template | undefined;
     }
     interface AppTemplateShowcase {
+        "editable"?: boolean;
         "template"?: Template;
     }
     interface AppTemplates {
