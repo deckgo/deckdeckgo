@@ -72,9 +72,9 @@ export class AppTemplatesUser {
   private renderTemplates() {
     if (templatesStore.state.user.length === 0) {
       return (
-        <p>
+        <div class="info ion-padding">
           <app-no-templates></app-no-templates>
-        </p>
+        </div>
       );
     }
 
