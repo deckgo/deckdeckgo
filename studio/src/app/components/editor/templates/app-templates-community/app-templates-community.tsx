@@ -1,4 +1,4 @@
-import {Component, Fragment, h} from '@stencil/core';
+import {Component, Event, EventEmitter, h} from '@stencil/core';
 
 import templatesStore from '../../../../stores/templates.store';
 
@@ -8,17 +8,18 @@ import {Template} from '../../../../models/data/template';
   tag: 'app-templates-community',
 })
 export class AppTemplatesCommunity {
-  render() {
-    if (templatesStore.state.user.length <= 0) {
-      return (
-        <Fragment>
-          <ion-label>Share a template with the community. Follow this guide to get started.</ion-label>
-        </Fragment>
-      );
-    }
+  @Event()
+  selectedTemplate: EventEmitter<Template>;
 
-    return templatesStore.state.user.map((_template: Template) => {
-      return <div>TODO</div>;
+  render() {
+    return templatesStore.state.community.map((template: Template) => {
+      return (
+        <app-template-showcase
+          template={template}
+          key={template.id}
+          custom-tappable
+          onClick={() => this.selectedTemplate.emit(template)}></app-template-showcase>
+      );
     });
   }
 }

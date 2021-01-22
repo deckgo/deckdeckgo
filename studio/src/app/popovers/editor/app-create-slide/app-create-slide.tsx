@@ -4,7 +4,6 @@ import {SegmentChangeEventDetail} from '@ionic/core';
 
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
-import userStore from '../../../stores/user.store';
 
 import {SlideAttributes, SlideTemplate, SlideType} from '../../../models/data/slide';
 
@@ -12,6 +11,7 @@ import {Deck} from '../../../models/data/deck';
 import {Template} from '../../../models/data/template';
 
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
+import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {SlotType} from '../../../types/editor/slot-type';
 
@@ -34,7 +34,7 @@ export class AppCreateSlide {
   @Event() signIn: EventEmitter<void>;
 
   private async addSlide(template: SlideTemplate, deck?: Deck, elements?: SlotType[]) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements}, deck, userStore.state.user);
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements}, deck);
     await this.closePopover(template, slide);
   }
 
@@ -48,6 +48,7 @@ export class AppCreateSlide {
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
+  // User template is also only possible if user is logged in
   private async addRestrictedSlide(template: SlideTemplate | Template, type: SlideType = SlideType.DEFAULT, elements?: SlotType[]) {
     if (authStore.state.anonymous) {
       this.signIn.emit();
@@ -55,7 +56,11 @@ export class AppCreateSlide {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements, type}, null, userStore.state.user);
+    await this.addSlideTemplate(template, type, elements);
+  }
+
+  private async addSlideTemplate(template: SlideTemplate | Template, type: SlideType = SlideType.DEFAULT, elements?: SlotType[]) {
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, type, elements});
     await this.closePopover(template, slide);
   }
 
@@ -119,7 +124,10 @@ export class AppCreateSlide {
     if (slotType && customSlotsCount > 1) {
       elements.push(slotType);
 
-      if (this.composeTemplate.type === SlideType.USER && this.elements.length < (this.composeTemplate?.template as Template)?.data?.slots?.length - 1) {
+      if (
+        SlideUtils.isSlideTemplate(this.composeTemplate.type) &&
+        this.elements.length < (this.composeTemplate?.template as Template)?.data?.slots?.length - 1
+      ) {
         this.elements = [...this.elements];
         return;
       }
@@ -132,6 +140,8 @@ export class AppCreateSlide {
       await this.addSlide(SlideTemplate.CONTENT, undefined, elements);
     } else if (this.composeTemplate.type === SlideType.USER) {
       await this.addRestrictedSlide(this.composeTemplate.template, SlideType.USER, elements);
+    } else if (this.composeTemplate.type === SlideType.COMMUNITY) {
+      await this.addSlideTemplate(this.composeTemplate.template, SlideType.COMMUNITY, elements);
     } else {
       await this.addSlide(SlideTemplate.TITLE, undefined, elements);
     }
@@ -220,7 +230,16 @@ export class AppCreateSlide {
       return undefined;
     }
 
-    return <app-templates-community class="container ion-margin-bottom"></app-templates-community>;
+    return (
+      <app-templates-community
+        class="container ion-margin-bottom"
+        onSelectedTemplate={($event: CustomEvent<Template>) =>
+          (this.composeTemplate = {
+            template: $event.detail,
+            type: SlideType.COMMUNITY,
+          })
+        }></app-templates-community>
+    );
   }
 
   private renderTemplatesUser() {
@@ -299,7 +318,7 @@ export class AppCreateSlide {
       return <app-templates-content highlight={true} highlightIndex={this.elements?.length} {...attr}></app-templates-content>;
     } else if (slideTemplate === SlideTemplate.SPLIT) {
       return <app-templates-split vertical={this.composeTemplate.attributes !== undefined} {...attr}></app-templates-split>;
-    } else if (this.composeTemplate.type === SlideType.USER) {
+    } else if (SlideUtils.isSlideTemplate(this.composeTemplate.type)) {
       return <app-template-showcase template={this.composeTemplate.template as Template}></app-template-showcase>;
     } else if (slideTemplate === SlideTemplate.TITLE) {
       return <app-templates-title {...attr}></app-templates-title>;

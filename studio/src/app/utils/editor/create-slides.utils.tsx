@@ -4,6 +4,8 @@ import {v4 as uuid} from 'uuid';
 
 import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
+import userStore from '../../stores/user.store';
+
 import {SlideAttributes, SlideTemplate, SlideType} from '../../models/data/slide';
 import {User} from '../../models/data/user';
 import {Deck} from '../../models/data/deck';
@@ -17,6 +19,7 @@ import {SocialUtils} from './social.utils';
 import {SlotType} from '../../types/editor/slot-type';
 
 import {TemplateUtils} from './template.utils';
+import {SlideUtils} from './slide.utils';
 
 export interface InitTemplate {
   template: SlideTemplate | Template;
@@ -26,15 +29,15 @@ export interface InitTemplate {
 }
 
 export class CreateSlidesUtils {
-  static createSlide(template: InitTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
-    if (template.type === SlideType.USER) {
-      return this.createSlideTemplateUser(template.template as Template, template.elements);
+  static createSlide(template: InitTemplate, deck?: Deck): Promise<JSX.IntrinsicElements> {
+    if (SlideUtils.isSlideTemplate(template.type)) {
+      return this.createSlideTemplate(template.template as Template, template.elements);
     }
 
-    return this.createSlideDefault(template, deck, user);
+    return this.createSlideDefault(template, deck);
   }
 
-  private static async createSlideDefault(template: InitTemplate, deck?: Deck, user?: User): Promise<JSX.IntrinsicElements> {
+  private static async createSlideDefault(template: InitTemplate, deck?: Deck): Promise<JSX.IntrinsicElements> {
     if (template.template === SlideTemplate.CONTENT) {
       return this.createSlideContent(template.elements);
     } else if (template.template === SlideTemplate.SPLIT) {
@@ -42,7 +45,7 @@ export class CreateSlidesUtils {
     } else if (template.template === SlideTemplate.GIF) {
       return this.createSlideGif(undefined);
     } else if (template.template === SlideTemplate.AUTHOR) {
-      return this.createSlideAuthor(user);
+      return this.createSlideAuthor();
     } else if (template.template === SlideTemplate.YOUTUBE) {
       return this.createSlideYoutube();
     } else if (template.template === SlideTemplate.QRCODE) {
@@ -152,9 +155,11 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static createSlideAuthor(user: User): Promise<JSX.IntrinsicElements> {
+  private static createSlideAuthor(): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       const title = <h1 slot="title">Author</h1>;
+
+      const user: User | undefined = userStore.state.user;
 
       const name: string = user && user.data && user.data.name && user.data.name !== undefined && user.data.name !== '' ? user.data.name : undefined;
       const bio: string = user && user.data && user.data.bio && user.data.bio !== undefined && user.data.bio !== '' ? user.data.bio : undefined;
@@ -297,7 +302,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static async createSlideTemplateUser(template: Template, elements: SlotType[]): Promise<JSX.IntrinsicElements | undefined> {
+  private static async createSlideTemplate(template: Template, elements: SlotType[]): Promise<JSX.IntrinsicElements | undefined> {
     if (!template || !template.data) {
       return;
     }

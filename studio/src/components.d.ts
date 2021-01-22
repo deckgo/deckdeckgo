@@ -1638,6 +1638,7 @@ declare namespace LocalJSX {
         "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate; attributes: SlideAttributes}>) => void;
     }
     interface AppTemplatesCommunity {
+        "onSelectedTemplate"?: (event: CustomEvent<Template>) => void;
     }
     interface AppTemplatesContent {
         "highlight"?: boolean;
