@@ -25,6 +25,13 @@ export const Menu = forwardRef(({lang}, ref) => {
 
   return (
     <div role="button" tabIndex="0" className={`${styles.menu} ${open ? `${styles.open}` : ''}`} onClick={() => hide()} onKeyDown={() => hide()}>
+      <img
+        loading="lazy"
+        src="/assets/icons/ionicons/close.svg"
+        aria-hidden="true"
+        alt=""
+        style={{width: '3rem', padding: '0.45rem', position: 'fixed', top: '0', left: '0', margin: '15px 0 0 20px'}}
+      />
       <Link to={`/${lang}/`}>
         <h2>DeckDeckGo</h2>
       </Link>
