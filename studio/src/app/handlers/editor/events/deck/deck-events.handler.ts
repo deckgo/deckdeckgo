@@ -13,16 +13,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {
-  Slide,
-  SlideAttributes,
-  SlideAttributesYAxisDomain,
-  SlideChartType,
-  SlideData,
-  SlideSplitType,
-  SlideTemplate,
-  SlideType,
-} from '../../../../models/data/slide';
+import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideSplitType, SlideTemplate} from '../../../../models/data/slide';
 
 import {Constants} from '../../../../types/core/constants';
 
@@ -33,6 +24,7 @@ import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils'
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
 import {DeckAction} from '../../../../types/editor/deck-action';
+import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
 export class DeckEventsHandler {
   private mainRef: HTMLElement;
@@ -896,7 +888,7 @@ export class DeckEventsHandler {
 
     return {
       template: template || slide.nodeName?.toLowerCase(),
-      ...(!template && {type: SlideType.USER}),
+      ...(!template && {type: SlideUtils.slideType(slide)}),
     };
   }
 

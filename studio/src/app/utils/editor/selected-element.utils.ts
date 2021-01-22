@@ -1,10 +1,11 @@
-import {SlideSplitType, SlideType} from '../../models/data/slide';
+import {SlideSplitType} from '../../models/data/slide';
 
 import {SlotType} from '../../types/editor/slot-type';
 import {SelectedElement} from '../../types/editor/selected-element';
 
 import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
+import {SlideUtils} from './slide.utils';
 
 export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {
@@ -68,7 +69,7 @@ export class SelectedElementUtils {
       type,
       slide: {
         nodeName,
-        type: element.hasAttribute('type') ? SlideType[element.getAttribute('type')] : SlideType.DEFAULT,
+        type: SlideUtils.slideType(element),
         demo: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') === SlideSplitType.DEMO,
         qrCode: nodeName === 'deckgo-slide-qrcode',
         chart: nodeName === 'deckgo-slide-chart',

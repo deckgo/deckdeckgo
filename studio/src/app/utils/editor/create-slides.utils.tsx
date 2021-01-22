@@ -31,7 +31,7 @@ export interface InitTemplate {
 export class CreateSlidesUtils {
   static createSlide(template: InitTemplate, deck?: Deck): Promise<JSX.IntrinsicElements> {
     if (SlideUtils.isSlideTemplate(template.type)) {
-      return this.createSlideTemplate(template.template as Template, template.elements);
+      return this.createSlideTemplate(template.template as Template, template.elements, template.type);
     }
 
     return this.createSlideDefault(template, deck);
@@ -302,7 +302,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static async createSlideTemplate(template: Template, elements: SlotType[]): Promise<JSX.IntrinsicElements | undefined> {
+  private static async createSlideTemplate(template: Template, elements: SlotType[], type: SlideType): Promise<JSX.IntrinsicElements | undefined> {
     if (!template || !template.data) {
       return;
     }
@@ -312,7 +312,7 @@ export class CreateSlidesUtils {
     const Element = template.data.tag;
 
     const slide: JSX.IntrinsicElements = (
-      <Element key={uuid()} type="user">
+      <Element key={uuid()} type={type}>
         {!elements || elements.length <= 0
           ? undefined
           : elements.map((element: SlotType, i: number) => {

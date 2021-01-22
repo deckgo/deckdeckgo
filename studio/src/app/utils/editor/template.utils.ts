@@ -23,7 +23,9 @@ export class TemplateUtils {
       return;
     }
 
-    const template: Template | undefined = templatesStore.state.user.find((userTemplate: Template) => userTemplate.data.tag === slide.data.template);
+    const templates: Template[] = slide.data.type === SlideType.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
+
+    const template: Template | undefined = templates.find((userTemplate: Template) => userTemplate.data.tag === slide.data.template);
 
     if (!template) {
       return;
