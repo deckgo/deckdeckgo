@@ -380,7 +380,11 @@ export class AppActionsElement {
           );
         }
       }
+
+      this.blockSlide.emit(false);
     });
+
+    this.blockSlide.emit(true);
 
     await popover.present();
   }
