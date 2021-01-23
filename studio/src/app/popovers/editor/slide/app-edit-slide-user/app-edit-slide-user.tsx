@@ -59,10 +59,6 @@ export class AppEditSlideUser {
   }
 
   render() {
-    return <Fragment>{this.renderOptionsString()}</Fragment>;
-  }
-
-  private renderOptionsString() {
     if (!this.template) {
       return undefined;
     }
