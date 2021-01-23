@@ -15,9 +15,9 @@ interface Property {
 }
 
 @Component({
-  tag: 'app-edit-slide-dynamic',
+  tag: 'app-edit-slide-user',
 })
-export class AppEditSlideDynamic {
+export class AppEditSlideUser {
   @Prop()
   selectedElement: SelectedElement;
 

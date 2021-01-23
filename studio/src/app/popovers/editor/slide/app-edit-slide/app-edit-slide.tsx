@@ -73,7 +73,7 @@ export class AppEditSlide {
     } else if (this.selectedElement.slide?.author) {
       return <app-edit-slide-author selectedElement={this.selectedElement.element} slideDidChange={this.slideDidChange}></app-edit-slide-author>;
     } else {
-      return <app-edit-slide-dynamic selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-dynamic>;
+      return <app-edit-slide-user selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-user>;
     }
   }
 }
