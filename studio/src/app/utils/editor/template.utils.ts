@@ -19,18 +19,22 @@ export class TemplateUtils {
   }
 
   static async loadSlideTemplate(slide: Slide) {
-    if (!slide.data.scope || slide.data.scope === SlideScope.DEFAULT) {
-      return;
-    }
-
-    const templates: Template[] = slide.data.scope === SlideScope.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
-
-    const template: Template | undefined = templates.find((userTemplate: Template) => userTemplate.data.tag === slide.data.template);
+    const template: Template | undefined = await this.getTemplate(slide.data.scope, slide.data.template);
 
     if (!template) {
       return;
     }
 
     await this.loadScript(template);
+  }
+
+  static async getTemplate(scope: SlideScope, template: string): Promise<Template | undefined> {
+    if (!scope || scope === SlideScope.DEFAULT) {
+      return undefined;
+    }
+
+    const templates: Template[] = scope === SlideScope.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
+
+    return templates.find((filteredTemplate: Template) => filteredTemplate.data.tag === template);
   }
 }

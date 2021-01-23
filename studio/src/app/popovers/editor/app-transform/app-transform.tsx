@@ -1,6 +1,12 @@
-import {Component, Element, h, Prop} from '@stencil/core';
+import {Component, Element, h, Prop, State} from '@stencil/core';
 
 import {SlotType} from '../../../types/editor/slot-type';
+
+import {SlideScope} from '../../../models/data/slide';
+import {Template, TemplateDataSlot} from '../../../models/data/template';
+
+import {SlideUtils} from '../../../utils/editor/slide.utils';
+import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 @Component({
   tag: 'app-transform',
@@ -11,6 +17,30 @@ export class AppTransform {
 
   @Prop()
   selectedElement: HTMLElement;
+
+  @State()
+  private slotTypes: SlotType[] | undefined;
+
+  async componentWillLoad() {
+    const slotName: string | null = this.selectedElement.getAttribute('slot');
+
+    if (!slotName) {
+      this.slotTypes = undefined;
+      return;
+    }
+
+    const scope: SlideScope = SlideUtils.slideScope(this.selectedElement.parentElement);
+
+    const template: Template | undefined = await TemplateUtils.getTemplate(scope, this.selectedElement.parentElement?.nodeName.toLowerCase());
+
+    if (!template) {
+      this.slotTypes = undefined;
+      return;
+    }
+
+    const slot: TemplateDataSlot | undefined = template.data.slots?.find((slot: TemplateDataSlot) => slot.name === slotName);
+    this.slotTypes = slot?.types as SlotType[];
+  }
 
   private async closePopover(type?: SlotType) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
@@ -25,7 +55,10 @@ export class AppTransform {
         <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
 
-      <app-slot-type selectedElement={this.selectedElement} onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>,
+      <app-slot-type
+        selectedElement={this.selectedElement}
+        slotTypes={this.slotTypes}
+        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>,
     ];
   }
 }
