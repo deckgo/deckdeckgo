@@ -2,7 +2,7 @@ import {createStore} from '@stencil/store';
 
 import {Template} from '../models/data/template';
 
-import templates from '../configs/templates.json';
+import templates from '../../assets/templates.json';
 
 interface Templates {
   user: Template[];
