@@ -4,6 +4,10 @@
       "id": "db8abf75-5372-41be-8ee6-799b4884882c",
       "data": {
         "tag": "deckgo-slide-countdown",
+        "author": {
+          "name": "Gaurav Mahto",
+          "url": "https://github.com/gauravmahto"
+        },
         "cdn": "https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js",
         "props": [
           {

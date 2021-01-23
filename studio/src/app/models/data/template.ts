@@ -12,11 +12,17 @@ export interface TemplateDataProp {
   placeholder?: string;
 }
 
+export interface TemplateDataAuthor {
+  name: string;
+  url?: string;
+}
+
 export interface TemplateData {
   owner_id: string;
 
   tag: string;
   cdn?: string;
+  author?: TemplateDataAuthor;
   slots?: TemplateDataSlot[];
   props?: TemplateDataProp[];
 

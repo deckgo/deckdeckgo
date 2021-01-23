@@ -16,6 +16,7 @@ export class AppTemplatesCommunity {
       return (
         <app-template-showcase
           template={template}
+          author={true}
           key={template.id}
           custom-tappable
           onClick={() => this.selectedTemplate.emit(template)}></app-template-showcase>

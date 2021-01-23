@@ -54,6 +54,7 @@ app-template-showcase {
       ion-label {
         margin: 8px;
         font-size: var(--font-size-small);
+        color: var(--ion-color-medium);
       }
     }
 
@@ -70,6 +71,27 @@ app-template-showcase {
       right: 4px;
 
       @include dashboard.edit;
+    }
+  }
+
+  > p {
+    text-align: center;
+    font-size: var(--font-size-small);
+    color: var(--ion-color-medium);
+    margin: 8px 0;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition: opacity 0.2s ease-in;
+
+    &.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    a {
+      text-decoration: underline;
     }
   }
 }

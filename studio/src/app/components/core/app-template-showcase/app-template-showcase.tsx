@@ -1,4 +1,4 @@
-import {Component, Prop, h, State} from '@stencil/core';
+import {Component, Prop, h, State, Fragment} from '@stencil/core';
 
 import {Template, TemplateDataSlot} from '../../../models/data/template';
 
@@ -15,6 +15,9 @@ export class AppTemplateShowcase {
   @Prop()
   editable: boolean = false;
 
+  @Prop()
+  author: boolean = false;
+
   @State()
   private loaded: boolean = false;
 
@@ -30,10 +33,13 @@ export class AppTemplateShowcase {
 
   render() {
     return (
-      <article>
-        {this.loaded ? this.renderTemplate() : this.renderSpinner()}
-        {this.loaded ? this.renderEdit() : undefined}
-      </article>
+      <Fragment>
+        <article>
+          {this.loaded ? this.renderTemplate() : this.renderSpinner()}
+          {this.loaded ? this.renderEdit() : undefined}
+        </article>
+        {this.renderAuthor()}
+      </Fragment>
     );
   }
 
@@ -69,6 +75,21 @@ export class AppTemplateShowcase {
       <button>
         <ion-icon name="pencil"></ion-icon>
       </button>
+    );
+  }
+
+  private renderAuthor() {
+    if (!this.author) {
+      return undefined;
+    }
+
+    return (
+      <p class={this.loaded ? 'show' : 'hidden'}>
+        Provided by{' '}
+        <a href={this.template.data.author?.url} rel="noopener norefferer" target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>
+          {this.template.data.author?.name}
+        </a>
+      </p>
     );
   }
 }
