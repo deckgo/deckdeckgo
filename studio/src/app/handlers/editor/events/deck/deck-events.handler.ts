@@ -13,7 +13,16 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideSplitType, SlideTemplate} from '../../../../models/data/slide';
+import {
+  Slide,
+  SlideAttributes,
+  SlideAttributesYAxisDomain,
+  SlideChartType,
+  SlideData,
+  SlideScope,
+  SlideSplitType,
+  SlideTemplate,
+} from '../../../../models/data/slide';
 
 import {Constants} from '../../../../types/core/constants';
 
@@ -565,8 +574,7 @@ export class DeckEventsHandler {
   }
 
   private async getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-    const type: string | null = slide.getAttribute('type');
-    if (type === 'user' || type === 'community') {
+    if (SlideUtils.slideScope(slide) !== SlideScope.DEFAULT) {
       return this.getSlideUserAttributes(slide);
     }
 
