@@ -8,7 +8,7 @@ import {ParseElementsUtils} from './parse-elements.utils';
 
 import {QRCodeUtils} from './qrcode.utils';
 
-import {Slide, SlideTemplate, SlideType} from '../../models/data/slide';
+import {Slide, SlideTemplate, SlideScope} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
@@ -60,7 +60,7 @@ export class ParseSlidesUtils {
       const attributes = {
         ...userAttributes,
         ...defaultAttributes,
-        ...(slide.data.type !== SlideType.DEFAULT && {type: slide.data.type}),
+        ...(slide.data.scope !== SlideScope.DEFAULT && {scope: slide.data.scope}),
       };
 
       const SlideElement: string = slideTag;

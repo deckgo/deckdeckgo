@@ -7,7 +7,7 @@ import templatesStore from '../../../../stores/templates.store';
 import {SelectedElement} from '../../../../types/editor/selected-element';
 
 import {Template, TemplateDataProp} from '../../../../models/data/template';
-import {SlideType} from '../../../../models/data/slide';
+import {SlideScope} from '../../../../models/data/slide';
 
 interface Property {
   prop: TemplateDataProp;
@@ -43,7 +43,7 @@ export class AppEditSlideDynamic {
   }
 
   private getTemplates(): Template[] {
-    return this.selectedElement?.slide?.type === SlideType.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
+    return this.selectedElement?.slide?.scope === SlideScope.COMMUNITY ? templatesStore.state.community : templatesStore.state.user;
   }
 
   private async onInputCustomUrlChange($event: CustomEvent<InputChangeEventDetail>, prop: TemplateDataProp) {

@@ -20,7 +20,7 @@ import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
-import {SlideType} from '../../../../../models/data/slide';
+import {SlideScope} from '../../../../../models/data/slide';
 
 @Component({
   tag: 'app-actions-element',
@@ -342,7 +342,7 @@ export class AppActionsElement {
       (!this.selectedElement?.slide?.qrCode &&
         !this.selectedElement?.slide?.chart &&
         !this.selectedElement?.slide?.author &&
-        this.selectedElement?.slide?.type === SlideType.DEFAULT)
+        this.selectedElement?.slide?.scope === SlideScope.DEFAULT)
     ) {
       return;
     }
@@ -836,7 +836,7 @@ export class AppActionsElement {
       this.selectedElement?.slide?.playground ||
       this.selectedElement?.slide?.author ||
       this.selectedElement?.slide?.demo ||
-      this.selectedElement?.slide?.type !== SlideType.DEFAULT
+      this.selectedElement?.slide?.scope !== SlideScope.DEFAULT
     );
   }
 
@@ -965,7 +965,7 @@ export class AppActionsElement {
             ? this.openEditModalSlide('app-playground', this.updatePlayground)
             : this.selectedElement?.slide?.demo
             ? this.openEditModalSlide('app-demo', this.updateSlideDemo)
-            : this.selectedElement?.slide?.type !== SlideType.DEFAULT
+            : this.selectedElement?.slide?.scope !== SlideScope.DEFAULT
             ? this.openEditSlide()
             : this.openEditSlide()
         }

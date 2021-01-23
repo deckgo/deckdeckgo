@@ -6,7 +6,7 @@ import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
 import userStore from '../../stores/user.store';
 
-import {SlideAttributes, SlideTemplate, SlideType} from '../../models/data/slide';
+import {SlideAttributes, SlideTemplate, SlideScope} from '../../models/data/slide';
 import {User} from '../../models/data/user';
 import {Deck} from '../../models/data/deck';
 import {Template} from '../../models/data/template';
@@ -23,15 +23,15 @@ import {SlideUtils} from './slide.utils';
 
 export interface InitTemplate {
   template: SlideTemplate | Template;
-  type?: SlideType;
+  scope?: SlideScope;
   elements?: SlotType[];
   attributes?: SlideAttributes;
 }
 
 export class CreateSlidesUtils {
   static createSlide(template: InitTemplate, deck?: Deck): Promise<JSX.IntrinsicElements> {
-    if (SlideUtils.isSlideTemplate(template.type)) {
-      return this.createSlideTemplate(template.template as Template, template.elements, template.type);
+    if (SlideUtils.isSlideTemplate(template.scope)) {
+      return this.createSlideTemplate(template.template as Template, template.elements, template.scope);
     }
 
     return this.createSlideDefault(template, deck);
@@ -302,7 +302,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static async createSlideTemplate(template: Template, elements: SlotType[], type: SlideType): Promise<JSX.IntrinsicElements | undefined> {
+  private static async createSlideTemplate(template: Template, elements: SlotType[], scope: SlideScope): Promise<JSX.IntrinsicElements | undefined> {
     if (!template || !template.data) {
       return;
     }
@@ -312,7 +312,7 @@ export class CreateSlidesUtils {
     const Element = template.data.tag;
 
     const slide: JSX.IntrinsicElements = (
-      <Element key={uuid()} type={type}>
+      <Element key={uuid()} scope={scope}>
         {!elements || elements.length <= 0
           ? undefined
           : elements.map((element: SlotType, i: number) => {

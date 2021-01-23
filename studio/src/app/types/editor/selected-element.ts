@@ -1,5 +1,5 @@
 import {SlotType} from './slot-type';
-import {SlideType} from '../../models/data/slide';
+import {SlideScope} from '../../models/data/slide';
 
 export interface SelectedSlot {
   code: boolean;
@@ -14,7 +14,7 @@ export interface SelectedSlot {
 
 export interface SelectedSlide {
   nodeName: string | undefined;
-  type: SlideType;
+  scope: SlideScope;
   demo: boolean;
   qrCode: boolean;
   chart: boolean;

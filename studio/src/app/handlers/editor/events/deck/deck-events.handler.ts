@@ -888,7 +888,7 @@ export class DeckEventsHandler {
 
     return {
       template: template || slide.nodeName?.toLowerCase(),
-      ...(!template && {type: SlideUtils.slideType(slide)}),
+      ...(!template && {scope: SlideUtils.slideScope(slide)}),
     };
   }
 

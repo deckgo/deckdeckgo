@@ -14,7 +14,7 @@ export enum SlideTemplate {
   PLAYGROUND = 'playground',
 }
 
-export enum SlideType {
+export enum SlideScope {
   DEFAULT = 'default',
   COMMUNITY = 'community',
   USER = 'user',
@@ -69,7 +69,7 @@ export interface SlideData {
   content?: string;
 
   template: SlideTemplate | string;
-  type?: SlideType;
+  scope?: SlideScope;
 
   attributes?: SlideAttributes;
 

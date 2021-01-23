@@ -69,7 +69,7 @@ export class SelectedElementUtils {
       type,
       slide: {
         nodeName,
-        type: SlideUtils.slideType(element),
+        scope: SlideUtils.slideScope(element),
         demo: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') === SlideSplitType.DEMO,
         qrCode: nodeName === 'deckgo-slide-qrcode',
         chart: nodeName === 'deckgo-slide-chart',

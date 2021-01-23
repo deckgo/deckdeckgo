@@ -1,11 +1,11 @@
-import {SlideType} from '../../models/data/slide';
+import {SlideScope} from '../../models/data/slide';
 
 export class SlideUtils {
-  static isSlideTemplate(type: SlideType | undefined): boolean {
-    return type && type !== undefined && (type === SlideType.COMMUNITY || type === SlideType.USER);
+  static isSlideTemplate(scope: SlideScope | undefined): boolean {
+    return scope && scope !== undefined && (scope === SlideScope.COMMUNITY || scope === SlideScope.USER);
   }
 
-  static slideType(element: HTMLElement | undefined): SlideType {
-    return element?.hasAttribute('type') ? <SlideType>element.getAttribute('type') : SlideType.DEFAULT;
+  static slideScope(element: HTMLElement | undefined): SlideScope {
+    return element?.hasAttribute('scope') ? <SlideScope>element.getAttribute('scope') : SlideScope.DEFAULT;
   }
 }
