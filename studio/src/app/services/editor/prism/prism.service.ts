@@ -1,4 +1,4 @@
-import {AssetsService} from '../../core/assets/assets.service';
+import assetsStore from '../../../stores/assets.store';
 
 export interface PrismLanguage {
   language: string;
@@ -9,12 +9,6 @@ export class PrismService {
   private languages: PrismLanguage[];
 
   private static instance: PrismService;
-
-  private assetsService: AssetsService;
-
-  private constructor() {
-    this.assetsService = AssetsService.getInstance();
-  }
 
   static getInstance() {
     if (!PrismService.instance) {
@@ -48,14 +42,7 @@ export class PrismService {
       }
 
       try {
-        const assets: Assets | undefined = await this.assetsService.assets();
-
-        if (assets === undefined || !assets.prism || !assets.prism.definitionSrc) {
-          this.initDefaultLanguages();
-          resolve(this.languages);
-        }
-
-        const response: Response = await fetch(assets.prism.definitionSrc);
+        const response: Response = await fetch(assetsStore.state.prism.definitionSrc);
 
         const definition: any = await response.json();
 

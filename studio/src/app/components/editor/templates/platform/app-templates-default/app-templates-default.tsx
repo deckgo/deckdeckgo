@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
 
 import userStore from '../../../../../stores/user.store';
+import assetsStore from '../../../../../stores/assets.store';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 import {Template} from '../../../../../models/data/template';
@@ -8,7 +9,6 @@ import {Template} from '../../../../../models/data/template';
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 
 import {EnvironmentConfigService} from '../../../../../services/core/environment/environment-config.service';
-import {AssetsService} from '../../../../../services/core/assets/assets.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
@@ -17,9 +17,6 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment
 })
 export class AppTemplatesDefault {
   @Element() el: HTMLElement;
-
-  @State()
-  private assets: Assets | undefined = undefined;
 
   @State()
   private navigatorOnline: boolean = navigator.onLine;
@@ -43,10 +40,6 @@ export class AppTemplatesDefault {
 
   @Event()
   composeTemplate: EventEmitter<InitTemplate>;
-
-  async componentWillLoad() {
-    this.assets = await AssetsService.getInstance().assets();
-  }
 
   async componentDidLoad() {
     await this.lazyLoadContent();
@@ -163,10 +156,6 @@ export class AppTemplatesDefault {
   }
 
   private renderChart() {
-    if (this.assets === undefined || !this.assets.chart) {
-      return undefined;
-    }
-
     return (
       <div class="item" custom-tappable onClick={() => this.selectCharts.emit()}>
         <deckgo-slide-chart
@@ -180,7 +169,7 @@ export class AppTemplatesDefault {
           marginRight={0}
           width={204}
           height={68}
-          src={this.assets.chart.lineCompareSrc}
+          src={assetsStore.state.chart.lineCompareSrc}
           custom-loader={true}>
           <p slot="title">Charts</p>
         </deckgo-slide-chart>
@@ -213,10 +202,6 @@ export class AppTemplatesDefault {
   }
 
   private renderGif() {
-    if (this.assets === undefined || !this.assets.gif || !this.assets.gif.exampleSrc) {
-      return undefined;
-    }
-
     if (!this.navigatorOnline) {
       // For the Gif template, we need to select a Gif in Tenor, which is not accessible offline
       return undefined;
@@ -224,7 +209,7 @@ export class AppTemplatesDefault {
 
     return (
       <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.GIF})}>
-        <deckgo-slide-gif class="showcase" src={this.assets.gif.exampleSrc} alt="Slide Gif">
+        <deckgo-slide-gif class="showcase" src={assetsStore.state.gif.exampleSrc} alt="Slide Gif">
           <p slot="top">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
           </p>

@@ -4,6 +4,7 @@ import {del, get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
+import assetsStore from '../../../stores/assets.store';
 
 import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
@@ -16,7 +17,6 @@ import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
-import {AssetsService} from '../../core/assets/assets.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
@@ -30,15 +30,12 @@ export class OfflineService {
   private deckOnlineService: DeckOnlineService;
   private storageOnlineService: StorageOnlineService;
 
-  private assetsService: AssetsService;
   private fontsService: FontsService;
 
   private constructor() {
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
     this.storageOnlineService = StorageOnlineService.getInstance();
-
-    this.assetsService = AssetsService.getInstance();
     this.fontsService = FontsService.getInstance();
   }
 
@@ -237,19 +234,7 @@ export class OfflineService {
   }
 
   private async cacheAssets() {
-    const assets: Assets | undefined = await this.assetsService.assets();
-
-    if (assets === undefined) {
-      return;
-    }
-
-    const promises: Promise<void>[] = [
-      this.assetsDefinition(),
-      this.assetsShapes(assets),
-      this.assetsDeckDeckGo(assets),
-      this.assetsNavigation(assets),
-      this.assetCharts(assets),
-    ];
+    const promises: Promise<void>[] = [this.assetsShapes(), this.assetsDeckDeckGo(), this.assetsNavigation(), this.assetCharts()];
 
     // We don't cache PrismJS definition file.
     // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
@@ -257,42 +242,34 @@ export class OfflineService {
     await Promise.all(promises);
   }
 
-  private async assetsDefinition(): Promise<void> {
-    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-    const assetsFileUrl: string[] = [`${config.globalAssetsUrl}/assets.json`];
-
-    await ServiceWorkerUtils.cacheUrls('assets', assetsFileUrl);
-  }
-
-  private async assetsShapes(assets: Assets): Promise<void> {
+  private async assetsShapes(): Promise<void> {
     const deckGoUrls: string[] = [
-      ...this.assetsShapesList(assets, 'shapes'),
-      ...this.assetsShapesList(assets, 'arrows'),
-      ...this.assetsShapesList(assets, 'status'),
-      ...this.assetsShapesList(assets, 'computers'),
-      ...this.assetsShapesList(assets, 'dateTime'),
-      ...this.assetsShapesList(assets, 'files'),
-      ...this.assetsShapesList(assets, 'finance'),
+      ...this.assetsShapesList('shapes'),
+      ...this.assetsShapesList('arrows'),
+      ...this.assetsShapesList('status'),
+      ...this.assetsShapesList('computers'),
+      ...this.assetsShapesList('dateTime'),
+      ...this.assetsShapesList('files'),
+      ...this.assetsShapesList('finance'),
     ];
 
     await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
   }
 
-  private async assetsDeckDeckGo(assets: Assets): Promise<void> {
-    if (assets.deckdeckgo) {
+  private async assetsDeckDeckGo(): Promise<void> {
+    if (assetsStore.state.deckdeckgo) {
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      const deckGoUrls: string[] = [`${config.globalAssetsUrl}${assets.deckdeckgo.logo}`];
+      const deckGoUrls: string[] = [`${config.globalAssetsUrl}${assetsStore.state.deckdeckgo.logo}`];
 
       await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
     }
   }
 
-  private async assetsNavigation(assets: Assets) {
-    if (assets.navigation && assets.navigation.length > 0) {
+  private async assetsNavigation() {
+    if (assetsStore.state.navigation && assetsStore.state.navigation.length > 0) {
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-      const deckGoUrls: string[] = assets.navigation.map((asset: ImgAsset) => {
+      const deckGoUrls: string[] = assetsStore.state.navigation.map((asset: ImgAsset) => {
         return `${config.globalAssetsUrl}${asset.src}`;
       });
 
@@ -300,11 +277,11 @@ export class OfflineService {
     }
   }
 
-  private assetsShapesList(assets: Assets, group: string): string[] {
-    if (assets.shapes && assets.shapes[group] && assets.shapes[group].length > 0) {
+  private assetsShapesList(group: string): string[] {
+    if (assetsStore.state.shapes && assetsStore.state.shapes[group] && assetsStore.state.shapes[group].length > 0) {
       const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-      return assets.shapes[group].map((asset: ImgAsset) => {
+      return assetsStore.state.shapes[group].map((asset: ImgAsset) => {
         return `${config.globalAssetsUrl}${asset.src}`;
       });
     } else {
@@ -312,10 +289,10 @@ export class OfflineService {
     }
   }
 
-  private async assetCharts(assets: Assets): Promise<void> {
-    if (assets.chart) {
-      const corsGitHubUrls: string[] = Object.keys(assets.chart).map((key: string) => {
-        return assets.chart[key];
+  private async assetCharts(): Promise<void> {
+    if (assetsStore.state.chart) {
+      const corsGitHubUrls: string[] = Object.keys(assetsStore.state.chart).map((key: string) => {
+        return assetsStore.state.chart[key];
       });
 
       await ServiceWorkerUtils.cacheUrls('data-content', corsGitHubUrls);
