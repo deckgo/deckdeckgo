@@ -24,8 +24,8 @@ export class AppList {
   @Event() listStyleChanged: EventEmitter<ListStyle>;
 
   async componentWillLoad() {
-    this.listType = await ListUtils.isElementList(this.selectedElement);
-    this.selectedStyle = await ListUtils.getListElementType(this.selectedElement);
+    this.listType = ListUtils.isElementList(this.selectedElement);
+    this.selectedStyle = ListUtils.getListElementType(this.selectedElement);
   }
 
   private async setListType($event: CustomEvent) {

@@ -1,0 +1,97 @@
+@use "../../../../global/theme/mixins/editor";
+@use "../../../../global/theme/mixins/dashboard";
+
+app-template-showcase {
+  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+
+  article {
+    position: relative;
+    overflow: hidden;
+
+    width: var(--template-showcase-width);
+    height: var(--template-showcase-height, 7rem);
+
+    cursor: pointer;
+
+    background: white;
+
+    @include editor.panel;
+
+    deckgo-deck {
+      --background: white;
+      --color: black;
+
+      --font-size-very-small: 4px;
+      --font-size-small: 8px;
+      --font-size-normal: 10px;
+
+      --font-size-h1: 18px;
+      --font-size-h2: 10px;
+      --font-size-h3: 7px;
+
+      --slide-width: 100%;
+      --slide-height: 100%;
+
+      > .deckgo-slide-container {
+        --slide-padding-top-default: 4px;
+        --slide-padding-end-default: 4px;
+        --slide-padding-bottom-default: 4px;
+        --slide-padding-start-default: 4px;
+      }
+    }
+
+    div.spinner {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background: var(--ion-color-light);
+
+      ion-label {
+        margin: 8px;
+        font-size: var(--font-size-small);
+        color: var(--ion-color-medium);
+      }
+    }
+
+    ion-skeleton-text {
+      background: rgba(var(--ion-color-medium-rgb), 0.8);
+      height: 12px;
+      margin: 8px 2px;
+      border-radius: 8px;
+    }
+
+    button {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+
+      @include dashboard.edit;
+    }
+  }
+
+  > p {
+    text-align: center;
+    font-size: var(--font-size-small);
+    color: var(--ion-color-medium);
+    margin: 8px 0;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition: opacity 0.2s ease-in;
+
+    &.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}

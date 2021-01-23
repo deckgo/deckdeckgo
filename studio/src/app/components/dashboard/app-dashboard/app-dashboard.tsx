@@ -21,6 +21,8 @@ import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import {TemplateService} from '../../../services/data/template/template.service';
+import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -44,10 +46,10 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private deckService: DeckService;
-  private slideService: SlideService;
-
-  private deckDashboardService: DeckDashboardService;
+  private readonly deckService: DeckService;
+  private readonly slideService: SlideService;
+  private readonly deckDashboardService: DeckDashboardService;
+  private readonly templateService: TemplateService;
 
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
@@ -58,6 +60,7 @@ export class AppDashboard {
     this.deckService = DeckService.getInstance();
     this.slideService = SlideService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
+    this.templateService = TemplateService.getInstance();
   }
 
   async componentWillLoad() {
@@ -87,6 +90,9 @@ export class AppDashboard {
 
     try {
       const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
+
+      await this.templateService.init();
+
       this.decks = await this.fetchFirstSlides(userDecks);
       await this.filterDecks(null);
 
@@ -169,6 +175,8 @@ export class AppDashboard {
         const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
         const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
         const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
+
+        await TemplateUtils.loadSlideTemplate(slide);
 
         resolve({
           deck,

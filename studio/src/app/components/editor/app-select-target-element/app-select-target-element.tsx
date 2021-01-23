@@ -38,9 +38,6 @@ export class AppSelectTargetElement {
   @Prop()
   image: boolean = false;
 
-  @Prop()
-  shape: boolean = false;
-
   @Event()
   applyTo: EventEmitter<TargetElement>;
 
@@ -145,7 +142,7 @@ export class AppSelectTargetElement {
     if (this.background) {
       return (
         <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
-          <ion-label>{this.shape ? 'Color' : 'Background'}</ion-label>
+          <ion-label>Background</ion-label>
         </ion-segment-button>
       );
     } else {

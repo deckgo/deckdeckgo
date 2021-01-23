@@ -1,0 +1,20 @@
+@use "../../../../../global/theme/mixins/dashboard";
+
+app-templates {
+  main {
+    background: white;
+
+    div.action {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    div.container {
+      @include dashboard.grid;
+
+      --template-showcase-width: var(--card-width);
+      --template-showcase-height: calc(var(--card-width) * 9 / 16);
+    }
+  }
+}

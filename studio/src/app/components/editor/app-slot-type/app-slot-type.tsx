@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, Fragment, h, JSX, Prop, State} from '@stencil/core';
 
 import {SlotType} from '../../../types/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
@@ -13,6 +13,9 @@ export class AppSlotType {
 
   @Prop()
   skip: boolean = false;
+
+  @Prop()
+  slotTypes: SlotType[] | undefined;
 
   @State()
   private currentType: SlotType;
@@ -72,40 +75,61 @@ export class AppSlotType {
   render() {
     return (
       <ion-list class="article">
-        <a onClick={() => this.select(SlotType.H1)} class={this.currentType === SlotType.H1 ? 'current' : ''}>
-          <ion-item>
+        {this.renderSlot(
+          SlotType.H1,
+          <Fragment>
             <ion-icon name="text-outline" slot="start"></ion-icon>
             <h1>Huge title</h1>
-          </ion-item>
-        </a>
-        <a onClick={() => this.select(SlotType.H2)} class={this.currentType === SlotType.H2 ? 'current' : ''}>
-          <ion-item>
+          </Fragment>
+        )}
+
+        {this.renderSlot(
+          SlotType.H2,
+          <Fragment>
             <span class="placeholder" slot="start">
               &nbsp;
             </span>
             <h2>Large title</h2>
-          </ion-item>
-        </a>
-        <a onClick={() => this.select(SlotType.H3)} class={this.currentType === SlotType.H3 ? 'current' : ''}>
-          <ion-item>
+          </Fragment>
+        )}
+
+        {this.renderSlot(
+          SlotType.H3,
+          <Fragment>
             <span class="placeholder" slot="start">
               &nbsp;
             </span>
             <h3>Small title</h3>
-          </ion-item>
-        </a>
-        <a onClick={() => this.select(SlotType.SECTION)} class={this.currentType === SlotType.SECTION ? 'current' : ''}>
-          <ion-item>
+          </Fragment>
+        )}
+
+        {this.renderSlot(
+          SlotType.SECTION,
+          <Fragment>
             <span class="placeholder" slot="start">
               &nbsp;
             </span>
             <p>Paragraph</p>
-          </ion-item>
-        </a>
+          </Fragment>
+        )}
+
         {this.renderComplexTypes()}
 
         {this.renderSkip()}
       </ion-list>
+    );
+  }
+
+  private renderSlot(slotType: SlotType, item: JSX.IntrinsicElements) {
+    // User or community slides might limits which slot types can be used in the slide
+    if (this.slotTypes !== undefined && this.slotTypes.find((type: SlotType) => slotType === type) === undefined) {
+      return undefined;
+    }
+
+    return (
+      <a onClick={() => this.select(slotType)} class={this.currentType === slotType ? 'current' : ''}>
+        <ion-item>{item}</ion-item>
+      </a>
     );
   }
 
@@ -128,43 +152,56 @@ export class AppSlotType {
       return undefined;
     }
 
-    return [
-      <a onClick={() => this.select(SlotType.OL)} class={this.currentType === SlotType.OL ? 'current' : ''}>
-        <ion-item>
-          <ion-icon src="/assets/icons/ionicons/list.svg" slot="start"></ion-icon>
-          <ion-label>List</ion-label>
-        </ion-item>
-      </a>,
-      <a onClick={() => this.select(SlotType.IMG)} class={this.currentType === SlotType.IMG ? 'current' : ''}>
-        <ion-item>
-          <ion-icon src="/assets/icons/ionicons/images.svg" slot="start"></ion-icon>
-          <ion-label>Image</ion-label>
-        </ion-item>
-      </a>,
-      <a onClick={() => this.select(SlotType.CODE)} class={this.currentType === SlotType.CODE ? 'current' : ''}>
-        <ion-item>
-          <ion-icon src="/assets/icons/ionicons/code.svg" slot="start"></ion-icon>
-          <ion-label>Code</ion-label>
-        </ion-item>
-      </a>,
-      // <a onClick={() => this.select(SlotType.MARKDOWN)} class={this.currentType === SlotType.MARKDOWN ? 'current' : ''}>
-      //   <ion-item>
-      //     <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>
-      //     <ion-label>Markdown</ion-label>
-      //   </ion-item>
-      // </a>,
-      <a onClick={() => this.select(SlotType.MATH)} class={this.currentType === SlotType.MATH ? 'current' : ''}>
-        <ion-item>
-          <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>
-          <ion-label>Math</ion-label>
-        </ion-item>
-      </a>,
-      <a onClick={() => this.select(SlotType.WORD_CLOUD)} class={this.currentType === SlotType.WORD_CLOUD ? 'current' : ''}>
-        <ion-item>
-          <ion-icon src="/assets/icons/word-cloud.svg" slot="start"></ion-icon>
-          <ion-label>Word Cloud</ion-label>
-        </ion-item>
-      </a>,
-    ];
+    return (
+      <Fragment>
+        {this.renderSlot(
+          SlotType.OL,
+          <Fragment>
+            <ion-icon src="/assets/icons/ionicons/list.svg" slot="start"></ion-icon>
+            <ion-label>List</ion-label>
+          </Fragment>
+        )}
+
+        {this.renderSlot(
+          SlotType.IMG,
+          <Fragment>
+            <ion-icon src="/assets/icons/ionicons/images.svg" slot="start"></ion-icon>
+            <ion-label>Image</ion-label>
+          </Fragment>
+        )}
+
+        {this.renderSlot(
+          SlotType.CODE,
+          <Fragment>
+            <ion-icon src="/assets/icons/ionicons/code.svg" slot="start"></ion-icon>
+            <ion-label>Code</ion-label>
+          </Fragment>
+        )}
+
+        {/*{this.renderSlot(*/}
+        {/*  SlotType.MARKDOWN,*/}
+        {/*  <Fragment>*/}
+        {/*    <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>*/}
+        {/*    <ion-label>Markdown</ion-label>*/}
+        {/*  </Fragment>*/}
+        {/*)}*/}
+
+        {this.renderSlot(
+          SlotType.MATH,
+          <Fragment>
+            <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>
+            <ion-label>Math</ion-label>
+          </Fragment>
+        )}
+
+        {this.renderSlot(
+          SlotType.WORD_CLOUD,
+          <Fragment>
+            <ion-icon src="/assets/icons/word-cloud.svg" slot="start"></ion-icon>
+            <ion-label>Word Cloud</ion-label>
+          </Fragment>
+        )}
+      </Fragment>
+    );
   }
 }

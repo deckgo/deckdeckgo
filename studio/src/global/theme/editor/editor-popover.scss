@@ -49,6 +49,12 @@ ion-item-divider {
   ion-label {
     margin: 16px 0 4px;
   }
+
+  &.item {
+    ion-label[class*="sc-ion-label"] {
+      white-space: inherit;
+    }
+  }
 }
 
 ion-button.delete {

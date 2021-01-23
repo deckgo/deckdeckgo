@@ -2,7 +2,7 @@
 
 app-create-slide {
   ion-toolbar {
-    padding: 16px 8px;
+    padding: 16px 8px 0;
 
     div.toolbar-title {
       display: flex;
@@ -22,7 +22,11 @@ app-create-slide {
     }
   }
 
-  div.container {
+  ion-segment {
+    margin-bottom: 8px;
+  }
+
+  .container {
     display: grid;
     grid-template-columns: 50% 50%;
     grid-row-gap: 20px;

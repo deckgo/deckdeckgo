@@ -12,6 +12,7 @@ import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
+import { SelectedElement } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { ImageAction } from "./app/types/editor/image-action";
@@ -20,6 +21,9 @@ import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
 import { ItemReorderEventDetail } from "@ionic/core";
+import { Template } from "./app/models/data/template";
+import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
+import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
     interface AppActionAddSlide {
         "addSlide": EventEmitter;
@@ -159,10 +163,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppEditSlide {
-        "author": boolean;
-        "chart": boolean;
-        "qrCode": boolean;
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
@@ -177,22 +178,19 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
     }
+    interface AppEditSlideUser {
+        "selectedElement": SelectedElement;
+        "slideDidChange": EventEmitter<HTMLElement>;
+    }
     interface AppEditor {
         "deckId": string;
     }
     interface AppElementDelete {
     }
     interface AppElementStyle {
-        "code": boolean;
-        "image": boolean;
         "imageHelper": ImageHelper;
         "imgDidChange": EventEmitter<HTMLElement>;
-        "markdown": boolean;
-        "math": boolean;
-        "selectedElement": HTMLElement;
-        "shape": 'shape' | 'text' | undefined;
-        "slide": boolean;
-        "wordCloud": boolean;
+        "selectedElement": SelectedElement;
     }
     interface AppEmbed {
     }
@@ -270,6 +268,8 @@ export namespace Components {
         "publish": boolean;
         "signIn": boolean;
     }
+    interface AppNoTemplates {
+    }
     interface AppNotes {
         "selectedElement": HTMLElement;
     }
@@ -325,7 +325,6 @@ export namespace Components {
         "headerFooter": boolean;
         "image": boolean;
         "qrCode": boolean;
-        "shape": boolean;
         "sides": boolean;
         "slide": boolean;
         "textTarget": boolean;
@@ -361,8 +360,40 @@ export namespace Components {
     interface AppSlotType {
         "selectedElement": HTMLElement;
         "skip": boolean;
+        "slotTypes": SlotType[] | undefined;
     }
     interface AppSpinner {
+    }
+    interface AppTemplate {
+        "template": Template | undefined;
+    }
+    interface AppTemplateShowcase {
+        "author": boolean;
+        "editable": boolean;
+        "template": Template;
+    }
+    interface AppTemplates {
+    }
+    interface AppTemplatesCharts {
+    }
+    interface AppTemplatesCommunity {
+    }
+    interface AppTemplatesContent {
+        "highlight": boolean;
+        "highlightIndex": number | undefined;
+    }
+    interface AppTemplatesDefault {
+    }
+    interface AppTemplatesSplit {
+        "highlight": boolean;
+        "highlightIndex": number | undefined;
+        "vertical": boolean;
+    }
+    interface AppTemplatesTitle {
+        "highlight": boolean;
+        "highlightIndex": number | undefined;
+    }
+    interface AppTemplatesUser {
     }
     interface AppTransform {
         "selectedElement": HTMLElement;
@@ -624,6 +655,12 @@ declare global {
         prototype: HTMLAppEditSlideQrcodeElement;
         new (): HTMLAppEditSlideQrcodeElement;
     };
+    interface HTMLAppEditSlideUserElement extends Components.AppEditSlideUser, HTMLStencilElement {
+    }
+    var HTMLAppEditSlideUserElement: {
+        prototype: HTMLAppEditSlideUserElement;
+        new (): HTMLAppEditSlideUserElement;
+    };
     interface HTMLAppEditorElement extends Components.AppEditor, HTMLStencilElement {
     }
     var HTMLAppEditorElement: {
@@ -779,6 +816,12 @@ declare global {
     var HTMLAppNavigationActionsElement: {
         prototype: HTMLAppNavigationActionsElement;
         new (): HTMLAppNavigationActionsElement;
+    };
+    interface HTMLAppNoTemplatesElement extends Components.AppNoTemplates, HTMLStencilElement {
+    }
+    var HTMLAppNoTemplatesElement: {
+        prototype: HTMLAppNoTemplatesElement;
+        new (): HTMLAppNoTemplatesElement;
     };
     interface HTMLAppNotesElement extends Components.AppNotes, HTMLStencilElement {
     }
@@ -960,6 +1003,66 @@ declare global {
         prototype: HTMLAppSpinnerElement;
         new (): HTMLAppSpinnerElement;
     };
+    interface HTMLAppTemplateElement extends Components.AppTemplate, HTMLStencilElement {
+    }
+    var HTMLAppTemplateElement: {
+        prototype: HTMLAppTemplateElement;
+        new (): HTMLAppTemplateElement;
+    };
+    interface HTMLAppTemplateShowcaseElement extends Components.AppTemplateShowcase, HTMLStencilElement {
+    }
+    var HTMLAppTemplateShowcaseElement: {
+        prototype: HTMLAppTemplateShowcaseElement;
+        new (): HTMLAppTemplateShowcaseElement;
+    };
+    interface HTMLAppTemplatesElement extends Components.AppTemplates, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesElement: {
+        prototype: HTMLAppTemplatesElement;
+        new (): HTMLAppTemplatesElement;
+    };
+    interface HTMLAppTemplatesChartsElement extends Components.AppTemplatesCharts, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesChartsElement: {
+        prototype: HTMLAppTemplatesChartsElement;
+        new (): HTMLAppTemplatesChartsElement;
+    };
+    interface HTMLAppTemplatesCommunityElement extends Components.AppTemplatesCommunity, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesCommunityElement: {
+        prototype: HTMLAppTemplatesCommunityElement;
+        new (): HTMLAppTemplatesCommunityElement;
+    };
+    interface HTMLAppTemplatesContentElement extends Components.AppTemplatesContent, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesContentElement: {
+        prototype: HTMLAppTemplatesContentElement;
+        new (): HTMLAppTemplatesContentElement;
+    };
+    interface HTMLAppTemplatesDefaultElement extends Components.AppTemplatesDefault, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesDefaultElement: {
+        prototype: HTMLAppTemplatesDefaultElement;
+        new (): HTMLAppTemplatesDefaultElement;
+    };
+    interface HTMLAppTemplatesSplitElement extends Components.AppTemplatesSplit, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesSplitElement: {
+        prototype: HTMLAppTemplatesSplitElement;
+        new (): HTMLAppTemplatesSplitElement;
+    };
+    interface HTMLAppTemplatesTitleElement extends Components.AppTemplatesTitle, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesTitleElement: {
+        prototype: HTMLAppTemplatesTitleElement;
+        new (): HTMLAppTemplatesTitleElement;
+    };
+    interface HTMLAppTemplatesUserElement extends Components.AppTemplatesUser, HTMLStencilElement {
+    }
+    var HTMLAppTemplatesUserElement: {
+        prototype: HTMLAppTemplatesUserElement;
+        new (): HTMLAppTemplatesUserElement;
+    };
     interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {
     }
     var HTMLAppTransformElement: {
@@ -1043,6 +1146,7 @@ declare global {
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
         "app-edit-slide-chart": HTMLAppEditSlideChartElement;
         "app-edit-slide-qrcode": HTMLAppEditSlideQrcodeElement;
+        "app-edit-slide-user": HTMLAppEditSlideUserElement;
         "app-editor": HTMLAppEditorElement;
         "app-element-delete": HTMLAppElementDeleteElement;
         "app-element-style": HTMLAppElementStyleElement;
@@ -1069,6 +1173,7 @@ declare global {
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
         "app-navigation-actions": HTMLAppNavigationActionsElement;
+        "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
         "app-offline": HTMLAppOfflineElement;
         "app-photo": HTMLAppPhotoElement;
@@ -1099,6 +1204,16 @@ declare global {
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
+        "app-template": HTMLAppTemplateElement;
+        "app-template-showcase": HTMLAppTemplateShowcaseElement;
+        "app-templates": HTMLAppTemplatesElement;
+        "app-templates-charts": HTMLAppTemplatesChartsElement;
+        "app-templates-community": HTMLAppTemplatesCommunityElement;
+        "app-templates-content": HTMLAppTemplatesContentElement;
+        "app-templates-default": HTMLAppTemplatesDefaultElement;
+        "app-templates-split": HTMLAppTemplatesSplitElement;
+        "app-templates-title": HTMLAppTemplatesTitleElement;
+        "app-templates-user": HTMLAppTemplatesUserElement;
         "app-transform": HTMLAppTransformElement;
         "app-unpublish": HTMLAppUnpublishElement;
         "app-user-delete": HTMLAppUserDeleteElement;
@@ -1287,10 +1402,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppEditSlide {
-        "author"?: boolean;
-        "chart"?: boolean;
-        "qrCode"?: boolean;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditSlideAuthor {
@@ -1307,23 +1419,20 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
+    interface AppEditSlideUser {
+        "selectedElement"?: SelectedElement;
+        "slideDidChange"?: EventEmitter<HTMLElement>;
+    }
     interface AppEditor {
         "deckId"?: string;
     }
     interface AppElementDelete {
     }
     interface AppElementStyle {
-        "code"?: boolean;
-        "image"?: boolean;
         "imageHelper"?: ImageHelper;
         "imgDidChange"?: EventEmitter<HTMLElement>;
-        "markdown"?: boolean;
-        "math"?: boolean;
         "onOptionsDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
-        "shape"?: 'shape' | 'text' | undefined;
-        "slide"?: boolean;
-        "wordCloud"?: boolean;
+        "selectedElement"?: SelectedElement;
     }
     interface AppEmbed {
     }
@@ -1413,6 +1522,8 @@ declare namespace LocalJSX {
         "publish"?: boolean;
         "signIn"?: boolean;
     }
+    interface AppNoTemplates {
+    }
     interface AppNotes {
         "selectedElement"?: HTMLElement;
     }
@@ -1473,7 +1584,6 @@ declare namespace LocalJSX {
         "image"?: boolean;
         "onApplyTo"?: (event: CustomEvent<TargetElement>) => void;
         "qrCode"?: boolean;
-        "shape"?: boolean;
         "sides"?: boolean;
         "slide"?: boolean;
         "textTarget"?: boolean;
@@ -1512,8 +1622,50 @@ declare namespace LocalJSX {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
         "selectedElement"?: HTMLElement;
         "skip"?: boolean;
+        "slotTypes"?: SlotType[] | undefined;
     }
     interface AppSpinner {
+    }
+    interface AppTemplate {
+        "template"?: Template | undefined;
+    }
+    interface AppTemplateShowcase {
+        "author"?: boolean;
+        "editable"?: boolean;
+        "template"?: Template;
+    }
+    interface AppTemplates {
+    }
+    interface AppTemplatesCharts {
+        "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate; attributes: SlideAttributes}>) => void;
+    }
+    interface AppTemplatesCommunity {
+        "onSelectedTemplate"?: (event: CustomEvent<Template>) => void;
+    }
+    interface AppTemplatesContent {
+        "highlight"?: boolean;
+        "highlightIndex"?: number | undefined;
+    }
+    interface AppTemplatesDefault {
+        "onAddSlideAspectRatio"?: (event: CustomEvent<void>) => void;
+        "onAddSlideAuthor"?: (event: CustomEvent<void>) => void;
+        "onAddSlideQRCode"?: (event: CustomEvent<void>) => void;
+        "onComposeTemplate"?: (event: CustomEvent<InitTemplate>) => void;
+        "onSelectCharts"?: (event: CustomEvent<void>) => void;
+        "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate | Template; attributes?: SlideAttributes}>) => void;
+    }
+    interface AppTemplatesSplit {
+        "highlight"?: boolean;
+        "highlightIndex"?: number | undefined;
+        "vertical"?: boolean;
+    }
+    interface AppTemplatesTitle {
+        "highlight"?: boolean;
+        "highlightIndex"?: number | undefined;
+    }
+    interface AppTemplatesUser {
+        "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
+        "onSelectedTemplate"?: (event: CustomEvent<Template>) => void;
     }
     interface AppTransform {
         "selectedElement"?: HTMLElement;
@@ -1574,6 +1726,7 @@ declare namespace LocalJSX {
         "app-edit-slide-author": AppEditSlideAuthor;
         "app-edit-slide-chart": AppEditSlideChart;
         "app-edit-slide-qrcode": AppEditSlideQrcode;
+        "app-edit-slide-user": AppEditSlideUser;
         "app-editor": AppEditor;
         "app-element-delete": AppElementDelete;
         "app-element-style": AppElementStyle;
@@ -1600,6 +1753,7 @@ declare namespace LocalJSX {
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
         "app-navigation-actions": AppNavigationActions;
+        "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
         "app-offline": AppOffline;
         "app-photo": AppPhoto;
@@ -1630,6 +1784,16 @@ declare namespace LocalJSX {
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
+        "app-template": AppTemplate;
+        "app-template-showcase": AppTemplateShowcase;
+        "app-templates": AppTemplates;
+        "app-templates-charts": AppTemplatesCharts;
+        "app-templates-community": AppTemplatesCommunity;
+        "app-templates-content": AppTemplatesContent;
+        "app-templates-default": AppTemplatesDefault;
+        "app-templates-split": AppTemplatesSplit;
+        "app-templates-title": AppTemplatesTitle;
+        "app-templates-user": AppTemplatesUser;
         "app-transform": AppTransform;
         "app-unpublish": AppUnpublish;
         "app-user-delete": AppUserDelete;
@@ -1683,6 +1847,7 @@ declare module "@stencil/core" {
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
             "app-edit-slide-chart": LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
             "app-edit-slide-qrcode": LocalJSX.AppEditSlideQrcode & JSXBase.HTMLAttributes<HTMLAppEditSlideQrcodeElement>;
+            "app-edit-slide-user": LocalJSX.AppEditSlideUser & JSXBase.HTMLAttributes<HTMLAppEditSlideUserElement>;
             "app-editor": LocalJSX.AppEditor & JSXBase.HTMLAttributes<HTMLAppEditorElement>;
             "app-element-delete": LocalJSX.AppElementDelete & JSXBase.HTMLAttributes<HTMLAppElementDeleteElement>;
             "app-element-style": LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
@@ -1709,6 +1874,7 @@ declare module "@stencil/core" {
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
+            "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
             "app-offline": LocalJSX.AppOffline & JSXBase.HTMLAttributes<HTMLAppOfflineElement>;
             "app-photo": LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
@@ -1739,6 +1905,16 @@ declare module "@stencil/core" {
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
+            "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
+            "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
+            "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;
+            "app-templates-charts": LocalJSX.AppTemplatesCharts & JSXBase.HTMLAttributes<HTMLAppTemplatesChartsElement>;
+            "app-templates-community": LocalJSX.AppTemplatesCommunity & JSXBase.HTMLAttributes<HTMLAppTemplatesCommunityElement>;
+            "app-templates-content": LocalJSX.AppTemplatesContent & JSXBase.HTMLAttributes<HTMLAppTemplatesContentElement>;
+            "app-templates-default": LocalJSX.AppTemplatesDefault & JSXBase.HTMLAttributes<HTMLAppTemplatesDefaultElement>;
+            "app-templates-split": LocalJSX.AppTemplatesSplit & JSXBase.HTMLAttributes<HTMLAppTemplatesSplitElement>;
+            "app-templates-title": LocalJSX.AppTemplatesTitle & JSXBase.HTMLAttributes<HTMLAppTemplatesTitleElement>;
+            "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;

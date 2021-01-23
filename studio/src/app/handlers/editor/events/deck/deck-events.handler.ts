@@ -13,17 +13,27 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
-import {Slide, SlideAttributes, SlideAttributesYAxisDomain, SlideChartType, SlideData, SlideSplitType, SlideTemplate} from '../../../../models/data/slide';
+import {
+  Slide,
+  SlideAttributes,
+  SlideAttributesYAxisDomain,
+  SlideChartType,
+  SlideData,
+  SlideScope,
+  SlideSplitType,
+  SlideTemplate,
+} from '../../../../models/data/slide';
+
+import {Constants} from '../../../../types/core/constants';
 
 import {Utils} from '../../../../utils/core/utils';
-import {Resources} from '../../../../utils/core/resources';
-
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
 import {DeckAction} from '../../../../types/editor/deck-action';
+import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
 export class DeckEventsHandler {
   private mainRef: HTMLElement;
@@ -231,9 +241,7 @@ export class DeckEventsHandler {
 
   private postSlide(deck: Deck, slide: HTMLElement): Promise<Slide> {
     return new Promise<Slide>(async (resolve) => {
-      const slideData: SlideData = {
-        template: this.getSlideTemplate(slide),
-      };
+      const slideData: SlideData = this.initSlideData(slide);
 
       const content: string = await this.cleanSlideContent(slide);
       if (content && content.length > 0) {
@@ -319,17 +327,12 @@ export class DeckEventsHandler {
     });
   }
 
-  private updateNavigation(deck: Deck): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!deck || !deck.id) {
-        resolve();
-        return;
-      }
+  private async updateNavigation(deck: Deck) {
+    if (!deck || !deck.id) {
+      return;
+    }
 
-      history.replaceState({}, `Deck edited ${deck.id}`, `/editor/${deck.id}`);
-
-      resolve();
-    });
+    history.replaceState({}, `Deck edited ${deck.id}`, `/editor/${deck.id}`);
   }
 
   private updateDeck(deck: HTMLElement): Promise<void> {
@@ -402,8 +405,8 @@ export class DeckEventsHandler {
 
         // TODO: Add a check, we should not update the title from the slide in case it would have been set in the publication
 
-        if (title.length >= Resources.Constants.DECK.TITLE_MAX_LENGTH) {
-          title = title.substr(0, Resources.Constants.DECK.TITLE_MAX_LENGTH);
+        if (title.length >= Constants.DECK.TITLE_MAX_LENGTH) {
+          title = title.substr(0, Constants.DECK.TITLE_MAX_LENGTH);
         }
 
         currentDeck.data.name = title;
@@ -472,9 +475,7 @@ export class DeckEventsHandler {
 
         const slideUpdate: Slide = {
           id: slide.getAttribute('slide_id'),
-          data: {
-            template: this.getSlideTemplate(slide),
-          },
+          data: this.initSlideData(slide),
         };
 
         const content: string = await this.cleanSlideContent(slide);
@@ -572,94 +573,104 @@ export class DeckEventsHandler {
     });
   }
 
-  private getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-    return new Promise<SlideAttributes>(async (resolve) => {
-      let attributes: SlideAttributes = {};
+  private async getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    if (SlideUtils.slideScope(slide) !== SlideScope.DEFAULT) {
+      return this.getSlideUserAttributes(slide);
+    }
 
-      if (slide.getAttribute('style')) {
-        attributes.style = slide.getAttribute('style');
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.style = firebase.firestore.FieldValue.delete();
-      }
-
-      if ((slide as any).src) {
-        attributes.src = (slide as any).src;
-      }
-
-      if (slide.hasAttribute('custom-background')) {
-        attributes.customBackground = '' + true;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.customBackground = firebase.firestore.FieldValue.delete();
-      }
-
-      if ((slide as any).imgSrc) {
-        attributes.imgSrc = (slide as any).imgSrc;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.imgSrc = firebase.firestore.FieldValue.delete();
-      }
-
-      if ((slide as any).imgAlt) {
-        attributes.imgAlt = (slide as any).imgAlt;
-      }
-
-      const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
-      const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
-      const splitAttributes: SlideAttributes = await this.getSlideAttributesSplit(slide, cleanFields);
-      const authorAttributes: SlideAttributes = await this.getSlideAttributesAuthor(slide, cleanFields);
-      const playgroundAttributes: SlideAttributes = await this.getSlideAttributesPlayground(slide, cleanFields);
-
-      attributes = {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes, ...authorAttributes, ...playgroundAttributes};
-
-      resolve(attributes);
-    });
+    return this.getSlideDefaultAttributes(slide, cleanFields);
   }
 
-  private getSlideAttributesSplit(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-    return new Promise<SlideAttributes>((resolve) => {
-      if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-split') {
-        resolve({});
-        return;
-      }
-
-      let attributes: SlideAttributes = {};
-
-      if ((slide as any).vertical) {
-        attributes.vertical = true;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.vertical = firebase.firestore.FieldValue.delete();
-      }
-
-      // We only want to persist the currently specific 'demo' type, not the default one
-      if (slide.hasAttribute('type') && (slide.getAttribute('type') as SlideSplitType) === SlideSplitType.DEMO) {
-        attributes.type = SlideSplitType.DEMO;
-      }
-
-      resolve(attributes);
-    });
+  private async getSlideUserAttributes(slide: HTMLElement): Promise<SlideAttributes> {
+    return Array.from(slide.attributes)
+      ?.filter((a: Attr) => {
+        return !/(?:contenteditable|editable|spellcheck|highlighted|custom-loader|class|slide_id|type)/.test(a.name);
+      })
+      .map((a: Attr) => [a.name, a.value])
+      .reduce((acc: SlideAttributes, attr: string[]) => {
+        acc[attr[0]] = attr[1];
+        return acc;
+      }, {} as SlideAttributes);
   }
 
-  private getSlideAttributesAuthor(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-    return new Promise<SlideAttributes>((resolve) => {
-      if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-author') {
-        resolve({});
-        return;
-      }
+  private async getSlideDefaultAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    let attributes: SlideAttributes = {};
 
-      let attributes: SlideAttributes = {};
+    if (slide.getAttribute('style')) {
+      attributes.style = slide.getAttribute('style');
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.style = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.hasAttribute('img-mode') && slide.getAttribute('img-mode') !== 'cover') {
-        attributes.imgMode = slide.getAttribute('img-mode');
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.imgMode = firebase.firestore.FieldValue.delete();
-      }
+    if ((slide as any).src) {
+      attributes.src = (slide as any).src;
+    }
 
-      resolve(attributes);
-    });
+    if (slide.hasAttribute('custom-background')) {
+      attributes.customBackground = '' + true;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.customBackground = firebase.firestore.FieldValue.delete();
+    }
+
+    if ((slide as any).imgSrc) {
+      attributes.imgSrc = (slide as any).imgSrc;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.imgSrc = firebase.firestore.FieldValue.delete();
+    }
+
+    if ((slide as any).imgAlt) {
+      attributes.imgAlt = (slide as any).imgAlt;
+    }
+
+    const qrCodeAttributes: SlideAttributes = await this.getSlideAttributesQRCode(slide, cleanFields);
+    const chartAttributes: SlideAttributes = await this.getSlideAttributesChart(slide, cleanFields);
+    const splitAttributes: SlideAttributes = await this.getSlideAttributesSplit(slide, cleanFields);
+    const authorAttributes: SlideAttributes = await this.getSlideAttributesAuthor(slide, cleanFields);
+    const playgroundAttributes: SlideAttributes = await this.getSlideAttributesPlayground(slide, cleanFields);
+
+    return {...attributes, ...qrCodeAttributes, ...chartAttributes, ...splitAttributes, ...authorAttributes, ...playgroundAttributes};
+  }
+
+  private async getSlideAttributesSplit(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-split') {
+      return {};
+    }
+
+    let attributes: SlideAttributes = {};
+
+    if ((slide as any).vertical) {
+      attributes.vertical = true;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.vertical = firebase.firestore.FieldValue.delete();
+    }
+
+    // We only want to persist the currently specific 'demo' type, not the default one
+    if (slide.hasAttribute('type') && (slide.getAttribute('type') as SlideSplitType) === SlideSplitType.DEMO) {
+      attributes.type = SlideSplitType.DEMO;
+    }
+
+    return attributes;
+  }
+
+  private async getSlideAttributesAuthor(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-author') {
+      return {};
+    }
+
+    let attributes: SlideAttributes = {};
+
+    if (slide.hasAttribute('img-mode') && slide.getAttribute('img-mode') !== 'cover') {
+      attributes.imgMode = slide.getAttribute('img-mode');
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.imgMode = firebase.firestore.FieldValue.delete();
+    }
+
+    return attributes;
   }
 
   private async getSlideAttributesPlayground(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
@@ -679,149 +690,141 @@ export class DeckEventsHandler {
     return attributes;
   }
 
-  private getSlideAttributesQRCode(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-    return new Promise<SlideAttributes>((resolve) => {
-      if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-qrcode') {
-        resolve({});
-        return;
-      }
+  private async getSlideAttributesQRCode(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-qrcode') {
+      return {};
+    }
 
-      let attributes: SlideAttributes = {};
+    let attributes: SlideAttributes = {};
 
-      if (slide.hasAttribute('custom-qrcode')) {
-        attributes.customQRCode = true;
-        attributes.content = (slide as any).content;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.customQRCode = firebase.firestore.FieldValue.delete();
-        // @ts-ignore
-        attributes.content = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.hasAttribute('custom-qrcode')) {
+      attributes.customQRCode = true;
+      attributes.content = (slide as any).content;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.customQRCode = firebase.firestore.FieldValue.delete();
+      // @ts-ignore
+      attributes.content = firebase.firestore.FieldValue.delete();
+    }
 
-      resolve(attributes);
-    });
+    return attributes;
   }
 
-  private getSlideAttributesChart(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
-    return new Promise<SlideAttributes>((resolve) => {
-      if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-chart') {
-        resolve({});
-        return;
-      }
+  private async getSlideAttributesChart(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
+    if (!slide || !slide.nodeName || slide.nodeName.toLowerCase() !== 'deckgo-slide-chart') {
+      return {};
+    }
 
-      let attributes: SlideAttributes = {};
+    let attributes: SlideAttributes = {};
 
-      if (slide.hasAttribute('inner-radius')) {
-        attributes.innerRadius = parseInt(slide.getAttribute('inner-radius'));
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.innerRadius = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.hasAttribute('inner-radius')) {
+      attributes.innerRadius = parseInt(slide.getAttribute('inner-radius'));
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.innerRadius = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.hasAttribute('type')) {
-        attributes.type = SlideChartType[slide.getAttribute('type').toUpperCase()];
-      }
+    if (slide.hasAttribute('type')) {
+      attributes.type = SlideChartType[slide.getAttribute('type').toUpperCase()];
+    }
 
-      if (slide.hasAttribute('animation')) {
-        attributes.animation = slide.hasAttribute('animation');
-      }
+    if (slide.hasAttribute('animation')) {
+      attributes.animation = slide.hasAttribute('animation');
+    }
 
-      if (slide.hasAttribute('date-pattern')) {
-        attributes.datePattern = slide.getAttribute('date-pattern');
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.datePattern = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.hasAttribute('date-pattern')) {
+      attributes.datePattern = slide.getAttribute('date-pattern');
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.datePattern = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.hasAttribute('y-axis-domain')) {
-        attributes.yAxisDomain = slide.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.yAxisDomain = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.hasAttribute('y-axis-domain')) {
+      attributes.yAxisDomain = slide.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.yAxisDomain = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.getAttribute('smooth') === 'false') {
-        attributes.smooth = false;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.smooth = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.getAttribute('smooth') === 'false') {
+      attributes.smooth = false;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.smooth = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.getAttribute('area') === 'false') {
-        attributes.area = false;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.area = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.getAttribute('area') === 'false') {
+      attributes.area = false;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.area = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.hasAttribute('ticks')) {
-        attributes.ticks = parseInt(slide.getAttribute('ticks'));
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.ticks = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.hasAttribute('ticks')) {
+      attributes.ticks = parseInt(slide.getAttribute('ticks'));
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.ticks = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.getAttribute('grid') === 'true') {
-        attributes.grid = true;
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.grid = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.getAttribute('grid') === 'true') {
+      attributes.grid = true;
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.grid = firebase.firestore.FieldValue.delete();
+    }
 
-      if (slide.hasAttribute('separator')) {
-        attributes.separator = slide.getAttribute('separator');
-      } else if (cleanFields) {
-        // @ts-ignore
-        attributes.separator = firebase.firestore.FieldValue.delete();
-      }
+    if (slide.hasAttribute('separator')) {
+      attributes.separator = slide.getAttribute('separator');
+    } else if (cleanFields) {
+      // @ts-ignore
+      attributes.separator = firebase.firestore.FieldValue.delete();
+    }
 
-      resolve(attributes);
-    });
+    return attributes;
   }
 
-  private getDeckAttributes(deck: HTMLElement, updateDeck: boolean, currentDeck: Deck | null = null): Promise<DeckAttributes> {
-    return new Promise<DeckAttributes>((resolve) => {
-      let attributes: DeckAttributes = {};
+  private async getDeckAttributes(deck: HTMLElement, updateDeck: boolean, currentDeck: Deck | null = null): Promise<DeckAttributes> {
+    let attributes: DeckAttributes = {};
 
-      if (deck.hasAttribute('style') && deck.getAttribute('style') !== '') {
-        attributes.style = deck.getAttribute('style');
-      } else if (updateDeck) {
+    if (deck.hasAttribute('style') && deck.getAttribute('style') !== '') {
+      attributes.style = deck.getAttribute('style');
+    } else if (updateDeck) {
+      // @ts-ignore
+      attributes.style = firebase.firestore.FieldValue.delete();
+    }
+
+    if (deck.hasAttribute('animation') && deck.getAttribute('animation') !== 'slide') {
+      attributes.animation = deck.getAttribute('animation') as 'slide' | 'fade' | 'none';
+    } else if (updateDeck) {
+      // @ts-ignore
+      attributes.animation = firebase.firestore.FieldValue.delete();
+    }
+
+    if (deck.hasAttribute('direction') && deck.getAttribute('direction') !== 'horizontal') {
+      attributes.direction = deck.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
+    } else if (updateDeck) {
+      // @ts-ignore
+      attributes.direction = firebase.firestore.FieldValue.delete();
+    }
+
+    if (deck.hasAttribute('direction-mobile') && deck.getAttribute('direction-mobile') !== 'papyrus') {
+      attributes.directionMobile = deck.getAttribute('direction-mobile') as 'horizontal' | 'vertical' | 'papyrus';
+    } else if (updateDeck) {
+      // @ts-ignore
+      attributes.directionMobile = firebase.firestore.FieldValue.delete();
+    }
+
+    if (currentDeck && currentDeck.data && currentDeck.data.attributes) {
+      if (currentDeck.data.attributes.autoSlide !== undefined) {
+        attributes.autoSlide = currentDeck.data.attributes.autoSlide;
+      } else {
         // @ts-ignore
-        attributes.style = firebase.firestore.FieldValue.delete();
+        attributes.autoSlide = firebase.firestore.FieldValue.delete();
       }
+    }
 
-      if (deck.hasAttribute('animation') && deck.getAttribute('animation') !== 'slide') {
-        attributes.animation = deck.getAttribute('animation') as 'slide' | 'fade' | 'none';
-      } else if (updateDeck) {
-        // @ts-ignore
-        attributes.animation = firebase.firestore.FieldValue.delete();
-      }
-
-      if (deck.hasAttribute('direction') && deck.getAttribute('direction') !== 'horizontal') {
-        attributes.direction = deck.getAttribute('direction') as 'horizontal' | 'vertical' | 'papyrus';
-      } else if (updateDeck) {
-        // @ts-ignore
-        attributes.direction = firebase.firestore.FieldValue.delete();
-      }
-
-      if (deck.hasAttribute('direction-mobile') && deck.getAttribute('direction-mobile') !== 'papyrus') {
-        attributes.directionMobile = deck.getAttribute('direction-mobile') as 'horizontal' | 'vertical' | 'papyrus';
-      } else if (updateDeck) {
-        // @ts-ignore
-        attributes.directionMobile = firebase.firestore.FieldValue.delete();
-      }
-
-      if (currentDeck && currentDeck.data && currentDeck.data.attributes) {
-        if (currentDeck.data.attributes.autoSlide !== undefined) {
-          attributes.autoSlide = currentDeck.data.attributes.autoSlide;
-        } else {
-          // @ts-ignore
-          attributes.autoSlide = firebase.firestore.FieldValue.delete();
-        }
-      }
-
-      resolve(attributes);
-    });
+    return attributes;
   }
 
   private async getDeckSlot(deck: HTMLElement, slotName: 'background' | 'header' | 'footer'): Promise<string | null> {
@@ -834,23 +837,20 @@ export class DeckEventsHandler {
     return cleanContent(slotElement.innerHTML);
   }
 
-  private cleanSlideContent(slide: HTMLElement): Promise<string> {
-    return new Promise<string>(async (resolve) => {
-      const content: string = await this.filterSlideContentSlots(slide);
+  private async cleanSlideContent(slide: HTMLElement): Promise<string> {
+    const content: string = await this.filterSlideContentSlots(slide);
 
-      if (!content || content.length <= 0) {
-        resolve(content);
-        return;
-      }
+    if (!content || content.length <= 0) {
+      return content;
+    }
 
-      let result: string = await cleanContent(content);
+    let result: string = await cleanContent(content);
 
-      result = await this.cleanSlideCustomSlots(slide, result, 'background');
-      result = await this.cleanSlideCustomSlots(slide, result, 'header');
-      result = await this.cleanSlideCustomSlots(slide, result, 'footer');
+    result = await this.cleanSlideCustomSlots(slide, result, 'background');
+    result = await this.cleanSlideCustomSlots(slide, result, 'header');
+    result = await this.cleanSlideCustomSlots(slide, result, 'footer');
 
-      resolve(result);
-    });
+    return result;
   }
 
   private async cleanSlideCustomSlots(slide: HTMLElement, content: string, customAttribute: 'background' | 'header' | 'footer'): Promise<string> {
@@ -862,84 +862,71 @@ export class DeckEventsHandler {
     return content;
   }
 
-  private filterSlideContentSlots(slide: HTMLElement): Promise<string> {
-    return new Promise<string>((resolve) => {
-      if (!slide || !document) {
-        resolve(null);
-        return;
+  private async filterSlideContentSlots(slide: HTMLElement): Promise<string | null> {
+    if (!slide || !document) {
+      return null;
+    }
+
+    const div = document.createElement('div');
+
+    const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
+    elements.forEach((e: HTMLElement) => {
+      if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
+        div.appendChild(e.cloneNode(true));
       }
-
-      const div = document.createElement('div');
-
-      const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
-      elements.forEach((e: HTMLElement) => {
-        if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-          div.appendChild(e.cloneNode(true));
-        }
-      });
-
-      if (!div || div.childElementCount <= 0) {
-        resolve(null);
-        return;
-      }
-
-      const content: string = div.innerHTML;
-
-      resolve(content);
     });
+
+    if (!div || div.childElementCount <= 0) {
+      return null;
+    }
+
+    return div.innerHTML;
   }
 
-  private getSlideTemplate(slide: HTMLElement): SlideTemplate {
-    const templateKey: string = Object.keys(SlideTemplate).find((key: string) => {
+  private getSlideTemplate(slide: HTMLElement): SlideTemplate | undefined {
+    const templateKey: string | undefined = Object.keys(SlideTemplate).find((key: string) => {
       return slide.nodeName.toLowerCase().indexOf(SlideTemplate[key]) > -1;
     });
 
     return SlideTemplate[templateKey];
   }
 
-  private slideToLastSlide(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
+  private initSlideData(slide: HTMLElement): SlideData {
+    const template: SlideTemplate | undefined = this.getSlideTemplate(slide);
 
-      if (!deck || !deck.children || deck.children.length <= 0) {
-        resolve();
-        return;
-      }
-
-      const slides: Element[] = Array.from(deck.children).filter((slide: Element) => {
-        return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
-      });
-
-      if (!slides || slides.length <= 0) {
-        resolve();
-        return;
-      }
-
-      const lastSlide: Element = slides[slides.length - 1];
-
-      if (!lastSlide || lastSlide.getAttribute('slide_id')) {
-        resolve();
-        return;
-      }
-
-      await (deck as any).slideTo(slides.length - 1);
-
-      resolve();
-    });
+    return {
+      template: template || slide.nodeName?.toLowerCase(),
+      ...(!template && {scope: SlideUtils.slideScope(slide)}),
+    };
   }
 
-  initSlideSize(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
+  private async slideToLastSlide(): Promise<void> {
+    const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
-      if (!deck) {
-        return;
-      }
+    if (!deck || !deck.children || deck.children.length <= 0) {
+      return;
+    }
 
-      await deck.initSlideSize();
-
-      resolve();
+    const slides: Element[] = Array.from(deck.children).filter((slide: Element) => {
+      return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
     });
+
+    if (!slides || slides.length <= 0) {
+      return;
+    }
+
+    const lastSlide: Element = slides[slides.length - 1];
+
+    if (!lastSlide || lastSlide.getAttribute('slide_id')) {
+      return;
+    }
+
+    await (deck as any).slideTo(slides.length - 1);
+  }
+
+  async initSlideSize() {
+    const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
+    await deck?.initSlideSize();
   }
 
   updateDeckSlidesOrder(detail: ItemReorderEventDetail): Promise<void> {
@@ -971,17 +958,13 @@ export class DeckEventsHandler {
     });
   }
 
-  private emitSlideDidUpdate(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
-        bubbles: true,
-        detail: element,
-      });
-
-      this.mainRef.dispatchEvent(slideDidUpdate);
-
-      resolve();
+  private async emitSlideDidUpdate(element: HTMLElement) {
+    const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
+      bubbles: true,
+      detail: element,
     });
+
+    this.mainRef.dispatchEvent(slideDidUpdate);
   }
 
   async toggleSlideEditable(editable: boolean) {

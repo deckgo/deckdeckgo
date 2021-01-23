@@ -14,6 +14,12 @@ export enum SlideTemplate {
   PLAYGROUND = 'playground',
 }
 
+export enum SlideScope {
+  DEFAULT = 'default',
+  COMMUNITY = 'community',
+  USER = 'user',
+}
+
 export enum SlideChartType {
   LINE = 'line',
   PIE = 'pie',
@@ -55,11 +61,16 @@ export interface SlideAttributes {
   customLoader?: boolean;
 
   theme?: string;
+
+  [key: string]: string | number | boolean;
 }
 
 export interface SlideData {
   content?: string;
-  template: SlideTemplate;
+
+  template: SlideTemplate | string;
+  scope?: SlideScope;
+
   attributes?: SlideAttributes;
 
   api_id?: string;

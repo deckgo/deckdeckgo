@@ -1,28 +1,38 @@
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
 
+export interface InjectScript {
+  id: string;
+  src: string;
+  module?: boolean;
+}
+
 export class Utils {
-  static injectJS(id: string, src: string): Promise<string> {
+  static injectJS(scr: InjectScript): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       if (!document) {
         resolve();
         return;
       }
 
-      if (document.getElementById(id)) {
+      if (document.getElementById(scr.id)) {
         resolve('JS already loaded.');
         return;
       }
       const script = document.createElement('script');
 
-      script.id = id;
+      script.id = scr.id;
       script.async = true;
       script.defer = true;
-      script.src = src;
+      script.src = scr.src;
 
-      script.addEventListener('load', () => resolve('JS loaded.'));
+      if (scr.module) {
+        script.type = 'module';
+      }
 
-      script.addEventListener('error', () => reject('Error loading script.'));
-      script.addEventListener('abort', () => reject('Script loading aborted.'));
+      script.addEventListener('load', () => resolve('JS loaded.'), {once: true});
+
+      script.addEventListener('error', () => reject('Error loading script.'), {once: true});
+      script.addEventListener('abort', () => reject('Script loading aborted.'), {once: true});
 
       document.head.appendChild(script);
     });
@@ -45,10 +55,10 @@ export class Utils {
       link.setAttribute('rel', 'stylesheet');
       link.setAttribute('href', src);
 
-      link.addEventListener('load', () => resolve('CSS loaded.'));
+      link.addEventListener('load', () => resolve('CSS loaded.'), {once: true});
 
-      link.addEventListener('error', () => reject('Error loading css.'));
-      link.addEventListener('abort', () => reject('CSS loading aborted.'));
+      link.addEventListener('error', () => reject('Error loading css.'), {once: true});
+      link.addEventListener('abort', () => reject('CSS loading aborted.'), {once: true});
       document.head.appendChild(link);
     });
   }

@@ -1,0 +1,44 @@
+{
+  "community": [
+    {
+      "id": "db8abf75-5372-41be-8ee6-799b4884882c",
+      "data": {
+        "tag": "deckgo-slide-countdown",
+        "author": {
+          "name": "Gaurav Mahto",
+          "url": "https://github.com/gauravmahto"
+        },
+        "cdn": "https://unpkg.com/@deckdeckgo/slide-countdown@latest/dist/deckdeckgo-slide-countdown/deckdeckgo-slide-countdown.esm.js",
+        "props": [
+          {
+            "name": "days",
+            "type": "number",
+            "placeholder": "The amount of days before your presentations"
+          },
+          {
+            "name": "hours",
+            "type": "number",
+            "placeholder": "The amount of hours before your presentations (max. 23)"
+          },
+          {
+            "name": "minutes",
+            "type": "number",
+            "placeholder": "The amount of minutes before your presentations (max. 59)"
+          },
+          {
+            "name": "until",
+            "type": "string",
+            "placeholder": "A specific date and time until when your presentation will start (format: 2021-08-27T23:25:59.000+02:00)"
+          }
+        ],
+        "slots": [
+          {
+            "name": "title",
+            "placeholder": "Display the remaining time until your presentation",
+            "types": ["h1", "h2", "h3", "section"]
+          }
+        ]
+      }
+    }
+  ]
+}

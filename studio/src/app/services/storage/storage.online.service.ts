@@ -6,7 +6,7 @@ import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 
-import {Resources} from '../../utils/core/resources';
+import {Constants} from '../../types/core/constants';
 
 export class StorageOnlineService {
   private static instance: StorageOnlineService;
@@ -67,7 +67,7 @@ export class StorageOnlineService {
         const ref = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/`);
 
         let options: ListOptions = {
-          maxResults: Resources.Constants.STORAGE.MAX_QUERY_RESULTS,
+          maxResults: Constants.STORAGE.MAX_QUERY_RESULTS,
         };
 
         if (next) {

@@ -13,8 +13,8 @@ self.addEventListener('message', (event) => {
 
 workbox.setConfig({debug: false});
 
-const { CacheableResponsePlugin } = workbox.cacheableResponse;
-const { ExpirationPlugin } = workbox.expiration;
+const {CacheableResponsePlugin} = workbox.cacheableResponse;
+const {ExpirationPlugin} = workbox.expiration;
 
 /**
  * Cache font as displayed in the Workbox common recipe
@@ -106,7 +106,7 @@ workbox.routing.registerRoute(
 
 // Cache unpkg notably for language definitions
 workbox.routing.registerRoute(
-  /^(?=.*unpkg\.com).*/,
+  /^(?=.*(unpkg\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net)).*/,
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'unpkg',
     plugins: [

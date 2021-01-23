@@ -46,10 +46,14 @@ export class AppRoot {
 
   async componentWillLoad() {
     if (Build.isBrowser) {
-      await this.authService.init();
-      await this.themeService.initDarkModePreference();
-      await this.colorService.init();
-      await this.offlineService.init();
+      const promises: Promise<void>[] = [
+        this.authService.init(),
+        this.themeService.initDarkModePreference(),
+        this.colorService.init(),
+        this.offlineService.init(),
+      ];
+
+      await Promise.all(promises);
     }
   }
 
@@ -183,6 +187,7 @@ export class AppRoot {
 
           <ion-route url="/profile" component="app-profile" />
           <ion-route url="/customization" component="app-customization" />
+          <ion-route url="/templates" component="app-templates" />
 
           <ion-route url="/dashboard" component="app-dashboard-page" />
 

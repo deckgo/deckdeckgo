@@ -3,7 +3,7 @@ import {SlotUtils} from './slot.utils';
 import {ListStyle} from '../../types/editor/list-style';
 
 export class ListUtils {
-  static async isElementList(element: HTMLElement): Promise<SlotType.OL | SlotType.UL | undefined> {
+  static isElementList(element: HTMLElement): SlotType.OL | SlotType.UL | undefined {
     if (!SlotUtils.isNodeList(element)) {
       return undefined;
     }
@@ -15,7 +15,7 @@ export class ListUtils {
     }
   }
 
-  static async getListElementType(element: HTMLElement): Promise<ListStyle | undefined> {
+  static getListElementType(element: HTMLElement): ListStyle | undefined {
     if (!SlotUtils.isNodeList(element)) {
       return undefined;
     }
