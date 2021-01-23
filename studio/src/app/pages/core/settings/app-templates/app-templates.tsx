@@ -1,4 +1,4 @@
-import {Component, Fragment, h} from '@stencil/core';
+import {Component, Fragment, h, State} from '@stencil/core';
 
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
@@ -22,6 +22,9 @@ export class AppTemplates {
 
   private destroyListener;
 
+  @State()
+  private loading: boolean = false;
+
   constructor() {
     this.templateService = TemplateService.getInstance();
   }
@@ -42,10 +45,14 @@ export class AppTemplates {
     this.destroyListener();
 
     try {
+      this.loading = true;
+
       await this.templateService.init();
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
+
+    this.loading = false;
   }
 
   private async editTemplate(template?: Template) {
@@ -99,6 +106,10 @@ export class AppTemplates {
       return this.renderNotLoggedInContent();
     }
 
+    if (this.loading) {
+      return undefined;
+    }
+
     return (
       <Fragment>
         {this.renderContent()}
@@ -123,7 +134,18 @@ export class AppTemplates {
       return <app-no-templates></app-no-templates>;
     }
 
-    return <div class="container ion-margin-top">{this.renderTemplates()}</div>;
+    return (
+      <Fragment>
+        <ion-label>
+          Do you want to contribute to the community?{' '}
+          <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
+            Contact
+          </a>{' '}
+          us to share a template.
+        </ion-label>
+        <div class="container ion-margin-top">{this.renderTemplates()}</div>
+      </Fragment>
+    );
   }
 
   private renderTemplates() {
