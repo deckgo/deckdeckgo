@@ -1,8 +1,8 @@
-import {Component, Element, Event, EventEmitter, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
+
+import assetsStore from '../../../../../stores/assets.store';
 
 import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../../../models/data/slide';
-
-import {AssetsService} from '../../../../../services/core/assets/assets.service';
 
 @Component({
   tag: 'app-templates-charts',
@@ -10,18 +10,11 @@ import {AssetsService} from '../../../../../services/core/assets/assets.service'
 export class AppTemplatesCharts {
   @Element() el: HTMLElement;
 
-  @State()
-  private assets: Assets | undefined = undefined;
-
   @Event()
   selectedTemplate: EventEmitter<{template: SlideTemplate; attributes: SlideAttributes}>;
 
   private timerInterval: NodeJS.Timeout;
   private timerCounter: number = 0;
-
-  async componentWillLoad() {
-    this.assets = await AssetsService.getInstance().assets();
-  }
 
   async componentDidLoad() {
     await this.lazyLoadAllCharts();
@@ -80,7 +73,7 @@ export class AppTemplatesCharts {
           marginRight={8}
           width={68}
           height={68}
-          src={this.assets.chart.pieSrc}
+          src={assetsStore.state.chart.pieSrc}
           custom-loader={true}>
           <p slot="title">Pie</p>
         </deckgo-slide-chart>
@@ -101,7 +94,7 @@ export class AppTemplatesCharts {
           width={68}
           height={68}
           inner-radius={16}
-          src={this.assets.chart.pieSrc}
+          src={assetsStore.state.chart.pieSrc}
           custom-loader={true}>
           <p slot="title">Donut</p>
         </deckgo-slide-chart>
@@ -122,7 +115,7 @@ export class AppTemplatesCharts {
           marginRight={8}
           width={68}
           height={68}
-          src={this.assets.chart.barCompareSrc}
+          src={assetsStore.state.chart.barCompareSrc}
           custom-loader={true}>
           <p slot="title">Pie comparison</p>
         </deckgo-slide-chart>
@@ -141,7 +134,7 @@ export class AppTemplatesCharts {
           height={68}
           y-axis-domain="extent"
           date-pattern="dd.MM.yyyy"
-          src={this.assets.chart.lineCompareSrc}
+          src={assetsStore.state.chart.lineCompareSrc}
           custom-loader={true}>
           <p slot="title">Area</p>
         </deckgo-slide-chart>
@@ -164,7 +157,7 @@ export class AppTemplatesCharts {
           y-axis-domain="extent"
           date-pattern="dd.MM.yyyy"
           smooth={'false'}
-          src={this.assets.chart.lineSrc}
+          src={assetsStore.state.chart.lineSrc}
           custom-loader={true}>
           <p slot="title">Sharp area</p>
         </deckgo-slide-chart>
@@ -185,7 +178,7 @@ export class AppTemplatesCharts {
           width={88}
           height={68}
           area={'false'}
-          src={this.assets.chart.lineNoDatesSrc}
+          src={assetsStore.state.chart.lineNoDatesSrc}
           custom-loader={true}>
           <p slot="title">Lines</p>
         </deckgo-slide-chart>
@@ -208,7 +201,7 @@ export class AppTemplatesCharts {
           y-axis-domain="extent"
           date-pattern="dd.MM.yyyy"
           animation={true}
-          src={this.assets.chart.lineMultipleSrc}
+          src={assetsStore.state.chart.lineMultipleSrc}
           custom-loader={true}>
           <p slot="title">Line graph comparison</p>
         </deckgo-slide-chart>
@@ -225,7 +218,7 @@ export class AppTemplatesCharts {
           marginRight={0}
           width={88}
           height={68}
-          src={this.assets.chart.pieSrc}
+          src={assetsStore.state.chart.pieSrc}
           custom-loader={true}>
           <p slot="title">Bar</p>
         </deckgo-slide-chart>
@@ -242,7 +235,7 @@ export class AppTemplatesCharts {
           marginRight={0}
           width={88}
           height={68}
-          src={this.assets.chart.barCompareSrc}
+          src={assetsStore.state.chart.barCompareSrc}
           style={{
             '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
@@ -268,7 +261,7 @@ export class AppTemplatesCharts {
           width={88}
           height={68}
           animation={true}
-          src={this.assets.chart.barCompareSrc}
+          src={assetsStore.state.chart.barCompareSrc}
           style={{
             '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',

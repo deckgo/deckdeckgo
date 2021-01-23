@@ -1,8 +1,9 @@
-import {Component, Element, h, Prop, State} from '@stencil/core';
+import {Component, Element, h, Prop} from '@stencil/core';
+
+import assetsStore from '../../../stores/assets.store';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import {AssetsService} from '../../../services/core/assets/assets.service';
 
 @Component({
   tag: 'app-shape',
@@ -14,14 +15,7 @@ export class AppShape {
   @Prop()
   selectedElement: HTMLElement;
 
-  @State()
-  private assets: Assets | undefined = undefined;
-
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-  async componentWillLoad() {
-    this.assets = await AssetsService.getInstance().assets();
-  }
 
   private async closePopoverWithoutResults() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
@@ -104,13 +98,9 @@ export class AppShape {
   }
 
   private renderShapesGroup(group: string) {
-    if (this.assets?.shapes?.[group]?.length > 0) {
-      return this.assets.shapes[group].map((asset: ImgAsset) => {
-        return this.renderShape(`${this.config.globalAssetsUrl}${asset.src}`, asset.ariaLabel);
-      });
-    } else {
-      return undefined;
-    }
+    return assetsStore.state.shapes[group].map((asset: ImgAsset) => {
+      return this.renderShape(`${this.config.globalAssetsUrl}${asset.src}`, asset.ariaLabel);
+    });
   }
 
   private renderShape(src: string, ariaLabel: string) {

@@ -46,20 +46,6 @@ workbox.routing.registerRoute(
   })
 );
 
-// Catch assets list
-workbox.routing.registerRoute(
-  /^(?=.*assets\.json).*/,
-  new workbox.strategies.CacheFirst({
-    cacheName: 'assets',
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60,
-      }),
-    ],
-  })
-);
-
 // Cache the images
 workbox.routing.registerRoute(
   /^(?!.*(?:unsplash|giphy|tenor|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,

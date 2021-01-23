@@ -1,18 +1,12 @@
+import assetsStore from '../../../stores/assets.store';
+
 import {Utils} from '../../../utils/core/utils';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
-import {AssetsService} from '../../core/assets/assets.service';
-
 export class FontsService {
   private static instance: FontsService;
-
-  private assetsService: AssetsService;
-
-  private constructor() {
-    this.assetsService = AssetsService.getInstance();
-  }
 
   static getInstance() {
     if (!FontsService.instance) {
@@ -23,21 +17,15 @@ export class FontsService {
 
   async loadAllGoogleFonts(): Promise<GoogleFont[] | undefined> {
     try {
-      const assets: Assets = await this.assetsService.assets();
-
-      if (!assets || !assets.fonts || assets.fonts.length <= 0) {
-        return undefined;
-      }
-
       const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
 
-      const promises = assets.fonts.map((font: GoogleFont) => {
+      const promises = assetsStore.state.fonts.map((font: GoogleFont) => {
         return Utils.injectCSS(font.id, google.fontsUrl + font.name.replace(' ', '+'));
       });
 
       await Promise.all(promises);
 
-      return assets.fonts;
+      return assetsStore.state.fonts;
     } catch (err) {
       // We ignore this error. Show must go on aka will fallback on default font
     }
@@ -76,16 +64,9 @@ export class FontsService {
         return;
       }
 
-      const assets: Assets = await this.assetsService.assets();
-
-      if (!assets || !assets.fonts || assets.fonts.length <= 0) {
-        resolve(undefined);
-        return;
-      }
-
       const fontFamily: string = fontFamilyStyle.replace(/\'/g, '').replace(/"/g, '');
 
-      const font: GoogleFont = assets.fonts.find((font: GoogleFont) => {
+      const font: GoogleFont = assetsStore.state.fonts.find((font: GoogleFont) => {
         return fontFamily === font.family.replace(/\'/g, '');
       });
 
