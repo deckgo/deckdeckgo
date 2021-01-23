@@ -85,7 +85,7 @@ export class AppTemplateShowcase {
 
     return (
       <p class={this.loaded ? 'show' : 'hidden'}>
-        Provided by{' '}
+        Created by{' '}
         <a href={this.template.data.author?.url} rel="noopener norefferer" target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>
           {this.template.data.author?.name}
         </a>
