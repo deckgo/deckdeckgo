@@ -1,11 +1,9 @@
-import { get, RequestOptions } from "https";
-import fs from "fs";
-import path from "path";
+import {get, RequestOptions} from 'https';
+import fs from 'fs';
+import path from 'path';
 
 export function downloadStarterMaster() {
-  return downloadFromURL(
-    `https://github.com/deckgo/starter-kit/archive/master.zip`
-  );
+  return downloadFromURL(`https://github.com/deckgo/starter-kit/archive/master.zip`);
 }
 
 export function downloadFontsKey() {
@@ -13,29 +11,16 @@ export function downloadFontsKey() {
 }
 
 export function downloadFontsList(key: string) {
-  return downloadFromURL(
-    `https://www.googleapis.com/webfonts/v1/webfonts?key=${key}`
-  );
+  return downloadFromURL(`https://www.googleapis.com/webfonts/v1/webfonts?key=${key}`);
 }
 
-export function downloadFont(
-  family: string,
-  variants: string[],
-  subsets: string[],
-  userAgent: string
-) {
-  return downloadFromURL(
-    `https://fonts.googleapis.com/css?family=${family}:${variants.join(
-      ","
-    )}&subset=${subsets.join(",")}`,
-    { headers: { "User-Agent": userAgent } }
-  );
+export function downloadFont(family: string, variants: string[], subsets: string[], userAgent: string) {
+  return downloadFromURL(`https://fonts.googleapis.com/css?family=${family}:${variants.join(',')}&subset=${subsets.join(',')}`, {
+    headers: {'User-Agent': userAgent}
+  });
 }
 
-function downloadFromURL(
-  url: string,
-  headers: RequestOptions = {}
-): Promise<Buffer> {
+function downloadFromURL(url: string, headers: RequestOptions = {}): Promise<Buffer> {
   return new Promise<Buffer>((resolve, reject) => {
     get(url, headers, (res) => {
       if (res.statusCode === 302) {
@@ -43,11 +28,11 @@ function downloadFromURL(
       } else {
         const data: any[] = [];
 
-        res.on("data", (chunk) => data.push(chunk));
-        res.on("end", () => {
+        res.on('data', (chunk) => data.push(chunk));
+        res.on('end', () => {
           resolve(Buffer.concat(data));
         });
-        res.on("error", reject);
+        res.on('error', reject);
       }
     });
   });
@@ -58,19 +43,19 @@ export function downloadToFile(url: string, folder: string, fileName: string) {
     const fileStream = fs.createWriteStream(folder + path.sep + fileName);
 
     fileStream
-      .on("open", () => {
+      .on('open', () => {
         get(url, (res) => {
-          res.on("error", (err) => {
+          res.on('error', (err) => {
             reject(err);
           });
 
           res.pipe(fileStream);
         });
       })
-      .on("error", (err) => {
+      .on('error', (err) => {
         reject(err);
       })
-      .on("finish", () => {
+      .on('finish', () => {
         resolve();
       });
   });
