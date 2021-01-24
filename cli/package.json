@@ -1,7 +1,7 @@
 {
   "name": "create-deckdeckgo",
-  "version": "2.0.0",
-  "description": "Quickly create a new DeckDeckGo presentation: npm init deckdeckgo",
+  "version": "2.1.0",
+  "description": "Create a new DeckDeckGo presentation or template",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
@@ -40,17 +40,12 @@
   "author": "David Dal Busco",
   "license": "MIT",
   "keywords": [
-    "ionic",
-    "stencil",
-    "stenciljs",
-    "web components",
-    "pwa",
-    "progressive web app",
-    "presentation",
-    "slides",
+    "slide",
     "slideshow",
     "talk",
-    "cli"
+    "cli",
+    "template",
+    "presentation"
   ],
   "dependencies": {
     "cli-spinner": "^0.2.10",

@@ -1,3 +1,11 @@
+<a name="2.1.0"></a>
+
+# 2.1.0 (2021-01-24)
+
+### Features
+
+- support for `template` creation
+
 <a name="2.0.0"></a>
 
 # 2.0.0 (2020-10-28)
