@@ -3,10 +3,15 @@ import {red} from 'colorette';
 import {cleanup, nodeVersionWarning} from './utils/utils';
 import {getPkgVersion} from './utils/version';
 import {initPresentation} from './presentation';
+import { initTemplate } from "./template";
 
 const USAGE_DOCS = `Usage:
 npm init deckdeckgo
 `;
+
+interface GoalAnswer {
+  goal: string;
+}
 
 async function run() {
   const args = process.argv.slice(2);
@@ -27,12 +32,35 @@ async function run() {
   nodeVersionWarning();
 
   try {
-    await initPresentation();
+    const answer: GoalAnswer = await ask();
+
+    if (answer.goal === 'Presentation') {
+      await initPresentation();
+    } else if (answer.goal === 'Template') {
+      await initTemplate();
+    } else {
+      console.log('No goal selected. Process aborted.');
+    }
   } catch (e) {
     console.error(`\n${red('✖')} ${e.message}\n`);
   }
 
   cleanup();
+}
+
+const ask = async (): Promise<GoalAnswer> => {
+  const question = [
+    {
+      type: 'list',
+      name: 'goal',
+      message: 'What do you want to create?',
+      choices: ['Presentation', 'Template']
+    }
+  ];
+
+  const inquirer = require('inquirer');
+
+  return inquirer.prompt(question);
 }
 
 (async () => {
