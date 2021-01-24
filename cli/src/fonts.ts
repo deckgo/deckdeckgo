@@ -59,7 +59,7 @@ interface FontKey {
 }
 
 export function installFont(folder: string) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
     try {
       const inquirerFonts = require("inquirer");
 
@@ -291,7 +291,7 @@ function downloadFontAllCSS(
 
       loading.stop(true);
 
-      resolve();
+      resolve(null);
     } catch (err) {
       loading.stop(true);
       console.error(err);

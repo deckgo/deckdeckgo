@@ -21,7 +21,7 @@ export function npm(
   projectPath: string,
   stdio: any = "ignore"
 ) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const p = spawn("npm", [command], {
       shell: true,
       stdio,

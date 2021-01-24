@@ -131,7 +131,7 @@ async function run() {
 }
 
 function createPresentation(answers: Answers) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
     try {
       await downloadInstallPresentation(answers);
 
@@ -147,7 +147,7 @@ function createPresentation(answers: Answers) {
 }
 
 function downloadInstallPresentation(answers: Answers) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
     try {
       const loading = new Spinner(bold("[1/3] Creating your presentation..."));
       loading.setSpinnerString(18);
@@ -170,7 +170,7 @@ function downloadInstallPresentation(answers: Answers) {
 }
 
 function installDependencies(answers: Answers) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
     try {
       const loading = new Spinner(bold("[2/3] Installing dependencies..."));
       loading.setSpinnerString(18);
@@ -189,7 +189,7 @@ function installDependencies(answers: Answers) {
 }
 
 function updatePresentation(answers: Answers) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
     try {
       const loading = new Spinner(bold("[3/3] Updating presentation..."));
       loading.setSpinnerString(18);
