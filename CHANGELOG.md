@@ -1,4 +1,18 @@
+<a name="4.2.0"></a>
+
+# [4.1.0](https://github.com/deckgo/deckdeckgo/compare/v4.1.0...v4.2.0) (In progress...)
+
+### Applications
+
+- studio: v4.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Others
+
+- cli: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
+
 <a name="4.1.0"></a>
+
+# [4.1.0](https://github.com/deckgo/deckdeckgo/compare/v4.0.0...v4.1.0) (2021-01-14)
 
 ### Applications
 

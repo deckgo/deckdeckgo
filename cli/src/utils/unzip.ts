@@ -1,15 +1,11 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-import { fromBuffer } from "yauzl";
+import {fromBuffer} from 'yauzl';
 
 export function unZipBuffer(buffer: Buffer, projectName: string) {
   return new Promise((resolve, reject) => {
-    fromBuffer(
-      buffer,
-      { lazyEntries: true },
-      handleZipFile(projectName, resolve, reject)
-    );
+    fromBuffer(buffer, {lazyEntries: true}, handleZipFile(projectName, resolve, reject));
   });
 }
 
@@ -21,11 +17,11 @@ function handleZipFile(projectName: string, resolve: any, reject: any) {
 
     // track when we've closed all our file handles
     zipfile.readEntry();
-    zipfile.on("entry", (entry: any) => {
+    zipfile.on('entry', (entry: any) => {
       let fileName: string;
 
-      if (entry.fileName.indexOf("/") > -1) {
-        const segments = entry.fileName.split("/");
+      if (entry.fileName.indexOf('/') > -1) {
+        const segments = entry.fileName.split('/');
         segments[0] = projectName;
         fileName = segments.join(path.sep);
       } else {
@@ -44,7 +40,7 @@ function handleZipFile(projectName: string, resolve: any, reject: any) {
             if (errL) {
               throw errL;
             }
-            readStream.on("end", () => {
+            readStream.on('end', () => {
               zipfile.readEntry();
             });
             // pump file contents
@@ -53,15 +49,15 @@ function handleZipFile(projectName: string, resolve: any, reject: any) {
         });
       }
     });
-    zipfile.once("error", reject);
-    zipfile.once("end", () => {
+    zipfile.once('error', reject);
+    zipfile.once('end', () => {
       resolve();
     });
   };
 }
 
 function mkdirp(dir: string, cb: any) {
-  if (dir === ".") return cb();
+  if (dir === '.') return cb();
   fs.stat(dir, (err) => {
     if (err == null) return cb(); // already exists
 

@@ -15,7 +15,5 @@
     "outDir": "dist/src",
     "strictNullChecks": false
   },
-  "files": [
-    "src/index.ts"
-  ]
+  "files": ["src/index.ts"]
 }
