@@ -1,7 +1,7 @@
 import { red } from "colorette";
 
-import { cleanup, nodeVersionWarning } from "./utils";
-import { getPkgVersion } from "./version";
+import { cleanup, nodeVersionWarning } from "./utils/utils";
+import { getPkgVersion } from "./utils/version";
 import { initPresentation } from "./presentation";
 
 const USAGE_DOCS = `Usage:

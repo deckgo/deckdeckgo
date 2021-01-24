@@ -2,10 +2,10 @@ import { bold, cyan } from "colorette";
 
 import { Spinner } from "cli-spinner";
 
-import { installFont } from "./fonts";
-import { npm, rimraf } from "./utils";
-import { downloadStarterMaster } from "./download";
-import { unZipBuffer } from "./unzip";
+import { installFont } from "./utils/fonts";
+import { npm, rimraf } from "./utils/utils";
+import { downloadStarterMaster } from "./utils/download";
+import { unZipBuffer } from "./utils/unzip";
 
 interface Answers {
   folder: string;
