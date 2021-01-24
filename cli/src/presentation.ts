@@ -14,7 +14,19 @@ interface Answers {
   author: string;
 }
 
-export const initPresentation = () => {
+export const initPresentation = async () => {
+  const answers: Answers = await prompt();
+
+  await createPresentation(answers);
+
+  console.log('Coolio, Your presentation is initialized.\n');
+
+  await installFont(answers.folder);
+
+  info(answers);
+};
+
+const prompt = (): Promise<Answers> => {
   const questions = [
     {
       type: 'input',
@@ -60,112 +72,76 @@ export const initPresentation = () => {
 
   const inquirer = require('inquirer');
 
-  inquirer.prompt(questions).then(async (answers: Answers) => {
-    await createPresentation(answers);
-
-    console.log('Coolio, Your presentation is initialized.\n');
-
-    await installFont(answers.folder);
-
-    console.log(
-      'Run ' +
-        cyan('npm run start') +
-        ' in the newly created folder ' +
-        cyan(answers.folder) +
-        ' to serve your presentation locally at the address ' +
-        cyan('http://localhost:3000') +
-        '\n'
-    );
-
-    console.log('Find this presentation in the remote control with the keyword: ' + cyan(answers.title) + '\n');
-    console.log(
-      'If you rather like not to use the remote control while developing your deck, run ' +
-        cyan('npm run start-no-remote') +
-        ' instead of the previous command\n'
-    );
-
-    console.log('Dive deeper with the "Getting Started" guide at ' + cyan('https://docs.deckdeckgo.com') + '\n');
-  });
-};
-
-function createPresentation(answers: Answers) {
-  return new Promise<void>(async (resolve, reject) => {
-    try {
-      await downloadInstallPresentation(answers);
-
-      await installDependencies(answers);
-
-      await updatePresentation(answers);
-
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+  return inquirer.prompt(questions);
 }
 
-function downloadInstallPresentation(answers: Answers) {
-  return new Promise<void>(async (resolve, reject) => {
-    try {
-      const loading = new Spinner(bold('[1/3] Creating your presentation...'));
-      loading.setSpinnerString(18);
-      loading.start();
+const info = (answers: Answers) => {
+  console.log(
+    'Run ' +
+    cyan('npm run start') +
+    ' in the newly created folder ' +
+    cyan(answers.folder) +
+    ' to serve your presentation locally at the address ' +
+    cyan('http://localhost:3000') +
+    '\n'
+  );
 
-      // 1. Remove dir
-      rimraf(answers.folder);
+  console.log('Find this presentation in the remote control with the keyword: ' + cyan(answers.title) + '\n');
+  console.log(
+    'If you rather like not to use the remote control while developing your deck, run ' +
+    cyan('npm run start-no-remote') +
+    ' instead of the previous command\n'
+  );
 
-      // 2. Download starter
-      const buffer = await downloadStarterMaster();
-      await unZipBuffer(buffer, answers.folder);
-
-      loading.stop(true);
-
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+  console.log('Dive deeper with the "Getting Started" guide at ' + cyan('https://docs.deckdeckgo.com') + '\n');
 }
 
-function installDependencies(answers: Answers) {
-  return new Promise<void>(async (resolve, reject) => {
-    try {
-      const loading = new Spinner(bold('[2/3] Installing dependencies...'));
-      loading.setSpinnerString(18);
-      loading.start();
+const createPresentation = async (answers: Answers) => {
+  await downloadInstallPresentation(answers);
 
-      // 3. Install dependencies
-      await npm('ci', answers.folder);
+  await installDependencies(answers);
 
-      loading.stop(true);
-
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+  await updatePresentation(answers);
 }
 
-function updatePresentation(answers: Answers) {
-  return new Promise<void>(async (resolve, reject) => {
-    try {
-      const loading = new Spinner(bold('[3/3] Updating presentation...'));
-      loading.setSpinnerString(18);
-      loading.start();
+const downloadInstallPresentation = async (answers: Answers) => {
+  const loading = new Spinner(bold('[1/3] Creating your presentation...'));
+  loading.setSpinnerString(18);
+  loading.start();
 
-      // 4. Replace values in starter
-      replaceAnswers(answers);
+  // 1. Remove dir
+  rimraf(answers.folder);
 
-      loading.stop(true);
+  // 2. Download starter
+  const buffer = await downloadStarterMaster();
+  await unZipBuffer(buffer, answers.folder);
 
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+  loading.stop(true);
 }
 
-function replaceAnswers(answers: Answers) {
+const installDependencies = async (answers: Answers) => {
+  const loading = new Spinner(bold('[2/3] Installing dependencies...'));
+  loading.setSpinnerString(18);
+  loading.start();
+
+  // 3. Install dependencies
+  await npm('ci', answers.folder);
+
+  loading.stop(true);
+}
+
+const updatePresentation = async (answers: Answers) => {
+  const loading = new Spinner(bold('[3/3] Updating presentation...'));
+  loading.setSpinnerString(18);
+  loading.start();
+
+  // 4. Replace values in starter
+  replaceAnswers(answers);
+
+  loading.stop(true);
+}
+
+const replaceAnswers = (answers: Answers) => {
   const replaceResources = [
     answers.folder + '/src/index.html',
     answers.folder + '/src/manifest.json',
