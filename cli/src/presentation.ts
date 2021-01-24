@@ -3,9 +3,10 @@ import {bold, cyan} from 'colorette';
 import {Spinner} from 'cli-spinner';
 
 import {installFont} from './utils/fonts';
-import {npm, rimraf} from './utils/utils';
+import {rimraf} from './utils/utils';
 import {downloadStarterMaster} from './utils/download';
 import {unZipBuffer} from './utils/unzip';
+import { installDependencies } from "./utils/install";
 
 interface Answers {
   folder: string;
@@ -77,7 +78,7 @@ const prompt = (): Promise<Answers> => {
 
 const info = (answers: Answers) => {
   console.log(
-    'Run ' +
+    '\nRun ' +
     cyan('npm run start') +
     ' in the newly created folder ' +
     cyan(answers.folder) +
@@ -99,7 +100,7 @@ const info = (answers: Answers) => {
 const createPresentation = async (answers: Answers) => {
   await downloadInstallPresentation(answers);
 
-  await installDependencies(answers);
+  await installDependencies(answers.folder, '2/3');
 
   await updatePresentation(answers);
 }
@@ -115,17 +116,6 @@ const downloadInstallPresentation = async (answers: Answers) => {
   // 2. Download starter
   const buffer = await downloadStarterMaster();
   await unZipBuffer(buffer, answers.folder);
-
-  loading.stop(true);
-}
-
-const installDependencies = async (answers: Answers) => {
-  const loading = new Spinner(bold('[2/3] Installing dependencies...'));
-  loading.setSpinnerString(18);
-  loading.start();
-
-  // 3. Install dependencies
-  await npm('ci', answers.folder);
 
   loading.stop(true);
 }

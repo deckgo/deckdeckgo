@@ -10,6 +10,10 @@ export function downloadFontsKey() {
   return downloadFromURL(`https://api.deckdeckgo.com/googlefonts/`);
 }
 
+export function downloadTemplateMaster() {
+  return downloadFromURL(`https://github.com/deckgo/template-kit/archive/master.zip`);
+}
+
 export function downloadFontsList(key: string) {
   return downloadFromURL(`https://www.googleapis.com/webfonts/v1/webfonts?key=${key}`);
 }
