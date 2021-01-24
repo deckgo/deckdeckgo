@@ -8,7 +8,7 @@
 
 ### Others
 
-- cli: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
+- cli: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
 
 <a name="4.1.0"></a>
 

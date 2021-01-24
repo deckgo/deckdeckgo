@@ -32,7 +32,6 @@ const prompt = (): Promise<Answers> => {
       type: 'input',
       name: 'name',
       message: "What's your template name (will be use to create a new folder)?",
-      default: '',
       validate: (input: string) => {
         const reservedKeywords: boolean = /(?:deckgo|deckdeckgo|ddg)/.test(input);
 

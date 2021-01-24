@@ -1,3 +1,11 @@
+<a name="2.1.1"></a>
+
+# 2.1.1 (2021-01-24)
+
+### Features
+
+- not empty default for template name
+
 <a name="2.1.0"></a>
 
 # 2.1.0 (2021-01-24)
