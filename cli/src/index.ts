@@ -27,7 +27,7 @@ async function run() {
   nodeVersionWarning();
 
   try {
-    initPresentation();
+    await initPresentation();
   } catch (e) {
     console.error(`\n${red('✖')} ${e.message}\n`);
   }
