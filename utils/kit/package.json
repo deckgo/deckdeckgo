@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/kit",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": "David Dal Busco",
   "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "@deckdeckgo/core": "^8.0.0",
     "@deckdeckgo/remote": "^2.0.0",
     "@ionic/core": "^5.0.0",
-    "web-social-share": "^6.0.0"
+    "web-social-share": "^7.0.0"
   },
   "devDependencies": {
     "@deckdeckgo/core": "^8.0.0",

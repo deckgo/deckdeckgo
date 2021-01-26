@@ -4,11 +4,15 @@
 
 ### Applications
 
+- demo: v7.1.2 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 - studio: v4.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Others
 
 - cli: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
+- kit: v2.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
+- starter kit: v7.1.4 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
+- studio kit: v7.2.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 
 <a name="4.1.0"></a>
 

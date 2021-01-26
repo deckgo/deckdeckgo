@@ -42,34 +42,6 @@ async function openRemoteToGrantAccess(fromClient: {message: string; fromSocketI
   await openRemote(undefined);
 }
 
-export async function reconnectRemoteControl() {
-  const deckgoRemoteElement: HTMLDeckgoRemoteElement | null = document.querySelector('deckgo-remote') as HTMLDeckgoRemoteElement | null;
-
-  if (!deckgoRemoteElement) {
-    return;
-  }
-
-  await deckgoRemoteElement.connect();
-
-  const deck: HTMLDeckgoDeckElement | null = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
-
-  if (!deck) {
-    return;
-  }
-
-  await deck.slideTo(0, 300, false);
-}
-
-export async function disconnectRemoteControl() {
-  const deckgoRemoteElement: HTMLDeckgoRemoteElement | null = document.querySelector('deckgo-remote') as HTMLDeckgoRemoteElement | null;
-
-  if (!deckgoRemoteElement) {
-    return;
-  }
-
-  await deckgoRemoteElement.disconnect();
-}
-
 export const initRemote = async () => {
   if (process.env.NO_REMOTE || EMBEDDED) {
     return;
