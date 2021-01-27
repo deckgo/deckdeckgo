@@ -54,15 +54,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "master",
+        "branch": "release-20.03",
         "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
         "homepage": null,
-        "owner": "nh2",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72",
-        "sha256": "1hnmp637r99qd6g0sbx4w3za564gbzwl5c4z0x7fvn7kfi2jp1hx",
+        "rev": "504f993df9a5ca63317fe9c859df19daad30aa14",
+        "sha256": "19innk4v45xq62q6n5h0alhfbb3v7yxpdd1r7sglgjn8sr3ylwmn",
         "type": "tarball",
-        "url": "https://github.com/nh2/nixpkgs/archive/a2d7e9b875e8ba7fd15b989cf2d80be4e183dc72.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/504f993df9a5ca63317fe9c859df19daad30aa14.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "port-utils": {
@@ -77,10 +77,10 @@
         "homepage": "",
         "owner": "nh2",
         "repo": "static-haskell-nix",
-        "rev": "8d004d7ced9da947c785b93b4011f39367442339",
-        "sha256": "0nw4g23c5rs0cvaar2phpr60zim9r0qycznpifi8d8k85y4r3bdd",
+        "rev": "382150290ba43b6eb41981c1ab3b32aa31798140",
+        "sha256": "0zsyplzf1k235rl26irm27y5ljd8ciayw80q575msxa69a9y2nvd",
         "type": "tarball",
-        "url": "https://github.com/nh2/static-haskell-nix/archive/8d004d7ced9da947c785b93b4011f39367442339.tar.gz",
+        "url": "https://github.com/nh2/static-haskell-nix/archive/382150290ba43b6eb41981c1ab3b32aa31798140.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "wai-lambda": {

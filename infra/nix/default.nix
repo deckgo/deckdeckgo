@@ -1,101 +1,23 @@
 {}:
-with rec
-{ sources = import ./sources.nix;
-  pkgs_ = import sources.nixpkgs {};
-  mkPackage = pkgs: hsuper: name: path:
-    with
-    { addStaticLinkerFlagsWithPkgconfig =
-        haskellDrv:
-        pkgConfigNixPackages:
-        pkgconfigFlagsString:
-        pkgs.haskell.lib.overrideCabal
-          (pkgs.haskell.lib.appendConfigureFlag haskellDrv
-            [ "--ld-option=-Wl,--start-group" ]
-          )
-          (old:
-            { preConfigure =
-                builtins.concatStringsSep "\n"
-                  [ (old.preConfigure or "")
-                    ''
-                      set -e
-                      configureFlags+=$(for flag in $(pkg-config --static ${pkgconfigFlagsString}); do echo -n " --ld-option=$flag"; done)
-                    ''
-                  ];
-              libraryPkgconfigDepends =
-                (old.libraryPkgconfigDepends or []) ++
-                pkgConfigNixPackages;
-            }
-          );
+let
+  sources = import ./sources.nix;
+  pkgs = import sources.nixpkgs {};
+  staticPkgs = pkgs.pkgsMusl;
+  compiler = "ghc865";
+
+  haskellPackages = with pkgs.haskell.lib; staticPkgs.haskell.packages.${compiler}.override {
+    overrides = self: super: {
+      # Dependencies we need to patch
+      google-key-updater = self.callPackage ../google-key-updater {};
+      deckdeckgo-handler = self.callPackage ../handler {};
+      unsplash-proxy = self.callPackage ../unsplash-proxy {};
+      #hpc-coveralls = appendPatch super.hpc-coveralls (builtins.fetchurl https://github.com/guillaume-nargeot/hpc-coveralls/pull/73/commits/344217f513b7adfb9037f73026f5d928be98d07f.patch);
+      telegram-api = self.callPackage telegram-api-pkg {};
     };
-    { ${name} =
-        with { drv = hsuper.callCabal2nix name (pkgs.lib.cleanSource path) {}; };
-        with pkgs.haskell.lib;
-        failOnAllWarnings (
-        disableLibraryProfiling (
-        disableExecutableProfiling (
-          with { openssl_static = pkgs.openssl.override { static = true; }; };
-          addStaticLinkerFlagsWithPkgconfig drv [ openssl_static ]
-            "--libs openssl"
-        )));
-    };
+  };
 
-  pkgs = import sources.nixpkgs
-    { overlays =
-        [ (_: pkgs: pkgs.lib.recursiveUpdate pkgs
-            { haskell = pkgs.lib.recursiveUpdate pkgs.haskell
-              { packages = pkgs.lib.recursiveUpdate pkgs.haskell.packages
-                { ghc864 = pkgs.haskell.packages.ghc864.override
-                  (old:
-                    { overrides =
-                        pkgs.lib.composeExtensions
-                        (old.overrides or (_: _: {}))
-                        (hself: hsuper:
-                          mkPackage pkgs hsuper "deckdeckgo-handler"
-                            ../handler //
-                          mkPackage pkgs hsuper "firebase-login"
-                            ../firebase-login //
-                          mkPackage pkgs hsuper "unsplash-proxy"
-                            ../unsplash-proxy //
-                          mkPackage pkgs hsuper "wai-lambda"
-                            wai-lambda.wai-lambda-source //
-                          mkPackage pkgs hsuper "google-key-updater"
-                            ../google-key-updater
-                        );
-                    }
-                  );
-                };
-              };
-
-              # for cabal2nix
-              nix = pkgs_.nix;
-              git = pkgs_.git;
-              subversion = pkgs_.subversion;
-            }
-          )
-
-          (_: pkgs:
-            {
-              # Fails during tests
-              go_1_12 = pkgs.go_1_12.overrideAttrs (_:
-                { doCheck = false; }
-                );
-
-              # for napalm
-              nodejs = pkgs.nodejs-12_x;
-            }
-          )
-        ];
-    };
-
-  wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
-
-  survey = import "${sources.static-haskell-nix}/survey"
-    { normalPkgs = pkgs; };
-
-  haskellPackages =
-    survey.pkgsWithStaticHaskellBinaries.haskellPackages;
-};
+in
 
 pkgs //
-{ inherit haskellPackages sources wai-lambda; } //
+{ inherit haskellPackages sources; } //
 { terraform = pkgs.terraform_0_12 ; }
