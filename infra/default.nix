@@ -1,7 +1,11 @@
-with { pkgs = import ./nix {}; };
+let
+  pkgs = import ./nix {};
+in
 
 rec
-{ 
+{
+  inherit (pkgs) pkgsMusl;
+  inherit (pkgs) staticHaskellPackages; # TODO remove me
   function = # TODO: rename to handler
     pkgs.runCommand "build-lambda" {}
       ''
@@ -170,11 +174,11 @@ rec
         #'';
      #});
 
-  handler = pkgs.haskellPackages.deckdeckgo-handler;
+  handler = pkgs.staticHaskellPackages.deckdeckgo-handler;
 
-  unsplashProxy = pkgs.haskellPackages.unsplash-proxy;
+  unsplashProxy = pkgs.staticHaskellPackages.unsplash-proxy;
 
-  googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
+  googleKeyUpdater = pkgs.staticHaskellPackages.google-key-updater;
 
   publicKey = builtins.readFile ./public.cer;
 

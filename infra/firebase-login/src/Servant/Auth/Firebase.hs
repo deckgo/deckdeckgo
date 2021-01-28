@@ -35,6 +35,7 @@ import qualified Network.Wai as Wai
 import qualified Servant as Servant
 import qualified Servant.Client.Core as Servant
 import qualified Servant.Client.Core as Servant.Client
+import qualified Servant.Server.Internal as Servant
 import qualified Servant.Server.Internal.RoutingApplication as Servant
 
 data Protected
