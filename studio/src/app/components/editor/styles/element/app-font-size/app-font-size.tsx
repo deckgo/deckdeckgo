@@ -1,5 +1,9 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import settingsStore from '../../../../../stores/settings.store';
+
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+
 enum FontSize {
   VERY_SMALL,
   SMALL,
@@ -85,7 +89,9 @@ export class AppFontSize {
 
   render() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.fontSize}
+        onExpansion={($event: CustomEvent<'open' | 'close'>) => SettingsUtils.update({fontSize: $event.detail})}>
         <ion-label slot="title">Size</ion-label>
 
         <ion-list>

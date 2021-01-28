@@ -2,8 +2,9 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
-import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import settingsStore from '../../../../../stores/settings.store';
+
+import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
 @Component({

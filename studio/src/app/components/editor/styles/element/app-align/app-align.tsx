@@ -1,6 +1,9 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import settingsStore from '../../../../../stores/settings.store';
+
 import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
 @Component({
   tag: 'app-align',
@@ -36,7 +39,9 @@ export class AppAlign {
     }
 
     return (
-      <app-expansion-panel expanded="close">
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.align}
+        onExpansion={($event: CustomEvent<'open' | 'close'>) => SettingsUtils.update({align: $event.detail})}>
         <ion-label slot="title">Alignment</ion-label>
         <ion-list>
           <ion-item class="select">
