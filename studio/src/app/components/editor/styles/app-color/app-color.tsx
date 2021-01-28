@@ -9,12 +9,14 @@ import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 import colorStore from '../../../../stores/color.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
+import settingsStore from '../../../../stores/settings.store';
+import {EditMode} from '../../../../types/core/settings';
 
 @Component({
   tag: 'app-color',
   styleUrl: 'app-color.scss',
 })
-export class AppImage {
+export class AppColor {
   @Prop()
   initColor: () => Promise<InitStyleColor>;
 
@@ -27,11 +29,16 @@ export class AppImage {
   @State()
   private opacity: number = 100;
 
+  @State()
+  private colorCSS: string;
+
   @Event()
   colorDidChange: EventEmitter<string>;
 
   @Event()
   resetColor: EventEmitter<void>;
+
+  private destroyListener;
 
   private readonly debounceHandleHexInput: ($event: CustomEvent<KeyboardEvent>) => void = debounce(async ($event: CustomEvent<KeyboardEvent>) => {
     await this.handleHexInput($event);
@@ -46,6 +53,16 @@ export class AppImage {
 
   async componentWillLoad() {
     await this.loadColor();
+
+    this.destroyListener = settingsStore.onChange('edit', async (_edit: EditMode) => {
+      await this.loadColor();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
   }
 
   @Watch('initColor')
@@ -60,6 +77,16 @@ export class AppImage {
     await this.initColorStateRgb(rgb);
 
     this.opacity = opacity ? opacity : 100;
+
+    await this.initColorCSS();
+  }
+
+  private async initColorCSS() {
+    if (!this.color.rgb?.value) {
+      return;
+    }
+
+    this.colorCSS = `rgba(${this.color.rgb.value}, ${this.opacity / 100})`;
   }
 
   private async initColorStateRgb(rgb: string | undefined) {
@@ -100,6 +127,7 @@ export class AppImage {
     $event.stopPropagation();
 
     await this.initColorStateRgb(color.rgb);
+    await this.initColorCSS();
 
     await this.colorChange();
   }
@@ -184,12 +212,31 @@ export class AppImage {
     await this.colorChange();
   }
 
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.colorCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateColorCSS() {
+    this.colorDidChange.emit(this.colorCSS);
+  }
+
   render() {
     return (
       <Fragment>
-        <ion-list class="inputs-list">
+        <ion-list class="inputs-list standard">
           {this.renderColorPicker()}
           {this.renderOpacity()}
+        </ion-list>
+
+        <ion-list class="css">
+          <ion-item class="with-padding ion-margin-bottom">
+            <ion-input
+              value={this.colorCSS}
+              placeholder="Color code"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={async () => await this.updateColorCSS()}></ion-input>
+          </ion-item>
         </ion-list>
 
         {this.renderColorHistory()}
