@@ -2,7 +2,7 @@ import settingsStore from '../../stores/settings.store';
 
 import {get} from 'idb-keyval';
 
-import {SettingsPanels} from '../../types/core/settings';
+import {EditMode, SettingsPanels} from '../../types/core/settings';
 
 export class SettingsService {
   private static instance: SettingsService;
@@ -25,6 +25,10 @@ export class SettingsService {
       if (settingsPanels) {
         settingsStore.state.panels = settingsPanels;
       }
+
+      const edit: EditMode | null = await get<EditMode>('deckdeckgo_settings_edit_mode');
+
+      settingsStore.state.edit = edit ?? 'standard';
     } catch (err) {
       console.warn(`Couldn't find settings for panels. Proceeding with default`);
     }

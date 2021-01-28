@@ -17,4 +17,16 @@ app-element-style {
       font-size: var(--font-size-very-small);
     }
   }
+
+  &[edit-mode="standard"] {
+    .css {
+      display: none;
+    }
+  }
+
+  &[edit-mode="css"] {
+    .standard {
+      display: none;
+    }
+  }
 }

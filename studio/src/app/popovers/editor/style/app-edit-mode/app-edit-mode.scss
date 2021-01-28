@@ -1,0 +1,11 @@
+app-edit-mode {
+  ion-segment {
+    background: transparent;
+    margin: auto;
+    width: fit-content;
+
+    ion-segment-button {
+      --indicator-box-shadow: 0 0 2px rgba(0, 0, 0, 0.16);
+    }
+  }
+}

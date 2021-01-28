@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Host, h, Prop, State} from '@stencil/core';
+
+import settingsStore from '../../../../stores/settings.store';
 
 import {TargetElement} from '../../../../types/editor/target-element';
 import {SlotType} from '../../../../types/editor/slot-type';
@@ -98,15 +100,20 @@ export class AppElementStyle {
   }
 
   render() {
-    return [
-      <ion-toolbar>
-        <h2>{this.selectedElement.type === 'slide' ? 'Slide style' : 'Style'}</h2>
-        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
-      </ion-toolbar>,
-      this.renderSelectTarget(),
+    return (
+      <Host edit-mode={settingsStore.state.edit}>
+        <ion-toolbar>
+          <h2>{this.selectedElement.type === 'slide' ? 'Slide style' : 'Style'}</h2>
+          <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
+        </ion-toolbar>
 
-      this.renderStyleOptions(),
-    ];
+        {this.renderSelectTarget()}
+
+        {this.renderStyleOptions()}
+
+        <app-edit-mode></app-edit-mode>
+      </Host>
+    );
   }
 
   private renderSelectTarget() {
