@@ -1439,6 +1439,7 @@ declare namespace LocalJSX {
     interface AppExpansionPanel {
         "expanded"?: 'open' | 'close';
         "expander"?: boolean;
+        "onExpansion"?: (event: CustomEvent<'open' | 'close'>) => void;
     }
     interface AppFontSize {
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
