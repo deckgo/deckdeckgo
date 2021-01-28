@@ -16,7 +16,7 @@ export class AppEditMode {
   render() {
     return (
       <ion-segment mode="ios" color="medium" value={settingsStore.state.edit} onIonChange={($event: CustomEvent) => this.switchEditMode($event)}>
-        <ion-segment-button value="standard">Standard</ion-segment-button>
+        <ion-segment-button value="standard">Properties</ion-segment-button>
         <ion-segment-button value="css">CSS</ion-segment-button>
       </ion-segment>
     );
