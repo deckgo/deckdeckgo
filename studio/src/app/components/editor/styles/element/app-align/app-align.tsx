@@ -60,7 +60,7 @@ export class AppAlign {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({align: $event.detail})}>
         <ion-label slot="title">Alignment</ion-label>
         <ion-list>
-          <ion-item class="select standard">
+          <ion-item class="select properties">
             <ion-label>Alignment</ion-label>
 
             <ion-select

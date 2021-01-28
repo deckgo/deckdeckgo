@@ -18,14 +18,14 @@ app-element-style {
     }
   }
 
-  &[edit-mode="standard"] {
+  &[edit-mode="properties"] {
     .css {
       display: none;
     }
   }
 
   &[edit-mode="css"] {
-    .standard {
+    .properties {
       display: none;
     }
   }

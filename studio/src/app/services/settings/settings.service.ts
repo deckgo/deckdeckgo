@@ -28,7 +28,7 @@ export class SettingsService {
 
       const edit: EditMode | null = await get<EditMode>('deckdeckgo_settings_edit_mode');
 
-      settingsStore.state.edit = edit ?? 'standard';
+      settingsStore.state.edit = edit ?? 'properties';
     } catch (err) {
       console.warn(`Couldn't find settings for panels. Proceeding with default`);
     }

@@ -24,7 +24,7 @@ export class AppLetterSpacing {
   selectedElement: HTMLElement;
 
   @State()
-  private letterSpacingStandard: LetterSpacing = LetterSpacing.NORMAL;
+  private letterSpacing: LetterSpacing = LetterSpacing.NORMAL;
 
   @State()
   private letterSpacingCSS: string;
@@ -34,7 +34,7 @@ export class AppLetterSpacing {
   private destroyListener;
 
   async componentWillLoad() {
-    this.letterSpacingStandard = await this.initLetterSpacing();
+    this.letterSpacing = await this.initLetterSpacing();
     await this.initLetterSpacingCSS();
 
     this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
@@ -43,7 +43,7 @@ export class AppLetterSpacing {
         return;
       }
 
-      this.letterSpacingStandard = await this.initLetterSpacing();
+      this.letterSpacing = await this.initLetterSpacing();
     });
   }
 
@@ -113,7 +113,7 @@ export class AppLetterSpacing {
       default:
         letterSpacingConverted = 'normal';
     }
-    this.letterSpacingStandard = $event.detail.value;
+    this.letterSpacing = $event.detail.value;
     this.selectedElement.style.letterSpacing = letterSpacingConverted;
 
     this.emitLetterSpacingChange();
@@ -140,10 +140,10 @@ export class AppLetterSpacing {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({letterSpacing: $event.detail})}>
         <ion-label slot="title">Letter spacing</ion-label>
         <ion-list>
-          <ion-item class="select standard">
+          <ion-item class="select properties">
             <ion-label>Letter spacing</ion-label>
             <ion-select
-              value={this.letterSpacingStandard}
+              value={this.letterSpacing}
               placeholder="Select letter spacing option"
               onIonChange={($event: CustomEvent) => this.updateLetterSpacing($event)}
               interface="popover"

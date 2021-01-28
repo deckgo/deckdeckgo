@@ -15,7 +15,7 @@ const {state, onChange} = createStore<Settings>({
     color: 'open',
     background: 'close',
   },
-  edit: 'standard',
+  edit: 'properties',
 });
 
 onChange('panels', (panels: SettingsPanels) => {

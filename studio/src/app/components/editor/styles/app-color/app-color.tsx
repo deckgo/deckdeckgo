@@ -223,7 +223,7 @@ export class AppColor {
   render() {
     return (
       <Fragment>
-        <ion-list class="inputs-list standard">
+        <ion-list class="inputs-list properties">
           {this.renderColorPicker()}
           {this.renderOpacity()}
         </ion-list>

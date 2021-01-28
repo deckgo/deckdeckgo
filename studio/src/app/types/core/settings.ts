@@ -1,6 +1,6 @@
 export type Expanded = 'open' | 'close';
 
-export type EditMode = 'standard' | 'css';
+export type EditMode = 'properties' | 'css';
 
 export interface SettingsPanels {
   borderRadius: Expanded;
