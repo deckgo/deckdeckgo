@@ -6,7 +6,7 @@ import settingsStore from '../../../../../stores/settings.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
-import {Expanded} from '../../../../../types/core/settings';
+import {EditMode, Expanded} from '../../../../../types/core/settings';
 
 @Component({
   tag: 'app-border-radius',
@@ -27,14 +27,40 @@ export class AppBorderRadius {
   @State()
   private cornersExpanded: boolean = false;
 
+  @State()
+  private borderRadiusCSS: string;
+
   private readonly maxBorderRadius: number = 64;
 
   @Event() borderRadiusDidChange: EventEmitter<void>;
 
+  private destroyListener;
+
   async componentWillLoad() {
     await this.initBorderRadius();
-
     await this.initCornersExpanded();
+
+    await this.initBorderRadiusCSS();
+
+    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+      if (edit === 'css') {
+        await this.initBorderRadiusCSS();
+        return;
+      }
+
+      await this.initBorderRadius();
+      await this.initCornersExpanded();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+  }
+
+  private async initBorderRadiusCSS() {
+    this.borderRadiusCSS = this.selectedElement?.style.borderRadius;
   }
 
   private async initBorderRadius() {
@@ -95,13 +121,23 @@ export class AppBorderRadius {
     this.cornersExpanded = $event.detail.value;
   }
 
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.borderRadiusCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateBorderRadiusCSS() {
+    this.selectedElement.style.borderRadius = this.borderRadiusCSS;
+
+    this.emitBorderRadiusChange();
+  }
+
   render() {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.borderRadius}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({borderRadius: $event.detail})}>
         <ion-label slot="title">Border radius</ion-label>
-        <ion-item class="select">
+        <ion-item class="select properties">
           <ion-select
             value={this.cornersExpanded}
             onIonChange={($event: CustomEvent) => this.selectCornersToShow($event)}
@@ -112,7 +148,7 @@ export class AppBorderRadius {
             <ion-select-option value={true}>Individual corners</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-list>
+        <ion-list class="properties">
           {!this.cornersExpanded ? this.renderOption('General', 'Every corner') : undefined}
           {this.cornersExpanded && (
             <Fragment>
@@ -122,6 +158,17 @@ export class AppBorderRadius {
               {this.renderOption('BottomLeft', 'Bottom left')}
             </Fragment>
           )}
+        </ion-list>
+
+        <ion-list class="css">
+          <ion-item class="with-padding">
+            <ion-input
+              value={this.borderRadiusCSS}
+              placeholder="border-radius"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={async () => await this.updateBorderRadiusCSS()}></ion-input>
+          </ion-item>
         </ion-list>
       </app-expansion-panel>
     );
