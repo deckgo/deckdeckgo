@@ -1,7 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {TargetElement} from '../../../../types/editor/target-element';
-import {SlotType} from '../../../../types/editor/slot-type';
 import {ImageAction} from '../../../../types/editor/image-action';
 import {SelectedElement} from '../../../../types/editor/selected-element';
 
@@ -27,9 +26,6 @@ export class AppElementStyle {
 
   @State()
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
-
-  @State()
-  private list: SlotType.OL | SlotType.UL | undefined;
 
   async componentWillLoad() {
     this.applyToTargetElement = this.selectedElement.slot?.image
@@ -222,7 +218,7 @@ export class AppElementStyle {
   }
 
   private renderList() {
-    if (!this.list) {
+    if (!this.selectedElement?.slot?.list) {
       return undefined;
     }
 
