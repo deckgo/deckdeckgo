@@ -14,6 +14,7 @@ const {state, onChange} = createStore<Settings>({
     image: 'open',
     color: 'open',
     background: 'close',
+    list: 'open',
   },
   edit: 'properties',
 });

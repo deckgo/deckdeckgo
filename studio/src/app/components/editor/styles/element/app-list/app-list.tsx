@@ -1,9 +1,14 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import settingsStore from '../../../../../stores/settings.store';
+
 import {SlotType} from '../../../../../types/editor/slot-type';
-import {ListUtils} from '../../../../../utils/editor/list.utils';
 import {ListStyle} from '../../../../../types/editor/list-style';
+import {Expanded} from '../../../../../types/core/settings';
+
+import {ListUtils} from '../../../../../utils/editor/list.utils';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
 @Component({
   tag: 'app-list',
@@ -70,7 +75,9 @@ export class AppList {
 
   render() {
     return (
-      <app-expansion-panel>
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.list}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({list: $event.detail})}>
         <ion-label slot="title">List</ion-label>
 
         <ion-list>

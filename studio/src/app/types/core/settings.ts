@@ -11,6 +11,7 @@ export interface SettingsPanels {
   image: Expanded;
   color: Expanded;
   background: Expanded;
+  list: Expanded;
 }
 
 export interface Settings {
