@@ -15,6 +15,7 @@ import { DeckAction } from "./app/types/editor/deck-action";
 import { SelectedElement } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
+import { Expanded } from "./app/types/core/settings";
 import { ImageAction } from "./app/types/editor/image-action";
 import { SlotType } from "./app/types/editor/slot-type";
 import { ListStyle } from "./app/types/editor/list-style";
@@ -194,7 +195,7 @@ export namespace Components {
     interface AppEmbed {
     }
     interface AppExpansionPanel {
-        "expanded": 'open' | 'close';
+        "expanded": Expanded;
         "expander": boolean;
     }
     interface AppFontSize {
@@ -1433,9 +1434,9 @@ declare namespace LocalJSX {
     interface AppEmbed {
     }
     interface AppExpansionPanel {
-        "expanded"?: 'open' | 'close';
+        "expanded"?: Expanded;
         "expander"?: boolean;
-        "onExpansion"?: (event: CustomEvent<'open' | 'close'>) => void;
+        "onExpansion"?: (event: CustomEvent<Expanded>) => void;
     }
     interface AppFontSize {
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
