@@ -7,6 +7,8 @@ import settingsStore from '../../../../../stores/settings.store';
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
+import {Expanded} from '../../../../../types/core/settings';
+
 @Component({
   tag: 'app-box-shadow',
 })
@@ -183,7 +185,7 @@ export class AppBoxShadow {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.boxShadow}
-        onExpansion={($event: CustomEvent<'open' | 'close'>) => SettingsUtils.update({boxShadow: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({boxShadow: $event.detail})}>
         <ion-label slot="title">Box shadow</ion-label>
 
         <app-color

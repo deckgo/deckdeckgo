@@ -4,6 +4,8 @@ import settingsStore from '../../../../../stores/settings.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
+import {Expanded} from '../../../../../types/core/settings';
+
 enum FontSize {
   VERY_SMALL,
   SMALL,
@@ -91,7 +93,7 @@ export class AppFontSize {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.fontSize}
-        onExpansion={($event: CustomEvent<'open' | 'close'>) => SettingsUtils.update({fontSize: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({fontSize: $event.detail})}>
         <ion-label slot="title">Size</ion-label>
 
         <ion-list>

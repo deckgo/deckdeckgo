@@ -4,6 +4,8 @@ import settingsStore from '../../../../../stores/settings.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
+import {Expanded} from '../../../../../types/core/settings';
+
 enum LetterSpacing {
   TIGHTER,
   TIGHT,
@@ -100,7 +102,7 @@ export class AppLetterSpacing {
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.letterSpacing}
-        onExpansion={($event: CustomEvent<'open' | 'close'>) => SettingsUtils.update({letterSpacing: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({letterSpacing: $event.detail})}>
         <ion-label slot="title">Letter spacing</ion-label>
         <ion-list>
           <ion-item class="select">

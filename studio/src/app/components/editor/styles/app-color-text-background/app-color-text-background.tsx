@@ -5,6 +5,8 @@ import settingsStore from '../../../../stores/settings.store';
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
 
+import {Expanded} from '../../../../types/core/settings';
+
 @Component({
   tag: 'app-color-text-background',
 })
@@ -109,9 +111,7 @@ export class AppColorTextBackground {
     return (
       <app-expansion-panel
         expanded={this.colorType === 'text' ? settingsStore.state.panels.color : settingsStore.state.panels.background}
-        onExpansion={($event: CustomEvent<'open' | 'close'>) =>
-          SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})
-        }>
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})}>
         <ion-label slot="title">Color</ion-label>
 
         <app-color

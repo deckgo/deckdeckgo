@@ -1,5 +1,7 @@
 import {Component, h, Prop, Event, EventEmitter} from '@stencil/core';
 
+import {Expanded} from '../../../../types/core/settings';
+
 @Component({
   tag: 'app-expansion-panel',
   styleUrl: 'app-expansion-panel.scss',
@@ -11,10 +13,10 @@ export class AppExpansionPanel {
   expander: boolean = true;
 
   @Prop({mutable: true})
-  expanded: 'open' | 'close' = 'open';
+  expanded: Expanded = 'open';
 
   @Event()
-  expansion: EventEmitter<'open' | 'close'>;
+  expansion: EventEmitter<Expanded>;
 
   // Source animation: https://css-tricks.com/using-css-transitions-auto-dimensions/
 
