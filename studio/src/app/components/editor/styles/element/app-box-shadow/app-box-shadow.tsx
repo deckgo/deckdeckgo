@@ -7,7 +7,7 @@ import settingsStore from '../../../../../stores/settings.store';
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
-import {Expanded} from '../../../../../types/core/settings';
+import {EditMode, Expanded} from '../../../../../types/core/settings';
 
 @Component({
   tag: 'app-box-shadow',
@@ -31,6 +31,9 @@ export class AppBoxShadow {
   @State()
   private boxShadow: boolean = false;
 
+  @State()
+  private boxShadowCSS: string;
+
   @Event() boxShadowDidChange: EventEmitter<void>;
 
   private readonly MAX_HORIZONTAL_LENGTH: number = 200;
@@ -38,8 +41,30 @@ export class AppBoxShadow {
   private readonly MAX_SPEED_RADIUS: number = 200;
   private readonly MAX_BLUR_RADIUS: number = 100;
 
+  private destroyListener;
+
   async componentWillLoad() {
     await this.init();
+    await this.initCSS();
+
+    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+      if (edit === 'css') {
+        await this.initCSS();
+        return;
+      }
+
+      await this.init();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+  }
+
+  private async initCSS() {
+    this.boxShadowCSS = this.selectedElement?.style.boxShadow;
   }
 
   private async init() {
@@ -181,6 +206,16 @@ export class AppBoxShadow {
     this.emitBoxShadowChange();
   }
 
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.boxShadowCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateLetterSpacingCSS() {
+    this.selectedElement.style.boxShadow = this.boxShadowCSS;
+
+    this.emitBoxShadowChange();
+  }
+
   render() {
     return (
       <app-expansion-panel
@@ -189,12 +224,12 @@ export class AppBoxShadow {
         <ion-label slot="title">Box shadow</ion-label>
 
         <app-color
-          class="ion-margin-top"
+          class="ion-margin-top properties"
           initColor={this.initColor}
           onResetColor={() => this.resetBoxShadow()}
           onColorDidChange={($event: CustomEvent<string>) => this.selectColor($event)}></app-color>
 
-        <ion-list>
+        <ion-list class="properties">
           <ion-item-divider class="ion-padding-top">
             <ion-label>
               Horizontal length <small>{this.boxShadowProperties.get('hLength')}px</small>
@@ -254,6 +289,17 @@ export class AppBoxShadow {
               mode="md"
               disabled={!this.boxShadow}
               onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'spreadRadius')}></ion-range>
+          </ion-item>
+        </ion-list>
+
+        <ion-list class="css">
+          <ion-item class="with-padding">
+            <ion-input
+              value={this.boxShadowCSS}
+              placeholder="box-shadow"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={async () => await this.updateLetterSpacingCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>
