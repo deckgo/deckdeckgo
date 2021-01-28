@@ -11,6 +11,7 @@ const {state, onChange} = createStore<Settings>({
     align: 'close',
     fontSize: 'open',
     letterSpacing: 'close',
+    image: 'open',
   },
 });
 

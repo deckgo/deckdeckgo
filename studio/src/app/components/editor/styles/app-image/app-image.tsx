@@ -6,6 +6,8 @@ import {EditAction} from '../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../types/editor/image-action';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
+import settingsStore from '../../../../stores/settings.store';
+import {SettingsUtils} from '../../../../utils/core/settings.utils';
 
 @Component({
   tag: 'app-image',
@@ -27,12 +29,6 @@ export class AppImage {
 
   @Prop()
   deck: boolean = false;
-
-  @Prop()
-  expander: boolean = true;
-
-  @Prop()
-  expanded: 'open' | 'close' = 'close';
 
   private imageHistoryService: ImageHistoryService;
 
@@ -109,7 +105,9 @@ export class AppImage {
 
   render() {
     return (
-      <app-expansion-panel expander={this.expander} expanded={this.expanded}>
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.image}
+        onExpansion={($event: CustomEvent<'open' | 'close'>) => SettingsUtils.update({image: $event.detail})}>
         <ion-label slot="title">Images, GIF or Waves</ion-label>
 
         <div class="image-actions ion-margin">

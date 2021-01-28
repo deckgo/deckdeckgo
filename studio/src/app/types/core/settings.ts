@@ -4,6 +4,7 @@ export interface SettingsPanels {
   align: 'open' | 'close';
   fontSize: 'open' | 'close';
   letterSpacing: 'open' | 'close';
+  image: 'open' | 'close';
 }
 
 export interface Settings {
