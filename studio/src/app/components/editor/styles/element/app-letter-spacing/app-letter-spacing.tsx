@@ -1,5 +1,11 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import settingsStore from '../../../../../stores/settings.store';
+
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+
+import {Expanded} from '../../../../../types/core/settings';
+
 enum LetterSpacing {
   TIGHTER,
   TIGHT,
@@ -94,7 +100,9 @@ export class AppLetterSpacing {
 
   render() {
     return (
-      <app-expansion-panel expanded="close">
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.letterSpacing}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({letterSpacing: $event.detail})}>
         <ion-label slot="title">Letter spacing</ion-label>
         <ion-list>
           <ion-item class="select">

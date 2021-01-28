@@ -118,7 +118,6 @@ export namespace Components {
     interface AppColorTextBackground {
         "colorType": 'text' | 'background';
         "deck": boolean;
-        "expanded": boolean;
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
@@ -215,8 +214,6 @@ export namespace Components {
     interface AppImage {
         "deck": boolean;
         "deleteBackground": boolean;
-        "expanded": 'open' | 'close';
-        "expander": boolean;
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
@@ -1347,7 +1344,6 @@ declare namespace LocalJSX {
     interface AppColorTextBackground {
         "colorType"?: 'text' | 'background';
         "deck"?: boolean;
-        "expanded"?: boolean;
         "onColorChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;
@@ -1439,6 +1435,7 @@ declare namespace LocalJSX {
     interface AppExpansionPanel {
         "expanded"?: 'open' | 'close';
         "expander"?: boolean;
+        "onExpansion"?: (event: CustomEvent<'open' | 'close'>) => void;
     }
     interface AppFontSize {
         "onCodeDidChange"?: (event: CustomEvent<void>) => void;
@@ -1462,8 +1459,6 @@ declare namespace LocalJSX {
     interface AppImage {
         "deck"?: boolean;
         "deleteBackground"?: boolean;
-        "expanded"?: 'open' | 'close';
-        "expander"?: boolean;
         "onAction"?: (event: CustomEvent<ImageAction>) => void;
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;

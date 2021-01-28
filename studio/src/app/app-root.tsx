@@ -12,6 +12,7 @@ import {ThemeService} from './services/theme/theme.service';
 import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
+import {SettingsService} from './services/settings/settings.service';
 
 @Component({
   tag: 'app-root',
@@ -20,13 +21,12 @@ import {ColorService} from './services/color/color.service';
 export class AppRoot {
   @Element() el: HTMLElement;
 
-  private authService: AuthService;
+  private readonly authService: AuthService;
+  private readonly offlineService: OfflineService;
 
-  private themeService: ThemeService;
-
-  private colorService: ColorService;
-
-  private offlineService: OfflineService;
+  private readonly themeService: ThemeService;
+  private readonly colorService: ColorService;
+  private readonly settingsService: SettingsService;
 
   @State()
   private loading: boolean = true;
@@ -39,18 +39,20 @@ export class AppRoot {
 
   constructor() {
     this.authService = AuthService.getInstance();
+    this.offlineService = OfflineService.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
-    this.offlineService = OfflineService.getInstance();
+    this.settingsService = SettingsService.getInstance();
   }
 
   async componentWillLoad() {
     if (Build.isBrowser) {
       const promises: Promise<void>[] = [
         this.authService.init(),
+        this.offlineService.init(),
         this.themeService.initDarkModePreference(),
         this.colorService.init(),
-        this.offlineService.init(),
+        this.settingsService.init(),
       ];
 
       await Promise.all(promises);

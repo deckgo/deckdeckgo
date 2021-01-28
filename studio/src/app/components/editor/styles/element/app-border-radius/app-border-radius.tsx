@@ -2,6 +2,12 @@ import {Component, Event, EventEmitter, h, Prop, State, Fragment} from '@stencil
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import settingsStore from '../../../../../stores/settings.store';
+
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+
+import {Expanded} from '../../../../../types/core/settings';
+
 @Component({
   tag: 'app-border-radius',
 })
@@ -91,7 +97,9 @@ export class AppBorderRadius {
 
   render() {
     return (
-      <app-expansion-panel expanded="close">
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.borderRadius}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({borderRadius: $event.detail})}>
         <ion-label slot="title">Border radius</ion-label>
         <ion-item class="select">
           <ion-select

@@ -2,7 +2,12 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import settingsStore from '../../../../../stores/settings.store';
+
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+
+import {Expanded} from '../../../../../types/core/settings';
 
 @Component({
   tag: 'app-box-shadow',
@@ -178,7 +183,9 @@ export class AppBoxShadow {
 
   render() {
     return (
-      <app-expansion-panel expanded={'close'}>
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.boxShadow}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({boxShadow: $event.detail})}>
         <ion-label slot="title">Box shadow</ion-label>
 
         <app-color

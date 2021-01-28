@@ -145,10 +145,12 @@ export class AppImageStyle {
 
   render() {
     return (
-      <ion-list>
-        {this.renderImageSize()}
-        {this.renderImageAlignment()}
-      </ion-list>
+      <app-expansion-panel expander={false}>
+        <ion-list>
+          {this.renderImageSize()}
+          {this.renderImageAlignment()}
+        </ion-list>
+      </app-expansion-panel>
     );
   }
 
