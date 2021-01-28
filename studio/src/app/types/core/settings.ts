@@ -5,6 +5,8 @@ export interface SettingsPanels {
   fontSize: 'open' | 'close';
   letterSpacing: 'open' | 'close';
   image: 'open' | 'close';
+  color: 'open' | 'close';
+  background: 'open' | 'close';
 }
 
 export interface Settings {

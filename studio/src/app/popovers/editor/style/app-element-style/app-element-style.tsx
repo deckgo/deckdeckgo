@@ -172,7 +172,6 @@ export class AppElementStyle {
         this.renderLetterSpacing(),
         this.renderList(),
         <app-color-text-background
-          expanded={!this.selectedElement.slot?.code}
           key={'text'}
           selectedElement={this.selectedElement.element}
           slide={this.selectedElement.type === 'slide'}
@@ -195,7 +194,6 @@ export class AppElementStyle {
         key={'background'}
         colorType={'background'}
         selectedElement={this.selectedElement.element}
-        expanded={false}
         onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       this.renderImage(),
     ];
