@@ -7,6 +7,7 @@ import {Settings, SettingsPanels} from '../types/core/settings';
 const {state, onChange, set} = createStore<Settings>({
   panels: {
     borderRadius: 'close',
+    boxShadow: 'close',
   },
 });
 
