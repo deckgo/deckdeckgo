@@ -73,17 +73,20 @@ export class AppActionsDeck {
   }
 
   private async openSlideNavigate() {
-    const modal: HTMLIonModalElement = await modalController.create({
+    const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slide-navigate',
+      mode: 'ios',
+      showBackdrop: false,
+      cssClass: 'popover-menu popover-menu-wide',
     });
 
-    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data >= 0) {
         this.slideTo.emit(detail.data);
       }
     });
 
-    await modal.present();
+    await popover.present();
   }
 
   private async openRemoteControlRequest() {
