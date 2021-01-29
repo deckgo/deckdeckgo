@@ -81,7 +81,7 @@ export class AppExpansionPanel {
   render() {
     return (
       <article class={this.expanded}>
-        <ion-item button onClick={($event: UIEvent) => this.toggle($event)} class={this.expander ? undefined : 'hidden'}>
+        <ion-item onClick={($event: UIEvent) => this.toggle($event)} class={this.expander ? undefined : 'hidden'}>
           <div>
             <slot name="title"></slot>
           </div>
