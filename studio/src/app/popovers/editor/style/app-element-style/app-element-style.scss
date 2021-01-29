@@ -1,6 +1,7 @@
 app-element-style {
   @import "../../../../../global/theme/editor/editor-info";
   @import "../../../../../global/theme/editor/editor-popover";
+  @import "../../../../../global/theme/editor/editor-edit-mode";
 
   ion-icon.more {
     font-size: 1rem;
@@ -15,18 +16,6 @@ app-element-style {
   ion-item-divider {
     small {
       font-size: var(--font-size-very-small);
-    }
-  }
-
-  &[edit-mode="properties"] {
-    .css {
-      display: none;
-    }
-  }
-
-  &[edit-mode="css"] {
-    .properties {
-      display: none;
     }
   }
 }
