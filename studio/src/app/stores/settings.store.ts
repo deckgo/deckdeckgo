@@ -16,7 +16,7 @@ const {state, onChange} = createStore<Settings>({
     background: 'close',
     list: 'open',
   },
-  edit: 'properties',
+  editMode: 'properties',
 });
 
 onChange('panels', (panels: SettingsPanels) => {
@@ -25,7 +25,7 @@ onChange('panels', (panels: SettingsPanels) => {
   });
 });
 
-onChange('edit', (mode: EditMode) => {
+onChange('editMode', (mode: EditMode) => {
   set('deckdeckgo_settings_edit_mode', mode).catch((err) => {
     console.error('Failed to update IDB with new edit mode', err);
   });

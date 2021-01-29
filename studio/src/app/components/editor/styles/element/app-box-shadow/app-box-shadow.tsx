@@ -47,7 +47,7 @@ export class AppBoxShadow {
     await this.init();
     await this.initCSS();
 
-    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
       if (edit === 'css') {
         await this.initCSS();
         return;

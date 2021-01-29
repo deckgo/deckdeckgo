@@ -54,7 +54,7 @@ export class AppColor {
   async componentWillLoad() {
     await this.loadColor();
 
-    this.destroyListener = settingsStore.onChange('edit', async (_edit: EditMode) => {
+    this.destroyListener = settingsStore.onChange('editMode', async (_edit: EditMode) => {
       await this.loadColor();
     });
   }

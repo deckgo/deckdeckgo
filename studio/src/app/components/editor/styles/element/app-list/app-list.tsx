@@ -40,7 +40,7 @@ export class AppList {
 
     await this.initListStyleCSS();
 
-    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
       if (edit === 'css') {
         await this.initListStyleCSS();
         return;

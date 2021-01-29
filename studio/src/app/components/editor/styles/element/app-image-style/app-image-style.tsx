@@ -44,7 +44,7 @@ export class AppImageStyle {
     this.currentImageSize = await this.initImageSize();
     this.currentImageAlignment = await this.initImageAlignment();
 
-    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
       if (edit === 'css') {
         await this.initCSS();
         return;

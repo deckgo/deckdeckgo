@@ -16,5 +16,5 @@ export interface SettingsPanels {
 
 export interface Settings {
   panels: SettingsPanels;
-  edit: EditMode;
+  editMode: EditMode;
 }

@@ -42,7 +42,7 @@ export class AppBorderRadius {
 
     await this.initBorderRadiusCSS();
 
-    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
       if (edit === 'css') {
         await this.initBorderRadiusCSS();
         return;

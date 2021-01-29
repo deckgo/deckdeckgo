@@ -37,7 +37,7 @@ export class AppLetterSpacing {
     this.letterSpacing = await this.initLetterSpacing();
     await this.initLetterSpacingCSS();
 
-    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
       if (edit === 'css') {
         await this.initLetterSpacingCSS();
         return;

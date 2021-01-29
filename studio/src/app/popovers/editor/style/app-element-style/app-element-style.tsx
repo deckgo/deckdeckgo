@@ -97,7 +97,7 @@ export class AppElementStyle {
 
   render() {
     return (
-      <Host edit-mode={settingsStore.state.edit}>
+      <Host edit-mode={settingsStore.state.editMode}>
         <ion-toolbar>
           <h2>{this.selectedElement.type === 'slide' ? 'Slide style' : 'Style'}</h2>
           <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
