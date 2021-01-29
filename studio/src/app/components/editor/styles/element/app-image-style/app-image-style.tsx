@@ -1,4 +1,6 @@
 import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
+import settingsStore from '../../../../../stores/settings.store';
+import {EditMode} from '../../../../../types/core/settings';
 
 enum ImageSize {
   SMALL = '25%',
@@ -30,9 +32,38 @@ export class AppImageStyle {
   @State()
   private currentImageAlignment: ImageAlignment;
 
+  @State()
+  private imageHeightCSS: string;
+
+  @State()
+  private imageJustifyContentCSS: string;
+
+  private destroyListener;
+
   async componentWillLoad() {
     this.currentImageSize = await this.initImageSize();
     this.currentImageAlignment = await this.initImageAlignment();
+
+    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+      if (edit === 'css') {
+        await this.initCSS();
+        return;
+      }
+
+      this.currentImageSize = await this.initImageSize();
+      this.currentImageAlignment = await this.initImageAlignment();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+  }
+
+  private async initCSS() {
+    this.imageHeightCSS = this.selectedElement.style.getPropertyValue('--deckgo-lazy-img-height');
+    this.imageJustifyContentCSS = this.selectedElement.style.getPropertyValue('justify-content');
   }
 
   private initImageSize(): Promise<ImageSize> {
@@ -143,6 +174,31 @@ export class AppImageStyle {
     });
   }
 
+  private handleImageHeightInput($event: CustomEvent<KeyboardEvent>) {
+    this.imageHeightCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateImageHeightCSS() {
+    if (!this.imageHeightCSS || this.imageHeightCSS === '') {
+      this.selectedElement.style.removeProperty('--deckgo-lazy-img-height');
+    } else {
+      this.selectedElement.style.setProperty('--deckgo-lazy-img-height', this.imageHeightCSS);
+    }
+
+    this.imgDidChange.emit(this.selectedElement);
+  }
+
+  private handleImageJustifyContentInput($event: CustomEvent<KeyboardEvent>) {
+    this.imageJustifyContentCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateImageJustifyContentCSS() {
+    this.selectedElement.style.setProperty('display', 'inline-flex');
+    this.selectedElement.style.setProperty('justify-content', this.imageJustifyContentCSS);
+
+    this.imgDidChange.emit(this.selectedElement);
+  }
+
   render() {
     return (
       <app-expansion-panel expander={false}>
@@ -160,7 +216,7 @@ export class AppImageStyle {
         <ion-label>Size</ion-label>
       </ion-item-divider>,
 
-      <ion-item class="select">
+      <ion-item class="select properties">
         <ion-label>Size</ion-label>
 
         <ion-select
@@ -176,6 +232,15 @@ export class AppImageStyle {
           <ion-select-option value={ImageSize.ORIGINAL}>Original</ion-select-option>
         </ion-select>
       </ion-item>,
+
+      <ion-item class="with-padding css">
+        <ion-input
+          value={this.imageHeightCSS}
+          placeholder="height"
+          debounce={500}
+          onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleImageHeightInput(e)}
+          onIonChange={async () => await this.updateImageHeightCSS()}></ion-input>
+      </ion-item>,
     ];
   }
 
@@ -185,7 +250,7 @@ export class AppImageStyle {
         <ion-label>Alignment</ion-label>
       </ion-item-divider>,
 
-      <ion-item class="select">
+      <ion-item class="select properties">
         <ion-label>Alignment</ion-label>
 
         <ion-select
@@ -199,6 +264,15 @@ export class AppImageStyle {
           <ion-select-option value={ImageAlignment.CENTER}>Center</ion-select-option>
           <ion-select-option value={ImageAlignment.END}>End</ion-select-option>
         </ion-select>
+      </ion-item>,
+
+      <ion-item class="with-padding css">
+        <ion-input
+          value={this.imageJustifyContentCSS}
+          placeholder="justify-content"
+          debounce={500}
+          onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleImageJustifyContentInput(e)}
+          onIonChange={async () => await this.updateImageJustifyContentCSS()}></ion-input>
       </ion-item>,
     ];
   }
