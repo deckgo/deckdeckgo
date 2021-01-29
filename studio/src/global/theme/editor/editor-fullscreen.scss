@@ -83,4 +83,12 @@
   app-editor-toolbar {
     --editor-toolbar-padding: 32px;
   }
+
+  ion-content div.grid {
+    display: block;
+
+    > app-breadcrumbs {
+      display: none;
+    }
+  }
 }

@@ -717,54 +717,65 @@ export class AppEditor {
     this.activeIndex = index;
   }
 
+  private async selectStep($event: CustomEvent<HTMLElement>) {
+    this.actionsEditorRef?.selectStep($event?.detail);
+  }
+
   render() {
     const autoSlide: boolean = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content ref={(el) => (this.contentRef = el as HTMLElement)}>
-        <main
-          ref={(el) => (this.mainRef = el as HTMLElement)}
-          class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
-          style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
-          {this.renderLoading()}
-          <deckgo-deck
-            ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
-            embedded={true}
-            style={this.style}
-            reveal={this.fullscreen && this.presenting}
-            direction={this.direction}
-            directionMobile={this.directionMobile}
-            animation={this.animation}
-            autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
-            onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
-            onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-            onSlideNextDidChange={() => this.onSlideChange()}
-            onSlidePrevDidChange={() => this.onSlideChange()}
-            onSlideToChange={() => this.onSlideChange()}>
-            {this.slides}
-            {this.background}
-            {this.header}
-            {this.footer}
-          </deckgo-deck>
-          <deckgo-remote autoConnect={false}></deckgo-remote>
-          <app-slide-warning></app-slide-warning>
-        </main>
+      <ion-content class="ion-no-padding">
+        <div class="grid">
+          <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
+            <main
+              ref={(el) => (this.mainRef = el as HTMLElement)}
+              class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
+              style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
+              {this.renderLoading()}
+              <deckgo-deck
+                ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
+                embedded={true}
+                style={this.style}
+                reveal={this.fullscreen && this.presenting}
+                direction={this.direction}
+                directionMobile={this.directionMobile}
+                animation={this.animation}
+                autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
+                onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
+                onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
+                onSlideNextDidChange={() => this.onSlideChange()}
+                onSlidePrevDidChange={() => this.onSlideChange()}
+                onSlideToChange={() => this.onSlideChange()}>
+                {this.slides}
+                {this.background}
+                {this.header}
+                {this.footer}
+              </deckgo-deck>
+              <deckgo-remote autoConnect={false}></deckgo-remote>
+              <app-slide-warning></app-slide-warning>
+            </main>
+          </div>
+
+          <app-breadcrumbs slideNumber={this.activeIndex} onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+
+          <app-actions-editor
+            ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
+            hideActions={this.hideActions}
+            fullscreen={this.fullscreen}
+            slides={this.slides}
+            slideNumber={this.activeIndex}
+            onSignIn={() => this.signIn()}
+            onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
+            onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
+            onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
+            onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+            onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
+            onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
+        </div>
         <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
       </ion-content>,
-      <app-actions-editor
-        ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
-        hideActions={this.hideActions}
-        fullscreen={this.fullscreen}
-        slides={this.slides}
-        slideNumber={this.activeIndex}
-        onSignIn={() => this.signIn()}
-        onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
-        onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
-        onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
-        onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-        onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
-        onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>,
       this.renderInlineEditor(),
     ];
   }

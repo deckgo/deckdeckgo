@@ -879,7 +879,7 @@ export class AppActionsElement {
 
   render() {
     return (
-      <ion-toolbar>
+      <aside>
         <ion-buttons slot="start">
           {this.renderStyle()}
           {this.renderEdit()}
@@ -896,7 +896,7 @@ export class AppActionsElement {
           {this.renderDelete()}
           {this.renderMore()}
         </ion-buttons>
-      </ion-toolbar>
+      </aside>
     );
   }
 

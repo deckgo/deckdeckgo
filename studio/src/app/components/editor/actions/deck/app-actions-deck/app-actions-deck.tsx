@@ -241,7 +241,7 @@ export class AppActionsDeck {
 
   render() {
     return (
-      <ion-toolbar>
+      <aside>
         <ion-buttons slot="start">
           <app-action-add-slide slides={this.slides} blockSlide={this.blockSlide} signIn={this.signIn} addSlide={this.addSlide}></app-action-add-slide>
 
@@ -328,7 +328,7 @@ export class AppActionsDeck {
             <ion-label aria-hidden="true">More</ion-label>
           </button>
         </ion-buttons>
-      </ion-toolbar>
+      </aside>
     );
   }
 

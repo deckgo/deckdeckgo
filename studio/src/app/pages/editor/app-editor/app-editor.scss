@@ -1,21 +1,54 @@
 @use "../../../../global/theme/editor/editor-fullscreen";
 
 ion-nav app-editor ion-content {
-  main {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  div.grid {
+    height: 100%;
 
-    width: var(--main-size-width);
-    height: var(--main-size-height);
+    display: grid;
+    grid-template-columns: auto 96px;
+    grid-template-rows: auto 40px;
 
-    max-width: inherit;
+    div.deck {
+      position: relative;
+      display: block;
+      height: inherit;
 
-    overflow: hidden;
+      main {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-    &.ready {
-      box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
+        width: var(--main-size-width);
+        height: var(--main-size-height);
+
+        max-width: inherit;
+
+        overflow: hidden;
+
+        &.ready {
+          box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
+        }
+      }
+    }
+
+    app-breadcrumbs {
+      grid-row-start: 2;
+      grid-row-end: 3;
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+
+    app-actions-editor {
+      grid-row-start: 1;
+      grid-row-end: 3;
+      grid-column-start: 2;
+      grid-column-end: 3;
+    }
+
+    @media screen and (max-width: 992px) {
+      display: flex;
+      flex-direction: column;
     }
   }
 }
