@@ -59,8 +59,8 @@ async function isFirstTimePublished(task: TaskData, deckData: DeckData): Promise
   return taskCreateAt.getTime() < deckPublishedAt.getTime();
 }
 
-function sendInfo(deckId: string, deckData: DeckData, task: TaskData): Promise<string> {
-  return new Promise<string>(async (resolve, reject) => {
+function sendInfo(deckId: string, deckData: DeckData, task: TaskData): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
     try {
       const mailFrom: string = functions.config().info.mail.from;
       const mailPwd: string = functions.config().info.mail.pwd;

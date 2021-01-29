@@ -71,8 +71,8 @@ function generateScreenshot(deckData: DeckData): Promise<string> {
   });
 }
 
-function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<string> {
-  return new Promise<string>(async (resolve, reject) => {
+function saveScreenshot(deckData: DeckData, imageBuffer: string): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
     if (!imageBuffer || imageBuffer === undefined || imageBuffer === '') {
       reject('No screenshot image');
       return;
