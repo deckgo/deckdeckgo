@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment} from '@stencil/core';
+import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment, Host} from '@stencil/core';
 
 import {isIPad, isMobile} from '@deckdeckgo/utils';
 
@@ -63,7 +63,7 @@ export class AppRemoteRequest {
 
   render() {
     return (
-      <div class="ion-padding">
+      <Host>
         {this.renderFullscreen()}
 
         {this.renderRemoteControl()}
@@ -76,7 +76,7 @@ export class AppRemoteRequest {
             <ion-toggle slot="end" mode="md" color="dark" checked={remoteStore.state.remote} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
           </ion-item>
         </ion-list>
-      </div>
+      </Host>
     );
   }
 

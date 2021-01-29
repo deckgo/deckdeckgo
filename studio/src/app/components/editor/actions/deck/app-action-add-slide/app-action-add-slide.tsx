@@ -49,8 +49,7 @@ export class AppActionAddSlide {
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-create-slide',
-      event: $event.detail,
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu popover-menu-wide',
     });

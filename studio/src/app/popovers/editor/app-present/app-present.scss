@@ -8,6 +8,8 @@ app-present {
   }
 
   ion-list {
+    --ion-item-background: transparent;
+
     ion-item {
       --border-color: transparent;
       --padding-start: 0;
