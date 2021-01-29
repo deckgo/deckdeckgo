@@ -6,7 +6,7 @@ export class Resources {
         IMAGE: 'deckdeckgo.png',
       },
       FEED: {
-        MIN_SLIDES: 3,
+        MIN_SLIDES: 5,
       },
     };
   }
