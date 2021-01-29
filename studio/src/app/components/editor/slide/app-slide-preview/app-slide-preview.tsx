@@ -30,7 +30,7 @@ export class AppSlidePreview {
   constructor() {
     this.debounceUpdatePreview = debounce(async () => {
       await this.updatePreview();
-    }, 500);
+    }, 750);
   }
 
   @Listen('ionKeyboardDidShow', {target: 'window'})
