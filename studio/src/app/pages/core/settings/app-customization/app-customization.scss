@@ -5,6 +5,15 @@ app-customization {
     ion-list.dark-light-list {
       padding-bottom: 0;
 
+      ion-item-divider {
+        --color: black;
+        --background: white;
+        --ion-item-border-color: transparent;
+        --ion-padding: 0;
+        font-size: initial;
+        padding: 0;
+      }
+
       ion-item {
         --padding-start: 0;
         --border-color: transparent;
