@@ -4,7 +4,7 @@ import settingsStore from '../../../../../stores/settings.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
-import {Expanded} from '../../../../../types/core/settings';
+import {EditMode, Expanded} from '../../../../../types/core/settings';
 
 enum FontSize {
   VERY_SMALL,
@@ -28,10 +28,34 @@ export class AppFontSize {
   @State()
   private currentFontSize: FontSize = undefined;
 
+  @State()
+  private fontSizeCSS: string;
+
   @Event() codeDidChange: EventEmitter<void>;
+
+  private destroyListener;
 
   async componentWillLoad() {
     this.currentFontSize = await this.initFontSize();
+
+    this.destroyListener = settingsStore.onChange('edit', async (edit: EditMode) => {
+      if (edit === 'css') {
+        await this.initFontSizeCSS();
+        return;
+      }
+
+      this.currentFontSize = await this.initFontSize();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+  }
+
+  private async initFontSizeCSS() {
+    this.fontSizeCSS = this.selectedElement.style.getPropertyValue(this.selector);
   }
 
   private initFontSize(): Promise<FontSize> {
@@ -57,36 +81,40 @@ export class AppFontSize {
     });
   }
 
-  private toggleFontSize($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private async toggleFontSize($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      this.currentFontSize = $event.detail.value;
+    this.currentFontSize = $event.detail.value;
 
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
+    if (!this.selectedElement) {
+      return;
+    }
 
-      this.selectedElement.style.removeProperty(this.selector);
+    this.selectedElement.style.removeProperty(this.selector);
 
-      if (this.currentFontSize === FontSize.VERY_SMALL) {
-        this.selectedElement.style.setProperty(this.selector, '50%');
-      } else if (this.currentFontSize === FontSize.SMALL) {
-        this.selectedElement.style.setProperty(this.selector, '75%');
-      } else if (this.currentFontSize === FontSize.BIG) {
-        this.selectedElement.style.setProperty(this.selector, '150%');
-      } else if (this.currentFontSize === FontSize.VERY_BIG) {
-        this.selectedElement.style.setProperty(this.selector, '200%');
-      }
+    if (this.currentFontSize === FontSize.VERY_SMALL) {
+      this.selectedElement.style.setProperty(this.selector, '50%');
+    } else if (this.currentFontSize === FontSize.SMALL) {
+      this.selectedElement.style.setProperty(this.selector, '75%');
+    } else if (this.currentFontSize === FontSize.BIG) {
+      this.selectedElement.style.setProperty(this.selector, '150%');
+    } else if (this.currentFontSize === FontSize.VERY_BIG) {
+      this.selectedElement.style.setProperty(this.selector, '200%');
+    }
 
-      this.codeDidChange.emit();
+    this.codeDidChange.emit();
+  }
 
-      resolve();
-    });
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.fontSizeCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateFontSizeCSS() {
+    this.selectedElement.style.setProperty(this.selector, this.fontSizeCSS);
+
+    this.codeDidChange.emit();
   }
 
   render() {
@@ -97,7 +125,7 @@ export class AppFontSize {
         <ion-label slot="title">Size</ion-label>
 
         <ion-list>
-          <ion-item class="select">
+          <ion-item class="select properties">
             <ion-label>Size</ion-label>
 
             <ion-select
@@ -113,6 +141,15 @@ export class AppFontSize {
               <ion-select-option value={FontSize.BIG}>Big</ion-select-option>
               <ion-select-option value={FontSize.VERY_BIG}>Very big</ion-select-option>
             </ion-select>
+          </ion-item>
+
+          <ion-item class="with-padding css">
+            <ion-input
+              value={this.fontSizeCSS}
+              placeholder="font-size"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={async () => await this.updateFontSizeCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>
