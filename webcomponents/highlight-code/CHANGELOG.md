@@ -1,3 +1,9 @@
+# 2.3.2 (2021-01-29)
+
+### Features
+
+- on content editable `input`, debounce the copy of the changes to the `slot`
+
 # 2.3.1 (2021-01-14)
 
 ### Style

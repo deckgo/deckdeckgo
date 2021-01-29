@@ -2,7 +2,7 @@ import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, St
 
 import Prism from 'prismjs';
 
-import {injectCSS} from '@deckdeckgo/utils';
+import {debounce, injectCSS} from '@deckdeckgo/utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
 
@@ -56,6 +56,14 @@ export class DeckdeckgoHighlightCode {
 
   @State()
   private loaded: boolean = false;
+
+  private readonly debounceUpdateSlot: () => void;
+
+  constructor() {
+    this.debounceUpdateSlot = debounce(async () => {
+      await this.copyCodeToSlot();
+    }, 500);
+  }
 
   async componentWillLoad() {
     await this.loadGoogleFonts();
@@ -539,7 +547,7 @@ export class DeckdeckgoHighlightCode {
     return line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
   }
 
-  private applyCode = async () => {
+  private async applyCode() {
     if (!this.editable) {
       return;
     }
@@ -549,7 +557,15 @@ export class DeckdeckgoHighlightCode {
     await this.parseSlottedCode();
 
     this.codeDidChange.emit(this.el);
-  };
+  }
+
+  private inputCode() {
+    if (!this.editable) {
+      return;
+    }
+
+    this.debounceUpdateSlot();
+  }
 
   private async copyCodeToSlot() {
     const code: HTMLElement | null = this.el.querySelector("[slot='code']");
@@ -592,7 +608,8 @@ export class DeckdeckgoHighlightCode {
         <div class="deckgo-highlight-code-container">
           <code
             contentEditable={this.editable}
-            onBlur={() => this.applyCode()}
+            onBlur={async () => await this.applyCode()}
+            onInput={() => this.inputCode()}
             onKeyDown={($event: KeyboardEvent) => this.catchTab($event)}
             ref={(el: HTMLElement | null) => (this.refCode = el as HTMLElement)}></code>
           <slot name="code"></slot>

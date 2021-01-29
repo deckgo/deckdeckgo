@@ -1,11 +1,15 @@
 <a name="4.2.0"></a>
 
-# [4.1.0](https://github.com/deckgo/deckdeckgo/compare/v4.1.0...v4.2.0) (In progress...)
+# [4.2.0](https://github.com/deckgo/deckdeckgo/compare/v4.1.0...v4.2.0) (In progress...)
 
 ### Applications
 
 - demo: v7.1.2 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 - studio: v4.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components
+
+- highlight-code: v2.3.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 ### Others
 
