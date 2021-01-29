@@ -112,7 +112,7 @@ function convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
       return;
     }
 
-    const attributes: SlideAttributes = await convertAttributesToString(slide.data.attributes);
+    const attributes: SlideAttributes | undefined = await convertAttributesToString(slide.data.attributes);
 
     const apiSlide: ApiSlide = {
       template: slide.data.template,
@@ -127,8 +127,8 @@ function convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
   });
 }
 
-function convertAttributesToString(attributes: SlideAttributes | undefined): Promise<SlideAttributes> {
-  return new Promise<SlideAttributes>((resolve) => {
+function convertAttributesToString(attributes: SlideAttributes | undefined): Promise<SlideAttributes | undefined> {
+  return new Promise<SlideAttributes | undefined>((resolve) => {
     if (!attributes) {
       resolve(undefined);
       return;
@@ -150,8 +150,8 @@ function convertAttributesToString(attributes: SlideAttributes | undefined): Pro
   });
 }
 
-function cleanNotes(content: string | undefined): Promise<string> {
-  return new Promise<string>((resolve) => {
+function cleanNotes(content: string | undefined): Promise<string | undefined> {
+  return new Promise<string | undefined>((resolve) => {
     if (!content || content === undefined || content === '') {
       resolve(content);
       return;
