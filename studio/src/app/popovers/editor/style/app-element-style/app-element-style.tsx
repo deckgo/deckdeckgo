@@ -1,4 +1,6 @@
-import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Host, h, Prop, State} from '@stencil/core';
+
+import settingsStore from '../../../../stores/settings.store';
 
 import {TargetElement} from '../../../../types/editor/target-element';
 import {ImageAction} from '../../../../types/editor/image-action';
@@ -94,15 +96,28 @@ export class AppElementStyle {
   }
 
   render() {
-    return [
-      <ion-toolbar>
-        <h2>{this.selectedElement.type === 'slide' ? 'Slide style' : 'Style'}</h2>
-        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
-      </ion-toolbar>,
-      this.renderSelectTarget(),
+    return (
+      <Host edit-mode={settingsStore.state.editMode}>
+        <ion-toolbar>
+          <h2>{this.selectedElement.type === 'slide' ? 'Slide style' : 'Style'}</h2>
+          <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
+        </ion-toolbar>
 
-      this.renderStyleOptions(),
-    ];
+        {this.renderSelectTarget()}
+
+        {this.renderStyleOptions()}
+
+        {this.renderEditMode()}
+      </Host>
+    );
+  }
+
+  private renderEditMode() {
+    if (this.applyToTargetElement === TargetElement.TRANSITION) {
+      return undefined;
+    }
+
+    return <app-edit-mode></app-edit-mode>;
   }
 
   private renderSelectTarget() {

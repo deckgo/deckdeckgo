@@ -4,7 +4,7 @@ import settingsStore from '../../../../../stores/settings.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
-import {Expanded} from '../../../../../types/core/settings';
+import {EditMode, Expanded} from '../../../../../types/core/settings';
 
 enum LetterSpacing {
   TIGHTER,
@@ -26,10 +26,31 @@ export class AppLetterSpacing {
   @State()
   private letterSpacing: LetterSpacing = LetterSpacing.NORMAL;
 
+  @State()
+  private letterSpacingCSS: string;
+
   @Event() letterSpacingDidChange: EventEmitter<void>;
+
+  private destroyListener;
 
   async componentWillLoad() {
     this.letterSpacing = await this.initLetterSpacing();
+    await this.initLetterSpacingCSS();
+
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
+      if (edit === 'css') {
+        await this.initLetterSpacingCSS();
+        return;
+      }
+
+      this.letterSpacing = await this.initLetterSpacing();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
   }
 
   private async initLetterSpacing(): Promise<LetterSpacing> {
@@ -98,6 +119,20 @@ export class AppLetterSpacing {
     this.emitLetterSpacingChange();
   }
 
+  private async initLetterSpacingCSS() {
+    this.letterSpacingCSS = this.selectedElement?.style.letterSpacing;
+  }
+
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.letterSpacingCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateLetterSpacingCSS() {
+    this.selectedElement.style.letterSpacing = this.letterSpacingCSS;
+
+    this.emitLetterSpacingChange();
+  }
+
   render() {
     return (
       <app-expansion-panel
@@ -105,7 +140,7 @@ export class AppLetterSpacing {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({letterSpacing: $event.detail})}>
         <ion-label slot="title">Letter spacing</ion-label>
         <ion-list>
-          <ion-item class="select">
+          <ion-item class="select properties">
             <ion-label>Letter spacing</ion-label>
             <ion-select
               value={this.letterSpacing}
@@ -122,6 +157,15 @@ export class AppLetterSpacing {
               <ion-select-option value={LetterSpacing.SUPERWIDE}>Superwide</ion-select-option>
               <ion-select-option value={LetterSpacing.WIDEST}>Widest</ion-select-option>
             </ion-select>
+          </ion-item>
+
+          <ion-item class="with-padding css">
+            <ion-input
+              value={this.letterSpacingCSS}
+              placeholder="letter-spacing"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={async () => await this.updateLetterSpacingCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

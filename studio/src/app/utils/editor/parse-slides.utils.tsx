@@ -33,11 +33,6 @@ export class ParseSlidesUtils {
     ignoreSlideId: boolean
   ): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
       let content = undefined;
 
       // Create a div to parse back to JSX its children

@@ -35,6 +35,20 @@ export class AppAlign {
     this.alignChange.emit();
   }
 
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.align = ($event.target as InputTargetEvent).value as TextAlign;
+  }
+
+  private updateAlignCSS() {
+    if (!this.selectedElement) {
+      return;
+    }
+
+    this.selectedElement.style.textAlign = this.align;
+
+    this.alignChange.emit();
+  }
+
   render() {
     if (this.align === undefined) {
       return undefined;
@@ -46,7 +60,7 @@ export class AppAlign {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({align: $event.detail})}>
         <ion-label slot="title">Alignment</ion-label>
         <ion-list>
-          <ion-item class="select">
+          <ion-item class="select properties">
             <ion-label>Alignment</ion-label>
 
             <ion-select
@@ -60,6 +74,15 @@ export class AppAlign {
               <ion-select-option value={TextAlign.CENTER}>Center</ion-select-option>
               <ion-select-option value={TextAlign.RIGHT}>Right</ion-select-option>
             </ion-select>
+          </ion-item>
+
+          <ion-item class="with-padding css">
+            <ion-input
+              value={this.align}
+              placeholder="text-align"
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={() => this.updateAlignCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

@@ -1,8 +1,9 @@
-import {Component, Element, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Element, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 
 import {TargetElement} from '../../../../types/editor/target-element';
 import {ImageAction} from '../../../../types/editor/image-action';
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
+import settingsStore from '../../../../stores/settings.store';
 
 @Component({
   tag: 'app-deck-style',
@@ -67,20 +68,32 @@ export class AppDeck {
   }
 
   render() {
-    return [
-      <ion-toolbar>
-        <h2>Deck style</h2>
-        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
-      </ion-toolbar>,
-      <app-select-target-element
-        textTarget={true}
-        background={true}
-        transition={true}
-        header-footer={true}
-        onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>,
+    return (
+      <Host edit-mode={settingsStore.state.editMode}>
+        <ion-toolbar>
+          <h2>Deck style</h2>
+          <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
+        </ion-toolbar>
+        <app-select-target-element
+          textTarget={true}
+          background={true}
+          transition={true}
+          header-footer={true}
+          onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
 
-      this.renderOptions(),
-    ];
+        {this.renderOptions()}
+
+        {this.renderEditMode()}
+      </Host>
+    );
+  }
+
+  private renderEditMode() {
+    if ([TargetElement.TEXT, TargetElement.BACKGROUND].includes(this.applyToTargetElement)) {
+      return <app-edit-mode></app-edit-mode>;
+    }
+
+    return undefined;
   }
 
   private renderOptions() {

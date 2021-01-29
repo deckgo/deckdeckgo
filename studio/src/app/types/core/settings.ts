@@ -1,5 +1,7 @@
 export type Expanded = 'open' | 'close';
 
+export type EditMode = 'properties' | 'css';
+
 export interface SettingsPanels {
   borderRadius: Expanded;
   boxShadow: Expanded;
@@ -14,4 +16,5 @@ export interface SettingsPanels {
 
 export interface Settings {
   panels: SettingsPanels;
+  editMode: EditMode;
 }

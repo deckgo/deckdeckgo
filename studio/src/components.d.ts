@@ -162,6 +162,8 @@ export namespace Components {
     interface AppDemo {
         "selectedElement": HTMLElement;
     }
+    interface AppEditMode {
+    }
     interface AppEditSlide {
         "selectedElement": SelectedElement;
         "slideDidChange": EventEmitter<HTMLElement>;
@@ -628,6 +630,12 @@ declare global {
     var HTMLAppDemoElement: {
         prototype: HTMLAppDemoElement;
         new (): HTMLAppDemoElement;
+    };
+    interface HTMLAppEditModeElement extends Components.AppEditMode, HTMLStencilElement {
+    }
+    var HTMLAppEditModeElement: {
+        prototype: HTMLAppEditModeElement;
+        new (): HTMLAppEditModeElement;
     };
     interface HTMLAppEditSlideElement extends Components.AppEditSlide, HTMLStencilElement {
     }
@@ -1140,6 +1148,7 @@ declare global {
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-demo": HTMLAppDemoElement;
+        "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
         "app-edit-slide-chart": HTMLAppEditSlideChartElement;
@@ -1397,6 +1406,8 @@ declare namespace LocalJSX {
     }
     interface AppDemo {
         "selectedElement"?: HTMLElement;
+    }
+    interface AppEditMode {
     }
     interface AppEditSlide {
         "selectedElement"?: SelectedElement;
@@ -1718,6 +1729,7 @@ declare namespace LocalJSX {
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
         "app-demo": AppDemo;
+        "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
         "app-edit-slide-chart": AppEditSlideChart;
@@ -1839,6 +1851,7 @@ declare module "@stencil/core" {
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
+            "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
             "app-edit-slide-chart": LocalJSX.AppEditSlideChart & JSXBase.HTMLAttributes<HTMLAppEditSlideChartElement>;
