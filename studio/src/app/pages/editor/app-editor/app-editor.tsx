@@ -9,7 +9,7 @@ import busyStore from '../../../stores/busy.store';
 import authStore from '../../../stores/auth.store';
 import colorStore from '../../../stores/color.store';
 
-import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
+import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
@@ -596,7 +596,17 @@ export class AppEditor {
   }
 
   private initMainSize() {
-    if (!this.contentRef || isFullscreen() || isMobile()) {
+    // @ts-ignore
+    console.log(
+      !!(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement),
+      document.fullscreenElement,
+      document.mozFullScreenElement,
+      document.webkitFullscreenElement,
+      document.msFullscreenElement,
+      isFullscreen()
+    );
+
+    if (!this.contentRef || isFullscreen() || (isMobile() && !isIPad() && !isAndroidTablet())) {
       this.mainSize = {
         width: isMobile() ? 'calc(100% - 32px)' : '100%',
         height: isMobile() ? 'calc(100% - 32px)' : '100%',
