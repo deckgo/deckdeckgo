@@ -4,9 +4,8 @@ ion-nav app-editor ion-content {
   div.grid {
     height: 100%;
 
-    display: grid;
-    grid-template-columns: auto 96px;
-    grid-template-rows: auto 48px;
+    display: flex;
+    flex-direction: column;
 
     div.deck {
       position: relative;
@@ -32,23 +31,16 @@ ion-nav app-editor ion-content {
       }
     }
 
-    app-breadcrumbs {
-      grid-row-start: 2;
-      grid-row-end: 3;
-      grid-column-start: 1;
-      grid-column-end: 3;
-    }
-
     app-actions-editor {
-      grid-row-start: 1;
-      grid-row-end: 3;
-      grid-column-start: 2;
-      grid-column-end: 3;
+      position: absolute;
+      top: 0;
+      right: 0;
     }
 
-    @media screen and (max-width: 992px) {
-      display: flex;
-      flex-direction: column;
+    @media screen and (max-width: 1200px) {
+      app-actions-editor {
+        position: inherit;
+      }
     }
   }
 }

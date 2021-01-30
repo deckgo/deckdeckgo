@@ -1,5 +1,5 @@
 app-actions-editor {
-  background: var(--ion-color-light);
+  background: transparent;
   display: block;
 
   &.hidden {
@@ -64,7 +64,7 @@ app-actions-editor {
         }
 
         button {
-          padding: 2px 12px;
+          padding: 2px 16px;
 
           ion-icon {
             padding: 6px;
@@ -75,7 +75,7 @@ app-actions-editor {
         }
       }
 
-      @media screen and (max-width: 992px) {
+      @media screen and (max-width: 1200px) {
         padding: 0 16px;
         min-height: 58px;
 

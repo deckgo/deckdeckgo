@@ -6,7 +6,7 @@ app-slide-preview {
   top: var(--ios-top, 8px);
   right: 8px;
 
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     right: 96px;
   }
 

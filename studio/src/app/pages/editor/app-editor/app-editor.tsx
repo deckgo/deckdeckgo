@@ -606,7 +606,9 @@ export class AppEditor {
 
     const maxHeight: number = this.contentRef.offsetHeight - 32;
 
-    const width: number = this.contentRef.offsetWidth - 32;
+    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
+
+    const width: number = this.contentRef.offsetWidth - (wideScreen.matches ? 192 : 32);
     const height: number = (width * 9) / 16;
 
     this.mainSize =
