@@ -328,7 +328,7 @@ testServer = withServer $ \port -> do
 
   runClientM (usersPost' b someUserInfo) clientEnv >>= \case
     -- TODO: test that user is returned here, even on 409
-    Left (FailureResponse resp) ->
+    Left (FailureResponse _ resp) ->
       if HTTP.statusCode (responseStatusCode resp) == 409 then pure () else
         error $ "Got unexpected response: " <> show resp
     Left e -> error $ "Expected 409, got error: " <> show e

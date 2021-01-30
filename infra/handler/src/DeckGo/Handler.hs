@@ -540,13 +540,16 @@ usersGetStatement = Statement sql encoder decoder True
       [ "SELECT account.id, account.firebase_id, account.username"
       ,   "FROM account"
       ]
-    encoder = HE.unit
-    decoder = HD.rowList $
+    encoder = mempty
+    decoder :: HD.Result [Item UserId User]
+    decoder = HD.rowList row
+    row :: HD.Row (Item UserId User)
+    row =
       Item <$>
-        ((UserId . FirebaseId) <$> HD.column HD.text) <*>
-        ( User <$>
-          (FirebaseId <$> HD.column HD.text) <*>
-          HD.nullableColumn (Username <$> HD.text)
+        ((UserId . FirebaseId) <$> (HD.column (HD.nonNullable HD.text))) <*>
+        (User <$>
+            (FirebaseId <$> (HD.column (HD.nonNullable HD.text))) <*>
+            (HD.column (HD.nullable (Username <$> HD.text)))
         )
 
 usersGetUserId :: HC.Connection -> UserId -> Servant.Handler (Item UserId User)
@@ -570,13 +573,13 @@ usersGetUserIdStatement = Statement sql encoder decoder True
       ]
     encoder = contramap
         (unFirebaseId . unUserId)
-        (HE.param HE.text)
+        (HE.param (HE.nonNullable HE.text))
     decoder = HD.rowMaybe $
       Item <$>
-        ((UserId . FirebaseId) <$> HD.column HD.text) <*>
+        ((UserId . FirebaseId) <$> HD.column (HD.nonNullable HD.text)) <*>
         ( User <$>
-          (FirebaseId <$> HD.column HD.text) <*>
-          HD.nullableColumn (Username <$> HD.text)
+          (FirebaseId <$> HD.column (HD.nonNullable HD.text)) <*>
+          (HD.column (HD.nullable (Username <$> HD.text)))
         )
 
 usersPost
@@ -669,8 +672,8 @@ usersPostStatement = Statement sql encoder decoder True
     encoder =
       contramap
         (unFirebaseId . unUserId . view _1)
-        (HE.param HE.text) <>
-      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param HE.text)
+        (HE.param (HE.nonNullable HE.text)) <>
+      contramap (unFirebaseId . userFirebaseId . view _2) (HE.param (HE.nonNullable HE.text))
     decoder = HD.rowsAffected
 
 usersPostStatement' :: Statement (Username, UserId) Int64
@@ -681,10 +684,10 @@ usersPostStatement' = Statement sql encoder decoder True
     encoder =
       contramap
         (unUsername . view _1)
-        (HE.param HE.text) <>
+        (HE.param (HE.nonNullable HE.text)) <>
       contramap
         (unFirebaseId . unUserId . view _2)
-        (HE.param HE.text)
+        (HE.param (HE.nonNullable HE.text))
     decoder = HD.rowsAffected
 
 usersPostStatement'' :: Statement Username () -- TODO: check was deleted?
@@ -696,8 +699,8 @@ usersPostStatement'' = Statement sql encoder decoder True
     encoder =
       contramap
         (unUsername)
-        (HE.param HE.text)
-    decoder = HD.unit
+        (HE.param (HE.nonNullable HE.text))
+    decoder = HD.noResult
 
 usersPut
   :: HC.Connection
@@ -783,8 +786,8 @@ usersDeleteStatement = Statement sql encoder decoder True
     encoder =
       contramap
         (unFirebaseId . unUserId)
-        (HE.param HE.text)
-    decoder = HD.unit -- TODO: affected rows
+        (HE.param (HE.nonNullable HE.text))
+    decoder = HD.noResult -- TODO: affected rows
 
 -- PRESENTATIONS
 
@@ -803,13 +806,13 @@ presentationsPostStatement = Statement sql encoder decoder True
       ,   "VALUES ($1, $2, $3, $4)"
       ]
     encoder =
-      contramap (unPresentationId . view _1) (HE.param HE.text) <>
-      contramap (unPresShortname . view _2) (HE.param HE.text) <>
-      contramap (view _3) (HE.param HE.text) <>
+      contramap (unPresentationId . view _1) (HE.param (HE.nonNullable HE.text)) <>
+      contramap (unPresShortname . view _2) (HE.param (HE.nonNullable HE.text)) <>
+      contramap (view _3) (HE.param (HE.nonNullable HE.text)) <>
       contramap
         (unFirebaseId . unUserId . view _4)
-        (HE.param HE.text)
-    decoder = HD.unit
+        (HE.param (HE.nonNullable HE.text))
+    decoder = HD.noResult
 
 presentationsGetByIdSession :: PresentationId -> HS.Session (Maybe (PresShortname, T.Text))
 presentationsGetByIdSession pid = do
@@ -823,10 +826,10 @@ presentationsGetByIdStatement = Statement sql encoder decoder True
       [ "SELECT name, url, owner FROM presentation"
       ,   "WHERE id = $1"
       ]
-    encoder = contramap unPresentationId (HE.param HE.text)
+    encoder = contramap unPresentationId (HE.param (HE.nonNullable HE.text))
     decoder = HD.rowMaybe $ (,) <$>
-      (PresShortname <$> HD.column HD.text) <*>
-      HD.column HD.text -- <*>
+      (PresShortname <$> HD.column (HD.nonNullable HD.text)) <*>
+      HD.column (HD.nonNullable HD.text)
       -- TODO: return user ID
 
 data PresResponse = PresResponse T.Text
@@ -878,7 +881,7 @@ migrateFrom = \frm -> do
           [ "INSERT INTO db_meta (key, value) VALUES ('version', $1)"
           , "ON CONFLICT (key) DO UPDATE SET value = $1"
           ]
-        ) (HE.param HE.text) HD.unit True
+        ) (HE.param (HE.nonNullable HE.text)) HD.noResult True
     HS.sql "COMMIT"
   where
     -- | Migrates from (ver -1) to ver
@@ -893,13 +896,13 @@ migrateFrom = \frm -> do
             ,   "anonymous BOOLEAN"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       DbVersion1 -> do
         HS.statement () $ Statement
           (BS8.unwords
             [ "DROP TABLE IF EXISTS account CASCADE"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE account ("
@@ -907,7 +910,7 @@ migrateFrom = \frm -> do
             ,   "firebase_id TEXT UNIQUE NOT NULL"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE username ("
@@ -915,7 +918,7 @@ migrateFrom = \frm -> do
             ,   "account TEXT REFERENCES account (id) ON DELETE CASCADE UNIQUE NOT NULL"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       DbVersion2 -> do
         HS.statement () $ Statement
           (BS8.unwords
@@ -926,7 +929,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       DbVersion3 -> do
         HS.sql "DROP TABLE IF EXISTS username"
         HS.sql "DROP TABLE IF EXISTS account CASCADE"
@@ -939,7 +942,7 @@ migrateFrom = \frm -> do
             ,   "username TEXT UNIQUE NULL"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE deck ("
@@ -950,7 +953,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE slide ("
@@ -962,7 +965,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       DbVersion4 -> do
         HS.sql "DROP TABLE IF EXISTS username"
         HS.sql "DROP TABLE IF EXISTS account CASCADE"
@@ -976,7 +979,7 @@ migrateFrom = \frm -> do
             ,   "username TEXT UNIQUE NULL"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE deck ("
@@ -987,7 +990,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE slide ("
@@ -999,7 +1002,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       DbVersion5 -> do
         HS.sql "DROP TABLE IF EXISTS username"
         HS.sql "DROP TABLE IF EXISTS account CASCADE"
@@ -1013,7 +1016,7 @@ migrateFrom = \frm -> do
             ,   "username TEXT UNIQUE NULL"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE deck ("
@@ -1024,7 +1027,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE slide ("
@@ -1036,7 +1039,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       DbVersion6 -> do
         HS.sql "DROP TABLE IF EXISTS username"
         HS.sql "DROP TABLE IF EXISTS account CASCADE"
@@ -1050,7 +1053,7 @@ migrateFrom = \frm -> do
             ,   "username TEXT UNIQUE NULL"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE deck ("
@@ -1061,7 +1064,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         HS.statement () $ Statement
           (BS8.unwords
             [ "CREATE TABLE slide ("
@@ -1073,7 +1076,7 @@ migrateFrom = \frm -> do
             ,   "attributes JSON"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
       -- TODO: unique on (owner, name)
       -- TODO: drop deck, slide tables
       DbVersion7 -> do
@@ -1086,7 +1089,7 @@ migrateFrom = \frm -> do
             ,   "owner TEXT NOT NULL REFERENCES account (id) ON DELETE CASCADE"
             , ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
 
 readDbVersion :: HS.Session (Either String (Maybe DbVersion))
 readDbVersion = do
@@ -1099,12 +1102,12 @@ readDbVersion = do
         ,   "AND    table_name = 'db_meta'"
         ,   ");"
         ]
-      ) HE.unit (HD.singleRow (HD.column HD.bool)) True
+      ) mempty (HD.singleRow (HD.column (HD.nonNullable HD.bool))) True
     case res of
       True -> do
         mtver <- HS.statement () $ Statement
           "SELECT value FROM db_meta WHERE key = 'version'"
-          HE.unit (HD.rowMaybe (HD.column HD.text)) True
+          mempty (HD.rowMaybe (HD.column (HD.nonNullable HD.text))) True
         case mtver of
           Nothing -> pure (Right Nothing)
           Just tver -> case dbVersionFromText tver of
@@ -1118,7 +1121,7 @@ readDbVersion = do
             ,   "value TEXT NOT NULL"
             ,   ");"
             ]
-          ) HE.unit HD.unit True
+          ) mempty HD.noResult True
         pure $ Right Nothing
 
 dbVersionToText :: DbVersion -> T.Text

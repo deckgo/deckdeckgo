@@ -5,8 +5,6 @@ in
 
 rec
 {
-  inherit (pkgs) pkgsMusl;
-  inherit (pkgs) staticHaskellPackages; # TODO remove me
   function = # TODO: rename to handler
     pkgs.runCommand "build-lambda" {}
       ''
