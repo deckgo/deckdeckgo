@@ -1,91 +1,120 @@
-import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
+
+import {RangeChangeEventDetail} from '@ionic/core';
 
 import settingsStore from '../../../../../stores/settings.store';
 
-import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
-import {Expanded} from '../../../../../types/core/settings';
+import {EditMode, Expanded} from '../../../../../types/core/settings';
 
 @Component({
   tag: 'app-block',
-  styleUrl: 'app-block.scss',
 })
 export class AppBlock {
   @Prop()
   selectedElement: HTMLElement;
 
   @State()
-  private align: TextAlign | undefined;
+  private width: number = 100;
 
-  @Event() alignChange: EventEmitter<void>;
+  @State()
+  private widthCSS: string;
+
+  @Event() blockChange: EventEmitter<void>;
+
+  private destroyListener;
 
   async componentWillLoad() {
-    this.align = await AlignUtils.getAlignment(this.selectedElement);
+    await this.initWidth();
+    this.widthCSS = this.selectedElement?.style.width;
+
+    this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
+      if (edit === 'css') {
+        this.widthCSS = this.selectedElement?.style.width;
+        return;
+      }
+
+      await this.initWidth();
+    });
   }
 
-  private async updateAlign($event: CustomEvent): Promise<void> {
-    if (!this.selectedElement || !$event || !$event.detail) {
+  disconnectedCallback() {
+    if (this.destroyListener) {
+      this.destroyListener();
+    }
+  }
+
+  private async initWidth() {
+    const width: number = parseInt(this.selectedElement?.style.width);
+    this.width = isNaN(width) ? 100 : width;
+  }
+
+  private async updateWidth($event: CustomEvent<RangeChangeEventDetail>) {
+    if (!$event || !$event.detail || $event.detail.value < 0 || $event.detail.value > 100) {
       return;
     }
 
-    this.selectedElement.style.textAlign = $event.detail.value;
-    this.align = $event.detail.value;
+    $event.stopPropagation();
 
-    this.alignChange.emit();
+    this.width = $event.detail.value as number;
+
+    this.selectedElement.style.width = `${this.width}%`;
+
+    this.blockChange.emit();
   }
 
-  private handleInput($event: CustomEvent<KeyboardEvent>) {
-    this.align = ($event.target as InputTargetEvent).value as TextAlign;
+  private handleWidthInput($event: CustomEvent<KeyboardEvent>) {
+    this.widthCSS = ($event.target as InputTargetEvent).value;
   }
 
-  private updateAlignCSS() {
+  private updateWidthCSS() {
     if (!this.selectedElement) {
       return;
     }
 
-    this.selectedElement.style.textAlign = this.align;
+    this.selectedElement.style.width = this.widthCSS;
 
-    this.alignChange.emit();
+    this.blockChange.emit();
   }
 
   render() {
-    if (this.align === undefined) {
-      return undefined;
-    }
-
     return (
       <app-expansion-panel
         expanded={settingsStore.state.panels.align}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({align: $event.detail})}>
-        <ion-label slot="title">Alignment</ion-label>
-        <ion-list>
-          <ion-item class="select properties">
-            <ion-label>Alignment</ion-label>
-
-            <ion-select
-              value={this.align}
-              placeholder="Select an alignment"
-              onIonChange={($event: CustomEvent) => this.updateAlign($event)}
-              interface="popover"
-              mode="md"
-              class="ion-padding-start ion-padding-end">
-              <ion-select-option value={TextAlign.LEFT}>Left</ion-select-option>
-              <ion-select-option value={TextAlign.CENTER}>Center</ion-select-option>
-              <ion-select-option value={TextAlign.RIGHT}>Right</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item class="with-padding css">
-            <ion-input
-              value={this.align}
-              placeholder="text-align"
-              debounce={500}
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={() => this.updateAlignCSS()}></ion-input>
-          </ion-item>
-        </ion-list>
+        <ion-label slot="title">Block</ion-label>
+        <ion-list>{this.renderWidth()}</ion-list>
       </app-expansion-panel>
+    );
+  }
+
+  private renderWidth() {
+    return (
+      <Fragment>
+        <ion-item-divider class="ion-padding-top properties">
+          <ion-label>
+            Width <small>{this.width}%</small>
+          </ion-label>
+        </ion-item-divider>
+        <ion-item class="item-opacity properties">
+          <ion-range
+            min={1}
+            max={100}
+            value={this.width}
+            mode="md"
+            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateWidth($event)}></ion-range>
+        </ion-item>
+
+        <ion-item class="with-padding css">
+          <ion-input
+            value={this.widthCSS}
+            placeholder="width"
+            debounce={500}
+            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleWidthInput(e)}
+            onIonChange={() => this.updateWidthCSS()}></ion-input>
+        </ion-item>
+      </Fragment>
     );
   }
 }

@@ -179,8 +179,8 @@ export class AppElementStyle {
     } else {
       return [
         this.renderFontSize(),
+        this.renderText(),
         this.renderBlock(),
-        this.renderLetterSpacing(),
         this.renderList(),
         <app-color-text-background
           key={'text'}
@@ -196,15 +196,15 @@ export class AppElementStyle {
       return undefined;
     }
 
-    return <app-block selectedElement={this.selectedElement.element} onAlignChange={() => this.emitStyleChange()}></app-block>;
+    return <app-block selectedElement={this.selectedElement.element} onBlockChange={() => this.emitStyleChange()}></app-block>;
   }
 
-  private renderLetterSpacing() {
+  private renderText() {
     if (this.selectedElement.slot?.code) {
       return undefined;
     }
 
-    return <app-letter-spacing selectedElement={this.selectedElement.element} onLetterSpacingDidChange={() => this.emitStyleChange()}></app-letter-spacing>;
+    return <app-text selectedElement={this.selectedElement.element} onTextDidChange={() => this.emitStyleChange()}></app-text>;
   }
 
   private renderBackground() {
