@@ -135,8 +135,8 @@ export class AppBlock {
   render() {
     return (
       <app-expansion-panel
-        expanded={settingsStore.state.panels.align}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({align: $event.detail})}>
+        expanded={settingsStore.state.panels.block}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({block: $event.detail})}>
         <ion-label slot="title">Block</ion-label>
         <ion-list>
           {this.renderWidth()}

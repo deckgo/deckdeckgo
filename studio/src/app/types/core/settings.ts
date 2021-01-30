@@ -5,9 +5,9 @@ export type EditMode = 'properties' | 'css';
 export interface SettingsPanels {
   borderRadius: Expanded;
   boxShadow: Expanded;
-  align: Expanded;
+  block: Expanded;
   fontSize: Expanded;
-  letterSpacing: Expanded;
+  text: Expanded;
   image: Expanded;
   color: Expanded;
   background: Expanded;

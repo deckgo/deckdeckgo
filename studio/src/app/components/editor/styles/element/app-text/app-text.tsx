@@ -172,8 +172,8 @@ export class AppText {
   render() {
     return (
       <app-expansion-panel
-        expanded={settingsStore.state.panels.letterSpacing}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({letterSpacing: $event.detail})}>
+        expanded={settingsStore.state.panels.text}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({text: $event.detail})}>
         <ion-label slot="title">Text</ion-label>
         <ion-list>
           {this.renderLetterSpacing()}

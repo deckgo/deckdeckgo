@@ -8,9 +8,9 @@ const {state, onChange} = createStore<Settings>({
   panels: {
     borderRadius: 'close',
     boxShadow: 'close',
-    align: 'close',
+    block: 'close',
     fontSize: 'open',
-    letterSpacing: 'close',
+    text: 'close',
     image: 'open',
     color: 'open',
     background: 'close',
