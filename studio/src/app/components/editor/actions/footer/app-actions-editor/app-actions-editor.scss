@@ -87,7 +87,10 @@ app-actions-editor {
 
           &:last-of-type {
             margin-top: inherit;
-            margin-left: 32px;
+
+            @media screen and (min-width: 540px) {
+              margin-left: 32px;
+            }
           }
         }
       }
