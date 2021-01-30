@@ -7,7 +7,7 @@
 , servant-swagger, servant-swagger-ui, stdenv, swagger2, tagsoup
 , tasty, tasty-hunit, temporary, text, time, unliftio
 , unordered-containers, wai, wai-cors, wai-lambda, warp
-, zip-archive
+, zip-archive, pkgsMusl
 }:
 mkDerivation {
   pname = "deckdeckgo-handler";
@@ -37,4 +37,10 @@ mkDerivation {
   ];
   prePatch = "hpack";
   license = stdenv.lib.licenses.agpl3;
+  configureFlags = [
+          "--ghc-option=-optl=-static"
+          "--extra-lib-dirs=${pkgsMusl.gmp6.override { withStatic = true; }}/lib"
+          "--extra-lib-dirs=${pkgsMusl.zlib.static}/lib"
+          "--extra-lib-dirs=${pkgsMusl.libffi.overrideAttrs (old: { dontDisableStatic = true; })}/lib"
+    ];
 }

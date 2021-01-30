@@ -19,10 +19,6 @@ mkDerivation {
   prePatch = "hpack";
   license = stdenv.lib.licenses.agpl3;
   configureFlags = [
-
-    "-flambda"
-    "--ghc-option=-optl=-static"
-
           "--ghc-option=-optl=-static"
           "--extra-lib-dirs=${pkgsMusl.gmp6.override { withStatic = true; }}/lib"
           "--extra-lib-dirs=${pkgsMusl.zlib.static}/lib"
