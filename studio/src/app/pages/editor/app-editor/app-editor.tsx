@@ -596,16 +596,6 @@ export class AppEditor {
   }
 
   private initMainSize() {
-    // @ts-ignore
-    console.log(
-      !!(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement),
-      document.fullscreenElement,
-      document.mozFullScreenElement,
-      document.webkitFullscreenElement,
-      document.msFullscreenElement,
-      isFullscreen()
-    );
-
     if (!this.contentRef || isFullscreen() || (isMobile() && !isIPad() && !isAndroidTablet())) {
       this.mainSize = {
         width: isMobile() ? 'calc(100% - 32px)' : '100%',
