@@ -186,7 +186,7 @@ export class AppText {
   private renderLetterSpacing() {
     return (
       <Fragment>
-        <ion-item-divider class="properties">
+        <ion-item-divider>
           <ion-label>Letter spacing</ion-label>
         </ion-item-divider>
 
@@ -228,7 +228,7 @@ export class AppText {
 
     return (
       <Fragment>
-        <ion-item-divider class="properties">
+        <ion-item-divider>
           <ion-label>Alignment</ion-label>
         </ion-item-divider>
 
