@@ -171,11 +171,12 @@ export class AppElementStyle {
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-reveal selectedElement={this.selectedElement.element} onToggleReveal={() => this.closePopover()}></app-reveal>;
     } else if (this.applyToTargetElement === TargetElement.IMAGE) {
-      return (
+      return [
         <app-image-style
           selectedElement={this.selectedElement.element}
-          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>
-      );
+          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>,
+        this.renderBlock(),
+      ];
     } else {
       return [
         this.renderFontSize(),
