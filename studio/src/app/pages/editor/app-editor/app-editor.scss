@@ -41,6 +41,7 @@ ion-nav app-editor ion-content {
     @media screen and (max-width: 1200px) {
       app-actions-editor {
         position: inherit;
+        width: inherit;
       }
     }
   }
