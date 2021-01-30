@@ -570,11 +570,11 @@ export class DeckdeckgoDeck {
       }
 
       if (this.dir === 'papyrus') {
-        const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+        const slide: HTMLElement | null = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
 
         // HACK: Chrome does not perform any scroll if the behavior 'smooth' is set and the event is triggered programmatically or with the keyboard aka only works if triggered with a click event
         setTimeout(() => {
-          slide.scrollIntoView(this.animation === 'none' ? null : {behavior: 'smooth', block: 'nearest'});
+          slide?.scrollIntoView(this.animation === 'none' ? null : {behavior: 'smooth', block: 'nearest'});
         }, 0);
       }
 
