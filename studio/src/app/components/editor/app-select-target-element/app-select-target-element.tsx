@@ -106,7 +106,7 @@ export class AppSelectTargetElement {
     if (this.slide) {
       return (
         <ion-segment-button value={TargetElement.SLIDE} mode="md">
-          <ion-label>Font</ion-label>
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {
@@ -118,7 +118,7 @@ export class AppSelectTargetElement {
     if (this.textTarget) {
       return (
         <ion-segment-button value={TargetElement.TEXT} mode="md">
-          <ion-label>Font</ion-label>
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {

@@ -8,10 +8,10 @@ import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 import {Expanded} from '../../../../../types/core/settings';
 
 @Component({
-  tag: 'app-align',
-  styleUrl: 'app-align.scss',
+  tag: 'app-block',
+  styleUrl: 'app-block.scss',
 })
-export class AppAlign {
+export class AppBlock {
   @Prop()
   selectedElement: HTMLElement;
 

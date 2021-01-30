@@ -75,6 +75,9 @@ export namespace Components {
         "ariaLabel": string;
         "src": string;
     }
+    interface AppBlock {
+        "selectedElement": HTMLElement;
+    }
     interface AppBorderRadius {
         "selectedElement": HTMLElement;
     }
@@ -467,6 +470,12 @@ declare global {
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
+    };
+    interface HTMLAppBlockElement extends Components.AppBlock, HTMLStencilElement {
+    }
+    var HTMLAppBlockElement: {
+        prototype: HTMLAppBlockElement;
+        new (): HTMLAppBlockElement;
     };
     interface HTMLAppBorderRadiusElement extends Components.AppBorderRadius, HTMLStencilElement {
     }
@@ -1120,6 +1129,7 @@ declare global {
         "app-actions-element": HTMLAppActionsElementElement;
         "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
+        "app-block": HTMLAppBlockElement;
         "app-border-radius": HTMLAppBorderRadiusElement;
         "app-bottom-sheet": HTMLAppBottomSheetElement;
         "app-box-shadow": HTMLAppBoxShadowElement;
@@ -1298,6 +1308,10 @@ declare namespace LocalJSX {
     interface AppAvatar {
         "ariaLabel"?: string;
         "src"?: string;
+    }
+    interface AppBlock {
+        "onAlignChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
     }
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
@@ -1700,6 +1714,7 @@ declare namespace LocalJSX {
         "app-actions-element": AppActionsElement;
         "app-align": AppAlign;
         "app-avatar": AppAvatar;
+        "app-block": AppBlock;
         "app-border-radius": AppBorderRadius;
         "app-bottom-sheet": AppBottomSheet;
         "app-box-shadow": AppBoxShadow;
@@ -1822,6 +1837,7 @@ declare module "@stencil/core" {
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+            "app-block": LocalJSX.AppBlock & JSXBase.HTMLAttributes<HTMLAppBlockElement>;
             "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
             "app-bottom-sheet": LocalJSX.AppBottomSheet & JSXBase.HTMLAttributes<HTMLAppBottomSheetElement>;
             "app-box-shadow": LocalJSX.AppBoxShadow & JSXBase.HTMLAttributes<HTMLAppBoxShadowElement>;

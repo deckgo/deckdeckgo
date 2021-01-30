@@ -179,7 +179,7 @@ export class AppElementStyle {
     } else {
       return [
         this.renderFontSize(),
-        <app-align selectedElement={this.selectedElement.element} onAlignChange={() => this.emitStyleChange()}></app-align>,
+        this.renderBlock(),
         this.renderLetterSpacing(),
         this.renderList(),
         <app-color-text-background
@@ -189,6 +189,14 @@ export class AppElementStyle {
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       ];
     }
+  }
+
+  private renderBlock() {
+    if (this.selectedElement.type === 'slide') {
+      return undefined;
+    }
+
+    return <app-block selectedElement={this.selectedElement.element} onAlignChange={() => this.emitStyleChange()}></app-block>;
   }
 
   private renderLetterSpacing() {
