@@ -3,14 +3,10 @@ let
   sources = import ./sources.nix;
   pkgs = import sources.nixpkgs { overlays  = [
     (self: super: {
-      gnutls = super.gnutls.overrideAttrs (_:
-        { doCheck = false; }
-      );
-      p11-kit = super.p11-kit.overrideAttrs (_:
-        { doCheck = false; }
-      );
 
-
+      postgresql = super.postgresql.override (_: {
+        enableSystemd = ! self.stdenv.hostPlatform.isMusl;
+      });
     }
     )
 
