@@ -6,21 +6,22 @@ ion-popover.popover-menu {
   }
 
   --width: 376px;
-  --max-width: 100%;
+  --max-width: calc(100% - 12px);
 
   div.popover-content {
-    top: 0 !important;
-    left: inherit !important;
-    right: 0;
+    top: 16px !important;
+
+    --min-height: calc(100% - 64px);
+
+    @media screen and (min-width: 1200px) {
+      left: inherit !important;
+      right: 84px;
+      --min-height: calc(100% - 32px);
+    }
 
     padding: 16px;
 
-    --min-height: 100%;
-
-    transform-origin: right top !important;
-
-    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.12);
-    border-radius: 0;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.32);
 
     background: var(--ion-color-light);
   }

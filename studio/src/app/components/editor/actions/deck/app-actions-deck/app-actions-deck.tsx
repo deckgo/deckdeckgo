@@ -73,17 +73,20 @@ export class AppActionsDeck {
   }
 
   private async openSlideNavigate() {
-    const modal: HTMLIonModalElement = await modalController.create({
+    const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slide-navigate',
+      mode: 'ios',
+      showBackdrop: false,
+      cssClass: 'popover-menu popover-menu-wide',
     });
 
-    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data >= 0) {
         this.slideTo.emit(detail.data);
       }
     });
 
-    await modal.present();
+    await popover.present();
   }
 
   private async openRemoteControlRequest() {
@@ -129,7 +132,7 @@ export class AppActionsDeck {
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data) {
         if (detail.data.action === MoreAction.PRESENT) {
-          await this.openPresent($event);
+          await this.openPresent();
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.SHARE) {
@@ -167,7 +170,7 @@ export class AppActionsDeck {
         blockSlide: this.blockSlide,
         deckDidChange: this.deckDidChange,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu popover-menu-wide',
     });
@@ -199,15 +202,15 @@ export class AppActionsDeck {
     }
   }
 
-  private async openPresent($event: UIEvent) {
+  private async openPresent() {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-present',
       componentProps: {
         fullscreen: this.fullscreen,
       },
-      event: $event,
       mode: 'ios',
-      cssClass: 'info',
+      showBackdrop: false,
+      cssClass: 'popover-menu',
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -241,7 +244,7 @@ export class AppActionsDeck {
 
   render() {
     return (
-      <ion-toolbar>
+      <aside>
         <ion-buttons slot="start">
           <app-action-add-slide slides={this.slides} blockSlide={this.blockSlide} signIn={this.signIn} addSlide={this.addSlide}></app-action-add-slide>
 
@@ -291,7 +294,7 @@ export class AppActionsDeck {
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
             aria-label="Remote"
-            onClick={($event: UIEvent) => this.openPresent($event)}
+            onClick={() => this.openPresent()}
             color="primary"
             class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
@@ -328,7 +331,7 @@ export class AppActionsDeck {
             <ion-label aria-hidden="true">More</ion-label>
           </button>
         </ion-buttons>
-      </ion-toolbar>
+      </aside>
     );
   }
 

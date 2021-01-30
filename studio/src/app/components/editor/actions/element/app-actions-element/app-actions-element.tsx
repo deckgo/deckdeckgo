@@ -322,7 +322,7 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement.element,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu',
     });
@@ -353,7 +353,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement,
         slideDidChange: this.slideDidChange,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu',
     });
@@ -399,7 +399,7 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement.element,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu',
     });
@@ -431,7 +431,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement.element,
         slide: this.selectedElement?.type === 'slide',
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu',
     });
@@ -472,7 +472,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement.element,
         codeDidChange: this.codeDidChange,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu',
     });
@@ -490,7 +490,7 @@ export class AppActionsElement {
         selectedElement: this.selectedElement.element,
         mathDidChange: this.mathDidChange,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu',
     });
@@ -683,7 +683,7 @@ export class AppActionsElement {
         imgDidChange: this.imgDidChange,
         imageHelper: this.imageHelper,
       },
-      mode: 'md',
+      mode: 'ios',
       showBackdrop: false,
       cssClass: `popover-menu ${this.selectedElement?.slide?.poll ? 'popover-menu-wide' : ''}`,
     });
@@ -879,7 +879,7 @@ export class AppActionsElement {
 
   render() {
     return (
-      <ion-toolbar>
+      <aside>
         <ion-buttons slot="start">
           {this.renderStyle()}
           {this.renderEdit()}
@@ -896,7 +896,7 @@ export class AppActionsElement {
           {this.renderDelete()}
           {this.renderMore()}
         </ion-buttons>
-      </ion-toolbar>
+      </aside>
     );
   }
 

@@ -1,3 +1,9 @@
+# 8.1.2 (2021-01-30)
+
+### Fix
+
+- slide might not be yet defined
+
 # 8.1.1 (2020-11-14)
 
 ### Fix

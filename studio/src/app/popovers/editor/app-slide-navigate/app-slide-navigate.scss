@@ -1,16 +1,12 @@
 app-slide-navigate {
-  main {
-    min-height: 100%;
-    background: white;
-  }
-
   ion-reorder-group {
     ion-item {
       --border-color: transparent;
+      --background: transparent;
     }
   }
 
   p {
-    font-size: var(--font-size-very-small);
+    padding: 0 24px;
   }
 }

@@ -29,7 +29,7 @@ export function isIOS(): boolean {
     return false;
   }
 
-  const a: string = navigator.userAgent || navigator.vendor || (window as any).opera;
+  const a: string = userAgent();
 
   return /iPhone|iPod/i.test(a) || isIPad();
 }
@@ -39,7 +39,7 @@ export function isIPad(): boolean {
     return false;
   }
 
-  const a: string = navigator.userAgent || navigator.vendor || (window as any).opera;
+  const a: string = userAgent();
 
   // iOS 12 and below
   if (/iPad/i.test(a)) {
@@ -51,11 +51,15 @@ export function isIPad(): boolean {
 }
 
 export function isFullscreen(): boolean {
-  if (!window || !screen) {
+  if (!document) {
     return false;
   }
 
-  return window.innerHeight == screen.height;
+  return (
+    // @ts-ignore
+    // prettier-ignore
+    !!(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement)
+  );
 }
 
 export function isFirefox(): boolean {
@@ -63,7 +67,7 @@ export function isFirefox(): boolean {
     return false;
   }
 
-  const a: string = navigator.userAgent || navigator.vendor || (window as any).opera;
+  const a: string = userAgent();
 
   return /firefox/i.test(a);
 }
@@ -90,3 +94,29 @@ export function isPortrait(): boolean {
 
   return window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
 }
+
+// Source: Ionic ionic-framework/core/src/utils/platform.ts
+
+export const isAndroid = (): boolean => {
+  if (!window) {
+    return false;
+  }
+
+  const a: string = userAgent();
+
+  return /android|sink/i.test(a);
+};
+
+export const isAndroidTablet = (): boolean => {
+  if (!window) {
+    return false;
+  }
+
+  const a: string = userAgent();
+
+  return isAndroid() && !/mobile/i.test(a);
+};
+
+const userAgent = (): string => {
+  return navigator.userAgent || navigator.vendor || (window as any).opera;
+};

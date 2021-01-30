@@ -19,6 +19,8 @@ app-expansion-panel {
     > ion-item {
       font-size: var(--font-size-normal);
 
+      cursor: pointer;
+
       &.hidden {
         display: none;
       }

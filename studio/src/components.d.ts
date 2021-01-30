@@ -6,7 +6,6 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
-import { BreadcrumbsStep } from "./app/types/editor/breadcrumbs-step";
 import { PrismLanguage } from "./app/services/editor/prism/prism.service";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
@@ -56,6 +55,7 @@ export namespace Components {
         "fullscreen": boolean;
         "hideActions": boolean;
         "selectDeck": () => Promise<void>;
+        "selectStep": (element: HTMLElement | undefined) => Promise<void>;
         "slideNumber": number;
         "slides": JSX.IntrinsicElements[];
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
@@ -85,7 +85,6 @@ export namespace Components {
     }
     interface AppBreadcrumbs {
         "slideNumber": number;
-        "step": BreadcrumbsStep;
     }
     interface AppCloseMenu {
     }
@@ -1314,7 +1313,6 @@ declare namespace LocalJSX {
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slideNumber"?: number;
-        "step"?: BreadcrumbsStep;
     }
     interface AppCloseMenu {
         "onClose"?: (event: CustomEvent<void>) => void;

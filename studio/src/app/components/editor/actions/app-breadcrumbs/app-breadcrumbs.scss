@@ -5,6 +5,9 @@ app-breadcrumbs {
 
   font-size: var(--font-size-small);
   color: rgba(var(--ion-color-medium-rgb), 0.6);
+  background: var(--ion-color-light);
+
+  margin-bottom: 24px;
 
   button[disabled],
   ion-label.separator.busy {
@@ -41,10 +44,10 @@ app-breadcrumbs {
     }
 
     &.selected:not([disabled]) {
-      color: var(--ion-color-primary);
+      color: var(--ion-color-dark);
 
       &::after {
-        background: var(--ion-color-primary);
+        background: var(--ion-color-dark);
       }
     }
 

@@ -6,6 +6,10 @@ app-slide-preview {
   top: var(--ios-top, 8px);
   right: 8px;
 
+  @media screen and (min-width: 1200px) {
+    right: 96px;
+  }
+
   transition: opacity 0.5s;
 
   visibility: initial;
