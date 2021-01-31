@@ -40,8 +40,5 @@ export async function getTemplate(userTemplates: Template[], scope: SlideScope |
 
   const templates: Template[] = scope === SlideScope.COMMUNITY ? (communityTemplates.community as Template[]) : userTemplates;
 
-  // TODO: remove
-  console.log('SCOPE', scope, templates);
-
   return templates.find((filteredTemplate: Template) => filteredTemplate.data.tag === template);
 }

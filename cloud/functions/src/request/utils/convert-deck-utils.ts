@@ -25,7 +25,7 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
         .map((slideAndTemplate: SlideAndTemplate) => (slideAndTemplate.template as Template).data.cdn as string);
 
       // TODO: pass CDN to API
-      console.log('CDN', cdns, [...new Set(cdns)]);
+      console.log('CDN', [...new Set(cdns)]);
 
       const apiDeck: ApiDeck = {
         name: deck.data.name ? deck.data.name.trim() : deck.data.name,
