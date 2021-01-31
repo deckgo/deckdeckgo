@@ -9,6 +9,7 @@ export interface SettingsPanels {
   fontSize: Expanded;
   text: Expanded;
   image: Expanded;
+  imageStyle: Expanded;
   color: Expanded;
   background: Expanded;
   list: Expanded;

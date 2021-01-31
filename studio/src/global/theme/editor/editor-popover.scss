@@ -49,7 +49,7 @@ ion-item-divider {
   font-weight: 500;
   font-size: var(--font-size-normal);
 
-  &:first-of-type {
+  &:first-child {
     ion-label {
       margin-top: 0;
     }
@@ -90,4 +90,8 @@ ion-segment {
       margin-right: 8px;
     }
   }
+}
+
+ion-item.item-range {
+  --padding-start: 12px;
 }

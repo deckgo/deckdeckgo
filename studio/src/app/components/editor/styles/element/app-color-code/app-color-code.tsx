@@ -365,6 +365,7 @@ export class AppColorCode {
             <ion-checkbox
               disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
               slot="end"
+              color="dark"
               checked={this.toolbar}
               onIonChange={() => this.toggleToolbar()}></ion-checkbox>
           </ion-item>

@@ -29,7 +29,7 @@ export class AppReveal {
       <ion-list class="article">
         <ion-item>
           <ion-label>Animate transition</ion-label>
-          <ion-checkbox slot="end" checked={this.reveal} onIonChange={() => this.toggle()}></ion-checkbox>
+          <ion-checkbox slot="end" color="dark" checked={this.reveal} onIonChange={() => this.toggle()}></ion-checkbox>
         </ion-item>
       </ion-list>
     );

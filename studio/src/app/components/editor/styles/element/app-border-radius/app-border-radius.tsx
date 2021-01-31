@@ -137,18 +137,18 @@ export class AppBorderRadius {
         expanded={settingsStore.state.panels.borderRadius}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({borderRadius: $event.detail})}>
         <ion-label slot="title">Border radius</ion-label>
-        <ion-item class="select properties">
-          <ion-select
-            value={this.cornersExpanded}
-            onIonChange={($event: CustomEvent) => this.selectCornersToShow($event)}
-            interface="popover"
-            mode="md"
-            class="ion-padding-start ion-padding-end">
-            <ion-select-option value={false}>All corners</ion-select-option>
-            <ion-select-option value={true}>Individual corners</ion-select-option>
-          </ion-select>
-        </ion-item>
         <ion-list class="properties">
+          <ion-item class="select">
+            <ion-select
+              value={this.cornersExpanded}
+              onIonChange={($event: CustomEvent) => this.selectCornersToShow($event)}
+              interface="popover"
+              mode="md"
+              class="ion-padding-start ion-padding-end">
+              <ion-select-option value={false}>All corners</ion-select-option>
+              <ion-select-option value={true}>Individual corners</ion-select-option>
+            </ion-select>
+          </ion-item>
           {!this.cornersExpanded ? this.renderOption('General', 'Every corner') : undefined}
           {this.cornersExpanded && (
             <Fragment>
@@ -183,9 +183,9 @@ export class AppBorderRadius {
           {text} <small>{borderRadius}px</small>
         </ion-label>
       </ion-item-divider>,
-      <ion-item class="item-opacity">
+      <ion-item class="item-range">
         <ion-range
-          color="primary"
+          color="dark"
           min={0}
           max={this.maxBorderRadius}
           value={this.borderRadiuses.get(option)}

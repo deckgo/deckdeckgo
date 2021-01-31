@@ -315,7 +315,6 @@ export namespace Components {
     interface AppRoot {
     }
     interface AppSelectTargetElement {
-        "background": boolean;
         "chart": boolean;
         "code": boolean;
         "headerFooter": boolean;
@@ -325,6 +324,7 @@ export namespace Components {
         "slide": boolean;
         "textTarget": boolean;
         "transition": boolean;
+        "wordCloud": boolean;
     }
     interface AppShape {
         "selectedElement": HTMLElement;
@@ -1578,7 +1578,6 @@ declare namespace LocalJSX {
     interface AppRoot {
     }
     interface AppSelectTargetElement {
-        "background"?: boolean;
         "chart"?: boolean;
         "code"?: boolean;
         "headerFooter"?: boolean;
@@ -1589,6 +1588,7 @@ declare namespace LocalJSX {
         "slide"?: boolean;
         "textTarget"?: boolean;
         "transition"?: boolean;
+        "wordCloud"?: boolean;
     }
     interface AppShape {
         "selectedElement"?: HTMLElement;

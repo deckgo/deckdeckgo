@@ -125,7 +125,7 @@ export class AppElementStyle {
       return;
     }
 
-    const elementTarget: boolean = this.selectedElement.type === 'element' && !this.selectedElement.slot?.image;
+    const elementTarget: boolean = this.selectedElement.type === 'element' && !this.selectedElement.slot?.image && !this.selectedElement.slot?.wordCloud;
     const transition: boolean =
       this.selectedElement.type === 'element' &&
       !this.selectedElement.slot?.code &&
@@ -139,12 +139,12 @@ export class AppElementStyle {
       <app-select-target-element
         textTarget={elementTarget}
         slide={this.selectedElement.type === 'slide'}
-        background={!this.selectedElement.slot?.image}
         qrCode={this.selectedElement.slide?.qrCode || this.selectedElement.slide?.poll}
         chart={this.selectedElement.slide?.chart || this.selectedElement.slide?.poll}
         code={this.selectedElement.slot?.code || this.selectedElement.slot?.markdown}
         image={this.selectedElement.slot?.image}
         sides={this.selectedElement.slide?.author || this.selectedElement.slide?.split}
+        wordCloud={this.selectedElement.slot?.wordCloud}
         transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );

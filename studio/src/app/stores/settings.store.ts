@@ -12,6 +12,7 @@ const {state, onChange} = createStore<Settings>({
     fontSize: 'open',
     text: 'close',
     image: 'open',
+    imageStyle: 'open',
     color: 'open',
     background: 'close',
     list: 'open',

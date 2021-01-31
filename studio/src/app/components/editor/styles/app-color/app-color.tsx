@@ -332,7 +332,7 @@ export class AppColor {
             Opacity <small>{this.opacity}%</small>
           </ion-label>
         </ion-item-divider>
-        <ion-item class="item-opacity">
+        <ion-item class="item-range">
           <ion-range
             min={0}
             max={100}

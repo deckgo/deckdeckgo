@@ -235,9 +235,9 @@ export class AppBoxShadow {
               Horizontal length <small>{this.boxShadowProperties.get('hLength')}px</small>
             </ion-label>
           </ion-item-divider>
-          <ion-item>
+          <ion-item class="item-range">
             <ion-range
-              color="primary"
+              color="dark"
               min={-this.MAX_HORIZONTAL_LENGTH}
               max={this.MAX_HORIZONTAL_LENGTH}
               value={this.boxShadowProperties.get('hLength')}
@@ -250,9 +250,9 @@ export class AppBoxShadow {
               Vertical length <small>{this.boxShadowProperties.get('vLength')}px</small>
             </ion-label>
           </ion-item-divider>
-          <ion-item>
+          <ion-item class="item-range">
             <ion-range
-              color="primary"
+              color="dark"
               min={-this.MAX_VERTICAL_LENGTH}
               max={this.MAX_VERTICAL_LENGTH}
               value={this.boxShadowProperties.get('vLength')}
@@ -265,9 +265,9 @@ export class AppBoxShadow {
               Blur radius <small>{this.boxShadowProperties.get('blurRadius')}px</small>
             </ion-label>
           </ion-item-divider>
-          <ion-item>
+          <ion-item class="item-range">
             <ion-range
-              color="primary"
+              color="dark"
               min={0}
               max={this.MAX_BLUR_RADIUS}
               value={this.boxShadowProperties.get('blurRadius')}
@@ -280,9 +280,9 @@ export class AppBoxShadow {
               Spread radius <small>{this.boxShadowProperties.get('spreadRadius')}px</small>
             </ion-label>
           </ion-item-divider>
-          <ion-item>
+          <ion-item class="item-range">
             <ion-range
-              color="primary"
+              color="dark"
               min={-this.MAX_SPEED_RADIUS}
               max={this.MAX_SPEED_RADIUS}
               value={this.boxShadowProperties.get('spreadRadius')}

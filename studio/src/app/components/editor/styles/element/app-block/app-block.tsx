@@ -203,8 +203,9 @@ export class AppBlock {
           <ion-label>Rotate {settingsStore.state.editMode === 'properties' ? <small>{this.rotate}deg</small> : undefined}</ion-label>
         </ion-item-divider>
 
-        <ion-item class="item-opacity properties">
+        <ion-item class="item-range properties">
           <ion-range
+            color="dark"
             value={this.rotate}
             min={0}
             max={360}
@@ -231,8 +232,12 @@ export class AppBlock {
           <ion-label>Padding {settingsStore.state.editMode === 'properties' ? <small>{this.padding}px</small> : undefined}</ion-label>
         </ion-item-divider>
 
-        <ion-item class="item-opacity properties">
-          <ion-range value={this.padding} mode="md" onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updatePadding($event)}></ion-range>
+        <ion-item class="item-range properties">
+          <ion-range
+            color="dark"
+            value={this.padding}
+            mode="md"
+            onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updatePadding($event)}></ion-range>
         </ion-item>
 
         <ion-item class="with-padding css">
@@ -253,8 +258,9 @@ export class AppBlock {
         <ion-item-divider class="ion-padding-top">
           <ion-label>Width {settingsStore.state.editMode === 'properties' ? <small>{this.width}%</small> : undefined}</ion-label>
         </ion-item-divider>
-        <ion-item class="item-opacity properties">
+        <ion-item class="item-range properties">
           <ion-range
+            color="dark"
             min={1}
             max={100}
             value={this.width}

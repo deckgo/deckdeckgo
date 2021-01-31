@@ -122,7 +122,7 @@ app-color {
     --bar-background: var(--ion-color-light);
   }
 
-  .item-opacity {
+  .item-range {
     &.ion-focused {
       outline: 1px solid rgba(var(--ion-color-primary-rgb), 0.4);
       outline-offset: -1px;
