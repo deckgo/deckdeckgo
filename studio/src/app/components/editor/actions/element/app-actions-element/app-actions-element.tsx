@@ -264,6 +264,26 @@ export class AppActionsElement {
     });
   }
 
+  private async copy($event: UIEvent) {
+    const copyStyle: boolean = this.selectedElement?.type !== 'slide' || this.selectedElement?.slot?.shape !== undefined;
+
+    if (copyStyle) {
+      await this.openCopyStyle($event);
+    } else {
+      await this.clone();
+    }
+  }
+
+  private async openCopyStyle($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-copy-style',
+      mode: 'ios',
+      event: $event,
+    });
+
+    await popover.present();
+  }
+
   private async clone() {
     if (this.selectedElement?.slot?.shape !== undefined) {
       await this.cloneShape();
@@ -932,11 +952,10 @@ export class AppActionsElement {
   }
 
   private renderCopy() {
-    const displayed: boolean = this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined;
-    const classSlide: string | undefined = `wider-devices ion-activatable ${displayed ? '' : 'hidden'}`;
+    const classSlide: string | undefined = `wider-devices ion-activatable`;
 
     return (
-      <button onClick={() => this.clone()} aria-label="Copy" disabled={store.state.deckBusy} class={classSlide} tabindex={displayed ? 0 : -1}>
+      <button onClick={($event: UIEvent) => this.copy($event)} aria-label="Copy" disabled={store.state.deckBusy} class={classSlide}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/copy.svg"></ion-icon>
         <ion-label aria-hidden="true">Copy</ion-label>

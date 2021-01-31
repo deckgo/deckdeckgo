@@ -124,6 +124,8 @@ export namespace Components {
     interface AppColorWordCloud {
         "selectedElement": HTMLElement;
     }
+    interface AppCopyStyle {
+    }
     interface AppCreateSlide {
     }
     interface AppCustomData {
@@ -551,6 +553,12 @@ declare global {
     var HTMLAppColorWordCloudElement: {
         prototype: HTMLAppColorWordCloudElement;
         new (): HTMLAppColorWordCloudElement;
+    };
+    interface HTMLAppCopyStyleElement extends Components.AppCopyStyle, HTMLStencilElement {
+    }
+    var HTMLAppCopyStyleElement: {
+        prototype: HTMLAppCopyStyleElement;
+        new (): HTMLAppCopyStyleElement;
     };
     interface HTMLAppCreateSlideElement extends Components.AppCreateSlide, HTMLStencilElement {
     }
@@ -1134,6 +1142,7 @@ declare global {
         "app-color-sides": HTMLAppColorSidesElement;
         "app-color-text-background": HTMLAppColorTextBackgroundElement;
         "app-color-word-cloud": HTMLAppColorWordCloudElement;
+        "app-copy-style": HTMLAppCopyStyleElement;
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
@@ -1359,6 +1368,8 @@ declare namespace LocalJSX {
     interface AppColorWordCloud {
         "onWordCloudDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
+    }
+    interface AppCopyStyle {
     }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
@@ -1714,6 +1725,7 @@ declare namespace LocalJSX {
         "app-color-sides": AppColorSides;
         "app-color-text-background": AppColorTextBackground;
         "app-color-word-cloud": AppColorWordCloud;
+        "app-copy-style": AppCopyStyle;
         "app-create-slide": AppCreateSlide;
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
@@ -1836,6 +1848,7 @@ declare module "@stencil/core" {
             "app-color-sides": LocalJSX.AppColorSides & JSXBase.HTMLAttributes<HTMLAppColorSidesElement>;
             "app-color-text-background": LocalJSX.AppColorTextBackground & JSXBase.HTMLAttributes<HTMLAppColorTextBackgroundElement>;
             "app-color-word-cloud": LocalJSX.AppColorWordCloud & JSXBase.HTMLAttributes<HTMLAppColorWordCloudElement>;
+            "app-copy-style": LocalJSX.AppCopyStyle & JSXBase.HTMLAttributes<HTMLAppCopyStyleElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
