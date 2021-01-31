@@ -88,7 +88,7 @@ body.dark {
     ion-list {
       background: var(--ion-color-dark);
 
-      ion-item.ion-activatable:not(.deck) {
+      ion-item.item {
         --background: transparent;
         --color: var(--ion-color-dark-contrast);
 
