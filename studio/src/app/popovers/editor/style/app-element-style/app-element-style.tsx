@@ -125,7 +125,7 @@ export class AppElementStyle {
       return;
     }
 
-    const elementTarget: boolean = this.selectedElement.type === 'element' && !this.selectedElement.slot?.image;
+    const elementTarget: boolean = this.selectedElement.type === 'element' && !this.selectedElement.slot?.image && !this.selectedElement.slot?.wordCloud;
     const transition: boolean =
       this.selectedElement.type === 'element' &&
       !this.selectedElement.slot?.code &&
@@ -139,12 +139,12 @@ export class AppElementStyle {
       <app-select-target-element
         textTarget={elementTarget}
         slide={this.selectedElement.type === 'slide'}
-        background={!this.selectedElement.slot?.image}
         qrCode={this.selectedElement.slide?.qrCode || this.selectedElement.slide?.poll}
         chart={this.selectedElement.slide?.chart || this.selectedElement.slide?.poll}
         code={this.selectedElement.slot?.code || this.selectedElement.slot?.markdown}
         image={this.selectedElement.slot?.image}
         sides={this.selectedElement.slide?.author || this.selectedElement.slide?.split}
+        wordCloud={this.selectedElement.slot?.wordCloud}
         transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );
@@ -171,16 +171,17 @@ export class AppElementStyle {
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-reveal selectedElement={this.selectedElement.element} onToggleReveal={() => this.closePopover()}></app-reveal>;
     } else if (this.applyToTargetElement === TargetElement.IMAGE) {
-      return (
+      return [
         <app-image-style
           selectedElement={this.selectedElement.element}
-          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>
-      );
+          onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>,
+        this.renderBlock(),
+      ];
     } else {
       return [
         this.renderFontSize(),
-        <app-align selectedElement={this.selectedElement.element} onAlignChange={() => this.emitStyleChange()}></app-align>,
-        this.renderLetterSpacing(),
+        this.renderText(),
+        this.renderBlock(),
         this.renderList(),
         <app-color-text-background
           key={'text'}
@@ -191,12 +192,20 @@ export class AppElementStyle {
     }
   }
 
-  private renderLetterSpacing() {
+  private renderBlock() {
+    if (this.selectedElement.type === 'slide') {
+      return undefined;
+    }
+
+    return <app-block selectedElement={this.selectedElement.element} onBlockChange={() => this.emitStyleChange()}></app-block>;
+  }
+
+  private renderText() {
     if (this.selectedElement.slot?.code) {
       return undefined;
     }
 
-    return <app-letter-spacing selectedElement={this.selectedElement.element} onLetterSpacingDidChange={() => this.emitStyleChange()}></app-letter-spacing>;
+    return <app-text selectedElement={this.selectedElement.element} onTextDidChange={() => this.emitStyleChange()}></app-text>;
   }
 
   private renderBackground() {

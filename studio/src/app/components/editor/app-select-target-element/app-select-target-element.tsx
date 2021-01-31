@@ -27,9 +27,6 @@ export class AppSelectTargetElement {
   textTarget: boolean = false;
 
   @Prop()
-  background: boolean = false;
-
-  @Prop()
   transition: boolean = false;
 
   @Prop()
@@ -37,6 +34,9 @@ export class AppSelectTargetElement {
 
   @Prop()
   image: boolean = false;
+
+  @Prop()
+  wordCloud: boolean = false;
 
   @Event()
   applyTo: EventEmitter<TargetElement>;
@@ -54,6 +54,8 @@ export class AppSelectTargetElement {
       ? TargetElement.IMAGE
       : this.textTarget
       ? TargetElement.TEXT
+      : this.wordCloud
+      ? TargetElement.WORD_CLOUD
       : this.sides
       ? TargetElement.SIDES
       : this.qrCode
@@ -71,6 +73,7 @@ export class AppSelectTargetElement {
         {this.renderCode()}
         {this.renderImage()}
         {this.renderText()}
+        {this.renderWordCloud()}
         {this.renderBackground()}
         {this.renderHeaderFooter()}
         {this.renderTransition()}
@@ -106,7 +109,7 @@ export class AppSelectTargetElement {
     if (this.slide) {
       return (
         <ion-segment-button value={TargetElement.SLIDE} mode="md">
-          <ion-label>Font</ion-label>
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {
@@ -118,7 +121,19 @@ export class AppSelectTargetElement {
     if (this.textTarget) {
       return (
         <ion-segment-button value={TargetElement.TEXT} mode="md">
-          <ion-label>Font</ion-label>
+          <ion-label>Text</ion-label>
+        </ion-segment-button>
+      );
+    } else {
+      return undefined;
+    }
+  }
+
+  private renderWordCloud() {
+    if (this.wordCloud) {
+      return (
+        <ion-segment-button value={TargetElement.WORD_CLOUD} mode="md">
+          <ion-label>Text</ion-label>
         </ion-segment-button>
       );
     } else {
@@ -139,15 +154,11 @@ export class AppSelectTargetElement {
   }
 
   private renderBackground() {
-    if (this.background) {
-      return (
-        <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
-          <ion-label>Background</ion-label>
-        </ion-segment-button>
-      );
-    } else {
-      return undefined;
-    }
+    return (
+      <ion-segment-button value={TargetElement.BACKGROUND} mode="md">
+        <ion-label>Background</ion-label>
+      </ion-segment-button>
+    );
   }
 
   private renderCode() {

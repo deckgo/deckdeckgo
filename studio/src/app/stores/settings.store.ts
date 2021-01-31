@@ -8,10 +8,11 @@ const {state, onChange} = createStore<Settings>({
   panels: {
     borderRadius: 'close',
     boxShadow: 'close',
-    align: 'close',
+    block: 'close',
     fontSize: 'open',
-    letterSpacing: 'close',
+    text: 'close',
     image: 'open',
+    imageStyle: 'open',
     color: 'open',
     background: 'close',
     list: 'open',

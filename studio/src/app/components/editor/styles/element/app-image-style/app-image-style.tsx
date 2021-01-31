@@ -1,6 +1,7 @@
 import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
 import settingsStore from '../../../../../stores/settings.store';
-import {EditMode} from '../../../../../types/core/settings';
+import {EditMode, Expanded} from '../../../../../types/core/settings';
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
 enum ImageSize {
   SMALL = '25%',
@@ -201,7 +202,10 @@ export class AppImageStyle {
 
   render() {
     return (
-      <app-expansion-panel expander={false}>
+      <app-expansion-panel
+        expanded={settingsStore.state.panels.imageStyle}
+        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({imageStyle: $event.detail})}>
+        <ion-label slot="title">Image</ion-label>
         <ion-list>
           {this.renderImageSize()}
           {this.renderImageAlignment()}

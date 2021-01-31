@@ -68,12 +68,12 @@ export namespace Components {
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
-    interface AppAlign {
-        "selectedElement": HTMLElement;
-    }
     interface AppAvatar {
         "ariaLabel": string;
         "src": string;
+    }
+    interface AppBlock {
+        "selectedElement": HTMLElement;
     }
     interface AppBorderRadius {
         "selectedElement": HTMLElement;
@@ -230,9 +230,6 @@ export namespace Components {
     interface AppImageStyle {
         "selectedElement": HTMLElement;
     }
-    interface AppLetterSpacing {
-        "selectedElement": HTMLElement;
-    }
     interface AppLinks {
     }
     interface AppList {
@@ -318,7 +315,6 @@ export namespace Components {
     interface AppRoot {
     }
     interface AppSelectTargetElement {
-        "background": boolean;
         "chart": boolean;
         "code": boolean;
         "headerFooter": boolean;
@@ -328,6 +324,7 @@ export namespace Components {
         "slide": boolean;
         "textTarget": boolean;
         "transition": boolean;
+        "wordCloud": boolean;
     }
     interface AppShape {
         "selectedElement": HTMLElement;
@@ -394,6 +391,9 @@ export namespace Components {
     }
     interface AppTemplatesUser {
     }
+    interface AppText {
+        "selectedElement": HTMLElement;
+    }
     interface AppTransform {
         "selectedElement": HTMLElement;
     }
@@ -456,17 +456,17 @@ declare global {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
     };
-    interface HTMLAppAlignElement extends Components.AppAlign, HTMLStencilElement {
-    }
-    var HTMLAppAlignElement: {
-        prototype: HTMLAppAlignElement;
-        new (): HTMLAppAlignElement;
-    };
     interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {
     }
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
+    };
+    interface HTMLAppBlockElement extends Components.AppBlock, HTMLStencilElement {
+    }
+    var HTMLAppBlockElement: {
+        prototype: HTMLAppBlockElement;
+        new (): HTMLAppBlockElement;
     };
     interface HTMLAppBorderRadiusElement extends Components.AppBorderRadius, HTMLStencilElement {
     }
@@ -755,12 +755,6 @@ declare global {
     var HTMLAppImageStyleElement: {
         prototype: HTMLAppImageStyleElement;
         new (): HTMLAppImageStyleElement;
-    };
-    interface HTMLAppLetterSpacingElement extends Components.AppLetterSpacing, HTMLStencilElement {
-    }
-    var HTMLAppLetterSpacingElement: {
-        prototype: HTMLAppLetterSpacingElement;
-        new (): HTMLAppLetterSpacingElement;
     };
     interface HTMLAppLinksElement extends Components.AppLinks, HTMLStencilElement {
     }
@@ -1068,6 +1062,12 @@ declare global {
         prototype: HTMLAppTemplatesUserElement;
         new (): HTMLAppTemplatesUserElement;
     };
+    interface HTMLAppTextElement extends Components.AppText, HTMLStencilElement {
+    }
+    var HTMLAppTextElement: {
+        prototype: HTMLAppTextElement;
+        new (): HTMLAppTextElement;
+    };
     interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {
     }
     var HTMLAppTransformElement: {
@@ -1118,8 +1118,8 @@ declare global {
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-editor": HTMLAppActionsEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
-        "app-align": HTMLAppAlignElement;
         "app-avatar": HTMLAppAvatarElement;
+        "app-block": HTMLAppBlockElement;
         "app-border-radius": HTMLAppBorderRadiusElement;
         "app-bottom-sheet": HTMLAppBottomSheetElement;
         "app-box-shadow": HTMLAppBoxShadowElement;
@@ -1168,7 +1168,6 @@ declare global {
         "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
         "app-image-style": HTMLAppImageStyleElement;
-        "app-letter-spacing": HTMLAppLetterSpacingElement;
         "app-links": HTMLAppLinksElement;
         "app-list": HTMLAppListElement;
         "app-logo": HTMLAppLogoElement;
@@ -1220,6 +1219,7 @@ declare global {
         "app-templates-split": HTMLAppTemplatesSplitElement;
         "app-templates-title": HTMLAppTemplatesTitleElement;
         "app-templates-user": HTMLAppTemplatesUserElement;
+        "app-text": HTMLAppTextElement;
         "app-transform": HTMLAppTransformElement;
         "app-unpublish": HTMLAppUnpublishElement;
         "app-user-delete": HTMLAppUserDeleteElement;
@@ -1291,13 +1291,13 @@ declare namespace LocalJSX {
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
     }
-    interface AppAlign {
-        "onAlignChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
-    }
     interface AppAvatar {
         "ariaLabel"?: string;
         "src"?: string;
+    }
+    interface AppBlock {
+        "onBlockChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
     }
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
@@ -1486,10 +1486,6 @@ declare namespace LocalJSX {
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "selectedElement"?: HTMLElement;
     }
-    interface AppLetterSpacing {
-        "onLetterSpacingDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
-    }
     interface AppLinks {
     }
     interface AppList {
@@ -1582,7 +1578,6 @@ declare namespace LocalJSX {
     interface AppRoot {
     }
     interface AppSelectTargetElement {
-        "background"?: boolean;
         "chart"?: boolean;
         "code"?: boolean;
         "headerFooter"?: boolean;
@@ -1593,6 +1588,7 @@ declare namespace LocalJSX {
         "slide"?: boolean;
         "textTarget"?: boolean;
         "transition"?: boolean;
+        "wordCloud"?: boolean;
     }
     interface AppShape {
         "selectedElement"?: HTMLElement;
@@ -1672,6 +1668,10 @@ declare namespace LocalJSX {
         "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
         "onSelectedTemplate"?: (event: CustomEvent<Template>) => void;
     }
+    interface AppText {
+        "onTextDidChange"?: (event: CustomEvent<void>) => void;
+        "selectedElement"?: HTMLElement;
+    }
     interface AppTransform {
         "selectedElement"?: HTMLElement;
     }
@@ -1698,8 +1698,8 @@ declare namespace LocalJSX {
         "app-actions-deck": AppActionsDeck;
         "app-actions-editor": AppActionsEditor;
         "app-actions-element": AppActionsElement;
-        "app-align": AppAlign;
         "app-avatar": AppAvatar;
+        "app-block": AppBlock;
         "app-border-radius": AppBorderRadius;
         "app-bottom-sheet": AppBottomSheet;
         "app-box-shadow": AppBoxShadow;
@@ -1748,7 +1748,6 @@ declare namespace LocalJSX {
         "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
         "app-image-style": AppImageStyle;
-        "app-letter-spacing": AppLetterSpacing;
         "app-links": AppLinks;
         "app-list": AppList;
         "app-logo": AppLogo;
@@ -1800,6 +1799,7 @@ declare namespace LocalJSX {
         "app-templates-split": AppTemplatesSplit;
         "app-templates-title": AppTemplatesTitle;
         "app-templates-user": AppTemplatesUser;
+        "app-text": AppText;
         "app-transform": AppTransform;
         "app-unpublish": AppUnpublish;
         "app-user-delete": AppUserDelete;
@@ -1820,8 +1820,8 @@ declare module "@stencil/core" {
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-editor": LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
-            "app-align": LocalJSX.AppAlign & JSXBase.HTMLAttributes<HTMLAppAlignElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
+            "app-block": LocalJSX.AppBlock & JSXBase.HTMLAttributes<HTMLAppBlockElement>;
             "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
             "app-bottom-sheet": LocalJSX.AppBottomSheet & JSXBase.HTMLAttributes<HTMLAppBottomSheetElement>;
             "app-box-shadow": LocalJSX.AppBoxShadow & JSXBase.HTMLAttributes<HTMLAppBoxShadowElement>;
@@ -1870,7 +1870,6 @@ declare module "@stencil/core" {
             "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
-            "app-letter-spacing": LocalJSX.AppLetterSpacing & JSXBase.HTMLAttributes<HTMLAppLetterSpacingElement>;
             "app-links": LocalJSX.AppLinks & JSXBase.HTMLAttributes<HTMLAppLinksElement>;
             "app-list": LocalJSX.AppList & JSXBase.HTMLAttributes<HTMLAppListElement>;
             "app-logo": LocalJSX.AppLogo & JSXBase.HTMLAttributes<HTMLAppLogoElement>;
@@ -1922,6 +1921,7 @@ declare module "@stencil/core" {
             "app-templates-split": LocalJSX.AppTemplatesSplit & JSXBase.HTMLAttributes<HTMLAppTemplatesSplitElement>;
             "app-templates-title": LocalJSX.AppTemplatesTitle & JSXBase.HTMLAttributes<HTMLAppTemplatesTitleElement>;
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
+            "app-text": LocalJSX.AppText & JSXBase.HTMLAttributes<HTMLAppTextElement>;
             "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;

@@ -15,6 +15,7 @@ ion-list[class*="list"] {
 ion-item {
   --border-width: 0;
   --inner-border-width: 0;
+  --inner-padding-end: 20px;
 
   &.action-button {
     --min-height: 42px;
@@ -41,10 +42,11 @@ ion-item {
 }
 
 ion-item-divider {
-  --color: black;
-  --background: inherit;
-  --ion-item-border-color: transparent;
-  --ion-padding: 0;
+  &:first-child {
+    ion-label {
+      margin-top: 0;
+    }
+  }
 
   ion-label {
     margin: 16px 0 4px;
@@ -81,4 +83,8 @@ ion-segment {
       margin-right: 8px;
     }
   }
+}
+
+ion-item.item-range {
+  --padding-start: 12px;
 }

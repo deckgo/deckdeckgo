@@ -76,7 +76,6 @@ export class AppDeck {
         </ion-toolbar>
         <app-select-target-element
           textTarget={true}
-          background={true}
           transition={true}
           header-footer={true}
           onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
