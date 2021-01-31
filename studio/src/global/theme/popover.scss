@@ -13,10 +13,14 @@ ion-popover.popover-menu {
 
     --min-height: calc(100% - 64px);
 
-    @media screen and (min-width: 1200px) {
+    @media screen and (min-width: 576px) {
       left: inherit !important;
-      right: 84px;
+      right: 16px;
       --min-height: calc(100% - 32px);
+    }
+
+    @media screen and (min-width: 1200px) {
+      right: 84px;
     }
 
     padding: 16px;
