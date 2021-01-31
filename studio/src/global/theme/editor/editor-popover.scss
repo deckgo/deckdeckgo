@@ -42,13 +42,6 @@ ion-item {
 }
 
 ion-item-divider {
-  --color: black;
-  --background: inherit;
-  --ion-item-border-color: transparent;
-  --ion-padding: 0;
-  font-weight: 500;
-  font-size: var(--font-size-normal);
-
   &:first-child {
     ion-label {
       margin-top: 0;
