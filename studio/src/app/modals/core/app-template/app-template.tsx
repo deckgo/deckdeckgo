@@ -133,7 +133,7 @@ export class AppTemplate {
   }
 
   private async validateTag() {
-    this.validTag = /(?:deckgo|deckdeckgo|ddg)/.test(this.templateData.tag);
+    this.validTag = !/(?:deckgo|deckdeckgo|ddg)/.test(this.templateData.tag);
   }
 
   private async navigateContact() {
