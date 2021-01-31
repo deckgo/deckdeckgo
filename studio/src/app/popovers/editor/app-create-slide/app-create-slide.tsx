@@ -121,7 +121,7 @@ export class AppCreateSlide {
     }
 
     // We might just want only one element
-    if (slotType && customSlotsCount > 1) {
+    if (slotType && (customSlotsCount === undefined || customSlotsCount > 1)) {
       elements.push(slotType);
 
       if (
