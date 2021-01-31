@@ -21,9 +21,7 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
       const apiSlides: SlideAndTemplate[] = await convertSlides(deck);
 
       const cdns: string[] = apiSlides
-        .filter(
-          (slideAndTemplate: SlideAndTemplate) => slideAndTemplate.template !== undefined && (slideAndTemplate.template as Template).data.cdn !== undefined
-        )
+        .filter((slideAndTemplate: SlideAndTemplate) => slideAndTemplate.template !== undefined && slideAndTemplate.template.data.cdn !== undefined)
         .map((slideAndTemplate: SlideAndTemplate) => (slideAndTemplate.template as Template).data.cdn as string);
 
       // TODO: pass CDN to API
