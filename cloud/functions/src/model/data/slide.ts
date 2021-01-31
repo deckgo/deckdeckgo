@@ -14,52 +14,22 @@ export enum SlideTemplate {
   PLAYGROUND = 'playground',
 }
 
-export enum SlideChartType {
-  LINE = 'line',
-  PIE = 'pie',
-  BAR = 'bar',
-}
-
-export enum SlideSplitType {
+export enum SlideScope {
   DEFAULT = 'default',
-  DEMO = 'demo',
+  COMMUNITY = 'community',
+  USER = 'user',
 }
-
-export type SlideAttributesYAxisDomain = 'max' | 'extent';
 
 export interface SlideAttributes {
-  style?: string;
-  src?: string;
-  customBackground?: string;
-  imgSrc?: string;
-  imgAlt?: string;
-
-  content?: string;
-  customQRCode?: boolean;
-
-  type?: SlideChartType | SlideSplitType;
-  innerRadius?: number;
-  animation?: boolean;
-  datePattern?: string;
-  yAxisDomain?: SlideAttributesYAxisDomain;
-  smooth?: boolean;
-  area?: boolean;
-  ticks?: number;
-  grid?: boolean;
-  separator?: string;
-
-  vertical?: boolean;
-
-  imgMode?: string;
-
-  customLoader?: boolean;
-
-  theme?: string;
+  [key: string]: string | number | boolean;
 }
 
 export interface SlideData {
   content?: string;
-  template: SlideTemplate;
+
+  template: SlideTemplate | string;
+  scope?: SlideScope;
+
   attributes?: SlideAttributes;
 
   api_id?: string;
