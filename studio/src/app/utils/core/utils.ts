@@ -9,24 +9,20 @@ export interface InjectScript {
 export class Utils {
   static injectJS(scr: InjectScript): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      if (document.getElementById(scr.id)) {
+      if (document?.getElementById(scr.id)) {
         resolve('JS already loaded.');
         return;
       }
       const script = document.createElement('script');
 
       script.id = scr.id;
-      script.async = true;
-      script.defer = true;
       script.src = scr.src;
 
       if (scr.module) {
         script.type = 'module';
+      } else {
+        script.async = true;
+        script.defer = true;
       }
 
       script.addEventListener('load', () => resolve('JS loaded.'), {once: true});
@@ -40,12 +36,7 @@ export class Utils {
 
   static injectCSS(id: string, src: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      if (document.getElementById(id)) {
+      if (document?.getElementById(id)) {
         resolve('CSS already loaded.');
         return;
       }
