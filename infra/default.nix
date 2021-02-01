@@ -5,6 +5,7 @@ in
 
 rec
 {
+  inherit (pkgs) pkgsMusl;
   function = # TODO: rename to handler
     pkgs.runCommand "build-lambda" {}
       ''

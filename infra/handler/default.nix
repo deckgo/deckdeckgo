@@ -15,6 +15,10 @@ mkDerivation {
   src = ./.;
   isLibrary = true;
   isExecutable = true;
+  enableLibraryProfiling = false;
+  enableExecutableProfiling = false;
+  enableSharedExecutables = false;
+  enableSharedLibraries = false;
   libraryHaskellDepends = [
     aeson amazonka amazonka-cloudfront amazonka-core amazonka-s3
     amazonka-sqs base bytestring cases conduit conduit-extra

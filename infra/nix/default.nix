@@ -1,17 +1,23 @@
 {}:
 let
   sources = import ./sources.nix;
-  pkgs = import sources.nixpkgs { overlays  = [
-    (self: super: {
+  pkgs = import sources.nixpkgs {
+    overlays = [
+      (
+        self: super: {
 
-      postgresql = super.postgresql.override (_: {
-        enableSystemd = ! self.stdenv.hostPlatform.isMusl;
-      });
-    }
-    )
+          postgresql = (super.postgresql.overrideAttrs (old: { dontDisableStatic = true; })).override {
+            # We need libpq, which does not need systemd,
+            # and systemd doesn't currently build with musl.
+            enableSystemd = false;
+          };
+          lzma = super.lzma.overrideAttrs (old: { dontDisableStatic = true; });
+        }
+      )
 
 
-  ];};
+    ];
+  };
   staticPkgs = pkgs.pkgsMusl;
   compiler = "ghc865";
 
@@ -27,6 +33,4 @@ let
 
 in
 
-pkgs //
-{ inherit staticHaskellPackages sources; } //
-{ terraform = pkgs.terraform_0_12 ; }
+pkgs // { inherit staticHaskellPackages sources; } // { terraform = pkgs.terraform_0_12; }
