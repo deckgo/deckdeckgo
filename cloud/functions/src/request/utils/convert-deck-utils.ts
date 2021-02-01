@@ -20,13 +20,6 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
     try {
       const apiSlides: SlideAndTemplate[] = await convertSlides(deck);
 
-      const cdns: string[] = apiSlides
-        .filter((slideAndTemplate: SlideAndTemplate) => slideAndTemplate.template !== undefined && slideAndTemplate.template.data.cdn !== undefined)
-        .map((slideAndTemplate: SlideAndTemplate) => (slideAndTemplate.template as Template).data.cdn as string);
-
-      // TODO: pass CDN to API
-      console.log('CDN', [...new Set(cdns)]);
-
       const apiDeck: ApiDeck = {
         name: deck.data.name ? deck.data.name.trim() : deck.data.name,
         description:
@@ -43,6 +36,12 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
       const googleFontScript: string | undefined = await getGoogleFontScript(deck);
       if (googleFontScript !== undefined) {
         apiDeck.head_extra = googleFontScript;
+      }
+
+      const scripts: string | undefined = getTemplateScripts(apiSlides);
+
+      if (scripts !== undefined) {
+        apiDeck.head_extra = apiDeck.head_extra !== undefined ? `${apiDeck.head_extra}${scripts}` : scripts;
       }
 
       const attributes: ApiDeckAttributes | undefined = await convertDeckAttributes(deck);
@@ -220,4 +219,17 @@ function convertSlideQRCode(apiSlide: ApiSlide): Promise<ApiSlide> {
 
     resolve(apiSlide);
   });
+}
+
+function getTemplateScripts(apiSlides: SlideAndTemplate[]) {
+  const cdns: string[] | undefined = apiSlides
+    .filter((slideAndTemplate: SlideAndTemplate) => slideAndTemplate.template !== undefined && slideAndTemplate.template.data.cdn !== undefined)
+    .map((slideAndTemplate: SlideAndTemplate) => (slideAndTemplate.template as Template).data.cdn as string);
+
+  if (cdns !== undefined && cdns.length > 0) {
+    const uniqueCdns: string[] = [...new Set(cdns)];
+    return uniqueCdns.map((cdn: string) => `<script type="module" src="${cdn}" />`).join();
+  }
+
+  return undefined;
 }
