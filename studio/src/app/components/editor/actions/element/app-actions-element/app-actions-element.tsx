@@ -277,6 +277,9 @@ export class AppActionsElement {
   private async openCopyStyle($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-copy-style',
+      componentProps: {
+        selectedElement: this.selectedElement.element,
+      },
       mode: 'ios',
       event: $event,
     });

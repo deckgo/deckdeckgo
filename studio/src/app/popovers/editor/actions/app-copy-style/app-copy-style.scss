@@ -1,0 +1,18 @@
+app-copy-style {
+  a {
+    color: inherit;
+    cursor: pointer;
+
+    display: block;
+
+    &:not(.disabled) {
+      &:hover {
+        color: var(--ion-color-tertiary);
+      }
+    }
+
+    &.disabled {
+      opacity: 0.4;
+    }
+  }
+}

@@ -125,6 +125,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppCopyStyle {
+        "selectedElement": HTMLElement;
     }
     interface AppCreateSlide {
     }
@@ -1370,6 +1371,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppCopyStyle {
+        "selectedElement"?: HTMLElement;
     }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
