@@ -36,12 +36,12 @@ export class AppCopyStyle {
   render() {
     return (
       <div class="ion-padding">
-        <a onClick={() => this.applyStyle()} aria-label="Apply style" class={editorStore.state.style !== null ? undefined : 'disabled'}>
-          <p>Apply style</p>
-        </a>
-
         <a onClick={() => this.copyStyle()} aria-label="Copy style">
           <p>Copy style</p>
+        </a>
+
+        <a onClick={() => this.applyStyle()} aria-label="Apply style" class={editorStore.state.style !== null ? undefined : 'disabled'}>
+          <p>Apply style</p>
         </a>
       </div>
     );

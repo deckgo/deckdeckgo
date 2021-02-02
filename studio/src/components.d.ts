@@ -250,9 +250,10 @@ export namespace Components {
         "offline": boolean;
     }
     interface AppMoreElementActions {
-        "copy": boolean;
+        "clone": boolean;
         "images": boolean;
         "notes": boolean;
+        "transform": boolean;
     }
     interface AppMoreShareOptions {
     }
@@ -1518,9 +1519,10 @@ declare namespace LocalJSX {
         "offline"?: boolean;
     }
     interface AppMoreElementActions {
-        "copy"?: boolean;
+        "clone"?: boolean;
         "images"?: boolean;
         "notes"?: boolean;
+        "transform"?: boolean;
     }
     interface AppMoreShareOptions {
     }

@@ -4,7 +4,7 @@ export enum MoreAction {
   SHARE,
   PUBLISH,
   EMBED,
-  COPY,
+  CLONE,
   NOTES,
   DELETE,
   HELP,
@@ -12,4 +12,5 @@ export enum MoreAction {
   IMAGES,
   REMOTE,
   BACKUP,
+  TRANSFORM,
 }
