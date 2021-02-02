@@ -12,10 +12,13 @@ export class AppMoreElementActions {
   notes: boolean = false;
 
   @Prop()
-  copy: boolean = false;
+  clone: boolean = false;
 
   @Prop()
   images: boolean = false;
+
+  @Prop()
+  transform: boolean = false;
 
   private async closePopover(action: MoreAction) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
@@ -28,7 +31,8 @@ export class AppMoreElementActions {
       <div class="ion-padding">
         {this.renderImages()}
         {this.renderNotes()}
-        {this.renderCopy()}
+        {this.renderClone()}
+        {this.renderTransform()}
         {this.renderDelete()}
       </div>
     );
@@ -46,13 +50,13 @@ export class AppMoreElementActions {
     );
   }
 
-  private renderCopy() {
-    if (!this.copy) {
+  private renderClone() {
+    if (!this.clone) {
       return undefined;
     }
 
     return (
-      <a onClick={() => this.closePopover(MoreAction.COPY)} aria-label="Copy">
+      <a onClick={() => this.closePopover(MoreAction.CLONE)} aria-label="Copy">
         <p>Copy</p>
       </a>
     );
@@ -74,6 +78,18 @@ export class AppMoreElementActions {
     return (
       <a onClick={() => this.closePopover(MoreAction.IMAGES)} aria-label="Add an image">
         <p>Add image</p>
+      </a>
+    );
+  }
+
+  private renderTransform() {
+    if (!this.transform) {
+      return undefined;
+    }
+
+    return (
+      <a onClick={() => this.closePopover(MoreAction.TRANSFORM)} aria-label="Transform">
+        <p>Transform</p>
       </a>
     );
   }

@@ -264,6 +264,19 @@ export class AppActionsElement {
     });
   }
 
+  private async openCopyStyle($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-copy-style',
+      componentProps: {
+        selectedElement: this.selectedElement.element,
+      },
+      mode: 'ios',
+      event: $event,
+    });
+
+    await popover.present();
+  }
+
   private async clone() {
     if (this.selectedElement?.slot?.shape !== undefined) {
       await this.cloneShape();
@@ -853,8 +866,9 @@ export class AppActionsElement {
       component: 'app-more-element-actions',
       componentProps: {
         notes: this.selectedElement?.type === 'slide',
-        copy: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
+        clone: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
         images: this.selectedElement?.slide?.aspectRatio,
+        transform: this.selectedElement?.type === 'element',
       },
       event: $event,
       mode: 'ios',
@@ -864,12 +878,14 @@ export class AppActionsElement {
       if (detail && detail.data) {
         if (detail.data.action === MoreAction.NOTES) {
           await this.openNotes();
-        } else if (detail.data.action === MoreAction.COPY) {
+        } else if (detail.data.action === MoreAction.CLONE) {
           await this.clone();
         } else if (detail.data.action === MoreAction.DELETE) {
           await this.confirmDeleteElement($event);
         } else if (detail.data.action === MoreAction.IMAGES) {
           await this.openShape('app-image-element');
+        } else if (detail.data.action === MoreAction.TRANSFORM) {
+          await this.openTransform();
         }
       }
     });
@@ -882,17 +898,18 @@ export class AppActionsElement {
       <aside>
         <ion-buttons slot="start">
           {this.renderStyle()}
+          {this.renderCopyStyle()}
           {this.renderEdit()}
           {this.renderAspectRatio()}
           {this.renderImages()}
           {this.renderCodeOptions()}
           {this.renderMathOptions()}
-          {this.renderTransform()}
         </ion-buttons>
 
         <ion-buttons slot="end">
           {this.renderNotes()}
-          {this.renderCopy()}
+          {this.renderClone()}
+          {this.renderTransform()}
           {this.renderDelete()}
           {this.renderMore()}
         </ion-buttons>
@@ -931,7 +948,7 @@ export class AppActionsElement {
     );
   }
 
-  private renderCopy() {
+  private renderClone() {
     const displayed: boolean = this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined;
     const classSlide: string | undefined = `wider-devices ion-activatable ${displayed ? '' : 'hidden'}`;
 
@@ -940,6 +957,24 @@ export class AppActionsElement {
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/copy.svg"></ion-icon>
         <ion-label aria-hidden="true">Copy</ion-label>
+      </button>
+    );
+  }
+
+  private renderCopyStyle() {
+    const displayed: boolean = this.selectedElement?.type === 'element' && this.selectedElement?.slot?.shape === undefined;
+    const classSlide: string | undefined = `ion-activatable ${displayed ? '' : 'hidden'}`;
+
+    return (
+      <button
+        onClick={($event: UIEvent) => this.openCopyStyle($event)}
+        aria-label="Paint format"
+        disabled={store.state.deckBusy}
+        class={classSlide}
+        tabindex={displayed ? 0 : -1}>
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
+        <ion-label aria-hidden="true">Format</ion-label>
       </button>
     );
   }
@@ -985,12 +1020,12 @@ export class AppActionsElement {
 
   private renderTransform() {
     const displayed: boolean = this.selectedElement?.type === 'element' && this.selectedElement?.slot?.shape === undefined;
-    const classToggle: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
+    const classToggle: string | undefined = `wider-devices ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
       <button aria-label="Transform" onClick={() => this.openTransform()} class={classToggle} tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/color-wand.svg"></ion-icon>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/flask.svg"></ion-icon>
         <ion-label aria-hidden="true">Transform</ion-label>
       </button>
     );
