@@ -1,3 +1,9 @@
+# 2.3.0 (2021-02-05)
+
+### Style
+
+- new style `--slide-content-justify-content` to align content to bottom
+
 # 2.2.2 (2020-11-14)
 
 ### Fix
