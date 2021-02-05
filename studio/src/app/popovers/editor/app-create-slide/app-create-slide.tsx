@@ -33,8 +33,8 @@ export class AppCreateSlide {
 
   @Event() signIn: EventEmitter<void>;
 
-  private async addSlide(template: SlideTemplate, deck?: Deck, elements?: SlotType[]) {
-    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements}, deck);
+  private async addSlide(template: SlideTemplate, deck?: Deck, elements?: SlotType[], style?: {[key: string]: string}) {
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, elements, style}, deck);
     await this.closePopover(template, slide);
   }
 
@@ -137,7 +137,7 @@ export class AppCreateSlide {
     if (this.composeTemplate.template === SlideTemplate.SPLIT) {
       await this.addSlideSplit(SlideTemplate.SPLIT, this.composeTemplate.attributes, elements);
     } else if (this.composeTemplate.template === SlideTemplate.CONTENT) {
-      await this.addSlide(SlideTemplate.CONTENT, undefined, elements);
+      await this.addSlide(SlideTemplate.CONTENT, undefined, elements, this.composeTemplate.style);
     } else if (this.composeTemplate.scope === SlideScope.USER) {
       await this.addRestrictedSlide(this.composeTemplate.template, SlideScope.USER, elements);
     } else if (this.composeTemplate.scope === SlideScope.COMMUNITY) {
@@ -315,7 +315,9 @@ export class AppCreateSlide {
     };
 
     if (slideTemplate === SlideTemplate.CONTENT) {
-      return <app-templates-content highlight={true} highlightIndex={this.elements?.length} {...attr}></app-templates-content>;
+      return (
+        <app-templates-content highlight={true} highlightIndex={this.elements?.length} {...attr} style={this.composeTemplate.style}></app-templates-content>
+      );
     } else if (slideTemplate === SlideTemplate.SPLIT) {
       return <app-templates-split vertical={this.composeTemplate.attributes !== undefined} {...attr}></app-templates-split>;
     } else if (SlideUtils.isSlideTemplate(this.composeTemplate.scope)) {

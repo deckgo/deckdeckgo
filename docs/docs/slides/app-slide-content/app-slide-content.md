@@ -117,14 +117,15 @@ This component offers the following options which could be set using attributes:
 
 The following theming options will affect this component if set on its host or parent.
 
-| CSS4 variable          | Default | Note                            |
-| ---------------------- | ------- | ------------------------------- |
-| --background           |         |                                 |
-| --color                |         |                                 |
-| --slide-padding-top    | 16px    | Padding top of the all slide    |
-| --slide-padding-end    | 32px    | Padding right of the all slide  |
-| --slide-padding-bottom | 16px    | Padding bottom of the all slide |
-| --slide-padding-start  | 32px    | Padding left of the all slide   |
-| --zIndex               | 1       | The z-index of the slide        |
+| CSS4 variable                   | Default    | Note                             |
+| ------------------------------- | ---------- | -------------------------------- |
+| --background                    |            |                                  |
+| --color                         |            |                                  |
+| --slide-padding-top             | 16px       | Padding top of the all slide     |
+| --slide-padding-end             | 32px       | Padding right of the all slide   |
+| --slide-padding-bottom          | 16px       | Padding bottom of the all slide  |
+| --slide-padding-start           | 32px       | Padding left of the all slide    |
+| --slide-content-justify-content | flex-start | Justify the content of the slide |
+| --zIndex                        | 1          | The z-index of the slide         |
 
 [deckdeckgo]: https://deckdeckgo.com

@@ -92,6 +92,7 @@ export class AppTemplatesDefault {
     return (
       <Fragment>
         {this.renderTitle()}
+
         {this.renderContent()}
 
         {this.renderSplit()}
@@ -120,7 +121,17 @@ export class AppTemplatesDefault {
   }
 
   private renderContent() {
-    return <app-templates-content custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT})}></app-templates-content>;
+    const flexEndStyle = {'--slide-content-justify-content': 'flex-end'};
+
+    return (
+      <Fragment>
+        <app-templates-content custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT})}></app-templates-content>
+        <app-templates-content
+          custom-tappable
+          onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT, style: flexEndStyle})}
+          style={flexEndStyle}></app-templates-content>
+      </Fragment>
+    );
   }
 
   private renderSplit() {

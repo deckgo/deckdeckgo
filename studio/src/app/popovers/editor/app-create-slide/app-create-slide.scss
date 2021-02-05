@@ -44,8 +44,6 @@ app-create-slide {
     }
 
     div.item {
-      min-height: 7rem;
-      height: fit-content;
       overflow: hidden;
 
       background: white;
@@ -53,6 +51,7 @@ app-create-slide {
       @include editor.panel;
 
       --slide-width: 100%;
+      --slide-height: 7rem;
 
       deckgo-slide-title,
       deckgo-slide-content,
