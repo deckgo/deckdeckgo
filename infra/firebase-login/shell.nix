@@ -1,5 +1,5 @@
-with { pkgs = import ./nix {}; };
-pkgs.haskellPackages.developPackage
-  { root = ./.;
-    modifier = drv: drv // { buildInputs = drv.buildInputs ++ [ pkgs.cabal-install ]; } ;
-  }
+with { pkgs = import ../nix {}; };
+
+pkgs.haskellPackages.firebase-login.env.overrideAttrs(oldAttrs: {
+  nativeBuildInputs = oldAttrs.nativeBuildInputs or [] ++ [ pkgs.cabal-install ];
+})

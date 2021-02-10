@@ -1,5 +1,18 @@
-# TODO: port tests
-# TODO: fix sources
-# TODO: drop nix/packages
-with { pkgs = import ./nix {}; };
-pkgs.callPackage ./nix/packages.nix {}
+{ mkDerivation, aeson, base, bytestring, hpack, http-client
+, http-client-tls, http-conduit, jose, lens, mtl, network-uri, pem
+, servant, servant-client-core, servant-server, servant-swagger
+, stdenv, text, unordered-containers, wai, word8, x509
+}:
+mkDerivation {
+  pname = "firebase-login";
+  version = "0.0.0";
+  src = ./.;
+  libraryHaskellDepends = [
+    aeson base bytestring http-client http-client-tls http-conduit jose
+    lens mtl network-uri pem servant servant-client-core servant-server
+    servant-swagger text unordered-containers wai word8 x509
+  ];
+  libraryToolDepends = [ hpack ];
+  prePatch = "hpack";
+  license = stdenv.lib.licenses.mit;
+}
