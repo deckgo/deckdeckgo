@@ -1387,11 +1387,10 @@ presentationFooterTags (unPresentationFooter -> bg) =
 slideTags :: Slide -> [Tag]
 slideTags slide =
     [ TagSoup.TagOpen
-        ("deckgo-slide-" <> slideTemplate slide)
+        (slideTemplate slide)
         (first Cases.spinalize <$> HMS.toList (slideAttributes slide))
     ] <> maybe [] TagSoup.parseTags (slideContent slide) <>
-    [ TagSoup.TagClose
-        ("deckgo-slide-" <> slideTemplate slide)
+    [ TagSoup.TagClose (slideTemplate slide)
     ]
 
 
