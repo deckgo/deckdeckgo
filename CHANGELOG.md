@@ -1,6 +1,6 @@
 <a name="4.2.0"></a>
 
-# [4.2.0](https://github.com/deckgo/deckdeckgo/compare/v4.1.0...v4.2.0) (In progress...)
+# [4.2.0](https://github.com/deckgo/deckdeckgo/compare/v4.1.0...v4.2.0) (2020-02-14)
 
 ### Applications
 
@@ -15,6 +15,10 @@
 ### Web Components: Templates
 
 - slide-content: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/content/CHANGELOG.md))
+
+### Others: New
+
+- template kit: v1.0.0 ([CHANGELOG](https://github.com/deckgo/template-kit/blob/master/CHANGELOG.md))
 
 ### Others
 
