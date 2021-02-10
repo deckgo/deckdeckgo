@@ -4,14 +4,21 @@ import {Deck} from '../../model/data/deck';
 import {ApiDeck, ApiDeckAttributes} from '../../model/api/api.deck';
 import {ApiSlide} from '../../model/api/api.slide';
 import {Slide, SlideAttributes, SlideTemplate} from '../../model/data/slide';
+import {Template} from '../../model/data/template';
 
 import {findSlide} from '../../utils/data/slide-utils';
 import {getGoogleFontScript} from './google-fonts-utils';
+import {findTemplates, getTemplate} from '../../utils/data/template-utils';
+
+interface SlideAndTemplate {
+  apiSlide: ApiSlide;
+  template: Template | undefined;
+}
 
 export function convertDeck(deck: Deck): Promise<ApiDeck> {
   return new Promise<ApiDeck>(async (resolve, reject) => {
     try {
-      const apiSlides: ApiSlide[] = await convertSlides(deck);
+      const apiSlides: SlideAndTemplate[] = await convertSlides(deck);
 
       const apiDeck: ApiDeck = {
         name: deck.data.name ? deck.data.name.trim() : deck.data.name,
@@ -23,12 +30,18 @@ export function convertDeck(deck: Deck): Promise<ApiDeck> {
         background: deck.data.background,
         header: deck.data.header,
         footer: deck.data.footer,
-        slides: apiSlides,
+        slides: apiSlides.map((slideAndTemplate: SlideAndTemplate) => slideAndTemplate.apiSlide),
       };
 
       const googleFontScript: string | undefined = await getGoogleFontScript(deck);
       if (googleFontScript !== undefined) {
         apiDeck.head_extra = googleFontScript;
+      }
+
+      const scripts: string | undefined = getTemplateScripts(apiSlides);
+
+      if (scripts !== undefined) {
+        apiDeck.head_extra = apiDeck.head_extra !== undefined ? `${apiDeck.head_extra}${scripts}` : scripts;
       }
 
       const attributes: ApiDeckAttributes | undefined = await convertDeckAttributes(deck);
@@ -73,20 +86,22 @@ async function convertDeckAttributes(deck: Deck): Promise<ApiDeckAttributes | un
   return attributes;
 }
 
-function convertSlides(deck: Deck): Promise<ApiSlide[]> {
-  return new Promise<ApiSlide[]>(async (resolve, reject) => {
+function convertSlides(deck: Deck): Promise<SlideAndTemplate[]> {
+  return new Promise<SlideAndTemplate[]>(async (resolve, reject) => {
     if (!deck.data.slides || deck.data.slides.length <= 0) {
       resolve([]);
       return;
     }
 
     try {
-      const promises: Promise<ApiSlide>[] = [];
+      const templates: Template[] = await findTemplates(deck.data.owner_id);
+
+      const promises: Promise<SlideAndTemplate>[] = [];
 
       for (let i: number = 0; i < deck.data.slides.length; i++) {
         const slideId: string = deck.data.slides[i];
 
-        promises.push(convertSlide(deck, slideId));
+        promises.push(convertSlide(deck, templates, slideId));
       }
 
       if (!promises || promises.length <= 0) {
@@ -94,7 +109,7 @@ function convertSlides(deck: Deck): Promise<ApiSlide[]> {
         return;
       }
 
-      const slides: ApiSlide[] = await Promise.all(promises);
+      const slides: SlideAndTemplate[] = await Promise.all(promises);
 
       resolve(slides);
     } catch (err) {
@@ -103,8 +118,8 @@ function convertSlides(deck: Deck): Promise<ApiSlide[]> {
   });
 }
 
-function convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
-  return new Promise<ApiSlide>(async (resolve, reject) => {
+function convertSlide(deck: Deck, templates: Template[], slideId: string): Promise<SlideAndTemplate> {
+  return new Promise<SlideAndTemplate>(async (resolve, reject) => {
     const slide: Slide = await findSlide(deck.id, slideId);
 
     if (!slide || !slide.data) {
@@ -114,8 +129,11 @@ function convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
 
     const attributes: SlideAttributes | undefined = await convertAttributesToString(slide.data.attributes);
 
+    const slideTemplate: SlideTemplate | undefined = SlideTemplate[slide.data.template.toUpperCase() as keyof typeof SlideTemplate];
+    const slideTag: string = slideTemplate ? `deckgo-slide-${slideTemplate.toLowerCase()}` : slide.data.template;
+
     const apiSlide: ApiSlide = {
-      template: slide.data.template,
+      template: slideTag,
       content: slide.data.content,
       attributes: attributes,
     };
@@ -123,7 +141,12 @@ function convertSlide(deck: Deck, slideId: string): Promise<ApiSlide> {
     const cleanApiSlide: ApiSlide = await convertSlideQRCode(apiSlide);
     cleanApiSlide.content = await cleanNotes(apiSlide.content);
 
-    resolve(cleanApiSlide);
+    const template: Template | undefined = await getTemplate(templates, slide.data.scope, slide.data.template);
+
+    resolve({
+      apiSlide: cleanApiSlide,
+      template,
+    });
   });
 }
 
@@ -196,4 +219,17 @@ function convertSlideQRCode(apiSlide: ApiSlide): Promise<ApiSlide> {
 
     resolve(apiSlide);
   });
+}
+
+function getTemplateScripts(apiSlides: SlideAndTemplate[]) {
+  const cdns: string[] | undefined = apiSlides
+    .filter((slideAndTemplate: SlideAndTemplate) => slideAndTemplate.template !== undefined && slideAndTemplate.template.data.cdn !== undefined)
+    .map((slideAndTemplate: SlideAndTemplate) => (slideAndTemplate.template as Template).data.cdn as string);
+
+  if (cdns !== undefined && cdns.length > 0) {
+    const uniqueCdns: string[] = [...new Set(cdns)];
+    return uniqueCdns.map((cdn: string) => `<script type="module" src="${cdn}" />`).join();
+  }
+
+  return undefined;
 }

@@ -1,7 +1,8 @@
 {
   "name": "functions",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
+    "prebuild": "node ./scripts/copy-templates.js",
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
     "serve": "npm run build && firebase serve --only functions",
