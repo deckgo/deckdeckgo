@@ -1,3 +1,25 @@
+# 4.2.0 (2020-02-10)
+
+### Features
+
+- user and community templates ([#1031](https://github.com/deckgo/deckdeckgo/pull/1031) and [#1056](https://github.com/deckgo/deckdeckgo/pull/1056))
+- new default template with content aligned at the bottom of the slide ([#1073](https://github.com/deckgo/deckdeckgo/pull/1073))
+- edit with default tool or with CSS ([#1066](https://github.com/deckgo/deckdeckgo/pull/1066))
+- copy and paste elements style ("format painter") ([#1071](https://github.com/deckgo/deckdeckgo/pull/1071))
+- width, rotate and padding options for elements ([#1070](https://github.com/deckgo/deckdeckgo/pull/1070))
+- keep track of panel state open or close ([#1065](https://github.com/deckgo/deckdeckgo/pull/1065))
+- minimum six slides, instead of four, to appear in "discover" section ([#1068](https://github.com/deckgo/deckdeckgo/pull/1068))
+- handle assets with store ([#1065](https://github.com/deckgo/deckdeckgo/pull/1062))
+
+### Style
+
+- new design of the editor's tools ([#1069](https://github.com/deckgo/deckdeckgo/pull/1069))
+
+### Fix
+
+- preview code block update ([#1067](https://github.com/deckgo/deckdeckgo/pull/1067))
+- navigate contact ([#1055](https://github.com/deckgo/deckdeckgo/pull/1055))
+
 # 4.1.0 (2020-01-14)
 
 ### Features
