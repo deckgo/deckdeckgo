@@ -1,7 +1,11 @@
-with { pkgs = import ./nix {}; };
+let
+  pkgs = import ./nix {};
+  napalm = import pkgs.sources.napalm { inherit pkgs;} ;
+in
 
 rec
-{ function = # TODO: rename to handler
+{
+  function = # TODO: rename to handler
     pkgs.runCommand "build-lambda" {}
       ''
         cp ${./main.js} main.js
@@ -59,9 +63,10 @@ rec
         ${pkgs.zip}/bin/zip -r $out/function.zip main.js main_hs
       '';
 
+
+  deckdeckgo-starter-dist-foo = napalm.buildPackage pkgs.sources.deckdeckgo-starter {};
+
   deckdeckgo-starter-dist =
-    with
-      { napalm = import pkgs.sources.napalm { inherit pkgs;} ; };
     pkgs.runCommand "deckdeckgo-starter" { buildInputs = [ pkgs.nodejs pkgs.zip ]; }
       ''
         cp -r ${napalm.buildPackage pkgs.sources.deckdeckgo-starter {}}/* .
@@ -75,9 +80,9 @@ rec
         popd
       '';
 
-  devshell = if ! pkgs.lib.inNixShell then null else
-    with
-      { pkg = pkgs.haskellPackages.developPackage { root = ./handler; } ; };
+
+  devshell =
+    let pkg = handler.env; in
     pkg.overrideAttrs(attr: {
       buildInputs = with pkgs;
         [ terraform awscli postgresql moreutils minio ];
@@ -166,11 +171,12 @@ rec
         '';
      });
 
-  handler = pkgs.haskellPackages.deckdeckgo-handler;
+  handler = pkgs.staticHaskellPackages.deckdeckgo-handler;
+  firebase-login = pkgs.staticHaskellPackages.firebase-login;
 
-  unsplashProxy = pkgs.haskellPackages.unsplash-proxy;
+  unsplashProxy = pkgs.staticHaskellPackages.unsplash-proxy;
 
-  googleKeyUpdater = pkgs.haskellPackages.google-key-updater;
+  googleKeyUpdater = pkgs.staticHaskellPackages.google-key-updater;
 
   publicKey = builtins.readFile ./public.cer;
 

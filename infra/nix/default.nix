@@ -1,101 +1,77 @@
 {}:
-with rec
-{ sources = import ./sources.nix;
-  pkgs_ = import sources.nixpkgs {};
-  mkPackage = pkgs: hsuper: name: path:
-    with
-    { addStaticLinkerFlagsWithPkgconfig =
-        haskellDrv:
-        pkgConfigNixPackages:
-        pkgconfigFlagsString:
-        pkgs.haskell.lib.overrideCabal
-          (pkgs.haskell.lib.appendConfigureFlag haskellDrv
+let
+  sources = import ./sources.nix;
+  pkgs = import sources.nixpkgs {
+    overlays = [
+      (
+        self: super:
+          super.lib.optionalAttrs super.stdenv.hostPlatform.isMusl
+            {
+
+
+              postgresql = (super.postgresql.overrideAttrs (old: { dontDisableStatic = true; })).override {
+                # We need libpq, which does not need systemd,
+                # and systemd doesn't currently build with musl.
+                enableSystemd = false;
+              };
+              lzma = super.lzma.overrideAttrs (old: { dontDisableStatic = true; });
+
+              openssl = super.openssl.override { static = true; };
+            }
+      )
+    ];
+  };
+  staticPkgs = pkgs.pkgsMusl;
+  compiler = "ghc865";
+
+  addStaticLinkerFlagsWithPkgconfig =
+    haskellDrv:
+    pkgConfigNixPackages:
+    pkgconfigFlagsString:
+      pkgs.haskell.lib.overrideCabal
+        (
+          pkgs.haskell.lib.appendConfigureFlag haskellDrv
             [ "--ld-option=-Wl,--start-group" ]
-          )
-          (old:
-            { preConfigure =
+        )
+        (
+          old:
+            {
+              preConfigure =
                 builtins.concatStringsSep "\n"
-                  [ (old.preConfigure or "")
+                  [
+                    (old.preConfigure or "")
                     ''
                       set -e
                       configureFlags+=$(for flag in $(pkg-config --static ${pkgconfigFlagsString}); do echo -n " --ld-option=$flag"; done)
                     ''
                   ];
               libraryPkgconfigDepends =
-                (old.libraryPkgconfigDepends or []) ++
-                pkgConfigNixPackages;
+                (old.libraryPkgconfigDepends or []) ++ pkgConfigNixPackages;
             }
-          );
+        );
+
+
+  opensslStatic = staticPkgs.openssl.dev;
+
+  foo = self: drv:
+    addStaticLinkerFlagsWithPkgconfig drv [ opensslStatic staticPkgs.postgresql ]
+      "--libs openssl --libs libpq";
+
+  final = staticPkgs;
+
+  staticHaskellPackages = with pkgs.haskell.lib; staticPkgs.haskell.packages.${compiler}.override {
+    overrides = self: super: {
+      google-key-updater = foo self (self.callPackage ../google-key-updater {});
+      deckdeckgo-handler = foo self (self.callPackage ../handler {});
+      unsplash-proxy = foo self (self.callPackage ../unsplash-proxy {});
+      firebase-login = foo self (self.callPackage ../firebase-login {});
+
+      postgresql-libpq = foo self super.postgresql-libpq;
+      postgresql-binary = foo self super.postgresql-binary;
+      hasql = foo self super.hasql;
     };
-    { ${name} =
-        with { drv = hsuper.callCabal2nix name (pkgs.lib.cleanSource path) {}; };
-        with pkgs.haskell.lib;
-        failOnAllWarnings (
-        disableLibraryProfiling (
-        disableExecutableProfiling (
-          with { openssl_static = pkgs.openssl.override { static = true; }; };
-          addStaticLinkerFlagsWithPkgconfig drv [ openssl_static ]
-            "--libs openssl"
-        )));
-    };
+  };
 
-  pkgs = import sources.nixpkgs
-    { overlays =
-        [ (_: pkgs: pkgs.lib.recursiveUpdate pkgs
-            { haskell = pkgs.lib.recursiveUpdate pkgs.haskell
-              { packages = pkgs.lib.recursiveUpdate pkgs.haskell.packages
-                { ghc864 = pkgs.haskell.packages.ghc864.override
-                  (old:
-                    { overrides =
-                        pkgs.lib.composeExtensions
-                        (old.overrides or (_: _: {}))
-                        (hself: hsuper:
-                          mkPackage pkgs hsuper "deckdeckgo-handler"
-                            ../handler //
-                          mkPackage pkgs hsuper "firebase-login"
-                            ../firebase-login //
-                          mkPackage pkgs hsuper "unsplash-proxy"
-                            ../unsplash-proxy //
-                          mkPackage pkgs hsuper "wai-lambda"
-                            wai-lambda.wai-lambda-source //
-                          mkPackage pkgs hsuper "google-key-updater"
-                            ../google-key-updater
-                        );
-                    }
-                  );
-                };
-              };
+in
 
-              # for cabal2nix
-              nix = pkgs_.nix;
-              git = pkgs_.git;
-              subversion = pkgs_.subversion;
-            }
-          )
-
-          (_: pkgs:
-            {
-              # Fails during tests
-              go_1_12 = pkgs.go_1_12.overrideAttrs (_:
-                { doCheck = false; }
-                );
-
-              # for napalm
-              nodejs = pkgs.nodejs-12_x;
-            }
-          )
-        ];
-    };
-
-  wai-lambda = pkgs.callPackage "${sources.wai-lambda}/nix/packages.nix" {};
-
-  survey = import "${sources.static-haskell-nix}/survey"
-    { normalPkgs = pkgs; };
-
-  haskellPackages =
-    survey.pkgsWithStaticHaskellBinaries.haskellPackages;
-};
-
-pkgs //
-{ inherit haskellPackages sources wai-lambda; } //
-{ terraform = pkgs.terraform_0_12 ; }
+pkgs // { inherit staticHaskellPackages sources; } // { terraform = pkgs.terraform_0_12; }

@@ -54,7 +54,7 @@ type ClientAPI =
 runClient
   :: MonadIO io
   => Client.ClientM a
-  -> io (Either Client.ServantError a)
+  -> io (Either Client.ClientError a)
 runClient act = liftIO $ do
     mgr <- HTTP.newManager HTTP.tlsManagerSettings
     Client.runClientM act (clientEnv mgr)

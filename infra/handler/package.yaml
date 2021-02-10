@@ -48,6 +48,10 @@ dependencies:
 
 ghc-options:
     - -Wall
+    - -optl
+    - -Wl,--start-group
+    - -lssl
+    - -lcrypto
 
 library:
     source-dirs: src

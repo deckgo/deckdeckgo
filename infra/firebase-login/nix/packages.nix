@@ -7,7 +7,7 @@
 }:
 rec
 { firebase-login-sdist = haskell.lib.sdistTarball firebase-login;
-  firebase-login = haskellPackages.callCabal2nix "firebase-login" firebase-login-source {};
+  firebase-login = haskellPackages.callPackage ../../firebase-login {};
   firebase-login-source = lib.sourceByRegex ../.
     [ "^package.yaml$"
       "^src.*"
