@@ -228,7 +228,7 @@ function getTemplateScripts(apiSlides: SlideAndTemplate[]) {
 
   if (cdns !== undefined && cdns.length > 0) {
     const uniqueCdns: string[] = [...new Set(cdns)];
-    return uniqueCdns.map((cdn: string) => `<script type="module" src="${cdn}" />`).join();
+    return uniqueCdns.map((cdn: string) => `<script type="module" src="${cdn}"></script>`).join();
   }
 
   return undefined;
