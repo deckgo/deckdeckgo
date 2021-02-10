@@ -218,6 +218,11 @@ export class AppConcept {
                 <td>Padding left of the all slide</td>
               </tr>
               <tr>
+                <td>--slide-content-justify-content</td>
+                <td>flex-start</td>
+                <td>Justify the content of the slide</td>
+              </tr>
+              <tr>
                 <td>--zIndex</td>
                 <td>1</td>
                 <td>The z-index of the slide</td>

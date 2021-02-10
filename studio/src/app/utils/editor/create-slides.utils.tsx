@@ -26,6 +26,7 @@ export interface InitTemplate {
   scope?: SlideScope;
   elements?: SlotType[];
   attributes?: SlideAttributes;
+  style?: {[key: string]: string};
 }
 
 export class CreateSlidesUtils {
@@ -39,7 +40,7 @@ export class CreateSlidesUtils {
 
   private static async createSlideDefault(template: InitTemplate, deck?: Deck): Promise<JSX.IntrinsicElements> {
     if (template.template === SlideTemplate.CONTENT) {
-      return this.createSlideContent(template.elements);
+      return this.createSlideContent(template.elements, template.style);
     } else if (template.template === SlideTemplate.SPLIT) {
       return this.createSlideSplit(template.elements);
     } else if (template.template === SlideTemplate.GIF) {
@@ -81,7 +82,7 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static createSlideContent(elements: SlotType[]): Promise<JSX.IntrinsicElements | undefined> {
+  private static createSlideContent(elements: SlotType[], style?: {[key: string]: string}): Promise<JSX.IntrinsicElements | undefined> {
     return new Promise<JSX.IntrinsicElements>((resolve) => {
       if (!elements || elements.length < 1) {
         resolve(undefined);
@@ -89,7 +90,7 @@ export class CreateSlidesUtils {
       }
 
       const slide: JSX.IntrinsicElements = (
-        <deckgo-slide-content key={uuid()}>
+        <deckgo-slide-content key={uuid()} style={style}>
           {this.createElement(elements[0], 'title')}
           {elements.length >= 2 ? this.createElement(elements[1], 'content') : undefined}
         </deckgo-slide-content>

@@ -53,8 +53,9 @@ app-actions-editor {
       padding: 16px 0;
 
       display: flex;
-      justify-content: flex-start;
       flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
 
       ion-buttons {
         flex-direction: column;
