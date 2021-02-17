@@ -1,0 +1,19 @@
+name: "Test"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: './.github/actions/nix'
+      with:
+        CACHIX_SIGNING_KEY: ${{ secrets.CACHIX_SIGNING_KEY }}
+    - name: "Building"
+      run: nix-build ./infra

@@ -1,0 +1,11 @@
+name: 'nix'
+description: 'use nix'
+runs:
+    using: 'node12'
+    main: 'main.js'
+    post: 'main.js'
+inputs:
+    cachix_signing_key:
+        description: "The Cachix signing key"
+        required: false
+        default: ""
