@@ -1,3 +1,10 @@
+# 2.4.0 (2021-02-17)
+
+### Features
+
+- improve `highlight-lines` to support single digit line (as for example `1,1` or `1` accepted)
+- update languages list
+
 # 2.3.2 (2021-01-29)
 
 ### Features
