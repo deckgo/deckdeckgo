@@ -660,7 +660,7 @@ export class AppActionsElement {
           entries.length > 0 &&
           entries[0].target &&
           entries[0].target.nodeName &&
-          entries[0].target.nodeName.toLowerCase().indexOf('deckgo-slide') === -1
+          SelectedElementUtils.isElementSlide(entries[0].target) !== 'slide'
         ) {
           await this.resizeSlideContent();
         }

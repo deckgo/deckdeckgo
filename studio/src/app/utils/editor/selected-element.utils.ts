@@ -9,7 +9,7 @@ import {SlideUtils} from './slide.utils';
 
 export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {
-    return element?.nodeName?.toLowerCase().indexOf('deckgo-slide') > -1 ? 'slide' : 'element';
+    return element?.parentElement?.nodeName?.toLowerCase() === 'deckgo-deck' ? 'slide' : 'element';
   }
 
   private static isElementDemo(element: HTMLElement): boolean {

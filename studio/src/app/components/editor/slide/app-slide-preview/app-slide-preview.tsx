@@ -4,6 +4,7 @@ import {cleanContent} from '@deckdeckgo/deck-utils';
 import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {SelectedElementUtils} from '../../../../utils/editor/selected-element.utils';
 
 @Component({
   tag: 'app-slide-preview',
@@ -65,7 +66,7 @@ export class AppSlidePreview {
     await this.stickyIOS(selectedElement);
 
     this.preview =
-      selectedElement?.parentElement?.nodeName?.toLowerCase().indexOf('deckgo-slide') >= 0 &&
+      SelectedElementUtils.isElementSlide(selectedElement) === 'slide' &&
       SlotUtils.isNodeEditable(selectedElement) &&
       !SlotUtils.isNodeWordCloud(selectedElement);
 

@@ -15,6 +15,7 @@ import {DeckService} from '../../../../services/data/deck/deck.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
+import {SelectedElementUtils} from '../../../../utils/editor/selected-element.utils';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -113,7 +114,7 @@ export class AppPublishEdit {
 
       const slide: HTMLElement = document.querySelector('app-editor main deckgo-deck > *:first-child');
 
-      if (slide?.tagName?.toLowerCase().indexOf('deckgo-slide') > -1) {
+      if (SelectedElementUtils.isElementSlide(slide) === 'slide') {
         const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
 
         if (contentElement) {
