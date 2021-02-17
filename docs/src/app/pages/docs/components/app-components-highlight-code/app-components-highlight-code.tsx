@@ -296,8 +296,8 @@ export class AppComponentsHighlightCode {
                   <code>highlight-lines</code>
                 </td>
                 <td>
-                  If you wish to highlight some lines of your code. The lines number should be provided as number separated with coma and group separated with
-                  space. For example: &quot;3,5 8,9 13,13 14,17&quot;
+                  If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or number separated with coma
+                  (many lines), group separated with space. For example: <code>1 3,5 8 14,17</code>
                 </td>
                 <td>
                   <code>string</code>

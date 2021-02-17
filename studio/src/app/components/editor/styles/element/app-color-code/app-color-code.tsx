@@ -198,7 +198,7 @@ export class AppColorCode {
     $event.stopPropagation();
 
     const alert: HTMLIonAlertElement = await alertController.create({
-            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 1,2 7,7 13,15<br/><br/>Which would highlight lines 1 to 2, line 7 and lines 13 to 15.',
+            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 1 4,5 13,15<br/><br/>Which would highlight line 1, lines 4 to 5 and 13 to 15.',
       buttons: ['Ok']
     });
 

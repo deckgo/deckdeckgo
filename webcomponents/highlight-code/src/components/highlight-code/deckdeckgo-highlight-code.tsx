@@ -478,7 +478,7 @@ export class DeckdeckgoHighlightCode {
             const start: number = parseInt(index[0], 0);
             const end: number = parseInt(index[1], 0);
 
-            for (let i = start; i <= end; i++) {
+            for (let i = start; i <= (isNaN(end) ? start : end); i++) {
               results.push(i);
             }
           }
