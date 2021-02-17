@@ -796,7 +796,7 @@ export class DeckdeckgoDeck {
       }
 
       const slides: Element[] = Array.from(definedSlides).filter((slide: Element) => {
-        return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
+        return !slide.hasAttribute('slot') || slide.getAttribute('slot') === '';
       });
 
       resolve(slides as HTMLElement[]);
