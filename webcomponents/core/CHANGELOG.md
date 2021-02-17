@@ -1,3 +1,9 @@
+# 8.1.3 (2021-02-17)
+
+### Fix
+
+- support swipe for templates with custom names
+
 # 8.1.2 (2021-01-30)
 
 ### Fix

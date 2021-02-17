@@ -29,11 +29,13 @@ import {Constants} from '../../../../types/core/constants';
 import {Utils} from '../../../../utils/core/utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
+import {SlideUtils} from '../../../../utils/editor/slide.utils';
+import {SelectedElementUtils} from '../../../../utils/editor/selected-element.utils';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
+
 import {DeckAction} from '../../../../types/editor/deck-action';
-import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
 export class DeckEventsHandler {
   private mainRef: HTMLElement;
@@ -159,7 +161,7 @@ export class DeckEventsHandler {
       parent = parent.parentElement;
     }
 
-    if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
+    if (!parent || !parent.nodeName || SelectedElementUtils.isElementSlide(parent) !== 'slide') {
       return;
     }
 
@@ -179,7 +181,7 @@ export class DeckEventsHandler {
       parent = parent.parentElement;
     }
 
-    if (!parent || !parent.nodeName || parent.nodeName.toLowerCase().indexOf('deckgo-slide') <= -1) {
+    if (!parent || !parent.nodeName || SelectedElementUtils.isElementSlide(parent) !== 'slide') {
       return;
     }
 
@@ -901,14 +903,14 @@ export class DeckEventsHandler {
   }
 
   private async slideToLastSlide(): Promise<void> {
-    const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
+    const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
 
     if (!deck || !deck.children || deck.children.length <= 0) {
       return;
     }
 
     const slides: Element[] = Array.from(deck.children).filter((slide: Element) => {
-      return slide.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1;
+      return SelectedElementUtils.isElementSlide(slide as HTMLElement) === 'slide';
     });
 
     if (!slides || slides.length <= 0) {
@@ -921,7 +923,7 @@ export class DeckEventsHandler {
       return;
     }
 
-    await (deck as any).slideTo(slides.length - 1);
+    await deck.slideTo(slides.length - 1);
   }
 
   async initSlideSize() {

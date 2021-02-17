@@ -4,6 +4,8 @@ import editorStore from '../../../../../stores/editor.store';
 
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
+import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
+
 @Component({
   tag: 'app-actions-editor',
   styleUrl: 'app-actions-editor.scss',
@@ -66,7 +68,7 @@ export class AppActionsEditor {
 
     await this.actionsElementRef.touch(element, autoOpen);
 
-    editorStore.state.step = element && element.tagName.toLocaleLowerCase().indexOf('deckgo-slide-') > -1 ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
+    editorStore.state.step = SelectedElementUtils.isElementSlide(element) === 'slide' ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
   }
 
   @Method()
