@@ -74,7 +74,7 @@ rec
       pkg.overrideAttrs (
         attr: {
           buildInputs = with pkgs;
-            [ terraform awscli postgresql moreutils minio ];
+            [ terraform awscli postgresql moreutils minio haskellPackages.ormolu ];
           LANG = "en_US.UTF-8";
           LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
           shellHook =
@@ -82,6 +82,11 @@ rec
               pgutil = pkgs.callPackage ./pgutil.nix {};
             in
               ''
+                function fmt() {
+                  nixpkgs-fmt **/*.nix
+                  ormolu -m inplace **/*.hs
+                }
+
                 function load_pg() {
                  export PGHOST=localhost
                  export PGPORT=5432
