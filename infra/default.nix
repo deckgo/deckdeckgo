@@ -74,7 +74,15 @@ rec
       pkg.overrideAttrs (
         attr: {
           buildInputs = with pkgs;
-            [ terraform awscli postgresql moreutils minio haskellPackages.ormolu ];
+            [
+              terraform
+              awscli
+              postgresql
+              moreutils
+              minio
+              haskellPackages.ormolu
+              nixpkgs-fmt
+            ];
           LANG = "en_US.UTF-8";
           LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
           shellHook =
@@ -83,7 +91,7 @@ rec
             in
               ''
                 function fmt() {
-                  nixpkgs-fmt **/*.nix
+                  nixpkgs-fmt *.nix **/*.nix
                   ormolu -m inplace **/*.hs
                 }
 
