@@ -1,45 +1,40 @@
 import {DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
-export function findSlidesTitle(): Promise<string[]> {
-  return new Promise<string[]>((resolve) => {
-    if (!document) {
-      resolve();
-      return;
-    }
+export const findSlidesTitle = async (): Promise<string[]> => {
+  const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-deck > *');
 
-    const results: string[] = [];
+  if (!slides) {
+    return [];
+  }
 
-    const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-deck > *');
+  const results: string[] = [];
 
-    if (slides) {
-      for (const slide of Array.from(slides)) {
-        if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
-          const title: HTMLElement | null = slide.querySelector('[slot="title"],[slot="question"]');
+  Array.from(slides)
+    .filter((slide: HTMLElement) => isSlide(slide))
+    .forEach((slide: HTMLElement, index: number) => {
+      const title: HTMLElement | null = slide.querySelector('[slot="title"],[slot="question"]');
 
-          if (title && title.textContent && title.textContent !== '') {
-            results.push(title.textContent);
+      if (title && title.textContent && title.textContent !== '') {
+        results.push(title.textContent);
+      } else {
+        const start: HTMLElement | null = slide.querySelector('[slot="start"],[slot="header"]');
+
+        if (start && start.textContent && start.textContent !== '') {
+          results.push(start.textContent);
+        } else {
+          const end: HTMLElement | null = slide.querySelector('[slot="end"],[slot="footer"]');
+
+          if (end && end.textContent && end.textContent !== '') {
+            results.push(end.textContent);
           } else {
-            const start: HTMLElement | null = slide.querySelector('[slot="start"],[slot="header"]');
-
-            if (start && start.textContent && start.textContent !== '') {
-              results.push(start.textContent);
-            } else {
-              const end: HTMLElement | null = slide.querySelector('[slot="end"],[slot="footer"]');
-
-              if (end && end.textContent && end.textContent !== '') {
-                results.push(end.textContent);
-              } else {
-                results.push('');
-              }
-            }
+            results.push(`Slide #${index}`);
           }
         }
       }
-    }
+    });
 
-    resolve(results);
-  });
-}
+  return results;
+};
 
 export function getSlideDefinition(slide: HTMLElement): Promise<DeckdeckgoSlideDefinition | null> {
   return new Promise<DeckdeckgoSlideDefinition | null>(async (resolve) => {
@@ -53,7 +48,7 @@ export function getSlideDefinition(slide: HTMLElement): Promise<DeckdeckgoSlideD
     resolve({
       template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
       content: slide.innerHTML,
-      attributes: attributes
+      attributes: attributes,
     });
   });
 }
@@ -69,7 +64,7 @@ export function getAttributesDefinition(attributes: NamedNodeMap): Promise<Deckd
     Array.prototype.slice.call(attributes).forEach((attribute: Attr) => {
       if (['id', 'hydrated', 'class', 'contenteditable'].indexOf(attribute.name.toLowerCase()) === -1) {
         let attr: DeckdeckgoAttributeDefinition = {
-          name: attribute.name
+          name: attribute.name,
         };
 
         if (attribute.value !== undefined) {
@@ -83,3 +78,7 @@ export function getAttributesDefinition(attributes: NamedNodeMap): Promise<Deckd
     resolve(results && results.length > 0 ? results : null);
   });
 }
+
+export const isSlide = (slide?: HTMLElement): boolean => {
+  return slide?.parentElement?.nodeName.toLowerCase() === 'deckgo-deck' && (!slide.hasAttribute('slot') || slide.getAttribute('slot') === '');
+};

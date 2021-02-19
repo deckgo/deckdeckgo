@@ -1,3 +1,11 @@
+<a name="3.4.0"></a>
+
+# 3.4.0 (2021-02-19)
+
+### Features
+
+- generic slides detection
+
 <a name="3.3.1"></a>
 
 # 3.3.1 (2021-01-30)

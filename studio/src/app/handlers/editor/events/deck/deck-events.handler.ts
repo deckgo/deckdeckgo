@@ -7,7 +7,7 @@ import errorStore from '../../../../stores/error.store';
 import busyStore from '../../../../stores/busy.store';
 import authStore from '../../../../stores/auth.store';
 
-import {cleanContent} from '@deckdeckgo/deck-utils';
+import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -30,7 +30,6 @@ import {Utils} from '../../../../utils/core/utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
-import {SelectedElementUtils} from '../../../../utils/editor/selected-element.utils';
 
 import {DeckService} from '../../../../services/data/deck/deck.service';
 import {SlideService} from '../../../../services/data/slide/slide.service';
@@ -161,7 +160,7 @@ export class DeckEventsHandler {
       parent = parent.parentElement;
     }
 
-    if (!parent || !parent.nodeName || SelectedElementUtils.isElementSlide(parent) !== 'slide') {
+    if (!parent || !parent.nodeName || !isSlide(parent)) {
       return;
     }
 
@@ -181,7 +180,7 @@ export class DeckEventsHandler {
       parent = parent.parentElement;
     }
 
-    if (!parent || !parent.nodeName || SelectedElementUtils.isElementSlide(parent) !== 'slide') {
+    if (!parent || !parent.nodeName || !isSlide(parent)) {
       return;
     }
 
@@ -910,7 +909,7 @@ export class DeckEventsHandler {
     }
 
     const slides: Element[] = Array.from(deck.children).filter((slide: Element) => {
-      return SelectedElementUtils.isElementSlide(slide as HTMLElement) === 'slide';
+      return isSlide(slide as HTMLElement);
     });
 
     if (!slides || slides.length <= 0) {

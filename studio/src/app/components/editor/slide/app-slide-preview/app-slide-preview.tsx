@@ -1,10 +1,9 @@
 import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} from '@stencil/core';
 
-import {cleanContent} from '@deckdeckgo/deck-utils';
+import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
-import {SelectedElementUtils} from '../../../../utils/editor/selected-element.utils';
 
 @Component({
   tag: 'app-slide-preview',
@@ -65,10 +64,7 @@ export class AppSlidePreview {
 
     await this.stickyIOS(selectedElement);
 
-    this.preview =
-      SelectedElementUtils.isElementSlide(selectedElement) === 'slide' &&
-      SlotUtils.isNodeEditable(selectedElement) &&
-      !SlotUtils.isNodeWordCloud(selectedElement);
+    this.preview = isSlide(selectedElement) && SlotUtils.isNodeEditable(selectedElement) && !SlotUtils.isNodeWordCloud(selectedElement);
 
     if (this.preview) {
       await this.initDeckPreview();

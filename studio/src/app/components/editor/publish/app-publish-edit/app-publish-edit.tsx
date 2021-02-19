@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
+import {isSlide} from '@deckdeckgo/deck-utils';
 
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
@@ -15,7 +16,6 @@ import {DeckService} from '../../../../services/data/deck/deck.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
-import {SelectedElementUtils} from '../../../../utils/editor/selected-element.utils';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -114,7 +114,7 @@ export class AppPublishEdit {
 
       const slide: HTMLElement = document.querySelector('app-editor main deckgo-deck > *:first-child');
 
-      if (SelectedElementUtils.isElementSlide(slide) === 'slide') {
+      if (isSlide(slide)) {
         const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
 
         if (contentElement) {

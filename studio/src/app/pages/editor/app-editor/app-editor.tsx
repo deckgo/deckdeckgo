@@ -11,7 +11,7 @@ import colorStore from '../../../stores/color.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
-import {convertStyle} from '@deckdeckgo/deck-utils';
+import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
@@ -38,8 +38,6 @@ import {OfflineService} from '../../../services/editor/offline/offline.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
-
-import {SelectedElementUtils} from '../../../utils/editor/selected-element.utils';
 
 @Component({
   tag: 'app-editor',
@@ -429,7 +427,7 @@ export class AppEditor {
 
       const selectedElement: HTMLElement = $event.detail;
 
-      if (SelectedElementUtils.isElementSlide(selectedElement) === 'slide') {
+      if (isSlide(selectedElement)) {
         resolve();
         return;
       }

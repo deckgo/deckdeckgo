@@ -26,17 +26,8 @@ export class AppSlideNavigate {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(index);
   }
 
-  private onReorder($event: CustomEvent<ItemReorderEventDetail>): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event) {
-        resolve();
-        return;
-      }
-
-      this.reorder.emit($event.detail);
-
-      resolve();
-    });
+  private onReorder($event: CustomEvent<ItemReorderEventDetail>) {
+    this.reorder.emit($event?.detail);
   }
 
   render() {
