@@ -1,3 +1,9 @@
+# 2.1.0 (2021-02-19)
+
+### Features
+
+- support custom templates names
+
 # 2.0.3 (2021-01-26)
 
 ### Fix

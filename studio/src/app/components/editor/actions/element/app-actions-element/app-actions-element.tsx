@@ -2,6 +2,7 @@ import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop, State}
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
+import {isSlide} from '@deckdeckgo/deck-utils';
 
 import store from '../../../../../stores/busy.store';
 
@@ -189,7 +190,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (SelectedElementUtils.isElementSlide(element) === 'slide') {
+      if (isSlide(element)) {
         resolve(element);
         return;
       }
@@ -655,13 +656,7 @@ export class AppActionsElement {
       await this.detachMoveToolbarOnElement();
 
       this.elementResizeObserver = new ResizeObserver(async (entries) => {
-        if (
-          entries &&
-          entries.length > 0 &&
-          entries[0].target &&
-          entries[0].target.nodeName &&
-          SelectedElementUtils.isElementSlide(entries[0].target) !== 'slide'
-        ) {
+        if (entries && entries.length > 0 && entries[0].target && entries[0].target.nodeName && !isSlide(entries[0].target)) {
           await this.resizeSlideContent();
         }
       });

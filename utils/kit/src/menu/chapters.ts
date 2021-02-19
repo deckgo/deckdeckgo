@@ -21,7 +21,7 @@ async function buildSlidesListActions(): Promise<string> {
     let i = 0;
 
     for (const slide of Array.from(slides)) {
-      if (slide.tagName && slide.tagName.toLowerCase().indexOf('deckgo-slide') > -1) {
+      if (slide.tagName && (!slide.hasAttribute('slot') || slide.getAttribute('slot') === '')) {
         const text = getSlideTitle(slide, i);
 
         result += '<ion-item ion-item button><ion-label>' + text + '</ion-label></ion-item>';
@@ -54,7 +54,7 @@ function getSlideTitle(slide: HTMLElement, index: number) {
       if (end && end.textContent !== '') {
         return end.textContent;
       } else {
-        return 'Slide ' + (index + 1);
+        return 'Slide #' + (index + 1);
       }
     }
   }

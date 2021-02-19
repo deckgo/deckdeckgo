@@ -7,9 +7,11 @@ import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
 import {SlideUtils} from './slide.utils';
 
+import {isSlide} from '@deckdeckgo/deck-utils';
+
 export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {
-    return element?.parentElement?.nodeName?.toLowerCase() === 'deckgo-deck' ? 'slide' : 'element';
+    return isSlide(element) ? 'slide' : 'element';
   }
 
   private static isElementDemo(element: HTMLElement): boolean {
