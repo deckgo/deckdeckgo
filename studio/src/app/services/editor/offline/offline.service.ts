@@ -147,7 +147,7 @@ export class OfflineService {
   private cacheServiceWorker(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const deckElement: HTMLElement = document.querySelector('app-editor > ion-content > main > deckgo-deck');
+        const deckElement: HTMLElement = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
 
         if (!deckElement) {
           reject('No deck found');
@@ -302,7 +302,7 @@ export class OfflineService {
   private lazyLoadAllContent(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const deck = document.querySelector('app-editor > ion-content > main > deckgo-deck');
+        const deck = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
 
         if (!deck) {
           reject('Deck not found');
@@ -462,7 +462,7 @@ export class OfflineService {
 
   private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content > main > deckgo-deck > *[slide_id="${slideId}"]`);
+      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slide_id="${slideId}"]`);
 
       if (!slideElement) {
         reject('No slide found');
@@ -748,7 +748,7 @@ export class OfflineService {
 
   private uploadDeckBackgroundAssets(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content > main > deckgo-deck > *[slot="background"]`);
+      const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slot="background"]`);
 
       if (!backgroundElement) {
         resolve();
