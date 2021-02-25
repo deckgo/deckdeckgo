@@ -81,6 +81,7 @@ export class SelectedElementUtils {
         split: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') !== SlideSplitType.DEMO,
         youtube: nodeName === 'deckgo-slide-youtube',
         playground: nodeName === 'deckgo-slide-playground',
+        fixed: ['deckgo-slide-title', 'deckgo-slide-content', 'deckgo-slide-split'].includes(nodeName),
       },
     };
   }

@@ -327,12 +327,12 @@ export class AppActionsElement {
   }
 
   private async openTransform() {
-    if (this.selectedElement?.type === 'slide') {
+    if (this.selectedElement?.type === 'slide' && !this.selectedElement?.slide?.fixed) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-transform',
+      component: this.selectedElement?.type === 'slide' ? 'app-transform-slide' : 'app-transform-element',
       componentProps: {
         selectedElement: this.selectedElement.element,
       },
@@ -863,7 +863,7 @@ export class AppActionsElement {
         notes: this.selectedElement?.type === 'slide',
         clone: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
         images: this.selectedElement?.slide?.aspectRatio,
-        transform: this.selectedElement?.type === 'element',
+        transform: this.displayTransform(),
       },
       event: $event,
       mode: 'ios',
@@ -886,6 +886,10 @@ export class AppActionsElement {
     });
 
     await popover.present();
+  }
+
+  private displayTransform() {
+    return (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.fixed) && this.selectedElement?.slot?.shape === undefined;
   }
 
   render() {
@@ -1014,7 +1018,7 @@ export class AppActionsElement {
   }
 
   private renderTransform() {
-    const displayed: boolean = this.selectedElement?.type === 'element' && this.selectedElement?.slot?.shape === undefined;
+    const displayed: boolean = this.displayTransform();
     const classToggle: string | undefined = `wider-devices ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (

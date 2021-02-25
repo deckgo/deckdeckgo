@@ -91,12 +91,7 @@ export class AppTemplatesDefault {
   render() {
     return (
       <Fragment>
-        {this.renderTitle()}
-
-        {this.renderContent()}
-
-        {this.renderSplit()}
-        {this.renderVertical()}
+        <app-templates-fixed onSelectedTemplate={($event: CustomEvent<InitTemplate>) => this.composeTemplate.emit($event?.detail)}></app-templates-fixed>
 
         {this.renderDemo()}
         {this.renderPlayground()}
@@ -113,37 +108,6 @@ export class AppTemplatesDefault {
         {this.renderQRCode()}
         {this.renderAuthor()}
       </Fragment>
-    );
-  }
-
-  private renderTitle() {
-    return <app-templates-title custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.TITLE})}></app-templates-title>;
-  }
-
-  private renderContent() {
-    const flexEndStyle = {'--slide-content-justify-content': 'flex-end'};
-
-    return (
-      <Fragment>
-        <app-templates-content custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT})}></app-templates-content>
-        <app-templates-content
-          custom-tappable
-          onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT, style: flexEndStyle})}
-          style={flexEndStyle}></app-templates-content>
-      </Fragment>
-    );
-  }
-
-  private renderSplit() {
-    return <app-templates-split custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.SPLIT})}></app-templates-split>;
-  }
-
-  private renderVertical() {
-    return (
-      <app-templates-split
-        custom-tappable
-        vertical={true}
-        onClick={() => this.composeTemplate.emit({template: SlideTemplate.SPLIT, attributes: {vertical: true}})}></app-templates-split>
     );
   }
 

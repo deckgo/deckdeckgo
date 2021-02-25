@@ -24,6 +24,7 @@ export interface SelectedSlide {
   split: boolean;
   youtube: boolean;
   playground: boolean;
+  fixed: boolean;
 }
 
 export interface SelectedElement {

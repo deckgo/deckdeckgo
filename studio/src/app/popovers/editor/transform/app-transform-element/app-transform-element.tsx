@@ -1,18 +1,18 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
-import {SlotType} from '../../../types/editor/slot-type';
+import {SlotType} from '../../../../types/editor/slot-type';
 
-import {SlideScope} from '../../../models/data/slide';
-import {Template, TemplateDataSlot} from '../../../models/data/template';
+import {SlideScope} from '../../../../models/data/slide';
+import {Template, TemplateDataSlot} from '../../../../models/data/template';
 
-import {SlideUtils} from '../../../utils/editor/slide.utils';
-import {TemplateUtils} from '../../../utils/editor/template.utils';
+import {SlideUtils} from '../../../../utils/editor/slide.utils';
+import {TemplateUtils} from '../../../../utils/editor/template.utils';
 
 @Component({
-  tag: 'app-transform',
-  styleUrl: 'app-transform.scss',
+  tag: 'app-transform-element',
+  styleUrl: 'app-transform-element.scss',
 })
-export class AppTransform {
+export class AppTransformElement {
   @Element() el: HTMLElement;
 
   @Prop()
