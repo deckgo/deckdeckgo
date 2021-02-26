@@ -33,7 +33,7 @@ export class CloneSlideUtils {
 
     // If we toggle to a CONTENT template from a one aligned bottom, we should think about removing the alignment to get the default one
     if (initTemplate.template === SlideTemplate.CONTENT && !initTemplate.style) {
-      delete attributes.style['--slide-content-justify-content'];
+      delete attributes.style?.['--slide-content-justify-content'];
     }
 
     // If we toggle to a SPLIT template from a one vertical, we should think about removing the vertical alignment to get the default one
