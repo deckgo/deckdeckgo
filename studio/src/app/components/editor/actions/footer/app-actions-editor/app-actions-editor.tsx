@@ -44,6 +44,8 @@ export class AppActionsEditor {
 
   @Event() private slideCopy: EventEmitter<HTMLElement>;
 
+  @Event() private slideTransform: EventEmitter<JSX.IntrinsicElements>;
+
   @Event() private elementFocus: EventEmitter<HTMLElement>;
 
   @Event() private presenting: EventEmitter<boolean>;
@@ -194,6 +196,7 @@ export class AppActionsEditor {
         ref={(el) => (this.actionsElementRef = el as HTMLAppActionsElementElement)}
         class={editorStore.state.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
         slideCopy={this.slideCopy}
+        slideTransform={this.slideTransform}
         elementFocus={this.elementFocus}
         onResetted={() => this.selectStepDeck()}></app-actions-element>
     );

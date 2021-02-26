@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
@@ -22,6 +22,8 @@ import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
 import {SlideScope} from '../../../../../models/data/slide';
+import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
+import {CloneSlideUtils} from '../../../../../utils/editor/clone-slide.utils';
 
 @Component({
   tag: 'app-actions-element',
@@ -33,6 +35,9 @@ export class AppActionsElement {
 
   @Prop()
   slideCopy: EventEmitter;
+
+  @Prop()
+  slideTransform: EventEmitter;
 
   @Prop()
   elementFocus: EventEmitter;
@@ -342,8 +347,10 @@ export class AppActionsElement {
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data && detail.data.type) {
+      if (detail.data?.type) {
         await this.transformSlotType(detail.data.type);
+      } else if (detail.data?.template) {
+        await this.transformTemplate(detail.data.template);
       }
     });
 
@@ -557,40 +564,53 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private transformSlotType(type: SlotType): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement) {
-        resolve();
-        return;
-      }
+  private async transformSlotType(type: SlotType) {
+    if (!this.selectedElement || !this.selectedElement.element.parentElement) {
+      return;
+    }
 
-      const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement.element, type);
+    const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement.element, type);
 
-      await this.replaceSlot(element);
-
-      resolve();
-    });
+    await this.replaceSlot(element);
   }
 
-  private replaceSlot(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement || !element) {
-        resolve();
-        return;
-      }
+  private async transformTemplate(template: InitTemplate) {
+    if (!this.selectedElement || !this.selectedElement.slide?.fixed) {
+      return;
+    }
 
-      this.selectedElement.element.parentElement.replaceChild(element, this.selectedElement.element);
+    const slide: JSX.IntrinsicElements = await CloneSlideUtils.toggleTemplate(this.selectedElement.element, template);
 
-      await this.initSelectedElement(element);
+    // Catch event when slide is parsed and then persist it to the database
+    document.addEventListener(
+      'slideDidLoad',
+      async ($event: CustomEvent) => {
+        const slide: HTMLElement = $event.target as HTMLElement;
 
-      await this.emitChange();
+        this.slideDidChange.emit(slide);
 
-      await this.resizeSlideContent();
+        await this.initSelectedElement(slide);
+      },
+      {once: true}
+    );
 
-      await this.reset();
+    this.slideTransform.emit(slide);
+  }
 
-      resolve();
-    });
+  private async replaceSlot(element: HTMLElement) {
+    if (!this.selectedElement || !this.selectedElement.element.parentElement || !element) {
+      return;
+    }
+
+    this.selectedElement.element.parentElement.replaceChild(element, this.selectedElement.element);
+
+    await this.initSelectedElement(element);
+
+    await this.emitChange();
+
+    await this.resizeSlideContent();
+
+    await this.reset();
   }
 
   private emitChange(): Promise<void> {

@@ -65,6 +65,7 @@ export namespace Components {
         "elementFocus": EventEmitter;
         "reset": () => Promise<void>;
         "slideCopy": EventEmitter;
+        "slideTransform": EventEmitter;
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
@@ -1295,6 +1296,7 @@ declare namespace LocalJSX {
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTo"?: (event: CustomEvent<number>) => void;
+        "onSlideTransform"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
         "slideNumber"?: number;
         "slides"?: JSX.IntrinsicElements[];
@@ -1311,6 +1313,7 @@ declare namespace LocalJSX {
         "onSlideDelete"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
+        "slideTransform"?: EventEmitter;
     }
     interface AppAvatar {
         "ariaLabel"?: string;
