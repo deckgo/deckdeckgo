@@ -25,6 +25,17 @@ export class AppTransformSlide {
   };
 
   render() {
+    const tag: 'title' | 'content-default' | 'content-bottom' | 'split-horizontal' | 'split-vertical' =
+      this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-title'
+        ? 'title'
+        : this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-content'
+        ? this.selectedElement.style.getPropertyValue('--slide-content-justify-content') !== ''
+          ? 'content-bottom'
+          : 'content-default'
+        : this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-split' && this.selectedElement.hasAttribute('vertical')
+        ? 'split-vertical'
+        : 'split-horizontal';
+
     return (
       <Fragment>
         <ion-toolbar>
@@ -33,7 +44,7 @@ export class AppTransformSlide {
         </ion-toolbar>
 
         <div class="container">
-          <AppTemplatesFixed selectTemplate={this.selectTemplate}></AppTemplatesFixed>
+          <AppTemplatesFixed selectTemplate={this.selectTemplate} selected={tag}></AppTemplatesFixed>
         </div>
       </Fragment>
     );

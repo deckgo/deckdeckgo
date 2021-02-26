@@ -10,12 +10,15 @@ export class AppTemplatesTitle {
   @Prop()
   highlightIndex: number | undefined = undefined;
 
+  @Prop()
+  selected: boolean = false;
+
   render() {
     const classTitle = this.highlight && this.highlightIndex === undefined ? 'highlight' : undefined;
     const classContent = this.highlight && this.highlightIndex === 1 ? 'highlight' : undefined;
 
     return (
-      <div class="item">
+      <div class={`item ${this.selected ? 'selected' : ''}`}>
         <deckgo-slide-title class="showcase">
           <p slot="title">
             <ion-skeleton-text style={{width: '60%'}} class={classTitle}></ion-skeleton-text>

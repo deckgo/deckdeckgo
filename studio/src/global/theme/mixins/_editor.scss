@@ -4,6 +4,10 @@
   border-radius: 4px;
 }
 
+@mixin selected {
+  box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
+}
+
 @mixin templates {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -11,6 +15,8 @@
   grid-column-gap: 20px;
 
   width: calc(100% - 20px);
+
+  padding-top: 8px;
 
   transition: width 0.15s ease-in-out;
 
@@ -27,6 +33,10 @@
     background: white;
 
     @include panel;
+
+    &.selected {
+      @include selected;
+    }
 
     --slide-width: 100%;
     --slide-height: 7rem;

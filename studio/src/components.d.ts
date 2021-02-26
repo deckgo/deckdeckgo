@@ -382,17 +382,20 @@ export namespace Components {
     interface AppTemplatesContent {
         "highlight": boolean;
         "highlightIndex": number | undefined;
+        "selected": boolean;
     }
     interface AppTemplatesDefault {
     }
     interface AppTemplatesSplit {
         "highlight": boolean;
         "highlightIndex": number | undefined;
+        "selected": boolean;
         "vertical": boolean;
     }
     interface AppTemplatesTitle {
         "highlight": boolean;
         "highlightIndex": number | undefined;
+        "selected": boolean;
     }
     interface AppTemplatesUser {
     }
@@ -1674,6 +1677,7 @@ declare namespace LocalJSX {
     interface AppTemplatesContent {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
+        "selected"?: boolean;
     }
     interface AppTemplatesDefault {
         "onAddSlideAspectRatio"?: (event: CustomEvent<void>) => void;
@@ -1686,11 +1690,13 @@ declare namespace LocalJSX {
     interface AppTemplatesSplit {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
+        "selected"?: boolean;
         "vertical"?: boolean;
     }
     interface AppTemplatesTitle {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
+        "selected"?: boolean;
     }
     interface AppTemplatesUser {
         "onNavigateSignIn"?: (event: CustomEvent<void>) => void;

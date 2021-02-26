@@ -183,7 +183,6 @@ export class AppCreateSlide {
         mode="md"
         value={this.templatesCategory}
         color="dark"
-        class="ion-padding-bottom"
         onIonChange={($event: CustomEvent<SegmentChangeEventDetail>) => (this.templatesCategory = $event?.detail?.value as 'default' | 'community' | 'user')}
         disabled={this.composeTemplate !== undefined}>
         <ion-segment-button mode="md" value="default">
