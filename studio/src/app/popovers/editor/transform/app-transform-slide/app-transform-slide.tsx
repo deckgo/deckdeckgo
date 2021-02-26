@@ -29,7 +29,7 @@ export class AppTransformSlide {
       this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-title'
         ? 'title'
         : this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-content'
-        ? this.selectedElement.style.getPropertyValue('--slide-content-justify-content') !== ''
+        ? this.selectedElement.style?.getPropertyValue('--slide-content-justify-content') !== ''
           ? 'content-bottom'
           : 'content-default'
         : this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-split' && this.selectedElement.hasAttribute('vertical')
