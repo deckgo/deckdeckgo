@@ -13,12 +13,15 @@ export class AppTemplatesSplit {
   @Prop()
   vertical: boolean = false;
 
+  @Prop()
+  selected: boolean = false;
+
   render() {
     const classStart = this.highlight && this.highlightIndex === undefined ? 'highlight' : undefined;
     const classEnd = this.highlight && this.highlightIndex === 1 ? 'highlight' : undefined;
 
     return (
-      <div class="item">
+      <div class={`item ${this.selected ? 'selected' : ''}`}>
         <deckgo-slide-split vertical={this.vertical} class="showcase">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}} class={classStart}></ion-skeleton-text>

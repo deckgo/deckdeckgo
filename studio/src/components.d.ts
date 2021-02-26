@@ -65,6 +65,7 @@ export namespace Components {
         "elementFocus": EventEmitter;
         "reset": () => Promise<void>;
         "slideCopy": EventEmitter;
+        "slideTransform": EventEmitter;
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
@@ -381,24 +382,30 @@ export namespace Components {
     interface AppTemplatesContent {
         "highlight": boolean;
         "highlightIndex": number | undefined;
+        "selected": boolean;
     }
     interface AppTemplatesDefault {
     }
     interface AppTemplatesSplit {
         "highlight": boolean;
         "highlightIndex": number | undefined;
+        "selected": boolean;
         "vertical": boolean;
     }
     interface AppTemplatesTitle {
         "highlight": boolean;
         "highlightIndex": number | undefined;
+        "selected": boolean;
     }
     interface AppTemplatesUser {
     }
     interface AppText {
         "selectedElement": HTMLElement;
     }
-    interface AppTransform {
+    interface AppTransformElement {
+        "selectedElement": HTMLElement;
+    }
+    interface AppTransformSlide {
         "selectedElement": HTMLElement;
     }
     interface AppUnpublish {
@@ -1078,11 +1085,17 @@ declare global {
         prototype: HTMLAppTextElement;
         new (): HTMLAppTextElement;
     };
-    interface HTMLAppTransformElement extends Components.AppTransform, HTMLStencilElement {
+    interface HTMLAppTransformElementElement extends Components.AppTransformElement, HTMLStencilElement {
     }
-    var HTMLAppTransformElement: {
-        prototype: HTMLAppTransformElement;
-        new (): HTMLAppTransformElement;
+    var HTMLAppTransformElementElement: {
+        prototype: HTMLAppTransformElementElement;
+        new (): HTMLAppTransformElementElement;
+    };
+    interface HTMLAppTransformSlideElement extends Components.AppTransformSlide, HTMLStencilElement {
+    }
+    var HTMLAppTransformSlideElement: {
+        prototype: HTMLAppTransformSlideElement;
+        new (): HTMLAppTransformSlideElement;
     };
     interface HTMLAppUnpublishElement extends Components.AppUnpublish, HTMLStencilElement {
     }
@@ -1231,7 +1244,8 @@ declare global {
         "app-templates-title": HTMLAppTemplatesTitleElement;
         "app-templates-user": HTMLAppTemplatesUserElement;
         "app-text": HTMLAppTextElement;
-        "app-transform": HTMLAppTransformElement;
+        "app-transform-element": HTMLAppTransformElementElement;
+        "app-transform-slide": HTMLAppTransformSlideElement;
         "app-unpublish": HTMLAppUnpublishElement;
         "app-user-delete": HTMLAppUserDeleteElement;
         "app-user-info": HTMLAppUserInfoElement;
@@ -1285,6 +1299,7 @@ declare namespace LocalJSX {
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTo"?: (event: CustomEvent<number>) => void;
+        "onSlideTransform"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
         "slideNumber"?: number;
         "slides"?: JSX.IntrinsicElements[];
@@ -1301,6 +1316,7 @@ declare namespace LocalJSX {
         "onSlideDelete"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
+        "slideTransform"?: EventEmitter;
     }
     interface AppAvatar {
         "ariaLabel"?: string;
@@ -1661,6 +1677,7 @@ declare namespace LocalJSX {
     interface AppTemplatesContent {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
+        "selected"?: boolean;
     }
     interface AppTemplatesDefault {
         "onAddSlideAspectRatio"?: (event: CustomEvent<void>) => void;
@@ -1673,11 +1690,13 @@ declare namespace LocalJSX {
     interface AppTemplatesSplit {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
+        "selected"?: boolean;
         "vertical"?: boolean;
     }
     interface AppTemplatesTitle {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
+        "selected"?: boolean;
     }
     interface AppTemplatesUser {
         "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
@@ -1687,7 +1706,10 @@ declare namespace LocalJSX {
         "onTextDidChange"?: (event: CustomEvent<void>) => void;
         "selectedElement"?: HTMLElement;
     }
-    interface AppTransform {
+    interface AppTransformElement {
+        "selectedElement"?: HTMLElement;
+    }
+    interface AppTransformSlide {
         "selectedElement"?: HTMLElement;
     }
     interface AppUnpublish {
@@ -1816,7 +1838,8 @@ declare namespace LocalJSX {
         "app-templates-title": AppTemplatesTitle;
         "app-templates-user": AppTemplatesUser;
         "app-text": AppText;
-        "app-transform": AppTransform;
+        "app-transform-element": AppTransformElement;
+        "app-transform-slide": AppTransformSlide;
         "app-unpublish": AppUnpublish;
         "app-user-delete": AppUserDelete;
         "app-user-info": AppUserInfo;
@@ -1939,7 +1962,8 @@ declare module "@stencil/core" {
             "app-templates-title": LocalJSX.AppTemplatesTitle & JSXBase.HTMLAttributes<HTMLAppTemplatesTitleElement>;
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-text": LocalJSX.AppText & JSXBase.HTMLAttributes<HTMLAppTextElement>;
-            "app-transform": LocalJSX.AppTransform & JSXBase.HTMLAttributes<HTMLAppTransformElement>;
+            "app-transform-element": LocalJSX.AppTransformElement & JSXBase.HTMLAttributes<HTMLAppTransformElementElement>;
+            "app-transform-slide": LocalJSX.AppTransformSlide & JSXBase.HTMLAttributes<HTMLAppTransformSlideElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
             "app-user-info": LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;

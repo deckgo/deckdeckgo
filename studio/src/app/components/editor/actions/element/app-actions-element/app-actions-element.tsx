@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Listen, Method, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
@@ -21,7 +21,9 @@ import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
-import {SlideScope} from '../../../../../models/data/slide';
+import {SlideScope, SlideTemplate} from '../../../../../models/data/slide';
+import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
+import {CloneSlideUtils} from '../../../../../utils/editor/clone-slide.utils';
 
 @Component({
   tag: 'app-actions-element',
@@ -33,6 +35,9 @@ export class AppActionsElement {
 
   @Prop()
   slideCopy: EventEmitter;
+
+  @Prop()
+  slideTransform: EventEmitter;
 
   @Prop()
   elementFocus: EventEmitter;
@@ -327,12 +332,12 @@ export class AppActionsElement {
   }
 
   private async openTransform() {
-    if (this.selectedElement?.type === 'slide') {
+    if (this.selectedElement?.type === 'slide' && !this.selectedElement?.slide?.fixed) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-transform',
+      component: this.selectedElement?.type === 'slide' ? 'app-transform-slide' : 'app-transform-element',
       componentProps: {
         selectedElement: this.selectedElement.element,
       },
@@ -342,8 +347,10 @@ export class AppActionsElement {
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data && detail.data.type) {
+      if (detail.data?.type) {
         await this.transformSlotType(detail.data.type);
+      } else if (detail.data?.template) {
+        await this.transformTemplate(detail.data.template);
       }
     });
 
@@ -557,40 +564,58 @@ export class AppActionsElement {
     await modal.present();
   }
 
-  private transformSlotType(type: SlotType): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement) {
-        resolve();
-        return;
-      }
+  private async transformSlotType(type: SlotType) {
+    if (!this.selectedElement || !this.selectedElement.element.parentElement) {
+      return;
+    }
 
-      const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement.element, type);
+    const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement.element, type);
 
-      await this.replaceSlot(element);
-
-      resolve();
-    });
+    await this.replaceSlot(element);
   }
 
-  private replaceSlot(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement || !element) {
-        resolve();
-        return;
-      }
+  private async transformTemplate(template: InitTemplate) {
+    if (!this.selectedElement || !this.selectedElement.slide?.fixed) {
+      return;
+    }
 
-      this.selectedElement.element.parentElement.replaceChild(element, this.selectedElement.element);
+    if (this.selectedElement.slide.nodeName === `deckgo-slide-${(template.template as SlideTemplate).toLowerCase()}`) {
+      // Nothing to transform
+      return;
+    }
 
-      await this.initSelectedElement(element);
+    const slide: JSX.IntrinsicElements = await CloneSlideUtils.toggleTemplate(this.selectedElement.element, template);
 
-      await this.emitChange();
+    // Catch event when slide is parsed and then persist it to the database
+    document.addEventListener(
+      'slideDidLoad',
+      async ($event: CustomEvent) => {
+        const slide: HTMLElement = $event.target as HTMLElement;
 
-      await this.resizeSlideContent();
+        this.slideDidChange.emit(slide);
 
-      await this.reset();
+        await this.initSelectedElement(slide);
+      },
+      {once: true}
+    );
 
-      resolve();
-    });
+    this.slideTransform.emit(slide);
+  }
+
+  private async replaceSlot(element: HTMLElement) {
+    if (!this.selectedElement || !this.selectedElement.element.parentElement || !element) {
+      return;
+    }
+
+    this.selectedElement.element.parentElement.replaceChild(element, this.selectedElement.element);
+
+    await this.initSelectedElement(element);
+
+    await this.emitChange();
+
+    await this.resizeSlideContent();
+
+    await this.reset();
   }
 
   private emitChange(): Promise<void> {
@@ -863,7 +888,7 @@ export class AppActionsElement {
         notes: this.selectedElement?.type === 'slide',
         clone: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
         images: this.selectedElement?.slide?.aspectRatio,
-        transform: this.selectedElement?.type === 'element',
+        transform: this.displayTransform(),
       },
       event: $event,
       mode: 'ios',
@@ -886,6 +911,10 @@ export class AppActionsElement {
     });
 
     await popover.present();
+  }
+
+  private displayTransform() {
+    return (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.fixed) && this.selectedElement?.slot?.shape === undefined;
   }
 
   render() {
@@ -1014,7 +1043,7 @@ export class AppActionsElement {
   }
 
   private renderTransform() {
-    const displayed: boolean = this.selectedElement?.type === 'element' && this.selectedElement?.slot?.shape === undefined;
+    const displayed: boolean = this.displayTransform();
     const classToggle: string | undefined = `wider-devices ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (

@@ -326,14 +326,14 @@ export class AppEditor {
     await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
   }
 
-  private concatSlide(extraSlide: JSX.IntrinsicElements): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.slides = [...this.slides, extraSlide];
+  private async concatSlide(extraSlide: JSX.IntrinsicElements) {
+    this.slides = [...this.slides, extraSlide];
 
-      await ParseDeckSlotsUtils.stickLastChildren(this.el);
+    await ParseDeckSlotsUtils.stickLastChildren(this.el);
+  }
 
-      resolve();
-    });
+  private async replaceSlide(slide: JSX.IntrinsicElements) {
+    this.slides = [...this.slides.map((filteredSlide: JSX.IntrinsicElements, i) => (i === this.activeIndex ? slide : filteredSlide))];
   }
 
   private async animatePrevNextSlide($event: CustomEvent<boolean>) {
@@ -374,6 +374,14 @@ export class AppEditor {
     if (slide) {
       await this.concatSlide(slide);
     }
+  }
+
+  private async transformSlide($event: CustomEvent<JSX.IntrinsicElements>) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    await this.replaceSlide($event.detail);
   }
 
   private async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
@@ -773,6 +781,7 @@ export class AppEditor {
             onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
             onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
             onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+            onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
             onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
             onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
         </div>

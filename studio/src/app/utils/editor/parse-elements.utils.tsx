@@ -60,7 +60,7 @@ export class ParseElementsUtils {
     });
   }
 
-  private static getAttributes(el): any {
+  static getAttributes(el: HTMLElement): any {
     if (!el || !el.attributes) {
       return {};
     }

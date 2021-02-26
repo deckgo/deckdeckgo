@@ -12,6 +12,8 @@ import {EnvironmentConfigService} from '../../../../../services/core/environment
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
+import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
+
 @Component({
   tag: 'app-templates-default',
 })
@@ -88,15 +90,14 @@ export class AppTemplatesDefault {
     await slidePoll.update();
   }
 
+  private selectTemplate = async (template: InitTemplate) => {
+    this.composeTemplate.emit(template);
+  };
+
   render() {
     return (
       <Fragment>
-        {this.renderTitle()}
-
-        {this.renderContent()}
-
-        {this.renderSplit()}
-        {this.renderVertical()}
+        <AppTemplatesFixed selectTemplate={this.selectTemplate}></AppTemplatesFixed>
 
         {this.renderDemo()}
         {this.renderPlayground()}
@@ -113,37 +114,6 @@ export class AppTemplatesDefault {
         {this.renderQRCode()}
         {this.renderAuthor()}
       </Fragment>
-    );
-  }
-
-  private renderTitle() {
-    return <app-templates-title custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.TITLE})}></app-templates-title>;
-  }
-
-  private renderContent() {
-    const flexEndStyle = {'--slide-content-justify-content': 'flex-end'};
-
-    return (
-      <Fragment>
-        <app-templates-content custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT})}></app-templates-content>
-        <app-templates-content
-          custom-tappable
-          onClick={() => this.composeTemplate.emit({template: SlideTemplate.CONTENT, style: flexEndStyle})}
-          style={flexEndStyle}></app-templates-content>
-      </Fragment>
-    );
-  }
-
-  private renderSplit() {
-    return <app-templates-split custom-tappable onClick={() => this.composeTemplate.emit({template: SlideTemplate.SPLIT})}></app-templates-split>;
-  }
-
-  private renderVertical() {
-    return (
-      <app-templates-split
-        custom-tappable
-        vertical={true}
-        onClick={() => this.composeTemplate.emit({template: SlideTemplate.SPLIT, attributes: {vertical: true}})}></app-templates-split>
     );
   }
 

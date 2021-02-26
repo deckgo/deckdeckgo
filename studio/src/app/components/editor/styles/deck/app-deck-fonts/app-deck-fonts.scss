@@ -1,3 +1,5 @@
+@use "../../../../../../global/theme/mixins/editor";
+
 app-deck-fonts {
   div.container {
     display: grid;
@@ -27,7 +29,7 @@ app-deck-fonts {
       height: 5rem;
 
       &.selected {
-        box-shadow: 0 0 8px 4px rgba(var(--ion-color-primary-rgb), 0.4);
+        @include editor.selected;
       }
 
       deckgo-slide-title {
