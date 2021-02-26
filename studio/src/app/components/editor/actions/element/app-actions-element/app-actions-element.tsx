@@ -21,7 +21,7 @@ import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
-import {SlideScope} from '../../../../../models/data/slide';
+import {SlideScope, SlideTemplate} from '../../../../../models/data/slide';
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 import {CloneSlideUtils} from '../../../../../utils/editor/clone-slide.utils';
 
@@ -576,6 +576,11 @@ export class AppActionsElement {
 
   private async transformTemplate(template: InitTemplate) {
     if (!this.selectedElement || !this.selectedElement.slide?.fixed) {
+      return;
+    }
+
+    if (this.selectedElement.slide.nodeName === `deckgo-slide-${(template.template as SlideTemplate).toLowerCase()}`) {
+      // Nothing to transform
       return;
     }
 
