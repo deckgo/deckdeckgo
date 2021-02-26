@@ -1,57 +1,51 @@
-import {Component, Element, Event, EventEmitter, Fragment, h} from '@stencil/core';
+import {FunctionalComponent, Fragment, h} from '@stencil/core';
 
 import {SlideTemplate} from '../../../../../models/data/slide';
 
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 
-@Component({
-  tag: 'app-templates-fixed',
-})
-export class AppTemplatesFixed {
-  @Element() el: HTMLElement;
+interface AppTemplatesFixedProps {
+  selectTemplate: (template: InitTemplate) => Promise<void>;
+}
 
-  @Event()
-  selectedTemplate: EventEmitter<InitTemplate>;
+export const AppTemplatesFixed: FunctionalComponent<AppTemplatesFixedProps> = ({selectTemplate}) => {
+  const renderTitle = () => {
+    return <app-templates-title custom-tappable onClick={() => selectTemplate({template: SlideTemplate.TITLE})}></app-templates-title>;
+  };
 
-  render() {
-    return (
-      <Fragment>
-        {this.renderTitle()}
-        {this.renderContent()}
-        {this.renderSplit()}
-        {this.renderVertical()}
-      </Fragment>
-    );
-  }
-
-  private renderTitle() {
-    return <app-templates-title custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.TITLE})}></app-templates-title>;
-  }
-
-  private renderContent() {
+  const renderContent = () => {
     const flexEndStyle = {'--slide-content-justify-content': 'flex-end'};
 
     return (
       <Fragment>
-        <app-templates-content custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CONTENT})}></app-templates-content>
+        <app-templates-content custom-tappable onClick={() => selectTemplate({template: SlideTemplate.CONTENT})}></app-templates-content>
         <app-templates-content
           custom-tappable
-          onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CONTENT, style: flexEndStyle})}
+          onClick={() => selectTemplate({template: SlideTemplate.CONTENT, style: flexEndStyle})}
           style={flexEndStyle}></app-templates-content>
       </Fragment>
     );
-  }
+  };
 
-  private renderSplit() {
-    return <app-templates-split custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.SPLIT})}></app-templates-split>;
-  }
+  const renderSplit = () => {
+    return <app-templates-split custom-tappable onClick={() => selectTemplate({template: SlideTemplate.SPLIT})}></app-templates-split>;
+  };
 
-  private renderVertical() {
+  const renderVertical = () => {
     return (
       <app-templates-split
         custom-tappable
         vertical={true}
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.SPLIT, attributes: {vertical: true}})}></app-templates-split>
+        onClick={() => selectTemplate({template: SlideTemplate.SPLIT, attributes: {vertical: true}})}></app-templates-split>
     );
-  }
-}
+  };
+
+  return (
+    <Fragment>
+      {renderTitle()}
+      {renderContent()}
+      {renderSplit()}
+      {renderVertical()}
+    </Fragment>
+  );
+};

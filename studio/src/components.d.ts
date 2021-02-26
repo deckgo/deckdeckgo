@@ -384,8 +384,6 @@ export namespace Components {
     }
     interface AppTemplatesDefault {
     }
-    interface AppTemplatesFixed {
-    }
     interface AppTemplatesSplit {
         "highlight": boolean;
         "highlightIndex": number | undefined;
@@ -1059,12 +1057,6 @@ declare global {
         prototype: HTMLAppTemplatesDefaultElement;
         new (): HTMLAppTemplatesDefaultElement;
     };
-    interface HTMLAppTemplatesFixedElement extends Components.AppTemplatesFixed, HTMLStencilElement {
-    }
-    var HTMLAppTemplatesFixedElement: {
-        prototype: HTMLAppTemplatesFixedElement;
-        new (): HTMLAppTemplatesFixedElement;
-    };
     interface HTMLAppTemplatesSplitElement extends Components.AppTemplatesSplit, HTMLStencilElement {
     }
     var HTMLAppTemplatesSplitElement: {
@@ -1244,7 +1236,6 @@ declare global {
         "app-templates-community": HTMLAppTemplatesCommunityElement;
         "app-templates-content": HTMLAppTemplatesContentElement;
         "app-templates-default": HTMLAppTemplatesDefaultElement;
-        "app-templates-fixed": HTMLAppTemplatesFixedElement;
         "app-templates-split": HTMLAppTemplatesSplitElement;
         "app-templates-title": HTMLAppTemplatesTitleElement;
         "app-templates-user": HTMLAppTemplatesUserElement;
@@ -1689,9 +1680,6 @@ declare namespace LocalJSX {
         "onSelectCharts"?: (event: CustomEvent<void>) => void;
         "onSelectedTemplate"?: (event: CustomEvent<{template: SlideTemplate | Template; attributes?: SlideAttributes}>) => void;
     }
-    interface AppTemplatesFixed {
-        "onSelectedTemplate"?: (event: CustomEvent<InitTemplate>) => void;
-    }
     interface AppTemplatesSplit {
         "highlight"?: boolean;
         "highlightIndex"?: number | undefined;
@@ -1837,7 +1825,6 @@ declare namespace LocalJSX {
         "app-templates-community": AppTemplatesCommunity;
         "app-templates-content": AppTemplatesContent;
         "app-templates-default": AppTemplatesDefault;
-        "app-templates-fixed": AppTemplatesFixed;
         "app-templates-split": AppTemplatesSplit;
         "app-templates-title": AppTemplatesTitle;
         "app-templates-user": AppTemplatesUser;
@@ -1962,7 +1949,6 @@ declare module "@stencil/core" {
             "app-templates-community": LocalJSX.AppTemplatesCommunity & JSXBase.HTMLAttributes<HTMLAppTemplatesCommunityElement>;
             "app-templates-content": LocalJSX.AppTemplatesContent & JSXBase.HTMLAttributes<HTMLAppTemplatesContentElement>;
             "app-templates-default": LocalJSX.AppTemplatesDefault & JSXBase.HTMLAttributes<HTMLAppTemplatesDefaultElement>;
-            "app-templates-fixed": LocalJSX.AppTemplatesFixed & JSXBase.HTMLAttributes<HTMLAppTemplatesFixedElement>;
             "app-templates-split": LocalJSX.AppTemplatesSplit & JSXBase.HTMLAttributes<HTMLAppTemplatesSplitElement>;
             "app-templates-title": LocalJSX.AppTemplatesTitle & JSXBase.HTMLAttributes<HTMLAppTemplatesTitleElement>;
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;

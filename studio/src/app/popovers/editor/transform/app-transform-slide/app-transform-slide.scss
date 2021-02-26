@@ -1,5 +1,11 @@
+@use "../../../../../global/theme/mixins/editor";
+
 app-transform-slide {
   ion-toolbar {
     padding: 16px 8px;
+  }
+
+  div.container {
+    @include editor.templates;
   }
 }

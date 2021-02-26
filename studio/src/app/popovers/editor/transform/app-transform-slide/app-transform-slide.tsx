@@ -1,5 +1,8 @@
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
-import {SlotType} from '../../../../types/editor/slot-type';
+
+import {InitTemplate} from '../../../../utils/editor/create-slides.utils';
+
+import {AppTemplatesFixed} from '../../../../components/editor/templates/platform/app-templates-fixed/app-templates-fixed';
 
 @Component({
   tag: 'app-transform-slide',
@@ -11,11 +14,15 @@ export class AppTransformSlide {
   @Prop()
   selectedElement: HTMLElement;
 
-  private async closePopover(type?: SlotType) {
+  private async closePopover(template?: InitTemplate) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      type: type,
+      template,
     });
   }
+
+  private selectTemplate = async (template: InitTemplate) => {
+    await this.closePopover(template);
+  };
 
   render() {
     return (
@@ -25,7 +32,9 @@ export class AppTransformSlide {
           <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
         </ion-toolbar>
 
-        <app-templates-fixed></app-templates-fixed>
+        <div class="container">
+          <AppTemplatesFixed selectTemplate={this.selectTemplate}></AppTemplatesFixed>
+        </div>
       </Fragment>
     );
   }

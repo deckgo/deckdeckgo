@@ -12,6 +12,8 @@ import {EnvironmentConfigService} from '../../../../../services/core/environment
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
+import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
+
 @Component({
   tag: 'app-templates-default',
 })
@@ -88,10 +90,14 @@ export class AppTemplatesDefault {
     await slidePoll.update();
   }
 
+  private selectTemplate = async (template: InitTemplate) => {
+    this.composeTemplate.emit(template);
+  };
+
   render() {
     return (
       <Fragment>
-        <app-templates-fixed onSelectedTemplate={($event: CustomEvent<InitTemplate>) => this.composeTemplate.emit($event?.detail)}></app-templates-fixed>
+        <AppTemplatesFixed selectTemplate={this.selectTemplate}></AppTemplatesFixed>
 
         {this.renderDemo()}
         {this.renderPlayground()}
