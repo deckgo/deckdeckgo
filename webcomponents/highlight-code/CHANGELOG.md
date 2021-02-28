@@ -1,3 +1,9 @@
+# 2.5.0 (2021-02-17)
+
+### Features
+
+- expose const `deckdeckgoHighlightCodeLanguages` to make the list of supported languages programmatically readable
+
 # 2.4.0 (2021-02-17)
 
 ### Features
