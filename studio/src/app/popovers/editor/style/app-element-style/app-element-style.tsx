@@ -213,6 +213,7 @@ export class AppElementStyle {
       <app-color-text-background
         key={'background'}
         colorType={'background'}
+        slide={this.selectedElement.type === 'slide'}
         selectedElement={this.selectedElement.element}
         onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       this.renderImage(),
