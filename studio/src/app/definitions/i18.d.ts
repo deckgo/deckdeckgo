@@ -39,6 +39,11 @@ interface I18nOffline {
   editing: string;
 }
 
+interface I18nShare {
+  a_presentation_by: string;
+  a_presentation: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -46,4 +51,5 @@ interface I18n {
   menu: I18nMenu;
   links: I18nLinks;
   offline: I18nOffline;
+  share: I18nShare;
 }
