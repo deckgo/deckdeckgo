@@ -40,8 +40,9 @@ interface I18nOffline {
 }
 
 interface I18nShare {
-  a_presentation_by: string;
   a_presentation: string;
+  a_presentation_by: string;
+  a_presentation_no_author: string;
 }
 
 interface I18n {

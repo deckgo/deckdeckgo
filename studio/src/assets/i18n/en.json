@@ -36,7 +36,8 @@
     "editing": "You are editing offline."
   },
   "share": {
+    "a_presentation": "A presentation",
     "a_presentation_by": "{0} by {1} created with {2}",
-    "a_presentation": "{0} created with {1}"
+    "a_presentation_no_author": "{0} created with {1}"
   }
 }

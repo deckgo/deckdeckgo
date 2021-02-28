@@ -36,7 +36,7 @@ export async function getShareTwitterText(deck: Deck | null, userName: string | 
     ]);
   } else {
     return i18nFormat(i18n.state.share.a_presentation_by, [
-      {regex: /\{0\}/g, value: `A presentation`},
+      {regex: /\{0\}/g, value: i18n.state.share.a_presentation},
       {regex: /\{1\}/g, value: `@${userSocial.twitter}`},
       {regex: /\{2\}/g, value: `@deckdeckgo`},
     ]);
@@ -52,14 +52,14 @@ async function getCommonShareText(deck: Deck | null, userName: string | undefine
         {regex: /\{2\}/g, value: `${deckDeckGo}`},
       ]);
     } else {
-      return i18nFormat(i18n.state.share.a_presentation, [
+      return i18nFormat(i18n.state.share.a_presentation_no_author, [
         {regex: /\{0\}/g, value: `"${deck.data.name}"`},
         {regex: /\{1\}/g, value: `${deckDeckGo}`},
       ]);
     }
   } else {
-    return i18nFormat(i18n.state.share.a_presentation, [
-      {regex: /\{0\}/g, value: `A presentation`},
+    return i18nFormat(i18n.state.share.a_presentation_no_author, [
+      {regex: /\{0\}/g, value: i18n.state.share.a_presentation},
       {regex: /\{1\}/g, value: `${deckDeckGo}`},
     ]);
   }
