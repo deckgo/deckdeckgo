@@ -1,5 +1,23 @@
 {
   "core": {
     "close": "Close"
+  },
+  "footer": {
+    "home": "Home",
+    "discover": "Discover",
+    "enterprise": "Enterprise",
+    "about": "About",
+    "team": "Team",
+    "newsletter": "Newsletter",
+    "contact": "Contact",
+    "press": "Press",
+    "faq": "FAQ",
+    "developers": "Developers",
+    "open_source": "Open source",
+    "services": "Services",
+    "developer": "Developer",
+    "terms": "Terms",
+    "terms_of_use": "Terms of use",
+    "privacy_policy": "Privacy Policy"
   }
 }
