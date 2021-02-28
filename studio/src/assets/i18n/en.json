@@ -75,6 +75,16 @@
     "go_offline": "Go offline",
     "more": "More",
     "exit_fullscreen": "Exit fullscreen",
-    "backup": "Backup"
+    "backup": "Backup",
+    "delete": "Delete",
+    "notes": "Notes",
+    "copy": "Copy",
+    "format": "Format",
+    "options": "Options",
+    "transform": "Transform",
+    "add_text": "Add a text",
+    "add_shape": "Add a shape",
+    "add_image": "Add an image",
+    "image": "Image"
   }
 }

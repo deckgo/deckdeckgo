@@ -84,6 +84,16 @@ interface I18nEditor {
   more: string;
   exit_fullscreen: string;
   backup: string;
+  delete: string;
+  notes: string;
+  copy: string;
+  format: string;
+  options: string;
+  transform: string;
+  add_text: string;
+  add_shape: string;
+  add_image: string;
+  image: string;
 }
 
 interface I18n {
