@@ -30,15 +30,15 @@ export async function getShareTwitterText(deck: Deck | null, userName: string | 
 
   if (deck?.data?.name !== '') {
     return i18nFormat(i18n.state.share.a_presentation_by, [
-      {regex: /\{0\}/g, value: `"${deck.data.name}"`},
-      {regex: /\{1\}/g, value: `@${userSocial.twitter}`},
-      {regex: /\{2\}/g, value: `@deckdeckgo`},
+      {placeholder: '{0}', value: `"${deck.data.name}"`},
+      {placeholder: '{1}', value: `@${userSocial.twitter}`},
+      {placeholder: '{2}', value: `@deckdeckgo`},
     ]);
   } else {
     return i18nFormat(i18n.state.share.a_presentation_by, [
-      {regex: /\{0\}/g, value: i18n.state.share.a_presentation},
-      {regex: /\{1\}/g, value: `@${userSocial.twitter}`},
-      {regex: /\{2\}/g, value: `@deckdeckgo`},
+      {placeholder: '{0}', value: i18n.state.share.a_presentation},
+      {placeholder: '{1}', value: `@${userSocial.twitter}`},
+      {placeholder: '{2}', value: `@deckdeckgo`},
     ]);
   }
 }
@@ -47,20 +47,20 @@ async function getCommonShareText(deck: Deck | null, userName: string | undefine
   if (deck?.data?.name !== '') {
     if (userName && userName !== undefined && userName !== '') {
       return i18nFormat(i18n.state.share.a_presentation_by, [
-        {regex: /\{0\}/g, value: `"${deck.data.name}"`},
-        {regex: /\{1\}/g, value: `${userName}`},
-        {regex: /\{2\}/g, value: `${deckDeckGo}`},
+        {placeholder: '{0}', value: `"${deck.data.name}"`},
+        {placeholder: '{1}', value: `${userName}`},
+        {placeholder: '{2}', value: `${deckDeckGo}`},
       ]);
     } else {
       return i18nFormat(i18n.state.share.a_presentation_no_author, [
-        {regex: /\{0\}/g, value: `"${deck.data.name}"`},
-        {regex: /\{1\}/g, value: `${deckDeckGo}`},
+        {placeholder: '{0}', value: `"${deck.data.name}"`},
+        {placeholder: '{1}', value: `${deckDeckGo}`},
       ]);
     }
   } else {
     return i18nFormat(i18n.state.share.a_presentation_no_author, [
-      {regex: /\{0\}/g, value: i18n.state.share.a_presentation},
-      {regex: /\{1\}/g, value: `${deckDeckGo}`},
+      {placeholder: '{0}', value: i18n.state.share.a_presentation},
+      {placeholder: '{1}', value: `${deckDeckGo}`},
     ]);
   }
 }

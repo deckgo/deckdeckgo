@@ -1,5 +1,6 @@
 interface I18nCore {
   close: string;
+  free_open_source: string;
 }
 
 interface I18nNav {
@@ -8,6 +9,9 @@ interface I18nNav {
   sign_in: string;
   write_a_presentation: string;
   ready_to_share: string;
+  profile: string;
+  customization: string;
+  templates: string;
 }
 
 interface I18nMenu {
@@ -45,6 +49,12 @@ interface I18nShare {
   a_presentation_no_author: string;
 }
 
+interface I18nSign_in {
+  hi: string;
+  why: string;
+  additionally: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -53,4 +63,5 @@ interface I18n {
   links: I18nLinks;
   offline: I18nOffline;
   share: I18nShare;
+  sign_in: I18nSign_in;
 }

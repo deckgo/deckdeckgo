@@ -12,6 +12,8 @@ import i18n from '../../../stores/i18n.store';
 import {AuthUser} from '../../../models/auth/auth.user';
 
 import {Utils} from '../../../utils/core/utils';
+import {renderI18n} from '../../../utils/core/i18n.utils';
+
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -294,7 +296,7 @@ export class AppSignIn {
         <div id="firebaseui-auth-container"></div>
 
         <p class="ion-text-center ion-padding-start ion-padding-end">
-          <small>DeckDeckGo is free and open source 😃.</small>
+          <small>{i18n.state.core.free_open_source}</small>
         </p>
       </main>,
     ];
@@ -302,8 +304,8 @@ export class AppSignIn {
 
   private renderMsg() {
     return [
-      <h1 class="ion-text-center ion-padding-start ion-padding-end">Oh, hi 👋! Good to have you.</h1>,
-      <p class="ion-text-center ion-padding">Sign in to unleash all features of the editor and to share your presentation online.</p>,
+      <h1 class="ion-text-center ion-padding-start ion-padding-end">{i18n.state.sign_in.hi}</h1>,
+      <p class="ion-text-center ion-padding">{i18n.state.sign_in.why}</p>,
     ];
   }
 
@@ -324,7 +326,7 @@ export class AppSignIn {
   private renderGitHub() {
     return (
       <p class="ion-text-center ion-padding-start ion-padding-end ion-padding-bottom">
-        Additionally, push the source code of your slides to repos with the GitHub <ion-icon name="logo-github"></ion-icon> logging.
+        {renderI18n(i18n.state.sign_in.additionally, {placeholder: '{0}', value: <ion-icon name="logo-github"></ion-icon>})}
       </p>
     );
   }

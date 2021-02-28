@@ -114,15 +114,15 @@ export class AppMenu {
 
         <ion-list class="settings">
           <ion-item button class="home" href="/profile" routerDirection="forward">
-            <ion-label>Profile</ion-label>
+            <ion-label>{i18n.state.nav.profile}</ion-label>
             <ion-icon lazy={true} name="person-outline" slot="start"></ion-icon>
           </ion-item>
           <ion-item button class="home" href="/customization" routerDirection="forward">
-            <ion-label>Customization</ion-label>
+            <ion-label>{i18n.state.nav.customization}</ion-label>
             <ion-icon lazy={true} name="color-palette-outline" slot="start"></ion-icon>
           </ion-item>
           <ion-item button class="home" href="/templates" routerDirection="forward">
-            <ion-label>Templates</ion-label>
+            <ion-label>{i18n.state.nav.templates}</ion-label>
             <ion-icon lazy={true} name="reader-outline" slot="start"></ion-icon>
           </ion-item>
         </ion-list>
