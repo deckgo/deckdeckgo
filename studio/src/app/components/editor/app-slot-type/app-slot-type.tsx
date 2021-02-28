@@ -178,13 +178,13 @@ export class AppSlotType {
           </Fragment>
         )}
 
-        {/*{this.renderSlot(*/}
-        {/*  SlotType.MARKDOWN,*/}
-        {/*  <Fragment>*/}
-        {/*    <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>*/}
-        {/*    <ion-label>Markdown</ion-label>*/}
-        {/*  </Fragment>*/}
-        {/*)}*/}
+        {this.renderSlot(
+          SlotType.MARKDOWN,
+          <Fragment>
+            <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>
+            <ion-label>Markdown</ion-label>
+          </Fragment>
+        )}
 
         {this.renderSlot(
           SlotType.MATH,
