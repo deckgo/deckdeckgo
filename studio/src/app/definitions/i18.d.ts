@@ -60,6 +60,16 @@ interface I18nSettings {
   un_publish: string;
 }
 
+interface I18nDashboard {
+  welcome: string;
+  your_presentations: string;
+  try: string;
+  filter: string;
+  no_slides: string;
+  copy: string;
+  delete: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -70,4 +80,5 @@ interface I18n {
   share: I18nShare;
   sign_in: I18nSign_in;
   settings: I18nSettings;
+  dashboard: I18nDashboard;
 }

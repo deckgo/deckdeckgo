@@ -52,5 +52,14 @@
   },
   "settings": {
     "un_publish": "Please note that currently, the presentations you have shared are not automatically removed from internet. If you wish to un-publish them, drop us a message on one of our {0} channels."
+  },
+  "dashboard": {
+    "welcome": "Welcome to DeckDeckGo 👋",
+    "your_presentations": "Your presentations",
+    "try": "You can try right now our editor for slides but, we will kindly ask you to {0} after three slides. We think it's safer that way, because your content is saved in the cloud.",
+    "filter": "Filter your presentations",
+    "no_slides": "You don't have any slides yet. Go for it, create your first deck now!",
+    "copy": "Copy presentation",
+    "delete": "Delete presentation"
   }
 }
