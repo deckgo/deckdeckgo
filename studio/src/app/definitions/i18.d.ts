@@ -1,6 +1,7 @@
 interface I18nCore {
   close: string;
   free_open_source: string;
+  loading: string;
 }
 
 interface I18nNav {
@@ -55,6 +56,10 @@ interface I18nSign_in {
   additionally: string;
 }
 
+interface I18nSettings {
+  un_publish: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -64,4 +69,5 @@ interface I18n {
   offline: I18nOffline;
   share: I18nShare;
   sign_in: I18nSign_in;
+  settings: I18nSettings;
 }

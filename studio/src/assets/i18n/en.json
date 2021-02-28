@@ -1,7 +1,8 @@
 {
   "core": {
     "close": "Close",
-    "free_open_source": "DeckDeckGo is free and open source 😃."
+    "free_open_source": "DeckDeckGo is free and open source 😃.",
+    "loading": "Loading..."
   },
   "nav": {
     "menu": "Menu",
@@ -48,5 +49,8 @@
     "hi": "Oh, hi 👋! Good to have you.",
     "why": "Sign in to unleash all features of the editor and to share your presentation online.",
     "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging."
+  },
+  "settings": {
+    "un_publish": "Please note that currently, the presentations you have shared are not automatically removed from internet. If you wish to un-publish them, drop us a message on one of our {0} channels."
   }
 }
