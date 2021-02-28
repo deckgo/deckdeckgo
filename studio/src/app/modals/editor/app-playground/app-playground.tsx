@@ -1,6 +1,9 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
+
+import i18n from '../../../stores/i18n.store';
+
 import {PlaygroundAction} from '../../../types/editor/playground-action';
 
 @Component({
@@ -78,8 +81,8 @@ export class AppPlayground {
       <ion-header>
         <ion-toolbar color="medium">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">Playground</ion-title>

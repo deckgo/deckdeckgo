@@ -1,8 +1,10 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-offline',
-  styleUrl: 'app-offline.scss'
+  styleUrl: 'app-offline.scss',
 })
 export class AppNotes {
   @Element() el: HTMLElement;
@@ -43,8 +45,8 @@ export class AppNotes {
       <ion-header>
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()} disabled={this.jobInProgress}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} disabled={this.jobInProgress} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{this.offline ? 'Go Online' : 'Go Offline'}</ion-title>
@@ -52,7 +54,7 @@ export class AppNotes {
       </ion-header>,
       <ion-content class="ion-padding" color="light">
         <main class="ion-padding">{this.renderContent()}</main>
-      </ion-content>
+      </ion-content>,
     ];
   }
 

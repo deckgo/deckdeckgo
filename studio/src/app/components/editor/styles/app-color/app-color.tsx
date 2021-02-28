@@ -252,7 +252,7 @@ export class AppColor {
         <input type="color" slot="start" arial-label="Color picker" value={colorValue} onChange={($event) => this.onColorPickerChange($event)}></input>
         {this.renderColorInput()}
         <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+          <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
 
         {this.renderColorSwitcher()}

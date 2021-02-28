@@ -2,6 +2,7 @@ import {Component, Element, Fragment, h, Listen, Prop, State} from '@stencil/cor
 
 import authStore from '../../../stores/auth.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
+import i18n from '../../../stores/i18n.store';
 
 import {Template, TemplateData} from '../../../models/data/template';
 
@@ -154,8 +155,8 @@ export class AppTemplate {
         <ion-header>
           <ion-toolbar color="primary">
             <ion-buttons slot="start">
-              <ion-button onClick={() => this.closeModal()}>
-                <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+                <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
               </ion-button>
             </ion-buttons>
             <ion-title class="ion-text-uppercase">Template</ion-title>

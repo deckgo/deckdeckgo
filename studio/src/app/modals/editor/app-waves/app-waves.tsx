@@ -2,6 +2,8 @@ import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
 
 import {RangeChangeEventDetail} from '@ionic/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {ColorUtils, InitStyleColor} from '../../../utils/editor/color.utils';
 import {WavesUtils} from '../../../utils/editor/waves.utils';
 
@@ -151,8 +153,8 @@ export class AppWaves {
 
   private renderCloseButton() {
     return (
-      <ion-button onClick={() => this.closeModal()}>
-        <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+      <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+        <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
       </ion-button>
     );
   }

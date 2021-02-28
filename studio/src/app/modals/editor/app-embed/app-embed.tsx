@@ -2,6 +2,7 @@ import {Component, Element, h, Listen, State} from '@stencil/core';
 
 import deckStore from '../../../stores/deck.store';
 import errorStore from '../../../stores/error.store';
+import i18n from '../../../stores/i18n.store';
 
 import {getPublishedUrl} from '../../../utils/core/share.utils';
 
@@ -67,8 +68,8 @@ export class AppEmbed {
       <ion-header>
         <ion-toolbar color="primary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">Embed</ion-title>

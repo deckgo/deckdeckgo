@@ -1,5 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {GifService} from '../../../services/tenor/gif/gif.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
@@ -261,8 +263,8 @@ export class AppGif {
       );
     } else {
       return (
-        <ion-button onClick={() => this.closeModal()}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+        <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+          <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-button>
       );
     }

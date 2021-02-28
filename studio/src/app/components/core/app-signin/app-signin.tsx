@@ -7,6 +7,7 @@ import {User as FirebaseUser, UserCredential, AuthCredential, OAuthCredential} f
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import tokenStore from '../../../stores/token.store';
+import i18n from '../../../stores/i18n.store';
 
 import {AuthUser} from '../../../models/auth/auth.user';
 
@@ -312,8 +313,8 @@ export class AppSignIn {
     } else {
       return (
         <ion-buttons class="back">
-          <ion-button onClick={() => this.navigateBack()} color="dark">
-            <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+          <ion-button onClick={() => this.navigateBack()} color="dark" aria-label={i18n.state.core.close}>
+            <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
           </ion-button>
         </ion-buttons>
       );

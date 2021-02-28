@@ -1,6 +1,7 @@
 import {Component, Element, State, h, Listen, Fragment} from '@stencil/core';
 
 import remoteStore from '../../../stores/remote.store';
+import i18n from '../../../stores/i18n.store';
 
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 
@@ -102,8 +103,8 @@ export class AppRemoteConnect {
         <ion-header>
           <ion-toolbar color="primary">
             <ion-buttons slot="start">
-              <ion-button onClick={() => this.closeModal()}>
-                <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+                <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
               </ion-button>
             </ion-buttons>
             <ion-title class="ion-text-uppercase">Remote control</ion-title>

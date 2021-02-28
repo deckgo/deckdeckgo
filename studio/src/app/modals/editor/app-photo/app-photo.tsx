@@ -1,12 +1,14 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
 import {ApiPhotoFactoryService} from '../../../services/api/photo/api.photo.factory.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
   tag: 'app-photo',
-  styleUrl: 'app-photo.scss'
+  styleUrl: 'app-photo.scss',
 })
 export class AppPhoto {
   @Element() el: HTMLElement;
@@ -216,15 +218,15 @@ export class AppPhoto {
               this.search();
             }}></ion-searchbar>
         </ion-toolbar>
-      </ion-footer>
+      </ion-footer>,
     ];
   }
 
   private renderCloseButton() {
     if (!this.searchTerm || this.searchTerm.length <= 0 || this.searching) {
       return (
-        <ion-button onClick={() => this.closeModal()}>
-          <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+        <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+          <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
         </ion-button>
       );
     } else {

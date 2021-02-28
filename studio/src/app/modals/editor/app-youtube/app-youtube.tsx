@@ -1,5 +1,7 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-youtube',
   styleUrl: 'app-youtube.scss',
@@ -45,8 +47,8 @@ export class AppYoutube {
       <ion-header>
         <ion-toolbar color="youtube">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">YouTube</ion-title>
