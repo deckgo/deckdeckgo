@@ -70,6 +70,22 @@ interface I18nDashboard {
   delete: string;
 }
 
+interface I18nEditor {
+  add_slide: string;
+  help: string;
+  share: string;
+  previous: string;
+  next: string;
+  slides: string;
+  style: string;
+  present: string;
+  go_online: string;
+  go_offline: string;
+  more: string;
+  exit_fullscreen: string;
+  backup: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -81,4 +97,5 @@ interface I18n {
   sign_in: I18nSign_in;
   settings: I18nSettings;
   dashboard: I18nDashboard;
+  editor: I18nEditor;
 }

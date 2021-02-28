@@ -61,5 +61,20 @@
     "no_slides": "You don't have any slides yet. Go for it, create your first deck now!",
     "copy": "Copy presentation",
     "delete": "Delete presentation"
+  },
+  "editor": {
+    "add_slide": "Add slide",
+    "help": "Help",
+    "share": "Share",
+    "previous": "Previous",
+    "next": "Next",
+    "slides": "Slides",
+    "style": "Style",
+    "present": "Present",
+    "go_online": "Go online",
+    "go_offline": "Go offline",
+    "more": "More",
+    "exit_fullscreen": "Exit fullscreen",
+    "backup": "Backup"
   }
 }
