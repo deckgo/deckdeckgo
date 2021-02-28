@@ -32,7 +32,7 @@ export class NodeUtils {
     }, []);
   }
 
-  static async findColors(node: HTMLElement, color: 'color' | 'background', slide: HTMLElement, deck: HTMLElement): Promise<string | undefined> {
+  static async findColors(node: HTMLElement, color: 'color' | 'background', deck: HTMLElement, slide: HTMLElement): Promise<string | undefined> {
     // Just in case
     if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
       return undefined;
@@ -46,8 +46,8 @@ export class NodeUtils {
       return deck.style.getPropertyValue(`--${color}`);
     }
 
-    if (node.isEqualNode(slide) && slide.style[color] !== '') {
-      return slide.style[color];
+    if (node.isEqualNode(slide) && (slide.style.getPropertyValue(`--${color}`) !== '' || slide.style[color] !== '')) {
+      return slide.style.getPropertyValue(`--${color}`) !== '' ? slide.style.getPropertyValue(`--${color}`) : slide.style[color];
     }
 
     const styleAttr: string = color === 'background' ? 'background-color' : 'color';
@@ -57,6 +57,6 @@ export class NodeUtils {
       return node.style[styleAttr];
     }
 
-    return await this.findColors(node.parentElement, color, slide, deck);
+    return await this.findColors(node.parentElement, color, deck, slide);
   }
 }

@@ -355,7 +355,7 @@ export class AppColor {
       return (
         <ion-fab-button
           size="small"
-          style={{'--background': palette.color.hex}}
+          style={{'--background': palette.color.hex, '--background-hover': palette.color.hex, '--background-activated': palette.color.hex}}
           onClick={($event: UIEvent) => this.selectColor($event, palette.color)}></ion-fab-button>
       );
     });
