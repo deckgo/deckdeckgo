@@ -43,7 +43,10 @@
   "share": {
     "a_presentation": "A presentation",
     "a_presentation_by": "{0} by {1} created with {2}",
-    "a_presentation_no_author": "{0} created with {1}"
+    "a_presentation_no_author": "{0} created with {1}",
+    "update_share": "Publish to update share",
+    "embed": "Embed",
+    "link": "Share link"
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Good to have you.",
@@ -85,6 +88,23 @@
     "add_text": "Add a text",
     "add_shape": "Add a shape",
     "add_image": "Add an image",
-    "image": "Image"
+    "image": "Image",
+    "qr_code": "QR code",
+    "chart": "Chart",
+    "text": "Text",
+    "header_footer": "Header & Footer",
+    "background": "Background",
+    "code": "Code",
+    "transition": "Transition",
+    "sides": "Sides",
+    "huge_title": "Huge title",
+    "large_title": "Large title",
+    "small_title": "Small title",
+    "paragraph": "Paragraph",
+    "skip": "Skip second element",
+    "list": "List",
+    "markdown": "Markdown",
+    "math": "Math",
+    "word_cloud": "Word Cloud"
   }
 }

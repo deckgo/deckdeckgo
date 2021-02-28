@@ -48,6 +48,9 @@ interface I18nShare {
   a_presentation: string;
   a_presentation_by: string;
   a_presentation_no_author: string;
+  update_share: string;
+  embed: string;
+  link: string;
 }
 
 interface I18nSign_in {
@@ -94,6 +97,23 @@ interface I18nEditor {
   add_shape: string;
   add_image: string;
   image: string;
+  qr_code: string;
+  chart: string;
+  text: string;
+  header_footer: string;
+  background: string;
+  code: string;
+  transition: string;
+  sides: string;
+  huge_title: string;
+  large_title: string;
+  small_title: string;
+  paragraph: string;
+  skip: string;
+  list: string;
+  markdown: string;
+  math: string;
+  word_cloud: string;
 }
 
 interface I18n {
