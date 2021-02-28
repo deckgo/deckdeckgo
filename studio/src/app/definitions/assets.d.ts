@@ -17,10 +17,6 @@ interface GifAsset {
   exampleSrc: string;
 }
 
-interface PrismAsset {
-  definitionSrc: string;
-}
-
 interface ChartAssets {
   lineSrc: string;
   lineCompareSrc: string;
@@ -48,7 +44,6 @@ interface DeckDeckGoAssets {
 interface Assets {
   shapes: ShapeAssets;
   gif: GifAsset;
-  prism: PrismAsset;
   chart: ChartAssets;
   team: TeamAssets;
   fonts: GoogleFont[];

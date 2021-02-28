@@ -2,7 +2,9 @@ import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
-import {PrismLanguage, PrismService} from '../../../services/editor/prism/prism.service';
+import {getCodeLanguage} from '../../../utils/editor/prism.utils';
+
+import {PrismLanguage} from '../../../types/editor/prism-language';
 
 @Component({
   tag: 'app-code',
@@ -23,12 +25,6 @@ export class AppCode {
   @State()
   private lineNumbers: boolean = false;
 
-  private prismService: PrismService;
-
-  constructor() {
-    this.prismService = PrismService.getInstance();
-  }
-
   async componentWillLoad() {
     await this.initCurrent();
   }
@@ -37,20 +33,16 @@ export class AppCode {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private initCurrent(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.initCurrentLanguage();
+  private async initCurrent() {
+    await this.initCurrentLanguage();
 
-      this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
-
-      resolve();
-    });
+    this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
   }
 
   private async initCurrentLanguage() {
     const language: string =
       this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
-    this.currentLanguage = await this.prismService.getLanguage(language);
+    this.currentLanguage = await getCodeLanguage(language);
   }
 
   private emitCodeDidChange() {

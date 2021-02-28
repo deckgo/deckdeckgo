@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
-import { PrismLanguage } from "./app/services/editor/prism/prism.service";
+import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
