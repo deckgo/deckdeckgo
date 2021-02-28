@@ -8,7 +8,9 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "node ./scripts/rm-www.js",
+    "clean": "node ./scripts/rm-www.js",
+    "i18n": "node ./scripts/i18n.types.js",
+    "prebuild": "npm run clean && npm run i18n",
     "build": "stencil build",
     "build:staging": "npm run build -- --staging",
     "postbuild": "./scripts/config.index.js",
