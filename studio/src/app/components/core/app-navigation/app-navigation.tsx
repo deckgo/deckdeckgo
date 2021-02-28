@@ -1,7 +1,7 @@
 import {Component, Prop, h} from '@stencil/core';
 
 import offlineStore from '../../../stores/offline.store';
-
+import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
 
 @Component({
@@ -104,7 +104,7 @@ export class AppNavigation {
       return (
         <ion-buttons slot="start">
           <ion-menu-toggle>
-            <ion-button>
+            <ion-button aria-label={i18n.state.nav.menu}>
               <ion-icon slot="icon-only" name="menu"></ion-icon>
             </ion-button>
           </ion-menu-toggle>
@@ -138,7 +138,7 @@ export class AppNavigation {
 
     return (
       <ion-router-link href={`/editor/${offlineStore.state.offline.id}`} routerDirection="root" slot="end" class="offline-info ion-padding-end">
-        <ion-label>You are editing offline.</ion-label>
+        <ion-label>{i18n.state.offline.editing}</ion-label>
       </ion-router-link>
     );
   }

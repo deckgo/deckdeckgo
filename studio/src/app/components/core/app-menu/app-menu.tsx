@@ -2,11 +2,12 @@ import {Component, Element, Fragment, h} from '@stencil/core';
 
 import navStore from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
+import {NavDirection} from '../../../stores/nav.store';
+import i18n from '../../../stores/i18n.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {NavDirection} from '../../../stores/nav.store';
 
 @Component({
   tag: 'app-menu',
@@ -66,7 +67,7 @@ export class AppMenu {
     return (
       <ion-item button class="home" href="/dashboard" routerDirection="forward">
         <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
-        <ion-label>Dashboard</ion-label>
+        <ion-label>{i18n.state.menu.dashboard}</ion-label>
       </ion-item>
     );
   }
@@ -76,14 +77,14 @@ export class AppMenu {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
           <ion-icon lazy={true} name="log-out-outline" slot="start" style={{transform: 'translate(3px, 0px)'}}></ion-icon>
-          <ion-label>Sign out</ion-label>
+          <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       );
     } else {
       return (
         <ion-item button onClick={() => this.signIn()}>
           <ion-icon lazy={true} name="log-in-outline" slot="start" style={{transform: 'translate(-3px, 0px)'}}></ion-icon>
-          <ion-label>Sign in</ion-label>
+          <ion-label>{i18n.state.nav.sign_in}</ion-label>
         </ion-item>
       );
     }
@@ -94,12 +95,12 @@ export class AppMenu {
       <Fragment>
         <ion-item button class="home" href="/poll" routerDirection="forward">
           <ion-icon lazy={true} name="chatbubble-ellipses-outline" slot="start"></ion-icon>
-          <ion-label>Poll</ion-label>
+          <ion-label>{i18n.state.menu.poll}</ion-label>
         </ion-item>
 
         <ion-item button class="home remote" href="https://deckdeckgo.app" target="_blank">
           <ion-icon lazy={true} name="phone-portrait-outline" slot="start"></ion-icon>
-          <ion-label>Remote control</ion-label>
+          <ion-label>{i18n.state.menu.remote_control}</ion-label>
         </ion-item>
       </Fragment>
     );

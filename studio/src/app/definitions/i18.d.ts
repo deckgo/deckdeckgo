@@ -2,6 +2,20 @@ interface I18nCore {
   close: string;
 }
 
+interface I18nNav {
+  menu: string;
+  sign_out: string;
+  sign_in: string;
+  write_a_presentation: string;
+  ready_to_share: string;
+}
+
+interface I18nMenu {
+  dashboard: string;
+  poll: string;
+  remote_control: string;
+}
+
 interface I18nLinks {
   home: string;
   discover: string;
@@ -21,8 +35,15 @@ interface I18nLinks {
   privacy_policy: string;
 }
 
+interface I18nOffline {
+  editing: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
+  nav: I18nNav;
+  menu: I18nMenu;
   links: I18nLinks;
+  offline: I18nOffline;
 }

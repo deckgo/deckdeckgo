@@ -2,6 +2,18 @@
   "core": {
     "close": "Close"
   },
+  "nav": {
+    "menu": "Menu",
+    "sign_out": "Sign out",
+    "sign_in": "Sign in",
+    "write_a_presentation": "Write a presentation",
+    "ready_to_share": "Ready to share?"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "poll": "Poll",
+    "remote_control": "Remote control"
+  },
   "links": {
     "home": "Home",
     "discover": "Discover",
@@ -19,5 +31,8 @@
     "terms": "Terms",
     "terms_of_use": "Terms of use",
     "privacy_policy": "Privacy Policy"
+  },
+  "offline": {
+    "editing": "You are editing offline."
   }
 }

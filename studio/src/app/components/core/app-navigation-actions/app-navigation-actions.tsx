@@ -5,6 +5,7 @@ import {popoverController} from '@ionic/core';
 import themeStore from '../../../stores/theme.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
+import i18n from '../../../stores/i18n.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
 
@@ -47,7 +48,7 @@ export class AppNavigationActions {
     } else if (this.presentation || this.publish) {
       return (
         <button class="wide-device ion-padding-start ion-padding-end signin" onClick={() => signIn()} tabindex={0}>
-          <ion-label>Sign in</ion-label>
+          <ion-label>{i18n.state.nav.sign_in}</ion-label>
         </button>
       );
     }
@@ -56,7 +57,7 @@ export class AppNavigationActions {
   private renderLoggedIn() {
     if (authStore.state.loggedIn && userStore.state.loaded) {
       return (
-        <button class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label="Open menu" tabindex={0}>
+        <button class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu} tabindex={0}>
           <app-avatar src={userStore.state.photoUrl}></app-avatar>
         </button>
       );
@@ -75,7 +76,7 @@ export class AppNavigationActions {
           routerDirection="root"
           mode="md"
           color={themeStore.state.darkTheme ? 'light' : 'dark'}>
-          <ion-label>Write a presentation</ion-label>
+          <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
         </ion-button>
       );
     } else {
@@ -92,7 +93,7 @@ export class AppNavigationActions {
           onClick={() => this.actionPublish.emit()}
           mode="md"
           color={themeStore.state.darkTheme ? 'light' : 'dark'}>
-          <ion-label>Ready to share?</ion-label>
+          <ion-label>{i18n.state.nav.ready_to_share}</ion-label>
         </ion-button>
       );
     } else {
