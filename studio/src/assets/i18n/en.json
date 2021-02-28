@@ -2,7 +2,7 @@
   "core": {
     "close": "Close"
   },
-  "footer": {
+  "links": {
     "home": "Home",
     "discover": "Discover",
     "enterprise": "Enterprise",

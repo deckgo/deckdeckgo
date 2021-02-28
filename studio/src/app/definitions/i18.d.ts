@@ -2,7 +2,7 @@ interface I18nCore {
   close: string;
 }
 
-interface I18nFooter {
+interface I18nLinks {
   home: string;
   discover: string;
   enterprise: string;
@@ -24,5 +24,5 @@ interface I18nFooter {
 interface I18n {
   lang: 'en';
   core: I18nCore;
-  footer: I18nFooter;
+  links: I18nLinks;
 }

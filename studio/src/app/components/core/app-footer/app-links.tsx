@@ -15,67 +15,67 @@ export class AppLinks {
           <ion-label class="ion-padding-top">DeckDeckGo</ion-label>
 
           <a href="https://deckdeckgo.com/en/" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.home}</ion-label>
+            <ion-label>{i18n.state.links.home}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/discover" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.discover}</ion-label>
+            <ion-label>{i18n.state.links.discover}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/enterprise" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.enterprise}</ion-label>
+            <ion-label>{i18n.state.links.enterprise}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/about" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.about}</ion-label>
+            <ion-label>{i18n.state.links.about}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/team" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.team}</ion-label>
+            <ion-label>{i18n.state.links.team}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/newsletter" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.newsletter}</ion-label>
+            <ion-label>{i18n.state.links.newsletter}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/contact" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.contact}</ion-label>
+            <ion-label>{i18n.state.links.contact}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/press" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.press}</ion-label>
+            <ion-label>{i18n.state.links.press}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/faq" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.faq}</ion-label>
+            <ion-label>{i18n.state.links.faq}</ion-label>
           </a>
         </section>
 
         <section>
-          <ion-label class="ion-padding-top">{i18n.state.footer.developers}</ion-label>
+          <ion-label class="ion-padding-top">{i18n.state.links.developers}</ion-label>
 
           <a href="https://deckdeckgo.com/en/opensource" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.open_source}</ion-label>
+            <ion-label>{i18n.state.links.open_source}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/services" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.services}</ion-label>
+            <ion-label>{i18n.state.links.services}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/en/developer" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.developer}</ion-label>
+            <ion-label>{i18n.state.links.developer}</ion-label>
           </a>
         </section>
 
         <section>
-          <ion-label class="ion-padding-top">{i18n.state.footer.terms}</ion-label>
+          <ion-label class="ion-padding-top">{i18n.state.links.terms}</ion-label>
 
           <a href="https://deckdeckgo.com/terms" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.terms_of_use}</ion-label>
+            <ion-label>{i18n.state.links.terms_of_use}</ion-label>
           </a>
 
           <a href="https://deckdeckgo.com/privacy" rel="noopener norefferer" target="_blank">
-            <ion-label>{i18n.state.footer.privacy_policy}</ion-label>
+            <ion-label>{i18n.state.links.privacy_policy}</ion-label>
           </a>
         </section>
 
