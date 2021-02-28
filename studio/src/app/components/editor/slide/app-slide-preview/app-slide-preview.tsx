@@ -64,7 +64,7 @@ export class AppSlidePreview {
 
     await this.stickyIOS(selectedElement);
 
-    this.preview = isSlide(selectedElement) && SlotUtils.isNodeEditable(selectedElement) && !SlotUtils.isNodeWordCloud(selectedElement);
+    this.preview = isSlide(selectedElement?.parentElement) && SlotUtils.isNodeEditable(selectedElement) && !SlotUtils.isNodeWordCloud(selectedElement);
 
     if (this.preview) {
       await this.initDeckPreview();
