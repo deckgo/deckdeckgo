@@ -17,6 +17,7 @@ interface I18nNav {
   profile: string;
   customization: string;
   templates: string;
+  settings: string;
 }
 
 interface I18nMenu {
@@ -101,6 +102,8 @@ interface I18nEditor {
   chart: string;
   text: string;
   header_footer: string;
+  header_footer_sign_in: string;
+  header_footer_edit: string;
   background: string;
   code: string;
   transition: string;
@@ -127,6 +130,9 @@ interface I18nEditor {
   your_images: string;
   waves: string;
   no_images: string;
+  typography: string;
+  default: string;
+  no_options: string;
 }
 
 interface I18nOffline {

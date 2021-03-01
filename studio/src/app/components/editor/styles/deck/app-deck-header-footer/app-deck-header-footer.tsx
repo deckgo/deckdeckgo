@@ -2,10 +2,13 @@ import {Component, Element, h, Prop, Host, JSX, EventEmitter, State, Event} from
 
 import userStore from '../../../../../stores/user.store';
 import authStore from '../../../../../stores/auth.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SocialUtils} from '../../../../../utils/editor/social.utils';
 import {HeaderFooterUtils} from '../../../../../utils/editor/header-footer.utils';
 import navStore, {NavDirection} from '../../../../../stores/nav.store';
+
+import {renderI18n} from '../../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-deck-header-footer',
@@ -97,12 +100,14 @@ export class AppDeckHeaderFooter {
   private renderNotLoggedIn() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Header &amp; Footer</ion-label>
+        <ion-label slot="title">{i18n.state.editor.header_footer}</ion-label>
 
         <div class="container ion-margin-bottom">
           <ion-label class="no-options">
-            Oh, hi! Users' settings are the options for the header and footer. Therefore, if you wish to give a try to this feature, please{' '}
-            <a onClick={() => this.onNavigateSignIn()}>sign in</a>.
+            {renderI18n(i18n.state.editor.header_footer_sign_in, {
+              placeholder: '{0}',
+              value: <a onClick={() => this.onNavigateSignIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>,
+            })}
           </ion-label>
         </div>
       </app-expansion-panel>
@@ -151,7 +156,7 @@ export class AppDeckHeaderFooter {
       return undefined;
     }
 
-    return <ion-label class="no-options">No options provided yet.</ion-label>;
+    return <ion-label class="no-options">{i18n.state.editor.no_options}</ion-label>;
   }
 
   private renderReset(
@@ -166,7 +171,7 @@ export class AppDeckHeaderFooter {
     return (
       <ion-item class="action-button">
         <ion-button shape="round" onClick={() => this.reset(slotName)} fill="outline" class="delete" disabled={selectedType === undefined}>
-          <ion-label>Reset</ion-label>
+          <ion-label>{i18n.state.core.reset}</ion-label>
         </ion-button>
       </ion-item>
     );
@@ -267,7 +272,10 @@ export class AppDeckHeaderFooter {
   private optionsNotice() {
     return (
       <div class="ion-padding-start ion-padding-end ion-padding-top">
-        Your custom and predefined (Twitter, etc.) options can be edited in your <a onClick={() => this.onNavigateSettings()}>settings</a>.
+        {renderI18n(i18n.state.editor.header_footer_edit, {
+          placeholder: '{0}',
+          value: <a onClick={() => this.onNavigateSettings()}>{i18n.state.nav.settings.toLowerCase()}</a>,
+        })}
       </div>
     );
   }

@@ -16,7 +16,8 @@
     "ready_to_share": "Ready to share?",
     "profile": "Profile",
     "customization": "Customization",
-    "templates": "Templates"
+    "templates": "Templates",
+    "settings": "Settings"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -94,6 +95,8 @@
     "chart": "Chart",
     "text": "Text",
     "header_footer": "Header & Footer",
+    "header_footer_sign_in": "Oh, hi! Users' settings are the options for the header and footer. Therefore, if you wish to give a try to this feature, please {0}.",
+    "header_footer_edit": "Your custom and predefined (Twitter, etc.) options can be edited in your {0}.",
     "background": "Background",
     "code": "Code",
     "transition": "Transition",
@@ -119,7 +122,10 @@
     "gif": "GIF",
     "your_images": "Your images",
     "waves": "Waves",
-    "no_images": "You have not used any images so far."
+    "no_images": "You have not used any images so far.",
+    "typography": "Typography",
+    "default": "Default",
+    "no_options": "No options provided yet."
   },
   "offline": {
     "editing": "You are editing offline.",

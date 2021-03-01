@@ -37,4 +37,8 @@ app-deck-header-footer {
       grid-column-end: 3;
     }
   }
+
+  div > a {
+    text-decoration: underline;
+  }
 }
