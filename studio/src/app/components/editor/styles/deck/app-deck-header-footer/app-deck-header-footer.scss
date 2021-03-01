@@ -38,7 +38,8 @@ app-deck-header-footer {
     }
   }
 
-  div > a {
+  div > a,
+  div ion-label a {
     text-decoration: underline;
   }
 }
