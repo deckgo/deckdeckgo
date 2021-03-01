@@ -5,6 +5,7 @@ import offlineStore from '../../../../stores/offline.store';
 import i18n from '../../../../stores/i18n.store';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
+
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({

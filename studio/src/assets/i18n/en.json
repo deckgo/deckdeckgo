@@ -2,7 +2,9 @@
   "core": {
     "close": "Close",
     "free_open_source": "DeckDeckGo is free and open source 😃.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "yes": "Yes",
+    "no": "No"
   },
   "nav": {
     "menu": "Menu",
@@ -124,5 +126,34 @@
     "hang_on_upload": "Hang on still, we are uploading the content.",
     "error_offline": "Apologies, something went wrong and app was unable to go offline.",
     "error_online": "Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!"
+  },
+  "publish_done": {
+    "hooray": "Hooray",
+    "did_it": "You did it",
+    "applause": "Applause",
+    "thumbs_up": "Thumbs up",
+    "published": "Your presentation has been published.",
+    "share": "{0} it with the world, your colleagues, friends and community.",
+    "source_processing": "The source code of the presentation is processing {0}",
+    "source_submitted": "The source code of the presentation has been submitted to a {0} on GitHub",
+    "repository": "repository"
+  },
+  "publish_edit": {
+    "share": "Share your presentation online",
+    "publish": "Publish your presentation to share it with the world, your colleagues, friends and community.",
+    "modern_app": "DeckDeckGo will distribute it online as a modern app.",
+    "meta": "Meta",
+    "title_edit": "Edit or review your presentation's title, summary and add or change tags (up to 5) to make your presentation more inviting to readers.",
+    "title_max_chars": "The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than 45 characters.",
+    "description": "Description",
+    "tags": "Tags",
+    "social_card": "DeckDeckGo will automatically generate the social card for your presentation based on the first slide of your deck.",
+    "error_previous": "Previous publication attempt failed. You can try again. If the problem persists, please {0} us.",
+    "contact": "contact",
+    "title": "Title",
+    "publish_now": "Publish now",
+    "hang_on_publishing": "Hang on, we are publishing your presentation",
+    "source_push": "Push the source code of the presentation to a new public repository of your GitHub account?",
+    "source_submit": "Submit the source code of the presentation to its GitHub repository?"
   }
 }

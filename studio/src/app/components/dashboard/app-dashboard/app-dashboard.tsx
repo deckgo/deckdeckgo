@@ -471,7 +471,7 @@ export class AppDashboard {
   private renderNotLoggedInText() {
     return (
       <Fragment>
-        <p>{renderI18n(i18n.state.dashboard.try, {placeholder: '{0}', value: <a onClick={() => signIn()}>sign in</a>})}</p>
+        <p>{renderI18n(i18n.state.dashboard.try, {placeholder: '{0}', value: <a onClick={() => signIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>})}</p>
         <p class="ion-no-margin">{i18n.state.core.free_open_source}</p>
       </Fragment>
     );

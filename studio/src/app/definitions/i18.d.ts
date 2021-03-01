@@ -2,6 +2,8 @@ interface I18nCore {
   close: string;
   free_open_source: string;
   loading: string;
+  yes: string;
+  no: string;
 }
 
 interface I18nNav {
@@ -134,6 +136,37 @@ interface I18nOffline {
   error_online: string;
 }
 
+interface I18nPublish_done {
+  hooray: string;
+  did_it: string;
+  applause: string;
+  thumbs_up: string;
+  published: string;
+  share: string;
+  source_processing: string;
+  source_submitted: string;
+  repository: string;
+}
+
+interface I18nPublish_edit {
+  share: string;
+  publish: string;
+  modern_app: string;
+  meta: string;
+  title_edit: string;
+  title_max_chars: string;
+  description: string;
+  tags: string;
+  social_card: string;
+  error_previous: string;
+  contact: string;
+  title: string;
+  publish_now: string;
+  hang_on_publishing: string;
+  source_push: string;
+  source_submit: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -146,4 +179,6 @@ interface I18n {
   dashboard: I18nDashboard;
   editor: I18nEditor;
   offline: I18nOffline;
+  publish_done: I18nPublish_done;
+  publish_edit: I18nPublish_edit;
 }
