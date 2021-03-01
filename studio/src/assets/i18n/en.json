@@ -37,9 +37,6 @@
     "terms_of_use": "Terms of use",
     "privacy_policy": "Privacy Policy"
   },
-  "offline": {
-    "editing": "You are editing offline."
-  },
   "share": {
     "a_presentation": "A presentation",
     "a_presentation_by": "{0} by {1} created with {2}",
@@ -106,5 +103,26 @@
     "markdown": "Markdown",
     "math": "Math",
     "word_cloud": "Word Cloud"
+  },
+  "offline": {
+    "editing": "You are editing offline.",
+    "why": "Low bandwidth? Have to jump in a plane? Or want to present without internet connections?",
+    "turn": "Turn DeckDeckGo {0} to store your presentation locally.",
+    "offline": "offline",
+    "still_edit": "You are still going to be able to {0} your slides further.",
+    "edit": "edit",
+    "offline_now": "Go offline now",
+    "hang_on_gather": "Hang on, we are gathering the content.",
+    "oopsie": "Oopsie, you are not online yet.",
+    "check": "Check your online connection, refresh your browser and try again!",
+    "cool": "Cool, you are back {0}.",
+    "online": "online",
+    "note": "Please note that the upload of this deck will {0} its previous online version.",
+    "replace": "replace",
+    "long_story": "Long story short, your local presentation is going to be uploaded and saved in the database as the good one.",
+    "online_now": "Go online now",
+    "hang_on_upload": "Hang on still, we are uploading the content.",
+    "error_offline": "Apologies, something went wrong and app was unable to go offline.",
+    "error_online": "Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!"
   }
 }

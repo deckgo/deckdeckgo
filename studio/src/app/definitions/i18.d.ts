@@ -40,10 +40,6 @@ interface I18nLinks {
   privacy_policy: string;
 }
 
-interface I18nOffline {
-  editing: string;
-}
-
 interface I18nShare {
   a_presentation: string;
   a_presentation_by: string;
@@ -116,16 +112,38 @@ interface I18nEditor {
   word_cloud: string;
 }
 
+interface I18nOffline {
+  editing: string;
+  why: string;
+  turn: string;
+  offline: string;
+  still_edit: string;
+  edit: string;
+  offline_now: string;
+  hang_on_gather: string;
+  oopsie: string;
+  check: string;
+  cool: string;
+  online: string;
+  note: string;
+  replace: string;
+  long_story: string;
+  online_now: string;
+  hang_on_upload: string;
+  error_offline: string;
+  error_online: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
   nav: I18nNav;
   menu: I18nMenu;
   links: I18nLinks;
-  offline: I18nOffline;
   share: I18nShare;
   sign_in: I18nSign_in;
   settings: I18nSettings;
   dashboard: I18nDashboard;
   editor: I18nEditor;
+  offline: I18nOffline;
 }
