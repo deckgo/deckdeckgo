@@ -143,6 +143,18 @@ interface I18nEditor {
   instant: string;
   desktop: string;
   mobile: string;
+  block: string;
+  rotate: string;
+  deg: string;
+  padding: string;
+  width: string;
+  border_radius: string;
+  all_corners: string;
+  individual_corners: string;
+  top_left: string;
+  top_right: string;
+  bottom_right: string;
+  bottom_left: string;
 }
 
 interface I18nOffline {

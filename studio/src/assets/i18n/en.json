@@ -135,7 +135,19 @@
     "fade": "Fade",
     "instant": "Instant",
     "desktop": "Desktop",
-    "mobile": "Mobile"
+    "mobile": "Mobile",
+    "block": "Block",
+    "rotate": "Rotate",
+    "deg": "deg",
+    "padding": "Padding",
+    "width": "Width",
+    "border_radius": "Border radius",
+    "all_corners": "All corners",
+    "individual_corners": "Individual corners",
+    "top_left": "Top left",
+    "top_right": "Top right",
+    "bottom_right": "Bottom right",
+    "bottom_left": "Bottom left"
   },
   "offline": {
     "editing": "You are editing offline.",

@@ -3,6 +3,7 @@ import {Component, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
@@ -186,7 +187,7 @@ export class AppBlock {
       <app-expansion-panel
         expanded={settingsStore.state.panels.block}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({block: $event.detail})}>
-        <ion-label slot="title">Block</ion-label>
+        <ion-label slot="title">{i18n.state.editor.block}</ion-label>
         <ion-list>
           {this.renderWidth()}
           {this.renderPadding()}
@@ -200,7 +201,15 @@ export class AppBlock {
     return (
       <Fragment>
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Rotate {settingsStore.state.editMode === 'properties' ? <small>{this.rotate}deg</small> : undefined}</ion-label>
+          <ion-label>
+            {i18n.state.editor.rotate}{' '}
+            {settingsStore.state.editMode === 'properties' ? (
+              <small>
+                {this.rotate}
+                {i18n.state.editor.deg}
+              </small>
+            ) : undefined}
+          </ion-label>
         </ion-item-divider>
 
         <ion-item class="item-range properties">
@@ -216,7 +225,7 @@ export class AppBlock {
         <ion-item class="with-padding css">
           <ion-input
             value={this.transformCSS}
-            placeholder="transform"
+            placeholder={i18n.state.editor.transform}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleTransformInput(e)}
             onIonChange={() => this.updateTransformCSS()}></ion-input>
@@ -229,7 +238,9 @@ export class AppBlock {
     return (
       <Fragment>
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Padding {settingsStore.state.editMode === 'properties' ? <small>{this.padding}px</small> : undefined}</ion-label>
+          <ion-label>
+            {i18n.state.editor.padding} {settingsStore.state.editMode === 'properties' ? <small>{this.padding}px</small> : undefined}
+          </ion-label>
         </ion-item-divider>
 
         <ion-item class="item-range properties">
@@ -243,7 +254,7 @@ export class AppBlock {
         <ion-item class="with-padding css">
           <ion-input
             value={this.paddingCSS}
-            placeholder="padding"
+            placeholder={i18n.state.editor.padding}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handlePaddingInput(e)}
             onIonChange={() => this.updatePaddingCSS()}></ion-input>
@@ -256,7 +267,9 @@ export class AppBlock {
     return (
       <Fragment>
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Width {settingsStore.state.editMode === 'properties' ? <small>{this.width}%</small> : undefined}</ion-label>
+          <ion-label>
+            {i18n.state.editor.width} {settingsStore.state.editMode === 'properties' ? <small>{this.width}%</small> : undefined}
+          </ion-label>
         </ion-item-divider>
         <ion-item class="item-range properties">
           <ion-range
@@ -271,7 +284,7 @@ export class AppBlock {
         <ion-item class="with-padding css">
           <ion-input
             value={this.widthCSS}
-            placeholder="width"
+            placeholder={i18n.state.editor.width}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleWidthInput(e)}
             onIonChange={() => this.updateWidthCSS()}></ion-input>
