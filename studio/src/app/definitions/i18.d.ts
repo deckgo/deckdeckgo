@@ -133,6 +133,16 @@ interface I18nEditor {
   typography: string;
   default: string;
   no_options: string;
+  auto_slide: string;
+  direction: string;
+  horizontal: string;
+  vertical: string;
+  animation: string;
+  swipe: string;
+  fade: string;
+  instant: string;
+  desktop: string;
+  mobile: string;
 }
 
 interface I18nOffline {

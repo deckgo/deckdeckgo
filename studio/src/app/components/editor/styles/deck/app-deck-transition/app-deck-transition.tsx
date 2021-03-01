@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Prop, h, State} from '@stencil/core';
 
 import deckStore from '../../../../../stores/deck.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {DeckAction} from '../../../../../types/editor/deck-action';
 
@@ -200,18 +201,18 @@ export class AppDeckTransition {
   private renderAutoSlide() {
     return (
       <app-expansion-panel expanded="close">
-        <ion-label slot="title">Auto Slide</ion-label>
+        <ion-label slot="title">{i18n.state.editor.auto_slide}</ion-label>
 
         <ion-list class="inputs-list">
           <ion-radio-group value={this.autoSlide} onIonChange={($event) => this.onAutoSlideChange($event)} class="inline ion-margin-start">
             <ion-item>
               <ion-radio value={true} mode="md"></ion-radio>
-              <ion-label>Yes</ion-label>
+              <ion-label>{i18n.state.core.yes}</ion-label>
             </ion-item>
 
             <ion-item>
               <ion-radio value={false} mode="md"></ion-radio>
-              <ion-label>No</ion-label>
+              <ion-label>{i18n.state.core.no}</ion-label>
             </ion-item>
           </ion-radio-group>
         </ion-list>
@@ -222,17 +223,29 @@ export class AppDeckTransition {
   private renderDirection() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Direction</ion-label>
+        <ion-label slot="title">{i18n.state.editor.direction}</ion-label>
 
         {this.renderDirectionDevice()}
 
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem('direction', 'horizontal', 'horizontal', this.selectedAnimation, 'Horizontal', this.selectedDirection === 'horizontal', () =>
-            this.applyDirection('horizontal')
+          {this.renderDeckItem(
+            'direction',
+            'horizontal',
+            'horizontal',
+            this.selectedAnimation,
+            i18n.state.editor.horizontal,
+            this.selectedDirection === 'horizontal',
+            () => this.applyDirection('horizontal')
           )}
 
-          {this.renderDeckItem('direction', 'vertical', 'vertical', this.selectedAnimation, 'Vertical', this.selectedDirection === 'vertical', () =>
-            this.applyDirection('vertical')
+          {this.renderDeckItem(
+            'direction',
+            'vertical',
+            'vertical',
+            this.selectedAnimation,
+            i18n.state.editor.vertical,
+            this.selectedDirection === 'vertical',
+            () => this.applyDirection('vertical')
           )}
 
           {this.renderShowcasePapyrus('Papyrus', this.selectedDirection === 'papyrus', () => this.applyDirection('papyrus'))}
@@ -246,10 +259,10 @@ export class AppDeckTransition {
       <div class="device">
         <ion-segment mode="ios" value={this.device} onIonChange={($event: CustomEvent) => this.selectDevice($event)}>
           <ion-segment-button value="desktop" mode="ios">
-            <ion-label>Desktop</ion-label>
+            <ion-label>{i18n.state.editor.desktop}</ion-label>
           </ion-segment-button>
           <ion-segment-button value="mobile" mode="ios">
-            <ion-label>Mobile</ion-label>
+            <ion-label>{i18n.state.editor.mobile}</ion-label>
           </ion-segment-button>
         </ion-segment>
       </div>
@@ -259,15 +272,17 @@ export class AppDeckTransition {
   private renderAnimation() {
     return (
       <app-expansion-panel expanded="close">
-        <ion-label slot="title">Animation</ion-label>
+        <ion-label slot="title">{i18n.state.editor.animation}</ion-label>
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'slide', 'Swipe', this.selectedAnimation === 'slide', () =>
+          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'slide', i18n.state.editor.swipe, this.selectedAnimation === 'slide', () =>
             this.applyAnimation('slide')
           )}
 
-          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'fade', 'Fade', this.selectedAnimation === 'fade', () => this.applyAnimation('fade'))}
+          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'fade', i18n.state.editor.fade, this.selectedAnimation === 'fade', () =>
+            this.applyAnimation('fade')
+          )}
 
-          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'none', 'Instant', this.selectedAnimation === 'none', () =>
+          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'none', i18n.state.editor.instant, this.selectedAnimation === 'none', () =>
             this.applyAnimation('none')
           )}
         </div>

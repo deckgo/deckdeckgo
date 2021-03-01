@@ -125,7 +125,17 @@
     "no_images": "You have not used any images so far.",
     "typography": "Typography",
     "default": "Default",
-    "no_options": "No options provided yet."
+    "no_options": "No options provided yet.",
+    "auto_slide": "Auto slide",
+    "direction": "Direction",
+    "horizontal": "Horizontal",
+    "vertical": "Vertical",
+    "animation": "Animation",
+    "swipe": "Swipe",
+    "fade": "Fade",
+    "instant": "Instant",
+    "desktop": "Desktop",
+    "mobile": "Mobile"
   },
   "offline": {
     "editing": "You are editing offline.",
