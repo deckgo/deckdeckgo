@@ -7,6 +7,7 @@ import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
 import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import colorStore from '../../../../stores/color.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 import settingsStore from '../../../../stores/settings.store';
@@ -232,7 +233,7 @@ export class AppColor {
           <ion-item class="with-padding ion-margin-bottom">
             <ion-input
               value={this.colorCSS}
-              placeholder="Color code"
+              placeholder={i18n.state.editor.color}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
               onIonChange={async () => await this.updateColorCSS()}></ion-input>
@@ -249,9 +250,14 @@ export class AppColor {
 
     return (
       <div class="color-picker item-input">
-        <input type="color" slot="start" arial-label="Color picker" value={colorValue} onChange={($event) => this.onColorPickerChange($event)}></input>
+        <input
+          type="color"
+          slot="start"
+          arial-label={i18n.state.editor.color_picker}
+          value={colorValue}
+          onChange={($event) => this.onColorPickerChange($event)}></input>
         {this.renderColorInput()}
-        <button slot="end" class="reset" arial-label="Reset" onClick={($event: UIEvent) => this.emitReset($event)}>
+        <button slot="end" class="reset" arial-label={i18n.state.core.reset} onClick={($event: UIEvent) => this.emitReset($event)}>
           <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
         </button>
 
@@ -272,7 +278,7 @@ export class AppColor {
           value={this.color?.hex}
           name="color"
           placeholder="#000000"
-          arial-label="Color"></ion-input>
+          arial-label={i18n.state.editor.color}></ion-input>
       );
     } else {
       return (
@@ -287,7 +293,7 @@ export class AppColor {
             max={'255'}
             name="r"
             placeholder="R"
-            arial-label="Rgb - Red"></ion-input>
+            arial-label={i18n.state.editor.rgb_red}></ion-input>
           <ion-input
             input-mode="tel"
             value={this.color?.rgb?.g}
@@ -298,7 +304,7 @@ export class AppColor {
             max={'255'}
             name="g"
             placeholder="G"
-            arial-label="Rgb - Green"></ion-input>
+            arial-label={i18n.state.editor.rgb_green}></ion-input>
           <ion-input
             input-mode="tel"
             value={this.color?.rgb?.b}
@@ -309,7 +315,7 @@ export class AppColor {
             max={'255'}
             name="b"
             placeholder="B"
-            arial-label="Rgb - Blue"></ion-input>
+            arial-label={i18n.state.editor.rgb_blue}></ion-input>
         </div>
       );
     }

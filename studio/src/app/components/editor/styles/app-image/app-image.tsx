@@ -2,13 +2,14 @@ import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/
 
 import {alertController} from '@ionic/core';
 
+import settingsStore from '../../../../stores/settings.store';
+import i18n from '../../../../stores/i18n.store';
+
 import {EditAction} from '../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../types/editor/image-action';
 import {Expanded} from '../../../../types/core/settings';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-
-import settingsStore from '../../../../stores/settings.store';
 
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
 
@@ -99,8 +100,8 @@ export class AppImage {
 
   private async presentHistoryInfo() {
     const alert: HTMLIonAlertElement = await alertController.create({
-      message: 'The editor keeps track of the last 10 images you would have use in any of your presentations.<br/><br/>Select one to add it again quickly.',
-      buttons: ['Ok'],
+      message: i18n.state.editor.history_details,
+      buttons: [i18n.state.core.ok],
     });
 
     return await alert.present();
@@ -111,7 +112,7 @@ export class AppImage {
       <app-expansion-panel
         expanded={settingsStore.state.panels.image}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({image: $event.detail})}>
-        <ion-label slot="title">Images, GIF or Waves</ion-label>
+        <ion-label slot="title">{i18n.state.editor.images}</ion-label>
 
         <div class="image-actions ion-margin">
           {this.renderStockPhotos()}
@@ -123,7 +124,7 @@ export class AppImage {
 
         <ion-list>
           <ion-item-divider class="ion-padding-top ion-margin-top">
-            <ion-label>History</ion-label>
+            <ion-label>{i18n.state.editor.history}</ion-label>
             <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
               <ion-icon name="help"></ion-icon>
             </button>
@@ -143,7 +144,7 @@ export class AppImage {
 
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
-        <ion-label>Stock photo</ion-label>
+        <ion-label>{i18n.state.editor.stock_photo}</ion-label>
       </ion-button>
     );
   }
@@ -156,7 +157,7 @@ export class AppImage {
 
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
-        <ion-label>GIF</ion-label>
+        <ion-label>{i18n.state.editor.gif}</ion-label>
       </ion-button>
     );
   }
@@ -164,7 +165,7 @@ export class AppImage {
   private renderCustom() {
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
-        <ion-label>Your images</ion-label>
+        <ion-label>{i18n.state.editor.your_images}</ion-label>
       </ion-button>
     );
   }
@@ -177,7 +178,7 @@ export class AppImage {
 
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
-        <ion-label>Waves</ion-label>
+        <ion-label>{i18n.state.editor.waves}</ion-label>
       </ion-button>
     );
   }
@@ -188,7 +189,7 @@ export class AppImage {
     } else {
       return (
         <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
-          <ion-label>Reset image</ion-label>
+          <ion-label>{i18n.state.core.reset}</ion-label>
         </ion-button>
       );
     }
@@ -199,7 +200,7 @@ export class AppImage {
       return (
         <ion-item class="history-empty">
           <ion-label class="ion-text-wrap">
-            <small>You have not used any images so far.</small>
+            <small>{i18n.state.editor.no_images}</small>
           </ion-label>
         </ion-item>
       );

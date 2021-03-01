@@ -4,6 +4,8 @@ interface I18nCore {
   loading: string;
   yes: string;
   no: string;
+  reset: string;
+  ok: string;
 }
 
 interface I18nNav {
@@ -112,6 +114,19 @@ interface I18nEditor {
   markdown: string;
   math: string;
   word_cloud: string;
+  color: string;
+  color_picker: string;
+  rgb_red: string;
+  rgb_green: string;
+  rgb_blue: string;
+  images: string;
+  history: string;
+  history_details: string;
+  stock_photo: string;
+  gif: string;
+  your_images: string;
+  waves: string;
+  no_images: string;
 }
 
 interface I18nOffline {
@@ -167,6 +182,11 @@ interface I18nPublish_edit {
   source_submit: string;
 }
 
+interface I18nWarning {
+  low_contrast: string;
+  overflow: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -181,4 +201,5 @@ interface I18n {
   offline: I18nOffline;
   publish_done: I18nPublish_done;
   publish_edit: I18nPublish_edit;
+  warning: I18nWarning;
 }

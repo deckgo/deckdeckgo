@@ -4,7 +4,9 @@
     "free_open_source": "DeckDeckGo is free and open source 😃.",
     "loading": "Loading...",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "reset": "Reset",
+    "ok": "Ok"
   },
   "nav": {
     "menu": "Menu",
@@ -104,7 +106,20 @@
     "list": "List",
     "markdown": "Markdown",
     "math": "Math",
-    "word_cloud": "Word Cloud"
+    "word_cloud": "Word Cloud",
+    "color": "Color",
+    "color_picker": "Color picker",
+    "rgb_red": "Rgb - Red",
+    "rgb_green": "Rgb - Green",
+    "rgb_blue": "Rgb - Blue",
+    "images": "Images, GIF or Waves",
+    "history": "History",
+    "history_details": "The editor keeps track of the last 10 images you would have use in any of your presentations. Select one to add it again quickly.",
+    "stock_photo": "Stock photo",
+    "gif": "GIF",
+    "your_images": "Your images",
+    "waves": "Waves",
+    "no_images": "You have not used any images so far."
   },
   "offline": {
     "editing": "You are editing offline.",
@@ -155,5 +170,9 @@
     "hang_on_publishing": "Hang on, we are publishing your presentation",
     "source_push": "Push the source code of the presentation to a new public repository of your GitHub account?",
     "source_submit": "Submit the source code of the presentation to its GitHub repository?"
+  },
+  "warning": {
+    "low_contrast": "Low contrast",
+    "overflow": "Overflow"
   }
 }
