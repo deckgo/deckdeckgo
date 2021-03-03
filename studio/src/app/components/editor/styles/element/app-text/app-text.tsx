@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
@@ -174,7 +175,7 @@ export class AppText {
       <app-expansion-panel
         expanded={settingsStore.state.panels.text}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({text: $event.detail})}>
-        <ion-label slot="title">Text</ion-label>
+        <ion-label slot="title">{i18n.state.editor.text}</ion-label>
         <ion-list>
           {this.renderLetterSpacing()}
           {this.renderAlign()}
@@ -187,32 +188,32 @@ export class AppText {
     return (
       <Fragment>
         <ion-item-divider>
-          <ion-label>Letter spacing</ion-label>
+          <ion-label>{i18n.state.editor.letter_spacing}</ion-label>
         </ion-item-divider>
 
         <ion-item class="select properties">
-          <ion-label>Letter spacing</ion-label>
+          <ion-label>{i18n.state.editor.letter_spacing}</ion-label>
           <ion-select
             value={this.letterSpacing}
-            placeholder="Select letter spacing option"
+            placeholder={i18n.state.editor.letter_spacing}
             onIonChange={($event: CustomEvent) => this.updateLetterSpacing($event)}
             interface="popover"
             mode="md"
             class="ion-padding-start ion-padding-end">
-            <ion-select-option value={LetterSpacing.TIGHTER}>Tighter</ion-select-option>
-            <ion-select-option value={LetterSpacing.TIGHT}>Tight</ion-select-option>
-            <ion-select-option value={LetterSpacing.NORMAL}>Normal</ion-select-option>
-            <ion-select-option value={LetterSpacing.WIDE}>Wide</ion-select-option>
-            <ion-select-option value={LetterSpacing.WIDER}>Wider</ion-select-option>
-            <ion-select-option value={LetterSpacing.SUPERWIDE}>Superwide</ion-select-option>
-            <ion-select-option value={LetterSpacing.WIDEST}>Widest</ion-select-option>
+            <ion-select-option value={LetterSpacing.TIGHTER}>{i18n.state.editor.tighter}</ion-select-option>
+            <ion-select-option value={LetterSpacing.TIGHT}>{i18n.state.editor.tight}</ion-select-option>
+            <ion-select-option value={LetterSpacing.NORMAL}>{i18n.state.editor.normal}</ion-select-option>
+            <ion-select-option value={LetterSpacing.WIDE}>{i18n.state.editor.wide}</ion-select-option>
+            <ion-select-option value={LetterSpacing.WIDER}>{i18n.state.editor.wider}</ion-select-option>
+            <ion-select-option value={LetterSpacing.SUPERWIDE}>{i18n.state.editor.superwide}</ion-select-option>
+            <ion-select-option value={LetterSpacing.WIDEST}>{i18n.state.editor.widest}</ion-select-option>
           </ion-select>
         </ion-item>
 
         <ion-item class="with-padding css">
           <ion-input
             value={this.letterSpacingCSS}
-            placeholder="letter-spacing"
+            placeholder={i18n.state.editor.letter_spacing}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleLetterSpacingInput(e)}
             onIonChange={async () => await this.updateLetterSpacingCSS()}></ion-input>
@@ -229,29 +230,29 @@ export class AppText {
     return (
       <Fragment>
         <ion-item-divider>
-          <ion-label>Alignment</ion-label>
+          <ion-label>{i18n.state.editor.alignment}</ion-label>
         </ion-item-divider>
 
         <ion-item class="select properties">
-          <ion-label>Alignment</ion-label>
+          <ion-label>{i18n.state.editor.alignment}</ion-label>
 
           <ion-select
             value={this.align}
-            placeholder="Select an alignment"
+            placeholder={i18n.state.editor.alignment}
             onIonChange={($event: CustomEvent) => this.updateAlign($event)}
             interface="popover"
             mode="md"
             class="ion-padding-start ion-padding-end">
-            <ion-select-option value={TextAlign.LEFT}>Left</ion-select-option>
-            <ion-select-option value={TextAlign.CENTER}>Center</ion-select-option>
-            <ion-select-option value={TextAlign.RIGHT}>Right</ion-select-option>
+            <ion-select-option value={TextAlign.LEFT}>{i18n.state.editor.left}</ion-select-option>
+            <ion-select-option value={TextAlign.CENTER}>{i18n.state.editor.center}</ion-select-option>
+            <ion-select-option value={TextAlign.RIGHT}>{i18n.state.editor.right}</ion-select-option>
           </ion-select>
         </ion-item>
 
         <ion-item class="with-padding css">
           <ion-input
             value={this.alignCSS}
-            placeholder="text-align"
+            placeholder={i18n.state.editor.text_align}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAlignInput(e)}
             onIonChange={() => this.updateAlignCSS()}></ion-input>

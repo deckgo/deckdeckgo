@@ -1,5 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
 @Component({
@@ -28,7 +30,7 @@ export class AppReveal {
     return (
       <ion-list class="article">
         <ion-item>
-          <ion-label>Animate transition</ion-label>
+          <ion-label>{i18n.state.editor.animate_transition}</ion-label>
           <ion-checkbox slot="end" color="dark" checked={this.reveal} onIonChange={() => this.toggle()}></ion-checkbox>
         </ion-item>
       </ion-list>

@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {ListStyle} from '../../../../../types/editor/list-style';
@@ -127,31 +128,31 @@ export class AppList {
       <app-expansion-panel
         expanded={settingsStore.state.panels.list}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({list: $event.detail})}>
-        <ion-label slot="title">List</ion-label>
+        <ion-label slot="title">{i18n.state.editor.list}</ion-label>
 
         <ion-list>
           <ion-item class="select">
-            <ion-label>List</ion-label>
+            <ion-label>{i18n.state.editor.list}</ion-label>
 
             <ion-select
               value={this.listType}
-              placeholder="Select a type of list"
+              placeholder={i18n.state.editor.list}
               onIonChange={($event: CustomEvent) => this.setListType($event)}
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={SlotType.OL}>Ordered</ion-select-option>
-              <ion-select-option value={SlotType.UL}>Unordered</ion-select-option>
+              <ion-select-option value={SlotType.OL}>{i18n.state.editor.ordered}</ion-select-option>
+              <ion-select-option value={SlotType.UL}>{i18n.state.editor.unordered}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>
 
         <ion-list>
           <ion-item class="select properties">
-            <ion-label>List Style</ion-label>
+            <ion-label>{i18n.state.editor.list_style}</ion-label>
             <ion-select
               value={this.selectedStyle}
-              placeholder="Select style"
+              placeholder={i18n.state.editor.list_style}
               onIonChange={($event: CustomEvent) => this.setListStyle($event)}
               interface="popover"
               mode="md"
@@ -175,20 +176,20 @@ export class AppList {
 
   private renderOrderedStyles() {
     return [
-      <ion-select-option value={ListStyle.DECIMAL}>Decimal</ion-select-option>,
-      <ion-select-option value={ListStyle.DECIMAL_LEADING}>Decimal with Zero</ion-select-option>,
-      <ion-select-option value={ListStyle.LATIN_LOWER}>Latin Lowercase</ion-select-option>,
-      <ion-select-option value={ListStyle.LATIN_UPPER}>Latin Uppercase</ion-select-option>,
-      <ion-select-option value={ListStyle.ROMAN_LOWER}>Roman Lowercase</ion-select-option>,
-      <ion-select-option value={ListStyle.ROMAN_UPPER}>Roman Uppercase</ion-select-option>,
+      <ion-select-option value={ListStyle.DECIMAL}>{i18n.state.editor.decimal}</ion-select-option>,
+      <ion-select-option value={ListStyle.DECIMAL_LEADING}>{i18n.state.editor.decimal_with_zero}</ion-select-option>,
+      <ion-select-option value={ListStyle.LATIN_LOWER}>{i18n.state.editor.latin_lowercase}</ion-select-option>,
+      <ion-select-option value={ListStyle.LATIN_UPPER}>{i18n.state.editor.latin_uppercase}</ion-select-option>,
+      <ion-select-option value={ListStyle.ROMAN_LOWER}>{i18n.state.editor.roman_lowercase}</ion-select-option>,
+      <ion-select-option value={ListStyle.ROMAN_UPPER}>{i18n.state.editor.roman_uppercase}</ion-select-option>,
     ];
   }
 
   private renderUnorderedStyles() {
     return [
-      <ion-select-option value={ListStyle.BULLET}>Bullet</ion-select-option>,
-      <ion-select-option value={ListStyle.CIRCLE}>Circle</ion-select-option>,
-      <ion-select-option value={ListStyle.SQUARE}>Square</ion-select-option>,
+      <ion-select-option value={ListStyle.BULLET}>{i18n.state.editor.bullet}</ion-select-option>,
+      <ion-select-option value={ListStyle.CIRCLE}>{i18n.state.editor.circle}</ion-select-option>,
+      <ion-select-option value={ListStyle.SQUARE}>{i18n.state.editor.square}</ion-select-option>,
     ];
   }
 }

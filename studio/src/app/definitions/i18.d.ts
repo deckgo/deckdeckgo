@@ -114,6 +114,16 @@ interface I18nEditor {
   paragraph: string;
   skip: string;
   list: string;
+  list_style: string;
+  decimal: string;
+  decimal_with_zero: string;
+  latin_lowercase: string;
+  latin_uppercase: string;
+  roman_lowercase: string;
+  roman_uppercase: string;
+  bullet: string;
+  circle: string;
+  square: string;
   markdown: string;
   math: string;
   word_cloud: string;
@@ -182,6 +192,33 @@ interface I18nEditor {
   select_theme: string;
   display_toolbar: string;
   highlight_lines: string;
+  size: string;
+  select_font_size: string;
+  very_small: string;
+  small: string;
+  normal: string;
+  big: string;
+  very_big: string;
+  medium: string;
+  large: string;
+  original: string;
+  alignment: string;
+  start: string;
+  center: string;
+  left: string;
+  right: string;
+  end: string;
+  animate_transition: string;
+  ordered: string;
+  unordered: string;
+  letter_spacing: string;
+  tighter: string;
+  tight: string;
+  wide: string;
+  wider: string;
+  superwide: string;
+  widest: string;
+  text_align: string;
 }
 
 interface I18nOffline {
