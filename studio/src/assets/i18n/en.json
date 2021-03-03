@@ -273,5 +273,38 @@
   "warning": {
     "low_contrast": "Low contrast",
     "overflow": "Overflow"
+  },
+  "templates": {
+    "no_personal_templates": "You do not have any personal templates yet. Follow this {0} to get started.",
+    "no_personal_templates_guide": "guide",
+    "set_of_default": "DeckDeckGo provides a set of default and community templates for your slides but, you can also use your own.",
+    "sign_in_to_add": "{0} to add yours.",
+    "pie": "Pie",
+    "donut": "Donut",
+    "pie_comparison": "Pie comparison",
+    "area": "Area",
+    "sharp_area": "Sharp area",
+    "lines": "Lines",
+    "line_graph_comparison": "Line graph comparison",
+    "bar": "Bar",
+    "grouped_bars": "Grouped bars",
+    "bar_comparison": "Bar comparison",
+    "poll": "Engage Your Audience / Poll",
+    "do_not_know": "Don't know",
+    "live_votes": "Live Votes With Mobile Devices",
+    "charts": "Charts",
+    "diagrams": "Diagrams",
+    "playground": "Playground",
+    "author": "Author",
+    "qr_code": "QR Code Deep Linking",
+    "showcase": "Showcase Your Apps"
+  },
+  "shapes": {
+    "robot": "Robot",
+    "desktop": "Desktop",
+    "arrow": "Arrow",
+    "cloud": "Cloud",
+    "database": "Database",
+    "envelope": "Envelope"
   }
 }

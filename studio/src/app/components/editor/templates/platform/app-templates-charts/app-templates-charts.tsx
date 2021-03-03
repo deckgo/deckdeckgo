@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
 
 import assetsStore from '../../../../../stores/assets.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../../../models/data/slide';
 
@@ -75,7 +76,7 @@ export class AppTemplatesCharts {
           height={68}
           src={assetsStore.state.chart.pieSrc}
           custom-loader={true}>
-          <p slot="title">Pie</p>
+          <p slot="title">{i18n.state.templates.pie}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -96,7 +97,7 @@ export class AppTemplatesCharts {
           inner-radius={16}
           src={assetsStore.state.chart.pieSrc}
           custom-loader={true}>
-          <p slot="title">Donut</p>
+          <p slot="title">{i18n.state.templates.donut}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -117,7 +118,7 @@ export class AppTemplatesCharts {
           height={68}
           src={assetsStore.state.chart.barCompareSrc}
           custom-loader={true}>
-          <p slot="title">Pie comparison</p>
+          <p slot="title">{i18n.state.templates.pie_comparison}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -136,7 +137,7 @@ export class AppTemplatesCharts {
           date-pattern="dd.MM.yyyy"
           src={assetsStore.state.chart.lineCompareSrc}
           custom-loader={true}>
-          <p slot="title">Area</p>
+          <p slot="title">{i18n.state.templates.area}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -159,7 +160,7 @@ export class AppTemplatesCharts {
           smooth={'false'}
           src={assetsStore.state.chart.lineSrc}
           custom-loader={true}>
-          <p slot="title">Sharp area</p>
+          <p slot="title">{i18n.state.templates.sharp_area}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -180,7 +181,7 @@ export class AppTemplatesCharts {
           area={'false'}
           src={assetsStore.state.chart.lineNoDatesSrc}
           custom-loader={true}>
-          <p slot="title">Lines</p>
+          <p slot="title">{i18n.state.templates.lines}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -203,7 +204,7 @@ export class AppTemplatesCharts {
           animation={true}
           src={assetsStore.state.chart.lineMultipleSrc}
           custom-loader={true}>
-          <p slot="title">Line graph comparison</p>
+          <p slot="title">{i18n.state.templates.line_graph_comparison}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -220,7 +221,7 @@ export class AppTemplatesCharts {
           height={68}
           src={assetsStore.state.chart.pieSrc}
           custom-loader={true}>
-          <p slot="title">Bar</p>
+          <p slot="title">{i18n.state.templates.bar}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -242,7 +243,7 @@ export class AppTemplatesCharts {
             '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
           }}
           custom-loader={true}>
-          <p slot="title">Grouped bars</p>
+          <p slot="title">{i18n.state.templates.grouped_bars}</p>
         </deckgo-slide-chart>
       </div>,
 
@@ -268,7 +269,7 @@ export class AppTemplatesCharts {
             '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
           }}
           custom-loader={true}>
-          <p slot="title">Bar comparison</p>
+          <p slot="title">{i18n.state.templates.bar_comparison}</p>
         </deckgo-slide-chart>
       </div>,
     ];

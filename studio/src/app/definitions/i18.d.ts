@@ -286,6 +286,41 @@ interface I18nWarning {
   overflow: string;
 }
 
+interface I18nTemplates {
+  no_personal_templates: string;
+  no_personal_templates_guide: string;
+  set_of_default: string;
+  sign_in_to_add: string;
+  pie: string;
+  donut: string;
+  pie_comparison: string;
+  area: string;
+  sharp_area: string;
+  lines: string;
+  line_graph_comparison: string;
+  bar: string;
+  grouped_bars: string;
+  bar_comparison: string;
+  poll: string;
+  do_not_know: string;
+  live_votes: string;
+  charts: string;
+  diagrams: string;
+  playground: string;
+  author: string;
+  qr_code: string;
+  showcase: string;
+}
+
+interface I18nShapes {
+  robot: string;
+  desktop: string;
+  arrow: string;
+  cloud: string;
+  database: string;
+  envelope: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -301,4 +336,6 @@ interface I18n {
   publish_done: I18nPublish_done;
   publish_edit: I18nPublish_edit;
   warning: I18nWarning;
+  templates: I18nTemplates;
+  shapes: I18nShapes;
 }
