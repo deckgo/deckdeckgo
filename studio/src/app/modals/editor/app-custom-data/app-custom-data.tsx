@@ -236,7 +236,7 @@ export class AppCustomData {
         </ion-button>
       );
     } else {
-      return [<ion-spinner color="tertiary"></ion-spinner>, <ion-label class="ion-padding-start">Upload in progress</ion-label>];
+      return [<ion-spinner color="tertiary"></ion-spinner>, <ion-label class="ion-padding-start">{i18n.state.core.in_progress}</ion-label>];
     }
   }
 }

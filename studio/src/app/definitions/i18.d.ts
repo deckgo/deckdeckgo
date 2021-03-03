@@ -2,6 +2,7 @@ interface I18nCore {
   close: string;
   free_open_source: string;
   loading: string;
+  in_progress: string;
   yes: string;
   no: string;
   reset: string;
