@@ -2,12 +2,13 @@ resource "aws_db_instance" "default" {
   allocated_storage   = 20
   storage_type        = "gp2"
   engine              = "postgres"
-  engine_version      = "9.6"
+  engine_version      = "12.5"
   instance_class      = "db.t2.small"
   name                = "deckdeckgo"
   username            = "deckdeckgo"
   password            = data.external.postgres-password.result.postgres-password
   skip_final_snapshot = true
+  allow_major_version_upgrade = true
 }
 
 # TODO: terraform-provider-secret
