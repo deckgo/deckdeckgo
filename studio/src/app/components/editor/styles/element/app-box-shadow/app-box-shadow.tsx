@@ -3,6 +3,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
@@ -221,7 +222,7 @@ export class AppBoxShadow {
       <app-expansion-panel
         expanded={settingsStore.state.panels.boxShadow}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({boxShadow: $event.detail})}>
-        <ion-label slot="title">Box shadow</ion-label>
+        <ion-label slot="title">{i18n.state.editor.box_shadow}</ion-label>
 
         <app-color
           class="ion-margin-top properties"
@@ -232,7 +233,7 @@ export class AppBoxShadow {
         <ion-list class="properties">
           <ion-item-divider class="ion-padding-top">
             <ion-label>
-              Horizontal length <small>{this.boxShadowProperties.get('hLength')}px</small>
+              {i18n.state.editor.horizontal_length} <small>{this.boxShadowProperties.get('hLength')}px</small>
             </ion-label>
           </ion-item-divider>
           <ion-item class="item-range">
@@ -247,7 +248,7 @@ export class AppBoxShadow {
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
-              Vertical length <small>{this.boxShadowProperties.get('vLength')}px</small>
+              {i18n.state.editor.vertical_length} <small>{this.boxShadowProperties.get('vLength')}px</small>
             </ion-label>
           </ion-item-divider>
           <ion-item class="item-range">
@@ -262,7 +263,7 @@ export class AppBoxShadow {
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
-              Blur radius <small>{this.boxShadowProperties.get('blurRadius')}px</small>
+              {i18n.state.editor.blur_radius} <small>{this.boxShadowProperties.get('blurRadius')}px</small>
             </ion-label>
           </ion-item-divider>
           <ion-item class="item-range">
@@ -277,7 +278,7 @@ export class AppBoxShadow {
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
-              Spread radius <small>{this.boxShadowProperties.get('spreadRadius')}px</small>
+              {i18n.state.editor.spread_radius} <small>{this.boxShadowProperties.get('spreadRadius')}px</small>
             </ion-label>
           </ion-item-divider>
           <ion-item class="item-range">

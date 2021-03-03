@@ -2,6 +2,8 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {alertController} from '@ionic/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
@@ -268,27 +270,27 @@ export class AppColorCode {
   private renderCategoryColor() {
     return (
       <app-expansion-panel expanded={'close'}>
-        <ion-label slot="title">More colors</ion-label>
+        <ion-label slot="title">{i18n.state.editor.more_colors}</ion-label>
         <ion-list>
           <ion-item class="select">
-            <ion-label>Apply a color to</ion-label>
+            <ion-label>{i18n.state.editor.apply_a_color_to}</ion-label>
 
             <ion-select
               value={this.codeColorType}
-              placeholder="Select a category"
+              placeholder={i18n.state.editor.select_category}
               onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={CodeColorType.COMMENTS}>Comments</ion-select-option>
-              <ion-select-option value={CodeColorType.FUNCTION}>Functions</ion-select-option>
-              <ion-select-option value={CodeColorType.KEYWORD}>Keywords</ion-select-option>
-              <ion-select-option value={CodeColorType.OPERATOR}>Operators</ion-select-option>
-              <ion-select-option value={CodeColorType.PUNCTUATION}>Punctuation</ion-select-option>
-              <ion-select-option value={CodeColorType.PROPERTY}>Properties</ion-select-option>
-              <ion-select-option value={CodeColorType.REGEX}>Regex</ion-select-option>
-              <ion-select-option value={CodeColorType.SELECTOR}>Selector</ion-select-option>
-              <ion-select-option value={CodeColorType.LINE_NUMBERS}>Line numbers</ion-select-option>
+              <ion-select-option value={CodeColorType.COMMENTS}>{i18n.state.editor.comments}</ion-select-option>
+              <ion-select-option value={CodeColorType.FUNCTION}>{i18n.state.editor.functions}</ion-select-option>
+              <ion-select-option value={CodeColorType.KEYWORD}>{i18n.state.editor.keywords}</ion-select-option>
+              <ion-select-option value={CodeColorType.OPERATOR}>{i18n.state.editor.operators}</ion-select-option>
+              <ion-select-option value={CodeColorType.PUNCTUATION}>{i18n.state.editor.punctuation}</ion-select-option>
+              <ion-select-option value={CodeColorType.PROPERTY}>{i18n.state.editor.properties}</ion-select-option>
+              <ion-select-option value={CodeColorType.REGEX}>{i18n.state.editor.regex}</ion-select-option>
+              <ion-select-option value={CodeColorType.SELECTOR}>{i18n.state.editor.selector}</ion-select-option>
+              <ion-select-option value={CodeColorType.LINE_NUMBERS}>{i18n.state.editor.line_numbers}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>
@@ -306,15 +308,15 @@ export class AppColorCode {
   private renderTerminal() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Terminal</ion-label>
+        <ion-label slot="title">{i18n.state.editor.terminal}</ion-label>
 
         <ion-list class="terminal">
           <ion-item class="select">
-            <ion-label>Terminal</ion-label>
+            <ion-label>{i18n.state.editor.terminal}</ion-label>
 
             <ion-select
               value={this.terminal}
-              placeholder="Select a terminal"
+              placeholder={i18n.state.editor.select_terminal}
               onIonChange={($event: CustomEvent) => this.toggle($event, 'terminal')}
               interface="popover"
               mode="md"
@@ -336,15 +338,15 @@ export class AppColorCode {
   private renderTheme() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Theme</ion-label>
+        <ion-label slot="title">{i18n.state.editor.theme}</ion-label>
 
         <ion-list class="theme">
           <ion-item class="select">
-            <ion-label>Theme</ion-label>
+            <ion-label>{i18n.state.editor.theme}</ion-label>
 
             <ion-select
               value={this.theme}
-              placeholder="Select a theme"
+              placeholder={i18n.state.editor.select_theme}
               disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
               onIonChange={($event: CustomEvent) => this.toggle($event, 'theme')}
               interface="popover"
@@ -361,7 +363,7 @@ export class AppColorCode {
           </ion-item>
 
           <ion-item>
-            <ion-label>Display toolbar</ion-label>
+            <ion-label>{i18n.state.editor.display_toolbar}</ion-label>
             <ion-checkbox
               disabled={this.terminal !== DeckdeckgoHighlightCodeTerminal.CARBON}
               slot="end"
@@ -377,7 +379,7 @@ export class AppColorCode {
   private renderHighlightLinesColor() {
     return (
       <app-expansion-panel expanded={'close'}>
-        <ion-label slot="title">Highlight lines</ion-label>
+        <ion-label slot="title">{i18n.state.editor.highlight_lines}</ion-label>
         <button slot="info" class="info" onClick={($event: UIEvent) => this.presentHighlightInfo($event)}>
           <ion-icon name="help"></ion-icon>
         </button>
@@ -385,7 +387,7 @@ export class AppColorCode {
           <ion-item class="with-padding">
             <ion-input
               value={this.highlightLines}
-              placeholder="List your lines here"
+              placeholder={i18n.state.editor.highlight_lines}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
               onIonChange={() => this.highlightSelectedLines()}></ion-input>

@@ -118,6 +118,10 @@ interface I18nEditor {
   math: string;
   word_cloud: string;
   color: string;
+  colors: string;
+  series: string;
+  series_index: string;
+  word: string;
   color_picker: string;
   rgb_red: string;
   rgb_green: string;
@@ -155,6 +159,29 @@ interface I18nEditor {
   top_right: string;
   bottom_right: string;
   bottom_left: string;
+  box_shadow: string;
+  horizontal_length: string;
+  vertical_length: string;
+  blur_radius: string;
+  spread_radius: string;
+  more_colors: string;
+  apply_a_color_to: string;
+  select_category: string;
+  comments: string;
+  functions: string;
+  keywords: string;
+  operators: string;
+  punctuation: string;
+  properties: string;
+  regex: string;
+  selector: string;
+  line_numbers: string;
+  terminal: string;
+  select_terminal: string;
+  theme: string;
+  select_theme: string;
+  display_toolbar: string;
+  highlight_lines: string;
 }
 
 interface I18nOffline {
