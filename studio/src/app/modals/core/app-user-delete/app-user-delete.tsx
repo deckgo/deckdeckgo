@@ -3,6 +3,7 @@ import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 
 import {UserUtils} from '../../../utils/core/user.utils';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-user-delete',
@@ -59,16 +60,19 @@ export class AppUserDelete {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Are you absolutely sure?</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.core.sure}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
         <p>
-          This action cannot be undone. This will permanently delete your user <strong>{this.username}</strong>.
+          {renderI18n(i18n.state.settings.cannot_undone, {
+            placeholder: '{0}',
+            value: <strong>{this.username}</strong>,
+          })}
         </p>
 
         <form onSubmit={(e: Event) => this.handleSubmit(e)}>
-          <p class="ion-no-margin">Please type your username to confirm.</p>
+          <p class="ion-no-margin">{i18n.state.settings.type_to_confirm}</p>
 
           <ion-item>
             <ion-input
@@ -80,7 +84,7 @@ export class AppUserDelete {
           </ion-item>
 
           <ion-button type="submit" disabled={!this.valid} color="danger" class="ion-margin-top" shape="round">
-            <ion-label>I understand, delete my user</ion-label>
+            <ion-label>{i18n.state.settings.i_understand}</ion-label>
           </ion-button>
         </form>
 

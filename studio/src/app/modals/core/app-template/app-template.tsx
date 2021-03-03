@@ -5,6 +5,7 @@ import navStore, {NavDirection} from '../../../stores/nav.store';
 import i18n from '../../../stores/i18n.store';
 
 import {Template, TemplateData} from '../../../models/data/template';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-template',
@@ -159,7 +160,7 @@ export class AppTemplate {
                 <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
               </ion-button>
             </ion-buttons>
-            <ion-title class="ion-text-uppercase">Template</ion-title>
+            <ion-title class="ion-text-uppercase">{i18n.state.templates.template}</ion-title>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding" color="light">
@@ -185,7 +186,7 @@ export class AppTemplate {
 
                 <ion-item class={`item-title ${errorTag}`}>
                   <ion-label>
-                    Tag <span>2</span>
+                    {i18n.state.templates.tag} <span>2</span>
                   </ion-label>
                 </ion-item>
 
@@ -202,7 +203,7 @@ export class AppTemplate {
 
                 <ion-item class="item-title">
                   <ion-label>
-                    Definition <span>3</span>
+                    {i18n.state.templates.definition} <span>3</span>
                   </ion-label>
                 </ion-item>
 
@@ -216,7 +217,7 @@ export class AppTemplate {
               </ion-list>
 
               <ion-button type="submit" color="primary" class="ion-margin-top" shape="round" disabled={!this.validCdn || !this.validTag}>
-                <ion-label>Save</ion-label>
+                <ion-label>{i18n.state.core.save}</ion-label>
               </ion-button>
             </form>
 
@@ -231,19 +232,34 @@ export class AppTemplate {
     return (
       <div class="notes">
         <p class={`small`}>
-          <span>1</span> URL to the ES Modules as for example <mark>https://unpkg.com/my-component@latest/dist/my-component/my-component.esm.js</mark>.
+          <span>1</span>{' '}
+          {renderI18n(i18n.state.templates.url, {
+            placeholder: '{0}',
+            value: <mark>https://unpkg.com/my-component@latest/dist/my-component/my-component.esm.js</mark>,
+          })}
         </p>
 
         <p class={`small ${errorCdn}`}>
-          We support Unpkg, Cloudfare and jsDelivr. If you would like to use another CDN, <a onClick={() => this.navigateContact()}>get in touch</a>.
+          {renderI18n(i18n.state.templates.cdn, {
+            placeholder: '{0}',
+            value: <a onClick={() => this.navigateContact()}>get in touch</a>,
+          })}
         </p>
 
         <p class={`small ${errorTag}`}>
-          <span>2</span> The tag should not contain any of the reserved keywords <mark>deckdeckgo</mark>, <mark>deckgo</mark> or <mark>ddg</mark>.
+          <span>2</span>{' '}
+          {renderI18n(i18n.state.templates.tag_format, {
+            placeholder: '{0}',
+            value: <mark>deckdeckgo, deckgo or ddg</mark>,
+          })}
         </p>
 
         <p class={`small`}>
-          <span>3</span> Upload the definition which was automatically generated when you built your template <mark>./src/components.desc.json</mark>.
+          <span>3</span>{' '}
+          {renderI18n(i18n.state.templates.upload_definition, {
+            placeholder: '{0}',
+            value: <mark>./src/components.desc.json</mark>,
+          })}
         </p>
       </div>
     );

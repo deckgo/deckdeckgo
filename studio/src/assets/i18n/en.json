@@ -6,7 +6,9 @@
     "yes": "Yes",
     "no": "No",
     "reset": "Reset",
-    "ok": "Ok"
+    "ok": "Ok",
+    "save": "Save",
+    "sure": "Are you absolutely sure?"
   },
   "nav": {
     "menu": "Menu",
@@ -56,7 +58,10 @@
     "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging."
   },
   "settings": {
-    "un_publish": "Please note that currently, the presentations you have shared are not automatically removed from internet. If you wish to un-publish them, drop us a message on one of our {0} channels."
+    "un_publish": "Please note that currently, the presentations you have shared are not automatically removed from internet. If you wish to un-publish them, drop us a message on one of our {0} channels.",
+    "cannot_undone": "This action cannot be undone. This will permanently delete your presentation {0}.",
+    "type_to_confirm": "Please type your username to confirm.",
+    "i_understand": "I understand, delete my user"
   },
   "dashboard": {
     "welcome": "Welcome to DeckDeckGo 👋",
@@ -65,7 +70,9 @@
     "filter": "Filter your presentations",
     "no_slides": "You don't have any slides yet. Go for it, create your first deck now!",
     "copy": "Copy presentation",
-    "delete": "Delete presentation"
+    "delete": "Delete presentation",
+    "cannot_undone": "This action cannot be undone. This will permanently delete your presentation {0}.",
+    "understand": "I understand, delete my presentation"
   },
   "editor": {
     "add_slide": "Add slide",
@@ -297,7 +304,15 @@
     "playground": "Playground",
     "author": "Author",
     "qr_code": "QR Code Deep Linking",
-    "showcase": "Showcase Your Apps"
+    "showcase": "Showcase Your Apps",
+    "template": "Template",
+    "tag": "Tag",
+    "definition": "Definition",
+    "cdn": "We support Unpkg, Cloudfare and jsDelivr. If you would like to use another CDN, {0}.",
+    "get_in_touch": "get in touch",
+    "url": "URL to the ES Modules as for example {0}.",
+    "tag_format": "The tag should not contain any of the reserved keywords {0}.",
+    "upload_definition": "Upload the definition which was automatically generated when you built your template {0}."
   },
   "shapes": {
     "robot": "Robot",

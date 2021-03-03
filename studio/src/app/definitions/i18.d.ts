@@ -6,6 +6,8 @@ interface I18nCore {
   no: string;
   reset: string;
   ok: string;
+  save: string;
+  sure: string;
 }
 
 interface I18nNav {
@@ -62,6 +64,9 @@ interface I18nSign_in {
 
 interface I18nSettings {
   un_publish: string;
+  cannot_undone: string;
+  type_to_confirm: string;
+  i_understand: string;
 }
 
 interface I18nDashboard {
@@ -72,6 +77,8 @@ interface I18nDashboard {
   no_slides: string;
   copy: string;
   delete: string;
+  cannot_undone: string;
+  understand: string;
 }
 
 interface I18nEditor {
@@ -310,6 +317,14 @@ interface I18nTemplates {
   author: string;
   qr_code: string;
   showcase: string;
+  template: string;
+  tag: string;
+  definition: string;
+  cdn: string;
+  get_in_touch: string;
+  url: string;
+  tag_format: string;
+  upload_definition: string;
 }
 
 interface I18nShapes {
