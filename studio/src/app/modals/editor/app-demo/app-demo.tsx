@@ -68,7 +68,7 @@ export class AppDemo {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Demo</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.demo}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -76,7 +76,7 @@ export class AppDemo {
           <ion-item>
             <ion-input
               value={this.demoSrc}
-              placeholder="Enter the URL of your app or website"
+              placeholder={i18n.state.editor.enter_demo_url}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
           </ion-item>
@@ -90,7 +90,7 @@ export class AppDemo {
           shape="round"
           onClick={() => this.save()}
           class="ion-margin-top">
-          <ion-label>Save</ion-label>
+          <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
       </ion-content>,
     ];

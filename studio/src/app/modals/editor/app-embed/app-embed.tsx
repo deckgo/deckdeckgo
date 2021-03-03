@@ -72,13 +72,13 @@ export class AppEmbed {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Embed</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.embed}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
         <ion-list class="inputs-list">
           <ion-item class="item-title">
-            <ion-label>Copy the following code to embed your presentation.</ion-label>
+            <ion-label>{i18n.state.editor.copy_embed_code}</ion-label>
           </ion-item>
           <ion-item>
             <ion-textarea
@@ -91,7 +91,7 @@ export class AppEmbed {
         </ion-list>
 
         <ion-button color="primary" shape="round" onClick={() => this.copyEmbedCode()}>
-          <ion-label>Copy to clipboard</ion-label>
+          <ion-label>{i18n.state.editor.copy_to_clipboard}</ion-label>
         </ion-button>
       </ion-content>,
     ];

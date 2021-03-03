@@ -232,7 +232,12 @@
     "your_data": "Your data",
     "your_collection_empty": "Your collection is empty",
     "upload_data": "Upload a new data",
-    "upload_image": "Upload a new image"
+    "upload_image": "Upload a new image",
+    "demo": "Demo",
+    "enter_demo_url": "Enter the URL of your app or website",
+    "embed": "Embed",
+    "copy_embed_code": "Copy the following code to embed your presentation.",
+    "copy_to_clipboard": "Copy to clipboard"
   },
   "offline": {
     "editing": "You are editing offline.",

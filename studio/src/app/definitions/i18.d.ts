@@ -240,6 +240,11 @@ interface I18nEditor {
   your_collection_empty: string;
   upload_data: string;
   upload_image: string;
+  demo: string;
+  enter_demo_url: string;
+  embed: string;
+  copy_embed_code: string;
+  copy_to_clipboard: string;
 }
 
 interface I18nOffline {
