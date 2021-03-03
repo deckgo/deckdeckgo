@@ -233,6 +233,12 @@ interface I18nEditor {
   font: string;
   axis: string;
   grid: string;
+  languages: string;
+  filter_languages: string;
+  your_data: string;
+  your_collection_empty: string;
+  upload_data: string;
+  upload_image: string;
 }
 
 interface I18nOffline {

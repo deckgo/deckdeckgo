@@ -169,7 +169,7 @@ export class AppCustomData {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Your data</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.your_data}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -178,7 +178,7 @@ export class AppCustomData {
         <input type="file" accept=".csv" onChange={() => this.upload()} />
 
         <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText="Loading more images..."></ion-infinite-scroll-content>
+          <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>,
       <ion-footer>
@@ -221,7 +221,7 @@ export class AppCustomData {
       <div class="placeholder">
         <div>
           <ion-icon src="/assets/icons/file.svg"></ion-icon>
-          <ion-label class="ion-text-center">Your collection of data is empty</ion-label>
+          <ion-label class="ion-text-center">{i18n.state.editor.your_collection_empty}</ion-label>
         </div>
       </div>
     );
@@ -232,7 +232,7 @@ export class AppCustomData {
       return (
         <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
           <ion-icon name="cloud-upload" slot="start"></ion-icon>
-          <ion-label>Upload a new data</ion-label>
+          <ion-label>{i18n.state.editor.upload_data}</ion-label>
         </ion-button>
       );
     } else {

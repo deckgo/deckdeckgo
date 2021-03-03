@@ -103,7 +103,7 @@ export class AppCodeLanguages {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Languages</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.languages}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -115,7 +115,7 @@ export class AppCodeLanguages {
         <ion-toolbar>
           <ion-searchbar
             debounce={500}
-            placeholder="Filter languages"
+            placeholder={i18n.state.editor.filter_languages}
             value={this.filter}
             onIonClear={() => this.clear()}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
