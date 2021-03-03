@@ -108,6 +108,7 @@ interface I18nEditor {
   code: string;
   transition: string;
   sides: string;
+  side: string;
   huge_title: string;
   large_title: string;
   small_title: string;
@@ -219,6 +220,12 @@ interface I18nEditor {
   superwide: string;
   widest: string;
   text_align: string;
+  fill: string;
+  backdrop: string;
+  stroke: string;
+  font: string;
+  axis: string;
+  grid: string;
 }
 
 interface I18nOffline {

@@ -101,6 +101,7 @@
     "code": "Code",
     "transition": "Transition",
     "sides": "Sides",
+    "side": "Side",
     "huge_title": "Huge title",
     "large_title": "Large title",
     "small_title": "Small title",
@@ -211,7 +212,13 @@
     "wider": "Wider",
     "superwide": "Superwide",
     "widest": "Widest",
-    "text_align": "Text align"
+    "text_align": "Text align",
+    "fill": "Fill",
+    "backdrop": "Backdrop",
+    "stroke": "Stroke",
+    "font": "Font",
+    "axis": "Axis",
+    "grid": "Grid"
   },
   "offline": {
     "editing": "You are editing offline.",

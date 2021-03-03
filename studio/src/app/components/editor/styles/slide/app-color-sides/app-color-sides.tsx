@@ -1,5 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
@@ -96,50 +98,50 @@ export class AppColorSides {
   render() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Colors</ion-label>
+        <ion-label slot="title">{i18n.state.editor.colors}</ion-label>
 
         <ion-list>
           <ion-item-divider class="ion-padding-top">
-            <ion-label>Apply a color to</ion-label>
+            <ion-label>{i18n.state.editor.apply_a_color_to}</ion-label>
           </ion-item-divider>
 
           <ion-item class="select">
-            <ion-label>Apply a color to</ion-label>
+            <ion-label>{i18n.state.editor.apply_a_color_to}</ion-label>
 
             <ion-select
               value={this.applyColorType}
-              placeholder="Apply a color to"
+              placeholder={i18n.state.editor.apply_a_color_to}
               onIonChange={($event: CustomEvent) => this.selectApplyType($event)}
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={ApplyColorType.FONT}>Font</ion-select-option>
-              <ion-select-option value={ApplyColorType.BACKGROUND}>Background</ion-select-option>
+              <ion-select-option value={ApplyColorType.FONT}>{i18n.state.editor.font}</ion-select-option>
+              <ion-select-option value={ApplyColorType.BACKGROUND}>{i18n.state.editor.background}</ion-select-option>
             </ion-select>
           </ion-item>
 
           <ion-item-divider class="ion-padding-top">
-            <ion-label>Side</ion-label>
+            <ion-label>{i18n.state.editor.side}</ion-label>
           </ion-item-divider>
 
           <ion-item class="select">
-            <ion-label>Side</ion-label>
+            <ion-label>{i18n.state.editor.side}</ion-label>
 
             <ion-select
               value={this.side}
-              placeholder="Side"
+              placeholder={i18n.state.editor.side}
               onIonChange={($event: CustomEvent) => this.toggleSide($event)}
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={ApplyColorSide.START}>Start</ion-select-option>
-              <ion-select-option value={ApplyColorSide.END}>End</ion-select-option>
+              <ion-select-option value={ApplyColorSide.START}>{i18n.state.editor.start}</ion-select-option>
+              <ion-select-option value={ApplyColorSide.END}>{i18n.state.editor.end}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>
 
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Color</ion-label>
+          <ion-label>{i18n.state.editor.color}</ion-label>
         </ion-item-divider>
 
         <app-color

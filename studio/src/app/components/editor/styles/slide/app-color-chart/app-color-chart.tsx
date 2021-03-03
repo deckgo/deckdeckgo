@@ -1,5 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {SlideChartType} from '../../../../../models/data/slide';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
@@ -131,19 +133,19 @@ export class AppColorDeckSlide {
   render() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Colors</ion-label>
+        <ion-label slot="title">{i18n.state.editor.colors}</ion-label>
 
         <ion-list>
           <ion-item-divider class="ion-padding-top">
-            <ion-label>Apply a color to</ion-label>
+            <ion-label>{i18n.state.editor.apply_a_color_to}</ion-label>
           </ion-item-divider>
 
           <ion-item class="select">
-            <ion-label>Apply a color to</ion-label>
+            <ion-label>{i18n.state.editor.apply_a_color_to}</ion-label>
 
             <ion-select
               value={this.applyColorType}
-              placeholder="Apply a color to"
+              placeholder={i18n.state.editor.apply_a_color_to}
               onIonChange={(e: CustomEvent) => this.toggleColorType(e)}
               interface="popover"
               mode="md"
@@ -153,15 +155,15 @@ export class AppColorDeckSlide {
           </ion-item>
 
           <ion-item-divider class="ion-padding-top">
-            <ion-label>Series</ion-label>
+            <ion-label>{i18n.state.editor.series}</ion-label>
           </ion-item-divider>
 
           <ion-item class="select">
-            <ion-label>Series</ion-label>
+            <ion-label>{i18n.state.editor.series}</ion-label>
 
             <ion-select
               value={this.colorIndex}
-              placeholder="Series index"
+              placeholder={i18n.state.editor.series_index}
               disabled={this.applyColorType !== ApplyColorType.FILL && this.applyColorType !== ApplyColorType.STROKE}
               onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
               interface="popover"
@@ -173,7 +175,7 @@ export class AppColorDeckSlide {
         </ion-list>
 
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Color</ion-label>
+          <ion-label>{i18n.state.editor.color}</ion-label>
         </ion-item-divider>
 
         <app-color
@@ -187,14 +189,14 @@ export class AppColorDeckSlide {
 
   private renderColorOptions() {
     const options = [
-      <ion-select-option value={ApplyColorType.FILL}>Fill</ion-select-option>,
-      <ion-select-option value={ApplyColorType.STROKE}>Stroke</ion-select-option>,
-      <ion-select-option value={ApplyColorType.FONT}>Font</ion-select-option>,
+      <ion-select-option value={ApplyColorType.FILL}>{i18n.state.editor.fill}</ion-select-option>,
+      <ion-select-option value={ApplyColorType.STROKE}>{i18n.state.editor.stroke}</ion-select-option>,
+      <ion-select-option value={ApplyColorType.FONT}>{i18n.state.editor.font}</ion-select-option>,
     ];
 
     if (this.chartType != SlideChartType.PIE) {
-      options.push(<ion-select-option value={ApplyColorType.AXIS}>Axis</ion-select-option>);
-      options.push(<ion-select-option value={ApplyColorType.GRID}>Grid</ion-select-option>);
+      options.push(<ion-select-option value={ApplyColorType.AXIS}>{i18n.state.editor.axis}</ion-select-option>);
+      options.push(<ion-select-option value={ApplyColorType.GRID}>{i18n.state.editor.grid}</ion-select-option>);
     }
 
     return options;
