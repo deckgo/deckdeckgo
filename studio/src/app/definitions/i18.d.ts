@@ -367,6 +367,7 @@ interface I18nEditor {
   delete_logo: string;
   deck_style: string;
   slide_style: string;
+  transform_element: string;
 }
 
 interface I18nOffline {

@@ -359,7 +359,9 @@
     "your_logo": "Your logo",
     "delete_logo": "Delete logo",
     "deck_style": "Deck style",
-    "slide_style": "Sldie style"
+    "slide_style": "Sldie style",
+    "transform_element": "Transform element",
+    "transform_slide": "Transform slide"
   },
   "offline": {
     "editing": "You are editing offline.",

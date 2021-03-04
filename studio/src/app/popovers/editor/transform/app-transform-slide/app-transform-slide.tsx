@@ -1,5 +1,7 @@
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 import {InitTemplate} from '../../../../utils/editor/create-slides.utils';
 
 import {AppTemplatesFixed} from '../../../../components/editor/templates/platform/app-templates-fixed/app-templates-fixed';
@@ -39,7 +41,7 @@ export class AppTransformSlide {
     return (
       <Fragment>
         <ion-toolbar>
-          <h2>Transform slide</h2>
+          <h2>{i18n.state.editor.transform_slide}</h2>
           <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
         </ion-toolbar>
 
