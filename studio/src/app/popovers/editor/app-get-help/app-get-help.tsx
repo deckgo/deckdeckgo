@@ -41,7 +41,7 @@ export class AppGetHelp {
         </p>
         <div class="ion-text-center">
           <ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>
-            {i18n.state.editor.got_it}
+            {i18n.state.core.got_it}
           </ion-button>
         </div>
       </div>

@@ -1,5 +1,8 @@
 import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
+
 @Component({
   tag: 'app-slide-warning-info',
 })
@@ -25,7 +28,7 @@ export class AppSlideWarningInfo {
 
         <div class="ion-text-center">
           <ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>
-            Got it
+            {i18n.state.core.got_it}
           </ion-button>
         </div>
       </div>
@@ -39,9 +42,9 @@ export class AppSlideWarningInfo {
 
     return (
       <Fragment>
-        <h2>Overflow</h2>
-        <p>Part of your content may be placed outside the slide's safe area (16/9).</p>
-        <p>It may not be visible on all display sizes.</p>
+        <h2>{i18n.state.warning.overflow}</h2>
+        <p>{i18n.state.warning.overflow_explanation}</p>
+        <p>{i18n.state.warning.overflow_visibility}</p>
       </Fragment>
     );
   }
@@ -53,17 +56,20 @@ export class AppSlideWarningInfo {
 
     return (
       <Fragment>
-        <h2>Low contrast</h2>
-        <p>We noticed that (a part of) the text color of this slide does not meet contrast ratio standards.</p>
+        <h2>{i18n.state.warning.low_contrast}</h2>
+        <p>{i18n.state.warning.contrast_ratio}</p>
         <p>
-          Elements are compared according{' '}
-          <a href="https://www.w3.org/TR/WCAG/#contrast-minimum" target="_blank" rel="noopener noreferrer">
-            WCAG
-          </a>{' '}
-          Level AA.
+          {renderI18n(i18n.state.warning.wcag, {
+            placeholder: '{0}',
+            value: (
+              <a href="https://www.w3.org/TR/WCAG/#contrast-minimum" target="_blank" rel="noopener noreferrer">
+                WCAG
+              </a>
+            ),
+          })}
         </p>
 
-        <p>Note that if you are using semi-transparent background, the contrast ratio cannot be precise.</p>
+        <p>{i18n.state.warning.note}</p>
       </Fragment>
     );
   }

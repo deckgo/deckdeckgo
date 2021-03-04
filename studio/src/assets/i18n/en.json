@@ -13,7 +13,8 @@
     "sure": "Are you absolutely sure?",
     "add": "Add",
     "submit": "Submit",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "got_it": "Got it"
   },
   "nav": {
     "menu": "Menu",
@@ -112,6 +113,7 @@
     "previous": "Previous",
     "next": "Next",
     "slides": "Slides",
+    "slide": "Slide",
     "style": "Style",
     "present": "Present",
     "go_online": "Go online",
@@ -302,7 +304,6 @@
     "fullscreen_edit": "You can edit your presentations in full screen mode too!",
     "fullscreen_typo": "Correct typo, add slides, change colors etc. all features are available.",
     "fullscreen_swipe": "Swipe up the bottom sheet to enter the edit mode 🚀.",
-    "got_it": "Got it",
     "need_help": "Need help?",
     "need_help_comment": "If you need help, have any feedback or ideas, we would love to hear from you 😃.",
     "reach_us": "Reach us on {0}.",
@@ -330,7 +331,8 @@
     "computers": "Computers",
     "date_time": "Date and Time",
     "files": "Files",
-    "finance": "Finance"
+    "finance": "Finance",
+    "jump_or_change": "Jump to a specific slide or change their order."
   },
   "offline": {
     "editing": "You are editing offline.",
@@ -384,7 +386,12 @@
   },
   "warning": {
     "low_contrast": "Low contrast",
-    "overflow": "Overflow"
+    "overflow": "Overflow",
+    "overflow_explanation": "Part of your content may be placed outside the slide's safe area (16/9).",
+    "overflow_visibility": "It may not be visible on all display sizes.",
+    "contrast_ratio": "We noticed that (a part of) the text color of this slide does not meet contrast ratio standards.",
+    "wcag": "Elements are compared according {0} Level AA.",
+    "note": "Note that if you are using semi-transparent background, the contrast ratio cannot be precise."
   },
   "templates": {
     "no_personal_templates": "You do not have any personal templates yet. Follow this {0} to get started.",

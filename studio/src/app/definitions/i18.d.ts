@@ -13,6 +13,7 @@ interface I18nCore {
   add: string;
   submit: string;
   cancel: string;
+  got_it: string;
 }
 
 interface I18nNav {
@@ -119,6 +120,7 @@ interface I18nEditor {
   previous: string;
   next: string;
   slides: string;
+  slide: string;
   style: string;
   present: string;
   go_online: string;
@@ -309,7 +311,6 @@ interface I18nEditor {
   fullscreen_edit: string;
   fullscreen_typo: string;
   fullscreen_swipe: string;
-  got_it: string;
   need_help: string;
   need_help_comment: string;
   reach_us: string;
@@ -338,6 +339,7 @@ interface I18nEditor {
   date_time: string;
   files: string;
   finance: string;
+  jump_or_change: string;
 }
 
 interface I18nOffline {
@@ -396,6 +398,11 @@ interface I18nPublish_edit {
 interface I18nWarning {
   low_contrast: string;
   overflow: string;
+  overflow_explanation: string;
+  overflow_visibility: string;
+  contrast_ratio: string;
+  wcag: string;
+  note: string;
 }
 
 interface I18nTemplates {
