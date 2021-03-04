@@ -357,7 +357,9 @@
     "your_presentation": "Your presentation",
     "custom_url": "A custom url",
     "your_logo": "Your logo",
-    "delete_logo": "Delete logo"
+    "delete_logo": "Delete logo",
+    "deck_style": "Deck style",
+    "slide_style": "Sldie style"
   },
   "offline": {
     "editing": "You are editing offline.",

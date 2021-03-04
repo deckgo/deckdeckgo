@@ -365,6 +365,8 @@ interface I18nEditor {
   custom_url: string;
   your_logo: string;
   delete_logo: string;
+  deck_style: string;
+  slide_style: string;
 }
 
 interface I18nOffline {

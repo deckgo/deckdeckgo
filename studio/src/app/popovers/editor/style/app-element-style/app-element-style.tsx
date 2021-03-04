@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, Host, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../stores/settings.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {TargetElement} from '../../../../types/editor/target-element';
 import {ImageAction} from '../../../../types/editor/image-action';
@@ -99,7 +100,7 @@ export class AppElementStyle {
     return (
       <Host edit-mode={settingsStore.state.editMode}>
         <ion-toolbar>
-          <h2>{this.selectedElement.type === 'slide' ? 'Slide style' : 'Style'}</h2>
+          <h2>{this.selectedElement.type === 'slide' ? i18n.state.editor.slide_style : i18n.state.editor.style}</h2>
           <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
         </ion-toolbar>
 
