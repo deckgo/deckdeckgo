@@ -25,6 +25,7 @@ interface I18nNav {
   customization: string;
   templates: string;
   settings: string;
+  dashboard: string;
 }
 
 interface I18nMenu {

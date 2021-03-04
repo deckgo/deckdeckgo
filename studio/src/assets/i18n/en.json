@@ -24,7 +24,8 @@
     "profile": "Profile",
     "customization": "Customization",
     "templates": "Templates",
-    "settings": "Settings"
+    "settings": "Settings",
+    "dashboard": "Dashboard"
   },
   "menu": {
     "dashboard": "Dashboard",

@@ -1,6 +1,7 @@
 import {Component, Element, h} from '@stencil/core';
 
 import navStore, {NavDirection} from '../../../stores/nav.store';
+import i18n from '../../../stores/i18n.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -54,23 +55,23 @@ export class AppUserMenu {
     return (
       <ion-list>
         <ion-item onClick={() => this.navigateEditor()}>
-          <ion-label>Write a presentation</ion-label>
+          <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
         </ion-item>
 
         <ion-item onClick={() => this.closePopover()}>
           <ion-router-link href="/dashboard" routerDirection="forward">
-            <ion-label>Dashboard</ion-label>
+            <ion-label>{i18n.state.nav.dashboard}</ion-label>
           </ion-router-link>
         </ion-item>
 
         <ion-item onClick={() => this.closePopover()}>
           <ion-router-link href="/profile" routerDirection="forward">
-            <ion-label>Profile</ion-label>
+            <ion-label>{i18n.state.nav.profile}</ion-label>
           </ion-router-link>
         </ion-item>
 
         <ion-item onClick={() => this.signOut()}>
-          <ion-label>Sign out</ion-label>
+          <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>
     );
