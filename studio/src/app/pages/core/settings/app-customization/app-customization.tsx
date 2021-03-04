@@ -2,6 +2,7 @@ import {Component, Fragment, h} from '@stencil/core';
 
 import themeStore from '../../../../stores/theme.store';
 import settingsStore from '../../../../stores/settings.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {ThemeService} from '../../../../services/theme/theme.service';
 
@@ -33,7 +34,7 @@ export class AppCustomization {
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
         <main class="ion-padding fit">
-          <h1>Customization</h1>
+          <h1>{i18n.state.settings.customization}</h1>
 
           <ion-list class="inputs-list dark-light-list">
             {this.renderDarkLightToggle()}
@@ -60,13 +61,13 @@ export class AppCustomization {
     return (
       <Fragment>
         <ion-item-divider class="ion-padding-top">
-          <ion-label>Edit mode</ion-label>
+          <ion-label>{i18n.state.settings.edit_mode}</ion-label>
         </ion-item-divider>
 
         <ion-radio-group value={this.editMode} onIonChange={() => this.toggleEditMode()}>
           <ion-item>
             <ion-radio value="properties" mode="md" slot="start"></ion-radio>
-            <ion-label>Properties</ion-label>
+            <ion-label>{i18n.state.settings.properties}</ion-label>
           </ion-item>
 
           <ion-item>

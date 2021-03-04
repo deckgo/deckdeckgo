@@ -5,6 +5,7 @@ import {modalController, OverlayEventDetail} from '@ionic/core';
 import authStore from '../../../../stores/auth.store';
 import errorStore from '../../../../stores/error.store';
 import templatesStore from '../../../../stores/templates.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {Template} from '../../../../models/data/template';
 import {AuthUser} from '../../../../models/auth/auth.user';
@@ -12,6 +13,7 @@ import {AuthUser} from '../../../../models/auth/auth.user';
 import {signIn} from '../../../../utils/core/signin.utils';
 
 import {TemplateService} from '../../../../services/data/template/template.service';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-templates',
@@ -94,7 +96,7 @@ export class AppTemplates {
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
         <main class="ion-padding fit">
-          <h1>Templates</h1>
+          <h1>{i18n.state.nav.templates}</h1>
           {this.renderGuardedContent()}
         </main>
       </ion-content>,
@@ -119,14 +121,14 @@ export class AppTemplates {
   }
 
   private renderNotLoggedInContent() {
-    return [
-      <p>
+    return renderI18n(i18n.state.settings.access_templates, {
+      placeholder: '{0}',
+      value: (
         <button type="button" class="app-button" onClick={() => signIn()}>
-          Sign in
+          {i18n.state.nav.sign_in}
         </button>
-        to use your own templates.
-      </p>,
-    ];
+      ),
+    });
   }
 
   private renderContent() {
@@ -137,11 +139,14 @@ export class AppTemplates {
     return (
       <Fragment>
         <ion-label>
-          Do you want to contribute to the community?{' '}
-          <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
-            Contact
-          </a>{' '}
-          us to share a template.
+          {renderI18n(i18n.state.settings.contribute_community, {
+            placeholder: '{0}',
+            value: (
+              <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
+                {i18n.state.settings.contact}
+              </a>
+            ),
+          })}
         </ion-label>
         <div class="container ion-margin-top">{this.renderTemplates()}</div>
       </Fragment>
@@ -158,7 +163,7 @@ export class AppTemplates {
     return (
       <div class="action ion-margin-top">
         <ion-button slot="end" shape="round" onClick={() => this.editTemplate()}>
-          <ion-label>Add a template</ion-label>
+          <ion-label>{i18n.state.settings.add_a_template}</ion-label>
         </ion-button>
       </div>
     );

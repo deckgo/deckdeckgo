@@ -72,6 +72,31 @@ interface I18nSettings {
   cannot_undone: string;
   type_to_confirm: string;
   i_understand: string;
+  customization: string;
+  edit_mode: string;
+  properties: string;
+  profile: string;
+  access_settings: string;
+  access_templates: string;
+  profile_note: string;
+  name: string;
+  email: string;
+  newsletter: string;
+  username: string;
+  danger_zone: string;
+  no_way_back: string;
+  delete_user: string;
+  profile_picture: string;
+  profile_picture_tips: string;
+  summary: string;
+  bio: string;
+  custom: string;
+  custom_url: string;
+  logo_address: string;
+  custom_logo: string;
+  contribute_community: string;
+  contact: string;
+  add_a_template: string;
 }
 
 interface I18nDashboard {
