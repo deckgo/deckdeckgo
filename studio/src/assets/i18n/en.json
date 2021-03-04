@@ -322,7 +322,15 @@
     "no_pending_requests": "No pending requests.",
     "grant_access": "Grant access to remote {0}?",
     "deny": "Deny",
-    "accept": "Accept"
+    "accept": "Accept",
+    "add_a_shape": "Add a shape",
+    "shapes": "Shapes",
+    "arrows": "Arrows",
+    "status": "Status",
+    "computers": "Computers",
+    "date_time": "Date and Time",
+    "files": "Files",
+    "finance": "Finance"
   },
   "offline": {
     "editing": "You are editing offline.",

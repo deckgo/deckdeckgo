@@ -330,6 +330,14 @@ interface I18nEditor {
   grant_access: string;
   deny: string;
   accept: string;
+  add_a_shape: string;
+  shapes: string;
+  arrows: string;
+  status: string;
+  computers: string;
+  date_time: string;
+  files: string;
+  finance: string;
 }
 
 interface I18nOffline {

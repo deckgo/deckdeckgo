@@ -1,6 +1,7 @@
 import {Component, Element, h, Prop} from '@stencil/core';
 
 import assetsStore from '../../../stores/assets.store';
+import i18n from '../../../stores/i18n.store';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
@@ -40,7 +41,7 @@ export class AppShape {
   render() {
     return [
       <ion-toolbar>
-        <h2>Add a shape</h2>
+        <h2>{i18n.state.editor.add_a_shape}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>
       </ion-toolbar>,
       this.renderShapes(),
@@ -52,43 +53,43 @@ export class AppShape {
       <div class="container ion-margin-bottom">
         <ion-list class="article">
           <ion-item-divider>
-            <ion-label>Shapes</ion-label>
+            <ion-label>{i18n.state.editor.shapes}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('shapes')}</div>
 
           <ion-item-divider>
-            <ion-label>Arrows</ion-label>
+            <ion-label>{i18n.state.editor.arrows}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('arrows')}</div>
 
           <ion-item-divider>
-            <ion-label>Status</ion-label>
+            <ion-label>{i18n.state.editor.status}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('status')}</div>
 
           <ion-item-divider>
-            <ion-label>Computers</ion-label>
+            <ion-label>{i18n.state.editor.computers}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('computers')}</div>
 
           <ion-item-divider>
-            <ion-label>Date and Time</ion-label>
+            <ion-label>{i18n.state.editor.date_time}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('dateTime')}</div>
 
           <ion-item-divider>
-            <ion-label>Files</ion-label>
+            <ion-label>{i18n.state.editor.files}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('files')}</div>
 
           <ion-item-divider>
-            <ion-label>Finance</ion-label>
+            <ion-label>{i18n.state.editor.finance}</ion-label>
           </ion-item-divider>
 
           <div class="ion-padding shapes">{this.renderShapesGroup('finance')}</div>
