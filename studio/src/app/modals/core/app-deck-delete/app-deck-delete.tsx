@@ -1,5 +1,8 @@
 import {Component, Element, Listen, Prop, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
+
 @Component({
   tag: 'app-deck-delete',
   styleUrl: 'app-deck-delete.scss',
@@ -37,21 +40,24 @@ export class AppDeckDelete {
       <ion-header>
         <ion-toolbar color="danger">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Are you absolutely sure?</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.core.sure}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
         <p>
-          This action cannot be undone. This will permanently delete your presentation <strong>{this.deckName}</strong>.
+          {renderI18n(i18n.state.dashboard.cannot_undone, {
+            placeholder: '{0}',
+            value: <strong>{this.deckName}</strong>,
+          })}
         </p>
 
         <form onSubmit={($event: Event) => this.handleSubmit($event)}>
           <ion-button type="submit" color="danger" class="ion-margin-top" shape="round">
-            <ion-label>I understand, delete my presentation</ion-label>
+            <ion-label>{i18n.state.dashboard.understand}</ion-label>
           </ion-button>
         </form>
 

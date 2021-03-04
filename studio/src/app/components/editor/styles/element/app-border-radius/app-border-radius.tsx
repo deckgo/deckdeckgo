@@ -3,6 +3,7 @@ import {Component, Event, EventEmitter, h, Prop, State, Fragment} from '@stencil
 import {RangeChangeEventDetail} from '@ionic/core';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
@@ -136,7 +137,7 @@ export class AppBorderRadius {
       <app-expansion-panel
         expanded={settingsStore.state.panels.borderRadius}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({borderRadius: $event.detail})}>
-        <ion-label slot="title">Border radius</ion-label>
+        <ion-label slot="title">{i18n.state.editor.border_radius}</ion-label>
         <ion-list class="properties">
           <ion-item class="select">
             <ion-select
@@ -145,17 +146,17 @@ export class AppBorderRadius {
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={false}>All corners</ion-select-option>
-              <ion-select-option value={true}>Individual corners</ion-select-option>
+              <ion-select-option value={false}>{i18n.state.editor.all_corners}</ion-select-option>
+              <ion-select-option value={true}>{i18n.state.editor.individual_corners}</ion-select-option>
             </ion-select>
           </ion-item>
           {!this.cornersExpanded ? this.renderOption('General', 'Every corner') : undefined}
           {this.cornersExpanded && (
             <Fragment>
-              {this.renderOption('TopLeft', 'Top left')}
-              {this.renderOption('TopRight', 'Top right')}
-              {this.renderOption('BottomRight', 'Bottom right')}
-              {this.renderOption('BottomLeft', 'Bottom left')}
+              {this.renderOption('TopLeft', i18n.state.editor.top_left)}
+              {this.renderOption('TopRight', i18n.state.editor.top_right)}
+              {this.renderOption('BottomRight', i18n.state.editor.bottom_right)}
+              {this.renderOption('BottomLeft', i18n.state.editor.bottom_left)}
             </Fragment>
           )}
         </ion-list>
@@ -164,7 +165,7 @@ export class AppBorderRadius {
           <ion-item class="with-padding">
             <ion-input
               value={this.borderRadiusCSS}
-              placeholder="border-radius"
+              placeholder={i18n.state.editor.border_radius}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
               onIonChange={async () => await this.updateBorderRadiusCSS()}></ion-input>

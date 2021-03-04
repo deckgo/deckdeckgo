@@ -4,6 +4,8 @@ import {ItemReorderEventDetail} from '@ionic/core';
 
 import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-slide-navigate',
   styleUrl: 'app-slide-navigate.scss',
@@ -33,7 +35,7 @@ export class AppSlideNavigate {
   render() {
     return (
       <Host>
-        <p>Jump to a specific slide or change their order.</p>
+        <p>{i18n.state.editor.jump_or_change}</p>
 
         <ion-reorder-group
           onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)}
@@ -47,7 +49,7 @@ export class AppSlideNavigate {
   private renderSlides() {
     if (this.slides && this.slides.length > 0) {
       return this.slides.map((slideTitle: string, i: number) => {
-        const text = 'Slide ' + (i + 1) + (slideTitle ? ': ' + slideTitle : '');
+        const text = `${i18n.state.editor.slide}` + (i + 1) + (slideTitle ? ': ' + slideTitle : '');
 
         return (
           <ion-item ion-item button onClick={() => this.jumpToSlide(i)} detail={false}>

@@ -10,6 +10,7 @@ import navStore, {NavDirection} from '../../../../stores/nav.store';
 import authStore from '../../../../stores/auth.store';
 import userStore from '../../../../stores/user.store';
 import apiUserStore from '../../../../stores/api.user.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {ApiUser} from '../../../../models/api/api.user';
 import {User} from '../../../../models/data/user';
@@ -25,6 +26,8 @@ import {ApiUserFactoryService} from '../../../../services/api/user/api.user.fact
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
+
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-profile',
@@ -446,7 +449,7 @@ export class AppProfile {
       <app-navigation></app-navigation>,
       <ion-content class="ion-padding fullscreen-padding">
         <main class="ion-padding fit">
-          <h1>Profile</h1>
+          <h1>{i18n.state.settings.profile}</h1>
           {this.renderGuardedContent()}
         </main>
       </ion-content>,
@@ -462,14 +465,14 @@ export class AppProfile {
   }
 
   private renderNotLoggedInContent() {
-    return [
-      <p>
+    return renderI18n(i18n.state.settings.access_settings, {
+      placeholder: '{0}',
+      value: (
         <button type="button" class="app-button" onClick={() => signIn()}>
-          Sign in
+          {i18n.state.nav.sign_in}
         </button>
-        to access your profile and settings.
-      </p>,
-    ];
+      ),
+    });
   }
 
   private renderUserContent() {
@@ -489,14 +492,14 @@ export class AppProfile {
 
         {this.renderSubmitForm()}
       </form>,
-      <p class="info">Note that your update has no effect on the presentations you would have already published.</p>,
+      <p class="info">{i18n.state.settings.profile_note}</p>,
     ];
   }
 
   private renderName() {
     return [
       <ion-item class="item-title">
-        <ion-label>Name</ion-label>
+        <ion-label>{i18n.state.settings.name}</ion-label>
       </ion-item>,
       <ion-item>
         <ion-input
@@ -516,7 +519,7 @@ export class AppProfile {
   private renderEmail() {
     return [
       <ion-item class="item-title">
-        <ion-label>Email</ion-label>
+        <ion-label>{i18n.state.settings.email}</ion-label>
       </ion-item>,
       <ion-item>
         <ion-input
@@ -531,7 +534,7 @@ export class AppProfile {
           onIonChange={() => this.validateEmailInput()}></ion-input>
       </ion-item>,
       <div class="newsletter">
-        <ion-label>Send me newsletter emails</ion-label>
+        <ion-label>{i18n.state.settings.newsletter}</ion-label>
         <ion-checkbox
           slot="end"
           value="pepperoni"
@@ -545,7 +548,7 @@ export class AppProfile {
   private renderUsername() {
     return [
       <ion-item class="item-title">
-        <ion-label>Username</ion-label>
+        <ion-label>{i18n.state.settings.username}</ion-label>
       </ion-item>,
       <ion-item>
         <ion-input
@@ -565,22 +568,22 @@ export class AppProfile {
   private renderSubmitForm() {
     return (
       <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !this.apiUser || !this.user} color="primary" shape="round">
-        <ion-label>Submit</ion-label>
+        <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
   }
 
   private renderDangerZone() {
     return [
-      <h1 class="danger-zone">Danger Zone</h1>,
-      <p>Once you delete your user, there is no going back. Please be certain.</p>,
+      <h1 class="danger-zone">{i18n.state.settings.danger_zone}</h1>,
+      <p>{i18n.state.settings.no_way_back}</p>,
       <ion-button
         color="danger"
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
         disabled={this.saving || !this.apiUser || !authStore.state.authUser}>
-        <ion-label>Delete my user</ion-label>
+        <ion-label>{i18n.state.settings.delete_user}</ion-label>
       </ion-button>,
     ];
   }
@@ -589,7 +592,7 @@ export class AppProfile {
     return (
       <ion-list class="inputs-list">
         <ion-item class="item-title">
-          <ion-label>Profile picture</ion-label>
+          <ion-label>{i18n.state.settings.profile_picture}</ion-label>
         </ion-item>
         <div class="avatar">
           <app-avatar src={this.user && this.user.data ? this.user.data.photo_url : undefined} aria-label="Profile picture"></app-avatar>
@@ -602,9 +605,7 @@ export class AppProfile {
           />
         </div>
         <p>
-          <small>
-            Tips: if you would update your profile picture, ideally use a <strong>square</strong> image for that purpose
-          </small>
+          <small>{i18n.state.settings.profile_picture_tips}</small>
         </p>
       </ion-list>
     );
@@ -614,7 +615,7 @@ export class AppProfile {
     return (
       <ion-list class="inputs-list">
         <ion-item class="item-title">
-          <ion-label>Summary</ion-label>
+          <ion-label>{i18n.state.settings.summary}</ion-label>
         </ion-item>
         <ion-item>
           <ion-textarea
@@ -623,7 +624,7 @@ export class AppProfile {
             debounce={500}
             disabled={this.saving}
             maxlength={192}
-            placeholder="Your short biography or how do you introduce yourself"
+            placeholder={i18n.state.settings.bio}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleSummaryInput(e)}></ion-textarea>
         </ion-item>
       </ion-list>
@@ -756,11 +757,14 @@ export class AppProfile {
   private renderCustom() {
     return [
       <ion-item class="item-title">
-        <ion-label>Custom</ion-label>
+        <ion-label>{i18n.state.settings.custom}</ion-label>
       </ion-item>,
       <p>
         <small>
-          Your website or any url (for example: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>)
+          {renderI18n(i18n.state.settings.custom_url, {
+            placeholder: '{0}',
+            value: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>,
+          })}
         </small>
       </p>,
       <ion-item>
@@ -780,16 +784,16 @@ export class AppProfile {
   private renderCustomLogo() {
     return [
       <p class="ion-margin-top">
-        <small>A logo for this custom address</small>
+        <small>{i18n.state.settings.logo_address}</small>
       </p>,
       <div class="avatar">
         {this.user && this.user.data && this.user.data.social && this.user.data.social.custom_logo_url ? (
-          <deckgo-lazy-img slot="icon" img-src={this.user.data.social.custom_logo_url} aria-label="Custom logo"></deckgo-lazy-img>
+          <deckgo-lazy-img slot="icon" img-src={this.user.data.social.custom_logo_url} aria-label={i18n.state.settings.custom_logo}></deckgo-lazy-img>
         ) : (
           <deckgo-lazy-img
             slot="icon"
             svg-src={`${this.config.globalAssetsUrl}/icons/ionicons/globe.svg`}
-            aria-label="Custom logo image placeholder"></deckgo-lazy-img>
+            aria-label={i18n.state.settings.custom_logo}></deckgo-lazy-img>
         )}
         <input
           id="inputCustomLogo"

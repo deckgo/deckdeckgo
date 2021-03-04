@@ -1,5 +1,7 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 import {SlotType} from '../../../../types/editor/slot-type';
 
 import {SlideScope} from '../../../../models/data/slide';
@@ -51,7 +53,7 @@ export class AppTransformElement {
   render() {
     return [
       <ion-toolbar>
-        <h2>Transform element</h2>
+        <h2>{i18n.state.editor.transform_element}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
 

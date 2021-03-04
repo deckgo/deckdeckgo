@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {filterCodeLanguages} from '../../../utils/editor/prism.utils';
 
 import {PrismLanguage} from '../../../types/editor/prism-language';
@@ -97,11 +99,11 @@ export class AppCodeLanguages {
       <ion-header>
         <ion-toolbar color="primary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Languages</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.languages}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -113,7 +115,7 @@ export class AppCodeLanguages {
         <ion-toolbar>
           <ion-searchbar
             debounce={500}
-            placeholder="Filter languages"
+            placeholder={i18n.state.editor.filter_languages}
             value={this.filter}
             onIonClear={() => this.clear()}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}

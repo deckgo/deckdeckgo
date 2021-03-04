@@ -1,5 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {FontsService} from '../../../../../services/editor/fonts/fonts.service';
 
 @Component({
@@ -70,7 +72,7 @@ export class AppDeckFonts {
   private renderFonts() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Typography</ion-label>
+        <ion-label slot="title">{i18n.state.editor.typography}</ion-label>
         <div class="container ion-margin-bottom">
           {this.renderDefaultFont(this.selectedFont === undefined)}
           {this.renderGoogleFonts()}
@@ -94,7 +96,7 @@ export class AppDeckFonts {
       <div class={`item ${selected ? 'selected' : ''}`} custom-tappable onClick={() => this.selectFont(null)}>
         <deckgo-slide-title class="showcase">
           <p slot="title" class="default">
-            Default
+            {i18n.state.editor.default}
           </p>
         </deckgo-slide-title>
       </div>

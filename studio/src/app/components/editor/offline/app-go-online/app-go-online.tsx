@@ -2,8 +2,11 @@ import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
 import errorStore from '../../../../stores/error.store';
 import offlineStore from '../../../../stores/offline.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
+
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-go-online',
@@ -41,14 +44,14 @@ export class AppGoOnline {
     } catch (err) {
       this.goingOnline = false;
       this.inProgress.emit(false);
-      errorStore.state.error = 'Something went wrong. Double check your internet connection and try again. If it still does not work, contact us!';
+      errorStore.state.error = i18n.state.offline.error_online;
     }
   }
 
   render() {
     return (
       <article>
-        <h1>Go online</h1>
+        <h1>{i18n.state.editor.go_online}</h1>
         {this.renderTextOffline()}
         {this.renderTextOnline()}
         <div class="ion-padding ion-text-center go">{this.renderGoOnline()}</div>
@@ -61,7 +64,7 @@ export class AppGoOnline {
       return undefined;
     }
 
-    return [<p>Oopsie, you are not online yet.</p>, <p>Check your online connection, refresh your browser and try again!</p>];
+    return [<p>{i18n.state.offline.oopsie}</p>, <p>{i18n.state.offline.check}</p>];
   }
 
   private renderTextOnline() {
@@ -71,12 +74,18 @@ export class AppGoOnline {
 
     return [
       <p>
-        Cool, you are back <strong>online</strong>.
+        {renderI18n(i18n.state.offline.cool, {
+          placeholder: '{0}',
+          value: <strong>{i18n.state.offline.online}</strong>,
+        })}
       </p>,
       <p>
-        Please note that the upload of this deck will <strong>replace</strong> its previous online version.
+        {renderI18n(i18n.state.offline.note, {
+          placeholder: '{0}',
+          value: <strong>{i18n.state.offline.replace}</strong>,
+        })}
       </p>,
-      <p>Long story short, your local presentation is going to be uploaded and saved in the database as the good one.</p>,
+      <p>{i18n.state.offline.long_story}</p>,
     ];
   }
 
@@ -84,14 +93,14 @@ export class AppGoOnline {
     if (!this.goingOnline) {
       return (
         <ion-button type="submit" color="tertiary" shape="round" onClick={() => this.goOnline()} disabled={!this.navigatorOnline}>
-          <ion-label>Go online now</ion-label>
+          <ion-label>{i18n.state.offline.online_now}</ion-label>
         </ion-button>
       );
     } else {
       return (
         <div class="in-progress">
           <ion-progress-bar value={offlineStore.state.progress} color="tertiary"></ion-progress-bar>
-          <ion-label>Hang on still, we are uploading the content.</ion-label>
+          <ion-label>{i18n.state.offline.hang_on_upload}</ion-label>
         </div>
       );
     }

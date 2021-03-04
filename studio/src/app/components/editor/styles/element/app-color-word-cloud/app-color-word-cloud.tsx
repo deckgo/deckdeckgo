@@ -1,5 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 @Component({
@@ -73,15 +75,15 @@ export class AppColorWordCloud {
   render() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Colors</ion-label>
+        <ion-label slot="title">{i18n.state.editor.colors}</ion-label>
 
         <ion-list>
           <ion-item class="select">
-            <ion-label>Series</ion-label>
+            <ion-label>{i18n.state.editor.series}</ion-label>
 
             <ion-select
               value={this.colorIndex}
-              placeholder="Series index"
+              placeholder={i18n.state.editor.series_index}
               onIonChange={(e: CustomEvent) => this.selectColorIndex(e)}
               interface="popover"
               mode="md"
@@ -103,7 +105,7 @@ export class AppColorWordCloud {
   // A select is more user friendly than an input
   private renderChartIndexes() {
     return this.indexes.map((index: number) => {
-      return <ion-select-option value={index + 1}>{`Word ${index + 1}`}</ion-select-option>;
+      return <ion-select-option value={index + 1}>{`${i18n.state.editor.word} ${index + 1}`}</ion-select-option>;
     });
   }
 }

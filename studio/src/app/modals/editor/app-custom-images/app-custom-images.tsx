@@ -1,5 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {Constants} from '../../../types/core/constants';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -180,11 +182,11 @@ export class AppCustomImages {
       <ion-header>
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Your images</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.your_images}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -198,7 +200,7 @@ export class AppCustomImages {
         <input type="file" accept="image/x-png,image/jpeg,image/gif" onChange={() => this.upload()} />
 
         <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText="Loading more images..."></ion-infinite-scroll-content>
+          <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>,
       <ion-footer>
@@ -219,7 +221,7 @@ export class AppCustomImages {
         <div class="placeholder">
           <div>
             <ion-icon name="images"></ion-icon>
-            <ion-label class="ion-text-center">Your collection of images is empty</ion-label>
+            <ion-label class="ion-text-center">{i18n.state.editor.your_collection_empty}</ion-label>
           </div>
         </div>
       );
@@ -233,11 +235,11 @@ export class AppCustomImages {
       return (
         <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
           <ion-icon name="cloud-upload" slot="start"></ion-icon>
-          <ion-label>Upload a new image</ion-label>
+          <ion-label>{i18n.state.editor.upload_image}</ion-label>
         </ion-button>
       );
     } else {
-      return [<ion-spinner color="tertiary"></ion-spinner>, <ion-label class="ion-padding-start">Upload in progress</ion-label>];
+      return [<ion-spinner color="tertiary"></ion-spinner>, <ion-label class="ion-padding-start">{i18n.state.core.in_progress}</ion-label>];
     }
   }
 }

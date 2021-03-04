@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
@@ -122,24 +123,24 @@ export class AppFontSize {
       <app-expansion-panel
         expanded={settingsStore.state.panels.fontSize}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({fontSize: $event.detail})}>
-        <ion-label slot="title">Size</ion-label>
+        <ion-label slot="title">{i18n.state.editor.size}</ion-label>
 
         <ion-list>
           <ion-item class="select properties">
-            <ion-label>Size</ion-label>
+            <ion-label>{i18n.state.editor.size}</ion-label>
 
             <ion-select
               value={this.currentFontSize}
-              placeholder="Select a font size"
+              placeholder={i18n.state.editor.select_font_size}
               onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={FontSize.VERY_SMALL}>Very small</ion-select-option>
-              <ion-select-option value={FontSize.SMALL}>Small</ion-select-option>
-              <ion-select-option value={FontSize.NORMAL}>Normal</ion-select-option>
-              <ion-select-option value={FontSize.BIG}>Big</ion-select-option>
-              <ion-select-option value={FontSize.VERY_BIG}>Very big</ion-select-option>
+              <ion-select-option value={FontSize.VERY_SMALL}>{i18n.state.editor.very_small}</ion-select-option>
+              <ion-select-option value={FontSize.SMALL}>{i18n.state.editor.small}</ion-select-option>
+              <ion-select-option value={FontSize.NORMAL}>{i18n.state.editor.normal}</ion-select-option>
+              <ion-select-option value={FontSize.BIG}>{i18n.state.editor.big}</ion-select-option>
+              <ion-select-option value={FontSize.VERY_BIG}>{i18n.state.editor.very_big}</ion-select-option>
             </ion-select>
           </ion-item>
 

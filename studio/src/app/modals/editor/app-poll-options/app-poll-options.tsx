@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-poll-options',
   styleUrl: 'app-poll-options.scss',
@@ -223,20 +225,20 @@ export class AppPollOptions {
       <ion-header>
         <ion-toolbar color="senary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Poll</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.menu.poll}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
         <ion-list class="inputs-list">
-          <h2>Question</h2>
+          <h2>{i18n.state.editor.question}</h2>
           <ion-item>
             <ion-input
               value={this.question}
-              placeholder="Enter your question"
+              placeholder={i18n.state.editor.enter_question}
               debounce={500}
               disabled={this.editDisabled}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleQuestionInput(e)}></ion-input>
@@ -248,13 +250,13 @@ export class AppPollOptions {
           <div class="add-answer">
             <ion-button fill="clear" color="medium" onClick={() => this.addAnswer()} disabled={this.editDisabled}>
               <ion-icon name="add" slot="start"></ion-icon>
-              <ion-label>Add an answer</ion-label>
+              <ion-label>{i18n.state.editor.add_answer}</ion-label>
             </ion-button>
           </div>
         </ion-list>
 
         <ion-button disabled={!this.valid || this.editDisabled} color="dark" shape="round" onClick={() => this.save()}>
-          <ion-label>Save</ion-label>
+          <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
       </ion-content>,
     ];

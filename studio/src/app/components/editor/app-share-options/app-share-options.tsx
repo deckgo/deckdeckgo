@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, Host} from '@stencil/core';
 
 import store from '../../../stores/deck.store';
+import i18n from '../../../stores/i18n.store';
 
 import {MoreAction} from '../../../types/editor/more-action';
 
@@ -26,7 +27,7 @@ export class AppMoreShareOptions {
     if (store.state.published) {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}>
-          <p>Publish to update share</p>
+          <p>{i18n.state.share.update_share}</p>
         </a>
       );
     } else {
@@ -38,7 +39,7 @@ export class AppMoreShareOptions {
     if (store.state.published) {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.EMBED)}>
-          <p>Embed</p>
+          <p>{i18n.state.share.embed}</p>
         </a>
       );
     } else {
@@ -50,13 +51,13 @@ export class AppMoreShareOptions {
     if (store.state.published) {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.SHARE)}>
-          <p>Share link</p>
+          <p>{i18n.state.share.link}</p>
         </a>
       );
     } else {
       return (
         <a onClick={() => this.selectedOption.emit(MoreAction.PUBLISH)}>
-          <p>Share</p>
+          <p>{i18n.state.editor.share}</p>
         </a>
       );
     }

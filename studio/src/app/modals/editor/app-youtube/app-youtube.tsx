@@ -1,5 +1,7 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-youtube',
   styleUrl: 'app-youtube.scss',
@@ -45,8 +47,8 @@ export class AppYoutube {
       <ion-header>
         <ion-toolbar color="youtube">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">YouTube</ion-title>
@@ -57,7 +59,7 @@ export class AppYoutube {
           <ion-item>
             <ion-input
               value={this.youtubeUrl}
-              placeholder="Enter the URL of the video"
+              placeholder={i18n.state.editor.enter_youtube_url}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
           </ion-item>
@@ -68,7 +70,7 @@ export class AppYoutube {
           color="dark"
           shape="round"
           onClick={() => this.save()}>
-          <ion-label>Save</ion-label>
+          <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
       </ion-content>,
     ];

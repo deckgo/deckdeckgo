@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, h, Prop} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 import {EditAction} from '../../../../types/editor/edit-action';
 
 import {SelectedElement} from '../../../../types/editor/selected-element';
@@ -45,13 +47,13 @@ export class AppEditSlide {
 
   private renderTitle() {
     if (this.selectedElement.slide?.qrCode) {
-      return <h2>QR code options</h2>;
+      return <h2>{i18n.state.editor.qr_code_options}</h2>;
     } else if (this.selectedElement.slide?.chart) {
-      return <h2>Chart options</h2>;
+      return <h2>{i18n.state.editor.chart_options}</h2>;
     } else if (this.selectedElement.slide?.author) {
-      return <h2>Author options</h2>;
+      return <h2>{i18n.state.editor.author_options}</h2>;
     } else {
-      return <h2>Slide options</h2>;
+      return <h2>{i18n.state.editor.slide_options}</h2>;
     }
   }
 

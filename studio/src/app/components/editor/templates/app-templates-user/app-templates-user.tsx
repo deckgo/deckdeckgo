@@ -2,12 +2,14 @@ import {Component, Event, EventEmitter, Fragment, h} from '@stencil/core';
 
 import errorStore from '../../../../stores/error.store';
 import templatesStore from '../../../../stores/templates.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {signIn} from '../../../../utils/core/signin.utils';
 
 import {Template} from '../../../../models/data/template';
 import {TemplateService} from '../../../../services/data/template/template.service';
 import authStore from '../../../../stores/auth.store';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-templates-user',
@@ -55,13 +57,17 @@ export class AppTemplatesUser {
   private renderNotLoggedIn() {
     return (
       <div class="info ion-padding-start ion-padding-end">
-        <p>DeckDeckGo provides a set of default and community templates for your slides but, you can also use your own.</p>
+        <p>{i18n.state.templates.set_of_default}</p>
 
         <p>
-          <button type="button" class="app-button" onClick={() => this.signIn()}>
-            Sign in
-          </button>
-          to add yours.
+          {renderI18n(i18n.state.templates.sign_in_to_add, {
+            placeholder: '{0}',
+            value: (
+              <button type="button" class="app-button" onClick={() => this.signIn()}>
+                {i18n.state.nav.sign_in}
+              </button>
+            ),
+          })}
         </p>
       </div>
     );

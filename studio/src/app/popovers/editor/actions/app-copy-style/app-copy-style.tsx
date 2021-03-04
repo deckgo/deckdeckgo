@@ -1,6 +1,7 @@
 import {Component, Element, h, Prop} from '@stencil/core';
 
 import editorStore from '../../../../stores/editor.store';
+import i18n from '../../../../stores/i18n.store';
 
 @Component({
   tag: 'app-copy-style',
@@ -36,12 +37,12 @@ export class AppCopyStyle {
   render() {
     return (
       <div class="ion-padding">
-        <a onClick={() => this.copyStyle()} aria-label="Copy style">
-          <p>Copy style</p>
+        <a onClick={() => this.copyStyle()} aria-label={i18n.state.editor.copy_style}>
+          <p>{i18n.state.editor.copy_style}</p>
         </a>
 
-        <a onClick={() => this.applyStyle()} aria-label="Apply style" class={editorStore.state.style !== null ? undefined : 'disabled'}>
-          <p>Apply style</p>
+        <a onClick={() => this.applyStyle()} aria-label={i18n.state.editor.apply_style} class={editorStore.state.style !== null ? undefined : 'disabled'}>
+          <p>{i18n.state.editor.apply_style}</p>
         </a>
       </div>
     );

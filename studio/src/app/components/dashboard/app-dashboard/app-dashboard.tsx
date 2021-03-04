@@ -5,24 +5,25 @@ import {convertStyle} from '@deckdeckgo/deck-utils';
 import authStore from '../../../stores/auth.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import errorStore from '../../../stores/error.store';
+import i18n from '../../../stores/i18n.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 import {AuthUser} from '../../../models/auth/auth.user';
 
 import {signIn} from '../../../utils/core/signin.utils';
-
+import {renderI18n} from '../../../utils/core/i18n.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
-
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
+import {TemplateUtils} from '../../../utils/editor/template.utils';
+
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
-
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
+import {TemplateService} from '../../../services/data/template/template.service';
+
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
-import {TemplateService} from '../../../services/data/template/template.service';
-import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -445,7 +446,7 @@ export class AppDashboard {
   private renderAnonymousContent() {
     return (
       <main class="ion-padding fit anonymous">
-        <h1>Welcome to DeckDeckGo 👋</h1>
+        <h1>{i18n.state.dashboard.welcome}</h1>
 
         {this.renderNotLoggedInText()}
         {this.renderCreateButton(true)}
@@ -456,7 +457,7 @@ export class AppDashboard {
   private renderGuardedContent() {
     return (
       <main class="ion-padding fit">
-        <h1>Your presentations</h1>
+        <h1>{i18n.state.dashboard.your_presentations}</h1>
 
         {this.renderDecksFilter()}
 
@@ -470,11 +471,8 @@ export class AppDashboard {
   private renderNotLoggedInText() {
     return (
       <Fragment>
-        <p>
-          You can try right now our editor for slides but, we will kindly ask you to <a onClick={() => signIn()}>sign in</a> after three slides. We think it's
-          safer that way, because your content is saved in the cloud.
-        </p>
-        <p class="ion-no-margin">DeckDeckGo is free and open source 😃.</p>
+        <p>{renderI18n(i18n.state.dashboard.try, {placeholder: '{0}', value: <a onClick={() => signIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>})}</p>
+        <p class="ion-no-margin">{i18n.state.core.free_open_source}</p>
       </Fragment>
     );
   }
@@ -485,7 +483,7 @@ export class AppDashboard {
         <ion-searchbar
           debounce={500}
           animated={false}
-          placeholder="Filter your presentations"
+          placeholder={i18n.state.dashboard.filter}
           onClick={($event) => $event.stopImmediatePropagation()}
           onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
           class="ion-no-padding ion-margin-top ion-margin-bottom"
@@ -493,7 +491,7 @@ export class AppDashboard {
       );
     }
 
-    return <p>You don't have any slides yet. Go for it, create your first deck now!</p>;
+    return <p>{i18n.state.dashboard.no_slides}</p>;
   }
 
   private renderCreateButton(withSignIn: boolean) {
@@ -501,12 +499,12 @@ export class AppDashboard {
       <div class="toolbar-actions ion-margin-top">
         {withSignIn ? (
           <ion-button shape="round" color="light" onClick={() => signIn()} style={{'margin-right': '8px'}}>
-            <ion-label>Sign in</ion-label>
+            <ion-label>{i18n.state.nav.sign_in}</ion-label>
           </ion-button>
         ) : undefined}
 
         <ion-button shape="round" color="primary" onClick={() => this.navigateEditor()}>
-          <ion-label>Write a presentation</ion-label>
+          <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
         </ion-button>
       </div>
     );

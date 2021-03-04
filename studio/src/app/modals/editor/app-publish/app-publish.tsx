@@ -1,5 +1,7 @@
 import {Component, Element, Listen, h, State} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {PublishService} from '../../../services/editor/publish/publish.service';
 
 @Component({
@@ -78,8 +80,8 @@ export class AppPublish {
       <ion-header>
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
-            <ion-button onClick={() => this.closeModal()}>
-              <ion-icon aria-label="Close" src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
+              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
           {this.renderTitle()}
@@ -95,9 +97,9 @@ export class AppPublish {
 
   private renderTitle() {
     if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
-      return <ion-title class="ion-text-uppercase">Published</ion-title>;
+      return <ion-title class="ion-text-uppercase">{i18n.state.editor.published}</ion-title>;
     } else {
-      return <ion-title class="ion-text-uppercase">Ready to share?</ion-title>;
+      return <ion-title class="ion-text-uppercase">{i18n.state.nav.ready_to_share}</ion-title>;
     }
   }
 

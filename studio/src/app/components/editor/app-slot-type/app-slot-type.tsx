@@ -2,6 +2,7 @@ import {Component, Event, EventEmitter, Fragment, h, JSX, Prop, State} from '@st
 
 import {SlotType} from '../../../types/editor/slot-type';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
+import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-slot-type',
@@ -79,7 +80,7 @@ export class AppSlotType {
           SlotType.H1,
           <Fragment>
             <ion-icon name="text-outline" slot="start"></ion-icon>
-            <h1>Huge title</h1>
+            <h1>{i18n.state.editor.huge_title}</h1>
           </Fragment>
         )}
 
@@ -89,7 +90,7 @@ export class AppSlotType {
             <span class="placeholder" slot="start">
               &nbsp;
             </span>
-            <h2>Large title</h2>
+            <h2>{i18n.state.editor.large_title}</h2>
           </Fragment>
         )}
 
@@ -99,7 +100,7 @@ export class AppSlotType {
             <span class="placeholder" slot="start">
               &nbsp;
             </span>
-            <h3>Small title</h3>
+            <h3>{i18n.state.editor.small_title}</h3>
           </Fragment>
         )}
 
@@ -109,7 +110,7 @@ export class AppSlotType {
             <span class="placeholder" slot="start">
               &nbsp;
             </span>
-            <p>Paragraph</p>
+            <p>{i18n.state.editor.paragraph}</p>
           </Fragment>
         )}
 
@@ -141,7 +142,7 @@ export class AppSlotType {
     return (
       <a class="skip" onClick={() => this.select(null)}>
         <ion-item>
-          <p>Skip second element</p>
+          <p>{i18n.state.editor.skip}</p>
         </ion-item>
       </a>
     );
@@ -158,7 +159,7 @@ export class AppSlotType {
           SlotType.OL,
           <Fragment>
             <ion-icon src="/assets/icons/ionicons/list.svg" slot="start"></ion-icon>
-            <ion-label>List</ion-label>
+            <ion-label>{i18n.state.editor.list}</ion-label>
           </Fragment>
         )}
 
@@ -166,7 +167,7 @@ export class AppSlotType {
           SlotType.IMG,
           <Fragment>
             <ion-icon src="/assets/icons/ionicons/images.svg" slot="start"></ion-icon>
-            <ion-label>Image</ion-label>
+            <ion-label>{i18n.state.editor.image}</ion-label>
           </Fragment>
         )}
 
@@ -174,7 +175,7 @@ export class AppSlotType {
           SlotType.CODE,
           <Fragment>
             <ion-icon src="/assets/icons/ionicons/code.svg" slot="start"></ion-icon>
-            <ion-label>Code</ion-label>
+            <ion-label>{i18n.state.editor.code}</ion-label>
           </Fragment>
         )}
 
@@ -182,7 +183,7 @@ export class AppSlotType {
           SlotType.MARKDOWN,
           <Fragment>
             <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>
-            <ion-label>Markdown</ion-label>
+            <ion-label>{i18n.state.editor.markdown}</ion-label>
           </Fragment>
         )}
 
@@ -190,7 +191,7 @@ export class AppSlotType {
           SlotType.MATH,
           <Fragment>
             <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>
-            <ion-label>Math</ion-label>
+            <ion-label>{i18n.state.editor.math}</ion-label>
           </Fragment>
         )}
 
@@ -198,7 +199,7 @@ export class AppSlotType {
           SlotType.WORD_CLOUD,
           <Fragment>
             <ion-icon src="/assets/icons/word-cloud.svg" slot="start"></ion-icon>
-            <ion-label>Word Cloud</ion-label>
+            <ion-label>{i18n.state.editor.word_cloud}</ion-label>
           </Fragment>
         )}
       </Fragment>

@@ -2,6 +2,8 @@ import {Component, h, Element, Prop, Event, EventEmitter} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 @Component({
   tag: 'app-action-help',
 })
@@ -31,7 +33,7 @@ export class AppActionHelp {
     if (this.link) {
       return (
         <a onClick={() => this.openGetHelp()} aria-label="Help">
-          <p>Help</p>
+          <p>{i18n.state.editor.help}</p>
         </a>
       );
     } else {
@@ -39,12 +41,12 @@ export class AppActionHelp {
         <button
           onMouseDown={($event) => $event.stopPropagation()}
           onTouchStart={($event) => $event.stopPropagation()}
-          aria-label="Help"
+          aria-label={i18n.state.editor.help}
           onClick={($event: UIEvent) => this.openGetHelp($event)}
           class="get-help-action ion-activatable">
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/help.svg"></ion-icon>
-          <ion-label aria-hidden="true">Help</ion-label>
+          <ion-label aria-hidden="true">{i18n.state.editor.help}</ion-label>
         </button>
       );
     }

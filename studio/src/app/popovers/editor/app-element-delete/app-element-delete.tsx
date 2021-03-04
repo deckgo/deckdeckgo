@@ -1,8 +1,10 @@
 import {Component, Element, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-element-delete',
-  styleUrl: 'app-element-delete.scss'
+  styleUrl: 'app-element-delete.scss',
 })
 export class AppElementDelete {
   @Element() el: HTMLElement;
@@ -15,13 +17,13 @@ export class AppElementDelete {
     return [
       <ion-grid class="ion-no-padding ion-margin">
         <ion-row>
-          <h3>Delete?</h3>
+          <h3>{i18n.state.editor.delete_question}</h3>
           <p>
-            <small>This action cannot be undone.</small>
+            <small>{i18n.state.editor.action_cannot_undone}</small>
           </p>
         </ion-row>
       </ion-grid>,
-      this.renderActions()
+      this.renderActions(),
     ];
   }
 
@@ -30,13 +32,13 @@ export class AppElementDelete {
       <div class="element-delete-actions">
         <button class="no ion-activatable" onClick={() => this.closePopover(false)}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-label>No</ion-label>
+          <ion-label>{i18n.state.core.no}</ion-label>
         </button>
 
         <button class="yes ion-activatable" onClick={() => this.closePopover(true)}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-label>
-            <strong>Yes</strong>
+            <strong>{i18n.state.core.yes}</strong>
           </ion-label>
         </button>
       </div>

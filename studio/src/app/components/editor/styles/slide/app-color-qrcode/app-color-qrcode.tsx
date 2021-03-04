@@ -1,5 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 
 enum ApplyColorType {
@@ -77,21 +79,21 @@ export class AppColorQRCode {
   render() {
     return (
       <app-expansion-panel>
-        <ion-label slot="title">Colors</ion-label>
+        <ion-label slot="title">{i18n.state.editor.colors}</ion-label>
 
         <ion-list>
           <ion-item class="select">
-            <ion-label>Apply a color to</ion-label>
+            <ion-label>{i18n.state.editor.apply_a_color_to}</ion-label>
 
             <ion-select
               value={this.applyColorType}
-              placeholder="Apply a color to"
+              placeholder={i18n.state.editor.apply_a_color_to}
               onIonChange={($event: CustomEvent) => this.selectApplyType($event)}
               interface="popover"
               mode="md"
               class="ion-padding-start ion-padding-end">
-              <ion-select-option value={ApplyColorType.QR_CODE}>Fill</ion-select-option>,
-              <ion-select-option value={ApplyColorType.BACKDROP}>Backdrop</ion-select-option>,
+              <ion-select-option value={ApplyColorType.QR_CODE}>{i18n.state.editor.fill}</ion-select-option>,
+              <ion-select-option value={ApplyColorType.BACKDROP}>{i18n.state.editor.backdrop}</ion-select-option>,
             </ion-select>
           </ion-item>
         </ion-list>

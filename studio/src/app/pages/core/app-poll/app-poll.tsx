@@ -2,12 +2,14 @@ import {Component, h, Prop, State} from '@stencil/core';
 
 import errorStore from '../../../stores/error.store';
 import pollStore from '../../../stores/poll.store';
+import i18n from '../../../stores/i18n.store';
 
 import {get, set} from 'idb-keyval';
 
 import {DeckdeckgoPoll, DeckdeckgoPollAnswer} from '@deckdeckgo/types';
 
 import {PollService} from '../../../services/poll/poll.service';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-poll',
@@ -185,7 +187,7 @@ export class AppPoll {
       return undefined;
     }
 
-    return [<h1>Vote now!</h1>, <p>Scan the QR-Code displayed on screen or enter the code to make your voice heard.</p>, this.renderJoinPollForm()];
+    return [<h1>{i18n.state.poll.vote_now}</h1>, <p>{i18n.state.poll.scan}</p>, this.renderJoinPollForm()];
   }
 
   private renderJoinPollForm() {
@@ -216,7 +218,7 @@ export class AppPoll {
         disabled={!this.pollKey || this.pollKey === undefined || this.pollKey === '' || this.connecting}
         color="primary"
         shape="round">
-        <ion-label>Submit</ion-label>
+        <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
   }
@@ -225,10 +227,10 @@ export class AppPoll {
     return (
       <div class="submit-form ion-margin-top">
         <ion-button type="submit" disabled={!this.choice || this.choice === undefined || this.choice === ''} color="primary" shape="round">
-          <ion-label>Submit</ion-label>
+          <ion-label>{i18n.state.core.submit}</ion-label>
         </ion-button>
         <a class="ion-margin-start" onClick={() => this.cancel()}>
-          <ion-label>Cancel</ion-label>
+          <ion-label>{i18n.state.core.cancel}</ion-label>
         </a>
       </div>
     );
@@ -243,21 +245,27 @@ export class AppPoll {
       <article>
         <app-random-gif keyword={this.keywords[this.keywordIndex]}></app-random-gif>
 
-        <h1 class="ion-text-center">{this.keywords[this.keywordIndex]}! Your vote has been cast.</h1>
+        <h1 class="ion-text-center">
+          {this.keywords[this.keywordIndex]}! {i18n.state.poll.vote_cast}
+        </h1>
 
-        <p class="ion-text-center">Enjoy the presentation and watch out the screen for the real-time polling.</p>
+        <p class="ion-text-center">{i18n.state.poll.enjoy}</p>
 
         <ion-button type="button" onClick={() => this.cancel()} color="primary" shape="round" class="ion-margin-top">
-          <ion-label>Vote for another poll</ion-label>
+          <ion-label>{i18n.state.poll.vote_again}</ion-label>
         </ion-button>
 
         <div class="by-deckdeckgo">
-          Created with{' '}
-          <ion-router-link href="/" routerDirection="forward">
-            <div>
-              <app-logo></app-logo> DeckDeckGo
-            </div>
-          </ion-router-link>
+          {renderI18n(i18n.state.poll.created_with, {
+            placeholder: '{0}',
+            value: (
+              <ion-router-link href="/" routerDirection="forward">
+                <div>
+                  <app-logo></app-logo> DeckDeckGo
+                </div>
+              </ion-router-link>
+            ),
+          })}
         </div>
       </article>
     );

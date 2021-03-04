@@ -1,8 +1,12 @@
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
 
+import i18n from '../../stores/i18n.store';
+
 import {Deck} from '../../models/data/deck';
 import {UserSocial} from '../../models/data/user';
+
+import {i18nFormat} from './i18n.utils';
 
 export async function getPublishedUrl(deck: Deck | null): Promise<string> {
   if (deck?.data?.meta?.pathname !== '') {
@@ -25,20 +29,38 @@ export async function getShareTwitterText(deck: Deck | null, userName: string | 
   }
 
   if (deck?.data?.name !== '') {
-    return `"${deck.data.name}" by @${userSocial.twitter} created with @deckdeckgo`;
+    return i18nFormat(i18n.state.share.a_presentation_by, [
+      {placeholder: '{0}', value: `"${deck.data.name}"`},
+      {placeholder: '{1}', value: `@${userSocial.twitter}`},
+      {placeholder: '{2}', value: `@deckdeckgo`},
+    ]);
   } else {
-    return `A presentation by ${userSocial.twitter} created with @deckdeckgo`;
+    return i18nFormat(i18n.state.share.a_presentation_by, [
+      {placeholder: '{0}', value: i18n.state.share.a_presentation},
+      {placeholder: '{1}', value: `@${userSocial.twitter}`},
+      {placeholder: '{2}', value: `@deckdeckgo`},
+    ]);
   }
 }
 
 async function getCommonShareText(deck: Deck | null, userName: string | undefined, deckDeckGo: string): Promise<string> {
   if (deck?.data?.name !== '') {
     if (userName && userName !== undefined && userName !== '') {
-      return `"${deck.data.name}" by ${userName} created with ${deckDeckGo}`;
+      return i18nFormat(i18n.state.share.a_presentation_by, [
+        {placeholder: '{0}', value: `"${deck.data.name}"`},
+        {placeholder: '{1}', value: `${userName}`},
+        {placeholder: '{2}', value: `${deckDeckGo}`},
+      ]);
     } else {
-      return `"${deck.data.name}" created with ${deckDeckGo}`;
+      return i18nFormat(i18n.state.share.a_presentation_no_author, [
+        {placeholder: '{0}', value: `"${deck.data.name}"`},
+        {placeholder: '{1}', value: `${deckDeckGo}`},
+      ]);
     }
   } else {
-    return `A presentation created with ${deckDeckGo}`;
+    return i18nFormat(i18n.state.share.a_presentation_no_author, [
+      {placeholder: '{0}', value: i18n.state.share.a_presentation},
+      {placeholder: '{1}', value: `${deckDeckGo}`},
+    ]);
   }
 }

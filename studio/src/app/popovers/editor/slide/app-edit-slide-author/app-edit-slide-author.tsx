@@ -1,5 +1,7 @@
 import {Component, Element, Prop, h, EventEmitter, State} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 enum ImageMode {
   COVER = 'cover',
   CIRCLE = 'circle',
@@ -67,22 +69,22 @@ export class AppEditSlideAuthor {
   render() {
     return [
       <ion-item-divider class="ion-padding-top">
-        <ion-label>Image</ion-label>
+        <ion-label>{i18n.state.editor.image}</ion-label>
       </ion-item-divider>,
 
       <ion-item class="select">
-        <ion-label>Image</ion-label>
+        <ion-label>{i18n.state.editor.image}</ion-label>
 
         <ion-select
           value={this.currentImageMode}
-          placeholder="Select a mode to display the image"
+          placeholder={i18n.state.editor.display_mode_image}
           onIonChange={(e: CustomEvent) => this.toggleImageMode(e)}
           interface="popover"
           mode="md"
           class="ion-padding-start ion-padding-end">
-          <ion-select-option value={ImageMode.COVER}>Cover</ion-select-option>
-          <ion-select-option value={ImageMode.CIRCLE}>Circle</ion-select-option>
-          <ion-select-option value={ImageMode.NONE}>None</ion-select-option>
+          <ion-select-option value={ImageMode.COVER}>{i18n.state.editor.cover}</ion-select-option>
+          <ion-select-option value={ImageMode.CIRCLE}>{i18n.state.editor.circle}</ion-select-option>
+          <ion-select-option value={ImageMode.NONE}>{i18n.state.editor.none}</ion-select-option>
         </ion-select>
       </ion-item>,
     ];

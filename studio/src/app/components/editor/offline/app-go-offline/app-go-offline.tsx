@@ -2,8 +2,11 @@ import {Component, h, State, Event, EventEmitter} from '@stencil/core';
 
 import errorStore from '../../../../stores/error.store';
 import offlineStore from '../../../../stores/offline.store';
+import i18n from '../../../../stores/i18n.store';
 
 import {OfflineService} from '../../../../services/editor/offline/offline.service';
+
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-go-offline',
@@ -35,20 +38,26 @@ export class AppGoOffline {
     } catch (err) {
       this.goingOffline = false;
       this.inProgress.emit(false);
-      errorStore.state.error = 'Apologies, something went wrong and app was unable to go offline.';
+      errorStore.state.error = i18n.state.offline.error_offline;
     }
   }
 
   render() {
     return (
       <article>
-        <h1>Go offline</h1>
-        <p>Low bandwidth? Have to jump in a plane? Or want to present without internet connections?</p>
+        <h1>{i18n.state.editor.go_offline}</h1>
+        <p>{i18n.state.offline.why}</p>
         <p>
-          Turn DeckDeckGo <strong>offline</strong> to store your presentation locally.
+          {renderI18n(i18n.state.offline.turn, {
+            placeholder: '{0}',
+            value: <strong>{i18n.state.offline.offline}</strong>,
+          })}
         </p>
         <p>
-          You are still going to be able to <strong>edit</strong> your slides further.
+          {renderI18n(i18n.state.offline.still_edit, {
+            placeholder: '{0}',
+            value: <strong>{i18n.state.offline.edit}</strong>,
+          })}
         </p>
         <div class="ion-padding ion-text-center go">{this.renderGoOffline()}</div>
       </article>
@@ -59,14 +68,14 @@ export class AppGoOffline {
     if (!this.goingOffline) {
       return (
         <ion-button type="submit" color="tertiary" shape="round" onClick={() => this.goOffline()}>
-          <ion-label>Go offline now</ion-label>
+          <ion-label>{i18n.state.offline.offline_now}</ion-label>
         </ion-button>
       );
     } else {
       return (
         <div class="in-progress">
           <ion-progress-bar value={offlineStore.state.progress} color="tertiary"></ion-progress-bar>
-          <ion-label>Hang on, we are gathering the content.</ion-label>
+          <ion-label>{i18n.state.offline.hang_on_gather}</ion-label>
         </div>
       );
     }

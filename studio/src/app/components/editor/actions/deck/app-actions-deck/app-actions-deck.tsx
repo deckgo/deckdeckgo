@@ -9,6 +9,7 @@ import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
 import errorStore from '../../../../../stores/error.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
@@ -251,39 +252,39 @@ export class AppActionsDeck {
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            aria-label="Previous"
+            aria-label={i18n.state.editor.previous}
             onClick={() => this.animatePrevNextSlide.emit(false)}
             class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
-            <ion-label aria-hidden="true">Previous</ion-label>
+            <ion-label aria-hidden="true">{i18n.state.editor.previous}</ion-label>
           </button>
 
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            aria-label="Next"
+            aria-label={i18n.state.editor.next}
             onClick={() => this.animatePrevNextSlide.emit(true)}
             class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
-            <ion-label aria-hidden="true">Next</ion-label>
+            <ion-label aria-hidden="true">{i18n.state.editor.next}</ion-label>
           </button>
 
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            aria-label="Slides"
+            aria-label={i18n.state.editor.slides}
             onClick={() => this.openSlideNavigate()}
             color="primary"
             class="ion-activatable wider-devices">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/md-list.svg"></ion-icon>
-            <ion-label aria-hidden="true">Slides</ion-label>
+            <ion-label aria-hidden="true">{i18n.state.editor.slides}</ion-label>
           </button>
 
           <app-action-busy aria-label="Style" iconSrc="/assets/icons/ionicons/brush.svg" onActionReady={() => this.openDeckStyle()}>
-            <ion-label aria-hidden="true">Style</ion-label>
+            <ion-label aria-hidden="true">{i18n.state.editor.style}</ion-label>
           </app-action-busy>
         </ion-buttons>
 
@@ -293,13 +294,13 @@ export class AppActionsDeck {
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            aria-label="Remote"
+            aria-label={i18n.state.editor.present}
             onClick={() => this.openPresent()}
             color="primary"
             class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/play.svg"></ion-icon>
-            <ion-label aria-hidden="true">Present</ion-label>
+            <ion-label aria-hidden="true">{i18n.state.editor.present}</ion-label>
           </button>
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
@@ -307,13 +308,17 @@ export class AppActionsDeck {
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            aria-label={offlineStore.state.offline ? 'Go online' : 'Go offline'}
+            aria-label={offlineStore.state.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}
             onClick={() => this.goOnlineOffline()}
             color="primary"
             class="wider-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
-            {offlineStore.state.offline ? <ion-label aria-hidden="true">Go online</ion-label> : <ion-label aria-hidden="true">Go offline</ion-label>}
+            {offlineStore.state.offline ? (
+              <ion-label aria-hidden="true">{i18n.state.editor.go_online}</ion-label>
+            ) : (
+              <ion-label aria-hidden="true">{i18n.state.editor.go_offline}</ion-label>
+            )}
           </button>
 
           {this.renderBackup()}
@@ -328,7 +333,7 @@ export class AppActionsDeck {
             class="small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-icon aria-hidden="true" src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
-            <ion-label aria-hidden="true">More</ion-label>
+            <ion-label aria-hidden="true">{i18n.state.editor.more}</ion-label>
           </button>
         </ion-buttons>
       </aside>
@@ -348,7 +353,8 @@ export class AppActionsDeck {
         color="primary"
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon> <ion-label aria-hidden="true">Exit fullscreen</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon>{' '}
+        <ion-label aria-hidden="true">{i18n.state.editor.exit_fullscreen}</ion-label>
       </button>
     );
   }
@@ -362,12 +368,12 @@ export class AppActionsDeck {
       <button
         onMouseDown={($event) => $event.stopPropagation()}
         onTouchStart={($event) => $event.stopPropagation()}
-        aria-label="Backup"
+        aria-label={i18n.state.editor.backup}
         onClick={() => this.backupOfflineData()}
         color="primary"
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon> <ion-label aria-hidden="true">Backup</ion-label>
+        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon> <ion-label aria-hidden="true">{i18n.state.editor.backup}</ion-label>
       </button>
     );
   }

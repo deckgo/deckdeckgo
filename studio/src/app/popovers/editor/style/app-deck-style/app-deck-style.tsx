@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 import {TargetElement} from '../../../../types/editor/target-element';
 import {ImageAction} from '../../../../types/editor/image-action';
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
@@ -71,7 +73,7 @@ export class AppDeck {
     return (
       <Host edit-mode={settingsStore.state.editMode}>
         <ion-toolbar>
-          <h2>Deck style</h2>
+          <h2>{i18n.state.editor.deck_style}</h2>
           <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
         </ion-toolbar>
         <app-select-target-element

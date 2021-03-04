@@ -1,5 +1,7 @@
 import {Component, Element, h, Prop} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 import {MoreAction} from '../../../../types/editor/more-action';
 
 @Component({
@@ -25,22 +27,22 @@ export class AppMoreDeckActions {
   render() {
     return (
       <div class="ion-padding">
-        <a onClick={() => this.closePopover(MoreAction.JUMP_TO)} aria-label="Jump to slide">
-          <p>Slides</p>
+        <a onClick={() => this.closePopover(MoreAction.JUMP_TO)} aria-label={i18n.state.editor.slides}>
+          <p>{i18n.state.editor.slides}</p>
         </a>
 
         <a onClick={() => this.closePopover(MoreAction.PRESENT)}>
-          <p>Present</p>
+          <p>{i18n.state.editor.present}</p>
         </a>
 
         <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
 
-        <a onClick={() => this.closePopover(MoreAction.OFFLINE)} aria-label="Offline">
-          <p>{this.offline ? 'Go Online' : 'Go Offline'}</p>
+        <a onClick={() => this.closePopover(MoreAction.OFFLINE)} aria-label={this.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}>
+          <p>{this.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}</p>
         </a>
 
-        <a onClick={() => this.closePopover(MoreAction.BACKUP)} aria-label="Backup">
-          <p>Backup</p>
+        <a onClick={() => this.closePopover(MoreAction.BACKUP)} aria-label={i18n.state.editor.backup}>
+          <p>{i18n.state.editor.backup}</p>
         </a>
 
         <app-action-help link={true} onHelpSelected={() => this.closePopover(MoreAction.HELP)}></app-action-help>

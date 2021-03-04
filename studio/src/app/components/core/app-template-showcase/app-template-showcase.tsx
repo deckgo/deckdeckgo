@@ -1,5 +1,7 @@
 import {Component, Prop, h, State, Fragment} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {Template, TemplateDataSlot} from '../../../models/data/template';
 
 import {TemplateUtils} from '../../../utils/editor/template.utils';
@@ -61,7 +63,7 @@ export class AppTemplateShowcase {
     return (
       <div class="spinner">
         <ion-spinner color="medium"></ion-spinner>
-        <ion-label>Loading...</ion-label>
+        <ion-label>{i18n.state.core.loading}</ion-label>
       </div>
     );
   }

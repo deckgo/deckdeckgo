@@ -2,6 +2,7 @@ import {Component, Element, Event, EventEmitter, Fragment, h, State} from '@sten
 
 import userStore from '../../../../../stores/user.store';
 import assetsStore from '../../../../../stores/assets.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 import {Template} from '../../../../../models/data/template';
@@ -126,11 +127,11 @@ export class AppTemplatesDefault {
           poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
           count-answers={3}
           connectPollSocket={false}>
-          <p slot="question">Engage Your Audience / Poll</p>
-          <p slot="answer-1">Yes</p>
-          <p slot="answer-2">No</p>
-          <p slot="answer-3">Don't know</p>
-          <p slot="awaiting-votes">Live Votes With Mobile Devices</p>
+          <p slot="question">{i18n.state.templates.poll}</p>
+          <p slot="answer-1">{i18n.state.core.yes}</p>
+          <p slot="answer-2">{i18n.state.core.no}</p>
+          <p slot="answer-3">{i18n.state.templates.do_not_know}</p>
+          <p slot="awaiting-votes">{i18n.state.templates.live_votes}</p>
         </deckgo-slide-poll>
       </div>
     );
@@ -152,7 +153,7 @@ export class AppTemplatesDefault {
           height={68}
           src={assetsStore.state.chart.lineCompareSrc}
           custom-loader={true}>
-          <p slot="title">Charts</p>
+          <p slot="title">{i18n.state.templates.charts}</p>
         </deckgo-slide-chart>
       </div>
     );
@@ -162,21 +163,39 @@ export class AppTemplatesDefault {
     return (
       <div class="item" custom-tappable onClick={() => this.addSlideAspectRatio.emit()}>
         <deckgo-slide-aspect-ratio class="showcase" grid={true}>
-          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/robot-solid.svg`} aria-label="Robot" class="robot"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/desktop-solid.svg`} aria-label="Desktop" class="desktop"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`} aria-label="Arrow" class="arrow-start"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/cloud-solid.svg`} aria-label="Cloud" class="cloud"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/robot-solid.svg`}
+            aria-label={i18n.state.shapes.robot}
+            class="robot"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/desktop-solid.svg`}
+            aria-label={i18n.state.shapes.desktop}
+            class="desktop"></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
-            aria-label="Arrow"
+            aria-label={i18n.state.shapes.arrow}
+            class="arrow-start"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/cloud-solid.svg`}
+            aria-label={i18n.state.shapes.cloud}
+            class="cloud"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
+            aria-label={i18n.state.shapes.arrow}
             class="arrow-end-top"></deckgo-lazy-img>
           <deckgo-lazy-img
             svg-src={`${this.config.globalAssetsUrl}/img/shapes/arrow-right-solid.svg`}
-            aria-label="Arrow"
+            aria-label={i18n.state.shapes.arrow}
             class="arrow-end-bottom"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/database-solid.svg`} aria-label="Database" class="database"></deckgo-lazy-img>
-          <deckgo-lazy-img svg-src={`${this.config.globalAssetsUrl}/img/shapes/envelope-solid.svg`} aria-label="Envelope" class="envelope"></deckgo-lazy-img>
-          <span>Diagrams</span>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/database-solid.svg`}
+            aria-label={i18n.state.shapes.database}
+            class="database"></deckgo-lazy-img>
+          <deckgo-lazy-img
+            svg-src={`${this.config.globalAssetsUrl}/img/shapes/envelope-solid.svg`}
+            aria-label={i18n.state.shapes.envelope}
+            class="envelope"></deckgo-lazy-img>
+          <span>{i18n.state.templates.diagrams}</span>
         </deckgo-slide-aspect-ratio>
       </div>
     );
@@ -190,7 +209,7 @@ export class AppTemplatesDefault {
 
     return (
       <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.GIF})}>
-        <deckgo-slide-gif class="showcase" src={assetsStore.state.gif.exampleSrc} alt="Slide Gif">
+        <deckgo-slide-gif class="showcase" src={assetsStore.state.gif.exampleSrc} alt={i18n.state.editor.gif}>
           <p slot="top">
             <ion-skeleton-text style={{width: '60%'}}></ion-skeleton-text>
           </p>
@@ -229,7 +248,7 @@ export class AppTemplatesDefault {
     return (
       <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.PLAYGROUND})}>
         <deckgo-slide-content class="showcase gif">
-          <p slot="title">Playground</p>
+          <p slot="title">{i18n.state.templates.playground}</p>
           <app-playground-placeholder slot="content"></app-playground-placeholder>
         </deckgo-slide-content>
       </div>
@@ -252,7 +271,7 @@ export class AppTemplatesDefault {
               : 'https://pbs.twimg.com/profile_images/941274539979366400/bTKGkd-O_400x400.jpg'
           }
           img-alt="Author">
-          <p slot="title">Author</p>
+          <p slot="title">{i18n.state.templates.author}</p>
           <p slot="author">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>
           </p>
@@ -271,7 +290,7 @@ export class AppTemplatesDefault {
           class="showcase"
           content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl}
           img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
-          <p slot="title">QR Code Deep Linking</p>
+          <p slot="title">{i18n.state.templates.qr_code}</p>
         </deckgo-slide-qrcode>
       </div>
     );
@@ -288,7 +307,7 @@ export class AppTemplatesDefault {
           </p>
           <div slot="end">
             <deckgo-demo></deckgo-demo>
-            <ion-label>Showcase Your Apps</ion-label>
+            <ion-label>{i18n.state.templates.showcase}</ion-label>
           </div>
         </deckgo-slide-split>
       </div>

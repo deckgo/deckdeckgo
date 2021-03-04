@@ -2,6 +2,7 @@ import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/cor
 import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
 
 import store from '../../../stores/error.store';
+import i18n from '../../../stores/i18n.store';
 
 import {Deck} from '../../../models/data/deck';
 
@@ -148,14 +149,14 @@ export class AppDashboardDeckActions {
       <Host>
         <button
           onClick={($event: UIEvent) => this.cloneDeck($event)}
-          title="Clone presentation"
+          title={i18n.state.dashboard.copy}
           class={this.actionInProgress || disabled ? 'disabled' : undefined}>
           <ion-icon name="copy"></ion-icon>
         </button>
 
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
-          title="Delete presentation"
+          title={i18n.state.dashboard.delete}
           class={this.actionInProgress || disabled ? 'disabled' : undefined}>
           <ion-icon name="trash"></ion-icon>
         </button>

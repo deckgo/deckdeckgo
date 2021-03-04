@@ -3,6 +3,7 @@ import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/
 import {isSlide} from '@deckdeckgo/deck-utils';
 
 import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
 
 import {EditMode, Expanded} from '../../../../../types/core/settings';
 
@@ -210,7 +211,7 @@ export class AppImageStyle {
       <app-expansion-panel
         expanded={settingsStore.state.panels.imageStyle}
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({imageStyle: $event.detail})}>
-        <ion-label slot="title">Image</ion-label>
+        <ion-label slot="title">{i18n.state.editor.image}</ion-label>
         <ion-list>
           {this.renderImageSize()}
           {this.renderImageAlignment()}
@@ -222,11 +223,11 @@ export class AppImageStyle {
   private renderImageSize() {
     return [
       <ion-item-divider class="ion-padding-top">
-        <ion-label>Size</ion-label>
+        <ion-label>{i18n.state.editor.size}</ion-label>
       </ion-item-divider>,
 
       <ion-item class="select properties">
-        <ion-label>Size</ion-label>
+        <ion-label>{i18n.state.editor.size}</ion-label>
 
         <ion-select
           value={this.currentImageSize}
@@ -235,10 +236,10 @@ export class AppImageStyle {
           interface="popover"
           mode="md"
           class="ion-padding-start ion-padding-end">
-          <ion-select-option value={ImageSize.SMALL}>Small</ion-select-option>
-          <ion-select-option value={ImageSize.MEDIUM}>Medium</ion-select-option>
-          <ion-select-option value={ImageSize.LARGE}>Large</ion-select-option>
-          <ion-select-option value={ImageSize.ORIGINAL}>Original</ion-select-option>
+          <ion-select-option value={ImageSize.SMALL}>{i18n.state.editor.small}</ion-select-option>
+          <ion-select-option value={ImageSize.MEDIUM}>{i18n.state.editor.medium}</ion-select-option>
+          <ion-select-option value={ImageSize.LARGE}>{i18n.state.editor.large}</ion-select-option>
+          <ion-select-option value={ImageSize.ORIGINAL}>{i18n.state.editor.original}</ion-select-option>
         </ion-select>
       </ion-item>,
 
@@ -256,11 +257,11 @@ export class AppImageStyle {
   private renderImageAlignment() {
     return [
       <ion-item-divider class="ion-padding-top">
-        <ion-label>Alignment</ion-label>
+        <ion-label>{i18n.state.editor.alignment}</ion-label>
       </ion-item-divider>,
 
       <ion-item class="select properties">
-        <ion-label>Alignment</ion-label>
+        <ion-label>{i18n.state.editor.alignment}</ion-label>
 
         <ion-select
           value={this.currentImageAlignment}
@@ -269,9 +270,9 @@ export class AppImageStyle {
           interface="popover"
           mode="md"
           class="ion-padding-start ion-padding-end">
-          <ion-select-option value={ImageAlignment.START}>Start</ion-select-option>
-          <ion-select-option value={ImageAlignment.CENTER}>Center</ion-select-option>
-          <ion-select-option value={ImageAlignment.END}>End</ion-select-option>
+          <ion-select-option value={ImageAlignment.START}>{i18n.state.editor.start}</ion-select-option>
+          <ion-select-option value={ImageAlignment.CENTER}>{i18n.state.editor.center}</ion-select-option>
+          <ion-select-option value={ImageAlignment.END}>{i18n.state.editor.end}</ion-select-option>
         </ion-select>
       </ion-item>,
 

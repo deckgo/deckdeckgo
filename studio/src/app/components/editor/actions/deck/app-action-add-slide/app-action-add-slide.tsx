@@ -2,6 +2,8 @@ import {Component, Element, EventEmitter, h, JSX, Prop} from '@stencil/core';
 
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
+import i18n from '../../../../../stores/i18n.store';
+
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
@@ -275,10 +277,10 @@ export class AppActionAddSlide {
   render() {
     return (
       <app-action-busy
-        aria-label="Add slide"
+        aria-label={i18n.state.editor.add_slide}
         iconSrc="/assets/icons/ionicons/add.svg"
         onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
-        <ion-label aria-hidden="true">Add slide</ion-label>
+        <ion-label aria-hidden="true">{i18n.state.editor.add_slide}</ion-label>
       </app-action-busy>
     );
   }
