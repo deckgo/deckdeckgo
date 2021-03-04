@@ -1,4 +1,7 @@
 import {Component, Element, h, Prop} from '@stencil/core';
+
+import i18n from '../../../../stores/i18n.store';
+
 import {MoreAction} from '../../../../types/editor/more-action';
 
 @Component({
@@ -44,8 +47,8 @@ export class AppMoreElementActions {
     }
 
     return (
-      <a onClick={() => this.closePopover(MoreAction.NOTES)} aria-label="Notes">
-        <p>Notes</p>
+      <a onClick={() => this.closePopover(MoreAction.NOTES)} aria-label={i18n.state.editor.notes}>
+        <p>{i18n.state.editor.notes}</p>
       </a>
     );
   }
@@ -56,16 +59,16 @@ export class AppMoreElementActions {
     }
 
     return (
-      <a onClick={() => this.closePopover(MoreAction.CLONE)} aria-label="Copy">
-        <p>Copy</p>
+      <a onClick={() => this.closePopover(MoreAction.CLONE)} aria-label={i18n.state.editor.copy}>
+        <p>{i18n.state.editor.copy}</p>
       </a>
     );
   }
 
   private renderDelete() {
     return (
-      <a onClick={() => this.closePopover(MoreAction.DELETE)} aria-label="Delete">
-        <p>Delete</p>
+      <a onClick={() => this.closePopover(MoreAction.DELETE)} aria-label={i18n.state.core.delete}>
+        <p>{i18n.state.core.delete}</p>
       </a>
     );
   }
@@ -76,8 +79,8 @@ export class AppMoreElementActions {
     }
 
     return (
-      <a onClick={() => this.closePopover(MoreAction.IMAGES)} aria-label="Add an image">
-        <p>Add image</p>
+      <a onClick={() => this.closePopover(MoreAction.IMAGES)} aria-label={i18n.state.editor.add_image}>
+        <p>{i18n.state.editor.add_image}</p>
       </a>
     );
   }
@@ -88,8 +91,8 @@ export class AppMoreElementActions {
     }
 
     return (
-      <a onClick={() => this.closePopover(MoreAction.TRANSFORM)} aria-label="Transform">
-        <p>Transform</p>
+      <a onClick={() => this.closePopover(MoreAction.TRANSFORM)} aria-label={i18n.state.editor.transform}>
+        <p>{i18n.state.editor.transform}</p>
       </a>
     );
   }

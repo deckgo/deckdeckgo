@@ -138,6 +138,7 @@
     "header_footer_edit": "Your custom and predefined (Twitter, etc.) options can be edited in your {0}.",
     "background": "Background",
     "code": "Code",
+    "code_options": "Code options",
     "transition": "Transition",
     "sides": "Sides",
     "side": "Side",
@@ -221,6 +222,7 @@
     "regex": "Regex",
     "selector": "Selector",
     "line_numbers": "Line numbers",
+    "display_line_number": "Display line numbers",
     "terminal": "Terminal",
     "select_terminal": "Select a terminal",
     "theme": "Theme",
@@ -261,6 +263,7 @@
     "axis": "Axis",
     "grid": "Grid",
     "languages": "Languages",
+    "language": "Language",
     "filter_languages": "Filter languages",
     "your_data": "Your data",
     "your_collection_empty": "Your collection is empty",
@@ -284,7 +287,9 @@
     "scan": " Scan the QR-Code or get the Progressive Web Apps at {0}",
     "direction_up": "Direction up",
     "direction_down": "Direction down",
-    "enter_youtube_url": "Enter the URL of the video"
+    "enter_youtube_url": "Enter the URL of the video",
+    "copy_style": "Copy style",
+    "apply_style": "Apply style"
   },
   "offline": {
     "editing": "You are editing offline.",

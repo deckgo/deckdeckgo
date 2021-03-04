@@ -145,6 +145,7 @@ interface I18nEditor {
   header_footer_edit: string;
   background: string;
   code: string;
+  code_options: string;
   transition: string;
   sides: string;
   side: string;
@@ -228,6 +229,7 @@ interface I18nEditor {
   regex: string;
   selector: string;
   line_numbers: string;
+  display_line_number: string;
   terminal: string;
   select_terminal: string;
   theme: string;
@@ -268,6 +270,7 @@ interface I18nEditor {
   axis: string;
   grid: string;
   languages: string;
+  language: string;
   filter_languages: string;
   your_data: string;
   your_collection_empty: string;
@@ -292,6 +295,8 @@ interface I18nEditor {
   direction_up: string;
   direction_down: string;
   enter_youtube_url: string;
+  copy_style: string;
+  apply_style: string;
 }
 
 interface I18nOffline {
