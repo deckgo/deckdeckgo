@@ -8,6 +8,7 @@ interface I18nCore {
   reset: string;
   ok: string;
   save: string;
+  delete: string;
   sure: string;
 }
 
@@ -98,6 +99,7 @@ interface I18nEditor {
   backup: string;
   delete: string;
   notes: string;
+  notes_display: string;
   copy: string;
   format: string;
   options: string;
@@ -149,6 +151,8 @@ interface I18nEditor {
   history: string;
   history_details: string;
   stock_photo: string;
+  photos_by_unsplash: string;
+  searching: string;
   gif: string;
   your_images: string;
   waves: string;
@@ -247,6 +251,9 @@ interface I18nEditor {
   copy_to_clipboard: string;
   gifs: string;
   search_tenor: string;
+  url_playground: string;
+  embed_codepen: string;
+  youtube_video: string;
 }
 
 interface I18nOffline {

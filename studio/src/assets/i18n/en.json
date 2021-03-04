@@ -9,6 +9,7 @@
     "reset": "Reset",
     "ok": "Ok",
     "save": "Save",
+    "delete": "Delete",
     "sure": "Are you absolutely sure?"
   },
   "nav": {
@@ -91,6 +92,7 @@
     "backup": "Backup",
     "delete": "Delete",
     "notes": "Notes",
+    "notes_display": "Your notes are displayed in the {0}. Markdown is supported 😉",
     "copy": "Copy",
     "format": "Format",
     "options": "Options",
@@ -142,6 +144,8 @@
     "history": "History",
     "history_details": "The editor keeps track of the last 10 images you would have use in any of your presentations. Select one to add it again quickly.",
     "stock_photo": "Stock photo",
+    "photos_by_unsplash": "Photos by Unsplash",
+    "searching": "Seaching",
     "gif": "GIF",
     "your_images": "Your images",
     "waves": "Waves",
@@ -239,7 +243,10 @@
     "copy_embed_code": "Copy the following code to embed your presentation.",
     "copy_to_clipboard": "Copy to clipboard",
     "gifs": "GIFs",
-    "search_tenor": "Search Tenor"
+    "search_tenor": "Search Tenor",
+    "url_playground": "Enter the URL of the playground",
+    "embed_codepen": "Embed your best CodePen, JSFiddle or WebComponents.dev. All you need is to enter their full links. Check out this {0} for a quick tutorial.",
+    "youtube_video": "Youtube video"
   },
   "offline": {
     "editing": "You are editing offline.",

@@ -5,6 +5,7 @@ import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 import i18n from '../../../stores/i18n.store';
 
 import {PlaygroundAction} from '../../../types/editor/playground-action';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-playground',
@@ -85,7 +86,7 @@ export class AppPlayground {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Playground</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.templates.playground}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -93,7 +94,7 @@ export class AppPlayground {
           <ion-item>
             <ion-input
               value={this.playgroundSrc}
-              placeholder="Enter the URL of the playground"
+              placeholder={i18n.state.editor.url_playground}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
           </ion-item>
@@ -103,7 +104,7 @@ export class AppPlayground {
           <ion-select
             value={this.playgroundTheme}
             disabled={!this.supportsTheme}
-            placeholder="Select a theme"
+            placeholder={i18n.state.editor.select_theme}
             onIonChange={($event: CustomEvent) => this.toggleTheme($event)}
             interface="popover"
             mode="md"
@@ -124,15 +125,18 @@ export class AppPlayground {
           shape="round"
           class="ion-margin-top"
           onClick={() => this.save()}>
-          <ion-label>Save</ion-label>
+          <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
 
         <p>
-          Embed your best CodePen, JSFiddle or WebComponents.dev. All you need is to enter their full links. Check out this{' '}
-          <a href="https://www.youtube.com/watch?v=nS4A2XSwQrw" target="_blank" aria-label="Demo on YouTube" rel="noopener noreferrer">
-            YouTube video
-          </a>{' '}
-          for a quick tutorial.
+          {renderI18n(i18n.state.editor.embed_codepen, {
+            placeholder: '{0}',
+            value: (
+              <a href="https://www.youtube.com/watch?v=nS4A2XSwQrw" target="_blank" aria-label="Demo on YouTube" rel="noopener noreferrer">
+                {i18n.state.editor.youtube_video}
+              </a>
+            ),
+          })}
         </p>
       </ion-content>,
     ];

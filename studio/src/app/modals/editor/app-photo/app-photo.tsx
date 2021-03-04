@@ -191,7 +191,7 @@ export class AppPhoto {
       <ion-header>
         <ion-toolbar color="primary">
           <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-          <ion-title class="ion-text-uppercase">Stock photo</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.stock_photo}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -203,7 +203,7 @@ export class AppPhoto {
         {this.renderPhotosPlaceHolder()}
 
         <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText="Loading more photos..."></ion-infinite-scroll-content>
+          <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>,
       <ion-footer>
@@ -244,7 +244,7 @@ export class AppPhoto {
         <div class="photos-placeholder">
           <div>
             <ion-icon name="images"></ion-icon>
-            <ion-label class="ion-text-center">Photos by Unsplash</ion-label>
+            <ion-label class="ion-text-center">{i18n.state.editor.photos_by_unsplash}</ion-label>
             {this.renderPlaceHolderSearching()}
           </div>
         </div>
@@ -258,7 +258,7 @@ export class AppPhoto {
     if (this.searching) {
       return (
         <p class="searching ion-margin-top">
-          Searching <ion-spinner color="medium"></ion-spinner>
+          {i18n.state.editor.searching} <ion-spinner color="medium"></ion-spinner>
         </p>
       );
     } else {

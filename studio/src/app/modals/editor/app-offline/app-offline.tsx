@@ -49,7 +49,7 @@ export class AppNotes {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">{this.offline ? 'Go Online' : 'Go Offline'}</ion-title>
+          <ion-title class="ion-text-uppercase">{this.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding" color="light">

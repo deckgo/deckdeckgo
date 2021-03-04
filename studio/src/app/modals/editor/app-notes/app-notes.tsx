@@ -1,6 +1,7 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-notes',
@@ -96,16 +97,19 @@ export class AppNotes {
               <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-uppercase">Notes</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.notes}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
         <p>
-          Your notes are displayed in the{' '}
-          <a href="https://deckdeckgo.app" target="_blank">
-            remote control <ion-icon src="/assets/icons/ionicons/open.svg" role="presentation"></ion-icon>
-          </a>
-          . Markdown is supported 😉
+          {renderI18n(i18n.state.editor.notes_display, {
+            placeholder: '{0}',
+            value: (
+              <a href="https://deckdeckgo.app" target="_blank">
+                {i18n.state.menu.remote_control} <ion-icon src="/assets/icons/ionicons/open.svg" role="presentation"></ion-icon>
+              </a>
+            ),
+          })}
         </p>
 
         <ion-list class="ion-no-padding">
@@ -123,11 +127,11 @@ export class AppNotes {
 
         <div class="notes-actions ion-margin-top">
           <ion-button color="dark" shape="round" onClick={() => this.save()}>
-            <ion-label>Save</ion-label>
+            <ion-label>{i18n.state.core.save}</ion-label>
           </ion-button>
 
           <ion-button color="dark" shape="round" onClick={() => this.delete()} fill="outline">
-            <ion-label>Delete</ion-label>
+            <ion-label>{i18n.state.core.delete}</ion-label>
           </ion-button>
         </div>
       </ion-content>,
