@@ -189,6 +189,8 @@ interface I18nEditor {
   no_images: string;
   typography: string;
   default: string;
+  community: string;
+  yours: string;
   no_options: string;
   auto_slide: string;
   direction: string;
@@ -297,6 +299,21 @@ interface I18nEditor {
   enter_youtube_url: string;
   copy_style: string;
   apply_style: string;
+  add_new_slide: string;
+  select_chart: string;
+  compose_slide: string;
+  back_to_slides: string;
+  action_cannot_undone: string;
+  delete_question: string;
+  fullscreen_tips: string;
+  fullscreen_edit: string;
+  fullscreen_typo: string;
+  fullscreen_swipe: string;
+  got_it: string;
+  need_help: string;
+  need_help_comment: string;
+  reach_us: string;
+  or: string;
 }
 
 interface I18nOffline {

@@ -4,6 +4,7 @@ import {SegmentChangeEventDetail} from '@ionic/core';
 
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
 
 import {SlideAttributes, SlideTemplate, SlideScope} from '../../../models/data/slide';
 
@@ -186,15 +187,15 @@ export class AppCreateSlide {
         onIonChange={($event: CustomEvent<SegmentChangeEventDetail>) => (this.templatesCategory = $event?.detail?.value as 'default' | 'community' | 'user')}
         disabled={this.composeTemplate !== undefined}>
         <ion-segment-button mode="md" value="default">
-          <ion-label>Default</ion-label>
+          <ion-label>{i18n.state.editor.default}</ion-label>
         </ion-segment-button>
 
         <ion-segment-button mode="md" value="community">
-          <ion-label>Community</ion-label>
+          <ion-label>{i18n.state.editor.community}</ion-label>
         </ion-segment-button>
 
         <ion-segment-button mode="md" value="user">
-          <ion-label>Yours</ion-label>
+          <ion-label>{i18n.state.editor.yours}</ion-label>
         </ion-segment-button>
       </ion-segment>
     );
@@ -202,10 +203,10 @@ export class AppCreateSlide {
 
   private renderToolbarTitle() {
     if (this.composeTemplate == undefined) {
-      return <h2>Add a new slide</h2>;
+      return <h2>{i18n.state.editor.add_new_slide}</h2>;
     }
 
-    return <h2>{this.composeTemplate?.template === SlideTemplate.CHART ? 'Select a chart' : 'Compose your slide'}</h2>;
+    return <h2>{this.composeTemplate?.template === SlideTemplate.CHART ? i18n.state.editor.select_chart : i18n.state.editor.compose_slide}</h2>;
   }
 
   private renderToolbarAction() {
@@ -215,7 +216,7 @@ export class AppCreateSlide {
 
     return (
       <app-close-menu slot="start" onClose={() => this.backCompose()}>
-        <ion-icon aria-label="Back to all slides" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
+        <ion-icon aria-label={i18n.state.editor.back_to_slides} src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
       </app-close-menu>
     );
   }
