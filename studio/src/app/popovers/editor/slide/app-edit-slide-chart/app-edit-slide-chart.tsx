@@ -1,5 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State, Host} from '@stencil/core';
 
+import i18n from '../../../../stores/i18n.store';
+
 import {SlideAttributesYAxisDomain, SlideChartType} from '../../../../models/data/slide';
 
 import {EditAction} from '../../../../types/editor/edit-action';
@@ -201,11 +203,11 @@ export class AppEditSlideChart {
 
     return [
       <ion-item-divider class="ion-margin-top">
-        <h4 class="ion-no-margin">Data source</h4>
+        <h4 class="ion-no-margin">{i18n.state.editor.data_separator}</h4>
       </ion-item-divider>,
 
       <ion-item-divider>
-        <ion-label>Date pattern</ion-label>
+        <ion-label>{i18n.state.editor.date_pattern}</ion-label>
       </ion-item-divider>,
 
       <ion-item class="with-padding">
@@ -231,7 +233,7 @@ export class AppEditSlideChart {
         <ion-input
           value={this.innerRadius}
           type="number"
-          placeholder="A radius to display a donut"
+          placeholder={i18n.state.editor.radius_display}
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInnerRadiusInput(e)}
           onIonChange={() => this.applyChartChanges()}></ion-input>
@@ -246,24 +248,24 @@ export class AppEditSlideChart {
 
     return [
       <ion-item>
-        <ion-label>Smooth</ion-label>
+        <ion-label>{i18n.state.editor.smooth}</ion-label>
         <ion-checkbox slot="end" checked={this.smooth} onIonChange={() => this.toggleSmooth()}></ion-checkbox>
       </ion-item>,
 
       <ion-item>
-        <ion-label>Area</ion-label>
+        <ion-label>{i18n.state.editor.area}</ion-label>
         <ion-checkbox slot="end" checked={this.area} onIonChange={() => this.toggleArea()}></ion-checkbox>
       </ion-item>,
 
       <ion-item>
-        <ion-label>Grid</ion-label>
+        <ion-label>{i18n.state.editor.grid}</ion-label>
         <ion-checkbox slot="end" checked={this.grid} onIonChange={() => this.toggleGrid()}></ion-checkbox>
       </ion-item>,
 
-      <ion-item-divider class="ion-margin-top">Y-axis</ion-item-divider>,
+      <ion-item-divider class="ion-margin-top">{i18n.state.editor.y_axis}</ion-item-divider>,
 
       <ion-item class="select">
-        <ion-label>Domain</ion-label>
+        <ion-label>{i18n.state.editor.domain}</ion-label>
 
         <ion-select
           value={this.yAxisDomain}
@@ -272,18 +274,18 @@ export class AppEditSlideChart {
           interface="popover"
           mode="md"
           class="ion-padding-start ion-padding-end">
-          <ion-select-option value="max">Max</ion-select-option>
-          <ion-select-option value="extent">Extent</ion-select-option>
+          <ion-select-option value="max">{i18n.state.editor.max}</ion-select-option>
+          <ion-select-option value="extent">{i18n.state.editor.extent}</ion-select-option>
         </ion-select>
       </ion-item>,
 
-      <ion-item-divider>Ticks</ion-item-divider>,
+      <ion-item-divider>{i18n.state.editor.ticks}</ion-item-divider>,
 
       <ion-item class="with-padding">
         <ion-input
           value={this.ticks}
           type="number"
-          placeholder="A custom number of ticks"
+          placeholder={i18n.state.editor.custom_number_ticks}
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleTicksInput(e)}
           onIonChange={() => this.applyChartChanges()}></ion-input>

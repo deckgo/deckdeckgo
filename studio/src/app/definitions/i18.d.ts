@@ -340,6 +340,31 @@ interface I18nEditor {
   files: string;
   finance: string;
   jump_or_change: string;
+  math_options: string;
+  qr_code_options: string;
+  chart_options: string;
+  author_options: string;
+  slide_options: string;
+  display_mode_image: string;
+  cover: string;
+  none: string;
+  data_separator: string;
+  date_pattern: string;
+  radius_display: string;
+  smooth: string;
+  area: string;
+  y_axis: string;
+  domain: string;
+  max: string;
+  extent: string;
+  ticks: string;
+  custom_number_ticks: string;
+  qr_code_explanation: string;
+  target: string;
+  your_presentation: string;
+  custom_url: string;
+  your_logo: string;
+  delete_logo: string;
 }
 
 interface I18nOffline {

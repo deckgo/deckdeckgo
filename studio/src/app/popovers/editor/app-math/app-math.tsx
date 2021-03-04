@@ -57,7 +57,7 @@ export class AppMath {
   render() {
     return [
       <ion-toolbar>
-        <h2>{i18n.state.editor.math}</h2>
+        <h2>{i18n.state.editor.math_options}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
       <ion-list class="article">
