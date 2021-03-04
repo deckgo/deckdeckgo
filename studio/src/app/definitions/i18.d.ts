@@ -10,6 +10,7 @@ interface I18nCore {
   save: string;
   delete: string;
   sure: string;
+  add: string;
 }
 
 interface I18nNav {
@@ -254,6 +255,15 @@ interface I18nEditor {
   url_playground: string;
   embed_codepen: string;
   youtube_video: string;
+  question: string;
+  enter_question: string;
+  add_answer: string;
+  published: string;
+  remote: string;
+  scan: string;
+  direction_up: string;
+  direction_down: string;
+  enter_youtube_url: string;
 }
 
 interface I18nOffline {

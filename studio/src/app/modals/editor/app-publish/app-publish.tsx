@@ -97,9 +97,9 @@ export class AppPublish {
 
   private renderTitle() {
     if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
-      return <ion-title class="ion-text-uppercase">Published</ion-title>;
+      return <ion-title class="ion-text-uppercase">{i18n.state.editor.published}</ion-title>;
     } else {
-      return <ion-title class="ion-text-uppercase">Ready to share?</ion-title>;
+      return <ion-title class="ion-text-uppercase">{i18n.state.nav.ready_to_share}</ion-title>;
     }
   }
 

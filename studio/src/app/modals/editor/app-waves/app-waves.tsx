@@ -123,7 +123,7 @@ export class AppWaves {
         <ion-header>
           <ion-toolbar color="quaternary">
             <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-            <ion-title class="ion-text-uppercase">Waves</ion-title>
+            <ion-title class="ion-text-uppercase">{i18n.state.editor.waves}</ion-title>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
@@ -134,17 +134,17 @@ export class AppWaves {
           </div>
 
           <app-expansion-panel>
-            <ion-label slot="title">Waves</ion-label>
+            <ion-label slot="title">{i18n.state.editor.waves}</ion-label>
             {this.renderOptions()}
           </app-expansion-panel>
 
           <app-expansion-panel>
-            <ion-label slot="title">Color</ion-label>
+            <ion-label slot="title">{i18n.state.editor.color}</ion-label>
             {this.renderColor()}
           </app-expansion-panel>
 
           <ion-button onClick={() => this.selectWave()} color="dark" shape="round">
-            Add
+            {i18n.state.core.add}
           </ion-button>
         </ion-content>
       </Fragment>
@@ -170,7 +170,7 @@ export class AppWaves {
           size="small"
           onClick={() => this.setOrientation('upward')}
           color={this.orientation === 'upward' ? 'quaternary' : 'medium'}
-          aria-label="Direction up">
+          aria-label={i18n.state.editor.direction_up}>
           <ion-icon name="chevron-up"></ion-icon>
         </ion-fab-button>
 
@@ -178,7 +178,7 @@ export class AppWaves {
           size="small"
           onClick={() => this.setOrientation('downward')}
           color={this.orientation === 'downward' ? 'quaternary' : 'medium'}
-          aria-label="Direction down">
+          aria-label={i18n.state.editor.direction_down}>
           <ion-icon name="chevron-down"></ion-icon>
         </ion-fab-button>
 

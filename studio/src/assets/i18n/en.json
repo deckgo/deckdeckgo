@@ -10,7 +10,8 @@
     "ok": "Ok",
     "save": "Save",
     "delete": "Delete",
-    "sure": "Are you absolutely sure?"
+    "sure": "Are you absolutely sure?",
+    "add": "Add"
   },
   "nav": {
     "menu": "Menu",
@@ -246,7 +247,16 @@
     "search_tenor": "Search Tenor",
     "url_playground": "Enter the URL of the playground",
     "embed_codepen": "Embed your best CodePen, JSFiddle or WebComponents.dev. All you need is to enter their full links. Check out this {0} for a quick tutorial.",
-    "youtube_video": "Youtube video"
+    "youtube_video": "Youtube video",
+    "question": "Question",
+    "enter_question": "Enter your question",
+    "add_answer": "Add an answer",
+    "published": "Published",
+    "remote": "Control your presentation from your phone, tablet or any devices where you can also see your notes, set a timer and draw over your slides.",
+    "scan": " Scan the QR-Code or get the Progressive Web Apps at {0}",
+    "direction_up": "Direction up",
+    "direction_down": "Direction down",
+    "enter_youtube_url": "Enter the URL of the video"
   },
   "offline": {
     "editing": "You are editing offline.",

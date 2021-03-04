@@ -59,7 +59,7 @@ export class AppYoutube {
           <ion-item>
             <ion-input
               value={this.youtubeUrl}
-              placeholder="Enter the URL of the video"
+              placeholder={i18n.state.editor.enter_youtube_url}
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}></ion-input>
           </ion-item>
@@ -70,7 +70,7 @@ export class AppYoutube {
           color="dark"
           shape="round"
           onClick={() => this.save()}>
-          <ion-label>Save</ion-label>
+          <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
       </ion-content>,
     ];
