@@ -11,6 +11,8 @@ interface I18nCore {
   delete: string;
   sure: string;
   add: string;
+  submit: string;
+  cancel: string;
 }
 
 interface I18nNav {
@@ -367,6 +369,15 @@ interface I18nShapes {
   envelope: string;
 }
 
+interface I18nPoll {
+  vote_now: string;
+  scan: string;
+  vote_cast: string;
+  enjoy: string;
+  vote_again: string;
+  created_with: string;
+}
+
 interface I18n {
   lang: 'en';
   core: I18nCore;
@@ -384,4 +395,5 @@ interface I18n {
   warning: I18nWarning;
   templates: I18nTemplates;
   shapes: I18nShapes;
+  poll: I18nPoll;
 }

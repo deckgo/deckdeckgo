@@ -11,7 +11,9 @@
     "save": "Save",
     "delete": "Delete",
     "sure": "Are you absolutely sure?",
-    "add": "Add"
+    "add": "Add",
+    "submit": "Submit",
+    "cancel": "Cancel"
   },
   "nav": {
     "menu": "Menu",
@@ -352,5 +354,13 @@
     "cloud": "Cloud",
     "database": "Database",
     "envelope": "Envelope"
+  },
+  "poll": {
+    "vote_now": "Vote now!",
+    "scan": "Scan the QR-Code displayed on screen or enter the code to make your voice heard.",
+    "vote_cast": "Your vote has been cast.",
+    "enjoy": "Enjoy the presentation and watch out the screen for the real-time polling.",
+    "vote_again": "Vote for another poll",
+    "created_with": "Created with {0}"
   }
 }
