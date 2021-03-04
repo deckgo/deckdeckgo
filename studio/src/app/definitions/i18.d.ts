@@ -245,6 +245,8 @@ interface I18nEditor {
   embed: string;
   copy_embed_code: string;
   copy_to_clipboard: string;
+  gifs: string;
+  search_tenor: string;
 }
 
 interface I18nOffline {

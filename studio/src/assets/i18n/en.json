@@ -237,7 +237,9 @@
     "enter_demo_url": "Enter the URL of your app or website",
     "embed": "Embed",
     "copy_embed_code": "Copy the following code to embed your presentation.",
-    "copy_to_clipboard": "Copy to clipboard"
+    "copy_to_clipboard": "Copy to clipboard",
+    "gifs": "GIFs",
+    "search_tenor": "Search Tenor"
   },
   "offline": {
     "editing": "You are editing offline.",

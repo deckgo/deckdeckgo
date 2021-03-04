@@ -223,7 +223,7 @@ export class AppGif {
       <ion-header>
         <ion-toolbar color="secondary">
           <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-          <ion-title class="ion-text-uppercase">GIFs</ion-title>
+          <ion-title class="ion-text-uppercase">{i18n.state.editor.gifs}</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
@@ -235,14 +235,14 @@ export class AppGif {
           onSelectImage={($event: CustomEvent) => this.selectGif($event)}></app-image-columns>
 
         <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText="Loading more GIFs..."></ion-infinite-scroll-content>
+          <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>,
       <ion-footer>
         <ion-toolbar>
           <ion-searchbar
             debounce={500}
-            placeholder="Search Tenor"
+            placeholder={i18n.state.editor.search_tenor}
             value={this.searchTerm}
             onIonClear={() => this.clear()}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
