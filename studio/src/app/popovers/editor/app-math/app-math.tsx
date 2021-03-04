@@ -1,5 +1,7 @@
 import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 @Component({
   tag: 'app-math',
   styleUrl: 'app-math.scss',
@@ -55,12 +57,12 @@ export class AppMath {
   render() {
     return [
       <ion-toolbar>
-        <h2>Math options</h2>
+        <h2>{i18n.state.editor.math}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
       </ion-toolbar>,
       <ion-list class="article">
         <ion-item-divider>
-          <ion-label>Macros</ion-label>
+          <ion-label>{i18n.state.editor.macros}</ion-label>
         </ion-item-divider>
 
         <ion-item class="select">

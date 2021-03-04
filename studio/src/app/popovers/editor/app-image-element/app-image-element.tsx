@@ -1,5 +1,7 @@
 import {Component, Element, Prop, h} from '@stencil/core';
 
+import i18n from '../../../stores/i18n.store';
+
 import {ImageAction} from '../../../types/editor/image-action';
 
 @Component({
@@ -28,7 +30,7 @@ export class AppImageElement {
   render() {
     return [
       <ion-toolbar>
-        <h2>{this.slide ? 'Slide background' : 'Image'}</h2>
+        <h2>{this.slide ? i18n.state.editor.slide_background : i18n.state.editor.image}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>
       </ion-toolbar>,
       <app-image selectedElement={this.selectedElement} slide={this.slide} onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>,

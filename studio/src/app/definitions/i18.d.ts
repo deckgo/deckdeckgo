@@ -314,6 +314,22 @@ interface I18nEditor {
   need_help_comment: string;
   reach_us: string;
   or: string;
+  slide_background: string;
+  macros: string;
+  remote_enabled: string;
+  remote_disabled: string;
+  presenter_view: string;
+  remote_features: string;
+  open_presenter_view: string;
+  control_presentation: string;
+  connect: string;
+  start_presenting: string;
+  enter_fullscreen_to_start: string;
+  enter_fullscreen: string;
+  no_pending_requests: string;
+  grant_access: string;
+  deny: string;
+  accept: string;
 }
 
 interface I18nOffline {
