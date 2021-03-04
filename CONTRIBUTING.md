@@ -42,9 +42,22 @@ Some bugs (sh\*t happens) might not yet been reported. Likewise, your awesome id
 
 ## Translation
 
-We are in the making of adding i18n to our applications. These following are those which can be currently translated.
-
 We would be grateful to get your help to translate our apps!
+
+### Editor
+
+The selection or detection of the language is not yet implemented in our editor. As soon as someone contributes with a language other than English, we will be happy to develop such function.
+
+Meanwhile, the online editor ([studio](https://github.com/deckgo/deckdeckgo/tree/master/studio)) can be translated as following:
+
+1. Translate each keys in [en.json](https://github.com/deckgo/deckdeckgo/blob/master/studio/src/assets/i18n/en.json)
+2. Once finished, copy this file to a new filename reflecting the language (such as for example `fr.json` for French)
+3. Revert the changes in `en.json`
+4. Provide a PR
+
+Translations are handled in JSON files but, as we are consuming these through a store, their representation have to exist as interfaces.
+To ease the process we have developed a script which extract the declarations automatically.
+In case you would add new keys, run `npm run i18n` to generate the interfaces.
 
 ### Site
 
@@ -54,5 +67,13 @@ The new website of [DeckDeckGo] supports i18n. To provide a new language with a 
 2. Translate the text of the pages "index, enterprise and discover" in their related [json](https://github.com/deckgo/deckdeckgo/tree/master/site/src/assets/i18n/) data.
 3. Translate all other pages directly in their related Javascript files (we did not extract the text from the "simple" page).
 4. Provide a translation for the [meta](https://github.com/deckgo/deckdeckgo/blob/master/site/gatsby-config.js) description.
+
+### Remote
+
+The remote control is not yet translated. If you think that's a must, let us now!
+
+### Docs
+
+We don't plan to translate the documentation for developers, it seems like quite a big task. That being said, we are welcoming contributions. If you are up to, for sure that would be awesome!
 
 [deckdeckgo]: https://deckdeckgo.com
