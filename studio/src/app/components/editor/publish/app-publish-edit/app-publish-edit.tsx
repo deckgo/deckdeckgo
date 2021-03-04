@@ -33,7 +33,10 @@ export class AppPublishEdit {
   private description: string;
 
   @State()
-  private valid: boolean = true;
+  private validTitle: boolean = true;
+
+  @State()
+  private validDescription: boolean = true;
 
   @State()
   private disablePublish: boolean = false;
@@ -241,7 +244,7 @@ export class AppPublishEdit {
   }
 
   private validateCaptionInput() {
-    this.valid = this.validCaption(this.caption);
+    this.validTitle = this.validCaption(this.caption);
   }
 
   private validCaption(title: string): boolean {
@@ -263,11 +266,8 @@ export class AppPublishEdit {
   }
 
   private validateDescriptionInput() {
-    this.valid = this.validDescription();
-  }
-
-  private validDescription(): boolean {
-    return !this.description || this.description === undefined || this.description === '' || this.description.length < Constants.DECK.DESCRIPTION_MAX_LENGTH;
+    this.validDescription =
+      !this.description || this.description === undefined || this.description === '' || this.description.length <= Constants.DECK.DESCRIPTION_MAX_LENGTH;
   }
 
   private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -388,7 +388,7 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateCaptionInput()}></ion-input>
             </ion-item>
 
-            <p class={`small ${this.valid ? undefined : 'error'}`}>
+            <p class={`small ${this.validTitle ? undefined : 'error'}`}>
               The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than {Constants.DECK.TITLE_MAX_LENGTH}{' '}
               characters.
             </p>
@@ -456,9 +456,9 @@ export class AppPublishEdit {
 
   private renderTitleLabel() {
     return (
-      <ion-item class={`item-title ${this.valid ? undefined : 'error'}`}>
+      <ion-item class={`item-title ${this.validTitle ? undefined : 'error'}`}>
         <ion-label>
-          Title {this.valid ? undefined : <ion-icon aria-label="Title needs to match the expected format" name="warning-outline"></ion-icon>}
+          Title {this.validTitle ? undefined : <ion-icon aria-label="Title needs to match the expected format" name="warning-outline"></ion-icon>}
         </ion-label>
       </ion-item>
     );
@@ -467,7 +467,11 @@ export class AppPublishEdit {
   private renderPublish(disable: boolean) {
     if (!disable) {
       return (
-        <ion-button type="submit" disabled={!this.valid || this.disablePublish || !apiUserStore.state.apiUser} color="tertiary" shape="round">
+        <ion-button
+          type="submit"
+          disabled={!this.validTitle || !this.validDescription || this.disablePublish || !apiUserStore.state.apiUser}
+          color="tertiary"
+          shape="round">
           <ion-label>Publish now</ion-label>
         </ion-button>
       );
