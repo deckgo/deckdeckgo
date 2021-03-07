@@ -13,6 +13,11 @@
 
     <script type="module" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js"></script>
 
+    <script
+      type="module"
+      src="https://unpkg.com/@deckdeckgo/drag-resize-rotate@latest/dist/deckdeckgo-drag-resize-rotate/deckdeckgo-drag-resize-rotate.esm.js"
+    ></script>
+
     <style>
       * {
         box-sizing: border-box;
@@ -54,21 +59,13 @@
             </text>
 
             <foreignObject x="0" y="0" width="100%" height="100%">
-              <span
-                contenteditable="true"
-                style="
-                  color: #154d54;
-                  font-family: Montserrat;
-                  font-size: 122px;
-                  font-weight: bold;
-                  letter-spacing: 0;
-                  position: absolute;
-                  left: 608px;
-                  top: 426.237px;
-                  transform: translate(0px, -80%);
-                "
-                >Thank you!</span
-              >
+              <deckgo-drr unit="px" text="true" style="--top: 426.237px; --left: 608px; --rotate: 0deg">
+                <span
+                  contenteditable="true"
+                  style="color: #154d54; font-family: Montserrat; font-size: 122px; font-weight: bold; letter-spacing: 0"
+                  >Thank you!</span
+                >
+              </deckgo-drr>
 
               <span
                 contenteditable="true"
