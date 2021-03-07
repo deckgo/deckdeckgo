@@ -1,3 +1,9 @@
+# 2.9.2 (2021-03-07)
+
+### Docs
+
+- new highlight code CSS variable `--deckgo-highlight-code-line-height`
+
 # 2.9.1 (2021-01-14)
 
 ### Docs

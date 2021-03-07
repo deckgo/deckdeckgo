@@ -152,8 +152,8 @@ The `<deckgo-highlight-code/>` could be styled using the following CSS4 variable
 | --deckgo-highlight-code-margin-bottom             | 16px 0 or 0 0 16px       | Margin bottom of the code                                                         |
 | --deckgo-highlight-code-zoom                      | 1                        | If you wish to manually zoom the code                                             |
 | --deckgo-highlight-code-white-space               | pre-wrap                 | The attribute white-space of the displayed                                        |
-| code                                              |
 | --deckgo-highlight-code-font-size                 |                          | The size of the font for the code                                                 |
+| --deckgo-highlight-code-line-height               |                          | The line height of the font for the code                                          |
 | --deckgo-highlight-code-font-family               | monospace                | The family of the font for the code                                               |
 | --deckgo-highlight-code-line-background           | #3E4564                  | The background of the lines you wish to highlight                                 |
 | --deckgo-highlight-code-line-numbers              | #999999                  | The color of the line numbers and divider                                         |
