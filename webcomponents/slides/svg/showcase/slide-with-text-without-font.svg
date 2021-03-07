@@ -1,8 +1,8 @@
 <svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0)">
 <rect width="1920" height="1080" fill="white"/>
-<text fill="#154D54" xml:space="preserve" style="white-space: pre" font-family="Montserrat" font-size="122" font-weight="bold" letter-spacing="0px"><tspan x="608" y="426.237">Thank you!</tspan></text>
-<text fill="#202323" xml:space="preserve" style="white-space: pre" font-family="Raleway" font-size="64" font-weight="600" letter-spacing="0px"><tspan x="792" y="547.092">Questions?</tspan></text>
+<text fill="#154D54" xml:space="preserve" style="white-space: pre" font-size="122" font-weight="bold" letter-spacing="0px"><tspan x="608" y="426.237">Thank you!</tspan></text>
+<text fill="#202323" xml:space="preserve" style="white-space: pre" font-size="64" font-weight="600" letter-spacing="0px"><tspan x="792" y="547.092">Questions?</tspan></text>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1137.25 938.88C1157.5 899.18 1215.43 889.572 1253.3 913.006C1279.59 929.271 1297.78 957.533 1326.23 969.672C1344.6 977.501 1365.18 977.687 1384.82 981.389C1426.06 989.217 1463.32 1014.52 1487.45 1048.65C1493.74 1057.55 1501.56 1070.11 1506.06 1082.67H1133.74C1132.19 1058.72 1130.64 1034.72 1129.05 1010.77C1127.46 986.404 1126.14 960.627 1137.25 938.88Z" fill="#FF6B48"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1616.18 798.27C1638.96 774.601 1675.89 772.537 1708.65 775.164C1781.82 781.022 1853.67 802.58 1918.06 837.827V1082.67H1668.77C1627.52 1030.78 1608.49 964.605 1598.46 899.039C1593.17 864.074 1591.67 823.815 1616.18 798.27Z" fill="#7BD5E1"/>
 <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="1158" y="695" width="786" height="418">
@@ -3671,8 +3671,8 @@
 <g mask="url(#mask610)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1882.05 833.99C1881.42 833.99 1880.84 834.18 1880.35 834.508C1879.55 835.052 1879.02 835.973 1879.02 837.016C1879.02 837.225 1879.04 837.431 1879.08 837.627C1879.24 838.416 1879.71 839.092 1880.35 839.53C1880.84 839.855 1881.42 840.045 1882.05 840.045C1883.51 840.045 1884.73 839.008 1885.02 837.627C1885.06 837.431 1885.08 837.225 1885.08 837.016C1885.08 835.345 1883.72 833.99 1882.05 833.99Z" fill="#23385C"/>
 </g>
-<text transform="translate(110 700)" fill="#202323" xml:space="preserve" style="white-space: pre" font-family="Raleway" font-size="36" font-weight="500" letter-spacing="0px"><tspan x="135.633" y="39.708"> Unsplash&#10;</tspan><tspan x="103.43" y="93.708"> Futura, Raleway&#10;</tspan><tspan x="214.664" y="147.708"> Freepik&#10;</tspan><tspan x="0" y="201.708">&#10;</tspan><tspan x="0" y="255.708">Your Name, your@email.com, @twitter_handle</tspan></text>
-<text transform="translate(110 700)" fill="#202323" xml:space="preserve" style="white-space: pre" font-family="Raleway" font-size="36" font-weight="bold" letter-spacing="0px"><tspan x="0" y="39.708">Images:</tspan><tspan x="0" y="93.708">Fonts:</tspan><tspan x="0" y="147.708">Illustrations:</tspan></text>
+<text transform="translate(110 700)" fill="#202323" xml:space="preserve" style="white-space: pre" font-size="36" font-weight="500" letter-spacing="0px"><tspan x="135.633" y="39.708"> Unsplash&#10;</tspan><tspan x="103.43" y="93.708"> Futura, Raleway&#10;</tspan><tspan x="214.664" y="147.708"> Freepik&#10;</tspan><tspan x="0" y="201.708">&#10;</tspan><tspan x="0" y="255.708">Your Name, your@email.com, @twitter_handle</tspan></text>
+<text transform="translate(110 700)" fill="#202323" xml:space="preserve" style="white-space: pre" font-size="36" font-weight="bold" letter-spacing="0px"><tspan x="0" y="39.708">Images:</tspan><tspan x="0" y="93.708">Fonts:</tspan><tspan x="0" y="147.708">Illustrations:</tspan></text>
 </g>
 <defs>
 <clipPath id="clip0">
