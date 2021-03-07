@@ -60,7 +60,7 @@ export class SlideSvg implements DeckdeckgoSlide {
         <div class="deckgo-slide">
           <div class="deckgo-aspect-ratio-container">
             <div class="deckgo-aspect-ratio-content">
-              <deckgo-lazy-img svg-src={this.svgSrc}></deckgo-lazy-img>
+              <deckgo-lazy-img svgSrc={this.svgSrc}></deckgo-lazy-img>
 
               <slot />
             </div>
