@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+
+    <title>DeckDeckGo - Template SVG</title>
+
+    <script type="module" src="/build/deckdeckgo-slide-svg.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-slide-svg.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/lazy-img@latest/dist/deckdeckgo-lazy-img/deckdeckgo-lazy-img.esm.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <deckgo-deck>
+      <deckgo-slide-svg srg-src="../showcase/slide.svg">
+        <fragment contenteditable="true">
+          <svg width="100%" height="100%" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text fill="#154D54" font-family="Montserrat" font-size="122" font-weight="bold" letter-spacing="0px">
+              <tspan x="608" y="426.237">Thank you!</tspan>
+            </text>
+            <text fill="#202323" font-family="Raleway" font-size="64" font-weight="600" letter-spacing="0px">
+              <tspan x="792" y="547.092">Questions?</tspan>
+            </text>
+            <text transform="translate(110 700)" fill="#202323" font-family="Raleway" font-size="36" font-weight="500" letter-spacing="0px">
+              <tspan x="135.633" y="39.708">Unsplash&#10;</tspan>
+              <tspan x="103.43" y="93.708">Futura, Raleway&#10;</tspan>
+              <tspan x="214.664" y="147.708">Freepik&#10;</tspan>
+              <tspan x="0" y="201.708">&#10;</tspan>
+              <tspan x="0" y="255.708">Your Name, your@email.com, @twitter_handle</tspan>
+            </text>
+            <text
+              transform="translate(110 700)"
+              fill="#202323"
+              font-family="Raleway"
+              font-size="36"
+              font-weight="bold"
+              letter-spacing="0px"
+            >
+              <tspan x="0" y="39.708">Images:</tspan>
+              <tspan x="0" y="93.708">Fonts:</tspan>
+              <tspan x="0" y="147.708">Illustrations:</tspan>
+            </text>
+          </svg>
+        </fragment>
+      </deckgo-slide-svg>
+
+      <img
+        slot="background"
+        data-src="https://images.unsplash.com/photo-1548523697-8bd0d1ecc91a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80"
+        style="width: 400px"
+      />
+
+      <div slot="header">
+        <img style="max-height: 100%" src="https://deckdeckgo.com/assets/favicon/icon-default-512x512.png" /> DeckDeckGo
+      </div>
+      <div slot="footer">
+        <img style="max-height: 100%" src="https://abs.twimg.com/responsive-web/web/icon-default-maskable-large.433070b4.png" />
+        daviddalbusco
+      </div>
+
+      <button onclick="slideNext()" slot="actions">Action slide next</button>
+    </deckgo-deck>
+
+    <script type="text/javascript">
+      function slideNext() {
+        const elem = document.getElementsByTagName('deckgo-deck');
+        if (elem && elem.length > 0) {
+          elem[0].slideNext(false);
+        }
+      }
+
+      document.addEventListener(
+        'deckDidLoad',
+        () => {
+          window.dispatchEvent(new Event('resize'));
+        },
+        {once: true}
+      );
+    </script>
+  </body>
+</html>

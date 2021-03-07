@@ -1,0 +1,54 @@
+@import "./deckdeckgo-slide";
+@import "./deckdeckgo-slide-slots";
+
+div.deckgo-slide {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  padding: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+div.deckgo-aspect-ratio-container {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div.deckgo-aspect-ratio-content {
+    position: relative;
+
+    width: var(--slide-width);
+    height: var(--slide-height);
+
+    overflow: visible;
+  }
+}
+
+svg,
+::slotted(*) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+svg {
+  z-index: 0;
+}
+
+::slotted(*) {
+  text-align: center;
+  user-select: text;
+
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+}
