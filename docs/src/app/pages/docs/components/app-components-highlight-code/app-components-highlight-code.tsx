@@ -436,14 +436,14 @@ export class AppComponentsHighlightCode {
                 <td>The attribute white-space of the displayed</td>
               </tr>
               <tr>
-                <td>code</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
                 <td>--deckgo-highlight-code-font-size</td>
                 <td></td>
                 <td>The size of the font for the code</td>
+              </tr>
+              <tr>
+                <td>--deckgo-highlight-code-line-height</td>
+                <td></td>
+                <td>The line height of the font for the code</td>
               </tr>
               <tr>
                 <td>--deckgo-highlight-code-font-family</td>

@@ -4,7 +4,7 @@ import {PrerenderHydrateOptions} from '@stencil/core/internal/stencil-public-com
 export const config: PrerenderConfig = {
   hydrateOptions(url?: URL): PrerenderHydrateOptions {
     const hydrate: PrerenderHydrateOptions = {
-      excludeComponents: ['deckgo-highlight-code', 'deckgo-slide-poll', 'deckgo-word-cloud'],
+      excludeComponents: ['deckgo-highlight-code', 'deckgo-deck', 'deckgo-slide-poll', 'deckgo-word-cloud', 'deckgo-demo', 'deckgo-gif'],
     };
     return hydrate;
   },

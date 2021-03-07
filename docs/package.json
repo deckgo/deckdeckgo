@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-docs",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "The Progressive Web App alternative for simple presentations",
   "license": "MIT",
   "files": [
@@ -20,7 +20,7 @@
     "@deckdeckgo/deck-utils": "^3.4.0",
     "@deckdeckgo/demo": "^2.0.1",
     "@deckdeckgo/drag-resize-rotate": "^2.0.1",
-    "@deckdeckgo/highlight-code": "^2.4.0",
+    "@deckdeckgo/highlight-code": "^2.5.1",
     "@deckdeckgo/inline-editor": "^3.0.2",
     "@deckdeckgo/lazy-img": "^3.0.0",
     "@deckdeckgo/markdown": "^2.0.1",
