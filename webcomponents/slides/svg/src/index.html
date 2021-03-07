@@ -148,6 +148,11 @@
         },
         {once: true}
       );
+
+      setTimeout(() => {
+        const text = document.querySelector('text');
+        console.log(text?.getBBox(), text);
+      }, 5000);
     </script>
   </body>
 </html>
