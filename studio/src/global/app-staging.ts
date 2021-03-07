@@ -33,6 +33,7 @@ import '@deckdeckgo/slide-qrcode';
 import '@deckdeckgo/slide-chart';
 import '@deckdeckgo/slide-poll';
 import '@deckdeckgo/slide-aspect-ratio';
+import '@deckdeckgo/slide-playground';
 
 import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
 
