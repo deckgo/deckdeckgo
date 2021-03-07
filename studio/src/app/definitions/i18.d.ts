@@ -368,6 +368,7 @@ interface I18nEditor {
   deck_style: string;
   slide_style: string;
   transform_element: string;
+  transform_slide: string;
 }
 
 interface I18nOffline {
