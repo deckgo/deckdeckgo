@@ -19,6 +19,13 @@
     ></script>
 
     <style>
+      @import url(https://fonts.googleapis.com/css?family=Signika);
+      body {
+        font-family: 'Signika', sans-serif;
+      }
+    </style>
+
+    <style>
       * {
         box-sizing: border-box;
       }
@@ -35,10 +42,12 @@
   </head>
   <body style="margin: 0">
     <deckgo-deck>
-      <deckgo-slide-svg svg-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/figma/webcomponents/slides/svg/showcase/slide.svg">
+      <deckgo-slide-svg
+        svg-src="https://raw.githubusercontent.com/deckgo/deckdeckgo/figma/webcomponents/slides/svg/showcase/slide-with-text-without-font.svg"
+      >
         <fragment>
           <svg width="100%" height="100%" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <text fill="#154D54" font-family="Montserrat" font-size="122" font-weight="bold" letter-spacing="0px">
+            <text fill="#154D54" font-size="122" font-weight="bold" letter-spacing="0px">
               <tspan x="608" y="426.237">Thank you!</tspan>
             </text>
             <text fill="#202323" font-family="Raleway" font-size="64" font-weight="600" letter-spacing="0px">
@@ -59,10 +68,8 @@
             </text>
 
             <foreignObject x="0" y="0" width="100%" height="100%">
-              <deckgo-drr unit="px" text="true" style="--top: 426.237px; --left: 608px; --rotate: 0deg">
-                <span
-                  contenteditable="true"
-                  style="color: #154d54; font-family: Montserrat; font-size: 122px; font-weight: bold; letter-spacing: 0"
+              <deckgo-drr unit="px" text="true" style="--top: 319.234375px; --left: 608px; --rotate: 0deg">
+                <span contenteditable="true" style="color: #154d54; font-size: 122px; font-weight: bold; letter-spacing: 0"
                   >Thank you!</span
                 >
               </deckgo-drr>
@@ -152,7 +159,7 @@
       setTimeout(() => {
         const text = document.querySelector('text');
         console.log(text?.getBBox(), text);
-      }, 5000);
+      }, 1000);
     </script>
   </body>
 </html>
