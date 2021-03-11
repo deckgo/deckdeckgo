@@ -73,7 +73,6 @@ export class DeckEventsHandler {
     this.mainRef.addEventListener('imgDidChange', this.onCustomEventChange, false);
     this.mainRef.addEventListener('linkCreated', this.onCustomEventChange, false);
     this.mainRef.addEventListener('drrDidChange', this.onCustomEventChange, false);
-    this.mainRef.addEventListener('notesDidChange', this.onSlideChange, false);
 
     if (!document) {
       return;
@@ -84,6 +83,7 @@ export class DeckEventsHandler {
     document.addEventListener('slideDelete', this.onSlideDelete, false);
     document.addEventListener('deckDidChange', this.onDeckChange, false);
     document.addEventListener('deckNeedChange', this.onDeckNeedChange, false);
+    document.addEventListener('notesDidChange', this.onSlideChange, false);
   }
 
   destroy() {
@@ -97,7 +97,6 @@ export class DeckEventsHandler {
     this.mainRef.removeEventListener('imgDidChange', this.onCustomEventChange, true);
     this.mainRef.removeEventListener('linkCreated', this.onCustomEventChange, true);
     this.mainRef.removeEventListener('drrDidChange', this.onCustomEventChange, true);
-    this.mainRef.removeEventListener('notesDidChange', this.onSlideChange, true);
 
     if (!document) {
       return;
@@ -108,6 +107,7 @@ export class DeckEventsHandler {
     document.removeEventListener('slideDelete', this.onSlideDelete, true);
     document.removeEventListener('deckDidChange', this.onDeckChange, true);
     document.removeEventListener('deckNeedChange', this.onDeckNeedChange, true);
+    document.removeEventListener('notesDidChange', this.onSlideChange, true);
   }
 
   private onSlideDidLoad = async ($event: CustomEvent) => {
@@ -140,6 +140,8 @@ export class DeckEventsHandler {
   };
 
   private onSlideChange = async ($event: CustomEvent) => {
+    console.log('yo', $event);
+
     if (!$event || !$event.detail) {
       return;
     }
