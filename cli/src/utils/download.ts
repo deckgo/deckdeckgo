@@ -2,16 +2,16 @@ import {get, RequestOptions} from 'https';
 import fs from 'fs';
 import path from 'path';
 
-export function downloadStarterMaster() {
-  return downloadFromURL(`https://github.com/deckgo/starter-kit/archive/master.zip`);
+export function downloadStarterMain() {
+  return downloadFromURL(`https://github.com/deckgo/starter-kit/archive/main.zip`);
 }
 
 export function downloadFontsKey() {
   return downloadFromURL(`https://api.deckdeckgo.com/googlefonts/`);
 }
 
-export function downloadTemplateMaster() {
-  return downloadFromURL(`https://github.com/deckgo/template-kit/archive/master.zip`);
+export function downloadTemplateMain() {
+  return downloadFromURL(`https://github.com/deckgo/template-kit/archive/main.zip`);
 }
 
 export function downloadFontsList(key: string) {
