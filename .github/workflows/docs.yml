@@ -3,9 +3,9 @@ name: CI - Docs
 on:
   push:
     branches:
-      - master
+      - main
     paths:
-      - 'docs/**'
+      - "docs/**"
 
 jobs:
   build:
