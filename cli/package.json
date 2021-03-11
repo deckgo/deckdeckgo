@@ -1,6 +1,6 @@
 {
   "name": "create-deckdeckgo",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Create a new DeckDeckGo presentation or template",
   "main": "dist/index.js",
   "scripts": {
