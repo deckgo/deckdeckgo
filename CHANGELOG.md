@@ -1,10 +1,11 @@
 <a name="4.3.0"></a>
 
-# [4.3.0](https://github.com/deckgo/deckdeckgo/compare/v4.2.0...v4.3.0) (In progress...)
+# [4.3.0](https://github.com/deckgo/deckdeckgo/compare/v4.2.0...v4.3.0) (2021-03-12)
 
 ### Applications
 
 - docs: v2.9.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- studio: v4.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
 
@@ -13,6 +14,7 @@
 
 ### Others
 
+- cli: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
 - deck-utils: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 - kit: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
 - starter kit: v7.1.5 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))

@@ -2,7 +2,7 @@ import {bold, cyan} from 'colorette';
 import {Spinner} from 'cli-spinner';
 
 import {rimraf} from './utils/utils';
-import {downloadTemplateMaster} from './utils/download';
+import {downloadTemplateMain} from './utils/download';
 import {unZipBuffer} from './utils/unzip';
 import {installDependencies} from './utils/install';
 
@@ -62,7 +62,7 @@ const downloadTemplate = async (answers: Answers) => {
   rimraf(answers.name);
 
   // 2. Download starter
-  const buffer = await downloadTemplateMaster();
+  const buffer = await downloadTemplateMain();
   await unZipBuffer(buffer, answers.name);
 
   loading.stop(true);

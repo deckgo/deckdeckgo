@@ -1,3 +1,21 @@
+# 4.3.0 (2020-03-12)
+
+### Features
+
+- i18n ([#370](https://github.com/deckgo/deckdeckgo/issues/370))
+- toggle slide type on the fly ([#251](https://github.com/deckgo/deckdeckgo/issues/251))
+- do not fetch code language list at runtime to improve performance ([#1083](https://github.com/deckgo/deckdeckgo/issues/1083))
+- add telegram to web-social-share options ([#1090](https://github.com/deckgo/deckdeckgo/issues/1090))
+
+### Fix
+
+- notes not persisted - listener has to be attached higher ([#1102](https://github.com/deckgo/deckdeckgo/pull/1102))
+- support swipe for templates with custom names ([#1079](https://github.com/deckgo/deckdeckgo/pull/1079))
+- custom templates names ([#1086](https://github.com/deckgo/deckdeckgo/pull/1086))
+- main deck selector to go offline ([#1088](https://github.com/deckgo/deckdeckgo/pull/1088))
+- low contrast warning ([#1094](https://github.com/deckgo/deckdeckgo/pull/1094))
+- publish action disable state ([#1095](https://github.com/deckgo/deckdeckgo/issues/1095))
+
 # 4.2.0 (2020-02-10)
 
 ### Features

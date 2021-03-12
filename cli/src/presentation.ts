@@ -4,9 +4,9 @@ import {Spinner} from 'cli-spinner';
 
 import {installFont} from './utils/fonts';
 import {rimraf} from './utils/utils';
-import {downloadStarterMaster} from './utils/download';
+import {downloadStarterMain} from './utils/download';
 import {unZipBuffer} from './utils/unzip';
-import { installDependencies } from "./utils/install";
+import {installDependencies} from './utils/install';
 
 interface Answers {
   folder: string;
@@ -74,28 +74,28 @@ const prompt = (): Promise<Answers> => {
   const inquirer = require('inquirer');
 
   return inquirer.prompt(questions);
-}
+};
 
 const info = (answers: Answers) => {
   console.log(
     '\nRun ' +
-    cyan('npm run start') +
-    ' in the newly created folder ' +
-    cyan(answers.folder) +
-    ' to serve your presentation locally at the address ' +
-    cyan('http://localhost:3000') +
-    '\n'
+      cyan('npm run start') +
+      ' in the newly created folder ' +
+      cyan(answers.folder) +
+      ' to serve your presentation locally at the address ' +
+      cyan('http://localhost:3000') +
+      '\n'
   );
 
   console.log('Find this presentation in the remote control with the keyword: ' + cyan(answers.title) + '\n');
   console.log(
     'If you rather like not to use the remote control while developing your deck, run ' +
-    cyan('npm run start-no-remote') +
-    ' instead of the previous command\n'
+      cyan('npm run start-no-remote') +
+      ' instead of the previous command\n'
   );
 
   console.log('Dive deeper with the "Getting Started" guide at ' + cyan('https://docs.deckdeckgo.com') + '\n');
-}
+};
 
 const createPresentation = async (answers: Answers) => {
   await downloadInstallPresentation(answers);
@@ -103,7 +103,7 @@ const createPresentation = async (answers: Answers) => {
   await installDependencies(answers.folder, '2/3');
 
   await updatePresentation(answers);
-}
+};
 
 const downloadInstallPresentation = async (answers: Answers) => {
   const loading = new Spinner(bold('[1/3] Creating your presentation...'));
@@ -114,11 +114,11 @@ const downloadInstallPresentation = async (answers: Answers) => {
   rimraf(answers.folder);
 
   // 2. Download starter
-  const buffer = await downloadStarterMaster();
+  const buffer = await downloadStarterMain();
   await unZipBuffer(buffer, answers.folder);
 
   loading.stop(true);
-}
+};
 
 const updatePresentation = async (answers: Answers) => {
   const loading = new Spinner(bold('[3/3] Updating presentation...'));
@@ -129,7 +129,7 @@ const updatePresentation = async (answers: Answers) => {
   replaceAnswers(answers);
 
   loading.stop(true);
-}
+};
 
 const replaceAnswers = (answers: Answers) => {
   const replaceResources = [
@@ -171,4 +171,4 @@ const replaceAnswers = (answers: Answers) => {
     recursive: false,
     silent: true
   });
-}
+};
