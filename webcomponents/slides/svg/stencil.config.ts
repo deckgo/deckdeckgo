@@ -13,9 +13,6 @@ export const config: Config = {
     {
       type: 'www',
       serviceWorker: null
-    },
-    {
-      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [
