@@ -1,5 +1,7 @@
 import {Component, Fragment, h, JSX, State} from '@stencil/core';
 
+import {modalController, OverlayEventDetail} from '@ionic/core';
+
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
 import authStore from '../../../stores/auth.store';
@@ -427,6 +429,18 @@ export class AppDashboard {
     unsubscribe();
   };
 
+  private async presentDeckImport() {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-deck-import',
+    });
+
+    modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
+      // TODO: Refresh
+    });
+
+    await modal.present();
+  }
+
   render() {
     if (this.loading) {
       return this.renderLoading();
@@ -457,14 +471,44 @@ export class AppDashboard {
   private renderGuardedContent() {
     return (
       <main class="ion-padding fit">
-        <h1>{i18n.state.dashboard.your_presentations}</h1>
+        {this.renderCreatePresentation()}
+
+        {this.renderYourPresentations()}
+      </main>
+    );
+  }
+
+  private renderYourPresentations() {
+    return (
+      <Fragment>
+        <h2>{i18n.state.dashboard.your_presentations}</h2>
 
         {this.renderDecksFilter()}
 
         {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
 
         {this.renderDecks()}
-      </main>
+      </Fragment>
+    );
+  }
+
+  private renderCreatePresentation() {
+    return (
+      <Fragment>
+        <h2>{i18n.state.dashboard.start_new_presentation}</h2>
+
+        <ion-label>{i18n.state.dashboard.create_or_import}</ion-label>
+
+        <div class="ion-padding-top ion-padding-bottom">
+          <ion-button shape="round" color="primary" onClick={() => this.navigateEditor()}>
+            <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
+          </ion-button>
+
+          <ion-button shape="round" color="light" onClick={() => this.presentDeckImport()} style={{'margin-left': '8px'}}>
+            <ion-label>{i18n.state.dashboard.import}</ion-label>
+          </ion-button>
+        </div>
+      </Fragment>
     );
   }
 

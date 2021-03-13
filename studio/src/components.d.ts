@@ -154,6 +154,8 @@ export namespace Components {
         "deckDidChange": EventEmitter<HTMLElement>;
         "deckElement": HTMLElement;
     }
+    interface AppDeckImport {
+    }
     interface AppDeckStyle {
         "blockSlide": EventEmitter<boolean>;
         "deckDidChange": EventEmitter<HTMLElement>;
@@ -628,6 +630,12 @@ declare global {
     var HTMLAppDeckHeaderFooterElement: {
         prototype: HTMLAppDeckHeaderFooterElement;
         new (): HTMLAppDeckHeaderFooterElement;
+    };
+    interface HTMLAppDeckImportElement extends Components.AppDeckImport, HTMLStencilElement {
+    }
+    var HTMLAppDeckImportElement: {
+        prototype: HTMLAppDeckImportElement;
+        new (): HTMLAppDeckImportElement;
     };
     interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {
     }
@@ -1168,6 +1176,7 @@ declare global {
         "app-deck-delete": HTMLAppDeckDeleteElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
+        "app-deck-import": HTMLAppDeckImportElement;
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-demo": HTMLAppDemoElement;
@@ -1421,6 +1430,8 @@ declare namespace LocalJSX {
         "deckElement"?: HTMLElement;
         "onNavigateSettings"?: (event: CustomEvent<void>) => void;
         "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppDeckImport {
     }
     interface AppDeckStyle {
         "blockSlide"?: EventEmitter<boolean>;
@@ -1762,6 +1773,7 @@ declare namespace LocalJSX {
         "app-deck-delete": AppDeckDelete;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
+        "app-deck-import": AppDeckImport;
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
         "app-demo": AppDemo;
@@ -1886,6 +1898,7 @@ declare module "@stencil/core" {
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
+            "app-deck-import": LocalJSX.AppDeckImport & JSXBase.HTMLAttributes<HTMLAppDeckImportElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;

@@ -104,7 +104,10 @@
     "copy": "Copy presentation",
     "delete": "Delete presentation",
     "cannot_undone": "This action cannot be undone. This will permanently delete your presentation {0}.",
-    "understand": "I understand, delete my presentation"
+    "understand": "I understand, delete my presentation",
+    "start_new_presentation": "Start a new presentation",
+    "create_or_import": "Create a blank new deck or import your Figma frames.",
+    "import": "Import"
   },
   "editor": {
     "add_slide": "Add slide",
