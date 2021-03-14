@@ -3,12 +3,7 @@ import {Component, Element, Fragment, h, Listen, State} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 import errorStore from '../../../stores/error.store';
 
-import {Deck, DeckData} from '../../../models/data/deck';
-
-import {initDeckData} from '../../../utils/core/deck.utils';
-
 import {StorageService} from '../../../services/storage/storage.service';
-import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
   tag: 'app-deck-import',
@@ -22,12 +17,10 @@ export class AppDeckImport {
   @State()
   private uploading: boolean = false;
 
-  private deckService: DeckService;
   private storageService: StorageService;
 
   constructor() {
     this.storageService = StorageService.getInstance();
-    this.deckService = DeckService.getInstance();
   }
 
   async componentDidLoad() {
@@ -55,23 +48,17 @@ export class AppDeckImport {
 
     if (this.uploadInput.files?.length > 0) {
       try {
-        await this.uploadFiles();
+        await this.uploadFile(this.uploadInput.files[0]);
       } catch (err) {
-        errorStore.state.error = 'Slides cannot be imported.';
+        errorStore.state.error = 'Data cannot be uploaded.';
       }
     }
   }
 
-  private async uploadFiles() {
+  private async uploadFile(file: File) {
     this.uploading = true;
 
-    const deck: DeckData = await initDeckData();
-    const {id}: Deck = await this.deckService.create(deck);
-
-    const promises: Promise<StorageFile>[] = Array.from(this.uploadInput.files).map((file: File) =>
-      this.storageService.uploadFile(file, `decks/${id}`, 10485760)
-    );
-    await Promise.all(promises);
+    await this.storageService.uploadFile(file, `decks`, 20971520);
 
     this.uploading = false;
   }
@@ -95,7 +82,7 @@ export class AppDeckImport {
             <ion-label>{i18n.state.editor.upload_data}</ion-label>
           </ion-button>
 
-          <input type="file" accept=".svg" multiple={true} onChange={() => this.upload()} ref={(el) => (this.uploadInput = el as HTMLInputElement)} />
+          <input type="file" accept=".zip" onChange={() => this.upload()} ref={(el) => (this.uploadInput = el as HTMLInputElement)} />
         </ion-content>
       </Fragment>
     );

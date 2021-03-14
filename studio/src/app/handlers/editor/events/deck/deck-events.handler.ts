@@ -26,7 +26,7 @@ import {
 
 import {Constants} from '../../../../types/core/constants';
 
-import {initDeckData} from '../../../../utils/core/deck.utils';
+import {Utils} from '../../../../utils/core/utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
@@ -277,7 +277,10 @@ export class DeckEventsHandler {
           return;
         }
 
-        let deck: DeckData = await initDeckData();
+        let deck: DeckData = {
+          name: `Presentation ${await Utils.getNow()}`,
+          owner_id: authStore.state.authUser.uid,
+        };
 
         // Retrieve text and background color style randomly generated in the editor
         const deckElement: HTMLElement = this.mainRef.querySelector('deckgo-deck');
