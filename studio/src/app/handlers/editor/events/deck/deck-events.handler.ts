@@ -140,8 +140,6 @@ export class DeckEventsHandler {
   };
 
   private onSlideChange = async ($event: CustomEvent) => {
-    console.log('yo', $event);
-
     if (!$event || !$event.detail) {
       return;
     }
