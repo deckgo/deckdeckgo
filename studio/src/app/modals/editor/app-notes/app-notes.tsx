@@ -20,7 +20,7 @@ export class AppNotes {
     if (this.selectedElement) {
       const element: HTMLElement = this.selectedElement.querySelector('[slot="notes"]');
 
-      this.notes = element ? element.innerHTML : undefined;
+      this.notes = element ? element.innerText : undefined;
     }
   }
 
