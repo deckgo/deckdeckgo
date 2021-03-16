@@ -1,11 +1,11 @@
 import * as admin from 'firebase-admin';
 
 import {Deck} from '../../../model/data/deck';
-import {SlideData} from '../../../model/data/slide';
+import {Slide, SlideData} from '../../../model/data/slide';
 
 import {MetadataSlide} from '../modal/metadata-slide';
 
-import {createDeck as createDeckUtils} from '../../../utils/data/deck-utils';
+import {createDeck as createDeckUtils, updateDeck} from '../../../utils/data/deck-utils';
 import {createSlide as createSlideUtils} from '../../../utils/data/slide-utils';
 
 const readFile = (filePath: string): Promise<string> => {
@@ -46,13 +46,18 @@ export async function createDeck(objName: string) {
 
   const deck: Deck = await createDeckUtils(userId);
 
-  const promises: Promise<void>[] = metaList.map((meta: MetadataSlide) => createSlide(deck, meta, userId, tmpId));
-  await Promise.all(promises);
+  const promises: Promise<string>[] = metaList.map((meta: MetadataSlide) => createSlide(deck, meta, userId, tmpId));
+  const slides: string[] = await Promise.all(promises);
+
+  await updateDeck(deck.id, {
+    ...deck.data,
+    slides,
+  });
 
   await cleanStorage(userId, tmpId);
 }
 
-const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpId: string) => {
+const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpId: string): Promise<string> => {
   const bucket = admin.storage().bucket();
 
   const file = bucket.file(`${userId}/assets/images/${tmpId}/${meta.background}`);
@@ -70,9 +75,11 @@ const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpI
     }),
   };
 
-  await createSlideUtils(deck.id, slideData);
+  const slide: Slide = await createSlideUtils(deck.id, slideData);
 
   await cleanStorageText(meta, userId, tmpId);
+
+  return slide.id;
 };
 
 const cleanStorageText = async (meta: MetadataSlide, userId: string, tmpId: string) => {
