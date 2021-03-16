@@ -1,5 +1,7 @@
 import * as admin from 'firebase-admin';
 
+import {v4 as uuid} from 'uuid';
+
 import {Deck} from '../../../model/data/deck';
 import {Slide, SlideData} from '../../../model/data/slide';
 
@@ -54,14 +56,11 @@ export async function createDeck(objName: string) {
     slides,
   });
 
-  await cleanStorage(userId, tmpId);
+  await cleanStorageMeta(userId, tmpId);
 }
 
 const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpId: string): Promise<string> => {
-  const bucket = admin.storage().bucket();
-
-  const file = bucket.file(`${userId}/assets/images/${tmpId}/${meta.background}`);
-  const downloadUrl: string | undefined = (await file.getMetadata())?.[0].mediaLink;
+  const downloadUrl: string = await generateDownloadUrl(meta, userId, tmpId);
 
   const content: string | undefined = meta.text ? await readFile(`${userId}/assets/decks/${tmpId}/${meta.text}`) : undefined;
 
@@ -70,7 +69,7 @@ const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpI
     ...(content && {content}),
     ...(downloadUrl && {
       attributes: {
-        src: downloadUrl,
+        svgSrc: downloadUrl,
       },
     }),
   };
@@ -96,11 +95,30 @@ const cleanStorageText = async (meta: MetadataSlide, userId: string, tmpId: stri
 };
 
 // Remove temp folder which only contains meta.json
-const cleanStorage = async (userId: string, tmpId: string) => {
-  const tmpPath: string = `${userId}/assets/decks/${tmpId}/`;
+const cleanStorageMeta = async (userId: string, tmpId: string) => {
+  const tmpPath: string = `${userId}/assets/decks/${tmpId}/meta.json`;
 
   const bucket = admin.storage().bucket();
   const folder = bucket.file(tmpPath);
 
   await folder.delete();
+};
+
+// https://www.sentinelstand.com/article/guide-to-firebase-storage-download-urls-tokens
+const generateDownloadUrl = async (meta: MetadataSlide, userId: string, tmpId: string): Promise<string> => {
+  const bucket = admin.storage().bucket();
+
+  const path: string = `${userId}/assets/images/${tmpId}/${meta.background}`;
+
+  const file = bucket.file(path);
+
+  const downloadToken: string = uuid();
+
+  await file.setMetadata({
+    metadata: {
+      firebaseStorageDownloadTokens: downloadToken,
+    },
+  });
+
+  return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(path)}?alt=media&token=${downloadToken}`;
 };
