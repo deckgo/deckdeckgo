@@ -203,7 +203,7 @@ export class OfflineService {
       return;
     }
 
-    await ServiceWorkerUtils.cacheUrls('cors-images', list);
+    await ServiceWorkerUtils.cacheUrls('cors-images', [...new Set(list)]);
   }
 
   private async cacheDeckGoImages(deckElement: HTMLElement): Promise<void> {
@@ -230,7 +230,7 @@ export class OfflineService {
       return;
     }
 
-    await ServiceWorkerUtils.cacheUrls('images', list);
+    await ServiceWorkerUtils.cacheUrls('images', [...new Set(list)]);
   }
 
   private async cacheAssets() {
