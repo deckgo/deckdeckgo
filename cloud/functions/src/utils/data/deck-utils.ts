@@ -1,5 +1,7 @@
 import * as admin from 'firebase-admin';
 
+import {format} from 'date-fns';
+
 import {Deck, DeckData} from '../../model/data/deck';
 
 export function findDeck(deckId: string): Promise<Deck> {
@@ -41,6 +43,32 @@ export function updateDeck(deckId: string, deckData: Partial<DeckData>): Promise
       await documentReference.set(data, {merge: true});
 
       resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+export function createDeck(ownerId: string): Promise<Deck> {
+  return new Promise<Deck>(async (resolve, reject) => {
+    try {
+      const now: admin.firestore.Timestamp = admin.firestore.Timestamp.now();
+
+      const data: DeckData = {
+        name: `Presentation ${format(new Date(), 'MMM d yyyy HH-mm-ss')}`,
+        owner_id: ownerId,
+        created_at: now,
+        updated_at: now,
+      };
+
+      const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection('/decks/');
+      const doc: admin.firestore.DocumentReference = await collectionRef.add(data);
+
+      resolve({
+        id: doc.id,
+        ref: doc,
+        data: data,
+      });
     } catch (err) {
       reject(err);
     }

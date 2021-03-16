@@ -5,6 +5,8 @@ import {v4 as uuid} from 'uuid';
 
 import {Parse} from 'unzipper';
 
+import {createDeck} from './utils/create-deck';
+
 export async function applyWatchImportDeck(obj: functions.storage.ObjectMetadata) {
   if (!obj.bucket || !obj.name) {
     return;
@@ -25,28 +27,6 @@ export async function applyWatchImportDeck(obj: functions.storage.ObjectMetadata
   }
 }
 
-async function createDeck(objName: string) {
-  const readMeta = (): Promise<string> => {
-    const bucket = admin.storage().bucket();
-    const stream = bucket.file(objName).createReadStream();
-
-    return new Promise<string>((resolve, reject) => {
-      let data = '';
-
-      stream.on('data', (chunk: string) => (data += chunk));
-      stream.on('end', () => resolve(data));
-      stream.on('error', (error: Error) => reject(error));
-    });
-  };
-
-  const text = await readMeta();
-
-  console.log('2', text);
-
-  // TODO: create deck
-  // TODO: create slides
-}
-
 async function unzipDeck(objName: string) {
   const bucket = admin.storage().bucket();
 
@@ -60,7 +40,7 @@ async function unzipDeck(objName: string) {
 
     return new Promise<void>((resolve, reject) => {
       stream.on('entry', (entry) => {
-        const destination = admin.storage().bucket().file(`${userId}/assets/decks/${dataId}/${entry.path}`);
+        const destination = bucket.file(`${userId}/assets/decks/${dataId}/${entry.path}`);
         return entry.pipe(destination.createWriteStream());
       });
       stream.on('finish', () => resolve());
