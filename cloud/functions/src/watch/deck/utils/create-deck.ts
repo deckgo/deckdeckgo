@@ -52,12 +52,14 @@ export async function createDeck(objName: string) {
   const promises: Promise<void>[] = metaList.map((meta: MetadataSlide) => createSlide(deck, meta, userId, tmpId));
   await Promise.all(promises);
 
+  // TODO: This cannot happens here, text by text should be deleted
   await cleanStorage(userId, tmpId);
 }
 
 const createSlide = async ({id}: Deck, meta: MetadataSlide, userId: string, tmpId: string) => {
   const bucket = admin.storage().bucket();
 
+  // TODO: on unzip background should be added to the images folder
   const backgroundPath: string = `${userId}/assets/decks/${tmpId}/${meta.background}`;
 
   const file = bucket.file(backgroundPath);
