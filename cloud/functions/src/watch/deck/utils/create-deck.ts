@@ -3,13 +3,10 @@ import * as admin from 'firebase-admin';
 import {Deck} from '../../../model/data/deck';
 import {SlideData} from '../../../model/data/slide';
 
+import {MetadataSlide} from '../modal/metadata-slide';
+
 import {createDeck as createDeckUtils} from '../../../utils/data/deck-utils';
 import {createSlide as createSlideUtils} from '../../../utils/data/slide-utils';
-
-interface MetadataSlide {
-  background: string;
-  text?: string;
-}
 
 const readFile = (filePath: string): Promise<string> => {
   const bucket = admin.storage().bucket();
@@ -52,22 +49,16 @@ export async function createDeck(objName: string) {
   const promises: Promise<void>[] = metaList.map((meta: MetadataSlide) => createSlide(deck, meta, userId, tmpId));
   await Promise.all(promises);
 
-  // TODO: This cannot happens here, text by text should be deleted
   await cleanStorage(userId, tmpId);
 }
 
-const createSlide = async ({id}: Deck, meta: MetadataSlide, userId: string, tmpId: string) => {
+const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpId: string) => {
   const bucket = admin.storage().bucket();
 
-  // TODO: on unzip background should be added to the images folder
-  const backgroundPath: string = `${userId}/assets/decks/${tmpId}/${meta.background}`;
-
-  const file = bucket.file(backgroundPath);
-  await file.move(backgroundPath);
-
+  const file = bucket.file(`${userId}/assets/images/${tmpId}/${meta.background}`);
   const downloadUrl: string | undefined = (await file.getMetadata())?.[0].mediaLink;
 
-  const content: string | undefined = meta.text ? await readFile(`${userId}/assets/decks/${id}/${meta.text}`) : undefined;
+  const content: string | undefined = meta.text ? await readFile(`${userId}/assets/decks/${tmpId}/${meta.text}`) : undefined;
 
   const slideData: SlideData = {
     template: 'svg',
@@ -79,9 +70,25 @@ const createSlide = async ({id}: Deck, meta: MetadataSlide, userId: string, tmpI
     }),
   };
 
-  await createSlideUtils(id, slideData);
+  await createSlideUtils(deck.id, slideData);
+
+  await cleanStorageText(meta, userId, tmpId);
 };
 
+const cleanStorageText = async (meta: MetadataSlide, userId: string, tmpId: string) => {
+  if (!meta.text) {
+    return;
+  }
+
+  const tmpPath: string = `${userId}/assets/decks/${tmpId}/${meta.text}`;
+
+  const bucket = admin.storage().bucket();
+  const folder = bucket.file(tmpPath);
+
+  await folder.delete();
+};
+
+// Remove temp folder which only contains meta.json
 const cleanStorage = async (userId: string, tmpId: string) => {
   const tmpPath: string = `${userId}/assets/decks/${tmpId}/`;
 
