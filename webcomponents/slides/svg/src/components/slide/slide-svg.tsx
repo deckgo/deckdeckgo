@@ -56,7 +56,7 @@ export class SlideSvg implements DeckdeckgoSlide {
 
   render() {
     return (
-      <Host class={{'deckgo-slide-container': true}} custom-background={true} custom-header={true} custom-footer={true}>
+      <Host class={{'deckgo-slide-container': true}} custom-background={true}>
         <div class="deckgo-slide">
           <div class="deckgo-aspect-ratio-container">
             <div class="deckgo-aspect-ratio-content">
@@ -66,6 +66,11 @@ export class SlideSvg implements DeckdeckgoSlide {
             </div>
           </div>
         </div>
+
+        <slot name="notes"></slot>
+        <slot name="actions"></slot>
+        <slot name="header"></slot>
+        <slot name="footer"></slot>
       </Host>
     );
   }
