@@ -62,16 +62,16 @@ export async function createDeck(objName: string) {
 const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpId: string): Promise<string> => {
   const downloadUrl: string = await generateDownloadUrl(meta, userId, tmpId);
 
+  const background: string = `<div slot="background"><deckgo-lazy-img img-src="${downloadUrl}"></deckgo-lazy-img></div>`;
+
   const content: string | undefined = meta.text ? await readFile(`${userId}/assets/decks/${tmpId}/${meta.text}`) : undefined;
 
   const slideData: SlideData = {
-    template: 'svg',
-    ...(content && {content}),
-    ...(downloadUrl && {
-      attributes: {
-        svgSrc: downloadUrl,
-      },
-    }),
+    template: 'aspect-ratio',
+    content: `${content ? content + background : background}`,
+    attributes: {
+      customBackground: 'true',
+    },
   };
 
   const slide: Slide = await createSlideUtils(deck.id, slideData);
