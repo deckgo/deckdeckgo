@@ -12,7 +12,6 @@ export enum SlideTemplate {
   POLL = 'poll',
   'ASPECT-RATIO' = 'aspect-ratio',
   PLAYGROUND = 'playground',
-  SVG = 'svg',
 }
 
 export enum SlideScope {

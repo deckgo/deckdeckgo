@@ -43,7 +43,6 @@
     "@deckdeckgo/slide-poll": "^2.2.3",
     "@deckdeckgo/slide-qrcode": "^2.2.2",
     "@deckdeckgo/slide-split": "^2.2.2",
-    "@deckdeckgo/slide-svg": "file:../webcomponents/slides/svg",
     "@deckdeckgo/slide-title": "^2.2.4",
     "@deckdeckgo/slide-utils": "^2.6.1",
     "@deckdeckgo/slide-youtube": "^2.2.2",
