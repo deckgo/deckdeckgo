@@ -1,3 +1,14 @@
+# 4.4.0 (2020-03-18)
+
+### Features
+
+- spanish translations ([#360](https://github.com/deckgo/deckdeckgo/issues/360))
+
+### Fix
+
+- unable to go offline ([#1104](https://github.com/deckgo/deckdeckgo/issues/1104))
+- notes encoding text incorrectly ([#1105](https://github.com/deckgo/deckdeckgo/issues/1105))
+
 # 4.3.0 (2020-03-12)
 
 ### Features

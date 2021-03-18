@@ -1,3 +1,11 @@
+<a name="4.4.0"></a>
+
+# [4.4.0](https://github.com/deckgo/deckdeckgo/compare/v4.3.0...v4.4.0) (2021-03-18)
+
+### Applications
+
+- studio: v4.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
 <a name="4.3.0"></a>
 
 # [4.3.0](https://github.com/deckgo/deckdeckgo/compare/v4.2.0...v4.3.0) (2021-03-12)
