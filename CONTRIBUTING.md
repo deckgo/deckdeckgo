@@ -46,14 +46,17 @@ We would be grateful to get your help to translate our apps!
 
 ### Editor
 
-The selection or detection of the language is not yet implemented in our editor. As soon as someone contributes with a language other than English, we will be happy to develop such function.
+The online editor ([studio](https://github.com/deckgo/deckdeckgo/tree/master/studio)) can be translated as following:
 
-Meanwhile, the online editor ([studio](https://github.com/deckgo/deckdeckgo/tree/master/studio)) can be translated as following:
+1. Copy [en.json](https://github.com/deckgo/deckdeckgo/blob/master/studio/src/assets/i18n/en.json) to a new filename reflecting the language (such as for example `fr.json` for French)
+2. Translate each keys of the newly created file
+3. Provide a PR
 
-1. Translate each keys in [en.json](https://github.com/deckgo/deckdeckgo/blob/master/studio/src/assets/i18n/en.json)
-2. Once finished, copy this file to a new filename reflecting the language (such as for example `fr.json` for French)
-3. Revert the changes in `en.json`
-4. Provide a PR
+If you would like to test your translations, either test these by overwriting temporarily [en.json](https://github.com/deckgo/deckdeckgo/blob/master/studio/src/assets/i18n/en.json) or add the new language as following:
+
+1. Add it the to the list of supported languages in [languages.d.ts](https://github.com/deckgo/deckdeckgo/blob/main/studio/src/app/definitions/languages.d.ts)
+2. Add a related dynamic import in the state management [i18n.store.ts](https://github.com/deckgo/deckdeckgo/blob/bdc79b9cd1f52171bab2f772fa6905c710f3b2e0/studio/src/app/stores/i18n.store.ts#L11)
+3. Add it to the default language detection list in [lang.service.ts](https://github.com/deckgo/deckdeckgo/blob/bdc79b9cd1f52171bab2f772fa6905c710f3b2e0/studio/src/app/services/lang/lang.service.ts#L36)
 
 Translations are handled in JSON files but, as we are consuming these through a store, their representation have to exist as interfaces.
 To ease the process we have developed a script which extract the declarations automatically.
