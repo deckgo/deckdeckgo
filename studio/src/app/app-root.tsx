@@ -13,6 +13,7 @@ import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
+import {LangService} from './services/lang/lang.service';
 
 @Component({
   tag: 'app-root',
@@ -27,6 +28,7 @@ export class AppRoot {
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
   private readonly settingsService: SettingsService;
+  private readonly langService: LangService;
 
   @State()
   private loading: boolean = true;
@@ -43,6 +45,7 @@ export class AppRoot {
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
+    this.langService = LangService.getInstance();
   }
 
   async componentWillLoad() {
@@ -53,6 +56,7 @@ export class AppRoot {
         this.themeService.initDarkModePreference(),
         this.colorService.init(),
         this.settingsService.init(),
+        this.langService.init(),
       ];
 
       await Promise.all(promises);

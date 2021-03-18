@@ -487,7 +487,7 @@ interface I18nPoll {
 }
 
 interface I18n {
-  lang: 'en';
+  lang: Languages;
   core: I18nCore;
   nav: I18nNav;
   menu: I18nMenu;

@@ -1,0 +1,1 @@
+type Languages = 'en' | 'es';

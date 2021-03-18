@@ -1,4 +1,4 @@
-import {Component, Fragment, h} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 import themeStore from '../../../../stores/theme.store';
 import settingsStore from '../../../../stores/settings.store';
@@ -29,6 +29,10 @@ export class AppCustomization {
     settingsStore.state.editMode = settingsStore.state.editMode === 'css' ? 'properties' : 'css';
   }
 
+  private toggleLang($event: CustomEvent) {
+    i18n.state.lang = $event.detail.value;
+  }
+
   render() {
     return [
       <app-navigation></app-navigation>,
@@ -38,6 +42,8 @@ export class AppCustomization {
 
           <ion-list class="inputs-list dark-light-list">
             {this.renderDarkLightToggle()}
+
+            {this.renderLang()}
 
             {this.renderEditMode()}
           </ion-list>
@@ -57,25 +63,40 @@ export class AppCustomization {
     );
   }
 
+  private renderLang() {
+    return (
+      <ion-item class="select">
+        <ion-label>{i18n.state.editor.language}</ion-label>
+        <ion-select
+          slot="end"
+          value={i18n.state.lang}
+          onIonChange={($event: CustomEvent) => this.toggleLang($event)}
+          interface="popover"
+          mode="md"
+          class="ion-padding-start ion-padding-end">
+          <ion-select-option value="en">English</ion-select-option>
+          <ion-select-option value="es">Español</ion-select-option>
+        </ion-select>
+      </ion-item>
+    );
+  }
+
   private renderEditMode() {
     return (
-      <Fragment>
-        <ion-item-divider class="ion-padding-top">
-          <ion-label>{i18n.state.settings.edit_mode}</ion-label>
-        </ion-item-divider>
+      <ion-item>
+        <ion-label>{i18n.state.settings.edit_mode}</ion-label>
 
-        <ion-radio-group value={this.editMode} onIonChange={() => this.toggleEditMode()}>
-          <ion-item>
-            <ion-radio value="properties" mode="md" slot="start"></ion-radio>
-            <ion-label>{i18n.state.settings.properties}</ion-label>
-          </ion-item>
-
-          <ion-item>
-            <ion-radio value="css" mode="md" slot="start"></ion-radio>
-            <ion-label>CSS</ion-label>
-          </ion-item>
-        </ion-radio-group>
-      </Fragment>
+        <ion-select
+          slot="end"
+          value={this.editMode}
+          onIonChange={() => this.toggleEditMode()}
+          interface="popover"
+          mode="md"
+          class="ion-padding-start ion-padding-end">
+          <ion-select-option value="properties">{i18n.state.settings.properties}</ion-select-option>
+          <ion-select-option value="css">CSS</ion-select-option>
+        </ion-select>
+      </ion-item>
     );
   }
 }
