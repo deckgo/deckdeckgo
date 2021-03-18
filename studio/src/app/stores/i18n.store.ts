@@ -22,7 +22,7 @@ const enI18n = (): I18n => {
   } as I18n;
 };
 
-onChange('lang', async (lang: 'en' | 'es') => {
+onChange('lang', async (lang: Languages) => {
   let bundle: I18n;
 
   switch (lang) {
@@ -36,7 +36,7 @@ onChange('lang', async (lang: 'en' | 'es') => {
   Object.assign(state, bundle);
 });
 
-onChange('lang', (lang: 'en' | 'es') => {
+onChange('lang', (lang: Languages) => {
   set('deckdeckgo_lang', lang).catch((err) => {
     console.error('Failed to update IDB with new language', err);
   });

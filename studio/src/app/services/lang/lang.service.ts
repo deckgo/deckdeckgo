@@ -18,7 +18,7 @@ export class LangService {
 
   async init() {
     try {
-      const lang: 'en' | 'es' | null = await get<'en' | 'es'>('deckdeckgo_lang');
+      const lang: Languages | null = await get<Languages>('deckdeckgo_lang');
 
       if (lang) {
         i18n.state.lang = lang;
@@ -33,7 +33,7 @@ export class LangService {
 
   private initDefaultLang() {
     const browserLang: string | undefined = this.getBrowserLang();
-    i18n.state.lang = /(es|en)/gi.test(browserLang) ? (browserLang as 'en' | 'es') : 'en';
+    i18n.state.lang = /(es|en)/gi.test(browserLang) ? (browserLang as Languages) : 'en';
   }
 
   /**

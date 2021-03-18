@@ -16,7 +16,7 @@ const generate = async () => {
     };
   });
 
-  const lang = `lang: 'en' | 'es';`;
+  const lang = `lang: Languages;`;
 
   const main = `\n\ninterface I18n {${lang}${data.map((i) => `${i.key}: ${i.name};`).join('')}}`;
   const interfaces = data.map((i) => `\n\ninterface ${i.name} {${i.properties.join('')}}`).join('');
