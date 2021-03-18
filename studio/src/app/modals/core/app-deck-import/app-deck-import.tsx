@@ -58,7 +58,7 @@ export class AppDeckImport {
   private async uploadFile(file: File) {
     this.uploading = true;
 
-    await this.storageService.uploadFile(file, `decks`, 20971520);
+    await this.storageService.uploadFile(file, `decks`, 20971520, false);
 
     this.uploading = false;
   }

@@ -17,13 +17,13 @@ export class StorageService {
     return StorageService.instance;
   }
 
-  async uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
+  async uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile> {
     const offline: OfflineDeck = await OfflineService.getInstance().status();
 
     if (offline !== undefined) {
       return StorageOfflineService.getInstance().uploadFile(data, folder, maxSize);
     } else {
-      return StorageOnlineService.getInstance().uploadFile(data, folder, maxSize);
+      return StorageOnlineService.getInstance().uploadFile(data, folder, maxSize, downloadUrl);
     }
   }
 

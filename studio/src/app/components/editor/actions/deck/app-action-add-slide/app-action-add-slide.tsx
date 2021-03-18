@@ -249,7 +249,7 @@ export class AppActionAddSlide {
         return;
       }
 
-      const url: string = dataFile.downloadUrl;
+      const url: string | undefined = dataFile.downloadUrl;
 
       if (!url || url === undefined || url === '') {
         resolve();
