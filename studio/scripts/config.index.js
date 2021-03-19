@@ -32,6 +32,10 @@ function updateCSP(filename) {
       result = result.replace(/<@SW_LOADER@>/g, swHash);
     }
 
+    // 3. Remove dev localhost
+    result = result.replace('ws://localhost:3333/', '');
+    result = result.replace('http://localhost:3333/~dev-server', '');
+
     fs.writeFile(`${filename}`, result, 'utf8', function (err) {
       if (err) return console.log(err);
     });
