@@ -45,7 +45,7 @@ const unzip = (objName: string, file: File, meta: string): Promise<void> => {
   const dataId: string = uuid();
 
   const metadata: Metadata = JSON.parse(meta);
-  const background: string[] = metadata.slides.map((metadata: MetadataSlide) => metadata.background);
+  const background: string[] = metadata.slides.map((filteredMetadata: MetadataSlide) => filteredMetadata.background);
 
   const stream = file.createReadStream().pipe(Parse());
 

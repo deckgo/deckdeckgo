@@ -62,7 +62,7 @@ export function createDeck(ownerId: string, fontFamily?: string): Promise<Deck> 
         updated_at: now,
       };
 
-      const font: GoogleFont | undefined = fonts.find((font: GoogleFont) => font.name === fontFamily && fontFamily !== undefined);
+      const font: GoogleFont | undefined = fonts.find((filteredFont: GoogleFont) => filteredFont.name === fontFamily && fontFamily !== undefined);
       if (font) {
         data = {
           ...data,
