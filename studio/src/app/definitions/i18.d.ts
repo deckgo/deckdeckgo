@@ -111,8 +111,6 @@ interface I18nDashboard {
   delete: string;
   cannot_undone: string;
   understand: string;
-  start_new_presentation: string;
-  create_or_import: string;
   import: string;
 }
 

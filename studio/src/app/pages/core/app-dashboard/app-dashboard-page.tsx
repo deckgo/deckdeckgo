@@ -7,7 +7,7 @@ export class AppDashboardPage {
   render() {
     return [
       <Fragment>
-        <app-navigation presentation={true}></app-navigation>
+        <app-navigation></app-navigation>
         <ion-content class="ion-padding">
           <app-dashboard></app-dashboard>
         </ion-content>

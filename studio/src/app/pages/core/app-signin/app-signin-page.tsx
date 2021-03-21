@@ -43,7 +43,7 @@ export class AppSigninPage {
     if (this.signin) {
       return (
         <Fragment>
-          <app-navigation></app-navigation>
+          <app-navigation write={false}></app-navigation>
           <ion-content class="ion-padding fullscreen-padding">
             <app-signin redirect={this.redirect} redirectId={this.redirectId}></app-signin>
           </ion-content>
@@ -53,7 +53,7 @@ export class AppSigninPage {
 
     return (
       <Fragment>
-        <app-navigation presentation={true}></app-navigation>
+        <app-navigation></app-navigation>
         <ion-content class="ion-padding">
           <app-dashboard></app-dashboard>
         </ion-content>

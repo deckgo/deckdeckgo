@@ -262,14 +262,14 @@ export namespace Components {
     }
     interface AppNavigation {
         "menuToggle": boolean;
-        "presentation": boolean;
         "publish": boolean;
         "user": boolean;
+        "write": boolean;
     }
     interface AppNavigationActions {
-        "presentation": boolean;
         "publish": boolean;
         "signIn": boolean;
+        "write": boolean;
     }
     interface AppNoTemplates {
     }
@@ -366,6 +366,10 @@ export namespace Components {
         "slotTypes": SlotType[] | undefined;
     }
     interface AppSpinner {
+    }
+    interface AppStartDeck {
+        "importColor": 'medium' | 'dark' | 'light';
+        "writeColor": 'primary' | 'dark' | 'light';
     }
     interface AppTemplate {
         "template": Template | undefined;
@@ -1027,6 +1031,12 @@ declare global {
         prototype: HTMLAppSpinnerElement;
         new (): HTMLAppSpinnerElement;
     };
+    interface HTMLAppStartDeckElement extends Components.AppStartDeck, HTMLStencilElement {
+    }
+    var HTMLAppStartDeckElement: {
+        prototype: HTMLAppStartDeckElement;
+        new (): HTMLAppStartDeckElement;
+    };
     interface HTMLAppTemplateElement extends Components.AppTemplate, HTMLStencilElement {
     }
     var HTMLAppTemplateElement: {
@@ -1242,6 +1252,7 @@ declare global {
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
+        "app-start-deck": HTMLAppStartDeckElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
@@ -1555,15 +1566,15 @@ declare namespace LocalJSX {
     }
     interface AppNavigation {
         "menuToggle"?: boolean;
-        "presentation"?: boolean;
         "publish"?: boolean;
         "user"?: boolean;
+        "write"?: boolean;
     }
     interface AppNavigationActions {
         "onActionPublish"?: (event: CustomEvent<void>) => void;
-        "presentation"?: boolean;
         "publish"?: boolean;
         "signIn"?: boolean;
+        "write"?: boolean;
     }
     interface AppNoTemplates {
     }
@@ -1668,6 +1679,10 @@ declare namespace LocalJSX {
         "slotTypes"?: SlotType[] | undefined;
     }
     interface AppSpinner {
+    }
+    interface AppStartDeck {
+        "importColor"?: 'medium' | 'dark' | 'light';
+        "writeColor"?: 'primary' | 'dark' | 'light';
     }
     interface AppTemplate {
         "template"?: Template | undefined;
@@ -1839,6 +1854,7 @@ declare namespace LocalJSX {
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
+        "app-start-deck": AppStartDeck;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
@@ -1964,6 +1980,7 @@ declare module "@stencil/core" {
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
+            "app-start-deck": LocalJSX.AppStartDeck & JSXBase.HTMLAttributes<HTMLAppStartDeckElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;
