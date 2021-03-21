@@ -104,7 +104,10 @@
     "copy": "Copiar presentación",
     "delete": "Eliminar presentación",
     "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación {0}.",
-    "understand": "Comprendo, elimina mi presentación"
+    "understand": "Comprendo, elimina mi presentación",
+    "start_new_presentation": "Iniciar una nueva presentación",
+    "create_or_import": "Crea uno nuevo paquete o importa tus Figma frames.",
+    "import": "Importar"
   },
   "editor": {
     "add_slide": "Añadir diapositiva",
