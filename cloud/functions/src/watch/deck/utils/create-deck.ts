@@ -71,6 +71,7 @@ const createSlide = async (deck: Deck, meta: MetadataSlide, userId: string, tmpI
     content: `${content ? content + background : background}`,
     attributes: {
       customBackground: 'true',
+      grid: false,
     },
   };
 
