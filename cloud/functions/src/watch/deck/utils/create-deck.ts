@@ -5,7 +5,7 @@ import {v4 as uuid} from 'uuid';
 import {Deck} from '../../../model/data/deck';
 import {Slide, SlideData} from '../../../model/data/slide';
 
-import {MetadataSlide} from '../modal/metadata-slide';
+import {Metadata, MetadataSlide} from '../types/metadata';
 
 import {createDeck as createDeckUtils, updateDeck} from '../../../utils/data/deck-utils';
 import {createSlide as createSlideUtils} from '../../../utils/data/slide-utils';
@@ -40,15 +40,15 @@ export async function createDeck(objName: string) {
     return;
   }
 
-  const metaList: MetadataSlide[] = JSON.parse(metaContent);
+  const metadata: Metadata = JSON.parse(metaContent);
 
-  if (!metaList || metaList.length <= 0) {
+  if (!metadata || !metadata.slides || metadata.slides.length <= 0) {
     return;
   }
 
-  const deck: Deck = await createDeckUtils(userId);
+  const deck: Deck = await createDeckUtils(userId, metadata.fontFamily);
 
-  const promises: Promise<string>[] = metaList.map((meta: MetadataSlide) => createSlide(deck, meta, userId, tmpId));
+  const promises: Promise<string>[] = metadata.slides.map((meta: MetadataSlide) => createSlide(deck, meta, userId, tmpId));
   const slides: string[] = await Promise.all(promises);
 
   await updateDeck(deck.id, {

@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import {v4 as uuid} from 'uuid';
 import {Entry, Parse} from 'unzipper';
 
-import {MetadataSlide} from '../modal/metadata-slide';
+import {Metadata, MetadataSlide} from '../types/metadata';
 
 import {File} from '@google-cloud/storage';
 
@@ -44,8 +44,8 @@ const unzip = (objName: string, file: File, meta: string): Promise<void> => {
   const userId: string = objName.split('/')[0];
   const dataId: string = uuid();
 
-  const metaList: MetadataSlide[] = JSON.parse(meta);
-  const background: string[] = metaList.map((metadata: MetadataSlide) => metadata.background);
+  const metadata: Metadata = JSON.parse(meta);
+  const background: string[] = metadata.slides.map((metadata: MetadataSlide) => metadata.background);
 
   const stream = file.createReadStream().pipe(Parse());
 
