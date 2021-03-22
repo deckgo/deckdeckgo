@@ -9,7 +9,7 @@ import { EventEmitter, JSX } from "@stencil/core";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
-import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
+import { DeckDashboardCloneResult } from "./app/services/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { SelectedElement } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";

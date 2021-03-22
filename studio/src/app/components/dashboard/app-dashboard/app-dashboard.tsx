@@ -19,7 +19,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
-import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
+import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';

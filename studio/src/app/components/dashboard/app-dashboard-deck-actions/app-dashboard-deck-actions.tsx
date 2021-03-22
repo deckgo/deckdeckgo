@@ -7,7 +7,7 @@ import i18n from '../../../stores/i18n.store';
 import {Deck} from '../../../models/data/deck';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
-import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
+import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
