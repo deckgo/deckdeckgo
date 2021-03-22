@@ -104,8 +104,7 @@
     "copy": "Copiar presentación",
     "delete": "Eliminar presentación",
     "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación {0}.",
-    "understand": "Comprendo, elimina mi presentación",
-    "import": "Importar"
+    "understand": "Comprendo, elimina mi presentación"
   },
   "editor": {
     "add_slide": "Añadir diapositiva",
@@ -471,5 +470,11 @@
     "enjoy": "Disfrute de la presentación y esté atento a la pantalla para ver la votación en tiempo real.",
     "vote_again": "Vota por otra encuesta",
     "created_with": "Creado con {0}"
+  },
+  "import": {
+    "import": "Importar",
+    "import_from_figma": "Importar desde Figma",
+    "create": "Crea una nueva presentación con tu {0} design.",
+    "export": "Exporte con nuestro {0} e impórtelos después para comenzar."
   }
 }

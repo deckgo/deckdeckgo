@@ -104,8 +104,7 @@
     "copy": "Copy presentation",
     "delete": "Delete presentation",
     "cannot_undone": "This action cannot be undone. This will permanently delete your presentation {0}.",
-    "understand": "I understand, delete my presentation",
-    "import": "Import"
+    "understand": "I understand, delete my presentation"
   },
   "editor": {
     "add_slide": "Add slide",
@@ -471,5 +470,11 @@
     "enjoy": "Enjoy the presentation and watch out the screen for the real-time polling.",
     "vote_again": "Vote for another poll",
     "created_with": "Created with {0}"
+  },
+  "import": {
+    "import": "Import",
+    "import_from_figma": "Import from Figma",
+    "create": "Create a new presentation with your {0} design.",
+    "export": "Export your frames with our {0} and import these afterwards to get started."
   }
 }

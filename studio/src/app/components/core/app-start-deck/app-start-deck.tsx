@@ -13,7 +13,7 @@ export class AppStartDeck {
   writeColor: 'primary' | 'dark' | 'light' = 'primary';
 
   @Prop()
-  importColor: 'medium' | 'dark' | 'light' = 'medium';
+  importColor: 'dark' | 'light' = 'dark';
 
   private async navigateEditor() {
     navStore.state.nav = {
@@ -27,6 +27,7 @@ export class AppStartDeck {
       component: 'app-deck-import',
       event: $event,
       mode: 'ios',
+      cssClass: 'info',
     });
 
     popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -49,7 +50,7 @@ export class AppStartDeck {
           onClick={($event: UIEvent) => this.presentDeckImport($event)}
           style={{margin: '0 16px 0 4px'}}
           class="ion-no-padding">
-          <ion-icon name="chevron-down-circle-outline" aria-label={i18n.state.dashboard.import}></ion-icon>
+          <ion-icon name="chevron-down-circle-outline" aria-label={i18n.state.import.import}></ion-icon>
         </ion-button>
       </Fragment>
     );

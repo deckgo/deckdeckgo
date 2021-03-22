@@ -3,4 +3,16 @@ app-deck-import {
     visibility: hidden;
     opacity: 0;
   }
+
+  p {
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  div.actions {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
 }

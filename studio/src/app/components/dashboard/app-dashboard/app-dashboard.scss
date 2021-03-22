@@ -91,6 +91,16 @@ app-dashboard {
       align-items: center;
 
       padding-top: 4px;
+
+      @media screen and (max-width: 768px) {
+        ion-button {
+          max-width: 128px;
+
+          ion-label {
+            white-space: initial;
+          }
+        }
+      }
     }
   }
 }

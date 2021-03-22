@@ -111,7 +111,6 @@ interface I18nDashboard {
   delete: string;
   cannot_undone: string;
   understand: string;
-  import: string;
 }
 
 interface I18nEditor {
@@ -487,6 +486,13 @@ interface I18nPoll {
   created_with: string;
 }
 
+interface I18nImport {
+  import: string;
+  import_from_figma: string;
+  create: string;
+  export: string;
+}
+
 interface I18n {
   lang: Languages;
   core: I18nCore;
@@ -505,4 +511,5 @@ interface I18n {
   templates: I18nTemplates;
   shapes: I18nShapes;
   poll: I18nPoll;
+  import: I18nImport;
 }

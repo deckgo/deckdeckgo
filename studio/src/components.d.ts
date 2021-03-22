@@ -368,7 +368,7 @@ export namespace Components {
     interface AppSpinner {
     }
     interface AppStartDeck {
-        "importColor": 'medium' | 'dark' | 'light';
+        "importColor": 'dark' | 'light';
         "writeColor": 'primary' | 'dark' | 'light';
     }
     interface AppTemplate {
@@ -1681,7 +1681,7 @@ declare namespace LocalJSX {
     interface AppSpinner {
     }
     interface AppStartDeck {
-        "importColor"?: 'medium' | 'dark' | 'light';
+        "importColor"?: 'dark' | 'light';
         "writeColor"?: 'primary' | 'dark' | 'light';
     }
     interface AppTemplate {
