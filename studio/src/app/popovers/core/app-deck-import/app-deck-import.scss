@@ -10,9 +10,23 @@ app-deck-import {
     }
   }
 
-  div.actions {
+  div.actions,
+  div.in-progress {
     display: flex;
     justify-content: center;
     align-content: center;
+  }
+
+  div.in-progress {
+    flex-direction: column;
+    max-width: calc(100% - 32px);
+    margin: auto;
+    text-align: center;
+    padding-top: 16px;
+
+    ion-label {
+      font-size: var(--font-size-small);
+      margin-top: 8px;
+    }
   }
 }

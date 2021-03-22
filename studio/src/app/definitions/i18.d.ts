@@ -492,6 +492,9 @@ interface I18nImport {
   create: string;
   export: string;
   sign_in: string;
+  upload: string;
+  hang_on_creation: string;
+  done: string;
 }
 
 interface I18n {

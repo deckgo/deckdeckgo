@@ -22,7 +22,7 @@ export class AppDeckImport {
   private uploadInput!: HTMLInputElement;
 
   @State()
-  private uploading: boolean = false;
+  private progress: 'uploading' | 'initializing' | 'done' | undefined = undefined;
 
   private storageService: StorageService;
   private deckImportService: DeckImportService;
@@ -42,7 +42,7 @@ export class AppDeckImport {
 
   private async upload() {
     if (!this.uploadInput) {
-      this.uploading = false;
+      this.progress = undefined;
       return;
     }
 
@@ -56,9 +56,11 @@ export class AppDeckImport {
   }
 
   private async uploadFile(file: File) {
-    this.uploading = true;
+    this.progress = 'uploading';
 
     await this.storageService.uploadFile(file, `decks`, 20971520, false);
+
+    this.progress = 'initializing';
 
     await this.deckImportService.snapshot(authStore.state.authUser?.uid, this.watchCreatedDeck);
   }
@@ -70,7 +72,7 @@ export class AppDeckImport {
 
     await this.closePopover(deck.id);
 
-    this.uploading = false;
+    this.progress = 'done';
 
     unsubscribe();
   };
@@ -130,14 +132,39 @@ export class AppDeckImport {
           })}
         </p>
 
-        <div class="actions">
-          <ion-button onClick={() => this.openFilePicker()} shape="round" color="primary" size="small" disabled={this.uploading}>
-            <ion-label>{i18n.state.import.import}</ion-label>
-          </ion-button>
-        </div>
+        {this.renderActions()}
 
         <input type="file" accept=".zip" onChange={() => this.upload()} ref={(el) => (this.uploadInput = el as HTMLInputElement)} />
       </Fragment>
     );
+  }
+
+  private renderActions() {
+    if (this.progress !== undefined) {
+      return (
+        <div class="in-progress">
+          <ion-progress-bar type="indeterminate" color="primary"></ion-progress-bar>
+          <ion-label>{this.renderProgressMsg()}</ion-label>
+        </div>
+      );
+    }
+
+    return (
+      <div class="actions">
+        <ion-button onClick={() => this.openFilePicker()} shape="round" color="primary" size="small" disabled={this.progress !== undefined}>
+          <ion-label>{i18n.state.import.import}</ion-label>
+        </ion-button>
+      </div>
+    );
+  }
+
+  private renderProgressMsg() {
+    if (this.progress === 'uploading') {
+      return i18n.state.import.upload;
+    } else if (this.progress === 'initializing') {
+      return i18n.state.import.hang_on_creation;
+    } else {
+      return i18n.state.import.done;
+    }
   }
 }
