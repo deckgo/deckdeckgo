@@ -475,6 +475,7 @@
     "import": "Importar",
     "import_from_figma": "Importar desde Figma",
     "create": "Crea una nueva presentación con tu {0} design.",
-    "export": "Exporte con nuestro {0} e impórtelos después para comenzar."
+    "export": "Exporte con nuestro {0} e impórtelos después para comenzar.",
+    "sign_in": "No queremos que pierda sus datos, por eso le pedimos que cree una cuenta para utilizar esta función."
   }
 }

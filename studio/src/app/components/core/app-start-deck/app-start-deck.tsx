@@ -30,11 +30,22 @@ export class AppStartDeck {
       cssClass: 'info',
     });
 
-    popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-      // TODO: Refresh
+    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
+      if (detail.data.deckId !== undefined) {
+        await this.navigateDeck(detail.data.deckId);
+      }
     });
 
     await popover.present();
+  }
+
+  private async navigateDeck(deckId: string) {
+    const url: string = `/editor/${deckId}`;
+
+    navStore.state.nav = {
+      url: url,
+      direction: NavDirection.RELOAD,
+    };
   }
 
   render() {

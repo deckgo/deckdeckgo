@@ -491,6 +491,7 @@ interface I18nImport {
   import_from_figma: string;
   create: string;
   export: string;
+  sign_in: string;
 }
 
 interface I18n {
