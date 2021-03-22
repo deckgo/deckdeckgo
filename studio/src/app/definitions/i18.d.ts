@@ -486,6 +486,17 @@ interface I18nPoll {
   created_with: string;
 }
 
+interface I18nImport {
+  import: string;
+  import_from_figma: string;
+  create: string;
+  export: string;
+  sign_in: string;
+  upload: string;
+  hang_on_creation: string;
+  done: string;
+}
+
 interface I18n {
   lang: Languages;
   core: I18nCore;
@@ -504,4 +515,5 @@ interface I18n {
   templates: I18nTemplates;
   shapes: I18nShapes;
   poll: I18nPoll;
+  import: I18nImport;
 }

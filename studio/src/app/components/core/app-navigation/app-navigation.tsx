@@ -14,7 +14,7 @@ export class AppNavigation {
 
   @Prop() user: boolean = true;
 
-  @Prop() presentation: boolean = false;
+  @Prop() write: boolean = true;
   @Prop() publish: boolean = false;
 
   render() {
@@ -123,7 +123,7 @@ export class AppNavigation {
     if (this.user) {
       return (
         <div slot="end">
-          <app-navigation-actions presentation={this.presentation} publish={this.publish}></app-navigation-actions>
+          <app-navigation-actions write={this.write} publish={this.publish}></app-navigation-actions>
         </div>
       );
     } else {

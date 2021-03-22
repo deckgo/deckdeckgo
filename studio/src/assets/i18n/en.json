@@ -470,5 +470,15 @@
     "enjoy": "Enjoy the presentation and watch out the screen for the real-time polling.",
     "vote_again": "Vote for another poll",
     "created_with": "Created with {0}"
+  },
+  "import": {
+    "import": "Import",
+    "import_from_figma": "Import from Figma",
+    "create": "Create a new presentation with your {0} design.",
+    "export": "Export your frames with our {0} and import these afterwards to get started.",
+    "sign_in": "We do not want you to loose your data, that is why we kindly ask you to create an account to use this feature.",
+    "upload": "Upload in progress...",
+    "hang_on_creation": "Hang on, we are creating the slides. It might take up to a minute.",
+    "done": "Deck ready. You are about to be redirected."
   }
 }

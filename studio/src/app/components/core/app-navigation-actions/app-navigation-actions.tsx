@@ -16,7 +16,7 @@ import {signIn} from '../../../utils/core/signin.utils';
 })
 export class AppNavigationActions {
   @Prop() signIn: boolean = true;
-  @Prop() presentation: boolean = false;
+  @Prop() write: boolean = true;
   @Prop() publish: boolean = false;
 
   @Event() private actionPublish: EventEmitter<void>;
@@ -45,7 +45,7 @@ export class AppNavigationActions {
   private renderSignIn() {
     if (authStore.state.loggedIn || !this.signIn) {
       return undefined;
-    } else if (this.presentation || this.publish) {
+    } else if (this.publish) {
       return (
         <button class="wide-device ion-padding-start ion-padding-end signin" onClick={() => signIn()} tabindex={0}>
           <ion-label>{i18n.state.nav.sign_in}</ion-label>
@@ -67,17 +67,9 @@ export class AppNavigationActions {
   }
 
   private renderPresentationButton() {
-    if (this.presentation) {
+    if (this.write && !this.publish) {
       return (
-        <ion-button
-          class="presentation ion-margin-end"
-          shape="round"
-          href="/editor"
-          routerDirection="root"
-          mode="md"
-          color={themeStore.state.darkTheme ? 'light' : 'dark'}>
-          <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
-        </ion-button>
+        <app-start-deck writeColor={themeStore.state.darkTheme ? 'light' : 'dark'} importColor={themeStore.state.darkTheme ? 'light' : 'dark'}></app-start-deck>
       );
     } else {
       return null;

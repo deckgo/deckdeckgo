@@ -4,14 +4,14 @@ import {JSDOM} from 'jsdom';
 
 // TODO: Extract to utilities because it is also use in studio
 
-interface GoogleFont {
+export interface GoogleFont {
   id: string;
   name: string;
   family: string;
 }
 
-// TODO fetch(`https://deckdeckgo.com/assests/assets.json`)
-const fonts = [
+// TODO fetch(`https://app.deckdeckgo.com/assests/assets.json`) at build time
+export const fonts: GoogleFont[] = [
   {
     id: 'google-fonts-lora',
     name: 'Lora',

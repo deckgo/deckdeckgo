@@ -131,7 +131,7 @@ export class AppPoll {
 
   render() {
     return [
-      <app-navigation presentation={true}></app-navigation>,
+      <app-navigation></app-navigation>,
       <ion-content class="ion-padding">
         <main class="ion-padding fit" style={this.hasVoted ? {height: '100%'} : undefined}>
           {this.renderPoll()}

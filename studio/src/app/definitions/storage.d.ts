@@ -1,7 +1,7 @@
 interface StorageFile {
   fullPath: string;
   name: string;
-  downloadUrl: string;
+  downloadUrl: string | undefined;
 }
 
 interface StorageFilesList {

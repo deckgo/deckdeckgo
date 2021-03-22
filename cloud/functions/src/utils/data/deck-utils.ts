@@ -1,6 +1,9 @@
 import * as admin from 'firebase-admin';
 
+import {format} from 'date-fns';
+
 import {Deck, DeckData} from '../../model/data/deck';
+import {fonts, GoogleFont} from '../../request/utils/google-fonts-utils';
 
 export function findDeck(deckId: string): Promise<Deck> {
   return new Promise<Deck>(async (resolve, reject) => {
@@ -41,6 +44,42 @@ export function updateDeck(deckId: string, deckData: Partial<DeckData>): Promise
       await documentReference.set(data, {merge: true});
 
       resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+export function createDeck(ownerId: string, fontFamily?: string): Promise<Deck> {
+  return new Promise<Deck>(async (resolve, reject) => {
+    try {
+      const now: admin.firestore.Timestamp = admin.firestore.Timestamp.now();
+
+      let data: DeckData = {
+        name: `Presentation ${format(new Date(), 'MMM d yyyy HH-mm-ss')}`,
+        owner_id: ownerId,
+        created_at: now,
+        updated_at: now,
+      };
+
+      const font: GoogleFont | undefined = fonts.find((filteredFont: GoogleFont) => filteredFont.name === fontFamily && fontFamily !== undefined);
+      if (font) {
+        data = {
+          ...data,
+          attributes: {
+            style: `font-family: ${font.family};`,
+          },
+        };
+      }
+
+      const collectionRef: admin.firestore.CollectionReference = admin.firestore().collection('/decks/');
+      const doc: admin.firestore.DocumentReference = await collectionRef.add(data);
+
+      resolve({
+        id: doc.id,
+        ref: doc,
+        data: data,
+      });
     } catch (err) {
       reject(err);
     }

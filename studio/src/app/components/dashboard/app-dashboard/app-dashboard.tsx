@@ -19,7 +19,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
-import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/dashboard/deck/deck-dashboard.service';
+import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
@@ -289,13 +289,6 @@ export class AppDashboard {
     };
   }
 
-  private async navigateEditor() {
-    navStore.state.nav = {
-      url: '/editor',
-      direction: NavDirection.RELOAD,
-    };
-  }
-
   private removeDeletedDeck($event: CustomEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
@@ -455,8 +448,12 @@ export class AppDashboard {
   }
 
   private renderGuardedContent() {
+    return <main class="ion-padding fit">{this.renderYourPresentations()}</main>;
+  }
+
+  private renderYourPresentations() {
     return (
-      <main class="ion-padding fit">
+      <Fragment>
         <h1>{i18n.state.dashboard.your_presentations}</h1>
 
         {this.renderDecksFilter()}
@@ -464,7 +461,7 @@ export class AppDashboard {
         {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
 
         {this.renderDecks()}
-      </main>
+      </Fragment>
     );
   }
 
@@ -503,9 +500,7 @@ export class AppDashboard {
           </ion-button>
         ) : undefined}
 
-        <ion-button shape="round" color="primary" onClick={() => this.navigateEditor()}>
-          <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
-        </ion-button>
+        <app-start-deck></app-start-deck>
       </div>
     );
   }

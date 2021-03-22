@@ -13,9 +13,11 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@google-cloud/storage": "^5.8.1",
     "cors": "^2.8.5",
+    "date-fns": "^2.17.0",
     "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.1",
+    "firebase-functions": "^3.13.2",
     "js-beautify": "^1.13.5",
     "jsdom": "^16.4.0",
     "mailchimp-api-v3": "^1.14.0",
@@ -23,7 +25,9 @@
     "nodemailer": "^6.4.17",
     "puppeteer": "^2.1.1",
     "rimraf": "^3.0.2",
-    "simple-git": "^2.31.0"
+    "simple-git": "^2.31.0",
+    "unzipper": "^0.10.11",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.9",
@@ -34,6 +38,8 @@
     "@types/nodemailer": "^6.4.0",
     "@types/puppeteer": "^2.0.1",
     "@types/rimraf": "^3.0.0",
+    "@types/unzipper": "^0.10.3",
+    "@types/uuid": "^8.3.0",
     "husky": "^4.3.8",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
@@ -42,7 +48,7 @@
   },
   "private": true,
   "engines": {
-    "node": "10"
+    "node": "12"
   },
   "husky": {
     "hooks": {

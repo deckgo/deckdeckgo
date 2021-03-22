@@ -9,7 +9,7 @@ import { EventEmitter, JSX } from "@stencil/core";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
-import { DeckDashboardCloneResult } from "./app/services/dashboard/deck/deck-dashboard.service";
+import { DeckDashboardCloneResult } from "./app/services/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { SelectedElement } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";
@@ -154,6 +154,8 @@ export namespace Components {
         "deckDidChange": EventEmitter<HTMLElement>;
         "deckElement": HTMLElement;
     }
+    interface AppDeckImport {
+    }
     interface AppDeckStyle {
         "blockSlide": EventEmitter<boolean>;
         "deckDidChange": EventEmitter<HTMLElement>;
@@ -260,14 +262,14 @@ export namespace Components {
     }
     interface AppNavigation {
         "menuToggle": boolean;
-        "presentation": boolean;
         "publish": boolean;
         "user": boolean;
+        "write": boolean;
     }
     interface AppNavigationActions {
-        "presentation": boolean;
         "publish": boolean;
         "signIn": boolean;
+        "write": boolean;
     }
     interface AppNoTemplates {
     }
@@ -364,6 +366,10 @@ export namespace Components {
         "slotTypes": SlotType[] | undefined;
     }
     interface AppSpinner {
+    }
+    interface AppStartDeck {
+        "importColor": 'dark' | 'light';
+        "writeColor": 'primary' | 'dark' | 'light';
     }
     interface AppTemplate {
         "template": Template | undefined;
@@ -628,6 +634,12 @@ declare global {
     var HTMLAppDeckHeaderFooterElement: {
         prototype: HTMLAppDeckHeaderFooterElement;
         new (): HTMLAppDeckHeaderFooterElement;
+    };
+    interface HTMLAppDeckImportElement extends Components.AppDeckImport, HTMLStencilElement {
+    }
+    var HTMLAppDeckImportElement: {
+        prototype: HTMLAppDeckImportElement;
+        new (): HTMLAppDeckImportElement;
     };
     interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {
     }
@@ -1019,6 +1031,12 @@ declare global {
         prototype: HTMLAppSpinnerElement;
         new (): HTMLAppSpinnerElement;
     };
+    interface HTMLAppStartDeckElement extends Components.AppStartDeck, HTMLStencilElement {
+    }
+    var HTMLAppStartDeckElement: {
+        prototype: HTMLAppStartDeckElement;
+        new (): HTMLAppStartDeckElement;
+    };
     interface HTMLAppTemplateElement extends Components.AppTemplate, HTMLStencilElement {
     }
     var HTMLAppTemplateElement: {
@@ -1168,6 +1186,7 @@ declare global {
         "app-deck-delete": HTMLAppDeckDeleteElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
+        "app-deck-import": HTMLAppDeckImportElement;
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-demo": HTMLAppDemoElement;
@@ -1233,6 +1252,7 @@ declare global {
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
+        "app-start-deck": HTMLAppStartDeckElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
@@ -1422,6 +1442,8 @@ declare namespace LocalJSX {
         "onNavigateSettings"?: (event: CustomEvent<void>) => void;
         "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
     }
+    interface AppDeckImport {
+    }
     interface AppDeckStyle {
         "blockSlide"?: EventEmitter<boolean>;
         "deckDidChange"?: EventEmitter<HTMLElement>;
@@ -1544,15 +1566,15 @@ declare namespace LocalJSX {
     }
     interface AppNavigation {
         "menuToggle"?: boolean;
-        "presentation"?: boolean;
         "publish"?: boolean;
         "user"?: boolean;
+        "write"?: boolean;
     }
     interface AppNavigationActions {
         "onActionPublish"?: (event: CustomEvent<void>) => void;
-        "presentation"?: boolean;
         "publish"?: boolean;
         "signIn"?: boolean;
+        "write"?: boolean;
     }
     interface AppNoTemplates {
     }
@@ -1658,6 +1680,10 @@ declare namespace LocalJSX {
     }
     interface AppSpinner {
     }
+    interface AppStartDeck {
+        "importColor"?: 'dark' | 'light';
+        "writeColor"?: 'primary' | 'dark' | 'light';
+    }
     interface AppTemplate {
         "template"?: Template | undefined;
     }
@@ -1762,6 +1788,7 @@ declare namespace LocalJSX {
         "app-deck-delete": AppDeckDelete;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
+        "app-deck-import": AppDeckImport;
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
         "app-demo": AppDemo;
@@ -1827,6 +1854,7 @@ declare namespace LocalJSX {
         "app-slide-warning-info": AppSlideWarningInfo;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
+        "app-start-deck": AppStartDeck;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
@@ -1886,6 +1914,7 @@ declare module "@stencil/core" {
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
+            "app-deck-import": LocalJSX.AppDeckImport & JSXBase.HTMLAttributes<HTMLAppDeckImportElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
@@ -1951,6 +1980,7 @@ declare module "@stencil/core" {
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
+            "app-start-deck": LocalJSX.AppStartDeck & JSXBase.HTMLAttributes<HTMLAppStartDeckElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;

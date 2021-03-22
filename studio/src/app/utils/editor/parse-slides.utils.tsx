@@ -115,8 +115,10 @@ export class ParseSlidesUtils {
     }
 
     if (slide.data.template === SlideTemplate['ASPECT-RATIO']) {
-      defaultAttributes['grid'] = true;
+      defaultAttributes['grid'] = slide.data.attributes && slide.data.attributes.grid === false ? 'false' : 'true';
       defaultAttributes['editable'] = true;
+
+      console.log(slide.data.attributes);
     }
 
     if (slide.data.template === SlideTemplate.PLAYGROUND) {

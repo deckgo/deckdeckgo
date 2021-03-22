@@ -18,7 +18,7 @@ export class StorageOnlineService {
     return StorageOnlineService.instance;
   }
 
-  uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
+  uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
@@ -44,7 +44,7 @@ export class StorageOnlineService {
         await ref.put(data);
 
         resolve({
-          downloadUrl: await ref.getDownloadURL(),
+          downloadUrl: downloadUrl ? await ref.getDownloadURL() : undefined,
           fullPath: ref.fullPath,
           name: ref.name,
         });

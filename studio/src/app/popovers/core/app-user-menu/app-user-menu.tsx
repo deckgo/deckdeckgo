@@ -38,15 +38,6 @@ export class AppUserMenu {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private async navigateEditor() {
-    navStore.state.nav = {
-      url: '/editor',
-      direction: NavDirection.RELOAD,
-    };
-
-    await this.closePopover();
-  }
-
   render() {
     return [<app-user-info></app-user-info>, <hr />, this.renderActions()];
   }
@@ -54,10 +45,6 @@ export class AppUserMenu {
   private renderActions() {
     return (
       <ion-list>
-        <ion-item onClick={() => this.navigateEditor()}>
-          <ion-label>{i18n.state.nav.write_a_presentation}</ion-label>
-        </ion-item>
-
         <ion-item onClick={() => this.closePopover()}>
           <ion-router-link href="/dashboard" routerDirection="forward">
             <ion-label>{i18n.state.nav.dashboard}</ion-label>
