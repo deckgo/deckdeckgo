@@ -599,7 +599,7 @@ export class AppProfile {
           <input
             id="inputProfilePicture"
             type="file"
-            accept="image/x-png,image/jpeg,image/gif"
+            accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp"
             onChange={() => this.selectProfilePicture()}
             disabled={this.saving}
           />
@@ -798,7 +798,7 @@ export class AppProfile {
         <input
           id="inputCustomLogo"
           type="file"
-          accept="image/x-png,image/jpeg,image/gif"
+          accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp"
           onChange={() => this.selectCustomLogo()}
           disabled={this.saving || !this.user || !this.user.data || !this.user.data.social || !this.user.data.social.custom}
         />

@@ -76,6 +76,8 @@ export class StorageOnlineService {
 
         const results: ListResult = await ref.list(options);
 
+        console.log(results);
+
         resolve(this.toStorageFileList(results));
       } catch (err) {
         resolve(null);
