@@ -64,7 +64,7 @@ export class StorageOnlineService {
           return;
         }
 
-        const ref = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/`);
+        const ref = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}`);
 
         let options: ListOptions = {
           maxResults: Constants.STORAGE.MAX_QUERY_RESULTS,
@@ -76,14 +76,14 @@ export class StorageOnlineService {
 
         const results: ListResult = await ref.list(options);
 
-        resolve(this.toStorageFileList(results));
+        resolve(this.toStorageFilesList(results));
       } catch (err) {
         resolve(null);
       }
     });
   }
 
-  private toStorageFileList(results: ListResult): Promise<StorageFilesList> {
+  private toStorageFilesList(results: ListResult): Promise<StorageFilesList> {
     return new Promise<StorageFilesList>(async (resolve) => {
       if (!results || !results.items || results.items.length <= 0) {
         resolve({
@@ -111,5 +111,35 @@ export class StorageOnlineService {
         name: ref.name,
       });
     });
+  }
+
+  getFolders(folder: string): Promise<StorageFoldersList | undefined> {
+    return new Promise<StorageFoldersList | null>(async (resolve) => {
+      try {
+        if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
+          errorStore.state.error = 'Not logged in.';
+          resolve(undefined);
+          return;
+        }
+
+        const ref = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/`);
+
+        const results: ListResult = await ref.listAll();
+
+        resolve(this.toStorageFoldersList(results));
+      } catch (err) {
+        resolve(null);
+      }
+    });
+  }
+
+  private toStorageFoldersList(results: ListResult): StorageFoldersList | undefined {
+    if (!results || !results.prefixes || results.prefixes.length <= 0) {
+      return undefined;
+    }
+
+    return {
+      prefixes: results.prefixes.map((prefix: Reference) => ({name: prefix.name})),
+    };
   }
 }

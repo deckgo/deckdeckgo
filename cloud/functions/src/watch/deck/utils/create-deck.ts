@@ -109,7 +109,7 @@ const cleanStorageMeta = async (userId: string, tmpId: string) => {
 const generateDownloadUrl = async (meta: MetadataSlide, userId: string, tmpId: string): Promise<string> => {
   const bucket = admin.storage().bucket();
 
-  const path: string = `${userId}/assets/images/${tmpId}/${meta.background}`;
+  const path: string = `${userId}/assets/backgrounds/${tmpId}/${meta.background}`;
 
   const file = bucket.file(path);
 
