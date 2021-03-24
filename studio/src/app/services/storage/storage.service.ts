@@ -36,4 +36,14 @@ export class StorageService {
       return StorageOnlineService.getInstance().getFiles(next, folder);
     }
   }
+
+  async getFolders(folder: string): Promise<StorageFoldersList | undefined> {
+    const offline: OfflineDeck = await OfflineService.getInstance().status();
+
+    if (offline !== undefined) {
+      return undefined;
+    } else {
+      return StorageOnlineService.getInstance().getFolders(folder);
+    }
+  }
 }

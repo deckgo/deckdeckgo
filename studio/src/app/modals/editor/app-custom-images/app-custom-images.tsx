@@ -35,6 +35,9 @@ export class AppCustomImages {
   @State()
   private loading: boolean = true;
 
+  @State()
+  private folder: string = 'images';
+
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.storageService = StorageService.getInstance();
@@ -85,9 +88,9 @@ export class AppCustomImages {
     });
   }
 
-  private search(): Promise<void> {
+  private search(reset: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'images');
+      const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, this.folder);
 
       if (!list) {
         resolve();
@@ -103,11 +106,11 @@ export class AppCustomImages {
         return;
       }
 
-      if (!this.imagesOdd) {
+      if (!this.imagesOdd || reset) {
         this.imagesOdd = [];
       }
 
-      if (!this.imagesEven) {
+      if (!this.imagesEven || reset) {
         this.imagesEven = [];
       }
 
@@ -177,6 +180,13 @@ export class AppCustomImages {
     });
   }
 
+  private async openFolder($event: CustomEvent<string>) {
+    this.loading = true;
+    this.folder = $event.detail;
+
+    await this.search(true);
+  }
+
   render() {
     return [
       <ion-header>
@@ -190,6 +200,8 @@ export class AppCustomImages {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
+        <app-background-folders onSelectFolder={($event: CustomEvent<string>) => this.openFolder($event)}></app-background-folders>
+
         <app-image-columns
           imagesOdd={this.imagesOdd}
           imagesEven={this.imagesEven}
@@ -233,7 +245,7 @@ export class AppCustomImages {
   private renderToolbarAction() {
     if (!this.uploading) {
       return (
-        <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
+        <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary" disabled={this.folder !== 'images'}>
           <ion-icon name="cloud-upload" slot="start"></ion-icon>
           <ion-label>{i18n.state.editor.upload_image}</ion-label>
         </ion-button>

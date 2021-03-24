@@ -53,8 +53,8 @@ const unzip = (objName: string, file: File, meta: string): Promise<void> => {
 
   return new Promise<void>((resolve, reject) => {
     stream.on('entry', (entry: Entry) => {
-      // We want to store the backgrounds as persistent images and the text as temporary data
-      const assetsPath: string = background.includes(entry.path) ? 'images' : 'decks';
+      // We want to store the backgrounds as persistent data and the text as temporary data
+      const assetsPath: string = background.includes(entry.path) ? 'backgrounds' : 'decks';
 
       const destination = bucket.file(`${userId}/assets/${assetsPath}/${dataId}/${entry.path}`);
       return entry.pipe(destination.createWriteStream());
