@@ -1,3 +1,9 @@
+# 8.1.4 (2021-03-25)
+
+### Style
+
+- set a CSS font size for aspect ratio slides
+
 # 8.1.3 (2021-02-17)
 
 ### Fix

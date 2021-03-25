@@ -163,6 +163,13 @@ deckgo-deck.papyrus deckgo-lazy-img[slot] {
   --deckgo-lazy-img-height: auto;
 }
 
+deckgo-deck.papyrus > deckgo-slide-aspect-ratio div[slot="background"] {
+  width: var(--slide-width);
+  height: calc(var(--slide-width) * 9 / 16);
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
 deckgo-deck > svg[wave] {
   vertical-align: middle;
 }
