@@ -114,7 +114,6 @@ export class AppComponentsCharts {
               </ion-button>
             </div>
           </div>
-
           <h3 id="app-components-charts-compare-two-graphs">Compare two graphs</h3>
           <p>
             <deckgo-line-chart
@@ -150,7 +149,6 @@ export class AppComponentsCharts {
                 '--deckgo-chart-stroke-width-2': '3px',
               }}></deckgo-line-chart>
           </div>
-
           <h3 id="app-components-charts-compare-two-lines-and-display-a-grid">Compare two lines and display a grid</h3>
           <div>
             <deckgo-line-chart
@@ -169,7 +167,6 @@ export class AppComponentsCharts {
                 '--deckgo-chart-stroke-width-2': '3px',
               }}></deckgo-line-chart>
           </div>
-
           <h3 id="app-components-charts-animated-lines">Animated lines</h3>
           <div>
             <deckgo-line-chart
@@ -190,7 +187,6 @@ export class AppComponentsCharts {
               </ion-button>
             </div>
           </div>
-
           <h3 id="app-components-charts-bar">Bar</h3>
           <div>
             <deckgo-bar-chart
@@ -203,8 +199,7 @@ export class AppComponentsCharts {
                 '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
               }}></deckgo-bar-chart>
           </div>
-
-          <h3 id="app-components-charts-compare-multiple-bars">Compare multiple bars</h3>
+          ### Compare multiple bars
           <div>
             <deckgo-bar-chart
               width={500}
@@ -212,7 +207,6 @@ export class AppComponentsCharts {
               src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/charts/showcase/data-pie-chart.csv"
               style={{'--deckgo-chart-fill-color-1': 'var(--ion-color-primary)'}}></deckgo-bar-chart>
           </div>
-
           <h3 id="app-components-charts-animated-bars">Animated bars</h3>
           <div>
             <deckgo-bar-chart
@@ -236,11 +230,9 @@ export class AppComponentsCharts {
               </ion-button>
             </div>
           </div>
-
           <h3 id="app-components-charts-video">Video</h3>
           <p>Have a look at this video where we demonstrate it!</p>
           <iframe width="560" height="315" src="https://www.youtube.com/embed/CaEwUXO7BYA" frameborder="0"></iframe>
-
           <h2 id="app-components-charts-installation">Installation</h2>
           <p>This component could be added to your web application using the following methods.</p>
           <blockquote>

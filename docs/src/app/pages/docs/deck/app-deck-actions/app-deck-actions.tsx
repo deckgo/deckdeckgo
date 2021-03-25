@@ -77,8 +77,8 @@ export class AppDeckActions {
           <deckgo-highlight-code language="javascript">
             <code slot="code">
               &lt;deckgo-deck&gt;{'\n'} &lt;deckgo-slide-title&gt;{'\n'} &lt;h1 slot=&quot;title&quot;&gt;My presentation title&lt;&#47;h1&gt;{'\n'} &lt;p
-              slot=&quot;content&quot;&gt;{'\n'} Hello World 🚀{'\n'} &lt;&#47;p&gt;{'\n'} &lt;&#47;deckgo-slide-title&gt;{'\n'}
-              {'\n'} &lt;a href=&quot;#&quot; onclick=&quot;share()&quot; slot=&quot;actions&quot; style=&quot;color: inherit;&quot;&gt;&lt;ion-icon
+              slot=&quot;content&quot;&gt;{'\n'} Hello World 🚀{'\n'} &lt;&#47;p&gt;{'\n'} &lt;&#47;deckgo-slide-title&gt;{'\n'} {'\n'} &lt;a href=&quot;#&quot;
+              onclick=&quot;share()&quot; slot=&quot;actions&quot; style=&quot;color: inherit;&quot;&gt;&lt;ion-icon
               name=&quot;share&quot;&gt;&lt;&#47;ion-icon&gt;&lt;&#47;a&gt;{'\n'}&lt;&#47;deckgo-deck&gt;
             </code>
           </deckgo-highlight-code>
