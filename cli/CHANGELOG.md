@@ -1,3 +1,11 @@
+<a name="2.2.1"></a>
+
+# 2.2.1 (2021-03-25)
+
+### Bump
+
+- bump version to republish to npmjs
+
 <a name="2.2.0"></a>
 
 # 2.2.0 (2021-03-11)
