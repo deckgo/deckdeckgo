@@ -1,3 +1,9 @@
+# 3.2.3 (2021-03-25)
+
+### Style
+
+- use font size based on the width to preserve aspect ratio of texts 
+
 # 3.2.2 (2020-11-14)
 
 ### Fix

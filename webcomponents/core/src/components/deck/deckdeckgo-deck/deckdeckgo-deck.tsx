@@ -196,7 +196,7 @@ export class DeckdeckgoDeck {
         slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
       }
 
-      await this.initFontSize(slider, sliderSize.height);
+      await this.initFontSize(slider, {height: sliderSize.height, width: sliderSize.width});
 
       resolve();
     });
@@ -224,18 +224,20 @@ export class DeckdeckgoDeck {
           slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
         }
 
-        await this.initFontSize(slider, slider.offsetParent.clientHeight);
+        await this.initFontSize(slider, {height: slider.offsetParent.clientHeight, width: slider.offsetParent.clientWidth});
       }
 
       resolve();
     });
   }
 
-  private async initFontSize(slider: HTMLElement, height: number) {
+  private async initFontSize(slider: HTMLElement, {height, width}: {height: number; width: number}) {
     // 576px height = font-size 16px or 1em (relative to the font-size of its direct or nearest parent)
     const fontSize: number = height / 576;
+    const ratioFontSize: number = width / 16 * 9 / 576;
 
     slider.style.setProperty('--slide-auto-font-size', `${fontSize}em`);
+    slider.style.setProperty('--slide-auto-ratio-font-size', `${ratioFontSize}em`);
   }
 
   private initKeyboardAssist() {
