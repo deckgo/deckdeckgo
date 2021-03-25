@@ -1,3 +1,9 @@
+<a name="2.2.0"></a>
+
+# 2.2.0 (2021-03-25)
+
+- new storage function `watchDeckImport` for figma import
+
 <a name="2.1.0"></a>
 
 # 2.1.0 (2021-01-31)
