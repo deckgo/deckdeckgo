@@ -42,6 +42,8 @@ export const Features = () => {
         <Feature titleKey="enterprise.features.edit.transition.title" msgKey="enterprise.features.edit.transition.content" />
         <Feature titleKey="enterprise.features.edit.math.title" msgKey="enterprise.features.edit.math.content" />
         <Feature titleKey="enterprise.features.edit.charts.title" msgKey="enterprise.features.edit.charts.content" />
+        <Feature titleKey="enterprise.features.edit.templates.title" msgKey="enterprise.features.edit.templates.content" />
+        <Feature titleKey="enterprise.features.edit.figma.title" msgKey="enterprise.features.edit.figma.content" />
 
         <h2>
           <FormattedMessage id="enterprise.features.presenting.title" />
