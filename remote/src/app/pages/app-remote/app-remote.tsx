@@ -157,7 +157,13 @@ export class AppRemote {
         const slidesElements: JSX.IntrinsicElements[] = await ParseSlidesUtils.parseSlides($event.deck);
         this.slides = [...slidesElements];
 
-        this.deckAttributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
+        const attributes = await ParseAttributesUtils.parseAttributes($event.deck.attributes);
+
+        this.deckAttributes = {
+          ...attributes,
+          direction: attributes.direction !== 'papyrus' ? attributes.direction : 'horizontal',
+          'direction-mobile': attributes.direction !== 'papyrus' ? attributes.direction : 'horizontal',
+        };
 
         this.deckRevealOnMobile = !$event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
         this.deckReveal = $event.deck.reveal;

@@ -1,3 +1,9 @@
+# 1.13.1 (2021-03-26)
+
+### Features
+
+- no `papyrus` display on remote, fallback on `horizontal`
+
 # 1.13.0 (2020-11-12)
 
 ### Features
