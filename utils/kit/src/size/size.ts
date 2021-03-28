@@ -1,4 +1,5 @@
 import {isPapyrus} from '../utils/utils.deck';
+import { isFullscreen } from "@deckdeckgo/utils";
 
 interface Size {
   width: string;
@@ -40,12 +41,6 @@ const initMainSize = async () => {
     return;
   }
 
-  console.log(EMBEDDED, isPapyrus(deck));
-
-  if (EMBEDDED || isPapyrus(deck)) {
-    return;
-  }
-
   const content: HTMLElement | null = document.querySelector('div.ion-page ion-content');
 
   const main: HTMLElement | null = document.querySelector('div.ion-page ion-content main');
@@ -54,35 +49,36 @@ const initMainSize = async () => {
     return;
   }
 
-  console.log(content, content.offsetHeight, content.offsetWidth);
-
-  const {width, height}: Size = initEmbeddedSize(content);
-
-  console.log(width, height);
-
-  main.style.setProperty('--main-size-width', width);
-  main.style.setProperty('--main-size-height', height);
-
-  console.log(content);
-
-  // TODO: missing header size
+  if (EMBEDDED || isPapyrus(deck) || isFullscreen()) {
+    defaultSize(main);
+  } else {
+    aspectRatioSize({content, main});
+  }
 
   await deck.initSlideSize();
 };
 
-const initEmbeddedSize = (content: HTMLElement): Size => {
+const defaultSize = (main: HTMLElement) => {
+  main.style.removeProperty('--main-size-width');
+  main.style.removeProperty('--main-size-height');
+}
+
+const aspectRatioSize = ({content, main}: {content: HTMLElement, main: HTMLElement}) => {
   const maxHeight: number = content.offsetHeight - 32;
 
-  const width: number = content.offsetWidth - 192;
-  const height: number = (width * 9) / 16;
+  const ratioWidth: number = content.offsetWidth - 192;
+  const ratioHeight: number = (ratioWidth * 9) / 16;
 
-  return height > maxHeight
+  const {width, height}: Size = ratioHeight > maxHeight
     ? {
         width: `${(maxHeight * 16) / 9}px`,
         height: `${maxHeight}px`,
       }
     : {
-        width: `${width}px`,
-        height: `${height}px`,
+        width: `${ratioWidth}px`,
+        height: `${ratioHeight}px`,
       };
+
+  main.style.setProperty('--main-size-width', width);
+  main.style.setProperty('--main-size-height', height);
 };
