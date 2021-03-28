@@ -8,10 +8,10 @@ export const initFullscreen = () => {
     document.addEventListener(
       'mouseInactivity',
       async ($event) => {
-        const navigation: HTMLElement | null = document.querySelector('#navigation');
+        const menu: HTMLElement | null = document.querySelector('#fullscreen-menu');
 
-        if ($event && navigation) {
-          navigation.style.visibility = ($event as CustomEvent<boolean>).detail ? 'inherit' : 'hidden';
+        if ($event && menu) {
+          menu.style.visibility = ($event as CustomEvent<boolean>).detail ? 'inherit' : 'hidden';
         }
 
         const previous: HTMLElement | null = document.querySelector('#previous');

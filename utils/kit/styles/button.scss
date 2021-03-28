@@ -98,10 +98,6 @@ button.navigation.hide-on-mobile {
   display: var(--deckgo-hide-on-mobile, inline-flex);
 }
 
-#navigation {
-  display: none;
-}
-
 button.navigation.transparent,
 button.navigation.primary {
   width: 60px;

@@ -22,10 +22,10 @@ async function initSreenshot() {
   const screenshot = url && url.searchParams ? url.searchParams.has('screenshot') : false;
 
   if (screenshot) {
-    const navigation: HTMLElement | null = document.querySelector('#navigation');
+    const menu: HTMLElement | null = document.querySelector('#fullscreen-menu');
 
-    if (navigation) {
-      navigation.style.display = 'none';
+    if (menu) {
+      menu.style.display = 'none';
     }
 
     const previous: HTMLElement | null = document.querySelector('#previous');
