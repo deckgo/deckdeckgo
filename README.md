@@ -27,6 +27,7 @@
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Community](#community)
+- [Supporting](#supporting)
 - [Progressive Web Apps](#progressive-web-apps)
 - [Web Components](#web-components)
 - [Others](#others)
@@ -62,6 +63,12 @@ Are you interested to contribute to our open source project? That would be aweso
 Templates and tools that are driven by the community of DeckDeckGo developers and maintainers are gathered together in a dedicated GitHub [org](https://github.com/deckgo-community).
 
 If you would like to add your contribution, get in [touch](https://deckdeckgo.com/en/contact).
+
+## Supporting
+
+If you like the project, you can become a sponsor at [Open Collective](https://opencollective.com/deckdeckgo).
+
+<a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/deckdeckgo/tiers/backers.svg?avatarHeight=32"/></a>
 
 ## Progressive Web Apps
 
