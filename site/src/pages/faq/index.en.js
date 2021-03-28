@@ -4,14 +4,14 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
 import {Link} from 'gatsby';
 
 const FaqPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Frequently asked questions</h1>
 
           <h3>Why DeckDeckGo?</h3>

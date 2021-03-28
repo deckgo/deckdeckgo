@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {FormattedMessage, useIntl} from 'react-intl';
 
-import styles from './contact.module.scss';
+import {main, form, getintouch, address} from './contact.module.scss';
 import {ActionButton} from '../../core/buttons/action-button';
 
 export const Contact = () => {
@@ -32,9 +32,9 @@ export const Contact = () => {
 
   return (
     <section>
-      <main className={styles.main}>
-        <form className={styles.form} onSubmit={($event) => submitForm($event)} action="https://formspree.io/xjvaebzk" method="POST">
-          <h3 className={styles.getintouch}>
+      <main className={main}>
+        <form className={form} onSubmit={($event) => submitForm($event)} action="https://formspree.io/xjvaebzk" method="POST">
+          <h3 className={getintouch}>
             <FormattedMessage id="enterprise.contact.inquiry" />
           </h3>
 
@@ -74,7 +74,7 @@ export const Contact = () => {
             </small>
           </div>
 
-          <p className={styles.address}>
+          <p className={address}>
             {`DeckDeckGo
 c/o The Hub Zürich Association
 Sihlquai 131

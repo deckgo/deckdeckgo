@@ -2,7 +2,7 @@ import React from 'react';
 
 import {FormattedMessage} from 'react-intl';
 
-import styles from './hero.module.scss';
+import {main, title, section, discover, hero, quote, subtitle} from './hero.module.scss';
 
 import {ActionButton} from '../../core/buttons/action-button';
 
@@ -29,13 +29,13 @@ export const EnterpriseHero = () => {
 
   function renderSectionHero() {
     return (
-      <section className={styles.section}>
-        <main className={`${styles.main} ${styles.hero}`}>
-          <h1 className={styles.title}>
+      <section className={section}>
+        <main className={`${main} ${hero}`}>
+          <h1 className={title}>
             <FormattedMessage id="enterprise.hero.title" />
           </h1>
 
-          <section className={styles.subtitle}>
+          <section className={subtitle}>
             <FormattedMessage id="enterprise.hero.subtitle" />
           </section>
 
@@ -48,7 +48,7 @@ export const EnterpriseHero = () => {
   function renderQuote() {
     return (
       <section>
-        <main className={`${styles.main} ${styles.quote}`}>
+        <main className={`${main} ${quote}`}>
           <blockquote>
             <span>❝</span>
             <p>
@@ -79,7 +79,7 @@ export const EnterpriseHero = () => {
               <FormattedMessage id="enterprise.hero.templates.uptodate" />
             </p>
 
-            <button type="button" className={styles.discover} onClick={scrollTo}>
+            <button type="button" className={discover} onClick={scrollTo}>
               <FormattedMessage id="enterprise.hero.get.in.touch" />{' '}
               <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 512 512">
                 <polyline

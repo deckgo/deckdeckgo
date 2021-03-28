@@ -3,13 +3,13 @@ import {Link} from 'gatsby';
 
 import {FormattedMessage} from 'react-intl';
 
-import styles from './links.module.scss';
+import {links, sectionTitle, social} from './links.module.scss';
 
 export const Links = ({lang, action, display = 'grid'}) => {
   return (
-    <div className={`${styles.links} ${action ? 'action' : ''} ${display}`}>
+    <div className={`${links} ${action ? 'action' : ''} ${display}`}>
       <section>
-        {display === 'grid' ? <p className={styles.sectionTitle}>DeckDeckGo</p> : undefined}
+        {display === 'grid' ? <p className={sectionTitle}>DeckDeckGo</p> : undefined}
 
         <Link to={`/${lang}/about`}>
           <FormattedMessage id="footer.link.about" />
@@ -38,7 +38,7 @@ export const Links = ({lang, action, display = 'grid'}) => {
 
       <section>
         {display === 'grid' ? (
-          <p className={styles.sectionTitle}>
+          <p className={sectionTitle}>
             <FormattedMessage id="footer.link.title.apps" />
           </p>
         ) : undefined}
@@ -58,7 +58,7 @@ export const Links = ({lang, action, display = 'grid'}) => {
 
       <section>
         {display === 'grid' ? (
-          <p className={styles.sectionTitle}>
+          <p className={sectionTitle}>
             <FormattedMessage id="footer.link.title.developers" />
           </p>
         ) : undefined}
@@ -78,7 +78,7 @@ export const Links = ({lang, action, display = 'grid'}) => {
 
       <section>
         {display === 'grid' ? (
-          <p className={styles.sectionTitle}>
+          <p className={sectionTitle}>
             <FormattedMessage id="footer.link.title.terms" />
           </p>
         ) : undefined}
@@ -92,7 +92,7 @@ export const Links = ({lang, action, display = 'grid'}) => {
         </Link>
       </section>
 
-      <div className={styles.social}>
+      <div className={social}>
         <a href="https://twitter.com/deckdeckgo" rel="noopener norefferer" aria-label="Twitter">
           <img loading="lazy" src="/assets/icons/ionicons/twitter.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
         </a>

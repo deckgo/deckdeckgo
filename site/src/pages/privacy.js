@@ -4,13 +4,13 @@ import Layout from '../components/core/layout/en';
 
 import {Footer} from '../components/core/footer/footer';
 
-import styles from '../themes/templates/template.module.scss';
+import {main} from '../themes/templates/template.module.scss';
 
 const PrivacyPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Privacy Policy</h1>
 
           <p>Effective 3rd July 2019</p>

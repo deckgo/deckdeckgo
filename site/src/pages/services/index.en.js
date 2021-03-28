@@ -5,13 +5,13 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
 
 const ServicesPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Services</h1>
 
           <p>

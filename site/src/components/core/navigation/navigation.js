@@ -3,9 +3,9 @@ import React, {createRef, useEffect, useRef, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
 import {graphql, Link, StaticQuery} from 'gatsby';
-import Img from 'gatsby-image';
+import {GatsbyImage} from 'gatsby-plugin-image';
 
-import styles from './navigation.module.scss';
+import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start} from './navigation.module.scss';
 
 import {LinkButton} from '../buttons/link-button';
 import {Menu} from '../menu/menu';
@@ -46,13 +46,13 @@ const Navigation = ({data, fix, lang, dark}) => {
 
   return (
     <>
-      <header className={`${styles.header} ` + (fix ? `${styles.fix}` : scrolled ? `${styles.fix} animated` : '') + `${dark ? ` ${styles.dark}` : ''}`}>
-        <nav className={styles.nav}>
-          <button className={styles.menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
+      <header className={`${header} ` + (fix ? `${fixStyle}` : scrolled ? `${fixStyle} animated` : '') + `${dark ? ` ${darkStyle}` : ''}`}>
+        <nav className={nav}>
+          <button className={menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
             <img loading="lazy" src={`/assets/icons/ionicons/menu${dark ? '-dark' : ''}.svg`} aria-hidden="true" alt="" style={{width: '2rem'}} />
           </button>
 
-          <div className={styles.start}>
+          <div className={start}>
             {renderDeckDeckGo()}
 
             <Link to={`/${lang}/discover`}>
@@ -64,7 +64,7 @@ const Navigation = ({data, fix, lang, dark}) => {
             </Link>
           </div>
 
-          <div className={styles.end}>
+          <div className={end}>
             <a href="https://app.deckdeckgo.com/signin" rel="noopener noreferrer">
               <FormattedMessage id="nav.signin" />
             </a>
@@ -80,8 +80,8 @@ const Navigation = ({data, fix, lang, dark}) => {
 
   function renderDeckDeckGo() {
     return (
-      <Link to={`/${lang}/`} className={styles.home}>
-        <Img fluid={data.placeholderImage.childImageSharp.fluid} />
+      <Link to={`/${lang}/`} className={home}>
+        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData} />
 
         <span style={{margin: 0}}>{data.site.siteMetadata.title}</span>
       </Link>
@@ -95,9 +95,7 @@ export default (props) => (
       query {
         placeholderImage: file(relativePath: {eq: "icon-192x192.png"}) {
           childImageSharp {
-            fluid(maxWidth: 48) {
-              ...GatsbyImageSharpFluid
-            }
+            gatsbyImageData(width: 48, placeholder: BLURRED)
           }
         }
         site {
