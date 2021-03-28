@@ -36,25 +36,29 @@ export const Links = ({lang, action, display = 'grid'}) => {
         </Link>
       </section>
 
-      <section>
-        {display === 'grid' ? (
+      {display === 'grid' ? (
+        <section>
           <p className={sectionTitle}>
-            <FormattedMessage id="footer.link.title.apps" />
+            <FormattedMessage id="footer.link.title.product" />
           </p>
-        ) : undefined}
 
-        <a href="https://app.deckdeckgo.com" rel="noopener norefferer">
-          <FormattedMessage id="footer.link.editor" />
-        </a>
+          <Link to={`/${lang}/features`}>
+            <FormattedMessage id="footer.link.features" />
+          </Link>
 
-        <a href="https://app.deckdeckgo.com/poll" rel="noopener norefferer">
-          <FormattedMessage id="footer.link.poll" />
-        </a>
+          <Link to={`/${lang}/discover`}>
+            <FormattedMessage id="footer.link.discover" />
+          </Link>
 
-        <a href="https://deckdeckgo.app" rel="noopener norefferer">
-          <FormattedMessage id="footer.link.remote" />
-        </a>
-      </section>
+          <Link to={`/${lang}/pricing`}>
+            <FormattedMessage id="footer.link.pricing" />
+          </Link>
+
+          <Link to={`/${lang}/enterprise`}>
+            <FormattedMessage id="footer.link.enterprise" />
+          </Link>
+        </section>
+      ) : undefined}
 
       <section>
         {display === 'grid' ? (
@@ -79,7 +83,7 @@ export const Links = ({lang, action, display = 'grid'}) => {
       <section>
         {display === 'grid' ? (
           <p className={sectionTitle}>
-            <FormattedMessage id="footer.link.title.terms" />
+            <FormattedMessage id="footer.link.title.legal" />
           </p>
         ) : undefined}
 

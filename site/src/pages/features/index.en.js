@@ -3,14 +3,14 @@ import * as React from 'react';
 import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
-import {EnterpriseHero} from '../../components/enterprise/hero/hero';
 import {Features} from '../../components/enterprise/features/features';
 import {Contact} from '../../components/enterprise/contact/contact';
+import {FeaturesHero} from '../../components/features/hero/hero';
 
-const EnterprisePage = (props) => {
+const FeaturesPages = (props) => {
   return (
-    <Layout location={props.location} sticky={false} navTheme={'enterprise'}>
-      <EnterpriseHero />
+    <Layout location={props.location} sticky={false} navTheme={'features'}>
+      <FeaturesHero />
 
       <Features />
 
@@ -21,4 +21,4 @@ const EnterprisePage = (props) => {
   );
 };
 
-export default EnterprisePage;
+export default FeaturesPages;

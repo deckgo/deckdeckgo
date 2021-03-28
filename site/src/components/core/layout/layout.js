@@ -39,7 +39,7 @@ deckDeckGoYoutube();
 deckDeckGoCharts();
 deckDeckGoQRCode();
 
-const Layout = ({children, location, messages, sticky = true, dark}) => {
+const Layout = ({children, location, messages, sticky = true, navTheme}) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -61,7 +61,7 @@ const Layout = ({children, location, messages, sticky = true, dark}) => {
     <IntlProvider locale={langKey} messages={messages}>
       <SEO lang={langKey} />
 
-      <Navigation lang={langKey} dark={dark} />
+      <Navigation lang={langKey} navTheme={navTheme} />
 
       <div className={sticky ? stickyStyles : undefined}>{children}</div>
     </IntlProvider>

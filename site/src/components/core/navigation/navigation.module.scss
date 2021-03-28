@@ -41,6 +41,11 @@
   color: var(--color-dark-contrast);
 }
 
+.features {
+  background: var(--color-tertiary);
+  color: var(--color-tertiary-contrast);
+}
+
 .fix {
   &::before {
     opacity: 1;
@@ -89,6 +94,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  height: 54px;
 
   a:first-of-type {
     margin-right: 1.45rem;
