@@ -1,4 +1,5 @@
 import {initEmbedded} from '../embed/embedded';
+import { initSize } from "../size/size";
 
 export const postLoading = async () => {
   const app = document.querySelector('ion-app');
@@ -9,6 +10,7 @@ export const postLoading = async () => {
 
   await initSreenshot();
   await initEmbedMode();
+  await initSize();
 };
 
 async function initSreenshot() {

@@ -1,5 +1,5 @@
 import {isMobile} from '@deckdeckgo/utils';
-import {contrast} from '../utils/util.color';
+import { isPapyrus, isVertical } from "../utils/utils.deck";
 
 export const initActions = async () => {
   const slider: HTMLDeckgoDeckElement | null = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
@@ -88,16 +88,6 @@ function handlePapyrusScroll(entries: IntersectionObserverEntry[]) {
   next.style.opacity = entries[0].isIntersecting ? '1' : '0';
 }
 
-function isPapyrus(deck: HTMLDeckgoDeckElement): boolean {
-  const mobile = isMobile();
-  return (deck.direction === 'papyrus' && !mobile) || (deck.directionMobile === 'papyrus' && mobile);
-}
-
-function isVertical(deck: HTMLDeckgoDeckElement): boolean {
-  const mobile = isMobile();
-  return (deck.direction === 'vertical' && !mobile) || (deck.directionMobile === 'vertical' && mobile);
-}
-
 async function initNavigation() {
   const deck = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
 
@@ -114,11 +104,6 @@ async function initNavigation() {
   if (!slide) {
     return;
   }
-
-  const style: CSSStyleDeclaration = window.getComputedStyle(slide);
-  const color: string = await contrast(style.backgroundColor);
-
-  document.body.style.setProperty('--button-navigation-color', color);
 
   const prev = document.querySelector('button#previous') as HTMLElement | null;
   if (prev) {
