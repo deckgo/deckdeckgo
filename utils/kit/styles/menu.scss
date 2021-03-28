@@ -1,3 +1,17 @@
 ion-menu ion-item {
   --inner-border-width: 0;
 }
+
+
+#fullscreen-menu {
+  display: none;
+
+  button {
+    background: rgba(var(--ion-color-dark-rgb), 0.4);
+    color: var(--ion-color-dark-contrast);
+
+    &:nth-child(2) {
+      margin: 0 16px;
+    }
+  }
+}

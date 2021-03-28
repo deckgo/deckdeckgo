@@ -1,4 +1,5 @@
 import {initEmbedded} from '../embed/embedded';
+import { initSize } from "../size/size";
 
 export const postLoading = async () => {
   const app = document.querySelector('ion-app');
@@ -9,6 +10,7 @@ export const postLoading = async () => {
 
   await initSreenshot();
   await initEmbedMode();
+  await initSize();
 };
 
 async function initSreenshot() {
@@ -20,10 +22,10 @@ async function initSreenshot() {
   const screenshot = url && url.searchParams ? url.searchParams.has('screenshot') : false;
 
   if (screenshot) {
-    const navigation: HTMLElement | null = document.querySelector('#navigation');
+    const menu: HTMLElement | null = document.querySelector('#fullscreen-menu');
 
-    if (navigation) {
-      navigation.style.display = 'none';
+    if (menu) {
+      menu.style.display = 'none';
     }
 
     const previous: HTMLElement | null = document.querySelector('#previous');
