@@ -15,7 +15,7 @@ import '../../../themes/variables.scss';
 import SEO from '../seo/seo';
 import Navigation from '../navigation/navigation';
 
-import {sticky} from './layout.module.scss';
+import {sticky as stickyStyles} from './layout.module.scss';
 
 import {defineCustomElements as deckDeckGoCoreElement} from '@deckdeckgo/core/dist/loader';
 
@@ -63,7 +63,7 @@ export default ({children, location, messages, sticky = true, dark}) => {
 
       <Navigation lang={langKey} dark={dark} />
 
-      <div className={sticky ? sticky : undefined}>{children}</div>
+      <div className={sticky ? stickyStyles : undefined}>{children}</div>
     </IntlProvider>
   );
 };
