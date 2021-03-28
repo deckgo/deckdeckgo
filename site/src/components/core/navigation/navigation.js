@@ -3,7 +3,7 @@ import React, {createRef, useEffect, useRef, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
 import {graphql, Link, StaticQuery} from 'gatsby';
-import { GatsbyImage } from "gatsby-plugin-image"
+import {GatsbyImage} from 'gatsby-plugin-image';
 
 import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start} from './navigation.module.scss';
 
