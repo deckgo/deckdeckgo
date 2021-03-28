@@ -21,9 +21,7 @@ export const Feed = () => {
           remoteImage {
             childImageSharp {
               id
-              fluid {
-                ...GatsbyImageSharpFluid
-              }
+              gatsbyImageData(width: 285, placeholder: BLURRED)
             }
           }
         }

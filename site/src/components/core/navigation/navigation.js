@@ -3,7 +3,7 @@ import React, {createRef, useEffect, useRef, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
 import {graphql, Link, StaticQuery} from 'gatsby';
-import Img from 'gatsby-image';
+import { GatsbyImage } from "gatsby-plugin-image"
 
 import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start} from './navigation.module.scss';
 
@@ -81,7 +81,7 @@ const Navigation = ({data, fix, lang, dark}) => {
   function renderDeckDeckGo() {
     return (
       <Link to={`/${lang}/`} className={home}>
-        <Img fluid={data.placeholderImage.childImageSharp.fluid} />
+        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData} />
 
         <span style={{margin: 0}}>{data.site.siteMetadata.title}</span>
       </Link>
@@ -95,9 +95,7 @@ export default (props) => (
       query {
         placeholderImage: file(relativePath: {eq: "icon-192x192.png"}) {
           childImageSharp {
-            fluid(maxWidth: 48) {
-              ...GatsbyImageSharpFluid
-            }
+            gatsbyImageData(width: 48, placeholder: BLURRED)
           }
         }
         site {
