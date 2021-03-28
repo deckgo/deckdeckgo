@@ -3,7 +3,7 @@ button.navigation {
   outline: none;
 
   font: inherit;
-  color: var(--button-navigation-color, inherit);
+  color: inherit;
   background: none;
   padding: 0;
 
@@ -29,20 +29,14 @@ button#next {
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-
-  @media screen and (max-width: 768px) {
-    top: unset;
-    transform: unset;
-    bottom: 16px;
-  }
 }
 
 button#previous {
-  left: 8px;
+  left: 16px;
 }
 
 button#next {
-  right: 8px;
+  right: 16px;
 }
 
 div.ion-page.vertical {
@@ -102,10 +96,6 @@ div.ion-page.papyrus {
 
 button.navigation.hide-on-mobile {
   display: var(--deckgo-hide-on-mobile, inline-flex);
-}
-
-#navigation {
-  display: none;
 }
 
 button.navigation.transparent,

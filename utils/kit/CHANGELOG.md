@@ -1,3 +1,15 @@
+# 3.0.0 (2021-03-28)
+
+### Breaking
+
+- fullscreen options container renamed from `navigation` to `fullscreen-menu`
+
+### Features
+
+- if windowed and not `papyrus` then display presentation in a 16/9 container
+
+### Features
+
 # 2.1.0 (2021-02-19)
 
 ### Features
