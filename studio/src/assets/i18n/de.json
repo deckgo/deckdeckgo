@@ -21,10 +21,11 @@
     "sign_out": "Ausloggen",
     "sign_in": "Einloggen",
     "write_a_presentation": "Erstelle eine Präsentation",
-    "ready_to_share": "Ready to share?",
+    "ready_to_share": "Bereit zum Teilen?",
     "profile": "Profil",
     "customization": "Anpassungen",
-    "templates": "Einstellungen",
+    "templates": "Vorlagen",
+    "settings": "Einstellungen",
     "dashboard": "Dashboard"
   },
   "menu": {
@@ -72,8 +73,8 @@
     "edit_mode": "Bearbeitungsmodus",
     "properties": "Eigenschaften",
     "profile": "Profil",
-    "access_settings": "{0} to access your profile and settings.",
-    "access_templates": "{0} to use your own templates.",
+    "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen",
+    "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
     "name": "Name",
     "email": "Email",
@@ -90,14 +91,14 @@
     "custom_url": "Deine Website oder URL (zum Beispiel: {0})",
     "logo_address": "A logo for this custom address",
     "custom_logo": "Benutzerdefiniertes Logo",
-    "contribute_community": "Do you want to contribute to the community? {0} us to share a template. Möchtest du zur Community beitragen? {0}",
+    "contribute_community": "Möchtest du zur Community beitragen? {0} uns um eine Vorlage zu teilen.",
     "contact": "Kontakt",
     "add_a_template": "Füge eine Vorlage hinzu"
   },
   "dashboard": {
     "welcome": "Willkommen bei DeckDeckGo 👋",
     "your_presentations": "Deine Präsentationen",
-    "try": "You can try right now our editor for slides but, we will kindly ask you to {0} after three slides. We think it's safer that way, because your content is saved in the cloud.",
+    "try": "Du kannst unseren Editor sofort mit bis zu drei Folien ausprobieren. Um mehr Folien zu erstellen, möchten wir dich bitten, einen Accout erstellen. Dies ist sicherer, da deine Folien in der Cloud sicher gespeichert werden kann.",
     "filter": "Deine Präsentationen filtern",
     "no_slides": "Du hast noch keine Folien. Leg' los, entwerfe jetzt dein erstes Set!",
     "copy": "Kopiere die Präsentation",
@@ -135,7 +136,7 @@
     "chart": "Chart",
     "text": "Text",
     "header_footer": "Kopf- und Fußzeile",
-    "header_footer_sign_in": "Oh, hi! Users' settings are the options for the header and footer. Therefore, if you wish to give a try to this feature, please {0}.",
+    "header_footer_sign_in": "Oh, hi! Benutzerdefinierte Einstellungen für Kopf- und Fußzeile ist ein Feature, das du als registrierter User nutzen kannst. Bitte {0}.",
     "header_footer_edit": "Benutzerdefinierte oder vorgefertigte Optionen (Twitter, etc.) können in deiner {0} bearbeitet werden.",
     "background": "Hintergrund",
     "code": "Code",
@@ -365,7 +366,7 @@
   "offline": {
     "editing": "Du bearbeitest gerade offline.",
     "why": "Langsame Verbindung? Unterwegs im Flugzeug? Oder möchtest du deine Präsentation ohne Internet-Verbindung halten?",
-    "turn": "Turn DeckDeckGo {0} to store your presentation locally.",
+    "turn": "Schalte DeckDeckGo {0} um deine Präsentation lokal zu speichern.",
     "offline": "offline",
     "still_edit": "Dir wird trotzdem möglich sein, deine Folien zu {0}.",
     "edit": "bearbeiten",
@@ -418,7 +419,7 @@
     "overflow_explanation": "Ein Teil des Inhalts könnte außerhalb der Leinwand angezeigt werden (16/9).",
     "overflow_visibility": "Möglicherweise nicht auf allen Bildschirm-Größen sichtbar.",
     "contrast_ratio": "We noticed that (a part of) the text color of this slide does not meet contrast ratio standards.",
-    "wcag": "Elements are compared according {0} Level AA.",
+    "wcag": "Elemente werden nach {0} Level AA komprimiert.",
     "note": "Beachte, dass der Kontrast nicht akkurat angegeben werden kann, wenn halb-transparente Hintergründe verwendet werden."
   },
   "templates": {
@@ -469,5 +470,15 @@
     "enjoy": "Genieße die Präsentation und verfolge die Leinwand bezüglich der Echtzeit-Umfrage.",
     "vote_again": "Stimme nochmal ab!",
     "created_with": "Kreiert mit {0}"
+  },
+  "import": {
+    "import": "Importieren",
+    "import_from_figma": "Aus Figma importieren",
+    "create": "Erstelle eine neue Präsentation mit deinem {0} Design",
+    "export": "Exportiere deine Frames mit unseren {0} und importiere diese anschließend um durchzustarten.",
+    "sign_in": "Wir möchten nicht, dass deine Daten verloren gehen. Daher bitten wir dich, einen Account zu erstellen, um dieses Feature zu nutzen.",
+    "upload": "Wird hochgeladen...",
+    "hang_on_creation": "Warte bitte, wir erstellen deine Folien. Dies könnte bis zu einer Minute dauern.",
+    "done": "Dein Deck ist bereit. Du wirst nun weitergeleitet."
   }
 }
