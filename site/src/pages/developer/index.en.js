@@ -4,13 +4,13 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
 
 const DeveloperPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Developer</h1>
 
           <h2>You know what's cool?</h2>

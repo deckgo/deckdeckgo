@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './footer.module.scss';
+import {footer} from './footer.module.scss';
 
 import {FormattedMessage} from 'react-intl';
 
@@ -9,7 +9,7 @@ import {Links} from '../links/links';
 
 export const Footer = ({action = true, lang}) => {
   return (
-    <footer className={`${styles.footer} ${action ? 'action' : ''}`}>
+    <footer className={`${footer} ${action ? 'action' : ''}`}>
       {renderAction()}
 
       <Links lang={lang} action={action}></Links>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {graphql, useStaticQuery} from 'gatsby';
 
-import styles from './feed.module.scss';
+import {main} from './feed.module.scss';
 
 import {Card} from '../card/card';
 
@@ -33,7 +33,7 @@ export const Feed = () => {
 
   return (
     <section>
-      <main className={styles.main}>
+      <main className={main}>
         {data.allFeed.nodes.map((feed) => (
           <Card key={feed.id} feed={feed} />
         ))}

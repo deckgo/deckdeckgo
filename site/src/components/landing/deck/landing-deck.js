@@ -4,7 +4,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 
 import {isIPad, isMobile} from '@deckdeckgo/utils';
 
-import styles from './landing-deck.module.scss';
+import {main, action, container} from './landing-deck.module.scss';
 import {LinkButton} from '../../core/buttons/link-button';
 
 export const LandingDeck = () => {
@@ -59,8 +59,8 @@ export const LandingDeck = () => {
 
   return (
     <section>
-      <main className={styles.main}>
-        <article className={`${styles.container} ${deckLoaded ? 'loaded' : ''} ${mobile ? 'mobile' : ''}`}>{renderDeck()}</article>
+      <main className={main}>
+        <article className={`${container} ${deckLoaded ? 'loaded' : ''} ${mobile ? 'mobile' : ''}`}>{renderDeck()}</article>
 
         {renderSlideNavigation(deckIsBeginning || deckIsEnd ? 'light' : 'dark')}
       </main>
@@ -238,7 +238,7 @@ function Example() {
       <>
         <button
           type="button"
-          className={`${styles.action} prev ${deckIsBeginning ? 'hide' : ''}`}
+          className={`${action} prev ${deckIsBeginning ? 'hide' : ''}`}
           style={{'--deck-nav-color': `var(--color-${color})`}}
           onClick={() => prevNextSlide(false)}
           tabIndex={-1}
@@ -253,7 +253,7 @@ function Example() {
 
         <button
           type="button"
-          className={`${styles.action} next ${deckIsEnd ? 'hide' : ''}`}
+          className={`${action} next ${deckIsEnd ? 'hide' : ''}`}
           style={{'--deck-nav-color': `var(--color-${color})`}}
           onClick={() => prevNextSlide(true)}
           tabIndex={-1}

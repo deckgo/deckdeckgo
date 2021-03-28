@@ -4,13 +4,13 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
 
 const ContactPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Contact</h1>
 
           <p>We would love to hear from you, ping us!</p>

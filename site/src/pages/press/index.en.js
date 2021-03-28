@@ -4,14 +4,14 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
-import pressStyles from './press.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
+import {article} from './press.module.scss';
 
 const PressPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Press</h1>
 
           <p>
@@ -37,7 +37,7 @@ const PressPage = (props) => {
 
           <h1>Featured Stories</h1>
 
-          <article className={pressStyles.article}>
+          <article className={article}>
             <a href="https://www.goodfirms.co/blog/best-free-open-source-presentation-software" rel="noopener noreferrer">
               The Best 7 Free and Open Source Presentation Software
             </a>
@@ -46,7 +46,7 @@ const PressPage = (props) => {
             </span>
           </article>
 
-          <article className={pressStyles.article}>
+          <article className={article}>
             <a href="https://medium.com/swlh/deckdeckgo-why-building-presentation-with-web-standards-makes-sense-1b6062a84fa" rel="noopener noreferrer">
               Why building presentations with web standards makes sense
             </a>
@@ -55,7 +55,7 @@ const PressPage = (props) => {
             </span>
           </article>
 
-          <article className={pressStyles.article}>
+          <article className={article}>
             <a href="https://qiita.com/berry-clione/items/8826729673fcdc9bd12f" rel="noopener noreferrer">
               ブラウザ上でスライド作ってプレゼンするDeckDeckGoをローカル環境で構築して脱パワポしてみた
             </a>
@@ -64,7 +64,7 @@ const PressPage = (props) => {
             </span>
           </article>
 
-          <article className={pressStyles.article}>
+          <article className={article}>
             <a href="https://www.tekcrispy.com/2019/09/25/deckdeckgo/" rel="noopener noreferrer">
               Crea presentaciones con diapositivas rápidamente
             </a>
@@ -73,7 +73,7 @@ const PressPage = (props) => {
             </span>
           </article>
 
-          <article className={pressStyles.article}>
+          <article className={article}>
             <a href="https://awards.dinacon.ch/en/shortlist-is-out/" rel="noopener noreferrer">
               Shortlisted for the DINAcon Awards 2019
             </a>
@@ -82,7 +82,7 @@ const PressPage = (props) => {
             </span>
           </article>
 
-          <article className={pressStyles.article}>
+          <article className={article}>
             <a
               href="https://www.moongift.jp/2019/09/deckdeckgo-%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%82%E3%81%A7%E3%81%8D%E3%82%8Bpwa%E3%81%AEhtml%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%89/"
               rel="noopener noreferrer">

@@ -2,17 +2,17 @@ import React from 'react';
 
 import {FormattedMessage} from 'react-intl';
 
-import styles from './hero.module.scss';
+import {main, title, subtitle} from './hero.module.scss';
 
 export const Hero = () => {
   return (
     <section>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
+      <main className={main}>
+        <h1 className={title}>
           <FormattedMessage id="hero.title" />
         </h1>
 
-        <section className={styles.subtitle}>
+        <section className={subtitle}>
           <FormattedMessage id="hero.subtitle" />
         </section>
       </main>

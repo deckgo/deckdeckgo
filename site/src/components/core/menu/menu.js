@@ -3,7 +3,8 @@ import {Link} from 'gatsby';
 
 import {FormattedMessage} from 'react-intl';
 
-import styles from './menu.module.scss';
+import {menu, open as openStyle} from './menu.module.scss';
+
 import {Links} from '../links/links';
 
 export const Menu = forwardRef(({lang}, ref) => {
@@ -24,7 +25,7 @@ export const Menu = forwardRef(({lang}, ref) => {
   };
 
   return (
-    <div role="button" tabIndex="0" className={`${styles.menu} ${open ? `${styles.open}` : ''}`} onClick={() => hide()} onKeyDown={() => hide()}>
+    <div role="button" tabIndex="0" className={`${menu} ${open ? `${openStyle}` : ''}`} onClick={() => hide()} onKeyDown={() => hide()}>
       <img
         loading="lazy"
         src="/assets/icons/ionicons/close.svg"

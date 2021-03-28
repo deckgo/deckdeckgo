@@ -2,7 +2,7 @@ import React from 'react';
 
 import {FormattedMessage, useIntl} from 'react-intl';
 
-import styles from './features.module.scss';
+import {main, section, enterprise} from './features.module.scss';
 
 import {Feature} from '../feature/feature';
 
@@ -10,8 +10,8 @@ export const Features = () => {
   const intl = useIntl();
 
   return (
-    <section className={styles.section}>
-      <main className={styles.main}>
+    <section className={section}>
+      <main className={main}>
         <h2>
           <FormattedMessage id="enterprise.features.main.title" />
         </h2>
@@ -71,7 +71,7 @@ export const Features = () => {
         <Feature titleKey="enterprise.features.developers.kit.title" msgKey="enterprise.features.developers.kit.content" />
         <Feature titleKey="enterprise.features.developers.opensource.title" msgKey="enterprise.features.developers.opensource.content" />
 
-        <p className={styles.enterprise}>
+        <p className={enterprise}>
           <img loading="lazy" src="/assets/icons/ionicons/business.svg" alt={intl.formatMessage({id: 'enterprise.features.enterprise.only'})} />{' '}
           <FormattedMessage id="enterprise.features.enterprise.only.notice" />
         </p>

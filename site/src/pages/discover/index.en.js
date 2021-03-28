@@ -7,14 +7,14 @@ import Layout from '../../components/core/layout/en';
 import {Footer} from '../../components/core/footer/footer';
 import {Feed} from '../../components/discover/feed/feed';
 
-import styles from '../../themes/templates/template.module.scss';
-import discoverStyles from './discover.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
+import {main as discoverStyles} from './discover.module.scss';
 
 const DiscoverPage = (props) => {
   return (
     <Layout location={props.location} sticky={false}>
       <section>
-        <main className={`${styles.main} ${discoverStyles.main}`}>
+        <main className={`${main} ${discoverStyles}`}>
           <h1>
             <FormattedMessage id="discover.title" />
           </h1>

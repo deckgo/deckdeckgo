@@ -4,7 +4,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 
 import {debounce} from '@deckdeckgo/utils';
 
-import styles from './landing-content.module.scss';
+import {main, remote, video} from './landing-content.module.scss';
 
 import {LandingPoll} from '../poll/landing-poll';
 
@@ -129,7 +129,7 @@ export const LandingContent = () => {
   return (
     <>
       <section>
-        <main className={styles.main} ref={mainRef}>
+        <main className={main} ref={mainRef}>
           {renderDescription()}
         </main>
       </section>
@@ -137,7 +137,7 @@ export const LandingContent = () => {
       <LandingPoll />
 
       <section>
-        <main className={`${styles.main} ${styles.remote}`}>{renderRemote()}</main>
+        <main className={`${main} ${remote}`}>{renderRemote()}</main>
       </section>
     </>
   );
@@ -197,7 +197,7 @@ export const LandingContent = () => {
 
   function renderVideo(url, alt) {
     return (
-      <div className={`${styles.video} video`} style={{width: `${videoWidth}px`, height: `${videoHeight}px`}}>
+      <div className={`${video} video`} style={{width: `${videoWidth}px`, height: `${videoHeight}px`}}>
         <deckgo-youtube width={videoWidth} height={videoHeight} src={url} frameTitle={intl.formatMessage({id: alt})}></deckgo-youtube>
       </div>
     );

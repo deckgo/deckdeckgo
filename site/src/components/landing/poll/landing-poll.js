@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl';
 
 import {debounce} from '@deckdeckgo/utils';
 
-import styles from './landing-poll.module.scss';
+import {section, main, deck} from './landing-poll.module.scss';
 
 export const LandingPoll = () => {
   let pollObserver = undefined;
@@ -72,8 +72,8 @@ export const LandingPoll = () => {
   };
 
   return (
-    <section className={styles.section}>
-      <main className={styles.main}>
+    <section className={section}>
+      <main className={main}>
         <h2>
           <FormattedMessage id="hero.poll.description.title" />
         </h2>
@@ -89,7 +89,7 @@ export const LandingPoll = () => {
 
   function renderPollDemo() {
     return (
-      <div className={styles.deck}>
+      <div className={deck}>
         <deckgo-slide-poll
           ref={pollRef}
           onSlideDidLoad={async () => await loadPollWithoutIntersectionObserver()}

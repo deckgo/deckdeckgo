@@ -4,20 +4,20 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
-import teamStyles from './team.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
+import {main as teamStylesMain, avatar, social} from './team.module.scss';
 
 const TeamPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Team</h1>
 
-          <div className={teamStyles.main}>
+          <div className={teamStylesMain}>
             <article>
               <img
-                className={teamStyles.avatar}
+                className={avatar}
                 loading="lazy"
                 alt="David"
                 role="presentation"
@@ -26,7 +26,7 @@ const TeamPage = (props) => {
 
               <h2>David Dal Busco</h2>
 
-              <div className={teamStyles.social}>
+              <div className={social}>
                 <a href="https://twitter.com/daviddalbusco" rel="noopener noreferrer" aria-label="Twitter">
                   <img loading="lazy" src="/assets/icons/ionicons/twitter.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
                 </a>
@@ -56,7 +56,7 @@ const TeamPage = (props) => {
 
             <article>
               <img
-                className={teamStyles.avatar}
+                className={avatar}
                 loading="lazy"
                 alt="Nicolas"
                 role="presentation"
@@ -65,7 +65,7 @@ const TeamPage = (props) => {
 
               <h2>Nicolas Mattia</h2>
 
-              <div className={teamStyles.social}>
+              <div className={social}>
                 <a href="https://twitter.com/nasmattia" rel="noopener noreferrer" aria-label="Twitter">
                   <img loading="lazy" src="/assets/icons/ionicons/twitter.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
                 </a>

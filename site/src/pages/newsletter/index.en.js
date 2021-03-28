@@ -4,14 +4,14 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 
-import styles from '../../themes/templates/template.module.scss';
+import {main} from '../../themes/templates/template.module.scss';
 import {ActionButton} from '../../components/core/buttons/action-button';
 
 const NewsletterPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={styles.main}>
+        <main className={main}>
           <h1>Join our Newsletter</h1>
 
           <p>Sign up to receive time to time an email on the latest DeckDeckGo updates, features, and news!</p>
