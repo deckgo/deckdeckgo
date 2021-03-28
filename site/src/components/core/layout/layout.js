@@ -39,7 +39,7 @@ deckDeckGoYoutube();
 deckDeckGoCharts();
 deckDeckGoQRCode();
 
-export default ({children, location, messages, sticky = true, dark}) => {
+const Layout = ({children, location, messages, sticky = true, dark}) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -67,6 +67,8 @@ export default ({children, location, messages, sticky = true, dark}) => {
     </IntlProvider>
   );
 };
+
+export default Layout;
 
 // IE9: https://stackoverflow.com/questions/5472938/does-ie9-support-console-log-and-is-it-a-real-function#answer-5473193
 const log = Function.prototype.bind.call(console.log, console);

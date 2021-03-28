@@ -10,7 +10,7 @@ import common from '../../../assets/i18n/common.json';
 
 import '@formatjs/intl-pluralrules/locale-data/en';
 
-export default (props) => (
+const LayoutEn = (props) => (
   <Layout
     {...props}
     messages={{
@@ -23,3 +23,5 @@ export default (props) => (
     }}
   />
 );
+
+export default LayoutEn;

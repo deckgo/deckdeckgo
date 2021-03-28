@@ -81,7 +81,7 @@ const Navigation = ({data, fix, lang, dark}) => {
   function renderDeckDeckGo() {
     return (
       <Link to={`/${lang}/`} className={home}>
-        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData} />
+        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData}  alt=""/>
 
         <span style={{margin: 0}}>{data.site.siteMetadata.title}</span>
       </Link>
@@ -89,7 +89,7 @@ const Navigation = ({data, fix, lang, dark}) => {
   }
 };
 
-export default (props) => (
+const LayoutQuery = (props) => (
   <StaticQuery
     query={graphql`
       query {
@@ -108,3 +108,5 @@ export default (props) => (
     render={(data) => <Navigation data={data} {...props} />}
   />
 );
+
+export default LayoutQuery;
