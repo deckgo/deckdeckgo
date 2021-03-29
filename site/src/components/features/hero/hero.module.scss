@@ -1,7 +1,7 @@
 @use "../../../themes/mixins/hero";
 
 .section {
-  background: linear-gradient(to top, var(--color-quinary), var(--color-tertiary) 100%);
+  background: linear-gradient(to top, var(--color-secondary), var(--color-tertiary));
   color: var(--color-primary-contrast);
 }
 
