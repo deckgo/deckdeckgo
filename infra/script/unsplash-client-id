@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-out=$(pass deckdeckgo/unsplash-client-id | head -n 1 | tr -d '\n')
+out=${DDG_UNSPLASH:?please set DDG_UNSPLASH to client ID}
 
 cat <<JSON
 {

@@ -1,14 +1,14 @@
 {
     "deckdeckgo-starter": {
-        "branch": "master",
+        "branch": "main",
         "description": "The Progressive Web App alternative for simple presentations",
         "homepage": "https://deckdeckgo.com",
         "owner": "deckgo",
         "repo": "studio-kit",
-        "rev": "60216a4d3bf8bba21407f90c7ed4715e9581c0b1",
-        "sha256": "09rxl2zjls9mdg7cnq4xpmbh37fsfjxcypqiyd6clrz94w7wkpwr",
+        "rev": "b0ec03cb21b86337aa762f22ff44db6467071c45",
+        "sha256": "0scw76ycldrp5j6zz640h4n61xcf58mp2alczd9gwczzwa6jdmxg",
         "type": "tarball",
-        "url": "https://github.com/deckgo/studio-kit/archive/60216a4d3bf8bba21407f90c7ed4715e9581c0b1.tar.gz",
+        "url": "https://github.com/deckgo/studio-kit/archive/b0ec03cb21b86337aa762f22ff44db6467071c45.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "elasticmq": {
@@ -40,11 +40,5 @@
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs/archive/504f993df9a5ca63317fe9c859df19daad30aa14.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "port-utils": {
-        "sha256": "1vfmm8mmkmfffgza64h6qz4ibniibqdr8mj452ikp1xmvv6m8qm9",
-        "type": "tarball",
-        "url": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz",
-        "url_template": "http://hackage.haskell.org/package/port-utils-0.2.1.0/port-utils-0.2.1.0.tar.gz"
     }
 }
