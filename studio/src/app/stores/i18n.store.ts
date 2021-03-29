@@ -1,7 +1,8 @@
 import {createStore} from '@stencil/store';
 
-import en from '../../assets/i18n/en.json';
 import {set} from 'idb-keyval';
+
+import en from '../../assets/i18n/en.json';
 
 const {state, onChange} = createStore<I18n>({
   lang: 'en',
@@ -12,6 +13,13 @@ const esI18n = async (): Promise<I18n> => {
   return {
     lang: 'es',
     ...(await import(`../../assets/i18n/es.json`)),
+  };
+};
+
+const deI18n = async (): Promise<I18n> => {
+  return {
+    lang: 'de',
+    ...(await import(`../../assets/i18n/de.json`)),
   };
 };
 
@@ -28,6 +36,9 @@ onChange('lang', async (lang: Languages) => {
   switch (lang) {
     case 'es':
       bundle = await esI18n();
+      break;
+    case 'de':
+      bundle = await deI18n();
       break;
     default:
       bundle = enI18n();

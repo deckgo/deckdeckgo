@@ -76,6 +76,7 @@ export class AppCustomization {
           class="ion-padding-start ion-padding-end">
           <ion-select-option value="en">English</ion-select-option>
           <ion-select-option value="es">Español</ion-select-option>
+          <ion-select-option value="de">Deutsch</ion-select-option>
         </ion-select>
       </ion-item>
     );
