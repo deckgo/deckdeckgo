@@ -1,41 +1,11 @@
+@use "../../../themes/mixins/features";
+
 .section {
-  padding: 3.45rem 0;
+  @include features.section;
 }
 
 .main {
-  display: grid;
-  grid-template-columns: repeat(3, calc((100% - (2 * 2.25rem)) / 3));
-  grid-template-rows: auto;
-
-  grid-gap: 2.25rem;
-
-  @media (max-width: 992px) {
-    grid-template-columns: repeat(2, 50%);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 100%;
-    grid-column-gap: 0;
-    grid-row-gap: 1.25rem;
-  }
-
-  > h2 {
-    margin-top: 2.25rem;
-  }
-
-  > h2,
-  > p {
-    grid-column-start: 1;
-    grid-column-end: 4;
-
-    @media (max-width: 992px) {
-      grid-column-end: 3;
-    }
-
-    @media (max-width: 768px) {
-      grid-column-end: 2;
-    }
-  }
+  @include features.main;
 }
 
 .enterprise {
