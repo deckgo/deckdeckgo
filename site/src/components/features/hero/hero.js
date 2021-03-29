@@ -2,15 +2,13 @@ import React from 'react';
 
 import {FormattedMessage} from 'react-intl';
 
-import {main, title, section, hero, quote, subtitle} from './hero.module.scss';
+import {main, title, section, hero, subtitle} from './hero.module.scss';
 
 export const FeaturesHero = () => {
 
   return (
     <>
       {renderSectionHero()}
-
-      {renderQuote()}
     </>
   );
 
@@ -30,42 +28,4 @@ export const FeaturesHero = () => {
     );
   }
 
-  function renderQuote() {
-    return (
-      <section>
-        <main className={`${main} ${quote}`}>
-          <blockquote>
-            <span>❝</span>
-            <p>
-              <FormattedMessage id="enterprise.hero.quote" />
-            </p>
-          </blockquote>
-
-          <h2>
-            <FormattedMessage id="enterprise.hero.templates.title" />
-          </h2>
-
-          <div>
-            <p>
-              <FormattedMessage id="enterprise.hero.templates.unlike" />
-            </p>
-
-            <p>
-              <FormattedMessage id="enterprise.hero.templates.custom" />
-            </p>
-          </div>
-
-          <div>
-            <p>
-              <FormattedMessage id="enterprise.hero.templates.together" />
-            </p>
-
-            <p>
-              <FormattedMessage id="enterprise.hero.templates.uptodate" />
-            </p>
-          </div>
-        </main>
-      </section>
-    );
-  }
 };
