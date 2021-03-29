@@ -1,4 +1,4 @@
-@use "../../../themes/mixins/main";
+@use "../../../themes/mixins/hero";
 
 .section {
   background: linear-gradient(to top, var(--color-quinary), var(--color-tertiary) 100%);
@@ -6,32 +6,21 @@
 }
 
 .main {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-
-  @include main.title;
+  @include hero.main;
 }
 
 .subtitle {
-  font-weight: 300;
-  margin: 1rem 0 2.25rem;
-  font-size: var(--font-size-h3);
-
-  @media (min-width: 992px) {
-    width: 828px;
-  }
+  @include hero.subtitle;
 }
 
 .title {
+  @include hero.title;
+
   @media (min-width: 992px) {
-    font-size: calc(var(--font-size-h1) + 1rem);
-    line-height: calc(var(--line-height-h1) + 1.45rem);
     width: 640px;
   }
 }
 
 .hero {
-  padding-bottom: 2.75rem;
+  @include hero.hero;
 }
