@@ -8,6 +8,15 @@
   grid-column-gap: 2.75rem;
   padding-bottom: 3.25rem;
 
+  @media (max-width: 992px) {
+    grid-column-gap: 1.75rem;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
+
   max-width: 960px;
 
   margin-top: 0.25rem;
@@ -17,6 +26,12 @@
   box-shadow: 0 0 1.8rem rgb(0 0 0 / 15%);
   border-radius: 8px;
   padding: 2.75rem 1.75rem;
+
+  @media (max-width: 768px) {
+    &:last-of-type {
+      margin-top: 2.75rem;
+    }
+  }
 
   display: block;
 
