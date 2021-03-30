@@ -4,6 +4,7 @@ import {FormattedMessage} from 'react-intl';
 
 import {main, article, tag} from './plan.module.scss';
 import {Link} from 'gatsby';
+import Layout from "../../core/layout/en";
 
 export const Plan = ({lang}) => {
   return (
@@ -100,6 +101,6 @@ export const Plan = ({lang}) => {
   }
 
   function renderEnterprise() {
-    return <article className={article}>Enterprise</article>;
+    return <article className={article}>TODO: Enterprise</article>;
   }
 };

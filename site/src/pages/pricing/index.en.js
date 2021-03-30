@@ -13,6 +13,10 @@ const PricingPages = (props) => {
 
       <Plan lang="en"></Plan>
 
+      TODO: here comes "give it a try" or sign up
+
+      TODO: followed by a sponsorship call to action
+
       <Footer lang="en" action={false} />
     </Layout>
   );
