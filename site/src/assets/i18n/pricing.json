@@ -1,0 +1,21 @@
+{
+  "pricing.hero.title": "Try it and adopt it!",
+  "pricing.hero.subtitle": "DeckDeckGo is for everyone, open source and do not track.",
+  "pricing.community.title": "Community",
+  "pricing.community.subtitle": "For you, for me, for evermore.",
+  "pricing.community.free": "Free thanks to your {sponsorshipLink} 🙏.",
+  "pricing.community.sponsorship": "sponsorship",
+  "pricing.community.includes": "Includes",
+  "pricing.community.feature.pwa": "Create, present and share your slides as Progressive Web Apps",
+  "pricing.community.feature.poll": "Interact with your audience with live polls",
+  "pricing.community.feature.templates": "Use predefined rich and responsive templates",
+  "pricing.community.feature.unsplash": "Search Unsplash and Tenor GIFs",
+  "pricing.community.feature.youtube": "Integrate easily Youtube video",
+  "pricing.community.feature.code": "Showcase your best developer code snippets",
+  "pricing.community.feature.remote": "Interact with your presentations with a remote control",
+  "pricing.community.feature.offline": "Present and work offline",
+  "pricing.community.feature.github": "Push the source code of your online slides to GitHub",
+  "pricing.community.feature.figma": "Import Firma frames",
+  "pricing.community.feature.more": "And many more {featuresLink}",
+  "pricing.community.features": "features"
+}

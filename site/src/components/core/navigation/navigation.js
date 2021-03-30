@@ -5,7 +5,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import {graphql, Link, StaticQuery} from 'gatsby';
 import {GatsbyImage} from 'gatsby-plugin-image';
 
-import {header, dark as darkStyle, features, end, fix as fixStyle, home, menu, nav, start} from './navigation.module.scss';
+import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start, tertiary} from './navigation.module.scss';
 
 import {LinkButton} from '../buttons/link-button';
 import {Menu} from '../menu/menu';
@@ -44,7 +44,7 @@ const Navigation = ({data, fix, lang, navTheme}) => {
     menuRef.current.open();
   };
 
-  const theme = navTheme === 'enterprise' ? darkStyle : (navTheme === 'features' ? features : '');
+  const theme = navTheme === 'enterprise' ? darkStyle : navTheme === 'features' || navTheme === 'pricing' ? tertiary : '';
 
   return (
     <>
@@ -75,7 +75,10 @@ const Navigation = ({data, fix, lang, navTheme}) => {
               <FormattedMessage id="nav.signin" />
             </a>
 
-            <LinkButton targetUrl="https://app.deckdeckgo.com/editor" msgId="nav.write.presentation" color={navTheme === 'features' && !scrolled ? 'light' : 'primary'}></LinkButton>
+            <LinkButton
+              targetUrl="https://app.deckdeckgo.com/editor"
+              msgId="nav.write.presentation"
+              color={(navTheme === 'features' || navTheme === 'pricing') && !scrolled ? 'light' : 'primary'}></LinkButton>
           </div>
         </nav>
       </header>
@@ -87,7 +90,7 @@ const Navigation = ({data, fix, lang, navTheme}) => {
   function renderDeckDeckGo() {
     return (
       <Link to={`/${lang}/`} className={home}>
-        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData}  alt=""/>
+        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData} alt="" />
 
         <span style={{margin: 0}}>{data.site.siteMetadata.title}</span>
       </Link>

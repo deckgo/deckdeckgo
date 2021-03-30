@@ -1,0 +1,72 @@
+@use "../../../themes/mixins/main";
+
+.main {
+  @include main.title;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 2.75rem;
+  padding-bottom: 3.25rem;
+
+  max-width: 960px;
+
+  margin-top: 0.25rem;
+}
+
+.article {
+  box-shadow: 0 0 1.8rem rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 2.75rem 1.75rem;
+
+  display: block;
+
+  text-align: center;
+
+  > h2:first-of-type {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: var(--font-weight-h1);
+
+    padding-bottom: 0.25rem;
+  }
+
+  > p:last-of-type {
+    margin: 1.75rem 0 2rem;
+  }
+
+  > p:first-of-type {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  > p:last-of-type, > p:first-of-type {
+    font-weight: 300;
+  }
+
+  aside {
+    text-align: initial;
+    padding-top: 0.25rem;
+
+    h4 {
+      margin: 0 0 1.25rem;
+    }
+  }
+}
+
+.tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    align-self: flex-start;
+  }
+
+  h2 {
+    margin: 0 0.25rem;
+    font-size: 4rem;
+    line-height: 3rem;
+    font-weight: bold;
+  }
+}
