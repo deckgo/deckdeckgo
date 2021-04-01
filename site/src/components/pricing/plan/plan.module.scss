@@ -45,10 +45,6 @@
     padding-bottom: 0.25rem;
   }
 
-  > p:last-of-type {
-    margin: 1.75rem 0 2rem;
-  }
-
   > p:first-of-type {
     max-width: 50%;
     margin-left: auto;
@@ -57,11 +53,15 @@
 
   > p:last-of-type, > p:first-of-type {
     font-weight: 300;
+    min-height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   aside {
     text-align: initial;
-    padding-top: 0.25rem;
+    padding-top: 0.75rem;
 
     h4 {
       margin: 0 0 1.25rem;
@@ -72,7 +72,10 @@
 .tag {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+
+  min-height: 4rem;
+  margin: 0 0 1.25rem;
 
   span {
     align-self: flex-start;

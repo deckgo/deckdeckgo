@@ -2,15 +2,18 @@ import React from 'react';
 
 import {FormattedMessage} from 'react-intl';
 
-import {main, article, tag} from './plan.module.scss';
 import {Link} from 'gatsby';
-import Layout from "../../core/layout/en";
+
+import {main, article, tag} from './plan.module.scss'
+import { LinkButton } from "../../core/buttons/link-button";
 
 export const Plan = ({lang}) => {
   return (
     <section>
       <main className={main}>
         {renderCommunity()}
+
+        {renderSponsorhip()}
 
         {renderEnterprise()}
       </main>
@@ -31,19 +34,6 @@ export const Plan = ({lang}) => {
         <p className={tag}>
           <span>$</span>
           <h2>0</h2>
-        </p>
-
-        <p>
-          <FormattedMessage
-            id="pricing.community.free"
-            values={{
-              sponsorshipLink: (
-                <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" rel="noopener noreferrer" style={{textDecoration: 'underline'}}>
-                  <FormattedMessage id="pricing.community.sponsorship" />
-                </a>
-              ),
-            }}
-          />
         </p>
 
         <aside>
@@ -96,6 +86,55 @@ export const Plan = ({lang}) => {
             </li>
           </ul>
         </aside>
+      </article>
+    );
+  }
+
+  function renderSponsorhip() {
+    return (
+      <article className={article}>
+        <h2>
+          <FormattedMessage id="pricing.sponsor.title" />
+        </h2>
+
+        <p><FormattedMessage id="pricing.sponsor.mvp" /></p>
+
+        <p className={tag}>
+        </p>
+
+        <aside>
+          <h4>
+            <FormattedMessage id="pricing.sponsor.includes" />
+          </h4>
+
+          <ul>
+            <li>
+              <FormattedMessage
+                id="pricing.sponsor.featured"
+                values={{
+                  openCollectiveLink: (
+                    <a href="https://opencollective.com/deckdeckgo" rel="noopener noreferrer" style={{textDecoration: 'underline'}}>
+                      Open Collective
+                    </a>
+                  ),
+                  githubLink: (
+                    <a href="https://github.com/deckgo/deckdeckgo" rel="noopener noreferrer" style={{textDecoration: 'underline'}}>
+                      GitHub
+                    </a>
+                  ),
+                }}
+              />
+            </li>
+            <li>
+              <FormattedMessage id="pricing.sponsor.voucher" />
+            </li>
+          </ul>
+        </aside>
+
+        <LinkButton
+          targetUrl="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
+          msgId="pricing.sponsor.title"
+          color="primary"></LinkButton>
       </article>
     );
   }
