@@ -33,7 +33,7 @@ export const Plan = ({lang}) => {
 
         <p className={tag}>
           <span>$</span>
-          <h2>0</h2>
+          <span>0</span>
         </p>
 
         <aside>

@@ -4,7 +4,7 @@
   @include main.title;
 
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, calc((100% - (2 * 2.75rem)) / 3));
   grid-column-gap: 2.75rem;
   padding-bottom: 3.25rem;
 
@@ -12,12 +12,12 @@
     grid-column-gap: 1.75rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 992px) {
     display: flex;
     flex-direction: column;
   }
 
-  max-width: 960px;
+  max-width: 1280px;
 
   margin-top: 0.25rem;
 }
@@ -26,6 +26,8 @@
   box-shadow: 0 0 1.8rem rgb(0 0 0 / 15%);
   border-radius: 8px;
   padding: 2.75rem 1.75rem;
+
+  height: fit-content;
 
   @media (max-width: 768px) {
     &:last-of-type {
@@ -37,21 +39,26 @@
 
   text-align: center;
 
-  > h2:first-of-type {
-    font-size: var(--font-size-h1);
-    line-height: var(--line-height-h1);
-    font-weight: var(--font-weight-h1);
+  @media (min-width: 1240px) {
+    > h2:first-of-type {
+      font-size: var(--font-size-h1);
+      line-height: var(--line-height-h1);
+      font-weight: var(--font-weight-h1);
+    }
+  }
 
+  > h2:first-of-type {
     padding-bottom: 0.25rem;
   }
 
   > p:first-of-type {
-    max-width: 50%;
+    max-width: 76%;
     margin-left: auto;
     margin-right: auto;
   }
 
-  > p:last-of-type, > p:first-of-type {
+  > p:last-of-type,
+  > p:first-of-type {
     font-weight: 300;
     min-height: 52px;
     display: flex;
@@ -81,7 +88,7 @@
     align-self: flex-start;
   }
 
-  h2 {
+  span:last-of-type {
     margin: 0 0.25rem;
     font-size: 4rem;
     line-height: 3rem;
