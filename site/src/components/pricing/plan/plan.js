@@ -4,8 +4,8 @@ import {FormattedMessage} from 'react-intl';
 
 import {Link} from 'gatsby';
 
-import {main, article, tag} from './plan.module.scss'
-import { LinkButton } from "../../core/buttons/link-button";
+import {main, article, tag} from './plan.module.scss';
+import {LinkButton} from '../../core/buttons/link-button';
 
 export const Plan = ({lang}) => {
   return (
@@ -39,7 +39,10 @@ export const Plan = ({lang}) => {
             id="pricing.community.free"
             values={{
               sponsorshipLink: (
-                <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" rel="noopener noreferrer" style={{textDecoration: 'underline', marginLeft: '4px', marginRight: '4px'}}>
+                <a
+                  href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
+                  rel="noopener noreferrer"
+                  style={{textDecoration: 'underline', marginLeft: '4px', marginRight: '4px'}}>
                   <FormattedMessage id="pricing.community.sponsorship" />
                 </a>
               ),
@@ -98,10 +101,7 @@ export const Plan = ({lang}) => {
           </ul>
         </aside>
 
-        <LinkButton
-          targetUrl="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
-          msgId="pricing.sponsor.action"
-          color="primary"></LinkButton>
+        <LinkButton targetUrl="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" msgId="pricing.sponsor.action" color="primary"></LinkButton>
       </article>
     );
   }
@@ -113,12 +113,13 @@ export const Plan = ({lang}) => {
           <FormattedMessage id="pricing.enterprise.title" />
         </h2>
 
-        <p><FormattedMessage id="enterprise.hero.title" /></p>
-
-        <p className={tag} aria-hidden={true}>
+        <p>
+          <FormattedMessage id="enterprise.hero.title" />
         </p>
 
-        <p aria-hidden={true}>{' '}</p>
+        <p className={tag} aria-hidden={true}></p>
+
+        <p aria-hidden={true}> </p>
 
         <aside>
           <h4>
@@ -158,6 +159,8 @@ export const Plan = ({lang}) => {
             </li>
           </ul>
         </aside>
+
+        <LinkButton targetUrl={`/${lang}/enterprise#contact`} msgId="pricing.enterprise.contact" color="primary-outline"></LinkButton>
       </article>
     );
   }

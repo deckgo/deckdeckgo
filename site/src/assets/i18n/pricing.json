@@ -20,5 +20,6 @@
   "pricing.community.features": "features",
   "pricing.enterprise.title": "Enterprise",
   "pricing.enterprise.includes": "Everything in Community, plus",
-  "pricing.sponsor.action": "Sponsor"
+  "pricing.sponsor.action": "Sponsor",
+  "pricing.enterprise.contact": "Contact"
 }

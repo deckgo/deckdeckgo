@@ -59,4 +59,15 @@
       background: rgba(var(--color-primary-rgb), 0.88);
     }
   }
+
+  &[color="primary-outline"] {
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+
+    &:hover,
+    &:active {
+      background: rgba(var(--color-primary-rgb), 0.68);
+      color: var(--color-primary-contrast);
+    }
+  }
 }
