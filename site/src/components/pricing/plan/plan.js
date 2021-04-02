@@ -13,8 +13,6 @@ export const Plan = ({lang}) => {
       <main className={main}>
         {renderCommunity()}
 
-        {renderSponsorhip()}
-
         {renderEnterprise()}
       </main>
     </section>
@@ -34,6 +32,19 @@ export const Plan = ({lang}) => {
         <p className={tag}>
           <span>$</span>
           <span>0</span>
+        </p>
+
+        <p>
+          <FormattedMessage
+            id="pricing.community.free"
+            values={{
+              sponsorshipLink: (
+                <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" rel="noopener noreferrer" style={{textDecoration: 'underline', marginLeft: '4px', marginRight: '4px'}}>
+                  <FormattedMessage id="pricing.community.sponsorship" />
+                </a>
+              ),
+            }}
+          />
         </p>
 
         <aside>
@@ -86,60 +97,68 @@ export const Plan = ({lang}) => {
             </li>
           </ul>
         </aside>
-      </article>
-    );
-  }
-
-  function renderSponsorhip() {
-    return (
-      <article className={article}>
-        <h2>
-          <FormattedMessage id="pricing.sponsor.title" />
-        </h2>
-
-        <p><FormattedMessage id="pricing.sponsor.mvp" /></p>
-
-        <p className={tag}>
-        </p>
-
-        <aside>
-          <h4>
-            <FormattedMessage id="pricing.sponsor.includes" />
-          </h4>
-
-          <ul>
-            <li>
-              <FormattedMessage
-                id="pricing.sponsor.featured"
-                values={{
-                  openCollectiveLink: (
-                    <a href="https://opencollective.com/deckdeckgo" rel="noopener noreferrer" style={{textDecoration: 'underline'}}>
-                      Open Collective
-                    </a>
-                  ),
-                  githubLink: (
-                    <a href="https://github.com/deckgo/deckdeckgo" rel="noopener noreferrer" style={{textDecoration: 'underline'}}>
-                      GitHub
-                    </a>
-                  ),
-                }}
-              />
-            </li>
-            <li>
-              <FormattedMessage id="pricing.sponsor.voucher" />
-            </li>
-          </ul>
-        </aside>
 
         <LinkButton
           targetUrl="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
-          msgId="pricing.sponsor.title"
+          msgId="pricing.sponsor.action"
           color="primary"></LinkButton>
       </article>
     );
   }
 
   function renderEnterprise() {
-    return <article className={article}>TODO: Enterprise</article>;
+    return (
+      <article className={article}>
+        <h2>
+          <FormattedMessage id="pricing.enterprise.title" />
+        </h2>
+
+        <p><FormattedMessage id="enterprise.hero.title" /></p>
+
+        <p className={tag} aria-hidden={true}>
+        </p>
+
+        <p aria-hidden={true}>{' '}</p>
+
+        <aside>
+          <h4>
+            <FormattedMessage id="pricing.enterprise.includes" />
+          </h4>
+
+          <ul>
+            <li>
+              <FormattedMessage id="features.main.privatelinks.title" />
+            </li>
+            <li>
+              <FormattedMessage id="features.main.pdf.title" />
+            </li>
+            <li>
+              <FormattedMessage id="features.edit.customfonts.title" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.housing.content" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.domain.content" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.uptodate.title" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.archive.content" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.collaborate.content" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.library.content" />
+            </li>
+            <li>
+              <FormattedMessage id="features.enterprise.support.content" />
+            </li>
+          </ul>
+        </aside>
+      </article>
+    );
   }
 };

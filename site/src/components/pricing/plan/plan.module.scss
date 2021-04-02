@@ -4,20 +4,16 @@
   @include main.title;
 
   display: grid;
-  grid-template-columns: repeat(3, calc((100% - (2 * 2.75rem)) / 3));
+  grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 2.75rem;
   padding-bottom: 3.25rem;
 
-  @media (max-width: 992px) {
-    grid-column-gap: 1.75rem;
-  }
-
-  @media (max-width: 992px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
   }
 
-  max-width: 1280px;
+  max-width: 960px;
 
   margin-top: 0.25rem;
 }
@@ -52,15 +48,19 @@
   }
 
   > p:first-of-type {
-    max-width: 76%;
+    max-width: 72%;
     margin-left: auto;
     margin-right: auto;
+    min-height: 52px;
+  }
+
+  > p:last-of-type {
+    min-height: 26px;
   }
 
   > p:last-of-type,
   > p:first-of-type {
     font-weight: 300;
-    min-height: 52px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,7 +82,7 @@
   align-items: flex-start;
 
   min-height: 4rem;
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.45rem;
 
   span {
     align-self: flex-start;
