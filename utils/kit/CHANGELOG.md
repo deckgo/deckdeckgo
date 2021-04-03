@@ -1,3 +1,9 @@
+# 3.0.1 (2021-04-03)
+
+### Fix
+
+- full deck size whe a screenshot is taken 
+
 # 3.0.0 (2021-03-28)
 
 ### Breaking

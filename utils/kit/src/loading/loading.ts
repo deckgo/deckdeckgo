@@ -1,5 +1,6 @@
 import {initEmbedded} from '../embed/embedded';
 import { initSize } from "../size/size";
+import { isScreenshot } from "../utils/utils.deck";
 
 export const postLoading = async () => {
   const app = document.querySelector('ion-app');
@@ -18,10 +19,7 @@ async function initSreenshot() {
     return;
   }
 
-  const url = new URL(window.location.href);
-  const screenshot = url && url.searchParams ? url.searchParams.has('screenshot') : false;
-
-  if (screenshot) {
+  if (isScreenshot()) {
     const menu: HTMLElement | null = document.querySelector('#fullscreen-menu');
 
     if (menu) {
