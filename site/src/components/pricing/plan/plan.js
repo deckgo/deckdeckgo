@@ -41,8 +41,7 @@ export const Plan = ({lang}) => {
               sponsorshipLink: (
                 <a
                   href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
-                  rel="noopener noreferrer"
-                  style={{textDecoration: 'underline'}}>
+                  rel="noopener noreferrer">
                   <FormattedMessage id="pricing.community.sponsorship" />
                 </a>
               ),
@@ -91,7 +90,7 @@ export const Plan = ({lang}) => {
                 id="pricing.community.feature.more"
                 values={{
                   featuresLink: (
-                    <Link to={`/${lang}/features/`} style={{textDecoration: 'underline'}}>
+                    <Link to={`/${lang}/features/`}>
                       <FormattedMessage id="pricing.community.features" />
                     </Link>
                   ),

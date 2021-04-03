@@ -15,8 +15,7 @@ export const Try = () => {
             tryLink: (
               <a
                 href="https://app.deckdeckgo.com/editor"
-                rel="noopener noreferrer"
-                style={{textDecoration: 'underline'}}>
+                rel="noopener noreferrer">
                 <FormattedMessage id="pricing.try.link" />
               </a>
             ),
