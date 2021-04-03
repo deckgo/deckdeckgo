@@ -1,3 +1,17 @@
+# 1.2.0 (2021-03-28)
+
+### Features
+
+- new pages `features` and `pricing` page (no fundamental changes, only reflects the opening of our Open Collective)
+
+### Style
+
+- make links globally displayed with underline
+
+### Fix
+
+- newsletter page form React errors
+
 # 1.1.0 (2021-03-28)
 
 ### Build

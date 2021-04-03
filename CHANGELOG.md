@@ -1,11 +1,12 @@
-<a name="4.4.0"></a>
+<a name="4.5.0"></a>
 
-# [4.4.0](https://github.com/deckgo/deckdeckgo/compare/v4.3.0...v4.4.0) (2021-03-18)
+# [4.5.0](https://github.com/deckgo/deckdeckgo/compare/v4.4.0...v4.5.0) (2021-04-03)
 
 ### Applications
 
 - demo: v8.0.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
-- studio: v4.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+- site: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/site/CHANGELOG.md))
+- studio: v4.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 - remote: v1.13.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### Web Components
@@ -24,6 +25,14 @@
 - kit: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
 - starter kit: v8.0.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
 - studio kit: v8.0.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
+
+<a name="4.4.0"></a>
+
+# [4.4.0](https://github.com/deckgo/deckdeckgo/compare/v4.3.0...v4.4.0) (2021-03-18)
+
+### Applications
+
+- studio: v4.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 <a name="4.3.0"></a>
 
