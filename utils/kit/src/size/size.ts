@@ -1,4 +1,4 @@
-import {isPapyrus} from '../utils/utils.deck';
+import { isPapyrus, isScreenshot } from "../utils/utils.deck";
 import { isFullscreen } from "@deckdeckgo/utils";
 
 interface Size {
@@ -49,7 +49,7 @@ const initMainSize = async () => {
     return;
   }
 
-  if (EMBEDDED || isPapyrus(deck) || isFullscreen()) {
+  if (EMBEDDED || isPapyrus(deck) || isFullscreen() || isScreenshot()) {
     defaultSize(main);
   } else {
     aspectRatioSize({content, main});
