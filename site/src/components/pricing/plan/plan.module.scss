@@ -1,0 +1,105 @@
+@use "../../../themes/mixins/main";
+
+.main {
+  @include main.title;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 2.75rem;
+  padding-bottom: 3.25rem;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  max-width: 960px;
+
+  margin-top: 0.25rem;
+}
+
+.article {
+  box-shadow: 0 0 1.8rem rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  padding: 2.75rem 1.75rem;
+
+  height: fit-content;
+
+  @media (max-width: 768px) {
+    &:last-of-type {
+      margin-top: 2.75rem;
+    }
+  }
+
+  display: block;
+
+  text-align: center;
+
+  @media (min-width: 1240px) {
+    > h2:first-of-type {
+      font-size: var(--font-size-h1);
+      line-height: var(--line-height-h1);
+      font-weight: var(--font-weight-h1);
+    }
+  }
+
+  > h2:first-of-type {
+    padding-bottom: 0.25rem;
+  }
+
+  > p:first-of-type {
+    max-width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.45rem;
+  }
+
+  @media (min-width: 768px) {
+    > p:first-of-type, > p:last-of-type {
+      min-height: 52px;
+    }
+  }
+
+  > p:last-of-type,
+  > p:first-of-type {
+    font-weight: 300;
+  }
+
+  aside {
+    text-align: initial;
+    padding-top: 0.75rem;
+
+    h4 {
+      margin: 0 0 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      ul {
+        min-height: 580px;
+      }
+    }
+  }
+}
+
+.tag {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  @media (min-width: 768px) {
+    min-height: 4rem;
+  }
+
+  margin: 0 0 1.25rem;
+
+  span {
+    align-self: flex-start;
+  }
+
+  span:last-of-type {
+    margin: 0 0.25rem;
+    font-size: 4rem;
+    line-height: 3rem;
+    font-weight: bold;
+  }
+}

@@ -5,12 +5,12 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import {graphql, Link, StaticQuery} from 'gatsby';
 import {GatsbyImage} from 'gatsby-plugin-image';
 
-import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start} from './navigation.module.scss';
+import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start, tertiary} from './navigation.module.scss';
 
 import {LinkButton} from '../buttons/link-button';
 import {Menu} from '../menu/menu';
 
-const Navigation = ({data, fix, lang, dark}) => {
+const Navigation = ({data, fix, lang, navTheme}) => {
   const intl = useIntl();
 
   const [scrolled, setScrolled] = useState(false);
@@ -44,23 +44,29 @@ const Navigation = ({data, fix, lang, dark}) => {
     menuRef.current.open();
   };
 
+  const theme = navTheme === 'enterprise' ? darkStyle : navTheme === 'features' || navTheme === 'pricing' ? tertiary : '';
+
   return (
     <>
-      <header className={`${header} ` + (fix ? `${fixStyle}` : scrolled ? `${fixStyle} animated` : '') + `${dark ? ` ${darkStyle}` : ''}`}>
+      <header className={`${header} ` + (fix ? `${fixStyle}` : scrolled ? `${fixStyle} animated` : '') + `${theme}`}>
         <nav className={nav}>
           <button className={menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
-            <img loading="lazy" src={`/assets/icons/ionicons/menu${dark ? '-dark' : ''}.svg`} aria-hidden="true" alt="" style={{width: '2rem'}} />
+            <img loading="lazy" src={`/assets/icons/ionicons/menu${navTheme ? '-dark' : ''}.svg`} aria-hidden="true" alt="" style={{width: '2rem'}} />
           </button>
 
           <div className={start}>
             {renderDeckDeckGo()}
 
+            <Link to={`/${lang}/features`}>
+              <FormattedMessage id="nav.features" />
+            </Link>
+
             <Link to={`/${lang}/discover`}>
               <FormattedMessage id="nav.discover" />
             </Link>
 
-            <Link to={`/${lang}/enterprise`}>
-              <FormattedMessage id="nav.enterprise" />
+            <Link to={`/${lang}/pricing`}>
+              <FormattedMessage id="nav.pricing" />
             </Link>
           </div>
 
@@ -69,7 +75,10 @@ const Navigation = ({data, fix, lang, dark}) => {
               <FormattedMessage id="nav.signin" />
             </a>
 
-            <LinkButton targetUrl="https://app.deckdeckgo.com/editor" msgId="nav.write.presentation" color="primary"></LinkButton>
+            <LinkButton
+              targetUrl="https://app.deckdeckgo.com/editor"
+              msgId="nav.write.presentation"
+              color={(navTheme === 'features' || navTheme === 'pricing') && !scrolled ? 'light' : 'primary'}></LinkButton>
           </div>
         </nav>
       </header>
@@ -81,7 +90,7 @@ const Navigation = ({data, fix, lang, dark}) => {
   function renderDeckDeckGo() {
     return (
       <Link to={`/${lang}/`} className={home}>
-        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData}  alt=""/>
+        <GatsbyImage image={data.placeholderImage.childImageSharp.gatsbyImageData} alt="" />
 
         <span style={{margin: 0}}>{data.site.siteMetadata.title}</span>
       </Link>

@@ -4,15 +4,15 @@ import Layout from '../../components/core/layout/en';
 
 import {Footer} from '../../components/core/footer/footer';
 import {EnterpriseHero} from '../../components/enterprise/hero/hero';
-import {Features} from '../../components/enterprise/features/features';
+import {EnterpriseFeatures} from '../../components/enterprise/features/features';
 import {Contact} from '../../components/enterprise/contact/contact';
 
 const EnterprisePage = (props) => {
   return (
-    <Layout location={props.location} sticky={false} dark={true}>
+    <Layout location={props.location} sticky={false} navTheme={'enterprise'}>
       <EnterpriseHero />
 
-      <Features />
+      <EnterpriseFeatures lang="en" />
 
       <Contact />
 

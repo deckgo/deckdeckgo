@@ -1,7 +1,9 @@
 {
+  "nav.features": "Features",
   "nav.discover": "Discover",
-  "nav.enterprise": "Enterprise",
+  "nav.pricing": "Pricing",
   "nav.signin": "Sign in",
+  "nav.enterprise": "Enterprise",
   "nav.write.presentation": "Write a presentation",
   "nav.menu": "Navigation menu"
 }

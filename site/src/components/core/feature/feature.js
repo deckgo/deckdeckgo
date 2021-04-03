@@ -15,7 +15,7 @@ export const Feature = ({titleKey, msgKey, enterprise}) => {
           <img
             loading="lazy"
             src="/assets/icons/ionicons/business.svg"
-            alt={intl.formatMessage({id: 'enterprise.features.enterprise.only'})}
+            alt={intl.formatMessage({id: 'features.enterprise.only'})}
             className={enterpriseStyle}
           />
         ) : undefined}

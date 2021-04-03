@@ -37,9 +37,21 @@ export const Menu = forwardRef(({lang}, ref) => {
         <h2>DeckDeckGo</h2>
       </Link>
 
+      <Link to={`/${lang}/features`}>
+        <h2>
+          <FormattedMessage id="nav.features" />
+        </h2>
+      </Link>
+
       <Link to={`/${lang}/discover`}>
         <h2>
           <FormattedMessage id="nav.discover" />
+        </h2>
+      </Link>
+
+      <Link to={`/${lang}/pricing`}>
+        <h2>
+          <FormattedMessage id="nav.pricing" />
         </h2>
       </Link>
 

@@ -1,0 +1,26 @@
+@use "../../../themes/mixins/hero";
+
+.section {
+  background: linear-gradient(to top, var(--color-secondary), var(--color-tertiary));
+  color: var(--color-primary-contrast);
+}
+
+.main {
+  @include hero.main;
+}
+
+.subtitle {
+  @include hero.subtitle;
+}
+
+.title {
+  @include hero.title;
+
+  @media (min-width: 992px) {
+    width: 640px;
+  }
+}
+
+.hero {
+  @include hero.hero;
+}

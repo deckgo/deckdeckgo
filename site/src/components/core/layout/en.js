@@ -3,6 +3,8 @@ import Layout from './layout';
 
 import index from '../../../assets/i18n/index.json';
 import enterprise from '../../../assets/i18n/enterprise.json';
+import features from '../../../assets/i18n/features.json';
+import pricing from '../../../assets/i18n/pricing.json';
 import discover from '../../../assets/i18n/discover.json';
 import footer from '../../../assets/i18n/footer.json';
 import nav from '../../../assets/i18n/nav.json';
@@ -19,6 +21,8 @@ const LayoutEn = (props) => (
       ...nav,
       ...common,
       ...enterprise,
+      ...features,
+      ...pricing,
       ...discover,
     }}
   />

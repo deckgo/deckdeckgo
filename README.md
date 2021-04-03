@@ -49,6 +49,7 @@ We are constantly developing new features and, are always happy to hear about co
 - Interact with your presentations with a remote control
 - Present and work offline
 - Push the source code of your online slides to GitHub
+- Import Figma frames
 
 ## Documentation
 

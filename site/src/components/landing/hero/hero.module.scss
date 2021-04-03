@@ -1,24 +1,18 @@
+@use "../../../themes/mixins/hero";
 @use "../../../themes/mixins/main";
 
 .main {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-
-  @include main.title;
+  @include hero.main;
 }
 
 .subtitle {
-  font-weight: 300;
-  margin: 1rem 0 2.25rem;
-  font-size: var(--font-size-h3);
+  @include hero.subtitle;
 }
 
 .title {
+  @include hero.title;
+
   @media (min-width: 992px) {
-    font-size: calc(var(--font-size-h1) + 1rem);
-    line-height: calc(var(--line-height-h1) + 1rem);
     max-width: 70%;
   }
 }

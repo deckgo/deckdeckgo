@@ -31,7 +31,7 @@ export const Contact = () => {
   };
 
   return (
-    <section>
+    <section id="contact">
       <main className={main}>
         <form className={form} onSubmit={($event) => submitForm($event)} action="https://formspree.io/xjvaebzk" method="POST">
           <h3 className={getintouch}>
