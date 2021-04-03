@@ -51,6 +51,7 @@
     max-width: calc(100% - 32px);
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 0.45rem;
 
     @media (min-width: 768px) {
       min-height: 52px;
@@ -66,9 +67,6 @@
   > p:last-of-type,
   > p:first-of-type {
     font-weight: 300;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   aside {
@@ -96,7 +94,7 @@
     min-height: 4rem;
   }
 
-  margin: 0 0 0.45rem;
+  margin: 0 0 1rem;
 
   span {
     align-self: flex-start;

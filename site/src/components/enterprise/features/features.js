@@ -29,6 +29,7 @@ export const EnterpriseFeatures = ({lang}) => {
           />
         </p>
 
+        <Feature titleKey="features.edit.unbreakable.title" msgKey="features.edit.unbreakable.content" />
         <Feature titleKey="features.main.privatelinks.title" msgKey="features.main.privatelinks.content" />
         <Feature titleKey="features.main.pdf.title" msgKey="features.main.pdf.content" />
         <Feature titleKey="features.edit.customfonts.title" msgKey="features.edit.customfonts.content" />

@@ -32,7 +32,7 @@ export const ListFeatures = ({lang}) => {
           <FormattedMessage id="features.edit.title" />
         </h2>
 
-        <Feature titleKey="features.edit.unbreakable.title" msgKey="features.edit.unbreakable.content" />
+        <Feature titleKey="features.edit.unbreakable.title" msgKey="features.edit.unbreakable.content" enterprise={true} />
         <Feature titleKey="features.edit.code.title" msgKey="features.edit.code.content" />
         <Feature titleKey="features.edit.embed.title" msgKey="features.edit.embed.content" />
         <Feature titleKey="features.edit.library.title" msgKey="features.edit.library.content" />

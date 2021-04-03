@@ -42,7 +42,7 @@ export const Plan = ({lang}) => {
                 <a
                   href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
                   rel="noopener noreferrer"
-                  style={{textDecoration: 'underline', marginLeft: '4px', marginRight: '4px'}}>
+                  style={{textDecoration: 'underline'}}>
                   <FormattedMessage id="pricing.community.sponsorship" />
                 </a>
               ),
@@ -72,6 +72,9 @@ export const Plan = ({lang}) => {
               <FormattedMessage id="pricing.community.feature.youtube" />
             </li>
             <li>
+              <FormattedMessage id="pricing.community.feature.figma" />
+            </li>
+            <li>
               <FormattedMessage id="pricing.community.feature.code" />
             </li>
             <li>
@@ -82,9 +85,6 @@ export const Plan = ({lang}) => {
             </li>
             <li>
               <FormattedMessage id="pricing.community.feature.github" />
-            </li>
-            <li>
-              <FormattedMessage id="pricing.community.feature.figma" />
             </li>
             <li>
               <FormattedMessage
@@ -127,6 +127,9 @@ export const Plan = ({lang}) => {
           </h4>
 
           <ul>
+            <li>
+              <FormattedMessage id="features.edit.unbreakable.title" />
+            </li>
             <li>
               <FormattedMessage id="features.main.privatelinks.title" />
             </li>
