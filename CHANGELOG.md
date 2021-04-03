@@ -17,6 +17,10 @@
 
 - slide-aspect-ratio: v3.2.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/aspect-ratio/CHANGELOG.md))
 
+### Others: New
+
+- figma-deckdeckgo-plugin: v1.0.1 ([CHANGELOG](https://github.com/deckgo/figma-deckdeckgo-plugin/blob/main/CHANGELOG.md))
+
 ### Others
 
 - cli: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
