@@ -52,15 +52,11 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0.45rem;
-
-    @media (min-width: 768px) {
-      min-height: 52px;
-    }
   }
 
   @media (min-width: 768px) {
-    > p:last-of-type {
-      min-height: 26px;
+    > p:first-of-type, > p:last-of-type {
+      min-height: 52px;
     }
   }
 
@@ -94,7 +90,7 @@
     min-height: 4rem;
   }
 
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
 
   span {
     align-self: flex-start;

@@ -1,9 +1,9 @@
 {
   "pricing.hero.title": "Try it and adopt it!",
-  "pricing.hero.subtitle": "DeckDeckGo is for everyone, interactive and open source.",
+  "pricing.hero.subtitle": "DeckDeckGo is for everyone, for every audience.",
   "pricing.community.title": "Community",
   "pricing.community.subtitle": "For you, for me, for evermore!",
-  "pricing.community.free": "Free with the help of your {sponsorshipLink} 🙏.",
+  "pricing.community.free": "Free with the help of your {sponsorshipLink} 🙏",
   "pricing.community.sponsorship": "sponsorship",
   "pricing.community.includes": "Includes",
   "pricing.community.feature.pwa": "Create, present and share your slides as Progressive Web Apps",
@@ -21,5 +21,7 @@
   "pricing.enterprise.title": "Enterprise",
   "pricing.enterprise.includes": "Everything in Community, plus",
   "pricing.sponsor.action": "Sponsor",
-  "pricing.enterprise.contact": "Contact"
+  "pricing.enterprise.contact": "Contact",
+  "pricing.try.text": "Unlike any other other editor for slides, you can try DeckDeckGo without the need to create an account. Give it a {tryLink}!",
+  "pricing.try.link": "try"
 }

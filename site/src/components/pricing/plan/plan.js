@@ -114,7 +114,7 @@ export const Plan = ({lang}) => {
         </h2>
 
         <p>
-          <FormattedMessage id="enterprise.hero.title" />
+          <FormattedMessage id="enterprise.hero.title" />.
         </p>
 
         <p className={tag} aria-hidden={true}></p>

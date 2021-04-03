@@ -5,6 +5,7 @@ import Layout from '../../components/core/layout/en';
 import {Footer} from '../../components/core/footer/footer';
 import {PricingHero} from '../../components/pricing/hero/hero';
 import {Plan} from '../../components/pricing/plan/plan';
+import { Try } from "../../components/pricing/try/try";
 
 const PricingPages = (props) => {
   return (
@@ -13,9 +14,7 @@ const PricingPages = (props) => {
 
       <Plan lang="en"></Plan>
 
-      TODO: here comes "give it a try" or sign up
-
-      TODO: followed by a sponsorship call to action
+      <Try></Try>
 
       <Footer lang="en" action={false} />
     </Layout>
