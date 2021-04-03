@@ -1,3 +1,12 @@
+# 4.5.0 (2020-04-03)
+
+### Features
+
+- figma integration ([#246](https://github.com/deckgo/deckdeckgo/issues/246))
+- german translations ([#1122](https://github.com/deckgo/deckdeckgo/issues/1122) and [#1123](https://github.com/deckgo/deckdeckgo/issues/1123))
+- accept images svg and webp ([#1113](https://github.com/deckgo/deckdeckgo/pull/1113)) 
+- csp object-src and base-uri ([#1111](https://github.com/deckgo/deckdeckgo/pull/1111))
+
 # 4.4.0 (2020-03-18)
 
 ### Features
