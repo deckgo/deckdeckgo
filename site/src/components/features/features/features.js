@@ -80,7 +80,7 @@ export const ListFeatures = ({lang}) => {
             id="features.enterprise.only.notice"
             values={{
               organizationsLink: (
-                <Link to={`/${lang}/enterprise/`} style={{textDecoration: 'underline'}}>
+                <Link to={`/${lang}/enterprise/`}>
                   <FormattedMessage id="features.enterprise.organizations.link" />
                 </Link>
               ),

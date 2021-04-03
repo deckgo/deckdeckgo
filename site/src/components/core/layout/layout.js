@@ -10,6 +10,7 @@ import '../../../themes/fonts.scss';
 import '../../../themes/theme.scss';
 import '../../../themes/main.scss';
 import '../../../themes/input.scss';
+import '../../../themes/links.scss';
 import '../../../themes/variables.scss';
 
 import SEO from '../seo/seo';

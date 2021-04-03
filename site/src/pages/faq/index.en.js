@@ -26,8 +26,7 @@ const FaqPage = (props) => {
             <a
               href="https://dev.to/daviddalbusco/we-are-developing-an-open-source-editor-for-presentations-1bng"
               target="_blank"
-              rel="noopener noreferrer"
-              style={{textDecoration: 'underline'}}>
+              rel="noopener noreferrer">
               article
             </a>{' '}
             to present our project and ourselves, you might find more answers in it if you wish to have a more concrete answer.
@@ -58,7 +57,7 @@ const FaqPage = (props) => {
 
           <p>
             That being said, for our{' '}
-            <Link to="/en/enterprise/" style={{textDecoration: 'underline'}}>
+            <Link to="/en/enterprise/">
               enterprise
             </Link>{' '}
             we do offer templates and options that match their CI/CD. In addition, we are in the making to open our online editor to custom users and community
@@ -69,7 +68,7 @@ const FaqPage = (props) => {
 
           <p>
             You can't (but we do understand that you might wish to if you are a{' '}
-            <Link to="/en/enterprise/" style={{textDecoration: 'underline'}}>
+            <Link to="/en/enterprise/">
               company
             </Link>
             ).

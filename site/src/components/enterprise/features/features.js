@@ -21,7 +21,7 @@ export const EnterpriseFeatures = ({lang}) => {
             id="enterprise.features.introduction"
             values={{
               communityLink: (
-                <Link to={`/${lang}/features/`} style={{textDecoration: 'underline'}}>
+                <Link to={`/${lang}/features/`}>
                   <FormattedMessage id="enterprise.community.link" />
                 </Link>
               ),
