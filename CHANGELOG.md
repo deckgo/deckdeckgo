@@ -19,7 +19,7 @@
 
 ### Others: New
 
-- figma-deckdeckgo-plugin: v1.0.1 ([CHANGELOG](https://github.com/deckgo/figma-deckdeckgo-plugin/blob/main/CHANGELOG.md))
+- figma-deckdeckgo-plugin: v1.0.2 ([CHANGELOG](https://github.com/deckgo/figma-deckdeckgo-plugin/blob/main/CHANGELOG.md))
 
 ### Others
 
