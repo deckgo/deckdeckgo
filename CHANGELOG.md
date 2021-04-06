@@ -1,6 +1,6 @@
 <a name="4.5.0"></a>
 
-# [4.5.0](https://github.com/deckgo/deckdeckgo/compare/v4.4.0...v4.5.0) (2021-04-03)
+# [4.5.0](https://github.com/deckgo/deckdeckgo/compare/v4.4.0...v4.5.0) (2021-04-06)
 
 ### Applications
 
