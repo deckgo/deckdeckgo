@@ -11,6 +11,7 @@ import {AnchorLink, ExecCommandAction, InlineAction} from '../../interfaces/inte
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 import {execCommand} from '../../utils/execcommand.utils';
+import {clearTheSelection, getSelection} from '../../utils/selection.utils';
 
 @Component({
   tag: 'deckgo-inline-editor',
@@ -297,7 +298,7 @@ export class DeckdeckgoInlineEditor {
 
   private displayTools(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const selection: Selection = await this.getSelection();
+      const selection: Selection | undefined = await getSelection();
 
       if (!this.anchorEvent) {
         await this.reset(false);
@@ -562,43 +563,11 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private getSelection(): Promise<Selection> {
-    return new Promise<Selection>((resolve) => {
-      let selectedSelection: Selection = null;
-
-      if (window && window.getSelection) {
-        selectedSelection = window.getSelection();
-      } else if (document && document.getSelection) {
-        selectedSelection = document.getSelection();
-      } else if (document && (document as any).selection) {
-        selectedSelection = (document as any).selection.createRange().text;
-      }
-
-      resolve(selectedSelection);
-    });
-  }
-
-  private clearTheSelection(): Promise<Selection> {
-    return new Promise<Selection>((resolve) => {
-      if (window && window.getSelection) {
-        if (window.getSelection().empty) {
-          window.getSelection().empty();
-        } else if (window.getSelection().removeAllRanges) {
-          window.getSelection().removeAllRanges();
-        }
-      } else if (document && (document as any).selection) {
-        (document as any).selection.empty();
-      }
-
-      resolve();
-    });
-  }
-
   @Method()
   reset(clearSelection: boolean, blurActiveElement?: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (clearSelection) {
-        await this.clearTheSelection();
+        await clearTheSelection();
       }
 
       await this.setToolsActivated(false);

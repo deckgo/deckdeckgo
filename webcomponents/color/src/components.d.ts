@@ -15,11 +15,11 @@ export namespace Components {
         "moreAlt": string;
         "palette": DeckdeckgoPalette[];
     }
-    interface DeckgoColorLabel {
+    interface DeckgoColorInput {
         "colorHex": string;
-        "colorLabel": string;
         "colorRgb": string;
         "customColorRgb": string;
+        "moreAlt": string;
     }
 }
 declare global {
@@ -29,15 +29,15 @@ declare global {
         prototype: HTMLDeckgoColorElement;
         new (): HTMLDeckgoColorElement;
     };
-    interface HTMLDeckgoColorLabelElement extends Components.DeckgoColorLabel, HTMLStencilElement {
+    interface HTMLDeckgoColorInputElement extends Components.DeckgoColorInput, HTMLStencilElement {
     }
-    var HTMLDeckgoColorLabelElement: {
-        prototype: HTMLDeckgoColorLabelElement;
-        new (): HTMLDeckgoColorLabelElement;
+    var HTMLDeckgoColorInputElement: {
+        prototype: HTMLDeckgoColorInputElement;
+        new (): HTMLDeckgoColorInputElement;
     };
     interface HTMLElementTagNameMap {
         "deckgo-color": HTMLDeckgoColorElement;
-        "deckgo-color-label": HTMLDeckgoColorLabelElement;
+        "deckgo-color-input": HTMLDeckgoColorInputElement;
     }
 }
 declare namespace LocalJSX {
@@ -50,15 +50,16 @@ declare namespace LocalJSX {
         "onColorChange"?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;
         "palette"?: DeckdeckgoPalette[];
     }
-    interface DeckgoColorLabel {
+    interface DeckgoColorInput {
         "colorHex"?: string;
-        "colorLabel"?: string;
         "colorRgb"?: string;
         "customColorRgb"?: string;
+        "moreAlt"?: string;
+        "onSelectHexColor"?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;
     }
     interface IntrinsicElements {
         "deckgo-color": DeckgoColor;
-        "deckgo-color-label": DeckgoColorLabel;
+        "deckgo-color-input": DeckgoColorInput;
     }
 }
 export { LocalJSX as JSX };
@@ -66,7 +67,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-color": LocalJSX.DeckgoColor & JSXBase.HTMLAttributes<HTMLDeckgoColorElement>;
-            "deckgo-color-label": LocalJSX.DeckgoColorLabel & JSXBase.HTMLAttributes<HTMLDeckgoColorLabelElement>;
+            "deckgo-color-input": LocalJSX.DeckgoColorInput & JSXBase.HTMLAttributes<HTMLDeckgoColorInputElement>;
         }
     }
 }

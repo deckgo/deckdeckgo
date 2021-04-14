@@ -9,11 +9,19 @@
     <script nomodule src="/build/deckdeckgo-color.js"></script>
   </head>
   <body>
-    <div style="width: 240px;">
-      <deckgo-color color-hex="#FFD084" style="--deckgo-button-more-border: 1px solid green;">
-        <span slot="more">...</span>
-        <span slot="custom-label">Spécial</span>
-      </deckgo-color>
+    <div style="border: 1px solid red; margin: 16px; display: inline-block;">
+      <deckgo-color color-hex="#FFD084"> </deckgo-color>
     </div>
+
+    <p></p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const elem = document.querySelector('deckgo-color');
+        const p = document.querySelector('p');
+
+        elem.addEventListener('colorChange', ($event) => (p.innerHTML = `Event: Hex ${$event.detail.hex} - Rgb ${$event.detail.rgb}`), {passive: true});
+      });
+    </script>
   </body>
 </html>
