@@ -1,0 +1,16 @@
+{
+  "printWidth": 140,
+  "singleQuote": true,
+  "arrowParens": "always",
+  "bracketSpacing": false,
+  "jsxBracketSameLine": true,
+  "trailingComma": "none",
+  "overrides": [
+    {
+      "files": ["*.scss", "*.css"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}
