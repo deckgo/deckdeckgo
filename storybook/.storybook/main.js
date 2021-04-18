@@ -7,7 +7,7 @@ module.exports = {
       options: {
         actions: false,
         backgrounds: false,
-        controls: false,
+        controls: true,
         docs: true,
         viewport: false,
         toolbars: false

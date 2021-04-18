@@ -1,13 +1,10 @@
 import theme from './theme';
 
+import {defineCustomElements as deckDeckGoChartsElements} from '@deckdeckgo/charts/dist/loader';
+deckDeckGoChartsElements();
+
 export const parameters = {
   actions: {argTypesRegex: '^on[A-Z].*'},
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/
-    }
-  },
   options: {
     storySort: {
       order: [
@@ -16,6 +13,7 @@ export const parameters = {
         'Edit',
         ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
         'Components',
+        ['BarChart'],
         'Miscellaneous',
         ['Contact', 'Sponsor', 'Logo'],
       ]
