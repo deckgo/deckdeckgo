@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "start-storybook -p 6006",
+    "start-no-cache": "start-storybook -p 6006 --no-manager-cache",
     "build": "build-storybook"
   },
   "repository": {
@@ -23,6 +24,7 @@
     "@storybook/addon-essentials": "^6.2.8",
     "@storybook/addon-links": "^6.2.8",
     "@storybook/html": "^6.2.8",
+    "@storybook/theming": "^6.2.8",
     "babel-loader": "^8.2.2",
     "husky": "^6.0.0",
     "prettier": "^2.2.1",

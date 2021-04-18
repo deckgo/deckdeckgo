@@ -1,3 +1,5 @@
+import theme from './theme';
+
 export const parameters = {
   actions: {argTypesRegex: '^on[A-Z].*'},
   controls: {
@@ -10,5 +12,8 @@ export const parameters = {
     storySort: {
       order: ['Introduction', ['Introduction', 'Getting Started', 'Installation', 'Showcase', 'Publish', 'Remote Control'], 'Components']
     }
+  },
+  docs: {
+    theme
   }
 };

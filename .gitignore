@@ -45,3 +45,5 @@ config.staging.json
 config.prod.json
 
 **/assetlinks.prod.json
+
+storybook-static/
