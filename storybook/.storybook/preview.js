@@ -10,7 +10,13 @@ export const parameters = {
   },
   options: {
     storySort: {
-      order: ['Introduction', ['Introduction', 'Getting Started', 'Installation', 'Showcase', 'Publish', 'Remote Control'], 'Components']
+      order: [
+        'Introduction',
+        ['Introduction', 'Getting Started', 'Installation', 'Showcase', 'Publish', 'Remote Control'],
+        'Edit',
+        ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
+        'Components'
+      ]
     }
   },
   docs: {
