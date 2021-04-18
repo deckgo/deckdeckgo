@@ -15,7 +15,9 @@ export const parameters = {
         ['Introduction', 'Getting Started', 'Installation', 'Showcase', 'Publish', 'Remote Control'],
         'Edit',
         ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
-        'Components'
+        'Components',
+        'Miscellaneous',
+        ['Contact', 'Sponsor', 'Logo'],
       ]
     }
   },
