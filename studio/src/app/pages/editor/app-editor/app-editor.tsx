@@ -788,7 +788,12 @@ export class AppEditor {
         <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
       </ion-content>,
       this.renderInlineEditor(),
+      this.renderFlashlight(),
     ];
+  }
+
+  private renderFlashlight() {
+    return this.fullscreen && this.presenting ? <deckgo-flashlight></deckgo-flashlight> : undefined;
   }
 
   private renderInlineEditor() {

@@ -26,6 +26,7 @@
     "@deckdeckgo/deck-utils": "^3.4.1",
     "@deckdeckgo/demo": "^2.0.1",
     "@deckdeckgo/drag-resize-rotate": "^2.0.1",
+    "@deckdeckgo/flashlight": "file:../webcomponents/flashlight",
     "@deckdeckgo/highlight-code": "^2.5.1",
     "@deckdeckgo/inline-editor": "^3.0.2",
     "@deckdeckgo/lazy-img": "^3.0.0",

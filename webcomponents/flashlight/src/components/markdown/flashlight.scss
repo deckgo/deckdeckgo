@@ -1,0 +1,33 @@
+:host {
+  display: block;
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: -1;
+
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: auto;
+  user-select: none;
+
+  background: transparent;
+
+  animation: opacity 0.5s ease-in, background 0.5 ease-in;
+}
+
+:host(.show) {
+  cursor: none;
+
+  background: radial-gradient(circle 10vmax at var(--x) var(--y), rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.65) 100%);
+
+  z-index: 102;
+
+  opacity: 1;
+  visibility: visible;
+}
