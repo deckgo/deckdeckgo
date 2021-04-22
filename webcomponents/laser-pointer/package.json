@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/laser-pointer",
-  "version": "2.0.1",
+  "version": "1.0.0",
   "description": "A Web Component to turn the mouse into a laser pointer",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

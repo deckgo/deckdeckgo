@@ -1,3 +1,11 @@
+<a name="4.6.0"></a>
+
+# [4.6.0](https://github.com/deckgo/deckdeckgo/compare/v4.5.0...v4.6.0) (In progress..)
+
+### Web Components: New
+
+- laser-pointer: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/laser-pointer/CHANGELOG.md))
+
 <a name="4.5.0"></a>
 
 # [4.5.0](https://github.com/deckgo/deckdeckgo/compare/v4.4.0...v4.5.0) (2021-04-06)
