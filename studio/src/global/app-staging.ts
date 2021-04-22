@@ -22,7 +22,7 @@ import '@deckdeckgo/drag-resize-rotate';
 import '@deckdeckgo/demo';
 import '@deckdeckgo/word-cloud';
 import '@deckdeckgo/markdown';
-import '@deckdeckgo/flashlight';
+import '@deckdeckgo/laser-pointer';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';
