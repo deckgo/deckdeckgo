@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface DeckgoFlashlight {
+    interface DeckgoLaserPointer {
         /**
           * Decrease RGB blue color with life span
          */
@@ -34,18 +34,18 @@ export namespace Components {
     }
 }
 declare global {
-    interface HTMLDeckgoFlashlightElement extends Components.DeckgoFlashlight, HTMLStencilElement {
+    interface HTMLDeckgoLaserPointerElement extends Components.DeckgoLaserPointer, HTMLStencilElement {
     }
-    var HTMLDeckgoFlashlightElement: {
-        prototype: HTMLDeckgoFlashlightElement;
-        new (): HTMLDeckgoFlashlightElement;
+    var HTMLDeckgoLaserPointerElement: {
+        prototype: HTMLDeckgoLaserPointerElement;
+        new (): HTMLDeckgoLaserPointerElement;
     };
     interface HTMLElementTagNameMap {
-        "deckgo-flashlight": HTMLDeckgoFlashlightElement;
+        "deckgo-laser-pointer": HTMLDeckgoLaserPointerElement;
     }
 }
 declare namespace LocalJSX {
-    interface DeckgoFlashlight {
+    interface DeckgoLaserPointer {
         /**
           * Decrease RGB blue color with life span
          */
@@ -72,14 +72,14 @@ declare namespace LocalJSX {
         "r"?: number;
     }
     interface IntrinsicElements {
-        "deckgo-flashlight": DeckgoFlashlight;
+        "deckgo-laser-pointer": DeckgoLaserPointer;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "deckgo-flashlight": LocalJSX.DeckgoFlashlight & JSXBase.HTMLAttributes<HTMLDeckgoFlashlightElement>;
+            "deckgo-laser-pointer": LocalJSX.DeckgoLaserPointer & JSXBase.HTMLAttributes<HTMLDeckgoLaserPointerElement>;
         }
     }
 }

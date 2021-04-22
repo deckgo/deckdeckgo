@@ -5,7 +5,7 @@ import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
-  namespace: 'deckdeckgo-flashlight',
+  namespace: 'deckdeckgo-laser-pointer',
   outputTargets: [
     {
       type: 'dist',

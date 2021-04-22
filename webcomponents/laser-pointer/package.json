@@ -1,7 +1,7 @@
 {
-  "name": "@deckdeckgo/flashlight",
+  "name": "@deckdeckgo/laser-pointer",
   "version": "2.0.1",
-  "description": "A Web Component to apply a Flashlight effect around the mouse cursor position",
+  "description": "A Web Component to turn the mouse into a laser pointer",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-flashlight/deckdeckgo-flashlight.esm.js",
+  "unpkg": "dist/deckdeckgo-laser-pointer/deckdeckgo-laser-pointer.esm.js",
   "files": [
     "dist/",
     "README.md",
@@ -47,7 +47,11 @@
     "stencil",
     "stenciljs",
     "web components",
-    "flashlight"
+    "laser pointer",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
   ],
   "husky": {
     "hooks": {

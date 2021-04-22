@@ -3,11 +3,11 @@ import {Component, h, Host, Listen, Prop, State} from '@stencil/core';
 import {unifyEvent} from '@deckdeckgo/utils';
 
 @Component({
-  tag: 'deckgo-flashlight',
-  styleUrl: 'flashlight.scss',
+  tag: 'deckgo-laser-pointer',
+  styleUrl: 'laser-pointer.scss',
   shadow: true,
 })
-export class DeckgoMdParser {
+export class DeckDeckGoLaserPointer {
   /**
    * The RGB red color
    */
