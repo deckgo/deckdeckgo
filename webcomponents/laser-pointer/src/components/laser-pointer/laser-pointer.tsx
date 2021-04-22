@@ -1,11 +1,11 @@
 import {Component, h, Host, Listen, Prop, State} from '@stencil/core';
 
-import {unifyEvent} from '@deckdeckgo/utils';
+import {unifyEvent, debounce, isIOS} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'deckgo-laser-pointer',
   styleUrl: 'laser-pointer.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckDeckGoLaserPointer {
   /**
@@ -48,7 +48,7 @@ export class DeckDeckGoLaserPointer {
   private mouse: 'moving' | 'idle' = 'idle';
 
   @State()
-  private viewport: {width: number; height: number};
+  private size: {width: number; height: number};
 
   private points: {x: number; y: number; lifetime: number}[] = [];
 
@@ -73,18 +73,24 @@ export class DeckDeckGoLaserPointer {
       clearTimeout(this.idleMouseTimer);
     }
 
-    window.removeEventListener('resize', () => this.initViewportSize());
+    window.removeEventListener(
+      'resize',
+      debounce(() => this.initViewportSize())
+    );
   }
 
   private initViewportSize() {
-    this.viewport = {
-      width: screen.width > window.innerWidth ? screen.width : window.innerWidth,
-      height: screen.height > window.innerHeight ? screen.height : window.innerHeight,
+    this.size = {
+      width: isIOS() && screen.width > window.innerWidth ? screen.width : window.innerWidth,
+      height: isIOS() && screen.height > window.innerHeight ? screen.height : window.innerHeight
     };
   }
 
   private initWindowResize() {
-    window.addEventListener('resize', () => this.initViewportSize());
+    window.addEventListener(
+      'resize',
+      debounce(() => this.initViewportSize())
+    );
   }
 
   private startAnimation() {
@@ -154,7 +160,7 @@ export class DeckDeckGoLaserPointer {
     ctx,
     rgbColor,
     point,
-    lifePercent,
+    lifePercent
   }: {
     ctx: CanvasRenderingContext2D;
     rgbColor: string;
@@ -187,7 +193,7 @@ export class DeckDeckGoLaserPointer {
     this.points.push({
       x: unifyEvent($event).clientX,
       y: unifyEvent($event).clientY,
-      lifetime: 0,
+      lifetime: 0
     });
 
     this.idleMouseTimer = setTimeout(() => {
@@ -204,7 +210,7 @@ export class DeckDeckGoLaserPointer {
   render() {
     return (
       <Host class={this.mouse === 'moving' ? 'show' : 'hidden'}>
-        <canvas ref={(el: HTMLCanvasElement | null) => (this.canvasRef = el)} width={this.viewport.width} height={this.viewport.height} />
+        <canvas ref={(el: HTMLCanvasElement | null) => (this.canvasRef = el)} width={this.size.width} height={this.size.height} />
       </Host>
     );
   }

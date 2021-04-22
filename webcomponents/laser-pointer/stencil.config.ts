@@ -8,11 +8,11 @@ export const config: Config = {
   namespace: 'deckdeckgo-laser-pointer',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null,
+      serviceWorker: null
     },
     {
       type: 'docs-readme'
@@ -21,7 +21,10 @@ export const config: Config = {
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
-    }),
+      plugins: [autoprefixer()]
+    })
   ],
+  devServer: {
+    openBrowser: false
+  }
 };
