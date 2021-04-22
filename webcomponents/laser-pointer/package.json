@@ -1,0 +1,61 @@
+{
+  "name": "@deckdeckgo/laser-pointer",
+  "version": "1.0.0",
+  "description": "A Web Component to turn the mouse into a laser pointer",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-laser-pointer/deckdeckgo-laser-pointer.esm.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {
+    "@deckdeckgo/utils": "^1.8.0"
+  },
+  "devDependencies": {
+    "@stencil/core": "^2.5.2",
+    "@stencil/postcss": "^2.0.0",
+    "@stencil/sass": "^1.4.1",
+    "autoprefixer": "^9.8.6",
+    "prettier": "2.2.1",
+    "pretty-quick": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "laser pointer",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

@@ -786,9 +786,14 @@ export class AppEditor {
             onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
         </div>
         <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
+        {this.renderLaserPointer()}
       </ion-content>,
       this.renderInlineEditor(),
     ];
+  }
+
+  private renderLaserPointer() {
+    return this.fullscreen && this.presenting ? <deckgo-laser-pointer></deckgo-laser-pointer> : undefined;
   }
 
   private renderInlineEditor() {
