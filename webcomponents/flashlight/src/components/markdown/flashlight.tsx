@@ -1,4 +1,4 @@
-import {Component, h, Host, Listen, State} from '@stencil/core';
+import {Component, h, Host, Listen, Prop, State} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
@@ -8,8 +8,47 @@ import {unifyEvent} from '@deckdeckgo/utils';
   shadow: true,
 })
 export class DeckgoMdParser {
+  /**
+   * The RGB red color
+   */
+  @Prop()
+  r: number = 61;
+
+  /**
+   * Decrease RGB red color with life span
+   */
+  @Prop()
+  animateR: boolean = true;
+
+  /**
+   * The RGB green color (which will fade with time)
+   */
+  @Prop()
+  g: number = 194;
+
+  /**
+   * Decrease RGB green color with life span
+   */
+  @Prop()
+  animateG: boolean = false;
+
+  /**
+   * The RGB blue color (which will fade with time)
+   */
+  @Prop()
+  b: number = 255;
+
+  /**
+   * Decrease RGB blue color with life span
+   */
+  @Prop()
+  animateB: boolean = true;
+
   @State()
   private mouse: 'moving' | 'idle' = 'idle';
+
+  @State()
+  private viewport: {width: number; height: number};
 
   private points: {x: number; y: number; lifetime: number}[] = [];
 
@@ -17,9 +56,6 @@ export class DeckgoMdParser {
   private readonly idleMouseTimeout: number = 2000;
 
   private canvasRef!: HTMLCanvasElement;
-
-  @State()
-  private viewport: {width: number; height: number};
 
   componentWillLoad() {
     this.initViewportSize();
@@ -68,14 +104,8 @@ export class DeckgoMdParser {
       const duration = (0.7 * 1000) / 60; // Last 80% of a frame per point
 
       for (let i = 0; i < this.points.length; ++i) {
-        const point = this.points[i];
-        let lastPoint;
-
-        if (this.points[i - 1] !== undefined) {
-          lastPoint = this.points[i - 1];
-        } else {
-          lastPoint = point;
-        }
+        const point: {x: number; y: number; lifetime: number} = this.points[i];
+        const lastPoint: {x: number; y: number; lifetime: number} = this.points[i - 1] !== undefined ? this.points[i - 1] : point;
 
         point.lifetime += 1;
 
@@ -92,11 +122,13 @@ export class DeckgoMdParser {
           ctx.lineJoin = 'round';
           ctx.lineWidth = spreadRate;
 
-          // As time increases decrease r and b, increase g to go from purple to green.
-          const red = Math.floor(190 - 190 * lifePercent);
-          const green = 0;
-          const blue = Math.floor(210 + 210 * lifePercent);
-          ctx.strokeStyle = `rgb(${red},${green},${blue}`;
+          const red: number = this.animateR ? Math.floor(this.r - this.r * lifePercent) : this.r;
+          const green: number = this.animateG ? Math.floor(this.g - this.g * lifePercent) : this.g;
+          const blue: number = this.animateB ? Math.floor(255 + 255 * lifePercent) : this.b;
+
+          const rgbColor: string = `rgb(${red},${green},${blue}`;
+
+          ctx.strokeStyle = rgbColor;
 
           ctx.beginPath();
 
@@ -106,10 +138,7 @@ export class DeckgoMdParser {
           ctx.stroke();
 
           if (i === this.points.length - 1) {
-            ctx.fillStyle = `rgb(${red},${green},${blue}`;
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, 6 * (1 - lifePercent), 0, 2 * Math.PI);
-            ctx.fill();
+            this.drawCircle({ctx, rgbColor, point, lifePercent});
           }
 
           ctx.closePath();
@@ -119,6 +148,23 @@ export class DeckgoMdParser {
     };
 
     animatePoints();
+  }
+
+  private drawCircle({
+    ctx,
+    rgbColor,
+    point,
+    lifePercent,
+  }: {
+    ctx: CanvasRenderingContext2D;
+    rgbColor: string;
+    point: {x: number; y: number; lifetime: number};
+    lifePercent: number;
+  }) {
+    ctx.fillStyle = rgbColor;
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, 7.4 * (1 - lifePercent), 0, 2 * Math.PI);
+    ctx.fill();
   }
 
   @Listen('mousemove', {passive: true, target: 'document'})

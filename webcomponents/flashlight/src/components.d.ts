@@ -7,6 +7,30 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoFlashlight {
+        /**
+          * Decrease RGB blue color with life span
+         */
+        "animateB": boolean;
+        /**
+          * Decrease RGB green color with life span
+         */
+        "animateG": boolean;
+        /**
+          * Decrease RGB red color with life span
+         */
+        "animateR": boolean;
+        /**
+          * The RGB blue color (which will fade with time)
+         */
+        "b": number;
+        /**
+          * The RGB green color (which will fade with time)
+         */
+        "g": number;
+        /**
+          * The RGB red color
+         */
+        "r": number;
     }
 }
 declare global {
@@ -22,6 +46,30 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoFlashlight {
+        /**
+          * Decrease RGB blue color with life span
+         */
+        "animateB"?: boolean;
+        /**
+          * Decrease RGB green color with life span
+         */
+        "animateG"?: boolean;
+        /**
+          * Decrease RGB red color with life span
+         */
+        "animateR"?: boolean;
+        /**
+          * The RGB blue color (which will fade with time)
+         */
+        "b"?: number;
+        /**
+          * The RGB green color (which will fade with time)
+         */
+        "g"?: number;
+        /**
+          * The RGB red color
+         */
+        "r"?: number;
     }
     interface IntrinsicElements {
         "deckgo-flashlight": DeckgoFlashlight;
