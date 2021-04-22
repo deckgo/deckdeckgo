@@ -1,7 +1,7 @@
 :host {
   display: none;
 
-  position: fixed;
+  position: absolute;
 
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@
 
   z-index: -1;
 
-  pointer-events: auto;
+  pointer-events: none;
   user-select: none;
 
   background: transparent;
@@ -18,8 +18,9 @@
 
 :host(.show) {
   cursor: none;
+  pointer-events: all;
 
   display: block;
 
-  z-index: 102;
+  z-index: 2;
 }

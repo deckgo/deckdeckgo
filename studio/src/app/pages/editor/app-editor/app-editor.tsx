@@ -786,9 +786,9 @@ export class AppEditor {
             onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
         </div>
         <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
+        {this.renderFlashlight()}
       </ion-content>,
       this.renderInlineEditor(),
-      this.renderFlashlight(),
     ];
   }
 
