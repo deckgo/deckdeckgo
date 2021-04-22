@@ -22,5 +22,9 @@
 
   display: block;
 
-  z-index: 2;
+  /**
+    * @prop --laser-pointer-zindex: z-index property when laser pointer is displayed.
+    * @default 2
+    */
+  z-index: var(--laser-pointer-zindex, 2);
 }
