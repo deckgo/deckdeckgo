@@ -136,10 +136,6 @@ function getRemoteControlInfo(connected: boolean) {
 }
 
 function getRemoteControlRoom() {
-  if (!document) {
-    return '';
-  }
-
   const deckgoRemoteElement = document.querySelector('deckgo-remote') as HTMLDeckgoRemoteElement | null;
 
   if (!deckgoRemoteElement) {

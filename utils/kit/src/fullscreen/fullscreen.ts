@@ -1,10 +1,5 @@
 export const initFullscreen = () => {
   return new Promise((resolve) => {
-    if (!document) {
-      resolve();
-      return;
-    }
-
     document.addEventListener(
       'mouseInactivity',
       async ($event) => {

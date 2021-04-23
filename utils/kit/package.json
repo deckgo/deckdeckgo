@@ -24,7 +24,7 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.3.0"
+    "@deckdeckgo/utils": "^1.8.1"
   },
   "peerDependencies": {
     "@deckdeckgo/core": "^8.0.0",

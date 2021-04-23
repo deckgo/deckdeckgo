@@ -5,10 +5,6 @@ import {presentSlidePicker} from '../menu/chapters';
 import {openMenu} from '../menu/menu';
 
 export const initButtons = () => {
-  if (!document) {
-    return;
-  }
-
   document.addEventListener('DOMContentLoaded', async () => {
     attachClickListener('play', videoStart);
     attachClickListener('pause', videoPause);
