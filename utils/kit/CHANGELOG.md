@@ -1,4 +1,10 @@
-# 3.0.1 (2021-04-03)
+# 3.1.0 (2021-04-23)
+
+### Features
+
+- laser pointer (fullscreen only)
+
+# 3.0.1 (2021-04-23)
 
 ### Fix
 
