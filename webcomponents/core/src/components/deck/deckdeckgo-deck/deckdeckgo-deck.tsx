@@ -1077,7 +1077,7 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      slider.style.setProperty('cursor', show ? 'initial' : 'none');
+      slider.style.setProperty('cursor', show ? 'inherit' : 'none');
       this.mouseInactivity.emit(show);
 
       this.cursorHidden = !show;
