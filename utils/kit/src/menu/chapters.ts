@@ -68,10 +68,6 @@ export async function presentSlidePicker() {
 }
 
 async function bindChaptersActions() {
-  if (!document) {
-    return;
-  }
-
   const items = document.querySelectorAll('deckgo-chapters ion-item');
 
   if (items) {
