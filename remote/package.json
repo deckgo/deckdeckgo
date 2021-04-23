@@ -20,7 +20,7 @@
     "@deckdeckgo/deck-utils": "^3.4.1",
     "@deckdeckgo/demo": "^2.0.1",
     "@deckdeckgo/drag-resize-rotate": "^2.0.1",
-    "@deckdeckgo/highlight-code": "^2.5.1",
+    "@deckdeckgo/highlight-code": "^2.6.0",
     "@deckdeckgo/lazy-img": "^3.0.0",
     "@deckdeckgo/markdown": "^2.0.1",
     "@deckdeckgo/math": "^2.0.3",
