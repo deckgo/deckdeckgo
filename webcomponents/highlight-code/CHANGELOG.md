@@ -1,3 +1,15 @@
+# 2.6.0 (2021-04-23)
+
+### Features
+
+- better support for JSX / HTML markup when component editable
+
+# 2.5.2 (2021-04-23)
+
+### Styles
+
+- add new CSS variable `--deckgo-editable-cursor`
+
 # 2.5.1 (2021-03-07)
 
 ### Styles

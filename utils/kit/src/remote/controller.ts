@@ -87,7 +87,7 @@ async function initDeck() {
 async function initRemoteRoomServer($event: CustomEvent) {
   const deckgoRemoteElement = document.querySelector('deckgo-remote') as HTMLDeckgoRemoteElement | null;
 
-  if (!deckgoRemoteElement || !document) {
+  if (!deckgoRemoteElement) {
     return;
   }
 

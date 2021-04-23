@@ -1,0 +1,27 @@
+:host {
+  display: none;
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: -1;
+
+  user-select: none;
+  pointer-events: none;
+
+  background: transparent;
+}
+
+:host(.show) {
+  display: block;
+
+  /**
+    * @prop --laser-pointer-zindex: z-index property when laser pointer is displayed.
+    * @default 2
+    */
+  z-index: var(--laser-pointer-zindex, 2);
+}

@@ -1,6 +1,7 @@
 import {initEmbedded} from '../embed/embedded';
 import { initSize } from "../size/size";
 import { isScreenshot } from "../utils/utils.deck";
+import { initMouse } from "../mouse/mouse";
 
 export const postLoading = async () => {
   const app = document.querySelector('ion-app');
@@ -12,6 +13,7 @@ export const postLoading = async () => {
   await initSreenshot();
   await initEmbedMode();
   await initSize();
+  await initMouse();
 };
 
 async function initSreenshot() {

@@ -11,7 +11,7 @@
 
 :host([editable]) {
   div.deckgo-markdown-container {
-    cursor: text;
+    cursor: var(--deckgo-editable-cursor, text);
   }
 
   div.markdown:empty:not(:focus):after {

@@ -285,7 +285,7 @@ export class DeckdeckgoHighlightCode {
     const code: HTMLElement = this.el.querySelector("[slot='code']");
 
     if (code) {
-      return this.parseCode(code.innerText ? code.innerText.trim() : code.innerText);
+      return this.parseCode(code?.innerHTML?.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'));
     } else {
       return new Promise<void>((resolve) => {
         resolve();

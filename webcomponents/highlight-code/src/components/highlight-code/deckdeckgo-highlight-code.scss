@@ -7,7 +7,7 @@
 }
 
 :host([editable]) {
-  cursor: text;
+  cursor: var(--deckgo-editable-cursor, text);
 
   code:empty:not(:focus):after {
     content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
