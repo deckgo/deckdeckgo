@@ -51,10 +51,6 @@ export function isIPad(): boolean {
 }
 
 export function isFullscreen(): boolean {
-  if (!document) {
-    return false;
-  }
-
   return (
     // @ts-ignore
     // prettier-ignore
@@ -73,10 +69,6 @@ export function isFirefox(): boolean {
 }
 
 export function isRTL(): boolean {
-  if (!document || !document.documentElement) {
-    return false;
-  }
-
   const htmlDir: string | null = document.documentElement.getAttribute('dir');
   return htmlDir !== null && htmlDir === 'rtl';
 }
