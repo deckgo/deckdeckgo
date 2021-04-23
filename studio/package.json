@@ -26,7 +26,7 @@
     "@deckdeckgo/deck-utils": "^3.4.1",
     "@deckdeckgo/demo": "^2.0.1",
     "@deckdeckgo/drag-resize-rotate": "^2.0.1",
-    "@deckdeckgo/highlight-code": "^2.5.2",
+    "@deckdeckgo/highlight-code": "^2.6.0",
     "@deckdeckgo/inline-editor": "^3.0.2",
     "@deckdeckgo/laser-pointer": "^1.0.1",
     "@deckdeckgo/lazy-img": "^3.0.0",
