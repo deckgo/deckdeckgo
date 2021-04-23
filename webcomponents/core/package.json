@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/core",
-  "version": "8.1.5",
+  "version": "8.1.6",
   "description": "Add a presentation to your web application using HTML and Web Components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@deckdeckgo/deck-utils": "^2.6.0",
-    "@deckdeckgo/utils": "^1.3.0"
+    "@deckdeckgo/utils": "^1.8.1"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^1.1.0",

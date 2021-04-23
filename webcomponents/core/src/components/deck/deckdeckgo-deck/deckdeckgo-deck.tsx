@@ -302,10 +302,6 @@ export class DeckdeckgoDeck {
 
   @Method()
   async toggleKeyboardAssist(state: boolean) {
-    if (!document) {
-      return;
-    }
-
     if (!this.keyboard) {
       return;
     }
