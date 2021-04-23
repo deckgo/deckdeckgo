@@ -1,3 +1,9 @@
+# 8.1.5 (2021-04-23)
+
+### Style
+
+- on cursor active `inherit` instead of `initial` behavior
+
 # 8.1.4 (2021-03-25)
 
 ### Style

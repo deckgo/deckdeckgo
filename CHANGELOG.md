@@ -4,7 +4,11 @@
 
 ### Web Components: New
 
-- laser-pointer: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/laser-pointer/CHANGELOG.md))
+- laser-pointer: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/laser-pointer/CHANGELOG.md))
+
+### Web Components
+
+- core: v8.1.5 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 
 <a name="4.5.0"></a>
 

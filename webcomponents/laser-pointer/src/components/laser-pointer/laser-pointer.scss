@@ -10,16 +10,13 @@
 
   z-index: -1;
 
-  pointer-events: none;
   user-select: none;
+  pointer-events: none;
 
   background: transparent;
 }
 
 :host(.show) {
-  cursor: none;
-  pointer-events: all;
-
   display: block;
 
   /**
