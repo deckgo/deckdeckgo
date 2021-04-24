@@ -1,8 +1,5 @@
 import theme from './theme';
 
-import {defineCustomElements as deckDeckGoChartsElements} from '@deckdeckgo/charts/dist/loader';
-deckDeckGoChartsElements();
-
 export const parameters = {
   actions: {argTypesRegex: '^on[A-Z].*'},
   options: {
