@@ -47,7 +47,7 @@ The main idea behind the [DeckDeckGo] charts is to be able to drop a **csv** fil
 
 ### CSV
 
-The csv file should contains at least two columns. The first column should contains the labels. The other columns should contains values.
+The csv file should contain at least two columns. The first column should contains the labels. The other columns should contains values.
 
 Use multiple columns in case you would like to compare multiple graphs.
 
@@ -55,7 +55,7 @@ The values could be provided as `number` or `percent`.
 
 ### Multiple columns
 
-The first column should contains the labels or groups used for the X axis. The other columns are the values use for the Y axis.
+The first column should contain the labels or groups used for the X axis. The other columns are the values use for the Y axis.
 
 ```
 Group A;5;0;10

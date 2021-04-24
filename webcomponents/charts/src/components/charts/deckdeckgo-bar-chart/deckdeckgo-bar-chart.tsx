@@ -97,7 +97,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
    * @private
    */
   @Event()
-  private chartCustomLoad: EventEmitter<string>;
+  chartCustomLoad: EventEmitter<string>;
 
   async componentDidLoad() {
     await this.draw();

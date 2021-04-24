@@ -10,7 +10,7 @@ export const parameters = {
         'Edit',
         ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
         'Components',
-        ['BarChart'],
+        ['Laser Pointer', 'Bar Chart', 'Line Chart'],
         'Miscellaneous',
         ['Contact', 'Sponsor', 'Logo'],
       ]
