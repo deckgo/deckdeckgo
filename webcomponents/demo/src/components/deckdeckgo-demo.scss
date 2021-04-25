@@ -66,6 +66,10 @@
 }
 
 .demo-device div.placeholder {
+  /**
+   * @prop A background color for the content of the device until the frame is loaded
+   * @default #323639
+   */
   background: var(--deckgo-demo-placeholder-background, #323639);
 }
 

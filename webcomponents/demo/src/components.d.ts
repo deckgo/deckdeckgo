@@ -7,11 +7,29 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoDemo {
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
         "frameTitle": string;
+        /**
+          * In case you would like to load the frame as soon as the component is loaded
+         */
         "instant": boolean;
+        /**
+          * Lazy load the iframe
+         */
         "lazyLoadContent": () => Promise<void>;
+        /**
+          * The type of device frame. md for Android, ios for iPhone
+         */
         "mode": string;
+        /**
+          * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+         */
         "src": string;
+        /**
+          * Refresh iframe size and reload content
+         */
         "updateIFrame": () => Promise<void>;
     }
 }
@@ -28,9 +46,21 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoDemo {
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
         "frameTitle"?: string;
+        /**
+          * In case you would like to load the frame as soon as the component is loaded
+         */
         "instant"?: boolean;
+        /**
+          * The type of device frame. md for Android, ios for iPhone
+         */
         "mode"?: string;
+        /**
+          * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+         */
         "src"?: string;
     }
     interface IntrinsicElements {
