@@ -3,6 +3,9 @@ import {Component, Prop, Watch, Element, h, State, Host, Event, EventEmitter} fr
 import katex from 'katex';
 import {extractMath, Segment} from 'extract-math';
 
+/**
+ * @slot math - The math expression to render
+ */
 @Component({
   tag: 'deckgo-math',
   styleUrl: 'deckdeckgo-math.scss',
@@ -11,15 +14,24 @@ import {extractMath, Segment} from 'extract-math';
 export class DeckdeckgoMath {
   @Element() el: HTMLElement;
 
+  /**
+   * To set the component has being editable (contenteditable will be applied on the slot on click)
+   */
   @Prop() editable: boolean = false;
 
+  /**
+   * A collection of custom macros. Each macro is a property with a name like \name (written "\name" in JavaScript) which maps to a string that describes the expansion of the macro, or a function that accepts an instance of MacroExpander as first argument and returns the expansion as a string.
+   */
   @Prop({reflect: true}) macros: string = `{"\\\\f":"f(#1)"}`;
 
   @State()
   private editing: boolean = false;
 
+  /**
+   * Emit the host element when modified
+   */
   @Event()
-  private mathDidChange: EventEmitter<HTMLElement>;
+  mathDidChange: EventEmitter<HTMLElement>;
 
   private parseAfterUpdate: boolean = false;
 

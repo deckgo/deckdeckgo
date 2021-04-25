@@ -7,7 +7,13 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoMath {
+        /**
+          * To set the component has being editable (contenteditable will be applied on the slot on click)
+         */
         "editable": boolean;
+        /**
+          * A collection of custom macros. Each macro is a property with a name like \name (written "\name" in JavaScript) which maps to a string that describes the expansion of the macro, or a function that accepts an instance of MacroExpander as first argument and returns the expansion as a string.
+         */
         "macros": string;
     }
 }
@@ -24,8 +30,17 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoMath {
+        /**
+          * To set the component has being editable (contenteditable will be applied on the slot on click)
+         */
         "editable"?: boolean;
+        /**
+          * A collection of custom macros. Each macro is a property with a name like \name (written "\name" in JavaScript) which maps to a string that describes the expansion of the macro, or a function that accepts an instance of MacroExpander as first argument and returns the expansion as a string.
+         */
         "macros"?: string;
+        /**
+          * Emit the host element when modified
+         */
         "onMathDidChange"?: (event: CustomEvent<HTMLElement>) => void;
     }
     interface IntrinsicElements {
