@@ -7,31 +7,83 @@
 }
 
 :host([editable]) {
+  /**
+   * @prop --deckgo-editable-cursor: The mouse cursor displayed when hovering the editable element
+   * @default text
+   */
   cursor: var(--deckgo-editable-cursor, text);
 
   code:empty:not(:focus):after {
+    /**
+     * @prop --deckgo-highlight-code-empty-text: Place holder in case the editable is set to true
+     * @default Click to add your code
+     */
     content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
   }
 }
 
 :host(.deckgo-highlight-code-carbon) {
+  /**
+   * @prop --deckgo-highlight-code-carbon-display: The display property of the host container
+   * @default block
+   */
   display: var(--deckgo-highlight-code-carbon-display, block);
+  /**
+   * @prop --deckgo-highlight-code-carbon-overflow: The overflow property of the host container.
+   * @default auto
+   */
   overflow: var(--deckgo-highlight-code-carbon-overflow, auto);
+  /**
+   * @prop --deckgo-highlight-code-carbon-border: The border property of the host container
+   */
   border: var(--deckgo-highlight-code-carbon-border);
+  /**
+   * @prop --deckgo-highlight-code-carbon-border-radius: The border-radius property of the host container
+   * @default 4px
+   */
   border-radius: var(--deckgo-highlight-code-carbon-border-radius, 4px);
+  /**
+   * @prop --deckgo-highlight-code-carbon-background: The background property of the host container
+   * @default #282a36
+   */
   background: var(--deckgo-highlight-code-carbon-background, #282a36);
+  /**
+   * @prop --deckgo-highlight-code-carbon-color: The color property of the host container
+   * @default white
+   */
   color: var(--deckgo-highlight-code-carbon-color, white);
+  /**
+   * @prop --deckgo-highlight-code-carbon-box-shadow: The box-shadow property of the host container
+   * @default rgba(0, 0, 0, 0.55) 0 8px 16px)
+   */
   box-shadow: var(--deckgo-highlight-code-carbon-box-shadow, rgba(0, 0, 0, 0.55) 0 8px 16px);
+  /**
+   * @prop --deckgo-highlight-code-carbon-margin: The margin property of the host container
+   * @default 16px 0
+   */
   margin: var(--deckgo-highlight-code-carbon-margin, 16px 0);
 
   div.deckgo-highlight-code-container {
+    /**
+     * @prop --deckgo-highlight-code-margin: The margin property of the code container
+     * @default 0 0 16px
+     */
     margin: var(--deckgo-highlight-code-margin, 0 0 16px);
 
     code {
       > div.deckgo-highlight-code-line-number {
         &:before {
+          /**
+           * @prop --deckgo-highlight-code-carbon-background: The background property of the host container
+           * @default transparent
+           */
           background: var(--deckgo-highlight-code-carbon-background, transparent);
+
           border-color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
+          /**
+           * @prop --deckgo-highlight-code-line-numbers: The color of the line numbers and divider
+           * @default var(--deckgo-highlight-code-token-comment, #6272a4)
+           */
           color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
         }
       }
@@ -40,29 +92,76 @@
 }
 
 :host(.deckgo-highlight-code-carbon) ::slotted([slot="code"]) {
+  /**
+   * @prop --deckgo-highlight-code-carbon-color: The color property of the host container
+   * @default white
+   */
   color: var(--deckgo-highlight-code-carbon-color, white);
 }
 
 :host(.deckgo-highlight-code-ubuntu) {
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-display: The display property of the host container
+   * @default block
+   */
   display: var(--deckgo-highlight-code-ubuntu-display, block);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-overflow: The overflow property of the host container
+   * @default auto
+   */
   overflow: var(--deckgo-highlight-code-ubuntu-overflow, auto);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-border: The border property of the host container
+   */
   border: var(--deckgo-highlight-code-ubuntu-border);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-border-radius: The border-radius property of the host container
+   * @default 6px 6px 0 0
+   */
   border-radius: var(--deckgo-highlight-code-ubuntu-border-radius, 6px 6px 0 0);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-background: The background property of the host container
+   * @default #4c1e3d
+   */
   background: var(--deckgo-highlight-code-ubuntu-background, #4c1e3d);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-color: The color property of the host container
+   * @default #ddd
+   */
   color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-box-shadow: The box-shadow property of the host container
+   * @default 2px 4px 10px rgba(0, 0, 0, 0.5)
+   */
   box-shadow: var(--deckgo-highlight-code-ubuntu-box-shadow, 2px 4px 10px rgba(0, 0, 0, 0.5));
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-margin: The margin property of the host container
+   * @default 16px 0
+   */
   margin: var(--deckgo-highlight-code-ubuntu-margin, 16px 0);
 
   div.deckgo-highlight-code-container {
     margin: var(--deckgo-highlight-code-margin, 0 0 16px);
+    /**
+     * @prop --deckgo-highlight-code-padding: The padding of the displayed code
+     * @default 2px 0 0
+     */
     padding: var(--deckgo-highlight-code-padding, 2px 0 0);
     background: transparent;
 
     code {
+      /**
+       * @prop : Place holder in case the editable is set to true
+       * @default
+       */
       font-family: var(--deckgo-highlight-code-font-family, "Ubuntu mono");
 
       > div.deckgo-highlight-code-line-number {
         &:before {
+          /**
+           * @prop : Place holder in case the editable is set to true
+           * @default
+           */
           background: var(--deckgo-highlight-code-ubuntu-background, #4c1e3d);
         }
       }
@@ -71,39 +170,106 @@
 }
 
 :host(.deckgo-highlight-code-ubuntu) ::slotted([slot="code"]) {
+  /**
+   * @prop : Place holder in case the editable is set to true
+   * @default
+   */
   color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
 }
 
 div.deckgo-highlight-code-container {
+  /**
+   * @prop : Place holder in case the editable is set to true
+   * @default
+   */
   color: var(--deckgo-highlight-code-color, inherit);
+  /**
+   * @prop : Place holder in case the editable is set to true
+   * @default
+   */
   background: var(--deckgo-highlight-code-background);
   padding: var(--deckgo-highlight-code-padding, 0 16px);
+  /**
+   * @prop --deckgo-highlight-code-border-radius: The border radius of the displayed code
+   */
   border-radius: var(--deckgo-highlight-code-border-radius);
-
   margin: var(--deckgo-highlight-code-margin, 16px 0);
 
   transform-origin: bottom left;
   transition: all 0.2s ease-in-out;
+  /**
+   * @prop --deckgo-highlight-code-zoom: If you wish to manually zoom the code
+   * @default 1
+   */
   transform: scale(var(--deckgo-highlight-code-zoom, 1));
 
+  /**
+   * @prop --deckgo-highlight-code-direction: The direction of the displayed code
+   * @default ltr
+   */
   direction: var(--deckgo-highlight-code-direction, ltr);
+  /**
+   * @prop --deckgo-highlight-code-text-align: The text alignment of your code
+   * @default start
+   */
   text-align: var(--deckgo-highlight-code-text-align, start);
 
+  /**
+   * @prop --deckgo-highlight-code-container-width: The attribute width of the code's container
+   */
   width: var(--deckgo-highlight-code-container-width);
+  /**
+   * @prop --deckgo-highlight-code-container-height: The attribute height of the code's container
+   */
   height: var(--deckgo-highlight-code-container-height);
+  /**
+   * @prop --deckgo-highlight-code-container-display: The attribute display of the code's container
+   * @default bloack
+   */
   display: var(--deckgo-highlight-code-container-display, block);
+  /**
+   * @prop --deckgo-highlight-code-container-justify-content: The attribute justify-content of the code's container
+   */
   justify-content: var(--deckgo-highlight-code-container-justify-content);
+  /**
+   * @prop --deckgo-highlight-code-container-flex-direction: The attribute flex-direction of the code's container
+   */
   flex-direction: var(--deckgo-highlight-code-container-flex-direction);
+  /**
+   * @prop --deckgo-highlight-code-container-align-items: The attribute align-items of the code's container
+   */
   align-items: var(--deckgo-highlight-code-container-align-items);
 
   code {
+    /**
+     * @prop --deckgo-highlight-code-scroll: In case you would like to change the scroll property of the shadowed code block
+     * @default auto
+     */
     overflow-y: var(--deckgo-highlight-code-scroll, auto);
+    /**
+     * @prop --deckgo-highlight-code-white-space: The attribute white-space of the displayed
+     * @default pre-wrap
+     */
     white-space: var(--deckgo-highlight-code-white-space, pre-wrap);
 
+    /**
+     * @prop --deckgo-highlight-code-font-size: The size of the font for the code
+     */
     font-size: var(--deckgo-highlight-code-font-size);
+    /**
+     * @prop --deckgo-highlight-code-font-family: The family of the font for the code
+     * @default monospace
+     */
     font-family: var(--deckgo-highlight-code-font-family, monospace);
+    /**
+     * @prop --deckgo-highlight-code-line-height: The line height of the font for the code
+     */
     line-height: var(--deckgo-highlight-code-line-height);
 
+    /**
+     * @prop --deckgo-highlight-code-display: The display property of the code
+     * @default block
+     */
     display: var(--deckgo-highlight-code-display, block);
 
     counter-reset: linenumber;
@@ -134,8 +300,18 @@ div.deckgo-highlight-code-container {
     }
 
     .deckgo-highlight-code-line {
+      /**
+       * @prop --deckgo-highlight-code-line-background: The background of the lines you wish to highlight
+       * @default #3e4564
+       */
       background: var(--deckgo-highlight-code-line-background, #3e4564);
+      /**
+       * @prop --deckgo-highlight-code-line-border-top: The border-top property of the lines you wish to highlight
+       */
       border-top: var(--deckgo-highlight-code-line-border-top);
+      /**
+       * @prop --deckgo-highlight-code-line-border-bottom: The border-bottom property of the lines you wish to highlight
+       */
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
     }
 
@@ -152,10 +328,18 @@ div.deckgo-highlight-code-container {
     .token.prolog,
     .token.doctype,
     .token.cdata {
+      /**
+       * @prop --deckgo-highlight-code-token-comment: Highlighted code tokens comment, prolog, doctype and cdata
+       * @default #6272a4
+       */
       color: var(--deckgo-highlight-code-token-comment, #6272a4);
     }
 
     .token.punctuation {
+      /**
+       * @prop --deckgo-highlight-code-token-punctuation: Highlighted code token punctuation
+       * @default #6272a4
+       */
       color: var(--deckgo-highlight-code-token-punctuation, #6272a4);
     }
 
@@ -166,6 +350,10 @@ div.deckgo-highlight-code-container {
     .token.constant,
     .token.symbol,
     .token.deleted {
+      /**
+       * @prop --deckgo-highlight-code-token-property: Highlighted code tokens property, tag, boolean, number, constant, symbol, deleted
+       * @default #bd93f9
+       */
       color: var(--deckgo-highlight-code-token-property, #bd93f9);
     }
 
@@ -175,6 +363,10 @@ div.deckgo-highlight-code-container {
     .token.char,
     .token.builtin,
     .token.inserted {
+      /**
+       * @prop --deckgo-highlight-code-token-selector: Highlighted code tokens selector, attr-name, string, char, builtin, inserted
+       * @default #50fa7b
+       */
       color: var(--deckgo-highlight-code-token-selector, #50fa7b);
     }
 
@@ -183,23 +375,39 @@ div.deckgo-highlight-code-container {
     .token.url,
     .language-css .token.string,
     .style .token.string {
+      /**
+       * @prop --deckgo-highlight-code-token-operator: Highlighted code tokens operator, entity, url, string
+       * @default #ff79c6
+       */
       color: var(--deckgo-highlight-code-token-operator, #ff79c6);
     }
 
     .token.atrule,
     .token.attr-value,
     .token.keyword {
+      /**
+       * @prop --deckgo-highlight-code-token-atrule: Highlighted code tokens atrule, attr-value, keyword
+       * @default #ff79c6
+       */
       color: var(--deckgo-highlight-code-token-atrule, #ff79c6);
     }
 
     .token.function,
     .token.class-name {
+      /**
+       * @prop --deckgo-highlight-code-token-function: Highlighted code function, class-name
+       * @default #ffb86c
+       */
       color: var(--deckgo-highlight-code-token-function, #ffb86c);
     }
 
     .token.regex,
     .token.important,
     .token.variable {
+      /**
+       * @prop --deckgo-highlight-code-token-regex: Highlighted code tokens regex, important, variable
+       * @default #f1fa8c
+       */
       color: var(--deckgo-highlight-code-token-regex, #f1fa8c);
     }
   }
@@ -208,28 +416,80 @@ div.deckgo-highlight-code-container {
 div.carbon {
   display: flex;
   justify-content: flex-start;
+  /**
+   * @prop --deckgo-highlight-code-carbon-header-padding: The padding property of the card header.
+   * @default 8px 16px
+   */
   padding: var(--deckgo-highlight-code-carbon-header-padding, 8px 16px);
+  /**
+   * @prop --deckgo-highlight-code-carbon-header-margin: 	The margin property of the card header
+   * @default 0
+   */
   margin: var(--deckgo-highlight-code-carbon-header-margin, 0);
 
   > div {
-    display: var(--deckgo-highlight-code-carbon-toolbar-display, "block");
+    /**
+     * @prop --deckgo-highlight-code-carbon-toolbar-display: The display property of the toolbar container
+     * @default bloack
+     */
+    display: var(--deckgo-highlight-code-carbon-toolbar-display, block);
+    /**
+     * @prop --deckgo-highlight-code-carbon-header-button-width: The width of a button of the card header
+     * @default 12px
+     */
     width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
+    /**
+     * @prop --deckgo-highlight-code-carbon-header-button-height: The height of a button of the card header
+     * @default 12px
+     */
     height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
+    /**
+     * @prop --deckgo-highlight-code-carbon-header-button-border-radius: 	The border-radius of a button of the card header
+     * @default 50%
+     */
     border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
+    /**
+     * @prop --deckgo-highlight-code-carbon-header-button-margin: The margin of a button of the card header
+     * @default 	8px 6px 8px 0
+     */
     margin: var(--deckgo-highlight-code-carbon-header-button-margin, 8px 6px 8px 0);
 
     &.red {
+      /**
+       * @prop --deckgo-highlight-code-carbon-header-button-red-background: The background of the first button of the card header
+       * @default #ff5f56
+       */
       background: var(--deckgo-highlight-code-carbon-header-button-red-background, #ff5f56);
+      /**
+       * @prop --deckgo-highlight-code-carbon-header-button-red-border: The border of the first button of the card header
+       * @default 0.5px solid #e0443e
+       */
       border: var(--deckgo-highlight-code-carbon-header-button-red-border, 0.5px solid #e0443e);
     }
 
     &.yellow {
+      /**
+       * @prop --deckgo-highlight-code-carbon-header-button-yellow-background: The background of the second button of the card header
+       * @default #ffbd2e
+       */
       background: var(--deckgo-highlight-code-carbon-header-button-yellow-background, #ffbd2e);
+      /**
+       * @prop --deckgo-highlight-code-carbon-header-button-yellow-border: The border of the second button of the card header
+       * @default 0.5px solid #dea123
+       */
       border: var(--deckgo-highlight-code-carbon-header-button-yellow-border, 0.5px solid #dea123);
     }
 
     &.green {
+      /**
+       * @prop --deckgo-highlight-code-carbon-header-button-green-background: The background of the third button of the card header
+       * @default #27c93f
+       */
       background: var(--deckgo-highlight-code-carbon-header-button-green-background, #27c93f);
+      /**
+       * @prop --deckgo-highlight-code-carbon-header-button-green-border: The color of the third button of the card header
+       * @default 0.5px solid #1aab29
+       */
       border: var(--deckgo-highlight-code-carbon-header-button-green-border, 0.5px solid #1aab29);
     }
   }
@@ -239,11 +499,27 @@ div.ubuntu {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-header-padding: The padding property of the card header.
+   * @default 0 8px
+   */
   padding: var(--deckgo-highlight-code-ubuntu-header-padding, 0 8px);
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-header-height: The height property of the card header
+   * @default 25px
+   */
   height: var(--deckgo-highlight-code-ubuntu-header-height, 25px);
 
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-header-background: The background property of the card header
+   * @default linear-gradient(#504b45 0%, #3c3b37 100%)
+   */
   background: var(--deckgo-highlight-code-ubuntu-header-background, linear-gradient(#504b45 0%, #3c3b37 100%));
 
+  /**
+   * @prop --deckgo-highlight-code-ubuntu-header-font-family: The font-family property of the card header
+   * @default "Ubuntu"
+   */
   font-family: var(--deckgo-highlight-code-ubuntu-header-font-family, "Ubuntu");
 
   > div {
@@ -251,30 +527,83 @@ div.ubuntu {
     align-items: center;
     justify-content: center;
 
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-width: The width of a button of the card header
+     * @default 12px
+     */
     width: var(--deckgo-highlight-code-ubuntu-header-button-width, 12px);
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-height: The height of a button of the card header
+     * @default 12px
+     */
     height: var(--deckgo-highlight-code-ubuntu-header-button-height, 12px);
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-border-radius: The border-radius of a button of the card header
+     * @default 50%
+     */
     border-radius: var(--deckgo-highlight-code-ubuntu-header-button-border-radius, 50%);
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-margin: The margin of a button of the card header
+     * @default 0 4px 0 0
+     */
     margin: var(--deckgo-highlight-code-ubuntu-header-button-margin, 0 4px 0 0);
 
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-font-size: The font-size of a button of the card header
+     * @default 7px
+     */
     font-size: var(--deckgo-highlight-code-ubuntu-header-button-font-size, 7px);
 
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-color: The color of a button of the card header
+     * @default black
+     */
     color: var(--deckgo-highlight-code-ubuntu-header-button-color, black);
 
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-text-shadow: The text-shadow of a button of the card header
+     * @default 0px 1px 0px rgba(255, 255, 255, 0.2)
+     */
     text-shadow: var(--deckgo-highlight-code-ubuntu-header-button-text-shadow, 0px 1px 0px rgba(255, 255, 255, 0.2));
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-button-box-shadow: The box-shadow of a button of the card header
+     * @default  0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642
+     */
     box-shadow: var(--deckgo-highlight-code-ubuntu-header-button-box-shadow, 0px 0px 1px 0px #41403a, 0px 1px 1px 0px #474642);
 
     &.close {
+      /**
+       * @prop --deckgo-highlight-code-ubuntu-header-button-close-background: The close button background of the card header
+       * @default linear-gradient(#f37458 0%, #de4c12 100%)
+       */
       background: var(--deckgo-highlight-code-ubuntu-header-button-close-background, linear-gradient(#f37458 0%, #de4c12 100%));
+      /**
+       * @prop --deckgo-highlight-code-ubuntu-header-button-close-border: The close button border of the card header
+       */
       border: var(--deckgo-highlight-code-ubuntu-header-button-close-border);
     }
 
     &.minimize {
+      /**
+       * @prop --deckgo-highlight-code-ubuntu-header-button-minimize-background: The minimize button background of the card header
+       * @default linear-gradient(#7d7871 0%, #595953 100%)
+       */
       background: var(--deckgo-highlight-code-ubuntu-header-button-minimize-background, linear-gradient(#7d7871 0%, #595953 100%));
+      /**
+       * @prop --deckgo-highlight-code-ubuntu-header-button-minimize-border: The minimize button border of the card header
+       */
       border: var(--deckgo-highlight-code-ubuntu-header-button-minimize-border);
     }
 
     &.maximize {
+      /**
+       * @prop --deckgo-highlight-code-ubuntu-header-button-maximize-background: The maximize button background of the card header
+       * @default linear-gradient(#7d7871 0%, #595953 100%)
+       */
       background: var(--deckgo-highlight-code-ubuntu-header-button-maximize-background, linear-gradient(#7d7871 0%, #595953 100%));
+      /**
+       * @prop --deckgo-highlight-code-ubuntu-header-button-maximize-border: The maximize button border of the card header
+       */
       border: var(--deckgo-highlight-code-ubuntu-header-button-maximize-border);
     }
 
@@ -282,15 +611,35 @@ div.ubuntu {
     &.minimize,
     &.maximize {
       span {
+        /**
+         * @prop --deckgo-highlight-code-ubuntu-header-button-span-display: The Ubuntu buttons span display
+         * @default inherit
+         */
         display: var(--deckgo-highlight-code-ubuntu-header-button-span-display, inherit);
       }
     }
   }
 
   > p {
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-user-color: The user's color of the card header.
+     * @default #d5d0ce
+     */
     color: var(--deckgo-highlight-code-ubuntu-header-user-color, #d5d0ce);
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-user-font-size: The user's font-size of the card header
+     * @default 12px
+     */
     font-size: var(--deckgo-highlight-code-ubuntu-header-user-font-size, 12px);
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-user-line-height: The user's line-height of the card header
+     * @default 14px
+     */
     line-height: var(--deckgo-highlight-code-ubuntu-header-user-line-height, 14px);
+    /**
+     * @prop --deckgo-highlight-code-ubuntu-header-user-margin: The user's margin of the card header
+     * @default 0 0 1px 4px
+     */
     margin: var(--deckgo-highlight-code-ubuntu-header-user-margin, 0 0 1px 4px);
   }
 }
