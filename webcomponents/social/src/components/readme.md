@@ -3,7 +3,7 @@
 
 ## Installation
 
-This component could be added to your web application using the following methods.
+This component can be added to your web application with following methods.
 
 > If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
 

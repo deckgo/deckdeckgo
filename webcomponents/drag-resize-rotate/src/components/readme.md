@@ -2,7 +2,7 @@
 
 ## Installation
 
-This component could be added to your web application using the following methods.
+This component can be added to your web application with following methods.
 
 ### Using from a CDN
 

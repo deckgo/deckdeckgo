@@ -2,9 +2,9 @@
 
 ## Installation
 
-This component could be added to your web application using the following methods.
+This component can be added to your web application with following methods.
 
-> If you are using our Starter Kit this template is included. You don't need to install it so therefore you should skip the "Installation" chapter.
+> If you are using our developer kit to create a presention, this component is already included
 
 ### Using DeckDeckGo charts from a CDN
 
