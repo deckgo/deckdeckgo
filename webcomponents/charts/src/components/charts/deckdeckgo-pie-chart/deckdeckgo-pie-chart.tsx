@@ -26,27 +26,67 @@ interface DeckdeckgoPieChartData {
 export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
 
+  /**
+   * The width of the chart
+   */
   @Prop({mutable: true}) width: number;
+
+  /**
+   * The height of the chart
+   */
   @Prop({mutable: true}) height: number;
 
+  /**
+   * The margin top of the chart in pixel
+   */
   @Prop() marginTop: number = 8;
+  /**
+   * The margin bottom of the chart in pixel
+   */
   @Prop() marginBottom: number = 64;
+  /**
+   * The margin left of the chart in pixel
+   */
   @Prop() marginLeft: number = 32;
+  /**
+   * The margin right of the chart in pixel
+   */
   @Prop() marginRight: number = 32;
 
-  // Specify a number for a donut chart
+  /**
+   * The inner radius of the pie
+   */
   @Prop() innerRadius: number = 0;
 
+  /**
+   * The path to the source file of the data
+   */
   @Prop() src: string;
+  /**
+   * The line separator use in your csv file
+   */
   @Prop() separator: string = ';';
 
+  /**
+   * Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.
+   */
   @Prop() customLoader: boolean = false;
 
+  /**
+   * Display multiple graphs and animate the transition between these
+   */
   @Prop() animation: boolean = false;
+  /**
+   * Duration of the transition between graphs
+   */
   @Prop() animationDuration: number = 1000;
 
+  /**
+   * The event to be processed to load the data if you are using a custom loader.
+   * @private
+   */
   @Event()
-  private chartCustomLoad: EventEmitter<string>;
+  chartCustomLoad: EventEmitter<string>;
 
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private myPath: Arc<any, DefaultArcObject>;
@@ -64,6 +104,11 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     await this.draw();
   }
 
+  /**
+   * In case you would like to redraw your chart, for example on resize of the window.
+   * @param width
+   * @param height
+   */
   @Method()
   draw(width?: number, height?: number): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -105,11 +150,17 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     });
   }
 
+  /**
+   * If you are using animation, this method is used to display the next data respectively the next chart.
+   */
   @Method()
   async next() {
     await this.prevNext(true);
   }
 
+  /**
+   * If you are using animation, this method is used to display the previous data respectively the previous chart.
+   */
   @Method()
   async prev() {
     await this.prevNext(false);
@@ -133,6 +184,9 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     }
   }
 
+  /**
+   * Is animation at the begin of the serie.
+   */
   @Method()
   isBeginning(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
@@ -145,6 +199,9 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
     });
   }
 
+  /**
+   * Is animation at the end of the serie.
+   */
   @Method()
   isEnd(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {

@@ -191,23 +191,76 @@ export namespace Components {
         "yAxisDomain": string;
     }
     interface DeckgoPieChart {
+        /**
+          * Display multiple graphs and animate the transition between these
+         */
         "animation": boolean;
+        /**
+          * Duration of the transition between graphs
+         */
         "animationDuration": number;
+        /**
+          * Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.
+         */
         "customLoader": boolean;
+        /**
+          * In case you would like to redraw your chart, for example on resize of the window.
+          * @param width
+          * @param height
+         */
         "draw": (width?: number, height?: number) => Promise<void>;
+        /**
+          * The height of the chart
+         */
         "height": number;
+        /**
+          * The inner radius of the pie
+         */
         "innerRadius": number;
+        /**
+          * Is animation at the begin of the serie.
+         */
         "isBeginning": () => Promise<boolean>;
+        /**
+          * Is animation at the end of the serie.
+         */
         "isEnd": () => Promise<boolean>;
+        /**
+          * The margin bottom of the chart in pixel
+         */
         "marginBottom": number;
+        /**
+          * The margin left of the chart in pixel
+         */
         "marginLeft": number;
+        /**
+          * The margin right of the chart in pixel
+         */
         "marginRight": number;
+        /**
+          * The margin top of the chart in pixel
+         */
         "marginTop": number;
+        /**
+          * If you are using animation, this method is used to display the next data respectively the next chart.
+         */
         "next": () => Promise<void>;
         "postCustomLoad": (content: string | undefined) => Promise<void>;
+        /**
+          * If you are using animation, this method is used to display the previous data respectively the previous chart.
+         */
         "prev": () => Promise<void>;
+        /**
+          * The line separator use in your csv file
+         */
         "separator": string;
+        /**
+          * The path to the source file of the data
+         */
         "src": string;
+        /**
+          * The width of the chart
+         */
         "width": number;
     }
 }
@@ -376,18 +429,58 @@ declare namespace LocalJSX {
         "yAxisDomain"?: string;
     }
     interface DeckgoPieChart {
+        /**
+          * Display multiple graphs and animate the transition between these
+         */
         "animation"?: boolean;
+        /**
+          * Duration of the transition between graphs
+         */
         "animationDuration"?: number;
+        /**
+          * Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.
+         */
         "customLoader"?: boolean;
+        /**
+          * The height of the chart
+         */
         "height"?: number;
+        /**
+          * The inner radius of the pie
+         */
         "innerRadius"?: number;
+        /**
+          * The margin bottom of the chart in pixel
+         */
         "marginBottom"?: number;
+        /**
+          * The margin left of the chart in pixel
+         */
         "marginLeft"?: number;
+        /**
+          * The margin right of the chart in pixel
+         */
         "marginRight"?: number;
+        /**
+          * The margin top of the chart in pixel
+         */
         "marginTop"?: number;
+        /**
+          * The event to be processed to load the data if you are using a custom loader.
+          * @private
+         */
         "onChartCustomLoad"?: (event: CustomEvent<string>) => void;
+        /**
+          * The line separator use in your csv file
+         */
         "separator"?: string;
+        /**
+          * The path to the source file of the data
+         */
         "src"?: string;
+        /**
+          * The width of the chart
+         */
         "width"?: number;
     }
     interface IntrinsicElements {
