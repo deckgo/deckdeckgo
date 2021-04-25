@@ -10,7 +10,7 @@ export const parameters = {
         'Edit',
         ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
         'Components',
-        ['Demo', 'Drag Resize Rotate', 'Highlight Code', 'Laser Pointer', 'Lazy Image', 'Math', 'Pie Chart', 'Bar Chart', 'Line Chart'],
+        ['Demo', 'Drag Resize Rotate', 'Highlight Code', 'Laser Pointer', 'Lazy Image', 'Math', 'QR Code', 'Pie Chart', 'Bar Chart', 'Line Chart'],
         'Miscellaneous',
         ['Contact', 'Sponsor', 'Logo'],
       ]
