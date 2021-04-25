@@ -17,26 +17,41 @@ interface ResizeMatrix {
 export class DeckdeckgoDragResizeRotate {
   @Element() el: HTMLElement;
 
+  /**
+   * The component could be use with percentage, viewport (vw/vh) or pixels (px) units. All relative to the container
+   */
   @Prop()
   unit: 'percentage' | 'viewport' | 'px' = 'percentage';
 
   // Size
 
+  /**
+   * Allow or not the resize actions
+   */
   @Prop({mutable: true})
   resize: boolean = true;
 
   // Position
 
+  /**
+   * Allow the component to be dragged in which direction
+   */
   @Prop()
   drag: 'x-axis' | 'y-axis' | 'all' | 'none' = 'all';
 
   // Rotate
 
+  /**
+   * Allow or not the rotation of the element
+   */
   @Prop()
   rotation: boolean = true;
 
   // Text content editable
 
+  /**
+   * To be used if your slotted element is to be defined as contentEditable. Useful for text edition. Note that if turns to true, the property resize is going to be set to false automatically
+   */
   @Prop({reflect: true})
   text: boolean = false;
 
@@ -75,11 +90,17 @@ export class DeckdeckgoDragResizeRotate {
   @State()
   private moving: boolean = false;
 
+  /**
+   * Emitted when the component is selected or unselected. It propagates the host component itself
+   */
   @Event()
-  private drrSelect: EventEmitter<HTMLElement | undefined>;
+  drrSelect: EventEmitter<HTMLElement | undefined>;
 
+  /**
+   * Emitted when the component is modified respectively when the user stop interacting. It propagates the host component itself
+   */
   @Event()
-  private drrDidChange: EventEmitter<HTMLElement | undefined>;
+  drrDidChange: EventEmitter<HTMLElement | undefined>;
 
   private startX: number = null;
   private startY: number = null;
