@@ -10,16 +10,40 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 export class DeckdeckgoYoutube implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
-  @Prop() src: string;
+  /**
+   * The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube
+   */
+  @Prop()
+  src: string;
 
-  @Prop() width: number;
-  @Prop() height: number;
+  /**
+   * The width of the video player
+   */
+  @Prop()
+  width: number;
+  /**
+   * The height of the video player
+   */
+  @Prop()
+  height: number;
 
-  @Prop() frameTitle: string;
+  /**
+   * A title for the frame, could be use for accessibility reason
+   */
+  @Prop()
+  frameTitle: string;
 
-  @Prop() allowFullscreen: boolean = true;
+  /**
+   * Allow option to toggle video in full screen
+   */
+  @Prop()
+  allowFullscreen: boolean = true;
 
-  @Prop() instant: boolean = false;
+  /**
+   * In case you would like to load the video as soon as the component is loaded
+   */
+  @Prop()
+  instant: boolean = false;
 
   @State()
   private loading: boolean = false;
@@ -37,6 +61,11 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
     }
   }
 
+  /**
+   * Update the iFrame, the video, size
+   * @param width
+   * @param height
+   */
   @Method()
   async updateIFrame(width: number, height: number) {
     const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
@@ -47,6 +76,9 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
     }
   }
 
+  /**
+   * Lazy load the video
+   */
   @Method()
   lazyLoadContent(): Promise<void> {
     return this.createIFrame();
@@ -57,11 +89,17 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
     await this.createIFrame();
   }
 
+  /**
+   * Play the video
+   */
   @Method()
   play(): Promise<void> {
     return this.playPauseVideo(true);
   }
 
+  /**
+   * Pause the video
+   */
   @Method()
   pause(): Promise<void> {
     return this.playPauseVideo(false);
