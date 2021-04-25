@@ -14,45 +14,87 @@ export class DeckdeckgoLazyImg {
 
   @Event() lazyImgDidLoad: EventEmitter;
 
+  /**
+   * The image source (= src) to lazy load
+   */
   @Prop({reflect: true})
   imgSrc: string;
 
+  /**
+   * The attribute "srcset" (= multiple URI) to lazy load in case you would like to provide multiple images for responsiveness
+   */
   @Prop({reflect: true})
   imgSrcSet: string;
 
+  /**
+   * The image alternate text
+   */
   @Prop({reflect: true})
   imgAlt: string;
 
+  /**
+   * 	The set of media conditions to indicates what image size would be best to choose
+   */
   @Prop({reflect: true})
   imgSizes: string;
 
+  /**
+   * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes.
+   */
   @Prop()
   observerRootMargin: string = '300px';
 
+  /**
+   * Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target.
+   */
   @Prop()
   observerThreshold: number | number[] = 0.25;
 
+  /**
+   * An optional image which could be displayed in case the main image would not be resolved
+   */
   @Prop()
   imgErrorSrc: string;
 
+  /**
+   * The SVG image source (= URI) to lazy load and to parse (no <img/> tag will be use to render the svg) aria-label	string
+   */
   @Prop({reflect: true})
   svgSrc: string;
 
+  /**
+   * If you are using the above SVG option, provide the accessibility information using this attribute
+   */
   @Prop({reflect: true})
   ariaLabel: string;
 
+  /**
+   * An intrinsicsize for the native lazy-loading
+   */
   @Prop()
   intrinsicsize: string;
 
+  /**
+   * The image width
+   */
   @Prop()
   imgWidth: number;
 
+  /**
+   * The image height
+   */
   @Prop()
   imgHeight: number;
 
+  /**
+   * In case you would like to take care by yourself to apply the load of the image. If turn to true then the component will emit an event customLoad when the image intersect the viewport instead of displaying it (doesn't apply for svg but only for img-src and img-src-set)
+   */
   @Prop()
   customLoader: boolean = false;
 
+  /**
+   * If set to lazy, the web native lazy capability of the browser, if available, will be used to lazy load the image
+   */
   @Prop()
   loading: 'lazy' | 'eager' = 'eager';
 
@@ -64,8 +106,11 @@ export class DeckdeckgoLazyImg {
   @State()
   private imgLoaded: boolean = false;
 
+  /**
+   * Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) as to be loaded.
+   */
   @Event()
-  private customLoad: EventEmitter<DeckDeckGoCustomLoad>;
+  customLoad: EventEmitter<DeckDeckGoCustomLoad>;
 
   async componentDidLoad() {
     await this.init();
@@ -106,6 +151,9 @@ export class DeckdeckgoLazyImg {
     });
   }
 
+  /**
+   * This component also export an async method lazyLoad() in case you would like to trigger "manually" the loading of the image
+   */
   @Method()
   lazyLoad(): Promise<void> {
     return new Promise<void>(async (resolve) => {
