@@ -8,7 +8,7 @@ This component could be added to your web application using the following method
 
 ### Using DeckDeckGo charts from a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] charts from a CDN. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo](https://deckdeckgo.com) charts from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/charts@latest/dist/deckdeckgo-charts/deckdeckgo-charts.esm.js"></script>
@@ -16,7 +16,7 @@ It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] char
 
 ### Install DeckDeckGo charts from NPM
 
-Install [DeckDeckGo] charts in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/charts) using the following command:
+Install [DeckDeckGo](https://deckdeckgo.com) charts in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/charts) using the following command:
 
 ```bash
 npm install @deckdeckgo/charts
@@ -43,7 +43,7 @@ deckDeckGoElement();
 
 ## Usage
 
-The main idea behind the [DeckDeckGo] charts is to be able to drop a **csv** file, provide it to the component and let it do the job respectively draw the chart.
+The main idea behind the [DeckDeckGo](https://deckdeckgo.com) charts is to be able to drop a **csv** file, provide it to the component and let it do the job respectively draw the chart.
 
 ### CSV
 

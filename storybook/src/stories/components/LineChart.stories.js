@@ -1,10 +1,10 @@
-import {Docs} from './LineChart.mdx';
+import {DocLineChart} from './Readme.mdx';
 
 export default {
   title: 'Components/Line Chart',
   parameters: {
     docs: {
-      page: Docs
+      page: DocLineChart
     }
   },
   argTypes: {
@@ -27,7 +27,7 @@ export default {
     smooth: {control: 'boolean'},
     area: {control: 'boolean'},
     ticks: {control: 'number'},
-    grid: {control: 'boolean'},
+    grid: {control: 'boolean'}
   }
 };
 

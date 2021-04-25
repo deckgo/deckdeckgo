@@ -1,10 +1,10 @@
-import {Docs} from './BarChart.mdx';
+import {DocBarChart} from './Readme.mdx';
 
 export default {
   title: 'Components/Bar Chart',
   parameters: {
     docs: {
-      page: Docs
+      page: DocBarChart
     }
   },
   argTypes: {

@@ -1,10 +1,10 @@
-import {Docs} from './LaserPointer.mdx';
+import {DocLaserPointer} from './Readme.mdx';
 
 export default {
   title: 'Components/Laser Pointer',
   parameters: {
     docs: {
-      page: Docs
+      page: DocLaserPointer
     }
   }
 };
