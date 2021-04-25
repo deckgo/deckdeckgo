@@ -7,11 +7,29 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoWordCloud {
+        /**
+          * To set the component has being editable (contenteditable will be applied on the slot on click)
+         */
         "editable": boolean;
+        /**
+          * Call the load and resize of the word cloud
+         */
         "lazyLoadContent": () => Promise<void>;
+        /**
+          * Margin bottom in pixels
+         */
         "marginBottom": number;
+        /**
+          * Margin left in pixels
+         */
         "marginLeft": number;
+        /**
+          * Margin right in pixels
+         */
         "marginRight": number;
+        /**
+          * Margin top in pixels
+         */
         "marginTop": number;
     }
 }
@@ -28,11 +46,30 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoWordCloud {
+        /**
+          * To set the component has being editable (contenteditable will be applied on the slot on click)
+         */
         "editable"?: boolean;
+        /**
+          * Margin bottom in pixels
+         */
         "marginBottom"?: number;
+        /**
+          * Margin left in pixels
+         */
         "marginLeft"?: number;
+        /**
+          * Margin right in pixels
+         */
         "marginRight"?: number;
+        /**
+          * Margin top in pixels
+         */
         "marginTop"?: number;
+        /**
+          * Emit the host element when modified
+          * @private
+         */
         "onWordCloudDidChange"?: (event: CustomEvent<HTMLElement>) => void;
     }
     interface IntrinsicElements {

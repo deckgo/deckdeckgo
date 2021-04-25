@@ -9,6 +9,9 @@ import cloud from 'd3-cloud';
 
 import {draw} from '../utils/word-cloud-draw';
 
+/**
+ * @slot words - The list of words to render in a cloud
+ */
 @Component({
   tag: 'deckgo-word-cloud',
   styleUrl: 'word-cloud.scss',
@@ -17,16 +20,36 @@ import {draw} from '../utils/word-cloud-draw';
 export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
-  @Prop() editable: boolean = false;
+  /**
+   * To set the component has being editable (contenteditable will be applied on the slot on click)
+   */
+  @Prop()
+  editable: boolean = false;
 
+  /**
+   * Margin top in pixels
+   */
   @Prop() marginTop: number = 32;
+  /**
+   * Margin bottom in pixels
+   */
   @Prop() marginBottom: number = 32;
+  /**
+   * Margin left in pixels
+   */
   @Prop() marginLeft: number = 32;
+  /**
+   * Margin right in pixels
+   */
   @Prop() marginRight: number = 32;
 
   @State()
   private editing: boolean = false;
 
+  /**
+   * Emit the host element when modified
+   * @private
+   */
   @Event()
   private wordCloudDidChange: EventEmitter<HTMLElement>;
 
@@ -64,6 +87,9 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
     await this.resizeReload();
   };
 
+  /**
+   * Call the load and resize of the word cloud
+   */
   @Method()
   lazyLoadContent(): Promise<void> {
     return this.resizeReload();
