@@ -8,7 +8,7 @@
 
 # DeckDeckGo - Remote
 
-This project is a Web Component which act as the remote control receiver of the [Progressive Web App](https://deckdeckgo.app) of [DeckDeckGo] .
+This project is a Web Component which act as the remote control receiver of the [Progressive Web App](https://deckdeckgo.app) of [DeckDeckGo](https://deckdeckgo.com) .
 
 ## Table of contents
 

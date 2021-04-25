@@ -77,21 +77,71 @@ export namespace Components {
         "mobile": boolean;
     }
     interface DeckgoInlineEditor {
+        /**
+          * Actions to manipulat
+         */
         "align": boolean;
+        /**
+          * Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document
+         */
         "attachTo": HTMLElement;
+        /**
+          * To hide the option to select a background-color
+         */
         "backgroundColor": boolean;
+        /**
+          * A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color
+         */
         "containers": string;
+        /**
+          * You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions
+         */
         "customActions": string;
+        /**
+          * Actions to modify the selection font-size enabled?
+         */
         "fontSize": boolean;
+        /**
+          * The type of element to attach the image toolbar
+         */
         "imgAnchor": string;
+        /**
+          * Per default, the component will not consider images as editable. Turn this option to true to activate the edition of images
+         */
         "imgEditable": boolean;
+        /**
+          * In case you would like to use a specific property to specify the float on your image
+         */
         "imgPropertyCssFloat": string;
+        /**
+          * In case you would like to use a specific property to specify the width on your image
+         */
         "imgPropertyWidth": string;
+        /**
+          * Actions to manipulate the selection as list enabled?
+         */
         "list": boolean;
+        /**
+          * The mobile mode is automatically recognize, but just it case you would like to "force" it
+         */
         "mobile": boolean;
+        /**
+          * In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors
+         */
         "palette": DeckdeckgoPalette[];
+        /**
+          * Reset the inline editor (= hide it) and optionally clear its selection.
+          * @param clearSelection
+          * @param blurActiveElement
+         */
         "reset": (clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>;
+        /**
+          * Use a sticky footer toolbar on desktop
+         */
         "stickyDesktop": boolean;
+        /**
+          * Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top
+         */
         "stickyMobile": boolean;
     }
 }
@@ -258,25 +308,82 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
     }
     interface DeckgoInlineEditor {
+        /**
+          * Actions to manipulat
+         */
         "align"?: boolean;
+        /**
+          * Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document
+         */
         "attachTo"?: HTMLElement;
+        /**
+          * To hide the option to select a background-color
+         */
         "backgroundColor"?: boolean;
+        /**
+          * A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color
+         */
         "containers"?: string;
+        /**
+          * You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions
+         */
         "customActions"?: string;
+        /**
+          * Actions to modify the selection font-size enabled?
+         */
         "fontSize"?: boolean;
+        /**
+          * The type of element to attach the image toolbar
+         */
         "imgAnchor"?: string;
+        /**
+          * Per default, the component will not consider images as editable. Turn this option to true to activate the edition of images
+         */
         "imgEditable"?: boolean;
+        /**
+          * In case you would like to use a specific property to specify the float on your image
+         */
         "imgPropertyCssFloat"?: string;
+        /**
+          * In case you would like to use a specific property to specify the width on your image
+         */
         "imgPropertyWidth"?: string;
+        /**
+          * Actions to manipulate the selection as list enabled?
+         */
         "list"?: boolean;
+        /**
+          * The mobile mode is automatically recognize, but just it case you would like to "force" it
+         */
         "mobile"?: boolean;
+        /**
+          * Triggered when a custom action is selected. Its detail provide an action name, the Selection and an anchorLink
+         */
         "onCustomAction"?: (event: CustomEvent<InlineAction>) => void;
+        /**
+          * Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element
+         */
         "onImgDidChange"?: (event: CustomEvent<HTMLElement>) => void;
+        /**
+          * Triggered when a link is created by the user. The event detail is the container
+         */
         "onLinkCreated"?: (event: CustomEvent<HTMLElement>) => void;
         "onStickyToolbarActivated"?: (event: CustomEvent<boolean>) => void;
+        /**
+          * Triggered when the style is modified (bold, italic, color, alignment, etc.). The event detail is the container
+         */
         "onStyleDidChange"?: (event: CustomEvent<HTMLElement>) => void;
+        /**
+          * In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors
+         */
         "palette"?: DeckdeckgoPalette[];
+        /**
+          * Use a sticky footer toolbar on desktop
+         */
         "stickyDesktop"?: boolean;
+        /**
+          * Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top
+         */
         "stickyMobile"?: boolean;
     }
     interface IntrinsicElements {

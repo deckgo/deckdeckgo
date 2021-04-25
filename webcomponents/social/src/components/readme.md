@@ -9,7 +9,7 @@ This component could be added to your web application using the following method
 
 ### Using from a CDN
 
-It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] social component from a CDN. To do so, add the following include script in the main HTML file of your project:
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo](https://deckdeckgo.com) social component from a CDN. To do so, add the following include script in the main HTML file of your project:
 
 ```
 <script type="module" src="https://unpkg.com/@deckdeckgo/social@latest/dist/deckdeckgo-social/deckdeckgo-social.esm.js"></script>
