@@ -1,5 +1,7 @@
 # deckgo-drr
 
+The "Drag, Resize and Rotate" is a Web Component to drag, resize and rotate any element.
+
 ## Installation
 
 This component can be added to your web application with following methods.

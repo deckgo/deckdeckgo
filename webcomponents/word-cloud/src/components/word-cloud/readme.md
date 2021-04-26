@@ -1,5 +1,9 @@
 # deckgo-word-cloud
 
+Write and render word clouds.
+
+This component is using [D3](https://d3js.org/) and [d3-cloud](https://github.com/jasondavies/d3-cloud) to render these.
+
 ## Installation
 
 This component can be added to your web application with following methods.

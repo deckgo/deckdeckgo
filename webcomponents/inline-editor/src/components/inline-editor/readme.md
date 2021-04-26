@@ -1,5 +1,7 @@
 # deckgo-inline-editor
 
+The "WYSIWYG inline editor" component is an HTML floating or sticky rich text editor.
+
 ## Installation
 
 This component can be added to your web application with following methods.

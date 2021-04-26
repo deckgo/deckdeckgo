@@ -1,5 +1,9 @@
 # deckgo-bar-chart
 
+Draw bar charts easily.
+
+To create and draw the charts, this project is using [D3js](https://d3js.org).
+
 ## Installation
 
 This component can be added to your web application with following methods.

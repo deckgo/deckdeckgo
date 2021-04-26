@@ -1,5 +1,6 @@
 # deckgo-social
 
+The "Social" component helps you generate a social link to your Twitter, Dev, Medium, LinkedIn, GitHub accounts or a custom uri.
 
 ## Installation
 

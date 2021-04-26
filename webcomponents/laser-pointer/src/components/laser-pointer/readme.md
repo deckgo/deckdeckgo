@@ -1,5 +1,7 @@
 # deckgo-flashlight
 
+Display the mouse cursor as a laser pointer.
+
 ## Installation
 
 This component can be added to your web application with following methods.

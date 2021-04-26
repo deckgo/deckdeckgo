@@ -1,5 +1,9 @@
 # deckgo-math
 
+Write and render math expressions.
+
+This component is using [Katex](https://katex.org/) to renders these.
+
 ## Installation
 
 This component can be added to your web application with following methods.

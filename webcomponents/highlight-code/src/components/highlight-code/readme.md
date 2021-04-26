@@ -1,5 +1,11 @@
 # deckgo-highlight-code
 
+The "Highlight Code" component is an extra component which let you highlight code easily.
+
+To highlight your code, this component is using [Prism.js](https://prismjs.com) from [Lea Verou](http://lea.verou.me) and [James DiGioia](https://twitter.com/jamesdigioia).
+
+Moreover, per default, your code will be displayed in form of a stylish "windowed" card as the amazing [carbon](https://carbon.now.sh), the tool to create and share beautiful images of your source code, would do.
+
 ## Installation
 
 This component can be added to your web application with following methods.

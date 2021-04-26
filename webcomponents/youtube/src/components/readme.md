@@ -1,5 +1,7 @@
 # deckgo-social
 
+The "YouTube" component allows you to easily add a [YouTube](https://youtube.com) video in almost any slide of your presentation.
+
 ## Installation
 
 This component can be added to your web application with following methods.

@@ -1,5 +1,11 @@
 # deckgo-lazy-img
 
+The "Lazy Image" component is a dead simple component to lazy load images.
+
+It leverages the native lazy-loading and the IntersectionObserver API (default behavior) to lazy load images. It also allows you to trigger "manually" their loading.
+
+An `<img/>` tag is per default use to display the image but optionally it could parse `SVG` too.
+
 ## Installation
 
 This component can be added to your web application with following methods.

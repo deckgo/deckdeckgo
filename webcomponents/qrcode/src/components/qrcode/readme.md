@@ -1,5 +1,9 @@
 # deckgo-qrcode
 
+The "QR Code" component is an extra component which let you add QR code in your slides, useful for example to display links and url and if you wish your audience to easily access them.
+
+To generate the QR code, the project [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) from [Kazuhiko Arase](https://github.com/kazuhikoarase) is used.
+
 ## Installation
 
 This component can be added to your web application with following methods.
