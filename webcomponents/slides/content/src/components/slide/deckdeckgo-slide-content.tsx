@@ -10,6 +10,15 @@ import {
   showAllRevealElements,
 } from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - A title
+ * @slot content - A content
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-content',
   styleUrl: 'deckdeckgo-slide-content.scss',
@@ -18,7 +27,11 @@ import {
 export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
-  @Event() slideDidLoad: EventEmitter<void>;
+  /**
+   * Triggered when the slide is loaded
+   */
+  @Event()
+  slideDidLoad: EventEmitter<void>;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);

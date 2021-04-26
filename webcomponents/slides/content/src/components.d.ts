@@ -27,6 +27,9 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideContent {
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
     }
     interface IntrinsicElements {

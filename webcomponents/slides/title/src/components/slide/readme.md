@@ -1,5 +1,7 @@
 # deckgo-slide-title
 
+The "Title" slide is a simple slide which display its title and content centered in the middle of the page.
+
 ## Installation
 
 This template could be added to your presentation using the following methods.
