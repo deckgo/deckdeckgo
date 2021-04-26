@@ -9,6 +9,8 @@ export const parameters = {
         ['Introduction', 'Getting Started', 'Installation', 'Showcase', 'Publish', 'Remote Control'],
         'Edit',
         ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
+        'Templates',
+        ['Templates'],
         'Components',
         ['Demo', 'Drag Resize Rotate', 'Highlight Code', 'Inline Editor', 'Laser Pointer', 'Lazy Image', 'Math', 'QR Code', 'Pie Chart', 'Bar Chart', 'Line Chart', 'Social', 'Word Cloud', 'Youtube'],
         'Miscellaneous',

@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Templates/Templates" />
+
+# Templates
+
+[DeckDeckGo](https://deckdeckgo.com) is a deck of slides. Each of these is based on a template which has its own layout and behaviour.
+
+Their content can be edited and structured using `slots` and other attributes.
+
+The deck itself is declared using the tag `<deckgo-deck/>` and each slides can be added as its children.
+
+```
+<deckgo-deck>
+  <deckgo-slide-title>
+    <h1 slot="title">The first slide</h1>
+    <p slot="content">
+      Hello World 🚀
+    </p>
+  </deckgo-slide-title>
+
+  <deckgo-slide-content>
+      <h1 slot="title">The second slide</h1>
+  </deckgo-slide-content>
+</deckgo-deck>
+```
+
+In the previous example, the presentation contains two slides. The first slide use the template `deckgo-slide-title` and the second slide use the template `deckgo-slide-content`.
+
+# Installation
+
+The core component (`<deckgo-deck/>`) does not contain any slides. These have to be explicitly installed and imported. Doing so, only these, which you are actually using, are going to be bundled in your presentations.
+
+> If you are using the Starter Kit, all default templates, are pre-installed and pre-imported.
+
+# Resources
+
+[DeckDeckGo](https://deckdeckgo.com) provides a set of default templates, those listed in this section hereafter. More templates are also available thanks to the wonderful work of the [community](https://github.com/deckgo-community).
+
+In addition, you can create you own custom templates and even use these in our [editor](https://app.deckdeckgo.com). Checkout the [template-kit](https://github.com/deckgo/template-kit) to get started.
