@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, Method, h, Host} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, h, Host, Prop } from "@stencil/core";
 
 import {
   DeckdeckgoSlide,
@@ -32,6 +32,18 @@ export class DeckdeckgoSlideContent implements DeckdeckgoSlide {
    */
   @Event()
   slideDidLoad: EventEmitter<void>;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);

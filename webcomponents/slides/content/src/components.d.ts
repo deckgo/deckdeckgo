@@ -9,6 +9,14 @@ export namespace Components {
     interface DeckgoSlideContent {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (enter: boolean, reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
@@ -27,6 +35,14 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideContent {
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
         /**
           * Triggered when the slide is loaded
          */

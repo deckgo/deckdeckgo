@@ -5,6 +5,14 @@ The "Content" slide is a simple slide which display its title and content aligne
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property           | Attribute           | Description                                                                                             | Type      | Default |
+| ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `customActions`    | `custom-actions`    | If you provide actions for the all deck but, a specific one for this slide, set this option to true     | `boolean` | `false` |
+| `customBackground` | `custom-background` | If you define a background for the all deck but, a specific one for this slide, set this option to true | `boolean` | `false` |
+
+
 ## Events
 
 | Event          | Description                        | Type                |
