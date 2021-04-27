@@ -3,6 +3,15 @@ import {Component, Element, Event, EventEmitter, Method, Prop, h, Host} from '@s
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - A title
+ * @slot content - An optional content
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-qrcode',
   styleUrl: 'deckdeckgo-slide-qrcode.scss',
@@ -11,12 +20,36 @@ import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} 
 export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
 
+  /**
+   * Triggered when the slide is loaded
+   */
   @Event() slideDidLoad: EventEmitter<void>;
 
+  /**
+   * The content, a text or an url, of the QR code to generate
+   */
   @Prop({reflect: true}) content: string;
 
+  /**
+   * In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too
+   */
   @Prop({reflect: true}) imgSrc: string;
+  /**
+   * In case you would display a logo over the QR code, you could provide an accessibility attribute using this option
+   */
   @Prop({reflect: true}) imgAlt: string;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   private container!: HTMLDivElement;
   private qrCode!: HTMLElement;

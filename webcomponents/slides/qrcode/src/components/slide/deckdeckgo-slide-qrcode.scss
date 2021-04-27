@@ -1,6 +1,46 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+/**
+ * @prop --slide-user-select: user select
+ * @default none
+ */
+
+/**
+ * @prop --overflow: overflow of the slide
+ * @default hidden
+ */
+
+/**
+ * @prop --slide-padding-top: Padding top of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-bottom: Padding bottom of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-start: Padding left of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-end: Padding right of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --zIndex: z-index
+ * @default 1
+ */
+
+/**
+ * @prop --background: background
+ * @prop --color: color
+ */
+
 div.deckgo-slide {
   flex-direction: column;
   align-items: flex-start;
@@ -14,7 +54,15 @@ div.deckgo-slide-qrcode {
   display: flex;
   flex-flow: row;
 
+  /**
+   * @prop --slide-qrcode-align: QR code vertical alignment
+   * @default center
+   */
   align-items: var(--slide-qrcode-align, center);
+  /**
+   * @prop --slide-qrcode-text-align: QR code horizontal alignment
+   * @default center
+   */
   text-align: var(--slide-qrcode-text-align, center);
 
   > * {
@@ -22,11 +70,18 @@ div.deckgo-slide-qrcode {
   }
 
   deckgo-qrcode {
+    /**
+     * @prop --slide-qrcode-background: QR code column's background
+     */
     background: var(--slide-qrcode-background);
   }
 }
 
 ::slotted([slot="title"]) {
+  /**
+   * @prop --slide-qrcode-title-display: If you wish to hide the slot="title"
+   * @default bloack
+   */
   display: var(--slide-qrcode-title-display, block);
 }
 

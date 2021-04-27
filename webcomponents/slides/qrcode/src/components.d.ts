@@ -9,9 +9,26 @@ export namespace Components {
     interface DeckgoSlideQrcode {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
         "content": string;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
         "hideContent": () => Promise<void>;
+        /**
+          * In case you would display a logo over the QR code, you could provide an accessibility attribute using this option
+         */
         "imgAlt": string;
+        /**
+          * In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too
+         */
         "imgSrc": string;
         "lazyLoadContent": () => Promise<void>;
         "resizeContent": () => Promise<void>;
@@ -31,9 +48,29 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
         "content"?: string;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
+        /**
+          * In case you would display a logo over the QR code, you could provide an accessibility attribute using this option
+         */
         "imgAlt"?: string;
+        /**
+          * In case you would like to display a logo over the QR code, provide the source of the image. Note: this image is lazy loaded too
+         */
         "imgSrc"?: string;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
     }
     interface IntrinsicElements {
