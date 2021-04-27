@@ -4,6 +4,16 @@ import {isMobile} from '@deckdeckgo/utils';
 
 import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - A title
+ * @slot author - Author of the slides
+ * @slot social-link - Several optional social links
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-author',
   styleUrl: 'deckdeckgo-slide-author.scss',
@@ -12,11 +22,23 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
+  /**
+   * Triggered when the slide is loaded
+   */
   @Event() slideDidLoad: EventEmitter<void>;
 
+  /**
+   * An image URI, for example a picture of the author. Note: this image will be displayed as a circle.
+   */
   @Prop() imgSrc: string;
+  /**
+   * An optional accessibility alt for the image.
+   */
   @Prop() imgAlt: string;
 
+  /**
+   * The design to be applied to the image. cover fits the image to the start pane, circle displays it in a circle and none in case you would not like to display an image
+   */
   @Prop({reflect: true}) imgMode: 'cover' | 'circle' | 'none' = 'cover';
 
   @State()
@@ -26,6 +48,18 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   private isLazyLoaded: boolean = false;
 
   private lazyLoadAfterUpdate: boolean = false;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   componentWillLoad() {
     this.mobile = isMobile();

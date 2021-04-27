@@ -9,9 +9,26 @@ export namespace Components {
     interface DeckgoSlideAuthor {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
         "hideContent": () => Promise<void>;
+        /**
+          * An optional accessibility alt for the image.
+         */
         "imgAlt": string;
+        /**
+          * The design to be applied to the image. cover fits the image to the start pane, circle displays it in a circle and none in case you would not like to display an image
+         */
         "imgMode": 'cover' | 'circle' | 'none';
+        /**
+          * An image URI, for example a picture of the author. Note: this image will be displayed as a circle.
+         */
         "imgSrc": string;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
@@ -30,9 +47,29 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideAuthor {
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
+        /**
+          * An optional accessibility alt for the image.
+         */
         "imgAlt"?: string;
+        /**
+          * The design to be applied to the image. cover fits the image to the start pane, circle displays it in a circle and none in case you would not like to display an image
+         */
         "imgMode"?: 'cover' | 'circle' | 'none';
+        /**
+          * An image URI, for example a picture of the author. Note: this image will be displayed as a circle.
+         */
         "imgSrc"?: string;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
     }
     interface IntrinsicElements {
