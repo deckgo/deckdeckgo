@@ -9,15 +9,38 @@ export namespace Components {
     interface DeckgoSlidePoll {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * In case you would not like that the template try to reach the socket server
+         */
         "connectPollSocket": boolean;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
         "hideContent": () => Promise<void>;
         "isAnswered": () => Promise<boolean>;
         "lazyLoadContent": () => Promise<void>;
+        /**
+          * Per default the template will always try to create a new poll but if you set this value, it will try to retrieve an existing poll
+         */
         "pollKey": string;
+        /**
+          * The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote
+         */
         "pollLink": string;
         "resizeContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
+        /**
+          * The path to reach the socket server
+         */
         "socketPath": string;
+        /**
+          * The url of the socket (server) where the poll (chat room) is going to be created
+         */
         "socketUrl": string;
         "update": () => Promise<void>;
     }
@@ -35,12 +58,38 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlidePoll {
+        /**
+          * In case you would not like that the template try to reach the socket server
+         */
         "connectPollSocket"?: boolean;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
         "onPollUpdated"?: (event: CustomEvent<void>) => void;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
+        /**
+          * Per default the template will always try to create a new poll but if you set this value, it will try to retrieve an existing poll
+         */
         "pollKey"?: string;
+        /**
+          * The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote
+         */
         "pollLink"?: string;
+        /**
+          * The path to reach the socket server
+         */
         "socketPath"?: string;
+        /**
+          * The url of the socket (server) where the poll (chat room) is going to be created
+         */
         "socketUrl"?: string;
     }
     interface IntrinsicElements {
