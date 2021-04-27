@@ -1,6 +1,47 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+
+/**
+ * @prop --slide-user-select: user select
+ * @default none
+ */
+
+/**
+ * @prop --overflow: overflow of the slide
+ * @default hidden
+ */
+
+/**
+ * @prop --slide-padding-top: Padding top of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-bottom: Padding bottom of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-start: Padding left of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-end: Padding right of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --zIndex: z-index
+ * @default 1
+ */
+
+/**
+ * @prop --background: background
+ * @prop --color: color
+ */
+
 div.deckgo-slide {
   flex-direction: column;
   align-items: flex-start;
@@ -32,25 +73,6 @@ div.deckgo-slide-code-container {
   pointer-events: none;
 }
 
-::slotted([slot="info"].deckgo-show-info) {
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-  background: var(--deckgo-show-info-background);
-  z-index: var(--deckgo-show-info-zindex, 1);
-
-  pointer-events: initial;
-}
-
 @media print {
   div.deckgo-slide {
     height: 100%;
@@ -58,6 +80,10 @@ div.deckgo-slide-code-container {
 }
 
 deckgo-highlight-code {
+  /**
+   * @prop --code-user-select: code user select
+   * @default text
+   */
   user-select: var(--code-user-select, text);
 }
 

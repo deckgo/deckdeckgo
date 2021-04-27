@@ -4,6 +4,15 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 
 import {DeckdeckgoHighlightCodeTerminal, DeckdeckgoHighlightCodeCarbonTheme} from '@deckdeckgo/highlight-code';
 
+/**
+ * @slot title - A title
+ * @slot code - A block of code to highlight if src is not used
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-code',
   styleUrl: 'deckdeckgo-slide-code.scss',
@@ -12,20 +21,62 @@ import {DeckdeckgoHighlightCodeTerminal, DeckdeckgoHighlightCodeCarbonTheme} fro
 export class DeckdeckgoSlideCode implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
+  /**
+   * Triggered when the slide is loaded
+   */
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Event() scrolling: EventEmitter<boolean>;
+  /**
+   * An event triggered when the code is scrolled
+   */
+  @Event()
+  scrolling: EventEmitter<boolean>;
 
+  /**
+   * The web url to the source code you would like to showcase
+   */
   @Prop() src: string;
 
+  /**
+   * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
+   */
   @Prop() anchor: string = '// DeckDeckGo';
+  /**
+   * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
+   */
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
+  /**
+   * Set this attribute to false in case you would like to actually display the anchor value too
+   */
   @Prop() hideAnchor: boolean = true;
 
-  @Prop() language: string = 'javascript';
+  /**
+   * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
+   */
+  @Prop({reflect: true}) language: string = 'javascript';
 
-  @Prop() terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
-  @Prop() theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+  /**
+   * Present the code in a stylish "windowed" card
+   */
+  @Prop()
+  terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
+  /**
+   * The theme of the selected terminal (applied only in case of carbon)
+   */
+  @Prop()
+  theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
