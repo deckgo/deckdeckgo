@@ -14,6 +14,10 @@ import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-hig
 
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
 
+/**
+ * @slot code - A `<code/>` element to highlight
+ * @slot user - A user name for the Ubuntu terminal
+ */
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
@@ -22,24 +26,63 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
 export class DeckdeckgoHighlightCode {
   @Element() el: HTMLElement;
 
-  @Event() private prismLanguageLoaded: EventEmitter<string>;
-  @Event() private codeDidChange: EventEmitter<HTMLElement>;
+  /**
+   * Emitted when a language is fetched and loaded
+   */
+  @Event()
+  prismLanguageLoaded: EventEmitter<string>;
 
+  /**
+   * Emitted when the code was edited (see attribute editable). Propagate the root component itself
+   */
+  @Event()
+  codeDidChange: EventEmitter<HTMLElement>;
+
+  /**
+   * The web url to the source code you would like to showcase
+   */
   @Prop() src: string;
 
+  /**
+   * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
+   */
   @Prop() anchor: string = '// DeckDeckGo';
+  /**
+   * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
+   */
   @Prop() anchorZoom: string = '// DeckDeckGoZoom';
+  /**
+   * Set this attribute to false in case you would like to actually display the anchor value too
+   */
   @Prop() hideAnchor: boolean = true;
 
+  /**
+   * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
+   */
   @Prop({reflect: true}) language: string = 'javascript';
 
+  /**
+   * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or number separated with coma (many lines), group separated with space. For example: 1 3,5 8 14,17
+   */
   @Prop({reflect: true}) highlightLines: string;
+  /**
+   * Display the number of the lines of code
+   */
   @Prop({reflect: true}) lineNumbers: boolean = false;
 
+  /**
+   * Present the code in a stylish "windowed" card
+   */
   @Prop({reflect: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
+  /**
+   * In case you would like to set the code component as being editable
+   */
   @Prop() editable: boolean = false;
 
+  /**
+   * The theme of the selected terminal (applied only in case of carbon)
+   */
   @Prop({reflect: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
   private anchorOffsetTop: number = 0;
@@ -257,6 +300,9 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
+  /**
+   * Load or reload the component
+   */
   @Method()
   load(): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -489,6 +535,10 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
+  /**
+   * Find the next anchor
+   * @param enter
+   */
   @Method()
   findNextAnchor(enter: boolean): Promise<DeckdeckgoHighlightCodeAnchor> {
     return new Promise<DeckdeckgoHighlightCodeAnchor>(async (resolve) => {
@@ -530,6 +580,10 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
+  /**
+   * Zoom into code
+   * @param zoom
+   */
   @Method()
   zoomCode(zoom: boolean): Promise<void> {
     return new Promise<void>((resolve) => {

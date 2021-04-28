@@ -5,6 +5,15 @@ import {DeckdeckgoSlideResize, hideLazyLoadImages, lazyLoadComponentContent, aft
 
 import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playground-theme';
 
+/**
+ * @slot title - A title
+ * @slot content - Some more optional content
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-playground',
   styleUrl: 'deckdeckgo-slide-playground.scss',
@@ -13,15 +22,44 @@ import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playgroun
 export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
 
+  /**
+   * Triggered when the slide is loaded
+   */
   @Event() slideDidLoad: EventEmitter<void>;
 
+  /**
+   * The full link to your Pen, Fiddle oder WebComponents.dev. The component will take care of converting the link to an embeddable one
+   */
   @Prop({reflect: true}) src: string;
+  /**
+   * The theming option if it can be applied respectivelly if supported by the third party playground, otherwise, 'default'
+   */
   @Prop({reflect: true}) theme: DeckdeckgoPlaygroundTheme = DeckdeckgoPlaygroundTheme.DEFAULT;
 
+  /**
+   * Per default the playground width will be calculated according the content size available. Using this option you would be able to define your own width.
+   */
   @Prop() width: number;
+  /**
+   * Per default the playground height will be calculated according the content size available. Using this option you would be able to define your own height.
+   */
   @Prop() height: number;
-
+  /**
+   * Allow toggle to fullscreen
+   */
   @Prop() allowFullscreen: boolean = true;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   @State() videoWidth: number;
   @State() videoHeight: number;

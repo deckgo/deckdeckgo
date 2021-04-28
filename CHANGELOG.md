@@ -2,6 +2,10 @@
 
 # [4.6.0](https://github.com/deckgo/deckdeckgo/compare/v4.5.0...v4.6.0) (In progress..)
 
+### Applications
+
+- docs: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+
 ### Web Components: New
 
 - laser-pointer: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/laser-pointer/CHANGELOG.md))

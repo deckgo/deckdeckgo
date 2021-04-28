@@ -1,6 +1,47 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+
+/**
+ * @prop --slide-user-select: user select
+ * @default none
+ */
+
+/**
+ * @prop --overflow: overflow of the slide
+ * @default hidden
+ */
+
+/**
+ * @prop --slide-split-padding-top: Padding top of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-split-padding-bottom: Padding bottom of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-split-padding-start: Padding left of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-split-padding-end: Padding right of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --zIndex: z-index
+ * @default 1
+ */
+
+/**
+ * @prop --background: background
+ * @prop --color: color
+ */
+
 :host {
   --slide-actions-z-index: 3;
   --slide-header-footer-z-index: 1;
@@ -41,14 +82,34 @@ div.deckgo-slide-split {
     var(--slide-split-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-padding-start, var(--slide-padding-start-default));
 
   &.deckgo-slide-split-start {
+    /**
+     * @prop --slide-split-display-start: start display
+     * @default flex
+     */
     display: var(--slide-split-display-start, flex);
+    /**
+     * @prop --slide-split-background-start: start background
+     */
     background: var(--slide-split-background-start);
+    /**
+     * @prop --slide-split-color-start: start color
+     */
     color: var(--slide-split-color-start);
   }
 
   &.deckgo-slide-split-end {
+    /**
+     * @prop --slide-split-display-end: end display
+     * @default flex
+     */
     display: var(--slide-split-display-end, flex);
+    /**
+     * @prop --slide-split-background-end: end background
+     */
     background: var(--slide-split-background-end);
+    /**
+     * @prop --slide-split-color-end: end color
+     */
     color: var(--slide-split-color-end);
   }
 }
@@ -69,6 +130,10 @@ div.deckgo-slide-split-vertical {
 ::slotted([slot="title"]) {
   flex: 1 100%;
 
+  /**
+   * @prop --slide-split-title-display: title display
+   * @default none
+   */
   display: var(--slide-split-title-display, none);
   max-height: fit-content;
 

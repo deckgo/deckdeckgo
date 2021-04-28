@@ -9,11 +9,28 @@ export namespace Components {
     interface DeckgoSlideAspectRatio {
         "afterSwipe": () => Promise<void>;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
+        /**
+          * Per default point-events are set to none for this template making it read-only respectively not editable
+         */
         "editable": boolean;
         "getContainer": () => Promise<HTMLDivElement>;
+        /**
+          * Display a grid behind the content. Note that the grid would only be display if not fullscreen
+         */
         "grid": boolean;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
+        /**
+          * The aspect ratio of the displayed content. Per default 16 being the width and 9 the height
+         */
         "ratio": number;
         "revealContent": () => Promise<void>;
     }
@@ -31,9 +48,29 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideAspectRatio {
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
+        /**
+          * Per default point-events are set to none for this template making it read-only respectively not editable
+         */
         "editable"?: boolean;
+        /**
+          * Display a grid behind the content. Note that the grid would only be display if not fullscreen
+         */
         "grid"?: boolean;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
+        /**
+          * The aspect ratio of the displayed content. Per default 16 being the width and 9 the height
+         */
         "ratio"?: number;
     }
     interface IntrinsicElements {

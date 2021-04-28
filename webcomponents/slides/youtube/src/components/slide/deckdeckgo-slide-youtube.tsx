@@ -3,6 +3,14 @@ import {Component, Element, Event, EventEmitter, Method, Prop, State, h, Host} f
 import {debounce} from '@deckdeckgo/utils';
 import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - A title
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-youtube',
   styleUrl: 'deckdeckgo-slide-youtube.scss',
@@ -11,13 +19,42 @@ import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdec
 export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   @Element() el: HTMLElement;
 
-  @Event() slideDidLoad: EventEmitter<void>;
+  /**
+   * Triggered when the slide is loaded
+   */
+  @Event()
+  slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflect: true}) src: string;
+  /**
+   * The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube
+   */
+  @Prop({reflect: true})
+  src: string;
+  /**
+   * Per default the video width will be calculated according the content size available. Using this option you would be able to define your own width
+   */
   @Prop() width: number;
+  /**
+   * Per default the video height will be calculated according the content size available. Per default the video height will be calculated according the content size available
+   */
   @Prop() height: number;
 
+  /**
+   * Allow fullscreen option
+   */
   @Prop() allowFullscreen: boolean = true;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   @State() videoWidth: number;
   @State() videoHeight: number;

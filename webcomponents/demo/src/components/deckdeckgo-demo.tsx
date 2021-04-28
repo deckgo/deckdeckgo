@@ -12,12 +12,24 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 export class DeckdeckgoDemo implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
 
+  /**
+   * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+   */
   @Prop({reflect: true}) src: string;
 
+  /**
+   * A title for the frame, could be use for accessibility reason
+   */
   @Prop({reflect: true}) frameTitle: string;
 
+  /**
+   * The type of device frame. md for Android, ios for iPhone
+   */
   @Prop({reflect: true}) mode = 'md';
 
+  /**
+   * In case you would like to load the frame as soon as the component is loaded
+   */
   @Prop() instant: boolean = false;
 
   @State()
@@ -59,6 +71,9 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
     await this.resizeReload();
   };
 
+  /**
+   * Refresh iframe size and reload content
+   */
   @Method()
   async updateIFrame() {
     await this.resizeReload();
@@ -81,6 +96,9 @@ export class DeckdeckgoDemo implements DeckdeckgoComponent {
     this.height = deviceHeight > height ? height : deviceHeight;
   }
 
+  /**
+   * Lazy load the iframe
+   */
   @Method()
   lazyLoadContent(): Promise<void> {
     return this.createIFrame();

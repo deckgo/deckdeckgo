@@ -1,6 +1,46 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
+/**
+ * @prop --slide-user-select: user select
+ * @default none
+ */
+
+/**
+ * @prop --overflow: overflow of the slide
+ * @default hidden
+ */
+
+/**
+ * @prop --slide-padding-top: Padding top of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-bottom: Padding bottom of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-start: Padding left of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --slide-padding-end: Padding right of the slide
+ * @default 64px and 32px on wider screen
+ */
+
+/**
+ * @prop --zIndex: z-index
+ * @default 1
+ */
+
+/**
+ * @prop --background: background
+ * @prop --color: color
+ */
+
 div.deckgo-slide {
   flex-direction: column;
   align-items: flex-start;
@@ -37,11 +77,19 @@ div.deckgo-aspect-ratio-container {
     overflow: visible;
 
     &.deckgo-aspect-ratio-content-grid {
+      /**
+       * @prop --slide-grid-background: The default grid color
+       * @default linear-gradient(to bottom, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%), linear-gradient(to right, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%)
+       */
       background: var(
         --slide-grid-background,
         linear-gradient(to bottom, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%),
         linear-gradient(to right, rgba(0, 0, 0, 0) 98%, rgba(110, 109, 111, 0.4) 98%)
       );
+      /**
+       * @prop --slide-grid-background-size: The default size of each squares of the grid
+       * @default 2em 2em
+       */
       background-size: var(--slide-grid-background-size, 2em 2em);
     }
   }

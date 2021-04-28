@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Deck/Size" />
+
+# Size
+
+Per default, the [DeckDeckGo] deck will use all the browser `window` size respectively width and height.
+
+However, it is possible to include or use [DeckDeckGo] in any container, for that purpose you would only need to set the attribute `embedded` to `true`.
+
+```
+<div style="width: 500px; height: 400px;">
+  <deckgo-deck embedded="true">
+    <deckgo-slide-title>
+      <h1 slot="title">My presentation title</h1>
+      <p slot="content">
+        Hello World 🚀
+      </p>
+    </deckgo-slide-title>
+  </deckgo-deck>
+</div>
+```
+
+## Tips and tricks
+
+To detect the size of the container, the `offsetParent` property is used which returns the nearest ancestor that has a position other than static. Therefore, if the size would not be detected, try to set the `position` of your container to `relative` or `fixed`.
+
+[DeckDeckGo]: https://deckdeckgo.com

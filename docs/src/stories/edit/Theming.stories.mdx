@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Edit/Theming" />
+
+# Theming
+
+Theming a [DeckDeckGo] presentation is quick and easy.
+
+## Table of contents
+
+- [Theme](#app-edit-theming-theme)
+- [Custom styles](#app-edit-theming-custom-styles)
+- [Notes](#app-edit-theming-notes)
+
+## Theme
+
+To create the theme for your deck when you are using the [DeckDeckGo] starter kit, use the [Ionic Color Generator](https://ionicframework.com/docs/theming/color-generator) to pick the colors of your choice.
+
+Once done, `copy` the generated CSS variables and `paste` them into the `src/css/variables.css` file of your presentation.
+
+Finally, edit the `index.html` and replace the color of the `body` background.
+
+```
+body {
+    background: #3880ff;
+}
+```
+
+> This background color is defined directly in the index.html file because it is the one which will be applied until your presentation is loaded
+
+## Custom styles
+
+[DeckDeckGo] also offers various theming options which could be set using CSS variables and which are described in their respective slides' templates, see chapter [concept](/slides/concept) to begin with.
+
+## Notes
+
+If you think we missed or need further theming options, don't hesitate to open an issue and/or submit a PR, it would be my pleasure to add more theming flexibility and options.
+
+[DeckDeckGo]: https://deckdeckgo.com

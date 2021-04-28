@@ -12,8 +12,11 @@ export class DeckdeckgoPager {
   @State()
   private percentageProgression: number = 0;
 
+  /**
+   * Emitted when the user click on the pager
+   */
   @Event()
-  private pagerClick: EventEmitter<void>;
+  pagerClick: EventEmitter<void>;
 
   @Watch('length')
   @Watch('activeIndex')

@@ -18,20 +18,54 @@ import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from '@deckdeckgo/t
 export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
 
+  /**
+   * The width of the chart
+   */
   @Prop({mutable: true}) width: number;
+
+  /**
+   * The height of the chart
+   */
   @Prop({mutable: true}) height: number;
 
+  /**
+   * The path to the source file of the data
+   */
   @Prop() src: string;
+  /**
+   * The line separator use in your csv file
+   */
   @Prop() separator: string = ';';
 
+  /**
+   * Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.
+   */
   @Prop() customLoader: boolean = false;
 
+  /**
+   * The margin top of the chart in pixel
+   */
   @Prop() marginTop: number = 32;
+  /**
+   * The margin bottom of the chart in pixel
+   */
   @Prop() marginBottom: number = 64;
+  /**
+   * The margin left of the chart in pixel
+   */
   @Prop() marginLeft: number = 32;
+  /**
+   * The margin right of the chart in pixel
+   */
   @Prop() marginRight: number = 32;
 
+  /**
+   * Display multiple graphs and animate the transition between these
+   */
   @Prop() animation: boolean = false;
+  /**
+   * Duration of the transition between graphs
+   */
   @Prop() animationDuration: number = 1000;
 
   private svg: Selection<BaseType, any, HTMLElement, any>;
@@ -39,6 +73,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   private x1: any;
   private y: any;
 
+  /**
+   * Instead of a source file, source data can also be provided as an array of `DeckdeckgoBarChartData`
+   */
   @Prop() data: DeckdeckgoBarChartData[];
   private chartData: DeckdeckgoBarChartData[];
 
@@ -46,12 +83,21 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
   private randomColors: string[];
 
+  /**
+   * If `false`, no axis y will be draw.
+   */
   @Prop() yAxis: boolean = true;
-
+  /**
+   * Set a minimal value for the y Axis. Useful in case the series of data could contains only zeros.
+   */
   @Prop() yAxisMin: number = 0;
 
+  /**
+   * The event to be processed to load the data if you are using a custom loader.
+   * @private
+   */
   @Event()
-  private chartCustomLoad: EventEmitter<string>;
+  chartCustomLoad: EventEmitter<string>;
 
   async componentDidLoad() {
     await this.draw();
@@ -67,6 +113,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     await this.draw();
   }
 
+  /**
+   * This is the method we are using to refresh the current bar chart when an audience is participating to live vote. It will not redraw the axis but it will draw and animate the bars.
+   * @param values
+   */
   @Method()
   async updateCurrentBar(values: DeckdeckgoBarChartDataValue[]) {
     if (!this.x0 || !this.x1 || !this.y) {
@@ -86,6 +136,11 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     await this.drawBars(this.barDataIndex, this.animationDuration);
   }
 
+  /**
+   * In case you would like to redraw your chart, for example on resize of the window.
+   * @param width
+   * @param height
+   */
   @Method()
   draw(width?: number, height?: number): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -174,11 +229,17 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     });
   }
 
+  /**
+   * If you are using animation, this method is used to display the next data respectively the next chart.
+   */
   @Method()
   async next() {
     await this.prevNext(true);
   }
 
+  /**
+   * If you are using animation, this method is used to display the previous data respectively the previous chart.
+   */
   @Method()
   async prev() {
     await this.prevNext(false);
@@ -202,6 +263,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     }
   }
 
+  /**
+   * Is animation at the begin of the serie.
+   */
   @Method()
   isBeginning(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
@@ -214,6 +278,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     });
   }
 
+  /**
+   * Is animation at the end of the serie.
+   */
   @Method()
   isEnd(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
@@ -390,6 +457,10 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
     });
   }
 
+  /**
+   * If you "manually" load the data, call this method once the text content fetched.
+   * @param content
+   */
   @Method()
   async postCustomLoad(content: string | undefined) {
     this.chartData = await this.loadContent(content);

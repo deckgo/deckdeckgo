@@ -5,43 +5,105 @@
 :host(.loaded) {
   img,
   svg {
+    /**
+     * @prop --deckgo-lazy-img-opacity-loaded: The opacity of the image when loaded
+     * @default 1
+     */
     opacity: var(--deckgo-lazy-img-opacity-loaded, 1);
   }
 }
 
 div.svg-container {
+  /**
+   * @prop --deckgo-lazy-img-height: Image max height
+   */
   height: var(--deckgo-lazy-img-height);
+  /**
+   * @prop --deckgo-lazy-img-width: Image max width
+   */
   width: var(--deckgo-lazy-img-width);
 }
 
 img,
 svg {
+  /**
+   * @prop --deckgo-lazy-img-pointer-events: Image pointer events
+   * @default none
+   */
   pointer-events: var(--deckgo-lazy-img-pointer-events, none);
 
+  /**
+   * @prop --deckgo-lazy-img-height: Image height
+   */
   height: var(--deckgo-lazy-img-height);
+  /**
+   * @prop --deckgo-lazy-img-width: mage width
+   */
   width: var(--deckgo-lazy-img-width);
 
+  /**
+   * @prop --deckgo-lazy-img-max-height: Image max height
+   */
   max-height: var(--deckgo-lazy-img-max-height);
+  /**
+   * @prop --deckgo-lazy-img-max-width: Image max width
+   * @default 100%
+   */
   max-width: var(--deckgo-lazy-img-max-width, 100%);
 
+  /**
+   * @prop --deckgo-lazy-img-min-height: Image min height
+   */
   min-height: var(--deckgo-lazy-img-min-height);
+  /**
+   * @prop --deckgo-lazy-img-min-width: 	Image min width
+   */
   min-width: var(--deckgo-lazy-img-min-width);
 
+  /**
+   * @prop --deckgo-lazy-img-float: Image float
+   */
   float: var(--deckgo-lazy-img-float);
 
+  /**
+   * @prop --deckgo-lazy-img-padding: Image padding
+   */
   padding: var(--deckgo-lazy-img-padding);
 
+  /**
+   * @prop --deckgo-lazy-img-vertical-align: Image vertical alignment
+   */
   vertical-align: var(--deckgo-lazy-img-vertical-align);
 
+  /**
+   * @prop --deckgo-lazy-img-display: The display property of the image
+   */
   display: var(--deckgo-lazy-img-display);
 
+  /**
+   * @prop --deckgo-lazy-img-border-radius: In case you would like to specify a border radius for the image
+   */
   border-radius: var(--deckgo-lazy-img-border-radius);
 
+  /**
+   * @prop --deckgo-lazy-img-object-fit: The property object-fit of the image
+   */
   object-fit: var(--deckgo-lazy-img-object-fit);
 
+  /**
+   * @prop --deckgo-lazy-img-opacity-not-loaded: The opacity of the image when not loaded
+   * @default 0
+   */
   opacity: var(--deckgo-lazy-img-opacity-not-loaded, 0);
 
+  /**
+   * @prop --deckgo-lazy-img-transition: The animation of the image, notably use to display smoothly the image when loaded
+   * @default opacity 0.15s linear
+   */
   transition: var(--deckgo-lazy-img-transition, opacity 0.15s linear);
 
+  /**
+   * @prop --deckgo-lazy-img-box-shadow: Image box-shadow
+   */
   box-shadow: var(--deckgo-lazy-img-box-shadow);
 }

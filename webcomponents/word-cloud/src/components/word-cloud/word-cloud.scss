@@ -25,6 +25,10 @@
 
 :host([editable]) {
   div.placeholder:empty:not(:focus):after {
+    /**
+     * @prop --deckgo-word-cloud-empty-text: Place holder in case editable is set to true
+     * @default "Click to add your words"
+     */
     content: var(--deckgo-word-cloud-empty-text, "Click to add your words");
   }
 }

@@ -2,17 +2,39 @@ import {Component, Method, Prop, State, Watch, h, Host} from '@stencil/core';
 
 import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot - A custom text to be displayed
+ * @slot icon - An icon to be displayed next to the social link
+ */
 @Component({
   tag: 'deckgo-social',
   styleUrl: 'deckdeckgo-social.scss',
   shadow: true,
 })
 export class DeckdeckgoSocial implements DeckdeckgoComponent {
+  /**
+   * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+   */
   @Prop({reflect: true}) twitter: string;
+  /**
+   * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+   */
   @Prop({reflect: true}) linkedin: string;
+  /**
+   * Your Medium username. username will be replaced automatically from https://username.medium.com/
+   */
   @Prop({reflect: true}) medium: string;
+  /**
+   * Your Dev username. It will be concatenated automatically with https://dev.to/
+   */
   @Prop({reflect: true}) dev: string;
+  /**
+   * Your Github username. It will be concatenated automatically with https://github.com/
+   */
   @Prop({reflect: true}) github: string;
+  /**
+   * In case you would like to provide the URI of your choice
+   */
   @Prop({reflect: true}) fullUrl: string;
 
   @State()

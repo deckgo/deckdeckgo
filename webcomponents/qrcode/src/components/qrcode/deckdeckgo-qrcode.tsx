@@ -7,6 +7,9 @@ enum DeckdeckgoQRCodeType {
   IMG = 'img'
 }
 
+/**
+ * @slot logo - An optional logo or image to be displayed over the QR code
+ */
 @Component({
   tag: 'deckgo-qrcode',
   styleUrl: 'deckdeckgo-qrcode.scss',
@@ -15,15 +18,35 @@ enum DeckdeckgoQRCodeType {
 export class DeckdeckgoQRCode {
   @Element() el: HTMLElement;
 
+  /**
+   * The content, a text or an url, of the QR code to generate
+   */
   @Prop() content: string;
 
+  /**
+   * The type of QR code to generate, <svg/> or <img/>
+   */
   @Prop() type: string = DeckdeckgoQRCodeType.SVG;
 
+  /**
+   * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+   */
   @Prop() qrCellSize: number;
+  /**
+   * The size of the code margin, in case you would like more spacing
+   */
   @Prop() qrMargin: number;
-
+  /**
+   * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+   */
   @Prop() qrBackgroundColor: string;
+  /**
+   * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+   */
   @Prop() qrFillColor: string;
+  /**
+   * An alternate text for the image of the QR code
+   */
   @Prop() qrAlt: string;
 
   async componentDidLoad() {
@@ -35,6 +58,9 @@ export class DeckdeckgoQRCode {
     await this.generate();
   }
 
+  /**
+   * The <deckgo-qrcode/> component exposes the following method in case you would like to refresh your QR code, for example on resize of the window on in case you would set its content asynchronously.
+   */
   @Method()
   generate(): Promise<void> {
     return new Promise<void>(async (resolve) => {

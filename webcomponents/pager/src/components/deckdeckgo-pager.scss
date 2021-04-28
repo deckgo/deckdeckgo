@@ -4,7 +4,13 @@
   position: absolute;
 
   bottom: 0;
+  /**
+   @prop --pager-position-left: The left attribute of the absolute positioning of the pager over the deck
+   */
   left: var(--pager-position-left);
+  /**
+   @prop --pager-position-right: The right attribute of the absolute positioning of the pager over the deck
+   */
   right: var(--pager-position-right);
 
   user-select: none;
@@ -13,37 +19,89 @@
 }
 
 .deckgo-pager-circular-chart {
+  /**
+   * @prop --pager-size: Height and width
+   * @default 48px
+   */
   height: var(--pager-size, 48px);
   width: var(--pager-size, 48px);
+  /**
+   * @prop --pager-margin-top: margin-top
+   * @default 8px
+   */
+  /**
+   * @prop --pager-margin-end: margin-right
+   * @default 32px
+   */
+  /**
+   * @prop --pager-margin-bottom: margin-bottom
+   * @default 8px
+   */
+  /**
+   * @prop --pager-margin-start: margin-left
+   * @default 32px
+   */
   margin: var(--pager-margin-top, 8px) var(--pager-margin-end, 32px) var(--pager-margin-bottom, 8px) var(--pager-margin-start, 32px);
   display: block;
 }
 
 .deckgo-pager-circle-bg {
   fill: none;
+  /**
+   * @prop --pager-background: circle background stroke
+   * @default #eee
+   */
   stroke: var(--pager-background, #eee);
+  /**
+   * @prop --pager-stroke-outer-width: circle outer stroke-width
+   * @default 2.2
+   */
   stroke-width: var(--pager-stroke-outer-width, 2.2);
 }
 
 .deckgo-pager-circle {
+  /**
+   * @prop --pager-color: circle stroke
+   * @default black
+   */
   stroke: var(--pager-color, black);
   fill: none;
+  /**
+   * @prop --pager-stroke-inner-width: stroker inner width
+   * @default 2.2
+   */
   stroke-width: var(--pager-stroke-inner-width, 2.2);
   stroke-linecap: round;
   transition: stroke-dasharray 500ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .deckgo-pager-progression {
+  /**
+   * @prop --pager-text-color: text color
+   * @default black
+   */
   fill: var(--pager-text-color, black);
+  /**
+   * @prop --pager-text-size: font-size
+   * @default 0.5em
+   */
   font-size: var(--pager-text-size, 0.5em);
   text-anchor: middle;
   font-weight: 300;
 
   &.deckgo-pager-percentage {
+    /**
+     * @prop --pager-text-percentage-display: display percentage / progression
+     * @default none
+     */
     display: var(--pager-text-percentage-display, none);
   }
 
   &.deckgo-pager-slides {
+    /**
+     * @prop --pager-text-slides-display: display page index
+     * @default none
+     */
     display: var(--pager-text-slides-display, none);
   }
 }

@@ -14,12 +14,29 @@ export namespace Components {
     }
     interface DeckgoSlideGif {
         "afterSwipe": () => Promise<void>;
+        /**
+          * An alternate text for the Gif
+         */
         "alt": string;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
+        /**
+          * If set to true, the GIF width and height will be related to the slide width and height respectively will be fullscreen.
+         */
         "fullscreen": boolean;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
+        /**
+          * The src (url) of the Gif
+         */
         "src": string;
     }
 }
@@ -49,9 +66,29 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface DeckgoSlideGif {
+        /**
+          * An alternate text for the Gif
+         */
         "alt"?: string;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
+        /**
+          * If set to true, the GIF width and height will be related to the slide width and height respectively will be fullscreen.
+         */
         "fullscreen"?: boolean;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
+        /**
+          * The src (url) of the Gif
+         */
         "src"?: string;
     }
     interface IntrinsicElements {

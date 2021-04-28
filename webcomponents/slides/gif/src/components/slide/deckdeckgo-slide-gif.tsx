@@ -2,6 +2,16 @@ import {Component, Element, Event, EventEmitter, Method, Prop, Listen, State, h,
 
 import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - A title
+ * @slot top - An element to display at the top of the Gif
+ * @slot bottom - An element to display at the bottom of the Gif
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-gif',
   styleUrl: 'deckdeckgo-slide-gif.scss',
@@ -10,12 +20,41 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
 
-  @Event() slideDidLoad: EventEmitter<void>;
+  /**
+   * Triggered when the slide is loaded
+   */
+  @Event()
+  slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflect: true}) src: string;
-  @Prop({reflect: true}) alt: string;
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
 
-  @Prop() fullscreen: boolean = true;
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
+
+  /**
+   * The src (url) of the Gif
+   */
+  @Prop({reflect: true})
+  src: string;
+
+  /**
+   * An alternate text for the Gif
+   */
+  @Prop({reflect: true})
+  alt: string;
+
+  /**
+   * If set to true, the GIF width and height will be related to the slide width and height respectively will be fullscreen.
+   */
+  @Prop()
+  fullscreen: boolean = true;
 
   @State() loaded: boolean = false;
 

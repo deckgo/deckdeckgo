@@ -9,6 +9,14 @@ enum DeckdeckgoSlideChartType {
   BAR = 'bar',
 }
 
+/**
+ * @slot title - A title
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-chart',
   styleUrl: 'deckdeckgo-slide-chart.scss',
@@ -17,7 +25,11 @@ enum DeckdeckgoSlideChartType {
 export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
 
-  @Event() slideDidLoad: EventEmitter<void>;
+  /**
+   * Triggered when the slide is loaded
+   */
+  @Event()
+  slideDidLoad: EventEmitter<void>;
 
   @Prop({reflect: true, mutable: true}) src: string;
   @Prop({reflect: true}) separator: string;
@@ -30,6 +42,9 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @State() chartWidth: number;
   @State() chartHeight: number;
 
+  /**
+   * The type of the chart, pie, line or bar
+   */
   @Prop({reflect: true}) type: string = DeckdeckgoSlideChartType.PIE;
 
   // Pie
@@ -55,6 +70,18 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Prop() animationDuration: number = 1000;
 
   private redrawAfterUpdate: boolean = false;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);
