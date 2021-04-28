@@ -14,7 +14,7 @@ If you would have this requirement, let us now with a new [feature request](http
 
 This template could be added to your presentation using the following methods.
 
-> If you are using our Starter Kit, no need to worry about this, this template is included, therefore you could skip the "Installation" chapter.
+> This template is included per default in our Developer Kit
 
 ### From a CDN
 
