@@ -1,5 +1,7 @@
 import {create} from '@storybook/theming';
 
+import DeckDeckGo from '../src/assets/img/deckdeckgo.svg';
+
 export default create({
   base: 'light',
 
@@ -28,5 +30,6 @@ export default create({
   inputBorderRadius: 4,
 
   brandTitle: 'DeckDeckGo',
-  brandUrl: 'https://deckdeckgo.com'
+  brandUrl: 'https://deckdeckgo.com',
+  brandImage: DeckDeckGo,
 });
