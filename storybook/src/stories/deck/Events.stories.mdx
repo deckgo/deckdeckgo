@@ -1,0 +1,22 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Deck/Events" />
+
+# Events
+
+A [DeckDeckGo] deck triggers following events:
+
+| Event                     | Emitted value | Description |
+| -------------------------- |-----------------|-----------------|
+| slidesDidLoad | string[] | Emitted when the deck and all slides have loaded. Emit the an ordered list of all the tag names of the slides. |
+| slideNextDidAnimate | void | Emitted when the slide didn't change but an animation occurred towards the next slide. |
+| slidePrevDidAnimate | void | Emitted when the slide didn't change but an animation occurred towards the previous slide. |
+| slideNextDidChange | number | Emitted when the next slide has started. Emit the index of the new active slide. |
+| slidePrevDidChange | number | Emitted when the previous slide has ended. Emit the index of the new active slide. |
+| slideToChange | number | Emitted when a specific slide has been selected. Emit the index of the new selected slide. |
+| slideDrag | number | Emitted when the slider is actively being moved. Emit the transformX value of the deck. |
+| slideWillChange | number | Emitted before the active slide has changed. Emit the transformX value of the deck. |
+| deckDidLoad | | Emitted after `slidesDidLoad` when all slides have been processed by the core (lazy loading, clone actions, etc.) |
+| mouseInactivity | boolean | Emitted when the mouse is idle and will be hidden. |
+
+[DeckDeckGo]: https://deckdeckgo.com

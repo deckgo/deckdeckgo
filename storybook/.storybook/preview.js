@@ -14,7 +14,7 @@ export const parameters = {
         'Components',
         ['Demo', 'Drag Resize Rotate', 'Highlight Code', 'Inline Editor', 'Laser Pointer', 'Lazy Image', 'Math', 'QR Code', 'Pie Chart', 'Bar Chart', 'Line Chart', 'Social', 'Word Cloud', 'Youtube'],
         'Deck',
-        ['Animation', 'Auto Slide', 'Background', 'Header Footer', 'Navigation', 'Pager'],
+        ['Animation', 'Auto Slide', 'Background', 'Header Footer', 'Navigation', 'Pager', 'Size', 'More Features', 'Events', 'Actions'],
         'Miscellaneous',
         ['Contact', 'Sponsor', 'Logo'],
       ]
