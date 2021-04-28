@@ -52,7 +52,7 @@ export default {
 };
 
 export const Code = ({src, language, terminal, theme}) => {
-  return `<div class="container" style="width: 600px; height: 600px;">
+  return `<div class="container" style="width: 600px; height: calc(600px *  9 / 16)">
   <deckgo-deck embedded="true">
     <deckgo-slide-code src="${src}" language="${language}" terminal="${terminal}" theme="${theme}">
           <h1 slot="title">slot="title"</h1>

@@ -19,15 +19,38 @@ export namespace Components {
     }
     interface DeckgoSlidePlayground {
         "afterSwipe": () => Promise<void>;
+        /**
+          * Allow toggle to fullscreen
+         */
         "allowFullscreen": boolean;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
+        /**
+          * Per default the playground height will be calculated according the content size available. Using this option you would be able to define your own height.
+         */
         "height": number;
         "hideContent": () => Promise<void>;
         "lazyLoadContent": () => Promise<void>;
         "resizeContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
+        /**
+          * The full link to your Pen, Fiddle oder WebComponents.dev. The component will take care of converting the link to an embeddable one
+         */
         "src": string;
+        /**
+          * The theming option if it can be applied respectivelly if supported by the third party playground, otherwise, 'default'
+         */
         "theme": DeckdeckgoPlaygroundTheme;
+        /**
+          * Per default the playground width will be calculated according the content size available. Using this option you would be able to define your own width.
+         */
         "width": number;
     }
 }
@@ -60,11 +83,37 @@ declare namespace LocalJSX {
         "width"?: number;
     }
     interface DeckgoSlidePlayground {
+        /**
+          * Allow toggle to fullscreen
+         */
         "allowFullscreen"?: boolean;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
+        /**
+          * Per default the playground height will be calculated according the content size available. Using this option you would be able to define your own height.
+         */
         "height"?: number;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
+        /**
+          * The full link to your Pen, Fiddle oder WebComponents.dev. The component will take care of converting the link to an embeddable one
+         */
         "src"?: string;
+        /**
+          * The theming option if it can be applied respectivelly if supported by the third party playground, otherwise, 'default'
+         */
         "theme"?: DeckdeckgoPlaygroundTheme;
+        /**
+          * Per default the playground width will be calculated according the content size available. Using this option you would be able to define your own width.
+         */
         "width"?: number;
     }
     interface IntrinsicElements {

@@ -14,7 +14,7 @@ export default {
 };
 
 export const AspectRatio = ({grid, ratio}) => {
-  return `<div class="container" style="width: 600px; height: 600px">
+  return `<div class="container" style="width: 600px; height: calc(600px *  9 / 16)">
   <deckgo-deck embedded="true">
     <deckgo-slide-aspect-ratio grid="${grid}" ratio="${ratio}">
         <h1 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0">Any elements</h1>
