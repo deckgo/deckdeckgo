@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "www",
+    "public": "storybook-static",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
