@@ -2,6 +2,12 @@
 
 The "WYSIWYG inline editor" component is an HTML floating or sticky rich text editor.
 
+### Video
+
+Have a look at this video where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/As3bXlnHHFE" frameborder="0"></iframe>
+
 ## Installation
 
 This component can be added to your web application with following methods.
