@@ -10,6 +10,16 @@ import {
   showAllRevealElements,
 } from '@deckdeckgo/slide-utils';
 
+/**
+ * @slot title - A title
+ * @slot start - The start element (split)
+ * @slot end - The end element (split)
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-split',
   styleUrl: 'deckdeckgo-slide-split.scss',
@@ -20,9 +30,29 @@ export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
 
   @Event() slideDidLoad: EventEmitter<void>;
 
-  @Prop({reflect: true}) vertical: boolean = false;
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
 
-  @Prop({reflect: true}) type: 'demo' | 'default' = 'default';
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
+
+  /**
+   * Split the slide horizontally (false) or vertically (true)
+   */
+  @Prop({reflect: true})
+  vertical: boolean = false;
+
+  /**
+   * Set to "demo" if you use such component in one of the start or end section
+   */
+  @Prop({reflect: true})
+  type: 'demo' | 'default' = 'default';
 
   async componentDidLoad() {
     await hideLazyLoadImages(this.el);

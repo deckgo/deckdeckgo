@@ -12,6 +12,14 @@ export namespace Components {
         "animationDuration": number;
         "area": string;
         "beforeSwipe": (enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
         "customLoader": boolean;
         "datePattern": string;
         "draw": () => Promise<void>;
@@ -32,6 +40,9 @@ export namespace Components {
         "smooth": string;
         "src": string;
         "ticks": number;
+        /**
+          * The type of the chart, pie, line or bar
+         */
         "type": string;
         "width": number;
         "yAxisDomain": string;
@@ -53,6 +64,14 @@ declare namespace LocalJSX {
         "animation"?: boolean;
         "animationDuration"?: number;
         "area"?: string;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
         "customLoader"?: boolean;
         "datePattern"?: string;
         "grid"?: string;
@@ -62,12 +81,18 @@ declare namespace LocalJSX {
         "marginLeft"?: number;
         "marginRight"?: number;
         "marginTop"?: number;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
         "range"?: string[];
         "separator"?: string;
         "smooth"?: string;
         "src"?: string;
         "ticks"?: number;
+        /**
+          * The type of the chart, pie, line or bar
+         */
         "type"?: string;
         "width"?: number;
         "yAxisDomain"?: string;

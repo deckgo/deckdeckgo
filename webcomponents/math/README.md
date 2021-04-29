@@ -21,7 +21,7 @@ It is developed with [Stencil](https://stenciljs.com) and use [Katex](https://ka
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/math).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-math--math).
 
 ## Develop
 

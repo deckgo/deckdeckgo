@@ -10,18 +10,59 @@ import { DeckdeckgoHighlightCodeCarbonTheme } from "./declarations/deckdeckgo-hi
 import { DeckdeckgoHighlightCodeAnchor } from "./declarations/deckdeckgo-highlight-code-anchor";
 export namespace Components {
     interface DeckgoHighlightCode {
+        /**
+          * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
+         */
         "anchor": string;
+        /**
+          * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
+         */
         "anchorZoom": string;
+        /**
+          * In case you would like to set the code component as being editable
+         */
         "editable": boolean;
+        /**
+          * Find the next anchor
+          * @param enter
+         */
         "findNextAnchor": (enter: boolean) => Promise<DeckdeckgoHighlightCodeAnchor>;
+        /**
+          * Set this attribute to false in case you would like to actually display the anchor value too
+         */
         "hideAnchor": boolean;
+        /**
+          * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or number separated with coma (many lines), group separated with space. For example: 1 3,5 8 14,17
+         */
         "highlightLines": string;
+        /**
+          * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
+         */
         "language": string;
+        /**
+          * Display the number of the lines of code
+         */
         "lineNumbers": boolean;
+        /**
+          * Load or reload the component
+         */
         "load": () => Promise<void>;
+        /**
+          * The web url to the source code you would like to showcase
+         */
         "src": string;
+        /**
+          * Present the code in a stylish "windowed" card
+         */
         "terminal": DeckdeckgoHighlightCodeTerminal;
+        /**
+          * The theme of the selected terminal (applied only in case of carbon)
+         */
         "theme": DeckdeckgoHighlightCodeCarbonTheme;
+        /**
+          * Zoom into code
+          * @param zoom
+         */
         "zoomCode": (zoom: boolean) => Promise<void>;
     }
 }
@@ -38,17 +79,53 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoHighlightCode {
+        /**
+          * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
+         */
         "anchor"?: string;
+        /**
+          * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
+         */
         "anchorZoom"?: string;
+        /**
+          * In case you would like to set the code component as being editable
+         */
         "editable"?: boolean;
+        /**
+          * Set this attribute to false in case you would like to actually display the anchor value too
+         */
         "hideAnchor"?: boolean;
+        /**
+          * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or number separated with coma (many lines), group separated with space. For example: 1 3,5 8 14,17
+         */
         "highlightLines"?: string;
+        /**
+          * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
+         */
         "language"?: string;
+        /**
+          * Display the number of the lines of code
+         */
         "lineNumbers"?: boolean;
+        /**
+          * Emitted when the code was edited (see attribute editable). Propagate the root component itself
+         */
         "onCodeDidChange"?: (event: CustomEvent<HTMLElement>) => void;
+        /**
+          * Emitted when a language is fetched and loaded
+         */
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
+        /**
+          * The web url to the source code you would like to showcase
+         */
         "src"?: string;
+        /**
+          * Present the code in a stylish "windowed" card
+         */
         "terminal"?: DeckdeckgoHighlightCodeTerminal;
+        /**
+          * The theme of the selected terminal (applied only in case of carbon)
+         */
         "theme"?: DeckdeckgoHighlightCodeCarbonTheme;
     }
     interface IntrinsicElements {

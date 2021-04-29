@@ -13,6 +13,7 @@ The following guide is here to try to guide you through the process of contribut
 - [Issues](#issues)
 - [Bugs and features requests](#bugs-and-features-requests)
 - [Translation](#translation)
+- [Documentation](#documentation)
 
 ## How to get Involved
 
@@ -78,5 +79,20 @@ The remote control is not yet translated. If you think that's a must, let us now
 ### Docs
 
 We don't plan to translate the documentation for developers, it seems like quite a big task. That being said, we are welcoming contributions. If you are up to, for sure that would be awesome!
+
+## Documentation
+
+The source of our [documentation](https://docs.deckdeckgo.com) are available in the [docs](https://github.com/deckgo/deckdeckgo/tree/main/docs) app.
+
+Any improvements regarding this subject are welcomed!
+
+If you are looking to document a new or existing web component, proceed as following:
+
+- document properties, methods, styles etc. in the component itself. We leverage the ability to generate automatically [README.md](https://stenciljs.com/docs/docs-readme) at build time with Stencil
+- fetch the component with a CDN in [preview-head.html](https://github.com/deckgo/deckdeckgo/blob/main/docs/.storybook/preview-head.html)
+- add a menu entry in [entry.js](https://github.com/deckgo/deckdeckgo/blob/main/docs/.storybook/preview.js)
+- add a new story and import readme, see folder [components](https://github.com/deckgo/deckdeckgo/tree/main/docs/src/stories/components)
+
+When trying out your documentation locally, run the docs, Storybook, with the "no cache" option to be sure that you get your change (`npm run start-no-cache`)
 
 [deckdeckgo]: https://deckdeckgo.com

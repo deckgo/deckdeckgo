@@ -1,88 +1,36 @@
 {
-  "name": "deckdeckgo-docs",
-  "version": "2.9.2",
-  "description": "The Progressive Web App alternative for simple presentations",
-  "license": "MIT",
-  "files": [
-    "dist/"
-  ],
+  "name": "@deckdeckgo/docs",
+  "version": "3.0.0",
+  "description": "The web open source editor for presentations ",
+  "main": "index.js",
   "scripts": {
-    "docs": "tsc --p ./scripts && node ./.deckgo/markdown-to-html && npx prettier --write src/",
-    "build": "npm run docs && stencil build --prerender",
-    "start": "npm run docs && stencil build --dev --watch --serve",
-    "test": "npm run docs && stencil test --spec --e2e",
-    "test.watch": "npm run docs && stencil test --spec --e2e --watch"
-  },
-  "dependencies": {
-    "@deckdeckgo/charts": "^2.0.1",
-    "@deckdeckgo/color": "^3.1.1",
-    "@deckdeckgo/core": "^8.1.4",
-    "@deckdeckgo/deck-utils": "^3.4.1",
-    "@deckdeckgo/demo": "^2.0.1",
-    "@deckdeckgo/drag-resize-rotate": "^2.0.1",
-    "@deckdeckgo/highlight-code": "^2.5.1",
-    "@deckdeckgo/inline-editor": "^3.0.2",
-    "@deckdeckgo/lazy-img": "^3.0.0",
-    "@deckdeckgo/markdown": "^2.0.1",
-    "@deckdeckgo/math": "^2.0.3",
-    "@deckdeckgo/qrcode": "^2.0.1",
-    "@deckdeckgo/reveal": "^1.0.0",
-    "@deckdeckgo/slide-aspect-ratio": "^3.2.3",
-    "@deckdeckgo/slide-author": "^2.2.2",
-    "@deckdeckgo/slide-big-img": "^2.2.2",
-    "@deckdeckgo/slide-chart": "^2.2.2",
-    "@deckdeckgo/slide-code": "^3.1.2",
-    "@deckdeckgo/slide-content": "^2.3.0",
-    "@deckdeckgo/slide-countdown": "^2.3.0",
-    "@deckdeckgo/slide-gif": "^3.2.2",
-    "@deckdeckgo/slide-playground": "^2.2.2",
-    "@deckdeckgo/slide-poll": "^2.2.3",
-    "@deckdeckgo/slide-qrcode": "^2.2.2",
-    "@deckdeckgo/slide-split": "^2.2.2",
-    "@deckdeckgo/slide-title": "^2.2.4",
-    "@deckdeckgo/slide-utils": "^2.6.1",
-    "@deckdeckgo/slide-video": "^2.2.2",
-    "@deckdeckgo/slide-youtube": "^2.2.2",
-    "@deckdeckgo/social": "^4.0.0",
-    "@deckdeckgo/utils": "^1.8.0",
-    "@deckdeckgo/word-cloud": "^1.0.5",
-    "@deckdeckgo/youtube": "^2.0.1",
-    "@ionic/core": "^5.5.0",
-    "idb-keyval": "^5.0.4"
-  },
-  "devDependencies": {
-    "@deckdeckgo/types": "^1.1.0",
-    "@stencil/core": "^2.0.3",
-    "@stencil/postcss": "^1.0.1",
-    "@stencil/sass": "^1.3.2",
-    "@types/glob": "^7.1.3",
-    "@types/marked": "^2.0.0",
-    "@types/node": "^14.14.36",
-    "autoprefixer": "^9.8.6",
-    "glob": "^7.1.6",
-    "husky": "^5.2.0",
-    "marked": "^2.0.1",
-    "prettier": "2.2.1",
-    "pretty-quick": "^3.1.0",
-    "typescript": "^4.1.2",
-    "workbox-build": "^5.1.4"
+    "start": "start-storybook -p 6006 -s public",
+    "start-no-cache": "start-storybook -p 6006 -s public --no-manager-cache",
+    "build": "build-storybook -s public"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/deckgo/deckdeckgo.git"
+    "url": "git+https://github.com/deckgo/deckdeckgo.git"
   },
-  "keywords": [
-    "ionic",
-    "stencil",
-    "stenciljs",
-    "web components",
-    "pwa",
-    "progressive web app",
-    "presentation",
-    "slides",
-    "slideshow",
-    "talk"
-  ],
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo/issues"
+  },
+  "homepage": "https://docs.deckdeckgo.com",
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@storybook/addon-actions": "^6.2.8",
+    "@storybook/addon-essentials": "^6.2.8",
+    "@storybook/addon-links": "^6.2.8",
+    "@storybook/html": "^6.2.8",
+    "@storybook/theming": "^6.2.8",
+    "babel-loader": "^8.2.2",
+    "husky": "^6.0.0",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
+  },
+  "dependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"

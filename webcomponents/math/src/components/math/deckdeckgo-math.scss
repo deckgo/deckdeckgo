@@ -8,6 +8,10 @@
 
 :host([editable]) {
   div.math:empty:not(:focus):after {
+    /**
+     * @prop --deckgo-math-empty-text: Place holder in case editable is set to true
+     * @default Click to add your math expression
+     */
     content: var(--deckgo-math-empty-text, "Click to add your math expression");
   }
 }
@@ -24,29 +28,81 @@
 }
 
 div.deckgo-math-container {
+  /**
+   * @prop --deckgo-math-color: Color
+   * @default inherit
+   */
   color: var(--deckgo-math-color, inherit);
+  /**
+   * @prop --deckgo-math-background: Background
+   */
   background: var(--deckgo-math-background);
+  /**
+   * @prop --deckgo-math-padding: Padding
+   * @default 8px
+   */
   padding: var(--deckgo-math-padding, 8px);
+  /**
+   * @prop --deckgo-math-border-radius: Border radius
+   */
   border-radius: var(--deckgo-math-border-radius);
 
+  /**
+   * @prop --deckgo-math-margin: Margin
+   * @default 0px
+   */
   margin: var(--deckgo-math-margin, 0px);
 
+  /**
+   * @prop --deckgo-math-direction: Direction
+   */
   direction: var(--deckgo-math-direction);
+  /**
+   * @prop --deckgo-math-text-align: Text alignment
+   */
   text-align: var(--deckgo-math-text-align);
 
+  /**
+   * @prop --deckgo-math-container-display: Container display
+   * @default bloack
+   */
   display: var(--deckgo-math-container-display, block);
+  /**
+   * @prop --deckgo-math-container-justify-content: Container justify-content attribute
+   */
   justify-content: var(--deckgo-math-container-justify-content);
+  /**
+   * @prop --deckgo-math-container-flex-direction: Container flex-direction attribute
+   */
   flex-direction: var(--deckgo-math-container-flex-direction);
+  /**
+   * @prop --deckgo-math-container-align-items: Container align-items attribute
+   */
   align-items: var(--deckgo-math-container-align-items);
 
   div.math {
+    /**
+     * @prop --deckgo-math-scroll: Scroll property of the expression(s)
+     * @default scroll
+     */
     overflow-y: var(--deckgo-math-scroll, scroll);
 
     white-space: pre-wrap;
 
+    /**
+     * @prop --deckgo-math-font-size: Font size property of the expression(s)
+     */
     font-size: var(--deckgo-math-font-size);
+    /**
+     * @prop --deckgo-math-min-height: Minimal height property of the expression(s)
+     * @default 23px
+     */
     min-height: var(--deckgo-math-min-height, 23px);
 
+    /**
+     * @prop --deckgo-math-display: Display property of the expression(s)
+     * @default block
+     */
     display: var(--deckgo-math-display, block);
   }
 }

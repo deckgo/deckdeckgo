@@ -36,34 +36,89 @@ enum DeckdeckgoLineChartAxisDomain {
 export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
 
+  /**
+   * The width of the chart
+   */
   @Prop({mutable: true}) width: number;
+
+  /**
+   * The height of the chart
+   */
   @Prop({mutable: true}) height: number;
 
+  /**
+   * The path to the source file of the data
+   */
   @Prop() src: string;
+  /**
+   * The line separator use in your csv file
+   */
   @Prop() separator: string = ';';
 
+  /**
+   * Set to `true` in case you would like to load (fetch) the data by yourself. Useful in case your data are protected with a token.
+   */
   @Prop() customLoader: boolean = false;
 
-  // All supported date format: https://date-fns.org/v2.0.0-alpha.26/docs/parse
+  /**
+   * The pattern for the dates. All supported date format: https://date-fns.org/v2.0.0-alpha.26/docs/parse.
+   */
   @Prop() datePattern: string = 'yyyy-MM-dd';
 
+  /**
+   * The margin top of the chart in pixel
+   */
   @Prop() marginTop: number = 32;
+  /**
+   * The margin bottom of the chart in pixel
+   */
   @Prop() marginBottom: number = 64;
+  /**
+   * The margin left of the chart in pixel
+   */
   @Prop() marginLeft: number = 32;
+  /**
+   * The margin right of the chart in pixel
+   */
   @Prop() marginRight: number = 32;
 
+  /**
+   * The y axis behavior.
+   */
   @Prop() yAxisDomain: string = DeckdeckgoLineChartAxisDomain.MAX;
 
+  /**
+   * Render smooth lines or with edges.
+   */
   @Prop() smooth: boolean = true;
+  /**
+   * Draw the area.
+   */
   @Prop() area: boolean = true;
+  /**
+   * Render ticks on the axes.
+   */
   @Prop() ticks: number;
+  /**
+   * Render a grid behind the chart.
+   */
   @Prop() grid: boolean = false;
 
+  /**
+   * Display multiple graphs and animate the transition between these
+   */
   @Prop() animation: boolean = false;
+  /**
+   * Duration of the transition between graphs
+   */
   @Prop() animationDuration: number = 1000;
 
+  /**
+   * The event to be processed to load the data if you are using a custom loader.
+   * @private
+   */
   @Event()
-  private chartCustomLoad: EventEmitter<string>;
+  chartCustomLoad: EventEmitter<string>;
 
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private x: any;
@@ -81,6 +136,11 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     await this.draw();
   }
 
+  /**
+   * In case you would like to redraw your chart, for example on resize of the window.
+   * @param width
+   * @param height
+   */
   @Method()
   draw(width?: number, height?: number): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -134,11 +194,17 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     }
   }
 
+  /**
+   * If you are using animation, this method is used to display the next data respectively the next chart.
+   */
   @Method()
   async next() {
     await this.prevNext(true);
   }
 
+  /**
+   * If you are using animation, this method is used to display the previous data respectively the previous chart.
+   */
   @Method()
   async prev() {
     await this.prevNext(false);
@@ -162,6 +228,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     }
   }
 
+  /**
+   * Is animation at the begin of the serie.
+   */
   @Method()
   isBeginning(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
@@ -174,6 +243,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     });
   }
 
+  /**
+   * Is animation at the end of the serie.
+   */
   @Method()
   isEnd(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {

@@ -22,6 +22,9 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoPager {
+        /**
+          * Emitted when the user click on the pager
+         */
         "onPagerClick"?: (event: CustomEvent<void>) => void;
     }
     interface IntrinsicElements {

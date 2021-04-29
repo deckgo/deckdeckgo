@@ -13,6 +13,9 @@ export const config: Config = {
     {
       type: 'www',
       serviceWorker: null
+    },
+    {
+      type: 'docs-readme',
     }
   ],
   plugins: [
@@ -20,8 +23,5 @@ export const config: Config = {
     postcss({
       plugins: [autoprefixer()]
     })
-  ],
-  copy: [
-    {src: 'components/utils/qrcode-generator/qrcode.js', dest: 'components/utils/qrcode-generator/qrcode.js'}
   ]
 };

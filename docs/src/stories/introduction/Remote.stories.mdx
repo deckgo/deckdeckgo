@@ -1,0 +1,68 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+import RemoteControlTimer from '../../assets/img/screenshots/remote-control/deckdeckgo-remote-control-timer.png';
+
+<Meta title="Introduction/Remote Control" />
+
+# Remote Control
+
+Your slides can be controlled with a [remote control] 📱.
+
+## Table of contents
+
+- [How does it work](#how-does-it-work)
+- [Privacy](#privacy)
+- [Give it a try](#give-it-a-try)
+- [Control your slides](#control-your-slides)
+  - [Features](#features)
+- [Time tracker](#time-tracker)
+
+## How does it work
+
+If you are using the starter kit, out of the box, your presentation will signal itself as "controllable" and will therefore be "discoverable". We are using a small NodeJS server for surch purpose.
+
+Once the presentation is linked to the [remote control], the communication between these will happen through a real-time channel using [WebRTC](https://webrtc.org/).
+
+## Privacy
+
+No data are exchanged as long as you do not grant access to your slides. A random number will be used to request a connection from the [remote control] to your deck. Such requests can be accepted or cancelled. A popup will appear for such purpose over your presentation.
+
+## Give it a try
+
+Better than a long description, the DeckDeckGo demo website implements a deck and receiver to let you interact with this application, just give it a try:
+
+1. Open the DeckDeckGo demo website 👉 https://demo.deckdeckgo.com
+2. Start the [remote control] PWA 👉 https://deckdeckgo.app
+3. Have fun 🎉
+
+## Control your slides
+
+Use the [remote control] to remotely take control of your presentation. It makes it easy to interact with the slides while you are focusing on your talk/audience.
+
+### Features
+
+- Switch between slides and/or swipe your slides
+- Play and pause YouTube video
+- Draw over your slide deck
+- Highlight elements of your presentation
+
+### Video
+
+Have a look at this video where we demonstrate it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3o3oGBTTRSs" frameBorder="0"></iframe>
+
+And this one where we demonstrate how to use it!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nxjHYBLTw5E" frameBorder="0"></iframe>
+
+## Time tracker
+
+The [remote control] lets you track your talk's time too. This application implements local notifications to inform you when your talk is about to finish or is finished.
+
+### Screenshot
+
+<img src={RemoteControlTimer} alt="The DeckDeckGo remote control timer" style={{maxWidth: '200px'}} />
+
+[deckdeckgo]: https://deckdeckgo.com
+[remote control]: https://deckdeckgo.app

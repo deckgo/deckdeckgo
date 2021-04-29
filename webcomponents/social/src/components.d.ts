@@ -7,12 +7,30 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoSocial {
+        /**
+          * Your Dev username. It will be concatenated automatically with https://dev.to/
+         */
         "dev": string;
+        /**
+          * In case you would like to provide the URI of your choice
+         */
         "fullUrl": string;
+        /**
+          * Your Github username. It will be concatenated automatically with https://github.com/
+         */
         "github": string;
         "lazyLoadContent": () => Promise<void>;
+        /**
+          * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+         */
         "linkedin": string;
+        /**
+          * Your Medium username. username will be replaced automatically from https://username.medium.com/
+         */
         "medium": string;
+        /**
+          * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+         */
         "twitter": string;
     }
 }
@@ -29,11 +47,29 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSocial {
+        /**
+          * Your Dev username. It will be concatenated automatically with https://dev.to/
+         */
         "dev"?: string;
+        /**
+          * In case you would like to provide the URI of your choice
+         */
         "fullUrl"?: string;
+        /**
+          * Your Github username. It will be concatenated automatically with https://github.com/
+         */
         "github"?: string;
+        /**
+          * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+         */
         "linkedin"?: string;
+        /**
+          * Your Medium username. username will be replaced automatically from https://username.medium.com/
+         */
         "medium"?: string;
+        /**
+          * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+         */
         "twitter"?: string;
     }
     interface IntrinsicElements {

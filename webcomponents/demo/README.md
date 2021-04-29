@@ -20,7 +20,7 @@ It is largely inspired and based on the awesome [work](https://github.com/ionic-
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/demo).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-demo--demo).
 
 ## Develop
 

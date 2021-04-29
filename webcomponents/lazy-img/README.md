@@ -20,7 +20,7 @@ It leverages the IntersectionObserver API to lazy load images and also allows yo
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/lazy-img).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-lazy-image--lazy-image).
 
 ## Develop
 

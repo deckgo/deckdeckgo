@@ -14,6 +14,9 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null,
     },
+    {
+      type: 'docs-readme',
+    }
   ],
   plugins: [
     sass({

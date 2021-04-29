@@ -1,29 +1,64 @@
 {
   "hosting": {
-    "public": "www",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "public": "storybook-static",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
         "destination": "/index.html"
       }
     ],
-    "headers": [{
-      "source" : "sw.js",
-      "headers" : [{
-        "key" : "Cache-Control",
-        "value" : "public,max-age=0,must-revalidate"
-      }]
-    },{
-      "source" : "/",
-      "headers" : [{
-        "key" : "Cache-Control",
-        "value" : "public,max-age=0,must-revalidate"
-      }]
-    }]
+    "headers": [
+      {
+        "source": "sw.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=0,must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "/",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=0,must-revalidate"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/docs/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/edit/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/slides/**",
+        "destination": "/?path=/story/templates-templates--page",
+        "type": 301
+      },
+      {
+        "source": "/components/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/deck/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/misc/**",
+        "destination": "/",
+        "type": 301
+      }
+    ]
   }
 }

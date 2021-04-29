@@ -18,7 +18,7 @@ A Web Component to drag, resize and rotate any element.
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/drr).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-drag-resize-rotate--drag-resize-rotate).
 
 ## Develop
 

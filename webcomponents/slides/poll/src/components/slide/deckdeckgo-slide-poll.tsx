@@ -11,6 +11,17 @@ import {initHowTo} from '../../utils/deckdeckgo-slide-poll.howto.utils';
 
 import {CommunicationService} from '../../services/communication/communication.service';
 
+/**
+ * @slot question - A question
+ * @slot answer-x - X possible answers to the question
+ * @slot how-to - Explain how can attendees vote. Note also that if you provide a string 0 in the content of your slot how-to, the information will be automatically converted to the real key of your poll (the key your audience could use to reach it and vote).
+ * @slot awaiting-votes - A message displayed until first vote
+ * @slot notes - Some notes related to this slide
+ * @slot actions - Custom actions for this slide
+ * @slot background - A custom background for this slide
+ * @slot header - A custom header for this slide
+ * @slot footer - A custom footer for this slide
+ */
 @Component({
   tag: 'deckgo-slide-poll',
   styleUrl: 'deckdeckgo-slide-poll.scss',
@@ -19,18 +30,36 @@ import {CommunicationService} from '../../services/communication/communication.s
 export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
 
+  /**
+   * Triggered when the slide is loaded
+   */
   @Event() slideDidLoad: EventEmitter<void>;
 
   @Event()
   private pollUpdated: EventEmitter<void>;
 
+  /**
+   * The url of the socket (server) where the poll (chat room) is going to be created
+   */
   @Prop({reflect: true}) socketUrl: string = 'https://api.deckdeckgo.com';
+  /**
+   * The path to reach the socket server
+   */
   @Prop({reflect: true}) socketPath: string = '/poll';
 
+  /**
+   * In case you would not like that the template try to reach the socket server
+   */
   @Prop() connectPollSocket: boolean = true;
 
+  /**
+   * The url which leads to the voting application respectively where your audience will be available to make their voice heard aka where they will be able to vote
+   */
   @Prop({reflect: true}) pollLink: string = 'https://app.deckdeckgo.com/poll';
 
+  /**
+   * Per default the template will always try to create a new poll but if you set this value, it will try to retrieve an existing poll
+   */
   @Prop({reflect: true, mutable: true})
   pollKey: string;
 
@@ -54,6 +83,18 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
 
   private readonly debounceUpdateChart: Function;
   private readonly debounceUpdatePoll: Function;
+
+  /**
+   * If you define a background for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customBackground: boolean = false;
+
+  /**
+   * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+   */
+  @Prop({reflect: true})
+  customActions: boolean = false;
 
   constructor() {
     this.debounceUpdateChart = debounce(this.updateChartCallback, 500);

@@ -7,13 +7,37 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
         "content": string;
+        /**
+          * The <deckgo-qrcode/> component exposes the following method in case you would like to refresh your QR code, for example on resize of the window on in case you would set its content asynchronously.
+         */
         "generate": () => Promise<void>;
+        /**
+          * An alternate text for the image of the QR code
+         */
         "qrAlt": string;
+        /**
+          * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
         "qrBackgroundColor": string;
+        /**
+          * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+         */
         "qrCellSize": number;
+        /**
+          * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
         "qrFillColor": string;
+        /**
+          * The size of the code margin, in case you would like more spacing
+         */
         "qrMargin": number;
+        /**
+          * The type of QR code to generate, <svg/> or <img/>
+         */
         "type": string;
     }
 }
@@ -30,12 +54,33 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
         "content"?: string;
+        /**
+          * An alternate text for the image of the QR code
+         */
         "qrAlt"?: string;
+        /**
+          * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
         "qrBackgroundColor"?: string;
+        /**
+          * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+         */
         "qrCellSize"?: number;
+        /**
+          * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
         "qrFillColor"?: string;
+        /**
+          * The size of the code margin, in case you would like more spacing
+         */
         "qrMargin"?: number;
+        /**
+          * The type of QR code to generate, <svg/> or <img/>
+         */
         "type"?: string;
     }
     interface IntrinsicElements {

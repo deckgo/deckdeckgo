@@ -9,16 +9,45 @@ import { DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal } f
 export namespace Components {
     interface DeckgoSlideCode {
         "afterSwipe": () => Promise<void>;
+        /**
+          * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
+         */
         "anchor": string;
+        /**
+          * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
+         */
         "anchorZoom": string;
         "beforeSwipe": (_enter: boolean, _reveal: boolean) => Promise<boolean>;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions": boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground": boolean;
+        /**
+          * Set this attribute to false in case you would like to actually display the anchor value too
+         */
         "hideAnchor": boolean;
         "hideContent": () => Promise<void>;
+        /**
+          * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
+         */
         "language": string;
         "lazyLoadContent": () => Promise<void>;
         "revealContent": () => Promise<void>;
+        /**
+          * The web url to the source code you would like to showcase
+         */
         "src": string;
+        /**
+          * Present the code in a stylish "windowed" card
+         */
         "terminal": DeckdeckgoHighlightCodeTerminal;
+        /**
+          * The theme of the selected terminal (applied only in case of carbon)
+         */
         "theme": DeckdeckgoHighlightCodeCarbonTheme;
     }
 }
@@ -35,14 +64,49 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoSlideCode {
+        /**
+          * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
+         */
         "anchor"?: string;
+        /**
+          * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
+         */
         "anchorZoom"?: string;
+        /**
+          * If you provide actions for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customActions"?: boolean;
+        /**
+          * If you define a background for the all deck but, a specific one for this slide, set this option to true
+         */
+        "customBackground"?: boolean;
+        /**
+          * Set this attribute to false in case you would like to actually display the anchor value too
+         */
         "hideAnchor"?: boolean;
+        /**
+          * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
+         */
         "language"?: string;
+        /**
+          * An event triggered when the code is scrolled
+         */
         "onScrolling"?: (event: CustomEvent<boolean>) => void;
+        /**
+          * Triggered when the slide is loaded
+         */
         "onSlideDidLoad"?: (event: CustomEvent<void>) => void;
+        /**
+          * The web url to the source code you would like to showcase
+         */
         "src"?: string;
+        /**
+          * Present the code in a stylish "windowed" card
+         */
         "terminal"?: DeckdeckgoHighlightCodeTerminal;
+        /**
+          * The theme of the selected terminal (applied only in case of carbon)
+         */
         "theme"?: DeckdeckgoHighlightCodeCarbonTheme;
     }
     interface IntrinsicElements {
