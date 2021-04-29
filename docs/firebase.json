@@ -27,6 +27,38 @@
           }
         ]
       }
+    ],
+    "redirects": [
+      {
+        "source": "/docs/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/edit/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/slides/**",
+        "destination": "/?path=/story/templates-templates--page",
+        "type": 301
+      },
+      {
+        "source": "/components/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/deck/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/misc/**",
+        "destination": "/",
+        "type": 301
+      }
     ]
   }
 }
