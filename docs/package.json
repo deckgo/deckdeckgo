@@ -4,9 +4,9 @@
   "description": "The web open source editor for presentations ",
   "main": "index.js",
   "scripts": {
-    "start": "start-storybook -p 6006 -s favicon",
-    "start-no-cache": "start-storybook -p 6006 -s favicon --no-manager-cache",
-    "build": "build-storybook -s favicon"
+    "start": "start-storybook -p 6006 -s public",
+    "start-no-cache": "start-storybook -p 6006 -s public --no-manager-cache",
+    "build": "build-storybook -s public"
   },
   "repository": {
     "type": "git",
