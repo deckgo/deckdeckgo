@@ -20,7 +20,7 @@ It is developed with [Stencil](https://stenciljs.com) and use the project [qrcod
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/qrcode).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-qr-code--qr-code).
 
 ## Develop
 

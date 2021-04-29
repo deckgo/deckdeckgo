@@ -20,7 +20,7 @@ It is fully configurable in terms of colors, you could define the set of colors 
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/color).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-color--color).
 
 ## Develop
 

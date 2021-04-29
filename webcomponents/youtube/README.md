@@ -20,7 +20,7 @@ It acts as a layer over the [YouTube Player API Reference for iframe Embeds](htt
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/youtube).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-youtube--youtube).
 
 ## Develop
 

@@ -20,7 +20,7 @@ It creates a floating editor bar or a sticky footer bar that shows up when you s
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/inline-editor).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-inline-editor--inline-editor).
 
 ## Develop
 
