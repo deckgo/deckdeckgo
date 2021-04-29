@@ -18,7 +18,7 @@ A Web Component to generate word clouds.
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/word-cloud).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-word-cloud--word-cloud).
 
 ## Develop
 

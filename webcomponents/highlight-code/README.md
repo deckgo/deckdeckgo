@@ -22,7 +22,7 @@ Furthermore, the inspiration for the design of the cards comes from the amazing 
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/code).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-highlight-code--highlight-code).
 
 ## Develop
 

@@ -18,7 +18,7 @@ A Web Component to generate social link to your Twitter, Dev, Medium, LinkedIn, 
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/social).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-social--social).
 
 ## Develop
 

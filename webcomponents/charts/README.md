@@ -20,7 +20,7 @@ It is developed with [Stencil](https://stenciljs.com) and use [D3js](https://d3j
 
 ## Getting Started
 
-To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/components/charts).
+To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-pie-chart--pie-chart).
 
 ## Develop
 
