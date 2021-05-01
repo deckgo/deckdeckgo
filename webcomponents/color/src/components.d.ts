@@ -8,18 +8,28 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DeckdeckgoPalette, DeckdeckgoPaletteColor } from "./utils/deckdeckgo-palette";
 export namespace Components {
     interface DeckgoColor {
+        /**
+          * The current selected color provided as hexadecimal value
+         */
         "colorHex": string;
+        /**
+          * The current selected color provided as a rgb value
+         */
         "colorRgb": string;
-        "label": boolean;
-        "more": boolean;
-        "moreAlt": string;
+        /**
+          * An accessibility label for the color input field
+         */
+        "inputAlt": string;
+        /**
+          * The palette of color.
+         */
         "palette": DeckdeckgoPalette[];
     }
     interface DeckgoColorInput {
         "colorHex": string;
         "colorRgb": string;
         "customColorRgb": string;
-        "moreAlt": string;
+        "inputAlt": string;
     }
 }
 declare global {
@@ -42,19 +52,32 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoColor {
+        /**
+          * The current selected color provided as hexadecimal value
+         */
         "colorHex"?: string;
+        /**
+          * The current selected color provided as a rgb value
+         */
         "colorRgb"?: string;
-        "label"?: boolean;
-        "more"?: boolean;
-        "moreAlt"?: string;
+        /**
+          * An accessibility label for the color input field
+         */
+        "inputAlt"?: string;
+        /**
+          * Emit the selected color
+         */
         "onColorChange"?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;
+        /**
+          * The palette of color.
+         */
         "palette"?: DeckdeckgoPalette[];
     }
     interface DeckgoColorInput {
         "colorHex"?: string;
         "colorRgb"?: string;
         "customColorRgb"?: string;
-        "moreAlt"?: string;
+        "inputAlt"?: string;
         "onSelectHexColor"?: (event: CustomEvent<DeckdeckgoPaletteColor>) => void;
     }
     interface IntrinsicElements {

@@ -12,15 +12,25 @@ import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../
 export class DeckdeckgoColor {
   @Element() el: HTMLElement;
 
-  @Prop({mutable: true}) palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
+  /**
+   * The palette of color.
+   */
+  @Prop({mutable: true})
+  palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
 
-  @Prop() more: boolean = true;
-  @Prop() moreAlt: string = 'More';
+  /**
+   * An accessibility label for the color input field
+   */
+  @Prop() inputAlt: string = 'Input a color (hex)';
 
+  /**
+   * The current selected color provided as hexadecimal value
+   */
   @Prop() colorHex: string;
+  /**
+   * The current selected color provided as a rgb value
+   */
   @Prop() colorRgb: string;
-
-  @Prop() label: boolean = true;
 
   @State()
   private selectedColorHex: string;
@@ -34,6 +44,9 @@ export class DeckdeckgoColor {
   @State()
   private selectedCustomColorRgb: string;
 
+  /**
+   * Emit the selected color
+   */
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
 
@@ -155,7 +168,7 @@ export class DeckdeckgoColor {
     return (
       <Host>
         {this.renderPalette()}
-        {this.renderMore()}
+        {this.renderInput()}
       </Host>
     );
   }
@@ -186,19 +199,14 @@ export class DeckdeckgoColor {
     }
   }
 
-  private renderMore() {
-    if (this.more) {
-      return <deckgo-color-input
+  private renderInput() {
+    return (
+      <deckgo-color-input
         colorHex={this.selectedColorHex}
         colorRgb={this.selectedColorRgb}
         customColorRgb={this.selectedCustomColorRgb}
-        moreAlt={this.moreAlt}
-        onSelectHexColor={this.selectColor}
-        >
-        <slot name="custom-label">Custom</slot>
-      </deckgo-color-input>
-    } else {
-      return undefined;
-    }
+        inputAlt={this.inputAlt}
+        onSelectHexColor={this.selectColor}></deckgo-color-input>
+    );
   }
 }

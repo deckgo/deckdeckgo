@@ -2,35 +2,35 @@
   display: flex;
   position: relative;
 
-  margin: var(--deckgo-color-button-margin, 4px);
+  margin: var(--deckgo-color-input-margin, 4px);
 }
 
 span {
-  width: var(--deckgo-color-button-width, 28px);
-  height: var(--deckgo-color-button-height, 28px);
+  width: var(--deckgo-color-hash-width, 28px);
+  height: var(--deckgo-color-hash-height, 28px);
 
   display: inline-flex;
   justify-content: center;
   align-items: center;
 
-  background: rgb(240, 240, 240) none repeat scroll 0 0;
-  color: rgb(152, 161, 164);
+  background: var(--deckgo-color-hash-background, rgb(240, 240, 240) none repeat scroll 0 0);
+  color: var(--deckgo-color-hash-color, rgb(152, 161, 164));
 
-  border-radius: 4px 0 0 4px;;
+  border-radius: var(--deckgo-color-hash-border-radius, 4px 0 0 4px);
 }
 
 input {
-  color: rgb(102, 102, 102);
+  color: var(--deckgo-color-input-color, rgb(102, 102, 102));
 
   border: none;
   outline: none;
 
-  height: 28px;
+  height: var(--deckgo-color-input-height, 28px);
 
-  box-shadow: rgb(240, 240, 240) 0 0 0 1px inset;
-  border-radius: 0 4px 4px 0;
+  box-shadow: var(--deckgo-color-input-box-shadow, rgb(240, 240, 240) 0 0 0 1px inset);
+  border-radius: var(--deckgo-color-input-border-radius, 0 4px 4px 0);
 
-  padding: 0 4px;
+  padding: var(--deckgo-color-input-padding, 0 4px);
 
-  max-width: 136px;
+  max-width: var(--deckgo-color-input-max-width, 136px);
 }

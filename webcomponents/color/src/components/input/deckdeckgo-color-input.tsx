@@ -24,7 +24,7 @@ export class DeckdeckgoColorInput {
   customColorRgb: string;
 
   @Prop()
-  moreAlt: string;
+  inputAlt: string;
 
   @State()
   private color: string;
@@ -85,7 +85,7 @@ export class DeckdeckgoColorInput {
         <input
           type="text"
           name="color-picker"
-          aria-label={this.moreAlt}
+          aria-label={this.inputAlt}
           onInput={($event: UIEvent) => this.debounceSelectColor(($event.target as InputTargetEvent).value)}
           value={this.color?.replace('#', '')}
         />

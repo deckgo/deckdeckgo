@@ -6,6 +6,8 @@ The "Drag, Resize and Rotate" is a Web Component to drag, resize and rotate any 
 
 This component can be added to your web application with following methods.
 
+> If you are using our developer kit to create a presention, this component is already included
+
 ### Using from a CDN
 
 It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo](https://deckdeckgo.com) lazy image component from a CDN. To do so, add the following include script in the main HTML file of your project:
