@@ -828,6 +828,7 @@ export class DeckdeckgoInlineEditor {
           action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'background-color' : 'color'}
           palette={this.palette}
           mobile={this.mobile}
+          containers={this.containers}
           onExecCommand={($event: CustomEvent<ExecCommandAction>) => this.onExecCommand($event)}></deckgo-ie-color-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.IMAGE) {

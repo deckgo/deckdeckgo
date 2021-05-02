@@ -1,10 +1,11 @@
-import {Component, Event, EventEmitter, h, Prop, Host} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
 
 import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
 import {hexToRgb} from '@deckdeckgo/utils';
 
 import {clearTheSelection, getSelection} from '../../../utils/selection.utils';
+import {findStyleNode, getAnchorNode} from '../../../utils/node.utils';
 
 import {ExecCommandAction} from '../../../interfaces/interfaces';
 
@@ -26,13 +27,39 @@ export class ColorActions {
   @Prop()
   mobile: boolean;
 
+  @Prop()
+  containers: string;
+
+  @State()
+  private colorRgb: string | undefined;
+
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
   private range: Range | undefined;
 
-  componentWillLoad() {
+  async componentWillLoad() {
     this.range = this.selection?.getRangeAt(0);
+
+    await this.initColor();
+  }
+
+  private async initColor() {
+    const container: HTMLElement | undefined = getAnchorNode(this.selection);
+
+    if (!container) {
+      return;
+    }
+
+    const style: Node | null = await findStyleNode(container, this.action === 'color' ? 'color' : 'background-color', this.containers);
+
+    if (!style) {
+      return;
+    }
+
+    const css: CSSStyleDeclaration = window?.getComputedStyle(style as HTMLElement);
+
+    this.colorRgb = (this.action === 'color' ? css.color : css.backgroundColor).replace('rgb(', '').replace(')', '');
   }
 
   private async selectColor($event: CustomEvent) {
@@ -79,7 +106,7 @@ export class ColorActions {
 
     return (
       <Host class={cssClass}>
-        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} palette={this.palette}></deckgo-color>
+        <deckgo-color color-rgb={this.colorRgb} onColorChange={($event: CustomEvent) => this.selectColor($event)} palette={this.palette}></deckgo-color>
       </Host>
     );
   }
