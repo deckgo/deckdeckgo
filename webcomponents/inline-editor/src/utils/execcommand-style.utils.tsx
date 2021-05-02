@@ -1,16 +1,14 @@
 import {ExecCommandStyle} from '../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from './utils';
+import {findStyleNode, getAnchorNode} from './node.utils';
 
 export async function execCommandStyle(selection: Selection, action: ExecCommandStyle, containers: string) {
-  const anchorNode: Node = selection.anchorNode;
+  const container: HTMLElement | undefined = getAnchorNode(selection);
 
-  if (!anchorNode) {
+  if (!container) {
     return;
   }
-
-  const container: HTMLElement =
-    anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.COMMENT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
 
   const sameSelection: boolean = container && container.innerText === selection.toString();
 
@@ -107,30 +105,6 @@ async function getStyleValue(container: HTMLElement, action: ExecCommandStyle, c
   }
 
   return action.value;
-}
-
-async function findStyleNode(node: Node, style: string, containers: string): Promise<Node | null> {
-  // Just in case
-  if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
-    return null;
-  }
-
-  if (!node.parentNode) {
-    return null;
-  }
-
-  if (DeckdeckgoInlineEditorUtils.isContainer(containers, node)) {
-    return null;
-  }
-
-  const hasStyle: boolean =
-    (node as HTMLElement).style[style] !== null && (node as HTMLElement).style[style] !== undefined && (node as HTMLElement).style[style] !== '';
-
-  if (hasStyle) {
-    return node;
-  }
-
-  return await findStyleNode(node.parentNode, style, containers);
 }
 
 // We try to not keep <span/> in the tree if we can use text

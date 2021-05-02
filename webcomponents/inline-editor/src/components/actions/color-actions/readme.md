@@ -1,19 +1,16 @@
 # deckgo-ie-color-actions
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
-| Property    | Attribute | Description | Type                            | Default     |
-| ----------- | --------- | ----------- | ------------------------------- | ----------- |
-| `action`    | `action`  |             | `"background-color" \| "color"` | `undefined` |
-| `mobile`    | `mobile`  |             | `boolean`                       | `undefined` |
-| `palette`   | --        |             | `DeckdeckgoPalette[]`           | `undefined` |
-| `selection` | --        |             | `Selection`                     | `undefined` |
-
+| Property     | Attribute    | Description | Type                            | Default     |
+| ------------ | ------------ | ----------- | ------------------------------- | ----------- |
+| `action`     | `action`     |             | `"background-color" \| "color"` | `undefined` |
+| `containers` | `containers` |             | `string`                        | `undefined` |
+| `mobile`     | `mobile`     |             | `boolean`                       | `undefined` |
+| `palette`    | --           |             | `DeckdeckgoPalette[]`           | `undefined` |
+| `selection`  | --           |             | `Selection`                     | `undefined` |
 
 ## Events
 
@@ -21,18 +18,18 @@
 | ------------- | ----------- | -------------------------------- |
 | `execCommand` |             | `CustomEvent<ExecCommandAction>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [deckgo-inline-editor](../../inline-editor)
+- [deckgo-inline-editor](../../inline-editor)
 
 ### Depends on
 
 - deckgo-color
 
 ### Graph
+
 ```mermaid
 graph TD;
   deckgo-ie-color-actions --> deckgo-color
@@ -41,6 +38,6 @@ graph TD;
   style deckgo-ie-color-actions fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
