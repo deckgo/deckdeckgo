@@ -28,7 +28,7 @@ export class DeckdeckgoColor {
    */
   @Prop() colorHex: string;
   /**
-   * The current selected color provided as a rgb value
+   * The current selected color provided as a rgb value (without "rgb()", only value such as for example 255, 67, 54)
    */
   @Prop() colorRgb: string;
 

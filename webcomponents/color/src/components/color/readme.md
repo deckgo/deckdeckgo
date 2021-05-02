@@ -165,12 +165,12 @@ export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
 
 ## Properties
 
-| Property   | Attribute   | Description                                              | Type                  | Default                 |
-| ---------- | ----------- | -------------------------------------------------------- | --------------------- | ----------------------- |
-| `colorHex` | `color-hex` | The current selected color provided as hexadecimal value | `string`              | `undefined`             |
-| `colorRgb` | `color-rgb` | The current selected color provided as a rgb value       | `string`              | `undefined`             |
-| `inputAlt` | `input-alt` | An accessibility label for the color input field         | `string`              | `'Input a color (hex)'` |
-| `palette`  | --          | The palette of color.                                    | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE`       |
+| Property   | Attribute   | Description                                                                                                      | Type                  | Default                 |
+| ---------- | ----------- | ---------------------------------------------------------------------------------------------------------------- | --------------------- | ----------------------- |
+| `colorHex` | `color-hex` | The current selected color provided as hexadecimal value                                                         | `string`              | `undefined`             |
+| `colorRgb` | `color-rgb` | The current selected color provided as a rgb value (without "rgb()", only value such as for example 255, 67, 54) | `string`              | `undefined`             |
+| `inputAlt` | `input-alt` | An accessibility label for the color input field                                                                 | `string`              | `'Input a color (hex)'` |
+| `palette`  | --          | The palette of color.                                                                                            | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE`       |
 
 
 ## Events
