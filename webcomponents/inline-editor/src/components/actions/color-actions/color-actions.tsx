@@ -4,6 +4,8 @@ import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
 import {hexToRgb} from '@deckdeckgo/utils';
 
+import {clearTheSelection, getSelection} from '../../../utils/selection.utils';
+
 import {ExecCommandAction} from '../../../interfaces/interfaces';
 
 @Component({
@@ -27,6 +29,12 @@ export class ColorActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
+  private range: Range | undefined;
+
+  componentWillLoad() {
+    this.range = this.selection?.getRangeAt(0);
+  }
+
   private async selectColor($event: CustomEvent) {
     if (!this.selection || !$event || !$event.detail) {
       return;
@@ -40,11 +48,16 @@ export class ColorActions {
       return;
     }
 
-    const text: string = this.selection.toString();
+    const text: string = this.range.toString();
 
     if (!text || text.length <= 0) {
       return;
     }
+
+    const selection: Selection | undefined = await getSelection();
+    await clearTheSelection();
+
+    selection?.addRange(this.range);
 
     this.execCommand.emit({
       cmd: 'style',
@@ -66,9 +79,7 @@ export class ColorActions {
 
     return (
       <Host class={cssClass}>
-        <deckgo-color label={false} onColorChange={($event: CustomEvent) => this.selectColor($event)} more={false} palette={this.palette}>
-          <div slot="more"></div>
-        </deckgo-color>
+        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} palette={this.palette}></deckgo-color>
       </Host>
     );
   }

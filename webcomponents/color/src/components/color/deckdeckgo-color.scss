@@ -1,89 +1,131 @@
 :host {
-  display: block;
-}
-
-div.color-container {
-  position: relative;
-
   display: flex;
   align-items: center;
-  flex-wrap: var(--deckgo-flex-wrap, wrap);
+  /**
+   * @prop --deckgo-color-flex-wrap: Component flex-wrap
+   * @default wrap
+   */
+  flex-wrap: var(--deckgo-color-flex-wrap, wrap);
+  /**
+   * @prop --deckgo-color-overflow: Component overflow
+   * @default visible
+   */
+  overflow: var(--deckgo-color-overflow, visible);
+  /**
+   * @prop --deckgo-color-padding: Component padding
+   * @default 8px
+   */
+  padding: var(--deckgo-color-padding, 8px);
+  /**
+   * @prop --deckgo-color-padding: Component width
+   * @default 288px
+   */
+  width: var(--deckgo-color-width, 288px);
+}
 
-  overflow: var(--deckgo-overflow, visible);
+button {
+  /**
+   * @prop --deckgo-color-button-width: Button width
+   * @default 28px
+   */
+  width: var(--deckgo-color-button-width, 28px);
+  /**
+   * @prop --deckgo-color-button-height: Button height
+   * @default 28px
+   */
+  height: var(--deckgo-color-button-height, 28px);
 
-  button,
-  div.more {
-    width: var(--deckgo-button-width, 28px);
-    min-width: var(--deckgo-button-width, 28px);
-    height: var(--deckgo-button-height, 28px);
-    min-height: var(--deckgo-button-height, 28px);
+  /**
+   * @prop --deckgo-color-button-margin: Button margin
+   * @default 4px
+   */
+  margin: var(--deckgo-color-button-margin, 4px);
+  padding: 0;
 
-    margin: var(--deckgo-button-margin, 4px);
-    padding: 0;
+  /**
+   * @prop --deckgo-color-button-outline: Button outline
+   * @default none
+   */
+  outline: var(--deckgo-color-button-outline, none);
 
-    outline: var(--deckgo-button-outline, none);
+  cursor: pointer;
+
+  border: 1px solid var(--deckdeckgo-palette-border-color, var(--deckdeckgo-palette-color-hex));
+
+  /**
+   * @prop --deckgo-color-button-border-radius: Button border-radius
+   * @default 2px
+   */
+  border-radius: var(--deckgo-color-button-border-radius, 2px);
+
+  background: var(--deckdeckgo-palette-color-hex);
+
+  &.selected {
+    box-shadow: 0 0 4px 4px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
   }
 
-  button {
-    cursor: pointer;
-
-    border: 1px solid var(--deckdeckgo-palette-border-color, var(--deckdeckgo-palette-color-hex));
-    border-radius: var(--deckgo-button-border-radius, 50%);
-
-    background: var(--deckdeckgo-palette-color-hex);
-
-    &.selected {
-      box-shadow: 0 0 8px 4px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
-    }
-
-    &:not(.selected):hover,
-    &:not(.selected):focus {
-      box-shadow: 0 0 8px 2px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
-    }
-  }
-
-  div.more {
-    display: inline-block;
-    position: relative;
-
-    outline: none;
-    border: none;
-
-    button,
-    input {
-      position: absolute;
-    }
-
-    button {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      margin: 0;
-
-      border-radius: var(--deckgo-button-more-border-radius, 50%);
-
-      outline: var(--deckgo-button-more-outline, none);
-      border: var(--deckgo-button-more-border, none);
-
-      &.selected {
-        border: 1px solid var(--deckdeckgo-palette-color-hex, var(--deckgo-button-more-border));
-      }
-
-      background: var(--deckgo-button-more-background, transparent);
-    }
-
-    input {
-      bottom: 0;
-      right: 0;
-
-      width: 1px;
-      height: 1px;
-
-      visibility: hidden;
-      opacity: 0;
-
-      transform: translate(100%, 100%);
-    }
+  &:not(.selected):hover,
+  &:not(.selected):focus {
+    box-shadow: 0 0 2px 2px rgba(var(--deckdeckgo-palette-box-shadow-color, var(--deckdeckgo-palette-color-rgb)), 0.4);
   }
 }
+
+/**
+ * deckgo-color-input: Host
+ */
+/**
+ * @prop --deckgo-color-input-margin: Input field margin
+ * @default 4px
+ */
+
+/**
+ * deckgo-color-input: Input
+ */
+/**
+ * @prop --deckgo-color-input-color: Input color
+ * @default rgb(102, 102, 102)
+ */
+/**
+ * @prop --deckgo-color-input-height: Input height
+ * @default 28px
+ */
+/**
+ * @prop --deckgo-color-input-box-shadow: Input box-shadow
+ * @default rgb(240, 240, 240) 0 0 0 1px inset
+ */
+/**
+ * @prop --deckgo-color-input-border-radius: Input border-radius
+ * @default 0 4px 4px 0
+ */
+/**
+ * @prop --deckgo-color-input-padding: Input padding
+ * @default 0 4px
+ */
+/**
+ * @prop --deckgo-color-input-max-width: Input max-width
+ * @default 136px
+ */
+
+/**
+ * deckgo-color-input: Hash (#)
+ */
+/**
+ * @prop --deckgo-color-hash-width: Hash (#) width
+ * @default 28px
+ */
+/**
+ * @prop --deckgo-color-hash-height: Hash (#) height
+ * @default 28px
+ */
+/**
+ * @prop --deckgo-color-hash-background: Hash (#) background
+ * @default rgb(240, 240, 240) none repeat scroll 0 0
+ */
+/**
+ * @prop --deckgo-color-hash-color: Hash (#) color
+ * @default rgb(152, 161, 164)
+ */
+/**
+ * @prop --deckgo-color-hash-border-radius: Hash (#) border-radius
+ * @default 4px 0 0 4px
+ */

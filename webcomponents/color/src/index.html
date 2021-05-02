@@ -8,12 +8,20 @@
     <script type="module" src="/build/deckdeckgo-color.esm.js"></script>
     <script nomodule src="/build/deckdeckgo-color.js"></script>
   </head>
-  <body>
-    <div style="width: 240px;">
-      <deckgo-color color-hex="#FFD084" style="--deckgo-button-more-border: 1px solid green;">
-        <span slot="more">...</span>
-        <span slot="custom-label">Spécial</span>
-      </deckgo-color>
+  <body style="padding: 32px">
+    <div style="box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1); margin: 16px; display: inline-block">
+      <deckgo-color color-hex="#00D084"> </deckgo-color>
     </div>
+
+    <p></p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const elem = document.querySelector('deckgo-color');
+        const p = document.querySelector('p');
+
+        elem.addEventListener('colorChange', ($event) => (p.innerHTML = `Event: Hex ${$event.detail.hex} - Rgb ${$event.detail.rgb}`), {passive: true});
+      });
+    </script>
   </body>
 </html>

@@ -12,15 +12,25 @@ import {DeckdeckgoPalette, DeckdeckgoPaletteColor, DEFAULT_PALETTE} from '../../
 export class DeckdeckgoColor {
   @Element() el: HTMLElement;
 
-  @Prop({mutable: true}) palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
+  /**
+   * The palette of color.
+   */
+  @Prop({mutable: true})
+  palette: DeckdeckgoPalette[] = DEFAULT_PALETTE;
 
-  @Prop() more: boolean = true;
-  @Prop() moreAlt: string = 'More';
+  /**
+   * An accessibility label for the color input field
+   */
+  @Prop() inputAlt: string = 'Input a color (hex)';
 
+  /**
+   * The current selected color provided as hexadecimal value
+   */
   @Prop() colorHex: string;
+  /**
+   * The current selected color provided as a rgb value (without "rgb()", only value such as for example 255, 67, 54)
+   */
   @Prop() colorRgb: string;
-
-  @Prop() label: boolean = true;
 
   @State()
   private selectedColorHex: string;
@@ -34,9 +44,9 @@ export class DeckdeckgoColor {
   @State()
   private selectedCustomColorRgb: string;
 
-  @State()
-  private selectedColorLabel: string;
-
+  /**
+   * Emit the selected color
+   */
   @Event()
   colorChange: EventEmitter<DeckdeckgoPaletteColor>;
 
@@ -45,7 +55,6 @@ export class DeckdeckgoColor {
   constructor() {
     this.debounceInitSelectedColorPalette = debounce(async () => {
       this.selectedColorPalette = await this.initSelectedColorPalette();
-      await this.initSelectedColorPaletteAlt();
 
       this.selectedCustomColorRgb = !this.selectedColorPalette ? this.selectedColorRgb : undefined;
     }, 150);
@@ -56,19 +65,10 @@ export class DeckdeckgoColor {
     this.selectedColorRgb = this.colorRgb ? this.colorRgb : await hexToRgb(this.colorHex);
 
     this.selectedColorPalette = await this.initSelectedColorPalette();
-    await this.initSelectedColorPaletteAlt();
 
     if (!this.selectedColorPalette) {
       this.selectedCustomColorRgb = this.selectedColorRgb;
     }
-  }
-
-  async componentDidLoad() {
-    await this.colorPickerListener(true);
-  }
-
-  async disconnectedCallback() {
-    await this.colorPickerListener(false);
   }
 
   @Watch('colorHex')
@@ -111,59 +111,16 @@ export class DeckdeckgoColor {
 
       this.selectedColorPalette = true;
 
-      await this.initSelectedColorPaletteAlt();
-
       this.selectedCustomColorRgb = undefined;
 
       resolve();
     });
   }
 
-  private openColorPicker(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector("input[name='color-picker']");
+  private selectColor = async ($event: CustomEvent<DeckdeckgoPaletteColor>) => {
+    const color = $event.detail;
 
-      if (!colorPicker) {
-        resolve();
-        return;
-      }
-
-      colorPicker.click();
-
-      resolve();
-    });
-  }
-
-  private colorPickerListener(bind: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const colorPicker: HTMLInputElement = this.el.shadowRoot.querySelector("input[name='color-picker']");
-
-      if (!colorPicker) {
-        resolve();
-        return;
-      }
-
-      if (bind) {
-        colorPicker.addEventListener('change', this.selectColor, false);
-      } else {
-        colorPicker.removeEventListener('change', this.selectColor, true);
-      }
-
-      resolve();
-    });
-  }
-
-  private selectColor = async ($event) => {
-    const selectedColor: string = $event.target.value;
-
-    const rgb: string = await hexToRgb(selectedColor);
-
-    const color: DeckdeckgoPaletteColor = {
-      hex: selectedColor,
-      rgb: rgb,
-    };
-
-    this.applyColorHexChange(selectedColor, rgb);
+    this.applyColorHexChange(color.hex, color.rgb);
 
     this.colorChange.emit(color);
   };
@@ -207,27 +164,11 @@ export class DeckdeckgoColor {
     });
   }
 
-  private async initSelectedColorPaletteAlt(): Promise<void> {
-    if (!this.palette || this.palette.length <= 0) {
-      this.selectedColorLabel = undefined;
-      return undefined;
-    }
-
-    const palette: DeckdeckgoPalette = this.palette.find((element: DeckdeckgoPalette) => {
-      return this.isHexColorSelected(element) || this.isRgbColorSelected(element);
-    });
-
-    this.selectedColorLabel = palette ? palette.alt : undefined;
-  }
-
   render() {
     return (
       <Host>
-        <div class="color-container" part="container">
-          {this.renderPalette()}
-          {this.renderMore()}
-        </div>
-        {this.renderLabel()}
+        {this.renderPalette()}
+        {this.renderInput()}
       </Host>
     );
   }
@@ -258,48 +199,14 @@ export class DeckdeckgoColor {
     }
   }
 
-  private renderMore() {
-    if (this.more) {
-      let style = {};
-
-      if (!this.selectedColorPalette && this.selectedColorHex) {
-        style['--deckdeckgo-palette-color-hex'] = this.selectedColorHex;
-      }
-
-      if (!this.selectedColorPalette && this.selectedCustomColorRgb) {
-        style['--deckdeckgo-palette-color-rgb'] = this.selectedCustomColorRgb;
-      }
-
-      return (
-        <div class="more">
-          <button
-            aria-label={this.more}
-            style={style}
-            class={!this.selectedColorPalette && (this.selectedColorHex || this.selectedCustomColorRgb) ? 'selected' : undefined}
-            onClick={() => this.openColorPicker()}>
-            <slot name="more"></slot>
-          </button>
-          <input type="color" name="color-picker"></input>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
-  }
-
-  private renderLabel() {
-    if (!this.label) {
-      return undefined;
-    }
-
+  private renderInput() {
     return (
-      <deckgo-color-label
+      <deckgo-color-input
         colorHex={this.selectedColorHex}
         colorRgb={this.selectedColorRgb}
-        colorLabel={this.selectedColorLabel}
-        customColorRgb={this.selectedCustomColorRgb}>
-        <slot name="custom-label">Custom</slot>
-      </deckgo-color-label>
+        customColorRgb={this.selectedCustomColorRgb}
+        inputAlt={this.inputAlt}
+        onSelectHexColor={this.selectColor}></deckgo-color-input>
     );
   }
 }

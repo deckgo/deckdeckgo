@@ -1,3 +1,9 @@
+# 3.1.0 (2021-05-XX)
+
+### Features
+
+- color picker with `input` field
+
 # 3.0.2 (2020-10-29)
 
 ### Fix

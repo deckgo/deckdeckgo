@@ -1,3 +1,13 @@
+# 4.0.0 (2021-05-01)
+
+### Breaking
+
+- `more` property and the option to display a native picker have been removed
+
+### Features
+
+- `input` field to enter custom color
+
 # 3.1.1 (2020-10-23)
 
 ### Fix

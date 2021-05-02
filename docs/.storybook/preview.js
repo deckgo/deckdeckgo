@@ -12,7 +12,7 @@ export const parameters = {
         'Templates',
         ['Templates', 'Title', 'Content', 'Split', 'Poll', 'Aspect Ratio', 'GIF', 'Chart', 'Youtube', 'Code', 'Author', 'QR Code', 'Playground'],
         'Components',
-        ['Demo', 'Drag Resize Rotate', 'Highlight Code', 'Inline Editor', 'Laser Pointer', 'Lazy Image', 'Math', 'QR Code', 'Pie Chart', 'Bar Chart', 'Line Chart', 'Social', 'Word Cloud', 'Youtube'],
+        ['Color', 'Demo', 'Drag Resize Rotate', 'Highlight Code', 'Inline Editor', 'Laser Pointer', 'Lazy Image', 'Math', 'Pie Chart', 'Bar Chart', 'Line Chart', 'QR Code', 'Social', 'Word Cloud', 'Youtube'],
         'Deck',
         ['Animation', 'Auto Slide', 'Background', 'Header Footer', 'Navigation', 'Pager', 'Size', 'More Features', 'Events', 'Actions'],
         'Miscellaneous',
