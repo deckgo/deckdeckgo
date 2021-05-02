@@ -4,7 +4,7 @@ import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
 import {hexToRgb} from '@deckdeckgo/utils';
 
-import { clearTheSelection, getSelection } from "../../../utils/selection.utils";
+import {clearTheSelection, getSelection} from '../../../utils/selection.utils';
 
 import {ExecCommandAction} from '../../../interfaces/interfaces';
 
@@ -79,9 +79,7 @@ export class ColorActions {
 
     return (
       <Host class={cssClass}>
-        <deckgo-color label={false} onColorChange={($event: CustomEvent) => this.selectColor($event)} palette={this.palette}>
-          <div slot="more"></div>
-        </deckgo-color>
+        <deckgo-color onColorChange={($event: CustomEvent) => this.selectColor($event)} palette={this.palette}></deckgo-color>
       </Host>
     );
   }
