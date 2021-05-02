@@ -13,7 +13,7 @@ export namespace Components {
          */
         "colorHex": string;
         /**
-          * The current selected color provided as a rgb value
+          * The current selected color provided as a rgb value (without "rgb()", only value such as for example 255, 67, 54)
          */
         "colorRgb": string;
         /**
@@ -57,7 +57,7 @@ declare namespace LocalJSX {
          */
         "colorHex"?: string;
         /**
-          * The current selected color provided as a rgb value
+          * The current selected color provided as a rgb value (without "rgb()", only value such as for example 255, 67, 54)
          */
         "colorRgb"?: string;
         /**
