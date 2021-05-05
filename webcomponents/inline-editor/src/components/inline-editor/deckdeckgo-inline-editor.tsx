@@ -778,8 +778,6 @@ export class DeckdeckgoInlineEditor {
       !this.selection ? document.activeElement : this.selection.anchorNode
     );
     this.styleDidChange.emit(container);
-
-    await this.reset(true);
   }
 
   render() {

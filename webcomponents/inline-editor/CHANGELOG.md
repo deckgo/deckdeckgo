@@ -1,3 +1,9 @@
+# 3.2.0 (2021-05-05)
+
+### Features
+
+- preserve selection after applying style aka do not close inline editor
+
 # 3.1.0 (2021-05-02)
 
 ### Features
