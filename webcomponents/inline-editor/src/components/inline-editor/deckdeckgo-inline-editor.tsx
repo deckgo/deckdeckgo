@@ -773,10 +773,19 @@ export class DeckdeckgoInlineEditor {
 
     await execCommand(this.selection, $event.detail, this.containers);
 
-    const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(
+    if ($event.detail.cmd === 'list') {
+      await this.reset(true);
+    }
+
+    const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(
       this.containers,
       !this.selection ? document.activeElement : this.selection.anchorNode
     );
+
+    if (!container) {
+      return;
+    }
+
     this.styleDidChange.emit(container);
   }
 

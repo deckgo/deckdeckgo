@@ -100,7 +100,13 @@ export class LinkActions {
         target.parentElement.replaceChild(a, target);
       }
 
-      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, targetContainer as HTMLElement);
+      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, targetContainer as HTMLElement);
+
+      if (!container) {
+        resolve();
+        return;
+      }
+
       this.linkCreated.emit(container);
 
       this.toolbarActions = ToolbarActions.SELECTION;

@@ -11,6 +11,6 @@ export async function execCommand(selection: Selection, action: ExecCommandActio
   if (action.cmd === 'style') {
     await execCommandStyle(selection, action.detail as ExecCommandStyle, containers);
   } else if (action.cmd === 'list') {
-    await execCommandList(selection, action.detail as ExecCommandList);
+    await execCommandList(selection, action.detail as ExecCommandList, containers);
   }
 }
