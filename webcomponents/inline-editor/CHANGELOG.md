@@ -1,8 +1,12 @@
-# 3.2.0 (2021-05-05)
+# 3.2.0 (2021-05-07)
 
 ### Features
 
 - preserve selection after applying style aka do not close inline editor
+
+### Fix
+
+- list manipulation
 
 # 3.1.0 (2021-05-02)
 
