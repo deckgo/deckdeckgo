@@ -33,9 +33,14 @@ export class AlignActions {
       e.stopPropagation();
 
       const anchorElement: HTMLElement = this.anchorEvent.target as HTMLElement;
-      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorElement);
+      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorElement);
 
-      container.style.textAlign = container.style.textAlign === align ? '' : align;
+      if (!container) {
+        resolve();
+        return;
+      }
+
+      container.style.textAlign = container?.style.textAlign === align ? '' : align;
 
       await this.alignModified.emit();
 

@@ -73,7 +73,13 @@ export class ImageActions {
       applyFunction(param);
 
       const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
+      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
+
+      if (!container) {
+        resolve();
+        return;
+      }
+
       this.imgDidChange.emit(container);
 
       this.imgModified.emit();
@@ -114,7 +120,7 @@ export class ImageActions {
         return;
       }
 
-      const container: HTMLElement = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
+      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
 
       if (!container) {
         resolve();
