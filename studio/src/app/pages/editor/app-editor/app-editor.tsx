@@ -244,22 +244,18 @@ export class AppEditor {
     }
   }
 
-  private updateInlineEditorListener(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.deckRef) {
-        return;
-      }
+  private async updateInlineEditorListener(): Promise<void> {
+    if (!this.deckRef) {
+      return;
+    }
 
-      const inlineEditor: HTMLElement = this.el.querySelector('deckgo-inline-editor');
+    const inlineEditor: HTMLDeckgoInlineEditorElement = this.el.querySelector('deckgo-inline-editor');
 
-      if (!inlineEditor) {
-        return;
-      }
+    if (!inlineEditor) {
+      return;
+    }
 
-      (inlineEditor as any).attachTo = this.deckRef;
-
-      resolve();
-    });
+    inlineEditor.attachTo = this.deckRef;
   }
 
   private initSlide(): Promise<void> {

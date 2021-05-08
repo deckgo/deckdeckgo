@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property     | Attribute    | Description | Type                            | Default     |
@@ -12,24 +13,25 @@
 | `palette`    | --           |             | `DeckdeckgoPalette[]`           | `undefined` |
 | `selection`  | --           |             | `Selection`                     | `undefined` |
 
+
 ## Events
 
 | Event         | Description | Type                             |
 | ------------- | ----------- | -------------------------------- |
 | `execCommand` |             | `CustomEvent<ExecCommandAction>` |
 
+
 ## Dependencies
 
 ### Used by
 
-- [deckgo-inline-editor](../../inline-editor)
+ - [deckgo-inline-editor](../../inline-editor)
 
 ### Depends on
 
 - deckgo-color
 
 ### Graph
-
 ```mermaid
 graph TD;
   deckgo-ie-color-actions --> deckgo-color
@@ -38,6 +40,6 @@ graph TD;
   style deckgo-ie-color-actions fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*
