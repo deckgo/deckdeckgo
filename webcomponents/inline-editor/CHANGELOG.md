@@ -1,3 +1,9 @@
+# 3.2.1 (2021-05-08)
+
+### Fix
+
+- close inline editor in a shadowed context
+
 # 3.2.0 (2021-05-07)
 
 ### Features

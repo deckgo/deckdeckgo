@@ -82,7 +82,7 @@ export class DeckdeckgoInlineEditor {
   private selection: Selection = null;
 
   private anchorLink: AnchorLink = null;
-  private anchorEvent: MouseEvent | TouchEvent;
+  private anchorEvent: MouseEvent | TouchEvent | undefined;
 
   @State()
   private link: boolean = false;
@@ -257,7 +257,15 @@ export class DeckdeckgoInlineEditor {
   }
 
   private startSelection = async ($event: MouseEvent | TouchEvent) => {
-    if (this.displayToolsActivated) {
+    const action: boolean = $event.composedPath().includes(this.el);
+
+    if (action) {
+      return;
+    }
+
+    if (this.displayToolsActivated && !action) {
+      // If use in a shadowed attachTo context, onSelectionChange might not be triggered
+      await this.reset(true);
       return;
     }
 
