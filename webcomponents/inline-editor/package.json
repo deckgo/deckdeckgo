@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/inline-editor",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "A WYSIWYG HTML Inline Editor Web Component",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
