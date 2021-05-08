@@ -12,6 +12,7 @@ import {AnchorLink, ExecCommandAction, InlineAction} from '../../interfaces/inte
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 import {execCommand} from '../../utils/execcommand.utils';
 import {clearTheSelection, getSelection} from '../../utils/selection.utils';
+import {getAnchorNode} from '../../utils/node.utils';
 
 /**
  * @slot - related to the customActions propery
@@ -358,6 +359,8 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
+    console.log('selectionchange');
+
     const anchorImage: boolean = await this.isAnchorImage();
     if (this.toolbarActions === ToolbarActions.IMAGE && anchorImage) {
       await this.reset(false);
@@ -388,6 +391,8 @@ export class DeckdeckgoInlineEditor {
         resolve();
         return;
       }
+
+      console.log('DISPLAY');
 
       const activated: boolean = await this.activateToolbar(selection);
       await this.setToolsActivated(activated);
@@ -523,28 +528,34 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      const content: Node = selection.anchorNode;
+      const content: Node = getAnchorNode(selection);
 
       if (!content) {
         resolve();
         return;
       }
 
-      if (this.isContainer(content) || content.parentElement) {
-        this.bold = undefined;
-        this.italic = undefined;
-        this.underline = undefined;
-        this.strikethrough = undefined;
-        this.contentList = undefined;
-        this.contentFontSize = undefined;
+      console.log('YOLO');
 
-        await this.initDefaultContentAlign();
-
-        await this.findStyle(this.isContainer(content) ? content : content.parentElement);
-      }
+      await this.initStyleForNode(content);
 
       resolve();
     });
+  }
+
+  private async initStyleForNode(node: Node) {
+    console.log('HHHHH', node);
+
+    this.bold = undefined;
+    this.italic = undefined;
+    this.underline = undefined;
+    this.strikethrough = undefined;
+    this.contentList = undefined;
+    this.contentFontSize = undefined;
+
+    await this.initDefaultContentAlign();
+
+    await this.findStyle(node);
   }
 
   private async initDefaultContentAlign() {
@@ -564,11 +575,15 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
+      console.log('a');
+
       // Just in case
       if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
         resolve();
         return;
       }
+
+      console.log('ccc', this.isContainer(node), (node as HTMLElement).outerHTML);
 
       if (this.isContainer(node)) {
         const nodeName: string = node.nodeName.toUpperCase();
@@ -582,6 +597,8 @@ export class DeckdeckgoInlineEditor {
         if (this.bold === undefined) {
           this.bold = await DeckdeckgoInlineEditorUtils.getBold(node as HTMLElement);
         }
+
+        console.log((node as HTMLElement).outerHTML);
 
         if (this.italic === undefined) {
           this.italic = await DeckdeckgoInlineEditorUtils.getItalic(node as HTMLElement);
@@ -779,6 +796,9 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
+    // onSelectionChange is triggered if DOM changes, we still need to detect attributes changes to refresh style
+    this.onAttributesChangesInitStyle();
+
     await execCommand(this.selection, $event.detail, this.containers);
 
     if ($event.detail.cmd === 'list') {
@@ -795,6 +815,18 @@ export class DeckdeckgoInlineEditor {
     }
 
     this.styleDidChange.emit(container);
+  }
+
+  private onAttributesChangesInitStyle() {
+    const anchoreNode: HTMLElement | undefined = getAnchorNode(this.selection);
+
+    const observer: MutationObserver = new MutationObserver(async () => {
+      observer.disconnect();
+
+      await this.initStyleForNode(anchoreNode);
+    });
+
+    observer.observe(anchoreNode, {attributes: true});
   }
 
   render() {

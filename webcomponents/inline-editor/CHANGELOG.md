@@ -3,6 +3,7 @@
 ### Fix
 
 - close inline editor in a shadowed context
+- init style after changes if "only" attributes are modified
 
 # 3.2.0 (2021-05-07)
 
