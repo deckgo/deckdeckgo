@@ -4,6 +4,11 @@
 
 - new property `handleGlobalEvents` to scope events
 
+### Fix
+
+- iOS selection
+- mobile overflow for color picker
+
 ### Style
 
 - color picker width when toolbar sticky
