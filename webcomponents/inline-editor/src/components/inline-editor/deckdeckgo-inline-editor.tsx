@@ -388,6 +388,10 @@ export class DeckdeckgoInlineEditor {
   }
 
   private async handleSelectionChange(_$event: UIEvent) {
+    if (this.toolbarActions === ToolbarActions.COLOR || this.toolbarActions === ToolbarActions.BACKGROUND_COLOR) {
+      return;
+    }
+
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
         await this.reset(false);
@@ -831,15 +835,15 @@ export class DeckdeckgoInlineEditor {
   }
 
   private onAttributesChangesInitStyle() {
-    const anchoreNode: HTMLElement | undefined = getAnchorNode(this.selection);
+    const anchorNode: HTMLElement | undefined = getAnchorNode(this.selection);
 
     const observer: MutationObserver = new MutationObserver(async () => {
       observer.disconnect();
 
-      await this.initStyleForNode(anchoreNode);
+      await this.initStyleForNode(anchorNode);
     });
 
-    observer.observe(anchoreNode, {attributes: true});
+    observer.observe(anchorNode, {attributes: true});
   }
 
   render() {

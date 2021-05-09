@@ -4,7 +4,7 @@ import {DeckdeckgoPalette} from '@deckdeckgo/color';
 
 import {hexToRgb} from '@deckdeckgo/utils';
 
-import {clearTheSelection, getSelection} from '../../../utils/selection.utils';
+import {getSelection} from '../../../utils/selection.utils';
 import {findStyleNode, getAnchorNode} from '../../../utils/node.utils';
 
 import {ExecCommandAction} from '../../../interfaces/interfaces';
@@ -33,12 +33,17 @@ export class ColorActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
+  private range: Range | undefined;
+
   async componentWillLoad() {
     await this.initColor();
   }
 
   private async initColor() {
     const selection: Selection | undefined = await getSelection();
+
+    this.range = selection?.getRangeAt(0);
+
     const container: HTMLElement | undefined = getAnchorNode(selection);
 
     if (!container) {
@@ -67,21 +72,19 @@ export class ColorActions {
       return;
     }
 
-    if (selection.rangeCount <= 0 || !document) {
-      return;
-    }
+    selection?.removeAllRanges();
+    selection?.addRange(this.range);
 
-    const range: Range | undefined = selection.getRangeAt(0);
+    const observer: MutationObserver = new MutationObserver( (_mutations: MutationRecord[]) => {
+      observer.disconnect();
 
-    const text: string = range?.toString();
+      // No node were added so the style was modified
+      this.range = selection?.getRangeAt(0);
+    });
 
-    if (!text || text.length <= 0) {
-      return;
-    }
+    const anchorNode: HTMLElement | undefined = getAnchorNode(selection);
 
-    await clearTheSelection();
-
-    selection?.addRange(range);
+    observer.observe(anchorNode, {childList: true});
 
     this.execCommand.emit({
       cmd: 'style',
