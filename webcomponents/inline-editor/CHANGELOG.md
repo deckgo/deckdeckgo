@@ -1,4 +1,10 @@
-# 4.0.0 (2021-05-09)
+# 4.0.2 (2021-05-09)
+
+### Fix
+
+- do not loose range selection focus on color input
+
+# 4.0.1 (2021-05-09)
 
 ### Features
 
