@@ -909,6 +909,7 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           sticky={sticky}
           contentAlign={this.contentAlign}
+          command={this.command}
           onAlignModified={() => this.reset(true)}></deckgo-ie-align-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.LIST) {

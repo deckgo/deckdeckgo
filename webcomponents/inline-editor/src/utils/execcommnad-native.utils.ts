@@ -1,5 +1,5 @@
 import { ExecCommandAction, ExecCommandList, ExecCommandStyle } from "../interfaces/interfaces";
-import { FontSize } from "../types/enums";
+import { ContentAlign, FontSize } from "../types/enums";
 
 export const execCommandNative = (action: ExecCommandAction) => {
   if (action.cmd === 'style') {
@@ -47,5 +47,18 @@ const execCommandNativeList = (action: ExecCommandAction) => {
     case 'ul' :
       document.execCommand('insertUnorderedList', false, null);
       break;
+  }
+}
+
+export const execCommandNativeAlign = (align: ContentAlign) => {
+  switch (align) {
+    case ContentAlign.CENTER:
+      document.execCommand('justifyCenter', false, null);
+      break;
+    case ContentAlign.RIGHT:
+      document.execCommand('justifyRight', false, null);
+      break;
+    default:
+      document.execCommand('justifyLeft', false, null);
   }
 }

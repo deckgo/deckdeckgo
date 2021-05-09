@@ -21,6 +21,7 @@ export namespace Components {
     }
     interface DeckgoIeAlignActions {
         "anchorEvent": MouseEvent | TouchEvent;
+        "command": 'native' | 'custom';
         "containers": string;
         "contentAlign": ContentAlign;
         "mobile": boolean;
@@ -251,6 +252,7 @@ declare namespace LocalJSX {
     }
     interface DeckgoIeAlignActions {
         "anchorEvent"?: MouseEvent | TouchEvent;
+        "command"?: 'native' | 'custom';
         "containers"?: string;
         "contentAlign"?: ContentAlign;
         "mobile"?: boolean;

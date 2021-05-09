@@ -2,7 +2,8 @@ import {Component, EventEmitter, h, Prop, Event, Host} from '@stencil/core';
 
 import {ContentAlign} from '../../../types/enums';
 
-import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
+import { execCommandAlign } from "../../../utils/execcommand-align.utils";
+import { execCommandNativeAlign } from "../../../utils/execcommnad-native.utils";
 
 @Component({
   tag: 'deckgo-ie-align-actions',
@@ -25,22 +26,21 @@ export class AlignActions {
   @Prop()
   containers: string;
 
+  @Prop()
+  command: 'native' | 'custom' = 'native';
+
   @Event()
   private alignModified: EventEmitter;
 
-  private justifyContent(e: UIEvent, align: ContentAlign): Promise<void> {
+  private justifyContent($event: UIEvent, align: ContentAlign): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
+      $event.stopPropagation();
 
-      const anchorElement: HTMLElement = this.anchorEvent.target as HTMLElement;
-      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorElement);
-
-      if (!container) {
-        resolve();
-        return;
+      if (this.command === 'native') {
+        execCommandNativeAlign(align);
+      } else {
+        await execCommandAlign(this.anchorEvent, this.containers, align);
       }
-
-      container.style.textAlign = container?.style.textAlign === align ? '' : align;
 
       await this.alignModified.emit();
 
