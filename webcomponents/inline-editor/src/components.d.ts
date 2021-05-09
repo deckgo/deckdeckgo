@@ -87,6 +87,10 @@ export namespace Components {
          */
         "backgroundColor": boolean;
         /**
+          * Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation
+         */
+        "command": 'native' | 'custom';
+        /**
           * A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color
          */
         "containers": string;
@@ -319,6 +323,10 @@ declare namespace LocalJSX {
           * To hide the option to select a background-color
          */
         "backgroundColor"?: boolean;
+        /**
+          * Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation
+         */
+        "command"?: 'native' | 'custom';
         /**
           * A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color
          */

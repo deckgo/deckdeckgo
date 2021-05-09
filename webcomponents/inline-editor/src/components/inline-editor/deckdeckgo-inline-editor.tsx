@@ -13,6 +13,7 @@ import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 import {execCommand} from '../../utils/execcommand.utils';
 import {clearTheSelection, getSelection} from '../../utils/selection.utils';
 import {getAnchorNode} from '../../utils/node.utils';
+import {execCommandNative} from '../../utils/execcommnad-native.utils';
 
 /**
  * @slot - related to the customActions propery
@@ -184,6 +185,12 @@ export class DeckdeckgoInlineEditor {
    */
   @Prop()
   handleGlobalEvents: boolean = true;
+
+  /**
+   * Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation
+   */
+  @Prop()
+  command: 'native' | 'custom' = 'native';
 
   /**
    * Triggered when a custom action is selected. Its detail provide an action name, the Selection and an anchorLink
@@ -801,7 +808,11 @@ export class DeckdeckgoInlineEditor {
     // onSelectionChange is triggered if DOM changes, we still need to detect attributes changes to refresh style
     this.onAttributesChangesInitStyle();
 
-    await execCommand(this.selection, $event.detail, this.containers);
+    if (this.command === 'native') {
+      execCommandNative($event.detail);
+    } else {
+      await execCommand(this.selection, $event.detail, this.containers);
+    }
 
     if ($event.detail.cmd === 'list' || isIOS()) {
       await this.reset(true);

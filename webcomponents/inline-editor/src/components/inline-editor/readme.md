@@ -75,29 +75,38 @@ document.addEventListeners('selectionchange', (event) => {
 
 ```
 
+## ExecCommand
+
+According the [MDN Web Docs](https://developer.mozilla.org/fr/docs/Web/API/Document/execCommand) the API `document.execCommand` is deprecated.
+This component relies on such command, notable to support undo/redo.
+
+In case it would be deprecated or, you would not like to use it, turn the property `command` to `custom`.
+Note that it currently do no support undo/redo.
+
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property              | Attribute                | Description                                                                                                                                                                       | Type                  | Default                   |
-| --------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------- |
-| `align`               | `align`                  | Actions to manipulat                                                                                                                                                              | `boolean`             | `true`                    |
-| `attachTo`            | --                       | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document                                        | `HTMLElement`         | `undefined`               |
-| `backgroundColor`     | `background-color`       | To hide the option to select a background-color                                                                                                                                   | `boolean`             | `true`                    |
-| `containers`          | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string`              | `'h1,h2,h3,h4,h5,h6,div'` |
-| `customActions`       | `custom-actions`         | You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions                                                    | `string`              | `undefined`               |
-| `fontSize`            | `font-size`              | Actions to modify the selection font-size enabled?                                                                                                                                | `boolean`             | `true`                    |
-| `handleGlobalEvents`  | `handle-global-events`   | Handle the selection change "manually". See chapter "Usage within shadow dom"                                                                                                     | `boolean`             | `true`                    |
-| `imgAnchor`           | `img-anchor`             | The type of element to attach the image toolbar                                                                                                                                   | `string`              | `'img'`                   |
-| `imgEditable`         | `img-editable`           | Per default, the component will not consider images as editable. Turn this option to true to activate the edition of images                                                       | `boolean`             | `false`                   |
-| `imgPropertyCssFloat` | `img-property-css-float` | In case you would like to use a specific property to specify the float on your image                                                                                              | `string`              | `'float'`                 |
-| `imgPropertyWidth`    | `img-property-width`     | In case you would like to use a specific property to specify the width on your image                                                                                              | `string`              | `'width'`                 |
-| `list`                | `list`                   | Actions to manipulate the selection as list enabled?                                                                                                                              | `boolean`             | `true`                    |
-| `mobile`              | `mobile`                 | The mobile mode is automatically recognize, but just it case you would like to "force" it                                                                                         | `boolean`             | `false`                   |
-| `palette`             | --                       | In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors                                          | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE`         |
-| `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop                                                                                                                                            | `boolean`             | `false`                   |
-| `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top                                                      | `boolean`             | `false`                   |
+| Property              | Attribute                | Description                                                                                                                                                                       | Type                   | Default                   |
+| --------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------- |
+| `align`               | `align`                  | Actions to manipulat                                                                                                                                                              | `boolean`              | `true`                    |
+| `attachTo`            | --                       | Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document                                        | `HTMLElement`          | `undefined`               |
+| `backgroundColor`     | `background-color`       | To hide the option to select a background-color                                                                                                                                   | `boolean`              | `true`                    |
+| `command`             | `command`                | Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation                                                                  | `"custom" \| "native"` | `'native'`                |
+| `containers`          | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string`               | `'h1,h2,h3,h4,h5,h6,div'` |
+| `customActions`       | `custom-actions`         | You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions                                                    | `string`               | `undefined`               |
+| `fontSize`            | `font-size`              | Actions to modify the selection font-size enabled?                                                                                                                                | `boolean`              | `true`                    |
+| `handleGlobalEvents`  | `handle-global-events`   | Handle the selection change "manually". See chapter "Usage within shadow dom"                                                                                                     | `boolean`              | `true`                    |
+| `imgAnchor`           | `img-anchor`             | The type of element to attach the image toolbar                                                                                                                                   | `string`               | `'img'`                   |
+| `imgEditable`         | `img-editable`           | Per default, the component will not consider images as editable. Turn this option to true to activate the edition of images                                                       | `boolean`              | `false`                   |
+| `imgPropertyCssFloat` | `img-property-css-float` | In case you would like to use a specific property to specify the float on your image                                                                                              | `string`               | `'float'`                 |
+| `imgPropertyWidth`    | `img-property-width`     | In case you would like to use a specific property to specify the width on your image                                                                                              | `string`               | `'width'`                 |
+| `list`                | `list`                   | Actions to manipulate the selection as list enabled?                                                                                                                              | `boolean`              | `true`                    |
+| `mobile`              | `mobile`                 | The mobile mode is automatically recognize, but just it case you would like to "force" it                                                                                         | `boolean`              | `false`                   |
+| `palette`             | --                       | In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors                                          | `DeckdeckgoPalette[]`  | `DEFAULT_PALETTE`         |
+| `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop                                                                                                                                            | `boolean`              | `false`                   |
+| `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top                                                      | `boolean`              | `false`                   |
 
 
 ## Events
