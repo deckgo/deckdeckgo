@@ -1,14 +1,11 @@
 :host {
   padding: 4px 0;
-
-  deckgo-color {
-    pointer-events: all;
-  }
 }
 
 :host(.deckgo-tools-mobile) {
   max-width: calc(100% - 54px);
-  --deckgo-overflow: scroll;
-  --deckgo-flex-wrap: nowrap;
-  --deckgo-color-width: 100%;
+  --deckgo-color-flex-wrap: nowrap;
+  --deckgo-color-width: fit-content;
+  pointer-events: all;
+  overflow: scroll;
 }

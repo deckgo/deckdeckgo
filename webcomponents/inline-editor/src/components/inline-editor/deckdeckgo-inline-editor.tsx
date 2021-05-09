@@ -489,23 +489,6 @@ export class DeckdeckgoInlineEditor {
       }
 
       await this.setStickyPositionIOS();
-
-      if (window) {
-        window.addEventListener(
-          'scroll',
-          async () => {
-            await this.setStickyPositionIOS();
-          },
-          {passive: true}
-        );
-        window.addEventListener(
-          'resize',
-          async () => {
-            await this.reset(true, true);
-          },
-          {passive: true}
-        );
-      }
     });
   }
 
@@ -815,7 +798,7 @@ export class DeckdeckgoInlineEditor {
 
     await execCommand(this.selection, $event.detail, this.containers);
 
-    if ($event.detail.cmd === 'list') {
+    if ($event.detail.cmd === 'list' || isIOS()) {
       await this.reset(true);
     }
 
