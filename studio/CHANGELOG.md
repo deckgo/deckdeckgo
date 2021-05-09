@@ -1,3 +1,10 @@
+# 4.6.0 (2020-05-09)
+
+### Features
+
+- inline editor improvements: stay open on changes, color can be entered with an input and redo/undo supported
+- laser pointer as cursor in fullscreen mode
+
 # 4.5.0 (2020-04-03)
 
 ### Features

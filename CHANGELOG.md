@@ -1,10 +1,11 @@
 <a name="4.6.0"></a>
 
-# [4.6.0](https://github.com/deckgo/deckdeckgo/compare/v4.5.0...v4.6.0) (In progress..)
+# [4.6.0](https://github.com/deckgo/deckdeckgo/compare/v4.5.0...v4.6.0) (2021-05-09)
 
 ### Applications
 
 - docs: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/docs/CHANGELOG.md))
+- studio: v4.6.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components: New
 
