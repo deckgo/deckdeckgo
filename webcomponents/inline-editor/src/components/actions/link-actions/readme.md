@@ -13,7 +13,6 @@
 | `containers`     | `containers`      |             | `string`                                                                                                                                                                                                            | `undefined` |
 | `linkCreated`    | --                |             | `EventEmitter<HTMLElement>`                                                                                                                                                                                         | `undefined` |
 | `mobile`         | `mobile`          |             | `boolean`                                                                                                                                                                                                           | `undefined` |
-| `selection`      | --                |             | `Selection`                                                                                                                                                                                                         | `undefined` |
 | `toolbarActions` | `toolbar-actions` |             | `ToolbarActions.ALIGNMENT \| ToolbarActions.BACKGROUND_COLOR \| ToolbarActions.COLOR \| ToolbarActions.FONT_SIZE \| ToolbarActions.IMAGE \| ToolbarActions.LINK \| ToolbarActions.LIST \| ToolbarActions.SELECTION` | `undefined` |
 
 

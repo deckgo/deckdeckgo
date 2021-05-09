@@ -401,11 +401,9 @@ export class DeckdeckgoInlineEditor {
   @Method()
   public displayTools(selection?: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
-
-      console.log('here', await getSelection());
-
-
-      if (!selection) selection = await getSelection();
+      if (!selection) {
+        selection = await getSelection();
+      }
 
       if (!this.anchorEvent) {
         await this.reset(false);
@@ -866,7 +864,6 @@ export class DeckdeckgoInlineEditor {
         <deckgo-ie-link-actions
           toolbarActions={this.toolbarActions}
           anchorLink={this.anchorLink}
-          selection={this.selection}
           linkCreated={this.linkCreated}
           containers={this.containers}
           mobile={this.mobile}
@@ -906,7 +903,6 @@ export class DeckdeckgoInlineEditor {
     } else if (this.toolbarActions === ToolbarActions.LIST) {
       return (
         <deckgo-ie-list-actions
-          selection={this.selection}
           disabledTitle={this.disabledTitle}
           mobile={this.mobile}
           sticky={sticky}
@@ -931,7 +927,6 @@ export class DeckdeckgoInlineEditor {
       <deckgo-ie-style-actions
         mobile={this.mobile}
         disabledTitle={this.disabledTitle}
-        selection={this.selection}
         bold={this.bold === 'bold'}
         italic={this.italic === 'italic'}
         underline={this.underline === 'underline'}

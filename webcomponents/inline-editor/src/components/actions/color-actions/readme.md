@@ -11,7 +11,6 @@
 | `containers` | `containers` |             | `string`                        | `undefined` |
 | `mobile`     | `mobile`     |             | `boolean`                       | `undefined` |
 | `palette`    | --           |             | `DeckdeckgoPalette[]`           | `undefined` |
-| `selection`  | --           |             | `Selection`                     | `undefined` |
 
 
 ## Events

@@ -12,9 +12,6 @@ export class StyleActions {
   disabledTitle: boolean = false;
 
   @Prop()
-  selection: Selection;
-
-  @Prop()
   mobile: boolean;
 
   @Prop()

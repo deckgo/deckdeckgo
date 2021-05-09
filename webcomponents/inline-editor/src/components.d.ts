@@ -51,14 +51,12 @@ export namespace Components {
         "containers": string;
         "linkCreated": EventEmitter<HTMLElement>;
         "mobile": boolean;
-        "selection": Selection;
         "toolbarActions": ToolbarActions;
     }
     interface DeckgoIeListActions {
         "contentList": ContentList;
         "disabledTitle": boolean;
         "mobile": boolean;
-        "selection": Selection;
         "sticky": boolean;
     }
     interface DeckgoIeSeparator {
@@ -69,7 +67,6 @@ export namespace Components {
         "disabledTitle": boolean;
         "italic": boolean;
         "mobile": boolean;
-        "selection": Selection;
         "strikethrough": boolean;
         "underline": boolean;
     }
@@ -285,7 +282,6 @@ declare namespace LocalJSX {
         "linkCreated"?: EventEmitter<HTMLElement>;
         "mobile"?: boolean;
         "onLinkModified"?: (event: CustomEvent<boolean>) => void;
-        "selection"?: Selection;
         "toolbarActions"?: ToolbarActions;
     }
     interface DeckgoIeListActions {
@@ -293,7 +289,6 @@ declare namespace LocalJSX {
         "disabledTitle"?: boolean;
         "mobile"?: boolean;
         "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
-        "selection"?: Selection;
         "sticky"?: boolean;
     }
     interface DeckgoIeSeparator {
@@ -305,7 +300,6 @@ declare namespace LocalJSX {
         "italic"?: boolean;
         "mobile"?: boolean;
         "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
-        "selection"?: Selection;
         "strikethrough"?: boolean;
         "underline"?: boolean;
     }

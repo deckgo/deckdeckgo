@@ -10,9 +10,6 @@ import {ExecCommandAction} from '../../../interfaces/interfaces';
 })
 export class AlignActions {
   @Prop()
-  selection: Selection;
-
-  @Prop()
   disabledTitle: boolean = false;
 
   @Prop()
