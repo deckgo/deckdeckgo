@@ -13,6 +13,7 @@ import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 import {execCommand} from '../../utils/execcommand.utils';
 import {clearTheSelection, getSelection} from '../../utils/selection.utils';
 import {getAnchorNode} from '../../utils/node.utils';
+import {execCommandNative} from '../../utils/execcommnad-native.utils';
 
 /**
  * @slot - related to the customActions propery
@@ -184,6 +185,12 @@ export class DeckdeckgoInlineEditor {
    */
   @Prop()
   handleGlobalEvents: boolean = true;
+
+  /**
+   * Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation
+   */
+  @Prop()
+  command: 'native' | 'custom' = 'native';
 
   /**
    * Triggered when a custom action is selected. Its detail provide an action name, the Selection and an anchorLink
@@ -401,7 +408,9 @@ export class DeckdeckgoInlineEditor {
   @Method()
   public displayTools(selection?: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!selection) selection = await getSelection();
+      if (!selection) {
+        selection = await getSelection();
+      }
 
       if (!this.anchorEvent) {
         await this.reset(false);
@@ -799,7 +808,11 @@ export class DeckdeckgoInlineEditor {
     // onSelectionChange is triggered if DOM changes, we still need to detect attributes changes to refresh style
     this.onAttributesChangesInitStyle();
 
-    await execCommand(this.selection, $event.detail, this.containers);
+    if (this.command === 'native') {
+      execCommandNative($event.detail);
+    } else {
+      await execCommand(this.selection, $event.detail, this.containers);
+    }
 
     if ($event.detail.cmd === 'list' || isIOS()) {
       await this.reset(true);
@@ -862,7 +875,6 @@ export class DeckdeckgoInlineEditor {
         <deckgo-ie-link-actions
           toolbarActions={this.toolbarActions}
           anchorLink={this.anchorLink}
-          selection={this.selection}
           linkCreated={this.linkCreated}
           containers={this.containers}
           mobile={this.mobile}
@@ -871,7 +883,6 @@ export class DeckdeckgoInlineEditor {
     } else if (this.toolbarActions === ToolbarActions.COLOR || this.toolbarActions === ToolbarActions.BACKGROUND_COLOR) {
       return (
         <deckgo-ie-color-actions
-          selection={this.selection}
           action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'background-color' : 'color'}
           palette={this.palette}
           mobile={this.mobile}
@@ -898,12 +909,12 @@ export class DeckdeckgoInlineEditor {
           mobile={this.mobile}
           sticky={sticky}
           contentAlign={this.contentAlign}
+          command={this.command}
           onAlignModified={() => this.reset(true)}></deckgo-ie-align-actions>
       );
     } else if (this.toolbarActions === ToolbarActions.LIST) {
       return (
         <deckgo-ie-list-actions
-          selection={this.selection}
           disabledTitle={this.disabledTitle}
           mobile={this.mobile}
           sticky={sticky}
@@ -928,7 +939,6 @@ export class DeckdeckgoInlineEditor {
       <deckgo-ie-style-actions
         mobile={this.mobile}
         disabledTitle={this.disabledTitle}
-        selection={this.selection}
         bold={this.bold === 'bold'}
         italic={this.italic === 'italic'}
         underline={this.underline === 'underline'}

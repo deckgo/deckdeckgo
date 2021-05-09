@@ -10,6 +10,7 @@
 | Property       | Attribute       | Description | Type                                                             | Default     |
 | -------------- | --------------- | ----------- | ---------------------------------------------------------------- | ----------- |
 | `anchorEvent`  | --              |             | `MouseEvent \| TouchEvent`                                       | `undefined` |
+| `command`      | `command`       |             | `"custom" \| "native"`                                           | `'native'`  |
 | `containers`   | `containers`    |             | `string`                                                         | `undefined` |
 | `contentAlign` | `content-align` |             | `ContentAlign.CENTER \| ContentAlign.LEFT \| ContentAlign.RIGHT` | `undefined` |
 | `mobile`       | `mobile`        |             | `boolean`                                                        | `undefined` |

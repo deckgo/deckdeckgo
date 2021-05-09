@@ -12,7 +12,6 @@
 | `contentList`   | `content-list`   |             | `ContentList.ORDERED \| ContentList.UNORDERED` | `undefined` |
 | `disabledTitle` | `disabled-title` |             | `boolean`                                      | `false`     |
 | `mobile`        | `mobile`         |             | `boolean`                                      | `undefined` |
-| `selection`     | --               |             | `Selection`                                    | `undefined` |
 | `sticky`        | `sticky`         |             | `boolean`                                      | `undefined` |
 
 

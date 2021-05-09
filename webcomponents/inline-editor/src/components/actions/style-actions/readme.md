@@ -7,15 +7,14 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type        | Default     |
-| --------------- | ---------------- | ----------- | ----------- | ----------- |
-| `bold`          | `bold`           |             | `boolean`   | `undefined` |
-| `disabledTitle` | `disabled-title` |             | `boolean`   | `false`     |
-| `italic`        | `italic`         |             | `boolean`   | `undefined` |
-| `mobile`        | `mobile`         |             | `boolean`   | `undefined` |
-| `selection`     | --               |             | `Selection` | `undefined` |
-| `strikethrough` | `strikethrough`  |             | `boolean`   | `undefined` |
-| `underline`     | `underline`      |             | `boolean`   | `undefined` |
+| Property        | Attribute        | Description | Type      | Default     |
+| --------------- | ---------------- | ----------- | --------- | ----------- |
+| `bold`          | `bold`           |             | `boolean` | `undefined` |
+| `disabledTitle` | `disabled-title` |             | `boolean` | `false`     |
+| `italic`        | `italic`         |             | `boolean` | `undefined` |
+| `mobile`        | `mobile`         |             | `boolean` | `undefined` |
+| `strikethrough` | `strikethrough`  |             | `boolean` | `undefined` |
+| `underline`     | `underline`      |             | `boolean` | `undefined` |
 
 
 ## Events

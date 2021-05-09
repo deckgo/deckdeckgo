@@ -21,6 +21,7 @@ export namespace Components {
     }
     interface DeckgoIeAlignActions {
         "anchorEvent": MouseEvent | TouchEvent;
+        "command": 'native' | 'custom';
         "containers": string;
         "contentAlign": ContentAlign;
         "mobile": boolean;
@@ -31,7 +32,6 @@ export namespace Components {
         "containers": string;
         "mobile": boolean;
         "palette": DeckdeckgoPalette[];
-        "selection": Selection;
     }
     interface DeckgoIeFontSizeActions {
         "fontSize": FontSize;
@@ -52,14 +52,12 @@ export namespace Components {
         "containers": string;
         "linkCreated": EventEmitter<HTMLElement>;
         "mobile": boolean;
-        "selection": Selection;
         "toolbarActions": ToolbarActions;
     }
     interface DeckgoIeListActions {
         "contentList": ContentList;
         "disabledTitle": boolean;
         "mobile": boolean;
-        "selection": Selection;
         "sticky": boolean;
     }
     interface DeckgoIeSeparator {
@@ -70,7 +68,6 @@ export namespace Components {
         "disabledTitle": boolean;
         "italic": boolean;
         "mobile": boolean;
-        "selection": Selection;
         "strikethrough": boolean;
         "underline": boolean;
     }
@@ -90,6 +87,10 @@ export namespace Components {
           * To hide the option to select a background-color
          */
         "backgroundColor": boolean;
+        /**
+          * Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation
+         */
+        "command": 'native' | 'custom';
         /**
           * A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color
          */
@@ -251,6 +252,7 @@ declare namespace LocalJSX {
     }
     interface DeckgoIeAlignActions {
         "anchorEvent"?: MouseEvent | TouchEvent;
+        "command"?: 'native' | 'custom';
         "containers"?: string;
         "contentAlign"?: ContentAlign;
         "mobile"?: boolean;
@@ -263,7 +265,6 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
         "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "palette"?: DeckdeckgoPalette[];
-        "selection"?: Selection;
     }
     interface DeckgoIeFontSizeActions {
         "fontSize"?: FontSize;
@@ -287,7 +288,6 @@ declare namespace LocalJSX {
         "linkCreated"?: EventEmitter<HTMLElement>;
         "mobile"?: boolean;
         "onLinkModified"?: (event: CustomEvent<boolean>) => void;
-        "selection"?: Selection;
         "toolbarActions"?: ToolbarActions;
     }
     interface DeckgoIeListActions {
@@ -295,7 +295,6 @@ declare namespace LocalJSX {
         "disabledTitle"?: boolean;
         "mobile"?: boolean;
         "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
-        "selection"?: Selection;
         "sticky"?: boolean;
     }
     interface DeckgoIeSeparator {
@@ -307,7 +306,6 @@ declare namespace LocalJSX {
         "italic"?: boolean;
         "mobile"?: boolean;
         "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
-        "selection"?: Selection;
         "strikethrough"?: boolean;
         "underline"?: boolean;
     }
@@ -327,6 +325,10 @@ declare namespace LocalJSX {
           * To hide the option to select a background-color
          */
         "backgroundColor"?: boolean;
+        /**
+          * Use `document.execCommand` (= "native") to modify the document or, alternatively use the `custom` implementation
+         */
+        "command"?: 'native' | 'custom';
         /**
           * A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color
          */
