@@ -55,11 +55,11 @@ export class DeckdeckgoInlineEditorUtils {
       return 'underline';
     }
 
-    if (element.style.textDecoration === 'underline') {
+    if (element.style.textDecoration?.indexOf('underline') > -1 || element.style.textDecorationLine?.indexOf('underline') > -1) {
       return 'underline';
     }
 
-    if (element.style.textDecoration === 'initial') {
+    if (element.style.textDecoration?.indexOf('initial') > -1 || element.style.textDecorationLine?.indexOf('initial') > -1) {
       return 'initial';
     }
 
@@ -70,11 +70,15 @@ export class DeckdeckgoInlineEditorUtils {
     const children: HTMLCollection = element.children;
     if (children && children.length > 0) {
       const selectedChild: HTMLElement = Array.from(children).find((child: HTMLElement) => {
-        return child.style.textDecorationLine === 'underline' || child.style.textDecorationLine === 'initial';
+        return (
+          child.style.textDecoration?.indexOf('underline') > -1 ||
+          child.style.textDecorationLine?.indexOf('underline') > -1 ||
+          child.style.textDecorationLine?.indexOf('initial') > -1
+        );
       }) as HTMLElement;
 
       if (selectedChild) {
-        return selectedChild.style.fontStyle === 'underline' ? 'underline' : 'initial';
+        return selectedChild.style.fontStyle?.indexOf('underline') > -1 ? 'underline' : 'initial';
       }
     }
 
@@ -86,11 +90,11 @@ export class DeckdeckgoInlineEditorUtils {
       return 'strikethrough';
     }
 
-    if (element.style.textDecoration === 'line-through') {
+    if (element.style.textDecoration?.indexOf('line-through') > -1 || element.style.textDecorationLine?.indexOf('line-through') > -1) {
       return 'strikethrough';
     }
 
-    if (element.style.textDecoration === 'initial') {
+    if (element.style.textDecoration?.indexOf('initial') > -1 || element.style.textDecorationLine?.indexOf('initial') > -1) {
       return 'initial';
     }
 
@@ -101,11 +105,15 @@ export class DeckdeckgoInlineEditorUtils {
     const children: HTMLCollection = element.children;
     if (children && children.length > 0) {
       const selectedChild: HTMLElement = Array.from(children).find((child: HTMLElement) => {
-        return child.style.textDecoration === 'line-through' || child.style.textDecoration === 'initial';
+        return (
+          child.style.textDecoration?.indexOf('line-through') > -1 ||
+          child.style.textDecorationLine?.indexOf('line-through') > -1 ||
+          child.style.textDecorationLine?.indexOf('initial') > -1
+        );
       }) as HTMLElement;
 
       if (selectedChild) {
-        return selectedChild.style.fontStyle === 'line-through' ? 'strikethrough' : 'initial';
+        return selectedChild.style.fontStyle?.indexOf('line-through') > -1 ? 'strikethrough' : 'initial';
       }
     }
 
