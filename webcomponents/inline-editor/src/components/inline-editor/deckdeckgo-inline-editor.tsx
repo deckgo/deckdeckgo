@@ -401,6 +401,10 @@ export class DeckdeckgoInlineEditor {
   @Method()
   public displayTools(selection?: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
+
+      console.log('here', await getSelection());
+
+
       if (!selection) selection = await getSelection();
 
       if (!this.anchorEvent) {
@@ -871,7 +875,6 @@ export class DeckdeckgoInlineEditor {
     } else if (this.toolbarActions === ToolbarActions.COLOR || this.toolbarActions === ToolbarActions.BACKGROUND_COLOR) {
       return (
         <deckgo-ie-color-actions
-          selection={this.selection}
           action={this.toolbarActions === ToolbarActions.BACKGROUND_COLOR ? 'background-color' : 'color'}
           palette={this.palette}
           mobile={this.mobile}

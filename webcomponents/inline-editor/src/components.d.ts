@@ -31,7 +31,6 @@ export namespace Components {
         "containers": string;
         "mobile": boolean;
         "palette": DeckdeckgoPalette[];
-        "selection": Selection;
     }
     interface DeckgoIeFontSizeActions {
         "fontSize": FontSize;
@@ -263,7 +262,6 @@ declare namespace LocalJSX {
         "mobile"?: boolean;
         "onExecCommand"?: (event: CustomEvent<ExecCommandAction>) => void;
         "palette"?: DeckdeckgoPalette[];
-        "selection"?: Selection;
     }
     interface DeckgoIeFontSizeActions {
         "fontSize"?: FontSize;

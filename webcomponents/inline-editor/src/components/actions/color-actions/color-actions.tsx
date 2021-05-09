@@ -16,9 +16,6 @@ import {ExecCommandAction} from '../../../interfaces/interfaces';
 })
 export class ColorActions {
   @Prop()
-  selection: Selection;
-
-  @Prop()
   action: 'color' | 'background-color';
 
   @Prop()
@@ -36,16 +33,13 @@ export class ColorActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
-  private range: Range | undefined;
-
   async componentWillLoad() {
-    this.range = this.selection?.getRangeAt(0);
-
     await this.initColor();
   }
 
   private async initColor() {
-    const container: HTMLElement | undefined = getAnchorNode(this.selection);
+    const selection: Selection | undefined = await getSelection();
+    const container: HTMLElement | undefined = getAnchorNode(selection);
 
     if (!container) {
       return;
@@ -63,7 +57,9 @@ export class ColorActions {
   }
 
   private async selectColor($event: CustomEvent) {
-    if (!this.selection || !$event || !$event.detail) {
+    const selection: Selection | undefined = await getSelection();
+
+    if (!selection || !$event || !$event.detail) {
       return;
     }
 
@@ -71,20 +67,21 @@ export class ColorActions {
       return;
     }
 
-    if (!this.selection || this.selection.rangeCount <= 0 || !document) {
+    if (selection.rangeCount <= 0 || !document) {
       return;
     }
 
-    const text: string = this.range.toString();
+    const range: Range | undefined = selection.getRangeAt(0);
+
+    const text: string = range?.toString();
 
     if (!text || text.length <= 0) {
       return;
     }
 
-    const selection: Selection | undefined = await getSelection();
     await clearTheSelection();
 
-    selection?.addRange(this.range);
+    selection?.addRange(range);
 
     this.execCommand.emit({
       cmd: 'style',
