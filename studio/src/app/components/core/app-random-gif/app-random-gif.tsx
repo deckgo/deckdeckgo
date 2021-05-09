@@ -30,7 +30,7 @@ export class AppRandomGif {
         return;
       }
 
-      const gifResponse: TenorSearchResponse = await this.gifService.getRandomGif(this.keyword);
+      const gifResponse: TenorSearchResponse | undefined = await this.gifService.getRandomGif(this.keyword);
 
       this.gif = gifResponse?.results?.[0] ?? null;
 

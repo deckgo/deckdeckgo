@@ -7,7 +7,7 @@ import store from '../../../stores/error.store';
 
 export class ApiPhotoProdService extends ApiPhotoService {
   // @Override
-  getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse> {
+  getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse | undefined> {
     return new Promise<UnsplashSearchResponse>(async (resolve) => {
       const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
 
@@ -20,14 +20,14 @@ export class ApiPhotoProdService extends ApiPhotoService {
 
         if (!response) {
           store.state.error = 'Unsplash photos could not be fetched';
-          resolve();
+          resolve(undefined);
           return;
         }
 
         resolve(response);
       } catch (err) {
         store.state.error = err.message;
-        resolve();
+        resolve(undefined);
       }
     });
   }
