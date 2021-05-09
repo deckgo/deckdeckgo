@@ -51,6 +51,30 @@ deckDeckGoElement();
 
 The `<deckgo-inline-editor/>` should be added once only in your page. It will interact with all elements of types `p`, `h1`, `h2` and `h3`, or other `containers` you would define, which are set as `contenteditable`.
 
+### Usage within shadow dom
+
+If the contenteditable being edited resides within a shadow-dom then inline-editor will not be able to find the appropriate selection without a reference to the shadow dom from which the selection event originates. 
+
+For such cases, it is recommended to use `deckgo-inline-editor` with `handleGlobalEvents=false` and the component can intercept the `selectionchange` event and pass the current selection to the `displayTools` method.
+
+```js
+// Inside a component lifecycle method eg. connectedCallback: 
+
+document.addEventListeners('selectionchange', (event) => {
+  // Obtain the selection from component's shadow root
+  const selection = this.shadowRoot?.getSelection();
+
+  if (!selection) return;
+
+  // Obtain the inline-editor element
+  // Here we assume that the element is added directly to document
+  const inlineEditor = document.querySelector('deckgo-inline-editor');
+
+  inlineEditor.displayTools(selection);
+});
+
+```
+
 <!-- Auto Generated Below -->
 
 
@@ -73,6 +97,8 @@ The `<deckgo-inline-editor/>` should be added once only in your page. It will in
 | `palette`             | --                       | In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors                                          | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE`         |
 | `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop                                                                                                                                            | `boolean`             | `false`                   |
 | `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top                                                      | `boolean`             | `false`                   |
+| `handleGlobalEvents`        | `handle-global-events`          | If the component should register global event handler to detect selection change. Set it to false if you want to invoke the displayTools method directly (eg. when selection originates in a different shadow dom)  | `boolean`             | `true`                   |
+
 
 
 ## Events

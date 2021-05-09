@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch} from '@stencil/core';
 
 import {debounce, isIOS, isMobile, isRTL, unifyEvent} from '@deckdeckgo/utils';
 
@@ -179,6 +179,9 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   customActions: string; // Comma separated list of additional action components
 
+  @Prop()
+  handleGlobalEvents: boolean = true;
+
   /**
    * Triggered when a custom action is selected. Its detail provide an action name, the Selection and an anchorLink
    */
@@ -200,6 +203,7 @@ export class DeckdeckgoInlineEditor {
 
   constructor() {
     this.resetDisplayToolsActivated();
+    this.handleSelectionChange = this.handleSelectionChange.bind(this);
   }
 
   private resetDisplayToolsActivated() {
@@ -209,9 +213,12 @@ export class DeckdeckgoInlineEditor {
   }
 
   async componentWillLoad() {
-    await this.attachListener();
-
     await this.initDefaultContentAlign();
+  }
+
+  async connectedCallback() {
+    this.attachSelectionChangeHandler();
+    await this.attachListener();
   }
 
   async componentDidLoad() {
@@ -221,7 +228,17 @@ export class DeckdeckgoInlineEditor {
   }
 
   async disconnectedCallback() {
+    this.detachSelectionChangeHandler();
     await this.detachListener(this.attachTo ? this.attachTo : document);
+  }
+
+  @Watch('handleGlobalEvents')
+  watchHandleGlobalEvents(changedValue: boolean) {
+    if (changedValue) {
+      this.attachSelectionChangeHandler();
+    } else {
+      this.detachSelectionChangeHandler();
+    }
   }
 
   @Watch('attachTo')
@@ -234,6 +251,18 @@ export class DeckdeckgoInlineEditor {
     await this.attachListener();
   }
 
+  private attachSelectionChangeHandler() {
+    if (!this.handleGlobalEvents) return;
+    document.addEventListener('selectionchange', this.handleSelectionChange, {
+      passive: true,
+    });
+  }
+
+  private detachSelectionChangeHandler() {
+    if (this.handleGlobalEvents) return;
+    document.removeEventListener('selectionchange', this.handleSelectionChange);
+  }
+
   private attachListener(): Promise<void> {
     return new Promise<void>((resolve) => {
       const listenerElement: HTMLElement | Document = this.attachTo ? this.attachTo : document;
@@ -241,7 +270,6 @@ export class DeckdeckgoInlineEditor {
         listenerElement.addEventListener('mousedown', this.startSelection, {passive: true});
         listenerElement.addEventListener('touchstart', this.startSelection, {passive: true});
       }
-
       resolve();
     });
   }
@@ -349,8 +377,7 @@ export class DeckdeckgoInlineEditor {
     return DeckdeckgoInlineEditorUtils.isAnchorImage(this.anchorEvent, this.imgAnchor);
   }
 
-  @Listen('selectionchange', {target: 'document', passive: true})
-  async selectionchange(_$event: UIEvent) {
+  private async handleSelectionChange(_$event: UIEvent) {
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
         await this.reset(false);
@@ -370,9 +397,10 @@ export class DeckdeckgoInlineEditor {
     await this.displayTools();
   }
 
-  private displayTools(): Promise<void> {
+  @Method()
+  public displayTools(selection?: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const selection: Selection | undefined = await getSelection();
+      if (!selection) selection = await getSelection();
 
       if (!this.anchorEvent) {
         await this.reset(false);

@@ -98,10 +98,12 @@ export namespace Components {
           * You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions
          */
         "customActions": string;
+        "displayTools": (selection?: Selection) => Promise<void>;
         /**
           * Actions to modify the selection font-size enabled?
          */
         "fontSize": boolean;
+        "handleGlobalEvents": boolean;
         /**
           * The type of element to attach the image toolbar
          */
@@ -334,6 +336,7 @@ declare namespace LocalJSX {
           * Actions to modify the selection font-size enabled?
          */
         "fontSize"?: boolean;
+        "handleGlobalEvents"?: boolean;
         /**
           * The type of element to attach the image toolbar
          */
