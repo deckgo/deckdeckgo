@@ -386,8 +386,6 @@ export class DeckdeckgoInlineEditor {
       return;
     }
 
-    console.log('selectionchange');
-
     const anchorImage: boolean = await this.isAnchorImage();
     if (this.toolbarActions === ToolbarActions.IMAGE && anchorImage) {
       await this.reset(false);
@@ -419,8 +417,6 @@ export class DeckdeckgoInlineEditor {
         resolve();
         return;
       }
-
-      console.log('DISPLAY');
 
       const activated: boolean = await this.activateToolbar(selection);
       await this.setToolsActivated(activated);
@@ -563,8 +559,6 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      console.log('YOLO');
-
       await this.initStyleForNode(content);
 
       resolve();
@@ -572,8 +566,6 @@ export class DeckdeckgoInlineEditor {
   }
 
   private async initStyleForNode(node: Node) {
-    console.log('HHHHH', node);
-
     this.bold = undefined;
     this.italic = undefined;
     this.underline = undefined;
@@ -603,15 +595,11 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      console.log('a');
-
       // Just in case
       if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
         resolve();
         return;
       }
-
-      console.log('ccc', this.isContainer(node), (node as HTMLElement).outerHTML);
 
       if (this.isContainer(node)) {
         const nodeName: string = node.nodeName.toUpperCase();
@@ -625,8 +613,6 @@ export class DeckdeckgoInlineEditor {
         if (this.bold === undefined) {
           this.bold = await DeckdeckgoInlineEditorUtils.getBold(node as HTMLElement);
         }
-
-        console.log((node as HTMLElement).outerHTML);
 
         if (this.italic === undefined) {
           this.italic = await DeckdeckgoInlineEditorUtils.getItalic(node as HTMLElement);

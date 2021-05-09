@@ -1,3 +1,17 @@
+# 3.4.0 (2021-05-09)
+
+### Features
+
+- new property `handleGlobalEvents` to scope events
+
+### Style
+
+- color picker width when toolbar sticky
+
+### Chore
+
+- remove `console.log`
+
 # 3.3.0 (2021-05-08)
 
 ### Fix
