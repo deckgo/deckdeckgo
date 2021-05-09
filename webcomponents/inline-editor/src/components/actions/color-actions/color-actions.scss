@@ -1,5 +1,9 @@
 :host {
   padding: 4px 0;
+
+  deckgo-color {
+    pointer-events: all;
+  }
 }
 
 :host(.deckgo-tools-mobile) {
