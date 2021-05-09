@@ -70,7 +70,7 @@ div.deckgo-tools {
 
   &.deckgo-tools-sticky,
   &.deckgo-tools-mobile.deckgo-tools-sticky {
-    position: absolute;
+    position: fixed;
 
     /**
      * @prop --deckgo-inline-editor-sticky-bottom: The bottom attribute of the sticky toolbar
