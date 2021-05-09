@@ -101,7 +101,7 @@ export class AppPhoto {
 
       this.searching = true;
 
-      const unsplashResponse: UnsplashSearchResponse = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
+      const unsplashResponse: UnsplashSearchResponse | undefined = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
 
       this.searching = false;
 

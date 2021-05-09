@@ -114,7 +114,7 @@ export class AppGif {
 
       this.searching = true;
 
-      const tenorResponse: TenorSearchResponse = await this.gifService.getGifs(this.searchTerm, this.paginationNext);
+      const tenorResponse: TenorSearchResponse | undefined = await this.gifService.getGifs(this.searchTerm, this.paginationNext);
 
       this.searching = false;
 

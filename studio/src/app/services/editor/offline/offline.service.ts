@@ -505,7 +505,7 @@ export class OfflineService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'data', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageOnlineService.uploadFile(data, 'data', 10485760);
 
         if (!storageFile) {
           reject(`Chart ${src} upload has failed.`);
@@ -588,7 +588,7 @@ export class OfflineService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
 
         if (!storageFile) {
           reject(`Image ${img.imgSrc} upload has failed.`);
@@ -785,7 +785,7 @@ export class OfflineService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageOnlineService.uploadFile(data, 'images', 10485760);
 
         if (!storageFile) {
           reject(`Image ${img.imgSrc} upload has failed.`);

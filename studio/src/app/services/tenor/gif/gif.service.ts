@@ -37,13 +37,13 @@ export class GifService {
         resolve(response.tags);
       } catch (err) {
         store.state.error = err.message;
-        resolve();
+        resolve([]);
       }
     });
   }
 
-  getGifs(searchTerm: string, next: string | number): Promise<TenorSearchResponse> {
-    return new Promise<TenorSearchResponse>(async (resolve) => {
+  getGifs(searchTerm: string, next: string | number): Promise<TenorSearchResponse | undefined> {
+    return new Promise<TenorSearchResponse | undefined>(async (resolve) => {
       const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       const anonymousId: string = await this.getAnonymousId();
@@ -68,20 +68,20 @@ export class GifService {
 
         if (!response) {
           store.state.error = 'Tenor trending could not be fetched';
-          resolve();
+          resolve(undefined);
           return;
         }
 
         resolve(response);
       } catch (err) {
         store.state.error = err.message;
-        resolve();
+        resolve(undefined);
       }
     });
   }
 
-  getRandomGif(searchTerm: string): Promise<TenorSearchResponse> {
-    return new Promise<TenorSearchResponse>(async (resolve) => {
+  getRandomGif(searchTerm: string): Promise<TenorSearchResponse | undefined> {
+    return new Promise<TenorSearchResponse | undefined>(async (resolve) => {
       const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       const anonymousId: string = await this.getAnonymousId();
@@ -92,18 +92,18 @@ export class GifService {
       try {
         const rawResponse: Response = await fetch(searchUrl);
 
-        const response: TenorSearchResponse = JSON.parse(await rawResponse.text());
+        const response: TenorSearchResponse | undefined = JSON.parse(await rawResponse.text());
 
         if (!response) {
           store.state.error = 'Tenor trending could not be fetched';
-          resolve();
+          resolve(undefined);
           return;
         }
 
         resolve(response);
       } catch (err) {
         // We don't throw an error, in such a case we just not gonna display a gif
-        resolve();
+        resolve(undefined);
       }
     });
   }

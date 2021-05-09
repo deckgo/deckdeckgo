@@ -56,7 +56,7 @@ export class AppActionsElement {
   @Event() private imgDidChange: EventEmitter<HTMLElement>;
   @Event() private notesDidChange: EventEmitter<HTMLElement>;
 
-  private elementResizeObserver: ResizeObserverConstructor;
+  private elementResizeObserver: ResizeObserver;
 
   private readonly debounceResizeSlideContent: () => void;
 
@@ -677,7 +677,7 @@ export class AppActionsElement {
       await this.detachMoveToolbarOnElement();
 
       this.elementResizeObserver = new ResizeObserver(async (entries) => {
-        if (entries && entries.length > 0 && entries[0].target && entries[0].target.nodeName && !isSlide(entries[0].target)) {
+        if (entries && entries.length > 0 && entries[0].target && entries[0].target.nodeName && !isSlide(entries[0].target as HTMLElement)) {
           await this.resizeSlideContent();
         }
       });

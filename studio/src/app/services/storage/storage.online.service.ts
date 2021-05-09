@@ -18,24 +18,24 @@ export class StorageOnlineService {
     return StorageOnlineService.instance;
   }
 
-  uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile> {
+  uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
           errorStore.state.error = 'Not logged in.';
-          resolve();
+          resolve(undefined);
           return;
         }
 
         if (!data || !data.name) {
           errorStore.state.error = 'File not valid.';
-          resolve();
+          resolve(undefined);
           return;
         }
 
         if (data.size > maxSize) {
           errorStore.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
-          resolve();
+          resolve(undefined);
           return;
         }
 
@@ -50,7 +50,7 @@ export class StorageOnlineService {
         });
       } catch (err) {
         errorStore.state.error = err.message;
-        resolve();
+        resolve(undefined);
       }
     });
   }

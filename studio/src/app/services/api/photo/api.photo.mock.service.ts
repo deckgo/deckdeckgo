@@ -2,7 +2,7 @@ import {ApiPhotoService} from './api.photo.service';
 
 export class ApiPhotoMockService extends ApiPhotoService {
   // @Override
-  getPhotos(_searchTerm: string, _next: string | number): Promise<UnsplashSearchResponse> {
+  getPhotos(_searchTerm: string, _next: string | number): Promise<UnsplashSearchResponse | undefined> {
     return new Promise<UnsplashSearchResponse>(async (resolve) => {
       const result: UnsplashSearchResponse = {
         total: 1,

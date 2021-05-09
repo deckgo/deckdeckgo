@@ -17,7 +17,7 @@ export class StorageService {
     return StorageService.instance;
   }
 
-  async uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile> {
+  async uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
     const offline: OfflineDeck = await OfflineService.getInstance().status();
 
     if (offline !== undefined) {

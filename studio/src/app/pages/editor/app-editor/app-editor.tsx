@@ -118,8 +118,8 @@ export class AppEditor {
   private contentRef!: HTMLElement;
   private mainRef!: HTMLElement;
 
-  private mainResizeObserver: ResizeObserverConstructor;
-  private slideResizeObserver: ResizeObserverConstructor;
+  private mainResizeObserver: ResizeObserver;
+  private slideResizeObserver: ResizeObserver;
 
   constructor() {
     this.authService = AuthService.getInstance();

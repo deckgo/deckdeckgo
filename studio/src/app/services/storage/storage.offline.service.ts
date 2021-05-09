@@ -12,18 +12,18 @@ export class StorageOfflineService {
     return StorageOfflineService.instance;
   }
 
-  uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile> {
+  uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
         if (!data || !data.name) {
           store.state.error = 'File not valid.';
-          resolve();
+          resolve(undefined);
           return;
         }
 
         if (data.size > maxSize) {
           store.state.error = `File is too big (max. ${maxSize / 1048576} Mb)`;
-          resolve();
+          resolve(undefined);
           return;
         }
 
@@ -38,7 +38,7 @@ export class StorageOfflineService {
         });
       } catch (err) {
         store.state.error = 'File could not be saved.';
-        resolve();
+        resolve(undefined);
       }
     });
   }
