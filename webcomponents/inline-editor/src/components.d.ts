@@ -103,6 +103,9 @@ export namespace Components {
           * Actions to modify the selection font-size enabled?
          */
         "fontSize": boolean;
+        /**
+          * Handle the selection change "manually". See chapter "Usage within shadow dom"
+         */
         "handleGlobalEvents": boolean;
         /**
           * The type of element to attach the image toolbar
@@ -336,6 +339,9 @@ declare namespace LocalJSX {
           * Actions to modify the selection font-size enabled?
          */
         "fontSize"?: boolean;
+        /**
+          * Handle the selection change "manually". See chapter "Usage within shadow dom"
+         */
         "handleGlobalEvents"?: boolean;
         /**
           * The type of element to attach the image toolbar

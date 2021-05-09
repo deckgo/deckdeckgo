@@ -179,6 +179,9 @@ export class DeckdeckgoInlineEditor {
   @Prop()
   customActions: string; // Comma separated list of additional action components
 
+  /**
+   * Handle the selection change "manually". See chapter "Usage within shadow dom"
+   */
   @Prop()
   handleGlobalEvents: boolean = true;
 

@@ -88,6 +88,7 @@ document.addEventListeners('selectionchange', (event) => {
 | `containers`          | `containers`             | A comma separated list of containers where the inline editor should/could be use. Used in order to allow the component to detect some information like the current style or color | `string`              | `'h1,h2,h3,h4,h5,h6,div'` |
 | `customActions`       | `custom-actions`         | You might to display and add further actions to the component ? Use this property to provide a comma separated list of actions                                                    | `string`              | `undefined`               |
 | `fontSize`            | `font-size`              | Actions to modify the selection font-size enabled?                                                                                                                                | `boolean`             | `true`                    |
+| `handleGlobalEvents`  | `handle-global-events`   | Handle the selection change "manually". See chapter "Usage within shadow dom"                                                                                                     | `boolean`             | `true`                    |
 | `imgAnchor`           | `img-anchor`             | The type of element to attach the image toolbar                                                                                                                                   | `string`              | `'img'`                   |
 | `imgEditable`         | `img-editable`           | Per default, the component will not consider images as editable. Turn this option to true to activate the edition of images                                                       | `boolean`             | `false`                   |
 | `imgPropertyCssFloat` | `img-property-css-float` | In case you would like to use a specific property to specify the float on your image                                                                                              | `string`              | `'float'`                 |
@@ -97,8 +98,6 @@ document.addEventListeners('selectionchange', (event) => {
 | `palette`             | --                       | In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors                                          | `DeckdeckgoPalette[]` | `DEFAULT_PALETTE`         |
 | `stickyDesktop`       | `sticky-desktop`         | Use a sticky footer toolbar on desktop                                                                                                                                            | `boolean`             | `false`                   |
 | `stickyMobile`        | `sticky-mobile`          | Use a sticky footer toolbar on mobile. The sticky bar is positioned bottom except on iOS for which it will be positioned top                                                      | `boolean`             | `false`                   |
-| `handleGlobalEvents`        | `handle-global-events`          | If the component should register global event handler to detect selection change. Set it to false if you want to invoke the displayTools method directly (eg. when selection originates in a different shadow dom)  | `boolean`             | `true`                   |
-
 
 
 ## Events
@@ -113,6 +112,16 @@ document.addEventListeners('selectionchange', (event) => {
 
 
 ## Methods
+
+### `displayTools(selection?: Selection) => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 ### `reset(clearSelection: boolean, blurActiveElement?: boolean) => Promise<void>`
 
