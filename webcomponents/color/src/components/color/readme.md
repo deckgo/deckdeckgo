@@ -195,9 +195,11 @@ export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
 | `--deckgo-color-hash-color`           | Hash (#) color @default rgb(152, 161, 164)                             |
 | `--deckgo-color-hash-height`          | Hash (#) height @default 28px                                          |
 | `--deckgo-color-hash-width`           | Hash (#) width @default 28px                                           |
+| `--deckgo-color-input-background`     | Input background @default inherit                                      |
 | `--deckgo-color-input-border-radius`  | Input border-radius @default 0 4px 4px 0                               |
 | `--deckgo-color-input-box-shadow`     | Input box-shadow @default rgb(240, 240, 240) 0 0 0 1px inset           |
 | `--deckgo-color-input-color`          | Input color @default rgb(102, 102, 102)                                |
+| `--deckgo-color-input-font-family`    | Input font-family @default inherit                                     |
 | `--deckgo-color-input-height`         | Input height @default 28px                                             |
 | `--deckgo-color-input-margin`         | Input field margin @default 4px                                        |
 | `--deckgo-color-input-max-width`      | Input max-width @default 136px                                         |

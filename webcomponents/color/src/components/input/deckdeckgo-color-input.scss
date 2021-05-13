@@ -21,6 +21,7 @@ span {
 
 input {
   color: var(--deckgo-color-input-color, rgb(102, 102, 102));
+  background: var(--deckgo-color-input-background, inherit);
 
   border: none;
   outline: none;
@@ -33,4 +34,6 @@ input {
   padding: var(--deckgo-color-input-padding, 0 4px);
 
   max-width: var(--deckgo-color-input-max-width, 136px);
+
+  font-family: var(--deckgo-color-input-font-family, inherit);
 }
