@@ -182,30 +182,32 @@ export const DEFAULT_PALETTE: DeckdeckgoPalette[] = [
 
 ## CSS Custom Properties
 
-| Name                                  | Description                                                            |
-| ------------------------------------- | ---------------------------------------------------------------------- |
-| `--deckgo-color-button-border-radius` | Button border-radius @default 2px                                      |
-| `--deckgo-color-button-height`        | Button height @default 28px                                            |
-| `--deckgo-color-button-margin`        | Button margin @default 4px                                             |
-| `--deckgo-color-button-outline`       | Button outline @default none                                           |
-| `--deckgo-color-button-width`         | Button width @default 28px                                             |
-| `--deckgo-color-flex-wrap`            | Component flex-wrap @default wrap                                      |
-| `--deckgo-color-hash-background`      | Hash (#) background @default rgb(240, 240, 240) none repeat scroll 0 0 |
-| `--deckgo-color-hash-border-radius`   | Hash (#) border-radius @default 4px 0 0 4px                            |
-| `--deckgo-color-hash-color`           | Hash (#) color @default rgb(152, 161, 164)                             |
-| `--deckgo-color-hash-height`          | Hash (#) height @default 28px                                          |
-| `--deckgo-color-hash-width`           | Hash (#) width @default 28px                                           |
-| `--deckgo-color-input-background`     | Input background @default inherit                                      |
-| `--deckgo-color-input-border-radius`  | Input border-radius @default 0 4px 4px 0                               |
-| `--deckgo-color-input-box-shadow`     | Input box-shadow @default rgb(240, 240, 240) 0 0 0 1px inset           |
-| `--deckgo-color-input-color`          | Input color @default rgb(102, 102, 102)                                |
-| `--deckgo-color-input-font-family`    | Input font-family @default inherit                                     |
-| `--deckgo-color-input-height`         | Input height @default 28px                                             |
-| `--deckgo-color-input-margin`         | Input field margin @default 4px                                        |
-| `--deckgo-color-input-max-width`      | Input max-width @default 136px                                         |
-| `--deckgo-color-input-padding`        | Input padding @default 0 4px                                           |
-| `--deckgo-color-overflow`             | Component overflow @default visible                                    |
-| `--deckgo-color-padding`              | Component padding @default 8px                                         |
+| Name                                           | Description                                                            |
+| ---------------------------------------------- | ---------------------------------------------------------------------- |
+| `--deckgo-color-button-border-radius`          | Button border-radius @default 2px                                      |
+| `--deckgo-color-button-height`                 | Button height @default 28px                                            |
+| `--deckgo-color-button-margin`                 | Button margin @default 4px                                             |
+| `--deckgo-color-button-outline`                | Button outline @default none                                           |
+| `--deckgo-color-button-width`                  | Button width @default 28px                                             |
+| `--deckgo-color-flex-wrap`                     | Component flex-wrap @default wrap                                      |
+| `--deckgo-color-hash-background`               | Hash (#) background @default rgb(240, 240, 240) none repeat scroll 0 0 |
+| `--deckgo-color-hash-border-radius`            | Hash (#) border-radius @default 4px 0 0 4px                            |
+| `--deckgo-color-hash-color`                    | Hash (#) color @default rgb(152, 161, 164)                             |
+| `--deckgo-color-hash-height`                   | Hash (#) height @default 28px                                          |
+| `--deckgo-color-hash-width`                    | Hash (#) width @default 28px                                           |
+| `--deckgo-color-input-background`              | Input background @default inherit                                      |
+| `--deckgo-color-input-border-radius`           | Input border-radius @default 0 4px 4px 0                               |
+| `--deckgo-color-input-box-shadow`              | Input box-shadow @default rgb(240, 240, 240) 0 0 0 1px inset           |
+| `--deckgo-color-input-color`                   | Input color @default rgb(102, 102, 102)                                |
+| `--deckgo-color-input-container-border`        | The border property of the input and hash container                    |
+| `--deckgo-color-input-container-border-radius` | The border-radius property of the input and hash container             |
+| `--deckgo-color-input-font-family`             | Input font-family @default inherit                                     |
+| `--deckgo-color-input-height`                  | Input height @default 28px                                             |
+| `--deckgo-color-input-margin`                  | Input field margin @default 4px                                        |
+| `--deckgo-color-input-max-width`               | Input max-width @default 136px                                         |
+| `--deckgo-color-input-padding`                 | Input padding @default 0 4px                                           |
+| `--deckgo-color-overflow`                      | Component overflow @default visible                                    |
+| `--deckgo-color-padding`                       | Component padding @default 8px                                         |
 
 
 ## Dependencies

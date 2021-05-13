@@ -1,3 +1,9 @@
+# 4.0.2 (2021-05-13)
+
+### Style
+
+- container input style `border` and `border-radius` exposed
+
 # 4.0.1 (2021-05-13)
 
 ### Style

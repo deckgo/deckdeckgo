@@ -3,6 +3,9 @@
   position: relative;
 
   margin: var(--deckgo-color-input-margin, 4px);
+
+  border-radius: var(--deckgo-color-input-container-border-radius);
+  border: var(--deckgo-color-input-container-border);
 }
 
 span {
