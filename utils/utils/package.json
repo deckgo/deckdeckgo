@@ -24,7 +24,7 @@
   "scripts": {
     "prepare": "npm run build",
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
-    "build": "rimraf lib && rimraf css && node ./esbuild.js && npm run ts-declaration"
+    "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
   "files": [
     "lib",

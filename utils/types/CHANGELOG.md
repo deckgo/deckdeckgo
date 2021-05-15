@@ -1,3 +1,11 @@
+<a name="2.0.0"></a>
+
+# 2.0.0 (2021-05-25)
+
+### Build
+
+- build only type declarations
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2020-04-10)
