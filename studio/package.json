@@ -48,7 +48,7 @@
     "@deckdeckgo/slide-utils": "^2.6.1",
     "@deckdeckgo/slide-youtube": "^2.2.2",
     "@deckdeckgo/social": "^4.0.0",
-    "@deckdeckgo/utils": "^1.8.1",
+    "@deckdeckgo/utils": "^2.0.0",
     "@deckdeckgo/word-cloud": "^1.0.5",
     "@deckdeckgo/youtube": "^2.0.1",
     "@ionic/core": "^5.6.6",
