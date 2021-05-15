@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Fragment, h, Host, Method, Prop, State, Watch} from '@stencil/core';
 
 import {debounce, isIOS, isMobile, isRTL, unifyEvent} from '@deckdeckgo/utils';
 
@@ -953,8 +953,6 @@ export class DeckdeckgoInlineEditor {
 
       this.renderFontSizeAction(),
 
-      this.renderSeparator(),
-
       this.renderColorActions(),
 
       this.renderSeparator(),
@@ -1049,11 +1047,15 @@ export class DeckdeckgoInlineEditor {
     }
 
     return (
-      <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openFontSizeActions()}>
-        <span>
-          A<small>A</small>
-        </span>
-      </deckgo-ie-action-button>
+      <Fragment>
+        <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openFontSizeActions()}>
+          <span>
+            A<small>A</small>
+          </span>
+        </deckgo-ie-action-button>
+
+        {this.renderSeparator()}
+      </Fragment>
     );
   }
 }

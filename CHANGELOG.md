@@ -1,3 +1,12 @@
+<a name="4.7.0"></a>
+
+# [4.7.0](https://github.com/deckgo/deckdeckgo/compare/v4.6.0...v4.7.0) (2021-XX-YY)
+
+### Web Components
+
+- color: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
+- inline-editor: v4.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
+
 <a name="4.6.0"></a>
 
 # [4.6.0](https://github.com/deckgo/deckdeckgo/compare/v4.5.0...v4.6.0) (2021-05-09)
@@ -13,7 +22,7 @@
 
 ### Web Components
 
-- color: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
+- color: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
 - core: v8.1.6 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - highlight-code: v2.6.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 - inline-editor: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
