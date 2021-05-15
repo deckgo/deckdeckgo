@@ -23,7 +23,7 @@
     "@deckdeckgo/charts": "^2.0.1",
     "@deckdeckgo/color": "^4.0.0",
     "@deckdeckgo/core": "^8.1.6",
-    "@deckdeckgo/deck-utils": "^3.4.1",
+    "@deckdeckgo/deck-utils": "^4.0.0",
     "@deckdeckgo/demo": "^2.0.1",
     "@deckdeckgo/drag-resize-rotate": "^2.0.1",
     "@deckdeckgo/highlight-code": "^2.6.0",
