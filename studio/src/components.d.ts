@@ -207,10 +207,6 @@ export namespace Components {
         "expanded": Expanded;
         "expander": boolean;
     }
-    interface AppFontSize {
-        "selectedElement": HTMLElement;
-        "selector": '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
-    }
     interface AppFullscreenInfo {
     }
     interface AppGetHelp {
@@ -733,12 +729,6 @@ declare global {
         prototype: HTMLAppExpansionPanelElement;
         new (): HTMLAppExpansionPanelElement;
     };
-    interface HTMLAppFontSizeElement extends Components.AppFontSize, HTMLStencilElement {
-    }
-    var HTMLAppFontSizeElement: {
-        prototype: HTMLAppFontSizeElement;
-        new (): HTMLAppFontSizeElement;
-    };
     interface HTMLAppFullscreenInfoElement extends Components.AppFullscreenInfo, HTMLStencilElement {
     }
     var HTMLAppFullscreenInfoElement: {
@@ -1210,7 +1200,6 @@ declare global {
         "app-element-style": HTMLAppElementStyleElement;
         "app-embed": HTMLAppEmbedElement;
         "app-expansion-panel": HTMLAppExpansionPanelElement;
-        "app-font-size": HTMLAppFontSizeElement;
         "app-fullscreen-info": HTMLAppFullscreenInfoElement;
         "app-get-help": HTMLAppGetHelpElement;
         "app-gif": HTMLAppGifElement;
@@ -1510,11 +1499,6 @@ declare namespace LocalJSX {
         "expanded"?: Expanded;
         "expander"?: boolean;
         "onExpansion"?: (event: CustomEvent<Expanded>) => void;
-    }
-    interface AppFontSize {
-        "onCodeDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
-        "selector"?: '--deckgo-highlight-code-font-size' | '--deckgo-math-font-size';
     }
     interface AppFullscreenInfo {
     }
@@ -1816,7 +1800,6 @@ declare namespace LocalJSX {
         "app-element-style": AppElementStyle;
         "app-embed": AppEmbed;
         "app-expansion-panel": AppExpansionPanel;
-        "app-font-size": AppFontSize;
         "app-fullscreen-info": AppFullscreenInfo;
         "app-get-help": AppGetHelp;
         "app-gif": AppGif;
@@ -1943,7 +1926,6 @@ declare module "@stencil/core" {
             "app-element-style": LocalJSX.AppElementStyle & JSXBase.HTMLAttributes<HTMLAppElementStyleElement>;
             "app-embed": LocalJSX.AppEmbed & JSXBase.HTMLAttributes<HTMLAppEmbedElement>;
             "app-expansion-panel": LocalJSX.AppExpansionPanel & JSXBase.HTMLAttributes<HTMLAppExpansionPanelElement>;
-            "app-font-size": LocalJSX.AppFontSize & JSXBase.HTMLAttributes<HTMLAppFontSizeElement>;
             "app-fullscreen-info": LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
             "app-get-help": LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
             "app-gif": LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;

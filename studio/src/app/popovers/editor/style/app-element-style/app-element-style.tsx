@@ -262,10 +262,9 @@ export class AppElementStyle {
     }
 
     return (
-      <app-font-size
+      <app-text
         selectedElement={this.selectedElement.element}
-        selector={this.selectedElement.slot?.math ? '--deckgo-math-font-size' : '--deckgo-highlight-code-font-size'}
-        onCodeDidChange={() => this.emitStyleChange()}></app-font-size>
+        onTextDidChange={() => this.emitStyleChange()}></app-text>
     );
   }
 }
