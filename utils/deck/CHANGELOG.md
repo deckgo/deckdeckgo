@@ -1,3 +1,11 @@
+<a name="4.0.0"></a>
+
+# 4.0.0 (2021-05-15)
+
+### Style
+
+- default `h1` font-size `3em` regardless of the screen size
+
 <a name="3.4.1"></a>
 
 # 3.4.1 (2021-03-25)
