@@ -7,6 +7,10 @@
 - color: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
 - inline-editor: v4.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 
+### Others
+
+- deck-utils: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+
 <a name="4.6.0"></a>
 
 # [4.6.0](https://github.com/deckgo/deckdeckgo/compare/v4.5.0...v4.6.0) (2021-05-09)
