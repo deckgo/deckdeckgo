@@ -249,8 +249,10 @@ interface I18nEditor {
   very_big: string;
   medium: string;
   large: string;
+  custom: string;
   original: string;
   alignment: string;
+  scale: string;
   start: string;
   center: string;
   left: string;

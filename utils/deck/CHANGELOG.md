@@ -1,3 +1,28 @@
+<a name="4.0.1"></a>
+
+# 4.0.1 (2021-05-15)
+
+### Build
+
+- remove unused dependencies
+
+<a name="4.0.0"></a>
+
+# 4.0.0 (2021-05-15)
+
+### Breaking Changes
+
+- build to ECMAScript module (`esm`)
+- drop `iife` and `cjs` formats
+
+### Build
+
+- migrate to `esbuild`
+
+### Style
+
+- default `h1` font-size `3em` regardless of the screen size
+
 <a name="3.4.1"></a>
 
 # 3.4.1 (2021-03-25)

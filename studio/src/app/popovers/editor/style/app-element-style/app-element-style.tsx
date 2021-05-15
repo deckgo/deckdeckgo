@@ -180,7 +180,6 @@ export class AppElementStyle {
       ];
     } else {
       return [
-        this.renderFontSize(),
         this.renderText(),
         this.renderBlock(),
         this.renderList(),
@@ -202,10 +201,6 @@ export class AppElementStyle {
   }
 
   private renderText() {
-    if (this.selectedElement.slot?.code) {
-      return undefined;
-    }
-
     return <app-text selectedElement={this.selectedElement.element} onTextDidChange={() => this.emitStyleChange()}></app-text>;
   }
 
@@ -253,19 +248,6 @@ export class AppElementStyle {
         selectedElement={this.selectedElement.element}
         onToggleList={() => this.closePopover()}
         onListStyleChanged={() => this.emitStyleChange()}></app-list>
-    );
-  }
-
-  private renderFontSize() {
-    if (!this.selectedElement.slot?.code && !this.selectedElement.slot?.math) {
-      return undefined;
-    }
-
-    return (
-      <app-font-size
-        selectedElement={this.selectedElement.element}
-        selector={this.selectedElement.slot?.math ? '--deckgo-math-font-size' : '--deckgo-highlight-code-font-size'}
-        onCodeDidChange={() => this.emitStyleChange()}></app-font-size>
     );
   }
 }

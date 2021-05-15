@@ -805,7 +805,7 @@ export class AppEditor {
         img-anchor="deckgo-lazy-img"
         list={false}
         palette={colorStore.state.history}
-        align={false}></deckgo-inline-editor>
+        align={false} fontSize={false}></deckgo-inline-editor>
     );
   }
 

@@ -48,7 +48,7 @@ export function getSlideDefinition(slide: HTMLElement): Promise<DeckdeckgoSlideD
     resolve({
       template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
       content: slide.innerHTML,
-      attributes: attributes,
+      attributes: attributes
     });
   });
 }
@@ -64,7 +64,7 @@ export function getAttributesDefinition(attributes: NamedNodeMap): Promise<Deckd
     Array.prototype.slice.call(attributes).forEach((attribute: Attr) => {
       if (['id', 'hydrated', 'class', 'contenteditable'].indexOf(attribute.name.toLowerCase()) === -1) {
         let attr: DeckdeckgoAttributeDefinition = {
-          name: attribute.name,
+          name: attribute.name
         };
 
         if (attribute.value !== undefined) {
@@ -80,5 +80,7 @@ export function getAttributesDefinition(attributes: NamedNodeMap): Promise<Deckd
 }
 
 export const isSlide = (slide?: HTMLElement): boolean => {
-  return slide?.parentElement?.nodeName.toLowerCase() === 'deckgo-deck' && (!slide.hasAttribute('slot') || slide.getAttribute('slot') === '');
+  return (
+    slide?.parentElement?.nodeName.toLowerCase() === 'deckgo-deck' && (!slide.hasAttribute('slot') || slide.getAttribute('slot') === '')
+  );
 };

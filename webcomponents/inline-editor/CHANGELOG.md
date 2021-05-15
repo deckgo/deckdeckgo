@@ -1,3 +1,9 @@
+# 4.0.3 (2021-05-15)
+
+### Fix
+
+- do not display separator if font-size option not activated
+
 # 4.0.2 (2021-05-09)
 
 ### Fix

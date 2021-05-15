@@ -39,13 +39,7 @@ deckgo-deck a {
 // Font size
 
 deckgo-deck h1 {
-  --font-size-deck-h1: 3em;
-
-  @media (max-width: 768px) {
-    --font-size-deck-h1: 2.4em;
-  }
-
-  font-size: var(--font-size-deck-h1);
+  font-size: 3em;
 }
 
 deckgo-deck h2 {

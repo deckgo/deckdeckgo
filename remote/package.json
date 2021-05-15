@@ -17,7 +17,7 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.0.1",
     "@deckdeckgo/core": "^8.1.4",
-    "@deckdeckgo/deck-utils": "^3.4.1",
+    "@deckdeckgo/deck-utils": "^4.0.1",
     "@deckdeckgo/demo": "^2.0.1",
     "@deckdeckgo/drag-resize-rotate": "^2.0.1",
     "@deckdeckgo/highlight-code": "^2.6.0",
@@ -44,7 +44,7 @@
     "@deckdeckgo/slide-video": "^2.2.2",
     "@deckdeckgo/slide-youtube": "^2.2.2",
     "@deckdeckgo/social": "^4.0.0",
-    "@deckdeckgo/utils": "^1.8.0",
+    "@deckdeckgo/utils": "^1.8.1",
     "@deckdeckgo/word-cloud": "^1.0.5",
     "@deckdeckgo/youtube": "^2.0.1",
     "@ionic/core": "^5.5.0",

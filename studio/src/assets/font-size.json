@@ -1,0 +1,23 @@
+{
+  "h1": {
+    "very_small": "1em",
+    "small": "2em",
+    "normal": "3em",
+    "big": "5em",
+    "very_big": "8em"
+  },
+  "h2": {
+    "very_small": "0.666667em",
+    "small": "1.33333em",
+    "normal": "2em",
+    "big": "3.33333em",
+    "very_big": "5.33333em"
+  },
+  "normal": {
+    "very_small": "0.466667em",
+    "small": "0.933333em",
+    "normal": "1.4em",
+    "big": "2.33333em",
+    "very_big": "3.73333em"
+  }
+}
