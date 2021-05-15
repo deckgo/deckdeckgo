@@ -6,7 +6,10 @@ import i18n from '../../../../../stores/i18n.store';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
 
 import {EditMode, Expanded} from '../../../../../types/core/settings';
+import { FontSize } from "../../../../../types/editor/font-size";
+
 import {AlignUtils, TextAlign} from '../../../../../utils/editor/align.utils';
+import { initFontSize, toggleFontSize } from "../../../../../utils/editor/font-size.utils";
 
 enum LetterSpacing {
   TIGHTER,
@@ -37,13 +40,18 @@ export class AppText {
   @State()
   private letterSpacingCSS: string;
 
+  @State()
+  private fontSize: FontSize | undefined = undefined;
+
+  @State()
+  private fontSizeCSS: string;
+
   @Event() textDidChange: EventEmitter<void>;
 
   private destroyListener;
 
   async componentWillLoad() {
-    this.letterSpacing = await this.initLetterSpacing();
-    this.align = await AlignUtils.getAlignment(this.selectedElement);
+    await this.init();
 
     await this.initCSS();
 
@@ -53,8 +61,7 @@ export class AppText {
         return;
       }
 
-      this.letterSpacing = await this.initLetterSpacing();
-      this.align = await AlignUtils.getAlignment(this.selectedElement);
+      await this.init();
     });
   }
 
@@ -64,6 +71,12 @@ export class AppText {
     }
   }
 
+  private async init() {
+    this.letterSpacing = await this.initLetterSpacing();
+    this.align = await AlignUtils.getAlignment(this.selectedElement);
+    this.fontSize = await initFontSize(this.selectedElement);
+  }
+  
   private async initLetterSpacing(): Promise<LetterSpacing> {
     if (!this.selectedElement) {
       return LetterSpacing.NORMAL;
@@ -133,6 +146,7 @@ export class AppText {
   private async initCSS() {
     this.letterSpacingCSS = this.selectedElement?.style.letterSpacing;
     this.alignCSS = this.selectedElement?.style.textAlign;
+    this.fontSizeCSS = this.selectedElement?.style.fontSize;
   }
 
   private handleLetterSpacingInput($event: CustomEvent<KeyboardEvent>) {
@@ -170,6 +184,40 @@ export class AppText {
     this.textDidChange.emit();
   }
 
+  private async toggleFontSize($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
+
+    this.fontSize = $event.detail.value;
+
+    if (!this.selectedElement) {
+      return;
+    }
+
+    this.selectedElement.style.removeProperty('font-size');
+
+    const size: string | undefined = toggleFontSize(this.selectedElement, this.fontSize);
+
+    if (!size) {
+      return;
+    }
+
+    this.selectedElement.style.setProperty('font-size', size);
+
+    this.textDidChange.emit();
+  }
+
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.fontSizeCSS = ($event.target as InputTargetEvent).value;
+  }
+
+  private async updateFontSizeCSS() {
+    this.selectedElement.style.setProperty('font-size', this.fontSizeCSS);
+
+    this.textDidChange.emit();
+  }
+  
   render() {
     return (
       <app-expansion-panel
@@ -177,11 +225,50 @@ export class AppText {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({text: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.text}</ion-label>
         <ion-list>
+          {this.renderFontSize()}
           {this.renderLetterSpacing()}
           {this.renderAlign()}
         </ion-list>
       </app-expansion-panel>
     );
+  }
+
+  private renderFontSize() {
+    return <Fragment>
+      <ion-item-divider>
+        <ion-label>{i18n.state.editor.scale}</ion-label>
+      </ion-item-divider>
+
+      <ion-item class="select properties">
+        <ion-label>{i18n.state.editor.size}</ion-label>
+
+        <ion-select
+          value={this.fontSize}
+          placeholder={i18n.state.editor.select_font_size}
+          onIonChange={($event: CustomEvent) => this.toggleFontSize($event)}
+          interface="popover"
+          mode="md"
+          class="ion-padding-start ion-padding-end">
+          <ion-select-option value={FontSize.VERY_SMALL}>{i18n.state.editor.very_small}</ion-select-option>
+          <ion-select-option value={FontSize.SMALL}>{i18n.state.editor.small}</ion-select-option>
+          <ion-select-option value={FontSize.NORMAL}>{i18n.state.editor.normal}</ion-select-option>
+          <ion-select-option value={FontSize.BIG}>{i18n.state.editor.big}</ion-select-option>
+          <ion-select-option value={FontSize.VERY_BIG}>{i18n.state.editor.very_big}</ion-select-option>
+          {
+            this.fontSize === FontSize.CUSTOM ? <ion-select-option value={FontSize.CUSTOM}>{i18n.state.editor.custom}</ion-select-option> : undefined
+          }
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="with-padding css">
+        <ion-input
+          value={this.fontSizeCSS}
+          placeholder="font-size"
+          debounce={500}
+          onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+          onIonChange={async () => await this.updateFontSizeCSS()}></ion-input>
+      </ion-item>
+    </Fragment>
   }
 
   private renderLetterSpacing() {
