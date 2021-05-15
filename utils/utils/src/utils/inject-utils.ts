@@ -1,10 +1,5 @@
 export function injectJS(id: string, src: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    if (!document) {
-      resolve();
-      return;
-    }
-
     if (document.getElementById(id)) {
       resolve('JS already loaded.');
       return;
@@ -27,11 +22,6 @@ export function injectJS(id: string, src: string): Promise<string> {
 
 export function injectCSS(id: string, src: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    if (!document) {
-      resolve();
-      return;
-    }
-
     if (document.getElementById(id)) {
       resolve('CSS already loaded.');
       return;
