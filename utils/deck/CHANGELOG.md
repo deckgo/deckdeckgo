@@ -1,3 +1,11 @@
+<a name="4.0.1"></a>
+
+# 4.0.1 (2021-05-15)
+
+### Build
+
+- remove unused dependencies
+
 <a name="4.0.0"></a>
 
 # 4.0.0 (2021-05-15)

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/deck-utils",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "David Dal Busco",
   "description": "Utils and styles for the DeckDeckGo applications",
   "license": "MIT",
@@ -12,9 +12,7 @@
     "url": "https://github.com/deckgo/deckdeckgo"
   },
   "homepage": "https://deckdeckgo.com",
-  "dependencies": {
-    "@deckdeckgo/utils": "^1.8.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@deckdeckgo/types": "^1.1.0",
     "autoprefixer": "^10.2.5",
