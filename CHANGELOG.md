@@ -10,6 +10,7 @@
 ### Others
 
 - deck-utils: v4.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+- kit: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
 - utils: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 - remote-utils: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/remote/CHANGELOG.md))  
 - slide-utils: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
