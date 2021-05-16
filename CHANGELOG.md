@@ -76,7 +76,7 @@
 
 ### Others
 
-- cli: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
+- cli: v3.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cli/CHANGELOG.md))
 - cloud: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/cloud/CHANGELOG.md))
 - deck-utils: v3.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 - kit: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
