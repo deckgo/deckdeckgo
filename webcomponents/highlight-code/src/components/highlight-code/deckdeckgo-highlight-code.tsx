@@ -500,6 +500,8 @@ export class DeckdeckgoHighlightCode {
 
               if (rows.indexOf(rowsIndexToCompare) > -1) {
                 editElement.classList.add('deckgo-highlight-code-line');
+              } else {
+                editElement.classList.add('deckgo-lowlight-code-line');
               }
             });
           }
