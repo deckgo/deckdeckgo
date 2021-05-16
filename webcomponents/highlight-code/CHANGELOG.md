@@ -1,3 +1,9 @@
+# 3.0.0 (2021-05-XX)
+
+### Breaking Changes
+
+- highlight lines per default not through background but, with more contrast against those not highlighted ("highlight opacity 1, no highlighted opacity 0.32")
+
 # 2.6.0 (2021-04-23)
 
 ### Features
