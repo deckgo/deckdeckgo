@@ -1,7 +1,8 @@
 import {red} from 'colorette';
 
+import {version} from '../package.json';
+
 import {cleanup, nodeVersionWarning} from './utils/utils';
-import {getPkgVersion} from './utils/version';
 import {initPresentation} from './presentation';
 import { initTemplate } from "./template";
 
@@ -17,10 +18,10 @@ async function run() {
   const args = process.argv.slice(2);
 
   const help = args.indexOf('--help') >= 0 || args.indexOf('-h') >= 0;
-  const info = args.indexOf('--info') >= 0;
+  const info = args.indexOf('--info') >= 0 || args.indexOf('--version') >= 0 || args.indexOf('--v') >= 0;
 
   if (info) {
-    console.log('create-deckdeckgo:', getPkgVersion(), '\n');
+    console.log('create-deckdeckgo:', version, '\n');
     return 0;
   }
 

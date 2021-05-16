@@ -1,3 +1,5 @@
+import {writeFile, readFile} from 'fs/promises';
+
 import {bold, cyan} from 'colorette';
 
 import {Spinner} from 'cli-spinner';
@@ -126,49 +128,29 @@ const updatePresentation = async (answers: Answers) => {
   loading.start();
 
   // 4. Replace values in starter
-  replaceAnswers(answers);
+  await replaceAnswers(answers);
 
   loading.stop(true);
 };
 
-const replaceAnswers = (answers: Answers) => {
+const replaceAnswers = async (answers: Answers) => {
   const replaceResources = [
     answers.folder + '/src/index.html',
     answers.folder + '/src/manifest.json',
     answers.folder + '/webpack.config.js'
   ];
 
-  const replace = require('replace');
+  for (const filePath of replaceResources) {
+    let data: string = (await readFile(filePath)).toString('utf8');
 
-  replace({
-    regex: '{{DECKDECKGO_TITLE}}',
-    replacement: answers.title,
-    paths: replaceResources,
-    recursive: false,
-    silent: true
-  });
+    data = data.replace(/{{DECKDECKGO_TITLE}}/g, answers.title);
+    data = data.replace(
+      /{{DECKDECKGO_SHORT_NAME}}/g,
+      answers.title && answers.title.length > 12 ? answers.title.substr(0, 12) : answers.title
+    );
+    data = data.replace(/{{DECKDECKGO_DESCRIPTION}}/g, answers.description);
+    data = data.replace(/{{DECKDECKGO_AUTHOR}}/g, answers.author);
 
-  replace({
-    regex: '{{DECKDECKGO_SHORT_NAME}}',
-    replacement: answers.title && answers.title.length > 12 ? answers.title.substr(0, 12) : answers.title,
-    paths: replaceResources,
-    recursive: false,
-    silent: true
-  });
-
-  replace({
-    regex: '{{DECKDECKGO_DESCRIPTION}}',
-    replacement: answers.description,
-    paths: replaceResources,
-    recursive: false,
-    silent: true
-  });
-
-  replace({
-    regex: '{{DECKDECKGO_AUTHOR}}',
-    replacement: answers.description,
-    paths: replaceResources,
-    recursive: false,
-    silent: true
-  });
+    await writeFile(filePath, data);
+  }
 };

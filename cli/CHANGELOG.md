@@ -1,3 +1,39 @@
+<a name="3.0.3"></a>
+
+# 3.0.3 (2021-05-16)
+
+### Fix
+
+- replace content
+
+<a name="3.0.2"></a>
+
+# 3.0.2 (2021-05-16)
+
+### Fix
+
+- add shell script header
+
+<a name="3.0.1"></a>
+
+# 3.0.1 (2021-05-16)
+
+### Fix
+
+- build target Node 10.4
+
+<a name="3.0.0"></a>
+
+# 3.0.0 (2021-05-16)
+
+### Breaking Changes
+
+- bump minimum Node.js requirement to current LTS v14.x
+
+### Build
+
+- migrate to `esbuild`
+
 <a name="2.2.1"></a>
 
 # 2.2.1 (2021-03-25)

@@ -46,9 +46,9 @@ export function rimraf(dir_path: string) {
 export function nodeVersionWarning() {
   try {
     const v = process.version.replace('v', '').split('.');
-    const major = parseInt(v[0], 10);
-    if (major < 10) {
-      console.log(yellow(`Your current version of Node is ${process.version}, however the recommendation is a minimum of Node 8.x LTS.`));
+    const major = parseInt(v[0], 14);
+    if (major < 14) {
+      console.log(yellow(`Your current version of Node is ${process.version}, however the recommendation is a minimum of Node 14.x LTS.`));
     }
   } catch (e) {
     console.error(`\n${red('✖')} ${e.message}\n`);
