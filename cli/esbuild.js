@@ -1,13 +1,21 @@
 const esbuild = require('esbuild');
+const {writeFile, mkdir} = require('fs').promises;
 
-esbuild
-  .build({
+const script = esbuild
+  .buildSync({
       entryPoints: ['src/index.ts'],
       bundle: true,
       minify: true,
       platform: 'node',
-      target: ['node10.4'],
-      outfile: 'dist/index.js'
-  })
-  .catch(() => process.exit(1));
+      write: false,
+      target: ['node14']
+  });
 
+(async () => {
+      await mkdir('dist');
+
+      await writeFile(
+        'dist/index.js',
+        `#!/usr/bin/env node\n${script.outputFiles[0].text}`
+      );
+})();
