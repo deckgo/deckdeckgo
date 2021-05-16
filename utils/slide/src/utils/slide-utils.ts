@@ -50,7 +50,7 @@ export function showAllRevealElements(el: HTMLElement): Promise<void> {
     const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
     if (elements && elements.length > 0) {
-      const promises = [];
+      const promises: Promise<void>[] = [];
 
       for (const element of Array.from(elements)) {
         promises.push((element as any).revealAll());
@@ -68,7 +68,7 @@ export function hideAllRevealElements(el: HTMLElement): Promise<void> {
     const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
 
     if (elements && elements.length > 0) {
-      const promises = [];
+      const promises: Promise<void>[] = [];
 
       for (const element of Array.from(elements)) {
         promises.push((element as any).hideAll());
@@ -100,7 +100,7 @@ export function afterSwipe(): Promise<void> {
 
 export function lazyLoadContent(el: HTMLElement): Promise<void> {
   return new Promise<void>(async (resolve) => {
-    const promises = [];
+    const promises: Promise<void>[] = [];
 
     promises.push(lazyLoadImages(el));
     promises.push(lazyLoadComponentContent(el, 'deckgo-gif'));

@@ -3,7 +3,7 @@ import {getAllElements} from './element-utils';
 
 export function lazyLoadImages(el: HTMLElement): Promise<void> {
   return new Promise<void>(async (resolve) => {
-    const promises = [];
+    const promises: Promise<void>[] = [];
 
     promises.push(lazyLoadLazyImgTags(el));
     promises.push(lazyLoadLazyImgComponents(el));
