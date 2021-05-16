@@ -301,10 +301,13 @@ div.deckgo-highlight-code-container {
 
     .deckgo-highlight-code-line {
       /**
-       * @prop --deckgo-highlight-code-line-background: The background of the lines you wish to highlight
-       * @default #3e4564
+       * @prop --deckgo-highlight-code-line-color: The color of the lines you wish to highlight
        */
-      background: var(--deckgo-highlight-code-line-background, #3e4564);
+      color: var(--deckgo-highlight-code-line-color);
+      /**
+       * @prop --deckgo-highlight-code-line-background: The background of the lines you wish to highlight
+       */
+      background: var(--deckgo-highlight-code-line-background);
       /**
        * @prop --deckgo-highlight-code-line-border-top: The border-top property of the lines you wish to highlight
        */
@@ -313,6 +316,38 @@ div.deckgo-highlight-code-container {
        * @prop --deckgo-highlight-code-line-border-bottom: The border-bottom property of the lines you wish to highlight
        */
       border-bottom: var(--deckgo-highlight-code-line-border-bottom);
+      /**
+       * @prop --deckgo-highlight-code-line-font-weight: The font-weight of the lines you wish to highlight
+       */
+      font-weight: var(--deckgo-highlight-code-line-font-weight);
+    }
+
+    .deckgo-lowlight-code-line {
+      /**
+       * @prop --deckgo-lowlight-code-line-color: The color of the lines you do not with to highlight
+       */
+      color: var(--deckgo-highlight-code-line-color);
+      /**
+       * @prop --deckgo-lowlight-code-line-background: The background of the lines you do not wish to highlight
+       */
+      background: var(--deckgo-lowlight-code-line-background);
+      /**
+       * @prop --deckgo-lowlight-code-line-border-top: The border-top property of the lines you do not wish to highlight
+       */
+      border-top: var(--deckgo-lowlight-code-line-border-top);
+      /**
+       * @prop --deckgo-lowlight-code-line-border-bottom: The border-bottom property of the lines you do not wish to highlight
+       */
+      border-bottom: var(--deckgo-lowlight-code-line-border-bottom);
+      /**
+       * @prop --deckgo-lowlight-code-line-font-weight: The font-weight of the lines you do not wish to highlight
+       */
+      font-weight: var(--deckgo-lowlight-code-line-font-weight);
+      /**
+       * @prop --deckgo-lowlight-code-line-opacity: The opacity of the lines you do not wish to highlight
+       * @default 0.32
+       */
+      opacity: var(--deckgo-lowlight-code-line-opacity, 0.32);
     }
 
     /* Prism style override */
