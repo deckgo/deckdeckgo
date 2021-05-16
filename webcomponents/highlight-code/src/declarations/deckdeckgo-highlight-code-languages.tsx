@@ -130,6 +130,7 @@ export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages 
   groovy: {title: 'Groovy'},
   haml: {title: 'Haml', require: ['ruby']},
   handlebars: {title: 'Handlebars', require: ['markup-templating']},
+  hbs: {title: 'hbs', main: 'handlebars', require: ['markup-templating']},
   haskell: {title: 'Haskell'},
   hs: {title: 'hs', main: 'haskell'},
   haxe: {title: 'Haxe'},
