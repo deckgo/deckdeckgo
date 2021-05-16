@@ -2,6 +2,10 @@
 
 # [4.7.0](https://github.com/deckgo/deckdeckgo/compare/v4.6.0...v4.7.0) (2021-XX-YY)
 
+### Others
+
+- demo: v8.2.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+
 ### Web Components
 
 - color: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
