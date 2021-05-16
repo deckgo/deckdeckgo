@@ -464,8 +464,8 @@ export class AppRemote {
     await this.actionPlayPause();
   }
 
-  private actionPlayPause() {
-    return new Promise(async (resolve) => {
+  private actionPlayPause(): Promise<void> {
+    return new Promise<void>(async (resolve) => {
       const deck = this.el.querySelector('deckgo-deck');
 
       if (!deck) {
