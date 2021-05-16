@@ -9,7 +9,7 @@
 ### Build
 
 - migrate to `esbuild`
-  
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)
