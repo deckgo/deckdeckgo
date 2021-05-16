@@ -6,7 +6,7 @@ esbuild
       bundle: true,
       minify: true,
       platform: 'node',
-      target: ['node14'],
+      target: ['node10.4'],
       outfile: 'dist/index.js'
   })
   .catch(() => process.exit(1));
