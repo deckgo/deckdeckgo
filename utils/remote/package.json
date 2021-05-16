@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/remote-utils",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "David Dal Busco",
   "description": "A collection of utils developed for the DeckDeckGo remote control",
   "license": "MIT",
@@ -10,22 +10,20 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "husky": "^4.2.3",
-    "prettier": "1.19.1",
-    "pretty-quick": "^2.0.1",
+    "esbuild": "^0.11.22",
+    "husky": "^6.0.0",
+    "prettier": "2.3.0",
+    "pretty-quick": "^3.1.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.1.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "tslib": "^1.11.1",
-    "typescript": "^3.8.3"
+    "typescript": "^4.2.4"
   },
   "main": "lib/index.cjs.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "rimraf lib && rollup -c && tsc"
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
+    "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
   "files": [
     "lib",
