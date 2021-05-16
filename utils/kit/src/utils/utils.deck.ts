@@ -1,4 +1,4 @@
-import { isMobile } from "@deckdeckgo/utils";
+import {isMobile} from '@deckdeckgo/utils';
 
 export function isPapyrus(deck: HTMLDeckgoDeckElement): boolean {
   const mobile = isMobile();

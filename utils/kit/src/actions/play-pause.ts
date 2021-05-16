@@ -21,7 +21,8 @@ export const playPause = (action: 'play' | 'pause', forwardToRemote: boolean): P
 
     if (
       !actionSlideElement ||
-      (actionSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase() && actionSlideElement.tagName !== 'deckgo-slide-video'.toUpperCase())
+      (actionSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase() &&
+        actionSlideElement.tagName !== 'deckgo-slide-video'.toUpperCase())
     ) {
       resolve();
       return;

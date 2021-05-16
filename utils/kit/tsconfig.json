@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "module": "esnext",
     "declaration": true,
-    "outDir": "lib",
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
     "strict": true,
-    "removeComments": true,
-    "moduleResolution": "node"
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types"],
+    "outDir": "lib"
+  }
 }

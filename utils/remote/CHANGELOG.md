@@ -1,3 +1,15 @@
+# 2.0.0 (2021-05-6)
+
+### Breaking Changes
+
+- build to ECMAScript module (`esm`)
+- output `esnext`
+- drop `iife` and `cjs` format
+
+### Build
+
+- migrate to `esbuild`
+
 <a name="1.0.0"></a>
 
 # 1.0.0 (2020-03-18)

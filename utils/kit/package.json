@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/kit",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "author": "David Dal Busco",
   "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
   "license": "MIT",
@@ -9,7 +9,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "rimraf lib && rimraf css && rollup -c && tsc && npm run build-kit",
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
+    "build": "rimraf lib && rimraf css && node ./esbuild.js && npm run ts-declaration && npm run build-kit",
     "build-kit": "npm run build-kit-sass && npm run build-kit-autoprefix && npm run build-kit-cleancss",
     "build-kit-sass": "node-sass --output-style expanded styles/index.scss ./css/kit.css",
     "build-kit-autoprefix": "postcss --use autoprefixer --map false --output ./css/kit.css ./css/kit.css",
@@ -24,35 +25,33 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^1.8.1"
+    "@deckdeckgo/utils": "^2.0.0"
   },
   "peerDependencies": {
-    "@deckdeckgo/core": "^8.0.0",
-    "@deckdeckgo/remote": "^2.0.0",
-    "@ionic/core": "^5.0.0",
-    "web-social-share": "^7.0.0"
+    "@deckdeckgo/core": "^8.1.6",
+    "@deckdeckgo/remote": "^2.0.1",
+    "@ionic/core": "^5.6.7",
+    "web-social-share": "^7.1.0"
   },
   "devDependencies": {
-    "@deckdeckgo/core": "^8.0.0",
+    "@deckdeckgo/core": "^8.1.6",
     "@deckdeckgo/remote": "^2.0.1",
-    "@deckdeckgo/types": "^1.1.0",
-    "@ionic/core": "^5.4.1",
+    "@deckdeckgo/types": "^2.0.1",
+    "@ionic/core": "^5.6.7",
+    "@types/node": "^15.3.0",
     "@types/resize-observer-browser": "^0.1.5",
-    "autoprefixer": "^9.7.6",
-    "clean-css-cli": "^4.3.0",
-    "husky": "^4.3.0",
-    "node-sass": "^4.14.1",
-    "postcss-cli": "^7.1.1",
-    "prettier": "2.1.2",
-    "pretty-quick": "^3.0.2",
+    "autoprefixer": "^10.2.5",
+    "clean-css-cli": "^5.3.0",
+    "esbuild": "^0.11.22",
+    "husky": "^6.0.0",
+    "node-sass": "^6.0.0",
+    "postcss": "^8.2.15",
+    "postcss-cli": "^8.3.1",
+    "prettier": "2.3.0",
+    "pretty-quick": "^3.1.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.27.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "tslib": "^2.0.1",
-    "typescript": "^4.0.3",
-    "web-social-share": "^6.4.1"
+    "typescript": "^4.2.4",
+    "web-social-share": "^7.1.0"
   },
   "files": [
     "lib",

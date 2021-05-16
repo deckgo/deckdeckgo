@@ -1,5 +1,5 @@
-import { isPapyrus, isScreenshot } from "../utils/utils.deck";
-import { isFullscreen } from "@deckdeckgo/utils";
+import {isPapyrus, isScreenshot} from '../utils/utils.deck';
+import {isFullscreen} from '@deckdeckgo/utils';
 
 interface Size {
   width: string;
@@ -24,7 +24,7 @@ const initMainSizeObserver = () => {
   if (content) {
     mainResizeObserver.observe(content);
   }
-}
+};
 
 const initSizeOldBrowser = () => {
   if (window && 'ResizeObserver' in window) {
@@ -61,23 +61,24 @@ const initMainSize = async () => {
 const defaultSize = (main: HTMLElement) => {
   main.style.removeProperty('--main-size-width');
   main.style.removeProperty('--main-size-height');
-}
+};
 
-const aspectRatioSize = ({content, main}: {content: HTMLElement, main: HTMLElement}) => {
+const aspectRatioSize = ({content, main}: {content: HTMLElement; main: HTMLElement}) => {
   const maxHeight: number = content.offsetHeight - 32;
 
   const ratioWidth: number = content.offsetWidth - 192;
   const ratioHeight: number = (ratioWidth * 9) / 16;
 
-  const {width, height}: Size = ratioHeight > maxHeight
-    ? {
-        width: `${(maxHeight * 16) / 9}px`,
-        height: `${maxHeight}px`,
-      }
-    : {
-        width: `${ratioWidth}px`,
-        height: `${ratioHeight}px`,
-      };
+  const {width, height}: Size =
+    ratioHeight > maxHeight
+      ? {
+          width: `${(maxHeight * 16) / 9}px`,
+          height: `${maxHeight}px`
+        }
+      : {
+          width: `${ratioWidth}px`,
+          height: `${ratioHeight}px`
+        };
 
   main.style.setProperty('--main-size-width', width);
   main.style.setProperty('--main-size-height', height);

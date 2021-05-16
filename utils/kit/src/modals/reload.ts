@@ -14,8 +14,8 @@ export const initReload = () => {
           handler: () => {
             registration?.waiting?.postMessage('skipWaiting');
             window.location.reload();
-          },
-        },
+          }
+        }
       ];
       toast.position = 'top';
       document.body.appendChild(toast);

@@ -1,3 +1,14 @@
+# 4.0.0 (2021-05-16)
+
+### Breaking Changes
+
+- build to ECMAScript module (`esm`)
+- drop `iife` and `cjs` formats
+
+### Build
+
+- migrate to `esbuild`
+
 # 3.1.0 (2021-04-23)
 
 ### Features
@@ -8,7 +19,7 @@
 
 ### Fix
 
-- full deck size whe a screenshot is taken 
+- full deck size whe a screenshot is taken
 
 # 3.0.0 (2021-03-28)
 

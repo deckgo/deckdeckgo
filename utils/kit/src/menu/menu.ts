@@ -81,21 +81,22 @@ export async function openMenu($event: UIEvent) {
 }
 
 async function openRemoteAndClose($event: UIEvent) {
-  await ((document.querySelector('ion-popover') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
+  await (document.querySelector('ion-popover') as HTMLIonPopoverElement as HTMLIonPopoverElement).dismiss();
   await openRemote($event);
 }
 
 async function fullScreenAndClose() {
-  await ((document.querySelector('ion-popover') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
+  await (document.querySelector('ion-popover') as HTMLIonPopoverElement as HTMLIonPopoverElement).dismiss();
   await toggleFullScreen();
 }
 
 async function openLink(link: string) {
   window.open(link, '_blank');
-  await ((document.querySelector('ion-popover') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
+  await (document.querySelector('ion-popover') as HTMLIonPopoverElement as HTMLIonPopoverElement).dismiss();
 }
 
 async function openShare() {
+  // @ts-ignore
   if (navigator && navigator.share) {
     await shareMobile();
   } else {
@@ -110,7 +111,7 @@ async function shareMobile() {
 
   await navigator.share({
     title: document.title,
-    url: shareUrl,
+    url: shareUrl
   });
 }
 
@@ -130,37 +131,37 @@ async function shareDesktop() {
         twitter: {
           socialShareUrl: shareUrl,
           socialSharePopupWidth: 300,
-          socialSharePopupHeight: 400,
-        },
+          socialSharePopupHeight: 400
+        }
       },
       {
         reddit: {
           socialShareUrl: shareUrl,
           socialSharePopupWidth: 300,
-          socialSharePopupHeight: 500,
-        },
+          socialSharePopupHeight: 500
+        }
       },
       {
         linkedin: {
-          socialShareUrl: shareUrl,
-        },
+          socialShareUrl: shareUrl
+        }
       },
       {
         email: {
-          socialShareBody: shareUrl,
-        },
+          socialShareBody: shareUrl
+        }
       },
       {
         whatsapp: {
-          socialShareUrl: shareUrl,
-        },
+          socialShareUrl: shareUrl
+        }
       },
       {
         hackernews: {
-          socialShareUrl: shareUrl,
-        },
-      },
-    ],
+          socialShareUrl: shareUrl
+        }
+      }
+    ]
   };
 
   webSocialShare.share = share;

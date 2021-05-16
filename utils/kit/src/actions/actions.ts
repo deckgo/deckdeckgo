@@ -1,5 +1,5 @@
 import {isMobile} from '@deckdeckgo/utils';
-import { isPapyrus, isVertical } from "../utils/utils.deck";
+import {isPapyrus, isVertical} from '../utils/utils.deck';
 
 export const initActions = async () => {
   const slider: HTMLDeckgoDeckElement | null = document.getElementById('slider') as HTMLDeckgoDeckElement | null;
@@ -59,7 +59,7 @@ async function initActionButtons() {
       }
 
       const observer = new IntersectionObserver(handlePapyrusScroll, {
-        threshold: 0.75,
+        threshold: 0.75
       });
 
       observer.observe(firstSlide as Element);
@@ -116,8 +116,8 @@ async function initNavigation() {
   }
 }
 
-function handleTabOnKeydown($event: KeyboardEvent, slider: HTMLDeckgoDeckElement) {
-  return new Promise(async (resolve) => {
+function handleTabOnKeydown($event: KeyboardEvent, slider: HTMLDeckgoDeckElement): Promise<void> {
+  return new Promise<void>(async (resolve) => {
     if (!$event || !slider) {
       resolve();
       return;

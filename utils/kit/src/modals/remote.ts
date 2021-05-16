@@ -76,7 +76,7 @@ async function askAccess() {
   buttonDismiss?.addEventListener('click', async () => {
     await removeFirstPendingRequest();
 
-    await ((document.querySelector('ion-popover.access') as HTMLIonPopoverElement) as HTMLIonPopoverElement).dismiss();
+    await (document.querySelector('ion-popover.access') as HTMLIonPopoverElement as HTMLIonPopoverElement).dismiss();
 
     await nextPendingRequests();
   });

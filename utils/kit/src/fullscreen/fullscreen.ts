@@ -1,5 +1,5 @@
-export const initFullscreen = () => {
-  return new Promise((resolve) => {
+export const initFullscreen = (): Promise<void> => {
+  return new Promise<void>((resolve) => {
     document.addEventListener(
       'mouseInactivity',
       async ($event) => {

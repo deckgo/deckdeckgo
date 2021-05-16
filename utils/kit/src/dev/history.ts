@@ -1,7 +1,7 @@
 const keepHistory = process.env.KEEP_HISTORY;
 
-export const postLoadingJumpTo = () => {
-  return new Promise(async (resolve) => {
+export const postLoadingJumpTo = (): Promise<void> => {
+  return new Promise<void>(async (resolve) => {
     if (!keepHistory) {
       resolve();
       return;
@@ -19,8 +19,8 @@ export const postLoadingJumpTo = () => {
   });
 };
 
-export const initDeckHistoryWatch = () => {
-  return new Promise(async (resolve) => {
+export const initDeckHistoryWatch = (): Promise<void> => {
+  return new Promise<void>(async (resolve) => {
     if (!keepHistory) {
       resolve();
       return;

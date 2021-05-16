@@ -1,5 +1,5 @@
-import { isPapyrus, isScreenshot } from "../utils/utils.deck";
-import { isFullscreen } from "@deckdeckgo/utils";
+import {isPapyrus, isScreenshot} from '../utils/utils.deck';
+import {isFullscreen} from '@deckdeckgo/utils';
 
 export const initMouse = async () => {
   if (window && 'ResizeObserver' in window) {
@@ -19,7 +19,7 @@ const initMainSizeObserver = () => {
   if (content) {
     mainResizeObserver.observe(content);
   }
-}
+};
 
 const initSizeOldBrowser = () => {
   if (window && 'ResizeObserver' in window) {

@@ -33,12 +33,17 @@ div.deckgo-slide {
   padding: var(--slide-padding-top, var(--slide-padding-top-default)) var(--slide-padding-end, var(--slide-padding-end-default))
     var(--slide-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-padding-start, var(--slide-padding-start-default));
 
-  width: calc(var(--slide-width) - var(--slide-padding-start, var(--slide-padding-start-default)) - var(--slide-padding-end, var(--slide-padding-end-default)));
+  width: calc(
+    var(--slide-width) - var(--slide-padding-start, var(--slide-padding-start-default)) -
+      var(--slide-padding-end, var(--slide-padding-end-default))
+  );
   height: calc(
-    var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
+    var(--slide-height) - var(--slide-padding-top, var(--slide-padding-top-default)) -
+      var(--slide-padding-bottom, var(--slide-padding-bottom-default))
   );
   min-height: calc(
-    var(--slide-min-height) - var(--slide-padding-top, var(--slide-padding-top-default)) - var(--slide-padding-bottom, var(--slide-padding-bottom-default))
+    var(--slide-min-height) - var(--slide-padding-top, var(--slide-padding-top-default)) -
+      var(--slide-padding-bottom, var(--slide-padding-bottom-default))
   );
 
   user-drag: none;
