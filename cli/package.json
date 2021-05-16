@@ -1,17 +1,11 @@
 {
   "name": "create-deckdeckgo",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Create a new DeckDeckGo presentation or template",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "build.tsc": "tsc",
-    "build.bundle": "rollup -c",
-    "minify": "terser --compress --mangle --toplevel --output dist/index.js -- dist/index.js",
-    "build": "npm run build.tsc && npm run build.bundle && npm run minify",
-    "build.dev": "npm run build.tsc && npm run build.bundle",
-    "dev": "npm run build.dev && npm start",
-    "version": "npm build"
+    "build": "rimraf dist && node ./esbuild.js"
   },
   "files": [
     "dist/index.js",
@@ -25,17 +19,13 @@
     "@types/cli-spinner": "^0.2.0",
     "@types/inquirer": "7.3.1",
     "@types/yauzl": "^2.9.1",
-    "husky": "^4.3.8",
-    "prettier": "^2.2.1",
+    "esbuild": "^0.11.22",
+    "husky": "^6.0.0",
+    "prettier": "^2.3.0",
     "pretty-quick": "^3.1.0",
-    "rollup": "^2.38.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "terser": "^5.5.1",
-    "tslint": "^6.1.3",
-    "tslint-ionic-rules": "0.0.21",
-    "typescript": "^4.1.3"
+    "rimraf": "^3.0.2",
+    "terser": "^5.7.0",
+    "typescript": "^4.2.4"
   },
   "author": "David Dal Busco",
   "license": "MIT",
@@ -49,9 +39,9 @@
   ],
   "dependencies": {
     "cli-spinner": "^0.2.10",
-    "colorette": "^1.2.1",
-    "inquirer": "^7.3.3",
-    "replace": "^1.2.0",
+    "colorette": "^1.2.2",
+    "inquirer": "^8.0.0",
+    "replace": "^1.2.1",
     "yauzl": "^2.10.0"
   }
 }
