@@ -1,7 +1,5 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import Prism from 'prismjs';
-
 import {debounce, injectCSS} from '@deckdeckgo/utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -14,6 +12,8 @@ import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-hig
 
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
 
+import {parseCode} from '../../utils/parse.utils';
+
 /**
  * @slot code - A `<code/>` element to highlight
  * @slot user - A user name for the Ubuntu terminal
@@ -21,7 +21,7 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoHighlightCode {
   @Element() el: HTMLElement;
@@ -99,6 +99,8 @@ export class DeckdeckgoHighlightCode {
 
   @State()
   private loaded: boolean = false;
+
+  private refContainer!: HTMLDivElement;
 
   private readonly debounceUpdateSlot: () => void;
 
@@ -331,12 +333,15 @@ export class DeckdeckgoHighlightCode {
     const code: HTMLElement = this.el.querySelector("[slot='code']");
 
     if (code) {
-      return this.parseCode(code?.innerHTML?.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'));
-    } else {
-      return new Promise<void>((resolve) => {
-        resolve();
+      return parseCode({
+        ...this.parseCodeOptions(),
+        code: code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
       });
     }
+
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
   }
 
   async fetchCode() {
@@ -349,192 +354,28 @@ export class DeckdeckgoHighlightCode {
       const response: Response = await fetch(this.src);
       fetchedCode = await response.text();
 
-      await this.parseCode(fetchedCode);
+      await parseCode({
+        ...this.parseCodeOptions(),
+        code: fetchedCode
+      });
     } catch (e) {
       // Prism might not be able to parse the code for the selected language
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
-
-      if (container && fetchedCode) {
-        container.children[0].innerHTML = fetchedCode;
+      if (this.refContainer && fetchedCode) {
+        this.refContainer.children[0].innerHTML = fetchedCode;
       }
     }
   }
 
-  private parseCode(code: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
-
-      if (!code || code === undefined || code === '') {
-        resolve();
-        return;
-      }
-
-      if (container) {
-        try {
-          // clear the container first
-          container.children[0].innerHTML = '';
-
-          // split the code on linebreaks
-          const regEx = RegExp(/\n(?!$)/g); //
-          const match = code.split(regEx);
-          match.forEach((m, idx, array) => {
-            // On last element
-            if (idx === array.length - 1) {
-              this.attachHighlightObserver(container);
-            }
-
-            let div: HTMLElement = document.createElement('div');
-            if (this.lineNumbers) {
-              div.classList.add('deckgo-highlight-code-line-number');
-            }
-
-            const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
-
-            // If empty, use \u200B as zero width text spacer
-            div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
-
-            container.children[0].appendChild(div);
-          });
-
-          await this.addAnchors();
-
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
-      }
-    });
-  }
-
-  private attachHighlightObserver(container: HTMLElement) {
-    if (window && 'ResizeObserver' in window) {
-      // @ts-ignore
-      const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
-        await this.addHighlight();
-
-        observer.disconnect();
-      });
-
-      observer.observe(container);
-    } else {
-      // Back in my days...
-      setTimeout(async () => {
-        await this.addHighlight();
-      }, 100);
-    }
-  }
-
-  private addAnchors(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.comment');
-
-      if (elements) {
-        const elementsArray: HTMLElement[] = Array.from(elements);
-
-        const anchors: HTMLElement[] = elementsArray.filter((element: HTMLElement) => {
-          return this.hasLineAnchor(element.innerHTML);
-        });
-
-        if (anchors) {
-          anchors.forEach((anchor: HTMLElement) => {
-            anchor.classList.add('deckgo-highlight-code-anchor');
-
-            if (this.hideAnchor) {
-              anchor.classList.add('deckgo-highlight-code-anchor-hidden');
-            }
-          });
-        }
-      }
-
-      resolve();
-    });
-  }
-
-  private hasLineAnchor(line: string): boolean {
-    return line && this.anchor && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
-  }
-
-  private addHighlight(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.highlightLines && this.highlightLines.length > 0) {
-        const rows: number[] = await this.findRowsToHighlight();
-
-        if (rows && rows.length > 0) {
-          const containerCode: HTMLElement = this.el.shadowRoot.querySelector('code');
-
-          if (containerCode && containerCode.hasChildNodes()) {
-            const elements: HTMLElement[] = Array.prototype.slice.call(containerCode.childNodes);
-
-            let rowIndex: number = 0;
-            let lastOffsetTop: number = -1;
-            let offsetHeight: number = -1;
-
-            elements.forEach((element: HTMLElement) => {
-              let editElement: HTMLElement;
-
-              // We need to convert text entries to an element in order to be able to style it
-              if (element.nodeName === '#text') {
-                const span = document.createElement('span');
-
-                if (element.previousElementSibling) {
-                  element.previousElementSibling.insertAdjacentElement('afterend', span);
-                } else {
-                  element.parentNode.prepend(span);
-                }
-
-                span.appendChild(element);
-
-                editElement = span;
-              } else {
-                editElement = element;
-              }
-
-              // We try to find the row index with the offset of the element
-              rowIndex = editElement.offsetTop > lastOffsetTop ? rowIndex + 1 : rowIndex;
-              lastOffsetTop = editElement.offsetTop;
-
-              // For some reason, some converted text element are displayed on two lines, that's why we should consider the 2nd one as index
-              offsetHeight = offsetHeight === -1 || offsetHeight > editElement.offsetHeight ? editElement.offsetHeight : offsetHeight;
-
-              const rowsIndexToCompare: number = editElement.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
-
-              if (rows.indexOf(rowsIndexToCompare) > -1) {
-                editElement.classList.add('deckgo-highlight-code-line');
-              } else {
-                editElement.classList.add('deckgo-lowlight-code-line');
-              }
-            });
-          }
-        }
-      }
-
-      resolve();
-    });
-  }
-
-  private findRowsToHighlight(): Promise<number[]> {
-    return new Promise<number[]>((resolve) => {
-      let results: number[] = [];
-
-      const rows: string[] = this.highlightLines.split(' ');
-
-      if (rows && rows.length > 0) {
-        rows.forEach((row: string) => {
-          const index: string[] = row.split(',');
-
-          if (index && index.length >= 1) {
-            const start: number = parseInt(index[0], 0);
-            const end: number = parseInt(index[1], 0);
-
-            for (let i = start; i <= (isNaN(end) ? start : end); i++) {
-              results.push(i);
-            }
-          }
-        });
-      }
-
-      resolve(results);
-    });
+  private parseCodeOptions() {
+    return {
+      refContainer: this.refContainer,
+      refCode: this.refCode,
+      lineNumbers: this.lineNumbers,
+      anchor: this.anchor,
+      hideAnchor: this.hideAnchor,
+      highlightLines: this.highlightLines,
+      language: this.language
+    };
   }
 
   /**
@@ -558,7 +399,7 @@ export class DeckdeckgoHighlightCode {
 
           resolve({
             offsetTop: anchor.offsetTop,
-            hasLineZoom: this.hasLineZoom(anchor.textContent),
+            hasLineZoom: this.hasLineZoom(anchor.textContent)
           });
         } else if (!enter) {
           const elementCode: HTMLElement = this.el.shadowRoot.querySelector('code');
@@ -568,7 +409,7 @@ export class DeckdeckgoHighlightCode {
 
             resolve({
               offsetTop: 0,
-              hasLineZoom: false,
+              hasLineZoom: false
             });
           } else {
             resolve(null);
@@ -600,7 +441,9 @@ export class DeckdeckgoHighlightCode {
   }
 
   private hasLineZoom(line: string): boolean {
-    return line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
+    return (
+      line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1
+    );
   }
 
   private async applyCode() {
@@ -650,7 +493,7 @@ export class DeckdeckgoHighlightCode {
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
-      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
+      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU
     };
 
     if (this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON) {
@@ -661,7 +504,7 @@ export class DeckdeckgoHighlightCode {
       <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
-        <div class="deckgo-highlight-code-container">
+        <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
           <code
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
@@ -685,7 +528,7 @@ export class DeckdeckgoHighlightCode {
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
         {this.renderCarbonCircle('green')}
-      </div>,
+      </div>
     ];
   }
 

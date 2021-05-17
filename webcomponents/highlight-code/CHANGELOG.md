@@ -4,6 +4,10 @@
 
 - highlight lines per default not through background but, with more contrast against those not highlighted ("highlight opacity 1, no highlighted opacity 0.32")
 
+### Refactoring
+
+- extract some functions to utils
+
 # 2.6.0 (2021-04-23)
 
 ### Features

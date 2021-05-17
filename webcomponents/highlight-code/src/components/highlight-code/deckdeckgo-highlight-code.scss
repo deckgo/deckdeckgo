@@ -69,25 +69,6 @@
      * @default 0 0 16px
      */
     margin: var(--deckgo-highlight-code-margin, 0 0 16px);
-
-    code {
-      > div.deckgo-highlight-code-line-number {
-        &:before {
-          /**
-           * @prop --deckgo-highlight-code-carbon-background: The background property of the host container
-           * @default transparent
-           */
-          background: var(--deckgo-highlight-code-carbon-background, transparent);
-
-          border-color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
-          /**
-           * @prop --deckgo-highlight-code-line-numbers: The color of the line numbers and divider
-           * @default var(--deckgo-highlight-code-token-comment, #6272a4)
-           */
-          color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
-        }
-      }
-    }
   }
 }
 
@@ -289,9 +270,33 @@ div.deckgo-highlight-code-container {
         bottom: 0;
         left: 0;
         width: 2.5em;
-        background: var(--deckgo-highlight-code-background);
-        border-right: 1px solid var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
-        color: var(--deckgo-highlight-code-line-numbers, var(--deckgo-highlight-code-token-comment, #6272a4));
+
+        /**
+           * @prop --deckgo-highlight-code-line-numbers-background: The background property of the line numbers
+           */
+        background: var(--deckgo-highlight-code-line-numbers-background);
+
+        /**
+           * @prop --deckgo-highlight-code-line-numbers-border-right: The border right property of the line numbers
+           * @default 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)
+           */
+        border-right: var(--deckgo-highlight-code-line-numbers-border-right, 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32));
+
+        /**
+           * @prop --deckgo-highlight-code-line-numbers-color: The color property of the line numbers
+           * @default var(--deckgo-highlight-code-token-comment, #6272a4)
+           */
+        color: var(--deckgo-highlight-code-line-numbers-color, var(--deckgo-highlight-code-token-comment, #6272a4));
+      }
+
+      &.deckgo-lowlight-code-line {
+        &:before {
+          /**
+           * @prop --deckgo-lowlight-code-line-numbers-color: The color property of the line numbers if not highlighted
+           * @default rgba(var(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32))
+           */
+          color: var(--deckgo-lowlight-code-line-numbers-color, rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32));
+        }
       }
     }
 
@@ -299,7 +304,7 @@ div.deckgo-highlight-code-container {
       visibility: hidden;
     }
 
-    .deckgo-highlight-code-line {
+    .deckgo-highlight-code-line * {
       /**
        * @prop --deckgo-highlight-code-line-color: The color of the lines you wish to highlight
        */
@@ -322,11 +327,11 @@ div.deckgo-highlight-code-container {
       font-weight: var(--deckgo-highlight-code-line-font-weight);
     }
 
-    .deckgo-lowlight-code-line {
+    .deckgo-lowlight-code-line * {
       /**
        * @prop --deckgo-lowlight-code-line-color: The color of the lines you do not with to highlight
        */
-      color: var(--deckgo-highlight-code-line-color);
+      color: var(--deckgo-lowlight-code-line-color);
       /**
        * @prop --deckgo-lowlight-code-line-background: The background of the lines you do not wish to highlight
        */

@@ -3,6 +3,7 @@ const theme: string = `{
   --deckgo-highlight-code-carbon-color: rgb(171, 178, 191);
   --deckgo-highlight-code-token-atrule: #c792ea;
   --deckgo-highlight-code-token-comment: #5c6370;
+  --deckgo-highlight-code-token-comment-rgb: 92, 99, 112;
   --deckgo-highlight-code-token-function: #82aaff;
   --deckgo-highlight-code-token-operator: #c792ea;
   --deckgo-highlight-code-token-property: #ffffff;

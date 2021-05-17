@@ -1,12 +1,12 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
-import { sass } from '@stencil/sass';
-import { postcss } from '@stencil/postcss';
+import {sass} from '@stencil/sass';
+import {postcss} from '@stencil/postcss';
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
   namespace: 'deckdeckgo-highlight-code',
-  outputTargets:[
+  outputTargets: [
     {
       type: 'dist'
     },
@@ -15,7 +15,7 @@ export const config: Config = {
       serviceWorker: null
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     }
   ],
   plugins: [
