@@ -331,7 +331,7 @@ export class DeckdeckgoHighlightCode {
     const code: HTMLElement = this.el.querySelector("[slot='code']");
 
     if (code) {
-      return this.parseCode(code?.innerHTML?.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'));
+      return this.parseCode(code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
     } else {
       return new Promise<void>((resolve) => {
         resolve();
@@ -372,7 +372,7 @@ export class DeckdeckgoHighlightCode {
       if (container) {
         try {
           // clear the container first
-          container.children[0].innerHTML = '';
+          container.children[0].textContent = '';
 
           // split the code on linebreaks
           const regEx = RegExp(/\n(?!$)/g); //
@@ -392,6 +392,20 @@ export class DeckdeckgoHighlightCode {
 
             // If empty, use \u200B as zero width text spacer
             div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
+
+            // No text node
+            const children: Node[] = Array.from(div.childNodes).map((node: Node) => {
+              if (node.nodeName === '#text') {
+                const span: HTMLSpanElement = document.createElement('span');
+                span.append(node);
+                return span;
+              }
+
+              return node;
+            });
+
+            div.textContent = '';
+            div.append(...children);
 
             container.children[0].appendChild(div);
           });
@@ -470,38 +484,19 @@ export class DeckdeckgoHighlightCode {
             let offsetHeight: number = -1;
 
             elements.forEach((element: HTMLElement) => {
-              let editElement: HTMLElement;
-
-              // We need to convert text entries to an element in order to be able to style it
-              if (element.nodeName === '#text') {
-                const span = document.createElement('span');
-
-                if (element.previousElementSibling) {
-                  element.previousElementSibling.insertAdjacentElement('afterend', span);
-                } else {
-                  element.parentNode.prepend(span);
-                }
-
-                span.appendChild(element);
-
-                editElement = span;
-              } else {
-                editElement = element;
-              }
-
               // We try to find the row index with the offset of the element
-              rowIndex = editElement.offsetTop > lastOffsetTop ? rowIndex + 1 : rowIndex;
-              lastOffsetTop = editElement.offsetTop;
+              rowIndex = element.offsetTop > lastOffsetTop ? rowIndex + 1 : rowIndex;
+              lastOffsetTop = element.offsetTop;
 
               // For some reason, some converted text element are displayed on two lines, that's why we should consider the 2nd one as index
-              offsetHeight = offsetHeight === -1 || offsetHeight > editElement.offsetHeight ? editElement.offsetHeight : offsetHeight;
+              offsetHeight = offsetHeight === -1 || offsetHeight > element.offsetHeight ? element.offsetHeight : offsetHeight;
 
-              const rowsIndexToCompare: number = editElement.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
+              const rowsIndexToCompare: number = element.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
 
               if (rows.indexOf(rowsIndexToCompare) > -1) {
-                editElement.classList.add('deckgo-highlight-code-line');
+                element.classList.add('deckgo-highlight-code-line');
               } else {
-                editElement.classList.add('deckgo-lowlight-code-line');
+                element.classList.add('deckgo-lowlight-code-line');
               }
             });
           }

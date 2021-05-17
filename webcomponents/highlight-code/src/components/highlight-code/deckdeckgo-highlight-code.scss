@@ -299,7 +299,7 @@ div.deckgo-highlight-code-container {
       visibility: hidden;
     }
 
-    .deckgo-highlight-code-line {
+    .deckgo-highlight-code-line * {
       /**
        * @prop --deckgo-highlight-code-line-color: The color of the lines you wish to highlight
        */
@@ -322,7 +322,7 @@ div.deckgo-highlight-code-container {
       font-weight: var(--deckgo-highlight-code-line-font-weight);
     }
 
-    .deckgo-lowlight-code-line {
+    .deckgo-lowlight-code-line * {
       /**
        * @prop --deckgo-lowlight-code-line-color: The color of the lines you do not with to highlight
        */
@@ -348,15 +348,6 @@ div.deckgo-highlight-code-container {
        * @default 0.32
        */
       opacity: var(--deckgo-lowlight-code-line-opacity, 0.32);
-    }
-
-    /* Prism style override */
-    .language-css .token.string:not(.deckgo-highlight-code-line),
-    .style .token.string:not(.deckgo-highlight-code-line),
-    .token.entity:not(.deckgo-highlight-code-line),
-    .token.operator:not(.deckgo-highlight-code-line),
-    .token.url:not(.deckgo-highlight-code-line) {
-      background: inherit;
     }
 
     .token.comment,
