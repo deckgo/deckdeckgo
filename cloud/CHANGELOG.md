@@ -3,6 +3,7 @@
 # 2.2.1 (2021-03-25)
 
 - `master` branch of the `studio-kit` has been renamed in `main`
+- `studio-kit` use a utility which does not need URL updates anymore
 
 <a name="2.2.0"></a>
 
