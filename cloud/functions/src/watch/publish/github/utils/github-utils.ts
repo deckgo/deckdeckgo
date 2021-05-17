@@ -56,7 +56,7 @@ export async function updateProject(githubToken: string, login: string, project:
   await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'modalNotes.js');
   await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'remotePopover.js');
 
-  await push(githubToken, login, project, 'master');
+  await push(githubToken, login, project, 'main');
 }
 
 async function updateInfo(githubToken: string, login: string, project: string, url: string, meta: DeckMeta, msg: string, ...files: string[]) {

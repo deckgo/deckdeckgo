@@ -49,7 +49,7 @@ function waitForRepoExist(url: string): Promise<boolean> {
 }
 
 async function repoExist(git: SimpleGit, url: string): Promise<boolean> {
-  const result: string | undefined = await git.listRemote([url, 'master']);
+  const result: string | undefined = await git.listRemote([url, 'main']);
 
   return result !== null && result !== undefined && result !== '';
 }
