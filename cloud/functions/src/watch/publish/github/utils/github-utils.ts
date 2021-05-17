@@ -51,10 +51,8 @@ export async function updateProject(githubToken: string, login: string, project:
   // Webpack dev server configuration
   await updateInfo(githubToken, login, project, url, meta, 'chore: update project settings', 'webpack.config.js');
 
-  // Icons path
-  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'menu.js');
-  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'modalNotes.js');
-  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'scripts', 'remotePopover.js');
+  // index.html base href path. make first PR cleaner as it will not contains these changes but, only content
+  await updateInfo(githubToken, login, project, url, meta, 'chore: update icons path', 'src', 'index.html');
 
   await push(githubToken, login, project, 'main');
 }
