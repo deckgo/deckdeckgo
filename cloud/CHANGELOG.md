@@ -1,3 +1,9 @@
+<a name="2.2.1"></a>
+
+# 2.2.1 (2021-03-25)
+
+- `master` branch of the `studio-kit` has been renamed in `main`
+
 <a name="2.2.0"></a>
 
 # 2.2.0 (2021-03-25)
