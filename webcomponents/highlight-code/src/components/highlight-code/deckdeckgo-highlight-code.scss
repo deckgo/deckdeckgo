@@ -350,6 +350,15 @@ div.deckgo-highlight-code-container {
       opacity: var(--deckgo-lowlight-code-line-opacity, 0.32);
     }
 
+    /* Prism style override */
+    .language-css .token.string:not(.deckgo-highlight-code-line),
+    .style .token.string:not(.deckgo-highlight-code-line),
+    .token.entity:not(.deckgo-highlight-code-line),
+    .token.operator:not(.deckgo-highlight-code-line),
+    .token.url:not(.deckgo-highlight-code-line) {
+      background: inherit;
+    }
+
     .token.comment,
     .token.prolog,
     .token.doctype,
