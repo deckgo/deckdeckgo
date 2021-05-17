@@ -1,7 +1,5 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import Prism from 'prismjs';
-
 import {debounce, injectCSS} from '@deckdeckgo/utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -13,6 +11,8 @@ import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highl
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
+
+import {parseCode} from '../../utils/parse.utils';
 
 /**
  * @slot code - A `<code/>` element to highlight
@@ -333,12 +333,15 @@ export class DeckdeckgoHighlightCode {
     const code: HTMLElement = this.el.querySelector("[slot='code']");
 
     if (code) {
-      return this.parseCode(code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
-    } else {
-      return new Promise<void>((resolve) => {
-        resolve();
+      return parseCode({
+        ...this.parseCodeOptions(),
+        code: code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
       });
     }
+
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
   }
 
   async fetchCode() {
@@ -351,7 +354,10 @@ export class DeckdeckgoHighlightCode {
       const response: Response = await fetch(this.src);
       fetchedCode = await response.text();
 
-      await this.parseCode(fetchedCode);
+      await parseCode({
+        ...this.parseCodeOptions(),
+        code: fetchedCode
+      });
     } catch (e) {
       // Prism might not be able to parse the code for the selected language
       if (this.refContainer && fetchedCode) {
@@ -360,176 +366,16 @@ export class DeckdeckgoHighlightCode {
     }
   }
 
-  private parseCode(code: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (!code || code === undefined || code === '') {
-        resolve();
-        return;
-      }
-
-      if (!this.refContainer) {
-        return;
-      }
-
-      try {
-        // clear the container first
-        this.refContainer.children[0].textContent = '';
-
-        // split the code on linebreaks
-        const regEx = RegExp(/\n(?!$)/g); //
-        const match = code.split(regEx);
-        match.forEach((m, idx, array) => {
-          // On last element
-          if (idx === array.length - 1) {
-            this.attachHighlightObserver(this.refContainer);
-          }
-
-          let div: HTMLElement = document.createElement('div');
-          if (this.lineNumbers) {
-            div.classList.add('deckgo-highlight-code-line-number');
-          }
-
-          const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
-
-          // If empty, use \u200B as zero width text spacer
-          div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
-
-          // No text node
-          const children: Node[] = Array.from(div.childNodes).map((node: Node) => {
-            if (node.nodeName === '#text') {
-              const span: HTMLSpanElement = document.createElement('span');
-              span.append(node);
-              return span;
-            }
-
-            return node;
-          });
-
-          div.textContent = '';
-          div.append(...children);
-
-          this.refContainer.children[0].appendChild(div);
-        });
-
-        await this.addAnchors();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private attachHighlightObserver(container: HTMLElement) {
-    if (window && 'ResizeObserver' in window) {
-      // @ts-ignore
-      const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
-        await this.addHighlight();
-
-        observer.disconnect();
-      });
-
-      observer.observe(container);
-    } else {
-      // Back in my days...
-      setTimeout(async () => {
-        await this.addHighlight();
-      }, 100);
-    }
-  }
-
-  private addAnchors(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.comment');
-
-      if (elements) {
-        const elementsArray: HTMLElement[] = Array.from(elements);
-
-        const anchors: HTMLElement[] = elementsArray.filter((element: HTMLElement) => {
-          return this.hasLineAnchor(element.innerHTML);
-        });
-
-        if (anchors) {
-          anchors.forEach((anchor: HTMLElement) => {
-            anchor.classList.add('deckgo-highlight-code-anchor');
-
-            if (this.hideAnchor) {
-              anchor.classList.add('deckgo-highlight-code-anchor-hidden');
-            }
-          });
-        }
-      }
-
-      resolve();
-    });
-  }
-
-  private hasLineAnchor(line: string): boolean {
-    return line && this.anchor && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchor.split(' ').join('')) > -1;
-  }
-
-  private addHighlight(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.highlightLines && this.highlightLines.length > 0) {
-        const rows: number[] = await this.findRowsToHighlight();
-
-        if (rows && rows.length > 0) {
-          const containerCode: HTMLElement = this.el.shadowRoot.querySelector('code');
-
-          if (containerCode && containerCode.hasChildNodes()) {
-            const elements: HTMLElement[] = Array.prototype.slice.call(containerCode.childNodes);
-
-            let rowIndex: number = 0;
-            let lastOffsetTop: number = -1;
-            let offsetHeight: number = -1;
-
-            elements.forEach((element: HTMLElement) => {
-              // We try to find the row index with the offset of the element
-              rowIndex = element.offsetTop > lastOffsetTop ? rowIndex + 1 : rowIndex;
-              lastOffsetTop = element.offsetTop;
-
-              // For some reason, some converted text element are displayed on two lines, that's why we should consider the 2nd one as index
-              offsetHeight = offsetHeight === -1 || offsetHeight > element.offsetHeight ? element.offsetHeight : offsetHeight;
-
-              const rowsIndexToCompare: number = element.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
-
-              if (rows.indexOf(rowsIndexToCompare) > -1) {
-                element.classList.add('deckgo-highlight-code-line');
-              } else {
-                element.classList.add('deckgo-lowlight-code-line');
-              }
-            });
-          }
-        }
-      }
-
-      resolve();
-    });
-  }
-
-  private findRowsToHighlight(): Promise<number[]> {
-    return new Promise<number[]>((resolve) => {
-      let results: number[] = [];
-
-      const rows: string[] = this.highlightLines.split(' ');
-
-      if (rows && rows.length > 0) {
-        rows.forEach((row: string) => {
-          const index: string[] = row.split(',');
-
-          if (index && index.length >= 1) {
-            const start: number = parseInt(index[0], 0);
-            const end: number = parseInt(index[1], 0);
-
-            for (let i = start; i <= (isNaN(end) ? start : end); i++) {
-              results.push(i);
-            }
-          }
-        });
-      }
-
-      resolve(results);
-    });
+  private parseCodeOptions() {
+    return {
+      refContainer: this.refContainer,
+      refCode: this.refCode,
+      lineNumbers: this.lineNumbers,
+      anchor: this.anchor,
+      hideAnchor: this.hideAnchor,
+      highlightLines: this.highlightLines,
+      language: this.language
+    };
   }
 
   /**
