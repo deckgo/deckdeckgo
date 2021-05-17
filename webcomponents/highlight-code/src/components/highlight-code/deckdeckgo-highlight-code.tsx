@@ -21,7 +21,7 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoHighlightCode {
   @Element() el: HTMLElement;
@@ -553,7 +553,7 @@ export class DeckdeckgoHighlightCode {
 
           resolve({
             offsetTop: anchor.offsetTop,
-            hasLineZoom: this.hasLineZoom(anchor.textContent),
+            hasLineZoom: this.hasLineZoom(anchor.textContent)
           });
         } else if (!enter) {
           const elementCode: HTMLElement = this.el.shadowRoot.querySelector('code');
@@ -563,7 +563,7 @@ export class DeckdeckgoHighlightCode {
 
             resolve({
               offsetTop: 0,
-              hasLineZoom: false,
+              hasLineZoom: false
             });
           } else {
             resolve(null);
@@ -595,7 +595,9 @@ export class DeckdeckgoHighlightCode {
   }
 
   private hasLineZoom(line: string): boolean {
-    return line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1;
+    return (
+      line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1
+    );
   }
 
   private async applyCode() {
@@ -645,7 +647,7 @@ export class DeckdeckgoHighlightCode {
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
-      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
+      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU
     };
 
     if (this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON) {
@@ -656,7 +658,7 @@ export class DeckdeckgoHighlightCode {
       <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
-        <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => this.refContainer = el as HTMLDivElement}>
+        <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
           <code
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
@@ -680,7 +682,7 @@ export class DeckdeckgoHighlightCode {
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
         {this.renderCarbonCircle('green')}
-      </div>,
+      </div>
     ];
   }
 

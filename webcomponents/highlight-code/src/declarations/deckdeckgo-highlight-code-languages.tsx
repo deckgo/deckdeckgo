@@ -348,5 +348,5 @@ export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages 
   yaml: {title: 'YAML'},
   yml: {title: 'yml', main: 'yaml'},
   yang: {title: 'YANG'},
-  zig: {title: 'Zig'},
+  zig: {title: 'Zig'}
 };

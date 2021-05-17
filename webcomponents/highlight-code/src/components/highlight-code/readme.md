@@ -55,7 +55,6 @@ You could inject a `<code/>` tag using slot or provide an URI to the file contai
 
 If you are displaying your code in an Ubuntu terminal, you could also displays a text in the toolbar (header) using the slot `user`.
 
-
 <!-- Auto Generated Below -->
 
 
@@ -162,9 +161,11 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-empty-text`                               | Place holder in case the editable is set to true @default Click to add your code                        |
 | `--deckgo-highlight-code-font-family`                              | The family of the font for the code @default monospace                                                  |
 | `--deckgo-highlight-code-font-size`                                | The size of the font for the code                                                                       |
-| `--deckgo-highlight-code-line-background`                          | The background of the lines you wish to highlight @default #3e4564                                      |
+| `--deckgo-highlight-code-line-background`                          | The background of the lines you wish to highlight                                                       |
 | `--deckgo-highlight-code-line-border-bottom`                       | The border-bottom property of the lines you wish to highlight                                           |
 | `--deckgo-highlight-code-line-border-top`                          | The border-top property of the lines you wish to highlight                                              |
+| `--deckgo-highlight-code-line-color`                               | The color of the lines you wish to highlight                                                            |
+| `--deckgo-highlight-code-line-font-weight`                         | The font-weight of the lines you wish to highlight                                                      |
 | `--deckgo-highlight-code-line-height`                              | The line height of the font for the code                                                                |
 | `--deckgo-highlight-code-line-numbers`                             | The color of the line numbers and divider @default var(--deckgo-highlight-code-token-comment, #6272a4)  |
 | `--deckgo-highlight-code-margin`                                   | The margin property of the code container @default 0 0 16px                                             |
@@ -212,6 +213,12 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-ubuntu-overflow`                          | The overflow property of the host container @default auto                                               |
 | `--deckgo-highlight-code-white-space`                              | The attribute white-space of the displayed @default pre-wrap                                            |
 | `--deckgo-highlight-code-zoom`                                     | If you wish to manually zoom the code @default 1                                                        |
+| `--deckgo-lowlight-code-line-background`                           | The background of the lines you do not wish to highlight                                                |
+| `--deckgo-lowlight-code-line-border-bottom`                        | The border-bottom property of the lines you do not wish to highlight                                    |
+| `--deckgo-lowlight-code-line-border-top`                           | The border-top property of the lines you do not wish to highlight                                       |
+| `--deckgo-lowlight-code-line-color`                                | The color of the lines you do not with to highlight                                                     |
+| `--deckgo-lowlight-code-line-font-weight`                          | The font-weight of the lines you do not wish to highlight                                               |
+| `--deckgo-lowlight-code-line-opacity`                              | The opacity of the lines you do not wish to highlight @default 0.32                                     |
 
 
 ----------------------------------------------

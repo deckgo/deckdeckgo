@@ -49,7 +49,7 @@ function getLanguageRequire(language) {
       .filter((key) => key !== 'meta')
       .forEach((key) => {
         filteredLanguages[key] = {
-          title: languages[key].title,
+          title: languages[key].title
         };
 
         if (languages[key].alias && Array.isArray(languages[key].alias) && languages[key].alias.length > 0) {
@@ -57,14 +57,14 @@ function getLanguageRequire(language) {
             filteredLanguages[alias] = {
               title: (languages[key].aliasTitles && languages[key].aliasTitles[alias]) || alias,
               main: key,
-              require: getLanguageRequire(languages[key]),
+              require: getLanguageRequire(languages[key])
             };
           });
         } else if (languages[key].alias && languages[key].alias.length > 0) {
           filteredLanguages[languages[key].alias] = {
             title: (languages[key].aliasTitles && languages[key].aliasTitles[languages[key].alias]) || languages[key].alias,
             main: key,
-            require: getLanguageRequire(languages[key]),
+            require: getLanguageRequire(languages[key])
           };
         }
         filteredLanguages[key].require = getLanguageRequire(languages[key]);

@@ -1,0 +1,5 @@
+www
+dist
+.stencil
+src/components.d.ts
+**/readme.md
