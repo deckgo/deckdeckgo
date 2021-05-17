@@ -100,6 +100,8 @@ export class DeckdeckgoHighlightCode {
   @State()
   private loaded: boolean = false;
 
+  private refContainer!: HTMLDivElement;
+
   private readonly debounceUpdateSlot: () => void;
 
   constructor() {
@@ -352,70 +354,68 @@ export class DeckdeckgoHighlightCode {
       await this.parseCode(fetchedCode);
     } catch (e) {
       // Prism might not be able to parse the code for the selected language
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
-
-      if (container && fetchedCode) {
-        container.children[0].innerHTML = fetchedCode;
+      if (this.refContainer && fetchedCode) {
+        this.refContainer.children[0].innerHTML = fetchedCode;
       }
     }
   }
 
   private parseCode(code: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
-
       if (!code || code === undefined || code === '') {
         resolve();
         return;
       }
 
-      if (container) {
-        try {
-          // clear the container first
-          container.children[0].textContent = '';
+      if (!this.refContainer) {
+        return;
+      }
 
-          // split the code on linebreaks
-          const regEx = RegExp(/\n(?!$)/g); //
-          const match = code.split(regEx);
-          match.forEach((m, idx, array) => {
-            // On last element
-            if (idx === array.length - 1) {
-              this.attachHighlightObserver(container);
+      try {
+        // clear the container first
+        this.refContainer.children[0].textContent = '';
+
+        // split the code on linebreaks
+        const regEx = RegExp(/\n(?!$)/g); //
+        const match = code.split(regEx);
+        match.forEach((m, idx, array) => {
+          // On last element
+          if (idx === array.length - 1) {
+            this.attachHighlightObserver(this.refContainer);
+          }
+
+          let div: HTMLElement = document.createElement('div');
+          if (this.lineNumbers) {
+            div.classList.add('deckgo-highlight-code-line-number');
+          }
+
+          const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
+
+          // If empty, use \u200B as zero width text spacer
+          div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
+
+          // No text node
+          const children: Node[] = Array.from(div.childNodes).map((node: Node) => {
+            if (node.nodeName === '#text') {
+              const span: HTMLSpanElement = document.createElement('span');
+              span.append(node);
+              return span;
             }
 
-            let div: HTMLElement = document.createElement('div');
-            if (this.lineNumbers) {
-              div.classList.add('deckgo-highlight-code-line-number');
-            }
-
-            const highlight: string = Prism.highlight(m, Prism.languages[this.language], this.language);
-
-            // If empty, use \u200B as zero width text spacer
-            div.innerHTML = highlight && highlight !== '' ? highlight : '\u200B';
-
-            // No text node
-            const children: Node[] = Array.from(div.childNodes).map((node: Node) => {
-              if (node.nodeName === '#text') {
-                const span: HTMLSpanElement = document.createElement('span');
-                span.append(node);
-                return span;
-              }
-
-              return node;
-            });
-
-            div.textContent = '';
-            div.append(...children);
-
-            container.children[0].appendChild(div);
+            return node;
           });
 
-          await this.addAnchors();
+          div.textContent = '';
+          div.append(...children);
 
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
+          this.refContainer.children[0].appendChild(div);
+        });
+
+        await this.addAnchors();
+
+        resolve();
+      } catch (err) {
+        reject(err);
       }
     });
   }
@@ -656,7 +656,7 @@ export class DeckdeckgoHighlightCode {
       <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
-        <div class="deckgo-highlight-code-container">
+        <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => this.refContainer = el as HTMLDivElement}>
           <code
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
