@@ -146,7 +146,7 @@ Here are the recent changes you made to your slides on [DeckDeckGo](https://deck
 
       const query = `
         mutation CreatePullRequest {
-          createPullRequest(input:{baseRefName:"master",body:"${body}",headRefName:"${branch}",repositoryId:"${repositoryId}",title:"${title}"}) {
+          createPullRequest(input:{baseRefName:"main",body:"${body}",headRefName:"${branch}",repositoryId:"${repositoryId}",title:"${title}"}) {
             pullRequest {
               id
             }
