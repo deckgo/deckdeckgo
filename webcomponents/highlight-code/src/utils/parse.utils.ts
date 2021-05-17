@@ -1,6 +1,5 @@
 import Prism from 'prismjs';
 
-import {addAnchors} from './anchors.utils';
 import {attachHighlightObserver} from './highlight.utils';
 
 export const parseCode = async ({
@@ -8,16 +7,12 @@ export const parseCode = async ({
   refCode,
   code,
   lineNumbers,
-  anchor,
-  hideAnchor,
   highlightLines,
   language
 }: {
   refContainer: HTMLDivElement | undefined;
   code: string | null | undefined;
   lineNumbers: boolean;
-  anchor: string;
-  hideAnchor: boolean;
   refCode: HTMLElement;
   highlightLines: string | undefined;
   language: string;
@@ -68,6 +63,4 @@ export const parseCode = async ({
 
     refContainer.children[0].appendChild(div);
   });
-
-  await addAnchors({refContainer, anchor, hideAnchor});
 };
