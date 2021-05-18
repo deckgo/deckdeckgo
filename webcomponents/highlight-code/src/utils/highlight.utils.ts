@@ -24,7 +24,7 @@ export const attachHighlightObserver = ({
   }
 };
 
-export const addHighlight = async ({
+const addHighlight = async ({
   highlightLines,
   refCode
 }: {
@@ -72,20 +72,22 @@ const findRowsToHighlight = async ({highlightLines}: {highlightLines: string | u
 
   const rows: string[] = highlightLines.split(' ');
 
-  if (rows && rows.length > 0) {
-    rows.forEach((row: string) => {
-      const index: string[] = row.split(',');
-
-      if (index && index.length >= 1) {
-        const start: number = parseInt(index[0], 0);
-        const end: number = parseInt(index[1], 0);
-
-        for (let i = start; i <= (isNaN(end) ? start : end); i++) {
-          results.push(i);
-        }
-      }
-    });
+  if (!rows || rows.length <= 0) {
+    return results;
   }
+
+  rows.forEach((row: string) => {
+    const index: string[] = row.replace(/-/g, ',').split(',');
+
+    if (index && index.length >= 1) {
+      const start: number = parseInt(index[0], 0);
+      const end: number = parseInt(index[1], 0);
+
+      for (let i = start; i <= (isNaN(end) ? start : end); i++) {
+        results.push(i);
+      }
+    }
+  });
 
   return results;
 };
