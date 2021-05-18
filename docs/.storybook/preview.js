@@ -10,7 +10,7 @@ export const parameters = {
         'Edit',
         ['HTML', 'Lazy Loading', 'Theming', 'Fonts', 'Reveal', 'RTL', 'Notes'],
         'Templates',
-        ['Templates', 'Title', 'Content', 'Split', 'Poll', 'Aspect Ratio', 'GIF', 'Chart', 'Youtube', 'Code', 'Author', 'QR Code', 'Playground'],
+        ['Templates', 'Title', 'Content', 'Split', 'Poll', 'Aspect Ratio', 'GIF', 'Chart', 'Youtube', 'Author', 'QR Code', 'Playground'],
         'Components',
         ['Color', 'Demo', 'Drag Resize Rotate', 'Highlight Code', 'Inline Editor', 'Laser Pointer', 'Lazy Image', 'Math', 'Pie Chart', 'Bar Chart', 'Line Chart', 'QR Code', 'Social', 'Word Cloud', 'Youtube'],
         'Deck',
