@@ -2,9 +2,17 @@
 
 # [4.7.0](https://github.com/deckgo/deckdeckgo/compare/v4.6.0...v4.7.0) (2021-XX-YY)
 
-### Others
+### Applications
 
 - demo: v8.2.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+
+### Web Components Templates
+
+- slide-code: **DECREPATED**
+
+The "code" template is not used in our web editor and, is really rarely used in starter apps.
+To showcase code, the component `@deckdeckgo/highlight-code` is always used with blocks of code.
+Therefore, to simplify the code base, I deprecate this template.
 
 ### Web Components
 
