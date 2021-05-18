@@ -137,7 +137,7 @@
        */
       font-family: var(--deckgo-highlight-code-font-family, "Ubuntu mono");
 
-      > div.deckgo-highlight-code-line-number {
+      > div.line-number {
         &:before {
           /**
            * @prop : Place holder in case the editable is set to true
@@ -257,7 +257,7 @@ div.container {
 
     height: 100%;
 
-    > div.deckgo-highlight-code-line-number {
+    > div.line-number {
       counter-increment: linenumber;
       position: relative;
       padding-left: 3.5em;

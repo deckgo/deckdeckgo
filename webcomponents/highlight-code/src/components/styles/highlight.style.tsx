@@ -7,7 +7,7 @@ export const HighlightStyle: FunctionalComponent<{start?: number; end?: number}>
       : 'div.container code.highlight > div.highlight *';
   const selectorLineNumbers: string =
     start !== undefined && end !== undefined
-      ? `code.highlight > div.deckgo-highlight-code-line-number:nth-child(n+${start + 1}):nth-child(-n+${end + 1}):before`
+      ? `code.highlight > div.line-number:nth-child(n+${start + 1}):nth-child(-n+${end + 1}):before`
       : 'div.container code.highlight > div.highlight:before';
 
   return (
