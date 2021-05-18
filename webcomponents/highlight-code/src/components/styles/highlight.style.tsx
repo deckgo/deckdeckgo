@@ -4,11 +4,11 @@ export const HighlightStyle: FunctionalComponent<{start?: number; end?: number}>
   const selectorGroup: string =
     start !== undefined && end !== undefined
       ? `code.highlight > :nth-child(n+${start + 1}):nth-child(-n+${end + 1}) *`
-      : 'div.deckgo-highlight-code-container code.highlight > div.highlight *';
+      : 'div.container code.highlight > div.highlight *';
   const selectorLineNumbers: string =
     start !== undefined && end !== undefined
       ? `code.highlight > div.deckgo-highlight-code-line-number:nth-child(n+${start + 1}):nth-child(-n+${end + 1}):before`
-      : 'div.deckgo-highlight-code-container code.highlight > div.highlight:before';
+      : 'div.container code.highlight > div.highlight:before';
 
   return (
     <style>{`

@@ -63,7 +63,7 @@
    */
   margin: var(--deckgo-highlight-code-carbon-margin, 16px 0);
 
-  div.deckgo-highlight-code-container {
+  div.container {
     /**
      * @prop --deckgo-highlight-code-margin: The margin property of the code container
      * @default 0 0 16px
@@ -121,7 +121,7 @@
    */
   margin: var(--deckgo-highlight-code-ubuntu-margin, 16px 0);
 
-  div.deckgo-highlight-code-container {
+  div.container {
     margin: var(--deckgo-highlight-code-margin, 0 0 16px);
     /**
      * @prop --deckgo-highlight-code-padding: The padding of the displayed code
@@ -158,7 +158,7 @@
   color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
 }
 
-div.deckgo-highlight-code-container {
+div.container {
   /**
    * @prop : Place holder in case the editable is set to true
    * @default

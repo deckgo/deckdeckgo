@@ -446,7 +446,7 @@ export class DeckdeckgoHighlightCode {
         {this.renderCarbon()}
         {this.renderUbuntu()}
         {this.renderHighlightStyle()}
-        <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
+        <div class="container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
           <code class={this.highlightLines?.length > 0 ? 'highlight' : undefined}
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
