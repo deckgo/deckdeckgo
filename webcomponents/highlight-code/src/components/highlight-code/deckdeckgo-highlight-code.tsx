@@ -1,8 +1,10 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {debounce, injectCSS} from '@deckdeckgo/utils';
+import {debounce} from '@deckdeckgo/utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
+import {parseCode} from '../../utils/parse.utils';
+import { loadGoogleFonts } from "../../utils/fonts.utils";
 
 import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
 
@@ -10,8 +12,6 @@ import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
-
-import {parseCode} from '../../utils/parse.utils';
 
 /**
  * @slot code - A `<code/>` element to highlight
@@ -91,7 +91,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   async componentWillLoad() {
-    await this.loadGoogleFonts();
+    await loadGoogleFonts(this.terminal);
 
     await this.loadTheme();
   }
@@ -270,13 +270,7 @@ export class DeckdeckgoHighlightCode {
   async onCarbonChange() {
     this.parseAfterUpdate = true;
 
-    await this.loadGoogleFonts();
-  }
-
-  private async loadGoogleFonts() {
-    if (this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU) {
-      await injectCSS('google-fonts-ubuntu', 'https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono&display=swap');
-    }
+    await loadGoogleFonts(this.terminal);
   }
 
   /**
