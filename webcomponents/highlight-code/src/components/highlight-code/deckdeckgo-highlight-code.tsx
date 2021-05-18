@@ -7,7 +7,6 @@ import {loadTheme} from '../../utils/themes-loader.utils';
 import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
 
 import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
-import {DeckdeckgoHighlightCodeAnchor} from '../../declarations/deckdeckgo-highlight-code-anchor';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
@@ -39,24 +38,6 @@ export class DeckdeckgoHighlightCode {
   codeDidChange: EventEmitter<HTMLElement>;
 
   /**
-   * The web url to the source code you would like to showcase
-   */
-  @Prop() src: string;
-
-  /**
-   * The anchor identifier which will be use to find the next anchor to scroll too using findNextAnchor()
-   */
-  @Prop() anchor: string = '// DeckDeckGo';
-  /**
-   * The anchor identifier which will be use to find the next anchor to zoom inside your code using findNextAnchor()
-   */
-  @Prop() anchorZoom: string = '// DeckDeckGoZoom';
-  /**
-   * Set this attribute to false in case you would like to actually display the anchor value too
-   */
-  @Prop() hideAnchor: boolean = true;
-
-  /**
    * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
    */
   @Prop({reflect: true}) language: string = 'javascript';
@@ -85,9 +66,7 @@ export class DeckdeckgoHighlightCode {
    */
   @Prop({reflect: true}) theme: DeckdeckgoHighlightCodeCarbonTheme = DeckdeckgoHighlightCodeCarbonTheme.DRACULA;
 
-  private anchorOffsetTop: number = 0;
-
-  private fetchOrParseAfterUpdate: boolean = false;
+  private parseAfterUpdate: boolean = false;
 
   private refCode!: HTMLElement;
 
@@ -122,14 +101,14 @@ export class DeckdeckgoHighlightCode {
     await this.loadLanguages();
 
     if (languageWasLoaded) {
-      await this.fetchOrParse();
+      await this.parse();
     }
   }
 
   async componentDidUpdate() {
-    if (this.fetchOrParseAfterUpdate) {
-      await this.fetchOrParse();
-      this.fetchOrParseAfterUpdate = false;
+    if (this.parseAfterUpdate) {
+      await this.parse();
+      this.parseAfterUpdate = false;
     }
   }
 
@@ -155,21 +134,18 @@ export class DeckdeckgoHighlightCode {
     }
 
     if (this.language && !this.loaded && (this.languagesToLoad === undefined || this.languagesToLoad.length <= 0)) {
-      await this.fetchOrParse();
+      await this.parse();
 
       this.loaded = true;
     }
   }
 
-  private async fetchOrParse() {
+  private async parse() {
     if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
       return;
     }
-    if (this.src) {
-      await this.fetchCode();
-    } else {
-      await this.parseSlottedCode();
-    }
+
+    await this.parseSlottedCode();
   }
 
   private languageDidLoad(): Promise<boolean> {
@@ -286,12 +262,12 @@ export class DeckdeckgoHighlightCode {
 
   @Watch('lineNumbers')
   async onLineNumbersChange() {
-    await this.fetchOrParse();
+    await this.parse();
   }
 
   @Watch('terminal')
   async onCarbonChange() {
-    this.fetchOrParseAfterUpdate = true;
+    this.parseAfterUpdate = true;
 
     await this.loadGoogleFonts();
   }
@@ -314,13 +290,13 @@ export class DeckdeckgoHighlightCode {
       }
 
       if (this.language === 'javascript') {
-        await this.fetchOrParse();
+        await this.parse();
         resolve();
         return;
       }
 
       if (document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']")) {
-        await this.fetchOrParse();
+        await this.parse();
       } else {
         await this.loadLanguages();
       }
@@ -344,106 +320,14 @@ export class DeckdeckgoHighlightCode {
     });
   }
 
-  async fetchCode() {
-    if (!this.src) {
-      return;
-    }
-
-    let fetchedCode: string;
-    try {
-      const response: Response = await fetch(this.src);
-      fetchedCode = await response.text();
-
-      await parseCode({
-        ...this.parseCodeOptions(),
-        code: fetchedCode
-      });
-    } catch (e) {
-      // Prism might not be able to parse the code for the selected language
-      if (this.refContainer && fetchedCode) {
-        this.refContainer.children[0].innerHTML = fetchedCode;
-      }
-    }
-  }
-
   private parseCodeOptions() {
     return {
       refContainer: this.refContainer,
       refCode: this.refCode,
       lineNumbers: this.lineNumbers,
-      anchor: this.anchor,
-      hideAnchor: this.hideAnchor,
       highlightLines: this.highlightLines,
       language: this.language
     };
-  }
-
-  /**
-   * Find the next anchor
-   * @param enter
-   */
-  @Method()
-  findNextAnchor(enter: boolean): Promise<DeckdeckgoHighlightCodeAnchor> {
-    return new Promise<DeckdeckgoHighlightCodeAnchor>(async (resolve) => {
-      const elements: NodeListOf<HTMLElement> = this.el.shadowRoot.querySelectorAll('span.deckgo-highlight-code-anchor');
-
-      if (elements) {
-        const elementsArray: HTMLElement[] = enter ? Array.from(elements) : Array.from(elements).reverse();
-
-        const anchor: HTMLElement = elementsArray.find((element: HTMLElement) => {
-          return enter ? element.offsetTop > this.anchorOffsetTop : element.offsetTop < this.anchorOffsetTop;
-        });
-
-        if (anchor) {
-          this.anchorOffsetTop = anchor.offsetTop;
-
-          resolve({
-            offsetTop: anchor.offsetTop,
-            hasLineZoom: this.hasLineZoom(anchor.textContent)
-          });
-        } else if (!enter) {
-          const elementCode: HTMLElement = this.el.shadowRoot.querySelector('code');
-
-          if (elementCode && elementCode.firstElementChild) {
-            this.anchorOffsetTop = 0;
-
-            resolve({
-              offsetTop: 0,
-              hasLineZoom: false
-            });
-          } else {
-            resolve(null);
-          }
-        } else {
-          resolve(null);
-        }
-      } else {
-        resolve(null);
-      }
-    });
-  }
-
-  /**
-   * Zoom into code
-   * @param zoom
-   */
-  @Method()
-  zoomCode(zoom: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const container: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-highlight-code-container');
-
-      if (container) {
-        container.style.setProperty('--deckgo-highlight-code-zoom', zoom ? '1.3' : '1');
-      }
-
-      resolve();
-    });
-  }
-
-  private hasLineZoom(line: string): boolean {
-    return (
-      line && this.anchorZoom && line.indexOf('@Prop') === -1 && line.split(' ').join('').indexOf(this.anchorZoom.split(' ').join('')) > -1
-    );
   }
 
   private async applyCode() {

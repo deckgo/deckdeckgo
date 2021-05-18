@@ -125,19 +125,6 @@ public static void main(String args[]) {
 
     <button onclick="toggleSrcLineNumbers()" style="margin-bottom: 16px">Toggle fetched line numbers</button>
 
-    <h1>Fixed height container:</h1>
-
-    <div style="--deckgo-highlight-code-container-height: 200px; overflow: hidden">
-      <deckgo-highlight-code
-        style="display: block"
-        line-numbers="true"
-        id="deckGoCode"
-        terminal="none"
-        src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx"
-      >
-      </deckgo-highlight-code>
-    </div>
-
     <h1>Typescript</h1>
 
     <!-- prettier-ignore -->
@@ -273,14 +260,5 @@ program = [
       <code slot="code"> The date and time now is: <#= DateTime.Now #> </code>
     </deckgo-highlight-code>
 
-    <h1>Src file:</h1>
-
-    <deckgo-highlight-code
-      line-numbers="true"
-      id="deckGoCode"
-      terminal="none"
-      src="https://raw.githubusercontent.com/deckgo/deckdeckgo/master/webcomponents/core/src/components/deck/deckdeckgo-deck/deckdeckgo-deck.tsx"
-    >
-    </deckgo-highlight-code>
   </body>
 </html>

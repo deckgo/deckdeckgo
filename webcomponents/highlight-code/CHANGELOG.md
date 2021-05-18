@@ -2,11 +2,14 @@
 
 ### Breaking Changes
 
+- remove fetch code through an url*
 - highlight lines per default not through background but, with more contrast against those not highlighted ("highlight opacity 1, no highlighted opacity 0.32")
 
 ### Refactoring
 
 - extract some functions to utils
+
+* I removed this feature because I think it is really rarely used and, it can simplify the code base which had becomes quite complicated for such a component.
 
 # 2.6.0 (2021-04-23)
 
