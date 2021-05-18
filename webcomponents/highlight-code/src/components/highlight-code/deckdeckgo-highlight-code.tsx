@@ -4,10 +4,10 @@ import {debounce} from '@deckdeckgo/utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
 import {parseCode} from '../../utils/parse.utils';
-import { loadGoogleFonts } from "../../utils/fonts.utils";
+import {loadGoogleFonts} from '../../utils/fonts.utils';
 
-import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
-import { HighlightStyle } from "../styles/highlight.style";
+import {CarbonThemeStyle} from '../styles/carbon-theme.style';
+import {HighlightStyle} from '../styles/highlight.style';
 
 import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
@@ -89,7 +89,7 @@ export class DeckdeckgoHighlightCode {
   private highlightEnd: boolean = false;
 
   @State()
-  private highlightRows: {start: number, end: number} | undefined = undefined;
+  private highlightRows: {start: number; end: number} | undefined = undefined;
 
   constructor() {
     this.debounceUpdateSlot = debounce(async () => {
@@ -427,8 +427,8 @@ export class DeckdeckgoHighlightCode {
 
     this.highlightRows = {
       start: allRows.indexOf(rows[0]),
-      end: allRows.indexOf(rows[rows.length - 1]),
-    }
+      end: allRows.indexOf(rows[rows.length - 1])
+    };
   }
 
   render() {
@@ -447,7 +447,8 @@ export class DeckdeckgoHighlightCode {
         {this.renderUbuntu()}
         {this.renderHighlightStyle()}
         <div class="container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
-          <code class={this.highlightLines?.length > 0 ? 'highlight' : undefined}
+          <code
+            class={this.highlightLines?.length > 0 ? 'highlight' : undefined}
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
             onInput={() => this.inputCode()}
