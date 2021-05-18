@@ -5,6 +5,10 @@
 - remove fetch code through an url*
 - highlight lines per default not through background but, with more contrast against those not highlighted ("highlight opacity 1, no highlighted opacity 0.32")
 
+### Features
+
+- support dash to highlight lines too (example: 1 4-8 12,18 22 26-32)
+
 ### Refactoring
 
 - extract some functions to utils

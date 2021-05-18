@@ -43,7 +43,8 @@ export class DeckdeckgoHighlightCode {
   @Prop({reflect: true}) language: string = 'javascript';
 
   /**
-   * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or number separated with coma (many lines), group separated with space. For example: 1 3,5 8 14,17
+   * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or numbers separated with coma or dash (many lines), group separated with space.
+   * For example: 1 3,5 8 14-17 which highlight lines  1, 3 to 5, 8 and 14 to 17
    */
   @Prop({reflect: true}) highlightLines: string;
   /**
