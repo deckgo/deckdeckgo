@@ -8,6 +8,7 @@
 ### Features
 
 - support dash to highlight lines too (example: 1 4-8 12,18 22 26-32)
+- animate highlight with methods `nextHighlight` and `prevHighlight` (this will "focus" the highlight through the groups)
 
 ### Refactoring
 

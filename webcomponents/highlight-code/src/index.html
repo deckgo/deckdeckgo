@@ -12,7 +12,7 @@
     <h1>Editable:</h1>
 
     <!-- prettier-ignore -->
-    <deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 5,6 8" line-numbers="true">
+    <deckgo-highlight-code language="java" editable="true" highlight-lines="0,2 5,6 8 14-15" line-numbers="true">
   <code slot="code">interface NumericTest {
   boolean computeTest(int n);
 }
@@ -94,11 +94,23 @@ public static void main(String args[]) {
           elem[0].theme = theme;
         }
       }
+
+      async function nextHighlight() {
+        const elem = document.querySelector('deckgo-highlight-code');
+        await elem?.nextHighlight();
+      }
+
+      async function prevHighlight() {
+        const elem = document.querySelector('deckgo-highlight-code');
+        await elem?.prevHighlight();
+      }
     </script>
 
     <button onclick="toggleLineNumbers()">Toggle line numbers</button>
     <button onclick="toggleCarbon()">Toggle carbon</button>
     <button onclick="toggleLanguage()">Toggle language</button>
+    <button onclick="prevHighlight()">Previous highlight</button>
+    <button onclick="nextHighlight()">Next highlight</button>
 
     <h1>Editable empty:</h1>
 

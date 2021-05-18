@@ -39,7 +39,7 @@ export const parseCode = async ({
 
     let div: HTMLElement = document.createElement('div');
     if (lineNumbers) {
-      div.classList.add('deckgo-highlight-code-line-number');
+      div.classList.add('line-number');
     }
 
     const highlight: string = Prism.highlight(m, Prism.languages[language], language);

@@ -7,6 +7,10 @@ export const attachHighlightObserver = ({
   refCode: HTMLElement;
   highlightLines: string | undefined;
 }) => {
+  if (!highlightLines || highlightLines.length <= 0) {
+    return;
+  }
+
   if (window && 'ResizeObserver' in window) {
     // @ts-ignore
     const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
@@ -24,22 +28,12 @@ export const attachHighlightObserver = ({
   }
 };
 
-const addHighlight = async ({
-  highlightLines,
-  refCode
-}: {
-  highlightLines: string | undefined;
-  refCode: HTMLElement;
-}): Promise<void> => {
-  if (!highlightLines || highlightLines.length <= 0) {
-    return;
-  }
-
+const addHighlight = async ({highlightLines, refCode}: {highlightLines: string | undefined; refCode: HTMLElement}): Promise<void> => {
   if (!refCode.hasChildNodes()) {
     return;
   }
 
-  const rows: number[] = await findRowsToHighlight({highlightLines});
+  const {rows, rowsGroup}: {rows: number[]; rowsGroup: Record<string, number>} = await findRowsToHighlight({highlightLines});
 
   if (rows.length <= 0) {
     return;
@@ -60,34 +54,46 @@ const addHighlight = async ({
     const rowsIndexToCompare: number = element.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
 
     if (rows.indexOf(rowsIndexToCompare) > -1) {
-      element.classList.add('deckgo-highlight-code-line');
-    } else {
-      element.classList.add('deckgo-lowlight-code-line');
+      element.classList.add('highlight', `group-${rowsGroup[`row_${rowsIndexToCompare}`]}`);
     }
   });
+
+  refCode.classList.add('animate');
 };
 
-const findRowsToHighlight = async ({highlightLines}: {highlightLines: string | undefined}): Promise<number[]> => {
-  let results: number[] = [];
+const findRowsToHighlight = async ({
+  highlightLines
+}: {
+  highlightLines: string | undefined;
+}): Promise<{rows: number[]; rowsGroup: Record<string, number>}> => {
+  const groups: string[] = highlightLines.split(' ');
 
-  const rows: string[] = highlightLines.split(' ');
-
-  if (!rows || rows.length <= 0) {
-    return results;
+  if (!groups || groups.length <= 0) {
+    return {
+      rows: [],
+      rowsGroup: {}
+    };
   }
 
-  rows.forEach((row: string) => {
-    const index: string[] = row.replace(/-/g, ',').split(',');
+  const rows: number[] = [];
+  let rowsGroup: Record<string, number> = {};
+
+  groups.forEach((group: string, groupIndex: number) => {
+    const index: string[] = group.replace(/-/g, ',').split(',');
 
     if (index && index.length >= 1) {
       const start: number = parseInt(index[0], 0);
       const end: number = parseInt(index[1], 0);
 
       for (let i = start; i <= (isNaN(end) ? start : end); i++) {
-        results.push(i);
+        rows.push(i);
+        rowsGroup[`row_${i}`] = groupIndex;
       }
     }
   });
 
-  return results;
+  return {
+    rows,
+    rowsGroup
+  };
 };

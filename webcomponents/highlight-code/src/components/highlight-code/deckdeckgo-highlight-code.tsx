@@ -1,17 +1,18 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {debounce, injectCSS} from '@deckdeckgo/utils';
+import {debounce} from '@deckdeckgo/utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
+import {parseCode} from '../../utils/parse.utils';
+import {loadGoogleFonts} from '../../utils/fonts.utils';
 
-import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
+import {CarbonThemeStyle} from '../styles/carbon-theme.style';
+import {HighlightStyle} from '../styles/highlight.style';
 
 import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
 
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
-
-import {parseCode} from '../../utils/parse.utils';
 
 /**
  * @slot code - A `<code/>` element to highlight
@@ -84,6 +85,12 @@ export class DeckdeckgoHighlightCode {
 
   private readonly debounceUpdateSlot: () => void;
 
+  private highlightGroup: number | undefined = undefined;
+  private highlightEnd: boolean = false;
+
+  @State()
+  private highlightRows: {start: number; end: number} | undefined = undefined;
+
   constructor() {
     this.debounceUpdateSlot = debounce(async () => {
       await this.copyCodeToSlot();
@@ -91,7 +98,7 @@ export class DeckdeckgoHighlightCode {
   }
 
   async componentWillLoad() {
-    await this.loadGoogleFonts();
+    await loadGoogleFonts(this.terminal);
 
     await this.loadTheme();
   }
@@ -270,13 +277,7 @@ export class DeckdeckgoHighlightCode {
   async onCarbonChange() {
     this.parseAfterUpdate = true;
 
-    await this.loadGoogleFonts();
-  }
-
-  private async loadGoogleFonts() {
-    if (this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU) {
-      await injectCSS('google-fonts-ubuntu', 'https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono&display=swap');
-    }
+    await loadGoogleFonts(this.terminal);
   }
 
   /**
@@ -375,6 +376,61 @@ export class DeckdeckgoHighlightCode {
     }
   };
 
+  /**
+   * Animate highlighted lines and, apply "focus" on next group
+   */
+  @Method()
+  async nextHighlight() {
+    if (this.highlightEnd) {
+      return;
+    }
+
+    await this.selectNextGroupHighlight(this.highlightGroup + 1 || 0);
+
+    // We want to limit the counter to max count of groups
+    if (this.highlightRows !== undefined) {
+      this.highlightGroup = this.highlightGroup + 1 || 0;
+    } else {
+      this.highlightEnd = true;
+    }
+  }
+
+  /**
+   * Animate highlighted lines and, apply "focus" on previous group
+   */
+  @Method()
+  async prevHighlight() {
+    if (this.highlightGroup === 0) {
+      this.highlightGroup = undefined;
+      this.highlightRows = undefined;
+      return;
+    }
+
+    this.highlightGroup = this.highlightEnd ? this.highlightGroup : this.highlightGroup - 1;
+
+    await this.selectNextGroupHighlight(this.highlightGroup);
+
+    if (this.highlightRows !== undefined) {
+      this.highlightEnd = false;
+    }
+  }
+
+  private async selectNextGroupHighlight(highlightGroup: number | undefined) {
+    const rows: NodeListOf<HTMLDivElement> = this.refCode?.querySelectorAll(`.group-${highlightGroup}`);
+
+    if (!rows || rows.length <= 0) {
+      this.highlightRows = undefined;
+      return;
+    }
+
+    const allRows = Array.from(this.refCode.children);
+
+    this.highlightRows = {
+      start: allRows.indexOf(rows[0]),
+      end: allRows.indexOf(rows[rows.length - 1])
+    };
+  }
+
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
@@ -389,8 +445,10 @@ export class DeckdeckgoHighlightCode {
       <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
-        <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
+        {this.renderHighlightStyle()}
+        <div class="container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
           <code
+            class={this.highlightLines?.length > 0 ? 'highlight' : undefined}
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
             onInput={() => this.inputCode()}
@@ -400,6 +458,14 @@ export class DeckdeckgoHighlightCode {
         </div>
       </Host>
     );
+  }
+
+  private renderHighlightStyle() {
+    if (!this.highlightLines || this.highlightLines.length <= 0) {
+      return undefined;
+    }
+
+    return <HighlightStyle {...this.highlightRows} />;
   }
 
   private renderCarbon() {

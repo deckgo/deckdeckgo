@@ -90,6 +90,26 @@ Type: `Promise<void>`
 
 
 
+### `nextHighlight() => Promise<void>`
+
+Animate highlighted lines and, apply "focus" on next group
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `prevHighlight() => Promise<void>`
+
+Animate highlighted lines and, apply "focus" on previous group
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Slots
 
@@ -140,12 +160,13 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-line-background`                          | The background of the lines you wish to highlight                                                                                                |
 | `--deckgo-highlight-code-line-border-bottom`                       | The border-bottom property of the lines you wish to highlight                                                                                    |
 | `--deckgo-highlight-code-line-border-top`                          | The border-top property of the lines you wish to highlight                                                                                       |
-| `--deckgo-highlight-code-line-color`                               | The color of the lines you wish to highlight                                                                                                     |
 | `--deckgo-highlight-code-line-font-weight`                         | The font-weight of the lines you wish to highlight                                                                                               |
 | `--deckgo-highlight-code-line-height`                              | The line height of the font for the code                                                                                                         |
 | `--deckgo-highlight-code-line-numbers-background`                  | The background property of the line numbers                                                                                                      |
 | `--deckgo-highlight-code-line-numbers-border-right`                | The border right property of the line numbers @default 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)        |
 | `--deckgo-highlight-code-line-numbers-color`                       | The color property of the line numbers @default var(--deckgo-highlight-code-token-comment, #6272a4)                                              |
+| `--deckgo-highlight-code-line-opacity`                             | The opacity of the lines you do wish to highlight @default 1                                                                                     |
+| `--deckgo-highlight-code-line-transition`                          | Transition between lowlight and highlight @default all 0.35s ease-in                                                                             |
 | `--deckgo-highlight-code-margin`                                   | The margin property of the code container @default 0 0 16px                                                                                      |
 | `--deckgo-highlight-code-padding`                                  | The padding of the displayed code @default 2px 0 0                                                                                               |
 | `--deckgo-highlight-code-scroll`                                   | In case you would like to change the scroll property of the shadowed code block @default auto                                                    |
