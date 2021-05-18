@@ -325,6 +325,22 @@ div.container {
       opacity: var(--deckgo-lowlight-code-line-opacity, 0.32);
     }
 
+    &.highlight.animate {
+      div > * {
+        /**
+         * --deckgo-highlight-code-line-transition: Transition between lowlight and highlight
+         * @default all 0.35s ease-in
+         */
+        transition: var(--deckgo-highlight-code-line-transition, all 0.35s ease-in);
+      }
+
+      > div.line-number {
+        &:before {
+          transition: var(--deckgo-highlight-code-line-transition, all 0.35s ease-in);
+        }
+      }
+    }
+
     /**
      * @prop --deckgo-highlight-code-line-background: The background of the lines you wish to highlight
      */

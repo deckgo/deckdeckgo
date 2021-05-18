@@ -57,6 +57,8 @@ const addHighlight = async ({highlightLines, refCode}: {highlightLines: string |
       element.classList.add('highlight', `group-${rowsGroup[`row_${rowsIndexToCompare}`]}`);
     }
   });
+
+  refCode.classList.add('animate');
 };
 
 const findRowsToHighlight = async ({

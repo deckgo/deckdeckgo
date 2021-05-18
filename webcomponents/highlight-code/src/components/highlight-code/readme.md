@@ -166,6 +166,7 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-line-numbers-border-right`                | The border right property of the line numbers @default 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)        |
 | `--deckgo-highlight-code-line-numbers-color`                       | The color property of the line numbers @default var(--deckgo-highlight-code-token-comment, #6272a4)                                              |
 | `--deckgo-highlight-code-line-opacity`                             | The opacity of the lines you do wish to highlight @default 1                                                                                     |
+| `--deckgo-highlight-code-line-transition`                          | Transition between lowlight and highlight @default all 0.35s ease-in                                                                             |
 | `--deckgo-highlight-code-margin`                                   | The margin property of the code container @default 0 0 16px                                                                                      |
 | `--deckgo-highlight-code-padding`                                  | The padding of the displayed code @default 2px 0 0                                                                                               |
 | `--deckgo-highlight-code-scroll`                                   | In case you would like to change the scroll property of the shadowed code block @default auto                                                    |
