@@ -7,6 +7,7 @@ import {parseCode} from '../../utils/parse.utils';
 import { loadGoogleFonts } from "../../utils/fonts.utils";
 
 import {CarbonThemeStyle} from '../styles/deckdeckgo-highlight-code-theme';
+import { HighlightStyle } from "../styles/highlight.style";
 
 import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
@@ -83,6 +84,12 @@ export class DeckdeckgoHighlightCode {
   private refContainer!: HTMLDivElement;
 
   private readonly debounceUpdateSlot: () => void;
+
+  private highlightGroup: number | undefined = undefined;
+  private highlightEnd: boolean = false;
+
+  @State()
+  private highlightRows: {start: number, end: number} | undefined = undefined;
 
   constructor() {
     this.debounceUpdateSlot = debounce(async () => {
@@ -369,6 +376,61 @@ export class DeckdeckgoHighlightCode {
     }
   };
 
+  /**
+   * Animate highlighted lines and, apply "focus" on next group
+   */
+  @Method()
+  async nextHighlight() {
+    if (this.highlightEnd) {
+      return;
+    }
+
+    await this.selectNextGroupHighlight(this.highlightGroup + 1 || 0);
+
+    // We want to limit the counter to max count of groups
+    if (this.highlightRows !== undefined) {
+      this.highlightGroup = this.highlightGroup + 1 || 0;
+    } else {
+      this.highlightEnd = true;
+    }
+  }
+
+  /**
+   * Animate highlighted lines and, apply "focus" on previous group
+   */
+  @Method()
+  async prevHighlight() {
+    if (this.highlightGroup === 0) {
+      this.highlightGroup = undefined;
+      this.highlightRows = undefined;
+      return;
+    }
+
+    this.highlightGroup = this.highlightEnd ? this.highlightGroup : this.highlightGroup - 1;
+
+    await this.selectNextGroupHighlight(this.highlightGroup);
+
+    if (this.highlightRows !== undefined) {
+      this.highlightEnd = false;
+    }
+  }
+
+  private async selectNextGroupHighlight(highlightGroup: number | undefined) {
+    const rows: NodeListOf<HTMLDivElement> = this.refCode?.querySelectorAll(`.group-${highlightGroup}`);
+
+    if (!rows || rows.length <= 0) {
+      this.highlightRows = undefined;
+      return;
+    }
+
+    const allRows = Array.from(this.refCode.children);
+
+    this.highlightRows = {
+      start: allRows.indexOf(rows[0]),
+      end: allRows.indexOf(rows[rows.length - 1]),
+    }
+  }
+
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
@@ -383,8 +445,9 @@ export class DeckdeckgoHighlightCode {
       <Host class={hostClass} onClick={() => this.edit()}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
+        {this.renderHighlightStyle()}
         <div class="deckgo-highlight-code-container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
-          <code
+          <code class={this.highlightLines?.length > 0 ? 'highlight' : undefined}
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
             onInput={() => this.inputCode()}
@@ -394,6 +457,14 @@ export class DeckdeckgoHighlightCode {
         </div>
       </Host>
     );
+  }
+
+  private renderHighlightStyle() {
+    if (!this.highlightLines || this.highlightLines.length <= 0) {
+      return undefined;
+    }
+
+    return <HighlightStyle {...this.highlightRows} />;
   }
 
   private renderCarbon() {

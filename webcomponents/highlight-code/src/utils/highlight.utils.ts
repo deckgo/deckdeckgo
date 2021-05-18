@@ -7,6 +7,10 @@ export const attachHighlightObserver = ({
   refCode: HTMLElement;
   highlightLines: string | undefined;
 }) => {
+  if (!highlightLines || highlightLines.length <= 0) {
+    return;
+  }
+
   if (window && 'ResizeObserver' in window) {
     // @ts-ignore
     const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
@@ -25,10 +29,6 @@ export const attachHighlightObserver = ({
 };
 
 const addHighlight = async ({highlightLines, refCode}: {highlightLines: string | undefined; refCode: HTMLElement}): Promise<void> => {
-  if (!highlightLines || highlightLines.length <= 0) {
-    return;
-  }
-
   if (!refCode.hasChildNodes()) {
     return;
   }
@@ -53,16 +53,17 @@ const addHighlight = async ({highlightLines, refCode}: {highlightLines: string |
 
     const rowsIndexToCompare: number = element.offsetHeight > offsetHeight ? rowIndex + 1 : rowIndex;
 
-    // TODO: pass group index to highlight
-    if (rows.indexOf(rowsIndexToCompare) > -1 && rowsGroup[`row_${rowsIndexToCompare}`] === 2) {
-      element.classList.add('deckgo-highlight-code-line');
-    } else {
-      element.classList.add('deckgo-lowlight-code-line');
+    if (rows.indexOf(rowsIndexToCompare) > -1) {
+      element.classList.add('highlight', `group-${rowsGroup[`row_${rowsIndexToCompare}`]}`);
     }
   });
 };
 
-const findRowsToHighlight = async ({highlightLines}: {highlightLines: string | undefined}): Promise<{rows: number[], rowsGroup: Record<string, number>}> => {
+const findRowsToHighlight = async ({
+  highlightLines
+}: {
+  highlightLines: string | undefined;
+}): Promise<{rows: number[]; rowsGroup: Record<string, number>}> => {
   const groups: string[] = highlightLines.split(' ');
 
   if (!groups || groups.length <= 0) {

@@ -272,31 +272,24 @@ div.deckgo-highlight-code-container {
         width: 2.5em;
 
         /**
-           * @prop --deckgo-highlight-code-line-numbers-background: The background property of the line numbers
-           */
+         * @prop --deckgo-highlight-code-line-numbers-background: The background property of the line numbers
+         */
         background: var(--deckgo-highlight-code-line-numbers-background);
 
         /**
-           * @prop --deckgo-highlight-code-line-numbers-border-right: The border right property of the line numbers
-           * @default 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)
-           */
-        border-right: var(--deckgo-highlight-code-line-numbers-border-right, 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32));
+         * @prop --deckgo-highlight-code-line-numbers-border-right: The border right property of the line numbers
+         * @default 1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)
+        */
+        border-right: var(
+          --deckgo-highlight-code-line-numbers-border-right,
+          1px solid rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)
+        );
 
         /**
-           * @prop --deckgo-highlight-code-line-numbers-color: The color property of the line numbers
-           * @default var(--deckgo-highlight-code-token-comment, #6272a4)
-           */
-        color: var(--deckgo-highlight-code-line-numbers-color, var(--deckgo-highlight-code-token-comment, #6272a4));
-      }
-
-      &.deckgo-lowlight-code-line {
-        &:before {
-          /**
-           * @prop --deckgo-lowlight-code-line-numbers-color: The color property of the line numbers if not highlighted
-           * @default rgba(var(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32))
-           */
-          color: var(--deckgo-lowlight-code-line-numbers-color, rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32));
-        }
+          * @prop --deckgo-lowlight-code-line-numbers-color: The color property of the line numbers if not highlighted
+          * @default rgba(var(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32))
+        */
+        color: var(--deckgo-lowlight-code-line-numbers-color, rgba(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32));
       }
     }
 
@@ -304,30 +297,7 @@ div.deckgo-highlight-code-container {
       visibility: hidden;
     }
 
-    .deckgo-highlight-code-line * {
-      /**
-       * @prop --deckgo-highlight-code-line-color: The color of the lines you wish to highlight
-       */
-      color: var(--deckgo-highlight-code-line-color);
-      /**
-       * @prop --deckgo-highlight-code-line-background: The background of the lines you wish to highlight
-       */
-      background: var(--deckgo-highlight-code-line-background);
-      /**
-       * @prop --deckgo-highlight-code-line-border-top: The border-top property of the lines you wish to highlight
-       */
-      border-top: var(--deckgo-highlight-code-line-border-top);
-      /**
-       * @prop --deckgo-highlight-code-line-border-bottom: The border-bottom property of the lines you wish to highlight
-       */
-      border-bottom: var(--deckgo-highlight-code-line-border-bottom);
-      /**
-       * @prop --deckgo-highlight-code-line-font-weight: The font-weight of the lines you wish to highlight
-       */
-      font-weight: var(--deckgo-highlight-code-line-font-weight);
-    }
-
-    .deckgo-lowlight-code-line * {
+    &.highlight div > * {
       /**
        * @prop --deckgo-lowlight-code-line-color: The color of the lines you do not with to highlight
        */
@@ -354,6 +324,27 @@ div.deckgo-highlight-code-container {
        */
       opacity: var(--deckgo-lowlight-code-line-opacity, 0.32);
     }
+
+    /**
+     * @prop --deckgo-highlight-code-line-background: The background of the lines you wish to highlight
+     */
+    /**
+     * @prop --deckgo-highlight-code-line-border-top: The border-top property of the lines you wish to highlight
+     */
+    /**
+     * @prop --deckgo-highlight-code-line-border-bottom: The border-bottom property of the lines you wish to highlight
+     */
+    /**
+     * @prop --deckgo-highlight-code-line-font-weight: The font-weight of the lines you wish to highlight
+     */
+    /**
+     * @prop --deckgo-highlight-code-line-opacity: The opacity of the lines you do wish to highlight
+     * @default 1
+     */
+    /**
+     * @prop --deckgo-highlight-code-line-numbers-color: The color property of the line numbers
+     * @default var(--deckgo-highlight-code-token-comment, #6272a4)
+    */
 
     /* Prism style override */
     .language-css .token.string:not(.deckgo-highlight-code-line),

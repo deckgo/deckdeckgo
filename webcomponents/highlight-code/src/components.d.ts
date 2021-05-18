@@ -30,6 +30,14 @@ export namespace Components {
          */
         "load": () => Promise<void>;
         /**
+          * Animate highlighted lines and, apply "focus" on next group
+         */
+        "nextHighlight": () => Promise<void>;
+        /**
+          * Animate highlighted lines and, apply "focus" on previous group
+         */
+        "prevHighlight": () => Promise<void>;
+        /**
           * Present the code in a stylish "windowed" card
          */
         "terminal": DeckdeckgoHighlightCodeTerminal;

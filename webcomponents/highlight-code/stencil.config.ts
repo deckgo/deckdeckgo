@@ -23,5 +23,8 @@ export const config: Config = {
     postcss({
       plugins: [autoprefixer()]
     })
-  ]
+  ],
+  devServer: {
+    openBrowser: false
+  }
 };
