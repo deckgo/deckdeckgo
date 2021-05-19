@@ -1,116 +1,97 @@
 import {lazyLoadImages} from './images-utils';
 import {lazyLoadComponentContent} from './component-utils';
 
-function showRevealElement(el: HTMLElement): Promise<boolean> {
-  return new Promise<boolean>(async (resolve) => {
-    const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
+import {DeckDeckGoRevealComponent} from '../interfaces/deckdeckgo-reveal-component';
 
-    let couldSwipe: boolean = true;
+const revealSelector: string = 'deckgo-reveal, deckgo-reveal-list, deckgo-highlight-code';
 
-    if (elements) {
-      const nextElement: HTMLElement | undefined = Array.from(elements).find((element: HTMLElement) => {
-        return !(element as any).allElementsRevealed;
-      });
+async function showRevealElement(el: HTMLElement): Promise<boolean> {
+  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
 
-      if (nextElement) {
-        await (nextElement as any).reveal();
-        couldSwipe = false;
-      }
-    }
+  if (!elements || elements.length <= 0) {
+    return true;
+  }
 
-    resolve(couldSwipe);
+  const nextElement: DeckDeckGoRevealComponent | undefined = Array.from(elements).find((element: DeckDeckGoRevealComponent) => {
+    return !element.allElementsRevealed;
   });
+
+  if (nextElement) {
+    await nextElement.reveal();
+    return false;
+  }
+
+  return true;
 }
 
-function hideRevealElement(el: HTMLElement): Promise<boolean> {
-  return new Promise<boolean>(async (resolve) => {
-    const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
+async function hideRevealElement(el: HTMLElement): Promise<boolean> {
+  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
 
-    let couldSwipe: boolean = true;
+  if (!elements || elements.length <= 0) {
+    return true;
+  }
 
-    if (elements) {
-      const nextElement: HTMLElement | undefined = Array.from(elements)
-        .reverse()
-        .find((element: HTMLElement) => {
-          return !(element as any).allElementsHidden;
-        });
+  let couldSwipe: boolean = true;
 
-      if (nextElement) {
-        await (nextElement as any).hide();
-        couldSwipe = false;
-      }
-    }
+  const nextElement: DeckDeckGoRevealComponent | undefined = Array.from(elements)
+    .reverse()
+    .find((element: DeckDeckGoRevealComponent) => {
+      return !element.allElementsHidden;
+    });
 
-    resolve(couldSwipe);
-  });
+  if (nextElement) {
+    await nextElement.hide();
+    couldSwipe = false;
+  }
+
+  return couldSwipe;
 }
 
-export function showAllRevealElements(el: HTMLElement): Promise<void> {
-  return new Promise<void>(async (resolve) => {
-    const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
+export async function showAllRevealElements(el: HTMLElement): Promise<void> {
+  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
 
-    if (elements && elements.length > 0) {
-      const promises: Promise<void>[] = [];
+  if (!elements || elements.length <= 0) {
+    return;
+  }
 
-      for (const element of Array.from(elements)) {
-        promises.push((element as any).revealAll());
-      }
+  const promises: Promise<void>[] = Array.from(elements).map((element: DeckDeckGoRevealComponent) => element.revealAll());
 
-      await Promise.all(promises);
-    }
-
-    resolve();
-  });
+  await Promise.all(promises);
 }
 
-export function hideAllRevealElements(el: HTMLElement): Promise<void> {
-  return new Promise<void>(async (resolve) => {
-    const elements: NodeListOf<HTMLElement> = el.querySelectorAll('deckgo-reveal, deckgo-reveal-list');
+export async function hideAllRevealElements(el: HTMLElement): Promise<void> {
+  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
 
-    if (elements && elements.length > 0) {
-      const promises: Promise<void>[] = [];
+  if (!elements || elements.length <= 0) {
+    return;
+  }
 
-      for (const element of Array.from(elements)) {
-        promises.push((element as any).hideAll());
-      }
+  const promises: Promise<void>[] = Array.from(elements).map((element: DeckDeckGoRevealComponent) => element.hideAll());
 
-      await Promise.all(promises);
-    }
-
-    resolve();
-  });
+  await Promise.all(promises);
 }
 
-export function beforeSwipe(el: HTMLElement, enter: boolean, reveal: boolean): Promise<boolean> {
-  return new Promise<boolean>(async (resolve) => {
-    if (reveal) {
-      const couldSwipe: boolean = enter ? await showRevealElement(el) : await hideRevealElement(el);
-      resolve(couldSwipe);
-    } else {
-      resolve(true);
-    }
-  });
+export async function beforeSwipe(el: HTMLElement, enter: boolean, reveal: boolean): Promise<boolean> {
+  if (reveal) {
+    return enter ? await showRevealElement(el) : await hideRevealElement(el);
+  }
+
+  return true;
 }
 
 export function afterSwipe(): Promise<void> {
-  return new Promise<void>((resolve) => {
-    resolve();
-  });
+  return Promise.resolve();
 }
 
-export function lazyLoadContent(el: HTMLElement): Promise<void> {
-  return new Promise<void>(async (resolve) => {
-    const promises: Promise<void>[] = [];
+export async function lazyLoadContent(el: HTMLElement): Promise<void> {
+  const promises: Promise<void>[] = [];
 
-    promises.push(lazyLoadImages(el));
-    promises.push(lazyLoadComponentContent(el, 'deckgo-gif'));
-    promises.push(lazyLoadComponentContent(el, 'deckgo-youtube'));
-    promises.push(lazyLoadComponentContent(el, 'deckgo-demo'));
-    promises.push(lazyLoadComponentContent(el, 'deckgo-word-cloud'));
-    promises.push(lazyLoadComponentContent(el, 'deckgo-markdown'));
+  promises.push(lazyLoadImages(el));
+  promises.push(lazyLoadComponentContent(el, 'deckgo-gif'));
+  promises.push(lazyLoadComponentContent(el, 'deckgo-youtube'));
+  promises.push(lazyLoadComponentContent(el, 'deckgo-demo'));
+  promises.push(lazyLoadComponentContent(el, 'deckgo-word-cloud'));
+  promises.push(lazyLoadComponentContent(el, 'deckgo-markdown'));
 
-    await Promise.all(promises);
-
-    resolve();
-  });
+  await Promise.all(promises);
 }
