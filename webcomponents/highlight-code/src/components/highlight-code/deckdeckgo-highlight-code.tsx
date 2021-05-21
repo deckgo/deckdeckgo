@@ -1,6 +1,7 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
+import { DeckDeckGoRevealComponent } from "@deckdeckgo/slide-utils";
 
 import {loadTheme} from '../../utils/themes-loader.utils';
 import {parseCode} from '../../utils/parse.utils';
@@ -23,7 +24,7 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
   styleUrl: 'deckdeckgo-highlight-code.scss',
   shadow: true
 })
-export class DeckdeckgoHighlightCode {
+export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
 
   /**
@@ -86,7 +87,12 @@ export class DeckdeckgoHighlightCode {
   private readonly debounceUpdateSlot: () => void;
 
   private highlightGroup: number | undefined = undefined;
-  private highlightEnd: boolean = false;
+
+  /**
+   * @internal Used when integrated in DeckDeckGo to display next and previous highlight in the presentations
+   */
+  @Prop({mutable: true})
+  revealProgress: 'start' | 'partial' | 'end' = 'start';
 
   @State()
   private highlightRows: {start: number; end: number} | undefined = undefined;
@@ -377,11 +383,45 @@ export class DeckdeckgoHighlightCode {
   };
 
   /**
+   * @internal Used when integrated in DeckDeckGo presentations. Call `nextHighlight()`.
+   */
+  @Method()
+  async reveal() {
+    await this.nextHighlight();
+  }
+
+  /**
+   * @internal Used when integrated in DeckDeckGo presentations. Call `prevHighlight()`.
+   */
+  @Method()
+  async hide() {
+    await this.prevHighlight();
+  }
+
+  /**
+   * @internal Reset the highlight state to default.
+   */
+  @Method()
+  async revealAll() {
+    this.highlightGroup = undefined;
+    this.highlightRows = undefined;
+    this.revealProgress = 'start';
+  }
+
+  /**
+   * @internal Reset the highlight state to default.
+   */
+  @Method()
+  async hideAll() {
+    await this.revealAll();
+  }
+
+  /**
    * Animate highlighted lines and, apply "focus" on next group
    */
   @Method()
   async nextHighlight() {
-    if (this.highlightEnd) {
+    if (this.revealProgress === 'end') {
       return;
     }
 
@@ -390,9 +430,12 @@ export class DeckdeckgoHighlightCode {
     // We want to limit the counter to max count of groups
     if (this.highlightRows !== undefined) {
       this.highlightGroup = this.highlightGroup + 1 || 0;
-    } else {
-      this.highlightEnd = true;
+
+      this.revealProgress = 'partial';
+      return;
     }
+
+    this.revealProgress = 'end';
   }
 
   /**
@@ -403,15 +446,16 @@ export class DeckdeckgoHighlightCode {
     if (this.highlightGroup === 0) {
       this.highlightGroup = undefined;
       this.highlightRows = undefined;
+      this.revealProgress = 'start';
       return;
     }
 
-    this.highlightGroup = this.highlightEnd ? this.highlightGroup : this.highlightGroup - 1;
+    this.highlightGroup = this.revealProgress === 'end' ? this.highlightGroup : this.highlightGroup - 1;
 
     await this.selectNextGroupHighlight(this.highlightGroup);
 
     if (this.highlightRows !== undefined) {
-      this.highlightEnd = false;
+      this.revealProgress = 'partial';
     }
   }
 

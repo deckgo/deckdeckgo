@@ -111,16 +111,12 @@ export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
     return Promise.resolve();
   }
 
-  private initFrameTitle(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      const title: HTMLElement = this.el.querySelector("[slot='title']");
+  private async initFrameTitle() {
+    const title: HTMLElement = this.el.querySelector("[slot='title']");
 
-      if (title) {
-        this.frameTitle = title.innerHTML;
-      }
-
-      resolve();
-    });
+    if (title) {
+      this.frameTitle = title.innerHTML;
+    }
   }
 
   private initSize(): Promise<void> {

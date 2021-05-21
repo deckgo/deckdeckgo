@@ -1,4 +1,16 @@
-# 3.0.0 (2021-05-XX)
+# 3.0.2 (2021-05-21)
+
+### Fix
+
+- in case of overlapping highlighted rows, highlight from lowest
+
+# 3.0.1 (2021-05-21)
+
+### Fix
+
+- property `revealProgress` should be mutable
+
+# 3.0.0 (2021-05-21)
 
 ### Breaking Changes
 
@@ -9,6 +21,7 @@
 
 - support dash to highlight lines too (example: 1 4-8 12,18 22 26-32)
 - animate highlight with methods `nextHighlight` and `prevHighlight` (this will "focus" the highlight through the groups)
+- integrate functions and properties to animate the component when used in DeckDeckGo presentations
 
 ### Refactoring
 

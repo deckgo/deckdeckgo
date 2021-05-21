@@ -7,21 +7,19 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoReveal {
-        "allElementsHidden": boolean;
-        "allElementsRevealed": boolean;
         "hide": () => Promise<void>;
         "hideAll": () => Promise<void>;
         "reveal": () => Promise<void>;
         "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
     }
     interface DeckgoRevealList {
-        "allElementsHidden": boolean;
-        "allElementsRevealed": boolean;
         "hide": () => Promise<void>;
         "hideAll": () => Promise<void>;
         "listTag": string;
         "reveal": () => Promise<void>;
         "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
     }
 }
 declare global {
@@ -44,13 +42,11 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoReveal {
-        "allElementsHidden"?: boolean;
-        "allElementsRevealed"?: boolean;
+        "revealProgress"?: 'start' | 'partial' | 'end';
     }
     interface DeckgoRevealList {
-        "allElementsHidden"?: boolean;
-        "allElementsRevealed"?: boolean;
         "listTag"?: string;
+        "revealProgress"?: 'start' | 'partial' | 'end';
     }
     interface IntrinsicElements {
         "deckgo-reveal": DeckgoReveal;

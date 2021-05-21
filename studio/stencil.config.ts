@@ -2,7 +2,7 @@ import {Config} from '@stencil/core';
 
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
-import autoprefixer from 'autoprefixer';
+const autoprefixer = require('autoprefixer');
 
 import replace from '@rollup/plugin-replace';
 
