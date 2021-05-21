@@ -87,7 +87,10 @@ const findRowsToHighlight = async ({
 
       for (let i = start; i <= (isNaN(end) ? start : end); i++) {
         rows.push(i);
-        rowsGroup[`row_${i}`] = groupIndex;
+
+        if (!(`row_${i}` in rowsGroup) || rowsGroup[`row_${i}`] > groupIndex) {
+          rowsGroup[`row_${i}`] = groupIndex;
+        }
       }
     }
   });
