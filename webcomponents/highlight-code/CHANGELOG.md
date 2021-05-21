@@ -1,3 +1,9 @@
+# 3.0.1 (2021-05-21)
+
+### Fix
+
+- property `revealProgress` should be mutable
+
 # 3.0.0 (2021-05-21)
 
 ### Breaking Changes

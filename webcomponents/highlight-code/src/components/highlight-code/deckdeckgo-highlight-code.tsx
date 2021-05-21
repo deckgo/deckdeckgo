@@ -91,7 +91,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   /**
    * @internal Used when integrated in DeckDeckGo to display next and previous highlight in the presentations
    */
-  @Prop()
+  @Prop({mutable: true})
   revealProgress: 'start' | 'partial' | 'end' = 'start';
 
   @State()

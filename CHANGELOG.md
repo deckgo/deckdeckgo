@@ -30,7 +30,7 @@ Therefore, to simplify the code base, I deprecate this template.
 
 - color: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
 - inline-editor: v4.0.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
-- highlight-code: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+- highlight-code: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
 ### Others
 
