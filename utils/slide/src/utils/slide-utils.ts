@@ -6,18 +6,18 @@ import {DeckDeckGoRevealComponent} from '../interfaces/deckdeckgo-reveal-compone
 const revealSelector: string = 'deckgo-reveal, deckgo-reveal-list, deckgo-highlight-code';
 
 async function showRevealElement(el: HTMLElement): Promise<boolean> {
-  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
+  const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealSelector);
 
   if (!elements || elements.length <= 0) {
     return true;
   }
 
-  const nextElement: DeckDeckGoRevealComponent | undefined = Array.from(elements).find((element: DeckDeckGoRevealComponent) => {
-    return !element.allElementsRevealed;
+  const nextElement: HTMLElement | undefined = Array.from(elements).find((element: HTMLElement) => {
+    return ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'end';
   });
 
   if (nextElement) {
-    await nextElement.reveal();
+    await ((nextElement as unknown) as DeckDeckGoRevealComponent).reveal();
     return false;
   }
 
@@ -25,7 +25,7 @@ async function showRevealElement(el: HTMLElement): Promise<boolean> {
 }
 
 async function hideRevealElement(el: HTMLElement): Promise<boolean> {
-  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
+  const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealSelector);
 
   if (!elements || elements.length <= 0) {
     return true;
@@ -33,14 +33,14 @@ async function hideRevealElement(el: HTMLElement): Promise<boolean> {
 
   let couldSwipe: boolean = true;
 
-  const nextElement: DeckDeckGoRevealComponent | undefined = Array.from(elements)
+  const nextElement: HTMLElement | undefined = Array.from(elements)
     .reverse()
-    .find((element: DeckDeckGoRevealComponent) => {
-      return !element.allElementsHidden;
+    .find((element: HTMLElement) => {
+      return ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'start';
     });
 
   if (nextElement) {
-    await nextElement.hide();
+    await ((nextElement as unknown) as DeckDeckGoRevealComponent).hide();
     couldSwipe = false;
   }
 
@@ -48,25 +48,29 @@ async function hideRevealElement(el: HTMLElement): Promise<boolean> {
 }
 
 export async function showAllRevealElements(el: HTMLElement): Promise<void> {
-  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
+  const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealSelector);
 
   if (!elements || elements.length <= 0) {
     return;
   }
 
-  const promises: Promise<void>[] = Array.from(elements).map((element: DeckDeckGoRevealComponent) => element.revealAll());
+  const promises: Promise<void>[] = Array.from(elements).map((element: HTMLElement) =>
+    ((element as unknown) as DeckDeckGoRevealComponent).revealAll()
+  );
 
   await Promise.all(promises);
 }
 
 export async function hideAllRevealElements(el: HTMLElement): Promise<void> {
-  const elements: NodeListOf<DeckDeckGoRevealComponent> = el.querySelectorAll(revealSelector);
+  const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealSelector);
 
   if (!elements || elements.length <= 0) {
     return;
   }
 
-  const promises: Promise<void>[] = Array.from(elements).map((element: DeckDeckGoRevealComponent) => element.hideAll());
+  const promises: Promise<void>[] = Array.from(elements).map((element: HTMLElement) =>
+    ((element as unknown) as DeckDeckGoRevealComponent).hideAll()
+  );
 
   await Promise.all(promises);
 }

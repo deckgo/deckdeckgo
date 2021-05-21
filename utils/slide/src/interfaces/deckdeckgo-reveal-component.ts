@@ -1,8 +1,7 @@
-export interface DeckDeckGoRevealComponent extends HTMLElement {
+export interface DeckDeckGoRevealComponent {
   reveal(): Promise<void>;
   hide(): Promise<void>;
   revealAll(): Promise<void>;
   hideAll(): Promise<void>;
-  allElementsRevealed: boolean;
-  allElementsHidden: boolean;
+  revealProgress: 'start' | 'partial' | 'end';
 }
