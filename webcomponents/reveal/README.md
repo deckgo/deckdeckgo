@@ -6,7 +6,7 @@
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/core
 [npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/LICENSE
 
-# DeckDeckGo - Core
+# DeckDeckGo - Reveal
 
 Make elements, texts or list items appear one line at a time.
 
