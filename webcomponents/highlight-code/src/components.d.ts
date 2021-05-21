@@ -13,6 +13,8 @@ export namespace Components {
           * In case you would like to set the code component as being editable
          */
         "editable": boolean;
+        "hide": () => Promise<void>;
+        "hideAll": () => Promise<void>;
         /**
           * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or numbers separated with coma or dash (many lines), group separated with space. For example: 1 3,5 8 14-17 which highlight lines  1, 3 to 5, 8 and 14 to 17
          */
@@ -37,6 +39,9 @@ export namespace Components {
           * Animate highlighted lines and, apply "focus" on previous group
          */
         "prevHighlight": () => Promise<void>;
+        "reveal": () => Promise<void>;
+        "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
         /**
           * Present the code in a stylish "windowed" card
          */
@@ -84,6 +89,7 @@ declare namespace LocalJSX {
           * Emitted when a language is fetched and loaded
          */
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
+        "revealProgress"?: 'start' | 'partial' | 'end';
         /**
           * Present the code in a stylish "windowed" card
          */
