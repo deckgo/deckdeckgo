@@ -2,6 +2,14 @@ app-code {
   @import "../../../../global/theme/editor/editor-info";
   @import "../../../../global/theme/editor/editor-popover";
 
+  ion-label.language[class*=sc-ion-label] {
+    margin-top: 16px;
+  }
+
+  ion-item-divider button.info {
+    margin: 0 20px;
+  }
+
   ion-item.select-language {
     > div {
       background: var(--ion-color-light);

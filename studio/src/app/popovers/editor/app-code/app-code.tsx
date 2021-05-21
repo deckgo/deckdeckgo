@@ -1,6 +1,6 @@
-import {Component, Element, EventEmitter, Prop, State, h} from '@stencil/core';
+import {Component, Element, EventEmitter, Prop, State, h, Fragment} from '@stencil/core';
 
-import {modalController, OverlayEventDetail} from '@ionic/core';
+import { alertController, modalController, OverlayEventDetail } from "@ionic/core";
 
 import i18n from '../../../stores/i18n.store';
 
@@ -27,6 +27,9 @@ export class AppCode {
   @State()
   private lineNumbers: boolean = false;
 
+  @State()
+  private highlightLines: string;
+
   async componentWillLoad() {
     await this.initCurrent();
   }
@@ -39,6 +42,8 @@ export class AppCode {
     await this.initCurrentLanguage();
 
     this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
+
+    this.highlightLines = this.selectedElement?.getAttribute('highlight-lines') ?? null;
   }
 
   private async initCurrentLanguage() {
@@ -90,32 +95,85 @@ export class AppCode {
     await modal.present();
   }
 
+  private handleInput($event: CustomEvent<KeyboardEvent>) {
+    this.highlightLines = ($event.target as InputTargetEvent).value;
+  }
+
+  private async highlightSelectedLines() {
+    if (!this.selectedElement) {
+      return;
+    }
+
+    if (this.highlightLines && this.highlightLines.length > 0) {
+      this.selectedElement.setAttribute('highlight-lines', this.highlightLines);
+    } else {
+      this.selectedElement.removeAttribute('highlight-lines');
+    }
+
+    // Reload component with new lines to highlight
+    await (this.selectedElement as HTMLDeckgoHighlightCodeElement).load();
+
+    this.emitCodeDidChange();
+  }
+
+  // prettier-ignore
+  private async presentHighlightInfo($event: UIEvent) {
+    $event.stopPropagation();
+
+    const alert: HTMLIonAlertElement = await alertController.create({
+      message: 'If you wish to highlight some specific lines of your code, list line numbers separately using comma. Group separated with dash.<br/><br/>For example: 1 4-5 13-15<br/><br/>Which highlights line 1, lines 4 to 5 and 13 to 15.',
+      buttons: ['Ok']
+    });
+
+    return await alert.present();
+  }
+
   render() {
-    return [
-      <ion-toolbar>
-        <h2>{i18n.state.editor.code_options}</h2>
-        <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
-      </ion-toolbar>,
-      <ion-list class="article">
-        <ion-item-divider>
-          <ion-label>{i18n.state.editor.language}</ion-label>
-        </ion-item-divider>
+    return (
+      <Fragment>
+        <ion-toolbar>
+          <h2>{i18n.state.editor.code_options}</h2>
+          <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
+        </ion-toolbar>
 
-        <ion-item onClick={() => this.openCodeLanguage()} class="select-language">
-          <div>
-            <ion-label>{this.currentLanguage ? this.currentLanguage.title : ''}</ion-label>
+        <ion-list class="article">
+          <ion-item-divider>
+            <ion-label class="language">{i18n.state.editor.language}</ion-label>
+          </ion-item-divider>
 
-            <div class="select-icon" role="presentation">
-              <div class="select-icon-inner"></div>
+          <ion-item onClick={() => this.openCodeLanguage()} class="select-language">
+            <div>
+              <ion-label>{this.currentLanguage ? this.currentLanguage.title : ''}</ion-label>
+
+              <div class="select-icon" role="presentation">
+                <div class="select-icon-inner"></div>
+              </div>
             </div>
-          </div>
-        </ion-item>
+          </ion-item>
 
-        <ion-item>
-          <ion-label>{i18n.state.editor.display_line_number}</ion-label>
-          <ion-checkbox slot="end" checked={this.lineNumbers} onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
-        </ion-item>
-      </ion-list>,
-    ];
+          <ion-item-divider class="ion-margin-top">
+            <ion-label>{i18n.state.editor.highlight_lines}</ion-label>
+
+            <button slot="end" class="info" onClick={($event: UIEvent) => this.presentHighlightInfo($event)}>
+              <ion-icon name="help"></ion-icon>
+            </button>
+          </ion-item-divider>
+
+          <ion-item class="with-padding">
+            <ion-input
+              value={this.highlightLines}
+              placeholder={i18n.state.editor.highlight_lines}
+              debounce={500}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={() => this.highlightSelectedLines()}></ion-input>
+          </ion-item>
+
+          <ion-item class="ion-margin-top ion-margin-bottom">
+            <ion-label>{i18n.state.editor.display_line_number}</ion-label>
+            <ion-checkbox slot="end" checked={this.lineNumbers} onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </Fragment>
+    );
   }
 }

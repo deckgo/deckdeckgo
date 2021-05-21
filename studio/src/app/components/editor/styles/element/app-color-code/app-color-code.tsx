@@ -1,7 +1,5 @@
 import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
-
 import i18n from '../../../../../stores/i18n.store';
 
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
@@ -30,9 +28,6 @@ export class AppColorCode {
 
   @State()
   private codeColorType: CodeColorType = undefined;
-
-  @State()
-  private highlightLines: string;
 
   @State()
   private terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
@@ -84,23 +79,6 @@ export class AppColorCode {
     return ColorUtils.splitColor(color);
   };
 
-  private initHighlightColor = async (): Promise<InitStyleColor> => {
-    this.highlightLines = this.selectedElement?.getAttribute('highlight-lines') ?? null;
-    const color: string = this.selectedElement?.style?.getPropertyValue('--deckgo-highlight-code-line-background') ?? '62,69,100';
-
-    return ColorUtils.splitColor(color);
-  };
-
-  private async resetHighlightColor() {
-    if (!this.selectedElement) {
-      return;
-    }
-
-    this.selectedElement.style.removeProperty('--deckgo-highlight-code-line-background');
-
-    this.emitCodeChange();
-  }
-
   private async initTerminal() {
     this.terminal =
       this.selectedElement && this.selectedElement.hasAttribute('terminal')
@@ -121,16 +99,6 @@ export class AppColorCode {
     }
 
     this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
-
-    this.emitCodeChange();
-  }
-
-  private async applyHighlightColor($event: CustomEvent<string>) {
-    if (!this.selectedElement || !$event) {
-      return;
-    }
-
-    this.selectedElement.style.setProperty('--deckgo-highlight-code-line-background', $event.detail);
 
     this.emitCodeChange();
   }
@@ -164,47 +132,6 @@ export class AppColorCode {
     } else {
       return '--deckgo-highlight-code-token-comment';
     }
-  }
-
-  private handleInput($event: CustomEvent<KeyboardEvent>) {
-    this.highlightLines = ($event.target as InputTargetEvent).value;
-  }
-
-  private highlightSelectedLines(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
-
-      const currentHighlight: string = this.selectedElement.getAttribute('highlight-lines');
-
-      if (currentHighlight === this.highlightLines) {
-        resolve();
-        return;
-      }
-
-      this.selectedElement.setAttribute('highlight-lines', this.highlightLines);
-
-      // Reload component with new lines to highlight
-      await (this.selectedElement as any).load();
-
-      this.emitCodeChange();
-
-      resolve();
-    });
-  }
-
-  // prettier-ignore
-  private async presentHighlightInfo($event: UIEvent) {
-    $event.stopPropagation();
-
-    const alert: HTMLIonAlertElement = await alertController.create({
-            message: 'If you wish to highlight some specific lines of your code, list their line numbers separately using comma.<br/><br/>For example: 1 4,5 13,15<br/><br/>Which would highlight line 1, lines 4 to 5 and 13 to 15.',
-      buttons: ['Ok']
-    });
-
-    return await alert.present();
   }
 
   private emitCodeChange() {
@@ -264,7 +191,7 @@ export class AppColorCode {
   }
 
   render() {
-    return [this.renderTerminal(), this.renderTheme(), this.renderCategoryColor(), this.renderHighlightLinesColor()];
+    return [this.renderTerminal(), this.renderTheme(), this.renderCategoryColor()];
   }
 
   private renderCategoryColor() {
@@ -372,33 +299,6 @@ export class AppColorCode {
               onIonChange={() => this.toggleToolbar()}></ion-checkbox>
           </ion-item>
         </ion-list>
-      </app-expansion-panel>
-    );
-  }
-
-  private renderHighlightLinesColor() {
-    return (
-      <app-expansion-panel expanded={'close'}>
-        <ion-label slot="title">{i18n.state.editor.highlight_lines}</ion-label>
-        <button slot="info" class="info" onClick={($event: UIEvent) => this.presentHighlightInfo($event)}>
-          <ion-icon name="help"></ion-icon>
-        </button>
-        <ion-list>
-          <ion-item class="with-padding">
-            <ion-input
-              value={this.highlightLines}
-              placeholder={i18n.state.editor.highlight_lines}
-              debounce={500}
-              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={() => this.highlightSelectedLines()}></ion-input>
-          </ion-item>
-        </ion-list>
-
-        <app-color
-          class="ion-margin-top"
-          initColor={this.initHighlightColor}
-          onResetColor={() => this.resetHighlightColor()}
-          onColorDidChange={($event: CustomEvent<string>) => this.applyHighlightColor($event)}></app-color>
       </app-expansion-panel>
     );
   }
