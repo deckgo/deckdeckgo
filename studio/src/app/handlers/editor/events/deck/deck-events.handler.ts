@@ -66,11 +66,8 @@ export class DeckEventsHandler {
     this.mainRef.addEventListener('input', this.onInputChange, false);
     this.mainRef.addEventListener('slideDidLoad', this.onSlideDidLoad, false);
     this.mainRef.addEventListener('slidesDidLoad', this.onSlidesDidLoad, false);
-    this.mainRef.addEventListener('codeDidChange', this.onCustomEventChange, false);
-    this.mainRef.addEventListener('mathDidChange', this.onCustomEventChange, false);
     this.mainRef.addEventListener('markdownDidChange', this.onCustomEventChange, false);
     this.mainRef.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
-    this.mainRef.addEventListener('imgDidChange', this.onCustomEventChange, false);
     this.mainRef.addEventListener('linkCreated', this.onCustomEventChange, false);
     this.mainRef.addEventListener('drrDidChange', this.onCustomEventChange, false);
 
@@ -84,17 +81,17 @@ export class DeckEventsHandler {
     document.addEventListener('deckDidChange', this.onDeckChange, false);
     document.addEventListener('deckNeedChange', this.onDeckNeedChange, false);
     document.addEventListener('notesDidChange', this.onSlideChange, false);
+    document.addEventListener('codeDidChange', this.onCustomEventChange, false);
+    document.addEventListener('mathDidChange', this.onCustomEventChange, false);
+    document.addEventListener('imgDidChange', this.onCustomEventChange, false);
   }
 
   destroy() {
     this.mainRef.removeEventListener('input', this.onInputChange, true);
     this.mainRef.removeEventListener('slideDidLoad', this.onSlideDidLoad, true);
     this.mainRef.removeEventListener('slidesDidLoad', this.onSlidesDidLoad, true);
-    this.mainRef.removeEventListener('codeDidChange', this.onCustomEventChange, true);
-    this.mainRef.removeEventListener('mathDidChange', this.onCustomEventChange, true);
     this.mainRef.removeEventListener('markdownDidChange', this.onCustomEventChange, true);
     this.mainRef.removeEventListener('wordCloudDidChange', this.onCustomEventChange, true);
-    this.mainRef.removeEventListener('imgDidChange', this.onCustomEventChange, true);
     this.mainRef.removeEventListener('linkCreated', this.onCustomEventChange, true);
     this.mainRef.removeEventListener('drrDidChange', this.onCustomEventChange, true);
 
@@ -108,6 +105,9 @@ export class DeckEventsHandler {
     document.removeEventListener('deckDidChange', this.onDeckChange, true);
     document.removeEventListener('deckNeedChange', this.onDeckNeedChange, true);
     document.removeEventListener('notesDidChange', this.onSlideChange, true);
+    document.removeEventListener('codeDidChange', this.onCustomEventChange, true);
+    document.removeEventListener('mathDidChange', this.onCustomEventChange, true);
+    document.removeEventListener('imgDidChange', this.onCustomEventChange, true);
   }
 
   private onSlideDidLoad = async ($event: CustomEvent) => {
