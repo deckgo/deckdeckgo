@@ -1,5 +1,7 @@
 import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} from '@stencil/core';
 
+import { DeckDeckGoRevealComponent } from "@deckdeckgo/slide-utils";
+
 import {DeckdeckgoRevealUtils} from '../deckdeckgo-reveal-utils';
 
 const RevealNthChild: FunctionalComponent<{index: number}> = ({index}) => {
@@ -26,68 +28,45 @@ const RevealNthChild: FunctionalComponent<{index: number}> = ({index}) => {
   styleUrl: 'deckdeckgo-reveal.scss',
   shadow: true,
 })
-export class DeckdeckgoReveal {
+export class DeckdeckgoReveal implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
 
-  @Prop()
-  allElementsRevealed: boolean = false;
-
-  @Prop()
-  allElementsHidden: boolean = true;
+  @Prop({mutable: true})
+  revealProgress: 'start' | 'partial' | 'end' = 'start';
 
   @State()
   private visibleIndex: number = 0;
 
   @Method()
-  reveal(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.visibleIndex++;
+  async reveal() {
+    this.visibleIndex++;
 
-      const elements: Node[] = await DeckdeckgoRevealUtils.findChildren(this.el);
+    const elements: Node[] = await DeckdeckgoRevealUtils.findChildren(this.el);
 
-      this.allElementsRevealed = elements && elements.length <= this.visibleIndex;
-      this.allElementsHidden = false;
-
-      resolve();
-    });
+    this.revealProgress = elements && elements.length <= this.visibleIndex ? 'end' : 'partial';
   }
 
   @Method()
-  hide(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.visibleIndex--;
+  async hide() {
+    this.visibleIndex--;
 
-      this.allElementsHidden = this.visibleIndex === 0;
-      this.allElementsRevealed = false;
-
-      resolve();
-    });
+    this.revealProgress = this.visibleIndex === 0 ? 'start' : 'partial';
   }
 
   @Method()
-  revealAll(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const elements: Node[] = await DeckdeckgoRevealUtils.findChildren(this.el);
+  async revealAll() {
+    const elements: Node[] = await DeckdeckgoRevealUtils.findChildren(this.el);
 
-      this.visibleIndex = elements ? elements.length : 0;
+    this.visibleIndex = elements ? elements.length : 0;
 
-      this.allElementsRevealed = true;
-      this.allElementsHidden = false;
-
-      resolve();
-    });
+    this.revealProgress = 'end';
   }
 
   @Method()
-  hideAll(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.visibleIndex = 0;
+  async hideAll() {
+    this.visibleIndex = 0;
 
-      this.allElementsHidden = true;
-      this.allElementsRevealed = false;
-
-      resolve();
-    });
+    this.revealProgress = 'start';
   }
 
   render() {
