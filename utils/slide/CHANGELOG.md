@@ -1,4 +1,10 @@
-# 2.0.0 (2021-05-6)
+# 4.0.0 (2021-05-21)
+
+### Breaking Changes
+
+- reveal state interface modified (renamed to `revealProgress`, type instead of boolean)
+
+# 3.0.0 (2021-05-16)
 
 ### Breaking Changes
 
