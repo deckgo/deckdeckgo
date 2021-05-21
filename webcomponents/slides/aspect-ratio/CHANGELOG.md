@@ -1,3 +1,9 @@
+# 3.3.0 (2021-05-26)
+
+### Build
+
+- update dependencies including `slide-utils`
+
 # 3.2.3 (2021-03-25)
 
 ### Style
