@@ -6,6 +6,12 @@ on:
       - main
     paths:
       - "docs/**"
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - "docs/**"
 
 jobs:
   build:
