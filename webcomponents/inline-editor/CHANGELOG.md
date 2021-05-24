@@ -1,3 +1,9 @@
+# 4.0.4 (2021-05-24)
+
+### Fix
+
+- @Prop() "toolbarActions" immutable but was modified from within the component.
+
 # 4.0.3 (2021-05-15)
 
 ### Fix
