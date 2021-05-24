@@ -6,6 +6,7 @@ import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import busyStore from '../../../../stores/busy.store';
 import authStore from '../../../../stores/auth.store';
+import editorStore from "../../../../stores/editor.store";
 
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
@@ -44,6 +45,7 @@ export class DeckEventsHandler {
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
+  private readonly debounceUndoRedoInput: () => void;
 
   constructor() {
     this.deckService = DeckService.getInstance();
@@ -58,6 +60,12 @@ export class DeckEventsHandler {
     this.debounceUpdateDeckTitle = debounce(async (title: string) => {
       await this.updateDeckTitle(title);
     }, 500);
+
+    this.debounceUndoRedoInput = debounce(() => {
+      // Push an empty input in our custom undo / redo stack
+      editorStore.state.undo.push({type: 'input'});
+      editorStore.state.redo = [];
+    }, 150);
   }
 
   async init(el: HTMLElement) {
@@ -167,7 +175,7 @@ export class DeckEventsHandler {
     this.debounceUpdateSlide(parent);
   };
 
-  private onInputChange = async ($event: Event) => {
+  private onInputChange = async ($event: InputEvent) => {
     if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
       return;
     }
@@ -189,6 +197,10 @@ export class DeckEventsHandler {
     // The first content editable element on the first slide is the title of the presentation
     if (parent && !parent.previousElementSibling && !element.previousElementSibling) {
       this.debounceUpdateDeckTitle(element.textContent);
+    }
+
+    if ($event.inputType !== 'historyRedo' && $event.inputType !== 'historyUndo') {
+      this.debounceUndoRedoInput();
     }
   };
 

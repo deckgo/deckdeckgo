@@ -1,14 +1,18 @@
 import editorStore from '../../stores/editor.store';
 
-import { UndoRedoChange } from "../../types/editor/undo-redo";
+import { UndoRedoChange, UndoRedoChangeAttribute } from "../../types/editor/undo-redo";
 
-export const setAttribute = ({element, attribute, value, updateUI}: UndoRedoChange) => {
+export const setAttribute = ({element, attribute, value, updateUI}: UndoRedoChangeAttribute) => {
   editorStore.state.undo.push({
-    element,
-    attribute,
-    value: element.getAttribute(attribute),
-    updateUI
+    type: 'style',
+    data: {
+      element,
+      attribute,
+      value: element.getAttribute(attribute),
+      updateUI
+    }
   });
+
   editorStore.state.redo = [];
 
   element.setAttribute(attribute, value);
@@ -18,45 +22,71 @@ export const setAttribute = ({element, attribute, value, updateUI}: UndoRedoChan
   updateUI(value);
 }
 
-export const undo = async () => {
+export const undo = async ($event: KeyboardEvent) => {
   const undoChange: UndoRedoChange | undefined = editorStore.state.undo[editorStore.state.undo.length - 1];
-  
+
   if (!undoChange) {
     return;
   }
-  
-  const {element, attribute} = undoChange;
 
-  editorStore.state.redo.push({
-    ...undoChange,
-    value: element.getAttribute(attribute)
-  });
+  const {type, data} = undoChange;
+
+  if (type === 'input') {
+    editorStore.state.redo.push({type});
+  }
+
+  if (type === 'style') {
+    $event.preventDefault();
+
+    const {element, attribute} = data;
+
+    editorStore.state.redo.push({
+      type,
+      data: {
+        ...data,
+        value: element.getAttribute(attribute)
+      }
+    });
+
+    undoRedoSetAttribute(data);
+  }
 
   editorStore.state.undo = [...editorStore.state.undo.slice(0, editorStore.state.undo.length - 1)];
-
-  undoRedoSetAttribute(undoChange);
 }
 
-export const redo = async () => {
+export const redo = async ($event: KeyboardEvent) => {
   const redoChange: UndoRedoChange | undefined = editorStore.state.redo[editorStore.state.redo.length - 1];
 
   if (!redoChange) {
     return;
   }
 
-  const {element, attribute} = redoChange;
+  const {type, data} = redoChange;
 
-  editorStore.state.undo.push({
-    ...redoChange,
-    value: element.getAttribute(attribute)
-  });
+  if (type === 'input') {
+    editorStore.state.undo.push({type});
+  }
+
+  if (type === 'style') {
+    $event.preventDefault();
+
+    const {element, attribute} = data;
+
+    editorStore.state.undo.push({
+      type,
+      data: {
+        ...data,
+        value: element.getAttribute(attribute)
+      }
+    });
+
+    undoRedoSetAttribute(data);
+  }
 
   editorStore.state.redo = [...editorStore.state.redo.slice(0, editorStore.state.redo.length - 1)];
-
-  undoRedoSetAttribute(redoChange);
 }
 
-const undoRedoSetAttribute = ({element, attribute, value, updateUI}: UndoRedoChange) => {
+const undoRedoSetAttribute = ({element, attribute, value, updateUI}: UndoRedoChangeAttribute) => {
   element.setAttribute(attribute, value);
 
   emitDidUpdate({element, eventName: 'deckDidChange'});

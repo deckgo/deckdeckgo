@@ -48,12 +48,12 @@ export class EditorEventsHandler {
     }
 
     if ($event?.metaKey && $event.key === 'z' && !$event?.shiftKey) {
-      await undo();
+      await undo($event);
       return;
     }
 
     if ($event?.metaKey && $event.key === 'z' && $event?.shiftKey) {
-      await redo();
+      await redo($event);
       return;
     }
   };
