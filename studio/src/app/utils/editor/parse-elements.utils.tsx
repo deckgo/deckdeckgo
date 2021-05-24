@@ -3,7 +3,9 @@ import {h} from '@stencil/core';
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
 import {SlotType} from '../../types/editor/slot-type';
+
 import {SlotUtils} from './slot.utils';
+import { getAttributes } from "./attributes.utils";
 
 export class ParseElementsUtils {
   static parseElements(element: HTMLElement, root: boolean, contentEditable: boolean): Promise<any> {
@@ -39,7 +41,7 @@ export class ParseElementsUtils {
     return new Promise<any>(async (resolve) => {
       const Elem: string = element.nodeName.toLowerCase();
 
-      const attributes: any = this.getAttributes(element);
+      const attributes: Record<string, string> = getAttributes(element);
       if (attributes.style) {
         attributes.style = await convertStyle(attributes.style);
       }
@@ -48,29 +50,16 @@ export class ParseElementsUtils {
         if (contentEditable && SlotUtils.isNodeReveal(element) && element.firstElementChild) {
           element.firstElementChild.setAttribute('contenteditable', `${true}`);
         } else {
-          attributes['contenteditable'] = true;
+          attributes['contenteditable'] = `${true}`;
         }
       }
 
       if (element && element.nodeName && element.nodeName.toLowerCase() === 'deckgo-lazy-img') {
-        attributes['custom-loader'] = true;
+        attributes['custom-loader'] = `${true}`;
       }
 
       resolve(<Elem {...attributes}>{content}</Elem>);
     });
-  }
-
-  static getAttributes(el: HTMLElement): any {
-    if (!el || !el.attributes) {
-      return {};
-    }
-
-    return Array.from(el.attributes)
-      .map((a: Attr) => [a.name, a.value])
-      .reduce((acc, attr) => {
-        acc[attr[0]] = attr[1];
-        return acc;
-      }, {});
   }
 
   private static isContentEditable(element: HTMLElement, attributes: any): boolean {

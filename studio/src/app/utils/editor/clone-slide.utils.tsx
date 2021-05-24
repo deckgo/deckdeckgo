@@ -6,7 +6,7 @@ import {convertStyle} from '@deckdeckgo/deck-utils';
 
 import {SlideTemplate} from '../../models/data/slide';
 
-import {ParseElementsUtils} from './parse-elements.utils';
+import { getAttributes } from "./attributes.utils";
 import {InitTemplate} from './create-slides.utils';
 
 export class CloneSlideUtils {
@@ -14,7 +14,7 @@ export class CloneSlideUtils {
     const SlideElement: string = `deckgo-slide-${(initTemplate.template as SlideTemplate).toLowerCase()}`;
 
     const attributes: any = {
-      ...ParseElementsUtils.getAttributes(selectedElement),
+      ...getAttributes(selectedElement),
       ...(initTemplate.attributes && {...initTemplate.attributes}),
     };
 
