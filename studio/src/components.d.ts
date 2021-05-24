@@ -1453,7 +1453,6 @@ declare namespace LocalJSX {
     interface AppDeckTransition {
         "deckElement"?: HTMLDeckgoDeckElement;
         "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
-        "onTransitionChange"?: (event: CustomEvent<void>) => void;
     }
     interface AppDemo {
         "selectedElement"?: HTMLElement;

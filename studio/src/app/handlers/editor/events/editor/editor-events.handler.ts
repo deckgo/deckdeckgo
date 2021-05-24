@@ -1,3 +1,5 @@
+import { redo, undo } from "../../../../helpers/editor/editor.helper";
+
 export class EditorEventsHandler {
   private mainRef: HTMLElement;
 
@@ -42,6 +44,17 @@ export class EditorEventsHandler {
   private onKeyDown = async ($event: KeyboardEvent) => {
     if ($event && $event.key === 'Escape') {
       await this.selectDeck();
+      return;
+    }
+
+    if ($event?.metaKey && $event.key === 'z' && !$event?.shiftKey) {
+      await undo();
+      return;
+    }
+
+    if ($event?.metaKey && $event.key === 'z' && $event?.shiftKey) {
+      await redo();
+      return;
     }
   };
 

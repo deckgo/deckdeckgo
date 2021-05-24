@@ -5,6 +5,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {DeckAction} from '../../../../../types/editor/deck-action';
 
+import {setAttribute} from '../../../../../helpers/editor/editor.helper';
+
 @Component({
   tag: 'app-deck-transition',
   styleUrl: 'app-deck-transition.scss',
@@ -14,8 +16,6 @@ export class AppDeckTransition {
 
   @Prop()
   deckElement: HTMLDeckgoDeckElement;
-
-  @Event() private transitionChange: EventEmitter<void>;
 
   @Event() deckNeedChange: EventEmitter<DeckAction>;
 
@@ -141,11 +141,17 @@ export class AppDeckTransition {
 
     await this.goToFirstSlide();
 
-    this.deckElement.setAttribute(this.device === 'mobile' ? 'direction-mobile' : 'direction', direction);
+    const resetDevice: 'desktop' | 'mobile' = this.device;
 
-    this.selectedDirection = direction;
-
-    this.transitionChange.emit();
+    setAttribute({
+      element: this.deckElement,
+      attribute: this.device === 'mobile' ? 'direction-mobile' : 'direction',
+      value: direction,
+      updateUI: (value: string) => {
+        this.device = resetDevice;
+        this.selectedDirection = value as 'horizontal' | 'vertical' | 'papyrus';
+      },
+    });
 
     await this.deckElement.initSlideSize();
   }
@@ -171,11 +177,12 @@ export class AppDeckTransition {
       return;
     }
 
-    this.deckElement.setAttribute('animation', animation);
-
-    this.selectedAnimation = animation;
-
-    this.transitionChange.emit();
+    setAttribute({
+      element: this.deckElement,
+      attribute: 'animation',
+      value: animation,
+      updateUI: (value: string) => (this.selectedAnimation = value as 'slide' | 'fade' | 'none'),
+    });
   }
 
   private async selectDevice($event: CustomEvent) {

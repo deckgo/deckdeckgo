@@ -110,7 +110,7 @@ export class AppDeck {
         <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>,
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
-      return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onDeckChange()}></app-deck-transition>;
+      return <app-deck-transition deckElement={this.deckElement}></app-deck-transition>;
     } else if (this.applyToTargetElement === TargetElement.HEADER_FOOTER) {
       return (
         <app-deck-header-footer
