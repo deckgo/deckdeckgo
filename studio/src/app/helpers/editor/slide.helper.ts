@@ -14,7 +14,7 @@ import {DeckService} from '../../services/data/deck/deck.service';
 import {SlideService} from '../../services/data/slide/slide.service';
 import {TemplateService} from '../../services/data/template/template.service';
 
-export class EditorHelper {
+export class SlideHelper {
   private slideService: SlideService;
   private deckService: DeckService;
   private templateService: TemplateService;

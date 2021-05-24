@@ -26,7 +26,7 @@ import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-event
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
 
-import {EditorHelper} from '../../../helpers/editor/editor.helper';
+import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
 import {SlotType} from '../../../types/editor/slot-type';
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
@@ -86,7 +86,7 @@ export class AppEditor {
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
-  private editorHelper: EditorHelper = new EditorHelper();
+  private editorHelper: SlideHelper = new SlideHelper();
 
   private authService: AuthService;
   private anonymousService: AnonymousService;
