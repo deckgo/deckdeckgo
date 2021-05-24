@@ -39,7 +39,7 @@ Therefore, to simplify the code base, I deprecate this template.
 - deck-utils: v4.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 - kit: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/kit/CHANGELOG.md))
 - utils: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
-- remote-utils: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/remote/CHANGELOG.md))  
+- remote-utils: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/remote/CHANGELOG.md))  
 - slide-utils: v4.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
 - starter kit: v8.3.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
 - studio kit: v8.3.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))

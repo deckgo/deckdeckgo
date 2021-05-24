@@ -1,3 +1,9 @@
+# 1.0.1 (2021-05-24)
+
+### Fix
+
+- main entry
+
 # 2.0.0 (2021-05-16)
 
 ### Breaking Changes
