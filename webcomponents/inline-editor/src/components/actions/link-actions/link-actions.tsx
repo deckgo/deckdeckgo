@@ -109,8 +109,6 @@ export class LinkActions {
 
       this.linkCreated.emit(container);
 
-      this.toolbarActions = ToolbarActions.SELECTION;
-
       resolve();
     });
   }

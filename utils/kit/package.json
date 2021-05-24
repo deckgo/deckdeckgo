@@ -1,10 +1,10 @@
 {
   "name": "@deckdeckgo/kit",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "David Dal Busco",
   "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
   "license": "MIT",
-  "main": "lib/index.cjs.js",
+  "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

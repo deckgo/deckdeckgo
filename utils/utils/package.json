@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/utils",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "David Dal Busco",
   "description": "A collection of utils methods and functions developed for DeckDeckGo",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
   },
-  "main": "lib/index.cjs.js",
+  "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
