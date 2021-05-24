@@ -89,9 +89,9 @@ export class AppDeckTransition {
       if (elements) {
         for (const element of Array.from(elements)) {
           if (element.classList.contains('showcase-direction')) {
-            await this.animateDecksDirection(element);
+            await this.animateDecksDirection(element as HTMLDeckgoDeckElement);
           } else {
-            await this.animationDecksAnimation(element);
+            await this.animationDecksAnimation(element as HTMLDeckgoDeckElement);
           }
         }
       }
@@ -116,21 +116,21 @@ export class AppDeckTransition {
     }, 500);
   }
 
-  private async animateDecksDirection(element: HTMLElement) {
-    const end: boolean = await (element as any).isEnd();
+  private async animateDecksDirection(element: HTMLDeckgoDeckElement) {
+    const end: boolean = await element.isEnd();
 
     if (end) {
-      await (element as any).slideTo(0);
+      await element.slideTo(0);
     } else {
-      await (element as any).slideNext();
+      await element.slideNext();
     }
   }
 
-  private async animationDecksAnimation(element: HTMLElement) {
+  private async animationDecksAnimation(element: HTMLDeckgoDeckElement) {
     if (this.timerCounterDecks % 2 === 0) {
-      await (element as any).slideNext();
+      await element.slideNext();
     } else {
-      await (element as any).slidePrev();
+      await element.slidePrev();
     }
   }
 
