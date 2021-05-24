@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-utils",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "David Dal Busco",
   "description": "Utils and interfaces for the DeckDeckGo slide templates",
   "license": "MIT",
@@ -23,7 +23,7 @@
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
   },
-  "main": "lib/index.cjs.js",
+  "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
