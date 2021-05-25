@@ -1,4 +1,4 @@
-import {Component, h, Host, Prop, State, Element, Event, EventEmitter, Build} from '@stencil/core';
+import { Component, h, Host, Prop, State, Element, Event, EventEmitter, Build, Watch } from "@stencil/core";
 
 import {unifyEvent} from '@deckdeckgo/utils';
 
@@ -147,9 +147,14 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   async componentWillUnload() {
-    if (this.drag !== 'none' || this.resize) {
-      await this.detachEventListeners();
-    }
+    await this.detachEventListeners();
+  }
+
+  @Watch('resize')
+  @Watch('drag')
+  async onPropChanges() {
+    await this.detachEventListeners();
+    await this.attachEventListeners();
   }
 
   private async attachEventListeners() {
@@ -166,6 +171,10 @@ export class DeckdeckgoDragResizeRotate {
   }
 
   private async detachEventListeners() {
+    if (this.drag === 'none' && !this.resize) {
+      return;
+    }
+
     if (document) {
       document.removeEventListener('mousedown', this.start, true);
       document.removeEventListener('touchstart', this.start, true);
