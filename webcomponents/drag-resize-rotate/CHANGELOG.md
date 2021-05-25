@@ -1,3 +1,9 @@
+# 2.1.0 (2020-10-25)
+
+### Features
+
+toggle drag, rotation and resize on the fly
+
 # 2.0.1 (2020-10-23)
 
 ### Fix
