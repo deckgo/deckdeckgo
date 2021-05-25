@@ -411,7 +411,7 @@ presentationsPost
 presentationsPost env conn _userId pinfo = do
     liftIO $ putStrLn $ unwords
       [ "POST presentation"
-      , show pinfo
+      , show (pinfo { presentationSlides = [] }) -- make sure output ain't too big
       , show _userId
       ]
 
