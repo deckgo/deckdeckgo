@@ -1006,6 +1006,12 @@ export class DeckEventsHandler {
         } else if (SlotUtils.isNodeReveal(e) && e.firstElementChild) {
           e.firstElementChild.setAttribute('contentEditable', attrEditableValue);
           e.firstElementChild.setAttribute('spellcheck', attrEditableValue);
+        } else if (SlotUtils.isNodeDragDropResize(e) && e.firstElementChild) {
+          e.setAttribute('resize', attrEditableValue);
+          e.setAttribute('rotation', attrEditableValue);
+          e.setAttribute('drag', editable ? 'all' : 'none');
+          e.firstElementChild.setAttribute('contentEditable', attrEditableValue);
+          e.firstElementChild.setAttribute('spellcheck', attrEditableValue);
         }
       }
     });
