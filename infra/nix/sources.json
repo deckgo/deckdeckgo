@@ -5,10 +5,10 @@
         "homepage": "https://deckdeckgo.com",
         "owner": "deckgo",
         "repo": "studio-kit",
-        "rev": "b6b36f85afbc8ccb10689190dbbcc4d26c9f1d7b",
-        "sha256": "0vmjqzpvpl10azkvxsw38kmycdcqlhnak3sz7d8qzl7bxp8cg61h",
+        "rev": "9c2a65e99ab3d6ef5a7d9c5d799422f0aede9f17",
+        "sha256": "0cdspzndix0am8bgr6cnmv65pq8738b9wmnsczil0xpg108jj4iv",
         "type": "tarball",
-        "url": "https://github.com/deckgo/studio-kit/archive/b6b36f85afbc8ccb10689190dbbcc4d26c9f1d7b.tar.gz",
+        "url": "https://github.com/deckgo/studio-kit/archive/9c2a65e99ab3d6ef5a7d9c5d799422f0aede9f17.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "elasticmq": {
