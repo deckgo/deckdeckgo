@@ -1,3 +1,9 @@
+# 4.0.2 (2021-05-27)
+
+### Fix
+
+- reveal / animate highlight code component only if lines have to be highlighted
+
 # 4.0.1 (2021-05-24)
 
 ### Fix

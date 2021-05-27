@@ -1,3 +1,9 @@
+# 2.3.1 - 2.3.2 (2021-05-27)
+
+### Fix
+
+- reveal `highlight-code` selector
+
 # 2.3.0 (2021-05-26)
 
 ### Build
