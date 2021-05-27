@@ -3,7 +3,7 @@ import {lazyLoadComponentContent} from './component-utils';
 
 import {DeckDeckGoRevealComponent} from '../interfaces/deckdeckgo-reveal-component';
 
-const revealSelector: string = 'deckgo-reveal, deckgo-reveal-list, deckgo-highlight-code';
+const revealSelector: string = 'deckgo-reveal, deckgo-reveal-list, deckgo-highlight-code[highlight-lines]';
 
 async function showRevealElement(el: HTMLElement): Promise<boolean> {
   const elements: NodeListOf<HTMLElement> = el.querySelectorAll(revealSelector);
@@ -13,7 +13,10 @@ async function showRevealElement(el: HTMLElement): Promise<boolean> {
   }
 
   const nextElement: HTMLElement | undefined = Array.from(elements).find((element: HTMLElement) => {
-    return ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'end';
+    return (
+      ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'end' &&
+      ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== undefined
+    );
   });
 
   if (nextElement) {
@@ -36,7 +39,12 @@ async function hideRevealElement(el: HTMLElement): Promise<boolean> {
   const nextElement: HTMLElement | undefined = Array.from(elements)
     .reverse()
     .find((element: HTMLElement) => {
-      return ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'start';
+      console.log(element);
+
+      return (
+        ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'start' &&
+        ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== undefined
+      );
     });
 
   if (nextElement) {

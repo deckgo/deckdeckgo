@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-chart",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "The Chart template is handy to plot and animate charts in your presentations",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/slide-utils": "^4.0.0",
+    "@deckdeckgo/slide-utils": "^4.0.2",
     "@deckdeckgo/utils": "^2.0.0"
   },
   "devDependencies": {
