@@ -4,7 +4,7 @@
 
 ### Applications
 
-- demo: v8.3.0 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+- demo: v8.3.1 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 
 ### Web Components Templates
 
@@ -42,8 +42,8 @@ Therefore, to simplify the code base, I deprecate this template.
 - utils: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/CHANGELOG.md))
 - remote-utils: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/remote/CHANGELOG.md))  
 - slide-utils: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/slide/CHANGELOG.md))
-- starter kit: v8.3.0 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
-- studio kit: v8.3.0 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
+- starter kit: v8.3.1 ([CHANGELOG](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md))
+- studio kit: v8.3.1 ([CHANGELOG](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md))
 - types: v2.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/types/CHANGELOG.md))
 
 <a name="4.6.0"></a>
