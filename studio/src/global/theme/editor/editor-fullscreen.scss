@@ -55,6 +55,10 @@
             }
           }
 
+          deckgo-drr {
+            pointer-events: none;
+          }
+
           cursor: none;
           --deckgo-editable-cursor: none;
         }
