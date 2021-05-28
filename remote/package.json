@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-remote",
-  "version": "1.13.1",
+  "version": "1.14.0",
   "author": "David Dal Busco",
   "description": "Present and interact with your lightweight DeckDeckGo's presentation",
   "license": "AGPL-3.0-or-later",

@@ -217,13 +217,17 @@ export class AppTimer {
     } else {
       return (
         <main>
-          <h1 class="ion-padding">The DeckDeckGo remote timer</h1>
+          <h1 class="ion-padding-start ion-padding-end ion-padding-top">The DeckDeckGo remote timer</h1>
           <a onClick={() => this.openDatetime()} class="link-to-timer">
-            <p class="ion-padding-start ion-padding-end">Not timer running. Click here to start a countdown or start it with the button below.</p>
+            <p class="ion-padding-start ion-padding-end">Not timer running.</p>
           </a>
           <div class="deck-action-button deck-action-button-screen-center">
             <button onClick={() => this.startAction()} aria-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
-              <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
+              <div>
+                <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
+              </div>
+
+              <ion-label>Start a timer</ion-label>
             </button>
           </div>
         </main>
