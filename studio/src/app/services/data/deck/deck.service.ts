@@ -33,7 +33,7 @@ export class DeckService {
         .collection('decks')
         .add(deck)
         .then(
-          async (doc: firebase.firestore.DocumentReference) => {
+          (doc: firebase.firestore.DocumentReference) => {
             resolve({
               id: doc.id,
               data: deck,

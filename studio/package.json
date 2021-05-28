@@ -52,7 +52,7 @@
     "@deckdeckgo/word-cloud": "^1.0.5",
     "@deckdeckgo/youtube": "^2.0.1",
     "@ionic/core": "^5.6.7",
-    "firebase": "^8.6.2",
+    "firebase": "^8.5.0",
     "idb-keyval": "^5.0.5",
     "socket.io-client": "2.3.1",
     "uuid": "^8.3.2",
