@@ -7,14 +7,16 @@ interface AuthStore {
   anonymous: boolean;
   loggedIn: boolean;
   gitHub: boolean;
+  authStateReady: boolean;
 }
 
-const {state, onChange, reset} = createStore({
+const {state, onChange, reset} = createStore<AuthStore>({
   authUser: null,
   anonymous: true,
   loggedIn: false,
   gitHub: false,
-} as AuthStore);
+  authStateReady: false
+});
 
 onChange('authUser', (authUser: AuthUser) => {
   state.anonymous = authUser ? authUser.anonymous : true;
