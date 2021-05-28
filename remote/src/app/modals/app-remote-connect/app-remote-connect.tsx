@@ -62,7 +62,7 @@ export class AppRemoteConnect {
     if (remoteStore.state.rooms && remoteStore.state.rooms.length > 0) {
       return (
         <ion-list>
-          <ion-list-header class="ion-padding-bottom ion-padding-top">
+          <ion-list-header class="ion-padding-bottom">
             <ion-label>
               Pick a presentation. Your remote ID is <strong>{this.clientId}</strong>.
             </ion-label>

@@ -671,16 +671,20 @@ export class AppRemote {
     } else {
       return (
         <main>
-          <h1 class="ion-padding">The DeckDeckGo remote control</h1>
+          <h1 class="ion-padding-start ion-padding-end ion-padding-top">The DeckDeckGo remote control</h1>
           <a onClick={() => this.openConnectModal()} class="link-to-modal">
-            <p class="ion-padding-start ion-padding-end">Not connected yet. Click here to find your presentation or start with the button below.</p>
+            <p class="ion-padding-start ion-padding-end">Not connected yet.</p>
           </a>
           <div class="deck-action-button deck-action-button-screen-center">
             <button
               onClick={() => this.openConnectModal()}
               aria-label="Connect a presentation"
               style={{'--action-button-background': 'var(--ion-color-primary'}}>
-              <ion-icon name="play" class="deck-action-button-icon-play"></ion-icon>
+              <div>
+                <ion-icon name="play" class="deck-action-button-icon-play"></ion-icon>
+              </div>
+
+              <ion-label>Connect a presentation</ion-label>
             </button>
           </div>
         </main>

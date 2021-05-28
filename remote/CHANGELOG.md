@@ -1,3 +1,9 @@
+# 1.14.0 (2021-05-28)
+
+### Features
+
+- add a label next to the start buttons
+
 # 1.13.1 (2021-03-26)
 
 ### Features
