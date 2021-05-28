@@ -159,9 +159,9 @@ export class AppEditor {
       this.destroyAuthListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
         if (authUser) {
           await this.initOrFetch();
-        }
 
-        this.destroyAuthListener();
+          this.destroyAuthListener();
+        }
       });
 
       // We don't have an authUser, neither from Firebase nor from indexedDb
