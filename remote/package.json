@@ -8,6 +8,8 @@
     "dist/"
   ],
   "scripts": {
+    "clean": "node ./scripts/rm-www.js",
+    "prebuild": "npm run clean",
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "local": "stencil build --dev --local --watch --serve",
