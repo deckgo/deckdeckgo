@@ -4,6 +4,10 @@
 
 - add a label next to the start buttons
 
+### Build
+
+- update dependencies
+
 # 1.13.1 (2021-03-26)
 
 ### Features

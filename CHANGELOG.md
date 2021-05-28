@@ -5,6 +5,7 @@
 ### Applications
 
 - demo: v8.3.1 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+- remote: v1.14.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### Web Components Templates
 
