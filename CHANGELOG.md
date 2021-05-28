@@ -33,6 +33,7 @@ Therefore, to simplify the code base, I deprecate this template.
 - inline-editor: v4.0.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
 - highlight-code: v3.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 - reveal: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/reveal/CHANGELOG.md))
+- remote: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/CHANGELOG.md))
 
 ### Others
 

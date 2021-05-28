@@ -33,7 +33,7 @@
     "@deckdeckgo/markdown": "^2.0.2",
     "@deckdeckgo/math": "^2.0.3",
     "@deckdeckgo/qrcode": "^2.0.1",
-    "@deckdeckgo/remote": "^2.0.1",
+    "@deckdeckgo/remote": "^2.1.0",
     "@deckdeckgo/reveal": "^2.0.0",
     "@deckdeckgo/slide-aspect-ratio": "^3.3.2",
     "@deckdeckgo/slide-author": "^2.3.2",
