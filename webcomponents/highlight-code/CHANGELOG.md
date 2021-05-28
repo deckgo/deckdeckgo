@@ -1,3 +1,9 @@
+# 3.1.0 (2021-05-28)
+
+### Style
+
+- adaptive header size (`em` instead of `px`)
+
 # 3.0.2 (2021-05-21)
 
 ### Fix
