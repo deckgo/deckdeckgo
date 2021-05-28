@@ -3,7 +3,7 @@ import {h} from '@stencil/core';
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
 export class ParseElementsUtils {
-  static parseElements(element: HTMLElement, root: boolean): Promise<any> {
+  static parseElements(element: HTMLElement, root: boolean, codeChild: boolean = false): Promise<any> {
     return new Promise<any>(async (resolve) => {
       if (!element) {
         resolve(undefined);
@@ -11,7 +11,7 @@ export class ParseElementsUtils {
       }
 
       if (element.nodeType === 3) {
-        resolve(element.textContent + '\n');
+        resolve(`${element.textContent}${!codeChild ? '\n' : ''}`);
         return;
       }
 
@@ -21,7 +21,7 @@ export class ParseElementsUtils {
         const elements: HTMLElement[] = Array.prototype.slice.call(element.childNodes);
 
         for (const elem of elements) {
-          const result = await this.parseElements(elem, false);
+          const result = await this.parseElements(elem, false, codeChild || element.nodeName.toLowerCase() === 'code');
           results.push(result);
         }
 
