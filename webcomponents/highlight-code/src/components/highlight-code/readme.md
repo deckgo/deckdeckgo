@@ -157,6 +157,7 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-empty-text`                               | Place holder in case the editable is set to true @default Click to add your code                                                                 |
 | `--deckgo-highlight-code-font-family`                              | The family of the font for the code @default monospace                                                                                           |
 | `--deckgo-highlight-code-font-size`                                | The size of the font for the code                                                                                                                |
+| `--deckgo-highlight-code-height`                                   | Height property of the shadowed code block @default 100%                                                                                         |
 | `--deckgo-highlight-code-line-background`                          | The background of the lines you wish to highlight                                                                                                |
 | `--deckgo-highlight-code-line-border-bottom`                       | The border-bottom property of the lines you wish to highlight                                                                                    |
 | `--deckgo-highlight-code-line-border-top`                          | The border-top property of the lines you wish to highlight                                                                                       |
@@ -211,6 +212,7 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-ubuntu-margin`                            | The margin property of the host container @default 16px 0                                                                                        |
 | `--deckgo-highlight-code-ubuntu-overflow`                          | The overflow property of the host container @default auto                                                                                        |
 | `--deckgo-highlight-code-white-space`                              | The attribute white-space of the displayed @default pre-wrap                                                                                     |
+| `--deckgo-highlight-code-width`                                    | Width property of the shadowed code block                                                                                                        |
 | `--deckgo-highlight-code-zoom`                                     | If you wish to manually zoom the code @default 1                                                                                                 |
 | `--deckgo-lowlight-code-line-background`                           | The background of the lines you do not wish to highlight                                                                                         |
 | `--deckgo-lowlight-code-line-border-bottom`                        | The border-bottom property of the lines you do not wish to highlight                                                                             |

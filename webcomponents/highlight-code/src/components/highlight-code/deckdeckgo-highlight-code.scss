@@ -255,7 +255,15 @@ div.container {
 
     counter-reset: linenumber;
 
-    height: 100%;
+    /**
+     * @prop --deckgo-highlight-code-height: Height property of the shadowed code block
+     * @default 100%
+     */
+    height: var(--deckgo-highlight-code-height, 100%);
+    /**
+     * @prop --deckgo-highlight-code-width: Width property of the shadowed code block
+     */
+    width: var(--deckgo-highlight-code-width);
 
     > div.line-number {
       counter-increment: linenumber;
