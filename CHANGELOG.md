@@ -1,11 +1,12 @@
 <a name="4.7.0"></a>
 
-# [4.7.0](https://github.com/deckgo/deckdeckgo/compare/v4.6.0...v4.7.0) (2021-XX-YY)
+# [4.7.0](https://github.com/deckgo/deckdeckgo/compare/v4.6.0...v4.7.0) (2021-05-29)
 
 ### Applications
 
 - demo: v8.3.2 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
 - remote: v1.14.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v4.7.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components Templates
 

@@ -1,3 +1,16 @@
+# 4.7.0 (2020-05-29)
+
+### Features
+
+- highlight code animation revisited ([#1171](https://github.com/deckgo/deckdeckgo/pull/1171))
+- font size users' editable ([#1160](https://github.com/deckgo/deckdeckgo/pull/1160))
+- toggle content editable drag drop resize ([#1180](https://github.com/deckgo/deckdeckgo/pull/1180))
+
+### Fix
+
+- sync reveal state with remote ([#1187](https://github.com/deckgo/deckdeckgo/pull/1187))
+- events are thrown outside main ref too ([#1172](https://github.com/deckgo/deckdeckgo/pull/1172))
+
 # 4.6.0 (2020-05-09)
 
 ### Features
