@@ -4,7 +4,7 @@ import remoteStore from '../../../../stores/remote.store';
 
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
-import {DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
+import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
@@ -280,21 +280,16 @@ export class RemoteEventsHandler {
     });
   }
 
-  private initRemoteSlides = ($event: CustomEvent) => {
-    return new Promise<void>(async (resolve) => {
-      const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+  private initRemoteSlides = async ($event: CustomEvent) => {
+    const deckgoRemoteElement: HTMLDeckgoRemoteElement | null = this.el.querySelector('deckgo-remote');
 
-      if (!deckgoRemoteElement || !document || !$event || !$event.detail) {
-        resolve();
-        return;
-      }
+    if (!deckgoRemoteElement || !document || !$event || !$event.detail) {
+      return;
+    }
 
-      deckgoRemoteElement.deck = $event.detail;
+    deckgoRemoteElement.deck = $event.detail;
 
-      await this.updateRemoteSlidesOnSlidesDidLoad($event);
-
-      resolve();
-    });
+    await this.updateRemoteSlidesOnSlidesDidLoad($event);
   };
 
   private initDeckMove() {
@@ -409,37 +404,30 @@ export class RemoteEventsHandler {
     });
   }
 
-  private connect(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+  private async connect() {
+    const deckgoRemoteElement: HTMLDeckgoRemoteElement | null = this.el.querySelector('deckgo-remote');
 
-      if (!deckgoRemoteElement) {
-        resolve();
-        return;
-      }
+    if (!deckgoRemoteElement) {
+      return;
+    }
 
-      const room: string = await this.remoteService.getRoom();
+    const room: string = await this.remoteService.getRoom();
 
-      if (!room) {
-        resolve();
-        return;
-      }
+    if (!room) {
+      return;
+    }
 
-      deckgoRemoteElement.room = room;
+    deckgoRemoteElement.room = room;
 
-      await deckgoRemoteElement.connect();
+    await deckgoRemoteElement.connect();
 
-      const deckElement = this.el.querySelector('deckgo-deck');
+    const deckElement: HTMLDeckgoDeckElement | null = this.el.querySelector('deckgo-deck');
 
-      if (!deckElement) {
-        resolve();
-        return;
-      }
+    if (!deckElement) {
+      return;
+    }
 
-      await deckElement.slideTo(0, 300, false);
-
-      resolve();
-    });
+    await deckElement.slideTo(0, 300, false);
   }
 
   private disconnect(): Promise<void> {
@@ -515,7 +503,7 @@ export class RemoteEventsHandler {
         return;
       }
 
-      const deckDefinition: any = await (deck as any).getDeckDefinition();
+      const deckDefinition: DeckdeckgoDeckDefinition | null = await (deck as HTMLDeckgoDeckElement).getDeckDefinition();
 
       if (deckDefinition) {
         const deckgoRemoteElement = self.el.querySelector('deckgo-remote');
@@ -652,19 +640,22 @@ export class RemoteEventsHandler {
     });
   }
 
-  updateRemoteReveal(reveal: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
+  async updateRemoteReveal(reveal: boolean) {
+    const deckgoRemoteElement: HTMLDeckgoRemoteElement | null = this.el.querySelector('deckgo-remote');
 
-      if (!deckgoRemoteElement) {
-        resolve();
-        return;
-      }
+    if (!deckgoRemoteElement) {
+      return;
+    }
 
+    if (remoteStore.state.connectionState === ConnectionState.CONNECTED) {
       await deckgoRemoteElement.updateReveal(reveal);
+      return;
+    }
 
-      resolve();
-    });
+    deckgoRemoteElement.deck = {
+      ...deckgoRemoteElement.deck,
+      reveal: reveal,
+    };
   }
 
   private async startAcceptedRemoteRequest(request: DeckdeckgoEventDeckRequest) {
