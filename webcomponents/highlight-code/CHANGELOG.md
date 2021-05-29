@@ -1,3 +1,9 @@
+# 3.2.0 (2021-05-29)
+
+### Style
+
+- add `width` and `height` CSS variables for the shadowed code block
+
 # 3.1.0 (2021-05-28)
 
 ### Style
