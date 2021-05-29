@@ -1,3 +1,10 @@
+# 2.5.0 (2021-05-29)
+
+### Build
+
+- output custom elements as a single bundle (`dist-custom-elements-bundle`)
+- bump dependencies
+
 # 2.4.1 - 2.4.2 (2021-05-27)
 
 ### Fix
