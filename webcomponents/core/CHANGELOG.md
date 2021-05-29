@@ -1,3 +1,9 @@
+# 8.2.1 (2021-05-29)
+
+### Fix
+
+- emit events (for animation) on keyboard triggers
+
 # 8.2.0 (2021-05-29)
 
 ### Build

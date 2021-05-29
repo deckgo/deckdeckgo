@@ -32,7 +32,7 @@ Therefore, to simplify the code base, I deprecate this template.
 
 - charts: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 - color: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/CHANGELOG.md))
-- core: v8.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
+- core: v8.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/CHANGELOG.md))
 - demo: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/demo/CHANGELOG.md))
 - drag-resize-rotate: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/drag-resize-rotate/CHANGELOG.md))
 - inline-editor: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/CHANGELOG.md))
