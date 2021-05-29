@@ -215,7 +215,7 @@ export class AppActionsDeck {
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail?.data.action === MoreAction.REMOTE) {
+      if (detail?.data?.action === MoreAction.REMOTE) {
         await this.openRemote();
       }
     });

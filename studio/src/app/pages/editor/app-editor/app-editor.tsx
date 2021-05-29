@@ -154,18 +154,21 @@ export class AppEditor {
   }
 
   private async initWithAuth() {
-    if (!authStore.state.authUser) {
+    if (!authStore.state.authUser || !authStore.state.authStateReady) {
       // As soon as the anonymous is created, we proceed
       this.destroyAuthListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
         if (authUser) {
           await this.initOrFetch();
-        }
 
-        this.destroyAuthListener();
+          this.destroyAuthListener();
+        }
       });
 
-      // If no user create an anonymous one
-      await this.authService.signInAnonymous();
+      // We don't have an authUser, neither from Firebase nor from indexedDb
+      if (!authStore.state.authUser && !authStore.state.authStateReady) {
+        // If no user create an anonymous one
+        await this.authService.signInAnonymous();
+      }
     } else {
       // We have got a user, regardless if anonymous or not, we init
       await this.initOrFetch();

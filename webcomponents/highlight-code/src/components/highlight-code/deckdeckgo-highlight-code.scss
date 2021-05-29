@@ -66,9 +66,9 @@
   div.container {
     /**
      * @prop --deckgo-highlight-code-margin: The margin property of the code container
-     * @default 0 0 16px
+     * @default 0 0 1em
      */
-    margin: var(--deckgo-highlight-code-margin, 0 0 16px);
+    margin: var(--deckgo-highlight-code-margin, 0 0 1em);
   }
 }
 
@@ -255,7 +255,15 @@ div.container {
 
     counter-reset: linenumber;
 
-    height: 100%;
+    /**
+     * @prop --deckgo-highlight-code-height: Height property of the shadowed code block
+     * @default 100%
+     */
+    height: var(--deckgo-highlight-code-height, 100%);
+    /**
+     * @prop --deckgo-highlight-code-width: Width property of the shadowed code block
+     */
+    width: var(--deckgo-highlight-code-width);
 
     > div.line-number {
       counter-increment: linenumber;
@@ -467,7 +475,7 @@ div.carbon {
    * @prop --deckgo-highlight-code-carbon-header-padding: The padding property of the card header.
    * @default 8px 16px
    */
-  padding: var(--deckgo-highlight-code-carbon-header-padding, 8px 16px);
+  padding: var(--deckgo-highlight-code-carbon-header-padding, 0.5em 1em);
   /**
    * @prop --deckgo-highlight-code-carbon-header-margin: 	The margin property of the card header
    * @default 0
@@ -482,14 +490,14 @@ div.carbon {
     display: var(--deckgo-highlight-code-carbon-toolbar-display, block);
     /**
      * @prop --deckgo-highlight-code-carbon-header-button-width: The width of a button of the card header
-     * @default 12px
+     * @default 0.75em
      */
-    width: var(--deckgo-highlight-code-carbon-header-button-width, 12px);
+    width: var(--deckgo-highlight-code-carbon-header-button-width, 0.75em);
     /**
      * @prop --deckgo-highlight-code-carbon-header-button-height: The height of a button of the card header
-     * @default 12px
+     * @default 0.75em
      */
-    height: var(--deckgo-highlight-code-carbon-header-button-height, 12px);
+    height: var(--deckgo-highlight-code-carbon-header-button-height, 0.75em);
     /**
      * @prop --deckgo-highlight-code-carbon-header-button-border-radius: 	The border-radius of a button of the card header
      * @default 50%
@@ -497,9 +505,9 @@ div.carbon {
     border-radius: var(--deckgo-highlight-code-carbon-header-button-border-radius, 50%);
     /**
      * @prop --deckgo-highlight-code-carbon-header-button-margin: The margin of a button of the card header
-     * @default 	8px 6px 8px 0
+     * @default 0.5em 0.375em 0.5em 0
      */
-    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 8px 6px 8px 0);
+    margin: var(--deckgo-highlight-code-carbon-header-button-margin, 0.5em 0.375em 0.5em 0);
 
     &.red {
       /**
@@ -548,9 +556,9 @@ div.ubuntu {
   align-items: center;
   /**
    * @prop --deckgo-highlight-code-ubuntu-header-padding: The padding property of the card header.
-   * @default 0 8px
+   * @default 0 0.5em
    */
-  padding: var(--deckgo-highlight-code-ubuntu-header-padding, 0 8px);
+  padding: var(--deckgo-highlight-code-ubuntu-header-padding, 0 0.5em);
   /**
    * @prop --deckgo-highlight-code-ubuntu-header-height: The height property of the card header
    * @default 25px
@@ -591,15 +599,15 @@ div.ubuntu {
     border-radius: var(--deckgo-highlight-code-ubuntu-header-button-border-radius, 50%);
     /**
      * @prop --deckgo-highlight-code-ubuntu-header-button-margin: The margin of a button of the card header
-     * @default 0 4px 0 0
+     * @default 0 0.25em 0 0
      */
-    margin: var(--deckgo-highlight-code-ubuntu-header-button-margin, 0 4px 0 0);
+    margin: var(--deckgo-highlight-code-ubuntu-header-button-margin, 0 0.25em 0 0);
 
     /**
      * @prop --deckgo-highlight-code-ubuntu-header-button-font-size: The font-size of a button of the card header
-     * @default 7px
+     * @default 0.4375em
      */
-    font-size: var(--deckgo-highlight-code-ubuntu-header-button-font-size, 7px);
+    font-size: var(--deckgo-highlight-code-ubuntu-header-button-font-size, 0.4375em);
 
     /**
      * @prop --deckgo-highlight-code-ubuntu-header-button-color: The color of a button of the card header

@@ -4,8 +4,7 @@ div.deck-action-button {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 9rem;
-  height: 9rem;
+  text-align: center;
 
   display: flex;
   flex-direction: column;
@@ -16,10 +15,7 @@ div.deck-action-button {
 
   border-radius: 50%;
 
-  button {
-    width: calc(9rem - 16px);
-    height: calc(9rem - 16px);
-
+  button:first-of-type {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,19 +24,36 @@ div.deck-action-button {
     border: 0;
     outline: 0;
 
-    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+    background: transparent;
 
-    background: var(--action-button-background);
+    > ion-label {
+      color: var(--ion-text-color);
+      font-weight: 300;
+    }
 
-    border-radius: 50%;
+    > div {
+      width: 9rem;
+      height: 9rem;
 
-    ion-icon {
-      color: var(--ion-color-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-      font-size: 6rem;
+      box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+      background: var(--action-button-background);
+      border-radius: 50%;
 
-      &.deck-action-button-icon-play {
-        padding-left: 12px;
+      margin-bottom: 24px;
+
+      ion-icon {
+        color: var(--ion-color-light);
+
+        font-size: 6rem;
+
+        &.deck-action-button-icon-play {
+          padding-left: 12px;
+        }
       }
     }
   }

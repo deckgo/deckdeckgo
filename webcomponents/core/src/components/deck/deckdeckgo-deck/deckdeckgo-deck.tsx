@@ -320,9 +320,9 @@ export class DeckdeckgoDeck {
     }
 
     if (['ArrowLeft', 'k', 'PageUp'].indexOf($event.key) !== -1) {
-      await this.slideNextPrev(false, true);
+      await this.slideNextPrev(false, true, true);
     } else if (['ArrowRight', 'j', 'PageDown'].indexOf($event.key) !== -1) {
-      await this.slideNextPrev(true, true);
+      await this.slideNextPrev(true, true, true);
     }
   };
 
