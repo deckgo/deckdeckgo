@@ -39,8 +39,6 @@ async function hideRevealElement(el: HTMLElement): Promise<boolean> {
   const nextElement: HTMLElement | undefined = Array.from(elements)
     .reverse()
     .find((element: HTMLElement) => {
-      console.log(element);
-
       return (
         ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'start' &&
         ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== undefined
