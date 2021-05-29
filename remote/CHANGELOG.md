@@ -1,3 +1,9 @@
+# 1.14.1 (2021-05-29)
+
+### Build
+
+- bump dependencies
+
 # 1.14.0 (2021-05-28)
 
 ### Features
