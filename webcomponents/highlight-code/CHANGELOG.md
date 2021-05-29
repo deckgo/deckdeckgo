@@ -1,3 +1,10 @@
+# 3.3.0 (2021-05-29)
+
+### Build
+
+- output custom elements as a single bundle (`dist-custom-elements-bundle`)
+- bump dependencies
+
 # 3.2.0 (2021-05-29)
 
 ### Style

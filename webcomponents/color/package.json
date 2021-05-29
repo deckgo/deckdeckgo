@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/color",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "A color picker developed with Web Components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -25,11 +25,11 @@
   },
   "devDependencies": {
     "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^1.0.1",
+    "@stencil/postcss": "^2.0.0",
     "@stencil/sass": "^1.4.1",
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.2.6",
     "husky": "^6.0.0",
-    "prettier": "2.2.1",
+    "prettier": "2.3.0",
     "pretty-quick": "^3.1.0"
   },
   "license": "MIT",
@@ -57,7 +57,7 @@
     "color-picker"
   ],
   "dependencies": {
-    "@deckdeckgo/utils": "^1.8.1"
+    "@deckdeckgo/utils": "^2.0.1"
   },
   "husky": {
     "hooks": {

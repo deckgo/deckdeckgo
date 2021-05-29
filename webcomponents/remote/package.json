@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/remote",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Present and interact with your DeckDeckGo's PWA presentation",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

@@ -2,6 +2,7 @@ import { Config } from '@stencil/core';
 
 import { sass } from '@stencil/sass';
 import { postcss } from '@stencil/postcss';
+// @ts-ignore
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
@@ -16,6 +17,9 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
+    },
+    {
+      type: 'dist-custom-elements-bundle',
     }
   ],
   plugins: [
