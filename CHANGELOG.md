@@ -1,3 +1,9 @@
+<a name="4.8.0"></a>
+
+# [4.8.0](https://github.com/deckgo/deckdeckgo/compare/v4.7.0...v4.8.0) (2021-XX-YY)
+
+- template kit: v1.1.0 ([CHANGELOG](https://github.com/deckgo/template-kit/blob/master/CHANGELOG.md))
+
 <a name="4.7.0"></a>
 
 # [4.7.0](https://github.com/deckgo/deckdeckgo/compare/v4.6.0...v4.7.0) (2021-05-29)
