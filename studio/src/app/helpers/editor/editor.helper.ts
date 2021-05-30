@@ -23,7 +23,7 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
 };
 
 export const undo = async ($event: KeyboardEvent) => {
-  if (undoRedoStore.state.stack !== undefined) {
+  if (undoRedoStore.state.elementInnerHTML !== undefined) {
     return;
   }
 
@@ -62,7 +62,7 @@ export const undo = async ($event: KeyboardEvent) => {
 };
 
 export const redo = async ($event: KeyboardEvent) => {
-  if (undoRedoStore.state.stack !== undefined) {
+  if (undoRedoStore.state.elementInnerHTML !== undefined) {
     return;
   }
 

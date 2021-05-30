@@ -145,11 +145,11 @@ export class AppActionsElement {
     element.focus();
 
     if (this.selectedElement?.type === 'element') {
-      undoRedoStore.state.stack = element.innerHTML
+      undoRedoStore.state.elementInnerHTML = element.innerHTML
       return;
     }
 
-    undoRedoStore.state.stack = undefined;
+    undoRedoStore.state.elementInnerHTML = undefined;
   }
 
   @Method()

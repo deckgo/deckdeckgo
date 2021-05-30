@@ -62,9 +62,9 @@ export class DeckEventsHandler {
     }, 500);
 
     this.debounceUndoRedoInput = debounce((element: HTMLElement) => {
-      undoRedoStore.state.undo.push({type: 'input', target: element, data: {innerHTML: undoRedoStore.state.stack}});
+      undoRedoStore.state.undo.push({type: 'input', target: element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
 
-      undoRedoStore.state.stack = element.innerHTML;
+      undoRedoStore.state.elementInnerHTML = element.innerHTML;
     }, 500);
   }
 
