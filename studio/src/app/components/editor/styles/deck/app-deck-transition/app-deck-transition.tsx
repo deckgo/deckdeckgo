@@ -143,8 +143,7 @@ export class AppDeckTransition {
 
     const resetDevice: 'desktop' | 'mobile' = this.device;
 
-    setAttribute({
-      element: this.deckElement,
+    setAttribute(this.deckElement, {
       attribute: this.device === 'mobile' ? 'direction-mobile' : 'direction',
       value: direction,
       updateUI: (value: string) => {
@@ -177,8 +176,7 @@ export class AppDeckTransition {
       return;
     }
 
-    setAttribute({
-      element: this.deckElement,
+    setAttribute(this.deckElement, {
       attribute: 'animation',
       value: animation,
       updateUI: (value: string) => (this.selectedAnimation = value as 'slide' | 'fade' | 'none'),

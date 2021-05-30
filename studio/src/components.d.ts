@@ -66,7 +66,7 @@ export namespace Components {
         "reset": () => Promise<void>;
         "slideCopy": EventEmitter;
         "slideTransform": EventEmitter;
-        "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
+        "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
     interface AppAvatar {

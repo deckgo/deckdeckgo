@@ -6,6 +6,7 @@ import {isSlide} from '@deckdeckgo/deck-utils';
 
 import store from '../../../../../stores/busy.store';
 import i18n from '../../../../../stores/i18n.store';
+import editorStore from "../../../../../stores/editor.store";
 
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
@@ -133,17 +134,22 @@ export class AppActionsElement {
   }
 
   @Method()
-  touch(element: HTMLElement, autoOpen: boolean = true): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.unSelect();
-      await this.select(element, autoOpen);
+  async touch(element: HTMLElement | undefined, autoOpen: boolean = true) {
+    await this.unSelect();
+    await this.select(element, autoOpen);
 
-      if (element) {
-        element.focus();
-      }
+    if (!element) {
+      return;
+    }
 
-      resolve();
-    });
+    element.focus();
+
+    if (this.selectedElement?.type === 'element') {
+      editorStore.state.stack = element.innerHTML
+      return;
+    }
+
+    editorStore.state.stack = undefined;
   }
 
   @Method()

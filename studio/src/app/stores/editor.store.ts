@@ -8,13 +8,15 @@ interface EditorStore {
   style: string | null;
   undo: UndoRedoChange[];
   redo: UndoRedoChange[];
+  stack: string | undefined
 }
 
 const {state} = createStore<EditorStore>({
   step: BreadcrumbsStep.DECK,
   style: null,
   undo: [],
-  redo: []
+  redo: [],
+  stack: undefined
 });
 
 export default {state};

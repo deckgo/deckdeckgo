@@ -6,7 +6,7 @@ import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import busyStore from '../../../../stores/busy.store';
 import authStore from '../../../../stores/auth.store';
-import editorStore from "../../../../stores/editor.store";
+import editorStore from '../../../../stores/editor.store';
 
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
@@ -45,7 +45,7 @@ export class DeckEventsHandler {
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
-  private readonly debounceUndoRedoInput: () => void;
+  private readonly debounceUndoRedoInput: (element: HTMLElement) => void;
 
   constructor() {
     this.deckService = DeckService.getInstance();
@@ -61,11 +61,11 @@ export class DeckEventsHandler {
       await this.updateDeckTitle(title);
     }, 500);
 
-    this.debounceUndoRedoInput = debounce(() => {
-      // Push an empty input in our custom undo / redo stack
-      editorStore.state.undo.push({type: 'input'});
-      editorStore.state.redo = [];
-    }, 150);
+    this.debounceUndoRedoInput = debounce((element: HTMLElement) => {
+      editorStore.state.undo.push({type: 'input', target: element, data: {innerHTML: editorStore.state.stack}});
+
+      editorStore.state.stack = element.innerHTML;
+    }, 500);
   }
 
   async init(el: HTMLElement) {
@@ -199,9 +199,14 @@ export class DeckEventsHandler {
       this.debounceUpdateDeckTitle(element.textContent);
     }
 
-    if ($event.inputType !== 'historyRedo' && $event.inputType !== 'historyUndo') {
-      this.debounceUndoRedoInput();
+    if ($event.inputType === 'historyUndo') {
+      // The effective undo is handled by the browser "document.execCommand('undo') as we are in an input.
+      // Therefore we can remove one operation from the overall undo stack.
+      editorStore.state.undo = [...editorStore.state.undo.slice(0, editorStore.state.undo.length - 1)];
+      return;
     }
+
+    this.debounceUndoRedoInput(element);
   };
 
   private onSlideDelete = async ($event: CustomEvent) => {
