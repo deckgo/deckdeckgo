@@ -6,7 +6,7 @@ import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import busyStore from '../../../../stores/busy.store';
 import authStore from '../../../../stores/auth.store';
-import editorStore from '../../../../stores/editor.store';
+import undoRedoStore from '../../../../stores/undo-redo.store';
 
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
@@ -62,9 +62,9 @@ export class DeckEventsHandler {
     }, 500);
 
     this.debounceUndoRedoInput = debounce((element: HTMLElement) => {
-      editorStore.state.undo.push({type: 'input', target: element, data: {innerHTML: editorStore.state.stack}});
+      undoRedoStore.state.undo.push({type: 'input', target: element, data: {innerHTML: undoRedoStore.state.stack}});
 
-      editorStore.state.stack = element.innerHTML;
+      undoRedoStore.state.stack = element.innerHTML;
     }, 500);
   }
 
@@ -202,7 +202,7 @@ export class DeckEventsHandler {
     if ($event.inputType === 'historyUndo') {
       // The effective undo is handled by the browser "document.execCommand('undo') as we are in an input.
       // Therefore we can remove one operation from the overall undo stack.
-      editorStore.state.undo = [...editorStore.state.undo.slice(0, editorStore.state.undo.length - 1)];
+      undoRedoStore.state.undo = [...undoRedoStore.state.undo.slice(0, undoRedoStore.state.undo.length - 1)];
       return;
     }
 

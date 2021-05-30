@@ -6,7 +6,7 @@ import {isSlide} from '@deckdeckgo/deck-utils';
 
 import store from '../../../../../stores/busy.store';
 import i18n from '../../../../../stores/i18n.store';
-import editorStore from "../../../../../stores/editor.store";
+import undoRedoStore from "../../../../../stores/undo-redo.store";
 
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
@@ -145,11 +145,11 @@ export class AppActionsElement {
     element.focus();
 
     if (this.selectedElement?.type === 'element') {
-      editorStore.state.stack = element.innerHTML
+      undoRedoStore.state.stack = element.innerHTML
       return;
     }
 
-    editorStore.state.stack = undefined;
+    undoRedoStore.state.stack = undefined;
   }
 
   @Method()

@@ -1,9 +1,9 @@
-import editorStore from '../../stores/editor.store';
+import undoRedoStore from '../../stores/undo-redo.store';
 
 import {UndoRedoChange, UndoRedoChangeAttribute, UndoRedoChangeElement} from '../../types/editor/undo-redo';
 
 export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoChangeAttribute) => {
-  editorStore.state.undo.push({
+  undoRedoStore.state.undo.push({
     type: 'style',
     target,
     data: {
@@ -13,7 +13,7 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
     },
   });
 
-  editorStore.state.redo = [];
+  undoRedoStore.state.redo = [];
 
   target.setAttribute(attribute, value);
 
@@ -23,13 +23,13 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
 };
 
 export const undo = async ($event: KeyboardEvent) => {
-  if (editorStore.state.stack !== undefined) {
+  if (undoRedoStore.state.stack !== undefined) {
     return;
   }
 
   $event.preventDefault();
 
-  const undoChange: UndoRedoChange | undefined = editorStore.state.undo[editorStore.state.undo.length - 1];
+  const undoChange: UndoRedoChange | undefined = undoRedoStore.state.undo[undoRedoStore.state.undo.length - 1];
 
   if (!undoChange) {
     return;
@@ -38,7 +38,7 @@ export const undo = async ($event: KeyboardEvent) => {
   const {type, data, target} = undoChange;
 
   if (type === 'input') {
-    editorStore.state.redo.push({type, target, data: {innerHTML: target.innerHTML}});
+    undoRedoStore.state.redo.push({type, target, data: {innerHTML: target.innerHTML}});
 
     undoRedoElement(target, data as UndoRedoChangeElement);
   }
@@ -46,7 +46,7 @@ export const undo = async ($event: KeyboardEvent) => {
   if (type === 'style') {
     const {attribute} = data as UndoRedoChangeAttribute;
 
-    editorStore.state.redo.push({
+    undoRedoStore.state.redo.push({
       type,
       target,
       data: {
@@ -58,17 +58,17 @@ export const undo = async ($event: KeyboardEvent) => {
     undoRedoSetAttribute(target, data as UndoRedoChangeAttribute);
   }
 
-  editorStore.state.undo = [...editorStore.state.undo.slice(0, editorStore.state.undo.length - 1)];
+  undoRedoStore.state.undo = [...undoRedoStore.state.undo.slice(0, undoRedoStore.state.undo.length - 1)];
 };
 
 export const redo = async ($event: KeyboardEvent) => {
-  if (editorStore.state.stack !== undefined) {
+  if (undoRedoStore.state.stack !== undefined) {
     return;
   }
 
   $event.preventDefault();
 
-  const redoChange: UndoRedoChange | undefined = editorStore.state.redo[editorStore.state.redo.length - 1];
+  const redoChange: UndoRedoChange | undefined = undoRedoStore.state.redo[undoRedoStore.state.redo.length - 1];
 
   if (!redoChange) {
     return;
@@ -77,7 +77,7 @@ export const redo = async ($event: KeyboardEvent) => {
   const {type, data, target} = redoChange;
 
   if (type === 'input') {
-    editorStore.state.undo.push({type, target, data: {innerHTML: target.innerHTML}});
+    undoRedoStore.state.undo.push({type, target, data: {innerHTML: target.innerHTML}});
 
     undoRedoElement(target, data as UndoRedoChangeElement);
   }
@@ -85,7 +85,7 @@ export const redo = async ($event: KeyboardEvent) => {
   if (type === 'style') {
     const {attribute} = data as UndoRedoChangeAttribute;
 
-    editorStore.state.undo.push({
+    undoRedoStore.state.undo.push({
       type,
       target,
       data: {
@@ -97,7 +97,7 @@ export const redo = async ($event: KeyboardEvent) => {
     undoRedoSetAttribute(target, data as UndoRedoChangeAttribute);
   }
 
-  editorStore.state.redo = [...editorStore.state.redo.slice(0, editorStore.state.redo.length - 1)];
+  undoRedoStore.state.redo = [...undoRedoStore.state.redo.slice(0, undoRedoStore.state.redo.length - 1)];
 };
 
 const undoRedoElement = (target: HTMLElement, {innerHTML}: UndoRedoChangeElement) => {
