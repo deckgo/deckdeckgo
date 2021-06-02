@@ -1,10 +1,10 @@
 import undoRedoStore from '../../stores/undo-redo.store';
 
-import {UndoRedoChange, UndoRedoChangeAttribute, UndoRedoChangeElement} from '../../types/editor/undo-redo';
+import {UndoRedoChange, UndoRedoChangeAttribute, UndoRedoChangeElement, UndoRedoChangeStyle} from '../../types/editor/undo-redo';
 
 export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoChangeAttribute) => {
   undoRedoStore.state.undo.push({
-    type: 'style',
+    type: 'attribute',
     target,
     data: {
       attribute,
@@ -20,6 +20,21 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
   emitDidUpdate({target, eventName: 'deckDidChange'});
 
   updateUI(value);
+};
+
+export const setStyle = (target: HTMLElement, property: string, {value, updateUI}: UndoRedoChangeStyle) => {
+  undoRedoStore.state.undo.push({
+    type: 'style',
+    target,
+    data: {
+      value: target.getAttribute('style'),
+      updateUI,
+    },
+  });
+
+  undoRedoStore.state.redo = [];
+
+  target.style.setProperty(property, value);
 };
 
 export const undo = async ($event: KeyboardEvent) => {
@@ -44,6 +59,19 @@ export const undo = async ($event: KeyboardEvent) => {
   }
 
   if (type === 'style') {
+    undoRedoStore.state.redo.push({
+      type,
+      target,
+      data: {
+        ...data,
+        value: target.getAttribute('style'),
+      },
+    });
+
+    await undoRedoSetStyle(target, data as UndoRedoChangeStyle);
+  }
+
+  if (type === 'attribute') {
     const {attribute} = data as UndoRedoChangeAttribute;
 
     undoRedoStore.state.redo.push({
@@ -83,6 +111,19 @@ export const redo = async ($event: KeyboardEvent) => {
   }
 
   if (type === 'style') {
+    undoRedoStore.state.undo.push({
+      type,
+      target,
+      data: {
+        ...data,
+        value: target.getAttribute('style'),
+      },
+    });
+
+    await undoRedoSetStyle(target, data as UndoRedoChangeStyle);
+  }
+
+  if (type === 'attribute') {
     const {attribute} = data as UndoRedoChangeAttribute;
 
     undoRedoStore.state.undo.push({
@@ -104,6 +145,12 @@ const undoRedoElement = (target: HTMLElement, {innerHTML}: UndoRedoChangeElement
   target.innerHTML = innerHTML;
 
   emitDidUpdate({target: target.parentElement, eventName: 'slideDidChange'});
+};
+
+const undoRedoSetStyle = async (target: HTMLElement, {value, updateUI}: UndoRedoChangeStyle) => {
+  target.setAttribute('style', value);
+
+  await updateUI(value);
 };
 
 const undoRedoSetAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoChangeAttribute) => {

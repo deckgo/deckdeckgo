@@ -5,6 +5,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
+import {setStyle} from '../../../../helpers/editor/editor.helper';
 
 import {Expanded} from '../../../../types/core/settings';
 
@@ -25,6 +26,8 @@ export class AppColorTextBackground {
 
   @Prop()
   colorType: 'text' | 'background' = 'text';
+
+  private colorRef!: HTMLAppColorElement;
 
   @Event() colorChange: EventEmitter<void>;
 
@@ -85,11 +88,10 @@ export class AppColorTextBackground {
       return;
     }
 
-    if (this.deck || this.slide) {
-      this.selectedElement.style.setProperty('--color', selectedColor);
-    } else {
-      this.selectedElement.style.color = selectedColor;
-    }
+    setStyle(this.selectedElement, this.deck || this.slide ? '--color' : 'color', {
+      value: selectedColor,
+      updateUI: async (_value: string) => await this.colorRef.loadColor()
+    });
 
     this.colorChange.emit();
   }
@@ -99,11 +101,10 @@ export class AppColorTextBackground {
       return;
     }
 
-    if (this.deck || this.slide) {
-      this.selectedElement.style.setProperty('--background', selectedColor);
-    } else {
-      this.selectedElement.style.background = selectedColor;
-    }
+    setStyle(this.selectedElement, this.deck || this.slide ? '--background' : 'background', {
+      value: selectedColor,
+      updateUI: async (_value: string) => await this.colorRef.loadColor()
+    });
 
     this.colorChange.emit();
   }
@@ -115,7 +116,7 @@ export class AppColorTextBackground {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.color}</ion-label>
 
-        <app-color
+        <app-color ref={(el) => this.colorRef = el as HTMLAppColorElement}
           initColor={this.colorType === 'background' ? this.initBackground : this.initColor}
           onResetColor={() => this.resetColor()}
           defaultColor={this.colorType === 'background' ? '#fff' : '#000'}
