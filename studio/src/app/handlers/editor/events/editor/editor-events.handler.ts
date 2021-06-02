@@ -1,9 +1,11 @@
 export class EditorEventsHandler {
   private mainRef: HTMLElement;
+  private actionsEditorRef: HTMLAppActionsEditorElement | undefined;
 
-  init(el: HTMLElement): Promise<void> {
+  init({mainRef, actionsEditorRef}: {mainRef: HTMLElement, actionsEditorRef: HTMLAppActionsEditorElement | undefined}): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      this.mainRef = el;
+      this.mainRef = mainRef;
+      this.actionsEditorRef = actionsEditorRef;
 
       const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
@@ -35,7 +37,7 @@ export class EditorEventsHandler {
 
   private onKeyUp = async ($event: KeyboardEvent) => {
     if ($event && $event.key === 'Tab' && document && document.activeElement && document.activeElement instanceof HTMLElement) {
-      await this.touchToolbar(document.activeElement);
+      await this.tabElement(document.activeElement);
     }
   };
 
@@ -45,31 +47,12 @@ export class EditorEventsHandler {
     }
   };
 
-  private touchToolbar(element: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppActionsEditorElement = this.mainRef.querySelector('app-actions-editor');
-
-      if (!actions) {
-        resolve();
-        return;
-      }
-
-      await actions.touch(element);
-
-      resolve();
-    });
+  private async tabElement(element: HTMLElement) {
+    await this.actionsEditorRef?.touch(element);
   }
 
-  selectDeck(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const actions: HTMLAppActionsEditorElement = this.mainRef.querySelector('app-actions-editor');
-
-      if (actions) {
-        await actions.selectDeck();
-      }
-
-      resolve();
-    });
+  async selectDeck() {
+    await this.actionsEditorRef.selectDeck();
   }
 
   private onBlockSlide = async ($event: CustomEvent) => {
