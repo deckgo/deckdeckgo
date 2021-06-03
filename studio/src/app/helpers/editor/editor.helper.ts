@@ -22,12 +22,13 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
   updateUI(value);
 };
 
-export const setStyle = (target: HTMLElement, property: string, {value, updateUI}: UndoRedoChangeStyle) => {
+export const setStyle = (target: HTMLElement, property: string, {value, type, updateUI}: UndoRedoChangeStyle) => {
   undoRedoStore.state.undo.push({
     type: 'style',
     target,
     data: {
       value: target.getAttribute('style'),
+      type,
       updateUI,
     },
   });
@@ -147,8 +148,16 @@ const undoRedoElement = (target: HTMLElement, {innerHTML}: UndoRedoChangeElement
   emitDidUpdate({target: target.parentElement, eventName: 'slideDidChange'});
 };
 
-const undoRedoSetStyle = async (target: HTMLElement, {value, updateUI}: UndoRedoChangeStyle) => {
+const undoRedoSetStyle = async (target: HTMLElement, {value, type, updateUI}: UndoRedoChangeStyle) => {
   target.setAttribute('style', value);
+
+  if (type === 'deck') {
+    emitDidUpdate({target, eventName: 'deckDidChange'});
+  } else if (type === 'slide') {
+    emitDidUpdate({target, eventName: 'slideDidChange'});
+  } else {
+    emitDidUpdate({target: target.parentElement, eventName: 'slideDidChange'});
+  }
 
   await updateUI(value);
 };

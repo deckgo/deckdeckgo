@@ -6,6 +6,7 @@ export interface UndoRedoChangeAttribute {
 
 export interface UndoRedoChangeStyle {
   value: string | null;
+  type: 'deck' | 'slide' | 'element';
   updateUI: (value: string) => Promise<void>;
 }
 

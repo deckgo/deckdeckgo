@@ -90,6 +90,7 @@ export class AppColorTextBackground {
 
     setStyle(this.selectedElement, this.deck || this.slide ? '--color' : 'color', {
       value: selectedColor,
+      type: this.deck ? 'deck' : (this.slide ? 'slide' : 'element'),
       updateUI: async (_value: string) => await this.colorRef.loadColor()
     });
 
@@ -103,6 +104,7 @@ export class AppColorTextBackground {
 
     setStyle(this.selectedElement, this.deck || this.slide ? '--background' : 'background', {
       value: selectedColor,
+      type: this.deck ? 'deck' : (this.slide ? 'slide' : 'element'),
       updateUI: async (_value: string) => await this.colorRef.loadColor()
     });
 
