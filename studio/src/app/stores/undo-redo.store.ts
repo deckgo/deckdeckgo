@@ -11,10 +11,10 @@ interface UndoRedoStore {
   elementInnerHTML: string | undefined;
 }
 
-const {state} = createStore<UndoRedoStore>({
+const {state, onChange} = createStore<UndoRedoStore>({
   undo: [],
   redo: [],
   elementInnerHTML: undefined,
 });
 
-export default {state};
+export default {state, onChange};
