@@ -6,7 +6,6 @@ import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
 import busyStore from '../../../../stores/busy.store';
 import authStore from '../../../../stores/auth.store';
-import undoRedoStore from '../../../../stores/undo-redo.store';
 
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
@@ -45,7 +44,6 @@ export class DeckEventsHandler {
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
-  private readonly debounceUndoRedoInput: (element: HTMLElement) => void;
 
   constructor() {
     this.deckService = DeckService.getInstance();
@@ -59,12 +57,6 @@ export class DeckEventsHandler {
 
     this.debounceUpdateDeckTitle = debounce(async (title: string) => {
       await this.updateDeckTitle(title);
-    }, 500);
-
-    this.debounceUndoRedoInput = debounce((element: HTMLElement) => {
-      undoRedoStore.state.undo.push({type: 'input', target: element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
-
-      undoRedoStore.state.elementInnerHTML = element.innerHTML;
     }, 500);
   }
 
@@ -198,15 +190,6 @@ export class DeckEventsHandler {
     if (parent && !parent.previousElementSibling && !element.previousElementSibling) {
       this.debounceUpdateDeckTitle(element.textContent);
     }
-
-    if ($event.inputType === 'historyUndo') {
-      // The effective undo is handled by the browser "document.execCommand('undo') as we are in an input.
-      // Therefore we can remove one operation from the overall undo stack.
-      undoRedoStore.state.undo = [...undoRedoStore.state.undo.slice(0, undoRedoStore.state.undo.length - 1)];
-      return;
-    }
-
-    this.debounceUndoRedoInput(element);
   };
 
   private onSlideDelete = async ($event: CustomEvent) => {

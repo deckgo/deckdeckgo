@@ -68,6 +68,14 @@ export class AppActionsElement {
 
   @Event() private resetted: EventEmitter<void>;
 
+  private observeElementMutations = () => {
+    undoRedoStore.state.undo.push({type: 'input', target: this.selectedElement.element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
+
+    undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
+  };
+
+  private observer: MutationObserver = new MutationObserver(this.observeElementMutations);
+
   constructor() {
     this.debounceResizeSlideContent = debounce(async () => {
       await this.resizeSlideContent();
@@ -145,9 +153,14 @@ export class AppActionsElement {
     element.focus();
 
     if (this.selectedElement?.type === 'element') {
+      this.observer.takeRecords();
+      this.observer.observe(this.selectedElement.element, {attributes: true, childList: true, subtree: true});
+
       undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
       return;
     }
+
+    this.observer.disconnect();
 
     undoRedoStore.state.elementInnerHTML = undefined;
   }
