@@ -137,9 +137,6 @@ export class AppTemplate {
 
   private async validateTag() {
     this.validTag = !/(?:deckgo|deckdeckgo|ddg)/.test(this.templateData?.tag);
-
-
-    console.log(this.templateData.tag);
   }
 
   private async navigateContact() {
