@@ -145,7 +145,7 @@ export class AppActionsElement {
     element.focus();
 
     if (this.selectedElement?.type === 'element') {
-      undoRedoStore.state.elementInnerHTML = element.innerHTML;
+      undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
       return;
     }
 
