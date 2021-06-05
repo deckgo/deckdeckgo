@@ -5,7 +5,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
-import {setStyle} from '../../../../helpers/editor/editor.helper';
+import {setStyle} from '../../../../utils/editor/undo-redo.utils';
 
 import {Expanded} from '../../../../types/core/settings';
 

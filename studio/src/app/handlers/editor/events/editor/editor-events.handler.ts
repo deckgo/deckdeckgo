@@ -1,4 +1,4 @@
-import { redo, undo } from "../../../../helpers/editor/editor.helper";
+import { redo, undo } from "../../../../utils/editor/undo-redo.utils";
 
 export class EditorEventsHandler {
   private mainRef: HTMLElement;
