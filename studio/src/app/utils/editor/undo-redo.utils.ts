@@ -35,6 +35,11 @@ export const setStyle = (target: HTMLElement, property: string, {value, type, up
 
   undoRedoStore.state.redo = [];
 
+  if (value === null) {
+    target.style.removeProperty(property);
+    return;
+  }
+
   target.style.setProperty(property, value);
 };
 
