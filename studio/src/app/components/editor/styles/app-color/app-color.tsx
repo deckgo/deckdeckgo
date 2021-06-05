@@ -81,6 +81,8 @@ export class AppColor {
 
     this.opacity = opacity ? opacity : 100;
 
+    this.skipNextColorCSSEmit = true;
+
     await this.initColorCSS();
   }
 
