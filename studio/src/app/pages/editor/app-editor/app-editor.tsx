@@ -8,6 +8,7 @@ import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
 import authStore from '../../../stores/auth.store';
 import colorStore from '../../../stores/color.store';
+import undoRedoStore from '../../../stores/undo-redo.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
@@ -207,6 +208,7 @@ export class AppEditor {
     await this.remoteEventsHandler.destroy();
 
     deckStore.reset();
+    undoRedoStore.reset();
   }
 
   async componentDidLoad() {
