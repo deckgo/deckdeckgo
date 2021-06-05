@@ -51,7 +51,7 @@ export class AppTemplateShowcase {
     return (
       <deckgo-deck embedded={true} keyboard={false} onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
         <Element>
-          {this.template.data.slots.map((slot: TemplateDataSlot) => {
+          {this.template.data.slots?.map((slot: TemplateDataSlot) => {
             return <ion-skeleton-text slot={slot.name} style={{width: '60%'}}></ion-skeleton-text>;
           })}
         </Element>
