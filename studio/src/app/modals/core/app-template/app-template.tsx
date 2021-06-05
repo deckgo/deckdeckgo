@@ -43,6 +43,7 @@ export class AppTemplate {
     history.pushState({modal: true}, null);
 
     await this.validateCDNInput();
+    await this.validateTag();
   }
 
   @Listen('popstate', {target: 'window'})
@@ -126,7 +127,7 @@ export class AppTemplate {
 
   private async validateCDNInput() {
     try {
-      const url: URL = new URL(this.templateData.cdn);
+      const url: URL = new URL(this.templateData?.cdn);
 
       this.validCdn = /unpkg\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net/g.test(url.hostname);
     } catch (err) {
@@ -135,7 +136,10 @@ export class AppTemplate {
   }
 
   private async validateTag() {
-    this.validTag = !/(?:deckgo|deckdeckgo|ddg)/.test(this.templateData.tag);
+    this.validTag = !/(?:deckgo|deckdeckgo|ddg)/.test(this.templateData?.tag);
+
+
+    console.log(this.templateData.tag);
   }
 
   private async navigateContact() {
