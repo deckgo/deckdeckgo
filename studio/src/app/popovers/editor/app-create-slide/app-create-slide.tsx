@@ -160,6 +160,27 @@ export class AppCreateSlide {
     return this.composeTemplate.scope === undefined ? SlideTemplate[(this.composeTemplate.template as SlideTemplate)?.toUpperCase()] : undefined;
   }
 
+  private async selectTemplateUser($event: CustomEvent<Template>) {
+    const template: Template = $event.detail;
+
+    if (!template || !template.data) {
+      return;
+    }
+
+    const customSlotsCount: number | undefined = template.data.slots?.length;
+
+    if (customSlotsCount !== undefined && customSlotsCount > 0) {
+      this.composeTemplate = {
+        template,
+        scope: SlideScope.USER,
+      };
+      return;
+    }
+
+    // User has created a template without any editable slots
+    await this.addRestrictedSlide(template, SlideScope.USER);
+  }
+
   render() {
     return (
       <Fragment>
@@ -254,12 +275,7 @@ export class AppCreateSlide {
     return (
       <app-templates-user
         class="container ion-margin-bottom"
-        onSelectedTemplate={($event: CustomEvent<Template>) =>
-          (this.composeTemplate = {
-            template: $event.detail,
-            scope: SlideScope.USER,
-          })
-        }
+        onSelectedTemplate={async ($event: CustomEvent<Template>) => await this.selectTemplateUser($event)}
         onNavigateSignIn={() => this.closePopoverWithoutResults()}></app-templates-user>
     );
   }
