@@ -205,7 +205,7 @@ export class AppSlideWarning {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slide-warning-info',
       componentProps: {
-        lowContrast: this.warningLowContrast,
+        lowContrast: settingsStore.state.contrastWarning === 'on' && this.warningLowContrast,
         overflow: this.warningOverflow,
       },
       event: $event,
@@ -232,7 +232,7 @@ export class AppSlideWarning {
   }
 
   private renderMsg() {
-    if ((settingsStore.state.contrastWarning === 'on' && this.warningLowContrast) && this.warningOverflow) {
+    if (settingsStore.state.contrastWarning === 'on' && this.warningLowContrast && this.warningOverflow) {
       return (
         <ion-label>
           {i18n.state.warning.low_contrast} + {i18n.state.warning.overflow}
