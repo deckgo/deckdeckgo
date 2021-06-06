@@ -1666,6 +1666,7 @@ declare namespace LocalJSX {
     }
     interface AppSlideWarningInfo {
         "lowContrast"?: boolean;
+        "onDeactivateContrastWarning"?: (event: CustomEvent<boolean>) => void;
         "overflow"?: boolean;
     }
     interface AppSlotType {

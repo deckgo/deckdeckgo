@@ -1,4 +1,4 @@
-import {Component, Element, Fragment, h, Prop} from '@stencil/core';
+import {Component, Element, Fragment, h, Prop, Event, EventEmitter} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
@@ -15,8 +15,15 @@ export class AppSlideWarningInfo {
   @Prop()
   overflow: boolean;
 
+  @Event() deactivateContrastWarning: EventEmitter<boolean>;
+
   private async closePopover() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
+  }
+
+  private async setCheckContrastWarning() {
+    this.deactivateContrastWarning.emit(false);
+    await this.closePopover();
   }
 
   render() {
@@ -70,6 +77,11 @@ export class AppSlideWarningInfo {
         </p>
 
         <p>{i18n.state.warning.note}</p>
+        <div class="ion-text-center">
+          <ion-button size="small" shape="round" color="warning" onClick={() => this.setCheckContrastWarning()}>
+            {i18n.state.settings.deactivate_contrast_warning}
+          </ion-button>
+        </div>
       </Fragment>
     );
   }

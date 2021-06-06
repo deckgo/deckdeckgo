@@ -93,7 +93,8 @@
     "custom_logo": "Benutzerdefiniertes Logo",
     "contribute_community": "Möchtest du zur Community beitragen? {0} uns um eine Vorlage zu teilen.",
     "contact": "Kontakt",
-    "add_a_template": "Füge eine Vorlage hinzu"
+    "add_a_template": "Füge eine Vorlage hinzu",
+    "deactivate_contrast_warning": "Deaktiviere Kontrast-Warnungen"
   },
   "dashboard": {
     "welcome": "Willkommen bei DeckDeckGo 👋",

@@ -23,6 +23,14 @@ export class AppSlideWarning {
   @State()
   private warningOverflow: boolean = false;
 
+  @State()
+  private checkLowContrast: boolean = true;
+
+  @Listen('deactivateContrastWarning', {target: 'document'})
+  onDeactivateContrastWarning() {
+    this.checkLowContrast = false;
+  }
+
   private readonly debounceResizeWarningOverflow: () => void = debounce(async () => {
     this.warningOverflow = await this.hasOverflow();
   }, 500);
@@ -60,7 +68,9 @@ export class AppSlideWarning {
   }
 
   private async detectWarnings() {
-    this.warningLowContrast = await this.hasLowContrast();
+    if (this.checkLowContrast) {
+      this.warningLowContrast = await this.hasLowContrast();
+    }
     this.debounceResizeWarningOverflow();
   }
 
@@ -218,7 +228,7 @@ export class AppSlideWarning {
     return (
       <Host
         class={{
-          warning: this.warningLowContrast || this.warningOverflow,
+          warning: (this.checkLowContrast && this.warningLowContrast) || this.warningOverflow,
         }}>
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
