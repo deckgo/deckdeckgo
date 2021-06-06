@@ -3,7 +3,7 @@ import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
 import editorStore from '../../../../../stores/editor.store';
-import undoRedoStore from "../../../../../stores/undo-redo.store";
+import undoRedoStore from '../../../../../stores/undo-redo.store';
 
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
@@ -62,12 +62,12 @@ export class AppActionsEditor {
 
   componentDidLoad() {
     this.destroyUndoRedoListener = undoRedoStore.onChange('elementInnerHTML', (elementInnerHTML: string | undefined) => {
-        if (elementInnerHTML === undefined) {
-          this.el.removeEventListener('click', this.resetElementInnerHTML, false);
-          return;
-        }
+      if (elementInnerHTML === undefined) {
+        this.el.removeEventListener('click', this.resetElementInnerHTML, false);
+        return;
+      }
 
-      this.el.addEventListener('click', this.resetElementInnerHTML, { once: true });
+      this.el.addEventListener('click', this.resetElementInnerHTML, {once: true});
     });
   }
 

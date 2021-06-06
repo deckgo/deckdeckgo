@@ -201,7 +201,7 @@ export class AppElementStyle {
   }
 
   private renderText() {
-    return <app-text selectedElement={this.selectedElement.element} onTextDidChange={() => this.emitStyleChange()}></app-text>;
+    return <app-text selectedElement={this.selectedElement} onTextDidChange={() => this.emitStyleChange()}></app-text>;
   }
 
   private renderBackground() {

@@ -404,7 +404,7 @@ export namespace Components {
     interface AppTemplatesUser {
     }
     interface AppText {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppTransformElement {
         "selectedElement": HTMLElement;
@@ -1725,7 +1725,7 @@ declare namespace LocalJSX {
     }
     interface AppText {
         "onTextDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppTransformElement {
         "selectedElement"?: HTMLElement;

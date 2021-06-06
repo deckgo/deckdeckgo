@@ -69,6 +69,10 @@ export class AppActionsElement {
   @Event() private resetted: EventEmitter<void>;
 
   private observeElementMutations = () => {
+    if (undoRedoStore.state.elementInnerHTML === undefined) {
+      return;
+    }
+
     undoRedoStore.state.undo.push({type: 'input', target: this.selectedElement.element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
 
     undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
