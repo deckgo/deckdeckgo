@@ -94,8 +94,8 @@
     "contribute_community": "¿Quieres contribuir a la comunidad? {0} para compartir una plantilla.",
     "contact": "Contactar",
     "add_a_template": "Añadir una plantilla",
-    "deactivate_contrast_warning": "Desactivar las advertencias de contraste",
-    "contrast_warning": "Advertencias de contraste",
+    "deactivate_contrast_warning": "Desactive la advertencia de contraste",
+    "contrast_warning": "Advertencia de contraste",
     "contrast_warning_active": "encendido",
     "contrast_warning_inactive": "apagado"
   },
