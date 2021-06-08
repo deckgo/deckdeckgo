@@ -6,6 +6,8 @@ import {debounce} from '@deckdeckgo/utils';
 
 import i18n from '../../../../stores/i18n.store';
 
+import settingsStore from '../../../../stores/settings.store';
+
 import {ContrastUtils} from '../../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
@@ -203,7 +205,7 @@ export class AppSlideWarning {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slide-warning-info',
       componentProps: {
-        lowContrast: this.warningLowContrast,
+        lowContrast: settingsStore.state.contrastWarning && this.warningLowContrast,
         overflow: this.warningOverflow,
       },
       event: $event,
@@ -218,7 +220,7 @@ export class AppSlideWarning {
     return (
       <Host
         class={{
-          warning: this.warningLowContrast || this.warningOverflow,
+          warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow,
         }}>
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
@@ -230,13 +232,13 @@ export class AppSlideWarning {
   }
 
   private renderMsg() {
-    if (this.warningLowContrast && this.warningOverflow) {
+    if (settingsStore.state.contrastWarning && this.warningLowContrast && this.warningOverflow) {
       return (
         <ion-label>
           {i18n.state.warning.low_contrast} + {i18n.state.warning.overflow}
         </ion-label>
       );
-    } else if (this.warningLowContrast) {
+    } else if (settingsStore.state.contrastWarning && this.warningLowContrast) {
       return <ion-label>{i18n.state.warning.low_contrast}</ion-label>;
     } else if (this.warningOverflow) {
       return <ion-label>{i18n.state.warning.overflow}</ion-label>;

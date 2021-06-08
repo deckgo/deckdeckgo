@@ -3,6 +3,8 @@ import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
+import settingsStore from '../../../stores/settings.store';
+
 @Component({
   tag: 'app-slide-warning-info',
 })
@@ -70,6 +72,17 @@ export class AppSlideWarningInfo {
         </p>
 
         <p>{i18n.state.warning.note}</p>
+        <div class="ion-text-center">
+          <ion-button
+            size="small"
+            shape="round"
+            color="warning"
+            onClick={() => {
+              (settingsStore.state.contrastWarning = false), this.closePopover();
+            }}>
+            {i18n.state.settings.deactivate_contrast_warning}
+          </ion-button>
+        </div>
       </Fragment>
     );
   }
