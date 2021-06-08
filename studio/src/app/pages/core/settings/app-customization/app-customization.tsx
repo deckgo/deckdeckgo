@@ -6,7 +6,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {ThemeService} from '../../../../services/theme/theme.service';
 
-import {EditMode, ContrastWarning} from '../../../../types/core/settings';
+import {EditMode} from '../../../../types/core/settings';
 
 @Component({
   tag: 'app-customization',
@@ -17,7 +17,7 @@ export class AppCustomization {
 
   private editMode: EditMode = settingsStore.state.editMode;
 
-  private contrastWarning: ContrastWarning = settingsStore.state.contrastWarning;
+  private contrastWarning = settingsStore.state.contrastWarning;
 
   constructor() {
     this.themeService = ThemeService.getInstance();
@@ -36,7 +36,7 @@ export class AppCustomization {
   }
 
   private toggleContrastWarning() {
-    settingsStore.state.contrastWarning = settingsStore.state.contrastWarning === 'off' ? 'on' : 'off';
+    settingsStore.state.contrastWarning = !settingsStore.state.contrastWarning;
   }
 
   render() {
@@ -116,7 +116,7 @@ export class AppCustomization {
 
         <ion-select
           slot="end"
-          value={this.contrastWarning}
+          value={this.contrastWarning ? "on" : "off"}
           onIonChange={() => this.toggleContrastWarning()}
           interface="popover"
           mode="md"

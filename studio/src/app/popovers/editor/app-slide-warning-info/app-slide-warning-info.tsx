@@ -78,7 +78,7 @@ export class AppSlideWarningInfo {
             shape="round"
             color="warning"
             onClick={() => {
-              (settingsStore.state.contrastWarning = 'off'), this.closePopover();
+              (settingsStore.state.contrastWarning = false), this.closePopover();
             }}>
             {i18n.state.settings.deactivate_contrast_warning}
           </ion-button>

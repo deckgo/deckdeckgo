@@ -2,7 +2,7 @@ import settingsStore from '../../stores/settings.store';
 
 import {get} from 'idb-keyval';
 
-import {EditMode, SettingsPanels, ContrastWarning} from '../../types/core/settings';
+import {EditMode, SettingsPanels} from '../../types/core/settings';
 
 export class SettingsService {
   private static instance: SettingsService;
@@ -27,10 +27,10 @@ export class SettingsService {
       }
 
       const edit: EditMode | null = await get<EditMode>('deckdeckgo_settings_edit_mode');
-      const contrastWarning: ContrastWarning | null = await get<ContrastWarning>('deckdeckgo_settings_contrast_warning');
+      const contrastWarning: boolean | null = await get<boolean>('deckdeckgo_settings_contrast_warning');
 
       settingsStore.state.editMode = edit ?? 'properties';
-      settingsStore.state.contrastWarning = contrastWarning ?? 'on';
+      settingsStore.state.contrastWarning = contrastWarning ?? true;
     } catch (err) {
       console.warn(`Couldn't find settings for panels. Proceeding with default`);
     }

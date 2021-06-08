@@ -205,7 +205,7 @@ export class AppSlideWarning {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-slide-warning-info',
       componentProps: {
-        lowContrast: settingsStore.state.contrastWarning === 'on' && this.warningLowContrast,
+        lowContrast: settingsStore.state.contrastWarning && this.warningLowContrast,
         overflow: this.warningOverflow,
       },
       event: $event,
@@ -220,7 +220,7 @@ export class AppSlideWarning {
     return (
       <Host
         class={{
-          warning: (settingsStore.state.contrastWarning === 'on' && this.warningLowContrast) || this.warningOverflow,
+          warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow,
         }}>
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
@@ -232,13 +232,13 @@ export class AppSlideWarning {
   }
 
   private renderMsg() {
-    if (settingsStore.state.contrastWarning === 'on' && this.warningLowContrast && this.warningOverflow) {
+    if (settingsStore.state.contrastWarning && this.warningLowContrast && this.warningOverflow) {
       return (
         <ion-label>
           {i18n.state.warning.low_contrast} + {i18n.state.warning.overflow}
         </ion-label>
       );
-    } else if (settingsStore.state.contrastWarning === 'on' && this.warningLowContrast) {
+    } else if (settingsStore.state.contrastWarning && this.warningLowContrast) {
       return <ion-label>{i18n.state.warning.low_contrast}</ion-label>;
     } else if (this.warningOverflow) {
       return <ion-label>{i18n.state.warning.overflow}</ion-label>;

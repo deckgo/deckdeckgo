@@ -2,8 +2,6 @@ export type Expanded = 'open' | 'close';
 
 export type EditMode = 'properties' | 'css';
 
-export type ContrastWarning = 'on' | 'off';
-
 export interface SettingsPanels {
   borderRadius: Expanded;
   boxShadow: Expanded;
@@ -20,5 +18,5 @@ export interface SettingsPanels {
 export interface Settings {
   panels: SettingsPanels;
   editMode: EditMode;
-  contrastWarning: ContrastWarning;
+  contrastWarning: boolean;
 }

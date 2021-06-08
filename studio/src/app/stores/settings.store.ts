@@ -2,7 +2,7 @@ import {createStore} from '@stencil/store';
 
 import {set} from 'idb-keyval';
 
-import {EditMode, Settings, SettingsPanels, ContrastWarning} from '../types/core/settings';
+import {EditMode, Settings, SettingsPanels} from '../types/core/settings';
 
 const {state, onChange} = createStore<Settings>({
   panels: {
@@ -18,7 +18,7 @@ const {state, onChange} = createStore<Settings>({
     list: 'open',
   },
   editMode: 'properties',
-  contrastWarning: 'on',
+  contrastWarning: true,
 });
 
 onChange('panels', (panels: SettingsPanels) => {
@@ -33,7 +33,7 @@ onChange('editMode', (mode: EditMode) => {
   });
 });
 
-onChange('contrastWarning', (warningState: ContrastWarning) => {
+onChange('contrastWarning', (warningState) => {
   set('deckdeckgo_settings_contrast_warning', warningState).catch((err) => {
     console.error('Failed to update IDB with new edit mode', err);
   });
