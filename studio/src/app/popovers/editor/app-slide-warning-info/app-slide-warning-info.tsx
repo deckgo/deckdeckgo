@@ -22,9 +22,9 @@ export class AppSlideWarningInfo {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
-  private deactivateContrastWarning() {
+  private async deactivateContrastWarning() {
     settingsStore.state.contrastWarning = false;
-    this.closePopover();
+    await this.closePopover();
   }
 
   render() {
@@ -91,9 +91,7 @@ export class AppSlideWarningInfo {
 
     return <div class="ion-text-center">
       <button
-        onClick={() => {
-          this.deactivateContrastWarning();
-        }}>
+        onClick={async () => await this.deactivateContrastWarning()}>
         {i18n.state.settings.deactivate_contrast_warning}
       </button>
     </div>
