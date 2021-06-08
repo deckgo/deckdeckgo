@@ -94,7 +94,7 @@
     "contribute_community": "Do you want to contribute to the community? {0} us to share a template.",
     "contact": "Contact",
     "add_a_template": "Add a template",
-    "deactivate_contrast_warning": "Deactivate low contrast warnings",
+    "deactivate_contrast_warning": "Deactivate low contrast warnings.",
     "contrast_warning": "Contrast warning",
     "contrast_warning_active": "on",
     "contrast_warning_inactive": "off"
