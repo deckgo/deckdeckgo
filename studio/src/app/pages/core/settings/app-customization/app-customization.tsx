@@ -17,8 +17,6 @@ export class AppCustomization {
 
   private editMode: EditMode = settingsStore.state.editMode;
 
-  private contrastWarning = settingsStore.state.contrastWarning;
-
   constructor() {
     this.themeService = ThemeService.getInstance();
   }
@@ -110,21 +108,11 @@ export class AppCustomization {
   }
 
   private renderContrastWarning() {
-    return (
-      <ion-item>
-        <ion-label>{i18n.state.settings.contrast_warning}</ion-label>
-
-        <ion-select
-          slot="end"
-          value={this.contrastWarning ? "on" : "off"}
-          onIonChange={() => this.toggleContrastWarning()}
-          interface="popover"
-          mode="md"
-          class="ion-padding-start ion-padding-end">
-          <ion-select-option value="on">{i18n.state.settings.contrast_warning_active}</ion-select-option>
-          <ion-select-option value="off">{i18n.state.settings.contrast_warning_inactive}</ion-select-option>
-        </ion-select>
-      </ion-item>
-    );
+    return <ion-item>
+      <ion-label>
+        {i18n.state.settings.contrast_warning}
+      </ion-label>
+      <ion-toggle slot="end" checked={settingsStore.state.contrastWarning} mode="md" color="medium" onIonChange={() => this.toggleContrastWarning()}></ion-toggle>
+    </ion-item>
   }
 }
