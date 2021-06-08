@@ -7,6 +7,7 @@ import settingsStore from '../../../stores/settings.store';
 
 @Component({
   tag: 'app-slide-warning-info',
+  styleUrl: 'app-slide-warning-info.scss',
 })
 export class AppSlideWarningInfo {
   @Element() el: HTMLElement;
@@ -21,6 +22,11 @@ export class AppSlideWarningInfo {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
+  private deactivateContrastWarning() {
+    settingsStore.state.contrastWarning = false;
+    this.closePopover();
+  }
+
   render() {
     return (
       <div class="ion-padding">
@@ -33,6 +39,8 @@ export class AppSlideWarningInfo {
             {i18n.state.core.got_it}
           </ion-button>
         </div>
+
+        {this.renderDeactivateLowContrast()}
       </div>
     );
   }
@@ -72,18 +80,22 @@ export class AppSlideWarningInfo {
         </p>
 
         <p>{i18n.state.warning.note}</p>
-        <div class="ion-text-center">
-          <ion-button
-            size="small"
-            shape="round"
-            color="warning"
-            onClick={() => {
-              (settingsStore.state.contrastWarning = false), this.closePopover();
-            }}>
-            {i18n.state.settings.deactivate_contrast_warning}
-          </ion-button>
-        </div>
       </Fragment>
     );
+  }
+
+  private renderDeactivateLowContrast() {
+    if (!this.lowContrast) {
+      return undefined;
+    }
+
+    return <div class="ion-text-center">
+      <button
+        onClick={() => {
+          this.deactivateContrastWarning();
+        }}>
+        {i18n.state.settings.deactivate_contrast_warning}
+      </button>
+    </div>
   }
 }
