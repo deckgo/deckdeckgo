@@ -18,6 +18,7 @@ const {state, onChange} = createStore<Settings>({
     list: 'open',
   },
   editMode: 'properties',
+  contrastWarning: true,
 });
 
 onChange('panels', (panels: SettingsPanels) => {
@@ -28,6 +29,12 @@ onChange('panels', (panels: SettingsPanels) => {
 
 onChange('editMode', (mode: EditMode) => {
   set('deckdeckgo_settings_edit_mode', mode).catch((err) => {
+    console.error('Failed to update IDB with new edit mode', err);
+  });
+});
+
+onChange('contrastWarning', (warningState) => {
+  set('deckdeckgo_settings_contrast_warning', warningState).catch((err) => {
     console.error('Failed to update IDB with new edit mode', err);
   });
 });

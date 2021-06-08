@@ -3,8 +3,11 @@ import {Component, Element, Fragment, h, Prop} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
+import settingsStore from '../../../stores/settings.store';
+
 @Component({
   tag: 'app-slide-warning-info',
+  styleUrl: 'app-slide-warning-info.scss',
 })
 export class AppSlideWarningInfo {
   @Element() el: HTMLElement;
@@ -19,6 +22,11 @@ export class AppSlideWarningInfo {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
+  private async deactivateContrastWarning() {
+    settingsStore.state.contrastWarning = false;
+    await this.closePopover();
+  }
+
   render() {
     return (
       <div class="ion-padding">
@@ -31,6 +39,8 @@ export class AppSlideWarningInfo {
             {i18n.state.core.got_it}
           </ion-button>
         </div>
+
+        {this.renderDeactivateLowContrast()}
       </div>
     );
   }
@@ -72,5 +82,18 @@ export class AppSlideWarningInfo {
         <p>{i18n.state.warning.note}</p>
       </Fragment>
     );
+  }
+
+  private renderDeactivateLowContrast() {
+    if (!this.lowContrast) {
+      return undefined;
+    }
+
+    return <div class="ion-text-center">
+      <button
+        onClick={async () => await this.deactivateContrastWarning()}>
+        {i18n.state.settings.deactivate_contrast_warning}
+      </button>
+    </div>
   }
 }

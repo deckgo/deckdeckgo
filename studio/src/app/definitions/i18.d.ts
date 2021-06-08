@@ -99,6 +99,10 @@ interface I18nSettings {
   contribute_community: string;
   contact: string;
   add_a_template: string;
+  deactivate_contrast_warning: string;
+  contrast_warning: string;
+  contrast_warning_active: string;
+  contrast_warning_inactive: string;
 }
 
 interface I18nDashboard {

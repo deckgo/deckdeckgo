@@ -18,4 +18,5 @@ export interface SettingsPanels {
 export interface Settings {
   panels: SettingsPanels;
   editMode: EditMode;
+  contrastWarning: boolean;
 }

@@ -33,6 +33,10 @@ export class AppCustomization {
     i18n.state.lang = $event.detail.value;
   }
 
+  private toggleContrastWarning() {
+    settingsStore.state.contrastWarning = !settingsStore.state.contrastWarning;
+  }
+
   render() {
     return [
       <app-navigation></app-navigation>,
@@ -46,6 +50,8 @@ export class AppCustomization {
             {this.renderLang()}
 
             {this.renderEditMode()}
+
+            {this.renderContrastWarning()}
           </ion-list>
         </main>
       </ion-content>,
@@ -99,5 +105,14 @@ export class AppCustomization {
         </ion-select>
       </ion-item>
     );
+  }
+
+  private renderContrastWarning() {
+    return <ion-item>
+      <ion-label>
+        {i18n.state.settings.contrast_warning}
+      </ion-label>
+      <ion-toggle slot="end" checked={settingsStore.state.contrastWarning} mode="md" color="medium" onIonChange={() => this.toggleContrastWarning()}></ion-toggle>
+    </ion-item>
   }
 }
