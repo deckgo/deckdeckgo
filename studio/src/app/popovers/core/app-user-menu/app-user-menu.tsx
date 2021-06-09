@@ -52,6 +52,18 @@ export class AppUserMenu {
         </ion-item>
 
         <ion-item onClick={() => this.closePopover()}>
+          <ion-router-link href="/customization" routerDirection="forward">
+            <ion-label>{i18n.state.nav.customization}</ion-label>
+          </ion-router-link>
+        </ion-item>
+
+        <ion-item onClick={() => this.closePopover()}>
+          <ion-router-link href="/templates" routerDirection="forward">
+            <ion-label>{i18n.state.nav.templates}</ion-label>
+          </ion-router-link>
+        </ion-item>
+
+        <ion-item onClick={() => this.closePopover()}>
           <ion-router-link href="/profile" routerDirection="forward">
             <ion-label>{i18n.state.nav.profile}</ion-label>
           </ion-router-link>
