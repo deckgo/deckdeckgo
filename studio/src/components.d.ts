@@ -6,12 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
+import { SelectedElement } from "./app/types/editor/selected-element";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
-import { SelectedElement } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { Expanded } from "./app/types/core/settings";
@@ -76,7 +76,7 @@ export namespace Components {
     interface AppBackgroundFolders {
     }
     interface AppBlock {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppBorderRadius {
         "selectedElement": HTMLElement;
@@ -1345,7 +1345,7 @@ declare namespace LocalJSX {
     }
     interface AppBlock {
         "onBlockChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;

@@ -5,16 +5,18 @@ import {RangeChangeEventDetail} from '@ionic/core';
 import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
 
-import {SettingsUtils} from '../../../../../utils/core/settings.utils';
-
 import {EditMode, Expanded} from '../../../../../types/core/settings';
+import { SelectedElement } from "../../../../../types/editor/selected-element";
+
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
 
 @Component({
   tag: 'app-block',
 })
 export class AppBlock {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedElement: SelectedElement;
 
   @State()
   private width: number = 100;
@@ -37,6 +39,8 @@ export class AppBlock {
   @Event() blockChange: EventEmitter<void>;
 
   private destroyListener;
+
+  private ignoreUpdateStyle: boolean = false;
 
   async componentWillLoad() {
     await this.initWidth();
@@ -69,33 +73,33 @@ export class AppBlock {
   }
 
   private async initPadding() {
-    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement);
+    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement?.element);
     const padding: number = parseInt(css.paddingTop);
     this.padding = isNaN(padding) ? 0 : padding;
   }
 
   private async initPaddingCSS() {
-    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement);
+    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement?.element);
     this.paddingCSS = css.padding;
   }
 
   private async initWidth() {
-    const width: number = parseInt(this.selectedElement?.style.width);
+    const width: number = parseInt(this.selectedElement?.element?.style.width);
     this.width = isNaN(width) ? 100 : width;
   }
 
   private async initWidthCSS() {
-    this.widthCSS = this.selectedElement?.style.width;
+    this.widthCSS = this.selectedElement?.element?.style.width;
   }
 
   private async initRotate() {
-    const matches: RegExpMatchArray | null = this.selectedElement?.style.transform.match(/(\d+)/);
+    const matches: RegExpMatchArray | null = this.selectedElement?.element?.style.transform.match(/(\d+)/);
     const rotate: number = parseInt(matches?.[0]);
     this.rotate = isNaN(rotate) ? 0 : rotate;
   }
 
   private async initTransformCSS() {
-    this.transformCSS = this.selectedElement?.style.transform;
+    this.transformCSS = this.selectedElement?.element?.style.transform;
   }
 
   private async updateWidth($event: CustomEvent<RangeChangeEventDetail>) {
@@ -107,7 +111,7 @@ export class AppBlock {
 
     this.width = $event.detail.value as number;
 
-    this.selectedElement.style.width = `${this.width}%`;
+    this.updateStyle({attr: 'width', value: `${this.width}%`});
 
     this.blockChange.emit();
   }
@@ -121,7 +125,7 @@ export class AppBlock {
       return;
     }
 
-    this.selectedElement.style.width = this.widthCSS;
+    this.updateStyle({attr: 'width', value: this.widthCSS});
 
     this.blockChange.emit();
   }
@@ -135,7 +139,7 @@ export class AppBlock {
 
     this.padding = $event.detail.value as number;
 
-    this.selectedElement.style.padding = `${this.padding}px`;
+    this.updateStyle({attr: 'padding', value: `${this.padding}px`});
 
     this.blockChange.emit();
   }
@@ -149,7 +153,7 @@ export class AppBlock {
       return;
     }
 
-    this.selectedElement.style.padding = this.paddingCSS;
+    this.updateStyle({attr: 'padding', value: this.paddingCSS});
 
     this.blockChange.emit();
   }
@@ -163,7 +167,7 @@ export class AppBlock {
 
     this.rotate = $event.detail.value as number;
 
-    this.selectedElement.style.transform = `rotate(${this.rotate}deg)`;
+    this.updateStyle({attr: 'transform', value: `rotate(${this.rotate}deg)`});
 
     this.blockChange.emit();
   }
@@ -177,9 +181,51 @@ export class AppBlock {
       return;
     }
 
-    this.selectedElement.style.transform = this.transformCSS;
+    this.updateStyle({attr: 'transform', value: this.transformCSS});
 
     this.blockChange.emit();
+  }
+
+  private updateStyle({attr, value}: {attr: 'transform' | 'width' | 'padding'; value: string}) {
+    if (this.ignoreUpdateStyle) {
+      this.ignoreUpdateStyle = false;
+      return;
+    }
+
+    setStyle(this.selectedElement.element, attr, {
+      value: value,
+      type: this.selectedElement.type,
+      updateUI: async () => {
+        // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
+        this.ignoreUpdateStyle = true;
+
+        if (settingsStore.state.editMode === 'css') {
+          switch (attr) {
+            case 'transform':
+              await this.initTransformCSS();
+              break;
+            case 'width':
+              await this.initWidthCSS();
+              break;
+            case 'padding':
+              await this.initPaddingCSS();
+          }
+
+          return;
+        }
+
+        switch (attr) {
+          case 'transform':
+            await this.initRotate();
+            break;
+          case 'width':
+            await this.initWidth();
+            break;
+          case 'padding':
+            await this.initPadding();
+        }
+      },
+    });
   }
 
   render() {

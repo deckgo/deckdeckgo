@@ -197,7 +197,7 @@ export class AppElementStyle {
       return undefined;
     }
 
-    return <app-block selectedElement={this.selectedElement.element} onBlockChange={() => this.emitStyleChange()}></app-block>;
+    return <app-block selectedElement={this.selectedElement} onBlockChange={() => this.emitStyleChange()}></app-block>;
   }
 
   private renderText() {
