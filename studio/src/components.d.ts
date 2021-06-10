@@ -79,7 +79,7 @@ export namespace Components {
         "selectedElement": SelectedElement;
     }
     interface AppBorderRadius {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppBottomSheet {
     }
@@ -1349,7 +1349,7 @@ declare namespace LocalJSX {
     }
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppBottomSheet {
         "onSheetChanged"?: (event: CustomEvent<'open' | 'close'>) => void;

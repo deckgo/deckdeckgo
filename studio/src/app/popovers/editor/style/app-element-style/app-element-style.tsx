@@ -217,7 +217,7 @@ export class AppElementStyle {
 
     if (this.selectedElement.type === 'element') {
       background.push(
-        <app-border-radius selectedElement={this.selectedElement.element} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
+        <app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
       );
       background.push(<app-box-shadow selectedElement={this.selectedElement.element} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>);
     }

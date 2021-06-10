@@ -5,24 +5,26 @@ import {RangeChangeEventDetail} from '@ionic/core';
 import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
 
-import {SettingsUtils} from '../../../../../utils/core/settings.utils';
-
 import {EditMode, Expanded} from '../../../../../types/core/settings';
+import { SelectedElement } from "../../../../../types/editor/selected-element";
+
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
 
 @Component({
   tag: 'app-border-radius',
 })
 export class AppBorderRadius {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedElement: SelectedElement;
 
   @State()
   private borderRadiuses: Map<string, number> = new Map([
-    ['General', 0],
-    ['TopLeft', 0],
-    ['TopRight', 0],
-    ['BottomLeft', 0],
-    ['BottomRight', 0],
+    ['general', 0],
+    ['top-left', 0],
+    ['top-right', 0],
+    ['bottom-left', 0],
+    ['bottom-right', 0],
   ]);
 
   @State()
@@ -36,6 +38,8 @@ export class AppBorderRadius {
   @Event() borderRadiusDidChange: EventEmitter<void>;
 
   private destroyListener;
+
+  private ignoreUpdateStyle: boolean = false;
 
   async componentWillLoad() {
     await this.initBorderRadius();
@@ -61,35 +65,35 @@ export class AppBorderRadius {
   }
 
   private async initBorderRadiusCSS() {
-    this.borderRadiusCSS = this.selectedElement?.style.borderRadius;
+    this.borderRadiusCSS = this.selectedElement?.element?.style.borderRadius;
   }
 
   private async initBorderRadius() {
-    if (!this.selectedElement || !window) {
+    if (!this.selectedElement || !this.selectedElement.element || !window) {
       return;
     }
 
-    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement);
+    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement.element);
 
     if (!style) {
       return;
     }
 
-    this.borderRadiuses.set('TopLeft', parseInt(style.borderTopLeftRadius));
-    this.borderRadiuses.set('TopRight', parseInt(style.borderTopRightRadius));
-    this.borderRadiuses.set('BottomRight', parseInt(style.borderBottomRightRadius));
-    this.borderRadiuses.set('BottomLeft', parseInt(style.borderBottomLeftRadius));
+    this.borderRadiuses.set('top-left', parseInt(style.borderTopLeftRadius));
+    this.borderRadiuses.set('top-right', parseInt(style.borderTopRightRadius));
+    this.borderRadiuses.set('bottom-right', parseInt(style.borderBottomRightRadius));
+    this.borderRadiuses.set('bottom-left', parseInt(style.borderBottomLeftRadius));
   }
 
   private async initCornersExpanded() {
     this.cornersExpanded = !(
-      this.borderRadiuses.get('TopLeft') === this.borderRadiuses.get('TopRight') &&
-      this.borderRadiuses.get('TopLeft') === this.borderRadiuses.get('BottomRight') &&
-      this.borderRadiuses.get('TopLeft') === this.borderRadiuses.get('BottomLeft')
+      this.borderRadiuses.get('top-left') === this.borderRadiuses.get('top-right') &&
+      this.borderRadiuses.get('top-left') === this.borderRadiuses.get('bottom-right') &&
+      this.borderRadiuses.get('top-left') === this.borderRadiuses.get('bottom-left')
     );
 
     if (!this.cornersExpanded) {
-      this.borderRadiuses.set('General', this.borderRadiuses.get('TopLeft'));
+      this.borderRadiuses.set('general', this.borderRadiuses.get('top-left'));
     }
   }
 
@@ -101,18 +105,26 @@ export class AppBorderRadius {
     if (!this.selectedElement || !$event || !$event.detail) {
       return;
     }
-    if (corner === 'General') {
+    if (corner === 'general') {
       this.borderRadiuses.forEach((_, key) => {
         this.borderRadiuses.set(key, $event.detail.value);
       });
-      this.selectedElement.style.borderRadius = `${$event.detail.value}px`;
+
+      this.updateStyle({attr: 'border-radius', value: `${$event.detail.value}px`});
     } else {
       this.borderRadiuses.set(corner, $event.detail.value);
-      this.selectedElement.style[`border${corner}Radius`] = `${$event.detail.value}px`;
+
+      this.updateStyle({attr: `border-${corner}-radius`, value: `${$event.detail.value}px`});
     }
-    this.borderRadiuses = new Map<string, number>(this.borderRadiuses);
+
+    this.updateBorderRadiuses();
 
     this.emitBorderRadiusChange();
+  }
+
+  // To apply a re-render
+  private updateBorderRadiuses() {
+    this.borderRadiuses = new Map<string, number>(this.borderRadiuses);
   }
 
   private selectCornersToShow($event: CustomEvent) {
@@ -127,9 +139,36 @@ export class AppBorderRadius {
   }
 
   private async updateBorderRadiusCSS() {
-    this.selectedElement.style.borderRadius = this.borderRadiusCSS;
+    this.selectedElement.element.style.borderRadius = this.borderRadiusCSS;
 
     this.emitBorderRadiusChange();
+  }
+
+  private updateStyle({attr, value}: {attr: string; value: string}) {
+    if (this.ignoreUpdateStyle) {
+      this.ignoreUpdateStyle = false;
+      return;
+    }
+
+    setStyle(this.selectedElement.element, attr, {
+      value: value,
+      type: this.selectedElement.type,
+      updateUI: async () => {
+        // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
+        this.ignoreUpdateStyle = true;
+
+        if (settingsStore.state.editMode === 'css') {
+          await this.initBorderRadiusCSS();
+
+          return;
+        }
+
+        await this.initBorderRadius();
+        await this.initCornersExpanded();
+
+        this.updateBorderRadiuses();
+      },
+    });
   }
 
   render() {
@@ -150,13 +189,13 @@ export class AppBorderRadius {
               <ion-select-option value={true}>{i18n.state.editor.individual_corners}</ion-select-option>
             </ion-select>
           </ion-item>
-          {!this.cornersExpanded ? this.renderOption('General', 'Every corner') : undefined}
+          {!this.cornersExpanded ? this.renderOption('general', 'Every corner') : undefined}
           {this.cornersExpanded && (
             <Fragment>
-              {this.renderOption('TopLeft', i18n.state.editor.top_left)}
-              {this.renderOption('TopRight', i18n.state.editor.top_right)}
-              {this.renderOption('BottomRight', i18n.state.editor.bottom_right)}
-              {this.renderOption('BottomLeft', i18n.state.editor.bottom_left)}
+              {this.renderOption('top-left', i18n.state.editor.top_left)}
+              {this.renderOption('top-right', i18n.state.editor.top_right)}
+              {this.renderOption('bottom-right', i18n.state.editor.bottom_right)}
+              {this.renderOption('bottom-left', i18n.state.editor.bottom_left)}
             </Fragment>
           )}
         </ion-list>
@@ -175,7 +214,7 @@ export class AppBorderRadius {
     );
   }
 
-  private renderOption(option: 'General' | 'TopLeft' | 'TopRight' | 'BottomRight' | 'BottomLeft', text: string) {
+  private renderOption(option: 'general' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left', text: string) {
     const borderRadius: number = this.borderRadiuses.get(option);
 
     return [
