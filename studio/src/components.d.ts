@@ -84,7 +84,7 @@ export namespace Components {
     interface AppBottomSheet {
     }
     interface AppBoxShadow {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppBreadcrumbs {
         "slideNumber": number;
@@ -1356,7 +1356,7 @@ declare namespace LocalJSX {
     }
     interface AppBoxShadow {
         "onBoxShadowDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
