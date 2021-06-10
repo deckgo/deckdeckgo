@@ -53,7 +53,7 @@ export class AppText {
   private destroyListener;
 
   // When we update states on undo / redo it triggers a rerender which triggers the onChange events of Ionic components
-  private ignoreNextChange: boolean = false;
+  private ignoreUpdateStyle: boolean = false;
 
   async componentWillLoad() {
     await this.init();
@@ -110,10 +110,6 @@ export class AppText {
     return LetterSpacing.NORMAL;
   }
 
-  private emitLetterSpacingChange() {
-    this.textDidChange.emit();
-  }
-
   private async updateLetterSpacing($event: CustomEvent): Promise<void> {
     if (!this.selectedElement || !this.selectedElement.element || !$event || !$event.detail) {
       return;
@@ -142,10 +138,10 @@ export class AppText {
       default:
         letterSpacingConverted = 'normal';
     }
-    this.letterSpacing = $event.detail.value;
-    this.selectedElement.element.style.letterSpacing = letterSpacingConverted;
 
-    this.emitLetterSpacingChange();
+    this.letterSpacing = $event.detail.value;
+
+    this.updateLetterSpacingCSS(letterSpacingConverted);
   }
 
   private async initCSS() {
@@ -158,10 +154,52 @@ export class AppText {
     this.letterSpacingCSS = ($event.target as InputTargetEvent).value;
   }
 
-  private async updateLetterSpacingCSS() {
-    this.selectedElement.element.style.letterSpacing = this.letterSpacingCSS;
+  private updateLetterSpacingCSS(letterSpacingCSS: string) {
+    this.updateStyle({attr: 'letter-spacing', value: letterSpacingCSS});
 
-    this.emitLetterSpacingChange();
+    this.textDidChange.emit();
+  }
+
+  private updateStyle({attr, value}: {attr: 'letter-spacing' | 'text-align' | 'font-size'; value: string}) {
+    if (this.ignoreUpdateStyle) {
+      this.ignoreUpdateStyle = false;
+      return;
+    }
+
+    setStyle(this.selectedElement.element, attr, {
+      value: value,
+      type: this.selectedElement.type,
+      updateUI: async () => {
+        // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
+        this.ignoreUpdateStyle = true;
+
+        if (settingsStore.state.editMode === 'css') {
+          switch (attr) {
+            case 'letter-spacing':
+              this.letterSpacingCSS = this.selectedElement?.element?.style.letterSpacing;
+              break;
+            case 'font-size':
+              this.fontSizeCSS = this.selectedElement?.element?.style.fontSize;
+              break;
+            case 'text-align':
+              this.alignCSS = this.selectedElement?.element?.style.textAlign;
+          }
+
+          return;
+        }
+
+        switch (attr) {
+          case 'letter-spacing':
+            this.letterSpacing = await this.initLetterSpacing();
+            break;
+          case 'font-size':
+            this.fontSize = await initFontSize(this.selectedElement?.element);
+            break;
+          case 'text-align':
+            this.align = await AlignUtils.getAlignment(this.selectedElement?.element);
+        }
+      },
+    });
   }
 
   private async updateAlign($event: CustomEvent): Promise<void> {
@@ -169,33 +207,27 @@ export class AppText {
       return;
     }
 
-    this.selectedElement.element.style.textAlign = $event.detail.value;
     this.align = $event.detail.value;
 
-    this.textDidChange.emit();
+    this.updateAlignCSS($event.detail.value);
   }
 
   private handleAlignInput($event: CustomEvent<KeyboardEvent>) {
     this.alignCSS = ($event.target as InputTargetEvent).value as TextAlign;
   }
 
-  private updateAlignCSS() {
+  private updateAlignCSS(alignCSS: string) {
     if (!this.selectedElement || !this.selectedElement.element) {
       return;
     }
 
-    this.selectedElement.element.style.textAlign = this.alignCSS;
+    this.updateStyle({attr: 'text-align', value: alignCSS});
 
     this.textDidChange.emit();
   }
 
   private async toggleFontSize($event: CustomEvent) {
     if (!$event || !$event.detail) {
-      return;
-    }
-
-    if (this.ignoreNextChange) {
-      this.ignoreNextChange = false;
       return;
     }
 
@@ -211,24 +243,15 @@ export class AppText {
       return;
     }
 
-    setStyle(this.selectedElement.element, 'font-size', {
-      value: size,
-      type: this.selectedElement.type,
-      updateUI: async () => {
-        this.ignoreNextChange = true;
-        this.fontSize = await initFontSize(this.selectedElement?.element);
-      },
-    });
-
-    this.textDidChange.emit();
+    this.updateFontSizeCSS(size);
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
     this.fontSizeCSS = ($event.target as InputTargetEvent).value;
   }
 
-  private async updateFontSizeCSS() {
-    this.selectedElement.element.style.setProperty('font-size', this.fontSizeCSS);
+  private updateFontSizeCSS(size: string) {
+    this.updateStyle({attr: 'font-size', value: size});
 
     this.textDidChange.emit();
   }
@@ -280,7 +303,7 @@ export class AppText {
             placeholder="font-size"
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-            onIonChange={async () => await this.updateFontSizeCSS()}></ion-input>
+            onIonChange={() => this.updateFontSizeCSS(this.fontSizeCSS)}></ion-input>
         </ion-item>
       </Fragment>
     );
@@ -318,7 +341,7 @@ export class AppText {
             placeholder={i18n.state.editor.letter_spacing}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleLetterSpacingInput(e)}
-            onIonChange={async () => await this.updateLetterSpacingCSS()}></ion-input>
+            onIonChange={() => this.updateLetterSpacingCSS(this.letterSpacingCSS)}></ion-input>
         </ion-item>
       </Fragment>
     );
@@ -357,7 +380,7 @@ export class AppText {
             placeholder={i18n.state.editor.text_align}
             debounce={500}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleAlignInput(e)}
-            onIonChange={() => this.updateAlignCSS()}></ion-input>
+            onIonChange={() => this.updateAlignCSS(this.alignCSS)}></ion-input>
         </ion-item>
       </Fragment>
     );
