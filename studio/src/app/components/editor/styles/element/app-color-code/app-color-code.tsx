@@ -101,19 +101,7 @@ export class AppColorCode {
 
     this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
 
-    const redoType: CodeColorType = this.codeColorType;
-
-    setStyle(this.selectedElement, this.getStyle(), {
-      value: $event.detail,
-      type: 'element',
-      updateUI: async (_value: string) => {
-        await this.colorCodeRef.loadColor();
-
-        this.codeColorType = redoType;
-      }
-    });
-
-    this.emitCodeChange();
+    this.updateStyle($event.detail);
   }
 
   private async toggleColorType($event: CustomEvent) {
@@ -156,7 +144,21 @@ export class AppColorCode {
       return;
     }
 
-    this.selectedElement.style.removeProperty(this.getStyle());
+    this.updateStyle(undefined);
+  }
+
+  private updateStyle(value: string | undefined) {
+    const redoType: CodeColorType = this.codeColorType;
+
+    setStyle(this.selectedElement, this.getStyle(), {
+      value,
+      type: 'element',
+      updateUI: async (_value: string) => {
+        await this.colorCodeRef.loadColor();
+
+        this.codeColorType = redoType;
+      }
+    });
 
     this.emitCodeChange();
   }
