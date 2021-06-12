@@ -5,6 +5,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
+import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
 
 enum CodeColorType {
   COMMENTS,
@@ -99,6 +100,18 @@ export class AppColorCode {
     }
 
     this.selectedElement.style.setProperty(this.getStyle(), $event.detail);
+
+    const redoType: CodeColorType = this.codeColorType;
+
+    setStyle(this.selectedElement, this.getStyle(), {
+      value: $event.detail,
+      type: 'element',
+      updateUI: async (_value: string) => {
+        await this.colorCodeRef.loadColor();
+
+        this.codeColorType = redoType;
+      }
+    });
 
     this.emitCodeChange();
   }
