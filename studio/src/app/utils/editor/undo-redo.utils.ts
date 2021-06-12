@@ -17,8 +17,6 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
 
   target.setAttribute(attribute, value);
 
-  emitDidUpdate({target, eventName: 'deckDidChange'});
-
   updateUI(value);
 };
 

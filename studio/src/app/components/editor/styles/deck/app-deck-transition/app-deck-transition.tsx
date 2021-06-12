@@ -17,6 +17,8 @@ export class AppDeckTransition {
   @Prop()
   deckElement: HTMLDeckgoDeckElement;
 
+  @Event() private transitionChange: EventEmitter<void>;
+
   @Event() deckNeedChange: EventEmitter<DeckAction>;
 
   @State()
@@ -152,6 +154,8 @@ export class AppDeckTransition {
       },
     });
 
+    this.transitionChange.emit();
+
     await this.deckElement.initSlideSize();
   }
 
@@ -181,6 +185,8 @@ export class AppDeckTransition {
       value: animation,
       updateUI: (value: string) => (this.selectedAnimation = value as 'slide' | 'fade' | 'none'),
     });
+
+    this.transitionChange.emit();
   }
 
   private async selectDevice($event: CustomEvent) {
