@@ -6,6 +6,7 @@ import {isSlide} from '@deckdeckgo/deck-utils';
 
 import store from '../../../../../stores/busy.store';
 import i18n from '../../../../../stores/i18n.store';
+import undoRedoStore from '../../../../../stores/undo-redo.store';
 
 import {ImageHelper} from '../../../../../helpers/editor/image.helper';
 import {ShapeHelper} from '../../../../../helpers/editor/shape.helper';
@@ -66,6 +67,26 @@ export class AppActionsElement {
   private shapeHelper: ShapeHelper;
 
   @Event() private resetted: EventEmitter<void>;
+
+  private observeElementMutations = () => {
+    if (undoRedoStore.state.elementInnerHTML === undefined) {
+      return;
+    }
+
+    if (undoRedoStore.state.elementInnerHTML === this.selectedElement.element.innerHTML) {
+      return;
+    }
+
+    if (undoRedoStore.state.undo === undefined) {
+      undoRedoStore.state.undo = [];
+    }
+
+    undoRedoStore.state.undo.push({type: 'input', target: this.selectedElement.element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
+
+    undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
+  };
+
+  private observer: MutationObserver = new MutationObserver(this.observeElementMutations);
 
   constructor() {
     this.debounceResizeSlideContent = debounce(async () => {
@@ -133,17 +154,27 @@ export class AppActionsElement {
   }
 
   @Method()
-  touch(element: HTMLElement, autoOpen: boolean = true): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.unSelect();
-      await this.select(element, autoOpen);
+  async touch(element: HTMLElement | undefined, autoOpen: boolean = true) {
+    await this.unSelect();
+    await this.select(element, autoOpen);
 
-      if (element) {
-        element.focus();
-      }
+    if (!element) {
+      return;
+    }
 
-      resolve();
-    });
+    element.focus();
+
+    if (this.selectedElement?.type === 'element') {
+      this.observer.takeRecords();
+      this.observer.observe(this.selectedElement.element, {attributes: true, childList: true, subtree: true});
+
+      undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
+      return;
+    }
+
+    this.observer.disconnect();
+
+    undoRedoStore.state.elementInnerHTML = undefined;
   }
 
   @Method()

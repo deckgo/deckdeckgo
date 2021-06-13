@@ -33,6 +33,8 @@ export class AppColor {
   @State()
   private colorCSS: string;
 
+  private skipNextColorCSSEmit: boolean = false;
+
   @Event()
   colorDidChange: EventEmitter<string>;
 
@@ -78,6 +80,8 @@ export class AppColor {
     await this.initColorStateRgb(rgb);
 
     this.opacity = opacity ? opacity : 100;
+
+    this.skipNextColorCSSEmit = true;
 
     await this.initColorCSS();
   }
@@ -126,6 +130,8 @@ export class AppColor {
     }
 
     $event.stopPropagation();
+
+    this.skipNextColorCSSEmit = true;
 
     await this.initColorStateRgb(color.rgb);
     await this.initColorCSS();
@@ -218,6 +224,11 @@ export class AppColor {
   }
 
   private async updateColorCSS() {
+    if (this.skipNextColorCSSEmit) {
+      this.skipNextColorCSSEmit = false;
+      return;
+    }
+
     this.colorDidChange.emit(this.colorCSS);
   }
 

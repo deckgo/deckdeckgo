@@ -167,7 +167,7 @@ export class DeckEventsHandler {
     this.debounceUpdateSlide(parent);
   };
 
-  private onInputChange = async ($event: Event) => {
+  private onInputChange = async ($event: InputEvent) => {
     if (!$event || !$event.target || !($event.target instanceof HTMLElement)) {
       return;
     }

@@ -9,7 +9,7 @@ interface EditorStore {
 
 const {state} = createStore<EditorStore>({
   step: BreadcrumbsStep.DECK,
-  style: null,
+  style: null
 });
 
 export default {state};

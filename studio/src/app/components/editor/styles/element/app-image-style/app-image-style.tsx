@@ -8,6 +8,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {EditMode, Expanded} from '../../../../../types/core/settings';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 enum ImageSize {
   SMALL = '25%',
@@ -47,9 +48,10 @@ export class AppImageStyle {
 
   private destroyListener;
 
+  private ignoreUpdateStyle: boolean = false;
+
   async componentWillLoad() {
-    this.currentImageSize = await this.initImageSize();
-    this.currentImageAlignment = await this.initImageAlignment();
+    await this.init();
 
     this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
       if (edit === 'css') {
@@ -57,8 +59,7 @@ export class AppImageStyle {
         return;
       }
 
-      this.currentImageSize = await this.initImageSize();
-      this.currentImageAlignment = await this.initImageAlignment();
+      await this.init();
     });
   }
 
@@ -66,6 +67,12 @@ export class AppImageStyle {
     if (this.destroyListener) {
       this.destroyListener();
     }
+  }
+
+  private async init() {
+    this.currentImageSize = await this.initImageSize();
+    this.currentImageAlignment = await this.initImageAlignment();
+
   }
 
   private async initCSS() {
@@ -132,53 +139,69 @@ export class AppImageStyle {
     });
   }
 
-  private toggleImageSize($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private toggleImageSize($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      this.currentImageSize = $event.detail.value;
+    this.currentImageSize = $event.detail.value;
 
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
+    if (!this.selectedElement) {
+      return;
+    }
 
-      if (this.currentImageSize === ImageSize.ORIGINAL) {
-        this.selectedElement.style.removeProperty('--deckgo-lazy-img-height');
-      } else {
-        this.selectedElement.style.setProperty('--deckgo-lazy-img-height', this.currentImageSize);
-      }
-
-      this.imgDidChange.emit(this.selectedElement);
-
-      resolve();
-    });
+    this.updateStyle([{
+      property: '--deckgo-lazy-img-height',
+      value: this.currentImageSize === ImageSize.ORIGINAL ? null : this.currentImageSize
+    }]);
   }
 
-  private toggleImageAlignment($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private toggleImageAlignment($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      this.currentImageAlignment = $event.detail.value;
+    this.currentImageAlignment = $event.detail.value;
 
-      if (!this.selectedElement) {
-        resolve();
-        return;
-      }
+    if (!this.selectedElement) {
+      return;
+    }
 
-      this.selectedElement.style.setProperty('display', 'inline-flex');
-      this.selectedElement.style.setProperty('justify-content', this.currentImageAlignment);
+    this.updateStyle([
+      {
+        property: 'display',
+        value: 'inline-flex',
+      },
+      {
+        property: 'justify-content',
+        value: this.currentImageAlignment.toString(),
+      },
+    ]);
+  }
 
-      this.imgDidChange.emit(this.selectedElement);
+  private updateStyle(properties: {property: string; value: string | null}[]) {
+    if (this.ignoreUpdateStyle) {
+      this.ignoreUpdateStyle = false;
+      return;
+    }
 
-      resolve();
+    setStyle(this.selectedElement, {
+      properties,
+      type: 'element',
+      updateUI: async (_value: string) => {
+        // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
+        this.ignoreUpdateStyle = true;
+
+        if (settingsStore.state.editMode === 'css') {
+          await this.initCSS();
+          return;
+        }
+
+        await this.init();
+      },
     });
+
+    this.imgDidChange.emit(this.selectedElement);
   }
 
   private handleImageHeightInput($event: CustomEvent<KeyboardEvent>) {
@@ -232,7 +255,7 @@ export class AppImageStyle {
         <ion-select
           value={this.currentImageSize}
           placeholder="Select an image size"
-          onIonChange={(e: CustomEvent) => this.toggleImageSize(e)}
+          onIonChange={($event: CustomEvent) => this.toggleImageSize($event)}
           interface="popover"
           mode="md"
           class="ion-padding-start ion-padding-end">
@@ -266,7 +289,7 @@ export class AppImageStyle {
         <ion-select
           value={this.currentImageAlignment}
           placeholder="Align the image"
-          onIonChange={(e: CustomEvent) => this.toggleImageAlignment(e)}
+          onIonChange={($event: CustomEvent) => this.toggleImageAlignment($event)}
           interface="popover"
           mode="md"
           class="ion-padding-start ion-padding-end">

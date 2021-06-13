@@ -6,12 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
+import { SelectedElement } from "./app/types/editor/selected-element";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck } from "./app/models/data/deck";
 import { DeckDashboardCloneResult } from "./app/services/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
-import { SelectedElement } from "./app/types/editor/selected-element";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
 import { Expanded } from "./app/types/core/settings";
@@ -66,7 +66,7 @@ export namespace Components {
         "reset": () => Promise<void>;
         "slideCopy": EventEmitter;
         "slideTransform": EventEmitter;
-        "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
+        "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
     interface AppAvatar {
@@ -76,15 +76,15 @@ export namespace Components {
     interface AppBackgroundFolders {
     }
     interface AppBlock {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppBorderRadius {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppBottomSheet {
     }
     interface AppBoxShadow {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppBreadcrumbs {
         "slideNumber": number;
@@ -404,7 +404,7 @@ export namespace Components {
     interface AppTemplatesUser {
     }
     interface AppText {
-        "selectedElement": HTMLElement;
+        "selectedElement": SelectedElement;
     }
     interface AppTransformElement {
         "selectedElement": HTMLElement;
@@ -1345,18 +1345,18 @@ declare namespace LocalJSX {
     }
     interface AppBlock {
         "onBlockChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppBorderRadius {
         "onBorderRadiusDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppBottomSheet {
         "onSheetChanged"?: (event: CustomEvent<'open' | 'close'>) => void;
     }
     interface AppBoxShadow {
         "onBoxShadowDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppBreadcrumbs {
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
@@ -1726,7 +1726,7 @@ declare namespace LocalJSX {
     }
     interface AppText {
         "onTextDidChange"?: (event: CustomEvent<void>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: SelectedElement;
     }
     interface AppTransformElement {
         "selectedElement"?: HTMLElement;

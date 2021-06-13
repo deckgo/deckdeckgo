@@ -4,6 +4,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {FontsService} from '../../../../../services/editor/fonts/fonts.service';
 
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
+
 @Component({
   tag: 'app-deck-fonts',
   styleUrl: 'app-deck-fonts.scss',
@@ -51,15 +53,13 @@ export class AppDeckFonts {
       return;
     }
 
-    if (!font) {
-      this.deckElement.style.removeProperty('font-family');
-    } else {
-      this.deckElement.style.setProperty('font-family', font.family);
-    }
+    setStyle(this.deckElement, {
+      properties: [{value: !font ? null : font.family, property: 'font-family'}],
+      type: 'deck',
+      updateUI: async () => await this.initSelectedFont(),
+    });
 
     this.fontsChange.emit();
-
-    await this.initSelectedFont();
   }
 
   render() {

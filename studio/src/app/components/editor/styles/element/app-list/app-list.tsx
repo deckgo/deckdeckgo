@@ -2,6 +2,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
+import undoRedoStore from "../../../../../stores/undo-redo.store";
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {ListStyle} from '../../../../../types/editor/list-style';
@@ -10,6 +11,7 @@ import {EditMode, Expanded} from '../../../../../types/core/settings';
 import {ListUtils} from '../../../../../utils/editor/list.utils';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
   tag: 'app-list',
@@ -34,11 +36,12 @@ export class AppList {
 
   private destroyListener;
 
+  private ignoreUpdateStyle: boolean = false;
+
   async componentWillLoad() {
     this.listType = ListUtils.isElementList(this.selectedElement);
 
     await this.initListStyle();
-
     await this.initListStyleCSS();
 
     this.destroyListener = settingsStore.onChange('editMode', async (edit: EditMode) => {
@@ -76,7 +79,15 @@ export class AppList {
 
     this.listType = $event.detail.value;
 
-    await this.removeStyle();
+    // Remove style with undo redo as we are going to replace the element in the dom
+    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+      this.selectedElement.style['--reveal-list-style'] = '';
+    } else {
+      this.selectedElement.style.listStyleType = '';
+    }
+
+    // We have to clear the history undo redo too
+    undoRedoStore.reset();
 
     this.toggleList.emit(this.listType);
   }
@@ -86,27 +97,18 @@ export class AppList {
       return;
     }
 
-    await this.updateStyle($event.detail.value);
+    await this.applyStyle($event.detail.value);
   }
 
-  private async updateStyle(style: ListStyle) {
+  private async applyStyle(style: ListStyle) {
     this.selectedStyle = style;
 
-    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-      this.selectedElement.style['--reveal-list-style'] = this.selectedStyle;
-    } else {
-      this.selectedElement.style.listStyleType = this.selectedStyle;
-    }
+    this.updateStyle({
+      property: SlotUtils.isNodeRevealList(this.selectedElement) ? '--reveal-list-style' : 'list-style-type',
+      value: this.selectedStyle,
+    });
 
     this.listStyleChanged.emit();
-  }
-
-  private async removeStyle() {
-    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-      this.selectedElement.style['--reveal-list-style'] = '';
-    } else {
-      this.selectedElement.style.listStyleType = '';
-    }
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
@@ -121,6 +123,36 @@ export class AppList {
     }
 
     this.listStyleChanged.emit();
+
+    this.updateStyle({
+      property: SlotUtils.isNodeRevealList(this.selectedElement) ? '--reveal-list-style' : 'list-style-type',
+      value: this.listStyleCSS,
+    });
+
+    this.listStyleChanged.emit();
+  }
+
+  private updateStyle(property: {property: string; value: string | null}) {
+    if (this.ignoreUpdateStyle) {
+      this.ignoreUpdateStyle = false;
+      return;
+    }
+
+    setStyle(this.selectedElement, {
+      properties: [property],
+      type: 'element',
+      updateUI: async (_value: string) => {
+        // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
+        this.ignoreUpdateStyle = true;
+
+        if (settingsStore.state.editMode === 'css') {
+          await this.initListStyleCSS();
+          return;
+        }
+
+        await this.initListStyle();
+      },
+    });
   }
 
   render() {
@@ -167,7 +199,7 @@ export class AppList {
               placeholder="list-style-type"
               debounce={500}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-              onIonChange={async () => await this.updateLetterSpacingCSS()}></ion-input>
+              onIonChange={() => this.updateLetterSpacingCSS()}></ion-input>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

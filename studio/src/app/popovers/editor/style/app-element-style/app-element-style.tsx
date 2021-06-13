@@ -197,11 +197,11 @@ export class AppElementStyle {
       return undefined;
     }
 
-    return <app-block selectedElement={this.selectedElement.element} onBlockChange={() => this.emitStyleChange()}></app-block>;
+    return <app-block selectedElement={this.selectedElement} onBlockChange={() => this.emitStyleChange()}></app-block>;
   }
 
   private renderText() {
-    return <app-text selectedElement={this.selectedElement.element} onTextDidChange={() => this.emitStyleChange()}></app-text>;
+    return <app-text selectedElement={this.selectedElement} onTextDidChange={() => this.emitStyleChange()}></app-text>;
   }
 
   private renderBackground() {
@@ -217,9 +217,9 @@ export class AppElementStyle {
 
     if (this.selectedElement.type === 'element') {
       background.push(
-        <app-border-radius selectedElement={this.selectedElement.element} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
+        <app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
       );
-      background.push(<app-box-shadow selectedElement={this.selectedElement.element} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>);
+      background.push(<app-box-shadow selectedElement={this.selectedElement} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>);
     }
 
     return background;

@@ -5,6 +5,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {DeckAction} from '../../../../../types/editor/deck-action';
 
+import {setAttribute} from '../../../../../utils/editor/undo-redo.utils';
+
 @Component({
   tag: 'app-deck-transition',
   styleUrl: 'app-deck-transition.scss',
@@ -141,9 +143,16 @@ export class AppDeckTransition {
 
     await this.goToFirstSlide();
 
-    this.deckElement.setAttribute(this.device === 'mobile' ? 'direction-mobile' : 'direction', direction);
+    const resetDevice: 'desktop' | 'mobile' = this.device;
 
-    this.selectedDirection = direction;
+    setAttribute(this.deckElement, {
+      attribute: this.device === 'mobile' ? 'direction-mobile' : 'direction',
+      value: direction,
+      updateUI: (value: string) => {
+        this.device = resetDevice;
+        this.selectedDirection = value as 'horizontal' | 'vertical' | 'papyrus';
+      },
+    });
 
     this.transitionChange.emit();
 
@@ -171,9 +180,11 @@ export class AppDeckTransition {
       return;
     }
 
-    this.deckElement.setAttribute('animation', animation);
-
-    this.selectedAnimation = animation;
+    setAttribute(this.deckElement, {
+      attribute: 'animation',
+      value: animation,
+      updateUI: (value: string) => (this.selectedAnimation = value as 'slide' | 'fade' | 'none'),
+    });
 
     this.transitionChange.emit();
   }
