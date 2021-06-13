@@ -110,11 +110,11 @@ export class AppBorderRadius {
         this.borderRadiuses.set(key, $event.detail.value);
       });
 
-      this.updateStyle({attr: 'border-radius', value: `${$event.detail.value}px`});
+      this.updateStyle({property: 'border-radius', value: `${$event.detail.value}px`});
     } else {
       this.borderRadiuses.set(corner, $event.detail.value);
 
-      this.updateStyle({attr: `border-${corner}-radius`, value: `${$event.detail.value}px`});
+      this.updateStyle({property: `border-${corner}-radius`, value: `${$event.detail.value}px`});
     }
 
     this.updateBorderRadiuses();
@@ -144,14 +144,14 @@ export class AppBorderRadius {
     this.emitBorderRadiusChange();
   }
 
-  private updateStyle({attr, value}: {attr: string; value: string}) {
+  private updateStyle({property, value}: {property: string; value: string}) {
     if (this.ignoreUpdateStyle) {
       this.ignoreUpdateStyle = false;
       return;
     }
 
-    setStyle(this.selectedElement.element, attr, {
-      values: [value],
+    setStyle(this.selectedElement.element, {
+      properties: [{property, value}],
       type: this.selectedElement.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again

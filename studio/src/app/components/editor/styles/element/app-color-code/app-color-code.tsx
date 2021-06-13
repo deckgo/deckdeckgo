@@ -144,14 +144,14 @@ export class AppColorCode {
       return;
     }
 
-    this.updateStyle();
+    this.updateStyle(null);
   }
 
-  private updateStyle(value?: string) {
+  private updateStyle(value: string | null) {
     const redoType: CodeColorType = this.codeColorType;
 
-    setStyle(this.selectedElement, this.getStyle(), {
-      values: value ? [value] : null,
+    setStyle(this.selectedElement,  {
+      properties: [{property: this.getStyle(), value}],
       type: 'element',
       updateUI: async (_value: string) => {
         await this.colorCodeRef.loadColor();

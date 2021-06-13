@@ -203,8 +203,8 @@ export class AppBoxShadow {
       return;
     }
 
-    setStyle(this.selectedElement.element, 'box-shadow', {
-      values: [value],
+    setStyle(this.selectedElement.element,  {
+      properties: [{property: 'box-shadow', value}],
       type: this.selectedElement.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again

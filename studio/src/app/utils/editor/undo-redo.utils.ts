@@ -22,13 +22,12 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
 
 export const setStyle = (
   target: HTMLElement,
-  property: string,
   {
-    values,
+    properties,
     type,
     updateUI,
   }: {
-    values: string[] | null;
+    properties: [{property: string; value: string | null}];
     type: 'deck' | 'slide' | 'element';
     updateUI: (value: string) => Promise<void>;
   }
@@ -45,12 +44,14 @@ export const setStyle = (
 
   undoRedoStore.state.redo = [];
 
-  if (values === null) {
-    target.style.removeProperty(property);
-    return;
-  }
+  properties.forEach(({property, value}) => {
+    if (value === null) {
+      target.style.removeProperty(property);
+      return;
+    }
 
-  values.forEach((value: string) => target.style.setProperty(property, value));
+    target.style.setProperty(property, value);
+  });
 };
 
 export const undo = async ($event: KeyboardEvent) => {

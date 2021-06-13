@@ -53,8 +53,8 @@ export class AppDeckFonts {
       return;
     }
 
-    setStyle(this.deckElement, 'font-family', {
-      values: !font ? null : [font.family],
+    setStyle(this.deckElement, {
+      properties: [{value: !font ? null : font.family, property: 'font-family'}],
       type: 'deck',
       updateUI: async () => await this.initSelectedFont(),
     });

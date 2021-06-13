@@ -88,10 +88,10 @@ export class AppColorTextBackground {
       return;
     }
 
-    setStyle(this.selectedElement, this.deck || this.slide ? '--color' : 'color', {
-      values: [selectedColor],
-      type: this.deck ? 'deck' : (this.slide ? 'slide' : 'element'),
-      updateUI: async (_value: string) => await this.colorRef.loadColor()
+    setStyle(this.selectedElement, {
+      properties: [{property: this.deck || this.slide ? '--color' : 'color', value: selectedColor}],
+      type: this.deck ? 'deck' : this.slide ? 'slide' : 'element',
+      updateUI: async (_value: string) => await this.colorRef.loadColor(),
     });
 
     this.colorChange.emit();
@@ -102,10 +102,10 @@ export class AppColorTextBackground {
       return;
     }
 
-    setStyle(this.selectedElement, this.deck || this.slide ? '--background' : 'background', {
-      values: [selectedColor],
-      type: this.deck ? 'deck' : (this.slide ? 'slide' : 'element'),
-      updateUI: async (_value: string) => await this.colorRef.loadColor()
+    setStyle(this.selectedElement, {
+      properties: [{value: selectedColor, property: this.deck || this.slide ? '--background' : 'background'}],
+      type: this.deck ? 'deck' : this.slide ? 'slide' : 'element',
+      updateUI: async (_value: string) => await this.colorRef.loadColor(),
     });
 
     this.colorChange.emit();
@@ -118,7 +118,8 @@ export class AppColorTextBackground {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.color}</ion-label>
 
-        <app-color ref={(el) => this.colorRef = el as HTMLAppColorElement}
+        <app-color
+          ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           initColor={this.colorType === 'background' ? this.initBackground : this.initColor}
           onResetColor={() => this.resetColor()}
           defaultColor={this.colorType === 'background' ? '#fff' : '#000'}

@@ -155,26 +155,26 @@ export class AppText {
   }
 
   private updateLetterSpacingCSS(letterSpacingCSS: string) {
-    this.updateStyle({attr: 'letter-spacing', value: letterSpacingCSS});
+    this.updateStyle({property: 'letter-spacing', value: letterSpacingCSS});
 
     this.textDidChange.emit();
   }
 
-  private updateStyle({attr, value}: {attr: 'letter-spacing' | 'text-align' | 'font-size'; value: string}) {
+  private updateStyle({property, value}: {property: 'letter-spacing' | 'text-align' | 'font-size'; value: string}) {
     if (this.ignoreUpdateStyle) {
       this.ignoreUpdateStyle = false;
       return;
     }
 
-    setStyle(this.selectedElement.element, attr, {
-      values: [value],
+    setStyle(this.selectedElement.element, {
+      properties: [{property, value}],
       type: this.selectedElement.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
         this.ignoreUpdateStyle = true;
 
         if (settingsStore.state.editMode === 'css') {
-          switch (attr) {
+          switch (property) {
             case 'letter-spacing':
               this.letterSpacingCSS = this.selectedElement?.element?.style.letterSpacing;
               break;
@@ -188,7 +188,7 @@ export class AppText {
           return;
         }
 
-        switch (attr) {
+        switch (property) {
           case 'letter-spacing':
             this.letterSpacing = await this.initLetterSpacing();
             break;
@@ -221,7 +221,7 @@ export class AppText {
       return;
     }
 
-    this.updateStyle({attr: 'text-align', value: alignCSS});
+    this.updateStyle({property: 'text-align', value: alignCSS});
 
     this.textDidChange.emit();
   }
@@ -251,7 +251,7 @@ export class AppText {
   }
 
   private updateFontSizeCSS(size: string) {
-    this.updateStyle({attr: 'font-size', value: size});
+    this.updateStyle({property: 'font-size', value: size});
 
     this.textDidChange.emit();
   }

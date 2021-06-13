@@ -111,7 +111,7 @@ export class AppBlock {
 
     this.width = $event.detail.value as number;
 
-    this.updateStyle({attr: 'width', value: `${this.width}%`});
+    this.updateStyle({property: 'width', value: `${this.width}%`});
 
     this.blockChange.emit();
   }
@@ -125,7 +125,7 @@ export class AppBlock {
       return;
     }
 
-    this.updateStyle({attr: 'width', value: this.widthCSS});
+    this.updateStyle({property: 'width', value: this.widthCSS});
 
     this.blockChange.emit();
   }
@@ -139,7 +139,7 @@ export class AppBlock {
 
     this.padding = $event.detail.value as number;
 
-    this.updateStyle({attr: 'padding', value: `${this.padding}px`});
+    this.updateStyle({property: 'padding', value: `${this.padding}px`});
 
     this.blockChange.emit();
   }
@@ -153,7 +153,7 @@ export class AppBlock {
       return;
     }
 
-    this.updateStyle({attr: 'padding', value: this.paddingCSS});
+    this.updateStyle({property: 'padding', value: this.paddingCSS});
 
     this.blockChange.emit();
   }
@@ -167,7 +167,7 @@ export class AppBlock {
 
     this.rotate = $event.detail.value as number;
 
-    this.updateStyle({attr: 'transform', value: `rotate(${this.rotate}deg)`});
+    this.updateStyle({property: 'transform', value: `rotate(${this.rotate}deg)`});
 
     this.blockChange.emit();
   }
@@ -181,26 +181,26 @@ export class AppBlock {
       return;
     }
 
-    this.updateStyle({attr: 'transform', value: this.transformCSS});
+    this.updateStyle({property: 'transform', value: this.transformCSS});
 
     this.blockChange.emit();
   }
 
-  private updateStyle({attr, value}: {attr: 'transform' | 'width' | 'padding'; value: string}) {
+  private updateStyle({property, value}: {property: 'transform' | 'width' | 'padding'; value: string}) {
     if (this.ignoreUpdateStyle) {
       this.ignoreUpdateStyle = false;
       return;
     }
 
-    setStyle(this.selectedElement.element, attr, {
-      values: [value],
+    setStyle(this.selectedElement.element, {
+      properties: [{property, value}],
       type: this.selectedElement.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
         this.ignoreUpdateStyle = true;
 
         if (settingsStore.state.editMode === 'css') {
-          switch (attr) {
+          switch (property) {
             case 'transform':
               await this.initTransformCSS();
               break;
@@ -214,7 +214,7 @@ export class AppBlock {
           return;
         }
 
-        switch (attr) {
+        switch (property) {
           case 'transform':
             await this.initRotate();
             break;
