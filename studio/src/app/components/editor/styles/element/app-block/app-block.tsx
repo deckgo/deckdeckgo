@@ -193,7 +193,7 @@ export class AppBlock {
     }
 
     setStyle(this.selectedElement.element, attr, {
-      value: value,
+      values: [value],
       type: this.selectedElement.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again

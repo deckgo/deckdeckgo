@@ -20,7 +20,19 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
   updateUI(value);
 };
 
-export const setStyle = (target: HTMLElement, property: string, {value, type, updateUI}: UndoRedoChangeStyle) => {
+export const setStyle = (
+  target: HTMLElement,
+  property: string,
+  {
+    values,
+    type,
+    updateUI,
+  }: {
+    values: string[] | null;
+    type: 'deck' | 'slide' | 'element';
+    updateUI: (value: string) => Promise<void>;
+  }
+) => {
   undoRedoStore.state.undo.push({
     type: 'style',
     target,
@@ -33,12 +45,12 @@ export const setStyle = (target: HTMLElement, property: string, {value, type, up
 
   undoRedoStore.state.redo = [];
 
-  if (value === null) {
+  if (values === null) {
     target.style.removeProperty(property);
     return;
   }
 
-  target.style.setProperty(property, value);
+  values.forEach((value: string) => target.style.setProperty(property, value));
 };
 
 export const undo = async ($event: KeyboardEvent) => {
@@ -131,7 +143,7 @@ export const undoRedo = async ({
   }
 
   return {
-    from: [...from.slice(0, from.length - 1)]
+    from: [...from.slice(0, from.length - 1)],
   };
 };
 

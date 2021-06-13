@@ -53,14 +53,14 @@ export class AppColorWordCloud {
       return;
     }
 
-    this.updateStyle(undefined);
+    this.updateStyle();
   }
 
-  private updateStyle(value: string | undefined) {
+  private updateStyle(value?: string) {
     const redoIndex: number = this.colorIndex;
 
     setStyle(this.selectedElement, this.getStyle(), {
-      value,
+      values: value ? [value] : null,
       type: 'element',
       updateUI: async (_value: string) => {
         await this.colorRef.loadColor();
