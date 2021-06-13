@@ -42,16 +42,16 @@
   grid-gap: 16px;
   grid-template-columns: repeat(4, 1fr);
 
-  --card-width: calc((100vw - 64px - 48px) / 4);
+  --card-width: min(calc((100vw - 64px - 48px) / 4), calc((1400px - 64px - 24px) / 4));
 
   @media (max-width: 992px) {
     grid-template-columns: repeat(3, 1fr);
-    --card-width: calc((100vw - 64px - 48px) / 3);
+    --card-width: calc((100vw - 64px - 32px) / 3);
   }
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
-    --card-width: calc((100vw - 64px - 48px) / 2);
+    --card-width: calc((100vw - 64px - 24px) / 2);
   }
 
   @media (max-width: 576px) {
