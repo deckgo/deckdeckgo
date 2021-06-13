@@ -2,6 +2,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
+import undoRedoStore from "../../../../../stores/undo-redo.store";
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {ListStyle} from '../../../../../types/editor/list-style';
@@ -85,6 +86,9 @@ export class AppList {
       this.selectedElement.style.listStyleType = '';
     }
 
+    // We have to clear the history undo redo too
+    undoRedoStore.reset();
+
     this.toggleList.emit(this.listType);
   }
 
@@ -129,8 +133,6 @@ export class AppList {
   }
 
   private updateStyle(property: {property: string; value: string | null}) {
-    console.log('updateStyle');
-
     if (this.ignoreUpdateStyle) {
       this.ignoreUpdateStyle = false;
       return;

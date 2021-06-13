@@ -3,6 +3,10 @@ import undoRedoStore from '../../stores/undo-redo.store';
 import {UndoRedoChange, UndoRedoChangeAttribute, UndoRedoChangeElement, UndoRedoChangeStyle} from '../../types/editor/undo-redo';
 
 export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoChangeAttribute) => {
+  if (!undoRedoStore.state.undo) {
+    undoRedoStore.state.undo = [];
+  }
+
   undoRedoStore.state.undo.push({
     type: 'attribute',
     target,
@@ -32,6 +36,10 @@ export const setStyle = (
     updateUI: (value: string) => Promise<void>;
   }
 ) => {
+  if (!undoRedoStore.state.undo) {
+    undoRedoStore.state.undo = [];
+  }
+
   undoRedoStore.state.undo.push({
     type: 'style',
     target,
@@ -91,11 +99,15 @@ export const undoRedo = async ({
   from,
   to,
 }: {
-  from: UndoRedoChange[];
-  to: UndoRedoChange[];
+  from: UndoRedoChange[] | undefined;
+  to: UndoRedoChange[] | undefined;
   $event: KeyboardEvent;
 }): Promise<{from: UndoRedoChange[]} | undefined> => {
   if (undoRedoStore.state.elementInnerHTML !== undefined) {
+    return undefined;
+  }
+
+  if (from === undefined || to === undefined) {
     return undefined;
   }
 

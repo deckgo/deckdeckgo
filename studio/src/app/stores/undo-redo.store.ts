@@ -3,8 +3,8 @@ import {createStore} from '@stencil/store';
 import {UndoRedoChange} from '../types/editor/undo-redo';
 
 interface UndoRedoStore {
-  undo: UndoRedoChange[];
-  redo: UndoRedoChange[];
+  undo: UndoRedoChange[] | undefined;
+  redo: UndoRedoChange[] | undefined;
 
   // The innerHTML (clone would work but, we cannot maintain a reference) of the selected element which is about to be edited (text input).
   // On changes, we push the value in the undo stack.
@@ -12,8 +12,8 @@ interface UndoRedoStore {
 }
 
 const {state, onChange, reset} = createStore<UndoRedoStore>({
-  undo: [],
-  redo: [],
+  undo: undefined,
+  redo: undefined,
   elementInnerHTML: undefined,
 });
 

@@ -73,6 +73,10 @@ export class AppActionsElement {
       return;
     }
 
+    if (undoRedoStore.state.undo === undefined) {
+      undoRedoStore.state.undo = [];
+    }
+
     undoRedoStore.state.undo.push({type: 'input', target: this.selectedElement.element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
 
     undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
