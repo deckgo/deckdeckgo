@@ -1,6 +1,12 @@
 <a name="4.8.0"></a>
 
-# [4.8.0](https://github.com/deckgo/deckdeckgo/compare/v4.7.0...v4.8.0) (2021-XX-YY)
+# [4.8.0](https://github.com/deckgo/deckdeckgo/compare/v4.7.0...v4.8.0) (2021-06-13)
+
+### Applications
+
+- studio: v4.8.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Others
 
 - template kit: v1.1.0 ([CHANGELOG](https://github.com/deckgo/template-kit/blob/master/CHANGELOG.md))
 

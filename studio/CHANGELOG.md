@@ -1,3 +1,17 @@
+# 4.8.0 (2020-06-13)
+
+### Features
+
+- "undo / redo" support for attribute and style changes ([#1175](https://github.com/deckgo/deckdeckgo/pull/1175))
+- dismiss low contrast warning ([#1064](https://github.com/deckgo/deckdeckgo/issues/1064))
+- add "customization" and "templates" links to top right menu ([#1200](https://github.com/deckgo/deckdeckgo/pull/1200))
+
+### Fix
+
+- dashboard and templates grid for wide screen ([#1201](https://github.com/deckgo/deckdeckgo/issues/1201https://github.com/deckgo/deckdeckgo/issues/1201))
+- custom user templates without (editable) slots ([#1197](https://github.com/deckgo/deckdeckgo/pull/1197))
+- select element on tab and deck on escape ([#1194](https://github.com/deckgo/deckdeckgo/pull/1194))
+
 # 4.7.0 (2020-05-29)
 
 ### Features
