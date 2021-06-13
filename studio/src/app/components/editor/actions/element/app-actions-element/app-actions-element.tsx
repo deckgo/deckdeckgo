@@ -73,6 +73,10 @@ export class AppActionsElement {
       return;
     }
 
+    if (undoRedoStore.state.elementInnerHTML === this.selectedElement.element.innerHTML) {
+      return;
+    }
+
     if (undoRedoStore.state.undo === undefined) {
       undoRedoStore.state.undo = [];
     }
