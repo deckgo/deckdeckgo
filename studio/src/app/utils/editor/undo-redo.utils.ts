@@ -27,7 +27,7 @@ export const setStyle = (
     type,
     updateUI,
   }: {
-    properties: [{property: string; value: string | null}];
+    properties: {property: string; value: string | null}[];
     type: 'deck' | 'slide' | 'element';
     updateUI: (value: string) => Promise<void>;
   }
