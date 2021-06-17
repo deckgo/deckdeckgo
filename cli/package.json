@@ -7,6 +7,11 @@
     "start": "node dist/index.js",
     "build": "rimraf dist && node ./esbuild.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git",
+    "directory": "cli"
+  },
   "files": [
     "dist/index.js",
     "README.md",
