@@ -43,7 +43,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo-remote.git",
+    "url": "git://github.com/deckgo/deckdeckgo.git",
     "directory": "webcomponents/remote"
   },
   "author": "David Dal Busco",

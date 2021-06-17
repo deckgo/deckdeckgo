@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo-qrcode.git",
+    "url": "git://github.com/deckgo/deckdeckgo.git",
     "directory": "webcomponents/qrcode"
   },
   "author": "David Dal Busco",
