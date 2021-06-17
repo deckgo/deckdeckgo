@@ -39,7 +39,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "webcomponents/math"
   },
   "author": "Akash Borad",
   "bugs": {

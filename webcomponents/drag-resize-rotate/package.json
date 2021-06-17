@@ -42,7 +42,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "webcomponents/drag-resize-rotate"
   },
   "author": "David Dal Busco",
   "bugs": {

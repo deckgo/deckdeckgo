@@ -53,7 +53,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deckgo/deckdeckgo.git"
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "webcomponents/charts"
   },
   "author": "David Dal Busco",
   "license": "MIT",

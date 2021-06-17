@@ -6,7 +6,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/deckgo/deckdeckgo-types.git"
+    "url": "git://github.com/deckgo/deckdeckgo-types.git",
+    "directory": "utils/types"
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
