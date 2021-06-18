@@ -365,8 +365,10 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       return;
     }
 
+    // Avoid duplicating new lines on new entries
+    this.refCode?.querySelectorAll('br')?.forEach((node: HTMLBRElement) => node.outerHTML = '\u200B');
+
     code.innerHTML = this.refCode?.innerText
-      ?.replace(/(?:\n\n)/g, '\n')
       .replace(/\u200B/g, '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
