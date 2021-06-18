@@ -1,7 +1,7 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
-import { DeckDeckGoRevealComponent } from "@deckdeckgo/slide-utils";
+import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
 import {parseCode} from '../../utils/parse.utils';
@@ -359,11 +359,22 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   }
 
   private async copyCodeToSlot() {
-    const code: HTMLElement | null = this.el.querySelector("[slot='code']");
+    const code: HTMLElement | null = this.el.querySelector(":scope > [slot='code']");
 
-    if (code) {
-      code.innerHTML = this.refCode?.innerText?.replace(/(?:\n\n)/g, '\n').replace(/\u200B/g, '');
+    if (!code) {
+      return;
     }
+
+    // Avoid duplicating new lines on new entries
+    this.refCode?.querySelectorAll('br')?.forEach((node: HTMLBRElement) => node.outerHTML = '\u200B');
+
+    code.innerHTML = this.refCode?.innerText
+      .replace(/\u200B/g, '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
   private edit() {
