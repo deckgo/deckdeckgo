@@ -1,3 +1,10 @@
+# 3.3.1 (2021-06-18)
+
+### Fix
+
+- editable content: support for html template as code block
+- editable content: new lines duplication
+
 # 3.3.0 (2021-05-29)
 
 ### Build

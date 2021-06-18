@@ -1,3 +1,11 @@
+<a name="4.9.0"></a>
+
+# [4.9.0](https://github.com/deckgo/deckdeckgo/compare/v4.8.0...v4.9.0) (2021-YY-XX)
+
+### Web Components
+
+- highlight-code: v3.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
+
 <a name="4.8.0"></a>
 
 # [4.8.0](https://github.com/deckgo/deckdeckgo/compare/v4.7.0...v4.8.0) (2021-06-13)
