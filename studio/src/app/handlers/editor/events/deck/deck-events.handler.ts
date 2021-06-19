@@ -186,8 +186,8 @@ export class DeckEventsHandler {
 
     this.debounceUpdateSlide(parent);
 
-    // The first content editable element on the first slide is the title of the presentation
-    if (parent && !parent.previousElementSibling && !element.previousElementSibling) {
+    // The first content editable element on the first slide is the title of the presentation (if the slot used is a title 😉)
+    if (parent && !parent.previousElementSibling && !element.previousElementSibling && SlotUtils.isNodeTitle(element)) {
       this.debounceUpdateDeckTitle(element.textContent);
     }
   };

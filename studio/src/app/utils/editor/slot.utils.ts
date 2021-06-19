@@ -55,4 +55,8 @@ export class SlotUtils {
       element?.nodeName?.toLowerCase() === SlotType.MARKDOWN
     );
   }
+
+  static isNodeTitle(selectedElement: HTMLElement): boolean {
+    return [SlotType.H1.toString(), SlotType.H2.toString(), SlotType.H3.toString()].includes(selectedElement.nodeName.toLowerCase());
+  }
 }
