@@ -129,7 +129,7 @@ export class AppCreateSlide {
         SlideUtils.isSlideTemplate(this.composeTemplate.scope) &&
         this.elements.length < (this.composeTemplate?.template as Template)?.data?.slots?.length - 1
       ) {
-        this.elements = [...this.elements];
+        this.elements = [...elements];
         return;
       }
     }
