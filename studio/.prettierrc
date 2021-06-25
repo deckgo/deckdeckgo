@@ -4,6 +4,7 @@
   "arrowParens": "always",
   "bracketSpacing": false,
   "jsxBracketSameLine": true,
+  "trailingComma": "none",
   "overrides": [
     {
       "files": ["*.scss", "*.css"],
