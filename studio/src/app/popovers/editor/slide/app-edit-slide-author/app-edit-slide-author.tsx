@@ -5,11 +5,11 @@ import i18n from '../../../../stores/i18n.store';
 enum ImageMode {
   COVER = 'cover',
   CIRCLE = 'circle',
-  NONE = 'none',
+  NONE = 'none'
 }
 
 @Component({
-  tag: 'app-edit-slide-author',
+  tag: 'app-edit-slide-author'
 })
 export class AppEditSlideAuthor {
   @Element() el: HTMLElement;
@@ -86,7 +86,7 @@ export class AppEditSlideAuthor {
           <ion-select-option value={ImageMode.CIRCLE}>{i18n.state.editor.circle}</ion-select-option>
           <ion-select-option value={ImageMode.NONE}>{i18n.state.editor.none}</ion-select-option>
         </ion-select>
-      </ion-item>,
+      </ion-item>
     ];
   }
 }

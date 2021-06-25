@@ -36,7 +36,7 @@ interface DeckAndFirstSlide {
 
 @Component({
   tag: 'app-dashboard',
-  styleUrl: 'app-dashboard.scss',
+  styleUrl: 'app-dashboard.scss'
 })
 export class AppDashboard {
   @State()
@@ -185,7 +185,7 @@ export class AppDashboard {
           style,
           background,
           header,
-          footer,
+          footer
         });
       } catch (err) {
         resolve(undefined);
@@ -215,7 +215,7 @@ export class AppDashboard {
           style,
           background,
           header,
-          footer,
+          footer
         });
       } catch (err) {
         resolve(undefined);
@@ -285,7 +285,7 @@ export class AppDashboard {
 
     navStore.state.nav = {
       url: url,
-      direction: NavDirection.RELOAD,
+      direction: NavDirection.RELOAD
     };
   }
 

@@ -5,7 +5,7 @@ import i18n from '../../../../stores/i18n.store';
 
 @Component({
   tag: 'app-copy-style',
-  styleUrl: 'app-copy-style.scss',
+  styleUrl: 'app-copy-style.scss'
 })
 export class AppCopyStyle {
   @Element() el: HTMLElement;

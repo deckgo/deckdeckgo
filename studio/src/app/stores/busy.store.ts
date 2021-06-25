@@ -7,7 +7,7 @@ interface BusyStore {
 
 const {state} = createStore({
   deckBusy: undefined,
-  slideReady: false,
+  slideReady: false
 } as BusyStore);
 
 export default {state};

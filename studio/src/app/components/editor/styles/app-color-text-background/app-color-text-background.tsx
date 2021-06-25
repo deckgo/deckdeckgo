@@ -10,7 +10,7 @@ import {setStyle} from '../../../../utils/editor/undo-redo.utils';
 import {Expanded} from '../../../../types/core/settings';
 
 @Component({
-  tag: 'app-color-text-background',
+  tag: 'app-color-text-background'
 })
 export class AppColorTextBackground {
   @Element() el: HTMLElement;
@@ -35,7 +35,7 @@ export class AppColorTextBackground {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -50,7 +50,7 @@ export class AppColorTextBackground {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -91,7 +91,7 @@ export class AppColorTextBackground {
     setStyle(this.selectedElement, {
       properties: [{property: this.deck || this.slide ? '--color' : 'color', value: selectedColor}],
       type: this.deck ? 'deck' : this.slide ? 'slide' : 'element',
-      updateUI: async (_value: string) => await this.colorRef.loadColor(),
+      updateUI: async (_value: string) => await this.colorRef.loadColor()
     });
 
     this.colorChange.emit();
@@ -105,7 +105,7 @@ export class AppColorTextBackground {
     setStyle(this.selectedElement, {
       properties: [{value: selectedColor, property: this.deck || this.slide ? '--background' : 'background'}],
       type: this.deck ? 'deck' : this.slide ? 'slide' : 'element',
-      updateUI: async (_value: string) => await this.colorRef.loadColor(),
+      updateUI: async (_value: string) => await this.colorRef.loadColor()
     });
 
     this.colorChange.emit();

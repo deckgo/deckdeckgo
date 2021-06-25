@@ -11,7 +11,7 @@ interface Templates {
 
 const {state} = createStore<Templates>({
   user: [],
-  community: templates.community,
+  community: templates.community
 } as Templates);
 
 export default {state};

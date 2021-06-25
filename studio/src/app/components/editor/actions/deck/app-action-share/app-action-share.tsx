@@ -9,7 +9,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {MoreAction} from '../../../../../types/editor/more-action';
 
 @Component({
-  tag: 'app-action-share',
+  tag: 'app-action-share'
 })
 export class AppActionShare {
   @Element() el: HTMLElement;
@@ -34,7 +34,7 @@ export class AppActionShare {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-share-options',
       event: $event,
-      mode: 'ios',
+      mode: 'ios'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -43,7 +43,7 @@ export class AppActionShare {
           shareStore.state.share = {
             deck: deckStore.state.deck,
             userName: userStore.state.name,
-            userSocial: userStore.state.social,
+            userSocial: userStore.state.social
           };
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();

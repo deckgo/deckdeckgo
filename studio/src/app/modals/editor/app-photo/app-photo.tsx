@@ -8,7 +8,7 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 
 @Component({
   tag: 'app-photo',
-  styleUrl: 'app-photo.scss',
+  styleUrl: 'app-photo.scss'
 })
 export class AppPhoto {
   @Element() el: HTMLElement;
@@ -218,7 +218,7 @@ export class AppPhoto {
               this.search();
             }}></ion-searchbar>
         </ion-toolbar>
-      </ion-footer>,
+      </ion-footer>
     ];
   }
 

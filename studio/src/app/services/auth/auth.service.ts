@@ -14,7 +14,7 @@ import {AuthUser} from '../../models/auth/auth.user';
 import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
 import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
-import { OfflineService } from "../editor/offline/offline.service";
+import {OfflineService} from '../editor/offline/offline.service';
 
 export class AuthService {
   private apiUserService: ApiUserService;
@@ -44,7 +44,7 @@ export class AuthService {
       authStore.state.authUser = localUser ? {...localUser} : null;
 
       // If we are offline, auth is already ready as we only use user from indexedDB
-      authStore.state.authStateReady = await OfflineService.getInstance().status() !== undefined;
+      authStore.state.authStateReady = (await OfflineService.getInstance().status()) !== undefined;
 
       firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
@@ -64,7 +64,7 @@ export class AuthService {
             email: firebaseUser.email,
             email_verified: firebaseUser.emailVerified,
             photo_url: firebaseUser.photoURL,
-            gitHub: firebaseUser.providerData && firebaseUser.providerData.length > 0 ? firebaseUser.providerData[0].providerId === 'github.com' : false,
+            gitHub: firebaseUser.providerData && firebaseUser.providerData.length > 0 ? firebaseUser.providerData[0].providerId === 'github.com' : false
           };
 
           // Update anonymous user

@@ -5,7 +5,7 @@ import i18n from '../../../../stores/i18n.store';
 @Component({
   tag: 'app-publish-tags',
   styleUrl: 'app-publish-tags.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppPublishTags {
   @Prop()

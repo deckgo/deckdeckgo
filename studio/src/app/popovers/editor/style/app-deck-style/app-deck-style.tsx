@@ -9,7 +9,7 @@ import settingsStore from '../../../../stores/settings.store';
 
 @Component({
   tag: 'app-deck-style',
-  styleUrl: 'app-deck-style.scss',
+  styleUrl: 'app-deck-style.scss'
 })
 export class AppDeck {
   @Element() el: HTMLElement;
@@ -107,7 +107,7 @@ export class AppDeck {
           selectedElement={this.deckElement}
           deck={true}
           onColorChange={() => this.onDeckChange()}></app-color-text-background>,
-        <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>,
+        <app-image selectedElement={this.deckElement} deck={true} onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onDeckChange()}></app-deck-transition>;

@@ -14,7 +14,7 @@ interface UndoRedoStore {
 const {state, onChange, reset} = createStore<UndoRedoStore>({
   undo: undefined,
   redo: undefined,
-  elementInnerHTML: undefined,
+  elementInnerHTML: undefined
 });
 
 export default {state, onChange, reset};

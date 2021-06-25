@@ -12,11 +12,11 @@ enum ApplyColorType {
   STROKE,
   FONT,
   AXIS,
-  GRID,
+  GRID
 }
 
 @Component({
-  tag: 'app-color-chart',
+  tag: 'app-color-chart'
 })
 export class AppColorDeckSlide {
   @Element() el: HTMLElement;
@@ -47,7 +47,7 @@ export class AppColorDeckSlide {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -191,7 +191,7 @@ export class AppColorDeckSlide {
     const options = [
       <ion-select-option value={ApplyColorType.FILL}>{i18n.state.editor.fill}</ion-select-option>,
       <ion-select-option value={ApplyColorType.STROKE}>{i18n.state.editor.stroke}</ion-select-option>,
-      <ion-select-option value={ApplyColorType.FONT}>{i18n.state.editor.font}</ion-select-option>,
+      <ion-select-option value={ApplyColorType.FONT}>{i18n.state.editor.font}</ion-select-option>
     ];
 
     if (this.chartType != SlideChartType.PIE) {

@@ -12,7 +12,7 @@ const generate = async () => {
     return {
       key,
       name: `I18n${key.charAt(0).toUpperCase()}${key.slice(1)}`,
-      properties,
+      properties
     };
   });
 

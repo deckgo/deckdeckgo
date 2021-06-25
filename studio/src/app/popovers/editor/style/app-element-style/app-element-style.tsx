@@ -11,7 +11,7 @@ import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
 @Component({
   tag: 'app-element-style',
-  styleUrl: 'app-element-style.scss',
+  styleUrl: 'app-element-style.scss'
 })
 export class AppElementStyle {
   @Element() el: HTMLElement;
@@ -176,7 +176,7 @@ export class AppElementStyle {
         <app-image-style
           selectedElement={this.selectedElement.element}
           onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>,
-        this.renderBlock(),
+        this.renderBlock()
       ];
     } else {
       return [
@@ -187,7 +187,7 @@ export class AppElementStyle {
           key={'text'}
           selectedElement={this.selectedElement.element}
           slide={this.selectedElement.type === 'slide'}
-          onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
+          onColorChange={() => this.emitStyleChange()}></app-color-text-background>
       ];
     }
   }
@@ -212,13 +212,11 @@ export class AppElementStyle {
         slide={this.selectedElement.type === 'slide'}
         selectedElement={this.selectedElement.element}
         onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
-      this.renderImage(),
+      this.renderImage()
     ];
 
     if (this.selectedElement.type === 'element') {
-      background.push(
-        <app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
-      );
+      background.push(<app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>);
       background.push(<app-box-shadow selectedElement={this.selectedElement} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>);
     }
 

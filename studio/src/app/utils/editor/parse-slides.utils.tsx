@@ -55,7 +55,7 @@ export class ParseSlidesUtils {
       const attributes = {
         ...userAttributes,
         ...defaultAttributes,
-        ...(slide.data.scope !== SlideScope.DEFAULT && {scope: slide.data.scope}),
+        ...(slide.data.scope !== SlideScope.DEFAULT && {scope: slide.data.scope})
       };
 
       const SlideElement: string = slideTag;
@@ -76,7 +76,7 @@ export class ParseSlidesUtils {
       src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
       'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
       'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
-      'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined,
+      'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined
     };
 
     if (slide.data.template === SlideTemplate.QRCODE) {

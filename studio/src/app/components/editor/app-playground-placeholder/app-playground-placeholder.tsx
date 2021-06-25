@@ -3,7 +3,7 @@ import {Component, h, Host} from '@stencil/core';
 @Component({
   tag: 'app-playground-placeholder',
   styleUrl: 'app-playground-placeholder.scss',
-  shadow: true,
+  shadow: true
 })
 export class AppPlaygroundPlaceholder {
   render() {

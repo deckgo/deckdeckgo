@@ -9,7 +9,7 @@ import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
   tag: 'app-custom-images',
-  styleUrl: 'app-custom-images.scss',
+  styleUrl: 'app-custom-images.scss'
 })
 export class AppCustomImages {
   @Element() el: HTMLElement;
@@ -219,7 +219,7 @@ export class AppCustomImages {
         <ion-toolbar>
           <div class={this.uploading ? 'uploading' : undefined}>{this.renderToolbarAction()}</div>
         </ion-toolbar>
-      </ion-footer>,
+      </ion-footer>
     ];
   }
 

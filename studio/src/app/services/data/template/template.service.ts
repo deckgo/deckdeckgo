@@ -58,7 +58,7 @@ export class TemplateService {
         const templates: Template[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
           return {
             id: documentSnapshot.id,
-            data: documentSnapshot.data() as TemplateData,
+            data: documentSnapshot.data() as TemplateData
           };
         });
 
@@ -84,7 +84,7 @@ export class TemplateService {
           async (doc: firebase.firestore.DocumentReference) => {
             resolve({
               id: doc.id,
-              data: templateData,
+              data: templateData
             });
           },
           (err) => {

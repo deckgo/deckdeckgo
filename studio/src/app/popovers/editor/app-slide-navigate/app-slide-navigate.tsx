@@ -8,7 +8,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-slide-navigate',
-  styleUrl: 'app-slide-navigate.scss',
+  styleUrl: 'app-slide-navigate.scss'
 })
 export class AppSlideNavigate {
   @Element() el: HTMLElement;

@@ -54,7 +54,7 @@ export class BackupOfflineService {
 
     await this.save({
       id: deckStore.state.deck.id,
-      data: backupDeckData,
+      data: backupDeckData
     });
   }
 
@@ -74,7 +74,7 @@ export class BackupOfflineService {
       api_id: deckStore.state.deck.data.api_id,
 
       created_at: deckStore.state.deck.data.created_at,
-      updated_at: deckStore.state.deck.data.updated_at,
+      updated_at: deckStore.state.deck.data.updated_at
     };
   }
 
@@ -128,10 +128,10 @@ export class BackupOfflineService {
         {
           description: 'JSON Files',
           accept: {
-            'application/json': ['.json'],
-          },
-        },
-      ],
+            'application/json': ['.json']
+          }
+        }
+      ]
     };
 
     return showSaveFilePicker(opts);

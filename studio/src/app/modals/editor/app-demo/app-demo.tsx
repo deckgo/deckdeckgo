@@ -6,7 +6,7 @@ import {DemoAction} from '../../../types/editor/demo-action';
 
 @Component({
   tag: 'app-demo',
-  styleUrl: 'app-demo.scss',
+  styleUrl: 'app-demo.scss'
 })
 export class AppDemo {
   @Element() el: HTMLElement;
@@ -47,7 +47,7 @@ export class AppDemo {
   async save() {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss({
       src: this.demoSrc,
-      mode: this.demoMode,
+      mode: this.demoMode
     } as DemoAction);
   }
 
@@ -92,7 +92,7 @@ export class AppDemo {
           class="ion-margin-top">
           <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
-      </ion-content>,
+      </ion-content>
     ];
   }
 

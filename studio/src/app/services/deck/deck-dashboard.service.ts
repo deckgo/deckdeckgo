@@ -32,14 +32,14 @@ export class DeckDashboardService {
         const clone: Deck = await this.cloneDeck(deck);
 
         deck.data.clone = {
-          deck_id_to: clone.id,
+          deck_id_to: clone.id
         };
 
         const updatedDeck: Deck = await this.deckService.update(deck);
 
         resolve({
           from: updatedDeck,
-          to: clone,
+          to: clone
         });
       } catch (err) {
         reject(err);
@@ -53,7 +53,7 @@ export class DeckDashboardService {
         let clone: DeckData = {...deck.data};
 
         clone.clone = {
-          deck_id_from: deck.id,
+          deck_id_from: deck.id
         };
 
         delete clone['slides'];
@@ -84,7 +84,7 @@ export class DeckDashboardService {
           updateFunction(
             {
               id: deckSnapshot.id,
-              data: deckSnapshot.data(),
+              data: deckSnapshot.data()
             },
             unsubscribe
           );

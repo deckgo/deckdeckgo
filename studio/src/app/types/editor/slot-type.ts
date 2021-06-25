@@ -14,5 +14,5 @@ export enum SlotType {
   DEMO = 'deckgo-demo',
   MATH = 'deckgo-math',
   WORD_CLOUD = 'deckgo-word-cloud',
-  MARKDOWN = 'deckgo-markdown',
+  MARKDOWN = 'deckgo-markdown'
 }

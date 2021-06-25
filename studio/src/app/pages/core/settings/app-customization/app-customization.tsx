@@ -10,7 +10,7 @@ import {EditMode} from '../../../../types/core/settings';
 
 @Component({
   tag: 'app-customization',
-  styleUrl: 'app-customization.scss',
+  styleUrl: 'app-customization.scss'
 })
 export class AppCustomization {
   private themeService: ThemeService;
@@ -54,7 +54,7 @@ export class AppCustomization {
             {this.renderContrastWarning()}
           </ion-list>
         </main>
-      </ion-content>,
+      </ion-content>
     ];
   }
 
@@ -108,11 +108,16 @@ export class AppCustomization {
   }
 
   private renderContrastWarning() {
-    return <ion-item>
-      <ion-label>
-        {i18n.state.settings.contrast_warning}
-      </ion-label>
-      <ion-toggle slot="end" checked={settingsStore.state.contrastWarning} mode="md" color="medium" onIonChange={() => this.toggleContrastWarning()}></ion-toggle>
-    </ion-item>
+    return (
+      <ion-item>
+        <ion-label>{i18n.state.settings.contrast_warning}</ion-label>
+        <ion-toggle
+          slot="end"
+          checked={settingsStore.state.contrastWarning}
+          mode="md"
+          color="medium"
+          onIonChange={() => this.toggleContrastWarning()}></ion-toggle>
+      </ion-item>
+    );
   }
 }

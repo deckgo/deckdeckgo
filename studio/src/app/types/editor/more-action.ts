@@ -12,5 +12,5 @@ export enum MoreAction {
   IMAGES,
   REMOTE,
   BACKUP,
-  TRANSFORM,
+  TRANSFORM
 }

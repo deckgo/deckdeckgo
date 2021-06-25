@@ -5,7 +5,7 @@ import {AuthUser} from '../../../models/auth/auth.user';
 import authStore from '../../../stores/auth.store';
 
 @Component({
-  tag: 'app-signin-page',
+  tag: 'app-signin-page'
 })
 export class AppSigninPage {
   @Prop()

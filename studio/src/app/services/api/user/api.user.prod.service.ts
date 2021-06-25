@@ -19,9 +19,9 @@ export class ApiUserProdService extends ApiUserService {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify(apiUserInfo),
+          body: JSON.stringify(apiUserInfo)
         });
 
         if (!rawResponse || (!rawResponse.ok && rawResponse.status !== 409)) {
@@ -51,8 +51,8 @@ export class ApiUserProdService extends ApiUserService {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+            Authorization: `Bearer ${token}`
+          }
         });
 
         if (!rawResponse || !rawResponse.ok) {
@@ -77,8 +77,8 @@ export class ApiUserProdService extends ApiUserService {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
+            'Content-Type': 'application/json'
+          }
         });
 
         if (!rawResponse || !rawResponse.ok) {

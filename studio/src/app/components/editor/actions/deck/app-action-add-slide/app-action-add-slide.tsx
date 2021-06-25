@@ -14,7 +14,7 @@ import {AnonymousService} from '../../../../../services/editor/anonymous/anonymo
 
 @Component({
   tag: 'app-action-add-slide',
-  shadow: false,
+  shadow: false
 })
 export class AppActionAddSlide {
   @Element() el: HTMLElement;
@@ -53,7 +53,7 @@ export class AppActionAddSlide {
       component: 'app-create-slide',
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu popover-menu-wide',
+      cssClass: 'popover-menu popover-menu-wide'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -83,7 +83,7 @@ export class AppActionAddSlide {
 
   private async openGifPicker() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-gif',
+      component: 'app-gif'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -95,7 +95,7 @@ export class AppActionAddSlide {
 
   private async openYoutube() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-youtube',
+      component: 'app-youtube'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -111,7 +111,7 @@ export class AppActionAddSlide {
 
   private async openPlayground() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-playground',
+      component: 'app-playground'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -127,7 +127,7 @@ export class AppActionAddSlide {
 
   private async openDemo() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-demo',
+      component: 'app-demo'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -143,7 +143,7 @@ export class AppActionAddSlide {
 
   private async openPoll() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-poll-options',
+      component: 'app-poll-options'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -159,7 +159,7 @@ export class AppActionAddSlide {
 
   private async openChart(attributes: SlideAttributes) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-custom-data',
+      component: 'app-custom-data'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -258,7 +258,7 @@ export class AppActionAddSlide {
 
       if (!attributes) {
         attributes = {
-          src: url,
+          src: url
         };
       } else {
         attributes.src = url;

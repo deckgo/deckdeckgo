@@ -6,13 +6,13 @@ import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
 
 import {EditMode, Expanded} from '../../../../../types/core/settings';
-import { SelectedElement } from "../../../../../types/editor/selected-element";
+import {SelectedElement} from '../../../../../types/editor/selected-element';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
-import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
-  tag: 'app-border-radius',
+  tag: 'app-border-radius'
 })
 export class AppBorderRadius {
   @Prop()
@@ -24,7 +24,7 @@ export class AppBorderRadius {
     ['top-left', 0],
     ['top-right', 0],
     ['bottom-left', 0],
-    ['bottom-right', 0],
+    ['bottom-right', 0]
   ]);
 
   @State()
@@ -167,7 +167,7 @@ export class AppBorderRadius {
         await this.initCornersExpanded();
 
         this.updateBorderRadiuses();
-      },
+      }
     });
   }
 
@@ -231,7 +231,7 @@ export class AppBorderRadius {
           value={this.borderRadiuses.get(option)}
           mode="md"
           onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBorderRadius($event, option)}></ion-range>
-      </ion-item>,
+      </ion-item>
     ];
   }
 }

@@ -9,7 +9,7 @@ import {getPublishedUrl, getShareText, getShareTwitterText} from '../../../utils
 @Component({
   tag: 'app-share-deck',
   styleUrl: 'app-share-deck.scss',
-  shadow: true,
+  shadow: true
 })
 export class AppShareDeck {
   @Element() el: HTMLElement;
@@ -31,7 +31,7 @@ export class AppShareDeck {
     // @ts-ignore
     await navigator.share({
       text: text,
-      url: publishedUrl,
+      url: publishedUrl
     });
   }
 
@@ -54,40 +54,40 @@ export class AppShareDeck {
             socialShareText: twitterText,
             socialShareUrl: publishedUrl,
             socialSharePopupWidth: 300,
-            socialSharePopupHeight: 400,
-          },
+            socialSharePopupHeight: 400
+          }
         },
         {
           linkedin: {
-            socialShareUrl: publishedUrl,
-          },
+            socialShareUrl: publishedUrl
+          }
         },
         {
           email: {
-            socialShareBody: `${text} ${publishedUrl}`,
-          },
+            socialShareBody: `${text} ${publishedUrl}`
+          }
         },
         {
           whatsapp: {
-            socialShareUrl: publishedUrl,
-          },
+            socialShareUrl: publishedUrl
+          }
         },
         {
           copy: {
-            socialShareUrl: publishedUrl,
-          },
+            socialShareUrl: publishedUrl
+          }
         },
         {
           hackernews: {
-            socialShareUrl: publishedUrl,
-          },
+            socialShareUrl: publishedUrl
+          }
         },
         {
           telegram: {
-            socialShareUrl: publishedUrl,
-          },
-        },
-      ],
+            socialShareUrl: publishedUrl
+          }
+        }
+      ]
     };
 
     webSocialShare.share = shareOptions;

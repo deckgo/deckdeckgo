@@ -31,7 +31,7 @@ export class ImageHelper {
 
   private async openModal(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action?: EditAction) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: componentTag,
+      component: componentTag
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

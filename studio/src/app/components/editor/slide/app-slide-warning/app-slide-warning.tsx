@@ -14,7 +14,7 @@ import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-slide-warning',
-  styleUrl: 'app-slide-warning.scss',
+  styleUrl: 'app-slide-warning.scss'
 })
 export class AppSlideWarning {
   private readonly lowestAACompliantLevel: number = 3;
@@ -189,7 +189,7 @@ export class AppSlideWarning {
     if (!deck) {
       return {
         deck: null,
-        slide: null,
+        slide: null
       };
     }
 
@@ -197,7 +197,7 @@ export class AppSlideWarning {
 
     return {
       deck,
-      slide: deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')') as HTMLElement | null,
+      slide: deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')') as HTMLElement | null
     };
   }
 
@@ -206,11 +206,11 @@ export class AppSlideWarning {
       component: 'app-slide-warning-info',
       componentProps: {
         lowContrast: settingsStore.state.contrastWarning && this.warningLowContrast,
-        overflow: this.warningOverflow,
+        overflow: this.warningOverflow
       },
       event: $event,
       mode: 'ios',
-      cssClass: 'info',
+      cssClass: 'info'
     });
 
     await popover.present();
@@ -220,7 +220,7 @@ export class AppSlideWarning {
     return (
       <Host
         class={{
-          warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow,
+          warning: (settingsStore.state.contrastWarning && this.warningLowContrast) || this.warningOverflow
         }}>
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>

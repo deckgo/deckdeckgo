@@ -6,7 +6,7 @@ import apiUserStore from '../../../stores/api.user.store';
 
 @Component({
   tag: 'app-user-info',
-  styleUrl: 'app-user-info.scss',
+  styleUrl: 'app-user-info.scss'
 })
 export class AppUserInfo {
   @Prop()

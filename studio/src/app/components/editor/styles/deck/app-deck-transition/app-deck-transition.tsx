@@ -9,7 +9,7 @@ import {setAttribute} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
   tag: 'app-deck-transition',
-  styleUrl: 'app-deck-transition.scss',
+  styleUrl: 'app-deck-transition.scss'
 })
 export class AppDeckTransition {
   @Element() el: HTMLElement;
@@ -151,7 +151,7 @@ export class AppDeckTransition {
       updateUI: (value: string) => {
         this.device = resetDevice;
         this.selectedDirection = value as 'horizontal' | 'vertical' | 'papyrus';
-      },
+      }
     });
 
     this.transitionChange.emit();
@@ -183,7 +183,7 @@ export class AppDeckTransition {
     setAttribute(this.deckElement, {
       attribute: 'animation',
       value: animation,
-      updateUI: (value: string) => (this.selectedAnimation = value as 'slide' | 'fade' | 'none'),
+      updateUI: (value: string) => (this.selectedAnimation = value as 'slide' | 'fade' | 'none')
     });
 
     this.transitionChange.emit();
@@ -201,7 +201,7 @@ export class AppDeckTransition {
     this.autoSlide = $event && $event.detail ? $event.detail.value : true;
 
     this.deckNeedChange.emit({
-      autoSlide: this.autoSlide,
+      autoSlide: this.autoSlide
     });
   }
 
@@ -341,7 +341,7 @@ export class AppDeckTransition {
             '--background': `${
               !selected ? 'transparent' : i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'})` : 'transparent'
             }`,
-            '--color': !selected ? 'inherit' : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`,
+            '--color': !selected ? 'inherit' : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`
           }}>
           <p slot="title">{text}</p>
         </deckgo-slide-title>

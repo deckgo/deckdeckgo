@@ -43,7 +43,7 @@ export class UserService {
 
           store.state.user = {
             id: authUser.uid,
-            data: updatedUser,
+            data: updatedUser
           };
         }
 
@@ -65,7 +65,7 @@ export class UserService {
           anonymous: authUser.anonymous,
           newsletter: true,
           created_at: now,
-          updated_at: now,
+          updated_at: now
         };
 
         if (authUser.name) {
@@ -85,7 +85,7 @@ export class UserService {
 
         resolve({
           id: authUser.uid,
-          data: user,
+          data: user
         });
       } catch (err) {
         reject(err);

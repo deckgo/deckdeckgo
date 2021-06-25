@@ -21,7 +21,7 @@ import {
   SlideData,
   SlideScope,
   SlideSplitType,
-  SlideTemplate,
+  SlideTemplate
 } from '../../../../models/data/slide';
 
 import {Constants} from '../../../../types/core/constants';
@@ -277,7 +277,7 @@ export class DeckEventsHandler {
 
         let deck: DeckData = {
           name: `Presentation ${await Utils.getNow()}`,
-          owner_id: authStore.state.authUser.uid,
+          owner_id: authStore.state.authUser.uid
         };
 
         // Retrieve text and background color style randomly generated in the editor
@@ -476,7 +476,7 @@ export class DeckEventsHandler {
 
         const slideUpdate: Slide = {
           id: slide.getAttribute('slide_id'),
-          data: this.initSlideData(slide),
+          data: this.initSlideData(slide)
         };
 
         const content: string = await this.cleanSlideContent(slide);
@@ -897,7 +897,7 @@ export class DeckEventsHandler {
 
     return {
       template: template || slide.nodeName?.toLowerCase(),
-      ...(!template && {scope: SlideUtils.slideScope(slide)}),
+      ...(!template && {scope: SlideUtils.slideScope(slide)})
     };
   }
 
@@ -962,7 +962,7 @@ export class DeckEventsHandler {
   private async emitSlideDidUpdate(element: HTMLElement) {
     const slideDidUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('slideDidUpdate', {
       bubbles: true,
-      detail: element,
+      detail: element
     });
 
     this.mainRef.dispatchEvent(slideDidUpdate);

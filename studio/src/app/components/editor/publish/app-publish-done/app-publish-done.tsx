@@ -10,7 +10,7 @@ import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-publish-done',
-  styleUrl: 'app-publish-done.scss',
+  styleUrl: 'app-publish-done.scss'
 })
 export class AppPublishDone {
   @Element() el: HTMLElement;
@@ -25,14 +25,14 @@ export class AppPublishDone {
     i18n.state.publish_done.hooray,
     i18n.state.publish_done.did_it,
     i18n.state.publish_done.applause,
-    i18n.state.publish_done.thumbs_up,
+    i18n.state.publish_done.thumbs_up
   ];
 
   private share() {
     shareStore.state.share = {
       deck: deckStore.state.deck,
       userName: userStore.state.name,
-      userSocial: userStore.state.social,
+      userSocial: userStore.state.social
     };
   }
 
@@ -73,7 +73,7 @@ export class AppPublishDone {
         <ion-label class="published-url ion-padding ion-text-center">
           {renderI18n(i18n.state.publish_done.source_processing, {
             placeholder: '{0}',
-            value: <ion-spinner color="tertiary"></ion-spinner>,
+            value: <ion-spinner color="tertiary"></ion-spinner>
           })}
         </ion-label>
       );
@@ -87,7 +87,7 @@ export class AppPublishDone {
             <a href={`${deckStore.state.deck.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
               {i18n.state.publish_done.repository}
             </a>
-          ),
+          )
         })}{' '}
         <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>.
       </ion-label>

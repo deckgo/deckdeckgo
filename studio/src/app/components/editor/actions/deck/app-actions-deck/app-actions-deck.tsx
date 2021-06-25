@@ -17,7 +17,7 @@ import {BackupOfflineService} from '../../../../../services/editor/backup/backup
 
 @Component({
   tag: 'app-actions-deck',
-  shadow: false,
+  shadow: false
 })
 export class AppActionsDeck {
   @Element() el: HTMLElement;
@@ -78,7 +78,7 @@ export class AppActionsDeck {
       component: 'app-slide-navigate',
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu popover-menu-wide',
+      cssClass: 'popover-menu popover-menu-wide'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -94,7 +94,7 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-remote-request',
       mode: 'ios',
-      cssClass: 'info',
+      cssClass: 'info'
     });
 
     await popover.present();
@@ -102,7 +102,7 @@ export class AppActionsDeck {
 
   private async openRemoteControlConnect() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-remote-connect',
+      component: 'app-remote-connect'
     });
 
     await modal.present();
@@ -110,7 +110,7 @@ export class AppActionsDeck {
 
   private async openEmbed() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-embed',
+      component: 'app-embed'
     });
 
     await modal.present();
@@ -124,10 +124,10 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
       componentProps: {
-        offline: offlineStore.state.offline,
+        offline: offlineStore.state.offline
       },
       event: $event,
-      mode: 'ios',
+      mode: 'ios'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -140,7 +140,7 @@ export class AppActionsDeck {
           shareStore.state.share = {
             deck: deckStore.state.deck,
             userName: userStore.state.name,
-            userSocial: userStore.state.social,
+            userSocial: userStore.state.social
           };
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
@@ -169,11 +169,11 @@ export class AppActionsDeck {
       componentProps: {
         signIn: this.signIn,
         blockSlide: this.blockSlide,
-        deckDidChange: this.deckDidChange,
+        deckDidChange: this.deckDidChange
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu popover-menu-wide',
+      cssClass: 'popover-menu popover-menu-wide'
     });
 
     await popover.present();
@@ -183,9 +183,9 @@ export class AppActionsDeck {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-offline',
       componentProps: {
-        offline: offlineStore.state.offline,
+        offline: offlineStore.state.offline
       },
-      cssClass: 'fullscreen',
+      cssClass: 'fullscreen'
     });
 
     await modal.present();
@@ -207,11 +207,11 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-present',
       componentProps: {
-        fullscreen: this.fullscreen,
+        fullscreen: this.fullscreen
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {

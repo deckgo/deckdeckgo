@@ -5,7 +5,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-notes',
-  styleUrl: 'app-notes.scss',
+  styleUrl: 'app-notes.scss'
 })
 export class AppNotes {
   @Element() el: HTMLElement;
@@ -108,7 +108,7 @@ export class AppNotes {
               <a href="https://deckdeckgo.app" target="_blank">
                 {i18n.state.menu.remote_control} <ion-icon src="/assets/icons/ionicons/open.svg" role="presentation"></ion-icon>
               </a>
-            ),
+            )
           })}
         </p>
 
@@ -134,7 +134,7 @@ export class AppNotes {
             <ion-label>{i18n.state.core.delete}</ion-label>
           </ion-button>
         </div>
-      </ion-content>,
+      </ion-content>
     ];
   }
 }

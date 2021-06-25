@@ -13,8 +13,8 @@ export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: 
     data: {
       attribute,
       value: target.getAttribute(attribute),
-      updateUI,
-    },
+      updateUI
+    }
   });
 
   undoRedoStore.state.redo = [];
@@ -29,7 +29,7 @@ export const setStyle = (
   {
     properties,
     type,
-    updateUI,
+    updateUI
   }: {
     properties: {property: string; value: string | null}[];
     type: 'deck' | 'slide' | 'element';
@@ -46,8 +46,8 @@ export const setStyle = (
     data: {
       value: target.getAttribute('style'),
       type,
-      updateUI,
-    },
+      updateUI
+    }
   });
 
   undoRedoStore.state.redo = [];
@@ -66,7 +66,7 @@ export const undo = async ($event: KeyboardEvent) => {
   const result: {from: UndoRedoChange[]} | undefined = await undoRedo({
     from: undoRedoStore.state.undo,
     to: undoRedoStore.state.redo,
-    $event,
+    $event
   });
 
   if (!result) {
@@ -82,7 +82,7 @@ export const redo = async ($event: KeyboardEvent) => {
   const result: {from: UndoRedoChange[]} | undefined = await undoRedo({
     from: undoRedoStore.state.redo,
     to: undoRedoStore.state.undo,
-    $event,
+    $event
   });
 
   if (!result) {
@@ -97,7 +97,7 @@ export const redo = async ($event: KeyboardEvent) => {
 export const undoRedo = async ({
   $event,
   from,
-  to,
+  to
 }: {
   from: UndoRedoChange[] | undefined;
   to: UndoRedoChange[] | undefined;
@@ -133,8 +133,8 @@ export const undoRedo = async ({
       target,
       data: {
         ...data,
-        value: target.getAttribute('style'),
-      },
+        value: target.getAttribute('style')
+      }
     });
 
     await undoRedoSetStyle(target, data as UndoRedoChangeStyle);
@@ -148,15 +148,15 @@ export const undoRedo = async ({
       target,
       data: {
         ...data,
-        value: target.getAttribute(attribute),
-      },
+        value: target.getAttribute(attribute)
+      }
     });
 
     undoRedoSetAttribute(target, data as UndoRedoChangeAttribute);
   }
 
   return {
-    from: [...from.slice(0, from.length - 1)],
+    from: [...from.slice(0, from.length - 1)]
   };
 };
 
@@ -191,7 +191,7 @@ const undoRedoSetAttribute = (target: HTMLElement, {attribute, value, updateUI}:
 const emitDidUpdate = ({eventName, target}: {target: HTMLElement; eventName: 'deckDidChange' | 'slideDidChange'}) => {
   const didUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>(eventName, {
     bubbles: true,
-    detail: target,
+    detail: target
   });
 
   target.dispatchEvent(didUpdate);

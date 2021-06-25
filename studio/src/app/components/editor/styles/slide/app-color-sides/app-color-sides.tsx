@@ -6,16 +6,16 @@ import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.util
 
 enum ApplyColorType {
   FONT,
-  BACKGROUND,
+  BACKGROUND
 }
 
 enum ApplyColorSide {
   START = 'start',
-  END = 'end',
+  END = 'end'
 }
 
 @Component({
-  tag: 'app-color-sides',
+  tag: 'app-color-sides'
 })
 export class AppColorSides {
   @Element() el: HTMLElement;
@@ -40,7 +40,7 @@ export class AppColorSides {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 

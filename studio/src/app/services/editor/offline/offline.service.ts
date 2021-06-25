@@ -125,7 +125,7 @@ export class OfflineService {
 
           const offline: OfflineDeck = {
             id: deckStore.state.deck.id,
-            name: deckStore.state.deck.data.name,
+            name: deckStore.state.deck.data.name
           };
 
           await set('deckdeckgo_offline', offline);
@@ -250,7 +250,7 @@ export class OfflineService {
       ...this.assetsShapesList('computers'),
       ...this.assetsShapesList('dateTime'),
       ...this.assetsShapesList('files'),
-      ...this.assetsShapesList('finance'),
+      ...this.assetsShapesList('finance')
     ];
 
     await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);

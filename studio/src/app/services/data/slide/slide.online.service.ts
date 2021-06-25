@@ -32,7 +32,7 @@ export class SlideOnlineService {
           async (doc: firebase.firestore.DocumentReference) => {
             resolve({
               id: doc.id,
-              data: slide,
+              data: slide
             });
           },
           (err) => {
@@ -58,7 +58,7 @@ export class SlideOnlineService {
 
         resolve({
           id: snapshot.id,
-          data: slide,
+          data: slide
         });
       } catch (err) {
         reject(err);

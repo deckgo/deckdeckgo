@@ -37,7 +37,7 @@ export class DeckImportService {
               updateFunction(
                 {
                   id: change.doc.id,
-                  data: change.doc.data(),
+                  data: change.doc.data()
                 },
                 unsubscribe
               );

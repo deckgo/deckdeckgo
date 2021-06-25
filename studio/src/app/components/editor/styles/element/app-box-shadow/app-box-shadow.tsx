@@ -13,7 +13,7 @@ import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
 @Component({
-  tag: 'app-box-shadow',
+  tag: 'app-box-shadow'
 })
 export class AppBoxShadow {
   @Prop()
@@ -23,7 +23,7 @@ export class AppBoxShadow {
     ['hLength', 0],
     ['vLength', 4],
     ['blurRadius', 16],
-    ['spreadRadius', 0],
+    ['spreadRadius', 0]
   ]);
 
   @State()
@@ -119,7 +119,7 @@ export class AppBoxShadow {
     if (!this.selectedElement || !this.selectedElement.element) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -128,14 +128,14 @@ export class AppBoxShadow {
     if (!style) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
     if (!style.boxShadow || style.boxShadow === 'none') {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -146,13 +146,13 @@ export class AppBoxShadow {
 
       return {
         rgb: styleColor.rgb ? styleColor.rgb : '0, 0, 0',
-        opacity: styleColor.rgb ? styleColor.opacity : 12,
+        opacity: styleColor.rgb ? styleColor.opacity : 12
       };
     }
 
     return {
       rgb: null,
-      opacity: null,
+      opacity: null
     };
   };
 
@@ -203,7 +203,7 @@ export class AppBoxShadow {
       return;
     }
 
-    setStyle(this.selectedElement.element,  {
+    setStyle(this.selectedElement.element, {
       properties: [{property: 'box-shadow', value}],
       type: this.selectedElement.type,
       updateUI: async () => {
@@ -219,7 +219,7 @@ export class AppBoxShadow {
         }
 
         await this.init();
-      },
+      }
     });
   }
 
@@ -258,7 +258,8 @@ export class AppBoxShadow {
         onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update({boxShadow: $event.detail})}>
         <ion-label slot="title">{i18n.state.editor.box_shadow}</ion-label>
 
-        <app-color ref={(el) => this.colorRef = el as HTMLAppColorElement}
+        <app-color
+          ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           class="ion-margin-top properties"
           initColor={this.initColor}
           onResetColor={() => this.resetBoxShadow()}

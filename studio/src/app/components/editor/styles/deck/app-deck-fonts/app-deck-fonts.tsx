@@ -8,7 +8,7 @@ import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
   tag: 'app-deck-fonts',
-  styleUrl: 'app-deck-fonts.scss',
+  styleUrl: 'app-deck-fonts.scss'
 })
 export class AppDeckFonts {
   @Prop()
@@ -56,7 +56,7 @@ export class AppDeckFonts {
     setStyle(this.deckElement, {
       properties: [{value: !font ? null : font.family, property: 'font-family'}],
       type: 'deck',
-      updateUI: async () => await this.initSelectedFont(),
+      updateUI: async () => await this.initSelectedFont()
     });
 
     this.fontsChange.emit();
@@ -65,7 +65,7 @@ export class AppDeckFonts {
   render() {
     return [
       <app-color-text-background selectedElement={this.deckElement} deck={true} onColorChange={() => this.fontsChange.emit()}></app-color-text-background>,
-      this.renderFonts(),
+      this.renderFonts()
     ];
   }
 

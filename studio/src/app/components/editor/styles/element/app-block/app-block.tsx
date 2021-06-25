@@ -6,13 +6,13 @@ import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
 
 import {EditMode, Expanded} from '../../../../../types/core/settings';
-import { SelectedElement } from "../../../../../types/editor/selected-element";
+import {SelectedElement} from '../../../../../types/editor/selected-element';
 
 import {SettingsUtils} from '../../../../../utils/core/settings.utils';
-import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
-  tag: 'app-block',
+  tag: 'app-block'
 })
 export class AppBlock {
   @Prop()
@@ -224,7 +224,7 @@ export class AppBlock {
           case 'padding':
             await this.initPadding();
         }
-      },
+      }
     });
   }
 

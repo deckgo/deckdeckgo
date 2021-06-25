@@ -22,7 +22,7 @@ import {DeckService} from '../../../services/data/deck/deck.service';
 
 @Component({
   tag: 'app-signin',
-  styleUrl: 'app-signin.scss',
+  styleUrl: 'app-signin.scss'
 })
 export class AppSignIn {
   @Element() el: HTMLElement;
@@ -67,7 +67,7 @@ export class AppSignIn {
 
     await Utils.injectJS({
       id: 'firebase-ui-script',
-      src: 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js',
+      src: 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js'
     });
     await Utils.injectCSS('firebase-ui-css', 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css');
 
@@ -83,7 +83,7 @@ export class AppSignIn {
     // GitHub scope
     signInOptions.push({
       provider: firebase.auth.GithubAuthProvider.PROVIDER_ID,
-      scopes: ['public_repo'],
+      scopes: ['public_repo']
     });
 
     signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
@@ -125,8 +125,8 @@ export class AppSignIn {
         },
         // signInFailure callback must be provided to handle merge conflicts which
         // occur when an existing credential is linked to an anonymous user.
-        signInFailure: this.onSignInFailure,
-      },
+        signInFailure: this.onSignInFailure
+      }
     };
 
     // @ts-ignore
@@ -232,7 +232,7 @@ export class AppSignIn {
         deckId: this.redirectId ? this.redirectId : null,
         userId: authStore.state.authUser ? authStore.state.authUser.uid : null,
         userToken: token,
-        anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true,
+        anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true
       })
     );
   }
@@ -255,13 +255,13 @@ export class AppSignIn {
     // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
     navStore.state.nav = {
       url: url + `?signin=${redirectStatus}`,
-      direction,
+      direction
     };
   }
 
   async navigateBack() {
     navStore.state.nav = {
-      direction: NavDirection.BACK,
+      direction: NavDirection.BACK
     };
   }
 
@@ -278,9 +278,9 @@ export class AppSignIn {
       id: userCred.user.uid,
       data: {
         github: {
-          token: (userCred.credential as OAuthCredential).accessToken,
-        },
-      },
+          token: (userCred.credential as OAuthCredential).accessToken
+        }
+      }
     };
   }
 
@@ -298,14 +298,14 @@ export class AppSignIn {
         <p class="ion-text-center ion-padding-start ion-padding-end">
           <small>{i18n.state.core.free_open_source}</small>
         </p>
-      </main>,
+      </main>
     ];
   }
 
   private renderMsg() {
     return [
       <h1 class="ion-text-center ion-padding-start ion-padding-end">{i18n.state.sign_in.hi}</h1>,
-      <p class="ion-text-center ion-padding">{i18n.state.sign_in.why}</p>,
+      <p class="ion-text-center ion-padding">{i18n.state.sign_in.why}</p>
     ];
   }
 

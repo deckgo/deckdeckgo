@@ -14,7 +14,7 @@ export class TemplateUtils {
     await Utils.injectJS({
       id: `${template.data.tag}-script`,
       src: template.data.cdn,
-      module: true,
+      module: true
     });
   }
 

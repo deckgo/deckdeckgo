@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-poll-options',
-  styleUrl: 'app-poll-options.scss',
+  styleUrl: 'app-poll-options.scss'
 })
 export class AppPollOptions {
   @Element() el: HTMLElement;
@@ -122,7 +122,7 @@ export class AppPollOptions {
 
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss({
       question: this.question,
-      answers: filterAnswers,
+      answers: filterAnswers
     });
   }
 
@@ -258,7 +258,7 @@ export class AppPollOptions {
         <ion-button disabled={!this.valid || this.editDisabled} color="dark" shape="round" onClick={() => this.save()}>
           <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
-      </ion-content>,
+      </ion-content>
     ];
   }
 

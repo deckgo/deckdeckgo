@@ -6,7 +6,7 @@ import {MoreAction} from '../../../../types/editor/more-action';
 
 @Component({
   tag: 'app-more-element-actions',
-  styleUrl: 'app-more-element-actions.scss',
+  styleUrl: 'app-more-element-actions.scss'
 })
 export class AppMoreElementActions {
   @Element() el: HTMLElement;
@@ -25,7 +25,7 @@ export class AppMoreElementActions {
 
   private async closePopover(action: MoreAction) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      action: action,
+      action: action
     });
   }
 

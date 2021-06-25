@@ -6,7 +6,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-get-help',
-  styleUrl: 'app-get-help.scss',
+  styleUrl: 'app-get-help.scss'
 })
 export class AppGetHelp {
   @Element() el: HTMLElement;
@@ -36,7 +36,7 @@ export class AppGetHelp {
                   Twitter
                 </a>
               </div>
-            ),
+            )
           })}
         </p>
         <div class="ion-text-center">

@@ -7,7 +7,7 @@ interface PollStore {
 }
 
 const {state, onChange, reset} = createStore({
-  poll: undefined,
+  poll: undefined
 } as PollStore);
 
 export default {state, onChange, reset};

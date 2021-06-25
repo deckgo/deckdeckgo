@@ -7,5 +7,5 @@ export enum EditAction {
   OPEN_CUSTOM_LOGO,
   DELETE_LOGO,
   OPEN_DATA,
-  OPEN_SVG_WAVES,
+  OPEN_SVG_WAVES
 }

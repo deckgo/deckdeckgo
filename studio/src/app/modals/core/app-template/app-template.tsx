@@ -9,7 +9,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-template',
-  styleUrl: 'app-template.scss',
+  styleUrl: 'app-template.scss'
 })
 export class AppTemplate {
   @Element() el: HTMLElement;
@@ -31,7 +31,7 @@ export class AppTemplate {
   async componentWillLoad() {
     if (!this.template || !this.template.data) {
       this.templateData = {
-        owner_id: authStore.state.authUser.uid,
+        owner_id: authStore.state.authUser.uid
       };
       return;
     }
@@ -61,8 +61,8 @@ export class AppTemplate {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss({
       ...this.template,
       data: {
-        ...this.templateData,
-      },
+        ...this.templateData
+      }
     });
   }
 
@@ -83,7 +83,7 @@ export class AppTemplate {
 
     this.templateData = {
       ...this.templateData,
-      tag: ($event.target as InputTargetEvent).value,
+      tag: ($event.target as InputTargetEvent).value
     };
   }
 
@@ -101,7 +101,7 @@ export class AppTemplate {
         this.templateData = {
           ...this.templateData,
           ...(cmp && cmp.slots && {slots: cmp.slots}),
-          ...(cmp && cmp.props && {props: cmp.props}),
+          ...(cmp && cmp.props && {props: cmp.props})
         };
       }
     }
@@ -142,7 +142,7 @@ export class AppTemplate {
   private async navigateContact() {
     navStore.state.nav = {
       url: '/contact',
-      direction: NavDirection.FORWARD,
+      direction: NavDirection.FORWARD
     };
 
     await this.closeModal();
@@ -236,14 +236,14 @@ export class AppTemplate {
           <span>1</span>{' '}
           {renderI18n(i18n.state.templates.url, {
             placeholder: '{0}',
-            value: <mark>https://unpkg.com/my-component@latest/dist/my-component/my-component.esm.js</mark>,
+            value: <mark>https://unpkg.com/my-component@latest/dist/my-component/my-component.esm.js</mark>
           })}
         </p>
 
         <p class={`small ${errorCdn}`}>
           {renderI18n(i18n.state.templates.cdn, {
             placeholder: '{0}',
-            value: <a onClick={() => this.navigateContact()}>get in touch</a>,
+            value: <a onClick={() => this.navigateContact()}>get in touch</a>
           })}
         </p>
 
@@ -251,7 +251,7 @@ export class AppTemplate {
           <span>2</span>{' '}
           {renderI18n(i18n.state.templates.tag_format, {
             placeholder: '{0}',
-            value: <mark>deckdeckgo, deckgo or ddg</mark>,
+            value: <mark>deckdeckgo, deckgo or ddg</mark>
           })}
         </p>
 
@@ -259,7 +259,7 @@ export class AppTemplate {
           <span>3</span>{' '}
           {renderI18n(i18n.state.templates.upload_definition, {
             placeholder: '{0}',
-            value: <mark>./src/components.desc.json</mark>,
+            value: <mark>./src/components.desc.json</mark>
           })}
         </p>
       </div>

@@ -5,7 +5,7 @@ import templatesStore from '../../../../stores/templates.store';
 import {Template} from '../../../../models/data/template';
 
 @Component({
-  tag: 'app-templates-community',
+  tag: 'app-templates-community'
 })
 export class AppTemplatesCommunity {
   @Event()

@@ -1,7 +1,7 @@
 import {Component, h, Fragment} from '@stencil/core';
 
 @Component({
-  tag: 'app-dashboard-page',
+  tag: 'app-dashboard-page'
 })
 export class AppDashboardPage {
   render() {
@@ -11,7 +11,7 @@ export class AppDashboardPage {
         <ion-content class="ion-padding">
           <app-dashboard></app-dashboard>
         </ion-content>
-      </Fragment>,
+      </Fragment>
     ];
   }
 }

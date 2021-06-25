@@ -3,7 +3,7 @@ import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 @Component({
   tag: 'app-image-columns',
   styleUrl: 'app-image-columns.scss',
-  shadow: true,
+  shadow: true
 })
 export class AppImageColumns {
   @Prop()

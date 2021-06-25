@@ -4,7 +4,7 @@ export enum FontSize {
   NORMAL = 'NORMAL',
   BIG = 'BIG',
   VERY_BIG = 'VERY_BIG',
-  CUSTOM = 'CUSTOM',
+  CUSTOM = 'CUSTOM'
 }
 
 export interface FontSizeDefinition {

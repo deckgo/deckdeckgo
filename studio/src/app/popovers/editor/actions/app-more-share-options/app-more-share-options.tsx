@@ -3,14 +3,14 @@ import {Component, Element, h} from '@stencil/core';
 import {MoreAction} from '../../../../types/editor/more-action';
 
 @Component({
-  tag: 'app-more-share-options',
+  tag: 'app-more-share-options'
 })
 export class AppMoreShareOptions {
   @Element() el: HTMLElement;
 
   private async closePopover($event: CustomEvent<MoreAction>) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      action: $event ? $event.detail : null,
+      action: $event ? $event.detail : null
     });
   }
 

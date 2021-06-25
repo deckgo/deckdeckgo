@@ -8,7 +8,7 @@ import {EditAction} from '../../../../types/editor/edit-action';
 import {ChartUtils} from '../../../../utils/editor/chart.utils';
 
 @Component({
-  tag: 'app-edit-slide-chart',
+  tag: 'app-edit-slide-chart'
 })
 export class AppEditSlideChart {
   @Element() el: HTMLElement;
@@ -217,7 +217,7 @@ export class AppEditSlideChart {
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleDatePatternInput(e)}
           onIonChange={() => this.applyChartChanges()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -237,7 +237,7 @@ export class AppEditSlideChart {
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInnerRadiusInput(e)}
           onIonChange={() => this.applyChartChanges()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -289,7 +289,7 @@ export class AppEditSlideChart {
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleTicksInput(e)}
           onIonChange={() => this.applyChartChanges()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 }

@@ -6,11 +6,11 @@ import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.util
 
 enum ApplyColorType {
   QR_CODE,
-  BACKDROP,
+  BACKDROP
 }
 
 @Component({
-  tag: 'app-color-qrcode',
+  tag: 'app-color-qrcode'
 })
 export class AppColorQRCode {
   @Element() el: HTMLElement;
@@ -29,7 +29,7 @@ export class AppColorQRCode {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 

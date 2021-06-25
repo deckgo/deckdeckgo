@@ -6,7 +6,7 @@ import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-reveal',
-  styleUrl: 'app-reveal.scss',
+  styleUrl: 'app-reveal.scss'
 })
 export class AppReveal {
   @Prop()

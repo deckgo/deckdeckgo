@@ -34,7 +34,7 @@ export class DeckOnlineService {
 
         resolve({
           id: snapshot.id,
-          data: deck,
+          data: deck
         });
       } catch (err) {
         reject(err);

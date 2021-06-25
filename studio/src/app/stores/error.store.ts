@@ -5,7 +5,7 @@ interface ErrorStore {
 }
 
 const {state, onChange} = createStore({
-  error: undefined,
+  error: undefined
 } as ErrorStore);
 
 export default {state, onChange};

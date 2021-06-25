@@ -17,7 +17,7 @@ import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-templates',
-  styleUrl: 'app-templates.scss',
+  styleUrl: 'app-templates.scss'
 })
 export class AppTemplates {
   private templateService: TemplateService;
@@ -61,9 +61,9 @@ export class AppTemplates {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-template',
       componentProps: {
-        template,
+        template
       },
-      cssClass: 'fullscreen',
+      cssClass: 'fullscreen'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -80,7 +80,7 @@ export class AppTemplates {
       if (template.id) {
         const updatedTemplate: Template = await this.templateService.update(template);
         templatesStore.state.user = [
-          ...templatesStore.state.user.map((mapTemplate: Template) => (mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate)),
+          ...templatesStore.state.user.map((mapTemplate: Template) => (mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate))
         ];
       } else {
         const createdTemplate: Template = await this.templateService.create(template.data);
@@ -99,7 +99,7 @@ export class AppTemplates {
           <h1>{i18n.state.nav.templates}</h1>
           {this.renderGuardedContent()}
         </main>
-      </ion-content>,
+      </ion-content>
     ];
   }
 
@@ -127,7 +127,7 @@ export class AppTemplates {
         <button type="button" class="app-button" onClick={() => signIn()}>
           {i18n.state.nav.sign_in}
         </button>
-      ),
+      )
     });
   }
 
@@ -145,7 +145,7 @@ export class AppTemplates {
               <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
                 {i18n.state.settings.contact}
               </a>
-            ),
+            )
           })}
         </ion-label>
         <div class="container ion-margin-top">{this.renderTemplates()}</div>

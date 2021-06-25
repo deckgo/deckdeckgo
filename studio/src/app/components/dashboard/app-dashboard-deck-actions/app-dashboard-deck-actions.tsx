@@ -12,7 +12,7 @@ import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/
 @Component({
   tag: 'app-dashboard-deck-actions',
   styleUrl: 'app-dashboard-deck-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
@@ -52,8 +52,8 @@ export class AppDashboardDeckActions {
       component: 'app-deck-delete',
       componentProps: {
         deckName: this.deck.data.name,
-        published: this.deck.data.meta?.published,
-      },
+        published: this.deck.data.meta?.published
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

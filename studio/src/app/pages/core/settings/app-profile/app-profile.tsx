@@ -31,7 +31,7 @@ import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-profile',
-  styleUrl: 'app-profile.scss',
+  styleUrl: 'app-profile.scss'
 })
 export class AppProfile {
   @Element() el: HTMLElement;
@@ -368,8 +368,8 @@ export class AppProfile {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser.username,
-      },
+        username: this.apiUser.username
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -407,7 +407,7 @@ export class AppProfile {
 
         navStore.state.nav = {
           url: '/',
-          direction: NavDirection.RELOAD,
+          direction: NavDirection.RELOAD
         };
 
         await loading.dismiss();
@@ -452,7 +452,7 @@ export class AppProfile {
           <h1>{i18n.state.settings.profile}</h1>
           {this.renderGuardedContent()}
         </main>
-      </ion-content>,
+      </ion-content>
     ];
   }
 
@@ -471,7 +471,7 @@ export class AppProfile {
         <button type="button" class="app-button" onClick={() => signIn()}>
           {i18n.state.nav.sign_in}
         </button>
-      ),
+      )
     });
   }
 
@@ -492,7 +492,7 @@ export class AppProfile {
 
         {this.renderSubmitForm()}
       </form>,
-      <p class="info">{i18n.state.settings.profile_note}</p>,
+      <p class="info">{i18n.state.settings.profile_note}</p>
     ];
   }
 
@@ -512,7 +512,7 @@ export class AppProfile {
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
           onIonChange={() => this.validateNameInput()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -541,7 +541,7 @@ export class AppProfile {
           checked={this.user && this.user.data ? this.user.data.newsletter : false}
           disabled={this.saving}
           onIonChange={($event: CustomEvent) => this.toggleNewsletter($event)}></ion-checkbox>
-      </div>,
+      </div>
     ];
   }
 
@@ -561,7 +561,7 @@ export class AppProfile {
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
           onIonChange={() => this.validateUsernameInput()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -584,7 +584,7 @@ export class AppProfile {
         onClick={() => this.presentConfirmDelete()}
         disabled={this.saving || !this.apiUser || !authStore.state.authUser}>
         <ion-label>{i18n.state.settings.delete_user}</ion-label>
-      </ion-button>,
+      </ion-button>
     ];
   }
 
@@ -662,7 +662,7 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'twitter')}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -684,7 +684,7 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'linkedin')}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -706,7 +706,7 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'dev')}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -728,7 +728,7 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'medium')}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -750,7 +750,7 @@ export class AppProfile {
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'github')}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -763,7 +763,7 @@ export class AppProfile {
         <small>
           {renderI18n(i18n.state.settings.custom_url, {
             placeholder: '{0}',
-            value: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>,
+            value: <strong>{this.custom ? this.custom : 'https://yourwebsite.com'}</strong>
           })}
         </small>
       </p>,
@@ -777,7 +777,7 @@ export class AppProfile {
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleSocialInput($event, 'custom')}></ion-input>
       </ion-item>,
 
-      this.renderCustomLogo(),
+      this.renderCustomLogo()
     ];
   }
 
@@ -802,7 +802,7 @@ export class AppProfile {
           onChange={() => this.selectCustomLogo()}
           disabled={this.saving || !this.user || !this.user.data || !this.user.data.social || !this.user.data.social.custom}
         />
-      </div>,
+      </div>
     ];
   }
 }

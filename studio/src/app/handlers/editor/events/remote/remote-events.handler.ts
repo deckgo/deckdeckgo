@@ -654,7 +654,7 @@ export class RemoteEventsHandler {
 
     deckgoRemoteElement.deck = {
       ...deckgoRemoteElement.deck,
-      reveal: reveal,
+      reveal: reveal
     };
   }
 
@@ -674,7 +674,7 @@ export class RemoteEventsHandler {
 
   private async emitRemoteSlideDidChange() {
     const slideDidChange: CustomEvent<void> = new CustomEvent<void>('remoteSlideDidChange', {
-      bubbles: true,
+      bubbles: true
     });
 
     this.el.dispatchEvent(slideDidChange);

@@ -46,7 +46,7 @@ export class StorageOnlineService {
         resolve({
           downloadUrl: downloadUrl ? await ref.getDownloadURL() : undefined,
           fullPath: ref.fullPath,
-          name: ref.name,
+          name: ref.name
         });
       } catch (err) {
         errorStore.state.error = err.message;
@@ -67,7 +67,7 @@ export class StorageOnlineService {
         const ref = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}`);
 
         let options: ListOptions = {
-          maxResults: Constants.STORAGE.MAX_QUERY_RESULTS,
+          maxResults: Constants.STORAGE.MAX_QUERY_RESULTS
         };
 
         if (next) {
@@ -88,7 +88,7 @@ export class StorageOnlineService {
       if (!results || !results.items || results.items.length <= 0) {
         resolve({
           items: [],
-          nextPageToken: null,
+          nextPageToken: null
         });
         return;
       }
@@ -98,7 +98,7 @@ export class StorageOnlineService {
 
       resolve({
         items: items,
-        nextPageToken: results.nextPageToken,
+        nextPageToken: results.nextPageToken
       });
     });
   }
@@ -108,7 +108,7 @@ export class StorageOnlineService {
       resolve({
         downloadUrl: await ref.getDownloadURL(),
         fullPath: ref.fullPath,
-        name: ref.name,
+        name: ref.name
       });
     });
   }
@@ -139,7 +139,7 @@ export class StorageOnlineService {
     }
 
     return {
-      prefixes: results.prefixes.map((prefix: Reference) => ({name: prefix.name})),
+      prefixes: results.prefixes.map((prefix: Reference) => ({name: prefix.name}))
     };
   }
 }

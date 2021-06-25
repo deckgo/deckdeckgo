@@ -8,7 +8,7 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 
 @Component({
   tag: 'app-user-menu',
-  styleUrl: 'app-user-menu.scss',
+  styleUrl: 'app-user-menu.scss'
 })
 export class AppUserMenu {
   @Element() el: HTMLElement;
@@ -30,7 +30,7 @@ export class AppUserMenu {
 
     navStore.state.nav = {
       url: '/',
-      direction: NavDirection.RELOAD,
+      direction: NavDirection.RELOAD
     };
   }
 

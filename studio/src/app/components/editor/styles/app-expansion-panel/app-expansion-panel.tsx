@@ -4,7 +4,7 @@ import {Expanded} from '../../../../types/core/settings';
 
 @Component({
   tag: 'app-expansion-panel',
-  styleUrl: 'app-expansion-panel.scss',
+  styleUrl: 'app-expansion-panel.scss'
 })
 export class AppExpansionPanel {
   container!: HTMLDivElement;

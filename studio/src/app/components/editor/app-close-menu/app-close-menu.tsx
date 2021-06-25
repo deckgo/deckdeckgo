@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-close-menu',
-  styleUrl: 'app-close-menu.scss',
+  styleUrl: 'app-close-menu.scss'
 })
 export class AppCloseMenu {
   @Event() private close: EventEmitter<void>;

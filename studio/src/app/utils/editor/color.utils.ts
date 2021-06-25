@@ -16,7 +16,7 @@ export class ColorUtils {
         if (rgbs && rgbs.length >= 3) {
           resolve({
             rgb: `${rgbs[0]}, ${rgbs[1]}, ${rgbs[2]}`,
-            opacity: rgbs.length > 3 ? parseFloat(rgbs[3]) * 100 : 100,
+            opacity: rgbs.length > 3 ? parseFloat(rgbs[3]) * 100 : 100
           });
 
           return;
@@ -25,7 +25,7 @@ export class ColorUtils {
 
       resolve({
         rgb: null,
-        opacity: 100,
+        opacity: 100
       });
     });
   }
@@ -42,7 +42,7 @@ export class ColorUtils {
       b.toString(16),
       Math.round(a * 255)
         .toString(16)
-        .substring(0, 2),
+        .substring(0, 2)
     ];
 
     // Pad single-digit output values

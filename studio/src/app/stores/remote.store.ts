@@ -13,7 +13,7 @@ const {state, onChange} = createStore({
   remote: false,
   pendingRequests: undefined,
   connectionState: ConnectionState.DISCONNECTED,
-  acceptedRequest: undefined,
+  acceptedRequest: undefined
 } as RemoteStore);
 
 export default {state, onChange};

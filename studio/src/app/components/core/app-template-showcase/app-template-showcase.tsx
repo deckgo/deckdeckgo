@@ -8,7 +8,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 @Component({
   tag: 'app-template-showcase',
-  styleUrl: 'app-template-showcase.scss',
+  styleUrl: 'app-template-showcase.scss'
 })
 export class AppTemplateShowcase {
   @Prop()

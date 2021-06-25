@@ -1,7 +1,7 @@
 import {Component, h, Prop} from '@stencil/core';
 
 @Component({
-  tag: 'app-templates-content',
+  tag: 'app-templates-content'
 })
 export class AppTemplatesContent {
   @Prop()

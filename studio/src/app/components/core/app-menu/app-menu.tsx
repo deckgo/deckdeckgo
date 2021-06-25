@@ -12,7 +12,7 @@ import {AuthService} from '../../../services/auth/auth.service';
 @Component({
   tag: 'app-menu',
   styleUrl: 'app-menu.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppMenu {
   @Element() el: HTMLElement;
@@ -32,7 +32,7 @@ export class AppMenu {
 
     navStore.state.nav = {
       url: '/',
-      direction: NavDirection.RELOAD,
+      direction: NavDirection.RELOAD
     };
   }
 

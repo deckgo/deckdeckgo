@@ -6,7 +6,7 @@ import {ImageAction} from '../../../types/editor/image-action';
 
 @Component({
   tag: 'app-image-element',
-  styleUrl: 'app-image-element.scss',
+  styleUrl: 'app-image-element.scss'
 })
 export class AppImageElement {
   @Element() el: HTMLElement;
@@ -33,7 +33,7 @@ export class AppImageElement {
         <h2>{this.slide ? i18n.state.editor.slide_background : i18n.state.editor.image}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>
       </ion-toolbar>,
-      <app-image selectedElement={this.selectedElement} slide={this.slide} onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>,
+      <app-image selectedElement={this.selectedElement} slide={this.slide} onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image>
     ];
   }
 }

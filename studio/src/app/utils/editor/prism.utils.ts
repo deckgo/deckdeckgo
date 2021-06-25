@@ -12,7 +12,7 @@ export const filterCodeLanguages = async (filter: string | undefined): Promise<P
       if (value.title && value.title !== '') {
         languages.push({
           language: key,
-          title: value.title,
+          title: value.title
         });
       }
     }
@@ -27,7 +27,7 @@ export const getCodeLanguage = async (language: string): Promise<PrismLanguage |
 
     return {
       language,
-      title: value.title,
+      title: value.title
     };
   }
 

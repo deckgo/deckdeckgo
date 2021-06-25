@@ -7,7 +7,7 @@ import store from '../../../stores/deck.store';
 @Component({
   tag: 'app-navigation',
   styleUrl: 'app-navigation.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppNavigation {
   @Prop() menuToggle: boolean = true;

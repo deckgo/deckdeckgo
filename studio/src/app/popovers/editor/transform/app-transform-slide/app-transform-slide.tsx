@@ -8,7 +8,7 @@ import {AppTemplatesFixed} from '../../../../components/editor/templates/platfor
 
 @Component({
   tag: 'app-transform-slide',
-  styleUrl: 'app-transform-slide.scss',
+  styleUrl: 'app-transform-slide.scss'
 })
 export class AppTransformSlide {
   @Element() el: HTMLElement;
@@ -18,7 +18,7 @@ export class AppTransformSlide {
 
   private async closePopover(template?: InitTemplate) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      template,
+      template
     });
   }
 

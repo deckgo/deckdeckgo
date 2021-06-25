@@ -9,7 +9,7 @@ interface TokenStore {
 }
 
 const {state, onChange} = createStore({
-  token: undefined,
+  token: undefined
 } as TokenStore);
 
 onChange('token', async (token: Token | undefined) => {

@@ -63,14 +63,14 @@ export class PublishService {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
             deckId: deck.id,
             ownerId: deck.data.owner_id,
             publish: true,
-            github: deck.data.github ? deck.data.github.publish : false,
-          }),
+            github: deck.data.github ? deck.data.github.publish : false
+          })
         });
 
         if (!rawResponse || !rawResponse.ok) {
@@ -100,7 +100,7 @@ export class PublishService {
         if (!deck.data.meta) {
           deck.data.meta = {
             title: deck.data.name,
-            updated_at: now,
+            updated_at: now
           };
         } else {
           deck.data.meta.title = deck.data.name;
@@ -122,7 +122,7 @@ export class PublishService {
         if (userStore.state.user?.data?.name) {
           if (!deck.data.meta.author) {
             deck.data.meta.author = {
-              name: userStore.state.user.data.name,
+              name: userStore.state.user.data.name
             };
           } else {
             (deck.data.meta.author as DeckMetaAuthor).name = userStore.state.user.data.name;
@@ -154,7 +154,7 @@ export class PublishService {
             deck.data.github.publish = github;
           } else {
             deck.data.github = {
-              publish: github,
+              publish: github
             };
           }
         }
@@ -186,7 +186,7 @@ export class PublishService {
           (deploySnapshot: firebase.firestore.DocumentSnapshot<DeckData>) => {
             deckStore.state.deck = {
               id: deploySnapshot.id,
-              data: deploySnapshot.data(),
+              data: deploySnapshot.data()
             };
           },
           (_err) => {

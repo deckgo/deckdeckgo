@@ -7,7 +7,7 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 
 @Component({
   tag: 'app-gif',
-  styleUrl: 'app-gif.scss',
+  styleUrl: 'app-gif.scss'
 })
 export class AppGif {
   @Element() el: HTMLElement;
@@ -250,7 +250,7 @@ export class AppGif {
               this.search();
             }}></ion-searchbar>
         </ion-toolbar>
-      </ion-footer>,
+      </ion-footer>
     ];
   }
 

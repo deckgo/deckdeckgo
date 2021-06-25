@@ -5,7 +5,7 @@ import i18n from '../../../../stores/i18n.store';
 
 @Component({
   tag: 'app-edit-mode',
-  styleUrl: 'app-edit-mode.scss',
+  styleUrl: 'app-edit-mode.scss'
 })
 export class AppEditMode {
   private switchEditMode($event: CustomEvent) {
