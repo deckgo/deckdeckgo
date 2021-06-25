@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
-import undoRedoStore from "../../../../../stores/undo-redo.store";
+import undoRedoStore from '../../../../../stores/undo-redo.store';
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {ListStyle} from '../../../../../types/editor/list-style';
@@ -15,7 +15,7 @@ import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
   tag: 'app-list',
-  styleUrl: 'app-list.scss',
+  styleUrl: 'app-list.scss'
 })
 export class AppList {
   @Prop()
@@ -105,7 +105,7 @@ export class AppList {
 
     this.updateStyle({
       property: SlotUtils.isNodeRevealList(this.selectedElement) ? '--reveal-list-style' : 'list-style-type',
-      value: this.selectedStyle,
+      value: this.selectedStyle
     });
 
     this.listStyleChanged.emit();
@@ -126,7 +126,7 @@ export class AppList {
 
     this.updateStyle({
       property: SlotUtils.isNodeRevealList(this.selectedElement) ? '--reveal-list-style' : 'list-style-type',
-      value: this.listStyleCSS,
+      value: this.listStyleCSS
     });
 
     this.listStyleChanged.emit();
@@ -151,7 +151,7 @@ export class AppList {
         }
 
         await this.initListStyle();
-      },
+      }
     });
   }
 
@@ -213,7 +213,7 @@ export class AppList {
       <ion-select-option value={ListStyle.LATIN_LOWER}>{i18n.state.editor.latin_lowercase}</ion-select-option>,
       <ion-select-option value={ListStyle.LATIN_UPPER}>{i18n.state.editor.latin_uppercase}</ion-select-option>,
       <ion-select-option value={ListStyle.ROMAN_LOWER}>{i18n.state.editor.roman_lowercase}</ion-select-option>,
-      <ion-select-option value={ListStyle.ROMAN_UPPER}>{i18n.state.editor.roman_uppercase}</ion-select-option>,
+      <ion-select-option value={ListStyle.ROMAN_UPPER}>{i18n.state.editor.roman_uppercase}</ion-select-option>
     ];
   }
 
@@ -221,7 +221,7 @@ export class AppList {
     return [
       <ion-select-option value={ListStyle.BULLET}>{i18n.state.editor.bullet}</ion-select-option>,
       <ion-select-option value={ListStyle.CIRCLE}>{i18n.state.editor.circle}</ion-select-option>,
-      <ion-select-option value={ListStyle.SQUARE}>{i18n.state.editor.square}</ion-select-option>,
+      <ion-select-option value={ListStyle.SQUARE}>{i18n.state.editor.square}</ion-select-option>
     ];
   }
 }

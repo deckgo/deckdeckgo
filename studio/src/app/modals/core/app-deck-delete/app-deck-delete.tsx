@@ -5,7 +5,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-deck-delete',
-  styleUrl: 'app-deck-delete.scss',
+  styleUrl: 'app-deck-delete.scss'
 })
 export class AppDeckDelete {
   @Element() el: HTMLElement;
@@ -51,7 +51,7 @@ export class AppDeckDelete {
         <p>
           {renderI18n(i18n.state.dashboard.cannot_undone, {
             placeholder: '{0}',
-            value: <strong>{this.deckName}</strong>,
+            value: <strong>{this.deckName}</strong>
           })}
         </p>
 
@@ -62,7 +62,7 @@ export class AppDeckDelete {
         </form>
 
         {this.renderNotePublished()}
-      </ion-content>,
+      </ion-content>
     ];
   }
 

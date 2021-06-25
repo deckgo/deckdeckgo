@@ -7,7 +7,7 @@ interface OfflineStore {
 
 const {state, onChange, reset} = createStore({
   offline: undefined,
-  progress: undefined,
+  progress: undefined
 } as OfflineStore);
 
 export default {state, onChange, reset};

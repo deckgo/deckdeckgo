@@ -6,27 +6,27 @@ import en from '../../assets/i18n/en.json';
 
 const {state, onChange} = createStore<I18n>({
   lang: 'en',
-  ...(en as Partial<I18n>),
+  ...(en as Partial<I18n>)
 } as I18n);
 
 const esI18n = async (): Promise<I18n> => {
   return {
     lang: 'es',
-    ...(await import(`../../assets/i18n/es.json`)),
+    ...(await import(`../../assets/i18n/es.json`))
   };
 };
 
 const deI18n = async (): Promise<I18n> => {
   return {
     lang: 'de',
-    ...(await import(`../../assets/i18n/de.json`)),
+    ...(await import(`../../assets/i18n/de.json`))
   };
 };
 
 const enI18n = (): I18n => {
   return {
     lang: 'en',
-    ...(en as Partial<I18n>),
+    ...(en as Partial<I18n>)
   } as I18n;
 };
 

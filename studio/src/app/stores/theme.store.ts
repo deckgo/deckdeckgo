@@ -5,7 +5,7 @@ interface DarkThemeStore {
 }
 
 const {state, onChange} = createStore({
-  darkTheme: undefined,
+  darkTheme: undefined
 } as DarkThemeStore);
 
 onChange('darkTheme', (dark: boolean | undefined) => {

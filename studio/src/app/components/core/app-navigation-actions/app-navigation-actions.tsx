@@ -12,7 +12,7 @@ import {signIn} from '../../../utils/core/signin.utils';
 @Component({
   tag: 'app-navigation-actions',
   styleUrl: 'app-navigation-actions.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppNavigationActions {
   @Prop() signIn: boolean = true;
@@ -25,7 +25,7 @@ export class AppNavigationActions {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-user-menu',
       event: $event,
-      mode: 'ios',
+      mode: 'ios'
     });
 
     await popover.present();

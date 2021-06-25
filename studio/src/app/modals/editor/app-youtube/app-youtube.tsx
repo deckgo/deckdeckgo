@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-youtube',
-  styleUrl: 'app-youtube.scss',
+  styleUrl: 'app-youtube.scss'
 })
 export class AppYoutube {
   @Element() el: HTMLElement;
@@ -72,7 +72,7 @@ export class AppYoutube {
           onClick={() => this.save()}>
           <ion-label>{i18n.state.core.save}</ion-label>
         </ion-button>
-      </ion-content>,
+      </ion-content>
     ];
   }
 }

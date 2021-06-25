@@ -6,7 +6,7 @@ import {StorageService} from '../../../../services/storage/storage.service';
 
 @Component({
   tag: 'app-background-folders',
-  styleUrl: 'app-background-folders.scss',
+  styleUrl: 'app-background-folders.scss'
 })
 export class AppBackgroundFolders {
   @State()

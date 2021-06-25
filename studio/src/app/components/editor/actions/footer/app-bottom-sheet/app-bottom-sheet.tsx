@@ -4,7 +4,7 @@ import {debounce, unifyEvent} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'app-bottom-sheet',
-  styleUrl: 'app-bottom-sheet.scss',
+  styleUrl: 'app-bottom-sheet.scss'
 })
 export class AppBottomSheet {
   @Element() el: HTMLElement;
@@ -135,7 +135,7 @@ export class AppBottomSheet {
       <Host
         style={{
           '--bottom-sheet-top': `${this.bottomSheetTop}px`,
-          '--contentheight': `${this.contentHeight}px`,
+          '--contentheight': `${this.contentHeight}px`
         }}>
         <div class="container" ref={(el) => (this.container = el)}>
           <button class="sheet-indicator" onClick={($event: UIEvent) => this.toggle($event)}>

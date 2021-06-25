@@ -71,7 +71,7 @@ export class ShapeHelper {
 
   private async openModal(slideElement: HTMLElement, componentTag: string) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: componentTag,
+      component: componentTag
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

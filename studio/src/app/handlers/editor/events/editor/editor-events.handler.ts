@@ -1,10 +1,10 @@
-import { redo, undo } from "../../../../utils/editor/undo-redo.utils";
+import {redo, undo} from '../../../../utils/editor/undo-redo.utils';
 
 export class EditorEventsHandler {
   private mainRef: HTMLElement;
   private actionsEditorRef: HTMLAppActionsEditorElement | undefined;
 
-  init({mainRef, actionsEditorRef}: {mainRef: HTMLElement, actionsEditorRef: HTMLAppActionsEditorElement | undefined}): Promise<void> {
+  init({mainRef, actionsEditorRef}: {mainRef: HTMLElement; actionsEditorRef: HTMLAppActionsEditorElement | undefined}): Promise<void> {
     return new Promise<void>(async (resolve) => {
       this.mainRef = mainRef;
       this.actionsEditorRef = actionsEditorRef;

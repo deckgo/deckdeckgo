@@ -66,7 +66,7 @@ export abstract class ApiUserService {
       const apiUserInfo: ApiUserInfo = {
         anonymous: authUser.anonymous,
         firebase_uid: authUser.uid,
-        email: authUser.anonymous ? null : authUser.email,
+        email: authUser.anonymous ? null : authUser.email
       };
 
       resolve(apiUserInfo);

@@ -12,7 +12,7 @@ import {TemplateUtils} from '../../../../utils/editor/template.utils';
 
 @Component({
   tag: 'app-transform-element',
-  styleUrl: 'app-transform-element.scss',
+  styleUrl: 'app-transform-element.scss'
 })
 export class AppTransformElement {
   @Element() el: HTMLElement;
@@ -46,7 +46,7 @@ export class AppTransformElement {
 
   private async closePopover(type?: SlotType) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      type: type,
+      type: type
     });
   }
 
@@ -60,7 +60,7 @@ export class AppTransformElement {
       <app-slot-type
         selectedElement={this.selectedElement}
         slotTypes={this.slotTypes}
-        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>,
+        onSelectType={($event: CustomEvent<SlotType>) => this.closePopover($event.detail)}></app-slot-type>
     ];
   }
 }

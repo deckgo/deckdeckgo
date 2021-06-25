@@ -37,7 +37,7 @@ export class PollService {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
         query: 'type=app',
-        path: '/poll',
+        path: '/poll'
       });
 
       this.socket.on('connect', async () => {
@@ -61,7 +61,7 @@ export class PollService {
 
       this.socket.emit('vote', {
         key: key,
-        answer: answer,
+        answer: answer
       });
 
       resolve();
@@ -77,7 +77,7 @@ export class PollService {
 
       if (store.state.poll) {
         this.socket.emit('leave', {
-          key: store.state.poll.key,
+          key: store.state.poll.key
         });
       }
 

@@ -4,7 +4,7 @@ import {GifService} from '../../../services/tenor/gif/gif.service';
 
 @Component({
   tag: 'app-random-gif',
-  styleUrl: 'app-random-gif.scss',
+  styleUrl: 'app-random-gif.scss'
 })
 export class AppRandomGif {
   @Prop()

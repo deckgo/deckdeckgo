@@ -60,8 +60,8 @@ export class SelectedElementUtils {
           image: this.isElementImage(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
           shape: this.isElementShape(element),
           demo: this.isElementDemo(element),
-          list: ListUtils.isElementList(element),
-        },
+          list: ListUtils.isElementList(element)
+        }
       };
     }
 
@@ -81,8 +81,8 @@ export class SelectedElementUtils {
         split: nodeName === 'deckgo-slide-split' && element?.getAttribute('type') !== SlideSplitType.DEMO,
         youtube: nodeName === 'deckgo-slide-youtube',
         playground: nodeName === 'deckgo-slide-playground',
-        fixed: ['deckgo-slide-title', 'deckgo-slide-content', 'deckgo-slide-split'].includes(nodeName),
-      },
+        fixed: ['deckgo-slide-title', 'deckgo-slide-content', 'deckgo-slide-split'].includes(nodeName)
+      }
     };
   }
 }

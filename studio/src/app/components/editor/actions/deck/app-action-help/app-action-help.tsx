@@ -5,7 +5,7 @@ import {popoverController} from '@ionic/core';
 import i18n from '../../../../../stores/i18n.store';
 
 @Component({
-  tag: 'app-action-help',
+  tag: 'app-action-help'
 })
 export class AppActionHelp {
   @Element() el: HTMLElement;
@@ -23,7 +23,7 @@ export class AppActionHelp {
       component: 'app-get-help',
       mode: 'ios',
       event: $event,
-      cssClass: 'info',
+      cssClass: 'info'
     });
 
     await popover.present();

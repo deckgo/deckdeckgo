@@ -20,11 +20,11 @@ enum LetterSpacing {
   WIDE,
   WIDER,
   SUPERWIDE,
-  WIDEST,
+  WIDEST
 }
 
 @Component({
-  tag: 'app-text',
+  tag: 'app-text'
 })
 export class AppText {
   @Prop()
@@ -198,7 +198,7 @@ export class AppText {
           case 'text-align':
             this.align = await AlignUtils.getAlignment(this.selectedElement?.element);
         }
-      },
+      }
     });
   }
 

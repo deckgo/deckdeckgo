@@ -17,7 +17,7 @@ import {LangService} from './services/lang/lang.service';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.scss',
+  styleUrl: 'app-root.scss'
 })
 export class AppRoot {
   @Element() el: HTMLElement;
@@ -56,7 +56,7 @@ export class AppRoot {
         this.themeService.initDarkModePreference(),
         this.colorService.init(),
         this.settingsService.init(),
-        this.langService.init(),
+        this.langService.init()
       ];
 
       await Promise.all(promises);
@@ -112,11 +112,11 @@ export class AppRoot {
           handler: () => {
             registration.waiting.postMessage('skipWaiting');
             window.location.reload();
-          },
-        },
+          }
+        }
       ],
       position: 'top',
-      color: 'quaternary',
+      color: 'quaternary'
     });
 
     await toast.present();
@@ -128,12 +128,12 @@ export class AppRoot {
       buttons: [
         {
           text: 'Close',
-          role: 'cancel',
-        },
+          role: 'cancel'
+        }
       ],
       position: 'top',
       color: 'danger',
-      duration: 6000,
+      duration: 6000
     });
 
     toast.onDidDismiss().then(() => {
@@ -218,7 +218,7 @@ export class AppRoot {
         <ion-nav id="menu-content" />
 
         <app-share-deck ref={(el) => (this.shareRef = el as HTMLAppShareDeckElement)}></app-share-deck>
-      </ion-app>,
+      </ion-app>
     ];
   }
 }

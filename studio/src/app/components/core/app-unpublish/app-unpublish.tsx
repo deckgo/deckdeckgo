@@ -6,7 +6,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-unpublish',
-  styleUrl: 'app-unpublish.scss',
+  styleUrl: 'app-unpublish.scss'
 })
 export class AppUnpublish {
   render() {
@@ -18,7 +18,7 @@ export class AppUnpublish {
             <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
               contact
             </a>
-          ),
+          )
         })}
       </p>
     );

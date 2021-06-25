@@ -6,7 +6,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-slot-type',
-  styleUrl: 'app-slot-type.scss',
+  styleUrl: 'app-slot-type.scss'
 })
 export class AppSlotType {
   @Prop()

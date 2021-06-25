@@ -9,7 +9,7 @@ import {WavesUtils} from '../../../utils/editor/waves.utils';
 
 @Component({
   tag: 'app-waves',
-  styleUrl: 'app-waves.scss',
+  styleUrl: 'app-waves.scss'
 })
 export class AppWaves {
   @Element() el: HTMLElement;
@@ -49,7 +49,7 @@ export class AppWaves {
   private initColor = async (): Promise<InitStyleColor> => {
     return {
       rgb: this.color,
-      opacity: 100,
+      opacity: 100
     };
   };
 
@@ -103,7 +103,7 @@ export class AppWaves {
       fill,
       opacity: this.waves ? this.waves.opacity : '1',
       wave: this.orientation,
-      path: {d: fullPath},
+      path: {d: fullPath}
     };
   }
 

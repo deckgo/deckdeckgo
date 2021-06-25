@@ -8,7 +8,7 @@ import {PrismLanguage} from '../../../types/editor/prism-language';
 
 @Component({
   tag: 'app-code-languages',
-  styleUrl: 'app-code-languages.scss',
+  styleUrl: 'app-code-languages.scss'
 })
 export class AppCodeLanguages {
   @Element() el: HTMLElement;
@@ -123,7 +123,7 @@ export class AppCodeLanguages {
               this.search();
             }}></ion-searchbar>
         </ion-toolbar>
-      </ion-footer>,
+      </ion-footer>
     ];
   }
 

@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-math',
-  styleUrl: 'app-math.scss',
+  styleUrl: 'app-math.scss'
 })
 export class AppMath {
   @Element() el: HTMLElement;
@@ -75,7 +75,7 @@ export class AppMath {
             onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleMacrosInput($event)}
             onIonChange={() => this.applyMacrosInput()}></ion-textarea>
         </ion-item>
-      </ion-list>,
+      </ion-list>
     ];
   }
 }

@@ -11,7 +11,7 @@ interface ColorStore {
 
 const {state, onChange} = createStore<ColorStore>({
   history: [],
-  colorInput: 'hex',
+  colorInput: 'hex'
 });
 
 onChange('history', (history: DeckdeckgoPalette[]) => {

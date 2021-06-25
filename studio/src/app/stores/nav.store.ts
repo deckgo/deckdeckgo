@@ -4,7 +4,7 @@ export enum NavDirection {
   FORWARD,
   RELOAD,
   BACK,
-  ROOT,
+  ROOT
 }
 
 export interface NavParams {
@@ -17,7 +17,7 @@ interface NavStore {
 }
 
 const {state, onChange, reset} = createStore({
-  nav: undefined,
+  nav: undefined
 } as NavStore);
 
 export default {state, onChange, reset};

@@ -63,7 +63,7 @@ export class Utils {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false,
+        hour12: false
       };
       const now: string = new Intl.DateTimeFormat('en-US', options).format(new Date());
 

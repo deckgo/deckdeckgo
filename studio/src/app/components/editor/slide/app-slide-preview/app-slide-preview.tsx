@@ -7,7 +7,7 @@ import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 @Component({
   tag: 'app-slide-preview',
-  styleUrl: 'app-slide-preview.scss',
+  styleUrl: 'app-slide-preview.scss'
 })
 export class AppSlidePreview {
   @Element() el: HTMLElement;
@@ -128,7 +128,7 @@ export class AppSlidePreview {
       <Host
         style={style}
         class={{
-          preview: this.preview,
+          preview: this.preview
         }}>
         <article>{this.renderPreview()}</article>
       </Host>

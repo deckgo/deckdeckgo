@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-element-delete',
-  styleUrl: 'app-element-delete.scss',
+  styleUrl: 'app-element-delete.scss'
 })
 export class AppElementDelete {
   @Element() el: HTMLElement;
@@ -23,7 +23,7 @@ export class AppElementDelete {
           </p>
         </ion-row>
       </ion-grid>,
-      this.renderActions(),
+      this.renderActions()
     ];
   }
 

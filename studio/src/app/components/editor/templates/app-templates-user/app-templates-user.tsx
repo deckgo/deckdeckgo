@@ -13,7 +13,7 @@ import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-templates-user',
-  styleUrl: 'app-templates-user.scss',
+  styleUrl: 'app-templates-user.scss'
 })
 export class AppTemplatesUser {
   private templateService: TemplateService;
@@ -66,7 +66,7 @@ export class AppTemplatesUser {
               <button type="button" class="app-button" onClick={() => this.signIn()}>
                 {i18n.state.nav.sign_in}
               </button>
-            ),
+            )
           })}
         </p>
       </div>

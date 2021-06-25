@@ -10,7 +10,7 @@ import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
 import {EditAction} from '../../../../types/editor/edit-action';
 
 @Component({
-  tag: 'app-edit-slide-qrcode',
+  tag: 'app-edit-slide-qrcode'
 })
 export class AppEditSlideQRCode {
   @Element() el: HTMLElement;
@@ -171,7 +171,7 @@ export class AppEditSlideQRCode {
         <ion-button shape="round" onClick={() => this.action.emit(EditAction.DELETE_LOGO)} fill="outline" class="delete">
           <ion-label>{i18n.state.editor.delete_logo}</ion-label>
         </ion-button>
-      </ion-item>,
+      </ion-item>
     ];
   }
 }

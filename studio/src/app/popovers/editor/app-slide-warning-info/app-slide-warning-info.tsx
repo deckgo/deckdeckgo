@@ -7,7 +7,7 @@ import settingsStore from '../../../stores/settings.store';
 
 @Component({
   tag: 'app-slide-warning-info',
-  styleUrl: 'app-slide-warning-info.scss',
+  styleUrl: 'app-slide-warning-info.scss'
 })
 export class AppSlideWarningInfo {
   @Element() el: HTMLElement;
@@ -75,7 +75,7 @@ export class AppSlideWarningInfo {
               <a href="https://www.w3.org/TR/WCAG/#contrast-minimum" target="_blank" rel="noopener noreferrer">
                 WCAG
               </a>
-            ),
+            )
           })}
         </p>
 
@@ -89,11 +89,10 @@ export class AppSlideWarningInfo {
       return undefined;
     }
 
-    return <div class="ion-text-center">
-      <button
-        onClick={async () => await this.deactivateContrastWarning()}>
-        {i18n.state.settings.deactivate_contrast_warning}
-      </button>
-    </div>
+    return (
+      <div class="ion-text-center">
+        <button onClick={async () => await this.deactivateContrastWarning()}>{i18n.state.settings.deactivate_contrast_warning}</button>
+      </div>
+    );
   }
 }

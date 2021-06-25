@@ -11,7 +11,7 @@ import {RemoteService} from '../../../services/editor/remote/remote.service';
 
 @Component({
   tag: 'app-present',
-  styleUrl: 'app-present.scss',
+  styleUrl: 'app-present.scss'
 })
 export class AppRemoteRequest {
   @Element() el: HTMLElement;
@@ -37,7 +37,7 @@ export class AppRemoteRequest {
 
   private async closePopover(action?: MoreAction) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      ...(action && {action}),
+      ...(action && {action})
     });
   }
 

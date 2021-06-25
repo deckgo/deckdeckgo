@@ -5,7 +5,7 @@ import i18n from '../../../stores/i18n.store';
 @Component({
   tag: 'app-links',
   styleUrl: 'app-links.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppLinks {
   render() {

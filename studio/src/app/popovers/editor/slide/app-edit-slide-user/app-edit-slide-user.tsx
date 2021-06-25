@@ -15,7 +15,7 @@ interface Property {
 }
 
 @Component({
-  tag: 'app-edit-slide-user',
+  tag: 'app-edit-slide-user'
 })
 export class AppEditSlideUser {
   @Prop()
@@ -37,7 +37,7 @@ export class AppEditSlideUser {
       .map((prop: TemplateDataProp) => {
         return {
           prop,
-          value: this.selectedElement.element.getAttribute(prop.name),
+          value: this.selectedElement.element.getAttribute(prop.name)
         };
       });
   }

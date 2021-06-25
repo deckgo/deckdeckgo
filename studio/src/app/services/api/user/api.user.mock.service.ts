@@ -40,7 +40,7 @@ export class ApiUserMockService extends ApiUserService {
         id: apiUserInfo.firebase_uid,
         anonymous: false,
         firebase_uid: apiUserInfo.firebase_uid,
-        username: 'Peter Parker',
+        username: 'Peter Parker'
       };
 
       resolve(testUser);

@@ -4,7 +4,7 @@ import {SlotType} from '../../types/editor/slot-type';
 export enum TextAlign {
   LEFT = 'left',
   CENTER = 'center',
-  RIGHT = 'right',
+  RIGHT = 'right'
 }
 
 export class AlignUtils {
@@ -49,7 +49,7 @@ export class AlignUtils {
         SlotType.REVEAL_LIST.toString(),
         SlotType.MATH.toString(),
         SlotType.WORD_CLOUD.toString(),
-        SlotType.MARKDOWN.toString(),
+        SlotType.MARKDOWN.toString()
       ].indexOf(element.nodeName.toLowerCase()) > -1
     );
   }

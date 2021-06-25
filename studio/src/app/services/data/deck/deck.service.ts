@@ -36,7 +36,7 @@ export class DeckService {
           (doc: firebase.firestore.DocumentReference) => {
             resolve({
               id: doc.id,
-              data: deck,
+              data: deck
             });
           },
           (err) => {
@@ -80,7 +80,7 @@ export class DeckService {
         const decks: Deck[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
           return {
             id: documentSnapshot.id,
-            data: documentSnapshot.data() as DeckData,
+            data: documentSnapshot.data() as DeckData
           };
         });
 

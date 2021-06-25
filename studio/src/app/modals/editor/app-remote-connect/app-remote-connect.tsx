@@ -8,7 +8,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-remote-connect',
-  styleUrl: 'app-remote-connect.scss',
+  styleUrl: 'app-remote-connect.scss'
 })
 export class AppRemoteConnect {
   @Element() el: HTMLElement;
@@ -120,7 +120,7 @@ export class AppRemoteConnect {
                 <a href="https://deckdeckgo.app" target="_blank" rel="noopener noreferrer">
                   https://deckdeckgo.app <ion-icon name="open"></ion-icon>
                 </a>
-              ),
+              )
             })}
           </p>
 

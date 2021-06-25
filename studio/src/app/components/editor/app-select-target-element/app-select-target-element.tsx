@@ -6,7 +6,7 @@ import {TargetElement} from '../../../types/editor/target-element';
 
 @Component({
   tag: 'app-select-target-element',
-  styleUrl: 'app-select-target-element.scss',
+  styleUrl: 'app-select-target-element.scss'
 })
 export class AppSelectTargetElement {
   @Prop()

@@ -9,7 +9,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-playground',
-  styleUrl: 'app-playground.scss',
+  styleUrl: 'app-playground.scss'
 })
 export class AppPlayground {
   @Element() el: HTMLElement;
@@ -55,7 +55,7 @@ export class AppPlayground {
   async save() {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss({
       src: this.playgroundSrc,
-      theme: this.supportsTheme ? this.playgroundTheme : undefined,
+      theme: this.supportsTheme ? this.playgroundTheme : undefined
     } as PlaygroundAction);
   }
 
@@ -135,10 +135,10 @@ export class AppPlayground {
               <a href="https://www.youtube.com/watch?v=nS4A2XSwQrw" target="_blank" aria-label="Demo on YouTube" rel="noopener noreferrer">
                 {i18n.state.editor.youtube_video}
               </a>
-            ),
+            )
           })}
         </p>
-      </ion-content>,
+      </ion-content>
     ];
   }
 }

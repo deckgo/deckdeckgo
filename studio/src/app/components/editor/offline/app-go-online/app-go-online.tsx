@@ -9,7 +9,7 @@ import {OfflineService} from '../../../../services/editor/offline/offline.servic
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
-  tag: 'app-go-online',
+  tag: 'app-go-online'
 })
 export class AppGoOnline {
   @State()
@@ -76,16 +76,16 @@ export class AppGoOnline {
       <p>
         {renderI18n(i18n.state.offline.cool, {
           placeholder: '{0}',
-          value: <strong>{i18n.state.offline.online}</strong>,
+          value: <strong>{i18n.state.offline.online}</strong>
         })}
       </p>,
       <p>
         {renderI18n(i18n.state.offline.note, {
           placeholder: '{0}',
-          value: <strong>{i18n.state.offline.replace}</strong>,
+          value: <strong>{i18n.state.offline.replace}</strong>
         })}
       </p>,
-      <p>{i18n.state.offline.long_story}</p>,
+      <p>{i18n.state.offline.long_story}</p>
     ];
   }
 

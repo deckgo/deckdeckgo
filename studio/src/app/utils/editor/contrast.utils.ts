@@ -71,7 +71,7 @@ export class ContrastUtils {
 
     return {
       luminanceOverlay: lumOverlay,
-      ratio: this.calculateColorContrastRatio(lumOverlay, lumColor),
+      ratio: this.calculateColorContrastRatio(lumOverlay, lumColor)
     };
   }
 

@@ -7,5 +7,5 @@ export enum ListStyle {
   LATIN_LOWER = 'lower-latin',
   BULLET = 'disc',
   CIRCLE = 'circle',
-  SQUARE = 'square',
+  SQUARE = 'square'
 }

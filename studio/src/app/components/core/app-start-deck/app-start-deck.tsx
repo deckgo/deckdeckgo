@@ -6,7 +6,7 @@ import i18n from '../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 
 @Component({
-  tag: 'app-start-deck',
+  tag: 'app-start-deck'
 })
 export class AppStartDeck {
   @Prop()
@@ -18,7 +18,7 @@ export class AppStartDeck {
   private async navigateEditor() {
     navStore.state.nav = {
       url: '/editor',
-      direction: NavDirection.RELOAD,
+      direction: NavDirection.RELOAD
     };
   }
 
@@ -27,7 +27,7 @@ export class AppStartDeck {
       component: 'app-deck-import',
       event: $event,
       mode: 'ios',
-      cssClass: 'info',
+      cssClass: 'info'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -44,7 +44,7 @@ export class AppStartDeck {
 
     navStore.state.nav = {
       url: url,
-      direction: NavDirection.RELOAD,
+      direction: NavDirection.RELOAD
     };
   }
 

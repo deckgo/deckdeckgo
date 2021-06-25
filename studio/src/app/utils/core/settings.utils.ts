@@ -6,7 +6,7 @@ export class SettingsUtils {
   public static update(panels: Partial<SettingsPanels>) {
     settingsStore.state.panels = {
       ...settingsStore.state.panels,
-      ...panels,
+      ...panels
     };
   }
 }

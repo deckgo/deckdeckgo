@@ -42,7 +42,7 @@ import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 
 @Component({
   tag: 'app-editor',
-  styleUrl: 'app-editor.scss',
+  styleUrl: 'app-editor.scss'
 })
 export class AppEditor {
   @Element() el: HTMLElement;
@@ -272,7 +272,7 @@ export class AppEditor {
 
       const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({
         template: SlideTemplate.TITLE,
-        elements: [SlotType.H1, SlotType.SECTION],
+        elements: [SlotType.H1, SlotType.SECTION]
       });
 
       await this.concatSlide(slide);
@@ -411,7 +411,7 @@ export class AppEditor {
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
-      cssClass: 'fullscreen',
+      cssClass: 'fullscreen'
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -539,7 +539,7 @@ export class AppEditor {
       component: 'app-fullscreen-info',
       mode: 'ios',
       cssClass: 'info',
-      showBackdrop: true,
+      showBackdrop: true
     });
 
     popover.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -608,7 +608,7 @@ export class AppEditor {
     if (!this.contentRef || isFullscreen() || (isMobile() && !isIPad() && !isAndroidTablet())) {
       this.mainSize = {
         width: isMobile() ? 'calc(100% - 32px)' : '100%',
-        height: isMobile() ? 'calc(100% - 32px)' : '100%',
+        height: isMobile() ? 'calc(100% - 32px)' : '100%'
       };
       return;
     }
@@ -624,11 +624,11 @@ export class AppEditor {
       height > maxHeight
         ? {
             width: `${(maxHeight * 16) / 9}px`,
-            height: `${maxHeight}px`,
+            height: `${maxHeight}px`
           }
         : {
             width: `${width}px`,
-            height: `${height}px`,
+            height: `${height}px`
           };
   }
 
@@ -789,7 +789,7 @@ export class AppEditor {
         <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
         {this.renderLaserPointer()}
       </ion-content>,
-      this.renderInlineEditor(),
+      this.renderInlineEditor()
     ];
   }
 
@@ -810,7 +810,8 @@ export class AppEditor {
         img-anchor="deckgo-lazy-img"
         list={false}
         palette={colorStore.state.history}
-        align={false} fontSize={false}></deckgo-inline-editor>
+        align={false}
+        fontSize={false}></deckgo-inline-editor>
     );
   }
 

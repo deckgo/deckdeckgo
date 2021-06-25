@@ -14,7 +14,7 @@ interface ShareStore {
 }
 
 const {state, onChange, reset} = createStore({
-  share: null,
+  share: null
 } as ShareStore);
 
 export default {state, onChange, reset};

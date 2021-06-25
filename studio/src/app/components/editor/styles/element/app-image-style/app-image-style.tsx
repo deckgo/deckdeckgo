@@ -14,17 +14,17 @@ enum ImageSize {
   SMALL = '25%',
   MEDIUM = '50%',
   LARGE = '75%',
-  ORIGINAL = '100%',
+  ORIGINAL = '100%'
 }
 
 enum ImageAlignment {
   START = 'flex-start',
   CENTER = 'center',
-  END = 'flex-end',
+  END = 'flex-end'
 }
 
 @Component({
-  tag: 'app-image-style',
+  tag: 'app-image-style'
 })
 export class AppImageStyle {
   @Element() el: HTMLElement;
@@ -72,7 +72,6 @@ export class AppImageStyle {
   private async init() {
     this.currentImageSize = await this.initImageSize();
     this.currentImageAlignment = await this.initImageAlignment();
-
   }
 
   private async initCSS() {
@@ -150,10 +149,12 @@ export class AppImageStyle {
       return;
     }
 
-    this.updateStyle([{
-      property: '--deckgo-lazy-img-height',
-      value: this.currentImageSize === ImageSize.ORIGINAL ? null : this.currentImageSize
-    }]);
+    this.updateStyle([
+      {
+        property: '--deckgo-lazy-img-height',
+        value: this.currentImageSize === ImageSize.ORIGINAL ? null : this.currentImageSize
+      }
+    ]);
   }
 
   private toggleImageAlignment($event: CustomEvent) {
@@ -170,12 +171,12 @@ export class AppImageStyle {
     this.updateStyle([
       {
         property: 'display',
-        value: 'inline-flex',
+        value: 'inline-flex'
       },
       {
         property: 'justify-content',
-        value: this.currentImageAlignment.toString(),
-      },
+        value: this.currentImageAlignment.toString()
+      }
     ]);
   }
 
@@ -198,7 +199,7 @@ export class AppImageStyle {
         }
 
         await this.init();
-      },
+      }
     });
 
     this.imgDidChange.emit(this.selectedElement);
@@ -273,7 +274,7 @@ export class AppImageStyle {
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleImageHeightInput(e)}
           onIonChange={async () => await this.updateImageHeightCSS()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 
@@ -306,7 +307,7 @@ export class AppImageStyle {
           debounce={500}
           onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleImageJustifyContentInput(e)}
           onIonChange={async () => await this.updateImageJustifyContentCSS()}></ion-input>
-      </ion-item>,
+      </ion-item>
     ];
   }
 }

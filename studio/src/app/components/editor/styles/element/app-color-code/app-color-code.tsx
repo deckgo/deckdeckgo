@@ -5,7 +5,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
-import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 enum CodeColorType {
   COMMENTS,
@@ -16,12 +16,12 @@ enum CodeColorType {
   KEYWORD,
   FUNCTION,
   REGEX,
-  LINE_NUMBERS,
+  LINE_NUMBERS
 }
 
 @Component({
   tag: 'app-color-code',
-  styleUrl: 'app-color-code.scss',
+  styleUrl: 'app-color-code.scss'
 })
 export class AppColorCode {
   @Prop()
@@ -51,7 +51,7 @@ export class AppColorCode {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -150,7 +150,7 @@ export class AppColorCode {
   private updateStyle(value: string | null) {
     const redoType: CodeColorType = this.codeColorType;
 
-    setStyle(this.selectedElement,  {
+    setStyle(this.selectedElement, {
       properties: [{property: this.getStyle(), value}],
       type: 'element',
       updateUI: async (_value: string) => {

@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 @Component({
   tag: 'app-offline',
-  styleUrl: 'app-offline.scss',
+  styleUrl: 'app-offline.scss'
 })
 export class AppNotes {
   @Element() el: HTMLElement;
@@ -54,7 +54,7 @@ export class AppNotes {
       </ion-header>,
       <ion-content class="ion-padding" color="light">
         <main class="ion-padding">{this.renderContent()}</main>
-      </ion-content>,
+      </ion-content>
     ];
   }
 

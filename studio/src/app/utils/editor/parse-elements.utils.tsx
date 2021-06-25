@@ -5,7 +5,7 @@ import {convertStyle} from '@deckdeckgo/deck-utils';
 import {SlotType} from '../../types/editor/slot-type';
 
 import {SlotUtils} from './slot.utils';
-import { getAttributes } from "./attributes.utils";
+import {getAttributes} from './attributes.utils';
 
 export class ParseElementsUtils {
   static parseElements(element: HTMLElement, root: boolean, contentEditable: boolean): Promise<any> {

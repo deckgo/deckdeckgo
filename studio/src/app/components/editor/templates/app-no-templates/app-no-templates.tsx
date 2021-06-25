@@ -6,7 +6,7 @@ import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-no-templates',
-  styleUrl: 'app-no-templates.scss',
+  styleUrl: 'app-no-templates.scss'
 })
 export class AppNoTemplates {
   render() {
@@ -18,7 +18,7 @@ export class AppNoTemplates {
             <a href="https://github.com/deckgo/template-kit" rel="noopener norefferer" target="_blank" class="tutorial">
               {i18n.state.templates.no_personal_templates_guide}
             </a>
-          ),
+          )
         })}
       </ion-label>
     );

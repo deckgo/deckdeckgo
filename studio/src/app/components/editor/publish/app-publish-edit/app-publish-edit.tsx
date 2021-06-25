@@ -25,7 +25,7 @@ interface CustomInputEvent extends KeyboardEvent {
 
 @Component({
   tag: 'app-publish-edit',
-  styleUrl: 'app-publish-edit.scss',
+  styleUrl: 'app-publish-edit.scss'
 })
 export class AppPublishEdit {
   @State()
@@ -449,7 +449,7 @@ export class AppPublishEdit {
             <a href="https://deckdeckgo.com/en/contact/" rel="noopener norefferer" target="_blank">
               {i18n.state.publish_edit.contact}
             </a>
-          ),
+          )
         })}
       </p>
     );
@@ -517,7 +517,7 @@ export class AppPublishEdit {
             <ion-label>{i18n.state.core.no}</ion-label>
           </ion-item>
         </ion-radio-group>
-      </ion-list>,
+      </ion-list>
     ];
   }
 

@@ -15,7 +15,7 @@ import {EditMode} from '../../../../types/core/settings';
 
 @Component({
   tag: 'app-color',
-  styleUrl: 'app-color.scss',
+  styleUrl: 'app-color.scss'
 })
 export class AppColor {
   @Prop()
@@ -103,8 +103,8 @@ export class AppColor {
         value: rgb,
         r: splitRgb?.[0],
         g: splitRgb?.[1],
-        b: splitRgb?.[2],
-      },
+        b: splitRgb?.[2]
+      }
     };
   }
 
@@ -119,8 +119,8 @@ export class AppColor {
         value: rgb,
         r: splitRgb?.[0],
         g: splitRgb?.[1],
-        b: splitRgb?.[2],
-      },
+        b: splitRgb?.[2]
+      }
     };
   }
 
@@ -158,7 +158,7 @@ export class AppColor {
 
     await ColorUtils.updateColor({
       hex: this.color.hex,
-      rgb: this.color.rgb.value,
+      rgb: this.color.rgb.value
     });
   }
 
@@ -171,8 +171,8 @@ export class AppColor {
         value: undefined,
         r: undefined,
         g: undefined,
-        b: undefined,
-      },
+        b: undefined
+      }
     };
     this.opacity = 100;
 

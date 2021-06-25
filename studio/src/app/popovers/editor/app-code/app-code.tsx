@@ -1,6 +1,6 @@
 import {Component, Element, EventEmitter, Prop, State, h, Fragment} from '@stencil/core';
 
-import { alertController, modalController, OverlayEventDetail } from "@ionic/core";
+import {alertController, modalController, OverlayEventDetail} from '@ionic/core';
 
 import i18n from '../../../stores/i18n.store';
 
@@ -10,7 +10,7 @@ import {PrismLanguage} from '../../../types/editor/prism-language';
 
 @Component({
   tag: 'app-code',
-  styleUrl: 'app-code.scss',
+  styleUrl: 'app-code.scss'
 })
 export class AppCode {
   @Element() el: HTMLElement;
@@ -82,8 +82,8 @@ export class AppCode {
       componentProps: {
         selectedElement: this.selectedElement,
         codeDidChange: this.codeDidChange,
-        currentLanguage: this.currentLanguage,
-      },
+        currentLanguage: this.currentLanguage
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

@@ -6,7 +6,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {SlideAttributes, SlideChartType, SlideTemplate} from '../../../../../models/data/slide';
 
 @Component({
-  tag: 'app-templates-charts',
+  tag: 'app-templates-charts'
 })
 export class AppTemplatesCharts {
   @Element() el: HTMLElement;
@@ -240,7 +240,7 @@ export class AppTemplatesCharts {
           style={{
             '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-            '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
+            '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
           }}
           custom-loader={true}>
           <p slot="title">{i18n.state.templates.grouped_bars}</p>
@@ -266,12 +266,12 @@ export class AppTemplatesCharts {
           style={{
             '--deckgo-chart-fill-color-1': 'var(--ion-color-primary)',
             '--deckgo-chart-fill-color-2': 'var(--ion-color-secondary)',
-            '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)',
+            '--deckgo-chart-fill-color-3': 'var(--ion-color-tertiary)'
           }}
           custom-loader={true}>
           <p slot="title">{i18n.state.templates.bar_comparison}</p>
         </deckgo-slide-chart>
-      </div>,
+      </div>
     ];
   }
 }

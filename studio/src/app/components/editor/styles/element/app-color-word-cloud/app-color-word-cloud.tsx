@@ -3,10 +3,10 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
-import { setStyle } from "../../../../../utils/editor/undo-redo.utils";
+import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
 
 @Component({
-  tag: 'app-color-word-cloud',
+  tag: 'app-color-word-cloud'
 })
 export class AppColorWordCloud {
   @Prop()
@@ -37,7 +37,7 @@ export class AppColorWordCloud {
     if (!this.selectedElement) {
       return {
         rgb: null,
-        opacity: null,
+        opacity: null
       };
     }
 
@@ -106,7 +106,8 @@ export class AppColorWordCloud {
           </ion-item>
         </ion-list>
 
-        <app-color class="ion-margin-top"
+        <app-color
+          class="ion-margin-top"
           ref={(el) => (this.colorRef = el as HTMLAppColorElement)}
           initColor={this.initColor}
           onResetColor={() => this.resetColor()}

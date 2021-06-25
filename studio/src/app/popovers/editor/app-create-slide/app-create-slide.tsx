@@ -18,7 +18,7 @@ import {SlotType} from '../../../types/editor/slot-type';
 
 @Component({
   tag: 'app-create-slide',
-  styleUrl: 'app-create-slide.scss',
+  styleUrl: 'app-create-slide.scss'
 })
 export class AppCreateSlide {
   @Element() el: HTMLElement;
@@ -84,14 +84,14 @@ export class AppCreateSlide {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       template,
       slide,
-      attributes,
+      attributes
     });
   }
 
   private async closePopoverOpenTemplateOptions(template: SlideTemplate | Template, attributes?: SlideAttributes) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
       template,
-      attributes,
+      attributes
     });
   }
 
@@ -172,7 +172,7 @@ export class AppCreateSlide {
     if (customSlotsCount !== undefined && customSlotsCount > 0) {
       this.composeTemplate = {
         template,
-        scope: SlideScope.USER,
+        scope: SlideScope.USER
       };
       return;
     }
@@ -257,7 +257,7 @@ export class AppCreateSlide {
         onSelectedTemplate={($event: CustomEvent<Template>) =>
           (this.composeTemplate = {
             template: $event.detail,
-            scope: SlideScope.COMMUNITY,
+            scope: SlideScope.COMMUNITY
           })
         }></app-templates-community>
     );
@@ -327,7 +327,7 @@ export class AppCreateSlide {
 
     const attr = {
       highlight: true,
-      highlightIndex: this.elements?.length,
+      highlightIndex: this.elements?.length
     };
 
     if (slideTemplate === SlideTemplate.CONTENT) {

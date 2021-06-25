@@ -34,7 +34,7 @@ export class StorageOfflineService {
         resolve({
           downloadUrl: key,
           fullPath: key,
-          name: data.name,
+          name: data.name
         });
       } catch (err) {
         store.state.error = 'File could not be saved.';
@@ -65,13 +65,13 @@ export class StorageOfflineService {
         return {
           downloadUrl: key,
           fullPath: key,
-          name: key,
+          name: key
         } as StorageFile;
       });
 
       resolve({
         items,
-        nextPageToken: undefined,
+        nextPageToken: undefined
       });
     });
   }

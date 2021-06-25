@@ -8,7 +8,7 @@ import {StorageService} from '../../../services/storage/storage.service';
 
 @Component({
   tag: 'app-custom-data',
-  styleUrl: 'app-custom-data.scss',
+  styleUrl: 'app-custom-data.scss'
 })
 export class AppCustomData {
   @Element() el: HTMLElement;
@@ -185,7 +185,7 @@ export class AppCustomData {
         <ion-toolbar>
           <div class={this.uploading ? 'uploading' : undefined}>{this.renderToolbarAction()}</div>
         </ion-toolbar>
-      </ion-footer>,
+      </ion-footer>
     ];
   }
 

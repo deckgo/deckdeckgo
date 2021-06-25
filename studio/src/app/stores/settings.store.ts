@@ -15,10 +15,10 @@ const {state, onChange} = createStore<Settings>({
     imageStyle: 'open',
     color: 'open',
     background: 'close',
-    list: 'open',
+    list: 'open'
   },
   editMode: 'properties',
-  contrastWarning: true,
+  contrastWarning: true
 });
 
 onChange('panels', (panels: SettingsPanels) => {

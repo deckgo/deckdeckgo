@@ -6,7 +6,7 @@ import {convertStyle} from '@deckdeckgo/deck-utils';
 
 import {SlideTemplate} from '../../models/data/slide';
 
-import { getAttributes } from "./attributes.utils";
+import {getAttributes} from './attributes.utils';
 import {InitTemplate} from './create-slides.utils';
 
 export class CloneSlideUtils {
@@ -15,7 +15,7 @@ export class CloneSlideUtils {
 
     const attributes: any = {
       ...getAttributes(selectedElement),
-      ...(initTemplate.attributes && {...initTemplate.attributes}),
+      ...(initTemplate.attributes && {...initTemplate.attributes})
     };
 
     delete attributes['class'];
@@ -27,7 +27,7 @@ export class CloneSlideUtils {
     if (initTemplate.style) {
       attributes.style = {
         ...attributes.style,
-        ...initTemplate.style,
+        ...initTemplate.style
       };
     }
 

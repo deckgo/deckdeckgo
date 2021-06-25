@@ -7,7 +7,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-user-delete',
-  styleUrl: 'app-user-delete.scss',
+  styleUrl: 'app-user-delete.scss'
 })
 export class AppUserDelete {
   @Element() el: HTMLElement;
@@ -67,7 +67,7 @@ export class AppUserDelete {
         <p>
           {renderI18n(i18n.state.settings.cannot_undone, {
             placeholder: '{0}',
-            value: <strong>{this.username}</strong>,
+            value: <strong>{this.username}</strong>
           })}
         </p>
 
@@ -89,7 +89,7 @@ export class AppUserDelete {
         </form>
 
         <app-unpublish></app-unpublish>
-      </ion-content>,
+      </ion-content>
     ];
   }
 }

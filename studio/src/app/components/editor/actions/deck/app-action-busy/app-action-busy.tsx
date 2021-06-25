@@ -5,7 +5,7 @@ import store from '../../../../../stores/busy.store';
 @Component({
   tag: 'app-action-busy',
   styleUrl: 'app-action-busy.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppActionBusy {
   @Event() private actionReady: EventEmitter<UIEvent>;

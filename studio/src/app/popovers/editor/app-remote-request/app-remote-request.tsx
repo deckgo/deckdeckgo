@@ -10,7 +10,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-remote-request',
-  styleUrl: 'app-remote-request.scss',
+  styleUrl: 'app-remote-request.scss'
 })
 export class AppRemoteRequest {
   @Element() el: HTMLElement;
@@ -53,7 +53,7 @@ export class AppRemoteRequest {
       <p>
         {renderI18n(i18n.state.editor.grant_access, {
           placeholder: '{0}',
-          value: <strong>{this.request.message}</strong>,
+          value: <strong>{this.request.message}</strong>
         })}
       </p>,
 
@@ -67,7 +67,7 @@ export class AppRemoteRequest {
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-label={i18n.state.editor.accept} src="/assets/icons/ionicons/checkmark.svg"></ion-icon>
         </button>
-      </div>,
+      </div>
     ];
   }
 }

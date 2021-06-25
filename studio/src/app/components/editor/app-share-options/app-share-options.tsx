@@ -8,7 +8,7 @@ import {MoreAction} from '../../../types/editor/more-action';
 @Component({
   tag: 'app-share-options',
   styleUrl: 'app-share-options.scss',
-  shadow: true,
+  shadow: true
 })
 export class AppMoreShareOptions {
   @Event() selectedOption: EventEmitter<MoreAction>;

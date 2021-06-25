@@ -7,7 +7,7 @@ interface ApiUserStore {
 }
 
 const {state, onChange, reset} = createStore({
-  apiUser: undefined,
+  apiUser: undefined
 } as ApiUserStore);
 
 export default {state, onChange, reset};

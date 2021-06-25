@@ -30,7 +30,7 @@ import {CloneSlideUtils} from '../../../../../utils/editor/clone-slide.utils';
 @Component({
   tag: 'app-actions-element',
   styleUrl: 'app-actions-element.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppActionsElement {
   @Element() el: HTMLElement;
@@ -260,7 +260,7 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-element-delete',
       event: $event,
-      mode: isMobile() && !isIOS() ? 'md' : 'ios',
+      mode: isMobile() && !isIOS() ? 'md' : 'ios'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -306,10 +306,10 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-copy-style',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement.element
       },
       mode: 'ios',
-      event: $event,
+      event: $event
     });
 
     await popover.present();
@@ -371,11 +371,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: this.selectedElement?.type === 'slide' ? 'app-transform-slide' : 'app-transform-element',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement.element
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -404,11 +404,11 @@ export class AppActionsElement {
       component: 'app-edit-slide',
       componentProps: {
         selectedElement: this.selectedElement,
-        slideDidChange: this.slideDidChange,
+        slideDidChange: this.slideDidChange
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
@@ -450,11 +450,11 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: component,
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedElement: this.selectedElement.element
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
@@ -463,7 +463,7 @@ export class AppActionsElement {
           this.selectedElement.element,
           component === 'app-image-element'
             ? {
-                img: detail.data,
+                img: detail.data
               }
             : detail.data
         );
@@ -482,11 +482,11 @@ export class AppActionsElement {
       component: 'app-image-element',
       componentProps: {
         selectedElement: this.selectedElement.element,
-        slide: this.selectedElement?.type === 'slide',
+        slide: this.selectedElement?.type === 'slide'
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     return popover;
@@ -501,8 +501,8 @@ export class AppActionsElement {
       component: 'app-poll-options',
       componentProps: {
         selectedElement: this.selectedElement,
-        slideDidChange: this.slideDidChange,
-      },
+        slideDidChange: this.slideDidChange
+      }
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
@@ -523,11 +523,11 @@ export class AppActionsElement {
       component: 'app-code',
       componentProps: {
         selectedElement: this.selectedElement.element,
-        codeDidChange: this.codeDidChange,
+        codeDidChange: this.codeDidChange
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     await popover.present();
@@ -541,11 +541,11 @@ export class AppActionsElement {
       component: 'app-math',
       componentProps: {
         selectedElement: this.selectedElement.element,
-        mathDidChange: this.mathDidChange,
+        mathDidChange: this.mathDidChange
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu',
+      cssClass: 'popover-menu'
     });
 
     await popover.present();
@@ -558,8 +558,8 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component,
       componentProps: {
-        selectedElement: this.selectedElement.element,
-      },
+        selectedElement: this.selectedElement.element
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -579,8 +579,8 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-notes',
       componentProps: {
-        selectedElement: this.selectedElement.element,
-      },
+        selectedElement: this.selectedElement.element
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -668,7 +668,7 @@ export class AppActionsElement {
     this.selectedElement = element
       ? {
           element,
-          ...(SelectedElementUtils.initDescription(element) as SelectedElement),
+          ...(SelectedElementUtils.initDescription(element) as SelectedElement)
         }
       : undefined;
 
@@ -741,11 +741,11 @@ export class AppActionsElement {
       componentProps: {
         selectedElement: this.selectedElement,
         imgDidChange: this.imgDidChange,
-        imageHelper: this.imageHelper,
+        imageHelper: this.imageHelper
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: `popover-menu ${this.selectedElement?.slide?.poll ? 'popover-menu-wide' : ''}`,
+      cssClass: `popover-menu ${this.selectedElement?.slide?.poll ? 'popover-menu-wide' : ''}`
     });
 
     await popover.present();
@@ -915,10 +915,10 @@ export class AppActionsElement {
         notes: this.selectedElement?.type === 'slide',
         clone: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
         images: this.selectedElement?.slide?.aspectRatio,
-        transform: this.displayTransform(),
+        transform: this.displayTransform()
       },
       event: $event,
-      mode: 'ios',
+      mode: 'ios'
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -1105,7 +1105,7 @@ export class AppActionsElement {
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/images.svg"></ion-icon>
         <ion-label aria-hidden="true">{i18n.state.editor.add_image}</ion-label>
-      </button>,
+      </button>
     ];
   }
 

@@ -9,7 +9,7 @@ import {OfflineService} from '../../../../services/editor/offline/offline.servic
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({
-  tag: 'app-go-offline',
+  tag: 'app-go-offline'
 })
 export class AppGoOffline {
   @State()
@@ -50,13 +50,13 @@ export class AppGoOffline {
         <p>
           {renderI18n(i18n.state.offline.turn, {
             placeholder: '{0}',
-            value: <strong>{i18n.state.offline.offline}</strong>,
+            value: <strong>{i18n.state.offline.offline}</strong>
           })}
         </p>
         <p>
           {renderI18n(i18n.state.offline.still_edit, {
             placeholder: '{0}',
-            value: <strong>{i18n.state.offline.edit}</strong>,
+            value: <strong>{i18n.state.offline.edit}</strong>
           })}
         </p>
         <div class="ion-padding ion-text-center go">{this.renderGoOffline()}</div>

@@ -11,24 +11,24 @@ export enum SlideTemplate {
   CHART = 'chart',
   POLL = 'poll',
   'ASPECT-RATIO' = 'aspect-ratio',
-  PLAYGROUND = 'playground',
+  PLAYGROUND = 'playground'
 }
 
 export enum SlideScope {
   DEFAULT = 'default',
   COMMUNITY = 'community',
-  USER = 'user',
+  USER = 'user'
 }
 
 export enum SlideChartType {
   LINE = 'line',
   PIE = 'pie',
-  BAR = 'bar',
+  BAR = 'bar'
 }
 
 export enum SlideSplitType {
   DEFAULT = 'default',
-  DEMO = 'demo',
+  DEMO = 'demo'
 }
 
 export type SlideAttributesYAxisDomain = 'max' | 'extent';

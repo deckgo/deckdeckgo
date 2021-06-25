@@ -28,7 +28,7 @@ export class SlideOfflineService {
 
         const slide: Slide = {
           id: slideId,
-          data: slideData,
+          data: slideData
         };
 
         const now: Date = new Date();

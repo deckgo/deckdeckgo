@@ -6,7 +6,7 @@ import {PublishService} from '../../../services/editor/publish/publish.service';
 
 @Component({
   tag: 'app-publish',
-  styleUrl: 'app-publish.scss',
+  styleUrl: 'app-publish.scss'
 })
 export class AppPublish {
   @Element() el: HTMLElement;
@@ -91,7 +91,7 @@ export class AppPublish {
         <main class={this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'}>
           {this.renderMain()}
         </main>
-      </ion-content>,
+      </ion-content>
     ];
   }
 

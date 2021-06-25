@@ -14,7 +14,7 @@ import {signIn} from '../../../utils/core/signin.utils';
 
 @Component({
   tag: 'app-deck-import',
-  styleUrl: 'app-deck-import.scss',
+  styleUrl: 'app-deck-import.scss'
 })
 export class AppDeckImport {
   @Element() el: HTMLElement;
@@ -95,7 +95,7 @@ export class AppDeckImport {
               <a href="https://figma.com" target="_blank" rel="noopener noreferrer">
                 Figma
               </a>
-            ),
+            )
           })}
         </p>
 
@@ -128,7 +128,7 @@ export class AppDeckImport {
               <a href="https://www.figma.com/community/plugin/950777256486678678/Figma-to-DeckDeckGo" target="_blank" rel="noopener noreferrer">
                 plugin
               </a>
-            ),
+            )
           })}
         </p>
 

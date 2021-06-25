@@ -25,7 +25,7 @@ const {ExpirationPlugin} = workbox.expiration;
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'google-fonts-stylesheets',
+    cacheName: 'google-fonts-stylesheets'
   })
 );
 
@@ -36,13 +36,13 @@ workbox.routing.registerRoute(
     cacheName: 'google-fonts-webfonts',
     plugins: [
       new CacheableResponsePlugin({
-        statuses: [0, 200],
+        statuses: [0, 200]
       }),
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 365,
-        maxEntries: 30,
-      }),
-    ],
+        maxEntries: 30
+      })
+    ]
   })
 );
 
@@ -54,9 +54,9 @@ workbox.routing.registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60,
-      }),
-    ],
+        maxEntries: 60
+      })
+    ]
   })
 );
 
@@ -67,12 +67,12 @@ workbox.routing.registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60,
+        maxEntries: 60
       }),
       new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
+        statuses: [0, 200]
+      })
+    ]
   })
 );
 
@@ -84,9 +84,9 @@ workbox.routing.registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60,
-      }),
-    ],
+        maxEntries: 60
+      })
+    ]
   })
 );
 
@@ -98,21 +98,21 @@ workbox.routing.registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 30 * 24 * 60 * 60,
-        maxEntries: 60,
-      }),
-    ],
+        maxEntries: 60
+      })
+    ]
   })
 );
 
 workbox.routing.registerRoute(
   /^(?=.*deckdeckgo\.com\/editor\/).*/,
   new workbox.strategies.NetworkFirst({
-    cacheName: 'editor',
+    cacheName: 'editor'
   })
 );
 
 // the precache manifest will be injected into the following line
 self.workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
   // Ignore all URL parameters otherwise /editor/:id won't be cached and therefore not accessible directly offline
-  ignoreURLParametersMatching: [/.*/],
+  ignoreURLParametersMatching: [/.*/]
 });

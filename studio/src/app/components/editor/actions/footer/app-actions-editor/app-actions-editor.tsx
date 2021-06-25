@@ -10,7 +10,7 @@ import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 @Component({
   tag: 'app-actions-editor',
   styleUrl: 'app-actions-editor.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppActionsEditor {
   @Element() el: HTMLElement;
@@ -167,7 +167,7 @@ export class AppActionsEditor {
         class={{
           fullscreen: this.fullscreen,
           hidden: this.hideActions,
-          'hidden-bottom-sheet': this.hideBottomSheet,
+          'hidden-bottom-sheet': this.hideBottomSheet
         }}>
         {this.fullscreen ? this.renderFullscreen() : this.renderActions()}
       </Host>

@@ -8,7 +8,7 @@ import {getPublishedUrl} from '../../../utils/core/share.utils';
 
 @Component({
   tag: 'app-embed',
-  styleUrl: 'app-embed.scss',
+  styleUrl: 'app-embed.scss'
 })
 export class AppEmbed {
   @Element() el: HTMLElement;
@@ -93,7 +93,7 @@ export class AppEmbed {
         <ion-button color="primary" shape="round" onClick={() => this.copyEmbedCode()}>
           <ion-label>{i18n.state.editor.copy_to_clipboard}</ion-label>
         </ion-button>
-      </ion-content>,
+      </ion-content>
     ];
   }
 }

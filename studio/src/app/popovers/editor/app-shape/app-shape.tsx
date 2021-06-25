@@ -8,7 +8,7 @@ import {EnvironmentConfigService} from '../../../services/core/environment/envir
 
 @Component({
   tag: 'app-shape',
-  styleUrl: 'app-shape.scss',
+  styleUrl: 'app-shape.scss'
 })
 export class AppShape {
   @Element() el: HTMLElement;
@@ -33,8 +33,8 @@ export class AppShape {
       svg: {
         src,
         label,
-        ratio,
-      },
+        ratio
+      }
     });
   }
 
@@ -44,7 +44,7 @@ export class AppShape {
         <h2>{i18n.state.editor.add_a_shape}</h2>
         <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>
       </ion-toolbar>,
-      this.renderShapes(),
+      this.renderShapes()
     ];
   }
 

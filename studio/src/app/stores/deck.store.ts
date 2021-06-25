@@ -11,7 +11,7 @@ interface DeckStore {
 const {state, onChange, reset} = createStore({
   deck: null,
   name: null,
-  published: false,
+  published: false
 } as DeckStore);
 
 onChange('deck', (deck: Deck | null) => {

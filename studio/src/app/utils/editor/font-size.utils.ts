@@ -25,14 +25,14 @@ export const initFontSize = (element: HTMLElement | undefined): FontSize => {
   return findFondSize({fonts: normal, fontSize});
 };
 
-const findFondSize = ({fonts, fontSize}: {fonts: Record<string, string>, fontSize: string}): FontSize => {
+const findFondSize = ({fonts, fontSize}: {fonts: Record<string, string>; fontSize: string}): FontSize => {
   const size: string | undefined = Object.keys(fonts).find((key: string) => fonts[key] === fontSize);
   return FontSize[size?.toUpperCase()] || FontSize.CUSTOM;
-}
+};
 
-const applyFontSize = ({fonts, fontSize}: {fonts: Record<string, string>, fontSize: FontSize}): string | undefined => {
+const applyFontSize = ({fonts, fontSize}: {fonts: Record<string, string>; fontSize: FontSize}): string | undefined => {
   return fonts[fontSize.toLowerCase()];
-}
+};
 
 export const toggleFontSize = (element: HTMLElement, fontSize: FontSize | undefined): string | undefined => {
   if (!element || !fontSize) {
@@ -48,7 +48,7 @@ export const toggleFontSize = (element: HTMLElement, fontSize: FontSize | undefi
   }
 
   return applyFontSize({fonts: normal, fontSize});
-}
+};
 
 const isElementH1 = (element: HTMLElement | undefined): boolean => {
   return SlotType.H1.toUpperCase() === element?.nodeName.toUpperCase();

@@ -12,7 +12,7 @@ import {renderI18n} from '../../../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-deck-header-footer',
-  styleUrl: 'app-deck-header-footer.scss',
+  styleUrl: 'app-deck-header-footer.scss'
 })
 export class AppDeckHeaderFooter {
   @Element() el: HTMLElement;
@@ -69,7 +69,7 @@ export class AppDeckHeaderFooter {
 
     navStore.state.nav = {
       url: '/profile',
-      direction: NavDirection.FORWARD,
+      direction: NavDirection.FORWARD
     };
   }
 
@@ -106,7 +106,7 @@ export class AppDeckHeaderFooter {
           <ion-label class="no-options">
             {renderI18n(i18n.state.editor.header_footer_sign_in, {
               placeholder: '{0}',
-              value: <a onClick={() => this.onNavigateSignIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>,
+              value: <a onClick={() => this.onNavigateSignIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>
             })}
           </ion-label>
         </div>
@@ -274,7 +274,7 @@ export class AppDeckHeaderFooter {
       <div class="ion-padding-start ion-padding-end ion-padding-top">
         {renderI18n(i18n.state.editor.header_footer_edit, {
           placeholder: '{0}',
-          value: <a onClick={() => this.onNavigateSettings()}>{i18n.state.nav.settings.toLowerCase()}</a>,
+          value: <a onClick={() => this.onNavigateSettings()}>{i18n.state.nav.settings.toLowerCase()}</a>
         })}
       </div>
     );

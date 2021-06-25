@@ -24,10 +24,10 @@ export const config: Config = {
       type: 'www',
       baseUrl: 'https://deckdeckgo.com',
       serviceWorker: {
-        swSrc: 'src/sw.js',
+        swSrc: 'src/sw.js'
       },
-      copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}],
-    },
+      copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}]
+    }
   ],
   globalScript: globalScript,
   globalStyle: 'src/global/app.scss',
@@ -35,18 +35,18 @@ export const config: Config = {
     replace({
       exclude: 'node_modules/**',
       delimiters: ['<@', '@>'],
-      values: configValues,
+      values: configValues
     }),
     sass({
-      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/'],
+      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
     }),
     postcss({
-      plugins: [autoprefixer()],
-    }),
+      plugins: [autoprefixer()]
+    })
   ],
   nodeResolve: {browser: true},
   devServer: {
     openBrowser: false,
-    reloadStrategy: 'pageReload',
-  },
+    reloadStrategy: 'pageReload'
+  }
 };

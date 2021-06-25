@@ -13,7 +13,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-poll',
-  styleUrl: 'app-poll.scss',
+  styleUrl: 'app-poll.scss'
 })
 export class AppPoll {
   @Prop({mutable: true})
@@ -138,7 +138,7 @@ export class AppPoll {
           {this.renderJoinPoll()}
           {this.renderHasVoted()}
         </main>
-      </ion-content>,
+      </ion-content>
     ];
   }
 
@@ -159,7 +159,7 @@ export class AppPoll {
         </ion-list>
 
         {this.renderSubmitForm()}
-      </form>,
+      </form>
     ];
   }
 
@@ -264,7 +264,7 @@ export class AppPoll {
                   <app-logo></app-logo> DeckDeckGo
                 </div>
               </ion-router-link>
-            ),
+            )
           })}
         </div>
       </article>

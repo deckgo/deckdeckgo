@@ -16,7 +16,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment
 import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
 
 @Component({
-  tag: 'app-templates-default',
+  tag: 'app-templates-default'
 })
 export class AppTemplatesDefault {
   @Element() el: HTMLElement;

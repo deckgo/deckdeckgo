@@ -8,7 +8,7 @@ import {BreadcrumbsStep} from '../../../../types/editor/breadcrumbs-step';
 @Component({
   tag: 'app-breadcrumbs',
   styleUrl: 'app-breadcrumbs.scss',
-  shadow: false,
+  shadow: false
 })
 export class AppBreadcrumbs {
   @Prop()

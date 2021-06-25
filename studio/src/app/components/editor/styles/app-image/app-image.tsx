@@ -15,7 +15,7 @@ import {SettingsUtils} from '../../../../utils/core/settings.utils';
 
 @Component({
   tag: 'app-image',
-  styleUrl: 'app-image.scss',
+  styleUrl: 'app-image.scss'
 })
 export class AppImage {
   @Element() el: HTMLElement;
@@ -75,7 +75,7 @@ export class AppImage {
 
   private async selectAction(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile) {
     const data: ImageAction = {
-      action: action,
+      action: action
     };
 
     if (image) {
@@ -101,7 +101,7 @@ export class AppImage {
   private async presentHistoryInfo() {
     const alert: HTMLIonAlertElement = await alertController.create({
       message: i18n.state.editor.history_details,
-      buttons: [i18n.state.core.ok],
+      buttons: [i18n.state.core.ok]
     });
 
     return await alert.present();
