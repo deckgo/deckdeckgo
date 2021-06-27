@@ -14,7 +14,6 @@ import {AuthUser} from '../../models/auth/auth.user';
 import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
 import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
-import {OfflineService} from '../editor/offline/offline.service';
 
 export class AuthService {
   private apiUserService: ApiUserService;
@@ -40,17 +39,13 @@ export class AuthService {
     try {
       // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
       // And we also need it in case the user go offline, so we could also check offline if user is anonymous or not
+      // TODO: maybe we do not need it anymore
       const localUser: AuthUser | undefined = await this.getLocalAuthUser();
       authStore.state.authUser = localUser ? {...localUser} : null;
-
-      // If we are offline, auth is already ready as we only use user from indexedDB
-      authStore.state.authStateReady = (await OfflineService.getInstance().status()) !== undefined;
 
       firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
       firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser | null) => {
-        authStore.state.authStateReady = true;
-
         if (!firebaseUser) {
           authStore.reset();
           await del('deckdeckgo_auth_user');

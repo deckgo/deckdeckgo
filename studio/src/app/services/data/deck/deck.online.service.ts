@@ -18,6 +18,21 @@ export class DeckOnlineService {
     return DeckOnlineService.instance;
   }
 
+  create(deck: Deck): Promise<Deck> {
+    return new Promise<Deck>(async (resolve, reject) => {
+      const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+      try {
+        // We use the same ID as the one which was generated to create the deck locally
+        await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
+
+        resolve(deck);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   get(deckId: string): Promise<Deck> {
     return new Promise<Deck>(async (resolve, reject) => {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
@@ -53,6 +68,45 @@ export class DeckOnlineService {
         await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
 
         resolve(FirestoreUtils.filterDelete(deck));
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  getUserDecks(userId: string): Promise<Deck[]> {
+    return new Promise<Deck[]>(async (resolve, reject) => {
+      try {
+        const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+        const snapshot: firebase.firestore.QuerySnapshot = await firestore
+          .collection('decks')
+          .where('owner_id', '==', userId)
+          .orderBy('updated_at', 'desc')
+          .get();
+
+        const decks: Deck[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
+          return {
+            id: documentSnapshot.id,
+            data: documentSnapshot.data() as DeckData
+          };
+        });
+
+        resolve(decks);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  delete(deckId: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+        await firestore.collection('decks').doc(deckId).delete();
+
+        resolve();
       } catch (err) {
         reject(err);
       }

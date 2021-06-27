@@ -2,7 +2,8 @@ import {Slide, SlideData} from '../../../models/data/slide';
 
 import {SlideOfflineService} from './slide.offline.service';
 import {SlideOnlineService} from './slide.online.service';
-import {OfflineService} from '../../editor/offline/offline.service';
+
+import authStore from '../../../stores/auth.store';
 
 export class SlideService {
   private static instance: SlideService;
@@ -18,43 +19,33 @@ export class SlideService {
     return SlideService.instance;
   }
 
-  async create(deckId: string, slide: SlideData): Promise<Slide> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
+  async create(deckId: string, slideData: SlideData): Promise<Slide> {
+    const slide: Slide = await SlideOfflineService.getInstance().create(deckId, slideData);
 
-    if (offline !== undefined) {
-      return SlideOfflineService.getInstance().create(deckId, slide);
-    } else {
-      return SlideOnlineService.getInstance().create(deckId, slide);
+    if (navigator.onLine && authStore.state.loggedIn) {
+      await SlideOnlineService.getInstance().update(deckId, slide);
     }
+
+    return slide;
   }
 
   async update(deckId: string, slide: Slide): Promise<void> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
+    const updatedSlide: Slide = await SlideOfflineService.getInstance().update(deckId, slide);
 
-    if (offline !== undefined) {
-      return SlideOfflineService.getInstance().update(deckId, slide);
-    } else {
-      return SlideOnlineService.getInstance().update(deckId, slide);
+    if (navigator.onLine && authStore.state.loggedIn) {
+      await SlideOnlineService.getInstance().update(deckId, updatedSlide);
     }
   }
 
   async delete(deckId: string, slideId: string): Promise<void> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
+    await SlideOfflineService.getInstance().delete(deckId, slideId);
 
-    if (offline !== undefined) {
-      return SlideOfflineService.getInstance().delete(deckId, slideId);
-    } else {
-      return SlideOnlineService.getInstance().delete(deckId, slideId);
+    if (navigator.onLine && authStore.state.loggedIn) {
+      await SlideOnlineService.getInstance().delete(deckId, slideId);
     }
   }
 
   async get(deckId: string, slideId: string): Promise<Slide> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
-
-    if (offline !== undefined) {
-      return SlideOfflineService.getInstance().get(deckId, slideId);
-    } else {
-      return SlideOnlineService.getInstance().get(deckId, slideId);
-    }
+    return SlideOfflineService.getInstance().get(deckId, slideId);
   }
 }

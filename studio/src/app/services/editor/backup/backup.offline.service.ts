@@ -23,8 +23,8 @@ interface DeckBackupData {
 
   api_id?: string;
 
-  created_at?: firebase.firestore.Timestamp;
-  updated_at?: firebase.firestore.Timestamp;
+  created_at?: firebase.firestore.Timestamp | Date;
+  updated_at?: firebase.firestore.Timestamp | Date;
 }
 
 interface DeckBackup {

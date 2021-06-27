@@ -1,4 +1,4 @@
-import {Build, Component, Element, h, JSX, Listen, Prop, State} from '@stencil/core';
+import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
@@ -6,7 +6,6 @@ import {get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
-import authStore from '../../../stores/auth.store';
 import colorStore from '../../../stores/color.store';
 import undoRedoStore from '../../../stores/undo-redo.store';
 
@@ -14,7 +13,6 @@ import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '
 
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
-import {AuthUser} from '../../../models/auth/auth.user';
 import {SlideTemplate} from '../../../models/data/slide';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
@@ -32,10 +30,8 @@ import {SlideHelper} from '../../../helpers/editor/slide.helper';
 import {SlotType} from '../../../types/editor/slot-type';
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 
-import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import {OfflineService} from '../../../services/editor/offline/offline.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
@@ -46,9 +42,6 @@ import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 })
 export class AppEditor {
   @Element() el: HTMLElement;
-
-  @Prop({mutable: true})
-  deckId: string;
 
   @State()
   private slides: JSX.IntrinsicElements[] = [];
@@ -89,10 +82,7 @@ export class AppEditor {
 
   private editorHelper: SlideHelper = new SlideHelper();
 
-  private authService: AuthService;
   private anonymousService: AnonymousService;
-
-  private offlineService: OfflineService;
 
   private fontsService: FontsService;
 
@@ -123,9 +113,7 @@ export class AppEditor {
   private slideResizeObserver: ResizeObserver;
 
   constructor() {
-    this.authService = AuthService.getInstance();
     this.anonymousService = AnonymousService.getInstance();
-    this.offlineService = OfflineService.getInstance();
     this.fontsService = FontsService.getInstance();
   }
 
@@ -136,9 +124,9 @@ export class AppEditor {
     }
 
     // ionViewDidEnter and ionViewDidLeave, kind of
-    if ($event.detail.to && $event.detail.to.indexOf('/editor') === 0) {
+    if ($event.detail.to && $event.detail.to.indexOf('/') === 0) {
       await this.init();
-    } else if ($event.detail.from && $event.detail.from.indexOf('/editor') === 0) {
+    } else if ($event.detail.from && $event.detail.from.indexOf('/') === 0) {
       await this.destroy();
     }
   }
@@ -147,55 +135,21 @@ export class AppEditor {
     await this.deckEventsHandler.init(this.mainRef);
     await this.editorEventsHandler.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
 
-    await this.initOffline();
-
-    await this.initWithAuth();
+    await this.initOrFetch();
 
     this.fullscreen = isFullscreen() && !isMobile();
   }
 
-  private async initWithAuth() {
-    if (!authStore.state.authUser || !authStore.state.authStateReady) {
-      // As soon as the anonymous is created, we proceed
-      this.destroyAuthListener = authStore.onChange('authUser', async (authUser: AuthUser | null) => {
-        if (authUser) {
-          await this.initOrFetch();
-
-          this.destroyAuthListener();
-        }
-      });
-
-      // We don't have an authUser, neither from Firebase nor from indexedDb
-      if (!authStore.state.authUser && !authStore.state.authStateReady) {
-        // If no user create an anonymous one
-        await this.authService.signInAnonymous();
-      }
-    } else {
-      // We have got a user, regardless if anonymous or not, we init
-      await this.initOrFetch();
-    }
-  }
-
   private async initOrFetch() {
-    if (!this.deckId) {
+    const deckId: string | undefined = await get<string>('deckdeckgo_deck_id');
+
+    if (!deckId) {
       await this.initSlide();
     } else {
-      await this.fetchSlides();
+      await this.fetchSlides(deckId);
     }
 
     this.slidesFetched = true;
-  }
-
-  async initOffline() {
-    if (Build.isServer) {
-      return;
-    }
-
-    // if we are offline we can't create a new deck or edit another one that the one we have marked as currently being edited offline
-    const offline: OfflineDeck = await this.offlineService.status();
-    if (offline !== undefined) {
-      this.deckId = offline.id;
-    }
   }
 
   async destroy() {
@@ -263,41 +217,23 @@ export class AppEditor {
     inlineEditor.attachTo = this.deckRef;
   }
 
-  private initSlide(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({
-        template: SlideTemplate.TITLE,
-        elements: [SlotType.H1, SlotType.SECTION]
-      });
-
-      await this.concatSlide(slide);
-
-      resolve();
+  private async initSlide() {
+    const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({
+      template: SlideTemplate.TITLE,
+      elements: [SlotType.H1, SlotType.SECTION]
     });
+
+    await this.concatSlide(slide);
   }
 
-  private fetchSlides(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document || !this.deckId) {
-        resolve();
-        return;
-      }
+  private async fetchSlides(deckId: string) {
+    const slides: JSX.IntrinsicElements[] = await this.editorHelper.loadDeckAndRetrieveSlides(deckId);
 
-      const slides: JSX.IntrinsicElements[] = await this.editorHelper.loadDeckAndRetrieveSlides(this.deckId);
+    if (slides && slides.length > 0) {
+      this.slides = [...slides];
+    }
 
-      if (slides && slides.length > 0) {
-        this.slides = [...slides];
-      }
-
-      await this.initDeckStyle();
-
-      resolve();
-    });
+    await this.initDeckStyle();
   }
 
   private async initDeckStyle() {

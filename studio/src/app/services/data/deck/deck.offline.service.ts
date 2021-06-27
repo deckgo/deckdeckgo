@@ -1,6 +1,8 @@
+import {v4 as uuid} from 'uuid';
+
 import {get, set} from 'idb-keyval';
 
-import {Deck, DeckAttributes} from '../../../models/data/deck';
+import {Deck, DeckAttributes, DeckData} from '../../../models/data/deck';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
@@ -17,6 +19,31 @@ export class DeckOfflineService {
       DeckOfflineService.instance = new DeckOfflineService();
     }
     return DeckOfflineService.instance;
+  }
+
+  create(deckData: DeckData): Promise<Deck> {
+    return new Promise<Deck>(async (resolve, reject) => {
+      try {
+        const deckId: string = uuid();
+
+        const now: Date = new Date();
+
+        const deck: Deck = {
+          id: deckId,
+          data: {
+            ...deckData,
+            updated_at: now,
+            created_at: now
+          }
+        };
+
+        await set(`/decks/${deckId}`, deck);
+
+        resolve(deck);
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   get(deckId: string): Promise<Deck> {

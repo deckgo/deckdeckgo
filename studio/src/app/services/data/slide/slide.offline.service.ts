@@ -59,8 +59,8 @@ export class SlideOfflineService {
     });
   }
 
-  update(deckId: string, slide: Slide): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
+  update(deckId: string, slide: Slide): Promise<Slide> {
+    return new Promise<Slide>(async (resolve, reject) => {
       try {
         if (!slide || !slide.data) {
           reject('Invalid slide data');
@@ -78,7 +78,7 @@ export class SlideOfflineService {
 
         await set(`/decks/${deckId}/slides/${slide.id}`, slide);
 
-        resolve();
+        resolve(slide);
       } catch (err) {
         reject(err);
       }

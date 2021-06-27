@@ -186,10 +186,7 @@ export class AppRoot {
     return [
       <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
-          <ion-route url="/" component="app-dashboard-page" />
-
-          <ion-route url="/editor" component="app-editor" />
-          <ion-route url="/editor/:deckId" component="app-editor" />
+          <ion-route url="/" component="app-editor" />
 
           <ion-route url="/profile" component="app-profile" />
           <ion-route url="/customization" component="app-customization" />

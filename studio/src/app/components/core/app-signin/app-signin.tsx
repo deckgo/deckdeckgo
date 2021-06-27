@@ -2,14 +2,12 @@ import {Component, Element, Prop, State, Watch, h} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
-import {User as FirebaseUser, UserCredential, AuthCredential, OAuthCredential} from '@firebase/auth-types';
+import {UserCredential, OAuthCredential} from '@firebase/auth-types';
 
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
 import tokenStore from '../../../stores/token.store';
 import i18n from '../../../stores/i18n.store';
-
-import {AuthUser} from '../../../models/auth/auth.user';
 
 import {Utils} from '../../../utils/core/utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
@@ -17,8 +15,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import {UserService} from '../../../services/data/user/user.service';
-import {DeckService} from '../../../services/data/deck/deck.service';
+import { MergeService } from '../../../services/data/merge/merge.service';
 
 @Component({
   tag: 'app-signin',
@@ -36,14 +33,10 @@ export class AppSignIn {
   @State()
   private signInInProgress: boolean = false;
 
-  private userService: UserService;
-  private deckService: DeckService;
-
-  private firebaseUser: FirebaseUser;
+  private mergeService: MergeService;
 
   constructor() {
-    this.deckService = DeckService.getInstance();
-    this.userService = UserService.getInstance();
+    this.mergeService = MergeService.getInstance();
   }
 
   async componentDidLoad() {
@@ -75,9 +68,6 @@ export class AppSignIn {
 
     const appUrl: string = deckDeckGoConfig.appUrl;
 
-    const redirectUrl: string = localStorage.getItem('deckdeckgo_redirect');
-    const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
-
     const signInOptions = [];
 
     // GitHub scope
@@ -90,8 +80,6 @@ export class AppSignIn {
 
     signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
 
-    this.firebaseUser = firebase.auth().currentUser;
-
     const uiConfig = {
       signInFlow: 'redirect',
       signInSuccessUrl: appUrl,
@@ -103,29 +91,22 @@ export class AppSignIn {
       // Privacy policy url/callback.
       privacyPolicyUrl: 'https://deckdeckgo.com/privacy',
       credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
-      autoUpgradeAnonymousUsers: true,
+      autoUpgradeAnonymousUsers: false,
       callbacks: {
         signInSuccessWithAuthResult: (authResult, _redirectUrl) => {
           this.signInInProgress = true;
 
           this.saveGithubCredentials(authResult);
 
-          // If success and login with email, as we don't have RELOADED the view and therefore not read again redirectUrl and mergeInfo
-          // We process with a redirect followed by a realod
-          if (authResult?.additionalUserInfo?.providerId === 'password') {
-            this.navigateRedirect();
-            return;
-          }
+          // TODO: We maybe do not need the merge info anymore?
+          const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
-          // HACK: so signInSuccessWithAuthResult doesn't like promises, so we save the navigation information before and run the redirect not asynchronously
-          // Ultimately I would like to transfer here the userService.updateMergedUser if async would be supported
-          this.navigateRoot(redirectUrl, 'success', NavDirection.ROOT, mergeInfo);
+          this.mergeDeck(mergeInfo).then(() => {
+            this.navigateRedirect();
+          });
 
           return false;
-        },
-        // signInFailure callback must be provided to handle merge conflicts which
-        // occur when an existing credential is linked to an anonymous user.
-        signInFailure: this.onSignInFailure
+        }
       }
     };
 
@@ -144,49 +125,11 @@ export class AppSignIn {
     ui.start('#firebaseui-auth-container', uiConfig);
   }
 
-  onSignInFailure = (error): Promise<void> => {
-    return new Promise<void>(async (resolve) => {
-      // For merge conflicts, the error.code will be
-      // 'firebaseui/anonymous-upgrade-merge-conflict'.
-      if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
-        resolve();
-        return;
-      }
+  private async mergeDeck(mergeInfo: MergeInformation | undefined) {
+    if (!mergeInfo || !mergeInfo.deckId) {
+      return;
+    }
 
-      this.signInInProgress = true;
-
-      // The credential the user tried to sign in with.
-      const cred = error.credential;
-
-      const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
-
-      if (!mergeInfo || !mergeInfo.deckId || !mergeInfo.userToken || !mergeInfo.userId) {
-        // Should not happens but at least  don't get stuck
-        await this.signInWithCredential(cred);
-
-        this.navigateRedirect('failure');
-
-        resolve();
-        return;
-      }
-
-      const destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
-        await this.mergeDeck(mergeInfo, destroyListener);
-
-        resolve();
-      });
-
-      await this.signInWithCredential(cred);
-    });
-  };
-
-  private async signInWithCredential(cred: AuthCredential) {
-    const userCred: UserCredential = await firebase.auth().signInWithCredential(cred);
-
-    this.saveGithubCredentials(userCred);
-  }
-
-  private async mergeDeck(mergeInfo: MergeInformation, destroyListener) {
     if (
       authStore.state.authUser === null ||
       authStore.state.authUser === undefined ||
@@ -196,20 +139,8 @@ export class AppSignIn {
       return;
     }
 
-    destroyListener();
-
-    // Merge deck to new user
-    await this.deckService.mergeDeck(mergeInfo.deckId, authStore.state.authUser.uid);
-
-    // Delete previous anonymous user from the database
-    await this.userService.delete(mergeInfo.userId);
-
-    // Delete previous anonymous user from Firebase
-    if (this.firebaseUser) {
-      await this.firebaseUser.delete();
-    }
-
-    this.navigateRedirect();
+    // Merge deck to auth user
+    await this.mergeService.mergeDeck(mergeInfo.deckId, authStore.state.authUser.uid);
   }
 
   private async saveRedirect() {

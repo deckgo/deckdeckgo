@@ -270,14 +270,9 @@ export class DeckEventsHandler {
   private createDeck(): Promise<Deck> {
     return new Promise<Deck>(async (resolve, reject) => {
       try {
-        if (!authStore.state.authUser) {
-          reject('User not authenticated');
-          return;
-        }
-
         let deck: DeckData = {
           name: `Presentation ${await Utils.getNow()}`,
-          owner_id: authStore.state.authUser.uid
+          owner_id: authStore.state.authUser?.uid
         };
 
         // Retrieve text and background color style randomly generated in the editor
@@ -289,8 +284,6 @@ export class DeckEventsHandler {
 
         const persistedDeck: Deck = await this.deckService.create(deck);
         deckStore.state.deck = {...persistedDeck};
-
-        await this.updateNavigation(persistedDeck);
 
         resolve(persistedDeck);
       } catch (err) {
@@ -326,14 +319,6 @@ export class DeckEventsHandler {
         reject(err);
       }
     });
-  }
-
-  private async updateNavigation(deck: Deck) {
-    if (!deck || !deck.id) {
-      return;
-    }
-
-    history.replaceState({}, `Deck edited ${deck.id}`, `/editor/${deck.id}`);
   }
 
   private updateDeck(deck: HTMLElement): Promise<void> {

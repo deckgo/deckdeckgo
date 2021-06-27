@@ -17,13 +17,13 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {DeckService} from '../../../services/data/deck/deck.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import { DeckOnlineService } from '../../../services/data/deck/deck.online.service';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -47,7 +47,7 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckService: DeckService;
+  private readonly deckOnlineService: DeckOnlineService;
   private readonly slideService: SlideService;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
@@ -58,7 +58,7 @@ export class AppDashboard {
   private destroyListener;
 
   constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideService = SlideService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
@@ -90,7 +90,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckOnlineService.getUserDecks(authStore.state.authUser.uid);
 
       await this.templateService.init();
 
