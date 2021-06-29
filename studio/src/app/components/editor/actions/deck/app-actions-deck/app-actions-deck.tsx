@@ -146,8 +146,6 @@ export class AppActionsDeck {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
           await this.openEmbed();
-        } else if (detail.data.action === MoreAction.OFFLINE) {
-          await this.goOnlineOffline();
         } else if (detail.data.action === MoreAction.BACKUP) {
           await this.backupOfflineData();
         }
@@ -177,18 +175,6 @@ export class AppActionsDeck {
     });
 
     await popover.present();
-  }
-
-  private async goOnlineOffline() {
-    const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-offline',
-      componentProps: {
-        offline: offlineStore.state.offline
-      },
-      cssClass: 'fullscreen'
-    });
-
-    await modal.present();
   }
 
   private async openRemote() {
@@ -304,22 +290,6 @@ export class AppActionsDeck {
           </button>
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
-
-          <button
-            onMouseDown={($event) => $event.stopPropagation()}
-            onTouchStart={($event) => $event.stopPropagation()}
-            aria-label={offlineStore.state.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}
-            onClick={() => this.goOnlineOffline()}
-            color="primary"
-            class="wider-devices ion-activatable">
-            <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src={`/assets/icons/ionicons/${offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'}.svg`}></ion-icon>
-            {offlineStore.state.offline ? (
-              <ion-label aria-hidden="true">{i18n.state.editor.go_online}</ion-label>
-            ) : (
-              <ion-label aria-hidden="true">{i18n.state.editor.go_offline}</ion-label>
-            )}
-          </button>
 
           {this.renderBackup()}
 

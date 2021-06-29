@@ -33,8 +33,10 @@ import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
+import { OfflineService } from '../../../services/editor/offline/offline.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
+import { SyncData } from '../../../types/editor/sync-data';
 
 import { worker } from '../../../workers/editor.worker.ts?worker';
 import { syncTimer } from '../../../workers/editor.worker';
@@ -115,9 +117,13 @@ export class AppEditor {
   private mainResizeObserver: ResizeObserver;
   private slideResizeObserver: ResizeObserver;
 
+  // TODO: rename service
+  private offlineService: OfflineService;
+
   constructor() {
     this.anonymousService = AnonymousService.getInstance();
     this.fontsService = FontsService.getInstance();
+    this.offlineService = OfflineService.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -144,10 +150,8 @@ export class AppEditor {
 
     await syncTimer();
 
-    worker.onmessage = async (_$event: MessageEvent) => {
-      console.log(_$event);
-
-      // TODO: offline.service.upload
+    worker.onmessage = async ({data}: MessageEvent<SyncData>) => {
+      await this.offlineService.upload(data);
     };
   }
 

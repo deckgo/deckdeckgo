@@ -5,11 +5,13 @@ import {del, get, set} from 'idb-keyval';
 import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
 import assetsStore from '../../../stores/assets.store';
+import authStore from '../../../stores/auth.store';
 
 import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
 
 import {SlotType} from '../../../types/editor/slot-type';
+import { SyncData } from '../../../types/editor/sync-data';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
@@ -58,27 +60,9 @@ export class OfflineService {
     return offlineStore.state.offline;
   }
 
-  async init() {
-    await this.status();
-  }
-
-  private progress(progress: number) {
-    offlineStore.state.progress += progress;
-  }
-
-  private progressStart() {
-    offlineStore.state.progress = 0;
-  }
-
-  private progressComplete() {
-    offlineStore.state.progress = 1;
-  }
-
   save(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        this.progressStart();
-
         const promises: Promise<void>[] = [this.saveDeck(), this.lazyLoadAllContent()];
 
         await Promise.all(promises);
@@ -94,18 +78,29 @@ export class OfflineService {
     });
   }
 
-  upload(): Promise<void> {
+  upload(syncData: SyncData | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        this.progressStart();
+        if (!syncData) {
+          resolve();
+          return;
+        }
 
-        await this.uploadData();
+        if (!authStore.state.loggedIn || !navigator.onLine) {
+          resolve();
+          return;
+        }
 
-        await del('deckdeckgo_offline');
+        const {deckId} = syncData;
 
-        this.progressComplete();
+        if (!deckId) {
+          resolve();
+          return;
+        }
 
-        offlineStore.reset();
+        await this.uploadSlides(syncData);
+
+        await this.uploadDeck(syncData);
 
         resolve();
       } catch (err) {
@@ -132,8 +127,6 @@ export class OfflineService {
 
           offlineStore.state.offline = {...offline};
 
-          this.progressComplete();
-
           resolve();
         } catch (err) {
           reject(err);
@@ -156,15 +149,9 @@ export class OfflineService {
 
         await this.cacheImages(deckElement);
 
-        this.progress(0.2);
-
         await this.cacheAssets();
 
-        this.progress(0.1);
-
         await this.fontsService.loadAllGoogleFonts();
-
-        this.progress(0.1);
 
         resolve();
       } catch (err) {
@@ -311,8 +298,6 @@ export class OfflineService {
 
         await (deck as any).lazyLoadAllContent();
 
-        this.progress(0.1);
-
         resolve();
       } catch (err) {
         reject(err);
@@ -343,8 +328,6 @@ export class OfflineService {
         }
 
         await set(`/decks/${deckStore.state.deck.id}`, deckStore.state.deck);
-
-        this.progress(0.5);
 
         resolve();
       } catch (err) {
@@ -394,55 +377,19 @@ export class OfflineService {
 
       await set(`/decks/${deck.id}/slides/${slideId}`, slide);
 
-      this.progress(deck.data?.slides?.length > 0 ? 0.4 / deck.data.slides.length : 0);
-
       resolve(slide);
     });
   }
 
-  private uploadData(): Promise<void> {
+  private uploadSlides({deckId, slides}: SyncData): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
-          reject('No deck found');
-          return;
-        }
-
-        await this.uploadSlides(deckStore.state.deck);
-
-        await this.deleteSlides(deckStore.state.deck);
-
-        const persistedDeck: Deck = await this.uploadDeck(deckStore.state.deck);
-
-        deckStore.state.deck = {...persistedDeck};
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private uploadSlides(deck: Deck): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (!deck.data.slides || deck.data.slides.length <= 0) {
+      if (!slides || slides.length <= 0) {
         resolve();
         return;
       }
 
       try {
-        const promises: Promise<void>[] = [];
-
-        for (let i: number = 0; i < deck.data.slides.length; i++) {
-          const slideId: string = deck.data.slides[i];
-
-          promises.push(this.uploadSlide(deck, slideId));
-        }
-
-        if (!promises || promises.length <= 0) {
-          resolve();
-          return;
-        }
+        const promises: Promise<void>[] = slides.map((slide: Slide) => this.uploadSlide(deckId, slide.id));
 
         await Promise.all(promises);
 
@@ -453,14 +400,12 @@ export class OfflineService {
     });
   }
 
-  private async uploadSlide(deck: Deck, slideId: string): Promise<void> {
-    await this.uploadSlideLocalUserAssets(deck, slideId);
-    await this.uploadSlideData(deck, slideId);
-
-    this.progress(deck.data?.slides?.length > 0 ? 0.7 / deck.data.slides.length : 0);
+  private async uploadSlide(deckId: string, slideId: string): Promise<void> {
+    await this.uploadSlideLocalUserAssets(deckId, slideId);
+    await this.uploadSlideData(deckId, slideId);
   }
 
-  private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {
+  private uploadSlideLocalUserAssets(deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slide_id="${slideId}"]`);
 
@@ -470,8 +415,8 @@ export class OfflineService {
       }
 
       try {
-        await this.uploadSlideLocalCharts(slideElement, deck, slideId);
-        await this.uploadSlideLocalImages(slideElement, deck, slideId);
+        await this.uploadSlideLocalCharts(slideElement, deckId, slideId);
+        await this.uploadSlideLocalImages(slideElement, deckId, slideId);
 
         resolve();
       } catch (err) {
@@ -480,7 +425,7 @@ export class OfflineService {
     });
   }
 
-  private uploadSlideLocalCharts(slideElement: HTMLElement, deck: Deck, slideId: string): Promise<void> {
+  private uploadSlideLocalCharts(slideElement: HTMLElement, deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         if (slideElement.tagName && slideElement.tagName.toUpperCase() !== 'deckgo-slide-chart'.toUpperCase()) {
@@ -513,7 +458,7 @@ export class OfflineService {
         }
 
         // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later updated back to the database.
-        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+        const slide: Slide = await get(`/decks/${deckId}/slides/${slideId}`);
 
         if (!slide) {
           reject('Slide not found and that is really weird here.');
@@ -522,7 +467,7 @@ export class OfflineService {
 
         slide.data.attributes.src = storageFile.downloadUrl;
 
-        await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+        await set(`/decks/${deckId}/slides/${slideId}`, slide);
 
         // 3. We update the DOM
         (slideElement as any).src = storageFile.downloadUrl;
@@ -537,7 +482,7 @@ export class OfflineService {
     });
   }
 
-  private uploadSlideLocalImages(slideElement: HTMLElement, deck: Deck, slideId: string): Promise<void> {
+  private uploadSlideLocalImages(slideElement: HTMLElement, deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement.querySelectorAll(SlotType.IMG);
@@ -563,7 +508,7 @@ export class OfflineService {
         }
 
         const promises: Promise<void>[] = list.map((img: HTMLDeckgoLazyImgElement) => {
-          return this.uploadSlideLocalImage(img, deck, slideId);
+          return this.uploadSlideLocalImage(img, deckId, slideId);
         });
 
         await Promise.all(promises);
@@ -575,7 +520,7 @@ export class OfflineService {
     });
   }
 
-  private uploadSlideLocalImage(img: HTMLDeckgoLazyImgElement, deck: Deck, slideId: string): Promise<void> {
+  private uploadSlideLocalImage(img: HTMLDeckgoLazyImgElement, deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const data: File = await get(img.imgSrc);
@@ -596,7 +541,7 @@ export class OfflineService {
         }
 
         // 2. We update the indexedDB stored slide with the new downloadUrl. This stored slide will be later uploaded back to the database.
-        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+        const slide: Slide = await get(`/decks/${deckId}/slides/${slideId}`);
 
         if (!slide) {
           reject('Slide not found and that is really weird here.');
@@ -606,7 +551,7 @@ export class OfflineService {
         slide.data.content = slide.data.content.replace(`img-src="${img.imgSrc}"`, `img-src="${storageFile.downloadUrl}"`);
         slide.data.content = slide.data.content.replace(`img-alt="${img.imgSrc}"`, `img-alt="${storageFile.downloadUrl}"`);
 
-        await set(`/decks/${deck.id}/slides/${slideId}`, slide);
+        await set(`/decks/${deckId}/slides/${slideId}`, slide);
 
         // 3. We update the DOM
         img.imgSrc = storageFile.downloadUrl;
@@ -622,10 +567,10 @@ export class OfflineService {
     });
   }
 
-  private uploadSlideData(deck: Deck, slideId: string): Promise<void> {
+  private uploadSlideData(deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const slide: Slide = await get(`/decks/${deck.id}/slides/${slideId}`);
+        const slide: Slide = await get(`/decks/${deckId}/slides/${slideId}`);
 
         if (!slide || !slide.data) {
           // If upload process end up in error in a previous try, some slides might have already been uploaded correctly and remove from the local db
@@ -640,9 +585,7 @@ export class OfflineService {
           slide.data.content = firebase.firestore.FieldValue.delete();
         }
 
-        await this.slideOnlineService.update(deck.id, slide);
-
-        await del(`/decks/${deck.id}/slides/${slideId}`);
+        await this.slideOnlineService.update(deckId, slide);
 
         resolve();
       } catch (err) {
@@ -651,14 +594,20 @@ export class OfflineService {
     });
   }
 
-  private async uploadDeck(deck: Deck): Promise<Deck> {
-    await this.uploadDeckBackgroundAssets(deck);
+  private async uploadDeck({deck}: SyncData): Promise<void> {
+    if (!deck) {
+      return;
+    }
 
-    const persistedDeck: Deck = await this.uploadDeckData(deck);
+    await this.uploadDeckBackgroundAssets(deck.id);
 
-    this.progress(0.1);
-
-    return persistedDeck;
+    await this.uploadDeckData({
+      id: deck.id,
+      data: {
+        ...deck.data,
+        owner_id: authStore.state.authUser.uid
+      }
+    });
   }
 
   private uploadDeckData(deck: Deck): Promise<Deck> {
@@ -688,8 +637,6 @@ export class OfflineService {
 
         const persistedDeck: Deck = await this.deckOnlineService.update(deck);
 
-        await del(`/decks/${deck.id}`);
-
         resolve(persistedDeck);
       } catch (err) {
         reject(err);
@@ -697,56 +644,7 @@ export class OfflineService {
     });
   }
 
-  private deleteSlides(deck: Deck): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (!deck) {
-        resolve();
-        return;
-      }
-
-      try {
-        const slidesToDelete: string[] = await get('deckdeckgo_slides_delete');
-
-        if (!slidesToDelete || slidesToDelete.length <= 0) {
-          resolve();
-          return;
-        }
-
-        const promises: Promise<void>[] = slidesToDelete.map((slideId: string) => {
-          return this.deleteSlide(deck, slideId, slidesToDelete.length);
-        });
-
-        if (!promises || promises.length <= 0) {
-          resolve();
-          return;
-        }
-
-        await Promise.all(promises);
-
-        await del('deckdeckgo_slides_delete');
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private deleteSlide(deck: Deck, slideId: string, slidesToDeleteLength: number): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        await this.slideOnlineService.delete(deck.id, slideId);
-
-        this.progress(0.3 / slidesToDeleteLength);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private uploadDeckBackgroundAssets(deck: Deck): Promise<void> {
+  private uploadDeckBackgroundAssets(deckId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slot="background"]`);
 
@@ -763,7 +661,7 @@ export class OfflineService {
           return;
         }
 
-        await this.uploadDeckLocalImage(img, deck.id);
+        await this.uploadDeckLocalImage(img, deckId);
 
         resolve();
       } catch (err) {

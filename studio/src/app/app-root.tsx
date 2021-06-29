@@ -9,7 +9,6 @@ import shareStore, {ShareData} from './stores/share.store';
 import {AuthService} from './services/auth/auth.service';
 
 import {ThemeService} from './services/theme/theme.service';
-import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
@@ -23,7 +22,6 @@ export class AppRoot {
   @Element() el: HTMLElement;
 
   private readonly authService: AuthService;
-  private readonly offlineService: OfflineService;
 
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
@@ -41,7 +39,6 @@ export class AppRoot {
 
   constructor() {
     this.authService = AuthService.getInstance();
-    this.offlineService = OfflineService.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
@@ -52,7 +49,6 @@ export class AppRoot {
     if (Build.isBrowser) {
       const promises: Promise<void>[] = [
         this.authService.init(),
-        this.offlineService.init(),
         this.themeService.initDarkModePreference(),
         this.colorService.init(),
         this.settingsService.init(),

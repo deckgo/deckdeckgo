@@ -37,10 +37,6 @@ export class AppMoreDeckActions {
 
         <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
 
-        <a onClick={() => this.closePopover(MoreAction.OFFLINE)} aria-label={this.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}>
-          <p>{this.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}</p>
-        </a>
-
         <a onClick={() => this.closePopover(MoreAction.BACKUP)} aria-label={i18n.state.editor.backup}>
           <p>{i18n.state.editor.backup}</p>
         </a>

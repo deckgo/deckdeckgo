@@ -2,11 +2,7 @@ import {get, getMany, keys} from 'idb-keyval';
 
 import {Slide} from '../models/data/slide';
 import {Deck} from '../models/data/deck';
-
-interface SyncData {
-  deck: Deck | undefined;
-  slides: Slide[] | undefined;
-}
+import {SyncData} from '../types/editor/sync-data';
 
 // TODO: move Firestore merge to worker
 
@@ -39,6 +35,7 @@ const syncData = async (): Promise<SyncData | undefined> => {
   // TODO: Filter on updated_at
 
   return {
+    deckId,
     deck,
     slides
   };
