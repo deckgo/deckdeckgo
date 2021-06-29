@@ -3,7 +3,7 @@ import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../models/data/deck';
 
-import {DeckService} from '../data/deck/deck.service';
+import { DeckOnlineService } from '../data/deck/deck.online.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;
@@ -13,10 +13,10 @@ export interface DeckDashboardCloneResult {
 export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
-  private deckService: DeckService;
+  private deckOnlineService: DeckOnlineService;
 
   private constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckOnlineService = DeckOnlineService.getInstance();
   }
 
   static getInstance() {
@@ -35,7 +35,7 @@ export class DeckDashboardService {
           deck_id_to: clone.id
         };
 
-        const updatedDeck: Deck = await this.deckService.update(deck);
+        const updatedDeck: Deck = await this.deckOnlineService.update(deck);
 
         resolve({
           from: updatedDeck,
@@ -60,7 +60,7 @@ export class DeckDashboardService {
         delete clone['api_id'];
         delete clone['meta'];
 
-        const createdDeck: Deck = await this.deckService.create(clone);
+        const createdDeck: Deck = await this.deckOnlineService.create(clone);
 
         resolve(createdDeck);
       } catch (err) {

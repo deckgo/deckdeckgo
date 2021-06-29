@@ -17,13 +17,13 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {SlideService} from '../../../services/data/slide/slide.service';
+import { DeckOnlineService } from '../../../services/data/deck/deck.online.service';
+import { SlideOnlineService } from '../../../services/data/slide/slide.online.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
-import { DeckOnlineService } from '../../../services/data/deck/deck.online.service';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -48,7 +48,7 @@ export class AppDashboard {
   private decks: DeckAndFirstSlide[] = null;
 
   private readonly deckOnlineService: DeckOnlineService;
-  private readonly slideService: SlideService;
+  private readonly slideOnlineService: SlideOnlineService;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
 
@@ -59,7 +59,7 @@ export class AppDashboard {
 
   constructor() {
     this.deckOnlineService = DeckOnlineService.getInstance();
-    this.slideService = SlideService.getInstance();
+    this.slideOnlineService = SlideOnlineService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
   }
@@ -168,7 +168,7 @@ export class AppDashboard {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideService.get(deck.id, slideId);
+        const slide: Slide = await this.slideOnlineService.get(deck.id, slideId);
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
         const style: any = await this.convertStyle(deck);

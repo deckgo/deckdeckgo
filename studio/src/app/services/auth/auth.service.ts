@@ -2,10 +2,9 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import {User as FirebaseUser} from '@firebase/auth-types';
 
-import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 
-import {get, set, del} from 'idb-keyval';
+import {del} from 'idb-keyval';
 
 import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
@@ -37,19 +36,11 @@ export class AuthService {
 
   async init() {
     try {
-      // We also save the user in the local storage to avoid a flickering in the GUI till Firebase as correctly fetched the user
-      // And we also need it in case the user go offline, so we could also check offline if user is anonymous or not
-      // TODO: maybe we do not need it anymore
-      const localUser: AuthUser | undefined = await this.getLocalAuthUser();
-      authStore.state.authUser = localUser ? {...localUser} : null;
-
       firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
       firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser | null) => {
         if (!firebaseUser) {
           authStore.reset();
-          await del('deckdeckgo_auth_user');
-
           await this.apiUserService.signOut();
         } else {
           const authUser: AuthUser = {
@@ -74,8 +65,6 @@ export class AuthService {
 
           await this.firestoreUserService.create(authUser);
 
-          await set('deckdeckgo_auth_user', authUser);
-
           authStore.state.authUser = {...authUser};
 
           await this.apiUserService.signIn(authUser);
@@ -97,20 +86,4 @@ export class AuthService {
     await del('deckdeckgo_redirect_info');
   }
 
-  signInAnonymous(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      try {
-        await firebase.auth().signInAnonymously();
-
-        resolve();
-      } catch (err) {
-        errorStore.state.error = err.message;
-        resolve();
-      }
-    });
-  }
-
-  async getLocalAuthUser(): Promise<AuthUser | undefined> {
-    return get<AuthUser>('deckdeckgo_auth_user');
-  }
 }

@@ -15,7 +15,6 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
-import { MergeService } from '../../../services/data/merge/merge.service';
 
 @Component({
   tag: 'app-signin',
@@ -32,12 +31,6 @@ export class AppSignIn {
 
   @State()
   private signInInProgress: boolean = false;
-
-  private mergeService: MergeService;
-
-  constructor() {
-    this.mergeService = MergeService.getInstance();
-  }
 
   async componentDidLoad() {
     await this.setupFirebaseUI();
@@ -98,12 +91,9 @@ export class AppSignIn {
 
           this.saveGithubCredentials(authResult);
 
-          // TODO: We maybe do not need the merge info anymore?
-          const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
+          // TODO: We do not need the merge info anymore
 
-          this.mergeDeck(mergeInfo).then(() => {
-            this.navigateRedirect();
-          });
+          this.navigateRedirect();
 
           return false;
         }
@@ -123,24 +113,6 @@ export class AppSignIn {
 
     // The start method will wait until the DOM is loaded.
     ui.start('#firebaseui-auth-container', uiConfig);
-  }
-
-  private async mergeDeck(mergeInfo: MergeInformation | undefined) {
-    if (!mergeInfo || !mergeInfo.deckId) {
-      return;
-    }
-
-    if (
-      authStore.state.authUser === null ||
-      authStore.state.authUser === undefined ||
-      !authStore.state.authUser.uid ||
-      authStore.state.authUser.uid === mergeInfo.userId
-    ) {
-      return;
-    }
-
-    // Merge deck to auth user
-    await this.mergeService.mergeDeck(mergeInfo.deckId, authStore.state.authUser.uid);
   }
 
   private async saveRedirect() {

@@ -36,6 +36,9 @@ import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 
+import { worker } from '../../../workers/editor.worker.ts?worker';
+import { syncTimer } from '../../../workers/editor.worker';
+
 @Component({
   tag: 'app-editor',
   styleUrl: 'app-editor.scss'
@@ -138,6 +141,14 @@ export class AppEditor {
     await this.initOrFetch();
 
     this.fullscreen = isFullscreen() && !isMobile();
+
+    await syncTimer();
+
+    worker.onmessage = async (_$event: MessageEvent) => {
+      console.log(_$event);
+
+      // TODO: offline.service.upload
+    };
   }
 
   private async initOrFetch() {

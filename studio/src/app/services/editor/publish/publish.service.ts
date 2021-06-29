@@ -11,7 +11,7 @@ import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 
 import {UserSocial} from '../../../models/data/user';
 
-import {DeckService} from '../../data/deck/deck.service';
+import { DeckOnlineService } from '../../data/deck/deck.online.service';
 
 import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';
@@ -19,10 +19,10 @@ import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config'
 export class PublishService {
   private static instance: PublishService;
 
-  private deckService: DeckService;
+  private deckOnlineService: DeckOnlineService;
 
   private constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckOnlineService = DeckOnlineService.getInstance();
   }
 
   static getInstance() {
@@ -159,7 +159,7 @@ export class PublishService {
           }
         }
 
-        const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+        const updatedDeck: Deck = await this.deckOnlineService.update(deckStore.state.deck);
         deckStore.state.deck = {...updatedDeck};
 
         resolve();

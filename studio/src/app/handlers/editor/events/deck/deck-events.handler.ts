@@ -31,23 +31,23 @@ import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
-import {DeckService} from '../../../../services/data/deck/deck.service';
-import {SlideService} from '../../../../services/data/slide/slide.service';
+import { DeckOfflineService } from '../../../../services/data/deck/deck.offline.service';
+import { SlideOfflineService } from '../../../../services/data/slide/slide.offline.service';
 
 import {DeckAction} from '../../../../types/editor/deck-action';
 
 export class DeckEventsHandler {
   private mainRef: HTMLElement;
 
-  private deckService: DeckService;
-  private slideService: SlideService;
+  private deckOfflineService: DeckOfflineService;
+  private slideOfflineService: SlideOfflineService;
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
 
   constructor() {
-    this.deckService = DeckService.getInstance();
-    this.slideService = SlideService.getInstance();
+    this.deckOfflineService = DeckOfflineService.getInstance();
+    this.slideOfflineService = SlideOfflineService.getInstance();
 
     this.debounceUpdateSlide = debounce(async (element: HTMLElement) => {
       await this.updateSlide(element);
@@ -255,7 +255,7 @@ export class DeckEventsHandler {
         slideData.attributes = attributes;
       }
 
-      const persistedSlide: Slide = await this.slideService.create(deck.id, slideData);
+      const persistedSlide: Slide = await this.slideOfflineService.create(deck.id, slideData);
 
       if (persistedSlide && persistedSlide.id) {
         slide.setAttribute('slide_id', persistedSlide.id);
@@ -282,7 +282,7 @@ export class DeckEventsHandler {
           deck.attributes = attributes;
         }
 
-        const persistedDeck: Deck = await this.deckService.create(deck);
+        const persistedDeck: Deck = await this.deckOfflineService.create(deck);
         deckStore.state.deck = {...persistedDeck};
 
         resolve(persistedDeck);
@@ -311,7 +311,7 @@ export class DeckEventsHandler {
 
         deck.data.slides.push(slide.id);
 
-        const updatedDeck: Deck = await this.deckService.update(deck);
+        const updatedDeck: Deck = await this.deckOfflineService.update(deck);
         deckStore.state.deck = {...updatedDeck};
 
         resolve();
@@ -357,7 +357,7 @@ export class DeckEventsHandler {
         // @ts-ignore
         currentDeck.data.footer = footer && footer !== undefined && footer !== '' ? footer : firebase.firestore.FieldValue.delete();
 
-        const updatedDeck: Deck = await this.deckService.update(currentDeck);
+        const updatedDeck: Deck = await this.deckOfflineService.update(currentDeck);
 
         deckStore.state.deck = {...updatedDeck};
 
@@ -397,7 +397,7 @@ export class DeckEventsHandler {
 
         currentDeck.data.name = title;
 
-        const updatedDeck: Deck = await this.deckService.update(currentDeck);
+        const updatedDeck: Deck = await this.deckOfflineService.update(currentDeck);
         deckStore.state.deck = {...updatedDeck};
 
         busyStore.state.deckBusy = false;
@@ -435,7 +435,7 @@ export class DeckEventsHandler {
 
       currentDeck.data.attributes.autoSlide = action.autoSlide;
 
-      const updatedDeck: Deck = await this.deckService.update(currentDeck);
+      const updatedDeck: Deck = await this.deckOfflineService.update(currentDeck);
       deckStore.state.deck = {...updatedDeck};
 
       busyStore.state.deckBusy = false;
@@ -479,7 +479,7 @@ export class DeckEventsHandler {
         }
 
         if (deckStore.state.deck) {
-          await this.slideService.update(deckStore.state.deck.id, slideUpdate);
+          await this.slideOfflineService.update(deckStore.state.deck.id, slideUpdate);
         }
 
         busyStore.state.deckBusy = false;
@@ -512,20 +512,20 @@ export class DeckEventsHandler {
         const currentDeck: Deck | null = deckStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
-          const slide: Slide = await this.slideService.get(currentDeck.id, slideId);
+          const slide: Slide = await this.slideOfflineService.get(currentDeck.id, slideId);
 
           if (slide && slide.data) {
             // Because there is an offline mode, it is handy currently to proceed the following on the client side.
             // But at some point, it might be interesting to move the logic to a cloud function.
 
             // 1. Delete the slide in Firestore or locally
-            await this.slideService.delete(currentDeck.id, slideId);
+            await this.slideOfflineService.delete(currentDeck.id, slideId);
 
             // 2. Update list of slide in the deck (in Firestore)
             if (currentDeck.data.slides && currentDeck.data.slides.indexOf(slideId) > -1) {
               currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
 
-              const updatedDeck: Deck = await this.deckService.update(currentDeck);
+              const updatedDeck: Deck = await this.deckOfflineService.update(currentDeck);
               deckStore.state.deck = {...updatedDeck};
             }
           }
@@ -933,7 +933,7 @@ export class DeckEventsHandler {
         if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
           currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
-          const updatedDeck: Deck = await this.deckService.update(currentDeck);
+          const updatedDeck: Deck = await this.deckOfflineService.update(currentDeck);
           deckStore.state.deck = {...updatedDeck};
         }
 

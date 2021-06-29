@@ -18,18 +18,28 @@ export class DeckOnlineService {
     return DeckOnlineService.instance;
   }
 
-  create(deck: Deck): Promise<Deck> {
+  create(deck: DeckData): Promise<Deck> {
     return new Promise<Deck>(async (resolve, reject) => {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-      try {
-        // We use the same ID as the one which was generated to create the deck locally
-        await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
+      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
+      deck.created_at = now;
+      deck.updated_at = now;
 
-        resolve(deck);
-      } catch (err) {
-        reject(err);
-      }
+      firestore
+        .collection('decks')
+        .add(deck)
+        .then(
+          (doc: firebase.firestore.DocumentReference) => {
+            resolve({
+              id: doc.id,
+              data: deck
+            });
+          },
+          (err) => {
+            reject(err);
+          }
+        );
     });
   }
 
