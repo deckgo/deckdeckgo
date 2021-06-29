@@ -54,7 +54,7 @@ export class ImageHelper {
   }
 
   async openCustomModalRestricted(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action: EditAction) {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       return;
     }

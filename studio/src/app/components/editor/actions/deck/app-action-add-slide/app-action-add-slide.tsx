@@ -10,8 +10,6 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {DemoAction} from '../../../../../types/editor/demo-action';
 
-import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
-
 @Component({
   tag: 'app-action-add-slide',
   shadow: false
@@ -31,21 +29,8 @@ export class AppActionAddSlide {
   @Prop()
   addSlide: EventEmitter;
 
-  private anonymousService: AnonymousService;
-
-  constructor() {
-    this.anonymousService = AnonymousService.getInstance();
-  }
-
   async onActionOpenSlideAdd($event: CustomEvent) {
     if (!$event || !$event.detail) {
-      return;
-    }
-
-    const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slides);
-
-    if (!couldAddSlide) {
-      this.signIn.emit();
       return;
     }
 

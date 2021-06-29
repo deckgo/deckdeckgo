@@ -176,7 +176,7 @@ export class AppRoot {
   }
 
   /**
-   * Note: Routes need to be flat as we path the return and deckId (redirect and redirectId) to the signin route. So no /settings/something but /something.
+   * Note: Routes need to be flat as we path the return and deckId (redirect) to the signin route. So no /settings/something but /something.
    */
   render() {
     return [
@@ -192,7 +192,6 @@ export class AppRoot {
 
           <ion-route url="/signin" component="app-signin-page" />
           <ion-route url="/signin/:redirect" component="app-signin-page" />
-          <ion-route url="/signin/:redirect/:redirectId" component="app-signin-page" />
 
           <ion-route url="/poll" component="app-poll" />
           <ion-route url="/poll/:pollKey" component="app-poll" />

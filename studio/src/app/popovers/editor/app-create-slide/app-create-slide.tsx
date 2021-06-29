@@ -51,7 +51,7 @@ export class AppCreateSlide {
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
   // User template is also only possible if user is logged in
   private async addRestrictedSlide(template: SlideTemplate | Template, scope: SlideScope = SlideScope.DEFAULT, elements?: SlotType[]) {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
@@ -67,7 +67,7 @@ export class AppCreateSlide {
 
   // User will need an account to upload her/his data
   private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       await this.closePopover(null);
       return;

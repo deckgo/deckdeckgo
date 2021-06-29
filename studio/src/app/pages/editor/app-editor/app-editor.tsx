@@ -30,7 +30,6 @@ import {SlideHelper} from '../../../helpers/editor/slide.helper';
 import {SlotType} from '../../../types/editor/slot-type';
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 
-import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 import { OfflineService } from '../../../services/editor/offline/offline.service';
@@ -40,6 +39,7 @@ import { SyncData } from '../../../types/editor/sync-data';
 
 import { worker } from '../../../workers/editor.worker.ts?worker';
 import { syncTimer } from '../../../workers/editor.worker';
+import authStore from '../../../stores/auth.store';
 
 @Component({
   tag: 'app-editor',
@@ -87,8 +87,6 @@ export class AppEditor {
 
   private editorHelper: SlideHelper = new SlideHelper();
 
-  private anonymousService: AnonymousService;
-
   private fontsService: FontsService;
 
   @State()
@@ -121,7 +119,6 @@ export class AppEditor {
   private offlineService: OfflineService;
 
   constructor() {
-    this.anonymousService = AnonymousService.getInstance();
     this.fontsService = FontsService.getInstance();
     this.offlineService = OfflineService.getInstance();
   }
@@ -351,9 +348,7 @@ export class AppEditor {
       return;
     }
 
-    const couldPublish: boolean = await this.anonymousService.couldPublish(this.slides);
-
-    if (!couldPublish) {
+    if (!authStore.state.authUser) {
       await this.signIn();
       return;
     }

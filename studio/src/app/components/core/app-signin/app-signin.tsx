@@ -1,11 +1,10 @@
-import {Component, Element, Prop, State, Watch, h} from '@stencil/core';
+import {Component, Element, Prop, State, h} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
 import {UserCredential, OAuthCredential} from '@firebase/auth-types';
 
 import navStore, {NavDirection} from '../../../stores/nav.store';
-import authStore from '../../../stores/auth.store';
 import tokenStore from '../../../stores/token.store';
 import i18n from '../../../stores/i18n.store';
 
@@ -26,9 +25,6 @@ export class AppSignIn {
   @Prop()
   redirect: string;
 
-  @Prop()
-  redirectId: string;
-
   @State()
   private signInInProgress: boolean = false;
 
@@ -41,11 +37,6 @@ export class AppSignIn {
     if (ui) {
       await ui.delete();
     }
-  }
-
-  @Watch('redirect')
-  async watchRedirect() {
-    await this.saveRedirect();
   }
 
   async setupFirebaseUI() {
@@ -91,8 +82,6 @@ export class AppSignIn {
 
           this.saveGithubCredentials(authResult);
 
-          // TODO: We do not need the merge info anymore
-
           this.navigateRedirect();
 
           return false;
@@ -102,8 +91,6 @@ export class AppSignIn {
 
     // @ts-ignore
     window['firebase'] = firebase;
-
-    await this.saveRedirect();
 
     const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
 
@@ -115,45 +102,17 @@ export class AppSignIn {
     ui.start('#firebaseui-auth-container', uiConfig);
   }
 
-  private async saveRedirect() {
-    const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
-
-    if (mergeInfo && mergeInfo.userId && mergeInfo.userToken) {
-      return;
-    }
-
-    localStorage.setItem('deckdeckgo_redirect', this.redirect ? this.redirect : '/');
-
-    let token: string | null = null;
-    if (authStore.state.authUser) {
-      token = await firebase.auth().currentUser?.getIdToken();
-    }
-
-    localStorage.setItem(
-      'deckdeckgo_redirect_info',
-      JSON.stringify({
-        deckId: this.redirectId ? this.redirectId : null,
-        userId: authStore.state.authUser ? authStore.state.authUser.uid : null,
-        userToken: token,
-        anonymous: authStore.state.authUser ? authStore.state.authUser.anonymous : true
-      })
-    );
-  }
-
   private navigateRedirect(redirectStatus: 'success' | 'failure' = 'success') {
     const redirectUrl: string = localStorage.getItem('deckdeckgo_redirect');
-    const mergeInfo: MergeInformation = JSON.parse(localStorage.getItem('deckdeckgo_redirect_info')) as MergeInformation;
 
     localStorage.removeItem('deckdeckgo_redirect');
-    localStorage.removeItem('deckdeckgo_redirect_info');
 
-    this.navigateRoot(redirectUrl, redirectStatus, NavDirection.RELOAD, mergeInfo);
+    this.navigateRoot(redirectUrl, redirectStatus, NavDirection.RELOAD);
   }
 
-  private navigateRoot(redirectUrl: string, redirectStatus: 'success' | 'failure', direction: NavDirection, mergeInfo: MergeInformation) {
+  private navigateRoot(redirectUrl: string, redirectStatus: 'success' | 'failure', direction: NavDirection) {
     // TODO: That's ugly
-    // prettier-ignore
-    const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + (!mergeInfo || !mergeInfo.deckId || mergeInfo.deckId.trim() === '' || mergeInfo.deckId.trim() === '/' ? '' : '/' + mergeInfo.deckId);
+    const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + '/';
 
     // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
     navStore.state.nav = {

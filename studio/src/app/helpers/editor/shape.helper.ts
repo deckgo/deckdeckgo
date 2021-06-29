@@ -61,7 +61,7 @@ export class ShapeHelper {
   }
 
   private async openModalRestricted(slideElement: HTMLElement) {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       return;
     }
