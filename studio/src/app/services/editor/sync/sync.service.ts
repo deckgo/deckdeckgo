@@ -25,8 +25,8 @@ import {EnvironmentConfigService} from '../../core/environment/environment-confi
 import {StorageOnlineService} from '../../storage/storage.online.service';
 import {FontsService} from '../fonts/fonts.service';
 
-export class OfflineService {
-  private static instance: OfflineService;
+export class SyncService {
+  private static instance: SyncService;
 
   private slideOnlineService: SlideOnlineService;
   private deckOnlineService: DeckOnlineService;
@@ -41,11 +41,11 @@ export class OfflineService {
     this.fontsService = FontsService.getInstance();
   }
 
-  static getInstance(): OfflineService {
-    if (!OfflineService.instance) {
-      OfflineService.instance = new OfflineService();
+  static getInstance(): SyncService {
+    if (!SyncService.instance) {
+      SyncService.instance = new SyncService();
     }
-    return OfflineService.instance;
+    return SyncService.instance;
   }
 
   async status(): Promise<OfflineDeck> {

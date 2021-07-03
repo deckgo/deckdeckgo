@@ -1,4 +1,4 @@
-import {OfflineService} from '../editor/offline/offline.service';
+import {SyncService} from '../editor/sync/sync.service';
 
 import {StorageOnlineService} from './storage.online.service';
 import {StorageOfflineService} from './storage.offline.service';
@@ -18,7 +18,7 @@ export class StorageService {
   }
 
   async uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
+    const offline: OfflineDeck = await SyncService.getInstance().status();
 
     if (offline !== undefined) {
       return StorageOfflineService.getInstance().uploadFile(data, folder, maxSize);
@@ -28,7 +28,7 @@ export class StorageService {
   }
 
   async getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
+    const offline: OfflineDeck = await SyncService.getInstance().status();
 
     if (offline !== undefined) {
       return StorageOfflineService.getInstance().getFiles(next, folder);
@@ -38,7 +38,7 @@ export class StorageService {
   }
 
   async getFolders(folder: string): Promise<StorageFoldersList | undefined> {
-    const offline: OfflineDeck = await OfflineService.getInstance().status();
+    const offline: OfflineDeck = await SyncService.getInstance().status();
 
     if (offline !== undefined) {
       return undefined;

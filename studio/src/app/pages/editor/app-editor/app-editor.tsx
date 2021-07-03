@@ -32,7 +32,7 @@ import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
-import { OfflineService } from '../../../services/editor/offline/offline.service';
+import { SyncService } from '../../../services/editor/sync/sync.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import { SyncData } from '../../../types/editor/sync-data';
@@ -115,12 +115,11 @@ export class AppEditor {
   private mainResizeObserver: ResizeObserver;
   private slideResizeObserver: ResizeObserver;
 
-  // TODO: rename service
-  private offlineService: OfflineService;
+  private syncService: SyncService;
 
   constructor() {
     this.fontsService = FontsService.getInstance();
-    this.offlineService = OfflineService.getInstance();
+    this.syncService = SyncService.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -148,7 +147,7 @@ export class AppEditor {
     await syncTimer();
 
     worker.onmessage = async ({data}: MessageEvent<SyncData>) => {
-      await this.offlineService.upload(data);
+      await this.syncService.upload(data);
     };
   }
 
