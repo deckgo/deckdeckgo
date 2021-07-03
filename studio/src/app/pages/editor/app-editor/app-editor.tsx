@@ -38,7 +38,7 @@ import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import { SyncData } from '../../../types/editor/sync-data';
 
 import { worker } from '../../../workers/editor.worker.ts?worker';
-import { syncTimer } from '../../../workers/editor.worker';
+import { startSyncTimer, stopSyncTimer } from '../../../workers/editor.worker';
 import authStore from '../../../stores/auth.store';
 
 @Component({
@@ -124,14 +124,10 @@ export class AppEditor {
 
   @Listen('ionRouteDidChange', {target: 'window'})
   async onRouteDidChange($event: CustomEvent) {
-    if (!$event || !$event.detail) {
-      return;
-    }
-
     // ionViewDidEnter and ionViewDidLeave, kind of
-    if ($event.detail.to && $event.detail.to.indexOf('/') === 0) {
+    if ($event?.detail?.to === '/') {
       await this.init();
-    } else if ($event.detail.from && $event.detail.from.indexOf('/') === 0) {
+    } else if ($event?.detail?.from === '/') {
       await this.destroy();
     }
   }
@@ -144,7 +140,11 @@ export class AppEditor {
 
     this.fullscreen = isFullscreen() && !isMobile();
 
-    await syncTimer();
+    await this.syncData();
+  }
+
+  private async syncData() {
+    await startSyncTimer();
 
     worker.onmessage = async ({data}: MessageEvent<SyncData>) => {
       await this.syncService.upload(data);
@@ -164,6 +164,8 @@ export class AppEditor {
   }
 
   async destroy() {
+    await stopSyncTimer();
+
     this.deckEventsHandler.destroy();
     this.editorEventsHandler.destroy();
     this.pollEventsHandler.destroy();

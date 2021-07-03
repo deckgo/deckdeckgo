@@ -6,18 +6,31 @@ import {SyncData} from '../types/editor/sync-data';
 
 // TODO: move Firestore merge to worker
 
-export const syncTimer = async () => {
-  // TODO: clean interval
+let timer: NodeJS.Timeout = undefined;
 
-  setInterval(async () => {
-    const data: SyncData | undefined = await syncData();
-
-    // @ts-ignore
-    postMessage(data);
-  }, 5000);
+export const startSyncTimer = async () => {
+  timer = setInterval(async () => await syncData(), 5000);
 };
 
-const syncData = async (): Promise<SyncData | undefined> => {
+export const stopSyncTimer = async () => {
+  if (!timer) {
+    return;
+  }
+
+  await syncData();
+
+  clearInterval(timer);
+  timer = undefined;
+};
+
+const syncData = async () => {
+  const data: SyncData | undefined = await collectData();
+
+  // @ts-ignore
+  postMessage(data);
+};
+
+const collectData = async (): Promise<SyncData | undefined> => {
   const deckId: string | undefined = await get<string>('deckdeckgo_deck_id');
 
   if (!deckId) {
