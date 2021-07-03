@@ -26,6 +26,11 @@ export const stopSyncTimer = async () => {
 const syncData = async () => {
   const data: SyncData | undefined = await collectData();
 
+  // Do not stress window side if there are no data to sync
+  if (!data) {
+    return;
+  }
+
   // @ts-ignore
   postMessage(data);
 };
