@@ -8,6 +8,7 @@ import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
 import colorStore from '../../../stores/color.store';
 import undoRedoStore from '../../../stores/undo-redo.store';
+import authStore from '../../../stores/auth.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
@@ -37,9 +38,8 @@ import { SyncService } from '../../../services/editor/sync/sync.service';
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import { SyncData } from '../../../types/editor/sync-data';
 
-import { worker } from '../../../workers/editor.worker.ts?worker';
-import { startSyncTimer, stopSyncTimer } from '../../../workers/editor.worker';
-import authStore from '../../../stores/auth.store';
+import { worker } from '../../../workers/sync.worker.ts?worker';
+import { startSyncTimer, stopSyncTimer } from '../../../workers/sync.worker';
 
 @Component({
   tag: 'app-editor',
