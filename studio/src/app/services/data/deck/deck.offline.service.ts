@@ -66,7 +66,6 @@ export class DeckOfflineService {
           return;
         }
 
-        // @ts-ignore
         deck.data.updated_at = new Date();
 
         if (deck.data.background && FirestoreUtils.shouldAttributeBeCleaned(deck.data.background)) {
