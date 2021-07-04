@@ -22,11 +22,13 @@ export interface SyncData {
   deleteDecks: SyncDataDeck[] | undefined;
   updateSlides: SyncDataSlide[] | undefined;
   deleteSlides: SyncDataSlide[] | undefined;
+  syncedAt: Date;
 }
 
 export interface SyncPendingDeck {
   deckId: string;
   key: string;
+  queuedAt: Date;
 }
 
 export interface SyncPendingSlide extends SyncPendingDeck {

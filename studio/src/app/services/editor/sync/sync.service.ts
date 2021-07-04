@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 
-import {del, get, set} from 'idb-keyval';
+import {del, get, set, update} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
@@ -11,7 +11,7 @@ import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
 
 import {SlotType} from '../../../types/editor/slot-type';
-import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync-data';
+import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} from '../../../types/editor/sync-data';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
@@ -81,9 +81,6 @@ export class SyncService {
   upload(syncData: SyncData | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-
-        console.log('UPLOAD', syncData);
-
         if (!syncData) {
           resolve();
           return;
@@ -96,7 +93,7 @@ export class SyncService {
 
         // TODO: when we will solve the storage question, we can leverage the data provided as parameter instead of querying idb here again
 
-        const {updateDecks, updateSlides, deleteSlides} = syncData;
+        const {syncedAt, updateDecks, updateSlides, deleteSlides} = syncData;
 
         await this.uploadSlides(updateSlides);
 
@@ -106,7 +103,7 @@ export class SyncService {
 
         await this.uploadDecks(updateDecks);
 
-        // TODO: it's over clean pending sync or clean it earlier?
+        await this.cleanPending(syncedAt);
 
         resolve();
       } catch (err) {
@@ -741,5 +738,26 @@ export class SyncService {
         reject(err);
       }
     });
+  }
+
+  private async cleanPending(syncedAt: Date) {
+    const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
+
+    if (!data) {
+      return undefined;
+    }
+
+    const filter = (arr: SyncPendingDeck[]) => arr.filter(({queuedAt}: SyncPendingDeck) => queuedAt.getTime() > syncedAt.getTime());
+
+    await update<SyncPending>(
+      'deckdeckgo_pending_sync',
+      (data: SyncPending) =>
+        ({
+          updateDecks: filter(data.updateDecks),
+          deleteDecks: filter(data.deleteDecks),
+          updateSlides: filter(data.updateSlides),
+          deleteSlides: filter(data.deleteSlides)
+        } as SyncPending)
+    );
   }
 }

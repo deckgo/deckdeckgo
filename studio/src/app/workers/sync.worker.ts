@@ -18,6 +18,8 @@ export const stopSyncTimer = async () => {
     return;
   }
 
+  // TODO: only sync data if sync not already in progress (in case it would least more than 5s)
+
   await syncData();
 
   clearInterval(timer);
@@ -48,6 +50,8 @@ const collectData = async (): Promise<SyncData | undefined> => {
     return undefined;
   }
 
+  const syncedAt: Date = new Date();
+
   const updateDecks: SyncDataDeck[] | undefined = (await getMany(uniqueSyncData(data.updateDecks).map(({key}: SyncPendingDeck) => key))).map((deck: Deck) => ({
     deckId: deck.id,
     deck
@@ -59,11 +63,14 @@ const collectData = async (): Promise<SyncData | undefined> => {
 
   const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({deckId, slideId}));
 
+  // TODO: remove decks and slides from update if deleted
+
   return {
     updateDecks,
     deleteDecks,
     updateSlides,
-    deleteSlides
+    deleteSlides,
+    syncedAt
   };
 };
 
@@ -79,8 +86,12 @@ const getSlide = async ({deckId, slideId, key}: SyncPendingSlide): Promise<SyncD
 
 const uniqueSyncData = (data: SyncPendingDeck[]): SyncPendingDeck[] => {
   return data.reduce((acc: SyncPendingDeck[], curr: SyncPendingDeck) => {
-    if (acc.findIndex(({key}: SyncPendingDeck) => key === curr.key) === -1) {
+    const index: number = acc.findIndex(({key}: SyncPendingDeck) => key === curr.key);
+
+    if (index === -1) {
       acc.push(curr);
+    } else if (acc[index].queuedAt.getTime() > curr.queuedAt.getTime()) {
+      acc[index] = curr;
     }
 
     return acc;
