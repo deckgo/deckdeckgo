@@ -543,19 +543,10 @@ export class DeckEventsHandler {
     });
   }
 
-  private deleteSlideElement(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
+  private async deleteSlideElement() {
+    const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
 
-      if (!deck) {
-        resolve();
-        return;
-      }
-
-      await (deck as any).deleteActiveSlide();
-
-      resolve();
-    });
+    await deck?.deleteActiveSlide();
   }
 
   private async getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
