@@ -38,6 +38,8 @@ const syncData = async () => {
 const collectData = async (): Promise<SyncData | undefined> => {
   const deckId: string | undefined = await get<string>('deckdeckgo_deck_id');
 
+  // TODO: replace with sync list?
+
   if (!deckId) {
     return undefined;
   }
