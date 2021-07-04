@@ -61,7 +61,7 @@
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Schön, dass du da bist.",
-    "why": "Melde dich an, um alle Features des Editors zu freizuschalten und deine Präsentationen zu teilen.",
+    "why": "Melde dich an, um deine Präsentationen Online zu speichern und teilen.",
     "additionally": "Sichere zusätzlich den Quellcode deiner Folien auf einem GitHub {0} Repository."
   },
   "settings": {

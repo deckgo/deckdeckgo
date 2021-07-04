@@ -14,8 +14,7 @@ export class AppNavigation {
 
   @Prop() user: boolean = true;
 
-  @Prop() write: boolean = true;
-  @Prop() publish: boolean = false;
+  @Prop() signIn: boolean = true;
 
   render() {
     return (
@@ -122,9 +121,7 @@ export class AppNavigation {
 
     if (this.user) {
       return (
-        <div slot="end">
-          <app-navigation-actions write={this.write} publish={this.publish}></app-navigation-actions>
-        </div>
+        <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
       );
     } else {
       return undefined;

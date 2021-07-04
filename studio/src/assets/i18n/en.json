@@ -61,7 +61,7 @@
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Good to have you.",
-    "why": "Sign in to unleash all features of the editor and to share your presentation online.",
+    "why": "Sign in to save and to share your presentation online.",
     "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging."
   },
   "settings": {

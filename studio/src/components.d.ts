@@ -255,14 +255,11 @@ export namespace Components {
     }
     interface AppNavigation {
         "menuToggle": boolean;
-        "publish": boolean;
+        "signIn": boolean;
         "user": boolean;
-        "write": boolean;
     }
     interface AppNavigationActions {
-        "publish": boolean;
         "signIn": boolean;
-        "write": boolean;
     }
     interface AppNoTemplates {
     }
@@ -1522,15 +1519,11 @@ declare namespace LocalJSX {
     }
     interface AppNavigation {
         "menuToggle"?: boolean;
-        "publish"?: boolean;
+        "signIn"?: boolean;
         "user"?: boolean;
-        "write"?: boolean;
     }
     interface AppNavigationActions {
-        "onActionPublish"?: (event: CustomEvent<void>) => void;
-        "publish"?: boolean;
         "signIn"?: boolean;
-        "write"?: boolean;
     }
     interface AppNoTemplates {
     }

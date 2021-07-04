@@ -1,8 +1,7 @@
-import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
+import {Component, Prop, h} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
 
-import themeStore from '../../../stores/theme.store';
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
@@ -16,10 +15,6 @@ import {signIn} from '../../../utils/core/signin.utils';
 })
 export class AppNavigationActions {
   @Prop() signIn: boolean = true;
-  @Prop() write: boolean = true;
-  @Prop() publish: boolean = false;
-
-  @Event() private actionPublish: EventEmitter<void>;
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -35,8 +30,6 @@ export class AppNavigationActions {
     return (
       <div>
         {this.renderSignIn()}
-        {this.renderPresentationButton()}
-        {this.renderPublishButton()}
         {this.renderLoggedIn()}
       </div>
     );
@@ -45,51 +38,29 @@ export class AppNavigationActions {
   private renderSignIn() {
     if (authStore.state.loggedIn || !this.signIn) {
       return undefined;
-    } else if (this.publish) {
-      return (
-        <button class="wide-device ion-padding-start ion-padding-end signin" onClick={() => signIn()} tabindex={0}>
-          <ion-label>{i18n.state.nav.sign_in}</ion-label>
-        </button>
-      );
     }
+
+    return (
+      <button class="ion-margin-end ion-activatable" onClick={() => signIn()} tabindex={0}>
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon name="log-in-outline"></ion-icon>
+        <ion-label>{i18n.state.nav.sign_in}</ion-label>
+      </button>
+    );
   }
 
   private renderLoggedIn() {
     if (authStore.state.loggedIn && userStore.state.loaded) {
       return (
-        <button class="ion-padding-end" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu} tabindex={0}>
+        <button class="ion-margin-end ion-activatable" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu} tabindex={0}>
+          <ion-ripple-effect></ion-ripple-effect>
           <app-avatar src={userStore.state.photoUrl}></app-avatar>
+          <ion-label>{userStore.state.name}</ion-label>
         </button>
       );
-    } else {
-      return undefined;
     }
+
+    return undefined
   }
 
-  private renderPresentationButton() {
-    if (this.write && !this.publish) {
-      return (
-        <app-start-deck writeColor={themeStore.state.darkTheme ? 'light' : 'dark'} importColor={themeStore.state.darkTheme ? 'light' : 'dark'}></app-start-deck>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  private renderPublishButton() {
-    if (this.publish) {
-      return (
-        <ion-button
-          class="publish ion-margin-end"
-          shape="round"
-          onClick={() => this.actionPublish.emit()}
-          mode="md"
-          color={themeStore.state.darkTheme ? 'light' : 'dark'}>
-          <ion-label>{i18n.state.nav.ready_to_share}</ion-label>
-        </ion-button>
-      );
-    } else {
-      return null;
-    }
-  }
 }

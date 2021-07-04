@@ -687,7 +687,7 @@ export class AppEditor {
     const autoSlide: boolean = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
-      <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
+      <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content class="ion-no-padding">
         <div class="grid">
           <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
