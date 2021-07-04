@@ -95,13 +95,14 @@ export class SyncService {
 
         const {syncedAt, updateDecks, updateSlides, deleteSlides} = syncData;
 
+        // First decks because it contains information for the permission and the list of slides
+        await this.uploadDecks(updateDecks);
+
         await this.uploadSlides(updateSlides);
 
         await this.deleteSlides(deleteSlides);
 
-        // TODO: delete decks?
-
-        await this.uploadDecks(updateDecks);
+        // TODO: handle delete decks here?
 
         await this.cleanPending(syncedAt);
 

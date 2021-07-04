@@ -63,12 +63,14 @@ const collectData = async (): Promise<SyncData | undefined> => {
 
   const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({deckId, slideId}));
 
-  // TODO: remove decks and slides from update if deleted
-
   return {
-    updateDecks,
+    updateDecks: deleteDecks
+      ? updateDecks?.filter(({deckId}: SyncDataDeck) => !deleteDecks.find(({deckId: deleteDeckId}: SyncDataDeck) => deleteDeckId === deckId))
+      : updateDecks,
     deleteDecks,
-    updateSlides,
+    updateSlides: deleteSlides
+      ? updateSlides?.filter(({slideId}: SyncDataSlide) => !deleteSlides.find(({slideId: deleteSlideId}: SyncDataSlide) => deleteSlideId === slideId))
+      : updateSlides,
     deleteSlides,
     syncedAt
   };
