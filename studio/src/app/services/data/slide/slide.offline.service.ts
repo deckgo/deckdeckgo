@@ -6,6 +6,7 @@ import {Slide, SlideAttributes, SlideData} from '../../../models/data/slide';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
+import { syncDeleteSlide, syncUpdateSlide } from '../../../utils/editor/sync.utils';
 
 export class SlideOfflineService {
   private static instance: SlideOfflineService;
@@ -37,6 +38,8 @@ export class SlideOfflineService {
         slide.data.updated_at = now;
 
         await set(`/decks/${deckId}/slides/${slide.id}`, slide);
+
+        await syncUpdateSlide({deckId, slideId: slide.id});
 
         resolve(slide);
       } catch (err) {
@@ -75,6 +78,8 @@ export class SlideOfflineService {
 
         await set(`/decks/${deckId}/slides/${slide.id}`, slide);
 
+        await syncUpdateSlide({deckId, slideId: slide.id});
+
         resolve(slide);
       } catch (err) {
         reject(err);
@@ -87,24 +92,12 @@ export class SlideOfflineService {
       try {
         await del(`/decks/${deckId}/slides/${slideId}`);
 
-        await this.saveSlidesToDelete(slideId);
+        await syncDeleteSlide({deckId, slideId});
 
         resolve();
       } catch (err) {
         reject(err);
       }
     });
-  }
-
-  private async saveSlidesToDelete(slideId: string) {
-    let slidesToDelete: string[] = await get('deckdeckgo_slides_delete');
-
-    if (!slidesToDelete) {
-      slidesToDelete = [];
-    }
-
-    slidesToDelete.push(slideId);
-
-    await set('deckdeckgo_slides_delete', slidesToDelete);
   }
 }

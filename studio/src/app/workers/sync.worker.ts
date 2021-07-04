@@ -1,8 +1,9 @@
-import {get, getMany, keys} from 'idb-keyval';
+import {get, getMany} from 'idb-keyval';
 
 import {Slide} from '../models/data/slide';
 import {Deck} from '../models/data/deck';
-import {SyncData} from '../types/editor/sync-data';
+
+import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '../types/editor/sync-data';
 
 // TODO: move Firestore merge to worker
 
@@ -24,6 +25,8 @@ export const stopSyncTimer = async () => {
 };
 
 const syncData = async () => {
+  // TODO: Avoid atomic errors, window updating while worker running. If we can move Firestore and ICP to the worker it solves everything though.
+
   const data: SyncData | undefined = await collectData();
 
   // Do not stress window side if there are no data to sync
@@ -32,31 +35,54 @@ const syncData = async () => {
   }
 
   // @ts-ignore
-  postMessage(data);
+  postMessage({
+    msg: 'deckdeckgo_sync',
+    data
+  });
 };
 
 const collectData = async (): Promise<SyncData | undefined> => {
-  const deckId: string | undefined = await get<string>('deckdeckgo_deck_id');
+  const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
-  // TODO: replace with sync list?
-
-  if (!deckId) {
+  if (!data) {
     return undefined;
   }
 
-  const deck: Deck | undefined = await get(`/decks/${deckId}`);
+  const updateDecks: SyncDataDeck[] | undefined = (await getMany(uniqueSyncData(data.updateDecks).map(({key}: SyncPendingDeck) => key))).map((deck: Deck) => ({
+    deckId: deck.id,
+    deck
+  }));
 
-  const slideIds: string[] | undefined = await keys();
+  const deleteDecks: SyncDataDeck[] | undefined = uniqueSyncData(data.deleteDecks).map(({deckId}: SyncPendingDeck) => ({deckId}));
 
-  const slideKeys: string[] = slideIds?.filter((key: string) => key.indexOf(`/decks/${deckId}/slides/`) > -1);
+  const updateSlides: SyncDataSlide[] | undefined = await Promise.all(uniqueSyncData(data.updateSlides).map((slide: SyncPendingSlide) => getSlide(slide)));
 
-  const slides: Slide[] | undefined = await getMany(slideKeys);
+  const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({deckId, slideId}));
 
-  // TODO: Filter on updated_at
+  return {
+    updateDecks,
+    deleteDecks,
+    updateSlides,
+    deleteSlides
+  };
+};
+
+const getSlide = async ({deckId, slideId, key}: SyncPendingSlide): Promise<SyncDataSlide> => {
+  const slide: Slide | undefined = await get(key);
 
   return {
     deckId,
-    deck,
-    slides
+    slideId,
+    slide
   };
+};
+
+const uniqueSyncData = (data: SyncPendingDeck[]): SyncPendingDeck[] => {
+  return data.reduce((acc: SyncPendingDeck[], curr: SyncPendingDeck) => {
+    if (acc.findIndex(({key}: SyncPendingDeck) => key === curr.key) === -1) {
+      acc.push(curr);
+    }
+
+    return acc;
+  }, []);
 };

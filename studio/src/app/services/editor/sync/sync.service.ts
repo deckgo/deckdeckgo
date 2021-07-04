@@ -11,7 +11,7 @@ import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
 
 import {SlotType} from '../../../types/editor/slot-type';
-import { SyncData } from '../../../types/editor/sync-data';
+import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync-data';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
@@ -81,6 +81,9 @@ export class SyncService {
   upload(syncData: SyncData | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
+
+        console.log('UPLOAD', syncData);
+
         if (!syncData) {
           resolve();
           return;
@@ -91,16 +94,19 @@ export class SyncService {
           return;
         }
 
-        const {deckId} = syncData;
+        // TODO: when we will solve the storage question, we can leverage the data provided as parameter instead of querying idb here again
 
-        if (!deckId) {
-          resolve();
-          return;
-        }
+        const {updateDecks, updateSlides, deleteSlides} = syncData;
 
-        await this.uploadSlides(syncData);
+        await this.uploadSlides(updateSlides);
 
-        await this.uploadDeck(syncData);
+        await this.deleteSlides(deleteSlides);
+
+        // TODO: delete decks?
+
+        await this.uploadDecks(updateDecks);
+
+        // TODO: it's over clean pending sync or clean it earlier?
 
         resolve();
       } catch (err) {
@@ -381,15 +387,15 @@ export class SyncService {
     });
   }
 
-  private uploadSlides({deckId, slides}: SyncData): Promise<void> {
+  private uploadSlides(data: SyncDataSlide[] | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      if (!slides || slides.length <= 0) {
+      if (!data || data.length <= 0) {
         resolve();
         return;
       }
 
       try {
-        const promises: Promise<void>[] = slides.map((slide: Slide) => this.uploadSlide(deckId, slide.id));
+        const promises: Promise<void>[] = data.map(({deckId, slideId}: SyncDataSlide) => this.uploadSlide(deckId, slideId));
 
         await Promise.all(promises);
 
@@ -594,15 +600,35 @@ export class SyncService {
     });
   }
 
-  private async uploadDeck({deck}: SyncData): Promise<void> {
+  private async deleteSlides(data: SyncDataSlide[] | undefined): Promise<void> {
+    if (!data || data.length <= 0) {
+      return;
+    }
+
+    const promises: Promise<void>[] = data.map(({deckId, slideId}: SyncDataSlide) => this.slideOnlineService.delete(deckId, slideId));
+    await Promise.all(promises);
+  }
+
+  private async uploadDecks(data: SyncDataDeck[] | undefined): Promise<void> {
+    if (!data || data.length <= 0) {
+      return;
+    }
+
+    const promises: Promise<void>[] = data.map((deck: SyncDataDeck) => this.uploadDeck(deck));
+    await Promise.all(promises);
+  }
+
+  private async uploadDeck({deckId}: SyncDataDeck): Promise<void> {
+    await this.uploadDeckBackgroundAssets(deckId);
+
+    const deck: Deck = await get(`/decks/${deckId}`);
+
     if (!deck) {
       return;
     }
 
-    await this.uploadDeckBackgroundAssets(deck.id);
-
     await this.uploadDeckData({
-      id: deck.id,
+      id: deckId,
       data: {
         ...deck.data,
         owner_id: authStore.state.authUser.uid

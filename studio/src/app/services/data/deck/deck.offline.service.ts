@@ -6,6 +6,7 @@ import {Deck, DeckAttributes, DeckData} from '../../../models/data/deck';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
+import { syncUpdateDeck } from '../../../utils/editor/sync.utils';
 
 export class DeckOfflineService {
   private static instance: DeckOfflineService;
@@ -38,6 +39,8 @@ export class DeckOfflineService {
         };
 
         await set(`/decks/${deckId}`, deck);
+
+        await syncUpdateDeck(deckId);
 
         resolve(deck);
       } catch (err) {
@@ -83,6 +86,8 @@ export class DeckOfflineService {
         deck.data.attributes = (await OfflineUtils.cleanAttributes(deck.data.attributes)) as DeckAttributes;
 
         await set(`/decks/${deck.id}`, deck);
+
+        await syncUpdateDeck(deck.id);
 
         resolve(deck);
       } catch (err) {

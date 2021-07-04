@@ -33,13 +33,13 @@ import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
-import { SyncService } from '../../../services/editor/sync/sync.service';
+import {SyncService} from '../../../services/editor/sync/sync.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
-import { SyncData } from '../../../types/editor/sync-data';
+import {SyncEvent} from '../../../types/editor/sync-data';
 
-import { worker } from '../../../workers/sync.worker.ts?worker';
-import { startSyncTimer, stopSyncTimer } from '../../../workers/sync.worker';
+import {worker} from '../../../workers/sync.worker.ts?worker';
+import {startSyncTimer, stopSyncTimer} from '../../../workers/sync.worker';
 
 @Component({
   tag: 'app-editor',
@@ -146,8 +146,12 @@ export class AppEditor {
   private async syncData() {
     await startSyncTimer();
 
-    worker.onmessage = async ({data}: MessageEvent<SyncData>) => {
-      await this.syncService.upload(data);
+    worker.onmessage = async ({data}: MessageEvent<SyncEvent>) => {
+      if (!data || data.msg !== 'deckdeckgo_sync') {
+        return;
+      }
+
+      await this.syncService.upload(data.data);
     };
   }
 
