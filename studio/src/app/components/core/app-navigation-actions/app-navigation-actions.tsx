@@ -118,22 +118,21 @@ export class AppNavigationActions {
           class="ion-activatable"
           onClick={() => this.newDeck()}
           disabled={syncStore.state.sync !== 'idle'}
-          tabindex={0}
           aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/document.svg"></ion-icon>
           <ion-label>{i18n.state.tools.new}</ion-label>
         </button>
 
-        <button class="ion-activatable" onClick={() => this.openFilePicker()} tabindex={0}>
+        <button class="ion-activatable" onClick={() => this.openFilePicker()}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/folder-open.svg"></ion-icon>
           <ion-label>{i18n.state.tools.open}</ion-label>
         </button>
 
-        <input type="file" accept="application/json" onChange={() => this.importData()} ref={(el) => (this.loadInput = el as HTMLInputElement)} />
+        <input type="file" accept="application/json" onChange={() => this.importData()} ref={(el) => (this.loadInput = el as HTMLInputElement)} tabindex="-1" />
 
-        <button class="ion-activatable" onClick={() => this.exportData()} tabindex={0}>
+        <button class="ion-activatable" onClick={() => this.exportData()}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon>
           <ion-label>{i18n.state.editor.export}</ion-label>
@@ -148,7 +147,7 @@ export class AppNavigationActions {
     }
 
     return (
-      <button class="ion-activatable" onClick={() => signIn()} tabindex={0}>
+      <button class="ion-activatable" onClick={() => signIn()}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" name="log-in-outline"></ion-icon>
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
@@ -162,7 +161,7 @@ export class AppNavigationActions {
         <Fragment>
           {this.renderCloudStatus()}
 
-          <button class="ion-activatable" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu} tabindex={0}>
+          <button class="ion-activatable" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu}>
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
             <ion-label>{userStore.state.name}</ion-label>
