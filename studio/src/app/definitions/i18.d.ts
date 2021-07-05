@@ -131,7 +131,7 @@ interface I18nEditor {
   go_offline: string;
   more: string;
   exit_fullscreen: string;
-  backup: string;
+  export: string;
   delete: string;
   notes: string;
   notes_display: string;

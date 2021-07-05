@@ -37,10 +37,6 @@ export class AppMoreDeckActions {
 
         <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
 
-        <a onClick={() => this.closePopover(MoreAction.BACKUP)} aria-label={i18n.state.editor.backup}>
-          <p>{i18n.state.editor.backup}</p>
-        </a>
-
         <app-action-help link={true} onHelpSelected={() => this.closePopover(MoreAction.HELP)}></app-action-help>
       </div>
     );

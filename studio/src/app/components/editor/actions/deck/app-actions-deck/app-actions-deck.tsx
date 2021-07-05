@@ -8,12 +8,9 @@ import remoteStore from '../../../../../stores/remote.store';
 import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
-import errorStore from '../../../../../stores/error.store';
 import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
-
-import {BackupOfflineService} from '../../../../../services/editor/backup/backup.offline.service';
 
 @Component({
   tag: 'app-actions-deck',
@@ -146,8 +143,6 @@ export class AppActionsDeck {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
           await this.openEmbed();
-        } else if (detail.data.action === MoreAction.BACKUP) {
-          await this.backupOfflineData();
         }
       }
     });
@@ -221,14 +216,6 @@ export class AppActionsDeck {
     }
   }
 
-  private async backupOfflineData() {
-    try {
-      await BackupOfflineService.getInstance().backup();
-    } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
-    }
-  }
-
   render() {
     return (
       <aside>
@@ -291,8 +278,6 @@ export class AppActionsDeck {
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
-          {this.renderBackup()}
-
           <app-action-help class="wider-devices"></app-action-help>
 
           <button
@@ -325,25 +310,6 @@ export class AppActionsDeck {
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon>{' '}
         <ion-label aria-hidden="true">{i18n.state.editor.exit_fullscreen}</ion-label>
-      </button>
-    );
-  }
-
-  private renderBackup() {
-    if (!offlineStore.state.offline) {
-      return undefined;
-    }
-
-    return (
-      <button
-        onMouseDown={($event) => $event.stopPropagation()}
-        onTouchStart={($event) => $event.stopPropagation()}
-        aria-label={i18n.state.editor.backup}
-        onClick={() => this.backupOfflineData()}
-        color="primary"
-        class="wider-devices ion-activatable">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon> <ion-label aria-hidden="true">{i18n.state.editor.backup}</ion-label>
       </button>
     );
   }

@@ -10,6 +10,5 @@ export enum MoreAction {
   HELP,
   IMAGES,
   REMOTE,
-  BACKUP,
   TRANSFORM
 }

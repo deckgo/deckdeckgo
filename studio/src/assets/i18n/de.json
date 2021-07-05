@@ -124,7 +124,7 @@
     "go_offline": "Offline gehen",
     "more": "Mehr",
     "exit_fullscreen": "Vollbild verlassen",
-    "backup": "Backup",
+    "export": "Export",
     "delete": "Löschen",
     "notes": "Notizen",
     "notes_display": "Deine Notizen werden im {0} angezeigt. Markdown wird unterstützt. 😉",

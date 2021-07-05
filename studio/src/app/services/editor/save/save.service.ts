@@ -9,7 +9,7 @@ import {Slide} from '../../../models/data/slide';
 
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
-interface DeckBackupData {
+interface DeckSaveData {
   name: string;
 
   attributes?: DeckAttributes;
@@ -27,19 +27,19 @@ interface DeckBackupData {
   updated_at?: firebase.firestore.Timestamp | Date;
 }
 
-interface DeckBackup {
+interface DeckSave {
   id: string;
-  data: DeckBackupData;
+  data: DeckSaveData;
 }
 
-export class BackupOfflineService {
-  private static instance: BackupOfflineService;
+export class SaveService {
+  private static instance: SaveService;
 
-  static getInstance(): BackupOfflineService {
-    if (!BackupOfflineService.instance) {
-      BackupOfflineService.instance = new BackupOfflineService();
+  static getInstance(): SaveService {
+    if (!SaveService.instance) {
+      SaveService.instance = new SaveService();
     }
-    return BackupOfflineService.instance;
+    return SaveService.instance;
   }
 
   async backup() {
@@ -50,7 +50,7 @@ export class BackupOfflineService {
     const slides: Slide[] = await this.getSlides(deckStore.state.deck);
 
     // We select what we want to backup and add the slides (not their id) in these data
-    const backupDeckData: DeckBackupData = FirestoreUtils.filterDelete(this.prepareDeckBackupData(slides), true);
+    const backupDeckData: DeckSaveData = FirestoreUtils.filterDelete(this.prepareDeckBackupData(slides), true);
 
     await this.save({
       id: deckStore.state.deck.id,
@@ -58,7 +58,7 @@ export class BackupOfflineService {
     });
   }
 
-  private prepareDeckBackupData(slides: Slide[]): DeckBackupData {
+  private prepareDeckBackupData(slides: Slide[]): DeckSaveData {
     return {
       name: deckStore.state.deck.data.name,
 
@@ -104,7 +104,7 @@ export class BackupOfflineService {
     }
   }
 
-  private save(deck: DeckBackup): Promise<void> {
+  private save(deck: DeckSave): Promise<void> {
     if ('showSaveFilePicker' in window) {
       return this.exportNativeFileSystem(deck);
     }
@@ -112,7 +112,7 @@ export class BackupOfflineService {
     return this.exportDownload(deck);
   }
 
-  private async exportNativeFileSystem(deck: DeckBackup) {
+  private async exportNativeFileSystem(deck: DeckSave) {
     const fileHandle: FileSystemFileHandle = await this.getNewFileHandle();
 
     if (!fileHandle) {
@@ -146,7 +146,7 @@ export class BackupOfflineService {
     await writer.close();
   }
 
-  private async exportDownload(deck: DeckBackup) {
+  private async exportDownload(deck: DeckSave) {
     const a: HTMLAnchorElement = document.createElement('a');
     a.style.display = 'none';
     document.body.appendChild(a);

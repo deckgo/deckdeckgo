@@ -1,4 +1,4 @@
-import {Component, Prop, h} from '@stencil/core';
+import {Component, Prop, h, Fragment} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
 
@@ -7,6 +7,8 @@ import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
+import { SaveService } from '../../../services/editor/save/save.service';
+import errorStore from '../../../stores/error.store';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -26,12 +28,33 @@ export class AppNavigationActions {
     await popover.present();
   }
 
+  private async backupOfflineData() {
+    try {
+      await SaveService.getInstance().backup();
+    } catch (err) {
+      errorStore.state.error = `Something went wrong. ${err}.`;
+    }
+  }
+
   render() {
     return (
       <div>
+        {this.renderActions()}
         {this.renderSignIn()}
         {this.renderLoggedIn()}
       </div>
+    );
+  }
+
+  private renderActions() {
+    return (
+      <Fragment>
+        <button class="ion-margin-start ion-margin-end ion-activatable" onClick={() => this.backupOfflineData()} tabindex={0}>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon>
+          <ion-label>{i18n.state.editor.export}</ion-label>
+        </button>
+      </Fragment>
     );
   }
 
@@ -43,7 +66,7 @@ export class AppNavigationActions {
     return (
       <button class="ion-margin-end ion-activatable" onClick={() => signIn()} tabindex={0}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon name="log-in-outline"></ion-icon>
+        <ion-icon aria-hidden="true" name="log-in-outline"></ion-icon>
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
       </button>
     );
@@ -60,7 +83,6 @@ export class AppNavigationActions {
       );
     }
 
-    return undefined
+    return undefined;
   }
-
 }

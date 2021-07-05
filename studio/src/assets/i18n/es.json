@@ -124,7 +124,7 @@
     "go_offline": "Desconectarse",
     "more": "Más",
     "exit_fullscreen": "Salir de la pantalla completa",
-    "backup": "Copia de seguridad",
+    "export": "Exportación",
     "delete": "Borrar",
     "notes": "Notas",
     "notes_display": "Sus notas se muestran en el {0}. Se admite Markdown 😉 .",
