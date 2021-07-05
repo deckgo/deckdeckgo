@@ -112,19 +112,21 @@ export class AppNavigationActions {
   }
 
   private renderActions() {
+    const disabled: boolean = syncStore.state.sync === 'pending' || syncStore.state.sync === 'in_progress';
+
     return (
       <Fragment>
         <button
           class="ion-activatable"
           onClick={() => this.newDeck()}
-          disabled={syncStore.state.sync !== 'idle'}
+          disabled={disabled}
           aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/document.svg"></ion-icon>
           <ion-label>{i18n.state.tools.new}</ion-label>
         </button>
 
-        <button class="ion-activatable" onClick={() => this.openFilePicker()}>
+        <button class="ion-activatable" onClick={() => this.openFilePicker()} disabled={disabled}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/folder-open.svg"></ion-icon>
           <ion-label>{i18n.state.tools.open}</ion-label>
