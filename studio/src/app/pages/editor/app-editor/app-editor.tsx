@@ -1,4 +1,4 @@
-import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
+import { Component, Element, h, JSX, Listen, State } from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
@@ -194,7 +194,6 @@ export class AppEditor {
   }
 
   private async reset() {
-    this.slides = [];
     this.background = undefined;
     this.header = undefined;
     this.footer = undefined;
@@ -202,10 +201,32 @@ export class AppEditor {
     this.animation = 'slide';
     this.direction = 'horizontal';
     this.directionMobile = 'papyrus';
+
+    this.resetDOM();
+
     this.activeIndex = 0;
+
+    this.slides = [];
 
     deckStore.reset();
     undoRedoStore.reset();
+  }
+
+  // TODO: It would be cleaner to have the states in store and to keep these in sync instead of modifying the DOM
+  private resetDOM() {
+    const background: HTMLElement = this.deckRef?.querySelector(":scope > [slot='background']");
+    background?.parentElement?.removeChild(background);
+
+    const header: HTMLElement = this.deckRef?.querySelector(":scope > [slot='header']");
+    header?.parentElement?.removeChild(header);
+
+    const footer: HTMLElement = this.deckRef?.querySelector(":scope > [slot='footer']");
+    footer?.parentElement?.removeChild(footer);
+
+    this.deckRef?.setAttribute('style', '');
+    this.deckRef?.setAttribute('animation', this.animation);
+    this.deckRef?.setAttribute('direction', this.direction);
+    this.deckRef?.setAttribute('direction-mobile', this.directionMobile);
   }
 
   async componentDidLoad() {
