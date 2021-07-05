@@ -490,6 +490,10 @@
   "tools": {
     "new": "Neu",
     "new_presentation": "Erstelle eine neue Präsentation",
-    "new_warning_text": "Dadurch werden die aktuelle Präsentation und Folien ersetzt. Sind Sie sicher?"
+    "new_warning_text": "Dadurch werden die aktuelle Präsentation und Folien ersetzt. Sind Sie sicher?",
+    "cloud": "Cloud",
+    "cloud_error": "Bei der Cloud-Synchronisierung ist ein Fehler aufgetreten",
+    "cloud_in_progress": "Cloud-Synchronisierung läuft",
+    "cloud_idle": "Cloud-Synchronisierung auf dem neuesten Stand"
   }
 }

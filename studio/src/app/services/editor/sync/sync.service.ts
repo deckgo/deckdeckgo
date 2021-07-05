@@ -6,6 +6,7 @@ import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
 import assetsStore from '../../../stores/assets.store';
 import authStore from '../../../stores/auth.store';
+import syncStore from '../../../stores/sync.store';
 
 import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
@@ -91,6 +92,8 @@ export class SyncService {
           return;
         }
 
+        syncStore.state.sync = 'in_progress';
+
         // TODO: when we will solve the storage question, we can leverage the data provided as parameter instead of querying idb here again
 
         const {syncedAt, updateDecks, updateSlides, deleteSlides} = syncData;
@@ -106,8 +109,12 @@ export class SyncService {
 
         await this.cleanPending(syncedAt);
 
+        syncStore.state.sync = 'idle';
+
         resolve();
       } catch (err) {
+        syncStore.state.sync = 'error';
+
         reject(err);
       }
     });

@@ -490,6 +490,10 @@
   "tools": {
     "new": "Nueva",
     "new_presentation": "Crea una nueva presentación",
-    "new_warning_text": "Esto reemplazará la presentación y las diapositivas. ¿Está seguro?"
+    "new_warning_text": "Esto reemplazará la presentación y las diapositivas. ¿Está seguro?",
+    "cloud": "Cloud",
+    "cloud_error": "La sincronización con el cloud encontró un error",
+    "cloud_in_progress": "Sincronización con el cloud en curso",
+    "cloud_idle": "Sincronización con el cloud actualizado"
   }
 }

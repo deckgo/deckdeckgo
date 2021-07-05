@@ -8,6 +8,7 @@ interface DeckStore {
   deck: Deck | null;
   name: string | null;
   published: boolean;
+  syncing: boolean;
 }
 
 const {state, onChange, reset} = createStore({

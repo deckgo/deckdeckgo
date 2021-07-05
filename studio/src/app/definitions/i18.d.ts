@@ -507,6 +507,10 @@ interface I18nTools {
   new: string;
   new_presentation: string;
   new_warning_text: string;
+  cloud: string;
+  cloud_error: string;
+  cloud_in_progress: string;
+  cloud_idle: string;
 }
 
 interface I18n {
