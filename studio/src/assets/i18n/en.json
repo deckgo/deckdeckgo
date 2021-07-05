@@ -486,5 +486,10 @@
     "upload": "Upload in progress...",
     "hang_on_creation": "Hang on, we are creating the slides. It might take up to a minute.",
     "done": "Deck ready. You are about to be redirected."
+  },
+  "tools": {
+    "new": "New",
+    "new_presentation": "Start a new presentation",
+    "new_warning_text": "This will replace the current deck and slides. Are you sure?"
   }
 }

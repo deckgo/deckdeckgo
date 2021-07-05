@@ -1,6 +1,6 @@
-import {Component, Prop, h, Fragment} from '@stencil/core';
+import { Component, Prop, h, Fragment, Element } from '@stencil/core';
 
-import {popoverController} from '@ionic/core';
+import { alertController, popoverController } from '@ionic/core';
 
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
@@ -16,6 +16,8 @@ import errorStore from '../../../stores/error.store';
   shadow: false
 })
 export class AppNavigationActions {
+  @Element() el: HTMLElement;
+
   @Prop() signIn: boolean = true;
 
   private async openMenu($event: UIEvent) {
@@ -28,12 +30,33 @@ export class AppNavigationActions {
     await popover.present();
   }
 
-  private async backupOfflineData() {
+  private async exportData() {
     try {
       await SaveService.getInstance().backup();
     } catch (err) {
       errorStore.state.error = `Something went wrong. ${err}.`;
     }
+  }
+
+  private async newDeck() {
+    const alert: HTMLIonAlertElement = await alertController.create({
+      header: i18n.state.tools.new_presentation,
+      message: i18n.state.tools.new_warning_text,
+      buttons: [
+        i18n.state.core.cancel,
+        { text: i18n.state.core.ok, handler: () => this.emitInitNewDeck() }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  private async emitInitNewDeck() {
+    const initNewDeck: CustomEvent<void> = new CustomEvent<void>('initNewDeck', {
+      bubbles: true
+    });
+
+    this.el.dispatchEvent(initNewDeck);
   }
 
   render() {
@@ -49,7 +72,13 @@ export class AppNavigationActions {
   private renderActions() {
     return (
       <Fragment>
-        <button class="ion-margin-start ion-margin-end ion-activatable" onClick={() => this.backupOfflineData()} tabindex={0}>
+        <button class="ion-margin-end ion-activatable" onClick={() => this.newDeck()} tabindex={0} aria-label={i18n.state.tools.new_presentation}>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/document.svg"></ion-icon>
+          <ion-label>{i18n.state.tools.new}</ion-label>
+        </button>
+
+        <button class="ion-margin-end ion-activatable" onClick={() => this.exportData()} tabindex={0}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon>
           <ion-label>{i18n.state.editor.export}</ion-label>

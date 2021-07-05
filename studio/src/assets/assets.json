@@ -240,6 +240,7 @@
     {"src": "/icons/text.svg", "ariaLabel": "Text"},
     {"src": "/icons/ionicons/play.svg", "ariaLabel": "Present"},
     {"src": "/icons/ionicons/download.svg", "ariaLabel": "Export"},
-    {"src": "/icons/ionicons/flask.svg", "ariaLabel": "Transform element"}
+    {"src": "/icons/ionicons/flask.svg", "ariaLabel": "Transform element"},
+    {"src": "/icons/ionicons/document.svg", "ariaLabel": "New presentation"}
   ]
 }

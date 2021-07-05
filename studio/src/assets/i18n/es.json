@@ -486,5 +486,10 @@
     "upload": "Subida en curso ... ",
     "hang_on_creation": "Espera, estamos creando las diapositivas. Puede tardar hasta un minuto. ",
     "done": "Hecho. Estás a punto de ser redirigido."
+  },
+  "tools": {
+    "new": "Nueva",
+    "new_presentation": "Crea una nueva presentación",
+    "new_warning_text": "Esto reemplazará la presentación y las diapositivas. ¿Está seguro?"
   }
 }

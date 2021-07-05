@@ -486,5 +486,10 @@
     "upload": "Wird hochgeladen...",
     "hang_on_creation": "Warte bitte, wir erstellen deine Folien. Dies könnte bis zu einer Minute dauern.",
     "done": "Dein Deck ist bereit. Du wirst nun weitergeleitet."
+  },
+  "tools": {
+    "new": "Neu",
+    "new_presentation": "Erstelle eine neue Präsentation",
+    "new_warning_text": "Dadurch werden die aktuelle Präsentation und Folien ersetzt. Sind Sie sicher?"
   }
 }

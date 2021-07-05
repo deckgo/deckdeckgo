@@ -2,7 +2,7 @@ import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
-import {get, set} from 'idb-keyval';
+import {del, get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
@@ -61,7 +61,7 @@ export class AppEditor {
   private footer: JSX.IntrinsicElements | undefined;
 
   @State()
-  private style: any;
+  private style: Record<string, string> | undefined;
 
   @State()
   private animation: 'slide' | 'fade' | 'none' = 'slide';
@@ -155,6 +155,15 @@ export class AppEditor {
     };
   }
 
+  @Listen('initNewDeck', {target: 'document'})
+  async onInitNewDeck() {
+    this.slidesFetched = false;
+
+    await this.reset();
+
+    await this.initSlide();
+  }
+
   private async initOrFetch() {
     const deckId: string | undefined = await get<string>('deckdeckgo_deck_id');
 
@@ -177,6 +186,25 @@ export class AppEditor {
     this.chartEventsHandler.destroy();
 
     await this.remoteEventsHandler.destroy();
+
+    deckStore.reset();
+    undoRedoStore.reset();
+  }
+
+  private async reset() {
+    await del('deckdeckgo_deck_id');
+
+    // TODO: clean / wait sync?
+
+    this.slides = [];
+    this.background = undefined;
+    this.header = undefined;
+    this.footer = undefined;
+    this.style = undefined;
+    this.animation = 'slide';
+    this.direction = 'horizontal';
+    this.directionMobile = 'papyrus';
+    this.activeIndex = 0;
 
     deckStore.reset();
     undoRedoStore.reset();

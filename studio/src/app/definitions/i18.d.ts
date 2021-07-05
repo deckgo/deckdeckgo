@@ -503,6 +503,12 @@ interface I18nImport {
   done: string;
 }
 
+interface I18nTools {
+  new: string;
+  new_presentation: string;
+  new_warning_text: string;
+}
+
 interface I18n {
   lang: Languages;
   core: I18nCore;
@@ -522,4 +528,5 @@ interface I18n {
   shapes: I18nShapes;
   poll: I18nPoll;
   import: I18nImport;
+  tools: I18nTools;
 }
