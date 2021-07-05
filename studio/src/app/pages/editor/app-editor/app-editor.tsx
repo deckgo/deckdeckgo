@@ -36,7 +36,7 @@ import {FontsService} from '../../../services/editor/fonts/fonts.service';
 import {SyncService} from '../../../services/editor/sync/sync.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
-import {SyncEvent} from '../../../types/editor/sync-data';
+import {SyncEvent} from '../../../types/editor/sync';
 
 import {worker} from '../../../workers/sync.worker.ts?worker';
 import {startSyncTimer, stopSyncTimer} from '../../../workers/sync.worker';
@@ -161,6 +161,8 @@ export class AppEditor {
 
     await this.reset();
 
+    // TODO: clean previous deck data from IDB (asynchronously? periodically? how?)
+
     await this.initSlide();
   }
 
@@ -193,8 +195,6 @@ export class AppEditor {
 
   private async reset() {
     await del('deckdeckgo_deck_id');
-
-    // TODO: clean / wait sync?
 
     this.slides = [];
     this.background = undefined;

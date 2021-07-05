@@ -3,7 +3,7 @@ import {get, getMany} from 'idb-keyval';
 import {Slide} from '../models/data/slide';
 import {Deck} from '../models/data/deck';
 
-import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '../types/editor/sync-data';
+import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '../types/editor/sync';
 
 // TODO: move Firestore merge to worker
 
@@ -17,8 +17,6 @@ export const stopSyncTimer = async () => {
   if (!timer) {
     return;
   }
-
-  // TODO: only sync data if sync not already in progress (in case it would least more than 5s)
 
   await syncData();
 

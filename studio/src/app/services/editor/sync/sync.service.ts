@@ -12,7 +12,7 @@ import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
 
 import {SlotType} from '../../../types/editor/slot-type';
-import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} from '../../../types/editor/sync-data';
+import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} from '../../../types/editor/sync';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';

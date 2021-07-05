@@ -1,6 +1,6 @@
 import {update} from 'idb-keyval';
 
-import { SyncPending, SyncPendingDeck, SyncPendingSlide } from '../../types/editor/sync-data';
+import { SyncPending, SyncPendingDeck, SyncPendingSlide } from '../../types/editor/sync';
 
 // We push data only and eliminate duplicates on the worker side when preparing the data
 
