@@ -22,7 +22,7 @@ import {FileSystemService} from '../../../services/editor/file-system/file-syste
 export class AppNavigationActions {
   @Element() el: HTMLElement;
 
-  @Prop() signIn: boolean = true;
+  @Prop() signIn: boolean = false;
 
   private loadInput!: HTMLInputElement;
 
@@ -98,6 +98,10 @@ export class AppNavigationActions {
   }
 
   render() {
+    if (this.signIn) {
+      return undefined;
+    }
+
     return (
       <Fragment>
         {this.renderActions()}
@@ -139,7 +143,7 @@ export class AppNavigationActions {
   }
 
   private renderSignIn() {
-    if (authStore.state.loggedIn || !this.signIn) {
+    if (authStore.state.loggedIn) {
       return undefined;
     }
 

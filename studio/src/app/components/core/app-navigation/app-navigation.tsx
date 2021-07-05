@@ -14,7 +14,7 @@ export class AppNavigation {
 
   @Prop() user: boolean = true;
 
-  @Prop() signIn: boolean = true;
+  @Prop() signIn: boolean = false;
 
   render() {
     return (
