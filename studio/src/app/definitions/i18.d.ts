@@ -511,6 +511,7 @@ interface I18nTools {
   cloud_error: string;
   cloud_in_progress: string;
   cloud_idle: string;
+  open: string;
 }
 
 interface I18n {

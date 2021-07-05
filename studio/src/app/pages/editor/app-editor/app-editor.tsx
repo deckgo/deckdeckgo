@@ -2,7 +2,7 @@ import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
-import {del, get, set} from 'idb-keyval';
+import {get, set} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import busyStore from '../../../stores/busy.store';
@@ -155,7 +155,7 @@ export class AppEditor {
     };
   }
 
-  @Listen('initNewDeck', {target: 'document'})
+  @Listen('reloadDeck', {target: 'document'})
   async onInitNewDeck() {
     this.slidesFetched = false;
 
@@ -163,7 +163,7 @@ export class AppEditor {
 
     // TODO: clean previous deck data from IDB (asynchronously? periodically? how?)
 
-    await this.initSlide();
+    await this.initOrFetch();
   }
 
   private async initOrFetch() {
@@ -194,8 +194,6 @@ export class AppEditor {
   }
 
   private async reset() {
-    await del('deckdeckgo_deck_id');
-
     this.slides = [];
     this.background = undefined;
     this.header = undefined;

@@ -494,6 +494,7 @@
     "cloud": "Cloud",
     "cloud_error": "La sincronización con el cloud encontró un error",
     "cloud_in_progress": "Sincronización con el cloud en curso",
-    "cloud_idle": "Sincronización con el cloud actualizado"
+    "cloud_idle": "Sincronización con el cloud actualizado",
+    "open": "Abrir"
   }
 }

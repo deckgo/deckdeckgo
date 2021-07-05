@@ -1,8 +1,18 @@
 app-navigation-actions {
-  div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  padding: 0 8px;
+
+  input {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 1px;
   }
 
   button {
@@ -21,6 +31,7 @@ app-navigation-actions {
     position: relative;
     overflow: hidden;
 
+    margin: 0 8px;
     padding: 4px;
     border-radius: 4px;
 
