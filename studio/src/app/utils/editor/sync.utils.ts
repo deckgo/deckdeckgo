@@ -1,6 +1,8 @@
 import {update} from 'idb-keyval';
 
-import { SyncPending, SyncPendingDeck, SyncPendingSlide } from '../../types/editor/sync';
+import syncStore from '../../stores/sync.store';
+
+import {SyncPending, SyncPendingDeck, SyncPendingSlide} from '../../types/editor/sync';
 
 // We push data only and eliminate duplicates on the worker side when preparing the data
 
@@ -14,6 +16,8 @@ export const syncUpdateDeck = async (deckId: string) => {
 
     return data;
   });
+
+  setPendingState();
 };
 
 export const syncDeleteDeck = async (deckId: string) => {
@@ -26,6 +30,8 @@ export const syncDeleteDeck = async (deckId: string) => {
 
     return data;
   });
+
+  setPendingState();
 };
 
 export const syncUpdateSlide = async ({deckId, slideId}: {deckId: string; slideId: string}) => {
@@ -38,6 +44,8 @@ export const syncUpdateSlide = async ({deckId, slideId}: {deckId: string; slideI
 
     return data;
   });
+
+  setPendingState();
 };
 
 export const syncDeleteSlide = async ({deckId, slideId}: {deckId: string; slideId: string}) => {
@@ -50,6 +58,8 @@ export const syncDeleteSlide = async ({deckId, slideId}: {deckId: string; slideI
 
     return data;
   });
+
+  setPendingState();
 };
 
 const initSyncDeckSlides = (): SyncPending => ({updateDecks: [], deleteDecks: [], deleteSlides: [], updateSlides: []});
@@ -66,3 +76,11 @@ const pendingSlide = ({deckId, slideId}: {deckId: string; slideId: string}): Syn
   key: `/decks/${deckId}/slides/${slideId}`,
   queuedAt: new Date()
 });
+
+const setPendingState = () => {
+  if (syncStore.state.sync === 'in_progress') {
+    return;
+  }
+
+  syncStore.state.sync = 'pending';
+};

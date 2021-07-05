@@ -218,6 +218,7 @@
     {"src": "/icons/ionicons/cloud-done.svg", "ariaLabel": "Cloud sync ok"},
     {"src": "/icons/ionicons/cloud-offline.svg", "ariaLabel": "Cloud sync in error"},
     {"src": "/icons/ionicons/cloud-upload.svg", "ariaLabel": "Cloud sync in progress"},
+    {"src": "/icons/ionicons/cloud-pending.svg", "ariaLabel": "Cloud sync pending"},
     {"src": "/icons/ionicons/help.svg", "ariaLabel": "Help"},
     {"src": "/icons/ionicons/ellipsis-vertical.svg", "ariaLabel": "Menu"},
     {"src": "/icons/ionicons/contract.svg", "ariaLabel": "Exit Fullscreen"},

@@ -109,7 +109,7 @@ export class SyncService {
 
         await this.cleanPending(syncedAt);
 
-        syncStore.state.sync = 'idle';
+        await this.updateSyncState();
 
         resolve();
       } catch (err) {
@@ -767,5 +767,23 @@ export class SyncService {
           deleteSlides: filter(data.deleteSlides)
         } as SyncPending)
     );
+  }
+
+  private async updateSyncState() {
+    const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
+
+    if (!data) {
+      syncStore.state.sync = 'idle';
+      return;
+    }
+
+    const {updateDecks, deleteDecks, deleteSlides, updateSlides} = data;
+
+    if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length ===  0) {
+      syncStore.state.sync = 'idle';
+      return;
+    }
+
+    syncStore.state.sync = 'pending';
   }
 }

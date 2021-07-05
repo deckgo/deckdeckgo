@@ -1,7 +1,7 @@
 import { Deck } from '../../models/data/deck';
 import { Slide } from '../../models/data/slide';
 
-export type SyncState = 'in_progress' | 'error' | 'idle';
+export type SyncState = 'pending' | 'in_progress' | 'error' | 'idle';
 
 export interface SyncDataDeck {
   deckId: string;

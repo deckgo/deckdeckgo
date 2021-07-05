@@ -34,6 +34,12 @@ const syncData = async () => {
     return;
   }
 
+  const {updateDecks, deleteDecks, deleteSlides, updateSlides} = data;
+
+  if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length ===  0) {
+    return;
+  }
+
   // @ts-ignore
   postMessage({
     msg: 'deckdeckgo_sync',

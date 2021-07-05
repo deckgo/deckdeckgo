@@ -183,6 +183,8 @@ export class AppNavigationActions {
         ? i18n.state.tools.cloud_error
         : syncStore.state.sync === 'in_progress'
         ? i18n.state.tools.cloud_in_progress
+        : syncStore.state.sync === 'pending'
+          ? i18n.state.tools.cloud_pending
         : i18n.state.tools.cloud_idle;
 
     return (
@@ -191,6 +193,8 @@ export class AppNavigationActions {
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
         ) : syncStore.state.sync === 'in_progress' ? (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-upload.svg"></ion-icon>
+        ) : syncStore.state.sync === 'pending' ? (
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-pending.svg"></ion-icon>
         ) : (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-done.svg"></ion-icon>
         )}
