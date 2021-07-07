@@ -1,8 +1,10 @@
-import {Component, Prop, h} from '@stencil/core';
+import {Component, Prop, h, Host, State} from '@stencil/core';
 
 import offlineStore from '../../../stores/offline.store';
 import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
+
+import {isIOS} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'app-navigation',
@@ -16,17 +18,23 @@ export class AppNavigation {
 
   @Prop() signIn: boolean = false;
 
+  @State()
+  private hideICP: boolean = false;
+
   render() {
     return (
-      <ion-header class={offlineStore.state.offline ? 'offline' : undefined}>
-        <ion-toolbar>
-          {this.renderTitleOnline()}
-          {this.renderTitleOffline()}
-          {this.renderMenuToggle()}
-          {this.renderUser()}
-          {this.renderInfoOffline()}
-        </ion-toolbar>
-      </ion-header>
+      <Host>
+        {this.renderICP()}
+        <ion-header class={offlineStore.state.offline ? 'offline' : undefined}>
+          <ion-toolbar>
+            {this.renderTitleOnline()}
+            {this.renderTitleOffline()}
+            {this.renderMenuToggle()}
+            {this.renderUser()}
+            {this.renderInfoOffline()}
+          </ion-toolbar>
+        </ion-header>
+      </Host>
     );
   }
 
@@ -120,9 +128,7 @@ export class AppNavigation {
     }
 
     if (this.user) {
-      return (
-        <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
-      );
+      return <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>;
     } else {
       return undefined;
     }
@@ -137,6 +143,31 @@ export class AppNavigation {
       <ion-router-link href={`/editor/${offlineStore.state.offline.id}`} routerDirection="root" slot="end" class="offline-info ion-padding-end">
         <ion-label>{i18n.state.offline.editing}</ion-label>
       </ion-router-link>
+    );
+  }
+
+  private renderICP() {
+    if (this.hideICP) {
+      return undefined;
+    }
+
+    return (
+      <header class={`icp ${isIOS() ? 'ios' : 'md'}`}>
+        <ion-button fill="clear" color="light" onClick={() => (this.hideICP = true)}>
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+
+        <p>
+          DeckDeckGo Internet Computer {' '}
+          <a
+            href="https://dev.to/daviddalbusco/we-received-a-grant-to-port-our-web-app-to-the-internet-computer-318o"
+            rel="noopener norefferer"
+            target="_blank"
+            aria-label="More information">
+            <ion-icon name="information-circle"></ion-icon>
+          </a>
+        </p>
+      </header>
     );
   }
 }
