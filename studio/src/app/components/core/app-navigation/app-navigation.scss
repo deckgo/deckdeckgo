@@ -106,6 +106,44 @@ app-navigation {
   ion-label {
     letter-spacing: 0.06em;
   }
+
+  header.icp {
+    background: var(--ion-color-secondary);
+    color: var(--ion-color-secondary-contrast);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    a {
+      vertical-align: middle;
+    }
+
+    p {
+      margin: 12px 0;
+
+      @media screen and (max-width: 540px) {
+        max-width: 280px;
+        overflow: hidden;
+        white-space: pre;
+        text-overflow: ellipsis;
+      }
+    }
+
+    ion-button {
+      position: fixed;
+      left: 0;
+    }
+
+    &.ios {
+      ion-button  {
+        --padding-start: 0.72rem;
+        --padding-end: 0.72rem;
+      }
+    }
+  }
 }
 
 body.dark {
