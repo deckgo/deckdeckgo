@@ -79,45 +79,38 @@ export class SyncService {
     });
   }
 
-  upload(syncData: SyncData | undefined): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!syncData) {
-          resolve();
-          return;
-        }
-
-        if (!authStore.state.loggedIn || !navigator.onLine) {
-          resolve();
-          return;
-        }
-
-        syncStore.state.sync = 'in_progress';
-
-        // TODO: when we will solve the storage question, we can leverage the data provided as parameter instead of querying idb here again
-
-        const {syncedAt, updateDecks, updateSlides, deleteSlides} = syncData;
-
-        // First decks because it contains information for the permission and the list of slides
-        await this.uploadDecks(updateDecks);
-
-        await this.uploadSlides(updateSlides);
-
-        await this.deleteSlides(deleteSlides);
-
-        // TODO: handle delete decks here?
-
-        await this.cleanPending(syncedAt);
-
-        await this.updateSyncState();
-
-        resolve();
-      } catch (err) {
-        syncStore.state.sync = 'error';
-
-        reject(err);
+  async upload(syncData: SyncData | undefined) {
+    try {
+      if (!syncData) {
+        return;
       }
-    });
+
+      if (!authStore.state.loggedIn || !navigator.onLine) {
+        return;
+      }
+
+      syncStore.state.sync = 'in_progress';
+
+      // TODO: when we will solve the storage question, we can leverage the data provided as parameter instead of querying idb here again
+
+      const {syncedAt, updateDecks, updateSlides, deleteSlides} = syncData;
+
+      // First decks because it contains information for the permission and the list of slides
+      await this.uploadDecks(updateDecks);
+
+      await this.uploadSlides(updateSlides);
+
+      await this.deleteSlides(deleteSlides);
+
+      // TODO: handle delete decks here?
+
+      await this.cleanPending(syncedAt);
+
+      await this.updateSyncState();
+    } catch (err) {
+      syncStore.state.sync = 'error';
+      console.error(err);
+    }
   }
 
   private toggleOffline(): Promise<void> {
@@ -154,7 +147,7 @@ export class SyncService {
         const deckElement: HTMLElement = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
 
         if (!deckElement) {
-          reject('No deck found');
+          resolve();
           return;
         }
 
@@ -300,14 +293,14 @@ export class SyncService {
   private lazyLoadAllContent(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const deck = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
+        const deck: HTMLDeckgoDeckElement = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
 
         if (!deck) {
-          reject('Deck not found');
+          resolve();
           return;
         }
 
-        await (deck as any).lazyLoadAllContent();
+        await deck.lazyLoadAllContent();
 
         resolve();
       } catch (err) {
@@ -421,7 +414,7 @@ export class SyncService {
       const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slide_id="${slideId}"]`);
 
       if (!slideElement) {
-        reject('No slide found');
+        resolve();
         return;
       }
 
