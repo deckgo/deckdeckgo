@@ -7,6 +7,8 @@ import i18n from '../../../stores/i18n.store';
 import {PlaygroundAction} from '../../../types/editor/playground-action';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-playground',
   styleUrl: 'app-playground.scss'
@@ -83,7 +85,7 @@ export class AppPlayground {
         <ion-toolbar color="medium">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.templates.playground}</ion-title>

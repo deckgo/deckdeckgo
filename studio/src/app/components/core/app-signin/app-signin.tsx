@@ -20,6 +20,8 @@ import {EnvironmentConfigService} from '../../../services/core/environment/envir
 import {UserService} from '../../../services/data/user/user.service';
 import {DeckService} from '../../../services/data/deck/deck.service';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-signin',
   styleUrl: 'app-signin.scss'
@@ -316,7 +318,7 @@ export class AppSignIn {
       return (
         <ion-buttons class="back">
           <ion-button onClick={() => this.navigateBack()} color="dark" aria-label={i18n.state.core.close}>
-            <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
           </ion-button>
         </ion-buttons>
       );
@@ -326,7 +328,7 @@ export class AppSignIn {
   private renderGitHub() {
     return (
       <p class="ion-text-center ion-padding-start ion-padding-end ion-padding-bottom">
-        {renderI18n(i18n.state.sign_in.additionally, {placeholder: '{0}', value: <ion-icon name="logo-github"></ion-icon>})}
+        {renderI18n(i18n.state.sign_in.additionally, {placeholder: '{0}', value: <AppIcon name="github" ariaLabel="" ariaHidden={true}></AppIcon>})}
       </p>
     );
   }

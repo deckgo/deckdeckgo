@@ -5,6 +5,8 @@ import i18n from '../../../stores/i18n.store';
 import {GifService} from '../../../services/tenor/gif/gif.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-gif',
   styleUrl: 'app-gif.scss'
@@ -258,13 +260,13 @@ export class AppGif {
     if ((this.gifsEven || this.gifsOdd) && !this.searching) {
       return (
         <ion-button onClick={() => this.clear()}>
-          <ion-icon name="arrow-back"></ion-icon>
+          <AppIcon name="arrow-back" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-button>
       );
     } else {
       return (
         <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-          <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+          <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
         </ion-button>
       );
     }

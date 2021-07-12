@@ -2,6 +2,8 @@ import {Component, h} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-links',
   styleUrl: 'app-links.scss',
@@ -81,16 +83,16 @@ export class AppLinks {
 
         <div class="social ion-padding-top ion-margin-top">
           <a href="https://twitter.com/deckdeckgo" rel="noopener norefferer" target="_blank" aria-label="Twitter">
-            <ion-icon name="logo-twitter"></ion-icon>
+            <AppIcon name="twitter" ariaLabel="" ariaHidden={true}></AppIcon>
           </a>
           <a href="https://github.com/deckgo" rel="noopener noreferrer" aria-label="GitHub">
-            <ion-icon name="logo-github"></ion-icon>
+            <AppIcon name="github" ariaLabel="" ariaHidden={true}></AppIcon>
           </a>
           <a
             aria-label="Slack"
             href="https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY"
             rel="noopener noreferrer">
-            <ion-icon name="logo-slack"></ion-icon>
+            <AppIcon name="slack" ariaLabel="" ariaHidden={true}></AppIcon>
           </a>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import {Component, Prop, h} from '@stencil/core';
 
+import {AppIcon} from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-avatar',
   styleUrl: 'app-avatar.scss',
@@ -19,7 +21,7 @@ export class AppAvatar {
     } else {
       return (
         <ion-avatar>
-          <ion-icon name="person-outline" aria-label={this.ariaLabel}></ion-icon>
+          <AppIcon name="person" ariaLabel={this.ariaLabel}></AppIcon>
         </ion-avatar>
       );
     }

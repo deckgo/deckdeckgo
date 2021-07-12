@@ -1,7 +1,10 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
+
 import {renderI18n} from '../../../utils/core/i18n.utils';
+
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-notes',
@@ -94,7 +97,7 @@ export class AppNotes {
         <ion-toolbar color="quinary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.editor.notes}</ion-title>
@@ -106,7 +109,7 @@ export class AppNotes {
             placeholder: '{0}',
             value: (
               <a href="https://deckdeckgo.app" target="_blank">
-                {i18n.state.menu.remote_control} <ion-icon src="/assets/icons/ionicons/open.svg" role="presentation"></ion-icon>
+                {i18n.state.menu.remote_control} <AppIcon name="open" ariaLabel="" ariaHidden={true}></AppIcon>
               </a>
             )
           })}

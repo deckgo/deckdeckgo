@@ -6,6 +6,8 @@ import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
 import {ApiPhotoFactoryService} from '../../../services/api/photo/api.photo.factory.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-photo',
   styleUrl: 'app-photo.scss'
@@ -226,13 +228,13 @@ export class AppPhoto {
     if (!this.searchTerm || this.searchTerm.length <= 0 || this.searching) {
       return (
         <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-          <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+          <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
         </ion-button>
       );
     } else {
       return (
         <ion-button onClick={() => this.clear()}>
-          <ion-icon name="arrow-back"></ion-icon>
+          <AppIcon name="arrow-back" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-button>
       );
     }
@@ -243,7 +245,7 @@ export class AppPhoto {
       return (
         <div class="photos-placeholder">
           <div>
-            <ion-icon name="images"></ion-icon>
+            <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label class="ion-text-center">{i18n.state.editor.photos_by_unsplash}</ion-label>
             {this.renderPlaceHolderSearching()}
           </div>

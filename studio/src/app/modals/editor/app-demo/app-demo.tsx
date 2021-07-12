@@ -4,6 +4,8 @@ import i18n from '../../../stores/i18n.store';
 
 import {DemoAction} from '../../../types/editor/demo-action';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-demo',
   styleUrl: 'app-demo.scss'
@@ -65,7 +67,7 @@ export class AppDemo {
         <ion-toolbar color="primary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.editor.demo}</ion-title>

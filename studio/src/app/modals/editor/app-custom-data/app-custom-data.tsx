@@ -6,6 +6,8 @@ import {Constants} from '../../../types/core/constants';
 
 import {StorageService} from '../../../services/storage/storage.service';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-custom-data',
   styleUrl: 'app-custom-data.scss'
@@ -166,7 +168,7 @@ export class AppCustomData {
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.editor.your_data}</ion-title>
@@ -206,7 +208,7 @@ export class AppCustomData {
   private renderFile(storageFile: StorageFile) {
     return (
       <div class="ion-padding data" custom-tappable onClick={() => this.selectData(storageFile)}>
-        <ion-icon src="/assets/icons/file.svg"></ion-icon>
+        <AppIcon name="file" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label>{storageFile.name}</ion-label>
       </div>
     );
@@ -220,7 +222,7 @@ export class AppCustomData {
     return (
       <div class="placeholder">
         <div>
-          <ion-icon src="/assets/icons/file.svg"></ion-icon>
+          <AppIcon name="file" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
           <ion-label class="ion-text-center">{i18n.state.editor.your_collection_empty}</ion-label>
         </div>
       </div>
@@ -231,7 +233,7 @@ export class AppCustomData {
     if (!this.uploading) {
       return (
         <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
-          <ion-icon name="cloud-upload" slot="start"></ion-icon>
+          <AppIcon name="cloud-upload" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.editor.upload_data}</ion-label>
         </ion-button>
       );

@@ -8,6 +8,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
+import { AppIcon } from '../../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-action-share'
 })
@@ -65,7 +67,7 @@ export class AppActionShare {
         onClick={($event: UIEvent) => this.share($event)}
         class="ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/share.svg"></ion-icon>
+        <AppIcon name="share" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.share}</ion-label>
       </button>
     );

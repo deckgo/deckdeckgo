@@ -6,6 +6,8 @@ import shareStore from '../../../stores/share.store';
 
 import {getPublishedUrl, getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-share-deck',
   styleUrl: 'app-share-deck.scss',
@@ -102,12 +104,13 @@ export class AppShareDeck {
   render() {
     return (
       <web-social-share show={false} onClosed={() => this.resetShare()}>
-        <ion-icon name="logo-twitter" slot="twitter" style={{color: '#00aced', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
-        <ion-icon name="logo-linkedin" slot="linkedin" style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
-        <ion-icon name="mail-outline" slot="email" style={{color: 'var(--ion-color-tertiary)', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
-        <ion-icon name="logo-whatsapp" slot="whatsapp" style={{color: '#25D366', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
-        <ion-icon name="copy-outline" slot="copy" style={{'font-size': '1.6rem', display: 'block'}}></ion-icon>
-        <ion-icon name="logo-hackernews" slot="hackernews" style={{color: '#ff6000', 'font-size': '1.6rem', display: 'block'}}></ion-icon>
+        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter" style={{color: '#00aced', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="linkedin" slot="linkedin" ariaLabel="Linkedin" style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="mail" slot="email" ariaLabel="Mail" style={{color: 'var(--ion-color-tertiary)', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="whatsapp" slot="whatsapp" ariaLabel="Whatsapp" style={{color: '#25D366', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="copy" slot="copy" ariaLabel="Copy" style={{'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="hackernews" slot="hackernews" ariaLabel="Hackernews" style={{color: '#ff6000', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter" ></AppIcon>
         <svg slot="telegram" style={{color: '#0088cc', width: '1.6rem', display: 'block'}} viewBox="0 0 448 512">
           <path
             fill="currentColor"

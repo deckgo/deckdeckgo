@@ -7,6 +7,8 @@ import i18n from '../../../stores/i18n.store';
 import {ColorUtils, InitStyleColor} from '../../../utils/editor/color.utils';
 import {WavesUtils} from '../../../utils/editor/waves.utils';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-waves',
   styleUrl: 'app-waves.scss'
@@ -154,7 +156,7 @@ export class AppWaves {
   private renderCloseButton() {
     return (
       <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-        <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+        <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
       </ion-button>
     );
   }
@@ -163,7 +165,7 @@ export class AppWaves {
     return (
       <div class="options">
         <ion-fab-button size="small" onClick={() => this.generateWaves()} color="quaternary" aria-label="Randomize">
-          <ion-icon name="shuffle-outline"></ion-icon>
+          <AppIcon name="shuffle" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
         <ion-fab-button
@@ -171,7 +173,7 @@ export class AppWaves {
           onClick={() => this.setOrientation('upward')}
           color={this.orientation === 'upward' ? 'quaternary' : 'medium'}
           aria-label={i18n.state.editor.direction_up}>
-          <ion-icon name="chevron-up"></ion-icon>
+          <AppIcon name="chevron-up" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
         <ion-fab-button
@@ -179,11 +181,11 @@ export class AppWaves {
           onClick={() => this.setOrientation('downward')}
           color={this.orientation === 'downward' ? 'quaternary' : 'medium'}
           aria-label={i18n.state.editor.direction_down}>
-          <ion-icon name="chevron-down"></ion-icon>
+          <AppIcon name="chevron-down" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-fab-button>
 
         <div class="complexity">
-          <ion-icon role="presentation" src="/assets/icons/waves-simple.svg"></ion-icon>
+          <AppIcon name="waves-simple" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
 
           <ion-range
             color="quaternary"
@@ -194,7 +196,7 @@ export class AppWaves {
             mode="md"
             onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateNodes($event)}></ion-range>
 
-          <ion-icon role="presentation" src="/assets/icons/waves-complex.svg"></ion-icon>
+          <AppIcon name="waves-complex" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
         </div>
       </div>
     );

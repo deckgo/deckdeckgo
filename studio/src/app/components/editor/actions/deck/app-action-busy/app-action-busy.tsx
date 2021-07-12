@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, Prop} from '@stencil/core';
 
 import store from '../../../../../stores/busy.store';
+import { AppIcon } from '../../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-action-busy',
@@ -11,7 +12,7 @@ export class AppActionBusy {
   @Event() private actionReady: EventEmitter<UIEvent>;
 
   @Prop()
-  iconSrc: string;
+  iconName: string;
 
   private action($event: UIEvent) {
     this.actionReady.emit($event);
@@ -26,7 +27,7 @@ export class AppActionBusy {
         onMouseDown={($event) => $event.stopPropagation()}
         onTouchStart={($event) => $event.stopPropagation()}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src={this.iconSrc}></ion-icon>
+        <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         <slot></slot>
       </button>
     );

@@ -1,7 +1,10 @@
 import {Component, Element, Listen, Prop, h} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
+
 import {renderI18n} from '../../../utils/core/i18n.utils';
+
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-deck-delete',
@@ -41,7 +44,7 @@ export class AppDeckDelete {
         <ion-toolbar color="danger">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.core.sure}</ion-title>
