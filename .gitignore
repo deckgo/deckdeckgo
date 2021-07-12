@@ -31,6 +31,7 @@ utils/deck/css/
 utils/kit/css/
 
 .firebase/
+.dfx/
 
 .terraform
 
