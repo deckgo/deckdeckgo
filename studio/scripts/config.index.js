@@ -41,7 +41,7 @@ function updateCSP(filename) {
     findJSFiles('./www/build/', jsFiles);
 
     const preload = [...new Set(jsFiles)].map((filename) => `<link rel="modulepreload" href="/build/${filename}">`).join('');
-    result = result.replace(/<.?script type="module"/g, `${preload}<script type="module"`);
+    result = result.replace(/<\/body>/g, `${preload}</body>`);
 
     fs.writeFile(`${filename}`, result, 'utf8', function (err) {
       if (err) return console.log(err);
