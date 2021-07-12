@@ -51,6 +51,9 @@
     "@deckdeckgo/utils": "^2.0.1",
     "@deckdeckgo/word-cloud": "^1.1.0",
     "@deckdeckgo/youtube": "^2.1.0",
+    "@dfinity/agent": "^0.9.1",
+    "@dfinity/candid": "^0.9.1",
+    "@dfinity/principal": "^0.9.1",
     "@ionic/core": "^5.6.8",
     "firebase": "^8.6.3",
     "idb-keyval": "^5.0.6",
@@ -60,6 +63,7 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1",
+    "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-replace": "^2.4.2",
     "@stencil/core": "^2.5.2",
     "@stencil/postcss": "^2.0.0",
@@ -73,6 +77,7 @@
     "husky": "^6.0.0",
     "prettier": "2.3.0",
     "pretty-quick": "^3.1.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "workbox-build": "5.1.4"
   },
   "repository": {

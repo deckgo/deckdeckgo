@@ -1,6 +1,11 @@
 {
   "canisters": {
+    "counter": {
+      "main": "src/backend/counter/main.mo",
+      "type": "motoko"
+    },
     "assets": {
+      "dependencies": ["counter"],
       "frontend": {
         "entrypoint": "www/index.html"
       },
