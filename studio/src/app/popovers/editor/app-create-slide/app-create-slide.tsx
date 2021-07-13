@@ -16,6 +16,8 @@ import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {SlotType} from '../../../types/editor/slot-type';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-create-slide',
   styleUrl: 'app-create-slide.scss'
@@ -237,7 +239,7 @@ export class AppCreateSlide {
 
     return (
       <app-close-menu slot="start" onClose={() => this.backCompose()}>
-        <ion-icon aria-label={i18n.state.editor.back_to_slides} src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
+        <AppIcon name="arrow-back" ariaLabel={i18n.state.editor.back_to_slides}></AppIcon>
       </app-close-menu>
     );
   }

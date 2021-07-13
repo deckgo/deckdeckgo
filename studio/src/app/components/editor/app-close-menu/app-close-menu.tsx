@@ -1,6 +1,7 @@
 import {Component, EventEmitter, h, Host, Event} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
+import { AppIcon } from '../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-close-menu',
@@ -15,7 +16,7 @@ export class AppCloseMenu {
         <button class="ion-activatable" onClick={() => this.close.emit()}>
           <ion-ripple-effect></ion-ripple-effect>
           <slot>
-            <ion-icon aria-label={i18n.state.core.close} src="/assets/icons/ionicons/close.svg"></ion-icon>
+            <AppIcon name="close" ariaLabel={i18n.state.core.close}></AppIcon>
           </slot>
         </button>
       </Host>

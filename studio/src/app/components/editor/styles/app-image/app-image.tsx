@@ -13,6 +13,8 @@ import {ImageHistoryService} from '../../../../services/editor/image-history/ima
 
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-image',
   styleUrl: 'app-image.scss'
@@ -126,7 +128,7 @@ export class AppImage {
           <ion-item-divider class="ion-padding-top ion-margin-top">
             <ion-label>{i18n.state.editor.history}</ion-label>
             <button slot="end" class="info" onClick={() => this.presentHistoryInfo()}>
-              <ion-icon name="help"></ion-icon>
+              <AppIcon name="help" ariaLabel="" ariaHidden={true}></AppIcon>
             </button>
           </ion-item-divider>
 

@@ -14,6 +14,7 @@ import {EnvironmentConfigService} from '../../../../../services/core/environment
 import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
 import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
+import { AppIcon } from '../../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-templates-default'
@@ -232,7 +233,7 @@ export class AppTemplatesDefault {
         <deckgo-slide-content class="showcase gif">
           <p slot="title">YouTube</p>
           <p slot="content">
-            <ion-icon name="logo-youtube"></ion-icon>
+            <AppIcon name="youtube" ariaLabel="" ariaHidden={true}></AppIcon>
           </p>
         </deckgo-slide-content>
       </div>

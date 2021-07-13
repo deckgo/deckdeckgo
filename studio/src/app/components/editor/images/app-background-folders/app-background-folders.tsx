@@ -4,6 +4,8 @@ import i18n from '../../../../stores/i18n.store';
 
 import {StorageService} from '../../../../services/storage/storage.service';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-background-folders',
   styleUrl: 'app-background-folders.scss'
@@ -62,7 +64,7 @@ export class AppBackgroundFolders {
       return (
         <button class={`${current ? 'current' : ''}`} onClick={() => this.openFolder(folder)}>
           {this.renderFolderName(folder)}
-          <ion-icon name={current ? 'folder-open' : 'folder'}></ion-icon>
+          <AppIcon name={current ? 'folder-open' : 'folder'} ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       );
     });

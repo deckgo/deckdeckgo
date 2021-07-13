@@ -12,6 +12,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
+import { AppIcon } from '../../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-actions-deck',
   shadow: false
@@ -229,7 +231,7 @@ export class AppActionsDeck {
             onClick={() => this.animatePrevNextSlide.emit(false)}
             class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-back.svg"></ion-icon>
+            <AppIcon name="arrow-back" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.previous}</ion-label>
           </button>
 
@@ -240,7 +242,7 @@ export class AppActionsDeck {
             onClick={() => this.animatePrevNextSlide.emit(true)}
             class="ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/arrow-forward.svg"></ion-icon>
+            <AppIcon name="arrow-forward" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.next}</ion-label>
           </button>
 
@@ -252,11 +254,11 @@ export class AppActionsDeck {
             color="primary"
             class="ion-activatable wider-devices">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/md-list.svg"></ion-icon>
+            <AppIcon name="md-list" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.slides}</ion-label>
           </button>
 
-          <app-action-busy aria-label="Style" iconSrc="/assets/icons/ionicons/brush.svg" onActionReady={() => this.openDeckStyle()}>
+          <app-action-busy aria-label="Style" iconName="brush" onActionReady={() => this.openDeckStyle()}>
             <ion-label aria-hidden="true">{i18n.state.editor.style}</ion-label>
           </app-action-busy>
         </ion-buttons>
@@ -272,7 +274,7 @@ export class AppActionsDeck {
             color="primary"
             class="wider-devices open-remote ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/play.svg"></ion-icon>
+            <AppIcon name="play" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.present}</ion-label>
           </button>
 
@@ -287,7 +289,7 @@ export class AppActionsDeck {
             color="primary"
             class="small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>
-            <ion-icon aria-hidden="true" src="/assets/icons/ionicons/ellipsis-vertical.svg"></ion-icon>
+            <AppIcon name="ellipsis-vertical" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.more}</ion-label>
           </button>
         </ion-buttons>
@@ -308,7 +310,7 @@ export class AppActionsDeck {
         color="primary"
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" src="/assets/icons/ionicons/contract.svg"></ion-icon>{' '}
+        <AppIcon name="contract" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.exit_fullscreen}</ion-label>
       </button>
     );

@@ -2,6 +2,8 @@ import {Component, EventEmitter, Prop, Event, h} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-publish-tags',
   styleUrl: 'app-publish-tags.scss',
@@ -44,7 +46,7 @@ export class AppPublishTags {
   private renderCloseTags(tag: string) {
     return (
       <button onClick={($event: UIEvent) => this.remove($event, tag)} disabled={this.disableRemove} aria-label={i18n.state.core.close}>
-        <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+        <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
       </button>
     );
   }

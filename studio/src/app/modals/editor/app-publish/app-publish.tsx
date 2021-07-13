@@ -4,6 +4,8 @@ import i18n from '../../../stores/i18n.store';
 
 import {PublishService} from '../../../services/editor/publish/publish.service';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-publish',
   styleUrl: 'app-publish.scss'
@@ -81,7 +83,7 @@ export class AppPublish {
         <ion-toolbar color="tertiary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           {this.renderTitle()}

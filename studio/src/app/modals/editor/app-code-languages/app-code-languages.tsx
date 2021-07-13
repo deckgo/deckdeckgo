@@ -6,6 +6,8 @@ import {filterCodeLanguages} from '../../../utils/editor/prism.utils';
 
 import {PrismLanguage} from '../../../types/editor/prism-language';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-code-languages',
   styleUrl: 'app-code-languages.scss'
@@ -100,7 +102,7 @@ export class AppCodeLanguages {
         <ion-toolbar color="primary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.editor.languages}</ion-title>

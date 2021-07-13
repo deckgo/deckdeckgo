@@ -1,5 +1,7 @@
 import {Component, h} from '@stencil/core';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-logo',
   styleUrl: 'app-logo.scss',
@@ -9,7 +11,7 @@ export class AppLogo {
   render() {
     return (
       <div>
-        <ion-icon src="/assets/img/deckdeckgo-logo-round.svg"></ion-icon>
+        <AppIcon name="deckdeckgo-logo-round" path="img" ariaLabel="" ariaHidden={true}></AppIcon>
       </div>
     );
   }

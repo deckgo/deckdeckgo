@@ -6,6 +6,8 @@ import {Template, TemplateDataSlot} from '../../../models/data/template';
 
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-template-showcase',
   styleUrl: 'app-template-showcase.scss'
@@ -75,7 +77,7 @@ export class AppTemplateShowcase {
 
     return (
       <button>
-        <ion-icon name="pencil"></ion-icon>
+        <AppIcon name="pencil" ariaLabel="" ariaHidden={true}></AppIcon>
       </button>
     );
   }
