@@ -2,6 +2,8 @@ import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil
 
 import i18n from '../../../stores/i18n.store';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-poll-options',
   styleUrl: 'app-poll-options.scss'
@@ -226,7 +228,7 @@ export class AppPollOptions {
         <ion-toolbar color="senary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.menu.poll}</ion-title>
@@ -249,7 +251,7 @@ export class AppPollOptions {
 
           <div class="add-answer">
             <ion-button fill="clear" color="medium" onClick={() => this.addAnswer()} disabled={this.editDisabled}>
-              <ion-icon name="add" slot="start"></ion-icon>
+              <AppIcon name="add" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
               <ion-label>{i18n.state.editor.add_answer}</ion-label>
             </ion-button>
           </div>

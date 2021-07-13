@@ -32,7 +32,7 @@ export namespace Components {
         "slides": JSX.IntrinsicElements[];
     }
     interface AppActionBusy {
-        "iconSrc": string;
+        "iconName": string;
     }
     interface AppActionHelp {
         "link": boolean;
@@ -1246,7 +1246,7 @@ declare namespace LocalJSX {
         "slides"?: JSX.IntrinsicElements[];
     }
     interface AppActionBusy {
-        "iconSrc"?: string;
+        "iconName"?: string;
         "onActionReady"?: (event: CustomEvent<UIEvent>) => void;
     }
     interface AppActionHelp {

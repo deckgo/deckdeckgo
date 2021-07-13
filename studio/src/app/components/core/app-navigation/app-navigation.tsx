@@ -3,6 +3,7 @@ import {Component, Prop, h, Host, State} from '@stencil/core';
 import offlineStore from '../../../stores/offline.store';
 import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
+import { AppIcon } from '../app-icon/app-icon';
 
 import {isIOS} from '@deckdeckgo/utils';
 
@@ -112,7 +113,7 @@ export class AppNavigation {
         <ion-buttons slot="start">
           <ion-menu-toggle>
             <ion-button aria-label={i18n.state.nav.menu}>
-              <ion-icon slot="icon-only" name="menu"></ion-icon>
+              <AppIcon name="menu" ariaHidden={true} ariaLabel="" slot="icon-only"></AppIcon>
             </ion-button>
           </ion-menu-toggle>
         </ion-buttons>

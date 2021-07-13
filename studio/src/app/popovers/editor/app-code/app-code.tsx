@@ -8,6 +8,8 @@ import {getCodeLanguage} from '../../../utils/editor/prism.utils';
 
 import {PrismLanguage} from '../../../types/editor/prism-language';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-code',
   styleUrl: 'app-code.scss'
@@ -155,7 +157,7 @@ export class AppCode {
             <ion-label>{i18n.state.editor.highlight_lines}</ion-label>
 
             <button slot="end" class="info" onClick={($event: UIEvent) => this.presentHighlightInfo($event)}>
-              <ion-icon name="help"></ion-icon>
+              <AppIcon name="help" ariaLabel="" ariaHidden={true}></AppIcon>
             </button>
           </ion-item-divider>
 

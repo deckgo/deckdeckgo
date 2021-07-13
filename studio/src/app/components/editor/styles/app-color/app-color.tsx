@@ -8,10 +8,13 @@ import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import colorStore from '../../../../stores/color.store';
 import i18n from '../../../../stores/i18n.store';
+import settingsStore from '../../../../stores/settings.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
-import settingsStore from '../../../../stores/settings.store';
+
 import {EditMode} from '../../../../types/core/settings';
+
+import { AppIcon } from '../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-color',
@@ -269,7 +272,7 @@ export class AppColor {
           onChange={($event) => this.onColorPickerChange($event)}></input>
         {this.renderColorInput()}
         <button slot="end" class="reset" arial-label={i18n.state.core.reset} onClick={($event: UIEvent) => this.emitReset($event)}>
-          <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+          <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
         </button>
 
         {this.renderColorSwitcher()}

@@ -5,6 +5,8 @@ import {OverlayEventDetail, popoverController} from '@ionic/core';
 import i18n from '../../../stores/i18n.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-start-deck'
 })
@@ -61,7 +63,7 @@ export class AppStartDeck {
           onClick={($event: UIEvent) => this.presentDeckImport($event)}
           style={{margin: '0 16px 0 4px'}}
           class="ion-no-padding">
-          <ion-icon name="chevron-down-circle-outline" aria-label={i18n.state.import.import}></ion-icon>
+          <AppIcon name="chevron-down-circle" ariaLabel="" ariaHidden={true}></AppIcon>
         </ion-button>
       </Fragment>
     );

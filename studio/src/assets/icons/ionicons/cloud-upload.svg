@@ -1,10 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
-    <g transform="matrix(1,0,0,1,0,48)">
-        <path d="M320,367.79L396,367.79C451,367.79 496,338.58 496,284.19C496,229.8 443,202.72 400,200.59C391.11,115.53 329,63.79 256,63.79C187,63.79 142.56,109.58 128,154.99C68,160.69 16,198.87 16,261.39C16,323.91 70,367.79 136,367.79L192,367.79" style="fill:none;fill-rule:nonzero;stroke:currentColor;stroke-width:32px;"/>
-    </g>
-    <g transform="matrix(1,0,0,0.979411,0,51.9488)">
-        <path d="M320,255.79L256,191.79L192,255.79M256,448.21L256,207.79" style="fill:none;fill-rule:nonzero;stroke:currentColor;stroke-width:32px;"/>
-    </g>
-</svg>
+<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Cloud Upload</title><path d='M320 367.79h76c55 0 100-29.21 100-83.6s-53-81.47-96-83.6c-8.89-85.06-71-136.8-144-136.8-69 0-113.44 45.79-128 91.2-60 5.7-112 43.88-112 106.4s54 106.4 120 106.4h56' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='32'/><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='32' d='M320 255.79l-64-64-64 64M256 448.21V207.79'/></svg>
