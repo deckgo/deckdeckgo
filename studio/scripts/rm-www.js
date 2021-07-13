@@ -1,13 +1,5 @@
-const fs = require('fs');
+#!/usr/bin/env node
 
-// directory path
-const dir = 'www';
+const {rm} = require('./rm.utils.js');
 
-// delete directory recursively
-try {
-  fs.rmdirSync(dir, {recursive: true});
-
-  console.log(`${dir} is deleted!`);
-} catch (err) {
-  console.error(`Error while deleting ${dir}.`);
-}
+rm('www');
