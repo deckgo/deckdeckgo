@@ -12,6 +12,8 @@ import {ContrastUtils} from '../../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-slide-warning',
   styleUrl: 'app-slide-warning.scss'
@@ -225,7 +227,7 @@ export class AppSlideWarning {
         <button class="ion-activatable" onClick={($event: UIEvent) => this.openInformation($event)}>
           <ion-ripple-effect></ion-ripple-effect>
           {this.renderMsg()}
-          <ion-icon name="warning-outline"></ion-icon>
+          <AppIcon name="warning" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>
     );

@@ -27,7 +27,7 @@ export class AppActionBusy {
         onMouseDown={($event) => $event.stopPropagation()}
         onTouchStart={($event) => $event.stopPropagation()}>
         <ion-ripple-effect></ion-ripple-effect>
-        <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
+        <AppIcon name={this.iconName} ariaLabel="" ariaHidden={true}></AppIcon>
         <slot></slot>
       </button>
     );

@@ -8,6 +8,8 @@ import i18n from '../../../../stores/i18n.store';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-publish-done',
   styleUrl: 'app-publish-done.scss'
@@ -50,7 +52,7 @@ export class AppPublishDone {
         </p>
 
         <ion-button color="tertiary" shape="round" onClick={() => this.share()} class="ion-margin">
-          <ion-icon name="share-outline" slot="start"></ion-icon>
+          <AppIcon name="share" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.editor.share}</ion-label>
         </ion-button>
 
@@ -89,7 +91,7 @@ export class AppPublishDone {
             </a>
           )
         })}{' '}
-        <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>.
+        <AppIcon name="github" ariaLabel="" ariaHidden={true}></AppIcon>.
       </ion-label>
     );
   }
