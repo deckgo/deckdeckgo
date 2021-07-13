@@ -2,7 +2,7 @@
 
 // Delete unused Ionic assets and dependencies from output bundle
 
-const {rm} = require('./rm.utils.js');
+const {rmDir} = require('./rm.utils.js');
 
-rm('www/build/svg');
-rm('www/build/swiper');
+rmDir('www/build/svg');
+rmDir('www/build/swiper');

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const {rm} = require('./rm.utils.js');
+const {rmDir} = require('./rm.utils.js');
 
-rm('www');
+rmDir('www');
