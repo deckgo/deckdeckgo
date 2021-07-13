@@ -6,6 +6,8 @@ import i18n from '../../../stores/i18n.store';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-remote-connect',
   styleUrl: 'app-remote-connect.scss'
@@ -105,7 +107,7 @@ export class AppRemoteConnect {
           <ion-toolbar color="primary">
             <ion-buttons slot="start">
               <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-                <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+                <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
               </ion-button>
             </ion-buttons>
             <ion-title class="ion-text-uppercase">{i18n.state.menu.remote_control}</ion-title>
@@ -118,7 +120,7 @@ export class AppRemoteConnect {
               placeholder: '{0}',
               value: (
                 <a href="https://deckdeckgo.app" target="_blank" rel="noopener noreferrer">
-                  https://deckdeckgo.app <ion-icon name="open"></ion-icon>
+                  https://deckdeckgo.app <AppIcon name="open" ariaLabel="" ariaHidden={true}></AppIcon>
                 </a>
               )
             })}
@@ -126,7 +128,7 @@ export class AppRemoteConnect {
 
           <div class="qrcode-container" style={remoteStore.state.remote ? {} : {opacity: '0.4'}}>
             <deckgo-qrcode content={this.qrCodeURI}>
-              <ion-icon slot="logo" src="/assets/img/deckdeckgo-logo.svg"></ion-icon>
+              <AppIcon name="deckdeckgo-logo" path="img" ariaLabel="" ariaHidden={true}></AppIcon>
             </deckgo-qrcode>
           </div>
         </ion-content>

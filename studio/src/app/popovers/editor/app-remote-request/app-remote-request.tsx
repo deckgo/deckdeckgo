@@ -1,12 +1,15 @@
 import {Component, Element, h, State} from '@stencil/core';
 
+import {DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
+
 import remoteStore from '../../../stores/remote.store';
 import i18n from '../../../stores/i18n.store';
 
-import {DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
-
 import {RemoteService} from '../../../services/editor/remote/remote.service';
+
 import {renderI18n} from '../../../utils/core/i18n.utils';
+
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-remote-request',
@@ -58,14 +61,14 @@ export class AppRemoteRequest {
       </p>,
 
       <div class="actions">
-        <button class="navigation ion-activatable transparent dismiss" onClick={() => this.shiftRequestsAndClose()}>
+        <button class="navigation ion-activatable transparent dismiss" onClick={() => this.shiftRequestsAndClose()} aria-label={i18n.state.editor.deny}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon aria-label={i18n.state.editor.deny} src="/assets/icons/ionicons/close.svg"></ion-icon>
+          <AppIcon name="close" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
 
-        <button class="navigation ion-activatable primary connect" onClick={() => this.accept()}>
+        <button class="navigation ion-activatable primary connect" onClick={() => this.accept()} aria-label={i18n.state.editor.accept}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon aria-label={i18n.state.editor.accept} src="/assets/icons/ionicons/checkmark.svg"></ion-icon>
+          <AppIcon name="checkmark" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </div>
     ];

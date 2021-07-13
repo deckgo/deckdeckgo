@@ -9,6 +9,8 @@ import store from '../../../../stores/deck.store';
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
 import {EditAction} from '../../../../types/editor/edit-action';
 
+import { AppIcon } from '../../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-edit-slide-qrcode'
 })
@@ -137,7 +139,7 @@ export class AppEditSlideQRCode {
         <ion-item-divider class="ion-padding-top">
           <ion-label>{i18n.state.editor.target}</ion-label>
           <button slot="end" class="info" onClick={() => this.presentQRCodeInfo()}>
-            <ion-icon name="help"></ion-icon>
+            <AppIcon name="help" ariaLabel="" ariaHidden={true}></AppIcon>
           </button>
         </ion-item-divider>
 

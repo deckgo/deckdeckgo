@@ -1,8 +1,12 @@
 import {Component, Event, EventEmitter, Fragment, h, JSX, Prop, State} from '@stencil/core';
 
-import {SlotType} from '../../../types/editor/slot-type';
-import {SlotUtils} from '../../../utils/editor/slot.utils';
 import i18n from '../../../stores/i18n.store';
+
+import {SlotType} from '../../../types/editor/slot-type';
+
+import {SlotUtils} from '../../../utils/editor/slot.utils';
+
+import { AppIcon } from '../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-slot-type',
@@ -79,7 +83,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.H1,
           <Fragment>
-            <ion-icon name="text-outline" slot="start"></ion-icon>
+            <AppIcon name="text" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <h1>{i18n.state.editor.huge_title}</h1>
           </Fragment>
         )}
@@ -158,7 +162,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.OL,
           <Fragment>
-            <ion-icon src="/assets/icons/ionicons/list.svg" slot="start"></ion-icon>
+            <AppIcon name="list" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.list}</ion-label>
           </Fragment>
         )}
@@ -166,7 +170,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.IMG,
           <Fragment>
-            <ion-icon src="/assets/icons/ionicons/images.svg" slot="start"></ion-icon>
+            <AppIcon name="images" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.image}</ion-label>
           </Fragment>
         )}
@@ -174,7 +178,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.CODE,
           <Fragment>
-            <ion-icon src="/assets/icons/ionicons/code.svg" slot="start"></ion-icon>
+            <AppIcon name="code" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.code}</ion-label>
           </Fragment>
         )}
@@ -182,7 +186,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.MARKDOWN,
           <Fragment>
-            <ion-icon src="/assets/icons/markdown.svg" slot="start"></ion-icon>
+            <AppIcon name="markdown" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.markdown}</ion-label>
           </Fragment>
         )}
@@ -190,7 +194,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.MATH,
           <Fragment>
-            <ion-icon src="/assets/icons/math.svg" slot="start"></ion-icon>
+            <AppIcon name="math" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.math}</ion-label>
           </Fragment>
         )}
@@ -198,7 +202,7 @@ export class AppSlotType {
         {this.renderSlot(
           SlotType.WORD_CLOUD,
           <Fragment>
-            <ion-icon src="/assets/icons/word-cloud.svg" slot="start"></ion-icon>
+            <AppIcon name="word-cloud" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.word_cloud}</ion-label>
           </Fragment>
         )}

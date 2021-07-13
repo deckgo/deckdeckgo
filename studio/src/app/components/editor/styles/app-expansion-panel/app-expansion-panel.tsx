@@ -2,6 +2,8 @@ import {Component, h, Prop, Event, EventEmitter} from '@stencil/core';
 
 import {Expanded} from '../../../../types/core/settings';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 @Component({
   tag: 'app-expansion-panel',
   styleUrl: 'app-expansion-panel.scss'
@@ -87,7 +89,7 @@ export class AppExpansionPanel {
           </div>
           <div slot="start">
             <slot name="icon">
-              <ion-icon src="/assets/icons/ionicons/chevron-down.svg"></ion-icon>
+              <AppIcon name="chevron-down" ariaLabel="" ariaHidden={true}></AppIcon>
             </slot>
           </div>
           <div slot="end">

@@ -19,6 +19,8 @@ import {PublishService} from '../../../../services/editor/publish/publish.servic
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
+import { AppIcon } from '../../../core/app-icon/app-icon';
+
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
 }
@@ -442,7 +444,7 @@ export class AppPublishEdit {
 
     return (
       <p class="small error ion-margin-top">
-        <ion-icon name="warning-outline"></ion-icon>{' '}
+        <AppIcon name="warning" ariaLabel="" ariaHidden={true}></AppIcon>{' '}
         {renderI18n(i18n.state.publish_edit.error_previous, {
           placeholder: '{0}',
           value: (
@@ -460,7 +462,7 @@ export class AppPublishEdit {
       <ion-item class={`item-title ${this.validTitle ? undefined : 'error'}`}>
         <ion-label>
           {i18n.state.publish_edit.title}{' '}
-          {this.validTitle ? undefined : <ion-icon aria-label="Title needs to match the expected format" name="warning-outline"></ion-icon>}
+          {this.validTitle ? undefined : <AppIcon name="warning" ariaLabel="Title needs to match the expected format"></AppIcon>}
         </ion-label>
       </ion-item>
     );
@@ -502,7 +504,7 @@ export class AppPublishEdit {
 
     return [
       <h2 class="ion-padding-top">
-        GitHub <ion-icon name="logo-github" aria-label="GitHub"></ion-icon>
+        GitHub <AppIcon name="github" ariaLabel="" ariaHidden={true}></AppIcon>
       </h2>,
       this.renderGitHubText(),
       <ion-list class="inputs-list ion-margin-bottom">

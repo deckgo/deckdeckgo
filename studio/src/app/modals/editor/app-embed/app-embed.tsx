@@ -6,6 +6,8 @@ import i18n from '../../../stores/i18n.store';
 
 import {getPublishedUrl} from '../../../utils/core/share.utils';
 
+import { AppIcon } from '../../../components/core/app-icon/app-icon';
+
 @Component({
   tag: 'app-embed',
   styleUrl: 'app-embed.scss'
@@ -69,7 +71,7 @@ export class AppEmbed {
         <ion-toolbar color="primary">
           <ion-buttons slot="start">
             <ion-button onClick={() => this.closeModal()} aria-label={i18n.state.core.close}>
-              <ion-icon src="/assets/icons/ionicons/close.svg"></ion-icon>
+              <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
             </ion-button>
           </ion-buttons>
           <ion-title class="ion-text-uppercase">{i18n.state.editor.embed}</ion-title>

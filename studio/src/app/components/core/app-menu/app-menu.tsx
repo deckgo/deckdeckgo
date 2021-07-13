@@ -9,6 +9,8 @@ import {signIn} from '../../../utils/core/signin.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 
+import { AppIcon } from '../app-icon/app-icon';
+
 @Component({
   tag: 'app-menu',
   styleUrl: 'app-menu.scss',
@@ -66,7 +68,7 @@ export class AppMenu {
   private renderDashboard() {
     return (
       <ion-item button class="home" href="/dashboard" routerDirection="forward">
-        <ion-icon lazy={true} name="apps-outline" slot="start"></ion-icon>
+        <AppIcon name="apps" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.menu.dashboard}</ion-label>
       </ion-item>
     );
@@ -76,14 +78,14 @@ export class AppMenu {
     if (authStore.state.loggedIn) {
       return (
         <ion-item button class="signout" onClick={() => this.signOut()}>
-          <ion-icon lazy={true} name="log-out-outline" slot="start" style={{transform: 'translate(3px, 0px)'}}></ion-icon>
+          <AppIcon name="log-out" ariaLabel="" ariaHidden={true} lazy={true} slot="start" style={{transform: 'translate(3px, 0px)'}}></AppIcon>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       );
     } else {
       return (
         <ion-item button onClick={() => this.signIn()}>
-          <ion-icon lazy={true} name="log-in-outline" slot="start" style={{transform: 'translate(-3px, 0px)'}}></ion-icon>
+          <AppIcon name="log-in" ariaLabel="" ariaHidden={true} lazy={true} slot="start" style={{transform: 'translate(-3px, 0px)'}}></AppIcon>
           <ion-label>{i18n.state.nav.sign_in}</ion-label>
         </ion-item>
       );
@@ -94,12 +96,12 @@ export class AppMenu {
     return (
       <Fragment>
         <ion-item button class="home" href="/poll" routerDirection="forward">
-          <ion-icon lazy={true} name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+          <AppIcon name="chatbubble-ellipses" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.menu.poll}</ion-label>
         </ion-item>
 
         <ion-item button class="home remote" href="https://deckdeckgo.app" target="_blank">
-          <ion-icon lazy={true} name="phone-portrait-outline" slot="start"></ion-icon>
+          <AppIcon name="phone-portrait" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.menu.remote_control}</ion-label>
         </ion-item>
       </Fragment>
@@ -110,20 +112,20 @@ export class AppMenu {
     return (
       <app-expansion-panel expanded="close">
         <ion-label slot="title">Settings</ion-label>
-        <ion-icon lazy={true} name="settings-outline" slot="icon"></ion-icon>
+        <AppIcon name="settings" ariaLabel="" ariaHidden={true} lazy={true} slot="icon"></AppIcon>
 
         <ion-list class="settings">
           <ion-item button class="home" href="/profile" routerDirection="forward">
             <ion-label>{i18n.state.nav.profile}</ion-label>
-            <ion-icon lazy={true} name="person-outline" slot="start"></ion-icon>
+            <AppIcon name="person" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           </ion-item>
           <ion-item button class="home" href="/customization" routerDirection="forward">
             <ion-label>{i18n.state.nav.customization}</ion-label>
-            <ion-icon lazy={true} name="color-palette-outline" slot="start"></ion-icon>
+            <AppIcon name="color-palette" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           </ion-item>
           <ion-item button class="home" href="/templates" routerDirection="forward">
             <ion-label>{i18n.state.nav.templates}</ion-label>
-            <ion-icon lazy={true} name="reader-outline" slot="start"></ion-icon>
+            <AppIcon name="reader" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           </ion-item>
         </ion-list>
       </app-expansion-panel>

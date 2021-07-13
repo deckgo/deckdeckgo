@@ -8,6 +8,7 @@ import {Deck} from '../../../models/data/deck';
 
 import {DeckService} from '../../../services/data/deck/deck.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
+import { AppIcon } from '../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
@@ -151,14 +152,14 @@ export class AppDashboardDeckActions {
           onClick={($event: UIEvent) => this.cloneDeck($event)}
           title={i18n.state.dashboard.copy}
           class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-          <ion-icon name="copy"></ion-icon>
+          <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
 
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
           class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-          <ion-icon name="trash"></ion-icon>
+          <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>
     );
