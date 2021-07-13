@@ -6,8 +6,9 @@ import i18n from '../../../stores/i18n.store';
 
 import {Deck} from '../../../models/data/deck';
 
-import {DeckService} from '../../../services/data/deck/deck.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
+import {DeckOnlineService} from '../../../services/data/deck/deck.online.service';
+
 import { AppIcon } from '../../core/app-icon/app-icon';
 
 @Component({
@@ -18,7 +19,7 @@ import { AppIcon } from '../../core/app-icon/app-icon';
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
 
-  private deckService: DeckService;
+  private deckOnlineService: DeckOnlineService;
   private deckDashboardService: DeckDashboardService;
 
   @Event() deckDeleted: EventEmitter<string>;
@@ -28,7 +29,7 @@ export class AppDashboardDeckActions {
   private actionInProgress: boolean = false;
 
   constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckOnlineService = DeckOnlineService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
@@ -80,7 +81,7 @@ export class AppDashboardDeckActions {
       await loading.present();
 
       try {
-        await this.deckService.delete(this.deck.id);
+        await this.deckOnlineService.delete(this.deck.id);
 
         this.deckDeleted.emit(this.deck.id);
       } catch (err) {
