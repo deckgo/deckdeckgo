@@ -37,11 +37,11 @@ function updateCSP(filename) {
     result = result.replace('http://localhost:3333/~dev-server', '');
 
     // 4. Preload all modules for Internet Computer
-    const jsFiles = [];
-    findJSFiles('./www/build/', jsFiles);
+    // const jsFiles = [];
+    // findJSFiles('./www/build/', jsFiles);
 
-    const preload = [...new Set(jsFiles)].map((filename) => `<link rel="modulepreload" href="/build/${filename}">`).join('');
-    result = result.replace(/<\/body>/g, `${preload}</body>`);
+    // const preload = [...new Set(jsFiles)].map((filename) => `<link rel="modulepreload" href="/build/${filename}">`).join('');
+    // result = result.replace(/<\/body>/g, `${preload}</body>`);
 
     fs.writeFile(`${filename}`, result, 'utf8', function (err) {
       if (err) return console.log(err);
