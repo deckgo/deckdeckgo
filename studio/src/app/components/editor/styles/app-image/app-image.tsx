@@ -1,7 +1,5 @@
 import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
-
 import settingsStore from '../../../../stores/settings.store';
 import i18n from '../../../../stores/i18n.store';
 
@@ -14,6 +12,8 @@ import {ImageHistoryService} from '../../../../services/editor/image-history/ima
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
 
 import { AppIcon } from '../../../core/app-icon/app-icon';
+
+import { alertController } from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-image',

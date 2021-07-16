@@ -1,6 +1,6 @@
 import {Component, Element, State, h, EventEmitter, Event, Host} from '@stencil/core';
 
-import {ItemReorderEventDetail} from '@ionic/core';
+import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 

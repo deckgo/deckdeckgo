@@ -1,5 +1,6 @@
 import {EventEmitter} from '@stencil/core';
-import {modalController, OverlayEventDetail} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import busyStore from '../../stores/busy.store';
 import authStore from '../../stores/auth.store';
@@ -9,6 +10,7 @@ import {EditAction} from '../../types/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
+import { modalController } from '../../utils/ionic/ionic.overlay';
 
 export class ImageHelper {
   constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}

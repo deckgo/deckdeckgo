@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch, Method} from '@stencil/core';
 
-import {RangeChangeEventDetail} from '@ionic/core';
+import type {RangeChangeEventDetail} from '@ionic/core';
 
 import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
 

@@ -21,10 +21,20 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
+    "@deckdeckgo/deck-utils": "^4.0.2",
+    "@deckdeckgo/utils": "^2.0.1",
+    "@dfinity/agent": "^0.9.1",
+    "@dfinity/candid": "^0.9.1",
+    "@dfinity/principal": "^0.9.1",
+    "firebase": "^8.6.3",
+    "idb-keyval": "^5.0.6",
+    "socket.io-client": "2.3.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
     "@deckdeckgo/charts": "^2.1.0",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/core": "^8.2.1",
-    "@deckdeckgo/deck-utils": "^4.0.2",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.0",
     "@deckdeckgo/highlight-code": "^3.3.1",
@@ -49,21 +59,10 @@
     "@deckdeckgo/slide-utils": "^4.0.3",
     "@deckdeckgo/slide-youtube": "^2.4.0",
     "@deckdeckgo/social": "^4.1.0",
-    "@deckdeckgo/utils": "^2.0.1",
+    "@deckdeckgo/types": "^2.0.1",
     "@deckdeckgo/word-cloud": "^1.1.0",
     "@deckdeckgo/youtube": "^2.1.0",
-    "@dfinity/agent": "^0.9.1",
-    "@dfinity/candid": "^0.9.1",
-    "@dfinity/principal": "^0.9.1",
-    "@ionic/core": "^5.6.8",
-    "firebase": "^8.6.3",
-    "idb-keyval": "^5.0.6",
-    "socket.io-client": "2.3.1",
-    "uuid": "^8.3.2",
-    "web-social-share": "^7.1.0"
-  },
-  "devDependencies": {
-    "@deckdeckgo/types": "^2.0.1",
+    "@ionic/core": "^5.6.11",
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-replace": "^2.4.2",
     "@stencil/core": "^2.5.2",
@@ -79,6 +78,7 @@
     "prettier": "2.3.0",
     "pretty-quick": "^3.1.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
+    "web-social-share": "^7.1.0",
     "workbox-build": "5.1.4"
   },
   "repository": {

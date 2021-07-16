@@ -12,7 +12,8 @@
     "noUnusedParameters": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["node_modules/@types", "node_modules/@deckdeckgo"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]

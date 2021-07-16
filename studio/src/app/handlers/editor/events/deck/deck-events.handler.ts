@@ -1,4 +1,4 @@
-import {ItemReorderEventDetail} from '@ionic/core';
+import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {debounce} from '@deckdeckgo/utils';
 

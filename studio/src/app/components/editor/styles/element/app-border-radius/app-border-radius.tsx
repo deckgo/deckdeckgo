@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, h, Prop, State, Fragment} from '@stencil/core';
 
-import {RangeChangeEventDetail} from '@ionic/core';
+import type {RangeChangeEventDetail} from '@ionic/core';
 
 import settingsStore from '../../../../../stores/settings.store';
 import i18n from '../../../../../stores/i18n.store';
