@@ -167,7 +167,9 @@ export const config: Config = {
     {
       type: 'www',
       baseUrl: 'https://deckdeckgo.com',
-      serviceWorker: null,
+      serviceWorker: {
+        swSrc: 'src/sw.js'
+      },
       copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}]
     }
   ],
