@@ -1,7 +1,5 @@
 import {Component, Prop, h, Fragment, Element} from '@stencil/core';
 
-import {alertController, loadingController, popoverController} from '@ionic/core';
-
 import {del} from 'idb-keyval';
 
 import authStore from '../../../stores/auth.store';
@@ -11,6 +9,7 @@ import errorStore from '../../../stores/error.store';
 import syncStore from '../../../stores/sync.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
+import { alertController, loadingController, popoverController } from '../../../utils/ionic/ionic.overlay';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 

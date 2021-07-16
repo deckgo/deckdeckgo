@@ -38,7 +38,7 @@ export class AppShareDeck {
   }
 
   private async shareDesktop() {
-    const webSocialShare = this.el.shadowRoot.querySelector('web-social-share');
+    const webSocialShare: HTMLWebSocialShareElement = this.el.shadowRoot.querySelector('web-social-share');
 
     if (!webSocialShare || !window) {
       return;

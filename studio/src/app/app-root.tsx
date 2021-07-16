@@ -1,7 +1,5 @@
 import {Build, Component, Element, h, Listen, State} from '@stencil/core';
 
-import {toastController} from '@ionic/core';
-
 import errorStore from './stores/error.store';
 import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
@@ -13,6 +11,8 @@ import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
+
+import { toastController } from './utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-root',

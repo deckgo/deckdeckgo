@@ -1,5 +1,5 @@
 import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
-import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
+import type {OverlayEventDetail} from '@ionic/core';
 
 import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
@@ -10,6 +10,7 @@ import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/
 import {DeckOnlineService} from '../../../services/data/deck/deck.online.service';
 
 import { AppIcon } from '../../core/app-icon/app-icon';
+import { loadingController, modalController } from '../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-dashboard-deck-actions',

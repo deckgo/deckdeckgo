@@ -1,6 +1,6 @@
 import { Component, Element, h, JSX, Listen, State } from '@stencil/core';
 
-import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
 
 import {get, set} from 'idb-keyval';
 
@@ -30,6 +30,7 @@ import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
 import {SlotType} from '../../../types/editor/slot-type';
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
+import { modalController, popoverController } from '../../../utils/ionic/ionic.overlay';
 
 import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';

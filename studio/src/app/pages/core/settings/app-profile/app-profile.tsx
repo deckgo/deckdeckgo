@@ -1,5 +1,6 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
-import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -28,6 +29,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-co
 import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
+import { loadingController, modalController } from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-profile',
