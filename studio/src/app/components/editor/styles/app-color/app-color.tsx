@@ -2,8 +2,6 @@ import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch, Method}
 
 import type {RangeChangeEventDetail} from '@ionic/core';
 
-import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
-
 import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
 import colorStore from '../../../../stores/color.store';
@@ -14,7 +12,9 @@ import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 import {EditMode} from '../../../../types/core/settings';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
+
+import {DeckdeckgoPaletteColor, DeckdeckgoPalette} from '../../../../utils/ddg/deckdeckgo-palette';
 
 @Component({
   tag: 'app-color',

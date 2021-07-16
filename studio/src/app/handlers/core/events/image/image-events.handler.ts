@@ -1,4 +1,4 @@
-import {DeckDeckGoCustomLoad} from '@deckdeckgo/lazy-img';
+import type {DeckDeckGoCustomLoad} from '@deckdeckgo/lazy-img';
 
 import {get} from 'idb-keyval';
 

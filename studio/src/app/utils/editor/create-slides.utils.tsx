@@ -2,7 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
-import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
+import { DeckdeckgoPlaygroundTheme } from '../ddg/deckdeckgo-playground-theme';
 
 import userStore from '../../stores/user.store';
 
