@@ -18,13 +18,15 @@ import replace from '@rollup/plugin-replace';
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
 // @ts-ignore
 const staging: boolean = process.argv && process.argv.indexOf('--staging') > -1;
+// @ts-ignore
+const internetComputer: boolean = process.argv && process.argv.indexOf('--ic') > -1;
 
-const globalScript: string = dev && !staging ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : 'src/global/app.ts';
+const globalScript: string = dev && !staging ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : internetComputer ? 'src/global/app-ic.ts' : 'src/global/app.ts';
 
-const configDataFile = dev && !staging ? './config.dev.json' : staging ? './config.staging.json' : './config.prod.json';
+const configDataFile = dev && !staging ? './config.dev.json' : (staging || internetComputer) ? './config.staging.json' : './config.prod.json';
 const configValues = require(configDataFile);
 
-const assetLinks = dev || staging ? 'assetlinks.dev.json' : 'assetlinks.prod.json';
+const assetLinks = dev || staging || internetComputer ? 'assetlinks.dev.json' : 'assetlinks.prod.json';
 
 const dfxAliases = Object.entries(dfxJson.canisters)
   .filter(([_key, {type}]: [string, {type: 'motoko' | 'assets'}]) => type !== 'assets')
