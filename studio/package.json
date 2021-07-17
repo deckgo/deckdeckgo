@@ -26,9 +26,9 @@
   "dependencies": {
     "@deckdeckgo/deck-utils": "^4.0.2",
     "@deckdeckgo/utils": "^2.0.1",
-    "@dfinity/agent": "^0.9.1",
-    "@dfinity/candid": "^0.9.1",
-    "@dfinity/principal": "^0.9.1",
+    "@dfinity/agent": "^0.9.2",
+    "@dfinity/candid": "^0.9.2",
+    "@dfinity/principal": "^0.9.2",
     "firebase": "^8.6.3",
     "idb-keyval": "^5.0.6",
     "socket.io-client": "2.3.1",
