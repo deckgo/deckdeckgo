@@ -1,0 +1,4 @@
+service : {
+  getValue: () -> (nat) query;
+  increment: () -> ();
+}

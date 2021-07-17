@@ -6,13 +6,9 @@ import path from 'path';
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
 const autoprefixer = require('autoprefixer');
-import alias from '@rollup/plugin-alias';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
-
-// @ts-ignore
-import dfxJson from './dfx.json';
-
 import replace from '@rollup/plugin-replace';
+
+import {canisterEnvIds} from './ic.config';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
@@ -21,25 +17,15 @@ const staging: boolean = process.argv && process.argv.indexOf('--staging') > -1;
 // @ts-ignore
 const internetComputer: boolean = process.argv && process.argv.indexOf('--ic') > -1;
 
-const globalScript: string = dev && !staging ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : internetComputer ? 'src/global/app-ic.ts' : 'src/global/app.ts';
+const prod = !(dev || staging || internetComputer);
 
-const configDataFile = dev && !staging ? './config.dev.json' : (staging || internetComputer) ? './config.staging.json' : './config.prod.json';
+const globalScript: string =
+  dev && !staging ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : internetComputer ? 'src/global/app-ic.ts' : 'src/global/app.ts';
+
+const configDataFile = dev && !staging ? './config.dev.json' : staging || internetComputer ? './config.staging.json' : './config.prod.json';
 const configValues = require(configDataFile);
 
-const assetLinks = dev || staging || internetComputer ? 'assetlinks.dev.json' : 'assetlinks.prod.json';
-
-const dfxAliases = Object.entries(dfxJson.canisters)
-  .filter(([_key, {type}]: [string, {type: 'motoko' | 'assets'}]) => type !== 'assets')
-  .reduce((acc, [name, _value]) => {
-    // Get the network name, or `local` by default.
-    const networkName = process.env['DFX_NETWORK'] || 'local';
-    const outputRoot = path.join(__dirname, '.dfx', networkName, 'canisters', name);
-
-    return {
-      ...acc,
-      ['dfx-generated/' + name]: path.join(outputRoot, name + '.js')
-    };
-  }, {});
+const assetLinks = !prod ? 'assetlinks.dev.json' : 'assetlinks.prod.json';
 
 export const config: Config = {
   bundles: [
@@ -183,6 +169,7 @@ export const config: Config = {
       delimiters: ['<@', '@>'],
       values: configValues
     }),
+    replace(canisterEnvIds(prod)),
     sass({
       includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
     }),
@@ -194,13 +181,5 @@ export const config: Config = {
   devServer: {
     openBrowser: false,
     reloadStrategy: 'pageReload'
-  },
-  rollupPlugins: {
-    before: [
-      alias({
-        entries: dfxAliases
-      })
-    ],
-    after: [nodePolyfills()]
   }
 };

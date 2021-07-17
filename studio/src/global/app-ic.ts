@@ -35,3 +35,8 @@ setupDeckGoConfig({
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
   }
 });
+
+// IE9: https://stackoverflow.com/questions/5472938/does-ie9-support-console-log-and-is-it-a-real-function#answer-5473193
+const log: any = Function.prototype.bind.call(console.log, console);
+log.apply(console, ['%cDeckDeckGo', 'color: #3880ff;font-size:2rem;font-weight: 300;']);
+log.apply(console, ['%chttps://github.com/deckgo/deckdeckgo', 'font-size:1rem;font-weight: 300;']);
