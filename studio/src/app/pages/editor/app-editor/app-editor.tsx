@@ -655,7 +655,7 @@ export class AppEditor {
 
   @Listen('signIn', {target: 'document'})
   async signIn() {
-    navigateSignIn();
+    await navigateSignIn();
   }
 
   private stickyToolbarActivated($event: CustomEvent) {

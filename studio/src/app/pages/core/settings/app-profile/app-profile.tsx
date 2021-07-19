@@ -470,7 +470,7 @@ export class AppProfile {
     return renderI18n(i18n.state.settings.access_settings, {
       placeholder: '{0}',
       value: (
-        <button type="button" class="app-button" onClick={() => signIn()}>
+        <button type="button" class="app-button" onClick={async () => await signIn()}>
           {i18n.state.nav.sign_in}
         </button>
       )

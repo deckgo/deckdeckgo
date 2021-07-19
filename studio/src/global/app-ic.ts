@@ -5,7 +5,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   deckdeckgo: {
-    prod: false,
+    mock: false,
     appUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app',
     globalAssetsUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/assets',
     pollUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/poll',

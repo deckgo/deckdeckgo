@@ -26,7 +26,7 @@ export class AppMenu {
   }
 
   private async signIn() {
-    signIn();
+    await signIn();
   }
 
   private async signOut() {

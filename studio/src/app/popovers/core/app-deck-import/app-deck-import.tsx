@@ -80,7 +80,7 @@ export class AppDeckImport {
   private async navigateSignIn() {
     await this.closePopover();
 
-    signIn();
+    await signIn();
   }
 
   render() {

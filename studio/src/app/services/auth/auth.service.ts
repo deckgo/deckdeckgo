@@ -14,6 +14,17 @@ import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
 import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
 
+// TODO: use auth
+import {AuthClient} from '@dfinity/auth-client';
+AuthClient.create().then(async (auth: AuthClient | undefined) => {
+  console.log('**** AUTH 3 **** auth start', auth);
+  const isAuth: boolean = (await auth?.isAuthenticated()) || false;
+  console.log('**** AUTH 4 **** auth status', isAuth);
+  console.log('**** AUTH 5 **** auth identify', auth.getIdentity());
+  const principal = auth.getIdentity().getPrincipal();
+  console.log('**** AUTH 6 **** auth identify values', principal.isAnonymous(), principal.toHex(), principal.toText(), principal.toString(), principal.toUint8Array());
+})
+
 export class AuthService {
   private apiUserService: ApiUserService;
 

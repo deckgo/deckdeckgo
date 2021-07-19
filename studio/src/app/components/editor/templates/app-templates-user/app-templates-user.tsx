@@ -41,7 +41,7 @@ export class AppTemplatesUser {
   }
 
   private async signIn() {
-    signIn();
+    await signIn();
 
     this.navigateSignIn.emit();
   }

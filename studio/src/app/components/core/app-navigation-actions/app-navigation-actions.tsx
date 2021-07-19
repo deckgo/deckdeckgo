@@ -148,7 +148,7 @@ export class AppNavigationActions {
     }
 
     return (
-      <button class="ion-activatable" onClick={() => signIn()}>
+      <button class="ion-activatable" onClick={async () => await signIn()}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" name="log-in-outline"></ion-icon>
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
