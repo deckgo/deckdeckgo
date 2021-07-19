@@ -1,5 +1,5 @@
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../environment/environment-config.service';
 
 import {ApiPhotoService} from './api.photo.service';
 import {ApiPhotoMockService} from './api.photo.mock.service';

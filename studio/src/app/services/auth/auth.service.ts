@@ -7,7 +7,7 @@ import authStore from '../../stores/auth.store';
 
 import {get, set, del} from 'idb-keyval';
 
-import {EnvironmentConfigService} from '../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../environment/environment-config.service';
 
 import {AuthUser} from '../../models/auth/auth.user';
 

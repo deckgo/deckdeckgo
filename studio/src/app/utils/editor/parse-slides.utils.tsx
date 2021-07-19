@@ -11,7 +11,7 @@ import {QRCodeUtils} from './qrcode.utils';
 import {Slide, SlideTemplate, SlideScope} from '../../models/data/slide';
 import {Deck} from '../../models/data/deck';
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export class ParseSlidesUtils {
   static async parseSlide(deck: Deck, slide: Slide, contentEditable: boolean, ignoreSlideId: boolean = false): Promise<JSX.IntrinsicElements> {

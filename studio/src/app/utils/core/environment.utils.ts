@@ -1,4 +1,4 @@
-import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 
 export const tenorEnabled = (): boolean => {
