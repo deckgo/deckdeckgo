@@ -13,7 +13,7 @@ import {UserSocial} from '../../../models/data/user';
 
 import { DeckOnlineService } from '../../data/deck/deck.online.service';
 
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';
 
 export class PublishService {

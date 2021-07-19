@@ -2,17 +2,22 @@ import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {ApiUserService} from './api.user.service';
 
 export class ApiUserProdService extends ApiUserService {
   // @Override
-  query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser> {
-    return new Promise<ApiUser>(async (resolve, reject) => {
+  query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser | undefined> {
+    return new Promise<ApiUser | undefined>(async (resolve, reject) => {
       try {
         const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+        if (!config?.apiUrl) {
+          resolve(undefined);
+          return;
+        }
 
         const rawResponse: Response = await fetch(config.apiUrl + context, {
           method: method,
@@ -46,6 +51,11 @@ export class ApiUserProdService extends ApiUserService {
       try {
         const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
+        if (!config?.apiUrl) {
+          resolve();
+          return;
+        }
+
         const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
           method: 'DELETE',
           headers: {
@@ -68,10 +78,15 @@ export class ApiUserProdService extends ApiUserService {
   }
 
   // @Override
-  get(userId: string): Promise<ApiUser> {
-    return new Promise<ApiUser>(async (resolve, reject) => {
+  get(userId: string): Promise<ApiUser | undefined> {
+    return new Promise<ApiUser | undefined>(async (resolve, reject) => {
       try {
         const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+        if (!config?.apiUrl) {
+          resolve(undefined);
+          return;
+        }
 
         const rawResponse: Response = await fetch(config.apiUrl + `/users/${userId}`, {
           method: 'GET',

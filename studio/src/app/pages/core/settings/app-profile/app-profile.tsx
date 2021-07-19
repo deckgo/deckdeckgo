@@ -26,7 +26,7 @@ import {StorageService} from '../../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import { loadingController, modalController } from '../../../../utils/ionic/ionic.overlay';

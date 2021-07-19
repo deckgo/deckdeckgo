@@ -1,4 +1,4 @@
-import {EnvironmentConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfig} from '../../types/core/environment-config';
 
 export class EnvironmentConfigService {
   private static instance: EnvironmentConfigService;
@@ -6,7 +6,6 @@ export class EnvironmentConfigService {
   private m: Map<keyof EnvironmentConfig, any>;
 
   private constructor() {
-    // Private constructor, singleton
     this.init();
   }
 
@@ -28,8 +27,7 @@ export class EnvironmentConfigService {
     this.m = new Map<keyof EnvironmentConfig, any>(Object.entries(DeckGo.config) as any);
   }
 
-  get(key: keyof EnvironmentConfig, fallback?: any): any {
-    const value = this.m.get(key);
-    return value !== undefined ? value : fallback;
+  get<T>(key: keyof EnvironmentConfig): T | undefined {
+    return this.m.get(key);
   }
 }

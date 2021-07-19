@@ -10,6 +10,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {MoreAction} from '../../../../../types/editor/more-action';
 
 import { AppIcon } from '../../../../core/app-icon/app-icon';
+import { shareEnabled } from '../../../../../utils/core/environment.utils';
 
 import { popoverController } from '../../../../../utils/ionic/ionic.overlay';
 
@@ -23,10 +24,12 @@ export class AppActionShare {
 
   @Event() private openEmbed: EventEmitter<void>;
 
+  private shareEnabled: boolean = shareEnabled();
+
   private async share($event: UIEvent) {
     if (deckStore.state.published) {
       await this.openShareOptions($event);
-    } else {
+    } else if (this.shareEnabled) {
       this.actionPublish.emit();
     }
   }
@@ -62,6 +65,10 @@ export class AppActionShare {
   }
 
   render() {
+    if (!this.shareEnabled && !deckStore.state.published) {
+      return undefined;
+    }
+
     return (
       <button
         onMouseDown={($event) => $event.stopPropagation()}

@@ -32,7 +32,7 @@ import {SlotType} from '../../../types/editor/slot-type';
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
 import { modalController, popoverController } from '../../../utils/ionic/ionic.overlay';
 
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 import {SyncService} from '../../../services/editor/sync/sync.service';
 
