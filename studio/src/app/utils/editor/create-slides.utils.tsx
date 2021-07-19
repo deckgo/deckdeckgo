@@ -12,7 +12,7 @@ import {Deck} from '../../models/data/deck';
 import {Template} from '../../models/data/template';
 
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {QRCodeUtils} from './qrcode.utils';
 import {SocialUtils} from './social.utils';

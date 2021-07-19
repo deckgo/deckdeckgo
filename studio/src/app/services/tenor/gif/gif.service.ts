@@ -1,4 +1,4 @@
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../environment/environment-config.service';
 
 import {get, set} from 'idb-keyval';
 
