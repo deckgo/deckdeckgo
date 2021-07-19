@@ -13,7 +13,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
-import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 import { AppIcon } from '../app-icon/app-icon';
 

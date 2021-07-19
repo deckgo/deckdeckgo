@@ -3,7 +3,7 @@ import assetsStore from '../../../stores/assets.store';
 import {Utils} from '../../../utils/core/utils';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../environment/environment-config.service';
 
 export class FontsService {
   private static instance: FontsService;
