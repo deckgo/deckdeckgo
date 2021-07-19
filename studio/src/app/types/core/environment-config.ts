@@ -35,7 +35,7 @@ export interface EnvironmentDeckDeckGoConfig {
 
 export interface EnvironmentConfig {
   deckdeckgo: EnvironmentDeckDeckGoConfig;
-  firebase: EnvironmentFirebaseConfig;
+  firebase?: EnvironmentFirebaseConfig;
   tenor?: EnvironmentTenorConfig;
   unsplash?: EnvironmentUnsplashConfig;
   google: EnvironmentGoogleConfig;

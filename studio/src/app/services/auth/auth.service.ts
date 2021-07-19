@@ -10,6 +10,8 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {AuthUser} from '../../models/auth/auth.user';
 
+import { firebaseEnabled } from '../../utils/core/environment.utils';
+
 import {ApiUserService} from '../api/user/api.user.service';
 import {UserService} from '../data/user/user.service';
 import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
@@ -35,6 +37,14 @@ export class AuthService {
   }
 
   async init() {
+    await this.initFirebase();
+  }
+
+  private async initFirebase() {
+    if (!firebaseEnabled()) {
+      return;
+    }
+
     try {
       firebase.initializeApp(EnvironmentConfigService.getInstance().get('firebase'));
 
@@ -78,12 +88,20 @@ export class AuthService {
   }
 
   async signOut() {
-    await firebase.auth().signOut();
+    await this.firebaseSignOut();
 
     await this.apiUserService.signOut();
 
     await del('deckdeckgo_redirect');
     await del('deckdeckgo_redirect_info');
+  }
+
+  private async firebaseSignOut() {
+    if (!firebaseEnabled()) {
+      return;
+    }
+
+    await firebase.auth().signOut();
   }
 
 }
