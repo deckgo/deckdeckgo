@@ -17,6 +17,7 @@ import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} fro
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
+import {firebaseEnabled} from '../../../utils/core/environment.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
@@ -86,6 +87,10 @@ export class SyncService {
       }
 
       if (!authStore.state.loggedIn || !navigator.onLine) {
+        return;
+      }
+
+      if (!firebaseEnabled()) {
         return;
       }
 
@@ -772,7 +777,7 @@ export class SyncService {
 
     const {updateDecks, deleteDecks, deleteSlides, updateSlides} = data;
 
-    if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length ===  0) {
+    if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length === 0) {
       syncStore.state.sync = 'idle';
       return;
     }

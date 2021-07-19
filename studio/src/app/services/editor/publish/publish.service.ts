@@ -8,13 +8,14 @@ import errorStore from '../../../stores/error.store';
 import authStore from '../../../stores/auth.store';
 
 import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
-
 import {UserSocial} from '../../../models/data/user';
 
-import { DeckOnlineService } from '../../data/deck/deck.online.service';
+import {DeckOnlineService} from '../../data/deck/deck.online.service';
 
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';
+
+import {firebaseEnabled} from '../../../utils/core/environment.utils';
 
 export class PublishService {
   private static instance: PublishService;
@@ -40,6 +41,11 @@ export class PublishService {
           return;
         }
 
+        if (!firebaseEnabled()) {
+          reject('Firebase is not enabled therefore publishing cannot be triggered');
+          return;
+        }
+
         await this.updateDeckMeta(description, tags, github);
 
         await this.publishDeck(deckStore.state.deck);
@@ -54,11 +60,11 @@ export class PublishService {
   private publishDeck(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const config: EnvironmentFirebaseConfig = EnvironmentConfigService.getInstance().get('firebase');
+        const firebaseConfig: EnvironmentFirebaseConfig = EnvironmentConfigService.getInstance().get('firebase');
 
         const token: string = await firebase.auth().currentUser.getIdToken();
 
-        const rawResponse: Response = await fetch(`${config.functionsUrl}/publish`, {
+        const rawResponse: Response = await fetch(`${firebaseConfig.functionsUrl}/publish`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
