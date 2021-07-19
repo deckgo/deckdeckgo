@@ -1,7 +1,7 @@
 import {FunctionalComponent, h} from '@stencil/core';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/core/environment/environment-config.service';
 
 interface AppIconProps {
   name: string;

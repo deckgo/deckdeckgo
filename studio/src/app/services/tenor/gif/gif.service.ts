@@ -1,4 +1,4 @@
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import {get, set} from 'idb-keyval';
 
@@ -18,12 +18,7 @@ export class GifService {
 
   getCategories(): Promise<TenorCategory[]> {
     return new Promise<TenorCategory[]>(async (resolve) => {
-      const config: EnvironmentTenorConfig | undefined = EnvironmentConfigService.getInstance().get('tenor');
-
-      if (!config) {
-        resolve([]);
-        return;
-      }
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       const anonymousId: string = await this.getAnonymousId();
 
@@ -49,12 +44,7 @@ export class GifService {
 
   getGifs(searchTerm: string, next: string | number): Promise<TenorSearchResponse | undefined> {
     return new Promise<TenorSearchResponse | undefined>(async (resolve) => {
-      const config: EnvironmentTenorConfig | undefined = EnvironmentConfigService.getInstance().get('tenor');
-
-      if (!config) {
-        resolve(undefined);
-        return;
-      }
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       const anonymousId: string = await this.getAnonymousId();
 
@@ -92,12 +82,7 @@ export class GifService {
 
   getRandomGif(searchTerm: string): Promise<TenorSearchResponse | undefined> {
     return new Promise<TenorSearchResponse | undefined>(async (resolve) => {
-      const config: EnvironmentTenorConfig | undefined = EnvironmentConfigService.getInstance().get('tenor');
-
-      if (!config) {
-        resolve(undefined);
-        return;
-      }
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       const anonymousId: string = await this.getAnonymousId();
 
@@ -125,12 +110,7 @@ export class GifService {
 
   registerShare(gifId: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const config: EnvironmentTenorConfig | undefined = EnvironmentConfigService.getInstance().get('tenor');
-
-      if (!config) {
-        resolve();
-        return;
-      }
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       // It isn't mandatory to provide the anonymous ID therefore, as we rather not like to track even if anonymous, we don't provide it
 
@@ -157,12 +137,7 @@ export class GifService {
         return;
       }
 
-      const config: EnvironmentTenorConfig | undefined = EnvironmentConfigService.getInstance().get('tenor');
-
-      if (!config) {
-        resolve(localAnonymousId);
-        return;
-      }
+      const config: EnvironmentTenorConfig = EnvironmentConfigService.getInstance().get('tenor');
 
       try {
         const rawResponse: Response = await fetch(config.url + 'anonid?key=' + config.key);

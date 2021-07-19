@@ -5,10 +5,11 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   deckdeckgo: {
-    mock: true,
+    prod: false,
     appUrl: 'http://localhost:3333',
     globalAssetsUrl: 'http://localhost:3333/assets',
     pollUrl: 'http://localhost:3333/poll',
+    apiUrl: '<@API_URL@>',
     presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
   },
@@ -22,6 +23,13 @@ setupDeckGoConfig({
     storageUrl: '<@FIREBASE_STORAGE_URL@>',
     functionsUrl: '<@FIREBASE_FUNCTIONS_URL@>',
     appId: '<@FIREBASE_APP_ID@>'
+  },
+  tenor: {
+    url: 'https://api.tenor.com/v1/',
+    key: '<@TENOR_KEY@>'
+  },
+  unsplash: {
+    url: '<@UNSPLASH_URL@>'
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='

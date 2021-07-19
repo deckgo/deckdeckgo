@@ -5,7 +5,7 @@ import store from '../../stores/poll.store';
 import {DeckdeckgoPoll} from '@deckdeckgo/types';
 
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../core/environment/environment-config.service';
 
 export class PollService {
   private socket: SocketIOClient.Socket;

@@ -1,7 +1,7 @@
 import {ApiPhotoService} from './api.photo.service';
 
 import {EnvironmentUnsplashConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import store from '../../../stores/error.store';
 
@@ -9,12 +9,7 @@ export class ApiPhotoProdService extends ApiPhotoService {
   // @Override
   getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse | undefined> {
     return new Promise<UnsplashSearchResponse>(async (resolve) => {
-      const config: EnvironmentUnsplashConfig | undefined = EnvironmentConfigService.getInstance().get('unsplash');
-
-      if (!config) {
-        resolve(undefined);
-        return;
-      }
+      const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
 
       const searchUrl: string = config.url + 'search/photos/?query=' + searchTerm + '&page=' + next;
 
@@ -40,12 +35,7 @@ export class ApiPhotoProdService extends ApiPhotoService {
   // @Override
   registerDownload(photoId: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const config: EnvironmentUnsplashConfig | undefined = EnvironmentConfigService.getInstance().get('unsplash');
-
-      if (!config) {
-        resolve();
-        return;
-      }
+      const config: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
 
       const shareUrl: string = config.url + 'photos/' + photoId + '/download/';
 

@@ -22,7 +22,7 @@ import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 import {StorageOnlineService} from '../../storage/storage.online.service';
 import {FontsService} from '../fonts/fonts.service';
 

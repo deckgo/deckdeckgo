@@ -1,5 +1,5 @@
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../core/environment/environment-config.service';
 
 import {ApiUserService} from './api.user.service';
 import {ApiUserMockService} from './api.user.mock.service';
@@ -11,7 +11,7 @@ export class ApiUserFactoryService {
   static getInstance() {
     if (!ApiUserFactoryService.instance) {
       const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      ApiUserFactoryService.instance = deckDeckGoConfig.mock ? new ApiUserMockService() : new ApiUserProdService();
+      ApiUserFactoryService.instance = !deckDeckGoConfig.prod ? new ApiUserMockService() : new ApiUserProdService();
     }
     return ApiUserFactoryService.instance;
   }
