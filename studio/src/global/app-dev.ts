@@ -6,7 +6,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 setupDeckGoConfig({
   deckdeckgo: {
     mock: true,
-    cloud: 'firebase',
+    cloud: 'ic',
     appUrl: 'http://localhost:3333',
     globalAssetsUrl: 'http://localhost:3333/assets',
     pollUrl: 'http://localhost:3333/poll',

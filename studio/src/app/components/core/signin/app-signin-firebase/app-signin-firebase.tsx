@@ -1,34 +1,29 @@
-import {Component, Element, Prop, State, h} from '@stencil/core';
+import {Component, Event, h, Fragment, EventEmitter} from '@stencil/core';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
 import {UserCredential, OAuthCredential} from '@firebase/auth-types';
 
-import navStore, {NavDirection} from '../../../stores/nav.store';
-import tokenStore from '../../../stores/token.store';
-import i18n from '../../../stores/i18n.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
+import tokenStore from '../../../../stores/token.store';
+import i18n from '../../../../stores/i18n.store';
 
-import {Utils} from '../../../utils/core/utils';
-import {renderI18n} from '../../../utils/core/i18n.utils';
+import {Utils} from '../../../../utils/core/utils';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
-import {AppIcon} from '../app-icon/app-icon';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
-  tag: 'app-signin',
-  styleUrl: 'app-signin.scss'
+  tag: 'app-signin-firebase',
+  styleUrl: 'app-signin-firebase.scss'
 })
-export class AppSignIn {
-  @Element() el: HTMLElement;
-
-  @Prop()
-  redirect: string;
-
-  @State()
-  private signInInProgress: boolean = false;
+export class AppSignInFirebase {
+  @Event()
+  inProgress: EventEmitter<boolean>;
 
   async componentDidLoad() {
     await this.setupFirebaseUI();
@@ -42,7 +37,7 @@ export class AppSignIn {
   }
 
   async setupFirebaseUI() {
-    this.signInInProgress = false;
+    this.inProgress.emit(false);
 
     await Utils.injectJS({
       id: 'firebase-ui-script',
@@ -80,7 +75,7 @@ export class AppSignIn {
       autoUpgradeAnonymousUsers: false,
       callbacks: {
         signInSuccessWithAuthResult: (authResult, _redirectUrl) => {
-          this.signInInProgress = true;
+          this.inProgress.emit(true);
 
           this.saveGithubCredentials(authResult);
 
@@ -123,12 +118,6 @@ export class AppSignIn {
     };
   }
 
-  async navigateBack() {
-    navStore.state.nav = {
-      direction: NavDirection.BACK
-    };
-  }
-
   private saveGithubCredentials(userCred: UserCredential) {
     if (!userCred || !userCred.user || !userCred.user.uid) {
       return;
@@ -149,21 +138,15 @@ export class AppSignIn {
   }
 
   render() {
-    return [
-      <main class="ion-padding fit">
-        {this.renderBackButton()}
-
+    return (
+      <Fragment>
         {this.renderMsg()}
 
         {this.renderGitHub()}
 
         <div id="firebaseui-auth-container"></div>
-
-        <p class="ion-text-center ion-padding-start ion-padding-end">
-          <small>{i18n.state.core.free_open_source}</small>
-        </p>
-      </main>
-    ];
+      </Fragment>
+    );
   }
 
   private renderMsg() {
@@ -171,20 +154,6 @@ export class AppSignIn {
       <h1 class="ion-text-center ion-padding-start ion-padding-end">{i18n.state.sign_in.hi}</h1>,
       <p class="ion-text-center ion-padding">{i18n.state.sign_in.why}</p>
     ];
-  }
-
-  private renderBackButton() {
-    if (this.signInInProgress) {
-      return undefined;
-    } else {
-      return (
-        <ion-buttons class="back">
-          <ion-button onClick={() => this.navigateBack()} color="dark" aria-label={i18n.state.core.close}>
-            <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
-          </ion-button>
-        </ion-buttons>
-      );
-    }
   }
 
   private renderGitHub() {
