@@ -8,13 +8,14 @@ import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../mod
 import {Template} from '../../../../../models/data/template';
 
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
+import {tenorEnabled} from '../../../../../utils/core/environment.utils';
 
 import {EnvironmentConfigService} from '../../../../../services/core/environment/environment-config.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
 import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
-import { AppIcon } from '../../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-templates-default'
@@ -45,6 +46,8 @@ export class AppTemplatesDefault {
   @Event()
   composeTemplate: EventEmitter<InitTemplate>;
 
+  private tenorEnabled: boolean = tenorEnabled();
+
   async componentDidLoad() {
     await this.lazyLoadContent();
     await this.drawChart();
@@ -52,13 +55,13 @@ export class AppTemplatesDefault {
   }
 
   private async lazyLoadContent() {
-    const slideGif: HTMLElement = this.el.querySelector('deckgo-slide-gif.showcase');
-    const slideAuthor: HTMLElement = this.el.querySelector('deckgo-slide-author.showcase');
-    const slideQRCode: HTMLElement = this.el.querySelector('deckgo-slide-qrcode.showcase');
-    const slidesChart: HTMLElement = this.el.querySelector('deckgo-slide-chart.showcase');
-    const slidesPoll: HTMLElement = this.el.querySelector('deckgo-slide-poll.showcase');
+    const slideGif: HTMLElement | null = this.el.querySelector('deckgo-slide-gif.showcase');
+    const slideAuthor: HTMLElement | null = this.el.querySelector('deckgo-slide-author.showcase');
+    const slideQRCode: HTMLElement | null = this.el.querySelector('deckgo-slide-qrcode.showcase');
+    const slidesChart: HTMLElement | null = this.el.querySelector('deckgo-slide-chart.showcase');
+    const slidesPoll: HTMLElement | null = this.el.querySelector('deckgo-slide-poll.showcase');
 
-    const slides: HTMLElement[] = this.navigatorOnline ? [slideGif, slideAuthor, slideQRCode, slidesChart, slidesPoll] : [slideQRCode, slidesChart, slidesPoll];
+    const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, slidesChart, slidesPoll].filter((element: HTMLElement | null) => element !== null);
 
     if (!slides || slides.length <= 0) {
       return;
@@ -124,8 +127,7 @@ export class AppTemplatesDefault {
       <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.POLL})}>
         <deckgo-slide-poll
           class="showcase"
-          poll-link={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}
-          poll-server={EnvironmentConfigService.getInstance().get('deckdeckgo').pollServerUrl}
+          poll-link={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').pollUrl}
           count-answers={3}
           connectPollSocket={false}>
           <p slot="question">{i18n.state.templates.poll}</p>
@@ -205,6 +207,10 @@ export class AppTemplatesDefault {
   private renderGif() {
     if (!this.navigatorOnline) {
       // For the Gif template, we need to select a Gif in Tenor, which is not accessible offline
+      return undefined;
+    }
+
+    if (!this.tenorEnabled) {
       return undefined;
     }
 
@@ -289,8 +295,8 @@ export class AppTemplatesDefault {
       <div class="item" custom-tappable onClick={() => this.addSlideQRCode.emit()}>
         <deckgo-slide-qrcode
           class="showcase"
-          content={EnvironmentConfigService.getInstance().get('deckdeckgo').appUrl}
-          img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
+          content={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').appUrl}
+          img-src={`${EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
           <p slot="title">{i18n.state.templates.qr_code}</p>
         </deckgo-slide-qrcode>
       </div>

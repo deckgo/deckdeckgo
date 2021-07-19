@@ -10,7 +10,7 @@ import {ApiUserService} from './api.user.service';
  */
 export class ApiUserMockService extends ApiUserService {
   // @Override
-  query(apiUserInfo: ApiUserInfo | ApiUser, _token: string, _context: string, _method: string): Promise<ApiUser> {
+  query(apiUserInfo: ApiUserInfo | ApiUser, _token: string, _context: string, _method: string): Promise<ApiUser | undefined> {
     return new Promise<ApiUser>(async (resolve) => {
       const testUser: ApiUser = await this.createTestUserInfo(apiUserInfo);
 
@@ -28,7 +28,7 @@ export class ApiUserMockService extends ApiUserService {
   }
 
   // @Override
-  get(_userId: string): Promise<ApiUser> {
+  get(_userId: string): Promise<ApiUser | undefined> {
     return new Promise<ApiUser>(async (resolve) => {
       resolve(undefined);
     });

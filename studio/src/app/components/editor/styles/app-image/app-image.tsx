@@ -12,6 +12,7 @@ import {Expanded} from '../../../../types/core/settings';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
+import { tenorEnabled, unsplashEnabled } from '../../../../utils/core/environment.utils';
 
 import { AppIcon } from '../../../core/app-icon/app-icon';
 
@@ -46,6 +47,9 @@ export class AppImage {
 
   @State()
   private navigatorOnline: boolean = navigator.onLine;
+
+  private tenorEnabled = tenorEnabled();
+  private unsplashEnabled = unsplashEnabled();
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
@@ -144,6 +148,10 @@ export class AppImage {
       return undefined;
     }
 
+    if (!this.unsplashEnabled) {
+      return undefined;
+    }
+
     return (
       <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
         <ion-label>{i18n.state.editor.stock_photo}</ion-label>
@@ -154,6 +162,10 @@ export class AppImage {
   private renderGif() {
     if (!this.navigatorOnline) {
       // Tenor not available offline
+      return undefined;
+    }
+
+    if (!this.tenorEnabled) {
       return undefined;
     }
 
