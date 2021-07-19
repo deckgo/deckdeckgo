@@ -19,6 +19,7 @@
     "postbuild": "./scripts/postbuild.js",
     "start": "stencil build --dev --watch --serve",
     "start:staging": "stencil build --dev --watch --serve --staging",
+    "start:ic": "stencil build --dev --watch --serve --ic",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watch",
     "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/counter/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
