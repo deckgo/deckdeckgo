@@ -11,7 +11,7 @@ export class ApiPhotoFactoryService {
   static getInstance() {
     if (!ApiPhotoFactoryService.instance) {
       const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      ApiPhotoFactoryService.instance = !deckDeckGoConfig.prod ? new ApiPhotoMockService() : new ApiPhotoProdService();
+      ApiPhotoFactoryService.instance = deckDeckGoConfig.mock ? new ApiPhotoMockService() : new ApiPhotoProdService();
     }
     return ApiPhotoFactoryService.instance;
   }
