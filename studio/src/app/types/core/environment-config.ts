@@ -24,11 +24,11 @@ export interface EnvironmentGoogleConfig {
 }
 
 export interface EnvironmentDeckDeckGoConfig {
-  prod: boolean;
+  mock: boolean;
   appUrl: string;
   globalAssetsUrl: string;
   pollUrl: string;
-  apiUrl: string;
+  apiUrl?: string;
   presentationUrl: string;
   socketUrl: string;
 }
@@ -36,8 +36,8 @@ export interface EnvironmentDeckDeckGoConfig {
 export interface EnvironmentConfig {
   deckdeckgo: EnvironmentDeckDeckGoConfig;
   firebase: EnvironmentFirebaseConfig;
-  tenor: EnvironmentTenorConfig;
-  unsplash: EnvironmentUnsplashConfig;
+  tenor?: EnvironmentTenorConfig;
+  unsplash?: EnvironmentUnsplashConfig;
   google: EnvironmentGoogleConfig;
 }
 

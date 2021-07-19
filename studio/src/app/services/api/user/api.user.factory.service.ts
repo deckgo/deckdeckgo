@@ -11,7 +11,7 @@ export class ApiUserFactoryService {
   static getInstance() {
     if (!ApiUserFactoryService.instance) {
       const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      ApiUserFactoryService.instance = !deckDeckGoConfig.prod ? new ApiUserMockService() : new ApiUserProdService();
+      ApiUserFactoryService.instance = deckDeckGoConfig.mock ? new ApiUserMockService() : new ApiUserProdService();
     }
     return ApiUserFactoryService.instance;
   }

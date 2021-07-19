@@ -7,11 +7,11 @@ import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
 
 export abstract class ApiUserService {
-  abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser>;
+  abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser | undefined>;
 
   abstract delete(userId: string, token: string): Promise<void>;
 
-  abstract get(userId: string): Promise<ApiUser>;
+  abstract get(userId: string): Promise<ApiUser | undefined>;
 
   signIn(authUser: AuthUser): Promise<void> {
     return new Promise<void>(async (resolve) => {
@@ -25,7 +25,7 @@ export abstract class ApiUserService {
         }
 
         try {
-          const user: ApiUser = await this.get(authUser.uid);
+          const user: ApiUser | undefined = await this.get(authUser.uid);
 
           if (!user) {
             const apiUser: ApiUserInfo = await this.createUserInfo(authUser);
@@ -48,11 +48,11 @@ export abstract class ApiUserService {
     apiUserStore.reset();
   }
 
-  post(apiUser: ApiUserInfo, token: string): Promise<ApiUser> {
+  post(apiUser: ApiUserInfo, token: string): Promise<ApiUser | undefined> {
     return this.query(apiUser, token, '/users', 'POST');
   }
 
-  put(apiUser: ApiUserInfo | ApiUser, token: string, userId: string): Promise<ApiUser> {
+  put(apiUser: ApiUserInfo | ApiUser, token: string, userId: string): Promise<ApiUser | undefined> {
     return this.query(apiUser, token, `/users/${userId}`, 'PUT');
   }
 

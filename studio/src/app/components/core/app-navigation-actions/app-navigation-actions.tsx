@@ -8,6 +8,7 @@ import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
+import { shareEnabled } from '../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -20,6 +21,8 @@ export class AppNavigationActions {
   @Prop() publish: boolean = false;
 
   @Event() private actionPublish: EventEmitter<void>;
+
+  private shareEnabled: boolean = shareEnabled();
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -77,7 +80,7 @@ export class AppNavigationActions {
   }
 
   private renderPublishButton() {
-    if (this.publish) {
+    if (this.publish && this.shareEnabled) {
       return (
         <ion-button
           class="publish ion-margin-end"

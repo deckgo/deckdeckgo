@@ -226,7 +226,7 @@ export class CreateSlidesUtils {
         <deckgo-slide-qrcode
           key={uuid()}
           content={content}
-          img-src={`${EnvironmentConfigService.getInstance().get('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
+          img-src={`${EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
           {title}
         </deckgo-slide-qrcode>
       );
@@ -267,7 +267,7 @@ export class CreateSlidesUtils {
           {...answerSlots}
 
           <div slot="how-to">
-            Go to <a href={EnvironmentConfigService.getInstance().get('deckdeckgo').pollUrl}>app.deckdeckgo.com/poll</a> and use the code {'{0}'}
+            Go to <a href={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').pollUrl}>app.deckdeckgo.com/poll</a> and use the code {'{0}'}
           </div>
           <div slot="awaiting-votes">Awaiting votes</div>
         </deckgo-slide-poll>
