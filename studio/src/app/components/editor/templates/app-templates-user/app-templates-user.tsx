@@ -40,8 +40,8 @@ export class AppTemplatesUser {
     }
   }
 
-  private async signIn() {
-    await signIn();
+  private signIn() {
+    signIn();
 
     this.navigateSignIn.emit();
   }

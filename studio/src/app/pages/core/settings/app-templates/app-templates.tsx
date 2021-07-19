@@ -14,7 +14,7 @@ import {signIn} from '../../../../utils/core/signin.utils';
 
 import {TemplateService} from '../../../../services/data/template/template.service';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
-import { modalController } from '../../../../utils/ionic/ionic.overlay';
+import {modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-templates',
@@ -125,7 +125,7 @@ export class AppTemplates {
     return renderI18n(i18n.state.settings.access_templates, {
       placeholder: '{0}',
       value: (
-        <button type="button" class="app-button" onClick={async () => await signIn()}>
+        <button type="button" class="app-button" onClick={() => signIn()}>
           {i18n.state.nav.sign_in}
         </button>
       )

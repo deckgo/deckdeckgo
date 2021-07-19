@@ -15,7 +15,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-confi
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
-import { AppIcon } from '../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-signin',

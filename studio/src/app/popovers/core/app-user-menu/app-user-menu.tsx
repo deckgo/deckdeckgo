@@ -5,6 +5,7 @@ import i18n from '../../../stores/i18n.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
 
 @Component({
   tag: 'app-user-menu',
@@ -18,7 +19,7 @@ export class AppUserMenu {
   private imageHistoryService: ImageHistoryService;
 
   constructor() {
-    this.authService = AuthService.getInstance();
+    this.authService = AuthFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 

@@ -8,7 +8,7 @@ import {ApiPhotoProdService} from './api.photo.prod.service';
 export class ApiPhotoFactoryService {
   private static instance: ApiPhotoService;
 
-  static getInstance() {
+  static getInstance(): ApiPhotoService {
     if (!ApiPhotoFactoryService.instance) {
       const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
       ApiPhotoFactoryService.instance = deckDeckGoConfig.mock ? new ApiPhotoMockService() : new ApiPhotoProdService();

@@ -9,7 +9,7 @@ import errorStore from '../../../stores/error.store';
 import syncStore from '../../../stores/sync.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
-import { alertController, loadingController, popoverController } from '../../../utils/ionic/ionic.overlay';
+import {alertController, loadingController, popoverController} from '../../../utils/ionic/ionic.overlay';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 
@@ -115,11 +115,7 @@ export class AppNavigationActions {
 
     return (
       <Fragment>
-        <button
-          class="ion-activatable"
-          onClick={() => this.newDeck()}
-          disabled={disabled}
-          aria-label={i18n.state.tools.new_presentation}>
+        <button class="ion-activatable" onClick={() => this.newDeck()} disabled={disabled} aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/document.svg"></ion-icon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -148,7 +144,7 @@ export class AppNavigationActions {
     }
 
     return (
-      <button class="ion-activatable" onClick={async () => await signIn()}>
+      <button class="ion-activatable" onClick={() => signIn()}>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon aria-hidden="true" name="log-in-outline"></ion-icon>
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
@@ -185,7 +181,7 @@ export class AppNavigationActions {
         : syncStore.state.sync === 'in_progress'
         ? i18n.state.tools.cloud_in_progress
         : syncStore.state.sync === 'pending'
-          ? i18n.state.tools.cloud_pending
+        ? i18n.state.tools.cloud_pending
         : i18n.state.tools.cloud_idle;
 
     return (

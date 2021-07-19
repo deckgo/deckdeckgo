@@ -1,4 +1,4 @@
-import { enableInputBlurring } from '../app/utils/ionic/ionic.input-blurring';
+import {enableInputBlurring} from '../app/utils/ionic/ionic.input-blurring';
 enableInputBlurring();
 
 import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
@@ -6,6 +6,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 setupDeckGoConfig({
   deckdeckgo: {
     mock: false,
+    cloud: 'ic',
     appUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app',
     globalAssetsUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/assets',
     pollUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/poll',

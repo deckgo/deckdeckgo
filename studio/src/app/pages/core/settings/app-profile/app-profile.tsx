@@ -29,7 +29,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-co
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
-import { loadingController, modalController } from '../../../../utils/ionic/ionic.overlay';
+import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-profile',
@@ -470,7 +470,7 @@ export class AppProfile {
     return renderI18n(i18n.state.settings.access_settings, {
       placeholder: '{0}',
       value: (
-        <button type="button" class="app-button" onClick={async () => await signIn()}>
+        <button type="button" class="app-button" onClick={() => signIn()}>
           {i18n.state.nav.sign_in}
         </button>
       )

@@ -8,7 +8,7 @@ import {ApiUserProdService} from './api.user.prod.service';
 export class ApiUserFactoryService {
   private static instance: ApiUserService;
 
-  static getInstance() {
+  static getInstance(): ApiUserService {
     if (!ApiUserFactoryService.instance) {
       const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
       ApiUserFactoryService.instance = deckDeckGoConfig.mock ? new ApiUserMockService() : new ApiUserProdService();
