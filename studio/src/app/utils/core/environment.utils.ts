@@ -12,7 +12,7 @@ export const unsplashEnabled = (): boolean => {
   );
 };
 
-export const shareEnabled = () => {
+export const shareEnabled = (): boolean => {
   const deckdeckgoConfig = EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo');
   return deckdeckgoConfig.apiUrl !== undefined || deckdeckgoConfig.mock;
 };
