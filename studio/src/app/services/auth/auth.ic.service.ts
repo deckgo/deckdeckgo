@@ -2,6 +2,7 @@ import {AuthClient} from '@dfinity/auth-client';
 import type {Principal} from '@dfinity/principal';
 
 import authStore from '../../stores/auth.store';
+import userStore from '../../stores/user.store';
 import navStore, {NavDirection} from '../../stores/nav.store';
 import errorStore from '../../stores/error.store';
 
@@ -31,6 +32,18 @@ export class AuthIcService extends AuthService {
       anonymous: false,
       gitHub: false
     } as AuthUser;
+
+    // TODO: do we need a user with internet computer? probably linked with above answer too
+    const now: Date = new Date();
+
+    userStore.state.user = {
+      id: principal.toString(),
+      data: {
+        anonymous: false,
+        created_at: now,
+        updated_at: now
+      }
+    };
   }
 
   // @Override
