@@ -2,6 +2,8 @@ import {AuthClient} from '@dfinity/auth-client';
 import type {Principal} from '@dfinity/principal';
 
 import authStore from '../../stores/auth.store';
+import navStore, {NavDirection} from '../../stores/nav.store';
+import errorStore from '../../stores/error.store';
 
 import {del} from 'idb-keyval';
 
@@ -35,13 +37,17 @@ export class AuthIcService extends AuthService {
   async signIn() {
     const authClient: AuthClient = this.authClient || (await AuthClient.create());
 
-    // TODO: onSuccess and onError
     await authClient.login({
       onSuccess: () => {
-        console.log('**** AUTH 1 **** authClient now has an identity');
+        navStore.state.nav = {
+          url: '/',
+          direction: NavDirection.RELOAD
+        };
       },
       onError: (err?: string) => {
-        console.log('**** AUTH 2 **** error while login in', err);
+        console.error(err);
+
+        errorStore.state.error = 'There was an issue sign in with the internet identity.';
       }
     });
   }

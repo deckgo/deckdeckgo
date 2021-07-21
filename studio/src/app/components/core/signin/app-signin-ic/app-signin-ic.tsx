@@ -1,7 +1,11 @@
-import {Component, Event, EventEmitter, Fragment, h} from '@stencil/core';
+import {Component, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
+
 import {AppIcon} from '../../app-icon/app-icon';
+
+import {AuthService} from '../../../../services/auth/auth.service';
+import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
 
 @Component({
   tag: 'app-signin-ic',
@@ -11,22 +15,44 @@ export class AppSignInIc {
   @Event()
   inProgress: EventEmitter<boolean>;
 
-  // TODO: signin
+  @State()
+  private signInInProgress: boolean = false;
+
+  private readonly authService: AuthService;
+
+  constructor() {
+    this.authService = AuthFactoryService.getInstance();
+  }
+
+  private async signIn() {
+    this.inProgress.emit(true);
+    this.signInInProgress = true;
+
+    await this.authService.signIn();
+  }
 
   render() {
     return (
       <Fragment>
         {this.renderMsg()}
 
-        <div class="actions">
-          <ion-button shape="round" color="dark">
-            <AppIcon name="dfinity" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
-            <ion-label>{i18n.state.sign_in.internet_identity}</ion-label>
-          </ion-button>
-        </div>
+        <div class="actions">{this.renderAction()}</div>
 
         {this.renderTerms()}
       </Fragment>
+    );
+  }
+
+  private renderAction() {
+    if (this.signInInProgress) {
+      return <ion-spinner color="medium"></ion-spinner>;
+    }
+
+    return (
+      <ion-button shape="round" color="dark" onClick={async () => await this.signIn()}>
+        <AppIcon name="dfinity" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
+        <ion-label>{i18n.state.sign_in.internet_identity}</ion-label>
+      </ion-button>
     );
   }
 

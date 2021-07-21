@@ -26,7 +26,7 @@ export class AppSignIn {
     };
   }
 
-  private uppdateInProgress = ({detail}: CustomEvent<boolean>) => {
+  private updateInProgress = ({detail}: CustomEvent<boolean>) => {
     this.signInInProgress = detail;
   };
 
@@ -44,9 +44,9 @@ export class AppSignIn {
     const {cloud} = this.deckDeckGoConfig;
 
     if (cloud === 'firebase') {
-      return <app-signin-firebase onInProgress={this.uppdateInProgress}></app-signin-firebase>;
+      return <app-signin-firebase onInProgress={this.updateInProgress}></app-signin-firebase>;
     } else if (cloud === 'ic') {
-      return <app-signin-ic onInProgress={this.uppdateInProgress}></app-signin-ic>;
+      return <app-signin-ic onInProgress={this.updateInProgress}></app-signin-ic>;
     }
 
     return undefined;
