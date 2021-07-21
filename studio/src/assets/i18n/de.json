@@ -1,7 +1,6 @@
 {
   "core": {
     "close": "Schließen",
-    "free_open_source": "DeckDeckGo is kostenlos und Open Source😃.",
     "loading": "Laden...",
     "in_progress": "Wird bearbeitet...",
     "yes": "Ja",
@@ -62,7 +61,10 @@
   "sign_in": {
     "hi": "Oh, hi 👋! Schön, dass du da bist.",
     "why": "Melde dich an, um deine Präsentationen Online zu speichern und teilen.",
-    "additionally": "Sichere zusätzlich den Quellcode deiner Folien auf einem GitHub {0} Repository."
+    "additionally": "Sichere zusätzlich den Quellcode deiner Folien auf einem GitHub {0} Repository.",
+    "internet_identity": "Mit Internet-Identität anmelden",
+    "why_internet_computer": "Melden Sie sich an, um Ihre Präsentationen online im Internet-Computer-Blockchain-Netzwerk zu speichern.",
+    "accept_by_continuing": "Indem Sie fortfahren, akzeptieren Sie unsere "
   },
   "settings": {
     "un_publish": "Bitte beachte, dass Präsentationen, die du geteilt hast, nicht automatisch wieder aus dem Netzt gelöscht werden. Falls du das Veröffentlichen rückgängig machen möchtest, schreibe uns bitte in einen unserer {0} Channels an.",

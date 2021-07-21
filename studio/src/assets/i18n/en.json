@@ -1,7 +1,6 @@
 {
   "core": {
     "close": "Close",
-    "free_open_source": "DeckDeckGo is free and open source 😃.",
     "loading": "Loading...",
     "in_progress": "In progress...",
     "yes": "Yes",
@@ -62,7 +61,10 @@
   "sign_in": {
     "hi": "Oh, hi 👋! Good to have you.",
     "why": "Sign in to save and to share your presentation online.",
-    "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging."
+    "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging.",
+    "internet_identity": "Sign in with Internet Identity",
+    "why_internet_computer": "Sign in to save your presentation online on the Internet Computer blockchain network.",
+    "accept_by_continuing": "By continuing, you are indicating that you accept our"
   },
   "settings": {
     "un_publish": "Please note that currently, the presentations you have shared are not automatically removed from internet. If you wish to un-publish them, drop us a message on one of our {0} channels.",

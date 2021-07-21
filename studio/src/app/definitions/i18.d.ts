@@ -1,6 +1,5 @@
 interface I18nCore {
   close: string;
-  free_open_source: string;
   loading: string;
   in_progress: string;
   yes: string;
@@ -67,6 +66,9 @@ interface I18nSign_in {
   hi: string;
   why: string;
   additionally: string;
+  internet_identity: string;
+  why_internet_computer: string;
+  accept_by_continuing: string;
 }
 
 interface I18nSettings {

@@ -11,8 +11,9 @@ import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
+import {AuthFactoryService} from './services/auth/auth.factory.service';
 
-import { toastController } from './utils/ionic/ionic.overlay';
+import {toastController} from './utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-root',
@@ -38,7 +39,7 @@ export class AppRoot {
   private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
-    this.authService = AuthService.getInstance();
+    this.authService = AuthFactoryService.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();

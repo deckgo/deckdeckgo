@@ -8,8 +8,9 @@ import i18n from '../../../stores/i18n.store';
 import {signIn} from '../../../utils/core/signin.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
+import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
 
-import { AppIcon } from '../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-menu',
@@ -22,11 +23,7 @@ export class AppMenu {
   private authService: AuthService;
 
   constructor() {
-    this.authService = AuthService.getInstance();
-  }
-
-  private async signIn() {
-    signIn();
+    this.authService = AuthFactoryService.getInstance();
   }
 
   private async signOut() {
@@ -84,7 +81,7 @@ export class AppMenu {
       );
     } else {
       return (
-        <ion-item button onClick={() => this.signIn()}>
+        <ion-item button onClick={() => signIn()}>
           <AppIcon name="log-in" ariaLabel="" ariaHidden={true} lazy={true} slot="start" style={{transform: 'translate(-3px, 0px)'}}></AppIcon>
           <ion-label>{i18n.state.nav.sign_in}</ion-label>
         </ion-item>

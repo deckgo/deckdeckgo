@@ -3,10 +3,11 @@ import {Config} from '@stencil/core';
 // @ts-ignore
 import path from 'path';
 
+const autoprefixer = require('autoprefixer');
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
-const autoprefixer = require('autoprefixer');
 import replace from '@rollup/plugin-replace';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 import {canisterEnvIds} from './ic.config';
 
@@ -20,7 +21,13 @@ const internetComputer: boolean = process.argv && process.argv.indexOf('--ic') >
 const prod = !(dev || staging || internetComputer);
 
 const globalScript: string =
-  dev && !staging ? 'src/global/app-dev.ts' : staging ? 'src/global/app-staging.ts' : internetComputer ? 'src/global/app-ic.ts' : 'src/global/app.ts';
+  dev && !staging && !internetComputer
+    ? 'src/global/app-dev.ts'
+    : staging
+    ? 'src/global/app-staging.ts'
+    : internetComputer
+    ? 'src/global/app-ic.ts'
+    : 'src/global/app.ts';
 
 const configDataFile = dev && !staging ? './config.dev.json' : staging || internetComputer ? './config.staging.json' : './config.prod.json';
 const configValues = require(configDataFile);
@@ -181,5 +188,8 @@ export const config: Config = {
   devServer: {
     openBrowser: false,
     reloadStrategy: 'pageReload'
+  },
+  rollupPlugins: {
+    after: [nodePolyfills()]
   }
 };

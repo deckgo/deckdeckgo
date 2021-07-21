@@ -14,7 +14,7 @@ import {signIn} from '../../../../utils/core/signin.utils';
 
 import {TemplateService} from '../../../../services/data/template/template.service';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
-import { modalController } from '../../../../utils/ionic/ionic.overlay';
+import {modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-templates',

@@ -29,7 +29,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-co
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
-import { loadingController, modalController } from '../../../../utils/ionic/ionic.overlay';
+import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-profile',
