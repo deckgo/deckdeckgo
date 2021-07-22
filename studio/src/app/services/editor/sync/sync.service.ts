@@ -17,7 +17,7 @@ import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} fro
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
-import {firebaseEnabled} from '../../../utils/core/environment.utils';
+import {firebaseEnabled, internetComputerEnabled} from '../../../utils/core/environment.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
@@ -26,6 +26,7 @@ import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-confi
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {StorageOnlineService} from '../../storage/storage.online.service';
 import {FontsService} from '../fonts/fonts.service';
+import { SyncIcService } from './sync.ic.service';
 
 export class SyncService {
   private static instance: SyncService;
@@ -87,6 +88,21 @@ export class SyncService {
       }
 
       if (!authStore.state.loggedIn || !navigator.onLine) {
+        return;
+      }
+
+      // TODO: More and clean
+      if (internetComputerEnabled()) {
+        await SyncIcService.getInstance().sync(syncData);
+
+        // TODO: Refactor and clean code
+
+        const {syncedAt} = syncData;
+
+        await this.cleanPending(syncedAt);
+
+        await this.updateSyncState();
+
         return;
       }
 

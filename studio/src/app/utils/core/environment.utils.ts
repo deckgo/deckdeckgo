@@ -16,3 +16,5 @@ export const shareEnabled = (): boolean => {
 };
 
 export const firebaseEnabled = (): boolean => EnvironmentConfigService.getInstance().get('firebase') !== undefined;
+
+export const internetComputerEnabled = (): boolean => EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo')?.cloud === 'ic';

@@ -1,15 +1,15 @@
 import {Actor, HttpAgent} from '@dfinity/agent';
 
 // Imports candid interface
-import {idlFactory} from './counter.did.js';
+import {idlFactory} from './decks.did.js';
 // CANISTER_ID is replaced by webpack based on node enviroment
-export const canisterId = process.env.COUNTER_CANISTER_ID;
+export const canisterId = process.env.DECKS_CANISTER_ID;
 
 /**
  *
  * @param {string | Principal} canisterId Canister ID of Agent
  * @param {{agentOptions?: import("@dfinity/agent").HttpAgentOptions; actorOptions?: import("@dfinity/agent").ActorConfig}} [options]
- * @return {import("@dfinity/agent").ActorSubclass<import("./counter.did.js")._SERVICE>}
+ * @return {import("@dfinity/agent").ActorSubclass<import("./decks.did.js")._SERVICE>}
  */
 export const createActor = (canisterId, options) => {
   const agent = new HttpAgent({...options?.agentOptions});
@@ -26,7 +26,7 @@ export const createActor = (canisterId, options) => {
 };
 
 /**
- * A ready-to-use agent for the counter canister
- * @type {import("@dfinity/agent").ActorSubclass<import("./counter.did.js")._SERVICE>}
+ * A ready-to-use agent for the decks canister
+ * @type {import("@dfinity/agent").ActorSubclass<import("./decks.did.js")._SERVICE>}
  */
-export const counter = createActor(canisterId);
+export const decks = createActor(canisterId);

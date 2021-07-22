@@ -84,7 +84,7 @@ actor Deck {
     };
 
     private func check_permission(user: Principal, deck: Deck) : async () {
-        if (user != Principal.fromText(deck.data.owner_id)) {
+        if (Principal.toText(user) != deck.data.owner_id) {
             throw Error.reject("User does not have the permission for the deck.");
         };
     };

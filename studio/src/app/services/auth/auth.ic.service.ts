@@ -28,7 +28,7 @@ export class AuthIcService extends AuthService {
 
     // TODO: should we or not use the principal as uid?
     authStore.state.authUser = {
-      uid: principal.toString(),
+      uid: principal.toText(),
       anonymous: false,
       gitHub: false
     } as AuthUser;
@@ -37,7 +37,7 @@ export class AuthIcService extends AuthService {
     const now: Date = new Date();
 
     userStore.state.user = {
-      id: principal.toString(),
+      id: principal.toText(),
       data: {
         anonymous: false,
         created_at: now,
