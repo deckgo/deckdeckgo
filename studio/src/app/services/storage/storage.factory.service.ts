@@ -13,7 +13,7 @@ export class StorageFactoryService {
   static getInstance(): StorageService {
     if (!StorageFactoryService.instance) {
       const {cloud}: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      StorageFactoryService.instance = cloud === 'none' ? new StorageOfflineService() : cloud === 'ic' ? new StorageIcService() : new StorageFirebaseService();
+      StorageFactoryService.instance = cloud === 'offline' ? new StorageOfflineService() : cloud === 'ic' ? new StorageIcService() : new StorageFirebaseService();
     }
     return StorageFactoryService.instance;
   }

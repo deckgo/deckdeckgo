@@ -13,7 +13,7 @@ export class SyncFactoryService {
   static getInstance(): SyncService {
     if (!SyncFactoryService.instance) {
       const {cloud}: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      SyncFactoryService.instance = cloud === 'none' ? new SyncOfflineService() : cloud === 'ic' ? new SyncIcService() : new SyncFirebaseService();
+      SyncFactoryService.instance = cloud === 'offline' ? new SyncOfflineService() : cloud === 'ic' ? new SyncIcService() : new SyncFirebaseService();
     }
     return SyncFactoryService.instance;
   }
