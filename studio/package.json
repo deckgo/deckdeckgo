@@ -10,8 +10,9 @@
   "scripts": {
     "clean": "node ./scripts/rm-www.js",
     "i18n": "node ./scripts/i18n.types.js",
-    "prebuild": "npm run clean && npm run i18n",
-    "prestart": "npm run i18n",
+    "ic:types": "node ./scripts/i18n.types.js",
+    "prebuild": "npm run clean && npm run i18n && npm run ic:types",
+    "prestart": "npm run i18n && npm run ic:types",
     "build": "npm run build:ic",
     "build:prod": "stencil build",
     "build:staging": "npm run build:prod -- --staging",
@@ -20,8 +21,7 @@
     "start": "stencil build --dev --watch --serve",
     "start:staging": "stencil build --dev --watch --serve --staging",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watch",
-    "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --delete src/app/functions"
+    "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
     "@deckdeckgo/deck-utils": "^4.0.2",
