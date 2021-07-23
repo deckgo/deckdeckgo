@@ -1,0 +1,16 @@
+type DeckId = text;
+type DeckData = 
+ record {
+   header: opt text;
+   name: text;
+ };
+type Deck = 
+ record {
+   data: DeckData;
+   id: DeckId;
+ };
+service : {
+  del: (DeckId) -> (bool);
+  get: (DeckId) -> (Deck);
+  set: (Deck) -> ();
+}
