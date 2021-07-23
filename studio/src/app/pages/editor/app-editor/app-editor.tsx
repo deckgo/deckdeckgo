@@ -35,6 +35,7 @@ import {modalController, popoverController} from '../../../utils/ionic/ionic.ove
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 import {SyncService} from '../../../services/editor/sync/sync.service';
+import {SyncFactoryService} from '../../../services/editor/sync/sync.factory.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {SyncEvent} from '../../../types/editor/sync';
@@ -120,7 +121,7 @@ export class AppEditor {
 
   constructor() {
     this.fontsService = FontsService.getInstance();
-    this.syncService = SyncService.getInstance();
+    this.syncService = SyncFactoryService.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})

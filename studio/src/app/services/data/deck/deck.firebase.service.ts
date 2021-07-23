@@ -4,18 +4,18 @@ import 'firebase/firestore';
 import {Deck, DeckData} from '../../../models/data/deck';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
-export class DeckOnlineService {
-  private static instance: DeckOnlineService;
+export class DeckFirebaseService {
+  private static instance: DeckFirebaseService;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!DeckOnlineService.instance) {
-      DeckOnlineService.instance = new DeckOnlineService();
+    if (!DeckFirebaseService.instance) {
+      DeckFirebaseService.instance = new DeckFirebaseService();
     }
-    return DeckOnlineService.instance;
+    return DeckFirebaseService.instance;
   }
 
   create(deck: DeckData): Promise<Deck> {

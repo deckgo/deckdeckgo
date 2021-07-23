@@ -6,8 +6,9 @@ import {Constants} from '../../../types/core/constants';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {StorageService} from '../../../services/storage/storage.service';
+import {StorageFactoryService} from '../../../services/storage/storage.factory.service';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-custom-images',
@@ -42,7 +43,7 @@ export class AppCustomImages {
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.storageService = StorageService.getInstance();
+    this.storageService = StorageFactoryService.getInstance();
   }
 
   async componentDidLoad() {

@@ -2,16 +2,10 @@ import {keys, set} from 'idb-keyval';
 
 import store from '../../stores/error.store';
 
-export class StorageOfflineService {
-  private static instance: StorageOfflineService;
+import {StorageService} from './storage.service';
 
-  static getInstance() {
-    if (!StorageOfflineService.instance) {
-      StorageOfflineService.instance = new StorageOfflineService();
-    }
-    return StorageOfflineService.instance;
-  }
-
+export class StorageOfflineService extends StorageService {
+  // @Override
   uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
@@ -43,6 +37,7 @@ export class StorageOfflineService {
     });
   }
 
+  // @Override
   getFiles(_next: string | null, folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       const storageKeys: IDBValidKey[] = await keys();
@@ -74,5 +69,11 @@ export class StorageOfflineService {
         nextPageToken: undefined
       });
     });
+  }
+
+  // @Override
+  async getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
+    // Not implemented in offline
+    return undefined;
   }
 }
