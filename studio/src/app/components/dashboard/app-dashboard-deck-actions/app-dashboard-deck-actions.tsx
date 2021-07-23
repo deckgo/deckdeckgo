@@ -7,7 +7,7 @@ import i18n from '../../../stores/i18n.store';
 import {Deck} from '../../../models/data/deck';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {DeckOnlineService} from '../../../services/data/deck/deck.online.service';
+import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
 
 import { AppIcon } from '../../core/app-icon/app-icon';
 
@@ -21,7 +21,7 @@ import { loadingController, modalController } from '../../../utils/ionic/ionic.o
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
 
-  private deckOnlineService: DeckOnlineService;
+  private deckFirebaseService: DeckFirebaseService;
   private deckDashboardService: DeckDashboardService;
 
   @Event() deckDeleted: EventEmitter<string>;
@@ -31,7 +31,7 @@ export class AppDashboardDeckActions {
   private actionInProgress: boolean = false;
 
   constructor() {
-    this.deckOnlineService = DeckOnlineService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
@@ -83,7 +83,7 @@ export class AppDashboardDeckActions {
       await loading.present();
 
       try {
-        await this.deckOnlineService.delete(this.deck.id);
+        await this.deckFirebaseService.delete(this.deck.id);
 
         this.deckDeleted.emit(this.deck.id);
       } catch (err) {

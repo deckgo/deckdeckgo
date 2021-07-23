@@ -17,8 +17,8 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {DeckOnlineService} from '../../../services/data/deck/deck.online.service';
-import {SlideOnlineService} from '../../../services/data/slide/slide.online.service';
+import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
+import {SlideFirebaseService} from '../../../services/data/slide/slide.firebase.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
 
@@ -47,8 +47,8 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckOnlineService: DeckOnlineService;
-  private readonly slideOnlineService: SlideOnlineService;
+  private readonly deckFirebaseService: DeckFirebaseService;
+  private readonly slideFirebaseService: SlideFirebaseService;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
 
@@ -58,8 +58,8 @@ export class AppDashboard {
   private destroyListener;
 
   constructor() {
-    this.deckOnlineService = DeckOnlineService.getInstance();
-    this.slideOnlineService = SlideOnlineService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.slideFirebaseService = SlideFirebaseService.getInstance();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
   }
@@ -90,7 +90,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckOnlineService.getUserDecks(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckFirebaseService.getUserDecks(authStore.state.authUser.uid);
 
       await this.templateService.init();
 
@@ -168,7 +168,7 @@ export class AppDashboard {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideOnlineService.get(deck.id, slideId);
+        const slide: Slide = await this.slideFirebaseService.get(deck.id, slideId);
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
         const style: any = await this.convertStyle(deck);

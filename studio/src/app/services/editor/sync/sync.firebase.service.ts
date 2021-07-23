@@ -19,8 +19,8 @@ import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 import {firebaseEnabled} from '../../../utils/core/environment.utils';
 
-import {SlideOnlineService} from '../../data/slide/slide.online.service';
-import {DeckOnlineService} from '../../data/deck/deck.online.service';
+import {SlideFirebaseService} from '../../data/slide/slide.firebase.service';
+import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
@@ -30,8 +30,8 @@ import {SyncService} from './sync.service';
 import {StorageFactoryService} from '../../storage/storage.factory.service';
 
 export class SyncFirebaseService extends SyncService {
-  private slideOnlineService: SlideOnlineService;
-  private deckOnlineService: DeckOnlineService;
+  private slideFirebaseService: SlideFirebaseService;
+  private deckFirebaseService: DeckFirebaseService;
 
   private storageService: StorageService;
 
@@ -40,8 +40,8 @@ export class SyncFirebaseService extends SyncService {
   constructor() {
     super();
 
-    this.deckOnlineService = DeckOnlineService.getInstance();
-    this.slideOnlineService = SlideOnlineService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.slideFirebaseService = SlideFirebaseService.getInstance();
     this.storageService = StorageFactoryService.getInstance();
     this.fontsService = FontsService.getInstance();
   }
@@ -363,7 +363,7 @@ export class SyncFirebaseService extends SyncService {
 
   private saveSlide(deck: Deck, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
-      const slide: Slide = await this.slideOnlineService.get(deck.id, slideId);
+      const slide: Slide = await this.slideFirebaseService.get(deck.id, slideId);
 
       if (!slide || !slide.data) {
         reject('Missing slide for publishing');
@@ -580,7 +580,7 @@ export class SyncFirebaseService extends SyncService {
           slide.data.content = firebase.firestore.FieldValue.delete();
         }
 
-        await this.slideOnlineService.update(deckId, slide);
+        await this.slideFirebaseService.update(deckId, slide);
 
         resolve();
       } catch (err) {
@@ -594,7 +594,7 @@ export class SyncFirebaseService extends SyncService {
       return;
     }
 
-    const promises: Promise<void>[] = data.map(({deckId, slideId}: SyncDataSlide) => this.slideOnlineService.delete(deckId, slideId));
+    const promises: Promise<void>[] = data.map(({deckId, slideId}: SyncDataSlide) => this.slideFirebaseService.delete(deckId, slideId));
     await Promise.all(promises);
   }
 
@@ -650,7 +650,7 @@ export class SyncFirebaseService extends SyncService {
           deck.data.footer = firebase.firestore.FieldValue.delete();
         }
 
-        const persistedDeck: Deck = await this.deckOnlineService.update(deck);
+        const persistedDeck: Deck = await this.deckFirebaseService.update(deck);
 
         resolve(persistedDeck);
       } catch (err) {

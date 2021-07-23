@@ -13,7 +13,7 @@ import {Deck} from '../../../../models/data/deck';
 
 import {Constants} from '../../../../types/core/constants';
 
-import { DeckOnlineService } from '../../../../services/data/deck/deck.online.service';
+import { DeckFirebaseService } from '../../../../services/data/deck/deck.firebase.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
@@ -60,7 +60,7 @@ export class AppPublishEdit {
   @State()
   private pushToGitHub: boolean = true;
 
-  private deckOnlineService: DeckOnlineService;
+  private deckFirebaseService: DeckFirebaseService;
 
   private readonly debounceUpdateDeck: () => void;
 
@@ -71,7 +71,7 @@ export class AppPublishEdit {
   private destroyDeckListener;
 
   constructor() {
-    this.deckOnlineService = DeckOnlineService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
 
     this.publishService = PublishService.getInstance();
 
@@ -151,7 +151,7 @@ export class AppPublishEdit {
 
         deckStore.state.deck.data.name = this.caption;
 
-        const updatedDeck: Deck = await this.deckOnlineService.update(deckStore.state.deck);
+        const updatedDeck: Deck = await this.deckFirebaseService.update(deckStore.state.deck);
         deckStore.state.deck = {...updatedDeck};
 
         this.disablePublish = false;
