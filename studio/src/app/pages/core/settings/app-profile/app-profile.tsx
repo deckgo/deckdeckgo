@@ -27,6 +27,7 @@ import {ApiUserFactoryService} from '../../../../services/api/user/api.user.fact
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
+import {StorageFactoryService} from '../../../../services/storage/storage.factory.service';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
@@ -95,7 +96,7 @@ export class AppProfile {
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = UserService.getInstance();
-    this.storageService = StorageService.getInstance();
+    this.storageService = StorageFactoryService.getInstance();
   }
 
   async componentDidLoad() {

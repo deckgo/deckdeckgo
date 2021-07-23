@@ -1,30 +1,45 @@
 import {decks as deckIc} from '../../../functions/decks/index';
 
+import authStore from '../../../stores/auth.store';
+import syncStore from '../../../stores/sync.store';
+
 import {SyncData, SyncDataDeck} from '../../../types/editor/sync';
 
 import {internetComputerEnabled} from '../../../utils/core/environment.utils';
 
+import {SyncService} from './sync.service';
+
 // TODO: can we move this in a web worker? the IC SDK is compatible?
 
-export class SyncIcService {
-  private static instance: SyncIcService;
-
-  private constructor() {}
-
-  static getInstance(): SyncIcService {
-    if (!SyncIcService.instance) {
-      SyncIcService.instance = new SyncIcService();
+export class SyncIcService extends SyncService {
+  // @Override
+  async upload(syncData: SyncData | undefined) {
+    if (!syncData) {
+      return;
     }
-    return SyncIcService.instance;
-  }
 
-  public async sync(syncData: SyncData) {
+    if (!authStore.state.loggedIn || !navigator.onLine) {
+      return;
+    }
+
     if (!internetComputerEnabled()) {
       return;
     }
 
-    const {updateDecks} = syncData;
+    syncStore.state.sync = 'in_progress';
 
+    await this.uploadDecksIC(syncData);
+
+    await this.clean(syncData);
+  }
+
+  private async clean({syncedAt}: SyncData) {
+    await this.cleanPending(syncedAt);
+
+    await this.updateSyncState();
+  }
+
+  private async uploadDecksIC({updateDecks}: SyncData) {
     if (!updateDecks || updateDecks.length <= 0) {
       return;
     }
@@ -39,8 +54,6 @@ export class SyncIcService {
     }
 
     // TODO: following can take ages
-
-    // TODO: refactor service with factory
 
     // TODO: Locally error -> Fail to verify certificate - https://forum.dfinity.org/t/fail-to-verify-certificate-in-development-update-calls/4078/14
 

@@ -1,49 +1,7 @@
-import {SyncService} from '../editor/sync/sync.service';
+export abstract class StorageService {
+  abstract uploadFile(data: File, folder: string, maxSize: number, downloadUrl?: boolean): Promise<StorageFile | undefined>;
 
-import {StorageOnlineService} from './storage.online.service';
-import {StorageOfflineService} from './storage.offline.service';
+  abstract getFiles(next: string | null, folder: string): Promise<StorageFilesList | null>;
 
-export class StorageService {
-  private static instance: StorageService;
-
-  private constructor() {
-    // Private constructor, singleton
-  }
-
-  static getInstance() {
-    if (!StorageService.instance) {
-      StorageService.instance = new StorageService();
-    }
-    return StorageService.instance;
-  }
-
-  async uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
-    const offline: OfflineDeck = await SyncService.getInstance().status();
-
-    if (offline !== undefined) {
-      return StorageOfflineService.getInstance().uploadFile(data, folder, maxSize);
-    } else {
-      return StorageOnlineService.getInstance().uploadFile(data, folder, maxSize, downloadUrl);
-    }
-  }
-
-  async getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
-    const offline: OfflineDeck = await SyncService.getInstance().status();
-
-    if (offline !== undefined) {
-      return StorageOfflineService.getInstance().getFiles(next, folder);
-    } else {
-      return StorageOnlineService.getInstance().getFiles(next, folder);
-    }
-  }
-
-  async getFolders(folder: string): Promise<StorageFoldersList | undefined> {
-    const offline: OfflineDeck = await SyncService.getInstance().status();
-
-    if (offline !== undefined) {
-      return undefined;
-    } else {
-      return StorageOnlineService.getInstance().getFolders(folder);
-    }
-  }
+  abstract getFolders(folder: string): Promise<StorageFoldersList | undefined>;
 }

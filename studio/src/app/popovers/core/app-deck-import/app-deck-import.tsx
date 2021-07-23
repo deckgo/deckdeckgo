@@ -8,6 +8,7 @@ import {Deck} from '../../../models/data/deck';
 
 import {StorageService} from '../../../services/storage/storage.service';
 import {DeckImportService} from '../../../services/deck/deck-import.service';
+import {StorageFactoryService} from '../../../services/storage/storage.factory.service';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
@@ -28,7 +29,7 @@ export class AppDeckImport {
   private deckImportService: DeckImportService;
 
   constructor() {
-    this.storageService = StorageService.getInstance();
+    this.storageService = StorageFactoryService.getInstance();
     this.deckImportService = DeckImportService.getInstance();
   }
 
