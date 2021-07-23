@@ -3,7 +3,6 @@ type DeckData =
  record {
    header: opt text;
    name: text;
-   owner_id: text;
  };
 type Deck = 
  record {
@@ -12,6 +11,6 @@ type Deck =
  };
 service : {
   del: (DeckId) -> (bool);
-  get: (DeckId) -> (opt Deck);
+  get: (DeckId) -> (Deck);
   set: (Deck) -> ();
 }

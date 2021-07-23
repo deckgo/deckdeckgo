@@ -1,7 +1,5 @@
 import {decks as deckIc} from '../../../functions/decks/index';
 
-import authStore from '../../../stores/auth.store';
-
 import {SyncData, SyncDataDeck} from '../../../types/editor/sync';
 
 import {internetComputerEnabled} from '../../../utils/core/environment.utils';
@@ -40,13 +38,16 @@ export class SyncIcService {
       return;
     }
 
+    // TODO: following can take ages
+
+    // TODO: refactor service with factory
+
     // TODO: Locally error -> Fail to verify certificate - https://forum.dfinity.org/t/fail-to-verify-certificate-in-development-update-calls/4078/14
 
     await deckIc.set({
       id: deck.id,
       data: {
         name: deck.data.name,
-        owner_id: authStore.state.authUser.uid,
         header: this.toNullString(deck.data.header)
       }
     });

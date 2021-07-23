@@ -5,12 +5,11 @@ export interface Deck {
 }
 export interface DeckData {
   name: string;
-  owner_id: string;
   header: [] | [string];
 }
 export type DeckId = string;
 export interface _SERVICE {
   del: (arg_0: DeckId) => Promise<boolean>;
-  get: (arg_0: DeckId) => Promise<[] | [Deck]>;
+  get: (arg_0: DeckId) => Promise<Deck>;
   set: (arg_0: Deck) => Promise<undefined>;
 }

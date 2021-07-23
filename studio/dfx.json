@@ -1,7 +1,7 @@
 {
   "canisters": {
     "decks": {
-      "main": "src/backend/decks/Decks.mo",
+      "main": "src/backend/decks/decks.mo",
       "type": "motoko"
     },
     "assets": {
