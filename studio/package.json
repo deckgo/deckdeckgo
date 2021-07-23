@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "node ./scripts/rm-www.js",
     "i18n": "node ./scripts/i18n.types.js",
-    "ic:types": "node ./scripts/i18n.types.js",
+    "ic:types": "node ./scripts/ic.types.js",
     "prebuild": "npm run clean && npm run i18n && npm run ic:types",
     "prestart": "npm run i18n && npm run ic:types",
     "build": "npm run build:ic",
