@@ -1,4 +1,4 @@
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 
@@ -12,7 +12,7 @@ export class SyncFactoryService {
 
   static getInstance(): SyncService {
     if (!SyncFactoryService.instance) {
-      const {cloud}: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
       SyncFactoryService.instance = cloud === 'offline' ? new SyncOfflineService() : cloud === 'ic' ? new SyncIcService() : new SyncFirebaseService();
     }
     return SyncFactoryService.instance;

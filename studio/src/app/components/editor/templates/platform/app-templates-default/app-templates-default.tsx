@@ -8,7 +8,7 @@ import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../mod
 import {Template} from '../../../../../models/data/template';
 
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
-import {tenorEnabled} from '../../../../../utils/core/environment.utils';
+import {tenor} from '../../../../../utils/core/environment.utils';
 
 import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
 
@@ -46,7 +46,7 @@ export class AppTemplatesDefault {
   @Event()
   composeTemplate: EventEmitter<InitTemplate>;
 
-  private tenorEnabled: boolean = tenorEnabled();
+  private tenorEnabled: boolean = tenor();
 
   async componentDidLoad() {
     await this.lazyLoadContent();

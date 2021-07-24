@@ -1,4 +1,4 @@
-import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
+import {EnvironmentAppConfig} from '../../types/core/environment-config';
 
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 
@@ -12,8 +12,9 @@ export class StorageFactoryService {
 
   static getInstance(): StorageService {
     if (!StorageFactoryService.instance) {
-      const {cloud}: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      StorageFactoryService.instance = cloud === 'offline' ? new StorageOfflineService() : cloud === 'ic' ? new StorageIcService() : new StorageFirebaseService();
+      const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      StorageFactoryService.instance =
+        cloud === 'offline' ? new StorageOfflineService() : cloud === 'ic' ? new StorageIcService() : new StorageFirebaseService();
     }
     return StorageFactoryService.instance;
   }

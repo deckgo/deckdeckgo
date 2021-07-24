@@ -17,7 +17,7 @@ import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync'
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
-import {firebaseEnabled} from '../../../utils/core/environment.utils';
+import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 
 import {SlideFirebaseService} from '../../data/slide/slide.firebase.service';
 import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';

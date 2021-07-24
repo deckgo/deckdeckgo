@@ -1,4 +1,4 @@
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 
 import {ApiPhotoService} from './api.photo.service';
@@ -10,8 +10,8 @@ export class ApiPhotoFactoryService {
 
   static getInstance(): ApiPhotoService {
     if (!ApiPhotoFactoryService.instance) {
-      const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      ApiPhotoFactoryService.instance = deckDeckGoConfig.mock ? new ApiPhotoMockService() : new ApiPhotoProdService();
+      const {mock}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
+      ApiPhotoFactoryService.instance = mock ? new ApiPhotoMockService() : new ApiPhotoProdService();
     }
     return ApiPhotoFactoryService.instance;
   }

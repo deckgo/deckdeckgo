@@ -4,7 +4,7 @@ import navStore, {NavDirection} from '../../../../stores/nav.store';
 import i18n from '../../../../stores/i18n.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
-import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
+import {EnvironmentAppConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class AppSignIn {
   @State()
   private signInInProgress: boolean = false;
 
-  private deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+  private appConfig: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
   async navigateBack() {
     navStore.state.nav = {
@@ -41,7 +41,7 @@ export class AppSignIn {
   }
 
   private renderSignInMethod() {
-    const {cloud} = this.deckDeckGoConfig;
+    const {cloud} = this.appConfig;
 
     if (cloud === 'firebase') {
       return <app-signin-firebase onInProgress={this.updateInProgress}></app-signin-firebase>;

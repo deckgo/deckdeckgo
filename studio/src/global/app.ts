@@ -4,9 +4,11 @@ enableInputBlurring();
 import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
 
 setupDeckGoConfig({
-  deckdeckgo: {
+  app: {
     mock: false,
-    cloud: 'firebase',
+    cloud: 'firebase'
+  },
+  deckdeckgo: {
     appUrl: 'https://app.deckdeckgo.com',
     globalAssetsUrl: 'https://app.deckdeckgo.com/assets',
     pollUrl: 'https://app.deckdeckgo.com/poll',
