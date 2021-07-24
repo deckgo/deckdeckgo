@@ -5,10 +5,10 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   app: {
+    mock: false,
     cloud: 'firebase'
   },
   deckdeckgo: {
-    mock: false,
     appUrl: 'https://deckdeckgo-studio-staging.web.app',
     globalAssetsUrl: 'https://deckdeckgo-studio-staging.web.app/assets',
     pollUrl: 'https://deckdeckgo-studio-staging.web.app/poll',

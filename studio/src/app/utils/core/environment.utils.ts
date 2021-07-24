@@ -4,15 +4,14 @@ import {EnvironmentDeckDeckGoConfig, EnvironmentAppConfig} from '../../types/cor
 export const tenor = (): boolean => EnvironmentConfigService.getInstance().get('tenor') !== undefined;
 
 export const unsplash = (): boolean => {
-  return (
-    EnvironmentConfigService.getInstance().get('unsplash') !== undefined ||
-    EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').mock
-  );
+  return EnvironmentConfigService.getInstance().get('unsplash') !== undefined || EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').mock;
 };
 
 export const share = (): boolean => {
-  const deckdeckgoConfig = EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo');
-  return deckdeckgoConfig.apiUrl !== undefined || deckdeckgoConfig.mock;
+  return (
+    EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').apiUrl !== undefined ||
+    EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').mock
+  );
 };
 
 export const firebase = (): boolean => EnvironmentConfigService.getInstance().get('firebase') !== undefined;

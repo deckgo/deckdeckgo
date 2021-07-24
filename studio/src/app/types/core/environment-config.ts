@@ -24,7 +24,6 @@ export interface EnvironmentGoogleConfig {
 }
 
 export interface EnvironmentDeckDeckGoConfig {
-  mock: boolean;
   appUrl: string;
   globalAssetsUrl: string;
   pollUrl: string;
@@ -35,6 +34,7 @@ export interface EnvironmentDeckDeckGoConfig {
 
 export interface EnvironmentAppConfig {
   cloud: 'offline' | 'firebase' | 'ic';
+  mock: boolean;
 }
 
 export interface EnvironmentConfig {
