@@ -10,11 +10,11 @@ import {Expanded} from '../../../../types/core/settings';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
-import { tenorEnabled, unsplashEnabled } from '../../../../utils/core/environment.utils';
+import {tenor, unsplash} from '../../../../utils/core/environment.utils';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
-import { alertController } from '../../../../utils/ionic/ionic.overlay';
+import {alertController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-image',
@@ -48,8 +48,8 @@ export class AppImage {
   @State()
   private navigatorOnline: boolean = navigator.onLine;
 
-  private tenorEnabled = tenorEnabled();
-  private unsplashEnabled = unsplashEnabled();
+  private tenorEnabled = tenor();
+  private unsplashEnabled = unsplash();
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();

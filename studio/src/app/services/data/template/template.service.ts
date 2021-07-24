@@ -5,7 +5,7 @@ import templatesStore from '../../../stores/templates.store';
 import authStore from '../../../stores/auth.store';
 
 import {Template, TemplateData} from '../../../models/data/template';
-import {firebaseEnabled} from '../../../utils/core/environment.utils';
+import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 
 export class TemplateService {
   private static instance: TemplateService;

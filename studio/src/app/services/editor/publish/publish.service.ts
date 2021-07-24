@@ -15,7 +15,7 @@ import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';
 
-import {firebaseEnabled} from '../../../utils/core/environment.utils';
+import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 
 export class PublishService {
   private static instance: PublishService;

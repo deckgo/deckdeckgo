@@ -5,7 +5,7 @@ import syncStore from '../../../stores/sync.store';
 
 import {SyncData, SyncDataDeck} from '../../../types/editor/sync';
 
-import {internetComputerEnabled} from '../../../utils/core/environment.utils';
+import {internetComputer} from '../../../utils/core/environment.utils';
 
 import {SyncService} from './sync.service';
 
@@ -22,7 +22,7 @@ export class SyncIcService extends SyncService {
       return;
     }
 
-    if (!internetComputerEnabled()) {
+    if (!internetComputer()) {
       return;
     }
 

@@ -4,9 +4,11 @@ enableInputBlurring();
 import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
 
 setupDeckGoConfig({
+  app: {
+    cloud: 'ic'
+  },
   deckdeckgo: {
     mock: false,
-    cloud: 'ic',
     appUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app',
     globalAssetsUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/assets',
     pollUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/poll',
