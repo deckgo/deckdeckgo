@@ -45,4 +45,6 @@ export abstract class SyncService {
 
     syncStore.state.sync = 'pending';
   }
+
+  protected isSyncPending = (): boolean => syncStore.state.sync === 'pending';
 }

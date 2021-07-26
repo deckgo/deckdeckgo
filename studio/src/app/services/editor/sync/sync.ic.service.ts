@@ -30,6 +30,10 @@ export class SyncIcService extends SyncService {
       return;
     }
 
+    if (!this.isSyncPending()) {
+      return;
+    }
+
     if (!internetComputer()) {
       return;
     }

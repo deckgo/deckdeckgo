@@ -76,6 +76,10 @@ export class SyncFirebaseService extends SyncService {
         return;
       }
 
+      if (!this.isSyncPending()) {
+        return;
+      }
+
       if (!firebaseEnabled()) {
         return;
       }
