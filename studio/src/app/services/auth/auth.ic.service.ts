@@ -1,5 +1,6 @@
 import {AuthClient} from '@dfinity/auth-client';
 import type {Principal} from '@dfinity/principal';
+import {Identity} from '@dfinity/agent';
 
 import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
@@ -11,6 +12,8 @@ import {del} from 'idb-keyval';
 import {AuthUser} from '../../models/auth/auth.user';
 
 import {AuthService} from './auth.service';
+import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentAppConfig} from '../../types/core/environment-config';
 
 export class AuthIcService extends AuthService {
   private authClient: AuthClient | undefined;
@@ -50,6 +53,8 @@ export class AuthIcService extends AuthService {
   async signIn() {
     const authClient: AuthClient = this.authClient || (await AuthClient.create());
 
+    const {mock} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
+
     await authClient.login({
       onSuccess: () => {
         navStore.state.nav = {
@@ -61,7 +66,8 @@ export class AuthIcService extends AuthService {
         console.error(err);
 
         errorStore.state.error = 'There was an issue sign in with the internet identity.';
-      }
+      },
+      ...(mock && {identityProvider: `http://localhost:8000?canisterId=${process.env.__CANDID_UI_CANISTER_ID}#authorize`})
     });
   }
 
@@ -71,5 +77,9 @@ export class AuthIcService extends AuthService {
 
     await del('deckdeckgo_redirect');
     await del('deckdeckgo_redirect_info');
+  }
+
+  getIdentity(): Identity | undefined {
+    return this.authClient?.getIdentity();
   }
 }

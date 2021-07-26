@@ -1,3 +1,5 @@
+import {Identity} from '@dfinity/agent';
+
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
@@ -12,6 +14,8 @@ import {internetComputer} from '../../../utils/core/environment.utils';
 import {createActor} from '../../../utils/core/ic.utils';
 
 import {SyncService} from './sync.service';
+import {AuthFactoryService} from '../../auth/auth.factory.service';
+import {AuthIcService} from '../../auth/auth.ic.service';
 
 // TODO: can we move this in a web worker? the IC SDK is compatible?
 
@@ -30,9 +34,17 @@ export class SyncIcService extends SyncService {
       return;
     }
 
+    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+
+    if (!identity) {
+      return;
+    }
+
     syncStore.state.sync = 'in_progress';
 
-    await this.uploadDecksIC(syncData);
+    const {updateDecks} = syncData;
+
+    await this.uploadDecksIC({updateDecks, identity});
 
     await this.clean(syncData);
   }
@@ -43,12 +55,12 @@ export class SyncIcService extends SyncService {
     await this.updateSyncState();
   }
 
-  private async uploadDecksIC({updateDecks}: SyncData) {
+  private async uploadDecksIC({updateDecks, identity}: {updateDecks: SyncDataDeck[] | undefined; identity: Identity}) {
     if (!updateDecks || updateDecks.length <= 0) {
       return;
     }
 
-    const deckActor: DeckService = await createActor<DeckService>({canisterId: process.env.DECKS_CANISTER_ID, idlFactory: DeckFactory});
+    const deckActor: DeckService = await createActor<DeckService>({canisterId: process.env.DECKS_CANISTER_ID, idlFactory: DeckFactory, identity});
 
     const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => this.uploadDeckIC({deck, deckActor}));
     await Promise.all(promises);
@@ -58,10 +70,6 @@ export class SyncIcService extends SyncService {
     if (!deck) {
       return;
     }
-
-    // TODO: following can take ages
-
-    // TODO: Locally error -> Fail to verify certificate - https://forum.dfinity.org/t/fail-to-verify-certificate-in-development-update-calls/4078/14
 
     await deckActor.set({
       id: deck.id,
