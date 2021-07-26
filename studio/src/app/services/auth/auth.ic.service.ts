@@ -67,7 +67,7 @@ export class AuthIcService extends AuthService {
 
         errorStore.state.error = 'There was an issue sign in with the internet identity.';
       },
-      ...(mock && {identityProvider: `http://localhost:8000?canisterId=${process.env.__CANDID_UI_CANISTER_ID}#authorize`})
+      ...(mock && {identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`})
     });
   }
 

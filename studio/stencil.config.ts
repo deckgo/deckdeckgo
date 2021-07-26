@@ -176,10 +176,7 @@ export const config: Config = {
       delimiters: ['<@', '@>'],
       values: configValues
     }),
-    replace({
-      ...canisterEnvIds(prod),
-      ...(prod && {'process.env.NODE_ENV': 'production'})
-    }),
+    replace(canisterEnvIds(prod)),
     sass({
       includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
     }),
