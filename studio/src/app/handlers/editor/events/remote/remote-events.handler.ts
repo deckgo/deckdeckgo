@@ -26,6 +26,9 @@ export class RemoteEventsHandler {
   async init(el: HTMLElement) {
     this.el = el;
 
+    const remote: HTMLDeckgoRemoteElement | null = this.el.querySelector('deckgo-remote');
+    await remote?.componentOnReady();
+
     await this.initRemote();
 
     this.destroyConnectListener = remoteStore.onChange('remote', async (enable: boolean) => {

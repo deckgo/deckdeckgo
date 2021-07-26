@@ -902,7 +902,10 @@ export class DeckEventsHandler {
 
   async initSlideSize() {
     const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
-    await deck?.initSlideSize();
+
+    if (typeof deck?.initSlideSize === 'function') {
+      await deck?.initSlideSize();
+    }
   }
 
   updateDeckSlidesOrder(detail: ItemReorderEventDetail): Promise<void> {
