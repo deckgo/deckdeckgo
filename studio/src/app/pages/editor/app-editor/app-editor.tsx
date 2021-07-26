@@ -732,12 +732,17 @@ export class AppEditor {
     this.actionsEditorRef?.selectStep($event?.detail);
   }
 
+  @Listen('deckDidLoad', {target: 'document'})
+  onDeckDidLoad() {
+    busyStore.state.deckReady = true;
+  }
+
   render() {
     const autoSlide: boolean = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content class="ion-no-padding">
+      <ion-content class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`}>
         <div class="grid">
           <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
             <main
@@ -816,7 +821,7 @@ export class AppEditor {
   }
 
   private renderLoading() {
-    if (this.slidesFetched) {
+    if (this.slidesFetched && busyStore.state.deckReady) {
       return undefined;
     } else {
       return <app-spinner></app-spinner>;
