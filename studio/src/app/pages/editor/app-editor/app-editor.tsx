@@ -645,7 +645,9 @@ export class AppEditor {
         return;
       }
 
-      await this.deckRef?.slideTo(this.activeIndex);
+      if (typeof this.deckRef?.slideTo === 'function') {
+        await this.deckRef?.slideTo(this.activeIndex);
+      }
     });
 
     this.slideResizeObserver.observe(this.mainRef);
