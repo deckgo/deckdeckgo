@@ -33,7 +33,7 @@ const copyFile = async ({srcPath, destPath}) => {
     return;
   }
 
-  if (basename(srcPath) === 'index') {
+  if (basename(srcPath) === 'index.js') {
     return;
   }
 
