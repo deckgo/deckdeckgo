@@ -9,6 +9,7 @@ import busyStore from '../../../stores/busy.store';
 import colorStore from '../../../stores/color.store';
 import undoRedoStore from '../../../stores/undo-redo.store';
 import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
@@ -824,7 +825,11 @@ export class AppEditor {
     if (this.slidesFetched && busyStore.state.deckReady) {
       return undefined;
     } else {
-      return <app-spinner></app-spinner>;
+      return (
+        <app-spinner>
+          <p>{i18n.state.editor.loading}</p>
+        </app-spinner>
+      );
     }
   }
 }

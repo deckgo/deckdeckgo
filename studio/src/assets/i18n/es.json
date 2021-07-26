@@ -113,6 +113,7 @@
     "understand": "Comprendo, elimina mi presentación"
   },
   "editor": {
+    "loading": "El editor se está cargando ... ",
     "add_slide": "Añadir diapositiva",
     "help": "Ayuda",
     "share": "Compartir",

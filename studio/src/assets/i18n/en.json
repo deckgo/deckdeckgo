@@ -113,6 +113,7 @@
     "understand": "I understand, delete my presentation"
   },
   "editor": {
+    "loading": "Hold tight! The editor is loading...",
     "add_slide": "Add slide",
     "help": "Help",
     "share": "Share",

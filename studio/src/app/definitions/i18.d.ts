@@ -120,6 +120,7 @@ interface I18nDashboard {
 }
 
 interface I18nEditor {
+  loading: string;
   add_slide: string;
   help: string;
   share: string;
