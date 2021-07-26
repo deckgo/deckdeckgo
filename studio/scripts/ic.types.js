@@ -2,7 +2,7 @@
 
 const prettier = require('prettier');
 
-const {join, extname} = require('path');
+const {join, extname, basename} = require('path');
 const {existsSync, readdirSync, writeFileSync, lstatSync, copyFileSync, readFileSync} = require('fs');
 
 const copyTypes = async ({src, dest = `./src/app/functions`}) => {
@@ -33,6 +33,10 @@ const copyFile = async ({srcPath, destPath}) => {
     return;
   }
 
+  if (basename(srcPath) === 'index.js') {
+    return;
+  }
+
   if (extname(srcPath) === '.did') {
     copyFileSync(srcPath, destPath);
     return;
@@ -42,7 +46,7 @@ const copyFile = async ({srcPath, destPath}) => {
   const config = await prettier.resolveConfig('./prettierrc');
   const output = prettier.format(buffer.toString('utf-8'), {parser: 'babel', ...config});
 
-  writeFileSync(destPath, output);
+  writeFileSync(destPath.replace('.did.js', '.utils.did.js'), output);
 };
 
 (async () => {
