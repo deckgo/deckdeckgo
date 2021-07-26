@@ -9,7 +9,7 @@ import {postcss} from '@stencil/postcss';
 import replace from '@rollup/plugin-replace';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 
-import {canisterEnvIds} from './ic.config';
+import {canisterEnvIds} from './dfx.config';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
