@@ -1,11 +1,13 @@
 import {Component, Prop, h, Host, State} from '@stencil/core';
 
+import {isIOS} from '@deckdeckgo/utils';
+
 import offlineStore from '../../../stores/offline.store';
+import busyStore from '../../../stores/busy.store';
 import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
-import { AppIcon } from '../app-icon/app-icon';
 
-import {isIOS} from '@deckdeckgo/utils';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-navigation',
@@ -128,7 +130,7 @@ export class AppNavigation {
       return undefined;
     }
 
-    if (this.user) {
+    if (this.user && busyStore.state.deckReady) {
       return <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>;
     } else {
       return undefined;
@@ -159,7 +161,7 @@ export class AppNavigation {
         </ion-button>
 
         <p>
-          DeckDeckGo Internet Computer {' '}
+          DeckDeckGo Internet Computer{' '}
           <a
             href="https://dev.to/daviddalbusco/we-received-a-grant-to-port-our-web-app-to-the-internet-computer-318o"
             rel="noopener norefferer"
