@@ -90,6 +90,10 @@ export class SyncService {
         return;
       }
 
+      if (syncStore.state.sync !== 'pending') {
+        return;
+      }
+
       if (!firebaseEnabled()) {
         return;
       }
