@@ -1,47 +1,57 @@
-import Principal "mo:base/Principal";
-import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
-import Text "mo:base/Text";
+
+import Error "mo:base/Error";
+
+import Types "./slides.types";
+import Store "./slides.store";
 
 actor Slide {
+    type SlideId = Types.SlideId;
+    type SlideData = Types.SlideData;
+    type Slide = Types.Slide;
+    type UserSlide = Types.UserSlide;
 
-    private type SlideId = Text;
-
-    private type SlideData = {
-        content: ?Text;
-    };
-
-    private type Slide = {
-        id: SlideId;
-        data: SlideData;
-    };
-
-    private type UserSlide = {
-        owner: Principal;
-        slide: Slide;
-    };
+    var store: Store.Store = Store.Store();
 
     // Preserve the application state on upgrades
     private stable var entries : [(SlideId, UserSlide)] = [];
 
-    private let slides = HashMap.fromIter<SlideId, UserSlide>(entries.vals(), 10, Text.equal, Text.hash);
-
     public shared({ caller }) func set(slide: Slide) {
-      slides.put(slide.id, {
-          owner = caller;
-          slide;
-      });
+        await store.setSlide(caller, slide);
     };
 
-    public shared({ caller }) func get(slideId: SlideId): async(?UserSlide) {
-      return slides.get(slideId)
+    public shared({ caller }) func get(slideId : SlideId) : async Slide {
+        let userSlide: ?UserSlide = await store.getSlide(caller, slideId);
+
+        switch userSlide {
+            case (?userSlide) {
+                return userSlide.slide;
+            };
+            case null {
+                throw Error.reject("Slide not found.");
+            };
+        };
+    };
+
+    public shared({ caller }) func del(slideId : SlideId) : async () {
+        let exists: Bool = await store.deleteSlide(caller, slideId);
+
+        switch exists {
+            case true {
+                return;
+            };
+            case false {
+                throw Error.reject("Slide not found.");
+            };
+        };
     };
 
     system func preupgrade() {
-        entries := Iter.toArray(slides.entries());
+        entries := Iter.toArray(store.getSlides().entries());
     };
 
     system func postupgrade() {
+        store.postupgrade(entries);
         entries := [];
     };
 }
