@@ -14,7 +14,6 @@ import {Slide, SlideAttributes} from '../../../models/data/slide';
 import {SlotType} from '../../../types/editor/slot-type';
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync';
 
-import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
@@ -577,7 +576,7 @@ export class SyncFirebaseService extends SyncService {
           return;
         }
 
-        slide.data.attributes = (await OfflineUtils.prepareAttributes(slide.data.attributes)) as SlideAttributes;
+        slide.data.attributes = (await FirestoreUtils.prepareAttributes(slide.data.attributes)) as SlideAttributes;
 
         if (slide.data.content === null) {
           // @ts-ignore
@@ -637,7 +636,7 @@ export class SyncFirebaseService extends SyncService {
           return;
         }
 
-        deck.data.attributes = (await OfflineUtils.prepareAttributes(deck.data.attributes)) as DeckAttributes;
+        deck.data.attributes = (await FirestoreUtils.prepareAttributes(deck.data.attributes)) as DeckAttributes;
 
         if (deck.data.background === null) {
           // @ts-ignore

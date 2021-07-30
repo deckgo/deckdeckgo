@@ -1,6 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
+import {SlideAttributes} from '../../models/data/slide';
+import {DeckAttributes} from '../../models/data/deck';
+
 export class FirestoreUtils {
   static filterDelete<T>(obj: T | null, replaceWithNull: boolean = false): T {
     if (!obj) {
@@ -38,5 +41,31 @@ export class FirestoreUtils {
     }
 
     return JSON.stringify(attr) === JSON.stringify(firebase.firestore.FieldValue.delete());
+  }
+
+  static async prepareAttributes(attributes: SlideAttributes | DeckAttributes): Promise<SlideAttributes | DeckAttributes> {
+    if (!attributes) {
+      // @ts-ignore
+      return firebase.firestore.FieldValue.delete();
+    }
+
+    const keys: string[] = Object.keys(attributes);
+
+    if (!keys || keys.length <= 0) {
+      // @ts-ignore
+      return firebase.firestore.FieldValue.delete();
+    }
+
+    keys.forEach((key: string) => {
+      const attr = attributes[key];
+
+      // Replace null values with Firestore "to delete fields"
+      if (attr === null) {
+        // @ts-ignore
+        attributes[key] = firebase.firestore.FieldValue.delete();
+      }
+    });
+
+    return attributes;
   }
 }
