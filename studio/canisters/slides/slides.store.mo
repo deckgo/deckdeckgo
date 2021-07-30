@@ -15,16 +15,16 @@ module {
     type UserSlide = SlidesTypes.UserSlide;
 
     public class Store() {
-        private var slides: HashMap.HashMap<SlideId, UserSlide> = HashMap.HashMap<SlideId, UserSlide>(10, Text.equal, Text.hash);
+        private var entries: HashMap.HashMap<SlideId, UserSlide> = HashMap.HashMap<SlideId, UserSlide>(10, Text.equal, Text.hash);
 
         public func getSlides(): HashMap.HashMap<SlideId, UserSlide> {
-            return slides;
+            return entries;
         };
 
         public func setSlide(user: Principal, slide: Slide): async() {
             let newUserSlide: UserSlide = await initSlide(user, slide);
 
-            slides.put(slide.slideId, newUserSlide);
+            entries.put(slide.slideId, newUserSlide);
         };
 
         private func initSlide(user: Principal, slide: Slide): async (UserSlide) {
@@ -40,7 +40,7 @@ module {
         };
 
         public func getSlide(user: Principal, slideId: SlideId): async ?UserSlide {
-            let userSlide: ?UserSlide = slides.get(slideId);
+            let userSlide: ?UserSlide = entries.get(slideId);
 
             switch userSlide {
                 case (?userSlide) {
@@ -52,18 +52,18 @@ module {
             };
 
             return userSlide;
-        };    
+        };
 
         public func deleteSlide(user: Principal, slideId : SlideId) : async Bool {
             let userSlide: ?UserSlide = await getSlide(user, slideId);
 
             let exists: Bool = Option.isSome(userSlide);
             if (exists) {
-                let removedSlide: ?UserSlide = slides.remove(slideId);
+                let removedSlide: ?UserSlide = entries.remove(slideId);
             };
-            
+
             return exists;
-        };    
+        };
 
         private func check_permission(user: Principal, userSlide: UserSlide) : async () {
             if (user != userSlide.owner) {
@@ -71,8 +71,8 @@ module {
             };
         };
 
-        public func postupgrade(entries: [(SlideId, UserSlide)]) {
-            slides := HashMap.fromIter<SlideId, UserSlide>(entries.vals(), 10, Text.equal, Text.hash);
+        public func postupgrade(slides: [(SlideId, UserSlide)]) {
+            entries := HashMap.fromIter<SlideId, UserSlide>(slides.vals(), 10, Text.equal, Text.hash);
         };
     }
 

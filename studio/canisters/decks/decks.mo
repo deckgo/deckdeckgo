@@ -1,3 +1,4 @@
+import Principal "mo:base/Principal";
 import Iter "mo:base/Iter";
 
 import Error "mo:base/Error";
@@ -16,6 +17,7 @@ actor Deck {
 
     // Preserve the application state on upgrades
     private stable var entries : [(DeckId, UserDeck)] = [];
+    private stable var index : [(Principal, [DeckId])] = [];
 
     public shared({ caller }) func set(deck: Deck) {
         await store.setDeck(caller, deck);
@@ -42,10 +44,13 @@ actor Deck {
 
     system func preupgrade() {
         entries := Iter.toArray(store.getDecks().entries());
+        index := Iter.toArray(store.getIndex().entries());
     };
 
     system func postupgrade() {
-        store.postupgrade(entries);
+        store.postupgrade(entries, index);
         entries := [];
+        index := [];
     };
 }
+
