@@ -5,13 +5,14 @@ import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
-import Types "./slides.types";
+import Types "../common/types";
+import SlidesTypes "./slides.types";
 
 module {
     type SlideId = Types.SlideId;
-    type SlideData = Types.SlideData;
-    type Slide = Types.Slide;
-    type UserSlide = Types.UserSlide;
+    type SlideData = SlidesTypes.SlideData;
+    type Slide = SlidesTypes.Slide;
+    type UserSlide = SlidesTypes.UserSlide;
 
     public class Store() {
         private var slides: HashMap.HashMap<SlideId, UserSlide> = HashMap.HashMap<SlideId, UserSlide>(10, Text.equal, Text.hash);

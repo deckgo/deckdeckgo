@@ -2,14 +2,15 @@ import Iter "mo:base/Iter";
 
 import Error "mo:base/Error";
 
-import Types "./slides.types";
+import Types "../common/types";
+import SlidesTypes "./slides.types";
 import Store "./slides.store";
 
 actor Slide {
     type SlideId = Types.SlideId;
-    type SlideData = Types.SlideData;
-    type Slide = Types.Slide;
-    type UserSlide = Types.UserSlide;
+    type SlideData = SlidesTypes.SlideData;
+    type Slide = SlidesTypes.Slide;
+    type UserSlide = SlidesTypes.UserSlide;
 
     var store: Store.Store = Store.Store();
 

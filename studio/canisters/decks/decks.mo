@@ -5,9 +5,11 @@ import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
+import Types "../common/types";
+
 actor Deck {
 
-    private type DeckId = Text;
+    type DeckId = Types.DeckId;
 
     private type DeckData = {
         name: Text;

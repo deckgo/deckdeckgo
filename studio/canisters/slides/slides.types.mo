@@ -2,9 +2,11 @@ import Text "mo:base/Text";
 import Principal "mo:base/Principal";
 import Time "mo:base/Time";
 
+import Types "../common/types";
+
 module {
 
-    public type SlideId = Text;
+    type SlideId = Types.SlideId;
 
     public type SlideAttribute = {
         name: Text;
