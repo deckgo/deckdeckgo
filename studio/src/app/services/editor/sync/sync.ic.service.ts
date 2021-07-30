@@ -3,14 +3,22 @@ import {Identity} from '@dfinity/agent';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
-import {Deck} from '../../../models/data/deck';
+import {UserSocial} from '../../../models/data/user';
+import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync';
 
 import {idlFactory as DeckFactory} from '../../../functions/decks/decks.utils.did';
 import {idlFactory as SlideFactory} from '../../../functions/slides/slides.utils.did';
-import {_SERVICE as DeckActor} from '../../../functions/decks/decks.did';
+import {
+  _SERVICE as DeckActor,
+  DeckGitHub,
+  DeckGitHubRepo,
+  DeckMeta,
+  DeckMetaAuthor as ActorDeckMetaAuthor,
+  UserSocial as ActorUserSocial
+} from '../../../functions/decks/decks.did';
 import {_SERVICE as SlideActor} from '../../../functions/slides/slides.did';
 
 import {internetComputer} from '../../../utils/core/environment.utils';
@@ -87,10 +95,18 @@ export class SyncIcService extends SyncService {
     }
 
     await deckActor.set({
-      id: deck.id,
+      deckId: deck.id,
       data: {
         name: deck.data.name,
-        header: CanisterUtils.toNullable<string>(deck.data.header)
+        attributes: CanisterUtils.prepareAttributes(deck.data.attributes),
+        background: CanisterUtils.toNullable<string>(deck.data.background),
+        header: CanisterUtils.toNullable<string>(deck.data.header),
+        footer: CanisterUtils.toNullable<string>(deck.data.footer),
+        slides: CanisterUtils.toNullable<string[]>(deck.data.slides),
+        meta: CanisterUtils.toNullable<DeckMeta>(this.convertDeckMeta(deck.data)),
+        github: CanisterUtils.toNullable<DeckGitHub>(this.convertDeckGitHub(deck.data)),
+        created_at: CanisterUtils.toNullableTimestamp(deck.data.created_at as Date | undefined),
+        updated_at: CanisterUtils.toNullableTimestamp(deck.data.updated_at as Date | undefined)
       }
     });
 
@@ -156,5 +172,75 @@ export class SyncIcService extends SyncService {
 
   private createSlideActor({identity}: {identity: Identity}): Promise<SlideActor> {
     return createActor<SlideActor>({canisterId: process.env.SLIDES_CANISTER_ID, idlFactory: SlideFactory, identity});
+  }
+
+  private convertDeckMeta({meta}: DeckData): DeckMeta | undefined {
+    if (!meta) {
+      return undefined;
+    }
+
+    const {title, feed, tags, pathname, description, published, published_at, updated_at, author} = meta;
+
+    const {name: authorName, photo_url} = author as DeckMetaAuthor;
+
+    const metaAuthor: ActorDeckMetaAuthor | undefined = author
+      ? {
+          name: authorName,
+          photo_url: CanisterUtils.toNullable<string>(photo_url),
+          social: CanisterUtils.toNullable<ActorUserSocial>(this.convertUserSocial(author as DeckMetaAuthor))
+        }
+      : undefined;
+
+    return {
+      title,
+      feed: CanisterUtils.toNullable<boolean>(feed),
+      tags: CanisterUtils.toNullable<string[]>(tags as string[]),
+      pathname: CanisterUtils.toNullable<string>(pathname),
+      description: CanisterUtils.toNullable<string>(description as string),
+      author: CanisterUtils.toNullable<ActorDeckMetaAuthor>(metaAuthor),
+      published: CanisterUtils.toNullable<boolean>(published),
+      published_at: CanisterUtils.toNullableTimestamp(published_at as Date | undefined),
+      updated_at: CanisterUtils.toTimestamp(updated_at as Date | undefined)
+    };
+  }
+
+  private convertUserSocial({social}: DeckMetaAuthor): ActorUserSocial | undefined {
+    if (!social) {
+      return undefined;
+    }
+
+    const {dev, linkedin, twitter, custom_logo_url, custom, github, medium} = social as UserSocial;
+
+    return {
+      dev: CanisterUtils.toNullable<string>(dev),
+      linkedin: CanisterUtils.toNullable<string>(linkedin),
+      twitter: CanisterUtils.toNullable<string>(twitter),
+      custom_logo_url: CanisterUtils.toNullable<string>(custom_logo_url),
+      custom: CanisterUtils.toNullable<string>(custom),
+      github: CanisterUtils.toNullable<string>(github),
+      medium: CanisterUtils.toNullable<string>(medium)
+    };
+  }
+
+  private convertDeckGitHub({github}: DeckData): DeckGitHub | undefined {
+    if (!github) {
+      return undefined;
+    }
+
+    const {repo, publish} = github;
+
+    return {
+      repo: CanisterUtils.toNullable<DeckGitHubRepo>(
+        repo
+          ? {
+              id: repo.id,
+              url: repo.url,
+              name: repo.name,
+              nameWithOwner: repo.nameWithOwner
+            }
+          : undefined
+      ),
+      publish
+    };
   }
 }

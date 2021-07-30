@@ -41,11 +41,11 @@ export interface DeckMeta {
   author?: DeckMetaAuthor | firebase.firestore.FieldValue;
 
   published?: boolean;
-  published_at?: firebase.firestore.Timestamp;
+  published_at?: firebase.firestore.Timestamp | Date;
 
   feed?: boolean;
 
-  updated_at: firebase.firestore.Timestamp;
+  updated_at: firebase.firestore.Timestamp | Date;
 }
 
 export interface DeckAttributes {

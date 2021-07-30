@@ -3,17 +3,12 @@ type SlideId__1 = text;
 type SlideId = text;
 type SlideData = 
  record {
-   attributes: opt vec SlideAttribute;
+   attributes: opt vec Attribute;
    content: opt text;
    created_at: opt Time;
    scope: opt text;
    template: text;
    updated_at: opt Time;
- };
-type SlideAttribute = 
- record {
-   name: text;
-   value: text;
  };
 type Slide = 
  record {
@@ -22,6 +17,11 @@ type Slide =
    slideId: SlideId;
  };
 type DeckId = text;
+type Attribute = 
+ record {
+   name: text;
+   value: text;
+ };
 service : {
   del: (SlideId__1) -> (bool);
   get: (SlideId__1) -> (Slide);

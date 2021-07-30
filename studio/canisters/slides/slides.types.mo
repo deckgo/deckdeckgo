@@ -8,19 +8,15 @@ module {
 
     type SlideId = Types.SlideId;
     type DeckId = Types.DeckId;
-
-    public type SlideAttribute = {
-        name: Text;
-        value: Text;
-    };
-
+    type Attribute = Types.Attribute;
+    
     public type SlideData = {
         content: ?Text;
 
         template: Text;
         scope: ?Text;
 
-        attributes: ?[SlideAttribute];
+        attributes: ?[Attribute];
 
         created_at: ?Time.Time;
         updated_at: ?Time.Time;
