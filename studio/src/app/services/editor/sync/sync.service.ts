@@ -7,7 +7,15 @@ import {SyncData, SyncPending, SyncPendingDeck} from '../../../types/editor/sync
 export abstract class SyncService {
   abstract upload(syncData: SyncData | undefined): Promise<void>;
 
-  protected async cleanPending(syncedAt: Date) {
+  protected async clean({syncedAt}: SyncData) {
+    await this.cleanPending(syncedAt);
+
+    await this.updateSyncState();
+  }
+
+  protected isSyncPending = (): boolean => syncStore.state.sync === 'pending';
+
+  private async cleanPending(syncedAt: Date) {
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {
@@ -28,7 +36,7 @@ export abstract class SyncService {
     );
   }
 
-  protected async updateSyncState() {
+  private async updateSyncState() {
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {
@@ -45,6 +53,4 @@ export abstract class SyncService {
 
     syncStore.state.sync = 'pending';
   }
-
-  protected isSyncPending = (): boolean => syncStore.state.sync === 'pending';
 }

@@ -1,0 +1,13 @@
+type SlideId__1 = text;
+type SlideId = text;
+type SlideData = record {content: opt text;};
+type Slide = 
+ record {
+   data: SlideData;
+   id: SlideId;
+ };
+service : {
+  del: (SlideId__1) -> ();
+  get: (SlideId__1) -> (Slide);
+  set: (Slide) -> () oneway;
+}
