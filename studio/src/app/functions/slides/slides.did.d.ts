@@ -1,20 +1,20 @@
 import type {Principal} from '@dfinity/principal';
+export interface Attribute {
+  value: string;
+  name: string;
+}
 export type DeckId = string;
 export interface Slide {
   data: SlideData;
   deckId: DeckId;
   slideId: SlideId;
 }
-export interface SlideAttribute {
-  value: string;
-  name: string;
-}
 export interface SlideData {
   updated_at: [] | [Time];
   content: [] | [string];
   created_at: [] | [Time];
   scope: [] | [string];
-  attributes: [] | [Array<SlideAttribute>];
+  attributes: [] | [Array<Attribute>];
   template: string;
 }
 export type SlideId = string;

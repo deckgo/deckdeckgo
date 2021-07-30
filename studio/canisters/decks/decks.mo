@@ -1,47 +1,28 @@
-import Trie "mo:base/Trie";
-import Principal "mo:base/Principal";
-import Text "mo:base/Text";
-import Option "mo:base/Option";
+import Iter "mo:base/Iter";
 
 import Error "mo:base/Error";
 
 import Types "../common/types";
+import DecksTypes "./decks.types";
+import DecksStore "./decks.store";
 
 actor Deck {
-
     type DeckId = Types.DeckId;
+    type DeckData = DecksTypes.DeckData;
+    type Deck = DecksTypes.Deck;
+    type UserDeck = DecksTypes.UserDeck;
 
-    private type DeckData = {
-        name: Text;
-        header: ?Text;
-    };
+    var store: DecksStore.Store = DecksStore.Store();
 
-    private type Deck = {
-        id: DeckId;
-        data: DeckData;
-    };
+    // Preserve the application state on upgrades
+    private stable var entries : [(DeckId, UserDeck)] = [];
 
-    private type UserDeck = {
-        owner: Principal;
-        deck: Deck;
-    };
-
-    // TODO: Should we use Trie or Hashmap? Performance?
-    private stable var decks : Trie.Trie<DeckId, UserDeck> = Trie.empty();
-
-    public shared({ caller }) func set(deck : Deck): async() {
-        let newUserDeck: UserDeck = await init(caller, deck);
-
-        decks := Trie.replace(
-            decks,
-            key(deck.id),
-            Text.equal,
-            ?newUserDeck,
-        ).0;
+    public shared({ caller }) func set(deck: Deck) {
+        await store.setDeck(caller, deck);
     };
 
     public shared({ caller }) func get(deckId : DeckId) : async Deck {
-        let userDeck: ?UserDeck = await getDeck(caller, deckId);
+        let userDeck: ?UserDeck = await store.getDeck(caller, deckId);
 
         switch userDeck {
             case (?userDeck) {
@@ -53,55 +34,18 @@ actor Deck {
         };
     };
 
-    public shared({ caller }) func del(deckId : DeckId) : async Bool {
-        let userDeck: ?UserDeck = await getDeck(caller, deckId);
+    public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
+        let exists: Bool = await store.deleteDeck(caller, deckId);
 
-        let exists: Bool = Option.isSome(userDeck);
-        if (exists) {
-            decks := Trie.replace(
-                decks,
-                key(deckId),
-                Text.equal,
-                null,
-            ).0;
-        };
         return exists;
     };
 
-    private func getDeck(user: Principal, deckId: Text): async ?UserDeck {
-        let userDeck: ?UserDeck = Trie.find(decks, key(deckId), Text.equal);
-
-        switch userDeck {
-            case (?userDeck) {
-                await check_permission(user, userDeck);
-            };
-            case null {
-                return null;
-            }
-        };
-
-        return userDeck;
+    system func preupgrade() {
+        entries := Iter.toArray(store.getDecks().entries());
     };
 
-    private func check_permission(user: Principal, userDeck: UserDeck) : async () {
-        if (user != userDeck.owner) {
-            throw Error.reject("User does not have the permission for the deck.");
-        };
+    system func postupgrade() {
+        store.postupgrade(entries);
+        entries := [];
     };
-
-    private func key(x : DeckId) : Trie.Key<DeckId> {
-        return { hash = Text.hash(x); key = x };
-    };
-
-    private func init(user: Principal, deck: Deck): async (UserDeck) {
-        let userDeck: ?UserDeck = await getDeck(user, deck.id);
-
-        // If userDeck is null, then it is a new deck
-        // If userDeck is not null and there was no error, then it is user deck
-
-        return {
-            owner = user;
-            deck = deck;
-        }
-    }
 }

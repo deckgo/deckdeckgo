@@ -4,7 +4,7 @@ import Error "mo:base/Error";
 
 import Types "../common/types";
 import SlidesTypes "./slides.types";
-import Store "./slides.store";
+import SlidesStore "./slides.store";
 
 actor Slide {
     type SlideId = Types.SlideId;
@@ -12,7 +12,7 @@ actor Slide {
     type Slide = SlidesTypes.Slide;
     type UserSlide = SlidesTypes.UserSlide;
 
-    var store: Store.Store = Store.Store();
+    var store: SlidesStore.Store = SlidesStore.Store();
 
     // Preserve the application state on upgrades
     private stable var entries : [(SlideId, UserSlide)] = [];

@@ -1,13 +1,13 @@
 export const idlFactory = ({IDL}) => {
   const SlideId__1 = IDL.Text;
   const Time = IDL.Int;
-  const SlideAttribute = IDL.Record({value: IDL.Text, name: IDL.Text});
+  const Attribute = IDL.Record({value: IDL.Text, name: IDL.Text});
   const SlideData = IDL.Record({
     updated_at: IDL.Opt(Time),
     content: IDL.Opt(IDL.Text),
     created_at: IDL.Opt(Time),
     scope: IDL.Opt(IDL.Text),
-    attributes: IDL.Opt(IDL.Vec(SlideAttribute)),
+    attributes: IDL.Opt(IDL.Vec(Attribute)),
     template: IDL.Text
   });
   const DeckId = IDL.Text;
