@@ -18,8 +18,10 @@ type SlideAttribute =
 type Slide = 
  record {
    data: SlideData;
-   id: SlideId;
+   deckId: DeckId;
+   slideId: SlideId;
  };
+type DeckId = text;
 service : {
   del: (SlideId__1) -> (bool);
   get: (SlideId__1) -> (Slide);

@@ -1,7 +1,9 @@
 import type {Principal} from '@dfinity/principal';
+export type DeckId = string;
 export interface Slide {
-  id: SlideId;
   data: SlideData;
+  deckId: DeckId;
+  slideId: SlideId;
 }
 export interface SlideAttribute {
   value: string;

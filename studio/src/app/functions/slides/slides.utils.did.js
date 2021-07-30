@@ -1,6 +1,5 @@
 export const idlFactory = ({IDL}) => {
   const SlideId__1 = IDL.Text;
-  const SlideId = IDL.Text;
   const Time = IDL.Int;
   const SlideAttribute = IDL.Record({value: IDL.Text, name: IDL.Text});
   const SlideData = IDL.Record({
@@ -11,7 +10,13 @@ export const idlFactory = ({IDL}) => {
     attributes: IDL.Opt(IDL.Vec(SlideAttribute)),
     template: IDL.Text
   });
-  const Slide = IDL.Record({id: SlideId, data: SlideData});
+  const DeckId = IDL.Text;
+  const SlideId = IDL.Text;
+  const Slide = IDL.Record({
+    data: SlideData,
+    deckId: DeckId,
+    slideId: SlideId
+  });
   return IDL.Service({
     del: IDL.Func([SlideId__1], [IDL.Bool], []),
     get: IDL.Func([SlideId__1], [Slide], []),

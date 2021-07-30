@@ -105,17 +105,18 @@ export class SyncIcService extends SyncService {
 
     const slideActor: SlideActor = await this.createSlideActor({identity});
 
-    const promises: Promise<void>[] = updateSlides.map(({slide}: SyncDataSlide) => this.uploadSlide({slide, slideActor}));
+    const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) => this.uploadSlide({slide, deckId, slideActor}));
     await Promise.all(promises);
   }
 
-  private async uploadSlide({slide, slideActor}: {slide: Slide; slideActor: SlideActor}) {
+  private async uploadSlide({slide, deckId, slideActor}: {slide: Slide; deckId: string; slideActor: SlideActor}) {
     if (!slide) {
       return;
     }
 
     await slideActor.set({
-      id: slide.id,
+      slideId: slide.id,
+      deckId,
       data: {
         content: CanisterUtils.toNullable<string>(slide.data.content),
         template: slide.data.template,

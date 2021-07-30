@@ -24,11 +24,11 @@ module {
         public func setSlide(user: Principal, slide: Slide): async() {
             let newUserSlide: UserSlide = await initSlide(user, slide);
 
-            slides.put(slide.id, newUserSlide);
+            slides.put(slide.slideId, newUserSlide);
         };
 
         private func initSlide(user: Principal, slide: Slide): async (UserSlide) {
-            let userSlide: ?UserSlide = await getSlide(user, slide.id);
+            let userSlide: ?UserSlide = await getSlide(user, slide.slideId);
 
             // If userSlide is null, then it is a new slide
             // If userSlide is not null and there was no error, then it is user slide

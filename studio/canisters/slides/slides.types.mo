@@ -7,6 +7,7 @@ import Types "../common/types";
 module {
 
     type SlideId = Types.SlideId;
+    type DeckId = Types.DeckId;
 
     public type SlideAttribute = {
         name: Text;
@@ -26,7 +27,8 @@ module {
     };
 
     public type Slide = {
-        id: SlideId;
+        slideId: SlideId;
+        deckId: DeckId;
         data: SlideData;
     };
 
