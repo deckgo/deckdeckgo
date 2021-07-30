@@ -7,7 +7,7 @@ type Slide =
    id: SlideId;
  };
 service : {
-  del: (SlideId__1) -> ();
+  del: (SlideId__1) -> (bool);
   get: (SlideId__1) -> (Slide);
   set: (Slide) -> () oneway;
 }

@@ -33,17 +33,10 @@ actor Slide {
         };
     };
 
-    public shared({ caller }) func del(slideId : SlideId) : async () {
+    public shared({ caller }) func del(slideId : SlideId) : async (Bool) {
         let exists: Bool = await store.deleteSlide(caller, slideId);
 
-        switch exists {
-            case true {
-                return;
-            };
-            case false {
-                throw Error.reject("Slide not found.");
-            };
-        };
+        return exists;
     };
 
     system func preupgrade() {
