@@ -4,8 +4,12 @@
       "main": "canisters/decks/decks.mo",
       "type": "motoko"
     },
+    "slides": {
+      "main": "canisters/slides/slides.mo",
+      "type": "motoko"
+    },
     "assets": {
-      "dependencies": ["decks"],
+      "dependencies": ["decks", "slides"],
       "frontend": {
         "entrypoint": "www/index.html"
       },

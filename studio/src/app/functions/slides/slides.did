@@ -1,0 +1,29 @@
+type Time = int;
+type SlideId__1 = text;
+type SlideId = text;
+type SlideData = 
+ record {
+   attributes: opt vec SlideAttribute;
+   content: opt text;
+   created_at: opt Time;
+   scope: opt text;
+   template: text;
+   updated_at: opt Time;
+ };
+type SlideAttribute = 
+ record {
+   name: text;
+   value: text;
+ };
+type Slide = 
+ record {
+   data: SlideData;
+   deckId: DeckId;
+   slideId: SlideId;
+ };
+type DeckId = text;
+service : {
+  del: (SlideId__1) -> (bool);
+  get: (SlideId__1) -> (Slide);
+  set: (Slide) -> () oneway;
+}

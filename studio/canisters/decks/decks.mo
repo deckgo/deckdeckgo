@@ -5,9 +5,11 @@ import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
+import Types "../common/types";
+
 actor Deck {
 
-    private type DeckId = Text;
+    type DeckId = Types.DeckId;
 
     private type DeckData = {
         name: Text;
@@ -41,7 +43,6 @@ actor Deck {
     public shared({ caller }) func get(deckId : DeckId) : async Deck {
         let userDeck: ?UserDeck = await getDeck(caller, deckId);
 
-        // TODO: can we return null instead of an exception (how to handle ?Deck return)
         switch userDeck {
             case (?userDeck) {
                 return userDeck.deck;
@@ -69,13 +70,6 @@ actor Deck {
 
     private func getDeck(user: Principal, deckId: Text): async ?UserDeck {
         let userDeck: ?UserDeck = Trie.find(decks, key(deckId), Text.equal);
-
-        // TODO: I would rather like following but do not know how to cast value for check_permission which does not accept null
-        // if (deck == null) {
-        //     return null;
-        // };
-        //
-        // await check_permission(caller, deck); <-- case deck ?
 
         switch userDeck {
             case (?userDeck) {

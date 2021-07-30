@@ -87,7 +87,7 @@ export class SyncFirebaseService extends SyncService {
 
       // TODO: when we will solve the storage question, we can leverage the data provided as parameter instead of querying idb here again
 
-      const {syncedAt, updateDecks, updateSlides, deleteSlides} = syncData;
+      const {updateDecks, updateSlides, deleteSlides} = syncData;
 
       // First decks because it contains information for the permission and the list of slides
       await this.uploadDecks(updateDecks);
@@ -98,9 +98,7 @@ export class SyncFirebaseService extends SyncService {
 
       // TODO: handle delete decks here?
 
-      await this.cleanPending(syncedAt);
-
-      await this.updateSyncState();
+      await this.clean(syncData);
     } catch (err) {
       syncStore.state.sync = 'error';
       console.error(err);
