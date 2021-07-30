@@ -26,6 +26,7 @@ export class RemoteEventsHandler {
   async init(el: HTMLElement) {
     this.el = el;
 
+    // TODO: fix me script might even not be loaded
     const remote: HTMLDeckgoRemoteElement | null = this.el.querySelector('deckgo-remote');
     await remote?.componentOnReady();
 
