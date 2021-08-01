@@ -67,6 +67,7 @@ type Attribute =
  };
 service : {
   del: (DeckId__1) -> (bool);
+  entries: () -> (vec Deck);
   get: (DeckId__1) -> (Deck);
   set: (Deck) -> () oneway;
 }

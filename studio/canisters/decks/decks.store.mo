@@ -3,6 +3,7 @@ import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Option "mo:base/Option";
 import Iter "mo:base/Iter";
+import Array "mo:base/Array";
 
 import Error "mo:base/Error";
 
@@ -66,6 +67,28 @@ module {
                 };
                 case null {
                     return null;
+                }
+            };
+        };
+
+        public func getDecks(user: Principal): async ([Deck]) {
+            let userDecks: ?HashMap.HashMap<DeckId, UserDeck> = decks.get(user);
+
+            switch userDecks {
+                case (?userDecks) {
+                    var results: ([Deck]) = [];
+
+                    for ((deckId: DeckId, value: UserDeck) in userDecks.entries()) {
+                        // Check permissions on each decks
+                        await check_permission(user, value);
+
+                        results := Array.append(results, [value.deck]);
+                    };
+
+                    return results;
+                };
+                case null {
+                    return [];
                 }
             };
         };
