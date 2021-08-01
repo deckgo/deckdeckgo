@@ -41,7 +41,7 @@ actor Slide {
     };
 
     system func preupgrade() {
-        entries := Iter.toArray(store.getSlides().entries());
+        entries := Iter.toArray(store.preupgrade().entries());
     };
 
     system func postupgrade() {
