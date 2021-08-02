@@ -17,13 +17,21 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
 import {SlideFirebaseService} from '../../../services/data/slide/slide.firebase.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
+import {DeckService} from '../../../services/data/deck/deck.service';
+import {DeckIcService} from '../../../services/data/deck/deck.ic.service';
+import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
+import {DeckOfflineService} from '../../../services/data/deck/deck.offline.service';
+import {SlideService} from '../../../services/data/slide/slide.service';
+import {SlideIcService} from '../../../services/data/slide/slide.ic.service';
+import {SlideOfflineService} from '../../../services/data/slide/slide.offline.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -47,8 +55,8 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckFirebaseService: DeckFirebaseService;
-  private readonly slideFirebaseService: SlideFirebaseService;
+  private readonly deckService: DeckService;
+  private readonly slideService: SlideService;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
 
@@ -58,10 +66,20 @@ export class AppDashboard {
   private destroyListener;
 
   constructor() {
-    this.deckFirebaseService = DeckFirebaseService.getInstance();
-    this.slideFirebaseService = SlideFirebaseService.getInstance();
+    this.deckService = this.initDeckService();
+    this.slideService = this.initSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
+  }
+
+  private initDeckService(): DeckService {
+    const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
+    return cloud === 'ic' ? DeckIcService.getInstance() : cloud === 'firebase' ? DeckFirebaseService.getInstance() : DeckOfflineService.getInstance();
+  }
+
+  private initSlideService(): SlideService {
+    const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
+    return cloud === 'ic' ? SlideIcService.getInstance() : cloud === 'firebase' ? SlideFirebaseService.getInstance() : SlideOfflineService.getInstance();
   }
 
   async componentWillLoad() {
@@ -90,7 +108,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckFirebaseService.getUserDecks(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckService.entries(authStore.state.authUser.uid);
 
       await this.templateService.init();
 
@@ -168,7 +186,7 @@ export class AppDashboard {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideFirebaseService.get(deck.id, slideId);
+        const slide: Slide = await this.slideService.get(deck.id, slideId);
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
         const style: any = await this.convertStyle(deck);

@@ -13,13 +13,13 @@ import {Deck} from '../../../../models/data/deck';
 
 import {Constants} from '../../../../types/core/constants';
 
-import { DeckFirebaseService } from '../../../../services/data/deck/deck.firebase.service';
+import {DeckFirebaseService} from '../../../../services/data/deck/deck.firebase.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;

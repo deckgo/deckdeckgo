@@ -9,9 +9,9 @@ import {Deck} from '../../../models/data/deck';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
 
-import { AppIcon } from '../../core/app-icon/app-icon';
+import {AppIcon} from '../../core/app-icon/app-icon';
 
-import { loadingController, modalController } from '../../../utils/ionic/ionic.overlay';
+import {loadingController, modalController} from '../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-dashboard-deck-actions',

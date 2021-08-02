@@ -3,7 +3,9 @@ import 'firebase/firestore';
 
 import {Slide, SlideData} from '../../../models/data/slide';
 
-export class SlideFirebaseService {
+import {SlideService} from './slide.service';
+
+export class SlideFirebaseService implements SlideService {
   private static instance: SlideFirebaseService;
 
   private constructor() {
@@ -17,6 +19,7 @@ export class SlideFirebaseService {
     return SlideFirebaseService.instance;
   }
 
+  // @Override
   get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       const firestore: firebase.firestore.Firestore = firebase.firestore();

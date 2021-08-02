@@ -1,23 +1,27 @@
 import {Identity} from '@dfinity/agent';
 
-import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
-
+import {Deck, DeckAttributes, DeckData, DeckGitHub, DeckGitHubRepo, DeckMeta, DeckMetaAuthor} from '../../../models/data/deck';
 import {UserSocial} from '../../../models/data/user';
 
 import {idlFactory as DeckFactory} from '../../../functions/decks/decks.utils.did';
 import {
   _SERVICE as DeckActor,
-  DeckGitHub,
-  DeckGitHubRepo,
-  DeckMeta,
-  DeckMetaAuthor as ActorDeckMetaAuthor,
-  UserSocial as ActorUserSocial
+  Deck as DeckIc,
+  DeckGitHub as DeckGitHubIc,
+  DeckGitHubRepo as DeckGitHubRepoIc,
+  DeckMeta as DeckMetaIc,
+  DeckMetaAuthor as DeckMetaAuthorIc,
+  UserSocial as UserSocialIc
 } from '../../../functions/decks/decks.did';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createActor} from '../../../utils/core/ic.utils';
 
-export class DeckIcService {
+import {DeckService} from './deck.service';
+import {AuthIcService} from '../../auth/auth.ic.service';
+import {AuthFactoryService} from '../../auth/auth.factory.service';
+
+export class DeckIcService implements DeckService {
   private static instance: DeckIcService;
 
   private constructor() {
@@ -40,17 +44,19 @@ export class DeckIcService {
       return;
     }
 
+    console.log('Deck IC about to SET');
+
     await deckActor.set({
       deckId: deck.id,
       data: {
         name: deck.data.name,
-        attributes: CanisterUtils.prepareAttributes(deck.data.attributes),
+        attributes: CanisterUtils.toAttributes(deck.data.attributes),
         background: CanisterUtils.toNullable<string>(deck.data.background),
         header: CanisterUtils.toNullable<string>(deck.data.header),
         footer: CanisterUtils.toNullable<string>(deck.data.footer),
         slides: CanisterUtils.toNullable<string[]>(deck.data.slides),
-        meta: CanisterUtils.toNullable<DeckMeta>(this.convertDeckMeta(deck.data)),
-        github: CanisterUtils.toNullable<DeckGitHub>(this.convertDeckGitHub(deck.data)),
+        meta: CanisterUtils.toNullable<DeckMetaIc>(this.toDeckMeta(deck.data)),
+        github: CanisterUtils.toNullable<DeckGitHubIc>(this.toDeckGitHub(deck.data)),
         created_at: CanisterUtils.toNullableTimestamp(deck.data.created_at as Date | undefined),
         updated_at: CanisterUtils.toNullableTimestamp(deck.data.updated_at as Date | undefined)
       }
@@ -60,7 +66,41 @@ export class DeckIcService {
     console.log('Deck IC Get:', await deckActor.get(deck.id));
   }
 
-  private convertDeckMeta({meta}: DeckData): DeckMeta | undefined {
+  // @Override
+  async entries(_userId: string): Promise<Deck[]> {
+    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+
+    if (!identity) {
+      return [];
+    }
+
+    const deckActor: DeckActor = await this.createActor({identity});
+
+    const decks: DeckIc[] = await deckActor.entries();
+
+    return decks?.map((deck: DeckIc) => this.fromDeck({deck, identity}));
+  }
+
+  private fromDeck({deck, identity}: {deck: DeckIc; identity: Identity}): Deck {
+    return {
+      id: deck.deckId,
+      data: {
+        name: deck.data.name,
+        owner_id: identity.getPrincipal().toText(),
+        attributes: CanisterUtils.fromAttributes<DeckAttributes>(deck.data.attributes),
+        background: deck.data.background?.[0],
+        header: deck.data.header?.[0],
+        footer: deck.data.footer?.[0],
+        slides: deck.data.slides?.[0],
+        meta: this.fromDeckMeta(deck.data.meta),
+        github: this.fromDeckGitHub(deck.data.github),
+        created_at: CanisterUtils.fromNullableTimestamp(deck.data.created_at),
+        updated_at: CanisterUtils.fromNullableTimestamp(deck.data.updated_at)
+      }
+    };
+  }
+
+  private toDeckMeta({meta}: DeckData): DeckMetaIc | undefined {
     if (!meta) {
       return undefined;
     }
@@ -69,11 +109,11 @@ export class DeckIcService {
 
     const {name: authorName, photo_url} = author as DeckMetaAuthor;
 
-    const metaAuthor: ActorDeckMetaAuthor | undefined = author
+    const metaAuthor: DeckMetaAuthorIc | undefined = author
       ? {
           name: authorName,
           photo_url: CanisterUtils.toNullable<string>(photo_url),
-          social: CanisterUtils.toNullable<ActorUserSocial>(this.convertUserSocial(author as DeckMetaAuthor))
+          social: CanisterUtils.toNullable<UserSocialIc>(this.toUserSocial(author as DeckMetaAuthor))
         }
       : undefined;
 
@@ -83,14 +123,14 @@ export class DeckIcService {
       tags: CanisterUtils.toNullable<string[]>(tags as string[]),
       pathname: CanisterUtils.toNullable<string>(pathname),
       description: CanisterUtils.toNullable<string>(description as string),
-      author: CanisterUtils.toNullable<ActorDeckMetaAuthor>(metaAuthor),
+      author: CanisterUtils.toNullable<DeckMetaAuthorIc>(metaAuthor),
       published: CanisterUtils.toNullable<boolean>(published),
       published_at: CanisterUtils.toNullableTimestamp(published_at as Date | undefined),
       updated_at: CanisterUtils.toTimestamp(updated_at as Date | undefined)
     };
   }
 
-  private convertUserSocial({social}: DeckMetaAuthor): ActorUserSocial | undefined {
+  private toUserSocial({social}: DeckMetaAuthor): UserSocialIc | undefined {
     if (!social) {
       return undefined;
     }
@@ -108,7 +148,7 @@ export class DeckIcService {
     };
   }
 
-  private convertDeckGitHub({github}: DeckData): DeckGitHub | undefined {
+  private toDeckGitHub({github}: DeckData): DeckGitHubIc | undefined {
     if (!github) {
       return undefined;
     }
@@ -116,7 +156,7 @@ export class DeckIcService {
     const {repo, publish} = github;
 
     return {
-      repo: CanisterUtils.toNullable<DeckGitHubRepo>(
+      repo: CanisterUtils.toNullable<DeckGitHubRepoIc>(
         repo
           ? {
               id: repo.id,
@@ -127,6 +167,52 @@ export class DeckIcService {
           : undefined
       ),
       publish
+    };
+  }
+
+  private fromDeckGitHub(github: [] | [DeckGitHubIc]): DeckGitHub | undefined {
+    if (!github || github.length <= 0) {
+      return undefined;
+    }
+
+    const repo: DeckGitHubRepo | undefined = github[0].repo?.[0];
+
+    return {
+      publish: github[0].publish,
+      repo: Object.keys(repo || {}).reduce((acc: DeckGitHubRepo, key: string) => {
+        acc[key] = JSON.parse(github[0].repo[0][key]);
+        return acc;
+      }, {} as DeckGitHubRepo)
+    };
+  }
+
+  private fromDeckMeta(meta: [] | [DeckMetaIc]): DeckMeta | undefined {
+    if (!meta || meta.length <= 0) {
+      return undefined;
+    }
+
+    const author: DeckMetaAuthor | undefined =
+      meta[0].author?.length > 0
+        ? {
+            name: meta[0].author[0].name,
+            photo_url: CanisterUtils.fromNullable<string>(meta[0].author[0].photo_url),
+            social: Object.keys(meta[0].author[0].social?.[0] || {}).reduce((acc: UserSocial, key: string) => {
+              acc[key] = JSON.parse(meta[0].author[0].social[0][key]);
+              return acc;
+            }, {} as UserSocial)
+          }
+        : undefined;
+
+    return {
+      title: meta[0].title,
+      feed: CanisterUtils.fromNullable<boolean>(meta[0].feed),
+      tags: CanisterUtils.fromNullable<string[]>(meta[0].tags),
+      pathname: CanisterUtils.fromNullable<string>(meta[0].pathname),
+      description: CanisterUtils.fromNullable<string>(meta[0].description),
+      author,
+      published: CanisterUtils.fromNullable<boolean>(meta[0].published),
+      published_at: CanisterUtils.fromNullableTimestamp(meta[0].published_at),
+      updated_at: CanisterUtils.fromTimestamp(meta[0].updated_at)
     };
   }
 }
