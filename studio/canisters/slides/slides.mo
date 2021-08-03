@@ -35,7 +35,13 @@ actor Slide {
     };
 
     public shared({ caller }) func del(slideId : SlideId) : async (Bool) {
-        let exists: Bool = await store.deleteSlide(caller, slideId);
+        let exists: Bool = await deleteSlide(caller, slideId);
+
+        return exists;
+    };
+
+    public func deleteSlide(user: Principal, slideId : SlideId) : async (Bool) {
+        let exists: Bool = await store.deleteSlide(user, slideId);
 
         return exists;
     };

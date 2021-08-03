@@ -7,7 +7,7 @@ import i18n from '../../../stores/i18n.store';
 import {Deck} from '../../../models/data/deck';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
+import {DeckService, initDeckService} from '../../../services/data/deck/deck.service';
 
 import {AppIcon} from '../../core/app-icon/app-icon';
 
@@ -21,9 +21,9 @@ import {loadingController, modalController} from '../../../utils/ionic/ionic.ove
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
 
-  @Prop() clone: boolean;
+  @Prop() cloud: 'offline' | 'firebase' | 'ic';
 
-  private deckFirebaseService: DeckFirebaseService;
+  private deckService: DeckService;
   private deckDashboardService: DeckDashboardService;
 
   @Event() deckDeleted: EventEmitter<string>;
@@ -33,7 +33,7 @@ export class AppDashboardDeckActions {
   private actionInProgress: boolean = false;
 
   constructor() {
-    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.deckService = initDeckService();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
@@ -85,7 +85,7 @@ export class AppDashboardDeckActions {
       await loading.present();
 
       try {
-        await this.deckFirebaseService.delete(this.deck.id);
+        await this.deckService.delete(this.deck.id);
 
         this.deckDeleted.emit(this.deck.id);
       } catch (err) {
@@ -104,7 +104,7 @@ export class AppDashboardDeckActions {
     return new Promise<void>(async (resolve) => {
       $event.stopPropagation();
 
-      if (this.actionInProgress || !this.clone) {
+      if (this.actionInProgress || this.cloud !== 'firebase') {
         resolve();
         return;
       }
@@ -166,7 +166,7 @@ export class AppDashboardDeckActions {
   }
 
   private renderClone(disabled: boolean) {
-    if (!this.clone) {
+    if (this.cloud !== 'firebase') {
       return undefined;
     }
 
