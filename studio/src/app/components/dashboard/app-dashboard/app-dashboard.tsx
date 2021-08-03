@@ -65,6 +65,8 @@ export class AppDashboard {
 
   private destroyListener;
 
+  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
+
   constructor() {
     this.deckService = this.initDeckService();
     this.slideService = this.initSlideService();
@@ -73,13 +75,15 @@ export class AppDashboard {
   }
 
   private initDeckService(): DeckService {
-    const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-    return cloud === 'ic' ? DeckIcService.getInstance() : cloud === 'firebase' ? DeckFirebaseService.getInstance() : DeckOfflineService.getInstance();
+    return this.cloud === 'ic' ? DeckIcService.getInstance() : this.cloud === 'firebase' ? DeckFirebaseService.getInstance() : DeckOfflineService.getInstance();
   }
 
   private initSlideService(): SlideService {
-    const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-    return cloud === 'ic' ? SlideIcService.getInstance() : cloud === 'firebase' ? SlideFirebaseService.getInstance() : SlideOfflineService.getInstance();
+    return this.cloud === 'ic'
+      ? SlideIcService.getInstance()
+      : this.cloud === 'firebase'
+      ? SlideFirebaseService.getInstance()
+      : SlideOfflineService.getInstance();
   }
 
   async componentWillLoad() {
@@ -547,6 +551,7 @@ export class AppDashboard {
 
           <app-dashboard-deck-actions
             deck={deck.deck}
+            clone={this.cloud === 'firebase'}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
             onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
         </ion-card>
