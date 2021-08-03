@@ -50,6 +50,8 @@ export class SlideIcService implements SlideService {
       }
     });
 
+    console.log('Slide IC SET done');
+
     // TODO: remove, just for test
     console.log('Slide IC Get:', await slideActor.get(slide.id));
   }

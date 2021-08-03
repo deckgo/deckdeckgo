@@ -62,6 +62,8 @@ export class DeckIcService implements DeckService {
       }
     });
 
+    console.log('Deck IC SET done');
+
     // TODO: remove, just for test
     console.log('Deck IC Get:', await deckActor.get(deck.id));
   }
@@ -76,7 +78,11 @@ export class DeckIcService implements DeckService {
 
     const deckActor: DeckActor = await this.createActor({identity});
 
+    console.log('Deck IC about to request entries');
+
     const decks: DeckIc[] = await deckActor.entries();
+
+    console.log('Deck IC entries done.', decks);
 
     return decks?.map((deck: DeckIc) => this.fromDeck({deck, identity}));
   }
@@ -180,7 +186,7 @@ export class DeckIcService implements DeckService {
     return {
       publish: github[0].publish,
       repo: Object.keys(repo || {}).reduce((acc: DeckGitHubRepo, key: string) => {
-        acc[key] = JSON.parse(github[0].repo[0][key]);
+        acc[key] = CanisterUtils.fromValue(github[0].repo[0][key]);
         return acc;
       }, {} as DeckGitHubRepo)
     };
@@ -197,7 +203,7 @@ export class DeckIcService implements DeckService {
             name: meta[0].author[0].name,
             photo_url: CanisterUtils.fromNullable<string>(meta[0].author[0].photo_url),
             social: Object.keys(meta[0].author[0].social?.[0] || {}).reduce((acc: UserSocial, key: string) => {
-              acc[key] = JSON.parse(meta[0].author[0].social[0][key]);
+              acc[key] = CanisterUtils.fromValue(meta[0].author[0].social[0][key]);
               return acc;
             }, {} as UserSocial)
           }

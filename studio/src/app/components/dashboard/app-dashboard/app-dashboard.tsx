@@ -186,7 +186,12 @@ export class AppDashboard {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
+        console.log('About to request slide in IC');
+
         const slide: Slide = await this.slideService.get(deck.id, slideId);
+
+        console.log('Slide request done', slide);
+
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
         const style: any = await this.convertStyle(deck);
