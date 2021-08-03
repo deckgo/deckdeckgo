@@ -12,8 +12,11 @@ import DecksTypes "./decks.types";
 
 import Utils "../common/utils";
 
+import Slides "canister:slides";
+
 module {
     type DeckId = Types.DeckId;
+    type SlideId = Types.SlideId;
     type DeckData = DecksTypes.DeckData;
     type Deck = DecksTypes.Deck;
     type UserDeck = DecksTypes.UserDeck;
@@ -108,24 +111,43 @@ module {
             return userDeck;
         };
 
-        public func deleteDeck(user: Principal, deckId : DeckId) : async Bool {
+        public func deleteDeck(user: Principal, deckId : DeckId, slides: Bool) : async Bool {
             let userDecks: ?HashMap.HashMap<DeckId, UserDeck> = decks.get(user);
 
             switch userDecks {
                 case (?userDecks) {
                     let userDeck: ?UserDeck = await getUserDeck(user, deckId, userDecks);
 
-                    let exists: Bool = Option.isSome(userDeck);
-                    if (exists) {
-                        let removedDeck: ?UserDeck = userDecks.remove(deckId);
-                        decks.put(user, userDecks);
-                    };
+                    switch userDeck {
+                        case (?userDeck) {
+                            await deleteSlides(user, userDeck.deck);
 
-                    return exists;
+                            let removedDeck: ?UserDeck = userDecks.remove(deckId);
+                            decks.put(user, userDecks);
+
+                            return true;
+                        };
+                        case null {
+                            return false;
+                        }
+                    };
                 };
                 case null {
                     return false;
                 }
+            };
+        };
+
+        private func deleteSlides(user: Principal, deck: Deck): async () {
+            let slides: ?[SlideId] = deck.data.slides;
+
+            switch (slides) {
+                case (?slides) {
+                    for ((slideId: Text) in slides.vals()) {
+                        let slideExists: Bool = await Slides.deleteSlide(user, slideId);
+                    };
+                };
+                case null {}
             };
         };
 

@@ -112,6 +112,7 @@ export class DeckFirebaseService implements DeckService {
     });
   }
 
+  // @Override
   delete(deckId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {

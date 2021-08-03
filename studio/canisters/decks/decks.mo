@@ -41,8 +41,8 @@ actor Deck {
         return decks;
     };
 
-    public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
-        let exists: Bool = await store.deleteDeck(caller, deckId);
+    public shared({ caller }) func del(deckId : DeckId, slides: Bool) : async (Bool) {
+        let exists: Bool = await store.deleteDeck(caller, deckId, slides);
 
         return exists;
     };

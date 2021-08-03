@@ -20,10 +20,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {SlideFirebaseService} from '../../../services/data/slide/slide.firebase.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
-import {DeckService} from '../../../services/data/deck/deck.service';
-import {DeckIcService} from '../../../services/data/deck/deck.ic.service';
-import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
-import {DeckOfflineService} from '../../../services/data/deck/deck.offline.service';
+import {DeckService, initDeckService} from '../../../services/data/deck/deck.service';
 import {SlideService} from '../../../services/data/slide/slide.service';
 import {SlideIcService} from '../../../services/data/slide/slide.ic.service';
 import {SlideOfflineService} from '../../../services/data/slide/slide.offline.service';
@@ -68,14 +65,10 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.deckService = this.initDeckService();
+    this.deckService = initDeckService();
     this.slideService = this.initSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
-  }
-
-  private initDeckService(): DeckService {
-    return this.cloud === 'ic' ? DeckIcService.getInstance() : this.cloud === 'firebase' ? DeckFirebaseService.getInstance() : DeckOfflineService.getInstance();
   }
 
   private initSlideService(): SlideService {
@@ -551,7 +544,7 @@ export class AppDashboard {
 
           <app-dashboard-deck-actions
             deck={deck.deck}
-            clone={this.cloud === 'firebase'}
+            cloud={this.cloud}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
             onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
         </ion-card>

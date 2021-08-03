@@ -102,4 +102,9 @@ export class DeckOfflineService implements DeckService {
   async entries(_userId: string): Promise<Deck[]> {
     throw new Error('Not implemented');
   }
+
+  // @Override
+  delete(_deckId: string): Promise<void> {
+    throw new Error('Not implemented');
+  }
 }

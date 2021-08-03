@@ -87,6 +87,27 @@ export class DeckIcService implements DeckService {
     return decks?.map((deck: DeckIc) => this.fromDeck({deck, identity}));
   }
 
+  // @Override
+  async delete(deckId: string): Promise<void> {
+    if (!deckId) {
+      return;
+    }
+
+    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+
+    if (!identity) {
+      return;
+    }
+
+    const deckActor: DeckActor = await this.createActor({identity});
+
+    console.log('Deck IC about to delete deck and its slides');
+
+    await deckActor.del(deckId, true);
+
+    console.log('Deck IC delete');
+  }
+
   private fromDeck({deck, identity}: {deck: DeckIc; identity: Identity}): Deck {
     return {
       id: deck.deckId,
