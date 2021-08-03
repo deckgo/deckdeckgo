@@ -15,7 +15,7 @@ actor Slide {
     var store: SlidesStore.Store = SlidesStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var entries : [(SlideId, UserSlide)] = [];
+    private stable var slides : [(SlideId, UserSlide)] = [];
 
     public shared({ caller }) func set(slide: Slide) {
         await store.setSlide(caller, slide);
@@ -41,11 +41,11 @@ actor Slide {
     };
 
     system func preupgrade() {
-        entries := Iter.toArray(store.getSlides().entries());
+        slides := Iter.toArray(store.preupgrade().entries());
     };
 
     system func postupgrade() {
-        store.postupgrade(entries);
-        entries := [];
+        store.postupgrade(slides);
+        slides := [];
     };
 }

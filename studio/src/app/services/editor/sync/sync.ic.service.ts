@@ -11,10 +11,10 @@ import {_SERVICE as SlideActor} from '../../../functions/slides/slides.did';
 import {internetComputer} from '../../../utils/core/environment.utils';
 
 import {SyncService} from './sync.service';
-import {AuthFactoryService} from '../../auth/auth.factory.service';
-import {AuthIcService} from '../../auth/auth.ic.service';
 import {DeckIcService} from '../../data/deck/deck.ic.service';
 import {SlideIcService} from '../../data/slide/slide.ic.service';
+import {AuthFactoryService} from '../../auth/auth.factory.service';
+import {AuthIcService} from '../../auth/auth.ic.service';
 
 // TODO: can we move this in a web worker? the IC SDK is compatible?
 

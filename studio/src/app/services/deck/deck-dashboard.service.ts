@@ -3,7 +3,7 @@ import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../models/data/deck';
 
-import { DeckFirebaseService } from '../data/deck/deck.firebase.service';
+import {DeckFirebaseService} from '../data/deck/deck.firebase.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;

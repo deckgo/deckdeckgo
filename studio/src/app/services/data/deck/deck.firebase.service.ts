@@ -4,7 +4,9 @@ import 'firebase/firestore';
 import {Deck, DeckData} from '../../../models/data/deck';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
-export class DeckFirebaseService {
+import {DeckService} from './deck.service';
+
+export class DeckFirebaseService implements DeckService {
   private static instance: DeckFirebaseService;
 
   private constructor() {
@@ -84,7 +86,8 @@ export class DeckFirebaseService {
     });
   }
 
-  getUserDecks(userId: string): Promise<Deck[]> {
+  // @Override
+  entries(userId: string): Promise<Deck[]> {
     return new Promise<Deck[]>(async (resolve, reject) => {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();

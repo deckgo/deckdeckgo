@@ -141,6 +141,7 @@ export namespace Components {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
+        "clone": boolean;
         "deck": Deck;
     }
     interface AppDashboardPage {
@@ -1407,6 +1408,7 @@ declare namespace LocalJSX {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
+        "clone"?: boolean;
         "deck"?: Deck;
         "onDeckCloned"?: (event: CustomEvent<DeckDashboardCloneResult>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;

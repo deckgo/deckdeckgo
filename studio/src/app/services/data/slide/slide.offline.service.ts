@@ -6,9 +6,11 @@ import {Slide, SlideAttributes, SlideData} from '../../../models/data/slide';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
-import { syncDeleteSlide, syncUpdateSlide } from '../../../utils/editor/sync.utils';
+import {syncDeleteSlide, syncUpdateSlide} from '../../../utils/editor/sync.utils';
 
-export class SlideOfflineService {
+import {SlideService} from './slide.service';
+
+export class SlideOfflineService implements SlideService {
   private static instance: SlideOfflineService;
 
   private constructor() {
@@ -48,6 +50,7 @@ export class SlideOfflineService {
     });
   }
 
+  // @Override
   get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       try {

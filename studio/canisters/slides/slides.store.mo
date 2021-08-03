@@ -17,10 +17,6 @@ module {
     public class Store() {
         private var slides: HashMap.HashMap<SlideId, UserSlide> = HashMap.HashMap<SlideId, UserSlide>(10, Text.equal, Text.hash);
 
-        public func getSlides(): HashMap.HashMap<SlideId, UserSlide> {
-            return slides;
-        };
-
         public func setSlide(user: Principal, slide: Slide): async() {
             let newUserSlide: UserSlide = await initSlide(user, slide);
 
@@ -69,6 +65,10 @@ module {
             if (user != userSlide.owner) {
                 throw Error.reject("User does not have the permission for the slide.");
             };
+        };
+
+        public func preupgrade(): HashMap.HashMap<SlideId, UserSlide> {
+            return slides;
         };
 
         public func postupgrade(entries: [(SlideId, UserSlide)]) {

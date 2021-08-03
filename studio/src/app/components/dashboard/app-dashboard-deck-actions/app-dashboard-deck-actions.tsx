@@ -9,9 +9,9 @@ import {Deck} from '../../../models/data/deck';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {DeckFirebaseService} from '../../../services/data/deck/deck.firebase.service';
 
-import { AppIcon } from '../../core/app-icon/app-icon';
+import {AppIcon} from '../../core/app-icon/app-icon';
 
-import { loadingController, modalController } from '../../../utils/ionic/ionic.overlay';
+import {loadingController, modalController} from '../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
@@ -20,6 +20,8 @@ import { loadingController, modalController } from '../../../utils/ionic/ionic.o
 })
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
+
+  @Prop() clone: boolean;
 
   private deckFirebaseService: DeckFirebaseService;
   private deckDashboardService: DeckDashboardService;
@@ -102,7 +104,7 @@ export class AppDashboardDeckActions {
     return new Promise<void>(async (resolve) => {
       $event.stopPropagation();
 
-      if (this.actionInProgress) {
+      if (this.actionInProgress || !this.clone) {
         resolve();
         return;
       }
@@ -151,12 +153,7 @@ export class AppDashboardDeckActions {
 
     return (
       <Host>
-        <button
-          onClick={($event: UIEvent) => this.cloneDeck($event)}
-          title={i18n.state.dashboard.copy}
-          class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-          <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
-        </button>
+        {this.renderClone(disabled)}
 
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
@@ -165,6 +162,21 @@ export class AppDashboardDeckActions {
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>
+    );
+  }
+
+  private renderClone(disabled: boolean) {
+    if (!this.clone) {
+      return undefined;
+    }
+
+    return (
+      <button
+        onClick={($event: UIEvent) => this.cloneDeck($event)}
+        title={i18n.state.dashboard.copy}
+        class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+        <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
+      </button>
     );
   }
 }

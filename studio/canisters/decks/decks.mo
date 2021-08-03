@@ -1,4 +1,6 @@
 import Iter "mo:base/Iter";
+import HashMap "mo:base/HashMap";
+import Principal "mo:base/Principal";
 
 import Error "mo:base/Error";
 
@@ -12,10 +14,10 @@ actor Deck {
     type Deck = DecksTypes.Deck;
     type UserDeck = DecksTypes.UserDeck;
 
-    var store: DecksStore.Store = DecksStore.Store();
+    let store: DecksStore.Store = DecksStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var entries : [(DeckId, UserDeck)] = [];
+    private stable var decks : [(Principal, [(DeckId, UserDeck)])] = [];
 
     public shared({ caller }) func set(deck: Deck) {
         await store.setDeck(caller, deck);
@@ -34,6 +36,11 @@ actor Deck {
         };
     };
 
+    public shared({ caller }) func entries() : async [Deck] {
+        let decks: [Deck] = await store.getDecks(caller);
+        return decks;
+    };
+
     public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
         let exists: Bool = await store.deleteDeck(caller, deckId);
 
@@ -41,11 +48,11 @@ actor Deck {
     };
 
     system func preupgrade() {
-        entries := Iter.toArray(store.getDecks().entries());
+        decks := Iter.toArray(store.preupgrade().entries());
     };
 
     system func postupgrade() {
-        store.postupgrade(entries);
-        entries := [];
+        store.postupgrade(decks);
+        decks := [];
     };
 }
