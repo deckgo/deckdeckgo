@@ -20,7 +20,7 @@ export class CanisterUtils {
   }
 
   static toNullableTimestamp(value?: Date): [] | [Time] {
-    const time: number = toDate(value).getTime();
+    const time: number | undefined = toDate(value)?.getTime();
 
     return value && !isNaN(time) ? [this.toTimestamp(value)] : [];
   }
