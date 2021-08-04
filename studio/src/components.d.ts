@@ -20,7 +20,7 @@ import { SlotType } from "./app/types/editor/slot-type";
 import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
-import { ItemReorderEventDetail } from "@ionic/core";
+import { IonicReorderEvent } from "./app/utils/ionic/ionic.reorder.event";
 import { Template } from "./app/models/data/template";
 import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
 import { InitTemplate } from "./app/utils/editor/create-slides.utils";
@@ -1630,7 +1630,7 @@ declare namespace LocalJSX {
         "redirect"?: string;
     }
     interface AppSlideNavigate {
-        "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+        "onReorder"?: (event: CustomEvent<IonicReorderEvent>) => void;
     }
     interface AppSlidePreview {
         "deckRef": HTMLDeckgoDeckElement;

@@ -1,6 +1,8 @@
 import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
-import type {ItemReorderEventDetail, OverlayEventDetail} from '@ionic/core';
+import type {OverlayEventDetail} from '@ionic/core';
+
+import type {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
 
 import {get, set} from 'idb-keyval';
 
@@ -668,7 +670,7 @@ export class AppEditor {
   }
 
   @Listen('reorder', {target: 'document'})
-  async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
+  async onReorderSlides($event: CustomEvent<IonicReorderEvent>) {
     if (!$event || !$event.detail) {
       return;
     }
@@ -676,7 +678,7 @@ export class AppEditor {
     await this.reorderSlides($event.detail);
   }
 
-  private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
+  private reorderSlides(detail: IonicReorderEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!detail) {
         resolve();
