@@ -17,13 +17,10 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {SlideFirebaseService} from '../../../services/data/slide/slide.firebase.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
-import {DeckService, initDeckService} from '../../../services/data/deck/deck.service';
-import {SlideService} from '../../../services/data/slide/slide.service';
-import {SlideIcService} from '../../../services/data/slide/slide.ic.service';
-import {SlideOfflineService} from '../../../services/data/slide/slide.offline.service';
+import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
+import {getSlideService, SlideService} from '../../../services/data/slide/slide.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
@@ -66,18 +63,10 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.deckService = initDeckService();
-    this.slideService = this.initSlideService();
+    this.deckService = getDeckService();
+    this.slideService = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
-  }
-
-  private initSlideService(): SlideService {
-    return this.cloud === 'ic'
-      ? SlideIcService.getInstance()
-      : this.cloud === 'firebase'
-      ? SlideFirebaseService.getInstance()
-      : SlideOfflineService.getInstance();
   }
 
   async componentWillLoad() {

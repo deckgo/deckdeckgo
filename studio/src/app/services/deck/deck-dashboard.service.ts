@@ -8,7 +8,7 @@ import {importEditorData} from '../../utils/editor/import.utils';
 import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
 import {DeckFirebaseService} from '../data/deck/deck.firebase.service';
-import {SlideFirebaseService} from '../data/slide/slide.firebase.service';
+import {getSlideService, SlideService} from '../data/slide/slide.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;
@@ -19,11 +19,11 @@ export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
   private deckFirebaseService: DeckFirebaseService;
-  private slideOnlineService: SlideFirebaseService;
+  private slideService: SlideService;
 
   private constructor() {
     this.deckFirebaseService = DeckFirebaseService.getInstance();
-    this.slideOnlineService = SlideFirebaseService.getInstance();
+    this.slideService = getSlideService();
   }
 
   static getInstance() {
@@ -104,7 +104,7 @@ export class DeckDashboardService {
   importData(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideOnlineService.get(deck.id, slideId));
+        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideService.get(deck.id, slideId));
         const slides: Slide[] = await Promise.all(promises || []);
 
         const deckToImport: Deck = {...deck};
