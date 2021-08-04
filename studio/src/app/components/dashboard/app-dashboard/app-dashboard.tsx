@@ -17,13 +17,15 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import { DeckOnlineService } from '../../../services/data/deck/deck.online.service';
-import { SlideOnlineService } from '../../../services/data/slide/slide.online.service';
+import {DeckOnlineService} from '../../../services/data/deck/deck.online.service';
+import {SlideOnlineService} from '../../../services/data/slide/slide.online.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import {loadingController} from '@ionic/core';
+import store from '../../../stores/error.store';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -272,7 +274,7 @@ export class AppDashboard {
     await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
   }
 
-  private navigateDeck(deck: DeckAndFirstSlide) {
+  private async navigateDeck(deck: DeckAndFirstSlide) {
     if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
       return;
     }
@@ -281,12 +283,22 @@ export class AppDashboard {
       return;
     }
 
-    const url: string = `/editor/${deck.deck.id}`;
+    const loading: HTMLIonLoadingElement = await loadingController.create({});
 
-    navStore.state.nav = {
-      url: url,
-      direction: NavDirection.RELOAD
-    };
+    await loading.present();
+
+    try {
+      await this.deckDashboardService.importData(deck.deck);
+
+      navStore.state.nav = {
+        url: '/',
+        direction: NavDirection.RELOAD
+      };
+    } catch (err) {
+      store.state.error = err;
+    }
+
+    await loading.dismiss();
   }
 
   private removeDeletedDeck($event: CustomEvent): Promise<void> {
@@ -520,7 +532,7 @@ export class AppDashboard {
       }
 
       return (
-        <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
+        <ion-card class="item ion-no-margin" onClick={async () => await this.navigateDeck(deck)} key={deck.deck.id}>
           {this.renderDeck(deck)}
 
           <app-dashboard-deck-actions
