@@ -1,15 +1,11 @@
-import { get, getMany, set, setMany } from 'idb-keyval';
+import {get, getMany} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
-interface DeckSave {
-  id: string;
-  deck: Deck;
-  slides: Slide[];
-}
+import { ImportData, importEditorData } from '../../../utils/editor/import.utils';
 
 export class FileSystemService {
   private static instance: FileSystemService;
@@ -22,12 +18,9 @@ export class FileSystemService {
   }
 
   async importData(file: File) {
-    const {id, deck, slides}: DeckSave = JSON.parse(await file.text());
+    const data: ImportData = JSON.parse(await file.text());
 
-    await setMany(slides.map((slide: Slide) => [`/decks/${id}/slides/${slide.id}`, slide]));
-    await set(`/decks/${id}`, deck);
-
-    await set('deckdeckgo_deck_id', id);
+    await importEditorData(data);
   }
 
   async exportData() {
@@ -72,7 +65,7 @@ export class FileSystemService {
     }
   }
 
-  private save(deck: DeckSave): Promise<void> {
+  private save(deck: ImportData): Promise<void> {
     if ('showSaveFilePicker' in window) {
       return this.exportNativeFileSystem(deck);
     }
@@ -80,7 +73,7 @@ export class FileSystemService {
     return this.exportDownload(deck);
   }
 
-  private async exportNativeFileSystem(deck: DeckSave) {
+  private async exportNativeFileSystem(deck: ImportData) {
     const fileHandle: FileSystemFileHandle = await this.getNewFileHandle();
 
     if (!fileHandle) {
@@ -114,7 +107,7 @@ export class FileSystemService {
     await writer.close();
   }
 
-  private async exportDownload(deckSave: DeckSave) {
+  private async exportDownload(deckSave: ImportData) {
     const a: HTMLAnchorElement = document.createElement('a');
     a.style.display = 'none';
     document.body.appendChild(a);

@@ -29,6 +29,7 @@ import {ImageEventsHandler} from '../../../handlers/core/events/image/image-even
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {loadingController} from '../../../utils/ionic/ionic.overlay';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -292,7 +293,7 @@ export class AppDashboard {
     await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
   }
 
-  private navigateDeck(deck: DeckAndFirstSlide) {
+  private async navigateDeck(deck: DeckAndFirstSlide) {
     if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
       return;
     }
@@ -301,12 +302,22 @@ export class AppDashboard {
       return;
     }
 
-    const url: string = `/editor/${deck.deck.id}`;
+    const loading: HTMLIonLoadingElement = await loadingController.create({});
 
-    navStore.state.nav = {
-      url: url,
-      direction: NavDirection.RELOAD
-    };
+    await loading.present();
+
+    try {
+      await this.deckDashboardService.importData(deck.deck);
+
+      navStore.state.nav = {
+        url: '/',
+        direction: NavDirection.RELOAD
+      };
+    } catch (err) {
+      errorStore.state.error = err;
+    }
+
+    await loading.dismiss();
   }
 
   private removeDeletedDeck($event: CustomEvent): Promise<void> {

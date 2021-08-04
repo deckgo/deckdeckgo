@@ -2,8 +2,13 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../models/data/deck';
+import {Slide} from '../../models/data/slide';
+
+import {importEditorData} from '../../utils/editor/import.utils';
+import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
 import {DeckFirebaseService} from '../data/deck/deck.firebase.service';
+import {SlideFirebaseService} from '../data/slide/slide.firebase.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;
@@ -14,9 +19,11 @@ export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
   private deckFirebaseService: DeckFirebaseService;
+  private slideOnlineService: SlideFirebaseService;
 
   private constructor() {
     this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.slideOnlineService = SlideFirebaseService.getInstance();
   }
 
   static getInstance() {
@@ -91,6 +98,39 @@ export class DeckDashboardService {
         });
 
       resolve();
+    });
+  }
+
+  importData(deck: Deck): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideOnlineService.get(deck.id, slideId));
+        const slides: Slide[] = await Promise.all(promises || []);
+
+        const deckToImport: Deck = {...deck};
+
+        if (deckToImport.data.background && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.background)) {
+          deckToImport.data.background = null;
+        }
+
+        if (deckToImport.data.header && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.header)) {
+          deckToImport.data.header = null;
+        }
+
+        if (deckToImport.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.footer)) {
+          deckToImport.data.footer = null;
+        }
+
+        await importEditorData({
+          id: deck.id,
+          deck,
+          slides
+        });
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 }
