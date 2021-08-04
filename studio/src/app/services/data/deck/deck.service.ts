@@ -13,7 +13,7 @@ export interface DeckService {
   delete(deckId: string): Promise<void>;
 }
 
-export const initDeckService = (): DeckService => {
+export const getDeckService = (): DeckService => {
   const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
   return cloud === 'ic' ? DeckIcService.getInstance() : cloud === 'firebase' ? DeckFirebaseService.getInstance() : DeckOfflineService.getInstance();
 };

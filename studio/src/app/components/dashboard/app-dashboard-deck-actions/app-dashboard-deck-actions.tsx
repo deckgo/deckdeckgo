@@ -7,7 +7,7 @@ import i18n from '../../../stores/i18n.store';
 import {Deck} from '../../../models/data/deck';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {DeckService, initDeckService} from '../../../services/data/deck/deck.service';
+import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
 
 import {AppIcon} from '../../core/app-icon/app-icon';
 
@@ -33,7 +33,7 @@ export class AppDashboardDeckActions {
   private actionInProgress: boolean = false;
 
   constructor() {
-    this.deckService = initDeckService();
+    this.deckService = getDeckService();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
