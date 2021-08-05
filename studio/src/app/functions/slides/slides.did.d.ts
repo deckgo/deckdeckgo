@@ -22,6 +22,7 @@ export type SlideId__1 = string;
 export type Time = bigint;
 export interface _SERVICE {
   del: (arg_0: SlideId__1) => Promise<boolean>;
+  deleteSlide: (arg_0: Principal, arg_1: SlideId__1) => Promise<boolean>;
   get: (arg_0: SlideId__1) => Promise<Slide>;
   set: (arg_0: Slide) => Promise<undefined>;
 }
