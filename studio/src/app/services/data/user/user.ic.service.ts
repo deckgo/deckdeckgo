@@ -67,10 +67,10 @@ export class UserIcService {
     console.log('User IC about to SET');
     const t0 = performance.now();
 
+    await userActor.set(newUser);
+
     const t1 = performance.now();
     console.log('User IC SET done', t1 - t0);
-
-    await userActor.set(newUser);
 
     return newUser;
   }
