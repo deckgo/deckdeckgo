@@ -45,6 +45,7 @@ export class DeckIcService implements DeckService {
     }
 
     console.log('Deck IC about to SET');
+    const t0 = performance.now();
 
     await deckActor.set({
       deckId: deck.id,
@@ -62,10 +63,13 @@ export class DeckIcService implements DeckService {
       }
     });
 
-    console.log('Deck IC SET done');
+    const t1 = performance.now();
+    console.log('Deck IC SET done', t1 - t0);
+
+    const t2 = performance.now();
 
     // TODO: remove, just for test
-    console.log('Deck IC Get:', await deckActor.get(deck.id));
+    console.log('Deck IC Get:', await deckActor.get(deck.id), performance.now() - t2);
   }
 
   // @Override

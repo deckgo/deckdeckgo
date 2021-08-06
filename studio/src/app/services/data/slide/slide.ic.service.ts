@@ -36,6 +36,7 @@ export class SlideIcService implements SlideService {
     }
 
     console.log('Slide IC about to SET');
+    const t0 = performance.now();
 
     await slideActor.set({
       slideId: slide.id,
@@ -50,10 +51,13 @@ export class SlideIcService implements SlideService {
       }
     });
 
-    console.log('Slide IC SET done');
+    const t1 = performance.now();
+    console.log('Slide IC SET done', t1 - t0);
+
+    const t2 = performance.now();
 
     // TODO: remove, just for test
-    console.log('Slide IC Get:', await slideActor.get(slide.id));
+    console.log('Slide IC Get:', await slideActor.get(slide.id), performance.now() - t2);
   }
 
   async deleteSlide({slideId, slideActor}: {slideId: string; slideActor: SlideActor}) {
