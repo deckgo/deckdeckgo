@@ -14,58 +14,64 @@ module {
     type UserId = Types.UserId;
     type User = UsersTypes.User;
     type UserUser = UsersTypes.UserUser;
+    type ProtectedUser = UsersTypes.ProtectedUser;
 
     public class Store() {
         private var users: HashMap.HashMap<UserId, UserUser> = HashMap.HashMap<UserId, UserUser>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        public func setUser(caller: UserId, user: User): async() {
-            let newUserUser: UserUser = await initUser(caller, user);
+        public func setUser(caller: UserId, user: User): ?Text {
+            let userUser: ProtectedUser = getUser(caller, user.userId);
 
-            users.put(caller, newUserUser);
+            switch (userUser.error) {
+                case (?error) {
+                    return ?error;
+                };
+                case null {
+                    users.put(caller, {
+                        owner = caller;
+                        user = user;
+                    });
+                };
+            };
+
+            return null;
         };
 
-        private func initUser(caller: UserId, user: User): async (UserUser) {
-            let userUser: ?UserUser = await getUser(caller, user.userId);
-
-            // If userUser is null, then it is a new user
-            // If userUser is not null and there was no error, then it is a user to update
-
-            return {
-                owner = caller;
-                user = user;
-            }
-        };
-
-        public func getUser(caller: UserId, userId: UserId): async ?UserUser {
+        public func getUser(caller: UserId, userId: UserId): ProtectedUser {
             let userUser: ?UserUser = users.get(userId);
 
             switch userUser {
                 case (?userUser) {
-                    await check_permission(caller, userUser);
+                    if (Utils.isPrincipalEqual(caller, userUser.owner)) {
+                        return {
+                            user = ?userUser;
+                            error = null;
+                        };
+                    };
                 };
                 case null {
-                    return null;
-                }
+                    return {
+                        user = null;
+                        error = null;
+                    }
+                };
             };
 
-            return userUser;
+            return {
+                user = null;
+                error = ?"User does not have the permission for the user.";
+            }
         };
 
-        public func deleteUser(user: UserId, userId : UserId) : async Bool {
-            let userUser: ?UserUser = await getUser(user, userId);
+        public func deleteUser(caller: UserId, userId : UserId) : ProtectedUser {
+            let userUser: ProtectedUser = getUser(caller, userId);
 
-            let exists: Bool = Option.isSome(userUser);
+            let exists: Bool = Option.isSome(userUser.user);
             if (exists) {
                 let removedUser: ?UserUser = users.remove(userId);
             };
 
-            return exists;
-        };
-
-        private func check_permission(user: UserId, userUser: UserUser) : async () {
-            if (user != userUser.owner) {
-                throw Error.reject("User does not have the permission for the user.");
-            };
+            return userUser;
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, UserUser> {

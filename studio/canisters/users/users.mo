@@ -1,4 +1,5 @@
 import Iter "mo:base/Iter";
+import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
@@ -10,6 +11,7 @@ actor User {
     type UserId = Types.UserId;
     type User = UsersTypes.User;
     type UserUser = UsersTypes.UserUser;
+    type ProtectedUser = UsersTypes.ProtectedUser;
 
     var store: UsersStore.Store = UsersStore.Store();
 
@@ -17,18 +19,32 @@ actor User {
     private stable var users : [(UserId, UserUser)] = [];
 
     public shared({ caller }) func set(user: User) {
-        await store.setUser(caller, user);
+        let error: ?Text = store.setUser(caller, user);
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {};
+        };
     };
 
-    public shared({ caller }) func get(userId: UserId) : async User {
-        let user: ?UserUser = await store.getUser(caller, userId);
+    public shared query({ caller }) func get(userId: UserId) : async User {
+        let user: ProtectedUser = store.getUser(caller, userId);
 
-        switch user {
-            case (?user) {
-                return user.user;
+        switch (user.error) {
+            case (?error) {
+                throw Error.reject(error);
             };
             case null {
-                throw Error.reject("User not found.");
+                switch (user.user) {
+                    case (?user) {
+                        return user.user;
+                    };
+                    case null {
+                        throw Error.reject("User not found.");
+                    };
+                };
             };
         };
     };
@@ -38,9 +54,17 @@ actor User {
     };
 
     public shared({ caller }) func del(userId: UserId) : async (Bool) {
-        let exists: Bool = await store.deleteUser(caller, userId);
+        let user: ProtectedUser = store.deleteUser(caller, userId);
 
-        return exists;
+        switch (user.error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                let exists: Bool = Option.isSome(user.user);
+                return exists;
+            };
+        };
     };
 
     system func preupgrade() {

@@ -24,7 +24,7 @@ export const idlFactory = ({IDL}) => {
   const User = IDL.Record({userId: UserId, data: UserData});
   return IDL.Service({
     del: IDL.Func([UserId__1], [IDL.Bool], []),
-    get: IDL.Func([UserId__1], [User], []),
+    get: IDL.Func([UserId__1], [User], ['query']),
     getUserId: IDL.Func([], [UserId__1], ['query']),
     set: IDL.Func([User], [], ['oneway'])
   });

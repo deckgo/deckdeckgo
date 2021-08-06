@@ -29,7 +29,7 @@ type User =
 type Time = int;
 service : {
   del: (UserId__1) -> (bool);
-  get: (UserId__1) -> (User);
+  get: (UserId__1) -> (User) query;
   getUserId: () -> (UserId__1) query;
   set: (User) -> () oneway;
 }

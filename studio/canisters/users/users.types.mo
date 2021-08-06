@@ -40,4 +40,9 @@ module {
         owner: UserId;
         user: User;
     };
+
+    public type ProtectedUser = {
+        user: ?UserUser;
+        error: ?Text;
+    };
 }
