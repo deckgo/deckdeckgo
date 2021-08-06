@@ -6,11 +6,11 @@ export interface User {
 }
 export interface UserData {
   bio: [] | [string];
-  updated_at: [] | [Time];
+  updated_at: Time;
   photo_url: [] | [string];
   social: [] | [UserSocial];
   name: [] | [string];
-  created_at: [] | [Time];
+  created_at: Time;
   email: [] | [string];
   newsletter: [] | [boolean];
 }
@@ -27,7 +27,7 @@ export interface UserSocial {
 }
 export interface _SERVICE {
   del: (arg_0: UserId__1) => Promise<boolean>;
-  get: (arg_0: UserId__1) => Promise<User>;
+  get: (arg_0: UserId__1) => Promise<[] | [User]>;
   getUserId: () => Promise<UserId__1>;
   set: (arg_0: User) => Promise<undefined>;
 }

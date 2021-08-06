@@ -13,18 +13,18 @@ export const idlFactory = ({IDL}) => {
   });
   const UserData = IDL.Record({
     bio: IDL.Opt(IDL.Text),
-    updated_at: IDL.Opt(Time),
+    updated_at: Time,
     photo_url: IDL.Opt(IDL.Text),
     social: IDL.Opt(UserSocial),
     name: IDL.Opt(IDL.Text),
-    created_at: IDL.Opt(Time),
+    created_at: Time,
     email: IDL.Opt(IDL.Text),
     newsletter: IDL.Opt(IDL.Bool)
   });
   const User = IDL.Record({userId: UserId, data: UserData});
   return IDL.Service({
     del: IDL.Func([UserId__1], [IDL.Bool], []),
-    get: IDL.Func([UserId__1], [User], ['query']),
+    get: IDL.Func([UserId__1], [IDL.Opt(User)], ['query']),
     getUserId: IDL.Func([], [UserId__1], ['query']),
     set: IDL.Func([User], [], ['oneway'])
   });

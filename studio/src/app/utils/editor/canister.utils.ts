@@ -1,5 +1,6 @@
 import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';
+import {UserSocial} from '../../models/data/user';
 
 import {Attribute, Time} from '../../canisters/slides/slides.did';
 
@@ -76,5 +77,12 @@ export class CanisterUtils {
     } catch (err) {
       return value;
     }
+  }
+
+  static fromUserSocial<T>(userSocial: [] | [T]): UserSocial {
+    return Object.keys(userSocial?.[0] || {}).reduce((acc: UserSocial, key: string) => {
+      acc[key] = CanisterUtils.fromValue(userSocial[0][key]);
+      return acc;
+    }, {} as UserSocial);
   }
 }

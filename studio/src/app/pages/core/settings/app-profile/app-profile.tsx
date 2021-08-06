@@ -21,7 +21,7 @@ import {signIn} from '../../../../utils/core/signin.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-import {UserService} from '../../../../services/data/user/user.service';
+import {UserFirebaseService} from '../../../../services/data/user/user.firebase.service';
 import {StorageService} from '../../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
@@ -58,7 +58,7 @@ export class AppProfile {
   @State()
   private saving: boolean = false;
 
-  private userService: UserService;
+  private userService: UserFirebaseService;
   private apiUserService: ApiUserService;
 
   private imageHistoryService: ImageHistoryService;
@@ -95,7 +95,7 @@ export class AppProfile {
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userService = UserService.getInstance();
+    this.userService = UserFirebaseService.getInstance();
     this.storageService = StorageFactoryService.getInstance();
   }
 

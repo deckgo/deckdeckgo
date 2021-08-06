@@ -29,7 +29,7 @@ actor User {
         };
     };
 
-    public shared query({ caller }) func get(userId: UserId) : async User {
+    public shared query({ caller }) func get(userId: UserId) : async ?User {
         let ({error; user}): ProtectedUser = store.getUser(caller, userId);
 
         switch (error) {
@@ -39,10 +39,10 @@ actor User {
             case null {
                 switch (user) {
                     case (?user) {
-                        return user.user;
+                        return ?user.user;
                     };
                     case null {
-                        throw Error.reject("User not found.");
+                        return null;
                     };
                 };
             };

@@ -13,13 +13,13 @@ type UserId = principal;
 type UserData = 
  record {
    bio: opt text;
-   created_at: opt Time;
+   created_at: Time;
    email: opt text;
    name: opt text;
    newsletter: opt bool;
    photo_url: opt text;
    social: opt UserSocial;
-   updated_at: opt Time;
+   updated_at: Time;
  };
 type User = 
  record {
@@ -29,7 +29,7 @@ type User =
 type Time = int;
 service : {
   del: (UserId__1) -> (bool);
-  get: (UserId__1) -> (User) query;
+  get: (UserId__1) -> (opt User) query;
   getUserId: () -> (UserId__1) query;
   set: (User) -> () oneway;
 }

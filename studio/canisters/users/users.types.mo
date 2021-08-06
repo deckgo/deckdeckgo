@@ -27,8 +27,8 @@ module {
 
         bio: ?Text;
 
-        created_at: ?Time.Time;
-        updated_at: ?Time.Time;
+        created_at: Time.Time;
+        updated_at: Time.Time;
     };
 
     public type User = {

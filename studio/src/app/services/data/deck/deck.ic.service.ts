@@ -227,10 +227,7 @@ export class DeckIcService implements DeckService {
         ? {
             name: meta[0].author[0].name,
             photo_url: CanisterUtils.fromNullable<string>(meta[0].author[0].photo_url),
-            social: Object.keys(meta[0].author[0].social?.[0] || {}).reduce((acc: UserSocial, key: string) => {
-              acc[key] = CanisterUtils.fromValue(meta[0].author[0].social[0][key]);
-              return acc;
-            }, {} as UserSocial)
+            social: CanisterUtils.fromUserSocial<UserSocialIc>(meta[0].author[0].social)
           }
         : undefined;
 
