@@ -24,7 +24,7 @@ type Attribute =
  };
 service : {
   del: (SlideId__1) -> (bool);
-  deleteSlide: (principal, SlideId__1) -> (bool);
+  delAdmin: (principal, principal, SlideId__1) -> (bool);
   get: (SlideId__1) -> (Slide);
   set: (Slide) -> () oneway;
 }

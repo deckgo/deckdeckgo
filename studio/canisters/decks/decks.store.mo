@@ -108,7 +108,7 @@ module {
             return userDeck;
         };
 
-        public func deleteDeck(user: Principal, deckId : DeckId, slides: Bool) : async Bool {
+        public func deleteDeck(admin: Principal, user: Principal, deckId : DeckId, slides: Bool) : async Bool {
             let userDecks: ?HashMap.HashMap<DeckId, UserDeck> = decks.get(user);
 
             switch userDecks {
@@ -117,7 +117,7 @@ module {
 
                     switch userDeck {
                         case (?userDeck) {
-                            await deleteSlides(user, userDeck.deck);
+                            await deleteSlides(admin, user, userDeck.deck);
 
                             let removedDeck: ?UserDeck = userDecks.remove(deckId);
                             decks.put(user, userDecks);
@@ -135,13 +135,13 @@ module {
             };
         };
 
-        private func deleteSlides(user: Principal, deck: Deck): async () {
+        private func deleteSlides(admin: Principal, user: Principal, deck: Deck): async () {
             let slides: ?[SlideId] = deck.data.slides;
 
             switch (slides) {
                 case (?slides) {
                     for ((slideId: Text) in slides.vals()) {
-                        let slideExists: Bool = await Slides.deleteSlide(user, slideId);
+                        let slideExists: Bool = await Slides.delAdmin(admin, user, slideId);
                     };
                 };
                 case null {}
