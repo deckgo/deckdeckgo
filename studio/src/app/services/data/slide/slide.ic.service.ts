@@ -2,8 +2,8 @@ import {Identity} from '@dfinity/agent';
 
 import {Slide, SlideScope} from '../../../models/data/slide';
 
-import {idlFactory as SlideFactory} from '../../../functions/slides/slides.utils.did';
-import {_SERVICE as SlideActor, Slide as SlideIc} from '../../../functions/slides/slides.did';
+import {idlFactory as SlideFactory} from '../../../canisters/slides/slides.utils.did';
+import {_SERVICE as SlideActor, Slide as SlideIc} from '../../../canisters/slides/slides.did';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createActor} from '../../../utils/core/ic.utils';

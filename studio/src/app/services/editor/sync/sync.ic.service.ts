@@ -5,8 +5,8 @@ import syncStore from '../../../stores/sync.store';
 
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync';
 
-import {_SERVICE as DeckActor} from '../../../functions/decks/decks.did';
-import {_SERVICE as SlideActor} from '../../../functions/slides/slides.did';
+import {_SERVICE as DeckActor} from '../../../canisters/decks/decks.did';
+import {_SERVICE as SlideActor} from '../../../canisters/slides/slides.did';
 
 import {internetComputer} from '../../../utils/core/environment.utils';
 
