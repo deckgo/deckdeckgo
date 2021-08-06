@@ -21,9 +21,7 @@ module {
     type UserDeck = DecksTypes.UserDeck;
 
     public class Store() {
-        let utils: Utils.Utils = Utils.Utils();
-
-        private var decks: HashMap.HashMap<Principal, HashMap.HashMap<DeckId, UserDeck>> = HashMap.HashMap<Principal, HashMap.HashMap<DeckId, UserDeck>>(10, utils.isPrincipalEqual, Principal.hash);
+        private var decks: HashMap.HashMap<Principal, HashMap.HashMap<DeckId, UserDeck>> = HashMap.HashMap<Principal, HashMap.HashMap<DeckId, UserDeck>>(10, Utils.isPrincipalEqual, Principal.hash);
 
         public func setDeck(user: Principal, deck: Deck): async() {
             let newUserDeck: UserDeck = await initDeck(user, deck);
@@ -158,7 +156,7 @@ module {
 
 
         public func preupgrade(): HashMap.HashMap<Principal, [(DeckId, UserDeck)]> {
-            let entries : HashMap.HashMap<Principal, [(DeckId, UserDeck)]> = HashMap.HashMap<Principal, [(DeckId, UserDeck)]>(10, utils.isPrincipalEqual, Principal.hash);
+            let entries : HashMap.HashMap<Principal, [(DeckId, UserDeck)]> = HashMap.HashMap<Principal, [(DeckId, UserDeck)]>(10, Utils.isPrincipalEqual, Principal.hash);
 
             for ((key: Principal, value: HashMap.HashMap<DeckId, UserDeck>) in decks.entries()) {
                 let userDecks : [(DeckId, UserDeck)] = Iter.toArray<(DeckId, UserDeck)>(value.entries());

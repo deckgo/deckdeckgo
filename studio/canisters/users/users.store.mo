@@ -16,9 +16,7 @@ module {
     type UserUser = UsersTypes.UserUser;
 
     public class Store() {
-        let utils: Utils.Utils = Utils.Utils();
-
-        private var users: HashMap.HashMap<UserId, UserUser> = HashMap.HashMap<UserId, UserUser>(10, utils.isPrincipalEqual, Principal.hash);
+        private var users: HashMap.HashMap<UserId, UserUser> = HashMap.HashMap<UserId, UserUser>(10, Utils.isPrincipalEqual, Principal.hash);
 
         public func setUser(caller: UserId, user: User): async() {
             let newUserUser: UserUser = await initUser(caller, user);
@@ -75,7 +73,7 @@ module {
         };
 
         public func postupgrade(entries: [(UserId, UserUser)]) {
-            users := HashMap.fromIter<UserId, UserUser>(entries.vals(), 10, utils.isPrincipalEqual, Principal.hash);
+            users := HashMap.fromIter<UserId, UserUser>(entries.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
         };
     }
 
