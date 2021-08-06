@@ -110,6 +110,6 @@ export class UserIcService {
   }
 
   private createActor({identity}: {identity: Identity}): Promise<UserActor> {
-    return createActor<UserActor>({canisterId: process.env.DECKS_CANISTER_ID, idlFactory: UserFactory, identity});
+    return createActor<UserActor>({canisterId: process.env.USERS_CANISTER_ID, idlFactory: UserFactory, identity});
   }
 }
