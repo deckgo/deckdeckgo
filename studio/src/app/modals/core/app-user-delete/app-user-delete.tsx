@@ -3,9 +3,8 @@ import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 
 import {UserUtils} from '../../../utils/core/user.utils';
-import {renderI18n} from '../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-user-delete',
@@ -66,15 +65,10 @@ export class AppUserDelete {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
-        <p>
-          {renderI18n(i18n.state.settings.cannot_undone, {
-            placeholder: '{0}',
-            value: <strong>{this.username}</strong>
-          })}
-        </p>
+        <p>{i18n.state.settings.cannot_undone}</p>
 
         <form onSubmit={(e: Event) => this.handleSubmit(e)}>
-          <p class="ion-no-margin">{i18n.state.settings.type_to_confirm}</p>
+          <p>{this.username === 'deckdeckgo' ? i18n.state.settings.type_ddg_to_confirm : i18n.state.settings.type_to_confirm}</p>
 
           <ion-item>
             <ion-input

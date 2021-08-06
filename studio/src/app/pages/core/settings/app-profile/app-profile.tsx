@@ -1,6 +1,7 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -18,19 +19,19 @@ import {User} from '../../../../models/data/user';
 
 import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {getUserService, UserService} from '../../../../services/data/user/user.service';
 import {StorageService} from '../../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
+import {AuthService} from '../../../../services/auth/auth.service';
+import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 import {StorageFactoryService} from '../../../../services/storage/storage.factory.service';
-
-import {renderI18n} from '../../../../utils/core/i18n.utils';
-import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-profile',
@@ -93,11 +94,14 @@ export class AppProfile {
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
+  private readonly authService: AuthService;
+
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = getUserService();
     this.storageService = StorageFactoryService.getInstance();
+    this.authService = AuthFactoryService.getInstance();
   }
 
   async componentDidLoad() {
@@ -404,7 +408,7 @@ export class AppProfile {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser.username
+        username: this.apiUser?.username || 'deckdeckgo'
       }
     });
 
@@ -424,20 +428,7 @@ export class AppProfile {
 
         await loading.present();
 
-        const firebaseUser: FirebaseUser = firebase.auth().currentUser;
-
-        if (firebaseUser) {
-          // We need the user token to access the API, therefore delete it here first
-          const token: string = await firebase.auth().currentUser.getIdToken();
-          await this.apiUserService.delete(this.apiUser.id, token);
-
-          // Then delete the user
-          await this.userService.delete(authStore.state.authUser.uid);
-
-          // Decks and slides are delete with a cloud function triggered on auth.delete
-
-          await firebaseUser.delete();
-        }
+        await this.deleteUserCloud();
 
         await this.imageHistoryService.clear();
 
@@ -454,6 +445,33 @@ export class AppProfile {
           "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
+  }
+
+  private async deleteUserCloud() {
+    if (this.cloud === 'ic') {
+      await this.userService.delete(authStore.state.authUser.uid);
+
+      await this.authService.signOut();
+
+      return;
+    }
+
+    const firebaseUser: FirebaseUser = firebase.auth().currentUser;
+
+    if (!firebaseUser) {
+      return;
+    }
+
+    // We need the user token to access the API, therefore delete it here first
+    const token: string = await firebase.auth().currentUser.getIdToken();
+    await this.apiUserService.delete(this.apiUser.id, token);
+
+    // Then delete the user
+    await this.userService.delete(authStore.state.authUser.uid);
+
+    // Decks and slides are delete with a cloud function triggered on auth.delete
+
+    await firebaseUser.delete();
   }
 
   private async selectProfilePicture() {
@@ -612,6 +630,8 @@ export class AppProfile {
   }
 
   private renderDangerZone() {
+    const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
+
     return [
       <h1 class="danger-zone">{i18n.state.settings.danger_zone}</h1>,
       <p>{i18n.state.settings.no_way_back}</p>,
@@ -620,7 +640,7 @@ export class AppProfile {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !this.apiUser || !authStore.state.authUser}>
+        disabled={this.saving || !validApiUser || !authStore.state.authUser}>
         <ion-label>{i18n.state.settings.delete_user}</ion-label>
       </ion-button>
     ];

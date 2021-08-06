@@ -113,8 +113,6 @@ export class UserIcService implements UserService {
         updated_at: CanisterUtils.fromTimestamp(updated_at)
       }
     };
-
-    console.log('HERE', userStore.state.user);
   }
 
   private createActor({identity}: {identity: Identity}): Promise<UserActor> {

@@ -68,8 +68,9 @@
   },
   "settings": {
     "un_publish": "Bitte beachte, dass Präsentationen, die du geteilt hast, nicht automatisch wieder aus dem Netzt gelöscht werden. Falls du das Veröffentlichen rückgängig machen möchtest, schreibe uns bitte in einen unserer {0} Channels an.",
-    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deine Präsentation dauerhaft gelöscht.",
+    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deinen Benutzer dauerhaft gelöscht.",
     "type_to_confirm": "Gib deinen Nutzernamen zur Bestätigung ein.",
+    "type_ddg_to_confirm": "Gib 'deckdeckgo' zur Bestätigung ein.",
     "i_understand": "Ich verstehe, lösche meinen Account.",
     "customization": "Anpassen",
     "edit_mode": "Bearbeitungsmodus",
@@ -109,7 +110,7 @@
     "no_slides": "Du hast noch keine Folien. Leg' los, entwerfe jetzt dein erstes Set!",
     "copy": "Kopiere die Präsentation",
     "delete": "Lösche die Präsentation",
-    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Deine Präsentation wird dauerhaft gelöscht. {0}",
+    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deine Präsentation dauerhaft gelöscht.",
     "understand": "Ich verstehe, lösche meine Präsentation."
   },
   "editor": {
