@@ -42,6 +42,9 @@ actor User {
                         return ?user.user;
                     };
                     case null {
+                        // We do not throw a "Not found error" here.
+                        // It is a special case of the user because if not found, the very first sign in, we create a blank user.
+                        // Use case developed in the web app.
                         return null;
                     };
                 };
