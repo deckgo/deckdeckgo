@@ -36,13 +36,13 @@ module {
         data: UserData;
     };
 
-    public type UserUser = {
+    public type OwnerUser = {
         owner: UserId;
         user: User;
     };
 
     public type ProtectedUser = {
-        user: ?UserUser;
+        user: ?OwnerUser;
         error: ?Text;
     };
 }

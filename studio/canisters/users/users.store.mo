@@ -13,16 +13,16 @@ import Utils "../common/utils";
 module {
     type UserId = Types.UserId;
     type User = UsersTypes.User;
-    type UserUser = UsersTypes.UserUser;
+    type OwnerUser = UsersTypes.OwnerUser;
     type ProtectedUser = UsersTypes.ProtectedUser;
 
     public class Store() {
-        private var users: HashMap.HashMap<UserId, UserUser> = HashMap.HashMap<UserId, UserUser>(10, Utils.isPrincipalEqual, Principal.hash);
+        private var users: HashMap.HashMap<UserId, OwnerUser> = HashMap.HashMap<UserId, OwnerUser>(10, Utils.isPrincipalEqual, Principal.hash);
 
         public func setUser(caller: UserId, user: User): ?Text {
-            let userUser: ProtectedUser = getUser(caller, user.userId);
+            let ownerUser: ProtectedUser = getUser(caller, user.userId);
 
-            switch (userUser.error) {
+            switch (ownerUser.error) {
                 case (?error) {
                     return ?error;
                 };
@@ -38,13 +38,13 @@ module {
         };
 
         public func getUser(caller: UserId, userId: UserId): ProtectedUser {
-            let userUser: ?UserUser = users.get(userId);
+            let ownerUser: ?OwnerUser = users.get(userId);
 
-            switch userUser {
-                case (?userUser) {
-                    if (Utils.isPrincipalEqual(caller, userUser.owner)) {
+            switch ownerUser {
+                case (?ownerUser) {
+                    if (Utils.isPrincipalEqual(caller, ownerUser.owner)) {
                         return {
-                            user = ?userUser;
+                            user = ?ownerUser;
                             error = null;
                         };
                     };
@@ -64,22 +64,22 @@ module {
         };
 
         public func deleteUser(caller: UserId, userId : UserId) : ProtectedUser {
-            let userUser: ProtectedUser = getUser(caller, userId);
+            let ownerUser: ProtectedUser = getUser(caller, userId);
 
-            let exists: Bool = Option.isSome(userUser.user);
+            let exists: Bool = Option.isSome(ownerUser.user);
             if (exists) {
-                let removedUser: ?UserUser = users.remove(userId);
+                let removedUser: ?OwnerUser = users.remove(userId);
             };
 
-            return userUser;
+            return ownerUser;
         };
 
-        public func preupgrade(): HashMap.HashMap<UserId, UserUser> {
+        public func preupgrade(): HashMap.HashMap<UserId, OwnerUser> {
             return users;
         };
 
-        public func postupgrade(entries: [(UserId, UserUser)]) {
-            users := HashMap.fromIter<UserId, UserUser>(entries.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
+        public func postupgrade(entries: [(UserId, OwnerUser)]) {
+            users := HashMap.fromIter<UserId, OwnerUser>(entries.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
         };
     }
 

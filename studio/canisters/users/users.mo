@@ -10,13 +10,13 @@ import UsersStore "./users.store";
 actor User {
     type UserId = Types.UserId;
     type User = UsersTypes.User;
-    type UserUser = UsersTypes.UserUser;
+    type OwnerUser = UsersTypes.OwnerUser;
     type ProtectedUser = UsersTypes.ProtectedUser;
 
     var store: UsersStore.Store = UsersStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var users : [(UserId, UserUser)] = [];
+    private stable var users : [(UserId, OwnerUser)] = [];
 
     public shared({ caller }) func set(user: User) {
         let error: ?Text = store.setUser(caller, user);
@@ -49,7 +49,7 @@ actor User {
         };
     };
 
-    public shared query({ caller }) func getUserId(): async UserId { 
+    public shared query({ caller }) func getUserId(): async UserId {
         return caller;
     };
 
