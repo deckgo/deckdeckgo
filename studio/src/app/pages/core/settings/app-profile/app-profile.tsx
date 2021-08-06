@@ -1,6 +1,7 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
@@ -18,19 +19,19 @@ import {User} from '../../../../models/data/user';
 
 import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
+import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-import {UserService} from '../../../../services/data/user/user.service';
+import {getUserService, UserService} from '../../../../services/data/user/user.service';
 import {StorageService} from '../../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
+import {AuthService} from '../../../../services/auth/auth.service';
+import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
+import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 import {StorageFactoryService} from '../../../../services/storage/storage.factory.service';
-
-import {renderI18n} from '../../../../utils/core/i18n.utils';
-import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-profile',
@@ -91,12 +92,16 @@ export class AppProfile {
   private destroyApiUserListener;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
+
+  private readonly authService: AuthService;
 
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userService = UserService.getInstance();
+    this.userService = getUserService();
     this.storageService = StorageFactoryService.getInstance();
+    this.authService = AuthFactoryService.getInstance();
   }
 
   async componentDidLoad() {
@@ -148,6 +153,8 @@ export class AppProfile {
     this.apiUser = apiUserStore.state.apiUser;
 
     this.apiUsername = this.apiUser.username;
+
+    this.validateUsernameInput();
   }
 
   private async initSocial() {
@@ -156,6 +163,9 @@ export class AppProfile {
     }
 
     this.user = {...userStore.state.user};
+
+    this.validateNameInput();
+    this.validateEmailInput();
 
     if (!userStore.state.user.data.social) {
       return;
@@ -187,7 +197,14 @@ export class AppProfile {
   }
 
   private validateUsernameInput() {
-    this.validUsername = this.apiUser && UserUtils.validUsername(this.apiUser.username);
+    if (this.cloud === 'ic') {
+      this.validUsername = this.apiUsername === null || this.apiUsername === undefined || this.apiUsername === '' || UserUtils.validUsername(this.apiUsername);
+      this.isValid();
+
+      return;
+    }
+
+    this.validUsername = UserUtils.validUsername(this.apiUsername);
     this.isValid();
   }
 
@@ -196,6 +213,16 @@ export class AppProfile {
   }
 
   private validateNameInput() {
+    if (this.cloud === 'ic') {
+      this.validName =
+        this.user &&
+        this.user.data &&
+        (this.user.data.name === null || this.user.data.name === undefined || this.user.data.name === '' || UserUtils.validName(this.user.data.name));
+      this.isValid();
+
+      return;
+    }
+
     this.validName = this.user && this.user.data && UserUtils.validName(this.user.data.name);
     this.isValid();
   }
@@ -205,6 +232,16 @@ export class AppProfile {
   }
 
   private validateEmailInput() {
+    if (this.cloud === 'ic') {
+      this.validEmail =
+        this.user &&
+        this.user.data &&
+        (this.user.data.email === null || this.user.data.email === undefined || this.user.data.email === '' || UserUtils.validEmail(this.user.data.email));
+      this.isValid();
+
+      return;
+    }
+
     this.validEmail = this.user && this.user.data && UserUtils.validEmail(this.user.data.email);
     this.isValid();
   }
@@ -269,7 +306,7 @@ export class AppProfile {
 
   private saveUser(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      if (!this.valid || !this.apiUser) {
+      if (!this.valid || (!this.apiUser && this.cloud !== 'ic')) {
         resolve();
         return;
       }
@@ -371,7 +408,7 @@ export class AppProfile {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser.username
+        username: this.apiUser?.username || 'deckdeckgo'
       }
     });
 
@@ -391,20 +428,7 @@ export class AppProfile {
 
         await loading.present();
 
-        const firebaseUser: FirebaseUser = firebase.auth().currentUser;
-
-        if (firebaseUser) {
-          // We need the user token to access the API, therefore delete it here first
-          const token: string = await firebase.auth().currentUser.getIdToken();
-          await this.apiUserService.delete(this.apiUser.id, token);
-
-          // Then delete the user
-          await this.userService.delete(authStore.state.authUser.uid);
-
-          // Decks and slides are delete with a cloud function triggered on auth.delete
-
-          await firebaseUser.delete();
-        }
+        await this.deleteUserCloud();
 
         await this.imageHistoryService.clear();
 
@@ -421,6 +445,33 @@ export class AppProfile {
           "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
+  }
+
+  private async deleteUserCloud() {
+    if (this.cloud === 'ic') {
+      await this.userService.delete(authStore.state.authUser.uid);
+
+      await this.authService.signOut();
+
+      return;
+    }
+
+    const firebaseUser: FirebaseUser = firebase.auth().currentUser;
+
+    if (!firebaseUser) {
+      return;
+    }
+
+    // We need the user token to access the API, therefore delete it here first
+    const token: string = await firebase.auth().currentUser.getIdToken();
+    await this.apiUserService.delete(this.apiUser.id, token);
+
+    // Then delete the user
+    await this.userService.delete(authStore.state.authUser.uid);
+
+    // Decks and slides are delete with a cloud function triggered on auth.delete
+
+    await firebaseUser.delete();
   }
 
   private async selectProfilePicture() {
@@ -510,7 +561,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={64}
-          required={true}
+          required={this.cloud !== 'ic'}
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
@@ -530,7 +581,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={254}
-          required={true}
+          required={this.cloud !== 'ic'}
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
@@ -559,7 +610,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={32}
-          required={true}
+          required={this.cloud !== 'ic'}
           disabled={this.saving}
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
@@ -569,14 +620,18 @@ export class AppProfile {
   }
 
   private renderSubmitForm() {
+    const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
+
     return (
-      <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !this.apiUser || !this.user} color="primary" shape="round">
+      <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !validApiUser || !this.user} color="primary" shape="round">
         <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
   }
 
   private renderDangerZone() {
+    const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
+
     return [
       <h1 class="danger-zone">{i18n.state.settings.danger_zone}</h1>,
       <p>{i18n.state.settings.no_way_back}</p>,
@@ -585,7 +640,7 @@ export class AppProfile {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !this.apiUser || !authStore.state.authUser}>
+        disabled={this.saving || !validApiUser || !authStore.state.authUser}>
         <ion-label>{i18n.state.settings.delete_user}</ion-label>
       </ion-button>
     ];

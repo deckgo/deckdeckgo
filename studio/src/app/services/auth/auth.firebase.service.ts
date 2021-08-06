@@ -11,20 +11,20 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 import {AuthUser} from '../../models/auth/auth.user';
 
 import {ApiUserService} from '../api/user/api.user.service';
-import {UserService} from '../data/user/user.service';
+import {UserFirebaseService} from '../data/user/user.firebase.service';
 import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
 import {AuthService} from './auth.service';
 
 export class AuthFirebaseService extends AuthService {
   private apiUserService: ApiUserService;
 
-  private firestoreUserService: UserService;
+  private firestoreUserService: UserFirebaseService;
 
   constructor() {
     super();
 
     this.apiUserService = ApiUserFactoryService.getInstance();
-    this.firestoreUserService = UserService.getInstance();
+    this.firestoreUserService = UserFirebaseService.getInstance();
   }
 
   // @Override

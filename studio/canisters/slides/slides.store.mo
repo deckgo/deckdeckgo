@@ -10,7 +10,6 @@ import SlidesTypes "./slides.types";
 
 module {
     type SlideId = Types.SlideId;
-    type SlideData = SlidesTypes.SlideData;
     type Slide = SlidesTypes.Slide;
     type UserSlide = SlidesTypes.UserSlide;
 
@@ -48,7 +47,7 @@ module {
             };
 
             return userSlide;
-        };    
+        };
 
         public func deleteSlide(user: Principal, slideId : SlideId) : async Bool {
             let userSlide: ?UserSlide = await getSlide(user, slideId);
@@ -57,9 +56,9 @@ module {
             if (exists) {
                 let removedSlide: ?UserSlide = slides.remove(slideId);
             };
-            
+
             return exists;
-        };    
+        };
 
         private func check_permission(user: Principal, userSlide: UserSlide) : async () {
             if (user != userSlide.owner) {

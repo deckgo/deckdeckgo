@@ -1,5 +1,6 @@
 import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';
+import {UserSocial} from '../../models/data/user';
 
 import {Attribute, Time} from '../../canisters/slides/slides.did';
 
@@ -26,7 +27,7 @@ export class CanisterUtils {
   }
 
   static fromTimestamp(value: Time): Date {
-    return new Date(`${value[0]}`);
+    return new Date(Number(value));
   }
 
   static fromNullableTimestamp(value?: [] | [Time]): Date | undefined {
@@ -76,5 +77,32 @@ export class CanisterUtils {
     } catch (err) {
       return value;
     }
+  }
+
+  static fromUserSocial<T>(userSocial: [] | [T]): UserSocial {
+    return Object.keys(userSocial?.[0] || {}).reduce((acc: UserSocial, key: string) => {
+      acc[key] = CanisterUtils.fromValue(userSocial[0][key]);
+      return acc;
+    }, {} as UserSocial);
+  }
+
+  static toUserSocial<T>(social: UserSocial | undefined): [] | [T] {
+    if (!social) {
+      return [];
+    }
+
+    const {dev, linkedin, twitter, custom_logo_url, custom, github, medium} = social;
+
+    return [
+      {
+        dev: CanisterUtils.toNullable<string>(dev),
+        linkedin: CanisterUtils.toNullable<string>(linkedin),
+        twitter: CanisterUtils.toNullable<string>(twitter),
+        custom_logo_url: CanisterUtils.toNullable<string>(custom_logo_url),
+        custom: CanisterUtils.toNullable<string>(custom),
+        github: CanisterUtils.toNullable<string>(github),
+        medium: CanisterUtils.toNullable<string>(medium)
+      } as unknown as T
+    ];
   }
 }

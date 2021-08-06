@@ -75,6 +75,7 @@ interface I18nSettings {
   un_publish: string;
   cannot_undone: string;
   type_to_confirm: string;
+  type_ddg_to_confirm: string;
   i_understand: string;
   customization: string;
   edit_mode: string;

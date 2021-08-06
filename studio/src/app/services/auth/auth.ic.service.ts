@@ -1,19 +1,15 @@
 import {AuthClient} from '@dfinity/auth-client';
-import type {Principal} from '@dfinity/principal';
 import {Identity} from '@dfinity/agent';
 
-import authStore from '../../stores/auth.store';
-import userStore from '../../stores/user.store';
 import navStore, {NavDirection} from '../../stores/nav.store';
 import errorStore from '../../stores/error.store';
 
 import {del} from 'idb-keyval';
 
-import {AuthUser} from '../../models/auth/auth.user';
-
 import {AuthService} from './auth.service';
 import {EnvironmentConfigService} from '../environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../types/core/environment-config';
+import {UserIcService} from '../data/user/user.ic.service';
 
 export class AuthIcService extends AuthService {
   private authClient: AuthClient | undefined;
@@ -27,26 +23,7 @@ export class AuthIcService extends AuthService {
       return;
     }
 
-    const principal: Principal = this.authClient.getIdentity().getPrincipal();
-
-    // TODO: should we or not use the principal as uid?
-    authStore.state.authUser = {
-      uid: principal.toText(),
-      anonymous: false,
-      gitHub: false
-    } as AuthUser;
-
-    // TODO: do we need a user with internet computer? probably linked with above answer too
-    const now: Date = new Date();
-
-    userStore.state.user = {
-      id: principal.toText(),
-      data: {
-        anonymous: false,
-        created_at: now,
-        updated_at: now
-      }
-    };
+    await UserIcService.getInstance().create({identity: this.authClient.getIdentity()});
   }
 
   // @Override
