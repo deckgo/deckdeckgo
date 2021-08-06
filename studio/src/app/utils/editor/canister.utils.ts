@@ -1,7 +1,7 @@
 import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';
 
-import {Attribute, Time} from '../../functions/slides/slides.did';
+import {Attribute, Time} from '../../canisters/slides/slides.did';
 
 import {toDate} from '../core/date.utils';
 

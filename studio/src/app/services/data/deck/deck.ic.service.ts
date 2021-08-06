@@ -3,7 +3,7 @@ import {Identity} from '@dfinity/agent';
 import {Deck, DeckAttributes, DeckData, DeckGitHub, DeckGitHubRepo, DeckMeta, DeckMetaAuthor} from '../../../models/data/deck';
 import {UserSocial} from '../../../models/data/user';
 
-import {idlFactory as DeckFactory} from '../../../functions/decks/decks.utils.did';
+import {idlFactory as DeckFactory} from '../../../canisters/decks/decks.utils.did';
 import {
   _SERVICE as DeckActor,
   Deck as DeckIc,
@@ -12,7 +12,7 @@ import {
   DeckMeta as DeckMetaIc,
   DeckMetaAuthor as DeckMetaAuthorIc,
   UserSocial as UserSocialIc
-} from '../../../functions/decks/decks.did';
+} from '../../../canisters/decks/decks.did';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createActor} from '../../../utils/core/ic.utils';
