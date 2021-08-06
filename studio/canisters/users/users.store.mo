@@ -20,9 +20,9 @@ module {
         private var users: HashMap.HashMap<UserId, OwnerUser> = HashMap.HashMap<UserId, OwnerUser>(10, Utils.isPrincipalEqual, Principal.hash);
 
         public func setUser(caller: UserId, user: User): ?Text {
-            let ownerUser: ProtectedUser = getUser(caller, user.userId);
+            let ({error}): ProtectedUser = getUser(caller, user.userId);
 
-            switch (ownerUser.error) {
+            switch (error) {
                 case (?error) {
                     return ?error;
                 };

@@ -30,14 +30,14 @@ actor User {
     };
 
     public shared query({ caller }) func get(userId: UserId) : async User {
-        let user: ProtectedUser = store.getUser(caller, userId);
+        let ({error; user}): ProtectedUser = store.getUser(caller, userId);
 
-        switch (user.error) {
+        switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                switch (user.user) {
+                switch (user) {
                     case (?user) {
                         return user.user;
                     };
