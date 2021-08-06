@@ -17,7 +17,6 @@ import Slides "canister:slides";
 module {
     type DeckId = Types.DeckId;
     type SlideId = Types.SlideId;
-    type DeckData = DecksTypes.DeckData;
     type Deck = DecksTypes.Deck;
     type UserDeck = DecksTypes.UserDeck;
 

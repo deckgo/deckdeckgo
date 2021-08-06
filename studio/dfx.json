@@ -8,8 +8,12 @@
       "main": "canisters/slides/slides.mo",
       "type": "motoko"
     },
+    "users": {
+      "main": "canisters/users/users.mo",
+      "type": "motoko"
+    },
     "assets": {
-      "dependencies": ["decks", "slides"],
+      "dependencies": ["decks", "slides", "users"],
       "frontend": {
         "entrypoint": "www/index.html"
       },
