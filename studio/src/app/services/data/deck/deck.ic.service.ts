@@ -144,7 +144,7 @@ export class DeckIcService implements DeckService {
       ? {
           name: authorName,
           photo_url: CanisterUtils.toNullable<string>(photo_url),
-          social: CanisterUtils.toNullable<UserSocialIc>(this.toUserSocial(author as DeckMetaAuthor))
+          social: CanisterUtils.toUserSocial<UserSocialIc>((author as DeckMetaAuthor).social as UserSocial)
         }
       : undefined;
 
@@ -158,24 +158,6 @@ export class DeckIcService implements DeckService {
       published: CanisterUtils.toNullable<boolean>(published),
       published_at: CanisterUtils.toNullableTimestamp(published_at as Date | undefined),
       updated_at: CanisterUtils.toTimestamp(updated_at as Date | undefined)
-    };
-  }
-
-  private toUserSocial({social}: DeckMetaAuthor): UserSocialIc | undefined {
-    if (!social) {
-      return undefined;
-    }
-
-    const {dev, linkedin, twitter, custom_logo_url, custom, github, medium} = social as UserSocial;
-
-    return {
-      dev: CanisterUtils.toNullable<string>(dev),
-      linkedin: CanisterUtils.toNullable<string>(linkedin),
-      twitter: CanisterUtils.toNullable<string>(twitter),
-      custom_logo_url: CanisterUtils.toNullable<string>(custom_logo_url),
-      custom: CanisterUtils.toNullable<string>(custom),
-      github: CanisterUtils.toNullable<string>(github),
-      medium: CanisterUtils.toNullable<string>(medium)
     };
   }
 

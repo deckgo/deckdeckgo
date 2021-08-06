@@ -1,15 +1,23 @@
 import {Identity} from '@dfinity/agent';
 
-import {createActor} from '../../../utils/core/ic.utils';
+import userStore from '../../../stores/user.store';
+import authStore from '../../../stores/auth.store';
 
 import {idlFactory as UserFactory} from '../../../canisters/users/users.utils.did';
 import {_SERVICE as UserActor, UserSocial as UserSocialIc, User as UserIc, UserId__1 as UserId} from '../../../canisters/users/users.did';
-import {CanisterUtils} from '../../../utils/editor/canister.utils';
-import authStore from '../../../stores/auth.store';
-import {AuthUser} from '../../../models/auth/auth.user';
-import userStore from '../../../stores/user.store';
 
-export class UserIcService {
+import {createActor} from '../../../utils/core/ic.utils';
+import {CanisterUtils} from '../../../utils/editor/canister.utils';
+
+import {AuthUser} from '../../../models/auth/auth.user';
+import {User} from '../../../models/data/user';
+
+import {AuthFactoryService} from '../../auth/auth.factory.service';
+import {UserService} from './user.service';
+import {AuthIcService} from '../../auth/auth.ic.service';
+import store from '../../../stores/user.store';
+
+export class UserIcService implements UserService {
   private static instance: UserIcService;
 
   private constructor() {
@@ -24,9 +32,7 @@ export class UserIcService {
   }
 
   async create({identity}: {identity: Identity}): Promise<void> {
-    const userActor: UserActor = await this.createActor({identity});
-
-    const ownerId: UserId = await userActor.getUserId();
+    const {userActor, ownerId} = await this.init({identity});
 
     console.log('User IC about to GET');
     const t0 = performance.now();
@@ -107,9 +113,88 @@ export class UserIcService {
         updated_at: CanisterUtils.fromTimestamp(updated_at)
       }
     };
+
+    console.log('HERE', userStore.state.user);
   }
 
   private createActor({identity}: {identity: Identity}): Promise<UserActor> {
     return createActor<UserActor>({canisterId: process.env.USERS_CANISTER_ID, idlFactory: UserFactory, identity});
+  }
+
+  // @Override
+  async update(user: User): Promise<void> {
+    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+
+    if (!identity) {
+      return;
+    }
+
+    const {userActor, ownerId} = await this.init({identity});
+
+    const {data} = user;
+
+    const {name, email, photo_url, newsletter, bio, social, created_at} = data;
+
+    const now: Date = new Date();
+
+    const updateUser: UserIc = {
+      userId: ownerId,
+      data: {
+        bio: CanisterUtils.toNullable<string>(bio),
+        photo_url: CanisterUtils.toNullable<string>(photo_url),
+        social: CanisterUtils.toUserSocial<UserSocialIc>(social),
+        name: CanisterUtils.toNullable<string>(name),
+        email: CanisterUtils.toNullable<string>(email),
+        newsletter: CanisterUtils.toNullable<boolean>(newsletter),
+        created_at: CanisterUtils.toTimestamp(created_at as Date),
+        updated_at: CanisterUtils.toTimestamp(now)
+      }
+    };
+
+    console.log('User IC about to SET');
+    const t0 = performance.now();
+
+    await userActor.set(updateUser);
+
+    const t1 = performance.now();
+    console.log('User IC SET done', t1 - t0);
+
+    store.state.user = {
+      id: user.id,
+      data: {
+        ...data,
+        updated_at: now
+      }
+    };
+  }
+
+  // @Override
+  async delete(_userId: string): Promise<void> {
+    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+
+    if (!identity) {
+      return;
+    }
+
+    const {userActor, ownerId} = await this.init({identity});
+
+    console.log('User IC about to DEL');
+    const t0 = performance.now();
+
+    await userActor.del(ownerId);
+
+    const t1 = performance.now();
+    console.log('User IC DEL done', t1 - t0);
+  }
+
+  private async init({identity}: {identity: Identity}): Promise<{userActor: UserActor; ownerId: UserId}> {
+    const userActor: UserActor = await this.createActor({identity});
+
+    const ownerId: UserId = await userActor.getUserId();
+
+    return {
+      userActor,
+      ownerId
+    };
   }
 }

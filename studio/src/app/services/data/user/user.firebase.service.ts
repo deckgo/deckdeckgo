@@ -6,7 +6,9 @@ import store from '../../../stores/user.store';
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User, UserData} from '../../../models/data/user';
 
-export class UserFirebaseService {
+import {UserService} from './user.service';
+
+export class UserFirebaseService implements UserService {
   private static instance: UserFirebaseService;
 
   private constructor() {
@@ -141,8 +143,9 @@ export class UserFirebaseService {
     }
   }
 
-  update(user: User): Promise<User> {
-    return new Promise<User>(async (resolve, reject) => {
+  // @Override
+  update(user: User): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
@@ -153,13 +156,14 @@ export class UserFirebaseService {
 
         store.state.user = {...user};
 
-        resolve(user);
+        resolve();
       } catch (err) {
         reject(err);
       }
     });
   }
 
+  // @Override
   delete(userId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {

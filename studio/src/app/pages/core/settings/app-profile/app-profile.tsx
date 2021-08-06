@@ -21,11 +21,11 @@ import {signIn} from '../../../../utils/core/signin.utils';
 
 import {ApiUserService} from '../../../../services/api/user/api.user.service';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-import {UserFirebaseService} from '../../../../services/data/user/user.firebase.service';
+import {getUserService, UserService} from '../../../../services/data/user/user.service';
 import {StorageService} from '../../../../services/storage/storage.service';
 import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
+import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 import {StorageFactoryService} from '../../../../services/storage/storage.factory.service';
 
@@ -58,7 +58,7 @@ export class AppProfile {
   @State()
   private saving: boolean = false;
 
-  private userService: UserFirebaseService;
+  private userService: UserService;
   private apiUserService: ApiUserService;
 
   private imageHistoryService: ImageHistoryService;
@@ -91,11 +91,12 @@ export class AppProfile {
   private destroyApiUserListener;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
     this.apiUserService = ApiUserFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userService = UserFirebaseService.getInstance();
+    this.userService = getUserService();
     this.storageService = StorageFactoryService.getInstance();
   }
 
@@ -148,6 +149,8 @@ export class AppProfile {
     this.apiUser = apiUserStore.state.apiUser;
 
     this.apiUsername = this.apiUser.username;
+
+    this.validateUsernameInput();
   }
 
   private async initSocial() {
@@ -156,6 +159,9 @@ export class AppProfile {
     }
 
     this.user = {...userStore.state.user};
+
+    this.validateNameInput();
+    this.validateEmailInput();
 
     if (!userStore.state.user.data.social) {
       return;
@@ -187,7 +193,14 @@ export class AppProfile {
   }
 
   private validateUsernameInput() {
-    this.validUsername = this.apiUser && UserUtils.validUsername(this.apiUser.username);
+    if (this.cloud === 'ic') {
+      this.validUsername = this.apiUsername === null || this.apiUsername === undefined || this.apiUsername === '' || UserUtils.validUsername(this.apiUsername);
+      this.isValid();
+
+      return;
+    }
+
+    this.validUsername = UserUtils.validUsername(this.apiUsername);
     this.isValid();
   }
 
@@ -196,6 +209,16 @@ export class AppProfile {
   }
 
   private validateNameInput() {
+    if (this.cloud === 'ic') {
+      this.validName =
+        this.user &&
+        this.user.data &&
+        (this.user.data.name === null || this.user.data.name === undefined || this.user.data.name === '' || UserUtils.validName(this.user.data.name));
+      this.isValid();
+
+      return;
+    }
+
     this.validName = this.user && this.user.data && UserUtils.validName(this.user.data.name);
     this.isValid();
   }
@@ -205,6 +228,16 @@ export class AppProfile {
   }
 
   private validateEmailInput() {
+    if (this.cloud === 'ic') {
+      this.validEmail =
+        this.user &&
+        this.user.data &&
+        (this.user.data.email === null || this.user.data.email === undefined || this.user.data.email === '' || UserUtils.validEmail(this.user.data.email));
+      this.isValid();
+
+      return;
+    }
+
     this.validEmail = this.user && this.user.data && UserUtils.validEmail(this.user.data.email);
     this.isValid();
   }
@@ -269,7 +302,7 @@ export class AppProfile {
 
   private saveUser(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      if (!this.valid || !this.apiUser) {
+      if (!this.valid || (!this.apiUser && this.cloud !== 'ic')) {
         resolve();
         return;
       }
@@ -510,7 +543,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={64}
-          required={true}
+          required={this.cloud !== 'ic'}
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
@@ -530,7 +563,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={254}
-          required={true}
+          required={this.cloud !== 'ic'}
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
@@ -559,7 +592,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={32}
-          required={true}
+          required={this.cloud !== 'ic'}
           disabled={this.saving}
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}
@@ -569,8 +602,10 @@ export class AppProfile {
   }
 
   private renderSubmitForm() {
+    const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
+
     return (
-      <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !this.apiUser || !this.user} color="primary" shape="round">
+      <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !validApiUser || !this.user} color="primary" shape="round">
         <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
