@@ -19,7 +19,7 @@ export const idlFactory = ({IDL}) => {
   });
   return IDL.Service({
     del: IDL.Func([SlideId__1], [IDL.Bool], []),
-    delAdmin: IDL.Func([IDL.Principal, IDL.Principal, SlideId__1], [IDL.Bool], []),
+    deleteSlide: IDL.Func([IDL.Principal, SlideId__1], [IDL.Bool], []),
     get: IDL.Func([SlideId__1], [Slide], []),
     set: IDL.Func([Slide], [], ['oneway'])
   });
