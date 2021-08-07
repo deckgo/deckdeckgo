@@ -54,7 +54,9 @@ export const idlFactory = ({IDL}) => {
   const Deck = IDL.Record({data: DeckData, deckId: DeckId});
   return IDL.Service({
     del: IDL.Func([DeckId__1, IDL.Bool], [IDL.Bool], []),
+    delAdmin: IDL.Func([IDL.Principal, DeckId__1, IDL.Bool], [IDL.Bool], []),
     entries: IDL.Func([], [IDL.Vec(Deck)], []),
+    entriesAdmin: IDL.Func([IDL.Principal], [IDL.Vec(Deck)], []),
     get: IDL.Func([DeckId__1], [Deck], []),
     set: IDL.Func([Deck], [], ['oneway'])
   });

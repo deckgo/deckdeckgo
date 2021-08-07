@@ -1,4 +1,5 @@
 import Iter "mo:base/Iter";
+import Principal "mo:base/Principal";
 
 import Error "mo:base/Error";
 
@@ -35,12 +36,12 @@ actor Slide {
     };
 
     public shared({ caller }) func del(slideId : SlideId) : async (Bool) {
-        let exists: Bool = await deleteSlide(caller, slideId);
+        let exists: Bool = await delAdmin(caller, slideId);
 
         return exists;
     };
 
-    public func deleteSlide(user: Principal, slideId : SlideId) : async (Bool) {
+    public func delAdmin(user: Principal, slideId : SlideId) : async (Bool) {
         let exists: Bool = await store.deleteSlide(user, slideId);
 
         return exists;
