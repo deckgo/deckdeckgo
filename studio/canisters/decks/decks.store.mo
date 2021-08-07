@@ -141,7 +141,7 @@ module {
             switch (slides) {
                 case (?slides) {
                     for ((slideId: Text) in slides.vals()) {
-                        let slideExists: Bool = await Slides.deleteSlide(user, slideId);
+                        let slideExists: Bool = await Slides.delAdmin(user, slideId);
                     };
                 };
                 case null {}

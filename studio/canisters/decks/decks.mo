@@ -10,7 +10,6 @@ import DecksStore "./decks.store";
 
 actor Deck {
     type DeckId = Types.DeckId;
-    type DeckData = DecksTypes.DeckData;
     type Deck = DecksTypes.Deck;
     type UserDeck = DecksTypes.UserDeck;
 
@@ -37,12 +36,23 @@ actor Deck {
     };
 
     public shared({ caller }) func entries() : async [Deck] {
-        let decks: [Deck] = await store.getDecks(caller);
+        let decks: [Deck] = await entriesAdmin(caller);
+        return decks;
+    };
+
+    public func entriesAdmin(user: Principal) : async [Deck] {
+        let decks: [Deck] = await store.getDecks(user);
         return decks;
     };
 
     public shared({ caller }) func del(deckId : DeckId, slides: Bool) : async (Bool) {
-        let exists: Bool = await store.deleteDeck(caller, deckId, slides);
+        let exists: Bool = await delAdmin(caller, deckId, slides);
+
+        return exists;
+    };
+
+    public func delAdmin(user: Principal, deckId : DeckId, slides: Bool) : async (Bool) {
+        let exists: Bool = await store.deleteDeck(user, deckId, slides);
 
         return exists;
     };

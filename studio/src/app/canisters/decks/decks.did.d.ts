@@ -60,7 +60,9 @@ export interface UserSocial {
 }
 export interface _SERVICE {
   del: (arg_0: DeckId__1, arg_1: boolean) => Promise<boolean>;
+  delAdmin: (arg_0: Principal, arg_1: DeckId__1, arg_2: boolean) => Promise<boolean>;
   entries: () => Promise<Array<Deck>>;
+  entriesAdmin: (arg_0: Principal) => Promise<Array<Deck>>;
   get: (arg_0: DeckId__1) => Promise<Deck>;
   set: (arg_0: Deck) => Promise<undefined>;
 }
