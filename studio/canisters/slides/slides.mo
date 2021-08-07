@@ -1,5 +1,4 @@
 import Iter "mo:base/Iter";
-import Principal "mo:base/Principal";
 
 import Error "mo:base/Error";
 
@@ -36,20 +35,12 @@ actor Slide {
     };
 
     public shared({ caller }) func del(slideId : SlideId) : async (Bool) {
-        let admin : Principal = Principal.fromActor(Slide);
-        
-        let exists: Bool = await delAdmin(admin, caller, slideId);
+        let exists: Bool = await deleteSlide(caller, slideId);
 
         return exists;
     };
 
-    public func delAdmin(caller: Principal, user: Principal, slideId : SlideId) : async (Bool) {
-        let admin : Principal = Principal.fromActor(Slide);
-
-        if (caller != admin) {
-            throw Error.reject("This function requires administrative privileges.");
-        };
-
+    public func deleteSlide(user: Principal, slideId : SlideId) : async (Bool) {
         let exists: Bool = await store.deleteSlide(user, slideId);
 
         return exists;
