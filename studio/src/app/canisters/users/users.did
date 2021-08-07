@@ -1,3 +1,4 @@
+type Username = text;
 type UserSocial = 
  record {
    custom: opt text;
@@ -20,6 +21,7 @@ type UserData =
    photo_url: opt text;
    social: opt UserSocial;
    updated_at: Time;
+   username: opt Username;
  };
 type User = 
  record {

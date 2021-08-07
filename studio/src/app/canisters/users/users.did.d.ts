@@ -8,6 +8,7 @@ export interface UserData {
   bio: [] | [string];
   updated_at: Time;
   photo_url: [] | [string];
+  username: [] | [Username];
   social: [] | [UserSocial];
   name: [] | [string];
   created_at: Time;
@@ -25,6 +26,7 @@ export interface UserSocial {
   github: [] | [string];
   medium: [] | [string];
 }
+export type Username = string;
 export interface _SERVICE {
   del: (arg_0: UserId__1) => Promise<boolean>;
   get: (arg_0: UserId__1) => Promise<[] | [User]>;

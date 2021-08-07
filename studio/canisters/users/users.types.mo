@@ -6,6 +6,8 @@ import Types "../common/types";
 module {
     type UserId = Types.UserId;
 
+    public type Username = Text;
+
     public type UserSocial = {
         twitter: ?Text;
         linkedin: ?Text;
@@ -26,6 +28,8 @@ module {
         social: ?UserSocial;
 
         bio: ?Text;
+
+        username: ?Username;
 
         created_at: Time.Time;
         updated_at: Time.Time;

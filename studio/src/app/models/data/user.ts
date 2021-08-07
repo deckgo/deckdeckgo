@@ -23,6 +23,9 @@ export interface UserData {
 
   bio?: string;
 
+  // Except Firebase for which we handle username in the api, see ApiUser
+  username?: string;
+
   created_at: firebase.firestore.Timestamp | Date;
   updated_at: firebase.firestore.Timestamp | Date;
 }
