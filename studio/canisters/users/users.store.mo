@@ -97,14 +97,14 @@ module {
                     return {
                         user = null;
                         error = null;
-                    }
+                    };
                 };
             };
 
             return {
                 user = null;
                 error = ?"User does not have the permission for the user.";
-            }
+            };
         };
 
         public func deleteUser(caller: UserId, userId : UserId) : ProtectedUser {

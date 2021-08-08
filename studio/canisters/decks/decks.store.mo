@@ -19,25 +19,41 @@ module {
     type SlideId = Types.SlideId;
     type Deck = DecksTypes.Deck;
     type OwnerDeck = DecksTypes.OwnerDeck;
+    type ProtectedDeck = DecksTypes.ProtectedDeck;
+    type ProtectedDecks = DecksTypes.ProtectedDecks;
 
     public class Store() {
         private var decks: HashMap.HashMap<Principal, HashMap.HashMap<DeckId, OwnerDeck>> = HashMap.HashMap<Principal, HashMap.HashMap<DeckId, OwnerDeck>>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        public func setDeck(user: Principal, deck: Deck): async() {
-            let newOwnerDeck: OwnerDeck = await initDeck(user, deck);
+        public func setDeck(user: Principal, deck: Deck): ?Text {
+            let ({error}): ProtectedDeck = getDeck(user, deck.deckId);
 
-            let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeck> = decks.get(user);
-
-            switch ownerDecks {
-                case (?ownerDecks) {
-                    setOwnerDeck(user, newOwnerDeck, ownerDecks);
+            switch (error) {
+                case (?error) {
+                    return ?error;
                 };
                 case null {
-                    let ownerDecks: HashMap.HashMap<DeckId, OwnerDeck> = HashMap.HashMap<DeckId, OwnerDeck>(10, Text.equal, Text.hash);
+                    let newOwnerDeck = {
+                        owner = user;
+                        deck = deck;
+                    };
 
-                    setOwnerDeck(user, newOwnerDeck, ownerDecks);
-                }
+                    let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeck> = decks.get(user);
+
+                    switch ownerDecks {
+                        case (?ownerDecks) {
+                            setOwnerDeck(user, newOwnerDeck, ownerDecks);
+                        };
+                        case null {
+                            let ownerDecks: HashMap.HashMap<DeckId, OwnerDeck> = HashMap.HashMap<DeckId, OwnerDeck>(10, Text.equal, Text.hash);
+
+                            setOwnerDeck(user, newOwnerDeck, ownerDecks);
+                        }
+                    };
+                };
             };
+
+            return null;
         };
 
         private func setOwnerDeck(user: Principal, newOwnerDeck: OwnerDeck, ownerDecks: HashMap.HashMap<DeckId, OwnerDeck>) {
@@ -45,33 +61,24 @@ module {
             decks.put(user, ownerDecks);
         };
 
-        private func initDeck(user: Principal, deck: Deck): async (OwnerDeck) {
-            let ownerDeck: ?OwnerDeck = await getDeck(user, deck.deckId);
-
-            // If ownerDeck is null, then it is a new deck
-            // If ownerDeck is not null and there was no error, then it is user deck
-
-            return {
-                owner = user;
-                deck = deck;
-            }
-        };
-
-        public func getDeck(user: Principal, deckId: DeckId): async ?OwnerDeck {
+        public func getDeck(user: Principal, deckId: DeckId): ProtectedDeck {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeck> = decks.get(user);
 
             switch ownerDecks {
                 case (?ownerDecks) {
-                    let ownerDeck: ?OwnerDeck = await getOwnerDeck(user, deckId, ownerDecks);
+                    let ownerDeck: ProtectedDeck = getOwnerDeck(user, deckId, ownerDecks);
                     return ownerDeck;
                 };
                 case null {
-                    return null;
-                }
+                    return {
+                        deck = null;
+                        error = null;
+                    };
+                };
             };
         };
 
-        public func getDecks(user: Principal): async ([Deck]) {
+        public func getDecks(user: Principal): ProtectedDecks {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeck> = decks.get(user);
 
             switch ownerDecks {
@@ -79,63 +86,85 @@ module {
                     var results: ([Deck]) = [];
 
                     for ((deckId: DeckId, value: OwnerDeck) in ownerDecks.entries()) {
-                        // Check permissions on each decks
-                        await check_permission(user, value);
+                        if (Utils.isPrincipalNotEqual(user, value.owner)) {
+                            return {
+                                decks = [];
+                                error = ?"User does not have the permission for one of the deck.";
+                            };
+                        };
 
                         results := Array.append(results, [value.deck]);
                     };
 
-                    return results;
+                    return {
+                        decks = results;
+                        error = null;
+                    };
                 };
                 case null {
-                    return [];
+                    return {
+                        decks = [];
+                        error = null;
+                    }
                 }
             };
         };
 
-        private func getOwnerDeck(user: Principal, deckId: DeckId, ownerDecks: HashMap.HashMap<DeckId, OwnerDeck>): async ?OwnerDeck {
+        private func getOwnerDeck(user: Principal, deckId: DeckId, ownerDecks: HashMap.HashMap<DeckId, OwnerDeck>): ProtectedDeck {
             let ownerDeck: ?OwnerDeck = ownerDecks.get(deckId);
 
             switch ownerDeck {
                 case (?ownerDeck) {
-                    await check_permission(user, ownerDeck);
+                    if (Utils.isPrincipalEqual(user, ownerDeck.owner)) {
+                        return {
+                            deck = ?ownerDeck;
+                            error = null;
+                        };
+                    };
                 };
                 case null {
-                    return null;
-                }
+                    return {
+                        deck = null;
+                        error = null;
+                    };
+                };
             };
 
-            return ownerDeck;
+            return {
+                deck = null;
+                error = ?"User does not have the permission for the deck.";
+            };
         };
 
-        public func deleteDeck(user: Principal, deckId : DeckId, slides: Bool) : async Bool {
+        public func deleteDeck(user: Principal, deckId : DeckId, slides: Bool) : ProtectedDeck {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeck> = decks.get(user);
 
             switch ownerDecks {
                 case (?ownerDecks) {
-                    let ownerDeck: ?OwnerDeck = await getOwnerDeck(user, deckId, ownerDecks);
+                    let protectedDeck: ProtectedDeck = getOwnerDeck(user, deckId, ownerDecks);
 
-                    switch ownerDeck {
-                        case (?ownerDeck) {
-                            await deleteSlides(user, ownerDeck.deck);
+                    switch (protectedDeck.deck) {
+                        case (?deck) {
+                            deleteSlides(user, deck.deck);
 
                             let removedDeck: ?OwnerDeck = ownerDecks.remove(deckId);
                             decks.put(user, ownerDecks);
-
-                            return true;
                         };
-                        case null {
-                            return false;
-                        }
+                        case null {};
                     };
+
+                    return protectedDeck;
                 };
                 case null {
-                    return false;
+                    return {
+                        deck = null;
+                        error = null;
+                    };
                 }
             };
         };
 
-        private func deleteSlides(user: Principal, deck: Deck): async () {
+        private func deleteSlides(user: Principal, deck: Deck): () {
             let slides: ?[SlideId] = deck.data.slides;
 
             switch (slides) {
@@ -147,13 +176,6 @@ module {
                 case null {}
             };
         };
-
-        private func check_permission(user: Principal, ownerDeck: OwnerDeck) : async () {
-            if (user != ownerDeck.owner) {
-                throw Error.reject("User does not have the permission for the deck.");
-            };
-        };
-
 
         public func preupgrade(): HashMap.HashMap<Principal, [(DeckId, OwnerDeck)]> {
             let entries : HashMap.HashMap<Principal, [(DeckId, OwnerDeck)]> = HashMap.HashMap<Principal, [(DeckId, OwnerDeck)]>(10, Utils.isPrincipalEqual, Principal.hash);
