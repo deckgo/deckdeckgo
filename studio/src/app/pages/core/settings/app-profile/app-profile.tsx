@@ -54,7 +54,7 @@ export class AppProfile {
   private validEmail: boolean = true;
 
   @State()
-  private apiUsername: string;
+  private apiUsername: string | undefined;
 
   @State()
   private saving: boolean = false;
@@ -113,10 +113,10 @@ export class AppProfile {
 
   private async initUser() {
     if (userStore.state.user) {
-      await this.initSocial();
+      await this.initUserData();
     } else {
       this.destroyUserListener = userStore.onChange('user', async () => {
-        await this.initSocial();
+        await this.initUserData();
       });
     }
   }
@@ -157,12 +157,14 @@ export class AppProfile {
     this.validateUsernameInput();
   }
 
-  private async initSocial() {
+  private async initUserData() {
     if (!userStore.state.user || userStore.state.user === undefined || !userStore.state.user.data || userStore.state.user.data.anonymous) {
       return;
     }
 
     this.user = {...userStore.state.user};
+
+    this.apiUsername = userStore.state.user.data.username;
 
     this.validateNameInput();
     this.validateEmailInput();
@@ -312,7 +314,13 @@ export class AppProfile {
       }
 
       try {
-        await this.userService.update(this.user);
+        await this.userService.update({
+          id: this.user.id,
+          data: {
+            ...this.user.data,
+            username: this.apiUsername
+          }
+        });
 
         resolve();
       } catch (err) {
@@ -408,7 +416,7 @@ export class AppProfile {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser?.username || 'deckdeckgo'
+        username: this.apiUser?.username || this.apiUsername || 'deckdeckgo'
       }
     });
 

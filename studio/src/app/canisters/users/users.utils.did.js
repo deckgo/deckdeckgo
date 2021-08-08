@@ -2,6 +2,7 @@ export const idlFactory = ({IDL}) => {
   const UserId__1 = IDL.Principal;
   const UserId = IDL.Principal;
   const Time = IDL.Int;
+  const Username = IDL.Text;
   const UserSocial = IDL.Record({
     dev: IDL.Opt(IDL.Text),
     linkedin: IDL.Opt(IDL.Text),
@@ -15,6 +16,7 @@ export const idlFactory = ({IDL}) => {
     bio: IDL.Opt(IDL.Text),
     updated_at: Time,
     photo_url: IDL.Opt(IDL.Text),
+    username: IDL.Opt(Username),
     social: IDL.Opt(UserSocial),
     name: IDL.Opt(IDL.Text),
     created_at: Time,

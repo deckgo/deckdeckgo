@@ -60,6 +60,7 @@ export class UserIcService implements UserService {
       userId: ownerId,
       data: {
         name: CanisterUtils.toNullable<string>(null),
+        username: CanisterUtils.toNullable<string>(null),
         bio: CanisterUtils.toNullable<string>(null),
         photo_url: CanisterUtils.toNullable<string>(null),
         email: CanisterUtils.toNullable<string>(null),
@@ -88,7 +89,7 @@ export class UserIcService implements UserService {
   private populateUser({user}: {user: UserIc}) {
     const {userId, data} = user;
 
-    const {name, email, photo_url, newsletter, bio, social, created_at, updated_at} = data;
+    const {name, email, photo_url, newsletter, bio, social, created_at, updated_at, username} = data;
 
     authStore.state.authUser = {
       uid: userId.toText(),
@@ -104,6 +105,7 @@ export class UserIcService implements UserService {
       data: {
         anonymous: false,
         name: CanisterUtils.fromNullable<string>(name),
+        username: CanisterUtils.fromNullable<string>(username),
         email: CanisterUtils.fromNullable<string>(email),
         newsletter: CanisterUtils.fromNullable<boolean>(newsletter),
         photo_url: CanisterUtils.fromNullable<string>(photo_url),
@@ -131,7 +133,7 @@ export class UserIcService implements UserService {
 
     const {data} = user;
 
-    const {name, email, photo_url, newsletter, bio, social, created_at} = data;
+    const {name, email, photo_url, newsletter, bio, social, created_at, username} = data;
 
     const now: Date = new Date();
 
@@ -139,6 +141,7 @@ export class UserIcService implements UserService {
       userId: ownerId,
       data: {
         name: CanisterUtils.toNullable<string>(name),
+        username: CanisterUtils.toNullable<string>(username),
         bio: CanisterUtils.toNullable<string>(bio),
         photo_url: CanisterUtils.toNullable<string>(photo_url),
         email: CanisterUtils.toNullable<string>(email),
@@ -149,7 +152,7 @@ export class UserIcService implements UserService {
       }
     };
 
-    console.log('User IC about to SET');
+    console.log('User IC about to SET', updateUser);
     const t0 = performance.now();
 
     await userActor.set(updateUser);

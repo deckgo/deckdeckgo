@@ -16,6 +16,7 @@ actor User {
     type User = UsersTypes.User;
     type OwnerUser = UsersTypes.OwnerUser;
     type ProtectedUser = UsersTypes.ProtectedUser;
+    type Username = UsersTypes.Username;
 
     type Deck = DecksTypes.Deck;
     type DeckId = Types.DeckId;
@@ -25,6 +26,7 @@ actor User {
 
     // Preserve the application state on upgrades
     private stable var users : [(UserId, OwnerUser)] = [];
+    private stable var usernames : [(Username, UserId)] = [];
 
     public shared({ caller }) func set(user: User) {
         let error: ?Text = store.setUser(caller, user);
@@ -89,11 +91,13 @@ actor User {
     };
 
     system func preupgrade() {
-        users := Iter.toArray(store.preupgrade().entries());
+        let ({users = activeUsers; usernames = activeUsernames;}) = store.preupgrade();
+        users := Iter.toArray(activeUsers.entries());
+        usernames := Iter.toArray(activeUsernames.entries());
     };
 
     system func postupgrade() {
-        store.postupgrade(users);
+        store.postupgrade(users, usernames);
         users := [];
     };
 }
