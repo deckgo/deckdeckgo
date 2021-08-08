@@ -59,13 +59,13 @@ export class UserIcService implements UserService {
     const newUser: UserIc = {
       userId: ownerId,
       data: {
-        bio: CanisterUtils.toNullable<string>(null),
-        photo_url: CanisterUtils.toNullable<string>(null),
-        social: CanisterUtils.toNullable<UserSocialIc>(null),
         name: CanisterUtils.toNullable<string>(null),
         username: CanisterUtils.toNullable<string>(null),
+        bio: CanisterUtils.toNullable<string>(null),
+        photo_url: CanisterUtils.toNullable<string>(null),
         email: CanisterUtils.toNullable<string>(null),
         newsletter: [true],
+        social: CanisterUtils.toNullable<UserSocialIc>(null),
         created_at: CanisterUtils.toTimestamp(now),
         updated_at: CanisterUtils.toTimestamp(now)
       }
@@ -140,13 +140,13 @@ export class UserIcService implements UserService {
     const updateUser: UserIc = {
       userId: ownerId,
       data: {
-        bio: CanisterUtils.toNullable<string>(bio),
-        photo_url: CanisterUtils.toNullable<string>(photo_url),
-        social: CanisterUtils.toUserSocial<UserSocialIc>(social),
         name: CanisterUtils.toNullable<string>(name),
         username: CanisterUtils.toNullable<string>(username),
+        bio: CanisterUtils.toNullable<string>(bio),
+        photo_url: CanisterUtils.toNullable<string>(photo_url),
         email: CanisterUtils.toNullable<string>(email),
         newsletter: CanisterUtils.toNullable<boolean>(newsletter),
+        social: CanisterUtils.toUserSocial<UserSocialIc>(social),
         created_at: CanisterUtils.toTimestamp(created_at as Date),
         updated_at: CanisterUtils.toTimestamp(now)
       }

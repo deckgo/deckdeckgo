@@ -60,14 +60,15 @@ export class CanisterUtils {
       return undefined;
     }
 
-    return attributes?.[0]?.reduce((acc: T, {name, value}: Attribute) => {
-      try {
-        acc[name] = this.fromValue(value);
-      } catch (err) {
-        acc[name] = value;
+    const result: T = attributes?.[0]?.reduce((acc: T, {name, value}: Attribute) => {
+      const parsed = this.fromValue(value);
+      if (parsed) {
+        acc[name] = parsed;
       }
       return acc;
     }, {} as T);
+
+    return Object.keys(result).length ? result : undefined;
   }
 
   // Try to parse to number or boolean from string. It it fails, as for a string, use the value as it.
@@ -75,15 +76,20 @@ export class CanisterUtils {
     try {
       return JSON.parse(value);
     } catch (err) {
-      return value;
+      return Array.isArray(value) ? value[0] : value;
     }
   }
 
-  static fromUserSocial<T>(userSocial: [] | [T]): UserSocial {
-    return Object.keys(userSocial?.[0] || {}).reduce((acc: UserSocial, key: string) => {
-      acc[key] = CanisterUtils.fromValue(userSocial[0][key]);
+  static fromUserSocial<T>(userSocial: [] | [T]): UserSocial | undefined {
+    const result: UserSocial = Object.keys(userSocial?.[0] || {}).reduce((acc: UserSocial, key: string) => {
+      const value = CanisterUtils.fromValue(userSocial[0][key]);
+      if (value) {
+        acc[key] = value;
+      }
       return acc;
     }, {} as UserSocial);
+
+    return Object.keys(result).length ? result : undefined;
   }
 
   static toUserSocial<T>(social: UserSocial | undefined): [] | [T] {
