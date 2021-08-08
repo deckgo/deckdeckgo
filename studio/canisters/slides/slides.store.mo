@@ -11,22 +11,22 @@ import SlidesTypes "./slides.types";
 module {
     type SlideId = Types.SlideId;
     type Slide = SlidesTypes.Slide;
-    type UserSlide = SlidesTypes.UserSlide;
+    type OwnerSlide = SlidesTypes.OwnerSlide;
 
     public class Store() {
-        private var slides: HashMap.HashMap<SlideId, UserSlide> = HashMap.HashMap<SlideId, UserSlide>(10, Text.equal, Text.hash);
+        private var slides: HashMap.HashMap<SlideId, OwnerSlide> = HashMap.HashMap<SlideId, OwnerSlide>(10, Text.equal, Text.hash);
 
         public func setSlide(user: Principal, slide: Slide): async() {
-            let newUserSlide: UserSlide = await initSlide(user, slide);
+            let newOwnerSlide: OwnerSlide = await initSlide(user, slide);
 
-            slides.put(slide.slideId, newUserSlide);
+            slides.put(slide.slideId, newOwnerSlide);
         };
 
-        private func initSlide(user: Principal, slide: Slide): async (UserSlide) {
-            let userSlide: ?UserSlide = await getSlide(user, slide.slideId);
+        private func initSlide(user: Principal, slide: Slide): async (OwnerSlide) {
+            let ownerSlide: ?OwnerSlide = await getSlide(user, slide.slideId);
 
-            // If userSlide is null, then it is a new slide
-            // If userSlide is not null and there was no error, then it is user slide
+            // If ownerSlide is null, then it is a new slide
+            // If ownerSlide is not null and there was no error, then it is user slide
 
             return {
                 owner = user;
@@ -34,44 +34,44 @@ module {
             }
         };
 
-        public func getSlide(user: Principal, slideId: SlideId): async ?UserSlide {
-            let userSlide: ?UserSlide = slides.get(slideId);
+        public func getSlide(user: Principal, slideId: SlideId): async ?OwnerSlide {
+            let ownerSlide: ?OwnerSlide = slides.get(slideId);
 
-            switch userSlide {
-                case (?userSlide) {
-                    await check_permission(user, userSlide);
+            switch ownerSlide {
+                case (?ownerSlide) {
+                    await check_permission(user, ownerSlide);
                 };
                 case null {
                     return null;
                 }
             };
 
-            return userSlide;
+            return ownerSlide;
         };
 
         public func deleteSlide(user: Principal, slideId : SlideId) : async Bool {
-            let userSlide: ?UserSlide = await getSlide(user, slideId);
+            let ownerSlide: ?OwnerSlide = await getSlide(user, slideId);
 
-            let exists: Bool = Option.isSome(userSlide);
+            let exists: Bool = Option.isSome(ownerSlide);
             if (exists) {
-                let removedSlide: ?UserSlide = slides.remove(slideId);
+                let removedSlide: ?OwnerSlide = slides.remove(slideId);
             };
 
             return exists;
         };
 
-        private func check_permission(user: Principal, userSlide: UserSlide) : async () {
-            if (user != userSlide.owner) {
+        private func check_permission(user: Principal, ownerSlide: OwnerSlide) : async () {
+            if (user != ownerSlide.owner) {
                 throw Error.reject("User does not have the permission for the slide.");
             };
         };
 
-        public func preupgrade(): HashMap.HashMap<SlideId, UserSlide> {
+        public func preupgrade(): HashMap.HashMap<SlideId, OwnerSlide> {
             return slides;
         };
 
-        public func postupgrade(entries: [(SlideId, UserSlide)]) {
-            slides := HashMap.fromIter<SlideId, UserSlide>(entries.vals(), 10, Text.equal, Text.hash);
+        public func postupgrade(entries: [(SlideId, OwnerSlide)]) {
+            slides := HashMap.fromIter<SlideId, OwnerSlide>(entries.vals(), 10, Text.equal, Text.hash);
         };
     }
 

@@ -9,7 +9,7 @@ module {
     type SlideId = Types.SlideId;
     type DeckId = Types.DeckId;
     type Attribute = Types.Attribute;
-    
+
     public type SlideData = {
         content: ?Text;
 
@@ -28,7 +28,7 @@ module {
         data: SlideData;
     };
 
-    public type UserSlide = {
+    public type OwnerSlide = {
         owner: Principal;
         slide: Slide;
     };

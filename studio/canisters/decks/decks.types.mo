@@ -73,7 +73,7 @@ module {
         data: DeckData;
     };
 
-    public type UserDeck = {
+    public type OwnerDeck = {
         owner: Principal;
         deck: Deck;
     };

@@ -11,23 +11,23 @@ import DecksStore "./decks.store";
 actor Deck {
     type DeckId = Types.DeckId;
     type Deck = DecksTypes.Deck;
-    type UserDeck = DecksTypes.UserDeck;
+    type OwnerDeck = DecksTypes.OwnerDeck;
 
     let store: DecksStore.Store = DecksStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, [(DeckId, UserDeck)])] = [];
+    private stable var decks : [(Principal, [(DeckId, OwnerDeck)])] = [];
 
     public shared({ caller }) func set(deck: Deck) {
         await store.setDeck(caller, deck);
     };
 
     public shared({ caller }) func get(deckId : DeckId) : async Deck {
-        let userDeck: ?UserDeck = await store.getDeck(caller, deckId);
+        let ownerDeck: ?OwnerDeck = await store.getDeck(caller, deckId);
 
-        switch userDeck {
-            case (?userDeck) {
-                return userDeck.deck;
+        switch ownerDeck {
+            case (?ownerDeck) {
+                return ownerDeck.deck;
             };
             case null {
                 throw Error.reject("Deck not found.");

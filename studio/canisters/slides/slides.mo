@@ -11,23 +11,23 @@ actor Slide {
     type SlideId = Types.SlideId;
     type SlideData = SlidesTypes.SlideData;
     type Slide = SlidesTypes.Slide;
-    type UserSlide = SlidesTypes.UserSlide;
+    type OwnerSlide = SlidesTypes.OwnerSlide;
 
     var store: SlidesStore.Store = SlidesStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var slides : [(SlideId, UserSlide)] = [];
+    private stable var slides : [(SlideId, OwnerSlide)] = [];
 
     public shared({ caller }) func set(slide: Slide) {
         await store.setSlide(caller, slide);
     };
 
     public shared({ caller }) func get(slideId : SlideId) : async Slide {
-        let userSlide: ?UserSlide = await store.getSlide(caller, slideId);
+        let ownerSlide: ?OwnerSlide = await store.getSlide(caller, slideId);
 
-        switch userSlide {
-            case (?userSlide) {
-                return userSlide.slide;
+        switch ownerSlide {
+            case (?ownerSlide) {
+                return ownerSlide.slide;
             };
             case null {
                 throw Error.reject("Slide not found.");
