@@ -188,14 +188,19 @@ export class DeckIcService implements DeckService {
       return undefined;
     }
 
-    const repo: DeckGitHubRepo | undefined = github[0].repo?.[0];
+    const repo: DeckGitHubRepoIc | undefined = github[0].repo?.[0];
+
+    const resultRepo: DeckGitHubRepo = Object.keys(repo || {}).reduce((acc: DeckGitHubRepo, key: string) => {
+      const value = CanisterUtils.fromValue(github[0].repo[0][key]);
+      if (value) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as DeckGitHubRepo);
 
     return {
       publish: github[0].publish,
-      repo: Object.keys(repo || {}).reduce((acc: DeckGitHubRepo, key: string) => {
-        acc[key] = CanisterUtils.fromValue(github[0].repo[0][key]);
-        return acc;
-      }, {} as DeckGitHubRepo)
+      repo: Object.keys(resultRepo).length ? resultRepo : undefined
     };
   }
 
