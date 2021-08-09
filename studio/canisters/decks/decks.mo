@@ -1,6 +1,7 @@
 import Iter "mo:base/Iter";
 import HashMap "mo:base/HashMap";
 import Principal "mo:base/Principal";
+import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
@@ -11,50 +12,98 @@ import DecksStore "./decks.store";
 actor Deck {
     type DeckId = Types.DeckId;
     type Deck = DecksTypes.Deck;
-    type UserDeck = DecksTypes.UserDeck;
+    type OwnerDeck = DecksTypes.OwnerDeck;
+    type ProtectedDeck = DecksTypes.ProtectedDeck;
+    type ProtectedDecks = DecksTypes.ProtectedDecks;
 
     let store: DecksStore.Store = DecksStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, [(DeckId, UserDeck)])] = [];
+    private stable var decks : [(Principal, [(DeckId, OwnerDeck)])] = [];
 
-    public shared({ caller }) func set(deck: Deck) {
-        await store.setDeck(caller, deck);
+    public shared({ caller }) func set(deck: Deck): async() {
+        let error: ?Text = store.setDeck(caller, deck);
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {};
+        };
     };
 
-    public shared({ caller }) func get(deckId : DeckId) : async Deck {
-        let userDeck: ?UserDeck = await store.getDeck(caller, deckId);
+    public shared query({ caller }) func get(deckId : DeckId) : async Deck {
+        let ({error; deck;}): ProtectedDeck = store.getDeck(caller, deckId);
 
-        switch userDeck {
-            case (?userDeck) {
-                return userDeck.deck;
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
             };
             case null {
-                throw Error.reject("Deck not found.");
+                switch (deck) {
+                    case (?deck) {
+                        return deck.deck;
+                    };
+                    case null {
+                        throw Error.reject("Deck not found.");
+                    };
+                };
             };
         };
     };
 
-    public shared({ caller }) func entries() : async [Deck] {
-        let decks: [Deck] = await entriesAdmin(caller);
-        return decks;
+    public shared query({ caller }) func entries() : async [Deck] {
+        let ({error; decks}): ProtectedDecks = store.getDecks(caller);
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                return decks;
+            };
+        };
     };
 
     public func entriesAdmin(user: Principal) : async [Deck] {
-        let decks: [Deck] = await store.getDecks(user);
-        return decks;
+        let ({error; decks}): ProtectedDecks = store.getDecks(user);
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                return decks;
+            };
+        };
     };
 
     public shared({ caller }) func del(deckId : DeckId, slides: Bool) : async (Bool) {
-        let exists: Bool = await delAdmin(caller, deckId, slides);
+        let deck: ProtectedDeck = await store.deleteDeck(caller, deckId, slides);
 
-        return exists;
+        switch (deck.error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                let exists: Bool = Option.isSome(deck.deck);
+                return exists;
+            };
+        };
     };
 
-    public func delAdmin(user: Principal, deckId : DeckId, slides: Bool) : async (Bool) {
-        let exists: Bool = await store.deleteDeck(user, deckId, slides);
+    public func delAdmin(user: Principal, deckId : DeckId, slides: Bool) : async Bool {
+        let deck: ProtectedDeck = await store.deleteDeck(user, deckId, slides);
 
-        return exists;
+        switch (deck.error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                let exists: Bool = Option.isSome(deck.deck);
+                return exists;
+            };
+        };
     };
 
     system func preupgrade() {

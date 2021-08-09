@@ -60,7 +60,7 @@ export class CanisterUtils {
       return undefined;
     }
 
-    const result: T = attributes?.[0]?.reduce((acc: T, {name, value}: Attribute) => {
+    const result: T = (attributes?.[0] || []).reduce((acc: T, {name, value}: Attribute) => {
       const parsed = this.fromValue(value);
       if (parsed) {
         acc[name] = parsed;

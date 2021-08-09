@@ -73,9 +73,19 @@ module {
         data: DeckData;
     };
 
-    public type UserDeck = {
+    public type OwnerDeck = {
         owner: Principal;
         deck: Deck;
+    };
+
+    public type ProtectedDeck = {
+        deck: ?OwnerDeck;
+        error: ?Text;
+    };
+
+    public type ProtectedDecks = {
+        decks: [Deck];
+        error: ?Text;
     };
 
 }

@@ -28,7 +28,7 @@ actor User {
     private stable var users : [(UserId, OwnerUser)] = [];
     private stable var usernames : [(Username, UserId)] = [];
 
-    public shared({ caller }) func set(user: User) {
+    public shared({ caller }) func set(user: User): async () {
         let error: ?Text = store.setUser(caller, user);
 
         switch (error) {
