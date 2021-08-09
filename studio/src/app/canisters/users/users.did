@@ -33,5 +33,5 @@ service : {
   del: (UserId__1) -> (bool);
   get: (UserId__1) -> (opt User) query;
   getUserId: () -> (UserId__1) query;
-  set: (User) -> () oneway;
+  set: (User) -> ();
 }

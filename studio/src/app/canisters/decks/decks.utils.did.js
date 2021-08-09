@@ -55,10 +55,10 @@ export const idlFactory = ({IDL}) => {
   return IDL.Service({
     del: IDL.Func([DeckId__1, IDL.Bool], [IDL.Bool], []),
     delAdmin: IDL.Func([IDL.Principal, DeckId__1, IDL.Bool], [IDL.Bool], []),
-    entries: IDL.Func([], [IDL.Vec(Deck)], []),
+    entries: IDL.Func([], [IDL.Vec(Deck)], ['query']),
     entriesAdmin: IDL.Func([IDL.Principal], [IDL.Vec(Deck)], []),
-    get: IDL.Func([DeckId__1], [Deck], []),
-    set: IDL.Func([Deck], [], ['oneway'])
+    get: IDL.Func([DeckId__1], [Deck], ['query']),
+    set: IDL.Func([Deck], [], [])
   });
 };
 export const init = ({IDL}) => {

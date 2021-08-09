@@ -28,7 +28,7 @@ export const idlFactory = ({IDL}) => {
     del: IDL.Func([UserId__1], [IDL.Bool], []),
     get: IDL.Func([UserId__1], [IDL.Opt(User)], ['query']),
     getUserId: IDL.Func([], [UserId__1], ['query']),
-    set: IDL.Func([User], [], ['oneway'])
+    set: IDL.Func([User], [], [])
   });
 };
 export const init = ({IDL}) => {
