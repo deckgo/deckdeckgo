@@ -136,7 +136,7 @@ module {
             };
         };
 
-        public func deleteDeck(user: Principal, deckId : DeckId, slides: Bool) : ProtectedDeck {
+        public func deleteDeck(user: Principal, deckId : DeckId, slides: Bool) : async (ProtectedDeck) {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeck> = decks.get(user);
 
             switch ownerDecks {
@@ -145,7 +145,7 @@ module {
 
                     switch (protectedDeck.deck) {
                         case (?deck) {
-                            deleteSlides(user, deck.deck);
+                            await deleteSlides(user, deck.deck);
 
                             let removedDeck: ?OwnerDeck = ownerDecks.remove(deckId);
                             decks.put(user, ownerDecks);
@@ -164,7 +164,7 @@ module {
             };
         };
 
-        private func deleteSlides(user: Principal, deck: Deck): () {
+        private func deleteSlides(user: Principal, deck: Deck): async () {
             let slides: ?[SlideId] = deck.data.slides;
 
             switch (slides) {

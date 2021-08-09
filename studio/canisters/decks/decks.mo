@@ -79,7 +79,7 @@ actor Deck {
     };
 
     public shared({ caller }) func del(deckId : DeckId, slides: Bool) : async (Bool) {
-        let deck: ProtectedDeck = store.deleteDeck(caller, deckId, slides);
+        let deck: ProtectedDeck = await store.deleteDeck(caller, deckId, slides);
 
         switch (deck.error) {
             case (?error) {
@@ -93,7 +93,7 @@ actor Deck {
     };
 
     public func delAdmin(user: Principal, deckId : DeckId, slides: Bool) : async Bool {
-        let deck: ProtectedDeck = store.deleteDeck(user, deckId, slides);
+        let deck: ProtectedDeck = await store.deleteDeck(user, deckId, slides);
 
         switch (deck.error) {
             case (?error) {
