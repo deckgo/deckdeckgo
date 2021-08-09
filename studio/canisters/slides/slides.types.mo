@@ -33,4 +33,9 @@ module {
         slide: Slide;
     };
 
+    public type ProtectedSlide = {
+        slide: ?OwnerSlide;
+        error: ?Text;
+    };
+
 }

@@ -1,5 +1,6 @@
 import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
+import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
@@ -12,39 +13,70 @@ actor Slide {
     type SlideData = SlidesTypes.SlideData;
     type Slide = SlidesTypes.Slide;
     type OwnerSlide = SlidesTypes.OwnerSlide;
+    type ProtectedSlide = SlidesTypes.ProtectedSlide;
 
     var store: SlidesStore.Store = SlidesStore.Store();
 
     // Preserve the application state on upgrades
     private stable var slides : [(SlideId, OwnerSlide)] = [];
 
-    public shared({ caller }) func set(slide: Slide) {
-        await store.setSlide(caller, slide);
+    public shared({ caller }) func set(slide: Slide): async() {
+        let error: ?Text = store.setSlide(caller, slide);
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {};
+        };
     };
 
-    public shared({ caller }) func get(slideId : SlideId) : async Slide {
-        let ownerSlide: ?OwnerSlide = await store.getSlide(caller, slideId);
+    public shared query({ caller }) func get(slideId : SlideId) : async Slide {
+        let ({error; slide;}): ProtectedSlide = store.getSlide(caller, slideId);
 
-        switch ownerSlide {
-            case (?ownerSlide) {
-                return ownerSlide.slide;
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
             };
             case null {
-                throw Error.reject("Slide not found.");
+                switch (slide) {
+                    case (?slide) {
+                        return slide.slide;
+                    };
+                    case null {
+                        throw Error.reject("Slide not found.");
+                    };
+                };
             };
         };
     };
 
     public shared({ caller }) func del(slideId : SlideId) : async (Bool) {
-        let exists: Bool = await delAdmin(caller, slideId);
+        let slide: ProtectedSlide = store.deleteSlide(caller, slideId);
 
-        return exists;
+        switch (slide.error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                let exists: Bool = Option.isSome(slide.slide);
+                return exists;
+            };
+        };
     };
 
-    public func delAdmin(user: Principal, slideId : SlideId) : async (Bool) {
-        let exists: Bool = await store.deleteSlide(user, slideId);
+    public func delAdmin(user: Principal, slideId: SlideId) : async Bool {
+        let slide: ProtectedSlide = store.deleteSlide(user, slideId);
 
-        return exists;
+        switch (slide.error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                let exists: Bool = Option.isSome(slide.slide);
+                return exists;
+            };
+        };
     };
 
     system func preupgrade() {
