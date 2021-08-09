@@ -2,6 +2,8 @@ import {Build} from '@stencil/core';
 
 import remoteStore from '../../../../stores/remote.store';
 
+import {componentOnReady} from '../../../../utils/ionic/ionic.overlay';
+
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
 import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
@@ -26,22 +28,22 @@ export class RemoteEventsHandler {
   async init(el: HTMLElement) {
     this.el = el;
 
-    // TODO: fix me script might even not be loaded
     const remote: HTMLDeckgoRemoteElement | null = this.el.querySelector('deckgo-remote');
-    await remote?.componentOnReady();
 
-    await this.initRemote();
+    componentOnReady(remote, async () => {
+      await this.initRemote();
 
-    this.destroyConnectListener = remoteStore.onChange('remote', async (enable: boolean) => {
-      if (enable) {
-        await this.connect();
-      } else {
-        await this.disconnect();
-      }
-    });
+      this.destroyConnectListener = remoteStore.onChange('remote', async (enable: boolean) => {
+        if (enable) {
+          await this.connect();
+        } else {
+          await this.disconnect();
+        }
+      });
 
-    this.destroyAcceptRequestListener = remoteStore.onChange('acceptedRequest', async (request: DeckdeckgoEventDeckRequest) => {
-      await this.startAcceptedRemoteRequest(request);
+      this.destroyAcceptRequestListener = remoteStore.onChange('acceptedRequest', async (request: DeckdeckgoEventDeckRequest) => {
+        await this.startAcceptedRemoteRequest(request);
+      });
     });
   }
 

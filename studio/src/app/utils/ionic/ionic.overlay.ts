@@ -6,7 +6,9 @@ import type {
   HTMLIonOverlayElement,
   LoadingOptions,
   ModalOptions,
-  PickerOptions, PopoverOptions, ToastOptions
+  PickerOptions,
+  PopoverOptions,
+  ToastOptions
 } from '@ionic/core';
 
 const getAppRoot = (doc: Document) => {
@@ -15,18 +17,16 @@ const getAppRoot = (doc: Document) => {
 
 export const getOverlay = (doc: Document, overlayTag?: string, id?: string): HTMLIonOverlayElement | undefined => {
   const overlays = getOverlays(doc, overlayTag);
-  return (id === undefined)
-    ? overlays[overlays.length - 1]
-    : overlays.find(o => o.id === id);
+  return id === undefined ? overlays[overlays.length - 1] : overlays.find((o) => o.id === id);
 };
 
-const componentOnReady = (el: any, callback: any) => {
+export const componentOnReady = (el: any, callback: any) => {
   if (el.componentOnReady) {
     el.componentOnReady().then((resolvedEl: any) => callback(resolvedEl));
   } else {
     raf(() => callback(el));
   }
-}
+};
 
 declare const __zone_symbol__requestAnimationFrame: any;
 
@@ -54,7 +54,7 @@ export const createOverlay = <T extends HTMLIonOverlayElement>(tagName: string, 
       // append the overlay element to the document body
       getAppRoot(document).appendChild(element);
 
-      return new Promise(resolve => componentOnReady(element, resolve));
+      return new Promise((resolve) => componentOnReady(element, resolve));
     });
   }
   return Promise.resolve() as any;
@@ -72,8 +72,7 @@ export const getOverlays = (doc: Document, selector?: string): HTMLIonOverlayEle
   if (selector === undefined) {
     selector = 'ion-alert,ion-action-sheet,ion-loading,ion-modal,ion-picker,ion-popover,ion-toast';
   }
-  return (Array.from(doc.querySelectorAll(selector)) as HTMLIonOverlayElement[])
-    .filter(c => c.overlayIndex > 0);
+  return (Array.from(doc.querySelectorAll(selector)) as HTMLIonOverlayElement[]).filter((c) => c.overlayIndex > 0);
 };
 
 const createController = <Opts extends object, HTMLElm extends any>(tagName: string) => {
@@ -90,10 +89,10 @@ const createController = <Opts extends object, HTMLElm extends any>(tagName: str
   };
 };
 
-export const alertController = /*@__PURE__*/createController<AlertOptions, HTMLIonAlertElement>('ion-alert');
-export const actionSheetController = /*@__PURE__*/createController<ActionSheetOptions, HTMLIonActionSheetElement>('ion-action-sheet');
-export const loadingController = /*@__PURE__*/createController<LoadingOptions, HTMLIonLoadingElement>('ion-loading');
-export const modalController = /*@__PURE__*/createController<ModalOptions, HTMLIonModalElement>('ion-modal');
-export const pickerController = /*@__PURE__*/createController<PickerOptions, HTMLIonPickerElement>('ion-picker');
-export const popoverController = /*@__PURE__*/createController<PopoverOptions, HTMLIonPopoverElement>('ion-popover');
-export const toastController = /*@__PURE__*/createController<ToastOptions, HTMLIonToastElement>('ion-toast');
+export const alertController = /*@__PURE__*/ createController<AlertOptions, HTMLIonAlertElement>('ion-alert');
+export const actionSheetController = /*@__PURE__*/ createController<ActionSheetOptions, HTMLIonActionSheetElement>('ion-action-sheet');
+export const loadingController = /*@__PURE__*/ createController<LoadingOptions, HTMLIonLoadingElement>('ion-loading');
+export const modalController = /*@__PURE__*/ createController<ModalOptions, HTMLIonModalElement>('ion-modal');
+export const pickerController = /*@__PURE__*/ createController<PickerOptions, HTMLIonPickerElement>('ion-picker');
+export const popoverController = /*@__PURE__*/ createController<PopoverOptions, HTMLIonPopoverElement>('ion-popover');
+export const toastController = /*@__PURE__*/ createController<ToastOptions, HTMLIonToastElement>('ion-toast');
