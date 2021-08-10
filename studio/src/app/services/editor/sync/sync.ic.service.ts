@@ -82,7 +82,7 @@ export class SyncIcService extends SyncService {
 
     const deckActor: DeckActor = await this.deckIcService.createActor({identity});
 
-    const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => this.deckIcService.uploadDeck({deck, deckActor}));
+    const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => this.deckIcService.uploadDeck({deck, deckActor, identity}));
     await Promise.all(promises);
   }
 

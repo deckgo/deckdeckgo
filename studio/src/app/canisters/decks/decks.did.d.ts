@@ -5,7 +5,12 @@ export interface Attribute {
 }
 export interface Deck {
   data: DeckData;
-  deckId: DeckId;
+  deckId: DeckId__1;
+}
+export interface DeckBucket {
+  del: (arg_0: boolean) => Promise<boolean>;
+  get: () => Promise<Deck>;
+  set: (arg_0: Deck) => Promise<undefined>;
 }
 export interface DeckData {
   updated_at: [] | [Time];
@@ -59,10 +64,8 @@ export interface UserSocial {
   medium: [] | [string];
 }
 export interface _SERVICE {
-  del: (arg_0: DeckId__1, arg_1: boolean) => Promise<boolean>;
-  delAdmin: (arg_0: Principal, arg_1: DeckId__1, arg_2: boolean) => Promise<boolean>;
-  entries: () => Promise<Array<Deck>>;
-  entriesAdmin: (arg_0: Principal) => Promise<Array<Deck>>;
-  get: (arg_0: DeckId__1) => Promise<Deck>;
-  set: (arg_0: Deck) => Promise<undefined>;
+  entries: () => Promise<Array<DeckBucket>>;
+  entriesAdmin: (arg_0: Principal) => Promise<Array<DeckBucket>>;
+  get: (arg_0: DeckId) => Promise<Principal>;
+  init: (arg_0: DeckId) => Promise<Principal>;
 }

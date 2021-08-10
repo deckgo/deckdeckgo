@@ -1,5 +1,4 @@
 export const idlFactory = ({IDL}) => {
-  const DeckId__1 = IDL.Text;
   const Time = IDL.Int;
   const UserSocial = IDL.Record({
     dev: IDL.Opt(IDL.Text),
@@ -50,15 +49,19 @@ export const idlFactory = ({IDL}) => {
     footer: IDL.Opt(IDL.Text),
     header: IDL.Opt(IDL.Text)
   });
-  const DeckId = IDL.Text;
-  const Deck = IDL.Record({data: DeckData, deckId: DeckId});
-  return IDL.Service({
-    del: IDL.Func([DeckId__1, IDL.Bool], [IDL.Bool], []),
-    delAdmin: IDL.Func([IDL.Principal, DeckId__1, IDL.Bool], [IDL.Bool], []),
-    entries: IDL.Func([], [IDL.Vec(Deck)], ['query']),
-    entriesAdmin: IDL.Func([IDL.Principal], [IDL.Vec(Deck)], []),
-    get: IDL.Func([DeckId__1], [Deck], ['query']),
+  const DeckId__1 = IDL.Text;
+  const Deck = IDL.Record({data: DeckData, deckId: DeckId__1});
+  const DeckBucket = IDL.Service({
+    del: IDL.Func([IDL.Bool], [IDL.Bool], []),
+    get: IDL.Func([], [Deck], ['query']),
     set: IDL.Func([Deck], [], [])
+  });
+  const DeckId = IDL.Text;
+  return IDL.Service({
+    entries: IDL.Func([], [IDL.Vec(DeckBucket)], ['query']),
+    entriesAdmin: IDL.Func([IDL.Principal], [IDL.Vec(DeckBucket)], []),
+    get: IDL.Func([DeckId], [DeckBucket], ['query']),
+    init: IDL.Func([DeckId], [DeckBucket], [])
   });
 };
 export const init = ({IDL}) => {

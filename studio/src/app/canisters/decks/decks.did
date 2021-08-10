@@ -55,10 +55,16 @@ type DeckData =
    slides: opt vec SlideId;
    updated_at: opt Time;
  };
+type DeckBucket = 
+ service {
+   del: (bool) -> (bool);
+   get: () -> (Deck) query;
+   set: (Deck) -> ();
+ };
 type Deck = 
  record {
    data: DeckData;
-   deckId: DeckId;
+   deckId: DeckId__1;
  };
 type Attribute = 
  record {
@@ -66,10 +72,8 @@ type Attribute =
    value: text;
  };
 service : {
-  del: (DeckId__1, bool) -> (bool);
-  delAdmin: (principal, DeckId__1, bool) -> (bool);
-  entries: () -> (vec Deck) query;
-  entriesAdmin: (principal) -> (vec Deck);
-  get: (DeckId__1) -> (Deck) query;
-  set: (Deck) -> ();
+  entries: () -> (vec DeckBucket) query;
+  entriesAdmin: (principal) -> (vec DeckBucket);
+  get: (DeckId) -> (DeckBucket) query;
+  init: (DeckId) -> (DeckBucket);
 }

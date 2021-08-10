@@ -7,7 +7,9 @@ import Error "mo:base/Error";
 import Types "../common/types";
 import UsersTypes "./users.types";
 import UsersStore "./users.store";
-import DecksTypes "../decks/decks.types";
+
+// TODO: implement back remove all decks
+// import DecksTypes "../decks/decks.types";
 
 import Decks "canister:decks";
 
@@ -18,9 +20,10 @@ actor User {
     type ProtectedUser = UsersTypes.ProtectedUser;
     type Username = UsersTypes.Username;
 
-    type Deck = DecksTypes.Deck;
-    type DeckId = Types.DeckId;
-    type DeckData = DecksTypes.DeckData;
+    // TODO:
+    // type Deck = DecksTypes.Deck;
+    // type DeckId = Types.DeckId;
+    // type DeckData = DecksTypes.DeckData;
 
     var store: UsersStore.Store = UsersStore.Store();
 
@@ -82,12 +85,13 @@ actor User {
         };
     };
 
+    // TODO:
     private func deleteDecks(user: Principal, userId: UserId): async () {
-        let decks: ([Deck]) = await Decks.entriesAdmin(userId);
-
-        for ((deck: Deck) in decks.vals()) {
-            let exists: Bool = await Decks.delAdmin(user, deck.deckId, true);
-        };
+        // let decks: ([Deck]) = await Decks.entriesAdmin(userId);
+        //
+        // for ((deck: Deck) in decks.vals()) {
+        //     let exists: Bool = await Decks.delAdmin(user, deck.deckId, true);
+        // };
     };
 
     system func preupgrade() {
