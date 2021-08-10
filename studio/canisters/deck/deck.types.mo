@@ -2,7 +2,7 @@ import Principal "mo:base/Principal";
 
 import Types "../common/types";
 
-import DeckBucket "./deck.bucket";
+import DeckBucket "./deck";
 
 module {
     type UserId = Types.UserId;

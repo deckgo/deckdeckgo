@@ -9,11 +9,11 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../common/types";
-import DeckBucketTypes "./deck.bucket.types";
+import DeckBucketTypes "../deck/deck.types";
 
 import Utils "../common/utils";
 
-import DeckBucket "./deck.bucket";
+import DeckBucket "../deck/deck";
 
 module {
     type UserId = Types.UserId;
