@@ -13,6 +13,7 @@ export interface Deck {
 }
 export interface DeckBucket {
   del: () => Promise<boolean>;
+  delAdmin: (arg_0: UserId__1) => Promise<boolean>;
   delSlide: (arg_0: SlideId__2) => Promise<boolean>;
   get: () => Promise<Deck>;
   getSlide: (arg_0: SlideId__2) => Promise<Slide>;
@@ -76,6 +77,7 @@ export type SlideId__1 = string;
 export type SlideId__2 = string;
 export type Time = bigint;
 export type UserId = Principal;
+export type UserId__1 = Principal;
 export interface UserSocial {
   dev: [] | [string];
   linkedin: [] | [string];

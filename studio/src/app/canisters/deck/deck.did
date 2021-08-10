@@ -8,6 +8,7 @@ type UserSocial =
    medium: opt text;
    twitter: opt text;
  };
+type UserId__1 = principal;
 type UserId = principal;
 type Time = int;
 type SlideId__2 = text;
@@ -74,6 +75,7 @@ type DeckData =
 type DeckBucket = 
  service {
    del: () -> (bool);
+   delAdmin: (UserId__1) -> (bool);
    delSlide: (SlideId__2) -> (bool);
    get: () -> (Deck) query;
    getSlide: (SlideId__2) -> (Slide) query;
