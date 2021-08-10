@@ -21,6 +21,8 @@ actor class DeckBucket(owner: Types.UserId) = this {
   type Deck = DeckDataTypes.Deck;
   type Slide = SlideDataTypes.Slide;
 
+  private stable let user: Types.UserId = owner;
+
   private stable var deck: ?Deck = null;
 
   // Preserve the application state on upgrades
@@ -33,7 +35,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
     */
 
   public shared query({ caller }) func get() : async Deck {
-    if (Utils.isPrincipalNotEqual(caller, owner)) {
+    if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to get the deck.");
     };
 
@@ -48,7 +50,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   };
 
   public shared({ caller }) func set(newDeck: Deck) : async () {
-    if (Utils.isPrincipalNotEqual(caller, owner)) {
+    if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to set the deck.");
     };
 
@@ -67,7 +69,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   // TODO: do we need to delete or destroy canister is enough?
 
   public shared({ caller }) func del() : async (Bool) {
-    if (Utils.isPrincipalNotEqual(caller, owner)) {
+    if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to delete the deck.");
     };
 
@@ -80,7 +82,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   // TODO: if we have this security then we probably do not need to check the user as parameter
 
   public shared({ caller }) func delAdmin(user: UserId) : async (Bool) {
-    if (Utils.isPrincipalNotEqual(user, owner)) {
+    if (Utils.isPrincipalNotEqual(user, user)) {
         throw Error.reject("User does not match the owner of the deck to delete.");
     };
 
@@ -105,7 +107,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
    */
 
   public shared query({ caller }) func getSlide(slideId: SlideId) : async Slide {
-    if (Utils.isPrincipalNotEqual(caller, owner)) {
+    if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to get the slide.");
     };
 
@@ -122,7 +124,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   };
 
   public shared({ caller }) func setSlide(slide: Slide) : async () {
-    if (Utils.isPrincipalNotEqual(caller, owner)) {
+    if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to set the slide.");
     };
 
@@ -130,7 +132,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   };
 
   public shared({ caller }) func delSlide(slideId: SlideId) : async (Bool) {
-    if (Utils.isPrincipalNotEqual(caller, owner)) {
+    if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to delete the slide.");
     };
 
