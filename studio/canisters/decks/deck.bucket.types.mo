@@ -1,3 +1,5 @@
+import Principal "mo:base/Principal";
+
 import Types "../common/types";
 
 import DeckBucket "./deck.bucket";
@@ -7,18 +9,21 @@ module {
 
     type DeckBucket = DeckBucket.DeckBucket;
 
+    public type DeckBucketId = Principal;
+
     public type OwnerDeckBucket = {
         bucket: DeckBucket;
+        bucketId: DeckBucketId;
         owner: UserId;
     };
 
     public type ProtectedDeckBucket = {
-        bucket: ?DeckBucket;
+        bucketId: ?DeckBucketId;
         error: ?Text;
     };
 
     public type ProtectedDeckBuckets = {
-        buckets: [DeckBucket];
+        buckets: [DeckBucketId];
         error: ?Text;
     };
 };

@@ -23,6 +23,7 @@ module {
     type OwnerDeckBucket = DeckBucketTypes.OwnerDeckBucket;
     type ProtectedDeckBucket = DeckBucketTypes.ProtectedDeckBucket;
     type ProtectedDeckBuckets = DeckBucketTypes.ProtectedDeckBuckets;
+    type DeckBucketId = DeckBucketTypes.DeckBucketId;
 
     type DeckBucket = DeckBucket.DeckBucket;
 
@@ -37,8 +38,8 @@ module {
                     return deckBucket;
                 };
                 case null {
-                    switch (deckBucket.bucket) {
-                        case (?bucket) {
+                    switch (deckBucket.bucketId) {
+                        case (?bucketId) {
                             return deckBucket;
                         };
                         case null {
@@ -48,6 +49,7 @@ module {
 
                             let newDeckBucket: OwnerDeckBucket = {
                                 bucket = b;
+                                bucketId = await b.id();
                                 owner = user;
                             };
 
@@ -63,7 +65,7 @@ module {
                             };
 
                             return {
-                                bucket = ?b;
+                                bucketId = ?(await b.id());
                                 error = null;
                             };
                         };
@@ -95,7 +97,7 @@ module {
                 };
                 case null {
                     return {
-                        bucket = null;
+                        bucketId = null;
                         error = null;
                     };
                 };
@@ -107,7 +109,7 @@ module {
 
             switch ownerDecks {
                 case (?ownerDecks) {
-                    var results: ([DeckBucket]) = [];
+                    var results: ([DeckBucketId]) = [];
 
                     for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
                         if (Utils.isPrincipalNotEqual(user, value.owner)) {
@@ -117,7 +119,7 @@ module {
                             };
                         };
 
-                        results := Array.append(results, [value.bucket]);
+                        results := Array.append(results, [value.bucketId]);
                     };
 
                     return {
@@ -141,21 +143,21 @@ module {
                 case (?ownerDeck) {
                     if (Utils.isPrincipalEqual(user, ownerDeck.owner)) {
                         return {
-                            bucket = ?ownerDeck.bucket;
+                            bucketId = ?ownerDeck.bucketId;
                             error = null;
                         };
                     };
                 };
                 case null {
                     return {
-                        bucket = null;
+                        bucketId = null;
                         error = null;
                     };
                 };
             };
 
             return {
-                bucket = null;
+                bucketId = null;
                 error = ?"User does not have the permission for the deck.";
             };
         };

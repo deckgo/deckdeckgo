@@ -1,4 +1,5 @@
 import Option "mo:base/Option";
+import Principal "mo:base/Principal";
 
 import Error "mo:base/Error";
 
@@ -9,7 +10,7 @@ import Utils "../common/utils";
 
 // import Slides "canister:slides";
 
-actor class DeckBucket(owner: Types.UserId) {
+actor class DeckBucket(owner: Types.UserId) = this {
 
   type UserId = Types.UserId;
   type DeckId = Types.DeckId;
@@ -81,6 +82,10 @@ actor class DeckBucket(owner: Types.UserId) {
             throw Error.reject("Deck not defined.");
         };
     };
+  };
+
+  public query func id() : async Principal {
+    return Principal.fromActor(this);
   };
 
 };
