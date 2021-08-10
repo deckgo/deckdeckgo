@@ -67,14 +67,14 @@ actor Decks {
     };
 
     public shared query({ caller }) func entries() : async [DeckBucketId] {
-        let ({error; buckets}): ProtectedDeckBuckets = store.getDecks(caller);
+        let ({error; bucketIds}): ProtectedDeckBuckets = store.getDecks(caller);
 
         switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                return buckets;
+                return bucketIds;
             };
         };
     };
@@ -82,14 +82,14 @@ actor Decks {
     // TODO: inter-canister call secure caller === user canister
 
     public func entriesAdmin(user: Principal) : async [DeckBucketId] {
-        let ({error; buckets}): ProtectedDeckBuckets = store.getDecks(user);
+        let ({error; bucketIds}): ProtectedDeckBuckets = store.getDecks(user);
 
         switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                return buckets;
+                return bucketIds;
             };
         };
     };

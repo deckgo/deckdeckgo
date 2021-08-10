@@ -127,7 +127,7 @@ module {
                     for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
                         if (Utils.isPrincipalNotEqual(user, value.owner)) {
                             return {
-                                buckets = [];
+                                bucketIds = [];
                                 error = ?"User does not have the permission for one of the deck.";
                             };
                         };
@@ -136,13 +136,13 @@ module {
                     };
 
                     return {
-                        buckets = results;
+                        bucketIds = results;
                         error = null;
                     };
                 };
                 case null {
                     return {
-                        buckets = [];
+                        bucketIds = [];
                         error = null;
                     }
                 }
