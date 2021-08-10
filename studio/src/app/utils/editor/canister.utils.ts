@@ -2,7 +2,7 @@ import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';
 import {UserSocial} from '../../models/data/user';
 
-import {Attribute, Time} from '../../canisters/slides/slides.did';
+import {Attribute, Time} from '../../canisters/deck/deck.did';
 
 import {toDate} from '../core/date.utils';
 

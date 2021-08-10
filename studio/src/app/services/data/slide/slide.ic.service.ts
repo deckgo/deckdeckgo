@@ -1,12 +1,13 @@
 import {Identity} from '@dfinity/agent';
+import {Principal} from '@dfinity/principal';
+
+import {_SERVICE as DecskActor, _SERVICE as DecksActor} from '../../../canisters/decks/decks.did';
+import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../../canisters/deck/deck.did';
 
 import {Slide, SlideScope} from '../../../models/data/slide';
-
-import {idlFactory as SlideFactory} from '../../../canisters/slides/slides.utils.did';
-import {_SERVICE as SlideActor, Slide as SlideIc} from '../../../canisters/slides/slides.did';
+import {createDeckBucketActor, createDecksActor} from '../../../utils/core/ic.deck.utils';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
-import {createActor} from '../../../utils/core/ic.utils';
 
 import {SlideService} from './slide.service';
 import {AuthFactoryService} from '../../auth/auth.factory.service';
@@ -26,11 +27,7 @@ export class SlideIcService implements SlideService {
     return SlideIcService.instance;
   }
 
-  createActor({identity}: {identity: Identity}): Promise<SlideActor> {
-    return createActor<SlideActor>({canisterId: process.env.SLIDES_CANISTER_ID, idlFactory: SlideFactory, identity});
-  }
-
-  async uploadSlide({slide, deckId, slideActor}: {slide: Slide; deckId: string; slideActor: SlideActor}) {
+  async uploadSlide({slide, deckId, decksActor, identity}: {slide: Slide; deckId: string; decksActor: DecksActor; identity: Identity}) {
     if (!slide) {
       return;
     }
@@ -38,9 +35,12 @@ export class SlideIcService implements SlideService {
     console.log('Slide IC about to SET');
     const t0 = performance.now();
 
-    await slideActor.set({
+    const bucket: Principal = await decksActor.init(deckId);
+
+    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
+
+    await deckBucket.setSlide({
       slideId: slide.id,
-      deckId,
       data: {
         content: CanisterUtils.toNullable<string>(slide.data.content),
         template: slide.data.template,
@@ -57,19 +57,23 @@ export class SlideIcService implements SlideService {
     const t2 = performance.now();
 
     // TODO: remove, just for test
-    console.log('Slide IC Get:', await slideActor.get(slide.id), performance.now() - t2);
+    console.log('Slide IC Get:', await deckBucket.getSlide(slide.id), performance.now() - t2);
   }
 
-  async deleteSlide({slideId, slideActor}: {slideId: string; slideActor: SlideActor}) {
+  async deleteSlide({slideId, deckId, decksActor, identity}: {slideId: string; deckId: string; decksActor: DecksActor; identity: Identity}) {
     if (!slideId) {
       return;
     }
 
-    await slideActor.del(slideId);
+    const bucket: Principal = await decksActor.init(deckId);
+
+    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
+
+    await deckBucket.delSlide(slideId);
   }
 
   // @Override
-  get(_deckId: string, slideId: string): Promise<Slide> {
+  get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
 
@@ -78,9 +82,13 @@ export class SlideIcService implements SlideService {
         return;
       }
 
-      const slideActor: SlideActor = await this.createActor({identity});
+      const decksActor: DecskActor = await createDecksActor({identity});
 
-      const slide: SlideIc = await slideActor.get(slideId);
+      const bucket: Principal = await decksActor.init(deckId);
+
+      const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
+
+      const slide: SlideIc = await deckBucket.getSlide(slideId);
 
       resolve({
         id: slideId,

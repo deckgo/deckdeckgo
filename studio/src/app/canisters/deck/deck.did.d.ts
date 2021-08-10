@@ -3,15 +3,22 @@ export interface Attribute {
   value: string;
   name: string;
 }
+export interface Attribute__1 {
+  value: string;
+  name: string;
+}
 export interface Deck {
   data: DeckData;
   deckId: DeckId;
 }
 export interface DeckBucket {
-  del: (arg_0: boolean) => Promise<boolean>;
+  del: () => Promise<boolean>;
+  delSlide: (arg_0: SlideId__2) => Promise<boolean>;
   get: () => Promise<Deck>;
+  getSlide: (arg_0: SlideId__2) => Promise<Slide>;
   id: () => Promise<Principal>;
   set: (arg_0: Deck) => Promise<undefined>;
+  setSlide: (arg_0: Slide) => Promise<undefined>;
 }
 export interface DeckData {
   updated_at: [] | [Time];
@@ -19,8 +26,8 @@ export interface DeckData {
   meta: [] | [DeckMeta];
   name: string;
   created_at: [] | [Time];
-  slides: [] | [Array<SlideId>];
-  attributes: [] | [Array<Attribute>];
+  slides: [] | [Array<SlideId__1>];
+  attributes: [] | [Array<Attribute__1>];
   github: [] | [DeckGitHub];
   footer: [] | [string];
   header: [] | [string];
@@ -52,7 +59,21 @@ export interface DeckMetaAuthor {
   social: [] | [UserSocial];
   name: string;
 }
+export interface Slide {
+  data: SlideData;
+  slideId: SlideId;
+}
+export interface SlideData {
+  updated_at: [] | [Time];
+  content: [] | [string];
+  created_at: [] | [Time];
+  scope: [] | [string];
+  attributes: [] | [Array<Attribute>];
+  template: string;
+}
 export type SlideId = string;
+export type SlideId__1 = string;
+export type SlideId__2 = string;
 export type Time = bigint;
 export type UserId = Principal;
 export interface UserSocial {

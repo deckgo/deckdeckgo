@@ -1,12 +1,11 @@
 import {Identity} from '@dfinity/agent';
+import {Principal} from '@dfinity/principal';
 
 import {Deck, DeckAttributes, DeckData, DeckGitHub, DeckGitHubRepo, DeckMeta, DeckMetaAuthor} from '../../../models/data/deck';
 import {UserSocial} from '../../../models/data/user';
 
-import {idlFactory as DeckFactory} from '../../../canisters/decks/decks.utils.did';
-import {_SERVICE as DeckActor} from '../../../canisters/decks/decks.did';
+import {_SERVICE as DecksActor} from '../../../canisters/decks/decks.did';
 
-import {idlFactory as DeckBucketFactory} from '../../../canisters/deck/deck.utils.did';
 import {
   _SERVICE as DeckBucketActor,
   Deck as DeckIc,
@@ -18,12 +17,11 @@ import {
 } from '../../../canisters/deck/deck.did';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
-import {createActor} from '../../../utils/core/ic.utils';
+import {createDeckBucketActor, createDecksActor} from '../../../utils/core/ic.deck.utils';
 
 import {DeckService} from './deck.service';
 import {AuthIcService} from '../../auth/auth.ic.service';
 import {AuthFactoryService} from '../../auth/auth.factory.service';
-import {Principal} from '@dfinity/principal';
 
 export class DeckIcService implements DeckService {
   private static instance: DeckIcService;
@@ -39,15 +37,7 @@ export class DeckIcService implements DeckService {
     return DeckIcService.instance;
   }
 
-  createDeckActor({identity}: {identity: Identity}): Promise<DeckActor> {
-    return createActor<DeckActor>({canisterId: process.env.DECKS_CANISTER_ID, idlFactory: DeckFactory, identity});
-  }
-
-  private createDeckBucketActor({identity, bucket}: {identity: Identity; bucket: Principal}): Promise<DeckBucketActor> {
-    return createActor<DeckBucketActor>({canisterId: bucket, idlFactory: DeckBucketFactory, identity});
-  }
-
-  async uploadDeck({deck, deckActor, identity}: {deck: Deck; deckActor: DeckActor; identity: Identity}) {
+  async uploadDeck({deck, decksActor, identity}: {deck: Deck; decksActor: DecksActor; identity: Identity}) {
     if (!deck) {
       return;
     }
@@ -55,9 +45,9 @@ export class DeckIcService implements DeckService {
     console.log('Deck IC about to SET');
     const t0 = performance.now();
 
-    const bucket: Principal = await deckActor.init(deck.id);
+    const bucket: Principal = await decksActor.init(deck.id);
 
-    const deckBucket: DeckBucketActor = await this.createDeckBucketActor({identity, bucket});
+    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
     await deckBucket.set({
       deckId: deck.id,
@@ -92,7 +82,7 @@ export class DeckIcService implements DeckService {
       return [];
     }
 
-    const decksActor: DeckActor = await this.createDeckActor({identity});
+    const decksActor: DecksActor = await createDecksActor({identity});
 
     console.log('Deck IC about to request entries');
 
@@ -108,7 +98,7 @@ export class DeckIcService implements DeckService {
   }
 
   private async getDeckIc({bucket, identity}: {bucket: Principal; identity: Identity}): Promise<DeckIc> {
-    const deckBucket: DeckBucketActor = await this.createDeckBucketActor({identity, bucket});
+    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
     return deckBucket.get();
   }
@@ -125,15 +115,15 @@ export class DeckIcService implements DeckService {
       return;
     }
 
-    const decksActor: DeckActor = await this.createDeckActor({identity});
+    const decksActor: DecksActor = await createDecksActor({identity});
 
     const bucket: Principal = await decksActor.init(deckId);
 
-    const deckBucket: DeckBucketActor = await this.createDeckBucketActor({identity, bucket});
+    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
     console.log('Deck IC about to delete deck and its slides');
 
-    await deckBucket.del(true);
+    await deckBucket.del();
 
     console.log('Deck IC delete');
   }

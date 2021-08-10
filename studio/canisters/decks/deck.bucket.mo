@@ -1,14 +1,16 @@
 import Option "mo:base/Option";
 import Principal "mo:base/Principal";
+import HashMap "mo:base/HashMap";
+import Text "mo:base/Text";
+import Iter "mo:base/Iter";
 
 import Error "mo:base/Error";
 
 import Types "../common/types";
 import DeckDataTypes "./deck.data.types";
+import SlideDataTypes "./slide.data.types";
 
 import Utils "../common/utils";
-
-// import Slides "canister:slides";
 
 actor class DeckBucket(owner: Types.UserId) = this {
 
@@ -17,12 +19,22 @@ actor class DeckBucket(owner: Types.UserId) = this {
   type SlideId = Types.SlideId;
 
   type Deck = DeckDataTypes.Deck;
+  type Slide = SlideDataTypes.Slide;
 
-  var deck: ?Deck = null;
+  private stable var deck: ?Deck = null;
+
+  // Preserve the application state on upgrades
+  private stable var entries : [(SlideId, Slide)] = [];
+
+  private var slides: HashMap.HashMap<SlideId, Slide> = HashMap.HashMap<SlideId, Slide>(10, Text.equal, Text.hash);
 
   /**
    * TODO: Should we also secure the deckId ?
    */
+
+   /**
+    * Deck
+    */
 
   public shared query({ caller }) func get() : async Deck {
     if (Utils.isPrincipalNotEqual(caller, owner)) {
@@ -47,12 +59,12 @@ actor class DeckBucket(owner: Types.UserId) = this {
     deck := ?newDeck;
   };
 
-  public shared({ caller }) func del(slides: Bool) : async (Bool) {
+  public shared({ caller }) func del() : async (Bool) {
     if (Utils.isPrincipalNotEqual(caller, owner)) {
         throw Error.reject("User does not have the permission to delete the deck.");
     };
 
-    await deleteSlides(caller);
+    slides := HashMap.fromIter<SlideId, Slide>([].vals(), 10, Text.equal, Text.hash);
 
     let exists: Bool = Option.isSome(deck);
     if (exists) {
@@ -64,28 +76,61 @@ actor class DeckBucket(owner: Types.UserId) = this {
     // TODO: what to do more to destroy?
   };
 
-  private func deleteSlides(user: Principal): async () {
-    switch (deck) {
-        case (?deck) {
-            let slides: ?[SlideId] = deck.data.slides;
+  /**
+   * Slides
+   */
 
-            switch (slides) {
-                case (?slides) {
-                    for ((slideId: Text) in slides.vals()) {
-                        // let slideExists: Bool = await Slides.delAdmin(user, slideId);
-                    };
-                };
-                case null {}
-            };
+  public shared query({ caller }) func getSlide(slideId: SlideId) : async Slide {
+    if (Utils.isPrincipalNotEqual(caller, owner)) {
+        throw Error.reject("User does not have the permission to get the slide.");
+    };
+
+    let slide: ?Slide = slides.get(slideId);
+
+    switch (slide) {
+        case (?slide) {
+            return slide;
         };
         case null {
-            throw Error.reject("Deck not defined.");
+            throw Error.reject("Slide not found.");
         };
     };
   };
 
+  public shared({ caller }) func setSlide(slide: Slide) : async () {
+    if (Utils.isPrincipalNotEqual(caller, owner)) {
+        throw Error.reject("User does not have the permission to set the slide.");
+    };
+
+    slides.put(slide.slideId, slide);
+  };
+
+  public shared({ caller }) func delSlide(slideId: SlideId) : async (Bool) {
+    if (Utils.isPrincipalNotEqual(caller, owner)) {
+        throw Error.reject("User does not have the permission to delete the slide.");
+    };
+
+    let slide: ?Slide = slides.remove(slideId);
+
+    let exists: Bool = Option.isSome(slide);
+    return exists;
+  };
+
+  /**
+   * Canister
+   */
+
   public query func id() : async Principal {
     return Principal.fromActor(this);
+  };
+
+  system func preupgrade() {
+    entries := Iter.toArray(slides.entries());
+  };
+
+  system func postupgrade() {
+    slides := HashMap.fromIter<SlideId, Slide>(entries.vals(), 10, Text.equal, Text.hash);
+    entries := [];
   };
 
 };
