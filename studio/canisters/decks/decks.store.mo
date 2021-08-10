@@ -74,7 +74,6 @@ module {
             };
         };
 
-        // TODO: FIXME caller !== user -> owner as constructor variable?
         private func initNewBucket(user: UserId): async (DeckBucket) {
             Cycles.add(1_000_000_000_000);
             let b: DeckBucket = await DeckBucket.DeckBucket(user);
