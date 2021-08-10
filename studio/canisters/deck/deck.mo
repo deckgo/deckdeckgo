@@ -28,10 +28,6 @@ actor class DeckBucket(owner: Types.UserId) = this {
 
   private var slides: HashMap.HashMap<SlideId, Slide> = HashMap.HashMap<SlideId, Slide>(10, Text.equal, Text.hash);
 
-  /**
-   * TODO: Should we also secure the deckId ?
-   */
-
    /**
     * Deck
     */
@@ -54,6 +50,15 @@ actor class DeckBucket(owner: Types.UserId) = this {
   public shared({ caller }) func set(newDeck: Deck) : async () {
     if (Utils.isPrincipalNotEqual(caller, owner)) {
         throw Error.reject("User does not have the permission to set the deck.");
+    };
+
+    switch (deck) {
+      case (?deck) {
+        if (deck.deckId != newDeck.deckId) {
+          throw Error.reject("The provided Deck ID does not match the one of this deck.");
+        };
+      };
+      case null {};
     };
 
     deck := ?newDeck;
