@@ -29,7 +29,7 @@ module {
     public class Store() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        public func init(user: Principal, deckId: DeckId): async (ProtectedDeckBucket) {
+        public func init(user: UserId, deckId: DeckId): async (ProtectedDeckBucket) {
             let deckBucket: ProtectedDeckBucket = getDeck(user, deckId);
 
             switch (deckBucket.error) {
@@ -42,7 +42,7 @@ module {
                             return deckBucket;
                         };
                         case null {
-                            let b: DeckBucket = await initNewBucket();
+                            let b: DeckBucket = await initNewBucket(user);
 
                             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
@@ -73,19 +73,19 @@ module {
         };
 
         // TODO: FIXME caller !== user -> owner as constructor variable?
-        private func initNewBucket(): async (DeckBucket) {
+        private func initNewBucket(user: UserId): async (DeckBucket) {
             Cycles.add(1_000_000_000_000);
-            let b: DeckBucket = await DeckBucket.DeckBucket();
+            let b: DeckBucket = await DeckBucket.DeckBucket(user);
 
             return b;
         };
 
-        private func setOwnerDeck(user: Principal, deckId: DeckId, newDeckBucket: OwnerDeckBucket, ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket>) {
+        private func setOwnerDeck(user: UserId, deckId: DeckId, newDeckBucket: OwnerDeckBucket, ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket>) {
             ownerDecks.put(deckId, newDeckBucket);
             decks.put(user, ownerDecks);
         };
 
-        public func getDeck(user: Principal, deckId: DeckId): ProtectedDeckBucket {
+        public func getDeck(user: UserId, deckId: DeckId): ProtectedDeckBucket {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
@@ -102,7 +102,7 @@ module {
             };
         };
 
-        public func getDecks(user: Principal): ProtectedDeckBuckets {
+        public func getDecks(user: UserId): ProtectedDeckBuckets {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
@@ -134,7 +134,7 @@ module {
             };
         };
 
-        private func getOwnerDeck(user: Principal, deckId: DeckId, ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket>): ProtectedDeckBucket {
+        private func getOwnerDeck(user: UserId, deckId: DeckId, ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket>): ProtectedDeckBucket {
             let ownerDeck: ?OwnerDeckBucket = ownerDecks.get(deckId);
 
             switch ownerDeck {
@@ -160,10 +160,10 @@ module {
             };
         };
 
-        public func preupgrade(): HashMap.HashMap<Principal, [(DeckId, OwnerDeckBucket)]> {
-            let entries : HashMap.HashMap<Principal, [(DeckId, OwnerDeckBucket)]> = HashMap.HashMap<Principal, [(DeckId, OwnerDeckBucket)]>(10, Utils.isPrincipalEqual, Principal.hash);
+        public func preupgrade(): HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]> {
+            let entries : HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]> = HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]>(10, Utils.isPrincipalEqual, Principal.hash);
 
-            for ((key: Principal, value: HashMap.HashMap<DeckId, OwnerDeckBucket>) in decks.entries()) {
+            for ((key: UserId, value: HashMap.HashMap<DeckId, OwnerDeckBucket>) in decks.entries()) {
                 let ownerDecks : [(DeckId, OwnerDeckBucket)] = Iter.toArray<(DeckId, OwnerDeckBucket)>(value.entries());
                 entries.put(key, ownerDecks);
             };
@@ -171,8 +171,8 @@ module {
             return entries;
         };
 
-        public func postupgrade(entries: [(Principal, [(DeckId, OwnerDeckBucket)])]) {
-            for ((key: Principal, value: [(DeckId, OwnerDeckBucket)]) in entries.vals()) {
+        public func postupgrade(entries: [(UserId, [(DeckId, OwnerDeckBucket)])]) {
+            for ((key: UserId, value: [(DeckId, OwnerDeckBucket)]) in entries.vals()) {
                 let ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket> = HashMap.fromIter<DeckId, OwnerDeckBucket>(Iter.fromArray<(DeckId, OwnerDeckBucket)>(value), 10, Text.equal, Text.hash);
 
                 decks.put(key, ownerDecks);

@@ -9,7 +9,7 @@ import Utils "../common/utils";
 
 // import Slides "canister:slides";
 
-actor class DeckBucket() {
+actor class DeckBucket(owner: Types.UserId) {
 
   type UserId = Types.UserId;
   type DeckId = Types.DeckId;
@@ -17,7 +17,6 @@ actor class DeckBucket() {
 
   type Deck = DeckDataTypes.Deck;
 
-  var owner: ?UserId = null;
   var deck: ?Deck = null;
 
   /**
@@ -25,13 +24,8 @@ actor class DeckBucket() {
    */
 
   public shared query({ caller }) func get() : async Deck {
-    switch owner {
-        case (?owner) {
-            if (Utils.isPrincipalNotEqual(caller, owner)) {
-                throw Error.reject("User does not have the permission to get the deck.");
-            };
-        };
-        case null {};
+    if (Utils.isPrincipalNotEqual(caller, owner)) {
+        throw Error.reject("User does not have the permission to get the deck.");
     };
 
     switch (deck) {
@@ -45,27 +39,23 @@ actor class DeckBucket() {
   };
 
   public shared({ caller }) func set(newDeck: Deck) : async () {
-    switch owner {
-        case (?owner) {
-            if (Utils.isPrincipalNotEqual(caller, owner)) {
-                throw Error.reject("User does not have the permission to set the deck.");
-            };
-        };
-        case null {
-            owner := ?caller;
-        };
+    if (Utils.isPrincipalNotEqual(caller, owner)) {
+        throw Error.reject("User does not have the permission to set the deck.");
     };
 
     deck := ?newDeck;
   };
 
   public shared({ caller }) func del(slides: Bool) : async (Bool) {
+    if (Utils.isPrincipalNotEqual(caller, owner)) {
+        throw Error.reject("User does not have the permission to delete the deck.");
+    };
+
     await deleteSlides(caller);
 
     let exists: Bool = Option.isSome(deck);
     if (exists) {
         deck := null;
-        owner := null;
     };
 
     return exists;
@@ -74,15 +64,6 @@ actor class DeckBucket() {
   };
 
   private func deleteSlides(user: Principal): async () {
-    switch owner {
-        case (?owner) {
-            if (Utils.isPrincipalNotEqual(user, owner)) {
-                throw Error.reject("User does not have the permission to delete the deck.");
-            };
-        };
-        case null {};
-    };
-
     switch (deck) {
         case (?deck) {
             let slides: ?[SlideId] = deck.data.slides;
@@ -90,7 +71,6 @@ actor class DeckBucket() {
             switch (slides) {
                 case (?slides) {
                     for ((slideId: Text) in slides.vals()) {
-                        // TODO: reactivate delete slide
                         // let slideExists: Bool = await Slides.delAdmin(user, slideId);
                     };
                 };
