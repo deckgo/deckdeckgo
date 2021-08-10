@@ -25,7 +25,9 @@ actor Deck {
     private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
 
     public shared({ caller }) func init(deckId: DeckId): async (DeckBucketId) {
-        let ({error; bucketId}): ProtectedDeckBucket = await store.init(caller, deckId);
+        let self: Principal = Principal.fromActor(Deck);
+
+        let ({error; bucketId}): ProtectedDeckBucket = await store.init(self, caller, deckId);
 
         switch (error) {
             case (?error) {

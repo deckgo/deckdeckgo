@@ -12,6 +12,7 @@ import Types "../common/types";
 import DeckBucketTypes "../deck/deck.types";
 
 import Utils "../common/utils";
+import IC "../common/ic";
 
 import DeckBucket "../deck/deck";
 
@@ -30,7 +31,9 @@ module {
     public class Store() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        public func init(user: UserId, deckId: DeckId): async (ProtectedDeckBucket) {
+        let ic : IC.Self = actor "aaaaa-aa";
+
+        public func init(manager: Principal, user: UserId, deckId: DeckId): async (ProtectedDeckBucket) {
             let deckBucket: ProtectedDeckBucket = getDeck(user, deckId);
 
             switch (deckBucket.error) {
@@ -43,7 +46,7 @@ module {
                             return deckBucket;
                         };
                         case null {
-                            let b: DeckBucket = await initNewBucket(user);
+                            let b: DeckBucket = await initNewBucket(manager, user);
 
                             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
@@ -74,9 +77,20 @@ module {
             };
         };
 
-        private func initNewBucket(user: UserId): async (DeckBucket) {
+        private func initNewBucket(manager: Principal, user: UserId): async (DeckBucket) {
             Cycles.add(1_000_000_000_000);
             let b: DeckBucket = await DeckBucket.DeckBucket(user);
+
+            let canisterId: Principal = await b.id();
+
+            let controllers: ?[Principal] = ?[user, manager];
+
+            await ic.update_settings(({canister_id = canisterId; settings = {
+                controllers = controllers;
+                freezing_threshold = null;
+                memory_allocation = null;
+                compute_allocation = null;
+            }}));
 
             return b;
         };
