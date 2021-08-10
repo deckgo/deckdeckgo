@@ -77,6 +77,8 @@ actor Deck {
         };
     };
 
+    // TODO: inter-canister call secure caller === user canister
+
     public func entriesAdmin(user: Principal) : async [DeckBucketId] {
         let ({error; buckets}): ProtectedDeckBuckets = store.getDecks(user);
 
