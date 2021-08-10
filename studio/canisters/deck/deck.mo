@@ -59,11 +59,32 @@ actor class DeckBucket(owner: Types.UserId) = this {
     deck := ?newDeck;
   };
 
+  // TODO: do we need to delete or destroy canister is enough?
+
   public shared({ caller }) func del() : async (Bool) {
     if (Utils.isPrincipalNotEqual(caller, owner)) {
         throw Error.reject("User does not have the permission to delete the deck.");
     };
 
+    let exists: Bool = delete();
+
+    return exists;
+  };
+
+  // TODO: only callable from user canister
+  // TODO: if we have this security then we probably do not need to check the user as parameter
+
+  public shared({ caller }) func delAdmin(user: UserId) : async (Bool) {
+    if (Utils.isPrincipalNotEqual(user, owner)) {
+        throw Error.reject("User does not match the owner of the deck to delete.");
+    };
+
+    let exists: Bool = delete();
+
+    return exists;
+  };
+
+  private func delete(): Bool {
     slides := HashMap.fromIter<SlideId, Slide>([].vals(), 10, Text.equal, Text.hash);
 
     let exists: Bool = Option.isSome(deck);
@@ -72,8 +93,6 @@ actor class DeckBucket(owner: Types.UserId) = this {
     };
 
     return exists;
-
-    // TODO: what to do more to destroy?
   };
 
   /**
