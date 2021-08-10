@@ -79,7 +79,7 @@ export class SlideIcService implements SlideService {
   }
 
   // @Override
-  get(deckId: string, slideId: string): Promise<Slide> {
+  async get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
 
@@ -88,25 +88,29 @@ export class SlideIcService implements SlideService {
         return;
       }
 
-      const decksActor: DecskActor = await createDecksActor({identity});
+      try {
+        const decksActor: DecskActor = await createDecksActor({identity});
 
-      const bucket: Principal = await decksActor.init(deckId);
+        const bucket: Principal = await decksActor.init(deckId);
 
-      const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
+        const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
-      const slide: SlideIc = await deckBucket.getSlide(slideId);
+        const slide: SlideIc = await deckBucket.getSlide(slideId);
 
-      resolve({
-        id: slideId,
-        data: {
-          content: CanisterUtils.fromNullable<string>(slide.data.content),
-          template: slide.data.template,
-          scope: CanisterUtils.fromNullable<SlideScope>(slide.data.scope as [] | [SlideScope]),
-          attributes: CanisterUtils.fromAttributes(slide.data.attributes),
-          created_at: CanisterUtils.fromNullableTimestamp(slide.data.created_at),
-          updated_at: CanisterUtils.fromNullableTimestamp(slide.data.updated_at)
-        }
-      });
+        resolve({
+          id: slideId,
+          data: {
+            content: CanisterUtils.fromNullable<string>(slide.data.content),
+            template: slide.data.template,
+            scope: CanisterUtils.fromNullable<SlideScope>(slide.data.scope as [] | [SlideScope]),
+            attributes: CanisterUtils.fromAttributes(slide.data.attributes),
+            created_at: CanisterUtils.fromNullableTimestamp(slide.data.created_at),
+            updated_at: CanisterUtils.fromNullableTimestamp(slide.data.updated_at)
+          }
+        });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 }
