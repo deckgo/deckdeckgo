@@ -11,7 +11,7 @@ import DeckBucketTypes "../deck/deck.types";
 
 import DecksStore "./decks.store";
 
-actor Deck {
+actor Decks {
     type DeckId = Types.DeckId;
 
     type OwnerDeckBucket = DeckBucketTypes.OwnerDeckBucket;
@@ -25,7 +25,7 @@ actor Deck {
     private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
 
     public shared({ caller }) func init(deckId: DeckId): async (DeckBucketId) {
-        let self: Principal = Principal.fromActor(Deck);
+        let self: Principal = Principal.fromActor(Decks);
 
         let ({error; bucketId}): ProtectedDeckBucket = await store.init(self, caller, deckId);
 
