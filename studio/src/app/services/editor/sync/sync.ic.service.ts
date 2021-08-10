@@ -5,10 +5,10 @@ import syncStore from '../../../stores/sync.store';
 
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync';
 
-import {_SERVICE as DeckActor} from '../../../canisters/decks/decks.did';
-import {_SERVICE as SlideActor} from '../../../canisters/slides/slides.did';
+import {_SERVICE as DecskActor} from '../../../canisters/decks/decks.did';
 
 import {internetComputer} from '../../../utils/core/environment.utils';
+import {createDecksActor} from '../../../utils/core/ic.deck.utils';
 
 import {SyncService} from './sync.service';
 import {DeckIcService} from '../../data/deck/deck.ic.service';
@@ -16,7 +16,7 @@ import {SlideIcService} from '../../data/slide/slide.ic.service';
 import {AuthFactoryService} from '../../auth/auth.factory.service';
 import {AuthIcService} from '../../auth/auth.ic.service';
 
-// TODO: can we move this in a web worker? the IC SDK is compatible?
+// TODO: can we move this in a web worker? the IC SDK is compatible? => No with agent-js, manually probably
 
 export class SyncIcService extends SyncService {
   private deckIcService: DeckIcService;
@@ -60,11 +60,13 @@ export class SyncIcService extends SyncService {
 
       const {updateDecks, updateSlides, deleteSlides} = syncData;
 
-      await this.uploadDecks({updateDecks, identity});
+      const decksActor: DecskActor = await createDecksActor({identity});
 
-      await this.uploadSlides({updateSlides, identity});
+      await this.uploadDecks({updateDecks, identity, decksActor});
 
-      await this.deleteSlides({deleteSlides, identity});
+      await this.uploadSlides({updateSlides, identity, decksActor});
+
+      await this.deleteSlides({deleteSlides, identity, decksActor});
 
       // TODO: handle delete decks here?
 
@@ -75,36 +77,34 @@ export class SyncIcService extends SyncService {
     }
   }
 
-  private async uploadDecks({updateDecks, identity}: {updateDecks: SyncDataDeck[] | undefined; identity: Identity}) {
+  private async uploadDecks({updateDecks, identity, decksActor}: {updateDecks: SyncDataDeck[] | undefined; identity: Identity; decksActor: DecskActor}) {
     if (!updateDecks || updateDecks.length <= 0) {
       return;
     }
 
-    const deckActor: DeckActor = await this.deckIcService.createActor({identity});
-
-    const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => this.deckIcService.uploadDeck({deck, deckActor}));
+    const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => this.deckIcService.uploadDeck({deck, decksActor, identity}));
     await Promise.all(promises);
   }
 
-  private async uploadSlides({updateSlides, identity}: {updateSlides: SyncDataSlide[] | undefined; identity: Identity}) {
+  private async uploadSlides({updateSlides, identity, decksActor}: {updateSlides: SyncDataSlide[] | undefined; identity: Identity; decksActor: DecskActor}) {
     if (!updateSlides || updateSlides.length <= 0) {
       return;
     }
 
-    const slideActor: SlideActor = await this.slideIcService.createActor({identity});
-
-    const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) => this.slideIcService.uploadSlide({slide, deckId, slideActor}));
+    const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) =>
+      this.slideIcService.uploadSlide({slide, deckId, decksActor, identity})
+    );
     await Promise.all(promises);
   }
 
-  private async deleteSlides({deleteSlides, identity}: {deleteSlides: SyncDataSlide[] | undefined; identity: Identity}) {
+  private async deleteSlides({deleteSlides, identity, decksActor}: {deleteSlides: SyncDataSlide[] | undefined; identity: Identity; decksActor: DecskActor}) {
     if (!deleteSlides || deleteSlides.length <= 0) {
       return;
     }
 
-    const slideActor: SlideActor = await this.slideIcService.createActor({identity});
-
-    const promises: Promise<void>[] = deleteSlides.map(({slideId}: SyncDataSlide) => this.slideIcService.deleteSlide({slideId, slideActor}));
+    const promises: Promise<void>[] = deleteSlides.map(({deckId, slideId}: SyncDataSlide) =>
+      this.slideIcService.deleteSlide({slideId, deckId, identity, decksActor})
+    );
     await Promise.all(promises);
   }
 }

@@ -6,8 +6,9 @@ import Error "mo:base/Error";
 
 import Types "../common/types";
 import UsersTypes "./users.types";
+import DeckBucketTypes "../deck/deck.types";
+
 import UsersStore "./users.store";
-import DecksTypes "../decks/decks.types";
 
 import Decks "canister:decks";
 
@@ -18,9 +19,7 @@ actor User {
     type ProtectedUser = UsersTypes.ProtectedUser;
     type Username = UsersTypes.Username;
 
-    type Deck = DecksTypes.Deck;
-    type DeckId = Types.DeckId;
-    type DeckData = DecksTypes.DeckData;
+    type DeckBucketId = DeckBucketTypes.DeckBucketId;
 
     var store: UsersStore.Store = UsersStore.Store();
 
@@ -83,10 +82,12 @@ actor User {
     };
 
     private func deleteDecks(user: Principal, userId: UserId): async () {
-        let decks: ([Deck]) = await Decks.entriesAdmin(userId);
+        let decks: ([DeckBucketId]) = await Decks.entriesAdmin(userId);
+        
+        for ((deckBucketId: DeckBucketId) in decks.vals()) {
+            let deckBucket = actor(Principal.toText(deckBucketId)): actor { delAdmin: (user: UserId) -> async Bool };
 
-        for ((deck: Deck) in decks.vals()) {
-            let exists: Bool = await Decks.delAdmin(user, deck.deckId, true);
+            let exists: Bool = await deckBucket.delAdmin(user);
         };
     };
 

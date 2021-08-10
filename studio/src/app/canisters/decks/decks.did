@@ -1,75 +1,8 @@
-type UserSocial = 
- record {
-   custom: opt text;
-   custom_logo_url: opt text;
-   dev: opt text;
-   github: opt text;
-   linkedin: opt text;
-   medium: opt text;
-   twitter: opt text;
- };
-type Time = int;
-type SlideId = text;
-type DeckMetaAuthor = 
- record {
-   name: text;
-   photo_url: opt text;
-   social: opt UserSocial;
- };
-type DeckMeta = 
- record {
-   author: opt DeckMetaAuthor;
-   description: opt text;
-   feed: opt bool;
-   pathname: opt text;
-   published: opt bool;
-   published_at: opt Time;
-   tags: opt vec text;
-   title: text;
-   updated_at: Time;
- };
-type DeckId__1 = text;
 type DeckId = text;
-type DeckGitHubRepo = 
- record {
-   id: text;
-   name: text;
-   nameWithOwner: text;
-   url: text;
- };
-type DeckGitHub = 
- record {
-   publish: bool;
-   repo: opt DeckGitHubRepo;
- };
-type DeckData = 
- record {
-   attributes: opt vec Attribute;
-   background: opt text;
-   created_at: opt Time;
-   footer: opt text;
-   github: opt DeckGitHub;
-   header: opt text;
-   meta: opt DeckMeta;
-   name: text;
-   slides: opt vec SlideId;
-   updated_at: opt Time;
- };
-type Deck = 
- record {
-   data: DeckData;
-   deckId: DeckId;
- };
-type Attribute = 
- record {
-   name: text;
-   value: text;
- };
+type DeckBucketId = principal;
 service : {
-  del: (DeckId__1, bool) -> (bool);
-  delAdmin: (principal, DeckId__1, bool) -> (bool);
-  entries: () -> (vec Deck) query;
-  entriesAdmin: (principal) -> (vec Deck);
-  get: (DeckId__1) -> (Deck) query;
-  set: (Deck) -> ();
+  entries: () -> (vec DeckBucketId) query;
+  entriesAdmin: (principal) -> (vec DeckBucketId);
+  get: (DeckId) -> (DeckBucketId) query;
+  init: (DeckId) -> (DeckBucketId);
 }

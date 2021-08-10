@@ -1,5 +1,6 @@
 import {Actor, HttpAgent, ActorMethod, ActorSubclass, Identity} from '@dfinity/agent';
 import {IDL} from '@dfinity/candid';
+import {Principal} from '@dfinity/principal';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../types/core/environment-config';
@@ -9,7 +10,7 @@ export const createActor = async <T = Record<string, ActorMethod>>({
   idlFactory,
   identity
 }: {
-  canisterId: string;
+  canisterId: string | Principal;
   idlFactory: IDL.InterfaceFactory;
   identity: Identity;
 }): Promise<ActorSubclass<T>> => {

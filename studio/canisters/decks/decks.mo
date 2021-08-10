@@ -2,106 +2,94 @@ import Iter "mo:base/Iter";
 import HashMap "mo:base/HashMap";
 import Principal "mo:base/Principal";
 import Option "mo:base/Option";
+import Cycles "mo:base/ExperimentalCycles";
 
 import Error "mo:base/Error";
 
 import Types "../common/types";
-import DecksTypes "./decks.types";
+import DeckBucketTypes "../deck/deck.types";
+
 import DecksStore "./decks.store";
 
-actor Deck {
+actor Decks {
     type DeckId = Types.DeckId;
-    type Deck = DecksTypes.Deck;
-    type OwnerDeck = DecksTypes.OwnerDeck;
-    type ProtectedDeck = DecksTypes.ProtectedDeck;
-    type ProtectedDecks = DecksTypes.ProtectedDecks;
+
+    type OwnerDeckBucket = DeckBucketTypes.OwnerDeckBucket;
+    type ProtectedDeckBucket = DeckBucketTypes.ProtectedDeckBucket;
+    type ProtectedDeckBuckets = DeckBucketTypes.ProtectedDeckBuckets;
+    type DeckBucketId = DeckBucketTypes.DeckBucketId;
 
     let store: DecksStore.Store = DecksStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, [(DeckId, OwnerDeck)])] = [];
+    private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
 
-    public shared({ caller }) func set(deck: Deck): async() {
-        let error: ?Text = store.setDeck(caller, deck);
+    public shared({ caller }) func init(deckId: DeckId): async (DeckBucketId) {
+        let self: Principal = Principal.fromActor(Decks);
 
-        switch (error) {
-            case (?error) {
-                throw Error.reject(error);
-            };
-            case null {};
-        };
-    };
-
-    public shared query({ caller }) func get(deckId : DeckId) : async Deck {
-        let ({error; deck;}): ProtectedDeck = store.getDeck(caller, deckId);
+        let ({error; bucketId}): ProtectedDeckBucket = await store.init(self, caller, deckId);
 
         switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                switch (deck) {
-                    case (?deck) {
-                        return deck.deck;
+                switch (bucketId) {
+                    case (?bucketId) {
+                        return bucketId;
                     };
                     case null {
-                        throw Error.reject("Deck not found.");
+                        throw Error.reject("Cannot init deck bucket.");
                     };
                 };
             };
         };
     };
 
-    public shared query({ caller }) func entries() : async [Deck] {
-        let ({error; decks}): ProtectedDecks = store.getDecks(caller);
+    public shared query({ caller }) func get(deckId : DeckId) : async DeckBucketId {
+        let ({error; bucketId}): ProtectedDeckBucket = store.getDeck(caller, deckId);
 
         switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                return decks;
+                switch (bucketId) {
+                    case (?bucketId) {
+                        return bucketId;
+                    };
+                    case null {
+                        throw Error.reject("Deck bucket not found.");
+                    };
+                };
             };
         };
     };
 
-    public func entriesAdmin(user: Principal) : async [Deck] {
-        let ({error; decks}): ProtectedDecks = store.getDecks(user);
+    public shared query({ caller }) func entries() : async [DeckBucketId] {
+        let ({error; bucketIds}): ProtectedDeckBuckets = store.getDecks(caller);
 
         switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                return decks;
+                return bucketIds;
             };
         };
     };
 
-    public shared({ caller }) func del(deckId : DeckId, slides: Bool) : async (Bool) {
-        let deck: ProtectedDeck = await store.deleteDeck(caller, deckId, slides);
+    // TODO: inter-canister call secure caller === user canister
 
-        switch (deck.error) {
+    public func entriesAdmin(user: Principal) : async [DeckBucketId] {
+        let ({error; bucketIds}): ProtectedDeckBuckets = store.getDecks(user);
+
+        switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
             case null {
-                let exists: Bool = Option.isSome(deck.deck);
-                return exists;
-            };
-        };
-    };
-
-    public func delAdmin(user: Principal, deckId : DeckId, slides: Bool) : async Bool {
-        let deck: ProtectedDeck = await store.deleteDeck(user, deckId, slides);
-
-        switch (deck.error) {
-            case (?error) {
-                throw Error.reject(error);
-            };
-            case null {
-                let exists: Bool = Option.isSome(deck.deck);
-                return exists;
+                return bucketIds;
             };
         };
     };
