@@ -65,11 +65,17 @@ export class SlideIcService implements SlideService {
       return;
     }
 
+    console.log('Slide IC about to DEL');
+    const t0 = performance.now();
+
     const bucket: Principal = await decksActor.init(deckId);
 
     const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
     await deckBucket.delSlide(slideId);
+
+    const t1 = performance.now();
+    console.log('Slide IC DEL done', t1 - t0);
   }
 
   // @Override
