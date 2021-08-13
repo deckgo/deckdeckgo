@@ -1,20 +1,11 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckAttributes, DeckData, DeckGitHub, DeckGitHubRepo, DeckMeta, DeckMetaAuthor} from '../../../models/data/deck';
-import {UserSocial} from '../../../models/data/user';
+import {Deck, DeckData} from '../../../models/data/deck';
 
 import {_SERVICE as DecksActor} from '../../../canisters/decks/decks.did';
 
-import {
-  _SERVICE as DeckBucketActor,
-  Deck as DeckIc,
-  DeckGitHub as DeckGitHubIc,
-  DeckGitHubRepo as DeckGitHubRepoIc,
-  DeckMeta as DeckMetaIc,
-  DeckMetaAuthor as DeckMetaAuthorIc,
-  UserSocial as UserSocialIc
-} from '../../../canisters/deck/deck.did';
+import {_SERVICE as DeckBucketActor, Deck as DeckIc} from '../../../canisters/deck/deck.did';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createDeckBucketActor, createDecksActor} from '../../../utils/core/ic.deck.utils';
@@ -51,18 +42,9 @@ export class DeckIcService implements DeckService {
 
     await deckBucket.set({
       deckId: deck.id,
-      data: {
-        name: deck.data.name,
-        attributes: CanisterUtils.toAttributes(deck.data.attributes),
-        background: CanisterUtils.toNullable<string>(deck.data.background),
-        header: CanisterUtils.toNullable<string>(deck.data.header),
-        footer: CanisterUtils.toNullable<string>(deck.data.footer),
-        slides: CanisterUtils.toNullable<string[]>(deck.data.slides),
-        meta: CanisterUtils.toNullable<DeckMetaIc>(this.toDeckMeta(deck.data)),
-        github: CanisterUtils.toNullable<DeckGitHubIc>(this.toDeckGitHub(deck.data)),
-        created_at: CanisterUtils.toNullableTimestamp(deck.data.created_at as Date | undefined),
-        updated_at: CanisterUtils.toNullableTimestamp(deck.data.updated_at as Date | undefined)
-      }
+      data: await CanisterUtils.toArray<DeckData>(deck.data),
+      created_at: CanisterUtils.toTimestamp((deck.data.created_at as Date) || new Date()),
+      updated_at: CanisterUtils.toTimestamp((deck.data.updated_at as Date) || new Date())
     });
 
     const t1 = performance.now();
@@ -88,19 +70,31 @@ export class DeckIcService implements DeckService {
 
     const buckets: Principal[] = await decksActor.entries();
 
-    const promises: Promise<DeckIc>[] = buckets.map((bucket: Principal) => this.getDeckIc({bucket, identity}));
+    console.log('Deck IC entries done.', buckets);
 
-    const decks: DeckIc[] = await Promise.all(promises);
+    const promises: Promise<DeckIc | undefined>[] = buckets.map((bucket: Principal) => this.getDeckIc({bucket, identity}));
 
-    console.log('Deck IC entries done.', decks);
+    const decksIc: DeckIc[] = await Promise.all(promises);
 
-    return decks?.map((deck: DeckIc) => this.fromDeck({deck, identity}));
+    console.log('Deck IC decks done.', decksIc);
+
+    const decksPromises: Promise<Deck>[] = decksIc
+      ?.filter((deck: DeckIc | undefined) => deck !== undefined)
+      .map((deck: DeckIc) => this.fromDeck({deck, identity}));
+    const decks: Deck[] = await Promise.all(decksPromises);
+
+    return decks;
   }
 
-  private async getDeckIc({bucket, identity}: {bucket: Principal; identity: Identity}): Promise<DeckIc> {
-    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
+  private async getDeckIc({bucket, identity}: {bucket: Principal; identity: Identity}): Promise<DeckIc | undefined> {
+    try {
+      const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
-    return deckBucket.get();
+      return await deckBucket.get();
+    } catch (err) {
+      console.error('Deck cannot be found.', bucket);
+      return undefined;
+    }
   }
 
   // @Override
@@ -128,122 +122,17 @@ export class DeckIcService implements DeckService {
     console.log('Deck IC delete');
   }
 
-  private fromDeck({deck, identity}: {deck: DeckIc; identity: Identity}): Deck {
+  private async fromDeck({deck, identity}: {deck: DeckIc; identity: Identity}): Promise<Deck> {
+    const data: DeckData = await CanisterUtils.fromArray<DeckData>(deck.data);
+
     return {
       id: deck.deckId,
       data: {
-        name: deck.data.name,
+        ...data,
         owner_id: identity.getPrincipal().toText(),
-        attributes: CanisterUtils.fromAttributes<DeckAttributes>(deck.data.attributes),
-        background: deck.data.background?.[0],
-        header: deck.data.header?.[0],
-        footer: deck.data.footer?.[0],
-        slides: deck.data.slides?.[0],
-        meta: this.fromDeckMeta(deck.data.meta),
-        github: this.fromDeckGitHub(deck.data.github),
-        created_at: CanisterUtils.fromNullableTimestamp(deck.data.created_at),
-        updated_at: CanisterUtils.fromNullableTimestamp(deck.data.updated_at)
+        created_at: CanisterUtils.fromTimestamp(deck.created_at),
+        updated_at: CanisterUtils.fromTimestamp(deck.updated_at)
       }
-    };
-  }
-
-  private toDeckMeta({meta}: DeckData): DeckMetaIc | undefined {
-    if (!meta) {
-      return undefined;
-    }
-
-    const {title, feed, tags, pathname, description, published, published_at, updated_at, author} = meta;
-
-    const {name: authorName, photo_url} = author as DeckMetaAuthor;
-
-    const metaAuthor: DeckMetaAuthorIc | undefined = author
-      ? {
-          name: authorName,
-          photo_url: CanisterUtils.toNullable<string>(photo_url),
-          social: CanisterUtils.toUserSocial<UserSocialIc>((author as DeckMetaAuthor).social as UserSocial)
-        }
-      : undefined;
-
-    return {
-      title,
-      feed: CanisterUtils.toNullable<boolean>(feed),
-      tags: CanisterUtils.toNullable<string[]>(tags as string[]),
-      pathname: CanisterUtils.toNullable<string>(pathname),
-      description: CanisterUtils.toNullable<string>(description as string),
-      author: CanisterUtils.toNullable<DeckMetaAuthorIc>(metaAuthor),
-      published: CanisterUtils.toNullable<boolean>(published),
-      published_at: CanisterUtils.toNullableTimestamp(published_at as Date | undefined),
-      updated_at: CanisterUtils.toTimestamp(updated_at as Date | undefined)
-    };
-  }
-
-  private toDeckGitHub({github}: DeckData): DeckGitHubIc | undefined {
-    if (!github) {
-      return undefined;
-    }
-
-    const {repo, publish} = github;
-
-    return {
-      repo: CanisterUtils.toNullable<DeckGitHubRepoIc>(
-        repo
-          ? {
-              id: repo.id,
-              url: repo.url,
-              name: repo.name,
-              nameWithOwner: repo.nameWithOwner
-            }
-          : undefined
-      ),
-      publish
-    };
-  }
-
-  private fromDeckGitHub(github: [] | [DeckGitHubIc]): DeckGitHub | undefined {
-    if (!github || github.length <= 0) {
-      return undefined;
-    }
-
-    const repo: DeckGitHubRepoIc | undefined = github[0].repo?.[0];
-
-    const resultRepo: DeckGitHubRepo = Object.keys(repo || {}).reduce((acc: DeckGitHubRepo, key: string) => {
-      const value = CanisterUtils.fromValue(github[0].repo[0][key]);
-      if (value) {
-        acc[key] = value;
-      }
-      return acc;
-    }, {} as DeckGitHubRepo);
-
-    return {
-      publish: github[0].publish,
-      repo: Object.keys(resultRepo).length ? resultRepo : undefined
-    };
-  }
-
-  private fromDeckMeta(meta: [] | [DeckMetaIc]): DeckMeta | undefined {
-    if (!meta || meta.length <= 0) {
-      return undefined;
-    }
-
-    const author: DeckMetaAuthor | undefined =
-      meta[0].author?.length > 0
-        ? {
-            name: meta[0].author[0].name,
-            photo_url: CanisterUtils.fromNullable<string>(meta[0].author[0].photo_url),
-            social: CanisterUtils.fromUserSocial<UserSocialIc>(meta[0].author[0].social)
-          }
-        : undefined;
-
-    return {
-      title: meta[0].title,
-      feed: CanisterUtils.fromNullable<boolean>(meta[0].feed),
-      tags: CanisterUtils.fromNullable<string[]>(meta[0].tags),
-      pathname: CanisterUtils.fromNullable<string>(meta[0].pathname),
-      description: CanisterUtils.fromNullable<string>(meta[0].description),
-      author,
-      published: CanisterUtils.fromNullable<boolean>(meta[0].published),
-      published_at: CanisterUtils.fromNullableTimestamp(meta[0].published_at),
-      updated_at: CanisterUtils.fromTimestamp(meta[0].updated_at)
     };
   }
 }

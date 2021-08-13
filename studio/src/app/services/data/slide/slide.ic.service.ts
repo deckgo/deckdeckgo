@@ -4,7 +4,7 @@ import {Principal} from '@dfinity/principal';
 import {_SERVICE as DecskActor, _SERVICE as DecksActor} from '../../../canisters/decks/decks.did';
 import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../../canisters/deck/deck.did';
 
-import {Slide, SlideScope} from '../../../models/data/slide';
+import {Slide, SlideData} from '../../../models/data/slide';
 import {createDeckBucketActor, createDecksActor} from '../../../utils/core/ic.deck.utils';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
@@ -41,14 +41,9 @@ export class SlideIcService implements SlideService {
 
     await deckBucket.setSlide({
       slideId: slide.id,
-      data: {
-        content: CanisterUtils.toNullable<string>(slide.data.content),
-        template: slide.data.template,
-        scope: CanisterUtils.toNullable<string>(slide.data.scope),
-        attributes: CanisterUtils.toAttributes(slide.data.attributes),
-        created_at: CanisterUtils.toNullableTimestamp(slide.data.created_at as Date | undefined),
-        updated_at: CanisterUtils.toNullableTimestamp(slide.data.updated_at as Date | undefined)
-      }
+      data: await CanisterUtils.toArray<SlideData>(slide.data),
+      created_at: CanisterUtils.toTimestamp((slide.data.created_at as Date) || new Date()),
+      updated_at: CanisterUtils.toTimestamp((slide.data.updated_at as Date) || new Date())
     });
 
     const t1 = performance.now();
@@ -97,15 +92,14 @@ export class SlideIcService implements SlideService {
 
         const slide: SlideIc = await deckBucket.getSlide(slideId);
 
+        const data: SlideData = await CanisterUtils.fromArray<SlideData>(slide.data);
+
         resolve({
           id: slideId,
           data: {
-            content: CanisterUtils.fromNullable<string>(slide.data.content),
-            template: slide.data.template,
-            scope: CanisterUtils.fromNullable<SlideScope>(slide.data.scope as [] | [SlideScope]),
-            attributes: CanisterUtils.fromAttributes(slide.data.attributes),
-            created_at: CanisterUtils.fromNullableTimestamp(slide.data.created_at),
-            updated_at: CanisterUtils.fromNullableTimestamp(slide.data.updated_at)
+            ...data,
+            created_at: CanisterUtils.fromTimestamp(slide.created_at),
+            updated_at: CanisterUtils.fromTimestamp(slide.updated_at)
           }
         });
       } catch (err) {

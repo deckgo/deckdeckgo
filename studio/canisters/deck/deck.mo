@@ -3,6 +3,7 @@ import Principal "mo:base/Principal";
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
+import Blob "mo:base/Blob";
 
 import Error "mo:base/Error";
 

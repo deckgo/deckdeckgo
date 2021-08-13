@@ -1,8 +1,6 @@
-import {SlideAttributes} from '../../models/data/slide';
-import {DeckAttributes} from '../../models/data/deck';
 import {UserSocial} from '../../models/data/user';
 
-import {Attribute, Time} from '../../canisters/deck/deck.did';
+import {Time} from '../../canisters/deck/deck.did';
 
 import {toDate} from '../core/date.utils';
 
@@ -32,43 +30,6 @@ export class CanisterUtils {
 
   static fromNullableTimestamp(value?: [] | [Time]): Date | undefined {
     return !isNaN(parseInt(`${value?.[0]}`)) ? new Date(`${value[0]}`) : undefined;
-  }
-
-  static toAttributes(attributes: SlideAttributes | DeckAttributes): [Attribute[]] | [] {
-    if (!attributes) {
-      return [];
-    }
-
-    const keys: string[] = Object.keys(attributes);
-
-    if (!keys || keys.length <= 0) {
-      return [];
-    }
-
-    const results: Attribute[] = keys
-      .filter((key: string) => attributes[key] !== null && attributes[key] !== undefined && attributes[key] !== '')
-      .map((key: string) => ({
-        name: key,
-        value: `${attributes[key]}`
-      }));
-
-    return results?.length > 0 ? [results] : [];
-  }
-
-  static fromAttributes<T>(attributes: [] | [Attribute[]]): T | undefined {
-    if (!attributes) {
-      return undefined;
-    }
-
-    const result: T = (attributes?.[0] || []).reduce((acc: T, {name, value}: Attribute) => {
-      const parsed = this.fromValue(value);
-      if (parsed) {
-        acc[name] = parsed;
-      }
-      return acc;
-    }, {} as T);
-
-    return Object.keys(result).length ? result : undefined;
   }
 
   // Try to parse to number or boolean from string. It it fails, as for a string, use the value as it.
@@ -110,5 +71,15 @@ export class CanisterUtils {
         medium: CanisterUtils.toNullable<string>(medium)
       } as unknown as T
     ];
+  }
+
+  static async toArray<T>(data: T): Promise<Array<number>> {
+    const blob: Blob = new Blob([JSON.stringify(data)], {type: 'application/json; charset=utf-8'});
+    return [...new Uint8Array(await blob.arrayBuffer())];
+  }
+
+  static async fromArray<T>(data: Array<number>): Promise<T> {
+    const blob: Blob = new Blob([new Uint8Array(data)], {type: 'application/json; charset=utf-8'});
+    return JSON.parse(await blob.text());
   }
 }

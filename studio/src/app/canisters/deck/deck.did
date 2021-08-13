@@ -1,101 +1,32 @@
-type UserSocial = 
- record {
-   custom: opt text;
-   custom_logo_url: opt text;
-   dev: opt text;
-   github: opt text;
-   linkedin: opt text;
-   medium: opt text;
-   twitter: opt text;
- };
 type UserId__1 = principal;
 type UserId = principal;
 type Time = int;
-type SlideId__2 = text;
 type SlideId__1 = text;
 type SlideId = text;
-type SlideData = 
- record {
-   attributes: opt vec Attribute;
-   content: opt text;
-   created_at: opt Time;
-   scope: opt text;
-   template: text;
-   updated_at: opt Time;
- };
 type Slide = 
  record {
-   data: SlideData;
+   created_at: Time;
+   data: blob;
    slideId: SlideId;
- };
-type DeckMetaAuthor = 
- record {
-   name: text;
-   photo_url: opt text;
-   social: opt UserSocial;
- };
-type DeckMeta = 
- record {
-   author: opt DeckMetaAuthor;
-   description: opt text;
-   feed: opt bool;
-   pathname: opt text;
-   published: opt bool;
-   published_at: opt Time;
-   tags: opt vec text;
-   title: text;
    updated_at: Time;
  };
 type DeckId = text;
-type DeckGitHubRepo = 
- record {
-   id: text;
-   name: text;
-   nameWithOwner: text;
-   url: text;
- };
-type DeckGitHub = 
- record {
-   publish: bool;
-   repo: opt DeckGitHubRepo;
- };
-type DeckData = 
- record {
-   attributes: opt vec Attribute__1;
-   background: opt text;
-   created_at: opt Time;
-   footer: opt text;
-   github: opt DeckGitHub;
-   header: opt text;
-   meta: opt DeckMeta;
-   name: text;
-   slides: opt vec SlideId__1;
-   updated_at: opt Time;
- };
 type DeckBucket = 
  service {
    del: () -> (bool);
    delAdmin: (UserId__1) -> (bool);
-   delSlide: (SlideId__2) -> (bool);
+   delSlide: (SlideId__1) -> (bool);
    get: () -> (Deck) query;
-   getSlide: (SlideId__2) -> (Slide) query;
+   getSlide: (SlideId__1) -> (Slide) query;
    id: () -> (principal) query;
    set: (Deck) -> ();
    setSlide: (Slide) -> ();
  };
 type Deck = 
  record {
-   data: DeckData;
+   created_at: Time;
+   data: blob;
    deckId: DeckId;
- };
-type Attribute__1 = 
- record {
-   name: text;
-   value: text;
- };
-type Attribute = 
- record {
-   name: text;
-   value: text;
+   updated_at: Time;
  };
 service : (UserId) -> DeckBucket
