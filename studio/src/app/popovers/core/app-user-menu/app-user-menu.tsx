@@ -1,7 +1,10 @@
-import {Component, Element, h} from '@stencil/core';
+import {Component, Element, Fragment, h} from '@stencil/core';
 
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import i18n from '../../../stores/i18n.store';
+import apiUserStore from '../../../stores/api.user.store';
+import userStore from '../../../stores/user.store';
+import authStore from '../../../stores/auth.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -40,7 +43,27 @@ export class AppUserMenu {
   }
 
   render() {
-    return [<app-user-info></app-user-info>, <hr />, this.renderActions()];
+    return [this.renderUserInfo(), this.renderActions()];
+  }
+
+  private renderUserInfo() {
+    if (authStore.state.anonymous) {
+      return undefined;
+    }
+
+    const username: string | undefined = apiUserStore.state.apiUser?.username || userStore.state.user?.data?.username;
+
+    if (!userStore.state.name && !username) {
+      return undefined;
+    }
+
+    return (
+      <Fragment>
+        <app-user-info></app-user-info>
+
+        <hr />
+      </Fragment>
+    );
   }
 
   private renderActions() {
