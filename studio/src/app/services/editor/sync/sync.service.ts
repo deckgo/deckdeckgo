@@ -10,7 +10,7 @@ export abstract class SyncService {
   protected async clean({syncedAt}: SyncData) {
     await this.cleanPending(syncedAt);
 
-    await this.updateSyncState();
+    await this.initSyncState();
   }
 
   protected isSyncPending = (): boolean => syncStore.state.sync === 'pending';
@@ -36,7 +36,7 @@ export abstract class SyncService {
     );
   }
 
-  private async updateSyncState() {
+  async initSyncState() {
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {

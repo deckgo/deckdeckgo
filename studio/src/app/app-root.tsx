@@ -12,6 +12,8 @@ import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
 import {AuthFactoryService} from './services/auth/auth.factory.service';
+import {SyncService} from './services/editor/sync/sync.service';
+import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
 
 import {toastController} from './utils/ionic/ionic.overlay';
 
@@ -28,6 +30,7 @@ export class AppRoot {
   private readonly colorService: ColorService;
   private readonly settingsService: SettingsService;
   private readonly langService: LangService;
+  private readonly syncService: SyncService;
 
   @State()
   private loading: boolean = true;
@@ -44,6 +47,7 @@ export class AppRoot {
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
     this.langService = LangService.getInstance();
+    this.syncService = SyncFactoryService.getInstance();
   }
 
   async componentWillLoad() {
@@ -53,7 +57,8 @@ export class AppRoot {
         this.themeService.initDarkModePreference(),
         this.colorService.init(),
         this.settingsService.init(),
-        this.langService.init()
+        this.langService.init(),
+        this.syncService.initSyncState()
       ];
 
       await Promise.all(promises);
