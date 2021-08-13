@@ -105,6 +105,7 @@ export class AppDashboard {
       // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
       await this.initWatchForClonedDecks();
     } catch (err) {
+      console.log(err);
       errorStore.state.error = 'Cannot init your dashboard.';
     }
 

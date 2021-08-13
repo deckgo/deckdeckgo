@@ -7,9 +7,4 @@ module {
     public type SlideId = Text;
     public type UserId = Principal;
 
-    public type Attribute = {
-        name: Text;
-        value: Text;
-    };
-
 }
