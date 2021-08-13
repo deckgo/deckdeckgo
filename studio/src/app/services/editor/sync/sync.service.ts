@@ -114,7 +114,7 @@ export class SyncService {
 
       await this.cleanPending(syncedAt);
 
-      await this.updateSyncState();
+      await this.initSyncState();
     } catch (err) {
       syncStore.state.sync = 'error';
       console.error(err);
@@ -770,7 +770,7 @@ export class SyncService {
     );
   }
 
-  private async updateSyncState() {
+  async initSyncState() {
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {
