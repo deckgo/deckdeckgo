@@ -116,11 +116,7 @@ export class AppNavigationActions {
 
     return (
       <Fragment>
-        <button
-          class="ion-activatable"
-          onClick={() => this.newDeck()}
-          disabled={disabled}
-          aria-label={i18n.state.tools.new_presentation}>
+        <button class="ion-activatable" onClick={() => this.newDeck()} disabled={disabled} aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/document.svg"></ion-icon>
           <ion-label>{i18n.state.tools.new}</ion-label>
@@ -166,7 +162,7 @@ export class AppNavigationActions {
           <button class="ion-activatable" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu}>
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
-            <ion-label>{userStore.state.name}</ion-label>
+            <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
           </button>
         </Fragment>
       );
@@ -186,7 +182,7 @@ export class AppNavigationActions {
         : syncStore.state.sync === 'in_progress'
         ? i18n.state.tools.cloud_in_progress
         : syncStore.state.sync === 'pending'
-          ? i18n.state.tools.cloud_pending
+        ? i18n.state.tools.cloud_pending
         : i18n.state.tools.cloud_idle;
 
     return (

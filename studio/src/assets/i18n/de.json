@@ -496,6 +496,7 @@
     "cloud_in_progress": "Cloud-Synchronisierung läuft",
     "cloud_idle": "Cloud-Synchronisierung auf dem neuesten Stand",
     "cloud_pending": "Cloud-Synchronisierung fällig",
-    "open": "Öffnen"
+    "open": "Öffnen",
+    "user": "Benutzer*in"
   }
 }

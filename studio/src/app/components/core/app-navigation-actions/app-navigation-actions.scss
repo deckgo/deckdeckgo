@@ -31,7 +31,7 @@ app-navigation-actions {
     position: relative;
     overflow: hidden;
 
-    margin: 0 8px;
+    margin: 0;
     padding: 4px;
     border-radius: 4px;
 
@@ -43,6 +43,10 @@ app-navigation-actions {
     ion-label {
       font-size: var(--font-size-small);
       white-space: nowrap;
+      min-width: 52px;
+      max-width: 52px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
