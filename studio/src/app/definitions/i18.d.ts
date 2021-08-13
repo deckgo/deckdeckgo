@@ -517,6 +517,7 @@ interface I18nTools {
   cloud_idle: string;
   cloud_pending: string;
   open: string;
+  user: string;
 }
 
 interface I18n {

@@ -1,5 +1,13 @@
 app-actions-element {
+  display: block;
+
+  aside {
+    pointer-events: none;
+  }
+
   button {
+    pointer-events: all;
+
     &.hidden {
       display: none;
     }

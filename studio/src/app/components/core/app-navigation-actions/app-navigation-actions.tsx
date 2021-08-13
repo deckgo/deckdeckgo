@@ -161,7 +161,7 @@ export class AppNavigationActions {
           <button class="ion-activatable" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu}>
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
-            <ion-label>{userStore.state.name}</ion-label>
+            <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
           </button>
         </Fragment>
       );

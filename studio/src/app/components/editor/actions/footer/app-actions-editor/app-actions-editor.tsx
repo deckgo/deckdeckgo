@@ -161,6 +161,16 @@ export class AppActionsEditor {
     }
   }
 
+  private async selectDeckOnClick($event: MouseEvent | TouchEvent) {
+    const src: HTMLElement = $event.composedPath()[0] as HTMLElement;
+
+    if (!this.actionsElementRef.isEqualNode(src)) {
+      return;
+    }
+
+    await this.selectDeck();
+  }
+
   render() {
     return (
       <Host
@@ -215,6 +225,7 @@ export class AppActionsEditor {
   private renderEditActions() {
     return (
       <app-actions-element
+        onClick={($event: MouseEvent | TouchEvent) => this.selectDeckOnClick($event)}
         ref={(el) => (this.actionsElementRef = el as HTMLAppActionsElementElement)}
         class={editorStore.state.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
         slideCopy={this.slideCopy}

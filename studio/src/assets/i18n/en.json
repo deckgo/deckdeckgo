@@ -500,6 +500,7 @@
     "cloud_in_progress": "Cloud sync in progress",
     "cloud_idle": "Cloud sync up to date",
     "cloud_pending": "Cloud sync pending",
-    "open": "Open"
+    "open": "Open",
+    "user": "User"
   }
 }
