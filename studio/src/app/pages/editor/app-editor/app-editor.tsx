@@ -1,4 +1,4 @@
-import { Component, Element, h, JSX, Listen, State } from '@stencil/core';
+import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
 import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
@@ -111,6 +111,7 @@ export class AppEditor {
   private actionsEditorRef!: HTMLAppActionsEditorElement;
   private contentRef!: HTMLElement;
   private mainRef!: HTMLElement;
+  private breadCrumbsRef!: HTMLAppBreadcrumbsElement;
 
   private mainResizeObserver: ResizeObserver;
   private slideResizeObserver: ResizeObserver;
@@ -514,6 +515,16 @@ export class AppEditor {
     await this.actionsEditorRef.touch(element);
   }
 
+  private async selectDeck($event: MouseEvent | TouchEvent) {
+    const src: HTMLElement = $event.composedPath()[0] as HTMLElement;
+
+    if (!this.contentRef.isEqualNode(src) && !this.breadCrumbsRef.isEqualNode(src)) {
+      return;
+    }
+
+    await this.actionsEditorRef.selectDeck();
+  }
+
   @Listen('toggleFullScreen', {target: 'window'})
   async onToggleFullScreen() {
     if (!this.deckRef) {
@@ -735,7 +746,7 @@ export class AppEditor {
 
     return [
       <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content class="ion-no-padding">
+      <ion-content class="ion-no-padding" onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
         <div class="grid">
           <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
             <main
@@ -767,7 +778,10 @@ export class AppEditor {
             </main>
           </div>
 
-          <app-breadcrumbs slideNumber={this.activeIndex} onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+          <app-breadcrumbs
+            ref={(el) => (this.breadCrumbsRef = el as HTMLAppBreadcrumbsElement)}
+            slideNumber={this.activeIndex}
+            onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
 
           <app-actions-editor
             ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
