@@ -1,13 +1,23 @@
 import {AuthClient} from '@dfinity/auth-client';
 import {Identity} from '@dfinity/agent';
 
-import navStore, {NavDirection} from '../../stores/nav.store';
-import errorStore from '../../stores/error.store';
-
 import {del} from 'idb-keyval';
 
+import navStore, {NavDirection} from '../../stores/nav.store';
+import errorStore from '../../stores/error.store';
+import authStore from '../../stores/auth.store';
+import userStore from '../../stores/user.store';
+
+import {AuthUser} from '../../models/auth/auth.user';
+import {User} from '../../models/data/user';
+
+import {InternetIdentityAuth} from '../../types/core/ic.identity';
+
+import {internetIdentityAuth} from '../../utils/core/ic.identity.utils';
+
 import {AuthService} from './auth.service';
-import {UserIcService} from '../data/user/user.ic.service';
+
+import {initUserWorker} from '../../workers/user.ic.worker';
 
 export class AuthIcService extends AuthService {
   private authClient: AuthClient | undefined;
@@ -21,7 +31,11 @@ export class AuthIcService extends AuthService {
       return;
     }
 
-    await UserIcService.getInstance().create({identity: this.authClient.getIdentity()});
+    const internetIdentity: InternetIdentityAuth = await internetIdentityAuth();
+
+    const user: User = await initUserWorker({internetIdentity, host: `${window.location}`});
+
+    this.populateUser({user});
   }
 
   // @Override
@@ -54,5 +68,24 @@ export class AuthIcService extends AuthService {
 
   getIdentity(): Identity | undefined {
     return this.authClient?.getIdentity();
+  }
+
+  private populateUser({user}: {user: User}) {
+    const {id, data} = user;
+
+    const {name, email, photo_url} = data;
+
+    authStore.state.authUser = {
+      uid: id,
+      anonymous: false,
+      gitHub: false,
+      name,
+      email,
+      photo_url
+    } as AuthUser;
+
+    userStore.state.user = {
+      ...user
+    };
   }
 }

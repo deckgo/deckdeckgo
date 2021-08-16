@@ -1,6 +1,5 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
-import {DelegationChain, DelegationIdentity, Ed25519KeyIdentity} from '@dfinity/identity';
 
 import {_SERVICE as DecksActor, _SERVICE as DecskActor} from '../canisters/decks/decks.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
@@ -9,18 +8,18 @@ import {Deck, DeckData} from '../models/data/deck';
 import {Slide, SlideData} from '../models/data/slide';
 
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../types/editor/sync';
+import {InternetIdentityAuth} from '../types/core/ic.identity';
 
 import {createDeckBucketActor, createDecksActor} from '../utils/core/ic.deck.utils';
 import {CanisterUtils} from '../utils/editor/canister.utils';
+import {initIdentity} from '../utils/core/ic.identity.utils';
 
 export const uploadWorker = async ({
-  delegationChain,
-  identityKey,
+  internetIdentity: {delegationChain, identityKey},
   syncData,
   host
 }: {
-  identityKey: string | null;
-  delegationChain: string | null;
+  internetIdentity: InternetIdentityAuth;
   syncData: SyncData | undefined;
   host: string;
 }) => {
@@ -45,13 +44,6 @@ export const uploadWorker = async ({
   await deleteSlides({deleteSlides: slidesToDelete, identity, decksActor, host});
 
   // TODO: handle delete decks here?
-};
-
-const initIdentity = ({identityKey, delegationChain}: {identityKey: string | null; delegationChain: string | null}): Identity => {
-  const chain: DelegationChain = DelegationChain.fromJSON(delegationChain);
-  const key: Ed25519KeyIdentity = Ed25519KeyIdentity.fromJSON(identityKey);
-
-  return DelegationIdentity.fromDelegation(key, chain);
 };
 
 const uploadDecks = async ({

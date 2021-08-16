@@ -1,12 +1,13 @@
 import {Identity} from '@dfinity/agent';
-import {LocalStorage} from '@dfinity/auth-client';
 
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
 import {SyncData} from '../../../types/editor/sync';
+import {InternetIdentityAuth} from '../../../types/core/ic.identity';
 
 import {internetComputer} from '../../../utils/core/environment.utils';
+import {internetIdentityAuth} from '../../../utils/core/ic.identity.utils';
 
 import {SyncService} from './sync.service';
 import {AuthFactoryService} from '../../auth/auth.factory.service';
@@ -42,14 +43,10 @@ export class SyncIcService extends SyncService {
 
       syncStore.state.sync = 'in_progress';
 
-      const storage: LocalStorage = new LocalStorage('ic-');
-
-      const identityKey: string | null = await storage.get('identity');
-      const delegationChain: string | null = await storage.get('delegation');
+      const internetIdentity: InternetIdentityAuth = await internetIdentityAuth();
 
       await uploadWorker({
-        identityKey,
-        delegationChain,
+        internetIdentity,
         syncData,
         host: `${window.location}`
       });
