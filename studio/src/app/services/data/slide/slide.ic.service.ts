@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {_SERVICE as DecskActor, _SERVICE as DecksActor} from '../../../canisters/decks/decks.did';
+import {_SERVICE as DecskActor} from '../../../canisters/decks/decks.did';
 import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../../canisters/deck/deck.did';
 
 import {Slide, SlideData} from '../../../models/data/slide';
@@ -25,52 +25,6 @@ export class SlideIcService implements SlideService {
       SlideIcService.instance = new SlideIcService();
     }
     return SlideIcService.instance;
-  }
-
-  async uploadSlide({slide, deckId, decksActor, identity}: {slide: Slide; deckId: string; decksActor: DecksActor; identity: Identity}) {
-    if (!slide) {
-      return;
-    }
-
-    console.log('Slide IC about to SET');
-    const t0 = performance.now();
-
-    const bucket: Principal = await decksActor.init(deckId);
-
-    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
-
-    await deckBucket.setSlide({
-      slideId: slide.id,
-      data: await CanisterUtils.toArray<SlideData>(slide.data),
-      created_at: CanisterUtils.toTimestamp((slide.data.created_at as Date) || new Date()),
-      updated_at: CanisterUtils.toTimestamp((slide.data.updated_at as Date) || new Date())
-    });
-
-    const t1 = performance.now();
-    console.log('Slide IC SET done', t1 - t0);
-
-    const t2 = performance.now();
-
-    // TODO: remove, just for test
-    console.log('Slide IC Get:', await deckBucket.getSlide(slide.id), performance.now() - t2);
-  }
-
-  async deleteSlide({slideId, deckId, decksActor, identity}: {slideId: string; deckId: string; decksActor: DecksActor; identity: Identity}) {
-    if (!slideId) {
-      return;
-    }
-
-    console.log('Slide IC about to DEL');
-    const t0 = performance.now();
-
-    const bucket: Principal = await decksActor.init(deckId);
-
-    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
-
-    await deckBucket.delSlide(slideId);
-
-    const t1 = performance.now();
-    console.log('Slide IC DEL done', t1 - t0);
   }
 
   // @Override
