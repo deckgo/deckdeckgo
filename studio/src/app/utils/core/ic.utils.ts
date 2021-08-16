@@ -2,21 +2,20 @@ import {Actor, HttpAgent, ActorMethod, ActorSubclass, Identity} from '@dfinity/a
 import {IDL} from '@dfinity/candid';
 import {Principal} from '@dfinity/principal';
 
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import {EnvironmentAppConfig} from '../../types/core/environment-config';
-
 export const createActor = async <T = Record<string, ActorMethod>>({
   canisterId,
   idlFactory,
-  identity
+  identity,
+  host
 }: {
   canisterId: string | Principal;
   idlFactory: IDL.InterfaceFactory;
   identity: Identity;
+  host?: string;
 }): Promise<ActorSubclass<T>> => {
-  const agent = new HttpAgent({identity});
+  const agent = new HttpAgent({identity, ...(host && {host})});
 
-  if (EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').mock) {
+  if (process.env.LOCAL_IDENTITY) {
     // Fetch root key for certificate validation during development
     await agent.fetchRootKey();
   }

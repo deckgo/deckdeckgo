@@ -31,13 +31,16 @@ export const canisterEnvIds = (prod: boolean): Record<string, string> => {
 
   const canisters = network === 'local' ? localCanisters : prodCanisters;
 
-  return Object.entries(canisters).reduce((acc, [name, value]) => {
-    const entry: Record<string, string> = {};
-    entry[`process.env.${name.toUpperCase()}_CANISTER_ID`] = JSON.stringify(value[network]);
+  return Object.entries(canisters).reduce(
+    (acc, [name, value]) => {
+      const entry: Record<string, string> = {};
+      entry[`process.env.${name.toUpperCase()}_CANISTER_ID`] = JSON.stringify(value[network]);
 
-    return {
-      ...acc,
-      ...entry
-    };
-  }, canisterLocalInternetId(network));
+      return {
+        ...acc,
+        ...entry
+      };
+    },
+    {...canisterLocalInternetId(network), 'process.env.LOCAL_IDENTITY': `${network === 'local'}`}
+  );
 };

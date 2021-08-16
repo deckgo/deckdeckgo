@@ -7,8 +7,6 @@ import errorStore from '../../stores/error.store';
 import {del} from 'idb-keyval';
 
 import {AuthService} from './auth.service';
-import {EnvironmentConfigService} from '../environment/environment-config.service';
-import {EnvironmentAppConfig} from '../../types/core/environment-config';
 import {UserIcService} from '../data/user/user.ic.service';
 
 export class AuthIcService extends AuthService {
@@ -30,8 +28,6 @@ export class AuthIcService extends AuthService {
   async signIn() {
     const authClient: AuthClient = this.authClient || (await AuthClient.create());
 
-    const {mock} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-
     await authClient.login({
       onSuccess: () => {
         navStore.state.nav = {
@@ -44,7 +40,7 @@ export class AuthIcService extends AuthService {
 
         errorStore.state.error = 'There was an issue sign in with the internet identity.';
       },
-      ...(mock && {identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`})
+      ...(process.env.LOCAL_IDENTITY && {identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`})
     });
   }
 

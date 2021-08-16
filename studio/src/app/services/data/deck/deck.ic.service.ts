@@ -28,34 +28,6 @@ export class DeckIcService implements DeckService {
     return DeckIcService.instance;
   }
 
-  async uploadDeck({deck, decksActor, identity}: {deck: Deck; decksActor: DecksActor; identity: Identity}) {
-    if (!deck) {
-      return;
-    }
-
-    console.log('Deck IC about to SET');
-    const t0 = performance.now();
-
-    const bucket: Principal = await decksActor.init(deck.id);
-
-    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
-
-    await deckBucket.set({
-      deckId: deck.id,
-      data: await CanisterUtils.toArray<DeckData>(deck.data),
-      created_at: CanisterUtils.toTimestamp((deck.data.created_at as Date) || new Date()),
-      updated_at: CanisterUtils.toTimestamp((deck.data.updated_at as Date) || new Date())
-    });
-
-    const t1 = performance.now();
-    console.log('Deck IC SET done', t1 - t0);
-
-    const t2 = performance.now();
-
-    // TODO: remove, just for test
-    console.log('Deck IC Get:', await deckBucket.get(), performance.now() - t2);
-  }
-
   // @Override
   async entries(_userId: string): Promise<Deck[]> {
     const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
