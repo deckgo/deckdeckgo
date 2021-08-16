@@ -16,6 +16,7 @@ import {SyncService} from './services/editor/sync/sync.service';
 import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
 
 import {toastController} from './utils/ionic/ionic.overlay';
+import {firebase, internetComputer} from './utils/core/environment.utils';
 
 @Component({
   tag: 'app-root',
@@ -53,7 +54,6 @@ export class AppRoot {
   async componentWillLoad() {
     if (Build.isBrowser) {
       const promises: Promise<void>[] = [
-        this.authService.init(),
         this.themeService.initDarkModePreference(),
         this.colorService.init(),
         this.settingsService.init(),
@@ -61,12 +61,22 @@ export class AppRoot {
         this.syncService.initSyncState()
       ];
 
+      if (firebase()) {
+        promises.push(this.authService.init());
+      }
+
       await Promise.all(promises);
     }
   }
 
   async componentDidLoad() {
     this.loading = false;
+
+    if (Build.isBrowser && internetComputer()) {
+      // We do not want to block the rendering but, performs the sign in once the app is displayed
+      // TODO: still need a bit of design though, like not displaying the "sign in" button while sign in
+      await this.authService.init();
+    }
 
     this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
       if (error && error !== undefined) {
