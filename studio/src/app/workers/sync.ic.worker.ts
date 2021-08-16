@@ -32,10 +32,7 @@ export const uploadWorker = async ({
     return;
   }
 
-  const chain: DelegationChain = DelegationChain.fromJSON(delegationChain);
-  const key: Ed25519KeyIdentity = Ed25519KeyIdentity.fromJSON(identityKey);
-
-  const identity: Identity = DelegationIdentity.fromDelegation(key, chain);
+  const identity: Identity = initIdentity({identityKey, delegationChain});
 
   const {updateDecks, updateSlides, deleteSlides: slidesToDelete} = syncData;
 
@@ -48,6 +45,13 @@ export const uploadWorker = async ({
   await deleteSlides({deleteSlides: slidesToDelete, identity, decksActor, host});
 
   // TODO: handle delete decks here?
+};
+
+const initIdentity = ({identityKey, delegationChain}: {identityKey: string | null; delegationChain: string | null}): Identity => {
+  const chain: DelegationChain = DelegationChain.fromJSON(delegationChain);
+  const key: Ed25519KeyIdentity = Ed25519KeyIdentity.fromJSON(identityKey);
+
+  return DelegationIdentity.fromDelegation(key, chain);
 };
 
 const uploadDecks = async ({
