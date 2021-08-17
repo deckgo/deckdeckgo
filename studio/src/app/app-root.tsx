@@ -1,4 +1,4 @@
-import {Build, Component, Element, h, Listen, State} from '@stencil/core';
+import {Component, Element, h, Listen, State} from '@stencil/core';
 
 import errorStore from './stores/error.store';
 import navStore from './stores/nav.store';
@@ -16,7 +16,6 @@ import {SyncService} from './services/editor/sync/sync.service';
 import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
 
 import {toastController} from './utils/ionic/ionic.overlay';
-import {firebase, internetComputer} from './utils/core/environment.utils';
 
 @Component({
   tag: 'app-root',
@@ -52,31 +51,22 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
-    if (Build.isBrowser) {
-      const promises: Promise<void>[] = [
-        this.themeService.initDarkModePreference(),
-        this.colorService.init(),
-        this.settingsService.init(),
-        this.langService.init(),
-        this.syncService.initSyncState()
-      ];
+    const promises: Promise<void>[] = [
+      this.authService.init(),
+      this.themeService.initDarkModePreference(),
+      this.colorService.init(),
+      this.settingsService.init(),
+      this.langService.init(),
+      this.syncService.initSyncState()
+    ];
 
-      if (firebase()) {
-        promises.push(this.authService.init());
-      }
-
-      await Promise.all(promises);
-    }
+    Promise.all(promises).then(() => {
+      // async componentWillLoad is render blocking and we want to display the app as soon as possible
+    });
   }
 
   async componentDidLoad() {
     this.loading = false;
-
-    if (Build.isBrowser && internetComputer()) {
-      // We do not want to block the rendering but, performs the sign in once the app is displayed
-      // TODO: still need a bit of design though, like not displaying the "sign in" button while sign in
-      await this.authService.init();
-    }
 
     this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
       if (error && error !== undefined) {
