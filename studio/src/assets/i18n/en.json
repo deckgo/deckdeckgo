@@ -491,12 +491,16 @@
     "new": "New",
     "new_presentation": "Start a new presentation",
     "new_warning_text": "This will replace the current deck and slides. Are you sure?",
-    "cloud": "Cloud",
-    "cloud_error": "Cloud sync encountered an error",
-    "cloud_in_progress": "Cloud sync in progress",
-    "cloud_idle": "Cloud sync up to date",
-    "cloud_pending": "Cloud sync pending",
     "open": "Open",
     "user": "User"
+  },
+  "sync": {
+    "cloud": "Cloud",
+    "cloud_error": "Cloud sync encountered an error",
+    "cloud_in_progress": "Saving...",
+    "cloud_idle": "All changes saved.",
+    "cloud_pending": "Saving...",
+    "info": "Every change that you make is automatically saved to your cloud.",
+    "status": "Status"
   }
 }
