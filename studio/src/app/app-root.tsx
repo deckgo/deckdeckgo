@@ -1,4 +1,4 @@
-import {Build, Component, Element, h, Listen, State} from '@stencil/core';
+import {Component, Element, h, Listen, State} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
@@ -48,19 +48,19 @@ export class AppRoot {
     this.langService = LangService.getInstance();
   }
 
-  async componentWillLoad() {
-    if (Build.isBrowser) {
-      const promises: Promise<void>[] = [
-        this.authService.init(),
-        this.offlineService.init(),
-        this.themeService.initDarkModePreference(),
-        this.colorService.init(),
-        this.settingsService.init(),
-        this.langService.init()
-      ];
+  componentWillLoad() {
+    const promises: Promise<void>[] = [
+      this.authService.init(),
+      this.offlineService.init(),
+      this.themeService.initDarkModePreference(),
+      this.colorService.init(),
+      this.settingsService.init(),
+      this.langService.init()
+    ];
 
-      await Promise.all(promises);
-    }
+    Promise.all(promises).then(() => {
+      // async componentWillLoad is render blocking and we want to display the app as soon as possible
+    });
   }
 
   async componentDidLoad() {
