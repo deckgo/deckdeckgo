@@ -189,10 +189,8 @@ export class AppNavigationActions {
       <button class={`cloud ${syncStore.state.sync}`} disabled={true} aria-label={label}>
         {syncStore.state.sync === 'error' ? (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
-        ) : syncStore.state.sync === 'in_progress' ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-upload.svg"></ion-icon>
-        ) : syncStore.state.sync === 'pending' ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-pending.svg"></ion-icon>
+        ) : ['in_progress', 'pending'].includes(syncStore.state.sync) ? (
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/sync.svg"></ion-icon>
         ) : (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-done.svg"></ion-icon>
         )}
