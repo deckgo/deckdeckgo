@@ -361,6 +361,8 @@ export namespace Components {
         "importColor": 'dark' | 'light';
         "writeColor": 'primary' | 'dark' | 'light';
     }
+    interface AppSyncInfo {
+    }
     interface AppTemplate {
         "template": Template | undefined;
     }
@@ -1021,6 +1023,12 @@ declare global {
         prototype: HTMLAppStartDeckElement;
         new (): HTMLAppStartDeckElement;
     };
+    interface HTMLAppSyncInfoElement extends Components.AppSyncInfo, HTMLStencilElement {
+    }
+    var HTMLAppSyncInfoElement: {
+        prototype: HTMLAppSyncInfoElement;
+        new (): HTMLAppSyncInfoElement;
+    };
     interface HTMLAppTemplateElement extends Components.AppTemplate, HTMLStencilElement {
     }
     var HTMLAppTemplateElement: {
@@ -1236,6 +1244,7 @@ declare global {
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
         "app-start-deck": HTMLAppStartDeckElement;
+        "app-sync-info": HTMLAppSyncInfoElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
@@ -1654,6 +1663,8 @@ declare namespace LocalJSX {
         "importColor"?: 'dark' | 'light';
         "writeColor"?: 'primary' | 'dark' | 'light';
     }
+    interface AppSyncInfo {
+    }
     interface AppTemplate {
         "template"?: Template | undefined;
     }
@@ -1824,6 +1835,7 @@ declare namespace LocalJSX {
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
         "app-start-deck": AppStartDeck;
+        "app-sync-info": AppSyncInfo;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
@@ -1949,6 +1961,7 @@ declare module "@stencil/core" {
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-start-deck": LocalJSX.AppStartDeck & JSXBase.HTMLAttributes<HTMLAppStartDeckElement>;
+            "app-sync-info": LocalJSX.AppSyncInfo & JSXBase.HTMLAttributes<HTMLAppSyncInfoElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;

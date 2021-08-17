@@ -495,12 +495,16 @@
     "new": "Nueva",
     "new_presentation": "Crea una nueva presentación",
     "new_warning_text": "Esto reemplazará la presentación y las diapositivas. ¿Está seguro?",
-    "cloud": "Cloud",
-    "cloud_error": "La sincronización con el cloud encontró un error",
-    "cloud_in_progress": "Sincronización con el cloud en curso",
-    "cloud_idle": "Sincronización con el cloud actualizado",
-    "cloud_pending": "Sincronización con el cloud pendiente ",
     "open": "Abrir",
     "user": "Usuarie"
+  },
+  "sync": {
+    "cloud": "Cloud",
+    "cloud_error": "La sincronización con el cloud encontró un error",
+    "cloud_in_progress": "Guardando...",
+    "cloud_idle": "Se han guardado todos los cambios.",
+    "cloud_pending": "Guardando...",
+    "info": "Todos los cambios que hagas se guardan automáticamente en el cloud.",
+    "status": "Estado"
   }
 }
