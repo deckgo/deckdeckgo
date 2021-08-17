@@ -97,6 +97,17 @@ export class AppNavigationActions {
     this.el.dispatchEvent(initNewDeck);
   }
 
+  private async openSyncInfo($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-sync-info',
+      mode: 'ios',
+      event: $event,
+      cssClass: 'info'
+    });
+
+    await popover.present();
+  }
+
   render() {
     if (this.signIn) {
       return undefined;
@@ -178,25 +189,23 @@ export class AppNavigationActions {
 
     const label: string =
       syncStore.state.sync === 'error'
-        ? i18n.state.tools.cloud_error
+        ? i18n.state.sync.cloud_error
         : syncStore.state.sync === 'in_progress'
-        ? i18n.state.tools.cloud_in_progress
+        ? i18n.state.sync.cloud_in_progress
         : syncStore.state.sync === 'pending'
-        ? i18n.state.tools.cloud_pending
-        : i18n.state.tools.cloud_idle;
+        ? i18n.state.sync.cloud_pending
+        : i18n.state.sync.cloud_idle;
 
     return (
-      <button class={`cloud ${syncStore.state.sync}`} disabled={true} aria-label={label}>
+      <button class={`cloud ${syncStore.state.sync}`} aria-label={label} onClick={($event: UIEvent) => this.openSyncInfo($event)}>
         {syncStore.state.sync === 'error' ? (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
-        ) : syncStore.state.sync === 'in_progress' ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-upload.svg"></ion-icon>
-        ) : syncStore.state.sync === 'pending' ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-pending.svg"></ion-icon>
+        ) : ['in_progress', 'pending'].includes(syncStore.state.sync) ? (
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/sync.svg"></ion-icon>
         ) : (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-done.svg"></ion-icon>
         )}
-        <ion-label>{i18n.state.tools.cloud}</ion-label>
+        <ion-label>{i18n.state.sync.cloud}</ion-label>
       </button>
     );
   }

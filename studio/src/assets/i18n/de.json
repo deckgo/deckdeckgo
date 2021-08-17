@@ -491,12 +491,16 @@
     "new": "Neu",
     "new_presentation": "Erstelle eine neue Präsentation",
     "new_warning_text": "Dadurch werden die aktuelle Präsentation und Folien ersetzt. Sind Sie sicher?",
-    "cloud": "Cloud",
-    "cloud_error": "Bei der Cloud-Synchronisierung ist ein Fehler aufgetreten",
-    "cloud_in_progress": "Cloud-Synchronisierung läuft",
-    "cloud_idle": "Cloud-Synchronisierung auf dem neuesten Stand",
-    "cloud_pending": "Cloud-Synchronisierung fällig",
     "open": "Öffnen",
     "user": "Benutzer*in"
+  },
+  "sync": {
+    "cloud": "Cloud",
+    "cloud_error": "Bei der Cloud-Synchronisierung ist ein Fehler aufgetreten",
+    "cloud_in_progress": "Wird gespeichert...",
+    "cloud_idle": "In Cloud gespeichert.",
+    "cloud_pending": "Wird gespeichert...",
+    "info": "Alle Änderungen werden automatisch in dem Cloud gespeichert.",
+    "status": "Status"
   }
 }

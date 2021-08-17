@@ -507,13 +507,18 @@ interface I18nTools {
   new: string;
   new_presentation: string;
   new_warning_text: string;
+  open: string;
+  user: string;
+}
+
+interface I18nSync {
   cloud: string;
   cloud_error: string;
   cloud_in_progress: string;
   cloud_idle: string;
   cloud_pending: string;
-  open: string;
-  user: string;
+  info: string;
+  status: string;
 }
 
 interface I18n {
@@ -536,4 +541,5 @@ interface I18n {
   poll: I18nPoll;
   import: I18nImport;
   tools: I18nTools;
+  sync: I18nSync;
 }
