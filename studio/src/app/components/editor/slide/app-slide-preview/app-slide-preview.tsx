@@ -1,6 +1,6 @@
 import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} from '@stencil/core';
 
-import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
+import {isSlide} from '@deckdeckgo/deck-utils';
 import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
@@ -21,7 +21,8 @@ export class AppSlidePreview {
   @State()
   private iosPositionTop: string | undefined = undefined;
 
-  private deckPreviewRef!: HTMLDeckgoDeckElement;
+  @State()
+  private slideElement: HTMLElement | undefined = undefined;
 
   @Event({bubbles: false}) private previewAttached: EventEmitter<void>;
 
@@ -67,8 +68,6 @@ export class AppSlidePreview {
     this.preview = isSlide(selectedElement?.parentElement) && SlotUtils.isNodeEditable(selectedElement) && !SlotUtils.isNodeWordCloud(selectedElement);
 
     if (this.preview) {
-      await this.initDeckPreview();
-
       this.el.addEventListener('previewAttached', async () => await this.updateSlide(selectedElement.parentElement), {once: true});
 
       this.deckRef.addEventListener('keypress', () => this.debounceUpdatePreview(), {passive: true});
@@ -85,28 +84,8 @@ export class AppSlidePreview {
     }
   }
 
-  async initDeckPreview() {
-    if (!this.deckRef) {
-      return;
-    }
-
-    this.deckPreviewRef?.setAttribute('style', this.deckRef.style.cssText);
-
-    await this.deckPreviewRef?.initSlideSize();
-  }
-
-  async updateSlide(slide: HTMLElement | undefined) {
-    if (!slide || !this.deckPreviewRef) {
-      return;
-    }
-
-    const content: string = await cleanContent(slide.outerHTML);
-
-    this.deckPreviewRef.innerHTML = content;
-  }
-
-  private async blockSlide() {
-    await this.deckPreviewRef?.blockSlide(true);
+  private async updateSlide(slide: HTMLElement | undefined) {
+    this.slideElement = slide?.cloneNode(true) as HTMLElement | undefined;
   }
 
   private async updatePreview() {
@@ -130,7 +109,7 @@ export class AppSlidePreview {
         class={{
           preview: this.preview
         }}>
-        <article>{this.renderPreview()}</article>
+        {this.renderPreview()}
       </Host>
     );
   }
@@ -140,12 +119,6 @@ export class AppSlidePreview {
       return undefined;
     }
 
-    return (
-      <deckgo-deck
-        embedded={true}
-        keyboard={false}
-        ref={(el) => (this.deckPreviewRef = el as HTMLDeckgoDeckElement)}
-        onSlidesDidLoad={() => this.blockSlide()}></deckgo-deck>
-    );
+    return <app-slide-thumbnail slide={this.slideElement} deck={this.deckRef}></app-slide-thumbnail>;
   }
 }

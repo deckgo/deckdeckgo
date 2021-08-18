@@ -6,6 +6,10 @@
 
 - highlight-code: v3.3.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/highlight-code/CHANGELOG.md))
 
+### Others
+
+- - deck-utils: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+
 <a name="4.8.0"></a>
 
 # [4.8.0](https://github.com/deckgo/deckdeckgo/compare/v4.7.0...v4.8.0) (2021-06-13)
