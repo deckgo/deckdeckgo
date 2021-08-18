@@ -1,7 +1,9 @@
 import {Component, Listen, h, Host, State, Prop} from '@stencil/core';
 
-import {isSlide} from '../../../../../../../utils/deck/src';
 import {debounce} from '@deckdeckgo/utils';
+
+import {isSlide} from '../../../../../../../utils/deck/src';
+import {deckSelector} from '../../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-slides-aside',
@@ -54,7 +56,7 @@ export class AppSlidesAside {
   }
 
   private async updateAllSlides() {
-    const slides: NodeListOf<HTMLElement> = document.querySelectorAll('app-editor > ion-content div.deck > main > deckgo-deck > *');
+    const slides: NodeListOf<HTMLElement> = document.querySelectorAll(`${deckSelector} > *`);
 
     if (!slides) {
       return;
