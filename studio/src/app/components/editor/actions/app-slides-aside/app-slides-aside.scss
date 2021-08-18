@@ -15,5 +15,21 @@ app-slides-aside {
 
   app-slide-thumbnail {
     margin-bottom: 16px;
+
+    transition: margin 0.25s ease-out, min-height 0.25s ease-in;
+
+    &.hover {
+      margin-bottom: calc((var(--slides-aside-width) - 32px) * 9 / 16);
+    }
+
+    &.drag-start, &.drag-hover {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    &.drag-hover {
+      min-height: 0;
+      border: none;
+    }
   }
 }
