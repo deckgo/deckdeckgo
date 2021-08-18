@@ -6,6 +6,8 @@ import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 
 import i18n from '../../../stores/i18n.store';
 
+import {deckSelector, slideTo} from '../../../utils/editor/deck.utils';
+
 @Component({
   tag: 'app-slide-navigate',
   styleUrl: 'app-slide-navigate.scss'
@@ -21,11 +23,13 @@ export class AppSlideNavigate {
   async componentDidLoad() {
     history.pushState({modal: true}, null);
 
-    this.slides = await findSlidesTitle();
+    this.slides = await findSlidesTitle(deckSelector);
   }
 
   async jumpToSlide(index: number) {
-    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(index);
+    await slideTo(index);
+
+    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
   private onReorder($event: CustomEvent<ItemReorderEventDetail>) {
@@ -35,8 +39,6 @@ export class AppSlideNavigate {
   render() {
     return (
       <Host>
-        <p>{i18n.state.editor.jump_or_change}</p>
-
         <ion-reorder-group
           onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)}
           disabled={!this.slides || this.slides.length <= 1}>

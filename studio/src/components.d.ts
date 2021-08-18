@@ -47,7 +47,6 @@ export namespace Components {
         "deckDidChange": EventEmitter;
         "fullscreen": boolean;
         "signIn": EventEmitter;
-        "slideTo": EventEmitter;
         "slides": JSX.IntrinsicElements[];
         "toggleFullScreen": EventEmitter;
     }
@@ -352,11 +351,18 @@ export namespace Components {
     interface AppSlidePreview {
         "deckRef": HTMLDeckgoDeckElement;
     }
+    interface AppSlideThumbnail {
+        "deck": HTMLDeckgoDeckElement;
+        "slide": HTMLElement;
+    }
     interface AppSlideWarning {
     }
     interface AppSlideWarningInfo {
         "lowContrast": boolean;
         "overflow": boolean;
+    }
+    interface AppSlidesAside {
+        "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
         "selectedElement": HTMLElement;
@@ -1005,6 +1011,12 @@ declare global {
         prototype: HTMLAppSlidePreviewElement;
         new (): HTMLAppSlidePreviewElement;
     };
+    interface HTMLAppSlideThumbnailElement extends Components.AppSlideThumbnail, HTMLStencilElement {
+    }
+    var HTMLAppSlideThumbnailElement: {
+        prototype: HTMLAppSlideThumbnailElement;
+        new (): HTMLAppSlideThumbnailElement;
+    };
     interface HTMLAppSlideWarningElement extends Components.AppSlideWarning, HTMLStencilElement {
     }
     var HTMLAppSlideWarningElement: {
@@ -1016,6 +1028,12 @@ declare global {
     var HTMLAppSlideWarningInfoElement: {
         prototype: HTMLAppSlideWarningInfoElement;
         new (): HTMLAppSlideWarningInfoElement;
+    };
+    interface HTMLAppSlidesAsideElement extends Components.AppSlidesAside, HTMLStencilElement {
+    }
+    var HTMLAppSlidesAsideElement: {
+        prototype: HTMLAppSlidesAsideElement;
+        new (): HTMLAppSlidesAsideElement;
     };
     interface HTMLAppSlotTypeElement extends Components.AppSlotType, HTMLStencilElement {
     }
@@ -1246,8 +1264,10 @@ declare global {
         "app-signin-page": HTMLAppSigninPageElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slide-preview": HTMLAppSlidePreviewElement;
+        "app-slide-thumbnail": HTMLAppSlideThumbnailElement;
         "app-slide-warning": HTMLAppSlideWarningElement;
         "app-slide-warning-info": HTMLAppSlideWarningInfoElement;
+        "app-slides-aside": HTMLAppSlidesAsideElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
         "app-start-deck": HTMLAppStartDeckElement;
@@ -1300,7 +1320,6 @@ declare namespace LocalJSX {
         "fullscreen"?: boolean;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
         "signIn"?: EventEmitter;
-        "slideTo"?: EventEmitter;
         "slides"?: JSX.IntrinsicElements[];
         "toggleFullScreen"?: EventEmitter;
     }
@@ -1316,7 +1335,6 @@ declare namespace LocalJSX {
         "onPresenting"?: (event: CustomEvent<boolean>) => void;
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
-        "onSlideTo"?: (event: CustomEvent<number>) => void;
         "onSlideTransform"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
         "slideNumber"?: number;
@@ -1662,11 +1680,18 @@ declare namespace LocalJSX {
         "deckRef": HTMLDeckgoDeckElement;
         "onPreviewAttached"?: (event: CustomEvent<void>) => void;
     }
+    interface AppSlideThumbnail {
+        "deck"?: HTMLDeckgoDeckElement;
+        "slide"?: HTMLElement;
+    }
     interface AppSlideWarning {
     }
     interface AppSlideWarningInfo {
         "lowContrast"?: boolean;
         "overflow"?: boolean;
+    }
+    interface AppSlidesAside {
+        "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
@@ -1846,8 +1871,10 @@ declare namespace LocalJSX {
         "app-signin-page": AppSigninPage;
         "app-slide-navigate": AppSlideNavigate;
         "app-slide-preview": AppSlidePreview;
+        "app-slide-thumbnail": AppSlideThumbnail;
         "app-slide-warning": AppSlideWarning;
         "app-slide-warning-info": AppSlideWarningInfo;
+        "app-slides-aside": AppSlidesAside;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
         "app-start-deck": AppStartDeck;
@@ -1972,8 +1999,10 @@ declare module "@stencil/core" {
             "app-signin-page": LocalJSX.AppSigninPage & JSXBase.HTMLAttributes<HTMLAppSigninPageElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slide-preview": LocalJSX.AppSlidePreview & JSXBase.HTMLAttributes<HTMLAppSlidePreviewElement>;
+            "app-slide-thumbnail": LocalJSX.AppSlideThumbnail & JSXBase.HTMLAttributes<HTMLAppSlideThumbnailElement>;
             "app-slide-warning": LocalJSX.AppSlideWarning & JSXBase.HTMLAttributes<HTMLAppSlideWarningElement>;
             "app-slide-warning-info": LocalJSX.AppSlideWarningInfo & JSXBase.HTMLAttributes<HTMLAppSlideWarningInfoElement>;
+            "app-slides-aside": LocalJSX.AppSlidesAside & JSXBase.HTMLAttributes<HTMLAppSlidesAsideElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-start-deck": LocalJSX.AppStartDeck & JSXBase.HTMLAttributes<HTMLAppStartDeckElement>;

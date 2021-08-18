@@ -13,6 +13,7 @@ import {SlotType} from '../../../types/editor/slot-type';
 
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
+import {deckSelector} from '../../../utils/editor/deck.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
@@ -146,7 +147,7 @@ export class OfflineService {
   private cacheServiceWorker(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const deckElement: HTMLElement = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
+        const deckElement: HTMLElement = document.querySelector(deckSelector);
 
         if (!deckElement) {
           reject('No deck found');
@@ -301,7 +302,7 @@ export class OfflineService {
   private lazyLoadAllContent(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const deck = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
+        const deck = document.querySelector(deckSelector);
 
         if (!deck) {
           reject('Deck not found');
@@ -461,7 +462,7 @@ export class OfflineService {
 
   private uploadSlideLocalUserAssets(deck: Deck, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slide_id="${slideId}"]`);
+      const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
       if (!slideElement) {
         reject('No slide found');
@@ -747,7 +748,7 @@ export class OfflineService {
 
   private uploadDeckBackgroundAssets(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slot="background"]`);
+      const backgroundElement: HTMLElement = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
       if (!backgroundElement) {
         resolve();

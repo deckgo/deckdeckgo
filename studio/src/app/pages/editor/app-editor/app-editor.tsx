@@ -109,6 +109,9 @@ export class AppEditor {
   private fullscreen: boolean = false;
 
   @State()
+  private thumbnails: boolean = false;
+
+  @State()
   private mainSize: {width: string; height: string};
 
   private destroyBusyListener;
@@ -354,18 +357,6 @@ export class AppEditor {
     }
   }
 
-  private async slideTo($event: CustomEvent<number>) {
-    if (!$event) {
-      return;
-    }
-
-    if (!this.deckRef) {
-      return;
-    }
-
-    await this.deckRef.slideTo($event.detail);
-  }
-
   private async copySlide($event: CustomEvent<HTMLElement>) {
     if (!$event || !$event.detail) {
       return;
@@ -598,12 +589,14 @@ export class AppEditor {
     setTimeout(async () => {
       this.initMainSize();
       await this.initSlideSize();
+      this.initThumbnails();
     }, 100);
   }
 
   private initMainSizeObserver() {
     this.mainResizeObserver = new ResizeObserver((_entries) => {
       this.initMainSize();
+      this.initThumbnails();
     });
 
     if (this.contentRef) {
@@ -613,6 +606,12 @@ export class AppEditor {
     if (this.actionsEditorRef) {
       this.mainResizeObserver.observe(this.actionsEditorRef);
     }
+  }
+
+  private initThumbnails() {
+    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
+
+    this.thumbnails = !isFullscreen() && wideScreen.matches;
   }
 
   private initMainSize() {
@@ -628,7 +627,7 @@ export class AppEditor {
 
     const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
 
-    const width: number = this.contentRef.offsetWidth - (wideScreen.matches ? 192 : 32);
+    const width: number = this.contentRef.offsetWidth - (wideScreen.matches ? 164 : 32);
     const height: number = (width * 9) / 16;
 
     this.mainSize =
@@ -749,58 +748,61 @@ export class AppEditor {
     return [
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content class="ion-no-padding" onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
-        <div class="grid">
-          <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
-            <main
-              ref={(el) => (this.mainRef = el as HTMLElement)}
-              class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
-              style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
-              {this.renderLoading()}
-              <deckgo-deck
-                ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
-                embedded={true}
-                style={this.style}
-                reveal={this.fullscreen && this.presenting}
-                direction={this.direction}
-                directionMobile={this.directionMobile}
-                animation={this.animation}
-                autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
-                onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
-                onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
-                onSlideNextDidChange={() => this.onSlideChange()}
-                onSlidePrevDidChange={() => this.onSlideChange()}
-                onSlideToChange={() => this.onSlideChange()}>
-                {this.slides}
-                {this.background}
-                {this.header}
-                {this.footer}
-              </deckgo-deck>
-              <deckgo-remote autoConnect={false}></deckgo-remote>
-              <app-slide-warning></app-slide-warning>
-            </main>
+        <div class="editor">
+          {this.renderSlidesThumbnails()}
+
+          <div class="grid">
+            <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
+              <main
+                ref={(el) => (this.mainRef = el as HTMLElement)}
+                class={busyStore.state.slideReady ? (this.presenting ? 'ready idle' : 'ready') : undefined}
+                style={{'--main-size-width': this.mainSize?.width, '--main-size-height': this.mainSize?.height}}>
+                {this.renderLoading()}
+                <deckgo-deck
+                  ref={(el) => (this.deckRef = el as HTMLDeckgoDeckElement)}
+                  embedded={true}
+                  style={this.style}
+                  reveal={this.fullscreen && this.presenting}
+                  direction={this.direction}
+                  directionMobile={this.directionMobile}
+                  animation={this.animation}
+                  autoSlide={this.fullscreen && this.presenting && autoSlide ? 'true' : 'false'}
+                  onMouseDown={(e: MouseEvent) => this.deckTouched(e)}
+                  onTouchStart={(e: TouchEvent) => this.deckTouched(e)}
+                  onSlideNextDidChange={() => this.onSlideChange()}
+                  onSlidePrevDidChange={() => this.onSlideChange()}
+                  onSlideToChange={() => this.onSlideChange()}>
+                  {this.slides}
+                  {this.background}
+                  {this.header}
+                  {this.footer}
+                </deckgo-deck>
+                <deckgo-remote autoConnect={false}></deckgo-remote>
+                <app-slide-warning></app-slide-warning>
+              </main>
+            </div>
+
+            <app-breadcrumbs
+              ref={(el) => (this.breadCrumbsRef = el as HTMLAppBreadcrumbsElement)}
+              slideNumber={this.activeIndex}
+              onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
+
+            <app-actions-editor
+              ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
+              hideActions={this.hideActions}
+              fullscreen={this.fullscreen}
+              slides={this.slides}
+              slideNumber={this.activeIndex}
+              onSignIn={() => this.signIn()}
+              onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
+              onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
+              onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
+              onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
+              onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
+              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
           </div>
-
-          <app-breadcrumbs
-            ref={(el) => (this.breadCrumbsRef = el as HTMLAppBreadcrumbsElement)}
-            slideNumber={this.activeIndex}
-            onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
-
-          <app-actions-editor
-            ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
-            hideActions={this.hideActions}
-            fullscreen={this.fullscreen}
-            slides={this.slides}
-            slideNumber={this.activeIndex}
-            onSignIn={() => this.signIn()}
-            onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
-            onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
-            onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
-            onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
-            onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
-            onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
-            onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
         </div>
-        <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
+        {this.renderSlidePreview()}
         {this.renderLaserPointer()}
       </ion-content>,
       this.renderInlineEditor()
@@ -835,5 +837,21 @@ export class AppEditor {
     } else {
       return <app-spinner></app-spinner>;
     }
+  }
+
+  private renderSlidesThumbnails() {
+    if (!this.thumbnails) {
+      return undefined;
+    }
+
+    return <app-slides-aside deckRef={this.deckRef}></app-slides-aside>;
+  }
+
+  private renderSlidePreview() {
+    if (this.thumbnails) {
+      return undefined;
+    }
+
+    return <app-slide-preview deckRef={this.deckRef}></app-slide-preview>;
   }
 }
