@@ -28,6 +28,10 @@ export class AppSlidesAside {
     }, 750);
   }
 
+  componentDidLoad() {
+    this.debounceUpdateAllSlides();
+  }
+
   @Listen('deckDidLoad', {target: 'document'})
   onDeckDidLoad() {
     this.debounceUpdateAllSlides();

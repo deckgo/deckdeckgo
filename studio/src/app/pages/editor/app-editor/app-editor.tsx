@@ -109,6 +109,9 @@ export class AppEditor {
   private fullscreen: boolean = false;
 
   @State()
+  private thumbnails: boolean = false;
+
+  @State()
   private mainSize: {width: string; height: string};
 
   private destroyBusyListener;
@@ -598,12 +601,14 @@ export class AppEditor {
     setTimeout(async () => {
       this.initMainSize();
       await this.initSlideSize();
+      this.initThumbnails();
     }, 100);
   }
 
   private initMainSizeObserver() {
     this.mainResizeObserver = new ResizeObserver((_entries) => {
       this.initMainSize();
+      this.initThumbnails();
     });
 
     if (this.contentRef) {
@@ -613,6 +618,12 @@ export class AppEditor {
     if (this.actionsEditorRef) {
       this.mainResizeObserver.observe(this.actionsEditorRef);
     }
+  }
+
+  private initThumbnails() {
+    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
+
+    this.thumbnails = !isFullscreen() && wideScreen.matches;
   }
 
   private initMainSize() {
@@ -628,7 +639,7 @@ export class AppEditor {
 
     const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
 
-    const width: number = this.contentRef.offsetWidth - (wideScreen.matches ? 192 : 32);
+    const width: number = this.contentRef.offsetWidth - (wideScreen.matches ? 164 : 32);
     const height: number = (width * 9) / 16;
 
     this.mainSize =
@@ -750,7 +761,7 @@ export class AppEditor {
       <app-navigation publish={true} class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content class="ion-no-padding" onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
         <div class="editor">
-          <app-slides-aside deckRef={this.deckRef}></app-slides-aside>
+          {this.renderSlidesThumbnails()}
 
           <div class="grid">
             <div class="deck" ref={(el) => (this.contentRef = el as HTMLElement)}>
@@ -839,5 +850,13 @@ export class AppEditor {
     } else {
       return <app-spinner></app-spinner>;
     }
+  }
+
+  private renderSlidesThumbnails() {
+    if (!this.thumbnails) {
+      return undefined;
+    }
+
+    return <app-slides-aside deckRef={this.deckRef}></app-slides-aside>;
   }
 }
