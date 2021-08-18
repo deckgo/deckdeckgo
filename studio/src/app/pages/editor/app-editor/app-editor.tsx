@@ -802,7 +802,7 @@ export class AppEditor {
               onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
           </div>
         </div>
-        <app-slide-preview deckRef={this.deckRef}></app-slide-preview>
+        {this.renderSlidePreview()}
         {this.renderLaserPointer()}
       </ion-content>,
       this.renderInlineEditor()
@@ -845,5 +845,13 @@ export class AppEditor {
     }
 
     return <app-slides-aside deckRef={this.deckRef}></app-slides-aside>;
+  }
+
+  private renderSlidePreview() {
+    if (this.thumbnails) {
+      return undefined;
+    }
+
+    return <app-slide-preview deckRef={this.deckRef}></app-slide-preview>;
   }
 }
