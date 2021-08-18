@@ -357,18 +357,6 @@ export class AppEditor {
     }
   }
 
-  private async slideTo($event: CustomEvent<number>) {
-    if (!$event) {
-      return;
-    }
-
-    if (!this.deckRef) {
-      return;
-    }
-
-    await this.deckRef.slideTo($event.detail);
-  }
-
   private async copySlide($event: CustomEvent<HTMLElement>) {
     if (!$event || !$event.detail) {
       return;
@@ -808,7 +796,6 @@ export class AppEditor {
               onSignIn={() => this.signIn()}
               onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
               onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
-              onSlideTo={($event: CustomEvent<number>) => this.slideTo($event)}
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
               onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}

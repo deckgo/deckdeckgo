@@ -6,7 +6,7 @@ import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 
 import i18n from '../../../stores/i18n.store';
 
-import {deckSelector} from '../../../utils/editor/deck.utils';
+import {deckSelector, slideTo} from '../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-slide-navigate',
@@ -27,7 +27,9 @@ export class AppSlideNavigate {
   }
 
   async jumpToSlide(index: number) {
-    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(index);
+    await slideTo(index);
+
+    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
   private onReorder($event: CustomEvent<ItemReorderEventDetail>) {

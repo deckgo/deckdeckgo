@@ -3,7 +3,7 @@ import {Component, Listen, h, Host, State, Prop} from '@stencil/core';
 import {debounce} from '@deckdeckgo/utils';
 
 import {isSlide} from '../../../../../../../utils/deck/src';
-import {deckSelector} from '../../../../utils/editor/deck.utils';
+import {deckSelector, slideTo} from '../../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-slides-aside',
@@ -70,8 +70,13 @@ export class AppSlidesAside {
   render() {
     return (
       <Host>
-        {this.slides.map((slide: HTMLElement) => (
-          <app-slide-thumbnail key={slide.getAttribute('slide_id')} slide={slide} deck={this.deckRef}></app-slide-thumbnail>
+        {this.slides.map((slide: HTMLElement, index: number) => (
+          <app-slide-thumbnail
+            custom-tappable
+            onClick={async () => await slideTo(index)}
+            key={slide.getAttribute('slide_id')}
+            slide={slide}
+            deck={this.deckRef}></app-slide-thumbnail>
         ))}
       </Host>
     );

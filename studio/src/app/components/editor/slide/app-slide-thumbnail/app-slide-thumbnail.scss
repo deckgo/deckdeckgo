@@ -19,6 +19,8 @@ app-slide-thumbnail {
   @include editor.panel;
 
   deckgo-deck {
+    pointer-events: none;
+
     @include deck.padding;
   }
 }

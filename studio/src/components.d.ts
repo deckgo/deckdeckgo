@@ -47,7 +47,6 @@ export namespace Components {
         "deckDidChange": EventEmitter;
         "fullscreen": boolean;
         "signIn": EventEmitter;
-        "slideTo": EventEmitter;
         "slides": JSX.IntrinsicElements[];
         "toggleFullScreen": EventEmitter;
     }
@@ -1321,7 +1320,6 @@ declare namespace LocalJSX {
         "fullscreen"?: boolean;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
         "signIn"?: EventEmitter;
-        "slideTo"?: EventEmitter;
         "slides"?: JSX.IntrinsicElements[];
         "toggleFullScreen"?: EventEmitter;
     }
@@ -1337,7 +1335,6 @@ declare namespace LocalJSX {
         "onPresenting"?: (event: CustomEvent<boolean>) => void;
         "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
-        "onSlideTo"?: (event: CustomEvent<number>) => void;
         "onSlideTransform"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
         "slideNumber"?: number;
