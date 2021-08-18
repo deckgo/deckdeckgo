@@ -334,7 +334,7 @@ export class AppEditor {
   private async concatSlide(extraSlide: JSX.IntrinsicElements) {
     this.slides = [...this.slides, extraSlide];
 
-    await ParseDeckSlotsUtils.stickLastChildren(this.el);
+    await ParseDeckSlotsUtils.stickLastChildren(this.mainRef);
   }
 
   private async replaceSlide(slide: JSX.IntrinsicElements) {
