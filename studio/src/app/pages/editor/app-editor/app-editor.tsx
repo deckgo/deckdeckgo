@@ -334,7 +334,7 @@ export class AppEditor {
   private async concatSlide(extraSlide: JSX.IntrinsicElements) {
     this.slides = [...this.slides, extraSlide];
 
-    await ParseDeckSlotsUtils.stickLastChildren(this.el);
+    await ParseDeckSlotsUtils.stickLastChildren(this.mainRef);
   }
 
   private async replaceSlide(slide: JSX.IntrinsicElements) {
@@ -683,34 +683,28 @@ export class AppEditor {
     await this.reorderSlides($event.detail);
   }
 
-  private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!detail) {
-        resolve();
-        return;
-      }
+  private async reorderSlides(detail: ItemReorderEventDetail) {
+    if (!detail) {
+      return;
+    }
 
-      try {
-        await this.deckEventsHandler.updateDeckSlidesOrder(detail);
+    if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
+      return;
+    }
 
-        if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
-          resolve();
-          return;
-        }
+    try {
+      await this.deckEventsHandler.updateDeckSlidesOrder(detail);
 
-        await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
+      await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
 
-        this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
-        this.slides = [...this.slides];
-      } catch (err) {
-        // We ignore the error here
-      }
+      this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
+      this.slides = [...this.slides];
+    } catch (err) {
+      // We ignore the error here
+    }
 
-      // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
-      detail.complete();
-
-      resolve();
-    });
+    // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
+    detail.complete();
   }
 
   private async updatePresenting(presenting: boolean) {

@@ -1692,6 +1692,7 @@ declare namespace LocalJSX {
     }
     interface AppSlidesAside {
         "deckRef": HTMLDeckgoDeckElement;
+        "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
