@@ -1,6 +1,3 @@
-@use "../../../../../global/theme/mixins/editor";
-@use "../../../../../global/theme/mixins/deck";
-
 app-slide-preview {
   position: absolute;
   top: var(--ios-top, 8px);
@@ -18,26 +15,5 @@ app-slide-preview {
   &:not(.preview) {
     visibility: hidden;
     opacity: 0;
-  }
-
-  article {
-    position: relative;
-
-    --preview-width: 200px;
-
-    width: var(--preview-width);
-    height: calc(var(--preview-width) * 9 / 16);
-
-    @media screen and (max-width: 768px) {
-      --preview-width: 128px;
-    }
-
-    overflow: hidden;
-
-    @include editor.panel;
-
-    deckgo-deck {
-      @include deck.padding;
-    }
   }
 }

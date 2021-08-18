@@ -1,0 +1,24 @@
+@use "../../../../../global/theme/mixins/editor";
+@use "../../../../../global/theme/mixins/deck";
+
+app-slide-thumbnail {
+  display: block;
+
+  position: relative;
+
+  width: var(--preview-width, 200px);
+  height: calc(var(--preview-width, 200px) * 9 / 16);
+  min-height: calc(var(--preview-width, 200px) * 9 / 16);
+
+  @media screen and (max-width: 768px) {
+    --preview-width: 128px;
+  }
+
+  overflow: hidden;
+
+  @include editor.panel;
+
+  deckgo-deck {
+    @include deck.padding;
+  }
+}

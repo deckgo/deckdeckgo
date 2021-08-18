@@ -1,8 +1,18 @@
 @use "../../../../global/theme/editor/editor-fullscreen";
 
 ion-nav app-editor ion-content {
+  div.editor {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+
+    --slides-aside-width: 190px;
+  }
+
   div.grid {
     height: 100%;
+    width: calc(100% - var(--slides-aside-width));
 
     display: flex;
     flex-direction: column;

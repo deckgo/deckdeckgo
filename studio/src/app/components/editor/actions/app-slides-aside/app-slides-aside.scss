@@ -1,0 +1,19 @@
+app-slides-aside {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100%;
+  height: 100%;
+
+  width: var(--slides-aside-width);
+
+  padding: 16px;
+  overflow: scroll;
+  border-right: 1px solid #dedede;
+
+  --preview-width: calc(var(--slides-aside-width) - 32px);
+
+  app-slide-thumbnail {
+    margin-bottom: 16px;
+  }
+}
