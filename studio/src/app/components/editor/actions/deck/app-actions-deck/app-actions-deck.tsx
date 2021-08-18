@@ -13,9 +13,9 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
-import { modalController, popoverController } from '../../../../../utils/ionic/ionic.overlay';
+import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
-import { AppIcon } from '../../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-actions-deck',
@@ -41,9 +41,6 @@ export class AppActionsDeck {
 
   @Prop()
   animatePrevNextSlide: EventEmitter;
-
-  @Prop()
-  slideTo: EventEmitter;
 
   @Prop()
   toggleFullScreen: EventEmitter;
@@ -81,12 +78,6 @@ export class AppActionsDeck {
       mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu popover-menu-wide'
-    });
-
-    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail.data >= 0) {
-        this.slideTo.emit(detail.data);
-      }
     });
 
     await popover.present();

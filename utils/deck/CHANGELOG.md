@@ -1,3 +1,9 @@
+# 4.1.0 (2021-08-18)
+
+### Features
+
+- `findSlidesTitle` deck query selector can be specified
+
 # 4.0.2 (2021-05-24)
 
 ### Fix

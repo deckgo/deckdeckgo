@@ -1,8 +1,20 @@
 @use "../../../../global/theme/editor/editor-fullscreen";
 
 ion-nav app-editor ion-content {
+  div.editor {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+
+    @media screen and (min-width: 1200px) {
+      --slides-aside-width: 190px;
+    }
+  }
+
   div.grid {
     height: 100%;
+    width: calc(100% - var(--slides-aside-width, 0px));
 
     display: flex;
     flex-direction: column;
@@ -17,6 +29,10 @@ ion-nav app-editor ion-content {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+
+        @media screen and (min-width: 1200px) {
+          left: calc(50% - 32px);
+        }
 
         width: var(--main-size-width);
         height: var(--main-size-height);

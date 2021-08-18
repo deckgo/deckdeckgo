@@ -35,8 +35,6 @@ export class AppActionsEditor {
 
   @Event() private animatePrevNextSlide: EventEmitter<boolean>;
 
-  @Event() private slideTo: EventEmitter<number>;
-
   @Event() private toggleFullScreen: EventEmitter<void>;
 
   @Event() private actionPublish: EventEmitter<void>;
@@ -214,7 +212,6 @@ export class AppActionsEditor {
         signIn={this.signIn}
         addSlide={this.addSlide}
         animatePrevNextSlide={this.animatePrevNextSlide}
-        slideTo={this.slideTo}
         toggleFullScreen={this.toggleFullScreen}
         actionPublish={this.actionPublish}
         deckDidChange={this.deckDidChange}
