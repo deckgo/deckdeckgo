@@ -676,8 +676,6 @@ export class AppEditor {
 
   @Listen('reorder', {target: 'document'})
   async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
-    console.log($event);
-
     if (!$event || !$event.detail) {
       return;
     }

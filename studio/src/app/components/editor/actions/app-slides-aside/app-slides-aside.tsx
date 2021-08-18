@@ -81,8 +81,6 @@ export class AppSlidesAside {
       to: undefined,
       complete: () => {}
     };
-
-    console.log(this.reorderDetail);
   }
 
   private onDragHover(to: number) {
@@ -93,6 +91,21 @@ export class AppSlidesAside {
     this.reorderDetail = {
       ...this.reorderDetail,
       to
+    };
+  }
+
+  private onDragLeave() {
+    if (!this.reorderDetail) {
+      return;
+    }
+
+    if (this.reorderDetail.to !== 0) {
+      return;
+    }
+
+    this.reorderDetail = {
+      ...this.reorderDetail,
+      to: -1
     };
   }
 
@@ -118,7 +131,11 @@ export class AppSlidesAside {
 
   render() {
     return (
-      <Host onDrop={() => this.onDrop()} onDragOver={($event: DragEvent) => $event.preventDefault()}>
+      <Host
+        onDrop={() => this.onDrop()}
+        onDragOver={($event: DragEvent) => $event.preventDefault()}
+        onDragLeave={() => this.onDragLeave()}
+        class={this.reorderDetail !== undefined ? 'drag' : ''}>
         {this.slides.map((slide: HTMLElement, index: number) => (
           <app-slide-thumbnail
             custom-tappable
@@ -129,6 +146,8 @@ export class AppSlidesAside {
             class={
               index === this.reorderDetail?.to && this.reorderDetail?.from !== this.reorderDetail?.to
                 ? 'hover'
+                : index === 0 && this.reorderDetail?.to === -1
+                ? 'hover-top'
                 : index === this.reorderDetail?.from
                 ? index === this.reorderDetail?.to
                   ? 'drag-start'

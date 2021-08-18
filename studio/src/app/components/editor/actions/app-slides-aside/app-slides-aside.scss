@@ -13,13 +13,23 @@ app-slides-aside {
 
   --preview-width: calc(var(--slides-aside-width) - 32px);
 
+  &.drag {
+    app-slide-thumbnail {
+      transition: margin 0.25s ease-out, min-height 0.25s ease-in;
+    }
+  }
+
   app-slide-thumbnail {
     margin-bottom: 16px;
 
-    transition: margin 0.25s ease-out, min-height 0.25s ease-in;
+    transition: margin 0.15s ease-in;
 
     &.hover {
       margin-bottom: calc((var(--slides-aside-width) - 32px) * 9 / 16);
+    }
+
+    &.hover-top {
+      margin-top: calc((var(--slides-aside-width) - 32px) * 9 / 16);
     }
 
     &.drag-start, &.drag-hover {
