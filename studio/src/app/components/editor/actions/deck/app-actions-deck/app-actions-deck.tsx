@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
+import {isMobile} from '@deckdeckgo/utils';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
 import offlineStore from '../../../../../stores/offline.store';
@@ -46,6 +47,9 @@ export class AppActionsDeck {
   private selectDeck: EventEmitter<void>;
 
   private destroyListener;
+
+  // Drag and drop is not supported on iOS and Firefox on Android
+  private mobile: boolean = isMobile();
 
   async componentWillLoad() {
     this.destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
@@ -259,7 +263,7 @@ export class AppActionsDeck {
             aria-label={i18n.state.editor.slides}
             onClick={() => this.openSlideNavigate()}
             color="primary"
-            class="ion-activatable wider-devices slide-navigate">
+            class={`ion-activatable wider-devices ${!this.mobile ? 'hide-slide-navigate' : ''}`}>
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="md-list" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.slides}</ion-label>
