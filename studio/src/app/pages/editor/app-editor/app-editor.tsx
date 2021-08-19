@@ -332,9 +332,12 @@ export class AppEditor {
   }
 
   private async concatSlide(extraSlide: JSX.IntrinsicElements) {
-    this.slides = [...this.slides, extraSlide];
+    const slideIndex: number = this.activeIndex + 1;
+    this.slides = [...this.slides.slice(0, slideIndex), extraSlide, ...this.slides.slice(slideIndex)];
 
-    await ParseDeckSlotsUtils.stickLastChildren(this.el);
+    await ParseDeckSlotsUtils.stickLastChildren(this.mainRef);
+
+    await this.deckRef?.slideTo(slideIndex);
   }
 
   private async replaceSlide(slide: JSX.IntrinsicElements) {
@@ -377,7 +380,8 @@ export class AppEditor {
     await this.replaceSlide($event.detail);
   }
 
-  private async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
+  @Listen('addSlide', {target: 'document'})
+  async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
     if (!$event) {
       return;
     }
@@ -607,7 +611,7 @@ export class AppEditor {
   }
 
   private initThumbnails() {
-    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
+    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1201px)');
 
     this.thumbnails = !isFullscreen() && wideScreen.matches;
   }
@@ -681,34 +685,28 @@ export class AppEditor {
     await this.reorderSlides($event.detail);
   }
 
-  private reorderSlides(detail: ItemReorderEventDetail): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!detail) {
-        resolve();
-        return;
-      }
+  private async reorderSlides(detail: ItemReorderEventDetail) {
+    if (!detail) {
+      return;
+    }
 
-      try {
-        await this.deckEventsHandler.updateDeckSlidesOrder(detail);
+    if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
+      return;
+    }
 
-        if (detail.from < 0 || detail.to < 0 || !this.slides || detail.to >= this.slides.length || detail.from === detail.to) {
-          resolve();
-          return;
-        }
+    try {
+      await this.deckEventsHandler.updateDeckSlidesOrder(detail);
 
-        await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
+      await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
 
-        this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
-        this.slides = [...this.slides];
-      } catch (err) {
-        // We ignore the error here
-      }
+      this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
+      this.slides = [...this.slides];
+    } catch (err) {
+      // We ignore the error here
+    }
 
-      // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
-      detail.complete();
-
-      resolve();
-    });
+    // Finish the reorder and position the item in the DOM based on where the gesture ended. This method can also be called directly by the reorder group
+    detail.complete();
   }
 
   private async updatePresenting(presenting: boolean) {
@@ -791,8 +789,6 @@ export class AppEditor {
               fullscreen={this.fullscreen}
               slides={this.slides}
               slideNumber={this.activeIndex}
-              onSignIn={() => this.signIn()}
-              onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
               onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
@@ -842,7 +838,7 @@ export class AppEditor {
       return undefined;
     }
 
-    return <app-slides-aside deckRef={this.deckRef}></app-slides-aside>;
+    return <app-slides-aside deckRef={this.deckRef} activeIndex={this.activeIndex}></app-slides-aside>;
   }
 
   private renderSlidePreview() {

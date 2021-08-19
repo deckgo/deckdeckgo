@@ -4,10 +4,12 @@
   --slide-padding-end: 4px;
   --slide-padding-bottom: 8px;
 
-  --slide-split-padding-start: 4px;
-  --slide-split-padding-top: 8px;
-  --slide-split-padding-end: 4px;
-  --slide-split-padding-bottom: 8px;
+  deckgo-slide-split {
+    --slide-split-padding-start: 8px;
+    --slide-split-padding-top: 8px;
+    --slide-split-padding-end: 8px;
+    --slide-split-padding-bottom: 8px;
+  }
 
   --deckgo-highlight-code-carbon-header-padding: 2px 8px;
   --deckgo-highlight-code-carbon-header-button-width: 2px;

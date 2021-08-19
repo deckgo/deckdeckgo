@@ -116,11 +116,8 @@ export class DeckEventsHandler {
     }
   };
 
-  private onSlidesDidLoad = async ($event: CustomEvent) => {
-    if ($event) {
-      await this.initSlideSize();
-      await this.slideToLastSlide();
-    }
+  private onSlidesDidLoad = async () => {
+    await this.initSlideSize();
   };
 
   private onDeckChange = async ($event: CustomEvent) => {
@@ -227,7 +224,7 @@ export class DeckEventsHandler {
 
         // Because of the offline mode, is kind of handy to handle the list on the client side too.
         // But maybe in the future it is something which could be moved to the cloud.
-        await this.updateDeckSlideList(deckStore.state.deck, persistedSlide);
+        await this.updateDeckSlideList(deckStore.state.deck, persistedSlide, slide);
 
         busyStore.state.deckBusy = false;
 
@@ -292,7 +289,7 @@ export class DeckEventsHandler {
     });
   }
 
-  private updateDeckSlideList(deck: Deck, slide: Slide): Promise<void> {
+  private updateDeckSlideList(deck: Deck, slide: Slide, slideElement: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         if (!deck && !deck.data) {
@@ -309,7 +306,8 @@ export class DeckEventsHandler {
           deck.data.slides = [];
         }
 
-        deck.data.slides.push(slide.id);
+        const slideIndex: number = SlideUtils.slideIndex(slideElement);
+        deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineService.update(deck);
         deckStore.state.deck = {...updatedDeck};
@@ -545,7 +543,6 @@ export class DeckEventsHandler {
 
   private async deleteSlideElement() {
     const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
-
     await deck?.deleteActiveSlide();
   }
 
@@ -874,30 +871,6 @@ export class DeckEventsHandler {
       template: template || slide.nodeName?.toLowerCase(),
       ...(!template && {scope: SlideUtils.slideScope(slide)})
     };
-  }
-
-  private async slideToLastSlide(): Promise<void> {
-    const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
-
-    if (!deck || !deck.children || deck.children.length <= 0) {
-      return;
-    }
-
-    const slides: Element[] = Array.from(deck.children).filter((slide: Element) => {
-      return isSlide(slide as HTMLElement);
-    });
-
-    if (!slides || slides.length <= 0) {
-      return;
-    }
-
-    const lastSlide: Element = slides[slides.length - 1];
-
-    if (!lastSlide || lastSlide.getAttribute('slide_id')) {
-      return;
-    }
-
-    await deck.slideTo(slides.length - 1);
   }
 
   async initSlideSize() {

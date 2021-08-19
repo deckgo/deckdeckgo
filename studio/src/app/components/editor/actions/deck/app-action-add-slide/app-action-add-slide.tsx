@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, h, JSX, Prop} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
@@ -18,16 +18,16 @@ export class AppActionAddSlide {
   @Element() el: HTMLElement;
 
   @Prop()
-  slides: JSX.IntrinsicElements[] = [];
+  slidesLength: number | undefined;
 
   @Prop()
-  blockSlide: EventEmitter;
+  popoverCssClass: string;
 
-  @Prop()
-  signIn: EventEmitter;
+  @Event({bubbles: true})
+  private addSlide: EventEmitter<JSX.IntrinsicElements>;
 
-  @Prop()
-  addSlide: EventEmitter;
+  @Event({bubbles: true})
+  private blockSlide: EventEmitter<boolean>;
 
   async onActionOpenSlideAdd($event: CustomEvent) {
     if (!$event || !$event.detail) {
@@ -38,7 +38,7 @@ export class AppActionAddSlide {
       component: 'app-create-slide',
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu popover-menu-wide'
+      cssClass: `popover-menu popover-menu-wide ${this.popoverCssClass}`
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -261,10 +261,7 @@ export class AppActionAddSlide {
 
   render() {
     return (
-      <app-action-busy
-        aria-label={i18n.state.editor.add_slide}
-        iconName="add"
-        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+      <app-action-busy aria-label={i18n.state.editor.add_slide} iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
         <ion-label aria-hidden="true">{i18n.state.editor.add_slide}</ion-label>
       </app-action-busy>
     );

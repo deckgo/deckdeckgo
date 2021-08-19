@@ -26,10 +26,8 @@ import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
 import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
     interface AppActionAddSlide {
-        "addSlide": EventEmitter;
-        "blockSlide": EventEmitter;
-        "signIn": EventEmitter;
-        "slides": JSX.IntrinsicElements[];
+        "popoverCssClass": string;
+        "slidesLength": number | undefined;
     }
     interface AppActionBusy {
         "iconName": string;
@@ -41,12 +39,9 @@ export namespace Components {
     }
     interface AppActionsDeck {
         "actionPublish": EventEmitter;
-        "addSlide": EventEmitter;
         "animatePrevNextSlide": EventEmitter;
-        "blockSlide": EventEmitter;
         "deckDidChange": EventEmitter;
         "fullscreen": boolean;
-        "signIn": EventEmitter;
         "slides": JSX.IntrinsicElements[];
         "toggleFullScreen": EventEmitter;
     }
@@ -158,9 +153,7 @@ export namespace Components {
     interface AppDeckImport {
     }
     interface AppDeckStyle {
-        "blockSlide": EventEmitter<boolean>;
         "deckDidChange": EventEmitter<HTMLElement>;
-        "signIn": EventEmitter<void>;
     }
     interface AppDeckTransition {
         "deckElement": HTMLDeckgoDeckElement;
@@ -349,6 +342,7 @@ export namespace Components {
         "overflow": boolean;
     }
     interface AppSlidesAside {
+        "activeIndex": number;
         "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
@@ -1269,10 +1263,10 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AppActionAddSlide {
-        "addSlide"?: EventEmitter;
-        "blockSlide"?: EventEmitter;
-        "signIn"?: EventEmitter;
-        "slides"?: JSX.IntrinsicElements[];
+        "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
+        "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
+        "popoverCssClass"?: string;
+        "slidesLength"?: number | undefined;
     }
     interface AppActionBusy {
         "iconName"?: string;
@@ -1288,13 +1282,10 @@ declare namespace LocalJSX {
     }
     interface AppActionsDeck {
         "actionPublish"?: EventEmitter;
-        "addSlide"?: EventEmitter;
         "animatePrevNextSlide"?: EventEmitter;
-        "blockSlide"?: EventEmitter;
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
-        "signIn"?: EventEmitter;
         "slides"?: JSX.IntrinsicElements[];
         "toggleFullScreen"?: EventEmitter;
     }
@@ -1302,13 +1293,11 @@ declare namespace LocalJSX {
         "fullscreen"?: boolean;
         "hideActions"?: boolean;
         "onActionPublish"?: (event: CustomEvent<void>) => void;
-        "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "onElementFocus"?: (event: CustomEvent<HTMLElement>) => void;
         "onPresenting"?: (event: CustomEvent<boolean>) => void;
-        "onSignIn"?: (event: CustomEvent<void>) => void;
         "onSlideCopy"?: (event: CustomEvent<HTMLElement>) => void;
         "onSlideTransform"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onToggleFullScreen"?: (event: CustomEvent<void>) => void;
@@ -1439,9 +1428,9 @@ declare namespace LocalJSX {
     interface AppDeckImport {
     }
     interface AppDeckStyle {
-        "blockSlide"?: EventEmitter<boolean>;
         "deckDidChange"?: EventEmitter<HTMLElement>;
-        "signIn"?: EventEmitter<void>;
+        "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
+        "onSignIn"?: (event: CustomEvent<void>) => void;
     }
     interface AppDeckTransition {
         "deckElement"?: HTMLDeckgoDeckElement;
@@ -1648,7 +1637,9 @@ declare namespace LocalJSX {
         "overflow"?: boolean;
     }
     interface AppSlidesAside {
+        "activeIndex"?: number;
         "deckRef": HTMLDeckgoDeckElement;
+        "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
