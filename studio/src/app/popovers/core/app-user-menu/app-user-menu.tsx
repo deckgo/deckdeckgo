@@ -5,6 +5,7 @@ import i18n from '../../../stores/i18n.store';
 import apiUserStore from '../../../stores/api.user.store';
 import userStore from '../../../stores/user.store';
 import authStore from '../../../stores/auth.store';
+import syncStore from '../../../stores/sync.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -93,7 +94,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signOut()}>
+        <ion-item onClick={() => this.signOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

@@ -13,6 +13,11 @@ const {state, onChange} = createStore<SyncStore>({
 });
 
 const onBeforeUnload = ($event: BeforeUnloadEvent) => {
+  if (window.location.pathname === '/signin') {
+    // We do not want to present a warning when user sign in
+    return;
+  }
+
   $event.preventDefault();
   return ($event.returnValue = 'Are you sure you want to exit?');
 };
