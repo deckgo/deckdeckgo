@@ -259,7 +259,7 @@ export class AppActionsDeck {
             aria-label={i18n.state.editor.slides}
             onClick={() => this.openSlideNavigate()}
             color="primary"
-            class="ion-activatable wider-devices">
+            class="ion-activatable wider-devices slide-navigate">
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="md-list" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.slides}</ion-label>

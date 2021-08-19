@@ -610,7 +610,7 @@ export class AppEditor {
   }
 
   private initThumbnails() {
-    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
+    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1201px)');
 
     this.thumbnails = !isFullscreen() && wideScreen.matches;
   }

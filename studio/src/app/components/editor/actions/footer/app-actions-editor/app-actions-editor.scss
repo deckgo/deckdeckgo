@@ -78,6 +78,13 @@ app-actions-editor {
           }
         }
       }
+
+      @media screen and (min-width: 1201px) {
+        app-action-add-slide,
+        button.slide-navigate {
+          display: none;
+        }
+      }
     }
   }
 
