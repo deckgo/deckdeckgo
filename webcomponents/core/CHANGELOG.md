@@ -1,3 +1,15 @@
+# 8.4.0 (2021-08-19)
+
+### Features
+
+- `deleteActiveSlide` make removal of DOM child optional
+
+# 8.3.0 (2021-08-19)
+
+### Features
+
+- consider mobile as small devices, not tablets 
+
 # 8.2.1 (2021-05-29)
 
 ### Fix

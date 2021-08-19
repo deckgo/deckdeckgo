@@ -1,4 +1,4 @@
-import {Component, Listen, h, Host, State, Prop, Event, EventEmitter} from '@stencil/core';
+import {Component, Listen, h, Host, State, Prop, Event, EventEmitter, Element, Watch} from '@stencil/core';
 
 import {ItemReorderEventDetail} from '@ionic/core';
 
@@ -13,6 +13,8 @@ import {SlideUtils} from '../../../../utils/editor/slide.utils';
   styleUrl: 'app-slides-aside.scss'
 })
 export class AppSlidesAside {
+  @Element() el: HTMLElement;
+
   @State()
   private slides: HTMLElement[] = [];
 
@@ -21,6 +23,9 @@ export class AppSlidesAside {
 
   @Prop()
   deckRef!: HTMLDeckgoDeckElement;
+
+  private hostRef!: HTMLAppSlidesAsideElement;
+  private asideRef!: HTMLElement;
 
   @Event()
   private reorder: EventEmitter<ItemReorderEventDetail>;
@@ -54,6 +59,20 @@ export class AppSlidesAside {
       this.canDragLeave = true;
       this.canDragHover = true;
     }, 250);
+  }
+
+  @Watch('activeIndex')
+  onActiveIndexChange() {
+    const nextThumbnail: HTMLElement | null = this.el.querySelector(`app-slide-thumbnail:nth-child(${this.activeIndex + 1})`);
+
+    const rect: DOMRect | undefined = nextThumbnail?.getBoundingClientRect();
+
+    if (rect?.top > this.hostRef?.scrollHeight || rect?.top < this.hostRef?.scrollTop) {
+      this.asideRef?.scrollTo({
+        top: rect.top,
+        behavior: 'smooth'
+      });
+    }
   }
 
   @Listen('deckDidLoad', {target: 'document'})
@@ -170,7 +189,7 @@ export class AppSlidesAside {
 
   render() {
     return (
-      <Host>
+      <Host ref={(el) => (this.hostRef = el as HTMLAppSlidesAsideElement)}>
         {this.renderSlides()}
 
         {this.renderActions()}
@@ -181,6 +200,7 @@ export class AppSlidesAside {
   private renderSlides() {
     return (
       <aside
+        ref={(el) => (this.asideRef = el as HTMLElement)}
         onDrop={() => this.onDrop()}
         onDragOver={($event: DragEvent) => $event.preventDefault()}
         onDragLeave={() => this.onDragLeave()}
