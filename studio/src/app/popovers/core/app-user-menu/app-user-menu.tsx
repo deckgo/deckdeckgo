@@ -2,6 +2,7 @@ import {Component, Element, h} from '@stencil/core';
 
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import i18n from '../../../stores/i18n.store';
+import syncStore from '../../../stores/sync.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
@@ -69,7 +70,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signOut()}>
+        <ion-item onClick={() => this.signOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>
