@@ -957,18 +957,15 @@ export class DeckdeckgoDeck {
   }
 
   @Method()
-  async deleteActiveSlide() {
+  async deleteActiveSlide(removeChild: boolean = true) {
     if (this.activeIndex > this.length || this.activeIndex < 0) {
       return;
     }
 
-    const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
-
-    if (!slide) {
-      return;
+    if (removeChild) {
+      const slide: HTMLElement | null = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+      slide?.parentElement.removeChild(slide);
     }
-
-    slide.parentElement.removeChild(slide);
 
     this.activeIndex = this.activeIndex > 0 ? this.activeIndex - 1 : 0;
     this.length = this.length > 0 ? this.length - 1 : 0;

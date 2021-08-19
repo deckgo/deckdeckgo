@@ -30,7 +30,9 @@ import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-even
 import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
 import {SlotType} from '../../../types/editor/slot-type';
+
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
+import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {AuthService} from '../../../services/auth/auth.service';
 import {AnonymousService} from '../../../services/editor/anonymous/anonymous.service';
@@ -378,6 +380,16 @@ export class AppEditor {
     }
 
     await this.replaceSlide($event.detail);
+  }
+
+  @Listen('slideDelete', {target: 'document'})
+  async deleteSlide({detail: deletedSlide}: CustomEvent<HTMLElement>) {
+    const slideIndex: number = SlideUtils.slideIndex(deletedSlide);
+
+    this.slides = [...this.slides.filter((_slide: JSX.IntrinsicElements, index: number) => slideIndex !== index)];
+
+    // Update deck length and slide to an active slide
+    await this.deckRef.deleteActiveSlide(false);
   }
 
   @Listen('addSlide', {target: 'document'})

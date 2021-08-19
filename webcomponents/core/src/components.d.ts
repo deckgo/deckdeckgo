@@ -13,7 +13,7 @@ export namespace Components {
         "autoSlideInterval": number;
         "blockSlide": (block: boolean) => Promise<void>;
         "cloneBackground": boolean;
-        "deleteActiveSlide": () => Promise<void>;
+        "deleteActiveSlide": (removeChild?: boolean) => Promise<void>;
         "direction": 'horizontal' | 'vertical' | 'papyrus';
         "directionMobile": 'horizontal' | 'vertical' | 'papyrus';
         "doPrint": () => Promise<void>;

@@ -1,3 +1,9 @@
+# 8.4.0 (2021-08-19)
+
+### Features
+
+- `deleteActiveSlide` make removal of DOM child optional
+
 # 8.3.0 (2021-08-19)
 
 ### Features
