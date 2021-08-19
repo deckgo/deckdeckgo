@@ -26,6 +26,7 @@ import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
 import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
     interface AppActionAddSlide {
+        "popoverCssClass": string;
         "slidesLength": number | undefined;
     }
     interface AppActionBusy {
@@ -1289,6 +1290,7 @@ declare namespace LocalJSX {
         "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onSignIn"?: (event: CustomEvent<void>) => void;
+        "popoverCssClass"?: string;
         "slidesLength"?: number | undefined;
     }
     interface AppActionBusy {

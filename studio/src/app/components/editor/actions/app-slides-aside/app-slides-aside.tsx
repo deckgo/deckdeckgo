@@ -190,7 +190,7 @@ export class AppSlidesAside {
   private renderActions() {
     return (
       <div class="actions">
-        <app-action-add-slide slidesLength={this.slides.length}></app-action-add-slide>
+        <app-action-add-slide slidesLength={this.slides.length} popoverCssClass="popover-menu-wide-start"></app-action-add-slide>
       </div>
     );
   }

@@ -22,6 +22,9 @@ export class AppActionAddSlide {
   @Prop()
   slidesLength: number | undefined;
 
+  @Prop()
+  popoverCssClass: string;
+
   @Event({bubbles: true})
   private signIn: EventEmitter<void>;
 
@@ -53,7 +56,7 @@ export class AppActionAddSlide {
       component: 'app-create-slide',
       mode: 'ios',
       showBackdrop: false,
-      cssClass: 'popover-menu popover-menu-wide'
+      cssClass: `popover-menu popover-menu-wide ${this.popoverCssClass}`
     });
 
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
