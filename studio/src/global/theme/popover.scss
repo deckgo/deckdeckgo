@@ -5,6 +5,15 @@ ion-popover.popover-menu {
     }
   }
 
+  &.popover-menu-wide-start {
+    @media screen and (min-width: 1200px) {
+      div.popover-content {
+        left: 176px !important;
+        right: inherit;
+      }
+    }
+  }
+
   --width: 376px;
   --max-width: calc(100% - 12px);
 

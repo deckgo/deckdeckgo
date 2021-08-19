@@ -1,4 +1,4 @@
-import {Component, Element, EventEmitter, h, Host, Prop, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
 
@@ -15,12 +15,6 @@ export class AppDeck {
   @Element() el: HTMLElement;
 
   @Prop()
-  signIn: EventEmitter<void>;
-
-  @Prop()
-  blockSlide: EventEmitter<boolean>;
-
-  @Prop()
   deckDidChange: EventEmitter<HTMLElement>;
 
   @State()
@@ -28,6 +22,12 @@ export class AppDeck {
 
   @State()
   private deckElement: HTMLDeckgoDeckElement;
+
+  @Event({bubbles: true})
+  private signIn: EventEmitter<void>;
+
+  @Event({bubbles: true})
+  private blockSlide: EventEmitter<boolean>;
 
   private imageHelper: ImageHelper;
 

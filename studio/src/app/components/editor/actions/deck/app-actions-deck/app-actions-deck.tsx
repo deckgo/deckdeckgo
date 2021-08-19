@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
 
+import {isMobile} from '@deckdeckgo/utils';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
 import offlineStore from '../../../../../stores/offline.store';
@@ -31,15 +32,6 @@ export class AppActionsDeck {
   slides: JSX.IntrinsicElements[] = [];
 
   @Prop()
-  blockSlide: EventEmitter;
-
-  @Prop()
-  signIn: EventEmitter;
-
-  @Prop()
-  addSlide: EventEmitter;
-
-  @Prop()
   animatePrevNextSlide: EventEmitter;
 
   @Prop()
@@ -55,6 +47,9 @@ export class AppActionsDeck {
   private selectDeck: EventEmitter<void>;
 
   private destroyListener;
+
+  // Drag and drop is not supported on iOS and Firefox on Android
+  private mobile: boolean = isMobile();
 
   async componentWillLoad() {
     this.destroyListener = remoteStore.onChange('pendingRequests', async (requests: DeckdeckgoEventDeckRequest[] | undefined) => {
@@ -160,8 +155,6 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-deck-style',
       componentProps: {
-        signIn: this.signIn,
-        blockSlide: this.blockSlide,
         deckDidChange: this.deckDidChange
       },
       mode: 'ios',
@@ -240,7 +233,7 @@ export class AppActionsDeck {
     return (
       <aside>
         <ion-buttons slot="start">
-          <app-action-add-slide slides={this.slides} blockSlide={this.blockSlide} signIn={this.signIn} addSlide={this.addSlide}></app-action-add-slide>
+          <app-action-add-slide slidesLength={this.slides?.length}></app-action-add-slide>
 
           <button
             onMouseDown={($event) => $event.stopPropagation()}
@@ -270,7 +263,7 @@ export class AppActionsDeck {
             aria-label={i18n.state.editor.slides}
             onClick={() => this.openSlideNavigate()}
             color="primary"
-            class="ion-activatable wider-devices">
+            class={`ion-activatable wider-devices ${!this.mobile ? 'hide-slide-navigate' : ''}`}>
             <ion-ripple-effect></ion-ripple-effect>
             <AppIcon name="md-list" ariaLabel="" ariaHidden={true}></AppIcon>
             <ion-label aria-hidden="true">{i18n.state.editor.slides}</ion-label>

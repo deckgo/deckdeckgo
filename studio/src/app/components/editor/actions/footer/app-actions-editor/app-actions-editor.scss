@@ -1,3 +1,5 @@
+@use "../../../../../../global/theme/mixins/button";
+
 app-actions-editor {
   background: transparent;
   display: block;
@@ -13,35 +15,15 @@ app-actions-editor {
     }
 
     button {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      @include button.action;
 
-      padding: 0 12px;
-
-      position: relative;
-
-      outline: none;
-
-      color: inherit;
-
-      border-radius: 2px;
-      background: transparent;
-
-      &:focus {
-        background: rgba(var(--ion-color-medium-rgb), 0.1);
+      ion-label {
+        margin-bottom: 6px;
       }
 
       ion-icon {
         font-size: 22px;
         margin: 6px 0 4px;
-      }
-
-      ion-label {
-        font-size: var(--font-size-small);
-        margin-bottom: 6px;
-        white-space: nowrap;
       }
     }
   }
@@ -69,10 +51,7 @@ app-actions-editor {
           padding: 2px 12px;
 
           ion-icon {
-            padding: 6px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            @include button.icon;
           }
         }
       }
@@ -97,6 +76,13 @@ app-actions-editor {
               margin-left: 32px;
             }
           }
+        }
+      }
+
+      @media screen and (min-width: 1201px) {
+        app-action-add-slide,
+        button.hide-slide-navigate {
+          display: none;
         }
       }
     }

@@ -377,7 +377,8 @@ export class AppEditor {
     await this.replaceSlide($event.detail);
   }
 
-  private async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
+  @Listen('addSlide', {target: 'document'})
+  async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
     if (!$event) {
       return;
     }
@@ -609,7 +610,7 @@ export class AppEditor {
   }
 
   private initThumbnails() {
-    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1200px)');
+    const wideScreen: MediaQueryList = window.matchMedia('(min-width: 1201px)');
 
     this.thumbnails = !isFullscreen() && wideScreen.matches;
   }
@@ -787,8 +788,6 @@ export class AppEditor {
               fullscreen={this.fullscreen}
               slides={this.slides}
               slideNumber={this.activeIndex}
-              onSignIn={() => this.signIn()}
-              onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
               onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
@@ -838,7 +837,7 @@ export class AppEditor {
       return undefined;
     }
 
-    return <app-slides-aside deckRef={this.deckRef}></app-slides-aside>;
+    return <app-slides-aside deckRef={this.deckRef} activeIndex={this.activeIndex}></app-slides-aside>;
   }
 
   private renderSlidePreview() {
