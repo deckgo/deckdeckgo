@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch, Host} from '@stencil/core';
 
-import {isIOS, unifyEvent, isMobile, isFullscreen, debounce} from '@deckdeckgo/utils';
+import {isIOS, unifyEvent, isMobile, isFullscreen, debounce, isAndroidTablet, isIPad} from '@deckdeckgo/utils';
 import {getSlideDefinition, getAttributesDefinition} from '@deckdeckgo/deck-utils';
 
 import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
@@ -95,6 +95,9 @@ export class DeckdeckgoDeck {
 
   private slideLoopInterval: number;
   private idleSlideLoopTimer: number;
+
+  // We do not consider iPad and Tablet as "mobile" devices. With mobile we mean smaller devices, phones.
+  private mobile: boolean = isMobile() && !(isIPad() || isAndroidTablet());
 
   async componentWillLoad() {
     await this.initRtl();
@@ -234,7 +237,7 @@ export class DeckdeckgoDeck {
   private async initFontSize(slider: HTMLElement, {height, width}: {height: number; width: number}) {
     // 576px height = font-size 16px or 1em (relative to the font-size of its direct or nearest parent)
     const fontSize: number = height / 576;
-    const ratioFontSize: number = width / 16 * 9 / 576;
+    const ratioFontSize: number = ((width / 16) * 9) / 576;
 
     slider.style.setProperty('--slide-auto-font-size', `${fontSize}em`);
     slider.style.setProperty('--slide-auto-ratio-font-size', `${ratioFontSize}em`);
@@ -337,7 +340,7 @@ export class DeckdeckgoDeck {
   }
 
   private async initDirection() {
-    this.dir = isMobile() ? this.directionMobile : this.direction;
+    this.dir = this.mobile ? this.directionMobile : this.direction;
   }
 
   /* BEGIN: Handle swipe */
@@ -681,7 +684,7 @@ export class DeckdeckgoDeck {
       // In standard case, we want to be able to reveal elements or not, as we wish but if we set reveal to false, we want to display everything straight at the begin.
       // Or we display also all reveal elements on mobile devices as there is no keyboard on mobile device to reveal elements
       // Also, no reveal for papyrus as we can scroll
-      if (!this.reveal || (!this.revealOnMobile && isMobile()) || this.dir === 'papyrus') {
+      if (!this.reveal || (!this.revealOnMobile && this.mobile) || this.dir === 'papyrus') {
         promises.push(this.revealAllContent());
       }
 
@@ -954,18 +957,15 @@ export class DeckdeckgoDeck {
   }
 
   @Method()
-  async deleteActiveSlide() {
+  async deleteActiveSlide(removeChild: boolean = true) {
     if (this.activeIndex > this.length || this.activeIndex < 0) {
       return;
     }
 
-    const slide: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
-
-    if (!slide) {
-      return;
+    if (removeChild) {
+      const slide: HTMLElement | null = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.activeIndex + 1) + ')');
+      slide?.parentElement.removeChild(slide);
     }
-
-    slide.parentElement.removeChild(slide);
 
     this.activeIndex = this.activeIndex > 0 ? this.activeIndex - 1 : 0;
     this.length = this.length > 0 ? this.length - 1 : 0;

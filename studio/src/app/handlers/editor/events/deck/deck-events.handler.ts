@@ -528,8 +528,6 @@ export class DeckEventsHandler {
           }
         }
 
-        await this.deleteSlideElement();
-
         busyStore.state.deckBusy = false;
 
         resolve();
@@ -539,11 +537,6 @@ export class DeckEventsHandler {
         resolve();
       }
     });
-  }
-
-  private async deleteSlideElement() {
-    const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
-    await deck?.deleteActiveSlide();
   }
 
   private async getSlideAttributes(slide: HTMLElement, cleanFields: boolean): Promise<SlideAttributes> {
