@@ -1,0 +1,31 @@
+@mixin action {
+  display: flex;
+  flex-direction: var(--button-action-flex-direction, column);
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  outline: none;
+
+  color: inherit;
+
+  border-radius: 2px;
+  background: transparent;
+
+  &:focus {
+    background: rgba(var(--ion-color-medium-rgb), 0.1);
+  }
+
+  ion-label {
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+}
+
+@mixin icon {
+  padding: 6px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}

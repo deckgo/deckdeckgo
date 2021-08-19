@@ -131,7 +131,17 @@ export class AppSlidesAside {
 
   render() {
     return (
-      <Host
+      <Host>
+        {this.renderSlides()}
+
+        <app-action-add-slide></app-action-add-slide>
+      </Host>
+    );
+  }
+
+  private renderSlides() {
+    return (
+      <aside
         onDrop={() => this.onDrop()}
         onDragOver={($event: DragEvent) => $event.preventDefault()}
         onDragLeave={() => this.onDragLeave()}
@@ -158,7 +168,17 @@ export class AppSlidesAside {
             onDragStart={() => this.onDragStart(index)}
             onDragOver={() => this.onDragHover(index)}></app-slide-thumbnail>
         ))}
-      </Host>
+
+        {this.renderActions()}
+      </aside>
+    );
+  }
+
+  private renderActions() {
+    return (
+      <div class="actions">
+        <app-action-add-slide></app-action-add-slide>
+      </div>
     );
   }
 }

@@ -1,45 +1,85 @@
+@use "../../../../../global/theme/mixins/button";
+
 app-slides-aside {
-  display: flex;
-  flex-direction: column;
 
-  min-height: 100%;
-  height: 100%;
+  position: relative;
 
-  width: var(--slides-aside-width);
+  aside {
+    display: flex;
+    flex-direction: column;
 
-  padding: 16px;
-  overflow: scroll;
-  border-right: 1px solid #dedede;
+    min-height: 100%;
+    height: 100%;
 
-  --preview-width: calc(var(--slides-aside-width) - 32px);
+    width: var(--slides-aside-width);
 
-  &.drag {
+    padding: 16px 16px 48px;
+    overflow: scroll;
+    border-right: 1px solid #dedede;
+
+    --preview-width: calc(var(--slides-aside-width) - 32px);
+
+    &.drag {
+      app-slide-thumbnail {
+        transition: margin 0.25s ease-out, min-height 0.25s ease-in;
+      }
+    }
+
     app-slide-thumbnail {
-      transition: margin 0.25s ease-out, min-height 0.25s ease-in;
+      margin-bottom: 16px;
+
+      transition: margin 0.15s ease-in;
+
+      &.hover {
+        margin-bottom: calc((var(--slides-aside-width) - 32px) * 9 / 16);
+      }
+
+      &.hover-top {
+        margin-top: calc((var(--slides-aside-width) - 32px) * 9 / 16);
+      }
+
+      &.drag-start, &.drag-hover {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      &.drag-hover {
+        min-height: 0;
+        border: none;
+      }
     }
   }
 
-  app-slide-thumbnail {
-    margin-bottom: 16px;
+  div.actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
 
-    transition: margin 0.15s ease-in;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
-    &.hover {
-      margin-bottom: calc((var(--slides-aside-width) - 32px) * 9 / 16);
-    }
+    width: 100%;
 
-    &.hover-top {
-      margin-top: calc((var(--slides-aside-width) - 32px) * 9 / 16);
-    }
+    background: var(--ion-color-light);
+    border: 1px solid #dedede;
 
-    &.drag-start, &.drag-hover {
-      visibility: hidden;
-      opacity: 0;
-    }
+    padding: 8px 16px;
+  }
 
-    &.drag-hover {
-      min-height: 0;
-      border: none;
+  app-action-add-slide {
+    button {
+      --button-action-flex-direction: row;
+
+      @include button.action;
+
+      ion-icon {
+        @include button.icon;
+
+        font-size: 14px;
+        margin: 0 4px 0 0;
+      }
     }
   }
 }
