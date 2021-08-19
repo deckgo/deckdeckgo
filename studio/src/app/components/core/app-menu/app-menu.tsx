@@ -1,15 +1,9 @@
 import {Component, Element, Fragment, h} from '@stencil/core';
 
-import navStore from '../../../stores/nav.store';
 import authStore from '../../../stores/auth.store';
-import {NavDirection} from '../../../stores/nav.store';
 import i18n from '../../../stores/i18n.store';
 
-import {signIn} from '../../../utils/core/signin.utils';
-
-import {AuthService} from '../../../services/auth/auth.service';
-
-import { AppIcon } from '../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-menu',
@@ -18,25 +12,6 @@ import { AppIcon } from '../app-icon/app-icon';
 })
 export class AppMenu {
   @Element() el: HTMLElement;
-
-  private authService: AuthService;
-
-  constructor() {
-    this.authService = AuthService.getInstance();
-  }
-
-  private async signIn() {
-    signIn();
-  }
-
-  private async signOut() {
-    await this.authService.signOut();
-
-    navStore.state.nav = {
-      url: '/',
-      direction: NavDirection.RELOAD
-    };
-  }
 
   render() {
     return (
@@ -47,8 +22,6 @@ export class AppMenu {
         {this.renderSettings()}
 
         {this.renderInteract()}
-
-        {this.renderSignInOut()}
       </ion-list>
     );
   }
@@ -72,24 +45,6 @@ export class AppMenu {
         <ion-label>{i18n.state.menu.dashboard}</ion-label>
       </ion-item>
     );
-  }
-
-  private renderSignInOut() {
-    if (authStore.state.loggedIn) {
-      return (
-        <ion-item button class="signout" onClick={() => this.signOut()}>
-          <AppIcon name="log-out" ariaLabel="" ariaHidden={true} lazy={true} slot="start" style={{transform: 'translate(3px, 0px)'}}></AppIcon>
-          <ion-label>{i18n.state.nav.sign_out}</ion-label>
-        </ion-item>
-      );
-    } else {
-      return (
-        <ion-item button onClick={() => this.signIn()}>
-          <AppIcon name="log-in" ariaLabel="" ariaHidden={true} lazy={true} slot="start" style={{transform: 'translate(-3px, 0px)'}}></AppIcon>
-          <ion-label>{i18n.state.nav.sign_in}</ion-label>
-        </ion-item>
-      );
-    }
   }
 
   private renderInteract() {
