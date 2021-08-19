@@ -31,11 +31,11 @@ app-slides-aside {
       transition: margin 0.15s ease-in;
 
       &.hover {
-        margin-bottom: calc((var(--slides-aside-width) - 32px) * 9 / 16);
+        margin-bottom: calc(var(--slides-aside-width) * 9 / 16);
       }
 
       &.hover-top {
-        margin-top: calc((var(--slides-aside-width) - 32px) * 9 / 16);
+        margin-top: calc(var(--slides-aside-width) * 9 / 16);
       }
 
       &.drag-start, &.drag-hover {
@@ -45,6 +45,7 @@ app-slides-aside {
 
       &.drag-hover {
         min-height: 0;
+        height: 0;
         border: none;
       }
     }

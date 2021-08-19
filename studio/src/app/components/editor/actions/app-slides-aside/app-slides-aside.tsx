@@ -28,6 +28,9 @@ export class AppSlidesAside {
 
   private readonly debounceUpdateSlide: (updateSlide: HTMLElement) => void;
 
+  private canDragLeave: boolean = true;
+  private canDragHover: boolean = true;
+
   constructor() {
     this.debounceUpdateAllSlides = debounce(async () => {
       await this.updateAllSlides();
@@ -40,6 +43,14 @@ export class AppSlidesAside {
 
   componentDidLoad() {
     this.debounceUpdateAllSlides();
+  }
+
+  componentDidUpdate() {
+    setTimeout(() => {
+      console.log('yo');
+      this.canDragLeave = true;
+      this.canDragHover = true;
+    }, 250);
   }
 
   @Listen('deckDidLoad', {target: 'document'})
@@ -99,8 +110,16 @@ export class AppSlidesAside {
   }
 
   private onDragHover(to: number) {
-    if (!this.reorderDetail) {
+    if (!this.canDragHover) {
       return;
+    }
+
+    if (!this.reorderDetail || this.reorderDetail.to === to) {
+      return;
+    }
+
+    if (this.reorderDetail.to === -1 && to === 0) {
+      this.canDragLeave = false;
     }
 
     this.reorderDetail = {
@@ -110,6 +129,10 @@ export class AppSlidesAside {
   }
 
   private onDragLeave() {
+    if (!this.canDragLeave) {
+      return;
+    }
+
     if (!this.reorderDetail) {
       return;
     }
@@ -117,6 +140,8 @@ export class AppSlidesAside {
     if (this.reorderDetail.to !== 0) {
       return;
     }
+
+    this.canDragHover = false;
 
     this.reorderDetail = {
       ...this.reorderDetail,
