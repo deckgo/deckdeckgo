@@ -332,9 +332,12 @@ export class AppEditor {
   }
 
   private async concatSlide(extraSlide: JSX.IntrinsicElements) {
-    this.slides = [...this.slides, extraSlide];
+    const slideIndex: number = this.activeIndex + 1;
+    this.slides = [...this.slides.slice(0, slideIndex), extraSlide, ...this.slides.slice(slideIndex)];
 
     await ParseDeckSlotsUtils.stickLastChildren(this.mainRef);
+
+    await this.deckRef?.slideTo(slideIndex);
   }
 
   private async replaceSlide(slide: JSX.IntrinsicElements) {

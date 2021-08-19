@@ -8,4 +8,8 @@ export class SlideUtils {
   static slideScope(element: HTMLElement | undefined): SlideScope {
     return element?.hasAttribute('scope') ? <SlideScope>element.getAttribute('scope') : SlideScope.DEFAULT;
   }
+
+  static slideIndex(slide: HTMLElement): number {
+    return Array.from(slide.parentNode.children).indexOf(slide);
+  }
 }

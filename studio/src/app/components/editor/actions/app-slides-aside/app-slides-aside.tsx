@@ -6,6 +6,7 @@ import {debounce} from '@deckdeckgo/utils';
 
 import {isSlide} from '../../../../../../../utils/deck/src';
 import {deckSelector, slideTo} from '../../../../utils/editor/deck.utils';
+import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
 @Component({
   tag: 'app-slides-aside',
@@ -76,19 +77,15 @@ export class AppSlidesAside {
   }
 
   private async updateSlide(updatedSlide: HTMLElement) {
-    const slideIndex: number = this.slideIndex(updatedSlide);
+    const slideIndex: number = SlideUtils.slideIndex(updatedSlide);
 
     this.slides = [...this.slides.map((slide: HTMLElement, index: number) => (slideIndex === index ? (updatedSlide.cloneNode(true) as HTMLElement) : slide))];
   }
 
   private async deleteSlide(deletedSlide: HTMLElement) {
-    const slideIndex: number = this.slideIndex(deletedSlide);
+    const slideIndex: number = SlideUtils.slideIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: HTMLElement, index: number) => slideIndex !== index)];
-  }
-
-  private slideIndex(slide: HTMLElement): number {
-    return Array.from(slide.parentNode.children).indexOf(slide);
   }
 
   private async updateAllSlides() {
