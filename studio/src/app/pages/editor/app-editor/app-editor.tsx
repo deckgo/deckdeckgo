@@ -377,7 +377,8 @@ export class AppEditor {
     await this.replaceSlide($event.detail);
   }
 
-  private async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
+  @Listen('addSlide', {target: 'document'})
+  async addSlide($event: CustomEvent<JSX.IntrinsicElements>) {
     if (!$event) {
       return;
     }
@@ -787,8 +788,6 @@ export class AppEditor {
               fullscreen={this.fullscreen}
               slides={this.slides}
               slideNumber={this.activeIndex}
-              onSignIn={() => this.signIn()}
-              onAddSlide={($event: CustomEvent<JSX.IntrinsicElements>) => this.addSlide($event)}
               onAnimatePrevNextSlide={($event: CustomEvent<boolean>) => this.animatePrevNextSlide($event)}
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}

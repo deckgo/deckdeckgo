@@ -26,7 +26,7 @@ import {SelectedElement} from '../../../../../types/editor/selected-element';
 import {SlideScope} from '../../../../../models/data/slide';
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 import {CloneSlideUtils} from '../../../../../utils/editor/clone-slide.utils';
-import { AppIcon } from '../../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-actions-element',
@@ -48,7 +48,8 @@ export class AppActionsElement {
   @State()
   private selectedElement: SelectedElement | undefined;
 
-  @Event() private blockSlide: EventEmitter<boolean>;
+  @Event({bubbles: true})
+  private blockSlide: EventEmitter<boolean>;
 
   @Event() private slideDelete: EventEmitter<HTMLElement>;
 

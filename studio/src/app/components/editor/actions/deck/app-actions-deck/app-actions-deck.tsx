@@ -31,15 +31,6 @@ export class AppActionsDeck {
   slides: JSX.IntrinsicElements[] = [];
 
   @Prop()
-  blockSlide: EventEmitter;
-
-  @Prop()
-  signIn: EventEmitter;
-
-  @Prop()
-  addSlide: EventEmitter;
-
-  @Prop()
   animatePrevNextSlide: EventEmitter;
 
   @Prop()
@@ -160,8 +151,6 @@ export class AppActionsDeck {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-deck-style',
       componentProps: {
-        signIn: this.signIn,
-        blockSlide: this.blockSlide,
         deckDidChange: this.deckDidChange
       },
       mode: 'ios',
@@ -240,7 +229,7 @@ export class AppActionsDeck {
     return (
       <aside>
         <ion-buttons slot="start">
-          <app-action-add-slide slides={this.slides} blockSlide={this.blockSlide} signIn={this.signIn} addSlide={this.addSlide}></app-action-add-slide>
+          <app-action-add-slide slidesLength={this.slides?.length}></app-action-add-slide>
 
           <button
             onMouseDown={($event) => $event.stopPropagation()}
