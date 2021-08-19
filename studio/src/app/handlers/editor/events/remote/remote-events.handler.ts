@@ -11,6 +11,8 @@ import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, D
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
+import {deckSelector} from '../../../../utils/editor/deck.utils';
+
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
 export class RemoteEventsHandler {
@@ -80,7 +82,7 @@ export class RemoteEventsHandler {
       });
     }
 
-    const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+    const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
     if (deck) {
       deck.removeEventListener('slidesDidLoad', async ($event: CustomEvent) => {
@@ -177,7 +179,7 @@ export class RemoteEventsHandler {
         return;
       }
 
-      const deck = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck) {
         resolve();
@@ -214,7 +216,7 @@ export class RemoteEventsHandler {
     return new Promise<void>(async (resolve) => {
       const deckgoRemoteElement = this.el.querySelector('deckgo-remote');
 
-      const deck = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deckgoRemoteElement || !deck) {
         resolve();
@@ -239,7 +241,7 @@ export class RemoteEventsHandler {
 
   private youtubePlayPause($event) {
     return new Promise<void>(async (resolve) => {
-      const deck = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck) {
         resolve();
@@ -267,7 +269,7 @@ export class RemoteEventsHandler {
 
   private initSlidesDidLoadListener() {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck) {
         resolve();
@@ -300,7 +302,7 @@ export class RemoteEventsHandler {
 
   private initDeckMove() {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck) {
         resolve();
@@ -427,7 +429,7 @@ export class RemoteEventsHandler {
 
     await deckgoRemoteElement.connect();
 
-    const deckElement: HTMLDeckgoDeckElement | null = this.el.querySelector('deckgo-deck');
+    const deckElement: HTMLDeckgoDeckElement | null = document.querySelector(deckSelector);
 
     if (!deckElement) {
       return;
@@ -458,7 +460,7 @@ export class RemoteEventsHandler {
 
   private updateRemoteSlidesOnSlidesDidLoad($event: CustomEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck || !$event || !$event.detail || !deck.hasChildNodes()) {
         resolve();
@@ -481,7 +483,7 @@ export class RemoteEventsHandler {
 
   updateRemoteSlidesOnMutation(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = this.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck || !deck.hasChildNodes()) {
         resolve();
@@ -502,7 +504,7 @@ export class RemoteEventsHandler {
 
   private updateRemoteDeckWithDefinition(self): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = self.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck || !deck.hasChildNodes()) {
         resolve();
@@ -527,7 +529,7 @@ export class RemoteEventsHandler {
 
   private updateCurrentSlideWithDefinition(self): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const deck: HTMLElement = self.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck || !deck.hasChildNodes()) {
         resolve();
@@ -551,7 +553,7 @@ export class RemoteEventsHandler {
         return;
       }
 
-      const deck: HTMLElement = self.el.querySelector('deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
       if (!deck || !deck.hasChildNodes()) {
         resolve();

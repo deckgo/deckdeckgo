@@ -27,11 +27,8 @@ export class AppActionsEditor {
   @Prop()
   slideNumber: number;
 
-  @Event() private blockSlide: EventEmitter<boolean>;
-
-  @Event() private signIn: EventEmitter<void>;
-
-  @Event() private addSlide: EventEmitter<JSX.IntrinsicElements>;
+  @Event({bubbles: true})
+  private blockSlide: EventEmitter<boolean>;
 
   @Event() private animatePrevNextSlide: EventEmitter<boolean>;
 
@@ -208,9 +205,6 @@ export class AppActionsEditor {
         class={editorStore.state.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
         fullscreen={this.fullscreen}
         slides={this.slides}
-        blockSlide={this.blockSlide}
-        signIn={this.signIn}
-        addSlide={this.addSlide}
         animatePrevNextSlide={this.animatePrevNextSlide}
         toggleFullScreen={this.toggleFullScreen}
         actionPublish={this.actionPublish}

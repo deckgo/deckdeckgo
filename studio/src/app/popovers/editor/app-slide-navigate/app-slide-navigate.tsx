@@ -18,7 +18,8 @@ export class AppSlideNavigate {
   @State()
   private slides: string[];
 
-  @Event() private reorder: EventEmitter<IonicReorderEvent>;
+  @Event()
+  private reorder: EventEmitter<IonicReorderEvent>;
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
