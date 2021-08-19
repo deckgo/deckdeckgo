@@ -57,10 +57,25 @@ export class AppSlidesAside {
     this.debounceUpdateSlide(updatedSlide);
   }
 
+  @Listen('slideDelete', {target: 'document'})
+  async onSlideDelete({detail: deletedSlide}: CustomEvent<HTMLElement>) {
+    await this.deleteSlide(deletedSlide);
+  }
+
   private async updateSlide(updatedSlide: HTMLElement) {
-    const slideIndex: number = Array.from(updatedSlide.parentNode.children).indexOf(updatedSlide);
+    const slideIndex: number = this.slideIndex(updatedSlide);
 
     this.slides = [...this.slides.map((slide: HTMLElement, index: number) => (slideIndex === index ? (updatedSlide.cloneNode(true) as HTMLElement) : slide))];
+  }
+
+  private async deleteSlide(deletedSlide: HTMLElement) {
+    const slideIndex: number = this.slideIndex(deletedSlide);
+
+    this.slides = [...this.slides.filter((_slide: HTMLElement, index: number) => slideIndex !== index)];
+  }
+
+  private slideIndex(slide: HTMLElement): number {
+    return Array.from(slide.parentNode.children).indexOf(slide);
   }
 
   private async updateAllSlides() {
