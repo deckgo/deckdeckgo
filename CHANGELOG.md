@@ -1,6 +1,10 @@
 <a name="4.9.0"></a>
 
-# [4.9.0](https://github.com/deckgo/deckdeckgo/compare/v4.8.0...v4.9.0) (2021-YY-XX)
+# [4.9.0](https://github.com/deckgo/deckdeckgo/compare/v4.8.0...v4.9.0) (2021-08-19)
+
+### Applications
+
+- remote: v1.14.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
 
 ### Web Components
 
