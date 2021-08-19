@@ -1575,7 +1575,6 @@ declare namespace LocalJSX {
         "write"?: boolean;
     }
     interface AppNavigationActions {
-        "onActionPublish"?: (event: CustomEvent<void>) => void;
         "publish"?: boolean;
         "signIn"?: boolean;
         "write"?: boolean;

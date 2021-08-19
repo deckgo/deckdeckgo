@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
+import {Component, Prop, h} from '@stencil/core';
 
 import {popoverController} from '@ionic/core';
 
@@ -8,7 +8,6 @@ import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
-import { shareEnabled } from '../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -19,10 +18,6 @@ export class AppNavigationActions {
   @Prop() signIn: boolean = true;
   @Prop() write: boolean = true;
   @Prop() publish: boolean = false;
-
-  @Event() private actionPublish: EventEmitter<void>;
-
-  private shareEnabled: boolean = shareEnabled();
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -39,7 +34,6 @@ export class AppNavigationActions {
       <div>
         {this.renderSignIn()}
         {this.renderPresentationButton()}
-        {this.renderPublishButton()}
         {this.renderLoggedIn()}
       </div>
     );
@@ -73,23 +67,6 @@ export class AppNavigationActions {
     if (this.write && !this.publish) {
       return (
         <app-start-deck writeColor={themeStore.state.darkTheme ? 'light' : 'dark'} importColor={themeStore.state.darkTheme ? 'light' : 'dark'}></app-start-deck>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  private renderPublishButton() {
-    if (this.publish && this.shareEnabled) {
-      return (
-        <ion-button
-          class="publish ion-margin-end"
-          shape="round"
-          onClick={() => this.actionPublish.emit()}
-          mode="md"
-          color={themeStore.state.darkTheme ? 'light' : 'dark'}>
-          <ion-label>{i18n.state.nav.ready_to_share}</ion-label>
-        </ion-button>
       );
     } else {
       return null;
