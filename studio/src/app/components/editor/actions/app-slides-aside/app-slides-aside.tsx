@@ -149,7 +149,7 @@ export class AppSlidesAside {
       <Host>
         {this.renderSlides()}
 
-        <app-action-add-slide></app-action-add-slide>
+        {this.renderActions()}
       </Host>
     );
   }
@@ -183,8 +183,6 @@ export class AppSlidesAside {
             onDragStart={() => this.onDragStart(index)}
             onDragOver={() => this.onDragHover(index)}></app-slide-thumbnail>
         ))}
-
-        {this.renderActions()}
       </aside>
     );
   }
