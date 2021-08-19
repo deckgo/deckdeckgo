@@ -30,6 +30,11 @@ app-slides-aside {
 
       transition: margin 0.15s ease-in;
 
+      &.highlight {
+        border: 1px solid var(--ion-color-dark);
+        box-shadow: rgba(var(--ion-color-dark-rgb), 0.4) 0 1px 4px;
+      }
+
       &.hover {
         margin-bottom: calc(var(--slides-aside-width) * 9 / 16);
       }

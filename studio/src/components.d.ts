@@ -355,6 +355,7 @@ export namespace Components {
         "overflow": boolean;
     }
     interface AppSlidesAside {
+        "activeIndex": number;
         "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
@@ -1680,6 +1681,7 @@ declare namespace LocalJSX {
         "overflow"?: boolean;
     }
     interface AppSlidesAside {
+        "activeIndex"?: number;
         "deckRef": HTMLDeckgoDeckElement;
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }

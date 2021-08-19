@@ -16,6 +16,9 @@ export class AppSlidesAside {
   private slides: HTMLElement[] = [];
 
   @Prop()
+  activeIndex: number;
+
+  @Prop()
   deckRef!: HTMLDeckgoDeckElement;
 
   @Event()
@@ -47,7 +50,6 @@ export class AppSlidesAside {
 
   componentDidUpdate() {
     setTimeout(() => {
-      console.log('yo');
       this.canDragLeave = true;
       this.canDragHover = true;
     }, 250);
@@ -186,29 +188,34 @@ export class AppSlidesAside {
         onDragOver={($event: DragEvent) => $event.preventDefault()}
         onDragLeave={() => this.onDragLeave()}
         class={this.reorderDetail !== undefined ? 'drag' : ''}>
-        {this.slides.map((slide: HTMLElement, index: number) => (
-          <app-slide-thumbnail
-            custom-tappable
-            onClick={async () => await slideTo(index)}
-            key={slide.getAttribute('slide_id')}
-            slide={slide}
-            deck={this.deckRef}
-            class={
-              index === this.reorderDetail?.to && this.reorderDetail?.from !== this.reorderDetail?.to
-                ? 'hover'
-                : index === 0 && this.reorderDetail?.to === -1
-                ? 'hover-top'
-                : index === this.reorderDetail?.from
-                ? index === this.reorderDetail?.to
-                  ? 'drag-start'
-                  : 'drag-hover'
-                : ''
-            }
-            draggable={true}
-            onDragStart={() => this.onDragStart(index)}
-            onDragOver={() => this.onDragHover(index)}></app-slide-thumbnail>
-        ))}
+        {this.slides.map((slide: HTMLElement, index: number) => this.renderThumbnail(slide, index))}
       </aside>
+    );
+  }
+
+  private renderThumbnail(slide: HTMLElement, index: number) {
+    const dragClass: string =
+      index === this.reorderDetail?.to && this.reorderDetail?.from !== this.reorderDetail?.to
+        ? 'hover'
+        : index === 0 && this.reorderDetail?.to === -1
+        ? 'hover-top'
+        : index === this.reorderDetail?.from
+        ? index === this.reorderDetail?.to
+          ? 'drag-start'
+          : 'drag-hover'
+        : '';
+
+    return (
+      <app-slide-thumbnail
+        custom-tappable
+        onClick={async () => await slideTo(index)}
+        key={slide.getAttribute('slide_id')}
+        slide={slide}
+        deck={this.deckRef}
+        class={`${dragClass} ${this.activeIndex === index ? 'highlight' : ''}`}
+        draggable={true}
+        onDragStart={() => this.onDragStart(index)}
+        onDragOver={() => this.onDragHover(index)}></app-slide-thumbnail>
     );
   }
 
