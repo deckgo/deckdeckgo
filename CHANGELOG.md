@@ -1,10 +1,11 @@
 <a name="4.9.0"></a>
 
-# [4.9.0](https://github.com/deckgo/deckdeckgo/compare/v4.8.0...v4.9.0) (2021-08-19)
+# [4.9.0](https://github.com/deckgo/deckdeckgo/compare/v4.8.0...v4.9.0) (2021-08-20)
 
 ### Applications
 
 - remote: v1.14.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v4.9.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
 
 ### Web Components
 
@@ -13,7 +14,7 @@
 
 ### Others
 
-- - deck-utils: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
+- deck-utils: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/utils/deck/CHANGELOG.md))
 
 <a name="4.8.0"></a>
 

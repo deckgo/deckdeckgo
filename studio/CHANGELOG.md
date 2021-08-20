@@ -1,4 +1,26 @@
-# 4.8.0 (2020-06-13)
+# 4.9.0 (2021)
+
+### Features
+
+- slides thumbnails on large screen ([#1294](https://github.com/deckgo/deckdeckgo/pull/1294), [#1295](https://github.com/deckgo/deckdeckgo/pull/1295), [#1296](https://github.com/deckgo/deckdeckgo/pull/1296) and [#1300](https://github.com/deckgo/deckdeckgo/pull/1300))
+- add new slide as next slide, not last ([#1297](https://github.com/deckgo/deckdeckgo/pull/1297))
+- select deck with additional click on editor ([#1211](https://github.com/deckgo/deckdeckgo/issues/1211))
+- remove sign in / out from side menu ([#1301](https://github.com/deckgo/deckdeckgo/pull/1301))
+- remove ready to publish cta in nav bar ([#1299](https://github.com/deckgo/deckdeckgo/pull/1299))
+- improve app first render ([#1291](https://github.com/deckgo/deckdeckgo/pull/1291))
+- optional config (tenor, unsplash and mock) ([#1239](https://github.com/deckgo/deckdeckgo/pull/1239))
+
+### Refactoring
+
+- move firestore prepareAttributes ([#1254](https://github.com/deckgo/deckdeckgo/pull/1254))
+- move env service to parent folder ([#1240](https://github.com/deckgo/deckdeckgo/pull/1240))
+
+### Fix
+
+- remove svg titles ([#1222](https://github.com/deckgo/deckdeckgo/pull/1222))
+- create slide select elements ([#1212](https://github.com/deckgo/deckdeckgo/pull/1212))
+
+# 4.8.0 (2021-06-13)
 
 ### Features
 
@@ -12,7 +34,7 @@
 - custom user templates without (editable) slots ([#1197](https://github.com/deckgo/deckdeckgo/pull/1197))
 - select element on tab and deck on escape ([#1194](https://github.com/deckgo/deckdeckgo/pull/1194))
 
-# 4.7.0 (2020-05-29)
+# 4.7.0 (2021-05-29)
 
 ### Features
 
@@ -25,14 +47,14 @@
 - sync reveal state with remote ([#1187](https://github.com/deckgo/deckdeckgo/pull/1187))
 - events are thrown outside main ref too ([#1172](https://github.com/deckgo/deckdeckgo/pull/1172))
 
-# 4.6.0 (2020-05-09)
+# 4.6.0 (2021-05-09)
 
 ### Features
 
 - inline editor improvements: stay open on changes, color can be entered with an input and redo/undo supported
 - laser pointer as cursor in fullscreen mode
 
-# 4.5.0 (2020-04-03)
+# 4.5.0 (2021-04-03)
 
 ### Features
 
@@ -41,7 +63,7 @@
 - accept images svg and webp ([#1113](https://github.com/deckgo/deckdeckgo/pull/1113))
 - csp object-src and base-uri ([#1111](https://github.com/deckgo/deckdeckgo/pull/1111))
 
-# 4.4.0 (2020-03-18)
+# 4.4.0 (2021-03-18)
 
 ### Features
 
@@ -52,7 +74,7 @@
 - unable to go offline ([#1104](https://github.com/deckgo/deckdeckgo/issues/1104))
 - notes encoding text incorrectly ([#1105](https://github.com/deckgo/deckdeckgo/issues/1105))
 
-# 4.3.0 (2020-03-12)
+# 4.3.0 (2021-03-12)
 
 ### Features
 
@@ -70,7 +92,7 @@
 - low contrast warning ([#1094](https://github.com/deckgo/deckdeckgo/pull/1094))
 - publish action disable state ([#1095](https://github.com/deckgo/deckdeckgo/issues/1095))
 
-# 4.2.0 (2020-02-10)
+# 4.2.0 (2021-02-10)
 
 ### Features
 
@@ -92,7 +114,7 @@
 - preview code block update ([#1067](https://github.com/deckgo/deckdeckgo/pull/1067))
 - navigate contact ([#1055](https://github.com/deckgo/deckdeckgo/pull/1055))
 
-# 4.1.0 (2020-01-14)
+# 4.1.0 (2021-01-14)
 
 ### Features
 
