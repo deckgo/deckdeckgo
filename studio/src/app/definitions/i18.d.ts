@@ -80,6 +80,7 @@ interface I18nSettings {
   profile: string;
   access_settings: string;
   access_templates: string;
+  access_dashboard: string;
   profile_note: string;
   name: string;
   email: string;

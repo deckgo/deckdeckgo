@@ -61,7 +61,7 @@
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Good to have you.",
-    "why": "Sign in to save and to share your presentation online.",
+    "why": "Sign in to save and to share your presentations online.",
     "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging."
   },
   "settings": {
@@ -75,6 +75,7 @@
     "profile": "Profile",
     "access_settings": "{0} to access your profile and settings.",
     "access_templates": "{0} to use your own templates.",
+    "access_dashboard": "{0} to save and to share your presentation online.",
     "profile_note": "Note that your update has no effect on the presentations you would have already published.",
     "name": "Name",
     "email": "Email",

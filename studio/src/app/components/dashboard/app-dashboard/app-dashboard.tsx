@@ -450,13 +450,23 @@ export class AppDashboard {
 
   private renderAnonymousContent() {
     return (
-      <main class="ion-padding fit anonymous">
-        <h1>{i18n.state.dashboard.welcome}</h1>
+      <main class="ion-padding fit">
+        <h1>{i18n.state.nav.dashboard}</h1>
 
-        {this.renderNotLoggedInText()}
-        {this.renderCreateButton(true)}
+        {this.renderNotLoggedInContent()}
       </main>
     );
+  }
+
+  private renderNotLoggedInContent() {
+    return renderI18n(i18n.state.settings.access_dashboard, {
+      placeholder: '{0}',
+      value: (
+        <button type="button" class="app-button" onClick={() => signIn()}>
+          {i18n.state.nav.sign_in}
+        </button>
+      )
+    });
   }
 
   private renderGuardedContent() {
@@ -473,15 +483,6 @@ export class AppDashboard {
         {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
 
         {this.renderDecks()}
-      </Fragment>
-    );
-  }
-
-  private renderNotLoggedInText() {
-    return (
-      <Fragment>
-        <p>{renderI18n(i18n.state.dashboard.try, {placeholder: '{0}', value: <a onClick={() => signIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>})}</p>
-        <p class="ion-no-margin">{i18n.state.core.free_open_source}</p>
       </Fragment>
     );
   }
