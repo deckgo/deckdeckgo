@@ -78,6 +78,7 @@
     "profile": "Perfil",
     "access_settings": "{0} para acceder a tu perfil y configuración.",
     "access_templates": "{0} para usar tus propias plantillas.",
+    "access_dashboard": "{0} para guardar su presentación en línea.",
     "profile_note": "Tenga en cuenta que su actualización no tiene ningún efecto sobre las presentaciones que ya hubiera publicado.",
     "name": "Nombre",
     "email": "Correo electrónico",
