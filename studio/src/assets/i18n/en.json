@@ -78,6 +78,7 @@
     "profile": "Profile",
     "access_settings": "{0} to access your profile and settings.",
     "access_templates": "{0} to use your own templates.",
+    "access_dashboard": "{0} to save your presentation online.",
     "profile_note": "Note that your update has no effect on the presentations you would have already published.",
     "name": "Name",
     "email": "Email",
