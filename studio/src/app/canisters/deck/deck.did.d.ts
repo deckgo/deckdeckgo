@@ -6,8 +6,6 @@ export interface Deck {
   created_at: Time;
 }
 export interface DeckBucket {
-  del: () => Promise<boolean>;
-  delAdmin: (arg_0: UserId__1) => Promise<boolean>;
   delSlide: (arg_0: SlideId__1) => Promise<boolean>;
   get: () => Promise<Deck>;
   getSlide: (arg_0: SlideId__1) => Promise<Slide>;
@@ -26,5 +24,4 @@ export type SlideId = string;
 export type SlideId__1 = string;
 export type Time = bigint;
 export type UserId = Principal;
-export type UserId__1 = Principal;
 export interface _SERVICE extends DeckBucket {}

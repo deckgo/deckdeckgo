@@ -3,11 +3,11 @@ import Principal "mo:base/Principal";
 import Types "../common/types";
 import IC "../common/ic";
 
-import DeckBucket "./deck";
+import DeckBucket "../deck/deck";
 
 module {
     type UserId = Types.UserId;
-    
+
     type DeckBucket = DeckBucket.DeckBucket;
 
     public type DeckBucketId = IC.canister_id;

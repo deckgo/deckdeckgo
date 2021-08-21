@@ -1,6 +1,5 @@
 export const idlFactory = ({IDL}) => {
   const UserId = IDL.Principal;
-  const UserId__1 = IDL.Principal;
   const SlideId__1 = IDL.Text;
   const Time = IDL.Int;
   const DeckId = IDL.Text;
@@ -18,8 +17,6 @@ export const idlFactory = ({IDL}) => {
     slideId: SlideId
   });
   const DeckBucket = IDL.Service({
-    del: IDL.Func([], [IDL.Bool], []),
-    delAdmin: IDL.Func([UserId__1], [IDL.Bool], []),
     delSlide: IDL.Func([SlideId__1], [IDL.Bool], []),
     get: IDL.Func([], [Deck], ['query']),
     getSlide: IDL.Func([SlideId__1], [Slide], ['query']),

@@ -9,7 +9,7 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../common/types";
-import DeckBucketTypes "../deck/deck.types";
+import DecksBucketTypes "./decks.types";
 
 import Utils "../common/utils";
 import IC "../common/ic";
@@ -21,10 +21,10 @@ module {
     type DeckId = Types.DeckId;
     type SlideId = Types.SlideId;
 
-    type OwnerDeckBucket = DeckBucketTypes.OwnerDeckBucket;
-    type ProtectedDeckBucket = DeckBucketTypes.ProtectedDeckBucket;
-    type ProtectedDeckBuckets = DeckBucketTypes.ProtectedDeckBuckets;
-    type DeckBucketId = DeckBucketTypes.DeckBucketId;
+    type OwnerDeckBucket = DecksBucketTypes.OwnerDeckBucket;
+    type ProtectedDeckBucket = DecksBucketTypes.ProtectedDeckBucket;
+    type ProtectedDeckBuckets = DecksBucketTypes.ProtectedDeckBuckets;
+    type DeckBucketId = DecksBucketTypes.DeckBucketId;
 
     type DeckBucket = DeckBucket.DeckBucket;
 
@@ -173,6 +173,73 @@ module {
                 bucketId = null;
                 error = ?"User does not have the permission for the deck.";
             };
+        };
+
+        public func deleteDeck(manager: Principal, user: UserId, deckId: DeckId) : async (ProtectedDeckBucket) {
+            let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
+
+            switch ownerDecks {
+                case (?ownerDecks) {
+                    let protectedDeck: ProtectedDeckBucket = getOwnerDeck(user, deckId, ownerDecks);
+
+                    switch (protectedDeck.bucketId) {
+                        case (?bucketId) {
+                            await deleteCanister(manager, bucketId);
+
+                            let removedDeck: ?OwnerDeckBucket = ownerDecks.remove(deckId);
+                            decks.put(user, ownerDecks);
+                        };
+                        case null {};
+                    };
+
+                    return protectedDeck;
+                };
+                case null {
+                    return {
+                        bucketId = null;
+                        error = null;
+                    };
+                }
+            };
+        };
+
+        public func deleteDecks(manager: Principal, user: UserId) : async (?Text) {
+            let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
+
+            switch ownerDecks {
+                case (?ownerDecks) {
+                    for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
+                        if (Utils.isPrincipalNotEqual(user, value.owner)) {
+                            return ?"User does not have the permission for one of the deck.";
+                        };
+                    };
+
+                    for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
+                        await deleteCanister(manager, value.bucketId);
+                    };
+
+                    let removedDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.remove(user);
+
+                    return null;
+                };
+                case null {
+                    return null;
+                }
+            };
+        };
+
+        private func deleteCanister(manager: Principal, bucketId: DeckBucketId): async() {
+            await transferCycles(manager, bucketId);
+
+            await ic.stop_canister({ canister_id = bucketId });
+
+            await ic.delete_canister({ canister_id = bucketId });
+        };
+
+        private func transferCycles(manager: Principal, bucketId: DeckBucketId): async() {
+            let status = await ic.canister_status({ canister_id = bucketId });
+            Cycles.add(status.cycles);
+            await ic.deposit_cycles({ canister_id = manager });
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]> {

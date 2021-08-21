@@ -1,9 +1,10 @@
 export const idlFactory = ({IDL}) => {
-  const DeckBucketId = IDL.Principal;
   const DeckId = IDL.Text;
+  const DeckBucketId = IDL.Principal;
   return IDL.Service({
+    del: IDL.Func([DeckId], [IDL.Bool], []),
+    deleteDecksAdmin: IDL.Func([IDL.Principal], [], []),
     entries: IDL.Func([], [IDL.Vec(DeckBucketId)], ['query']),
-    entriesAdmin: IDL.Func([IDL.Principal], [IDL.Vec(DeckBucketId)], []),
     get: IDL.Func([DeckId], [DeckBucketId], ['query']),
     init: IDL.Func([DeckId], [DeckBucketId], [])
   });
