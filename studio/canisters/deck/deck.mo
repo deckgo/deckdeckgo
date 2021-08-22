@@ -121,10 +121,14 @@ actor class DeckBucket(owner: Types.UserId) = this {
   };
 
   // TODO: inter-canister call secure caller === manager canister !!!
+  // Or as only controllers can execute following is enough security?
 
   public shared({ caller }) func transferCycles(): async() {
-      let cycles = Cycles.balance();
-      
+      let balance: Nat = Cycles.balance();
+
+      // We have to retain some cycles to be able to transfer some
+      let cycles: Nat = balance - 100_000_000_000;
+
       if (cycles > 0) {
         Cycles.add(cycles);
         await ic.deposit_cycles({ canister_id = caller });
