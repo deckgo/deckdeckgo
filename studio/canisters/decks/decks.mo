@@ -80,9 +80,7 @@ actor Decks {
     };
 
     public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
-        let self: Principal = Principal.fromActor(Decks);
-
-        let deck: ProtectedDeckBucket = await store.deleteDeck(self, caller, deckId);
+        let deck: ProtectedDeckBucket = await store.deleteDeck(caller, deckId);
 
         switch (deck.error) {
             case (?error) {
@@ -98,9 +96,7 @@ actor Decks {
     // TODO: inter-canister call secure caller === user canister or this canister
 
     public func deleteDecksAdmin(user: Principal) : async () {
-        let self: Principal = Principal.fromActor(Decks);
-
-        let error: ?Text = await store.deleteDecks(self, user);
+        let error: ?Text = await store.deleteDecks(user);
 
         switch (error) {
             case (?error) {

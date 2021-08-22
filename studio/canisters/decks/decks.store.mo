@@ -31,7 +31,7 @@ module {
     public class Store() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        let ic : IC.Self = actor "aaaaa-aa";
+        private let ic : IC.Self = actor "aaaaa-aa";
 
         public func init(manager: Principal, user: UserId, deckId: DeckId): async (ProtectedDeckBucket) {
             let deckBucket: ProtectedDeckBucket = getDeck(user, deckId);
@@ -83,7 +83,7 @@ module {
 
             let canisterId: Principal = await b.id();
 
-            let controllers: ?[Principal] = ?[user, manager];
+            let controllers: ?[Principal] = ?[canisterId, user, manager];
 
             await ic.update_settings(({canister_id = canisterId; settings = {
                 controllers = controllers;
@@ -175,7 +175,7 @@ module {
             };
         };
 
-        public func deleteDeck(manager: Principal, user: UserId, deckId: DeckId) : async (ProtectedDeckBucket) {
+        public func deleteDeck(user: UserId, deckId: DeckId) : async (ProtectedDeckBucket) {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
@@ -184,7 +184,7 @@ module {
 
                     switch (protectedDeck.bucketId) {
                         case (?bucketId) {
-                            await deleteCanister(manager, bucketId);
+                            await deleteCanister(bucketId);
 
                             let removedDeck: ?OwnerDeckBucket = ownerDecks.remove(deckId);
                             decks.put(user, ownerDecks);
@@ -203,7 +203,7 @@ module {
             };
         };
 
-        public func deleteDecks(manager: Principal, user: UserId) : async (?Text) {
+        public func deleteDecks(user: UserId) : async (?Text) {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
@@ -215,7 +215,7 @@ module {
                     };
 
                     for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
-                        await deleteCanister(manager, value.bucketId);
+                        await deleteCanister(value.bucketId);
                     };
 
                     let removedDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.remove(user);
@@ -228,18 +228,14 @@ module {
             };
         };
 
-        private func deleteCanister(manager: Principal, bucketId: DeckBucketId): async() {
-            await transferCycles(manager, bucketId);
+        private func deleteCanister(bucketId: DeckBucketId): async() {
+            let deckBucket = actor(Principal.toText(bucketId)): actor { transferCycles: () -> async () };
+
+            await deckBucket.transferCycles();
 
             await ic.stop_canister({ canister_id = bucketId });
 
             await ic.delete_canister({ canister_id = bucketId });
-        };
-
-        private func transferCycles(manager: Principal, bucketId: DeckBucketId): async() {
-            let status = await ic.canister_status({ canister_id = bucketId });
-            Cycles.add(status.cycles);
-            await ic.deposit_cycles({ canister_id = manager });
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]> {

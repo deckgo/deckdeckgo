@@ -12,6 +12,7 @@ export interface DeckBucket {
   id: () => Promise<Principal>;
   set: (arg_0: Deck) => Promise<undefined>;
   setSlide: (arg_0: Slide) => Promise<undefined>;
+  transferCycles: () => Promise<undefined>;
 }
 export type DeckId = string;
 export interface Slide {

@@ -22,7 +22,8 @@ export const idlFactory = ({IDL}) => {
     getSlide: IDL.Func([SlideId__1], [Slide], ['query']),
     id: IDL.Func([], [IDL.Principal], ['query']),
     set: IDL.Func([Deck], [], []),
-    setSlide: IDL.Func([Slide], [], [])
+    setSlide: IDL.Func([Slide], [], []),
+    transferCycles: IDL.Func([], [], [])
   });
   return DeckBucket;
 };

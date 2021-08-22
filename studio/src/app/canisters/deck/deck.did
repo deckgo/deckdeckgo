@@ -18,6 +18,7 @@ type DeckBucket =
    id: () -> (principal) query;
    set: (Deck) -> ();
    setSlide: (Slide) -> ();
+   transferCycles: () -> ();
  };
 type Deck = 
  record {
