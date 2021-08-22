@@ -6,7 +6,6 @@ import Error "mo:base/Error";
 
 import Types "../common/types";
 import UsersTypes "./users.types";
-import DeckBucketTypes "../deck/deck.types";
 
 import UsersStore "./users.store";
 
@@ -18,8 +17,6 @@ actor User {
     type OwnerUser = UsersTypes.OwnerUser;
     type ProtectedUser = UsersTypes.ProtectedUser;
     type Username = UsersTypes.Username;
-
-    type DeckBucketId = DeckBucketTypes.DeckBucketId;
 
     var store: UsersStore.Store = UsersStore.Store();
 
@@ -66,7 +63,7 @@ actor User {
     };
 
     public shared({ caller }) func del(userId: UserId) : async (Bool) {
-        await deleteDecks(caller, userId);
+        await Decks.deleteDecksAdmin(userId);
 
         let user: ProtectedUser = store.deleteUser(caller, userId);
 
@@ -78,16 +75,6 @@ actor User {
                 let exists: Bool = Option.isSome(user.user);
                 return exists;
             };
-        };
-    };
-
-    private func deleteDecks(user: Principal, userId: UserId): async () {
-        let decks: ([DeckBucketId]) = await Decks.entriesAdmin(userId);
-        
-        for ((deckBucketId: DeckBucketId) in decks.vals()) {
-            let deckBucket = actor(Principal.toText(deckBucketId)): actor { delAdmin: (user: UserId) -> async Bool };
-
-            let exists: Bool = await deckBucket.delAdmin(user);
         };
     };
 

@@ -81,15 +81,13 @@ export class DeckIcService implements DeckService {
       return;
     }
 
+    // We delete the all canister of the related deckId
+
     const decksActor: DecksActor = await createDecksActor({identity});
-
-    const bucket: Principal = await decksActor.init(deckId);
-
-    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
     console.log('Deck IC about to delete deck and its slides');
 
-    await deckBucket.del();
+    await decksActor.del(deckId);
 
     console.log('Deck IC delete');
   }

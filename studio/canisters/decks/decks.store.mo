@@ -9,7 +9,7 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../common/types";
-import DeckBucketTypes "../deck/deck.types";
+import DecksBucketTypes "./decks.types";
 
 import Utils "../common/utils";
 import IC "../common/ic";
@@ -21,17 +21,17 @@ module {
     type DeckId = Types.DeckId;
     type SlideId = Types.SlideId;
 
-    type OwnerDeckBucket = DeckBucketTypes.OwnerDeckBucket;
-    type ProtectedDeckBucket = DeckBucketTypes.ProtectedDeckBucket;
-    type ProtectedDeckBuckets = DeckBucketTypes.ProtectedDeckBuckets;
-    type DeckBucketId = DeckBucketTypes.DeckBucketId;
+    type OwnerDeckBucket = DecksBucketTypes.OwnerDeckBucket;
+    type ProtectedDeckBucket = DecksBucketTypes.ProtectedDeckBucket;
+    type ProtectedDeckBuckets = DecksBucketTypes.ProtectedDeckBuckets;
+    type DeckBucketId = DecksBucketTypes.DeckBucketId;
 
     type DeckBucket = DeckBucket.DeckBucket;
 
     public class Store() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        let ic : IC.Self = actor "aaaaa-aa";
+        private let ic : IC.Self = actor "aaaaa-aa";
 
         public func init(manager: Principal, user: UserId, deckId: DeckId): async (ProtectedDeckBucket) {
             let deckBucket: ProtectedDeckBucket = getDeck(user, deckId);
@@ -83,7 +83,7 @@ module {
 
             let canisterId: Principal = await b.id();
 
-            let controllers: ?[Principal] = ?[user, manager];
+            let controllers: ?[Principal] = ?[canisterId, user, manager];
 
             await ic.update_settings(({canister_id = canisterId; settings = {
                 controllers = controllers;
@@ -173,6 +173,69 @@ module {
                 bucketId = null;
                 error = ?"User does not have the permission for the deck.";
             };
+        };
+
+        public func deleteDeck(user: UserId, deckId: DeckId) : async (ProtectedDeckBucket) {
+            let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
+
+            switch ownerDecks {
+                case (?ownerDecks) {
+                    let protectedDeck: ProtectedDeckBucket = getOwnerDeck(user, deckId, ownerDecks);
+
+                    switch (protectedDeck.bucketId) {
+                        case (?bucketId) {
+                            await deleteCanister(bucketId);
+
+                            let removedDeck: ?OwnerDeckBucket = ownerDecks.remove(deckId);
+                            decks.put(user, ownerDecks);
+                        };
+                        case null {};
+                    };
+
+                    return protectedDeck;
+                };
+                case null {
+                    return {
+                        bucketId = null;
+                        error = null;
+                    };
+                }
+            };
+        };
+
+        public func deleteDecks(user: UserId) : async (?Text) {
+            let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
+
+            switch ownerDecks {
+                case (?ownerDecks) {
+                    for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
+                        if (Utils.isPrincipalNotEqual(user, value.owner)) {
+                            return ?"User does not have the permission for one of the deck.";
+                        };
+                    };
+
+                    for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
+                        await deleteCanister(value.bucketId);
+                    };
+
+                    let removedDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.remove(user);
+
+                    return null;
+                };
+                case null {
+                    return null;
+                }
+            };
+        };
+
+        private func deleteCanister(bucketId: DeckBucketId): async() {
+            let deckBucket = actor(Principal.toText(bucketId)): actor { transferCycles: () -> async () };
+
+            await deckBucket.transferCycles();
+
+            await ic.stop_canister({ canister_id = bucketId });
+
+            await ic.delete_canister({ canister_id = bucketId });
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]> {

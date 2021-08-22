@@ -7,17 +7,17 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../common/types";
-import DeckBucketTypes "../deck/deck.types";
+import DecksBucketTypes "./decks.types";
 
 import DecksStore "./decks.store";
 
 actor Decks {
     type DeckId = Types.DeckId;
 
-    type OwnerDeckBucket = DeckBucketTypes.OwnerDeckBucket;
-    type ProtectedDeckBucket = DeckBucketTypes.ProtectedDeckBucket;
-    type ProtectedDeckBuckets = DeckBucketTypes.ProtectedDeckBuckets;
-    type DeckBucketId = DeckBucketTypes.DeckBucketId;
+    type OwnerDeckBucket = DecksBucketTypes.OwnerDeckBucket;
+    type ProtectedDeckBucket = DecksBucketTypes.ProtectedDeckBucket;
+    type ProtectedDeckBuckets = DecksBucketTypes.ProtectedDeckBuckets;
+    type DeckBucketId = DecksBucketTypes.DeckBucketId;
 
     let store: DecksStore.Store = DecksStore.Store();
 
@@ -79,18 +79,30 @@ actor Decks {
         };
     };
 
-    // TODO: inter-canister call secure caller === user canister
+    public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
+        let deck: ProtectedDeckBucket = await store.deleteDeck(caller, deckId);
 
-    public func entriesAdmin(user: Principal) : async [DeckBucketId] {
-        let ({error; bucketIds}): ProtectedDeckBuckets = store.getDecks(user);
+        switch (deck.error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                let exists: Bool = Option.isSome(deck.bucketId);
+                return exists;
+            };
+        };
+    };
+
+    // TODO: inter-canister call secure caller === user canister or this canister
+
+    public func deleteDecksAdmin(user: Principal) : async () {
+        let error: ?Text = await store.deleteDecks(user);
 
         switch (error) {
             case (?error) {
                 throw Error.reject(error);
             };
-            case null {
-                return bucketIds;
-            };
+            case null {};
         };
     };
 
