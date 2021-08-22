@@ -123,9 +123,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   // TODO: inter-canister call secure caller === manager canister !!!
 
   public shared({ caller }) func transferCycles(): async() {
-      let self: Principal = await id();
-
-      let ({cycles}) = await ic.canister_status({ canister_id = self });
+      let cycles = Cycles.balance();
       
       if (cycles > 0) {
         Cycles.add(cycles);
