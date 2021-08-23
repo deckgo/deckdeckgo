@@ -1,7 +1,7 @@
 {
   "canisters": {
-    "decks": {
-      "main": "canisters/decks/decks.mo",
+    "manager": {
+      "main": "canisters/manager/manager.mo",
       "type": "motoko"
     },
     "users": {
@@ -9,7 +9,7 @@
       "type": "motoko"
     },
     "assets": {
-      "dependencies": ["decks", "users"],
+      "dependencies": ["manager", "users"],
       "frontend": {
         "entrypoint": "www/index.html"
       },

@@ -9,7 +9,7 @@ import UsersTypes "./users.types";
 
 import UsersStore "./users.store";
 
-import Decks "canister:decks";
+import Manager "canister:manager";
 
 actor User {
     type UserId = Types.UserId;
@@ -63,7 +63,7 @@ actor User {
     };
 
     public shared({ caller }) func del(userId: UserId) : async (Bool) {
-        await Decks.deleteDecksAdmin(userId);
+        await Manager.deleteDecksAdmin(userId);
 
         let user: ProtectedUser = store.deleteUser(caller, userId);
 
