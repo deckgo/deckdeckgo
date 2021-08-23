@@ -15,7 +15,6 @@ type DeckBucket =
    delSlide: (SlideId__1) -> (bool);
    get: () -> (Deck) query;
    getSlide: (SlideId__1) -> (Slide) query;
-   id: () -> (principal) query;
    set: (Deck) -> ();
    setSlide: (Slide) -> ();
    transferCycles: () -> ();

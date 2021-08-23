@@ -52,7 +52,7 @@ module {
 
                             let newDeckBucket: OwnerBucket = {
                                 bucket = b;
-                                bucketId = await b.id();
+                                bucketId = Principal.fromActor(b);
                                 owner = user;
                             };
 
@@ -68,7 +68,7 @@ module {
                             };
 
                             return {
-                                bucketId = ?(await b.id());
+                                bucketId = ?(Principal.fromActor(b));
                                 error = null;
                             };
                         };
@@ -81,7 +81,7 @@ module {
             Cycles.add(1_000_000_000_000);
             let b: DeckBucket = await DeckBucket.DeckBucket(user);
 
-            let canisterId: Principal = await b.id();
+            let canisterId: Principal = Principal.fromActor(b);
 
             let controllers: ?[Principal] = ?[canisterId, user, manager];
 

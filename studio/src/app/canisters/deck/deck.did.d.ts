@@ -9,7 +9,6 @@ export interface DeckBucket {
   delSlide: (arg_0: SlideId__1) => Promise<boolean>;
   get: () => Promise<Deck>;
   getSlide: (arg_0: SlideId__1) => Promise<Slide>;
-  id: () => Promise<Principal>;
   set: (arg_0: Deck) => Promise<undefined>;
   setSlide: (arg_0: Slide) => Promise<undefined>;
   transferCycles: () => Promise<undefined>;
