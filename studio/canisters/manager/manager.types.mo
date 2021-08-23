@@ -10,21 +10,21 @@ module {
 
     type DeckBucket = DeckBucket.DeckBucket;
 
-    public type DeckBucketId = IC.canister_id;
+    public type BucketId = IC.canister_id;
 
-    public type OwnerDeckBucket = {
+    public type OwnerBucket = {
         bucket: DeckBucket;
-        bucketId: DeckBucketId;
+        bucketId: BucketId;
         owner: UserId;
     };
 
-    public type ProtectedDeckBucket = {
-        bucketId: ?DeckBucketId;
+    public type ProtectedBucket = {
+        bucketId: ?BucketId;
         error: ?Text;
     };
 
-    public type ProtectedDeckBuckets = {
-        bucketIds: [DeckBucketId];
+    public type ProtectedBuckets = {
+        bucketIds: [BucketId];
         error: ?Text;
     };
 };

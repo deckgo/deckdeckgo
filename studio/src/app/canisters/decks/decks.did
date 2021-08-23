@@ -1,9 +1,0 @@
-type DeckId = text;
-type DeckBucketId = principal;
-service : {
-  del: (DeckId) -> (bool);
-  deleteDecksAdmin: (principal) -> ();
-  entries: () -> (vec DeckBucketId) query;
-  get: (DeckId) -> (DeckBucketId) query;
-  init: (DeckId) -> (DeckBucketId);
-}

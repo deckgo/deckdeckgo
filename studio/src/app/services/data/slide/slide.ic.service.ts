@@ -1,11 +1,11 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {_SERVICE as DecskActor} from '../../../canisters/decks/decks.did';
+import {_SERVICE as ManagerActor} from '../../../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../../canisters/deck/deck.did';
 
 import {Slide, SlideData} from '../../../models/data/slide';
-import {createDeckBucketActor, createDecksActor} from '../../../utils/core/ic.deck.utils';
+import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.deck.utils';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
@@ -38,9 +38,9 @@ export class SlideIcService implements SlideService {
       }
 
       try {
-        const decksActor: DecskActor = await createDecksActor({identity});
+        const managerActor: ManagerActor = await createManagerActor({identity});
 
-        const bucket: Principal = await decksActor.init(deckId);
+        const bucket: Principal = await managerActor.init(deckId);
 
         const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 

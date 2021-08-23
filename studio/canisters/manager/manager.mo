@@ -7,27 +7,27 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../common/types";
-import DecksBucketTypes "./decks.types";
 
-import DecksStore "./decks.store";
+import BucketTypes "./manager.types";
+import ManagerStore "./manager.store";
 
-actor Decks {
+actor Manager {
     type DeckId = Types.DeckId;
 
-    type OwnerDeckBucket = DecksBucketTypes.OwnerDeckBucket;
-    type ProtectedDeckBucket = DecksBucketTypes.ProtectedDeckBucket;
-    type ProtectedDeckBuckets = DecksBucketTypes.ProtectedDeckBuckets;
-    type DeckBucketId = DecksBucketTypes.DeckBucketId;
+    type OwnerBucket = BucketTypes.OwnerBucket;
+    type ProtectedBucket = BucketTypes.ProtectedBucket;
+    type ProtectedBuckets = BucketTypes.ProtectedBuckets;
+    type BucketId = BucketTypes.BucketId;
 
-    let store: DecksStore.Store = DecksStore.Store();
+    let store: ManagerStore.Store = ManagerStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
+    private stable var decks : [(Principal, [(DeckId, OwnerBucket)])] = [];
 
-    public shared({ caller }) func init(deckId: DeckId): async (DeckBucketId) {
-        let self: Principal = Principal.fromActor(Decks);
+    public shared({ caller }) func init(deckId: DeckId): async (BucketId) {
+        let self: Principal = Principal.fromActor(Manager);
 
-        let ({error; bucketId}): ProtectedDeckBucket = await store.init(self, caller, deckId);
+        let ({error; bucketId}): ProtectedBucket = await store.init(self, caller, deckId);
 
         switch (error) {
             case (?error) {
@@ -46,8 +46,8 @@ actor Decks {
         };
     };
 
-    public shared query({ caller }) func get(deckId : DeckId) : async DeckBucketId {
-        let ({error; bucketId}): ProtectedDeckBucket = store.getDeck(caller, deckId);
+    public shared query({ caller }) func get(deckId : DeckId) : async BucketId {
+        let ({error; bucketId}): ProtectedBucket = store.getDeck(caller, deckId);
 
         switch (error) {
             case (?error) {
@@ -66,8 +66,8 @@ actor Decks {
         };
     };
 
-    public shared query({ caller }) func entries() : async [DeckBucketId] {
-        let ({error; bucketIds}): ProtectedDeckBuckets = store.getDecks(caller);
+    public shared query({ caller }) func entries() : async [BucketId] {
+        let ({error; bucketIds}): ProtectedBuckets = store.getDecks(caller);
 
         switch (error) {
             case (?error) {
@@ -80,7 +80,7 @@ actor Decks {
     };
 
     public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
-        let deck: ProtectedDeckBucket = await store.deleteDeck(caller, deckId);
+        let deck: ProtectedBucket = await store.deleteDeck(caller, deckId);
 
         switch (deck.error) {
             case (?error) {

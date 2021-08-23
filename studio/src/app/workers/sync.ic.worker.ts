@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {_SERVICE as DecksActor, _SERVICE as DecskActor} from '../canisters/decks/decks.did';
+import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
 
 import {Deck, DeckData} from '../models/data/deck';
@@ -10,7 +10,7 @@ import {Slide, SlideData} from '../models/data/slide';
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../types/editor/sync';
 import {InternetIdentityAuth} from '../types/core/ic.identity';
 
-import {createDeckBucketActor, createDecksActor} from '../utils/core/ic.deck.utils';
+import {createDeckBucketActor, createManagerActor} from '../utils/core/ic.deck.utils';
 import {CanisterUtils} from '../utils/editor/canister.utils';
 import {initIdentity} from '../utils/core/ic.identity.utils';
 
@@ -35,13 +35,13 @@ export const uploadWorker = async ({
 
   const {updateDecks, updateSlides, deleteSlides: slidesToDelete} = syncData;
 
-  const decksActor: DecskActor = await createDecksActor({identity, host});
+  const managerActor: ManagerActor = await createManagerActor({identity, host});
 
-  await uploadDecks({updateDecks, identity, decksActor, host});
+  await uploadDecks({updateDecks, identity, managerActor, host});
 
-  await uploadSlides({updateSlides, identity, decksActor, host});
+  await uploadSlides({updateSlides, identity, managerActor, host});
 
-  await deleteSlides({deleteSlides: slidesToDelete, identity, decksActor, host});
+  await deleteSlides({deleteSlides: slidesToDelete, identity, managerActor, host});
 
   // TODO: handle delete decks here?
 };
@@ -49,25 +49,25 @@ export const uploadWorker = async ({
 const uploadDecks = async ({
   updateDecks,
   identity,
-  decksActor,
+  managerActor,
   host
 }: {
   updateDecks: SyncDataDeck[] | undefined;
   identity: Identity;
-  decksActor: DecskActor;
+  managerActor: ManagerActor;
   host: string;
 }) => {
   if (!updateDecks || updateDecks.length <= 0) {
     return;
   }
 
-  const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => uploadDeck({deck, decksActor, identity, host}));
+  const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => uploadDeck({deck, managerActor: managerActor, identity, host}));
   await Promise.all(promises);
 
   console.log('C synced');
 };
 
-const uploadDeck = async ({deck, decksActor, identity, host}: {deck: Deck; decksActor: DecksActor; identity: Identity; host: string}) => {
+const uploadDeck = async ({deck, managerActor, identity, host}: {deck: Deck; managerActor: ManagerActor; identity: Identity; host: string}) => {
   if (!deck) {
     return;
   }
@@ -75,7 +75,7 @@ const uploadDeck = async ({deck, decksActor, identity, host}: {deck: Deck; decks
   console.log('Deck IC about to SET');
   const t0 = performance.now();
 
-  const bucket: Principal = await decksActor.init(deck.id);
+  const bucket: Principal = await managerActor.init(deck.id);
 
   const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
 
@@ -98,51 +98,55 @@ const uploadDeck = async ({deck, decksActor, identity, host}: {deck: Deck; decks
 const uploadSlides = async ({
   updateSlides,
   identity,
-  decksActor,
+  managerActor,
   host
 }: {
   updateSlides: SyncDataSlide[] | undefined;
   identity: Identity;
-  decksActor: DecskActor;
+  managerActor: ManagerActor;
   host: string;
 }) => {
   if (!updateSlides || updateSlides.length <= 0) {
     return;
   }
 
-  const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) => uploadSlide({slide, deckId, decksActor, identity, host}));
+  const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) =>
+    uploadSlide({slide, deckId, managerActor: managerActor, identity, host})
+  );
   await Promise.all(promises);
 };
 
 const deleteSlides = async ({
   deleteSlides,
   identity,
-  decksActor,
+  managerActor,
   host
 }: {
   deleteSlides: SyncDataSlide[] | undefined;
   identity: Identity;
-  decksActor: DecskActor;
+  managerActor: ManagerActor;
   host: string;
 }) => {
   if (!deleteSlides || deleteSlides.length <= 0) {
     return;
   }
 
-  const promises: Promise<void>[] = deleteSlides.map(({deckId, slideId}: SyncDataSlide) => deleteSlide({slideId, deckId, identity, decksActor, host}));
+  const promises: Promise<void>[] = deleteSlides.map(({deckId, slideId}: SyncDataSlide) =>
+    deleteSlide({slideId, deckId, identity, managerActor: managerActor, host})
+  );
   await Promise.all(promises);
 };
 
 const uploadSlide = async ({
   slide,
   deckId,
-  decksActor,
+  managerActor,
   identity,
   host
 }: {
   slide: Slide;
   deckId: string;
-  decksActor: DecksActor;
+  managerActor: ManagerActor;
   identity: Identity;
   host: string;
 }) => {
@@ -153,7 +157,7 @@ const uploadSlide = async ({
   console.log('Slide IC about to SET');
   const t0 = performance.now();
 
-  const bucket: Principal = await decksActor.init(deckId);
+  const bucket: Principal = await managerActor.init(deckId);
 
   const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
 
@@ -176,13 +180,13 @@ const uploadSlide = async ({
 const deleteSlide = async ({
   slideId,
   deckId,
-  decksActor,
+  managerActor,
   identity,
   host
 }: {
   slideId: string;
   deckId: string;
-  decksActor: DecksActor;
+  managerActor: ManagerActor;
   identity: Identity;
   host: string;
 }) => {
@@ -193,7 +197,7 @@ const deleteSlide = async ({
   console.log('Slide IC about to DEL');
   const t0 = performance.now();
 
-  const bucket: Principal = await decksActor.init(deckId);
+  const bucket: Principal = await managerActor.init(deckId);
 
   const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
 
