@@ -113,12 +113,8 @@ actor class DeckBucket(owner: Types.UserId) = this {
   };
 
   /**
-   * Canister
+   * Canister mgmt
    */
-
-  public query func id() : async Principal {
-    return Principal.fromActor(this);
-  };
 
   // TODO: inter-canister call secure caller === manager canister !!!
   // Or as only controllers can execute following is enough security?

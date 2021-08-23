@@ -20,7 +20,6 @@ export const idlFactory = ({IDL}) => {
     delSlide: IDL.Func([SlideId__1], [IDL.Bool], []),
     get: IDL.Func([], [Deck], ['query']),
     getSlide: IDL.Func([SlideId__1], [Slide], ['query']),
-    id: IDL.Func([], [IDL.Principal], ['query']),
     set: IDL.Func([Deck], [], []),
     setSlide: IDL.Func([Slide], [], []),
     transferCycles: IDL.Func([], [], [])
