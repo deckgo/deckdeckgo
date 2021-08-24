@@ -10,7 +10,7 @@ import {Slide, SlideData} from '../models/data/slide';
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../types/editor/sync';
 import {InternetIdentityAuth} from '../types/core/ic.identity';
 
-import {createDeckBucketActor, createManagerActor} from '../utils/core/ic.deck.utils';
+import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/core/ic.deck.utils';
 import {CanisterUtils} from '../utils/editor/canister.utils';
 import {initIdentity} from '../utils/core/ic.identity.utils';
 
@@ -75,7 +75,7 @@ const uploadDeck = async ({deck, managerActor, identity, host}: {deck: Deck; man
   console.log('Deck IC about to SET');
   const t0 = performance.now();
 
-  const bucket: Principal = await managerActor.init(deck.id);
+  const bucket: Principal = await initDeckBucket({managerActor, deckId: deck.id});
 
   const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
 
@@ -158,7 +158,7 @@ const uploadSlide = async ({
   const t0 = performance.now();
 
   const t4 = performance.now();
-  const bucket: Principal = await managerActor.init(deckId);
+  const bucket: Principal = await initDeckBucket({managerActor, deckId});
 
   const t5 = performance.now();
   console.log('Bucket retrieved', t5 - t4);
@@ -201,7 +201,7 @@ const deleteSlide = async ({
   console.log('Slide IC about to DEL');
   const t0 = performance.now();
 
-  const bucket: Principal = await managerActor.init(deckId);
+  const bucket: Principal = await initDeckBucket({managerActor, deckId});
 
   const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
 

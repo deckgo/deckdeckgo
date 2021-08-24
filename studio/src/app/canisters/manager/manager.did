@@ -4,6 +4,6 @@ service : {
   del: (DeckId) -> (bool);
   deleteDecksAdmin: (principal) -> ();
   entries: () -> (vec BucketId) query;
-  get: (DeckId) -> (BucketId) query;
+  get: (DeckId) -> (opt BucketId) query;
   init: (DeckId) -> (BucketId);
 }

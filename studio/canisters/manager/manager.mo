@@ -46,7 +46,7 @@ actor Manager {
         };
     };
 
-    public shared query({ caller }) func get(deckId : DeckId) : async BucketId {
+    public shared query({ caller }) func get(deckId : DeckId) : async ?BucketId {
         let ({error; bucketId}): ProtectedBucket = store.getDeck(caller, deckId);
 
         switch (error) {
@@ -56,10 +56,13 @@ actor Manager {
             case null {
                 switch (bucketId) {
                     case (?bucketId) {
-                        return bucketId;
+                        return ?bucketId;
                     };
                     case null {
-                        throw Error.reject("Deck bucket not found.");
+                        // We do not throw a "Not found error" here.
+                        // For performance reason, in web app we first query if the deck exists and then if not, we init it
+                        // Most ofen the deck will exist already
+                        return null;
                     };
                 };
             };
