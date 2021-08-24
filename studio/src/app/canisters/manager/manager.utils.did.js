@@ -5,7 +5,7 @@ export const idlFactory = ({IDL}) => {
     del: IDL.Func([DeckId], [IDL.Bool], []),
     deleteDecksAdmin: IDL.Func([IDL.Principal], [], []),
     entries: IDL.Func([], [IDL.Vec(BucketId)], ['query']),
-    get: IDL.Func([DeckId], [BucketId], ['query']),
+    get: IDL.Func([DeckId], [IDL.Opt(BucketId)], ['query']),
     init: IDL.Func([DeckId], [BucketId], [])
   });
 };

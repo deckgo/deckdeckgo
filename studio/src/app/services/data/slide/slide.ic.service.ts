@@ -5,7 +5,7 @@ import {_SERVICE as ManagerActor} from '../../../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../../canisters/deck/deck.did';
 
 import {Slide, SlideData} from '../../../models/data/slide';
-import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.deck.utils';
+import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../../utils/core/ic.deck.utils';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
@@ -40,7 +40,7 @@ export class SlideIcService implements SlideService {
       try {
         const managerActor: ManagerActor = await createManagerActor({identity});
 
-        const bucket: Principal = await managerActor.init(deckId);
+        const bucket: Principal = await initDeckBucket({managerActor, deckId});
 
         const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
 
