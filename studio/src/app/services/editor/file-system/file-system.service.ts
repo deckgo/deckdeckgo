@@ -5,7 +5,9 @@ import deckStore from '../../../stores/deck.store';
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
-import { ImportData, importEditorData } from '../../../utils/editor/import.utils';
+import {ImportData, importEditorData} from '../../../utils/editor/import.utils';
+
+import {SwService} from '../sw/sw.service';
 
 export class FileSystemService {
   private static instance: FileSystemService;
@@ -21,6 +23,9 @@ export class FileSystemService {
     const data: ImportData = JSON.parse(await file.text());
 
     await importEditorData(data);
+
+    // We try to cache the data so that the user can go offline with it asap if wished
+    await SwService.getInstance().cacheServiceWorker();
   }
 
   async exportData() {
