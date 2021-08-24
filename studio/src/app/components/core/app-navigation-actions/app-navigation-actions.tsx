@@ -201,7 +201,7 @@ export class AppNavigationActions {
         {syncStore.state.sync === 'error' ? (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
         ) : ['in_progress', 'pending'].includes(syncStore.state.sync) ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/sync.svg"></ion-icon>
+          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/sync.svg" class="rotate"></ion-icon>
         ) : (
           <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-done.svg"></ion-icon>
         )}
