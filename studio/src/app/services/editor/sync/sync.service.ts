@@ -2,9 +2,7 @@ import firebase from 'firebase/app';
 
 import {del, get, set, update} from 'idb-keyval';
 
-import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
-import assetsStore from '../../../stores/assets.store';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
@@ -15,16 +13,12 @@ import {SlotType} from '../../../types/editor/slot-type';
 import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} from '../../../types/editor/sync';
 
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
-import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 import {firebaseEnabled} from '../../../utils/core/environment.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {StorageOnlineService} from '../../storage/storage.online.service';
-import {FontsService} from '../fonts/fonts.service';
 
 export class SyncService {
   private static instance: SyncService;
@@ -33,13 +27,10 @@ export class SyncService {
   private deckOnlineService: DeckOnlineService;
   private storageOnlineService: StorageOnlineService;
 
-  private fontsService: FontsService;
-
   private constructor() {
     this.deckOnlineService = DeckOnlineService.getInstance();
     this.slideOnlineService = SlideOnlineService.getInstance();
     this.storageOnlineService = StorageOnlineService.getInstance();
-    this.fontsService = FontsService.getInstance();
   }
 
   static getInstance(): SyncService {
@@ -59,24 +50,6 @@ export class SyncService {
     }
 
     return offlineStore.state.offline;
-  }
-
-  save(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const promises: Promise<void>[] = [this.saveDeck(), this.lazyLoadAllContent()];
-
-        await Promise.all(promises);
-
-        await this.cacheServiceWorker();
-
-        await this.toggleOffline();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
   }
 
   async upload(syncData: SyncData | undefined) {
@@ -119,278 +92,6 @@ export class SyncService {
       syncStore.state.sync = 'error';
       console.error(err);
     }
-  }
-
-  private toggleOffline(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        try {
-          if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
-            reject('No deck found');
-            return;
-          }
-
-          const offline: OfflineDeck = {
-            id: deckStore.state.deck.id,
-            name: deckStore.state.deck.data.name
-          };
-
-          await set('deckdeckgo_offline', offline);
-
-          offlineStore.state.offline = {...offline};
-
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private cacheServiceWorker(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const deckElement: HTMLElement = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
-
-        if (!deckElement) {
-          resolve();
-          return;
-        }
-
-        await this.cacheImages(deckElement);
-
-        await this.cacheAssets();
-
-        await this.fontsService.loadAllGoogleFonts();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private async cacheImages(deckElement: HTMLElement) {
-    const promises: Promise<void>[] = [this.cacheCorsImages(deckElement), this.cacheDeckGoImages(deckElement)];
-
-    await Promise.all(promises);
-  }
-
-  private async cacheCorsImages(deckElement: HTMLElement): Promise<void> {
-    const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = deckElement.querySelectorAll(SlotType.IMG);
-
-    if (!imgs) {
-      return;
-    }
-
-    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-    const list: string[] = Array.from(imgs)
-      .filter((img: HTMLDeckgoLazyImgElement) => {
-        return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) === -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf(config.globalAssetsUrl) === -1)
-        );
-      })
-      .map((img) => {
-        return img.imgSrc || img.svgSrc;
-      });
-
-    if (!list || list.length <= 0) {
-      return;
-    }
-
-    await ServiceWorkerUtils.cacheUrls('cors-images', [...new Set(list)]);
-  }
-
-  private async cacheDeckGoImages(deckElement: HTMLElement): Promise<void> {
-    const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = deckElement.querySelectorAll(SlotType.IMG);
-
-    if (!imgs) {
-      return;
-    }
-
-    const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-    const list = Array.from(imgs)
-      .filter((img: HTMLDeckgoLazyImgElement) => {
-        return (
-          (img.imgSrc !== undefined && img.imgSrc !== '' && img.imgSrc.indexOf(config.globalAssetsUrl) > -1) ||
-          (img.svgSrc !== undefined && img.svgSrc !== '' && img.svgSrc.indexOf(config.globalAssetsUrl) > -1)
-        );
-      })
-      .map((img) => {
-        return img.imgSrc || img.svgSrc;
-      });
-
-    if (!list || list.length <= 0) {
-      return;
-    }
-
-    await ServiceWorkerUtils.cacheUrls('images', [...new Set(list)]);
-  }
-
-  private async cacheAssets() {
-    const promises: Promise<void>[] = [this.assetsShapes(), this.assetsDeckDeckGo(), this.assetsNavigation(), this.assetCharts()];
-
-    // We don't cache PrismJS definition file.
-    // If we would do so, then the list of languages would be displayed but because we load on the fly, it would be in any case not possible offline to fetch the proper definition
-
-    await Promise.all(promises);
-  }
-
-  private async assetsShapes(): Promise<void> {
-    const deckGoUrls: string[] = [
-      ...this.assetsShapesList('shapes'),
-      ...this.assetsShapesList('arrows'),
-      ...this.assetsShapesList('status'),
-      ...this.assetsShapesList('computers'),
-      ...this.assetsShapesList('dateTime'),
-      ...this.assetsShapesList('files'),
-      ...this.assetsShapesList('finance')
-    ];
-
-    await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
-  }
-
-  private async assetsDeckDeckGo(): Promise<void> {
-    if (assetsStore.state.deckdeckgo) {
-      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      const deckGoUrls: string[] = [`${config.globalAssetsUrl}${assetsStore.state.deckdeckgo.logo}`];
-
-      await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
-    }
-  }
-
-  private async assetsNavigation() {
-    if (assetsStore.state.navigation && assetsStore.state.navigation.length > 0) {
-      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-      const deckGoUrls: string[] = assetsStore.state.navigation.map((asset: ImgAsset) => {
-        return `${config.globalAssetsUrl}${asset.src}`;
-      });
-
-      await ServiceWorkerUtils.cacheUrls('images', deckGoUrls);
-    }
-  }
-
-  private assetsShapesList(group: string): string[] {
-    if (assetsStore.state.shapes && assetsStore.state.shapes[group] && assetsStore.state.shapes[group].length > 0) {
-      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-      return assetsStore.state.shapes[group].map((asset: ImgAsset) => {
-        return `${config.globalAssetsUrl}${asset.src}`;
-      });
-    } else {
-      return [];
-    }
-  }
-
-  private async assetCharts(): Promise<void> {
-    if (assetsStore.state.chart) {
-      const corsGitHubUrls: string[] = Object.keys(assetsStore.state.chart).map((key: string) => {
-        return assetsStore.state.chart[key];
-      });
-
-      await ServiceWorkerUtils.cacheUrls('data-content', corsGitHubUrls);
-    }
-  }
-
-  private lazyLoadAllContent(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const deck: HTMLDeckgoDeckElement = document.querySelector('app-editor > ion-content div.deck > main > deckgo-deck');
-
-        if (!deck) {
-          resolve();
-          return;
-        }
-
-        await deck.lazyLoadAllContent();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private saveDeck(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
-          reject('No deck found');
-          return;
-        }
-
-        await this.saveSlides(deckStore.state.deck);
-
-        if (deckStore.state.deck.data.background && FirestoreUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.background)) {
-          deckStore.state.deck.data.background = null;
-        }
-
-        if (deckStore.state.deck.data.header && FirestoreUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.header)) {
-          deckStore.state.deck.data.header = null;
-        }
-
-        if (deckStore.state.deck.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deckStore.state.deck.data.footer)) {
-          deckStore.state.deck.data.footer = null;
-        }
-
-        await set(`/decks/${deckStore.state.deck.id}`, deckStore.state.deck);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private saveSlides(deck: Deck): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (!deck.data.slides || deck.data.slides.length <= 0) {
-        resolve();
-        return;
-      }
-
-      try {
-        const promises: Promise<Slide>[] = [];
-
-        for (let i: number = 0; i < deck.data.slides.length; i++) {
-          const slideId: string = deck.data.slides[i];
-
-          promises.push(this.saveSlide(deck, slideId));
-        }
-
-        if (!promises || promises.length <= 0) {
-          resolve();
-          return;
-        }
-
-        await Promise.all(promises);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  private saveSlide(deck: Deck, slideId: string): Promise<Slide> {
-    return new Promise<Slide>(async (resolve, reject) => {
-      const slide: Slide = await this.slideOnlineService.get(deck.id, slideId);
-
-      if (!slide || !slide.data) {
-        reject('Missing slide for publishing');
-        return;
-      }
-
-      await set(`/decks/${deck.id}/slides/${slideId}`, slide);
-
-      resolve(slide);
-    });
   }
 
   private uploadSlides(data: SyncDataSlide[] | undefined): Promise<void> {
