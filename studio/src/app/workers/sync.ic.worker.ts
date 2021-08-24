@@ -157,7 +157,11 @@ const uploadSlide = async ({
   console.log('Slide IC about to SET');
   const t0 = performance.now();
 
+  const t4 = performance.now();
   const bucket: Principal = await managerActor.init(deckId);
+
+  const t5 = performance.now();
+  console.log('Bucket retrieved', t5 - t4);
 
   const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
 
