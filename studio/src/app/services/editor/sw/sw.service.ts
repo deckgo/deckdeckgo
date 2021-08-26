@@ -1,4 +1,5 @@
 import assetsStore from '../../../stores/assets.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {SlotType} from '../../../types/editor/slot-type';
 
@@ -27,7 +28,7 @@ export class SwService {
   }
 
   async cacheServiceWorker() {
-    if (!navigator.onLine) {
+    if (!offlineStore.state.online) {
       return;
     }
 

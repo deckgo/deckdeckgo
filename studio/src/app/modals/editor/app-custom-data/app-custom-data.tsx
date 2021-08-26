@@ -5,8 +5,9 @@ import i18n from '../../../stores/i18n.store';
 import {Constants} from '../../../types/core/constants';
 
 import {StorageService} from '../../../services/storage/storage.service';
+import {StorageOfflineService} from '../../../services/storage/storage.offline.service';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-custom-data',
@@ -16,6 +17,7 @@ export class AppCustomData {
   @Element() el: HTMLElement;
 
   private storageService: StorageService;
+  private storageOfflineService: StorageOfflineService;
 
   @State()
   private files: StorageFile[];
@@ -33,6 +35,7 @@ export class AppCustomData {
 
   constructor() {
     this.storageService = StorageService.getInstance();
+    this.storageOfflineService = StorageOfflineService.getInstance();
   }
 
   async componentDidLoad() {
@@ -149,7 +152,7 @@ export class AppCustomData {
       if (filePicker.files && filePicker.files.length > 0) {
         this.uploading = true;
 
-        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'data', 10485760);
+        const storageFile: StorageFile = await this.storageOfflineService.uploadFile(filePicker.files[0], 'data', 10485760);
 
         if (storageFile) {
           await this.selectAndClose(storageFile);

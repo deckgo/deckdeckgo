@@ -4,6 +4,7 @@ import {alertController} from '@ionic/core';
 
 import settingsStore from '../../../../stores/settings.store';
 import i18n from '../../../../stores/i18n.store';
+import offlineStore from '../../../../stores/offline.store';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../types/editor/image-action';
@@ -12,9 +13,9 @@ import {Expanded} from '../../../../types/core/settings';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
-import { tenorEnabled, unsplashEnabled } from '../../../../utils/core/environment.utils';
+import {tenorEnabled, unsplashEnabled} from '../../../../utils/core/environment.utils';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-image',
@@ -44,9 +45,6 @@ export class AppImage {
 
   @State()
   private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
-
-  @State()
-  private navigatorOnline: boolean = navigator.onLine;
 
   private tenorEnabled = tenorEnabled();
   private unsplashEnabled = unsplashEnabled();
@@ -143,7 +141,7 @@ export class AppImage {
   }
 
   private renderStockPhotos() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // Unsplash not available offline
       return undefined;
     }
@@ -160,7 +158,7 @@ export class AppImage {
   }
 
   private renderGif() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // Tenor not available offline
       return undefined;
     }
