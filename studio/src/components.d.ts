@@ -235,7 +235,6 @@ export namespace Components {
     interface AppMenu {
     }
     interface AppMoreDeckActions {
-        "offline": boolean;
     }
     interface AppMoreElementActions {
         "clone": boolean;
@@ -1523,7 +1522,6 @@ declare namespace LocalJSX {
     interface AppMenu {
     }
     interface AppMoreDeckActions {
-        "offline"?: boolean;
     }
     interface AppMoreElementActions {
         "clone"?: boolean;
