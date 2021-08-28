@@ -7,19 +7,33 @@ import {SlotType} from '../../types/editor/slot-type';
 import {deckSelector} from './deck.utils';
 
 export const getSlidesLocalImages = async ({deck}: {deck: Deck}): Promise<File[]> => {
+  return getSlidesLocalAssets({deck, getAssets: getSlideLocalImages});
+};
+
+export const getSlidesLocalCharts = async ({deck}: {deck: Deck}): Promise<File[]> => {
+  return getSlidesLocalAssets({deck, getAssets: getSlideLocalCharts});
+};
+
+const getSlidesLocalAssets = async ({
+  deck,
+  getAssets
+}: {
+  deck: Deck;
+  getAssets: ({slideId}: {slideId: string}) => Promise<File[] | undefined>;
+}): Promise<File[]> => {
   if (!deck.data.slides || deck.data.slides.length <= 0) {
     return [];
   }
 
   try {
-    const data: (File[] | undefined)[] = await Promise.all(deck.data.slides.map((slideId: string) => getSlideLocalImages({slideId})));
+    const data: (File[] | undefined)[] = await Promise.all(deck.data.slides.map((slideId: string) => getAssets({slideId})));
     return [].concat(...data.filter((files: File[] | undefined) => files?.length));
   } catch (err) {
     throw new Error('Error while getting slides images');
   }
 };
 
-export const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<File[] | undefined> => {
+const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<File[] | undefined> => {
   const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
   if (!slideElement) {
@@ -43,4 +57,24 @@ export const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise
   });
 
   return getMany<File>(list.map(({imgSrc}: HTMLDeckgoLazyImgElement) => imgSrc));
+};
+
+const getSlideLocalCharts = async ({slideId}: {slideId: string}): Promise<File[] | undefined> => {
+  const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
+
+  if (!slideElement) {
+    return undefined;
+  }
+
+  if (slideElement.tagName && slideElement.tagName.toUpperCase() !== 'deckgo-slide-chart'.toUpperCase()) {
+    return undefined;
+  }
+
+  const src: string = (slideElement as HTMLDeckgoSlideChartElement).src;
+
+  if (!src || src === undefined || src === '') {
+    return undefined;
+  }
+
+  return getMany<File>([src]);
 };

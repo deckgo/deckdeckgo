@@ -8,7 +8,7 @@ import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
 import {ImportData, importEditorData} from '../../../utils/editor/import.utils';
-import {getSlidesLocalImages} from '../../../utils/editor/assets.utils';
+import {getSlidesLocalCharts, getSlidesLocalImages} from '../../../utils/editor/assets.utils';
 
 import {SwService} from '../sw/sw.service';
 
@@ -39,6 +39,7 @@ export class FileSystemService {
     const deck: Deck = await this.getDeck(deckStore.state.deck);
     const slides: Slide[] = await this.getSlides(deckStore.state.deck);
     const images: File[] = await getSlidesLocalImages({deck: deckStore.state.deck});
+    const charts: File[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
 
     const blob: Blob = await this.zip({
       data: {
@@ -46,7 +47,8 @@ export class FileSystemService {
         deck,
         slides
       },
-      images
+      images,
+      charts
     });
 
     await this.save({
@@ -140,11 +142,17 @@ export class FileSystemService {
     }
   }
 
-  private async zip({data, images}: {data: ImportData; images: File[]}): Promise<Blob> {
+  private async zip({data, images, charts}: {data: ImportData; images: File[]; charts: File[]}): Promise<Blob> {
     const zip = new JSZip();
 
     images.forEach((img: File) =>
       zip.file(`/assets/images/${img.name}`, img, {
+        base64: true
+      })
+    );
+
+    charts.forEach((chart: File) =>
+      zip.file(`${chart.name}`, chart, {
         base64: true
       })
     );
