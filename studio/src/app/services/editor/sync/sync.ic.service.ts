@@ -2,6 +2,7 @@ import {Identity} from '@dfinity/agent';
 
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {SyncData} from '../../../types/editor/sync';
 import {InternetIdentityAuth} from '../../../types/core/ic.identity';
@@ -23,7 +24,7 @@ export class SyncIcService extends SyncService {
         return;
       }
 
-      if (!authStore.state.loggedIn || !navigator.onLine) {
+      if (!authStore.state.loggedIn || !offlineStore.state.online) {
         return;
       }
 

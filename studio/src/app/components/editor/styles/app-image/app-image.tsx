@@ -1,7 +1,10 @@
 import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
 
+import {alertController} from '../../../../utils/ionic/ionic.overlay';
+
 import settingsStore from '../../../../stores/settings.store';
 import i18n from '../../../../stores/i18n.store';
+import offlineStore from '../../../../stores/offline.store';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../types/editor/image-action';
@@ -13,8 +16,6 @@ import {SettingsUtils} from '../../../../utils/core/settings.utils';
 import {tenor, unsplash} from '../../../../utils/core/environment.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
-
-import {alertController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-image',
@@ -44,9 +45,6 @@ export class AppImage {
 
   @State()
   private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
-
-  @State()
-  private navigatorOnline: boolean = navigator.onLine;
 
   private tenorEnabled = tenor();
   private unsplashEnabled = unsplash();
@@ -143,7 +141,7 @@ export class AppImage {
   }
 
   private renderStockPhotos() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // Unsplash not available offline
       return undefined;
     }
@@ -160,7 +158,7 @@ export class AppImage {
   }
 
   private renderGif() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // Tenor not available offline
       return undefined;
     }

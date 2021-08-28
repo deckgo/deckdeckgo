@@ -5,8 +5,8 @@ import i18n from '../../../stores/i18n.store';
 import {Constants} from '../../../types/core/constants';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-import {StorageService} from '../../../services/storage/storage.service';
-import {StorageFactoryService} from '../../../services/storage/storage.factory.service';
+import {getStorageService, StorageService} from '../../../services/storage/storage.service';
+import {StorageOfflineService} from '../../../services/storage/storage.offline.service';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
@@ -18,6 +18,7 @@ export class AppCustomImages {
   @Element() el: HTMLElement;
 
   private storageService: StorageService;
+  private storageOfflineService: StorageOfflineService;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -43,7 +44,8 @@ export class AppCustomImages {
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.storageService = StorageFactoryService.getInstance();
+    this.storageService = getStorageService();
+    this.storageOfflineService = StorageOfflineService.getInstance();
   }
 
   async componentDidLoad() {
@@ -170,7 +172,7 @@ export class AppCustomImages {
       if (filePicker.files && filePicker.files.length > 0) {
         this.uploading = true;
 
-        const storageFile: StorageFile = await this.storageService.uploadFile(filePicker.files[0], 'images', 10485760);
+        const storageFile: StorageFile = await this.storageOfflineService.uploadFile(filePicker.files[0], 'images', 10485760);
 
         if (storageFile) {
           await this.selectAndClose(storageFile);

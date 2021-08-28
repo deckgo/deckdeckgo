@@ -4,6 +4,7 @@ import {del, get, set} from 'idb-keyval';
 
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
@@ -13,26 +14,25 @@ import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync'
 
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
+import {deckSelector} from '../../../utils/editor/deck.utils';
 
 import {SlideFirebaseService} from '../../data/slide/slide.firebase.service';
 import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';
-
-import {StorageService} from '../../storage/storage.service';
+import {StorageFirebaseService} from '../../storage/storage.firebase.service';
 import {SyncService} from './sync.service';
-import {StorageFactoryService} from '../../storage/storage.factory.service';
 
 export class SyncFirebaseService extends SyncService {
   private slideFirebaseService: SlideFirebaseService;
   private deckFirebaseService: DeckFirebaseService;
 
-  private storageService: StorageService;
+  private storageFirebaseService: StorageFirebaseService;
 
   constructor() {
     super();
 
     this.deckFirebaseService = DeckFirebaseService.getInstance();
     this.slideFirebaseService = SlideFirebaseService.getInstance();
-    this.storageService = StorageFactoryService.getInstance();
+    this.storageFirebaseService = StorageFirebaseService.getInstance();
   }
 
   // @Override
@@ -42,7 +42,7 @@ export class SyncFirebaseService extends SyncService {
         return;
       }
 
-      if (!authStore.state.loggedIn || !navigator.onLine) {
+      if (!authStore.state.loggedIn || !offlineStore.state.online) {
         return;
       }
 
@@ -102,7 +102,7 @@ export class SyncFirebaseService extends SyncService {
 
   private uploadSlideLocalUserAssets(deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slide_id="${slideId}"]`);
+      const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
       if (!slideElement) {
         resolve();
@@ -145,7 +145,7 @@ export class SyncFirebaseService extends SyncService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile | undefined = await this.storageService.uploadFile(data, 'data', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageFirebaseService.uploadFile(data, 'data', 10485760);
 
         if (!storageFile) {
           reject(`Chart ${src} upload has failed.`);
@@ -228,7 +228,7 @@ export class SyncFirebaseService extends SyncService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile | undefined = await this.storageService.uploadFile(data, 'images', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageFirebaseService.uploadFile(data, 'images', 10485760);
 
         if (!storageFile) {
           reject(`Image ${img.imgSrc} upload has failed.`);
@@ -361,7 +361,7 @@ export class SyncFirebaseService extends SyncService {
 
   private uploadDeckBackgroundAssets(deckId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slot="background"]`);
+      const backgroundElement: HTMLElement = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
       if (!backgroundElement) {
         resolve();
@@ -398,7 +398,7 @@ export class SyncFirebaseService extends SyncService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile | undefined = await this.storageService.uploadFile(data, 'images', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageFirebaseService.uploadFile(data, 'images', 10485760);
 
         if (!storageFile) {
           reject(`Image ${img.imgSrc} upload has failed.`);

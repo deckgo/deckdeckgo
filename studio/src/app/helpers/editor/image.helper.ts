@@ -25,13 +25,13 @@ export class ImageHelper {
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(selectedElement, slide, deck, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
-      await this.openCustomModalRestricted(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
+      await this.openModal(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
     } else if (imageAction.action === EditAction.OPEN_SVG_WAVES) {
       await this.openModal(selectedElement, slide, deck, 'app-waves');
     }
   }
 
-  private async openModal(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action?: EditAction) {
+  async openModal(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action?: EditAction) {
     const modal: HTMLIonModalElement = await modalController.create({
       component: componentTag
     });

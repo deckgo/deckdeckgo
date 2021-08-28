@@ -4,7 +4,20 @@ import store from '../../stores/error.store';
 
 import {StorageService} from './storage.service';
 
-export class StorageOfflineService extends StorageService {
+export class StorageOfflineService implements StorageService {
+  private static instance: StorageOfflineService;
+
+  private constructor() {
+    // Private constructor, singleton
+  }
+
+  static getInstance() {
+    if (!StorageOfflineService.instance) {
+      StorageOfflineService.instance = new StorageOfflineService();
+    }
+    return StorageOfflineService.instance;
+  }
+
   // @Override
   uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {

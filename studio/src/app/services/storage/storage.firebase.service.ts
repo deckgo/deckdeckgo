@@ -8,7 +8,22 @@ import authStore from '../../stores/auth.store';
 
 import {Constants} from '../../types/core/constants';
 
-export class StorageFirebaseService {
+import {StorageService} from './storage.service';
+
+export class StorageFirebaseService implements StorageService {
+  private static instance: StorageFirebaseService;
+
+  private constructor() {
+    // Private constructor, singleton
+  }
+
+  static getInstance() {
+    if (!StorageFirebaseService.instance) {
+      StorageFirebaseService.instance = new StorageFirebaseService();
+    }
+    return StorageFirebaseService.instance;
+  }
+
   // @Override
   uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
@@ -33,7 +48,10 @@ export class StorageFirebaseService {
 
         const ref: Reference = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/${data.name}`);
 
-        await ref.put(data);
+        // Firebase issue: updating a File/Blob which has been saved previously in IDB does not work.
+        const buffer: ArrayBuffer = await new Response(data).arrayBuffer();
+
+        await ref.put(buffer);
 
         resolve({
           downloadUrl: downloadUrl ? await ref.getDownloadURL() : undefined,

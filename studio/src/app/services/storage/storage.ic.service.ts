@@ -2,19 +2,32 @@ import {StorageService} from './storage.service';
 
 // TODO: implement storage for the internet computer
 
-export class StorageIcService extends StorageService {
-  // @Override
-  uploadFile(_data: File, _folder: string, _maxSize: number): Promise<StorageFile | undefined> {
-    throw new Error('Not implemented yet.');
+export class StorageIcService implements StorageService {
+  private static instance: StorageIcService;
+
+  private constructor() {
+    // Private constructor, singleton
+  }
+
+  static getInstance() {
+    if (!StorageIcService.instance) {
+      StorageIcService.instance = new StorageIcService();
+    }
+    return StorageIcService.instance;
   }
 
   // @Override
-  getFiles(_next: string | null, _folder: string): Promise<StorageFilesList | null> {
-    throw new Error('Not implemented yet.');
+  async uploadFile(_data: File, _folder: string, _maxSize: number): Promise<StorageFile | undefined> {
+    return undefined;
   }
 
   // @Override
-  getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
-    throw new Error('Not implemented yet.');
+  async getFiles(_next: string | null, _folder: string): Promise<StorageFilesList | null> {
+    return null;
+  }
+
+  // @Override
+  async getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
+    return undefined;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Element, h, Prop} from '@stencil/core';
+import {Component, Element, h} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
 
@@ -10,9 +10,6 @@ import {MoreAction} from '../../../../types/editor/more-action';
 })
 export class AppMoreDeckActions {
   @Element() el: HTMLElement;
-
-  @Prop()
-  offline: boolean = false;
 
   private async closePopover(action: MoreAction) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
