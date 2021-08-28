@@ -368,7 +368,7 @@ export class SyncService {
 
   private uploadDeckBackgroundAssets(deckId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const backgroundElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slot="background"]`);
+      const backgroundElement: HTMLElement = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
       if (!backgroundElement) {
         resolve();
