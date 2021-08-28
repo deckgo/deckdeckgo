@@ -2,6 +2,7 @@ import {update} from 'idb-keyval';
 
 import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
+import offlineStore from '../../stores/offline.store';
 
 import {SyncPending, SyncPendingDeck, SyncPendingSlide} from '../../types/editor/sync';
 
@@ -79,7 +80,7 @@ const pendingSlide = ({deckId, slideId}: {deckId: string; slideId: string}): Syn
 });
 
 const setPendingState = () => {
-  if (!authStore.state.loggedIn || !navigator.onLine) {
+  if (!authStore.state.loggedIn || !offlineStore.state.online) {
     return;
   }
 

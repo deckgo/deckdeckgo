@@ -41,7 +41,10 @@ export class StorageOnlineService {
 
         const ref: Reference = firebase.storage().ref(`${authStore.state.authUser.uid}/assets/${folder}/${data.name}`);
 
-        await ref.put(data);
+        // Firebase issue: updating a File/Blob which has been saved previously in IDB does not work.
+        const buffer: ArrayBuffer = await new Response(data).arrayBuffer();
+
+        await ref.put(buffer);
 
         resolve({
           downloadUrl: downloadUrl ? await ref.getDownloadURL() : undefined,

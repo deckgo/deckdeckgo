@@ -1,4 +1,5 @@
-import {SyncService} from '../editor/sync/sync.service';
+import offlineStore from '../../stores/offline.store';
+import authStore from '../../stores/auth.store';
 
 import {StorageOnlineService} from './storage.online.service';
 import {StorageOfflineService} from './storage.offline.service';
@@ -17,33 +18,23 @@ export class StorageService {
     return StorageService.instance;
   }
 
-  async uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
-    const offline: OfflineDeck = await SyncService.getInstance().status();
-
-    if (offline !== undefined) {
-      return StorageOfflineService.getInstance().uploadFile(data, folder, maxSize);
-    } else {
-      return StorageOnlineService.getInstance().uploadFile(data, folder, maxSize, downloadUrl);
-    }
-  }
-
   async getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
-    const offline: OfflineDeck = await SyncService.getInstance().status();
-
-    if (offline !== undefined) {
-      return StorageOfflineService.getInstance().getFiles(next, folder);
-    } else {
+    if (this.online()) {
       return StorageOnlineService.getInstance().getFiles(next, folder);
     }
+
+    return StorageOfflineService.getInstance().getFiles(next, folder);
   }
 
   async getFolders(folder: string): Promise<StorageFoldersList | undefined> {
-    const offline: OfflineDeck = await SyncService.getInstance().status();
-
-    if (offline !== undefined) {
-      return undefined;
-    } else {
+    if (this.online()) {
       return StorageOnlineService.getInstance().getFolders(folder);
     }
+
+    return undefined;
+  }
+
+  private online(): boolean {
+    return authStore.state.loggedIn && offlineStore.state.online;
   }
 }

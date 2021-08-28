@@ -3,7 +3,6 @@ import {EventEmitter} from '@stencil/core';
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import busyStore from '../../stores/busy.store';
-import authStore from '../../stores/auth.store';
 
 import {ShapeAction, ShapeActionSVG} from '../../types/editor/shape-action';
 import {ImageAction} from '../../types/editor/image-action';
@@ -12,7 +11,7 @@ import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action
 import {EditAction} from '../../types/editor/edit-action';
 
 export class ShapeHelper {
-  constructor(private didChange: EventEmitter<HTMLElement>, private signIn: EventEmitter<void>) {}
+  constructor(private didChange: EventEmitter<HTMLElement>) {}
 
   async appendShape(slideElement: HTMLElement, shapeAction: ShapeAction) {
     if (shapeAction.svg) {
@@ -38,7 +37,7 @@ export class ShapeHelper {
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(slideElement, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
-      await this.openModalRestricted(slideElement);
+      await this.openModal(slideElement, 'app-custom-images');
     } else if (imageAction.action === EditAction.ADD_IMAGE) {
       await this.appendContentShapeImage(slideElement, imageAction.image as UnsplashPhoto | TenorGif | StorageFile);
     }
@@ -58,15 +57,6 @@ export class ShapeHelper {
 
       await this.appendContentShape(slideElement, 1, deckgImg.src, deckgImg.label, 'img');
     }
-  }
-
-  private async openModalRestricted(slideElement: HTMLElement) {
-    if (!authStore.state.authUser) {
-      this.signIn.emit();
-      return;
-    }
-
-    await this.openModal(slideElement, 'app-custom-images');
   }
 
   private async openModal(slideElement: HTMLElement, componentTag: string) {

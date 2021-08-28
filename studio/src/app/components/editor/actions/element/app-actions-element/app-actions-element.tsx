@@ -98,7 +98,7 @@ export class AppActionsElement {
 
   async componentWillLoad() {
     this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
-    this.shapeHelper = new ShapeHelper(this.slideDidChange, this.signIn);
+    this.shapeHelper = new ShapeHelper(this.slideDidChange);
   }
 
   async componentDidLoad() {
@@ -426,13 +426,7 @@ export class AppActionsElement {
             detail.data.action
           );
         } else if (detail.data.action === EditAction.OPEN_DATA) {
-          await this.imageHelper.openCustomModalRestricted(
-            this.selectedElement.element,
-            this.selectedElement?.type === 'slide',
-            false,
-            'app-custom-data',
-            detail.data.action
-          );
+          await this.imageHelper.openModal(this.selectedElement.element, this.selectedElement?.type === 'slide', false, 'app-custom-data', detail.data.action);
         }
       }
 

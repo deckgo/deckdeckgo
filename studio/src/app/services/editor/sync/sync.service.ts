@@ -2,9 +2,9 @@ import firebase from 'firebase/app';
 
 import {del, get, set, update} from 'idb-keyval';
 
-import offlineStore from '../../../stores/offline.store';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {Deck, DeckAttributes} from '../../../models/data/deck';
 import {Slide, SlideAttributes} from '../../../models/data/slide';
@@ -14,6 +14,7 @@ import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck} fro
 
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {firebaseEnabled} from '../../../utils/core/environment.utils';
+import {deckSelector} from '../../../utils/editor/deck.utils';
 
 import {SlideOnlineService} from '../../data/slide/slide.online.service';
 import {DeckOnlineService} from '../../data/deck/deck.online.service';
@@ -40,25 +41,13 @@ export class SyncService {
     return SyncService.instance;
   }
 
-  async status(): Promise<OfflineDeck> {
-    if (offlineStore.state.offline === undefined) {
-      const saved: OfflineDeck = await get('deckdeckgo_offline');
-
-      offlineStore.state.offline = saved ? {...saved} : undefined;
-
-      return saved;
-    }
-
-    return offlineStore.state.offline;
-  }
-
   async upload(syncData: SyncData | undefined) {
     try {
       if (!syncData) {
         return;
       }
 
-      if (!authStore.state.loggedIn || !navigator.onLine) {
+      if (!authStore.state.loggedIn || !offlineStore.state.online) {
         return;
       }
 
@@ -120,7 +109,7 @@ export class SyncService {
 
   private uploadSlideLocalUserAssets(deckId: string, slideId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      const slideElement: HTMLElement = document.querySelector(`app-editor > ion-content div.deck > main > deckgo-deck > *[slide_id="${slideId}"]`);
+      const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
       if (!slideElement) {
         resolve();
@@ -183,7 +172,7 @@ export class SyncService {
         await set(`/decks/${deckId}/slides/${slideId}`, slide);
 
         // 3. We update the DOM
-        (slideElement as any).src = storageFile.downloadUrl;
+        (slideElement as HTMLDeckgoSlideChartElement).src = storageFile.downloadUrl;
 
         // 4. All good, we don't need the image in the indexedDB anymore
         await del(src);

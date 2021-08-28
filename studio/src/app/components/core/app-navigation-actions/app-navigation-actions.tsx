@@ -9,6 +9,7 @@ import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
 import errorStore from '../../../stores/error.store';
 import syncStore from '../../../stores/sync.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
 
@@ -183,7 +184,7 @@ export class AppNavigationActions {
   }
 
   private renderCloudStatus() {
-    if (!navigator.onLine) {
+    if (!offlineStore.state.online) {
       return undefined;
     }
 

@@ -4,7 +4,6 @@ import {modalController, OverlayEventDetail, popoverController} from '@ionic/cor
 import {isMobile} from '@deckdeckgo/utils';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
-import offlineStore from '../../../../../stores/offline.store';
 import remoteStore from '../../../../../stores/remote.store';
 import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
@@ -108,9 +107,6 @@ export class AppActionsDeck {
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
-      componentProps: {
-        offline: offlineStore.state.offline
-      },
       event: $event,
       mode: 'ios'
     });
