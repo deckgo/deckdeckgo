@@ -135,7 +135,7 @@ export class SyncService {
           return;
         }
 
-        const src: string = (slideElement as any).src;
+        const src: string = (slideElement as HTMLDeckgoSlideChartElement).src;
 
         if (!src || src === undefined || src === '') {
           resolve();
