@@ -1,3 +1,5 @@
+import JSZip from 'jszip';
+
 import {get, getMany} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
@@ -6,6 +8,7 @@ import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
 import {ImportData, importEditorData} from '../../../utils/editor/import.utils';
+import {getSlidesLocalImages} from '../../../utils/editor/assets.utils';
 
 import {SwService} from '../sw/sw.service';
 
@@ -35,11 +38,20 @@ export class FileSystemService {
 
     const deck: Deck = await this.getDeck(deckStore.state.deck);
     const slides: Slide[] = await this.getSlides(deckStore.state.deck);
+    const images: File[] = await getSlidesLocalImages({deck: deckStore.state.deck});
+
+    const blob: Blob = await this.zip({
+      data: {
+        id: deck.id,
+        deck,
+        slides
+      },
+      images
+    });
 
     await this.save({
-      id: deck.id,
-      deck,
-      slides
+      filename: deckStore.state.deck.data.name,
+      blob
     });
   }
 
@@ -70,31 +82,31 @@ export class FileSystemService {
     }
   }
 
-  private save(deck: ImportData): Promise<void> {
+  private save({filename, blob}: {filename: string; blob: Blob}): Promise<void> {
     if ('showSaveFilePicker' in window) {
-      return this.exportNativeFileSystem(deck);
+      return this.exportNativeFileSystem(blob);
     }
 
-    return this.exportDownload(deck);
+    return this.exportDownload({filename, blob});
   }
 
-  private async exportNativeFileSystem(deck: ImportData) {
+  private async exportNativeFileSystem(blob: Blob) {
     const fileHandle: FileSystemFileHandle = await this.getNewFileHandle();
 
     if (!fileHandle) {
       throw new Error('Cannot access filesystem');
     }
 
-    await this.writeFile(fileHandle, JSON.stringify(deck));
+    await this.writeFile(fileHandle, blob);
   }
 
   private async getNewFileHandle(): Promise<FileSystemFileHandle> {
     const opts: SaveFilePickerOptions = {
       types: [
         {
-          description: 'JSON Files',
+          description: 'DeckDeckGo Files',
           accept: {
-            'application/json': ['.json']
+            'application/octet-stream': ['.ddg']
           }
         }
       ]
@@ -103,25 +115,21 @@ export class FileSystemService {
     return showSaveFilePicker(opts);
   }
 
-  private async writeFile(fileHandle: FileSystemFileHandle, contents: string | BufferSource | Blob) {
-    // Create a writer (request permission if necessary).
+  private async writeFile(fileHandle: FileSystemFileHandle, blob: Blob) {
     const writer = await fileHandle.createWritable();
-    // Write the full length of the contents
-    await writer.write(contents);
-    // Close the file and write the contents to disk
+    await writer.write(blob);
     await writer.close();
   }
 
-  private async exportDownload(deckSave: ImportData) {
+  private async exportDownload({filename, blob}: {filename: string; blob: Blob}) {
     const a: HTMLAnchorElement = document.createElement('a');
     a.style.display = 'none';
     document.body.appendChild(a);
 
-    const blob: Blob = new Blob([JSON.stringify(deckSave)], {type: 'octet/stream'});
     const url: string = window.URL.createObjectURL(blob);
 
     a.href = url;
-    a.download = `${deckSave.deck.data.name}.json`;
+    a.download = `${filename}.ddg`;
 
     a.click();
 
@@ -130,5 +138,23 @@ export class FileSystemService {
     if (a && a.parentElement) {
       a.parentElement.removeChild(a);
     }
+  }
+
+  private async zip({data, images}: {data: ImportData; images: File[]}): Promise<Blob> {
+    const zip = new JSZip();
+
+    images.forEach((img: File) =>
+      zip.file(`/assets/images/${img.name}`, img, {
+        base64: true
+      })
+    );
+
+    const blob: Blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+
+    zip.file('deck.json', blob, {
+      base64: true
+    });
+
+    return zip.generateAsync({type: 'blob'});
   }
 }
