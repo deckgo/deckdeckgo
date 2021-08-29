@@ -1,6 +1,7 @@
 import {get, update} from 'idb-keyval';
 
 import syncStore from '../../../stores/sync.store';
+import authStore from '../../../stores/auth.store';
 
 import {SyncData, SyncPending, SyncPendingDeck} from '../../../types/editor/sync';
 
@@ -37,6 +38,11 @@ export abstract class SyncService {
   }
 
   async initSyncState() {
+    if (!authStore.state.loggedIn) {
+      syncStore.state.sync = 'idle';
+      return;
+    }
+
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {
