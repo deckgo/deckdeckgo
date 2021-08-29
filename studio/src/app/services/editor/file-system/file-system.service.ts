@@ -152,7 +152,7 @@ export class FileSystemService {
     );
 
     charts.forEach((chart: File) =>
-      zip.file(`${chart.name}`, chart, {
+      zip.file(`/assets/data/${chart.name}`, chart, {
         base64: true
       })
     );
