@@ -5,6 +5,7 @@ import {toastController} from '@ionic/core';
 import errorStore from './stores/error.store';
 import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
+import authStore from './stores/auth.store';
 
 import {AuthService} from './services/auth/auth.service';
 
@@ -36,6 +37,7 @@ export class AppRoot {
   private destroyErrorListener;
   private destroyNavListener;
   private destroyShareListener;
+  private destroyAuthListener;
 
   private shareRef!: HTMLAppShareDeckElement;
 
@@ -49,13 +51,14 @@ export class AppRoot {
   }
 
   async componentWillLoad() {
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncService.initSyncState());
+
     const promises: Promise<void>[] = [
       this.authService.init(),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),
-      this.langService.init(),
-      this.syncService.initSyncState()
+      this.langService.init()
     ];
 
     Promise.all(promises).then(() => {
@@ -82,17 +85,10 @@ export class AppRoot {
   }
 
   disconnectedCallback() {
-    if (this.destroyErrorListener) {
-      this.destroyErrorListener();
-    }
-
-    if (this.destroyNavListener) {
-      this.destroyNavListener();
-    }
-
-    if (this.destroyShareListener) {
-      this.destroyShareListener();
-    }
+    this.destroyErrorListener?.();
+    this.destroyNavListener?.();
+    this.destroyShareListener?.();
+    this.destroyAuthListener?.();
   }
 
   @Listen('swUpdate', {target: 'window'})

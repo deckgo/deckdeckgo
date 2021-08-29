@@ -461,6 +461,11 @@ export class SyncService {
   }
 
   async initSyncState() {
+    if (!authStore.state.loggedIn) {
+      syncStore.state.sync = 'idle';
+      return;
+    }
+
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {
