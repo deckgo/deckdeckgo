@@ -140,7 +140,7 @@ export class AppNavigationActions {
           <ion-label>{i18n.state.tools.open}</ion-label>
         </button>
 
-        <input type="file" accept="application/json" onChange={() => this.importData()} ref={(el) => (this.loadInput = el as HTMLInputElement)} tabindex="-1" />
+        <input type="file" accept=".ddg" onChange={() => this.importData()} ref={(el) => (this.loadInput = el as HTMLInputElement)} tabindex="-1" />
 
         <button class="ion-activatable" onClick={() => this.exportData()}>
           <ion-ripple-effect></ion-ripple-effect>

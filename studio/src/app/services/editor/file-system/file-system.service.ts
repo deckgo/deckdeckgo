@@ -7,7 +7,7 @@ import deckStore from '../../../stores/deck.store';
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
-import {ImportData, importEditorData} from '../../../utils/editor/import.utils';
+import {ImportAsset, ImportData, importEditorAssets, importEditorData} from '../../../utils/editor/import.utils';
 import {getDeckLocalImage, getSlidesLocalCharts, getSlidesLocalImages} from '../../../utils/editor/assets.utils';
 
 import {SwService} from '../sw/sw.service';
@@ -23,8 +23,9 @@ export class FileSystemService {
   }
 
   async importData(file: File) {
-    const data: ImportData = JSON.parse(await file.text());
+    const {data, assets} = await this.unzip(file);
 
+    await importEditorAssets(assets);
     await importEditorData(data);
 
     // We try to cache the data so that the user can go offline with it asap if wished
@@ -167,5 +168,40 @@ export class FileSystemService {
     });
 
     return zip.generateAsync({type: 'blob'});
+  }
+
+  private async unzip(file: File): Promise<{
+    data: ImportData;
+    assets: ImportAsset[];
+  }> {
+    const zip = new JSZip();
+
+    const content: JSZip = await zip.loadAsync(file);
+
+    const data: ImportData = JSON.parse(await content.file('deck.json').async('text'));
+
+    const zippedAssets: {path: string; file: JSZip.JSZipObject}[] = [];
+
+    content.folder('/assets/images/').forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/images/${filename}`, file}));
+    content.folder('/assets/data/').forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/data/${filename}`, file}));
+
+    const promises: Promise<ImportAsset>[] = zippedAssets.map(
+      ({path, file}: {path: string; file: JSZip.JSZipObject}) =>
+        new Promise<ImportAsset>(async (resolve) => {
+          const blob: Blob = await file.async('blob');
+
+          resolve({
+            path,
+            blob
+          });
+        })
+    );
+
+    const assets: ImportAsset[] = await Promise.all(promises);
+
+    return {
+      data,
+      assets
+    };
   }
 }
