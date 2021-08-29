@@ -8,7 +8,7 @@ import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
 import {ImportData, importEditorData} from '../../../utils/editor/import.utils';
-import {getSlidesLocalCharts, getSlidesLocalImages} from '../../../utils/editor/assets.utils';
+import {getDeckLocalImage, getSlidesLocalCharts, getSlidesLocalImages} from '../../../utils/editor/assets.utils';
 
 import {SwService} from '../sw/sw.service';
 
@@ -38,8 +38,11 @@ export class FileSystemService {
 
     const deck: Deck = await this.getDeck(deckStore.state.deck);
     const slides: Slide[] = await this.getSlides(deckStore.state.deck);
+
     const images: File[] = await getSlidesLocalImages({deck: deckStore.state.deck});
     const charts: File[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
+
+    const deckBackground: File | undefined = await getDeckLocalImage();
 
     const blob: Blob = await this.zip({
       data: {
@@ -47,7 +50,7 @@ export class FileSystemService {
         deck,
         slides
       },
-      images,
+      images: [...images, ...(deckBackground ? [deckBackground] : [])],
       charts
     });
 
