@@ -128,7 +128,7 @@ export class SyncFirebaseService extends SyncService {
           return;
         }
 
-        const src: string = (slideElement as any).src;
+        const src: string = (slideElement as HTMLDeckgoSlideChartElement).src;
 
         if (!src || src === undefined || src === '') {
           resolve();
@@ -165,7 +165,7 @@ export class SyncFirebaseService extends SyncService {
         await set(`/decks/${deckId}/slides/${slideId}`, slide);
 
         // 3. We update the DOM
-        (slideElement as any).src = storageFile.downloadUrl;
+        (slideElement as HTMLDeckgoSlideChartElement).src = storageFile.downloadUrl;
 
         // 4. All good, we don't need the image in the indexedDB anymore
         await del(src);
