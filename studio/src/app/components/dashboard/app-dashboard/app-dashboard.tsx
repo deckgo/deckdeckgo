@@ -375,7 +375,7 @@ export class AppDashboard {
       }
 
       const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck.deck?.id === id;
+        return matchDeck?.deck?.id === id;
       });
 
       resolve(index);
