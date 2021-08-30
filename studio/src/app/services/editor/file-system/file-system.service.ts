@@ -211,6 +211,7 @@ export class FileSystemService {
       .folder('/assets/local/data/')
       .forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/local/data/${filename}`, file}));
 
+    // We import the cloud assets only if user is online otherwise it will be possible to display those
     if (!offlineStore.state.online) {
       content
         .folder('/assets/online/images/')
