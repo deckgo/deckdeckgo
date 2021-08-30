@@ -1,6 +1,5 @@
 import {Component, Prop, h} from '@stencil/core';
 
-import offlineStore from '../../../stores/offline.store';
 import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
 
@@ -14,9 +13,16 @@ import {AppIcon} from '../app-icon/app-icon';
 export class AppNavigation {
   @Prop() menuToggle: boolean = true;
 
-  @Prop() user: boolean = true;
-
   @Prop() signIn: boolean = false;
+
+  private async closeMenu() {
+    if (!document) {
+      return;
+    }
+
+    const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
+    await element?.close();
+  }
 
   render() {
     return (
@@ -24,7 +30,8 @@ export class AppNavigation {
         <ion-toolbar>
           {this.renderTitle()}
           {this.renderMenuToggle()}
-          {this.renderUser()}
+
+          <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
         </ion-toolbar>
       </ion-header>
     );
@@ -53,15 +60,6 @@ export class AppNavigation {
     );
   }
 
-  private async closeMenu() {
-    if (!document) {
-      return;
-    }
-
-    const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
-    await element?.close();
-  }
-
   private renderMenuToggle() {
     if (!this.menuToggle) {
       return undefined;
@@ -76,13 +74,5 @@ export class AppNavigation {
         </ion-menu-toggle>
       </ion-buttons>
     );
-  }
-
-  private renderUser() {
-    if (!offlineStore.state.online || !this.user) {
-      return undefined;
-    }
-
-    return <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>;
   }
 }
