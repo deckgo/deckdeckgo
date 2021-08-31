@@ -247,7 +247,6 @@ export namespace Components {
     interface AppNavigation {
         "menuToggle": boolean;
         "signIn": boolean;
-        "user": boolean;
     }
     interface AppNavigationActions {
         "signIn": boolean;
@@ -1534,7 +1533,6 @@ declare namespace LocalJSX {
     interface AppNavigation {
         "menuToggle"?: boolean;
         "signIn"?: boolean;
-        "user"?: boolean;
     }
     interface AppNavigationActions {
         "signIn"?: boolean;

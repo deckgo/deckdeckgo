@@ -1,3 +1,5 @@
+import {v4 as uuid} from 'uuid';
+
 import {get, getMany} from 'idb-keyval';
 
 import {Deck} from '../../models/data/deck';
@@ -6,32 +8,46 @@ import {SlotType} from '../../types/editor/slot-type';
 
 import {deckSelector} from './deck.utils';
 
-export const getDeckLocalImage = async (): Promise<File | undefined> => {
-  return getDeckBackgroundImage();
+export interface UserAsset {
+  key: string;
+  blob: Blob;
+  url?: string;
+}
+
+export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
+  return getDeckImage();
 };
 
-export const getSlidesLocalImages = async ({deck}: {deck: Deck}): Promise<File[]> => {
-  return getAssets({deck, getAssets: getSlideLocalImages});
+export const getSlidesLocalImages = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({deck, assets: getSlideLocalImages});
 };
 
-export const getSlidesLocalCharts = async ({deck}: {deck: Deck}): Promise<File[]> => {
-  return getAssets({deck, getAssets: getSlideLocalCharts});
+export const getSlidesLocalCharts = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({deck, assets: getSlideLocalCharts});
 };
 
-const getAssets = async ({deck, getAssets}: {deck: Deck; getAssets: ({slideId}: {slideId: string}) => Promise<File[] | undefined>}): Promise<File[]> => {
+export const getSlidesOnlineImages = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({deck, assets: getSlideOnlineImages});
+};
+
+export const getSlidesOnlineCharts = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({deck, assets: getSlideOnlineCharts});
+};
+
+const getAssets = async <T>({deck, assets}: {deck: Deck; assets: ({slideId}: {slideId: string}) => Promise<T[] | undefined>}): Promise<T[]> => {
   if (!deck.data.slides || deck.data.slides.length <= 0) {
     return [];
   }
 
   try {
-    const data: (File[] | undefined)[] = await Promise.all(deck.data.slides.map((slideId: string) => getAssets({slideId})));
-    return [].concat(...data.filter((files: File[] | undefined) => files?.length));
+    const data: (T[] | undefined)[] = await Promise.all(deck.data.slides.map((slideId: string) => assets({slideId})));
+    return [].concat(...data.filter((files: T[] | undefined) => files?.length));
   } catch (err) {
     throw new Error('Error while getting slides images');
   }
 };
 
-const getDeckBackgroundImage = async (): Promise<File | undefined> => {
+const getDeckImage = async (): Promise<UserAsset | undefined> => {
   const backgroundElement: HTMLElement = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
   if (!backgroundElement) {
@@ -44,16 +60,57 @@ const getDeckBackgroundImage = async (): Promise<File | undefined> => {
     return undefined;
   }
 
+  const {imgSrc} = img;
+
   if (!isLocalImage(img)) {
+    return getUserAsset({url: imgSrc, type: 'images'});
+  }
+
+  return {
+    key: imgSrc,
+    blob: await get(imgSrc)
+  };
+};
+
+const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
+  const imgs: HTMLDeckgoLazyImgElement[] | undefined = getSlideImages({slideId});
+
+  if (!imgs || imgs.length <= 0) {
     return undefined;
   }
 
-  const {imgSrc} = img;
+  // Filter online images (http...)
+  const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
+    return isLocalImage(img);
+  });
 
-  return get<File>(imgSrc);
+  const files: File[] = await getMany<File>(list.map(({imgSrc}: HTMLDeckgoLazyImgElement) => imgSrc));
+
+  return files.map((blob: File) => ({
+    key: `/assets/local/images/${blob.name}`,
+    blob,
+    type: 'local'
+  }));
 };
 
-const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<File[] | undefined> => {
+const getSlideOnlineImages = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
+  const imgs: HTMLDeckgoLazyImgElement[] | undefined = getSlideImages({slideId});
+
+  if (!imgs || imgs.length <= 0) {
+    return undefined;
+  }
+
+  // Filter online images (http...)
+  const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
+    return !isLocalImage(img);
+  });
+
+  const promises: Promise<UserAsset | undefined>[] = list.map(({imgSrc}: HTMLDeckgoLazyImgElement) => getUserAsset({url: imgSrc, type: 'images'}));
+
+  return (await Promise.all(promises)).filter((asset: UserAsset | undefined) => asset !== undefined);
+};
+
+const getSlideImages = ({slideId}: {slideId: string}): HTMLDeckgoLazyImgElement[] | undefined => {
   const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
   if (!slideElement) {
@@ -66,17 +123,41 @@ const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<File[]
     return undefined;
   }
 
-  // Filter online images (http...) and deck background (which are cloned from the deck to the slides)
-  const list: HTMLDeckgoLazyImgElement[] = Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
-    return isLocalImage(img) && !(img.parentElement?.getAttribute('slot') === 'background' && !slideElement.hasAttribute('custom-background'));
+  // Filter deck background (which are cloned from the deck to the slides)
+  return Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
+    return !(img.parentElement?.getAttribute('slot') === 'background' && !slideElement.hasAttribute('custom-background'));
   });
-
-  return getMany<File>(list.map(({imgSrc}: HTMLDeckgoLazyImgElement) => imgSrc));
 };
 
 const isLocalImage = ({imgSrc}: HTMLDeckgoLazyImgElement): boolean => imgSrc !== undefined && imgSrc !== '' && !imgSrc.startsWith('http');
 
-const getSlideLocalCharts = async ({slideId}: {slideId: string}): Promise<File[] | undefined> => {
+const getSlideLocalCharts = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
+  const src: string = getChartSrc({slideId});
+
+  if (!src || src === undefined || src === '') {
+    return undefined;
+  }
+
+  return [
+    {
+      key: src,
+      blob: await get(src)
+    }
+  ];
+};
+
+const getSlideOnlineCharts = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
+  const src: string = getChartSrc({slideId});
+
+  if (!src || src === undefined || src === '') {
+    return undefined;
+  }
+
+  const asset: UserAsset = await getUserAsset({url: src, type: 'data'});
+  return asset ? [asset] : undefined;
+};
+
+const getChartSrc = ({slideId}: {slideId: string}): string | undefined => {
   const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
   if (!slideElement) {
@@ -87,11 +168,24 @@ const getSlideLocalCharts = async ({slideId}: {slideId: string}): Promise<File[]
     return undefined;
   }
 
-  const src: string = (slideElement as HTMLDeckgoSlideChartElement).src;
+  return (slideElement as HTMLDeckgoSlideChartElement).src;
+};
 
-  if (!src || src === undefined || src === '') {
-    return undefined;
+const getUserAsset = async ({url, type}: {url: string; type: 'images' | 'data'}): Promise<UserAsset | undefined> => {
+  try {
+    const response: Response = await fetch(url);
+
+    const blob: Blob = await response.blob();
+
+    return {
+      url,
+      key: `/assets/online/${type}/${uuid()}`,
+      blob
+    };
+  } catch (err) {
+    // We ignore it, it remains referenced with its https link in the content.
+    // For example: Tenor (Gif) does not support CORS fetch.
   }
 
-  return getMany<File>([src]);
+  return undefined;
 };
