@@ -10,7 +10,7 @@ import {Slide} from '../../../models/data/slide';
 
 import {ImportAsset, ImportData, importEditorAssets, importEditorData} from '../../../utils/editor/import.utils';
 import {
-  getDeckLocalImage,
+  getDeckBackgroundImage,
   getSlidesLocalCharts,
   getSlidesLocalImages,
   getSlidesOnlineCharts,
@@ -55,8 +55,7 @@ export class FileSystemService {
     const onlineImages: UserAsset[] = await getSlidesOnlineImages({deck: deckStore.state.deck});
     const onlineCharts: UserAsset[] = await getSlidesOnlineCharts({deck: deckStore.state.deck});
 
-    const deckBackground: UserAsset | undefined = await getDeckLocalImage();
-    // TODO deck background online
+    const deckBackground: UserAsset | undefined = await getDeckBackgroundImage();
 
     const blob: Blob = await this.zip({
       data: {

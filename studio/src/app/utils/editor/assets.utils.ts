@@ -14,8 +14,8 @@ export interface UserAsset {
   url?: string;
 }
 
-export const getDeckLocalImage = async (): Promise<UserAsset | undefined> => {
-  return getDeckBackgroundImage();
+export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
+  return getDeckImage();
 };
 
 export const getSlidesLocalImages = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
@@ -47,7 +47,7 @@ const getAssets = async <T>({deck, assets}: {deck: Deck; assets: ({slideId}: {sl
   }
 };
 
-const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
+const getDeckImage = async (): Promise<UserAsset | undefined> => {
   const backgroundElement: HTMLElement = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
   if (!backgroundElement) {
@@ -60,11 +60,11 @@ const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
     return undefined;
   }
 
-  if (!isLocalImage(img)) {
-    return undefined;
-  }
-
   const {imgSrc} = img;
+
+  if (!isLocalImage(img)) {
+    return getUserAsset({url: imgSrc, type: 'images'});
+  }
 
   return {
     key: imgSrc,
