@@ -64,12 +64,32 @@ export class AppSlideThumbnail {
     const content: string = await cleanContent(this.slide.outerHTML);
 
     this.deckPreviewRef.innerHTML = content;
+
+    await Promise.all([this.lazyLoadImages(), this.lazyLoadCharts()]);
   }
 
   private async blockSlide($event: CustomEvent) {
     $event.stopPropagation();
 
     await this.deckPreviewRef?.blockSlide(true);
+  }
+
+  private async lazyLoadImages() {
+    const images: NodeListOf<HTMLDeckgoLazyImgElement> = this.deckPreviewRef.querySelectorAll('deckgo-lazy-img');
+    const promises: Promise<void>[] = Array.from(images).map((img: HTMLDeckgoLazyImgElement) => {
+      img.customLoader = true;
+      return img.lazyLoad();
+    });
+    await Promise.all(promises);
+  }
+
+  private async lazyLoadCharts() {
+    const imgs: NodeListOf<HTMLDeckgoSlideChartElement> = this.deckPreviewRef.querySelectorAll('deckgo-slide-chart');
+    const promises: Promise<void>[] = Array.from(imgs).map((img: HTMLDeckgoSlideChartElement) => {
+      img.customLoader = true;
+      return img.lazyLoadContent();
+    });
+    await Promise.all(promises);
   }
 
   render() {
