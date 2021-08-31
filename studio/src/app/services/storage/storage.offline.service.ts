@@ -34,7 +34,7 @@ export class StorageOfflineService implements StorageService {
           return;
         }
 
-        const key: string = `/assets/${folder}/${data.name}`;
+        const key: string = `/assets/local/${folder}/${data.name}`;
 
         await set(key, data);
 
@@ -61,7 +61,7 @@ export class StorageOfflineService implements StorageService {
       }
 
       const filteredKeys: IDBValidKey[] = storageKeys.filter((key: IDBValidKey) => {
-        return (key as string).indexOf(`/assets/${folder}/`) > -1;
+        return (key as string).indexOf(`/assets/local/${folder}/`) > -1;
       });
 
       if (!filteredKeys || filteredKeys.length <= 0) {

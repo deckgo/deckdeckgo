@@ -3,14 +3,20 @@ import JSZip from 'jszip';
 import {get, getMany} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
+import offlineStore from '../../../stores/offline.store';
 
 import {Deck} from '../../../models/data/deck';
 import {Slide} from '../../../models/data/slide';
 
 import {ImportAsset, ImportData, importEditorAssets, importEditorData} from '../../../utils/editor/import.utils';
-import {getDeckLocalImage, getSlidesLocalCharts, getSlidesLocalImages} from '../../../utils/editor/assets.utils';
-
-import {SwService} from '../sw/sw.service';
+import {
+  getDeckBackgroundImage,
+  getSlidesLocalCharts,
+  getSlidesLocalImages,
+  getSlidesOnlineCharts,
+  getSlidesOnlineImages,
+  UserAsset
+} from '../../../utils/editor/assets.utils';
 
 export class FileSystemService {
   private static instance: FileSystemService;
@@ -27,9 +33,6 @@ export class FileSystemService {
 
     await importEditorAssets(assets);
     await importEditorData(data);
-
-    // We try to cache the data so that the user can go offline with it asap if wished
-    await SwService.getInstance().cacheServiceWorker();
   }
 
   async exportData() {
@@ -40,10 +43,13 @@ export class FileSystemService {
     const deck: Deck = await this.getDeck(deckStore.state.deck);
     const slides: Slide[] = await this.getSlides(deckStore.state.deck);
 
-    const images: File[] = await getSlidesLocalImages({deck: deckStore.state.deck});
-    const charts: File[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
+    const localImages: UserAsset[] = await getSlidesLocalImages({deck: deckStore.state.deck});
+    const localCharts: UserAsset[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
 
-    const deckBackground: File | undefined = await getDeckLocalImage();
+    const onlineImages: UserAsset[] = await getSlidesOnlineImages({deck: deckStore.state.deck});
+    const onlineCharts: UserAsset[] = await getSlidesOnlineCharts({deck: deckStore.state.deck});
+
+    const deckBackground: UserAsset | undefined = await getDeckBackgroundImage();
 
     const blob: Blob = await this.zip({
       data: {
@@ -51,8 +57,7 @@ export class FileSystemService {
         deck,
         slides
       },
-      images: [...images, ...(deckBackground ? [deckBackground] : [])],
-      charts
+      assets: [...localImages, ...localCharts, ...onlineImages, ...onlineCharts, ...(deckBackground ? [deckBackground] : [])]
     });
 
     await this.save({
@@ -146,17 +151,11 @@ export class FileSystemService {
     }
   }
 
-  private async zip({data, images, charts}: {data: ImportData; images: File[]; charts: File[]}): Promise<Blob> {
+  private async zip({data, assets}: {data: ImportData; assets: UserAsset[]}): Promise<Blob> {
     const zip = new JSZip();
 
-    images.forEach((img: File) =>
-      zip.file(`/assets/images/${img.name}`, img, {
-        base64: true
-      })
-    );
-
-    charts.forEach((chart: File) =>
-      zip.file(`/assets/data/${chart.name}`, chart, {
+    assets.forEach(({key, blob}: UserAsset) =>
+      zip.file(key, blob, {
         base64: true
       })
     );
@@ -164,6 +163,22 @@ export class FileSystemService {
     const blob: Blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
 
     zip.file('deck.json', blob, {
+      base64: true
+    });
+
+    const assetsBlob: Blob = new Blob(
+      [
+        JSON.stringify(
+          assets.map(({key, url}: UserAsset) => ({
+            key,
+            ...(url && {url})
+          }))
+        )
+      ],
+      {type: 'application/json'}
+    );
+
+    zip.file('assets.json', assetsBlob, {
       base64: true
     });
 
@@ -178,12 +193,18 @@ export class FileSystemService {
 
     const content: JSZip = await zip.loadAsync(file);
 
-    const data: ImportData = JSON.parse(await content.file('deck.json').async('text'));
+    const data: ImportData = await this.parseImportData(content);
 
     const zippedAssets: {path: string; file: JSZip.JSZipObject}[] = [];
 
-    content.folder('/assets/images/').forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/images/${filename}`, file}));
-    content.folder('/assets/data/').forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/data/${filename}`, file}));
+    this.listZipAssets({content, zippedAssets, subPath: '/assets/local/images/'});
+    this.listZipAssets({content, zippedAssets, subPath: '/assets/local/data/'});
+
+    // We import the cloud assets only if user is online otherwise it will be possible to display those
+    if (!offlineStore.state.online) {
+      this.listZipAssets({content, zippedAssets, subPath: '/assets/online/images/'});
+      this.listZipAssets({content, zippedAssets, subPath: '/assets/online/data/'});
+    }
 
     const promises: Promise<ImportAsset>[] = zippedAssets.map(
       ({path, file}: {path: string; file: JSZip.JSZipObject}) =>
@@ -203,5 +224,34 @@ export class FileSystemService {
       data,
       assets
     };
+  }
+
+  private listZipAssets({content, zippedAssets, subPath}: {content: JSZip; subPath: string; zippedAssets: {path: string; file: JSZip.JSZipObject}[]}) {
+    content.folder(subPath).forEach((filename: string, file: JSZip.JSZipObject) =>
+      zippedAssets.push({
+        path: `${subPath}${filename}`,
+        file
+      })
+    );
+  }
+
+  private async parseImportData(content: JSZip): Promise<ImportData> {
+    let deck: string = await content.file('deck.json').async('text');
+
+    // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
+    if (!offlineStore.state.online) {
+      const assetsContent: string | null = await content.file('assets.json')?.async('text');
+      const assets: UserAsset[] = assetsContent ? JSON.parse(assetsContent) : [];
+
+      assets
+        .filter(({url}) => url !== undefined)
+        .forEach(({url, key}: UserAsset) => {
+          // deckgo-img img-src="" and slide src=""
+          deck = deck.replaceAll(`src=\\"${url}\\"`, `src=\\"${key}\\"`);
+          deck = deck.replaceAll(`src=\\"${url.replaceAll('&', '&amp;')}\\"`, `src=\\"${key}\\"`);
+        });
+    }
+
+    return JSON.parse(deck);
   }
 }

@@ -2,7 +2,6 @@ import {Component, Prop, h, Host, State} from '@stencil/core';
 
 import {isIOS} from '@deckdeckgo/utils';
 
-import offlineStore from '../../../stores/offline.store';
 import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
 
@@ -23,6 +22,11 @@ export class AppNavigation {
   @State()
   private hideICP: boolean = false;
 
+  private async closeMenu() {
+    const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
+    await element?.close();
+  }
+
   render() {
     return (
       <Host>
@@ -31,7 +35,8 @@ export class AppNavigation {
           <ion-toolbar>
             {this.renderTitle()}
             {this.renderMenuToggle()}
-            {this.renderUser()}
+
+            <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
           </ion-toolbar>
         </ion-header>
       </Host>
@@ -61,11 +66,6 @@ export class AppNavigation {
     );
   }
 
-  private async closeMenu() {
-    const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
-    await element?.close();
-  }
-
   private renderMenuToggle() {
     if (!this.menuToggle) {
       return undefined;
@@ -80,14 +80,6 @@ export class AppNavigation {
         </ion-menu-toggle>
       </ion-buttons>
     );
-  }
-
-  private renderUser() {
-    if (!offlineStore.state.online || !this.user) {
-      return undefined;
-    }
-
-    return <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>;
   }
 
   private renderICP() {
