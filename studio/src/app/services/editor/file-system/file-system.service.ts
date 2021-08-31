@@ -18,8 +18,6 @@ import {
   UserAsset
 } from '../../../utils/editor/assets.utils';
 
-import {SwService} from '../sw/sw.service';
-
 export class FileSystemService {
   private static instance: FileSystemService;
 
@@ -35,10 +33,6 @@ export class FileSystemService {
 
     await importEditorAssets(assets);
     await importEditorData(data);
-
-    // TODO: Remove unuseful
-    // We try to cache the data so that the user can go offline with it asap if wished
-    await SwService.getInstance().cacheServiceWorker();
   }
 
   async exportData() {
