@@ -197,21 +197,13 @@ export class FileSystemService {
 
     const zippedAssets: {path: string; file: JSZip.JSZipObject}[] = [];
 
-    content
-      .folder('/assets/local/images/')
-      .forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/local/images/${filename}`, file}));
-    content
-      .folder('/assets/local/data/')
-      .forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/local/data/${filename}`, file}));
+    this.listZipAssets({content, zippedAssets, subPath: '/assets/local/images/'});
+    this.listZipAssets({content, zippedAssets, subPath: '/assets/local/data/'});
 
     // We import the cloud assets only if user is online otherwise it will be possible to display those
     if (!offlineStore.state.online) {
-      content
-        .folder('/assets/online/images/')
-        .forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/online/images/${filename}`, file}));
-      content
-        .folder('/assets/online/data/')
-        .forEach((filename: string, file: JSZip.JSZipObject) => zippedAssets.push({path: `/assets/online/data/${filename}`, file}));
+      this.listZipAssets({content, zippedAssets, subPath: '/assets/online/images/'});
+      this.listZipAssets({content, zippedAssets, subPath: '/assets/online/data/'});
     }
 
     const promises: Promise<ImportAsset>[] = zippedAssets.map(
@@ -232,6 +224,15 @@ export class FileSystemService {
       data,
       assets
     };
+  }
+
+  private listZipAssets({content, zippedAssets, subPath}: {content: JSZip; subPath: string; zippedAssets: {path: string; file: JSZip.JSZipObject}[]}) {
+    content.folder(subPath).forEach((filename: string, file: JSZip.JSZipObject) =>
+      zippedAssets.push({
+        path: `${subPath}${filename}`,
+        file
+      })
+    );
   }
 
   private async parseImportData(content: JSZip): Promise<ImportData> {
