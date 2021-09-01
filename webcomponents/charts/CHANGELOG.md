@@ -1,3 +1,9 @@
+# 2.2.0 (2021-09-01)
+
+### Features
+
+- do not generate new random colors on redraw
+
 # 2.1.0 (2021-05-29)
 
 ### Build

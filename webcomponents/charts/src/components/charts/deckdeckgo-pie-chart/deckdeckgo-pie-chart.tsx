@@ -95,6 +95,8 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
   private pieDataIndex: number = 0;
 
+  private randomColors: string[] | undefined;
+
   async componentDidLoad() {
     await this.draw();
   }
@@ -364,14 +366,14 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
       }
 
       let results: DeckdeckgoPieChartData[] = [];
-      let randomColors: string[];
 
       lines.forEach((line: string, lineIndex: number) => {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length >= 2) {
-          if (!randomColors) {
-            randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+          if (!this.randomColors || this.randomColors.length !== lines.length) {
+            console.log('new');
+            this.randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
           }
 
           const label: string = values[0];
@@ -379,7 +381,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
           const pieData: DeckdeckgoPieChartDataValue = {
             label: label,
             value: parseInt(values[1]),
-            randomFillColor: randomColors.length >= 1 ? randomColors[lineIndex] : undefined,
+            randomFillColor: this.randomColors?.[lineIndex] || undefined,
             key: lineIndex + 1,
           };
 
@@ -406,7 +408,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
                 const pieData: DeckdeckgoPieChartDataValue = {
                   label: label,
                   value: parseInt(values[i]),
-                  randomFillColor: randomColors.length >= i ? randomColors[lineIndex] : undefined,
+                  randomFillColor: this.randomColors.length >= i ? this.randomColors[lineIndex] : undefined,
                   key: lineIndex + 1,
                 };
 

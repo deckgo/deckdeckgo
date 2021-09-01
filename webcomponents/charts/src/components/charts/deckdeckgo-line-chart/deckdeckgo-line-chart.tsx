@@ -127,6 +127,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   private series: DeckdeckgoLineChartSerie[];
   private serieIndex: number = 0;
 
+  private randomFillColors: string[] = [];
+
   async componentDidLoad() {
     await this.draw();
   }
@@ -524,8 +526,12 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
                     ? series[i - 1]
                     : {
                         data: [],
-                        randomFillColor: randomFillColor,
+                        randomFillColor: this.randomFillColors[i - 1] || randomFillColor,
                       };
+
+                if (series?.length < i) {
+                  this.randomFillColors.push(randomFillColor);
+                }
 
                 if (!data.data || data.data.length <= 0) {
                   data.data = [];

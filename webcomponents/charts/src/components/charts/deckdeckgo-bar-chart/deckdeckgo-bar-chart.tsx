@@ -183,7 +183,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
     await this.drawAxis();
 
-    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+    if (!this.randomColors || this.randomColors.length !== this.chartData[0].values.length) {
+      this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+    }
 
     await this.drawBars(0, 0);
   }
