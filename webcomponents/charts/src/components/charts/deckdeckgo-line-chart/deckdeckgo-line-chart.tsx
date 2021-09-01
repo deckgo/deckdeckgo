@@ -429,9 +429,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       .datum(data)
       .attr('class', 'area')
       .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex}, 0.8)`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, #${randomFillColor}))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex}, 3px)`)
       .attr('d', line);
   }
 
@@ -448,9 +448,9 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       .append('path')
       .merge(section)
       .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex}, 0.8)`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, #${randomFillColor}))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex}, 3px)`)
       .transition()
       .duration(this.animationDuration)
       .ease(easeLinear)

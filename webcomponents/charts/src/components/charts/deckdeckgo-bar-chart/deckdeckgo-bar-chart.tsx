@@ -357,18 +357,22 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .append('rect')
         .merge(section)
         .attr('style', (d, i) => {
+          const fillColor: string = this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '';
+
           return (
             'fill: var(--deckgo-chart-fill-color-' +
             d.key +
             ', ' +
-            (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') +
+            fillColor +
             '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
             d.key +
-            '); stroke: var(--deckgo-chart-stroke-' +
+            ', 0.8); stroke: var(--deckgo-chart-stroke-' +
             d.key +
+            ', ' +
+            fillColor +
             '); stroke-width: var(--deckgo-chart-stroke-width-' +
             d.key +
-            ')'
+            ', 3px)'
           );
         })
         .transition()

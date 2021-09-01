@@ -48,6 +48,7 @@ deckDeckGoElement();
 ## Usage
 
 The main idea behind the [DeckDeckGo](https://deckdeckgo.com) charts is to be able to drop a **csv** file, provide it to the component and let it do the job respectively draw the chart.
+
 #### CSV
 
 The csv file should contain two or multiple columns.

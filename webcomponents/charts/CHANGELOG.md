@@ -3,6 +3,7 @@
 ### Features
 
 - do not generate new random colors on redraw
+- random colors applied as background with an opacity of `0.8` and as stroke (border) width of `3px` (instead of only applied to background)
 
 ### Build
 
