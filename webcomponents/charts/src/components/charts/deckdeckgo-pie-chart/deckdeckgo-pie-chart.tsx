@@ -376,7 +376,6 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
         if (values && values.length >= 2) {
           if (!this.randomColors || this.randomColors.length !== lines.length) {
-            console.log('new');
             this.randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
           }
 
