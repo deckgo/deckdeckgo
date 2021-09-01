@@ -4,6 +4,10 @@
 
 - do not generate new random colors on redraw
 
+### Build
+
+- bump dependencies
+
 # 2.1.0 (2021-05-29)
 
 ### Build
