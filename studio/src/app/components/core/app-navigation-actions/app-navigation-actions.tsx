@@ -13,6 +13,8 @@ import offlineStore from '../../../stores/offline.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
 
+import {AppIcon} from '../app-icon/app-icon';
+
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 
 @Component({
@@ -130,13 +132,13 @@ export class AppNavigationActions {
       <Fragment>
         <button class="ion-activatable" onClick={() => this.newDeck()} disabled={disabled} aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/document.svg"></ion-icon>
+          <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
         </button>
 
         <button class="ion-activatable" onClick={() => this.openFilePicker()} disabled={disabled}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/folder-open.svg"></ion-icon>
+          <AppIcon name="folder-open" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.open}</ion-label>
         </button>
 
@@ -144,7 +146,7 @@ export class AppNavigationActions {
 
         <button class="ion-activatable" onClick={() => this.exportData()}>
           <ion-ripple-effect></ion-ripple-effect>
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/download.svg"></ion-icon>
+          <AppIcon name="download" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.editor.export}</ion-label>
         </button>
       </Fragment>
@@ -159,7 +161,7 @@ export class AppNavigationActions {
     return (
       <button class="ion-activatable" onClick={() => signIn()}>
         <ion-ripple-effect></ion-ripple-effect>
-        <ion-icon aria-hidden="true" name="log-in-outline"></ion-icon>
+        <AppIcon name="log-in" ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
       </button>
     );
@@ -200,11 +202,11 @@ export class AppNavigationActions {
     return (
       <button class={`cloud ${syncStore.state.sync}`} aria-label={label} onClick={($event: UIEvent) => this.openSyncInfo($event)}>
         {syncStore.state.sync === 'error' ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-offline.svg"></ion-icon>
+          <AppIcon name="cloud-offline" ariaHidden={true} ariaLabel=""></AppIcon>
         ) : ['in_progress', 'pending'].includes(syncStore.state.sync) ? (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/sync.svg" class="rotate"></ion-icon>
+          <AppIcon name="sync" ariaHidden={true} ariaLabel=""></AppIcon>
         ) : (
-          <ion-icon aria-hidden="true" src="/assets/icons/ionicons/cloud-done.svg"></ion-icon>
+          <AppIcon name="cloud-done" ariaHidden={true} ariaLabel=""></AppIcon>
         )}
         <ion-label>{i18n.state.sync.cloud}</ion-label>
       </button>
