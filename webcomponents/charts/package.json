@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/charts",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A collection of Web Components to easily draw charts",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

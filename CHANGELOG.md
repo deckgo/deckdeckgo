@@ -1,3 +1,11 @@
+<a name="4.10.0"></a>
+
+# [4.10.0](https://github.com/deckgo/deckdeckgo/compare/v4.9.0...v4.10.0) (2021-XX-YY)
+
+### Web Components
+
+- charts: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
+- 
 <a name="4.9.0"></a>
 
 # [4.9.0](https://github.com/deckgo/deckdeckgo/compare/v4.8.0...v4.9.0) (2021-08-20)
