@@ -20,7 +20,7 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/charts": "^2.2.1",
+    "@deckdeckgo/charts": "^2.2.2",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/core": "^8.4.0",
     "@deckdeckgo/deck-utils": "^4.1.0",
