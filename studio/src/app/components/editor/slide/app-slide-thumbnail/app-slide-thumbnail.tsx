@@ -84,10 +84,16 @@ export class AppSlideThumbnail {
   }
 
   private async lazyLoadCharts() {
-    const imgs: NodeListOf<HTMLDeckgoSlideChartElement> = this.deckPreviewRef.querySelectorAll('deckgo-slide-chart');
-    const promises: Promise<void>[] = Array.from(imgs).map((img: HTMLDeckgoSlideChartElement) => {
-      img.customLoader = true;
-      return img.lazyLoadContent();
+    const charts: NodeListOf<HTMLDeckgoSlideChartElement> = this.deckPreviewRef.querySelectorAll('deckgo-slide-chart');
+    const promises: Promise<void>[] = Array.from(charts).map((chart: HTMLDeckgoSlideChartElement) => {
+      chart.customLoader = true;
+
+      chart.marginTop = 8;
+      chart.marginBottom = 8;
+      chart.marginLeft = 8;
+      chart.marginRight = 8;
+
+      return chart.lazyLoadContent();
     });
     await Promise.all(promises);
   }
