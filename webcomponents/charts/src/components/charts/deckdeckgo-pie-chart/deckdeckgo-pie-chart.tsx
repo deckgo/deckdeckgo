@@ -235,19 +235,19 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
         .append('path')
         .merge(section)
         .attr('style', (d) => {
-          const randomColor: string = d.data.randomFillColor ? `#${d.data.randomFillColor}` : '';
+          const randomColor: string = d.data.randomFillColor ? `, #${d.data.randomFillColor}` : '';
+
+          const background: string = `var(--deckgo-chart-fill-color-${d.data.key}${randomColor})`;
 
           return (
-            'fill: var(--deckgo-chart-fill-color-' +
-            d.data.key +
-            ', ' +
-            randomColor +
-            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
+            'fill: ' +
+            background +
+            '; fill-opacity: var(--deckgo-chart-fill-opacity-' +
             d.data.key +
             ', 0.8); stroke: var(--deckgo-chart-stroke-' +
             d.data.key +
             ', ' +
-            randomColor +
+            background +
             '); stroke-width: var(--deckgo-chart-stroke-width-' +
             d.data.key +
             ', 3px)'

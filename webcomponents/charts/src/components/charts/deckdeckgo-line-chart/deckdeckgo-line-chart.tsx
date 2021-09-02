@@ -424,13 +424,15 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
     const styleIndex: number = index + 1;
 
+    const background: string = `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`;
+
     this.svg
       .append('path')
       .datum(data)
       .attr('class', 'area')
-      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
+      .style('fill', background)
       .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex}, 0.8)`)
-      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, #${randomFillColor}))`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, ${background}))`)
       .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex}, 3px)`)
       .attr('d', line);
   }
@@ -443,13 +445,15 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
     const styleIndex: number = index + 1;
 
+    const background: string = `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`;
+
     section
       .enter()
       .append('path')
       .merge(section)
-      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
+      .style('fill', background)
       .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex}, 0.8)`)
-      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, #${randomFillColor}))`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, ${background}))`)
       .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex}, 3px)`)
       .transition()
       .duration(this.animationDuration)
