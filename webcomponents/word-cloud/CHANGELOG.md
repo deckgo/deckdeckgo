@@ -1,8 +1,9 @@
-# 1.1.0 (2021-09-02)
+# 1.2.0 (2021-09-02)
 
 ### Features
 
 - preserve color if content does not change
+- do not repaint on edit or draw if list of words did not change
 
 ### Build
 
