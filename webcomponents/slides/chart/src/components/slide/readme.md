@@ -134,6 +134,16 @@ Type: `Promise<void>`
 
 
 
+### `getRandomColors() => Promise<string[] | undefined | null>`
+
+Returns the list of the random colors that have been generated.
+
+#### Returns
+
+Type: `Promise<string[]>`
+
+
+
 ### `hideContent() => Promise<void>`
 
 

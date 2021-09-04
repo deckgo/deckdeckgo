@@ -57,10 +57,12 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
 
   private svgRef!: SVGGElement;
 
-  private colors: string[] = Array.from({length: 5}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+  private colors: string[] | undefined;
 
   private width: number;
   private height: number;
+
+  private editWords: string;
 
   async componentDidLoad() {
     this.initWindowResize();
@@ -189,13 +191,24 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
       return;
     }
 
+    const sizeMatch: boolean = this.svgRef.getAttribute('width') === `${this.width}` && this.svgRef.getAttribute('height') === `${this.height}`;
+
+    if (words.join('') === this.editWords && sizeMatch) {
+      // We do not repaint if the list of words did not change
+      return;
+    }
+
+    if (!this.colors || this.colors.length !== words.length) {
+      this.colors = Array.from({length: words.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+    }
+
     const layout = cloud()
       .size([this.width, this.height])
       .words(
         words.map((d: string, index: number) => ({
           text: d,
           size: 10 + Math.random() * 110,
-          color: `var(--deckgo-word-count-fill-color-${index}, ${this.getRandomColor()})`,
+          color: `var(--deckgo-word-count-fill-color-${index}, #${this.colors?.[index]})`,
         }))
       )
       .rotate(() => ~~(Math.random() * 2) * 90)
@@ -207,11 +220,8 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
       });
 
     layout.start();
-  }
 
-  private getRandomColor(): string {
-    const index: number = Math.floor(Math.random() * this.colors.length);
-    return `#${this.colors[index]}`;
+    this.editWords = words?.join('');
   }
 
   private async applyChanges() {

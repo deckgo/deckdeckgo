@@ -209,7 +209,8 @@ export class AppActionsEditor {
         toggleFullScreen={this.toggleFullScreen}
         actionPublish={this.actionPublish}
         deckDidChange={this.deckDidChange}
-        onSelectDeck={() => this.selectDeck()}></app-actions-deck>
+        onSelectDeck={() => this.selectDeck()}
+        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-actions-deck>
     );
   }
 

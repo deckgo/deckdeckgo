@@ -1,3 +1,32 @@
+# 2.3.0 (2021-09-04)
+
+### Features
+
+- event `chartRandomColor` to emit the random colors that have been automatically generated to plot the chart 
+
+# 2.2.2 (2021-09-02)
+
+### Features
+
+- inherit stroke color from random fill color
+
+# 2.2.1 (2021-09-02)
+
+### Chore
+
+- remove console.log
+
+# 2.2.0 (2021-09-01)
+
+### Features
+
+- do not generate new random colors on redraw
+- random colors applied as background with an opacity of `0.8` and as stroke (border) width of `3px` (instead of only applied to background)
+
+### Build
+
+- bump dependencies
+
 # 2.1.0 (2021-05-29)
 
 ### Build

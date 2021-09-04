@@ -5,7 +5,7 @@ import type {ItemReorderEventDetail} from '@ionic/core';
 import {debounce} from '@deckdeckgo/utils';
 
 import {isSlide} from '../../../../../../../utils/deck/src';
-import {deckSelector, slideTo} from '../../../../utils/editor/deck.utils';
+import {deckSelector, slideTo, selectDeckSlide} from '../../../../utils/editor/deck.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
 @Component({
@@ -29,6 +29,9 @@ export class AppSlidesAside {
 
   @Event()
   private reorder: EventEmitter<ItemReorderEventDetail>;
+
+  @Event()
+  private stepTo: EventEmitter<HTMLElement | undefined>;
 
   @State()
   private reorderDetail: ItemReorderEventDetail | undefined = undefined;
@@ -187,6 +190,14 @@ export class AppSlidesAside {
     this.reorderDetail = undefined;
   }
 
+  private async slideTo(index: number) {
+    const slide: HTMLElement | null = selectDeckSlide(index);
+
+    this.stepTo.emit(slide);
+
+    await slideTo(index);
+  }
+
   render() {
     return (
       <Host ref={(el) => (this.hostRef = el as HTMLAppSlidesAsideElement)}>
@@ -225,7 +236,7 @@ export class AppSlidesAside {
     return (
       <app-slide-thumbnail
         custom-tappable
-        onClick={async () => await slideTo(index)}
+        onClick={async () => await this.slideTo(index)}
         key={slide.getAttribute('slide_id')}
         slide={slide}
         deck={this.deckRef}

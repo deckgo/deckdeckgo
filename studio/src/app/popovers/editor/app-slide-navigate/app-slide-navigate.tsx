@@ -28,9 +28,9 @@ export class AppSlideNavigate {
   }
 
   async jumpToSlide(index: number) {
-    await slideTo(index);
+    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss(index);
 
-    await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
+    await slideTo(index);
   }
 
   private onReorder($event: CustomEvent<IonicReorderEvent>) {

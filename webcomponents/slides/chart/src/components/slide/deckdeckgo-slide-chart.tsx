@@ -10,6 +10,19 @@ enum DeckdeckgoSlideChartType {
 }
 
 /**
+ * Manually define the list of methods of the charts as we do not want to explicitly add these to the bundle.
+ */
+interface HTMLDeckgoChartElement extends HTMLElement {
+  postCustomLoad(content: string | undefined): Promise<void>;
+  getRandomColors(): Promise<string[]>;
+  draw(width?: number, height?: number): Promise<void>;
+  next(): Promise<void>;
+  prev(): Promise<void>;
+  isBeginning(): Promise<boolean>;
+  isEnd(): Promise<boolean>;
+}
+
+/**
  * @slot title - A title
  * @slot notes - Some notes related to this slide
  * @slot actions - Custom actions for this slide
@@ -119,7 +132,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
         return;
       }
 
-      const chart: HTMLElement = this.el.shadowRoot.querySelector(
+      const chart: HTMLDeckgoChartElement = this.el.shadowRoot.querySelector(
         this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : this.type === DeckdeckgoSlideChartType.BAR ? 'deckgo-bar-chart' : 'deckgo-pie-chart'
       );
 
@@ -128,7 +141,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
         return;
       }
 
-      const couldSwipe: boolean = enter ? await (chart as any).isEnd() : await (chart as any).isBeginning();
+      const couldSwipe: boolean = enter ? await chart.isEnd() : await chart.isBeginning();
 
       if (couldSwipe) {
         resolve(true);
@@ -136,9 +149,9 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
       }
 
       if (enter) {
-        await (chart as any).next();
+        await chart.next();
       } else {
-        await (chart as any).prev();
+        await chart.prev();
       }
 
       resolve(false);
@@ -208,13 +221,11 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   private async drawChart() {
     await this.initSize();
 
-    const element: HTMLElement = this.el.shadowRoot.querySelector(
+    const element: HTMLDeckgoChartElement = this.el.shadowRoot.querySelector(
       this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : this.type === DeckdeckgoSlideChartType.BAR ? 'deckgo-bar-chart' : 'deckgo-pie-chart'
     );
 
-    if (element) {
-      await (element as any).draw(this.chartWidth, this.chartHeight);
-    }
+    await element?.draw(this.chartWidth, this.chartHeight);
   }
 
   @Method()
@@ -233,18 +244,41 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
 
   @Method()
   async postCustomLoad(content: string | undefined) {
-    let chartElement: HTMLElement;
-    if (this.type === DeckdeckgoSlideChartType.LINE) {
-      chartElement = this.el.shadowRoot.querySelector('deckgo-line-chart');
-    } else if (this.type === DeckdeckgoSlideChartType.BAR) {
-      chartElement = this.el.shadowRoot.querySelector('deckgo-bar-chart');
-    } else {
-      chartElement = this.el.shadowRoot.querySelector('deckgo-pie-chart');
-    }
+    const chartElement: HTMLDeckgoChartElement = this.getChartElement();
+    await chartElement?.postCustomLoad(content);
+  }
 
-    if (chartElement) {
-      await (chartElement as any).postCustomLoad(content);
+  /**
+   * Returns the list of the random colors that have been generated.
+   */
+  @Method()
+  async getRandomColors(): Promise<string[] | undefined | null> {
+    const chartElement: HTMLDeckgoChartElement = this.getChartElement();
+    return chartElement?.getRandomColors();
+  }
+
+  private getChartElement(): HTMLDeckgoChartElement | null {
+    if (this.type === DeckdeckgoSlideChartType.LINE) {
+      return this.el.shadowRoot.querySelector('deckgo-line-chart') as HTMLDeckgoChartElement | null;
+    } else if (this.type === DeckdeckgoSlideChartType.BAR) {
+      return this.el.shadowRoot.querySelector('deckgo-bar-chart') as HTMLDeckgoChartElement | null;
+    } else {
+      return this.el.shadowRoot.querySelector('deckgo-pie-chart') as HTMLDeckgoChartElement | null;
     }
+  }
+
+  private onChartRandomColor($event: CustomEvent<string[]>) {
+    $event.detail.forEach((color: string, i: number) => {
+      const key: string = `--deckgo-chart-fill-color-${i + 1}`;
+
+      const css: CSSStyleDeclaration = window.getComputedStyle(this.el);
+
+      // Do not overwrite if style already set on the host
+      const style: string | undefined = css.getPropertyValue(key);
+      if (style === undefined || style === '') {
+        this.el.style.setProperty(key, `#${color}`);
+      }
+    });
   }
 
   render() {
@@ -283,6 +317,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
           margin-left={this.marginLeft}
           animation={this.animation}
           animation-duration={this.animationDuration}
+          onChartRandomColor={($event: CustomEvent<string[]>) => this.onChartRandomColor($event)}
           {...attrs}></deckgo-bar-chart>
       );
     } else {
@@ -319,6 +354,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
         margin-left={this.marginLeft}
         animation={this.animation}
         animation-duration={this.animationDuration}
+        onChartRandomColor={($event: CustomEvent<string[]>) => this.onChartRandomColor($event)}
         {...attrs}></deckgo-line-chart>
     );
   }
@@ -340,6 +376,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
         margin-left={this.marginLeft}
         animation={this.animation}
         animation-duration={this.animationDuration}
+        onChartRandomColor={($event: CustomEvent<string[]>) => this.onChartRandomColor($event)}
         {...attrs}></deckgo-pie-chart>
     );
   }

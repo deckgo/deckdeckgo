@@ -120,12 +120,20 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Event()
   chartCustomLoad: EventEmitter<string>;
 
+  /**
+   * Emit the random colors that are generated for the charts.
+   */
+  @Event()
+  chartRandomColor: EventEmitter<string[]>;
+
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private x: any;
   private y: any;
 
   private series: DeckdeckgoLineChartSerie[];
   private serieIndex: number = 0;
+
+  private randomFillColors: string[] = [];
 
   async componentDidLoad() {
     await this.draw();
@@ -422,14 +430,16 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
     const styleIndex: number = index + 1;
 
+    const background: string = `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`;
+
     this.svg
       .append('path')
       .datum(data)
       .attr('class', 'area')
-      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
+      .style('fill', background)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex}, 0.8)`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, ${background}))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex}, 3px)`)
       .attr('d', line);
   }
 
@@ -441,14 +451,16 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
     // Starting with line 1 instead of 0 is more readable. Also Pie chart style start with 1 too
     const styleIndex: number = index + 1;
 
+    const background: string = `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`;
+
     section
       .enter()
       .append('path')
       .merge(section)
-      .style('fill', `var(--deckgo-chart-fill-color-${styleIndex}, #${randomFillColor})`)
-      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex})`)
-      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke))`)
-      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex})`)
+      .style('fill', background)
+      .style('fill-opacity', `var(--deckgo-chart-fill-opacity-${styleIndex}, 0.8)`)
+      .style('stroke', `var(--deckgo-chart-stroke-${styleIndex}, var(--deckgo-chart-stroke, ${background}))`)
+      .style('stroke-width', `var(--deckgo-chart-stroke-width-${styleIndex}, 3px)`)
       .transition()
       .duration(this.animationDuration)
       .ease(easeLinear)
@@ -524,8 +536,12 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
                     ? series[i - 1]
                     : {
                         data: [],
-                        randomFillColor: randomFillColor,
+                        randomFillColor: this.randomFillColors[i - 1] || randomFillColor,
                       };
+
+                if (series?.length < i) {
+                  this.randomFillColors.push(randomFillColor);
+                }
 
                 if (!data.data || data.data.length <= 0) {
                   data.data = [];
@@ -546,6 +562,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
           }
         }
       }
+
+      this.chartRandomColor.emit(this.randomFillColors);
 
       resolve(series);
     });

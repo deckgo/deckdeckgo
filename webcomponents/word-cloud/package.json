@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/word-cloud",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Web Component for creating word clouds",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -25,20 +25,20 @@
   "dependencies": {
     "@deckdeckgo/utils": "^2.0.1",
     "d3-cloud": "^1.2.5",
-    "d3-selection": "^2.0.0"
+    "d3-selection": "^3.0.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@deckdeckgo/slide-utils": "^4.0.3",
-    "@stencil/core": "^2.5.2",
+    "@stencil/core": "^2.8.0",
     "@stencil/postcss": "^2.0.0",
     "@stencil/sass": "^1.4.1",
-    "@types/d3-cloud": "^1.2.3",
-    "@types/d3-selection": "^2.0.0",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0"
+    "@types/d3-cloud": "^1.2.5",
+    "@types/d3-selection": "^3.0.1",
+    "autoprefixer": "^10.3.3",
+    "husky": "^7.0.2",
+    "prettier": "2.3.2",
+    "pretty-quick": "^3.1.1"
   },
   "repository": {
     "type": "git",

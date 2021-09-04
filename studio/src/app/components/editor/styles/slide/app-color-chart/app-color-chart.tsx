@@ -6,6 +6,7 @@ import {SlideChartType} from '../../../../../models/data/slide';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {ChartUtils} from '../../../../../utils/editor/chart.utils';
+import {hexToRgb} from '@deckdeckgo/utils';
 
 enum ApplyColorType {
   FILL,
@@ -52,9 +53,9 @@ export class AppColorDeckSlide {
     }
 
     if (this.applyColorType === ApplyColorType.FILL) {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`));
+      return ColorUtils.splitColor(await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`)));
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`));
+      return ColorUtils.splitColor(await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`)));
     } else if (this.applyColorType === ApplyColorType.AXIS) {
       return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-axis-color'));
     } else if (this.applyColorType === ApplyColorType.GRID) {
@@ -63,6 +64,11 @@ export class AppColorDeckSlide {
       return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-text-color'));
     }
   };
+
+  private async hexOrRgb(color: string) {
+    const hexColor: string | undefined = await hexToRgb(color);
+    return hexColor ? hexColor : color;
+  }
 
   private async toggleColorType($event: CustomEvent) {
     if (!$event || !$event.detail) {
