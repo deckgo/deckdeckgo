@@ -1,10 +1,20 @@
 <a name="4.10.0"></a>
 
-# [4.10.0](https://github.com/deckgo/deckdeckgo/compare/v4.9.0...v4.10.0) (2021-XX-YY)
+# [4.10.0](https://github.com/deckgo/deckdeckgo/compare/v4.9.0...v4.10.0) (2021-09-04)
+
+### Applications
+
+- demo: v8.3.3 ([CHANGELOG](https://github.com/deckgo/demo/blob/master/CHANGELOG.md))
+- remote: v1.14.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/remote/CHANGELOG.md))
+- studio: v4.10.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/studio/CHANGELOG.md))
+
+### Web Components: Templates
+
+- slide-chart: v2.5.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/slides/chart/CHANGELOG.md))
 
 ### Web Components
 
-- charts: v2.2.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
+- charts: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/charts/CHANGELOG.md))
 - word-cloud: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/word-cloud/CHANGELOG.md))
 
 <a name="4.9.0"></a>
