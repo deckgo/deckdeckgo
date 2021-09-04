@@ -23,6 +23,10 @@ export namespace Components {
         "customLoader": boolean;
         "datePattern": string;
         "draw": () => Promise<void>;
+        /**
+          * Returns the list of the random colors that have been generated.
+         */
+        "getRandomColors": () => Promise<string[] | undefined | null>;
         "grid": string;
         "height": number;
         "hideContent": () => Promise<void>;

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/slide-chart",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "The Chart template is handy to plot and animate charts in your presentations",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -27,13 +27,13 @@
     "@deckdeckgo/utils": "^2.0.1"
   },
   "devDependencies": {
-    "@stencil/core": "^2.5.2",
+    "@stencil/core": "^2.8.0",
     "@stencil/postcss": "^2.0.0",
     "@stencil/sass": "^1.4.1",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0"
+    "autoprefixer": "^10.3.4",
+    "husky": "^7.0.2",
+    "prettier": "2.3.2",
+    "pretty-quick": "^3.1.1"
   },
   "repository": {
     "type": "git",

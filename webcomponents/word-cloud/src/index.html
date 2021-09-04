@@ -17,6 +17,20 @@
       </deckgo-word-cloud>
     </div>
 
+    <div>
+      <button onclick="redraw()">Resize</button>
+
+      <script type="text/javascript">
+        const redraw = () => {
+          const div = document.querySelector('div');
+          div.style.width = '300px';
+
+          const word = document.querySelector('deckgo-word-cloud');
+          word.lazyLoadContent().then(() => {});
+        }
+      </script>
+    </div>
+
     <h1>Or make it not editable</h1>
 
     <div style="width: 560px; height: 560px">

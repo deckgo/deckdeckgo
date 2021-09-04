@@ -88,12 +88,20 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Event()
   chartCustomLoad: EventEmitter<string>;
 
+  /**
+   * Emit the random colors that are generated for the charts.
+   */
+  @Event()
+  chartRandomColor: EventEmitter<string[]>;
+
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private myPath: Arc<any, DefaultArcObject>;
 
   private data: DeckdeckgoPieChartData[];
 
   private pieDataIndex: number = 0;
+
+  private randomColors: string[] | undefined;
 
   async componentDidLoad() {
     await this.draw();
@@ -233,18 +241,22 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
         .append('path')
         .merge(section)
         .attr('style', (d) => {
+          const randomColor: string = d.data.randomFillColor ? `, #${d.data.randomFillColor}` : '';
+
+          const background: string = `var(--deckgo-chart-fill-color-${d.data.key}${randomColor})`;
+
           return (
-            'fill: var(--deckgo-chart-fill-color-' +
+            'fill: ' +
+            background +
+            '; fill-opacity: var(--deckgo-chart-fill-opacity-' +
+            d.data.key +
+            ', 0.8); stroke: var(--deckgo-chart-stroke-' +
             d.data.key +
             ', ' +
-            (d.data.randomFillColor ? `#${d.data.randomFillColor}` : '') +
-            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
-            d.data.key +
-            '); stroke: var(--deckgo-chart-stroke-' +
-            d.data.key +
+            background +
             '); stroke-width: var(--deckgo-chart-stroke-width-' +
             d.data.key +
-            ')'
+            ', 3px)'
           );
         })
         .transition()
@@ -364,22 +376,19 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
       }
 
       let results: DeckdeckgoPieChartData[] = [];
-      let randomColors: string[];
 
       lines.forEach((line: string, lineIndex: number) => {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length >= 2) {
-          if (!randomColors) {
-            randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
-          }
+          this.initRandomColors(lines);
 
           const label: string = values[0];
 
           const pieData: DeckdeckgoPieChartDataValue = {
             label: label,
             value: parseInt(values[1]),
-            randomFillColor: randomColors.length >= 1 ? randomColors[lineIndex] : undefined,
+            randomFillColor: this.randomColors?.[lineIndex] || undefined,
             key: lineIndex + 1,
           };
 
@@ -406,7 +415,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
                 const pieData: DeckdeckgoPieChartDataValue = {
                   label: label,
                   value: parseInt(values[i]),
-                  randomFillColor: randomColors.length >= i ? randomColors[lineIndex] : undefined,
+                  randomFillColor: this.randomColors.length >= i ? this.randomColors[lineIndex] : undefined,
                   key: lineIndex + 1,
                 };
 
@@ -419,6 +428,16 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       resolve(results);
     });
+  }
+
+  private initRandomColors(lines: string[]) {
+    if (this.randomColors?.length === lines.length) {
+      return;
+    }
+
+    this.randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+
+    this.chartRandomColor.emit(this.randomColors);
   }
 
   render() {
