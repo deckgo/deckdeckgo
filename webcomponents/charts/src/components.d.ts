@@ -333,6 +333,10 @@ declare namespace LocalJSX {
          */
         "onChartCustomLoad"?: (event: CustomEvent<string>) => void;
         /**
+          * Emit the random colors that are generated for the charts.
+         */
+        "onChartRandomColor"?: (event: CustomEvent<string[]>) => void;
+        /**
           * The line separator use in your csv file
          */
         "separator"?: string;
@@ -404,6 +408,10 @@ declare namespace LocalJSX {
          */
         "onChartCustomLoad"?: (event: CustomEvent<string>) => void;
         /**
+          * Emit the random colors that are generated for the charts.
+         */
+        "onChartRandomColor"?: (event: CustomEvent<string[]>) => void;
+        /**
           * The line separator use in your csv file
          */
         "separator"?: string;
@@ -470,6 +478,10 @@ declare namespace LocalJSX {
           * @private
          */
         "onChartCustomLoad"?: (event: CustomEvent<string>) => void;
+        /**
+          * Emit the random colors that are generated for the charts.
+         */
+        "onChartRandomColor"?: (event: CustomEvent<string[]>) => void;
         /**
           * The line separator use in your csv file
          */

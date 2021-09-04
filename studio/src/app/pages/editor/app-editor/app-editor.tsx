@@ -852,7 +852,12 @@ export class AppEditor {
       return undefined;
     }
 
-    return <app-slides-aside deckRef={this.deckRef} activeIndex={this.activeIndex}></app-slides-aside>;
+    return (
+      <app-slides-aside
+        deckRef={this.deckRef}
+        activeIndex={this.activeIndex}
+        onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-slides-aside>
+    );
   }
 
   private renderSlidePreview() {

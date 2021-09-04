@@ -1284,6 +1284,7 @@ declare namespace LocalJSX {
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
+        "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slides"?: JSX.IntrinsicElements[];
         "toggleFullScreen"?: EventEmitter;
     }
@@ -1636,6 +1637,7 @@ declare namespace LocalJSX {
         "activeIndex"?: number;
         "deckRef": HTMLDeckgoDeckElement;
         "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+        "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;

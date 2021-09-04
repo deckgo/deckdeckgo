@@ -5,6 +5,8 @@ import editorStore from '../../../../stores/editor.store';
 
 import {BreadcrumbsStep} from '../../../../types/editor/breadcrumbs-step';
 
+import {deckSelector, selectSlide} from '../../../../utils/editor/deck.utils';
+
 @Component({
   tag: 'app-breadcrumbs',
   styleUrl: 'app-breadcrumbs.scss',
@@ -25,15 +27,11 @@ export class AppBreadcrumbs {
     if (step === BreadcrumbsStep.DECK) {
       this.stepTo.emit(undefined);
     } else {
-      const deck = document.querySelector('main > deckgo-deck');
+      const deck: HTMLDeckgoDeckElement = document.querySelector(deckSelector);
 
-      if (!deck) {
-        return;
-      }
+      const index = await deck?.getActiveIndex();
 
-      const index = await (deck as any).getActiveIndex();
-
-      const slideElement: HTMLElement = deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+      const slideElement: HTMLElement | null = selectSlide({deck, index});
 
       if (!slideElement) {
         return;

@@ -1,3 +1,13 @@
+# 2.5.0 (2021-09-04)
+
+### Features
+
+- apply generated random colors as style attributes (so that colors remains the same even on updates)
+
+### Build
+
+- bump dependencies
+
 # 2.4.0 (2021-05-29)
 
 ### Build

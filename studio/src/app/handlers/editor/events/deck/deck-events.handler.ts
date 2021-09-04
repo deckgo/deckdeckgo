@@ -30,6 +30,7 @@ import {Utils} from '../../../../utils/core/utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
+import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {DeckOfflineService} from '../../../../services/data/deck/deck.offline.service';
 import {SlideOfflineService} from '../../../../services/data/slide/slide.offline.service';
@@ -910,15 +911,15 @@ export class DeckEventsHandler {
   }
 
   async toggleSlideEditable(editable: boolean) {
-    const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
+    const deck: HTMLDeckgoDeckElement = this.mainRef.querySelector('deckgo-deck');
 
     if (!deck) {
       return;
     }
 
-    const index: number = await (deck as HTMLDeckgoDeckElement).getActiveIndex();
+    const index: number = await deck.getActiveIndex();
 
-    const slideElement: HTMLElement = deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+    const slideElement: HTMLElement = selectSlide({deck, index});
 
     if (!slideElement) {
       return;

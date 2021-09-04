@@ -9,7 +9,7 @@ import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, D
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
-import {deckSelector} from '../../../../utils/editor/deck.utils';
+import {deckSelector, selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 
@@ -244,7 +244,7 @@ export class RemoteEventsHandler {
 
       const index = await deck.getActiveIndex();
 
-      const youtubeSlideElement: any = this.el.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+      const youtubeSlideElement: HTMLDeckgoSlideYoutubeElement | null = selectSlide({deck, index}) as HTMLDeckgoSlideYoutubeElement | null;
 
       if (!youtubeSlideElement || youtubeSlideElement.tagName !== 'deckgo-slide-youtube'.toUpperCase()) {
         resolve();

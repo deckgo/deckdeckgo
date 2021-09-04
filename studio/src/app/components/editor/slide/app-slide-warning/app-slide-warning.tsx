@@ -11,8 +11,9 @@ import settingsStore from '../../../../stores/settings.store';
 import {ContrastUtils} from '../../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {selectSlide} from '../../../../utils/editor/deck.utils';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-slide-warning',
@@ -186,7 +187,7 @@ export class AppSlideWarning {
   }
 
   private async getCurrentSlide(): Promise<{deck: HTMLElement | null; slide: HTMLElement | null}> {
-    const deck: HTMLElement = document.querySelector('main > deckgo-deck');
+    const deck: HTMLDeckgoDeckElement = document.querySelector('main > deckgo-deck');
 
     if (!deck) {
       return {
@@ -195,11 +196,11 @@ export class AppSlideWarning {
       };
     }
 
-    const index = await (deck as any).getActiveIndex();
+    const index: number = await deck.getActiveIndex();
 
     return {
       deck,
-      slide: deck.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')') as HTMLElement | null
+      slide: selectSlide({deck, index})
     };
   }
 

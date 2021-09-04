@@ -48,6 +48,7 @@ deckDeckGoElement();
 ## Usage
 
 The main idea behind the [DeckDeckGo](https://deckdeckgo.com) charts is to be able to drop a **csv** file, provide it to the component and let it do the job respectively draw the chart.
+
 #### CSV
 
 The csv file should contain two or multiple columns.
@@ -132,9 +133,10 @@ You could find other examples of line charts in the [src/index.html](https://git
 
 ## Events
 
-| Event             | Description                                                                  | Type                  |
-| ----------------- | ---------------------------------------------------------------------------- | --------------------- |
-| `chartCustomLoad` | The event to be processed to load the data if you are using a custom loader. | `CustomEvent<string>` |
+| Event              | Description                                                                  | Type                    |
+| ------------------ | ---------------------------------------------------------------------------- | ----------------------- |
+| `chartCustomLoad`  | The event to be processed to load the data if you are using a custom loader. | `CustomEvent<string>`   |
+| `chartRandomColor` | Emit the random colors that are generated for the charts.                    | `CustomEvent<string[]>` |
 
 
 ## Methods

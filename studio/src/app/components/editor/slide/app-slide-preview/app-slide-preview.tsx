@@ -4,6 +4,7 @@ import {isSlide} from '@deckdeckgo/deck-utils';
 import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-slide-preview',
@@ -95,7 +96,7 @@ export class AppSlidePreview {
       return;
     }
 
-    const slideElement: HTMLElement | undefined = this.deckRef?.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
+    const slideElement: HTMLElement | undefined = selectSlide({deck: this.deckRef, index});
 
     await this.updateSlide(slideElement);
   }
