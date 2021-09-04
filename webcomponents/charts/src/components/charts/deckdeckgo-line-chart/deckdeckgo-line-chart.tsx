@@ -120,6 +120,12 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Event()
   chartCustomLoad: EventEmitter<string>;
 
+  /**
+   * Emit the random colors that are generated for the charts.
+   */
+  @Event()
+  chartRandomColor: EventEmitter<string[]>;
+
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private x: any;
   private y: any;
@@ -556,6 +562,8 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
           }
         }
       }
+
+      this.chartRandomColor.emit(this.randomFillColors);
 
       resolve(series);
     });

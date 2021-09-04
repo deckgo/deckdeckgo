@@ -97,9 +97,10 @@ Qualified Hydropower;6.93%
 
 ## Events
 
-| Event             | Description                                                                  | Type                  |
-| ----------------- | ---------------------------------------------------------------------------- | --------------------- |
-| `chartCustomLoad` | The event to be processed to load the data if you are using a custom loader. | `CustomEvent<string>` |
+| Event              | Description                                                                  | Type                    |
+| ------------------ | ---------------------------------------------------------------------------- | ----------------------- |
+| `chartCustomLoad`  | The event to be processed to load the data if you are using a custom loader. | `CustomEvent<string>`   |
+| `chartRandomColor` | Emit the random colors that are generated for the charts.                    | `CustomEvent<string[]>` |
 
 
 ## Methods

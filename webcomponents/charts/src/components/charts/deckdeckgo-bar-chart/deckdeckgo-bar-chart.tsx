@@ -99,6 +99,12 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Event()
   chartCustomLoad: EventEmitter<string>;
 
+  /**
+   * Emit the random colors that are generated for the charts.
+   */
+  @Event()
+  chartRandomColor: EventEmitter<string[]>;
+
   async componentDidLoad() {
     await this.draw();
   }
@@ -183,11 +189,19 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
 
     await this.drawAxis();
 
-    if (!this.randomColors || this.randomColors.length !== this.chartData[0].values.length) {
-      this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
-    }
+    await this.initRandomColors();
 
     await this.drawBars(0, 0);
+  }
+
+  private async initRandomColors() {
+    if (this.randomColors?.length === this.chartData[0].values.length) {
+      return;
+    }
+
+    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+
+    this.chartRandomColor.emit(this.randomColors);
   }
 
   private async drawBars(index: number, animationDuration: number) {
@@ -356,25 +370,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         .enter()
         .append('rect')
         .merge(section)
-        .attr('style', (d, i) => {
-          const fillColor: string = this.randomColors && this.randomColors.length > i ? `, #${this.randomColors[i]}` : '';
-
-          const background: string = `var(--deckgo-chart-fill-color-${d.key}${fillColor})`;
-
-          return (
-            'fill: ' +
-            background +
-            '; fill-opacity: var(--deckgo-chart-fill-opacity-' +
-            d.key +
-            ', 0.8); stroke: var(--deckgo-chart-stroke-' +
-            d.key +
-            ', ' +
-            background +
-            '); stroke-width: var(--deckgo-chart-stroke-width-' +
-            d.key +
-            ', 3px)'
-          );
-        })
+        .attr('style', (d, i) => this.style(d, i))
         .transition()
         .duration(animationDuration)
         .attr('x', (d) => {
@@ -421,24 +417,30 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
           const height: number = this.height - this.marginTop - this.marginBottom - this.y(d.value);
           return height >= 0 ? height : 0;
         })
-        .attr('style', (d, i) => {
-          return (
-            'fill: var(--deckgo-chart-fill-color-' +
-            d.key +
-            ', ' +
-            (this.randomColors && this.randomColors.length > i ? `#${this.randomColors[i]}` : '') +
-            '); fill-opacity: var(--deckgo-chart-fill-opacity-' +
-            d.key +
-            '); stroke: var(--deckgo-chart-stroke-' +
-            d.key +
-            '); stroke-width: var(--deckgo-chart-stroke-width-' +
-            d.key +
-            ')'
-          );
-        });
+        .attr('style', (d, i) => this.style(d, i));
 
       resolve();
     });
+  }
+
+  private style(d, i: number): string {
+    const fillColor: string = this.randomColors && this.randomColors.length > i ? `, #${this.randomColors[i]}` : '';
+
+    const background: string = `var(--deckgo-chart-fill-color-${d.key}${fillColor})`;
+
+    return (
+      'fill: ' +
+      background +
+      '; fill-opacity: var(--deckgo-chart-fill-opacity-' +
+      d.key +
+      ', 0.8); stroke: var(--deckgo-chart-stroke-' +
+      d.key +
+      ', ' +
+      background +
+      '); stroke-width: var(--deckgo-chart-stroke-width-' +
+      d.key +
+      ', 3px)'
+    );
   }
 
   fetchData(): Promise<DeckdeckgoBarChartData[]> {

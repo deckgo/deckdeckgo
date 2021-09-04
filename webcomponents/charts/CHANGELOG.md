@@ -1,3 +1,9 @@
+# 2.3.0 (2021-09-04)
+
+### Features
+
+- event `chartRandomColor` to emit the random colors that have been automatically generated to plot the chart 
+
 # 2.2.2 (2021-09-02)
 
 ### Features

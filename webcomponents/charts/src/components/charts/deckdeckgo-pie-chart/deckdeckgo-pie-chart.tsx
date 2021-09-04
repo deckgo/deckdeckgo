@@ -88,6 +88,12 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Event()
   chartCustomLoad: EventEmitter<string>;
 
+  /**
+   * Emit the random colors that are generated for the charts.
+   */
+  @Event()
+  chartRandomColor: EventEmitter<string[]>;
+
   private svg: Selection<BaseType, any, HTMLElement, any>;
   private myPath: Arc<any, DefaultArcObject>;
 
@@ -375,9 +381,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
         const values: string[] = line.split(this.separator);
 
         if (values && values.length >= 2) {
-          if (!this.randomColors || this.randomColors.length !== lines.length) {
-            this.randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
-          }
+          this.initRandomColors(lines);
 
           const label: string = values[0];
 
@@ -424,6 +428,16 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       resolve(results);
     });
+  }
+
+  private initRandomColors(lines: string[]) {
+    if (this.randomColors?.length === lines.length) {
+      return;
+    }
+
+    this.randomColors = Array.from({length: lines.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+
+    this.chartRandomColor.emit(this.randomColors);
   }
 
   render() {
