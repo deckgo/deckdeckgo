@@ -93,6 +93,8 @@ export class AppSlideThumbnail {
       chart.marginLeft = 8;
       chart.marginRight = 8;
 
+      chart.setAttribute('style', this.slide.getAttribute('style'));
+
       return chart.lazyLoadContent();
     });
     await Promise.all(promises);
