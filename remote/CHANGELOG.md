@@ -1,3 +1,9 @@
+# 1.14.3 (2021-09-04)
+
+### Build
+
+- bump charts dependencies
+
 # 1.14.2 (2021-08-19)
 
 ### Build

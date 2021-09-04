@@ -1,4 +1,15 @@
-# 4.9.0 (2021)
+# 4.10.0 (2021-09-04)
+
+### Features
+
+- cuter default charts colors ([#1315](https://github.com/deckgo/deckdeckgo/pull/1315))
+
+### Fix
+
+- slide navigation and selection from new aside menu ([#1316](https://github.com/deckgo/deckdeckgo/pull/1316))
+- lazy load local thumbnails slides' images and charts ([#1311](https://github.com/deckgo/deckdeckgo/pull/1311))
+
+# 4.9.0 (2021-08-20)
 
 ### Features
 
