@@ -17,7 +17,7 @@
     "test.watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@deckdeckgo/charts": "^2.2.2",
+    "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/core": "^8.3.0",
     "@deckdeckgo/deck-utils": "^4.1.0",
     "@deckdeckgo/demo": "^2.1.0",
@@ -32,7 +32,7 @@
     "@deckdeckgo/slide-aspect-ratio": "^3.4.0",
     "@deckdeckgo/slide-author": "^2.4.0",
     "@deckdeckgo/slide-big-img": "^2.3.0",
-    "@deckdeckgo/slide-chart": "^2.4.0",
+    "@deckdeckgo/slide-chart": "^2.5.0",
     "@deckdeckgo/slide-content": "^2.5.0",
     "@deckdeckgo/slide-countdown": "^2.4.0",
     "@deckdeckgo/slide-gif": "^3.4.0",
