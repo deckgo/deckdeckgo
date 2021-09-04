@@ -14,6 +14,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
+import {selectDeckSlide} from '../../../../../utils/editor/deck.utils';
+
 import {BackupOfflineService} from '../../../../../services/editor/backup/backup.offline.service';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
@@ -46,6 +48,9 @@ export class AppActionsDeck {
   @Event()
   private selectDeck: EventEmitter<void>;
 
+  @Event()
+  private stepTo: EventEmitter<HTMLElement | undefined>;
+
   private destroyListener;
 
   // Drag and drop is not supported on iOS and Firefox on Android
@@ -73,6 +78,14 @@ export class AppActionsDeck {
       mode: 'ios',
       showBackdrop: false,
       cssClass: 'popover-menu popover-menu-wide'
+    });
+
+    popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
+      if (data !== undefined) {
+        const slide: HTMLElement | null = selectDeckSlide(data);
+
+        this.stepTo.emit(slide);
+      }
     });
 
     await popover.present();
