@@ -12,6 +12,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
+import { selectDeckSlide } from '../../../../../utils/editor/deck.utils';
+
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({
