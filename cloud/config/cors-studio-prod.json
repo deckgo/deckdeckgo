@@ -1,6 +1,6 @@
 [
   {
-    "origin": ["https://deckdeckgo.com", "https://beta.deckdeckgo.io", "https://deckdeckgo.app"],
+    "origin": ["https://deckdeckgo.com", "https://app.deckdeckgo.com", "https://beta.deckdeckgo.io", "https://deckdeckgo.app"],
     "responseHeader": ["Content-Type"],
     "method": ["GET"],
     "maxAgeSeconds": 3600
