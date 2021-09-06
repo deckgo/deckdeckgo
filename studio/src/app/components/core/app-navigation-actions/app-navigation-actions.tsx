@@ -17,6 +17,7 @@ import {AppIcon} from '../app-icon/app-icon';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 import {SyncService} from '../../../services/editor/sync/sync.service';
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -30,10 +31,12 @@ export class AppNavigationActions {
 
   private loadInput!: HTMLInputElement;
 
-  private syncService: SyncService;
+  private readonly syncService: SyncService;
+  private readonly imageHistoryService: ImageHistoryService;
 
   constructor() {
     this.syncService = SyncService.getInstance();
+    this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
   private async openMenu($event: UIEvent) {
@@ -87,7 +90,7 @@ export class AppNavigationActions {
         {
           text: i18n.state.core.ok,
           handler: async () => {
-            await this.clean();
+            await this.clear();
           }
         }
       ]
@@ -96,13 +99,15 @@ export class AppNavigationActions {
     await alert.present();
   }
 
-  private async clean() {
+  private async clear() {
     const loading: HTMLIonLoadingElement = await loadingController.create({});
 
     await loading.present();
 
     try {
-      await this.syncService.clean();
+      await this.syncService.clear();
+
+      await this.imageHistoryService.clear();
 
       // By removing the reference to the current deck in indexeddb, it will create a new deck on reload
       await del('deckdeckgo_deck_id');

@@ -5,7 +5,6 @@ import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 @Component({
   tag: 'app-user-menu',
@@ -16,16 +15,12 @@ export class AppUserMenu {
 
   private authService: AuthService;
 
-  private imageHistoryService: ImageHistoryService;
-
   constructor() {
     this.authService = AuthService.getInstance();
-    this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
   private async signOut() {
     await this.authService.signOut();
-    await this.imageHistoryService.clear();
 
     await this.closePopover();
 

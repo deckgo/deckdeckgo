@@ -483,7 +483,7 @@ export class SyncService {
     syncStore.state.sync = 'pending';
   }
 
-  async clean() {
+  async clear() {
     // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean data if signed out after user has click "New deck".
     if (authStore.state.loggedIn) {
       return;
