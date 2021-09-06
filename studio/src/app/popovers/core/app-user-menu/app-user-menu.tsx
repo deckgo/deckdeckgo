@@ -8,7 +8,6 @@ import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
 import {AuthService} from '../../../services/auth/auth.service';
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
 
 @Component({
@@ -18,18 +17,14 @@ import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
 export class AppUserMenu {
   @Element() el: HTMLElement;
 
-  private authService: AuthService;
-
-  private imageHistoryService: ImageHistoryService;
+  private readonly authService: AuthService;
 
   constructor() {
     this.authService = AuthFactoryService.getInstance();
-    this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
   private async signOut() {
     await this.authService.signOut();
-    await this.imageHistoryService.clear();
 
     await this.closePopover();
 

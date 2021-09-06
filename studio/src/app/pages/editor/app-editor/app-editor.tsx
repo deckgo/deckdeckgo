@@ -172,11 +172,12 @@ export class AppEditor {
 
     await this.reset();
 
-    // TODO: clean previous deck data from IDB (asynchronously? periodically? how?)
-
     await this.initOrFetch();
 
     await this.deckRef.slideTo(0);
+
+    // Select deck
+    this.actionsEditorRef?.selectStep(undefined);
   }
 
   private async initOrFetch() {
