@@ -16,6 +16,7 @@ import {signIn} from '../../../utils/core/signin.utils';
 import {AppIcon} from '../app-icon/app-icon';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
+import {SyncService} from '../../../services/editor/sync/sync.service';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -28,6 +29,12 @@ export class AppNavigationActions {
   @Prop() signIn: boolean = false;
 
   private loadInput!: HTMLInputElement;
+
+  private syncService: SyncService;
+
+  constructor() {
+    this.syncService = SyncService.getInstance();
+  }
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -80,16 +87,32 @@ export class AppNavigationActions {
         {
           text: i18n.state.core.ok,
           handler: async () => {
-            // By removing the reference to the current deck in indexeddb, it will create a new deck on reload
-            await del('deckdeckgo_deck_id');
-
-            this.emitReloadDeck();
+            await this.clean();
           }
         }
       ]
     });
 
     await alert.present();
+  }
+
+  private async clean() {
+    const loading: HTMLIonLoadingElement = await loadingController.create({});
+
+    await loading.present();
+
+    try {
+      await this.syncService.clean();
+
+      // By removing the reference to the current deck in indexeddb, it will create a new deck on reload
+      await del('deckdeckgo_deck_id');
+
+      this.emitReloadDeck();
+    } catch (err) {
+      errorStore.state.error = 'Something went wrong while cleaning the local data of current deck.';
+    }
+
+    await loading.dismiss();
   }
 
   private emitReloadDeck() {
