@@ -1,7 +1,5 @@
 import {createStore} from '@stencil/store';
 
-import {set} from 'idb-keyval';
-
 import {SyncState} from '../types/editor/sync';
 
 interface SyncStore {
@@ -23,10 +21,6 @@ const onBeforeUnload = ($event: BeforeUnloadEvent) => {
 };
 
 onChange('sync', (sync: SyncState) => {
-  set('deckdeckgo_sync_state', sync).catch((err) => {
-    console.error('Failed to update IDB with sync state', err);
-  });
-
   if (['pending', 'in_progress'].includes(sync)) {
     window.addEventListener('beforeunload', onBeforeUnload, {capture: true});
   } else {

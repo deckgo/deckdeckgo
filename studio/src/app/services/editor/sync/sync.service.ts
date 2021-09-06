@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 
-import {del, get, set, update} from 'idb-keyval';
+import {del, keys, get, set, update} from 'idb-keyval';
 
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
@@ -74,7 +74,7 @@ export class SyncService {
 
       // TODO: handle delete decks here?
 
-      await this.cleanPending(syncedAt);
+      await this.filterPending(syncedAt);
 
       await this.initSyncState();
     } catch (err) {
@@ -439,7 +439,7 @@ export class SyncService {
     });
   }
 
-  private async cleanPending(syncedAt: Date) {
+  private async filterPending(syncedAt: Date) {
     const data: SyncPending | undefined = await get<SyncPending>('deckdeckgo_pending_sync');
 
     if (!data) {
@@ -481,5 +481,22 @@ export class SyncService {
     }
 
     syncStore.state.sync = 'pending';
+  }
+
+  async clean() {
+    // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean data if signed out after user has click "New deck".
+    if (authStore.state.loggedIn) {
+      return;
+    }
+
+    await del('deckdeckgo_pending_sync');
+
+    const storageKeys: string[] = (await keys<string>()).filter((key: string) => key.startsWith('/decks/') || key.startsWith('/assets/'));
+
+    if (!storageKeys.length) {
+      return;
+    }
+
+    await Promise.all(storageKeys.map((key: string) => del(key)));
   }
 }
