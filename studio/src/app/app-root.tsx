@@ -10,7 +10,7 @@ import {AuthFactoryProvider} from './providers/auth/auth.factory.provider';
 
 import {ThemeService} from './services/theme/theme.service';
 import {NavDirection, NavParams} from './stores/nav.store';
-import {ColorService} from './services/color/color.service';
+import {ColorService} from './services/editor/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
 import {SyncService} from './services/editor/sync/sync.service';
