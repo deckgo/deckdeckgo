@@ -1,5 +1,5 @@
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 import {ApiUserService} from './api.user.service';
 import {ApiUserMockService} from './api.user.mock.service';

@@ -2,11 +2,12 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
-import {ApiPhotoService} from '../../../services/api/photo/api.photo.service';
-import {ApiPhotoFactoryService} from '../../../services/api/photo/api.photo.factory.service';
+import {ApiPhotoService} from '../../../providers/api/photo/api.photo.service';
+import {ApiPhotoFactoryService} from '../../../providers/api/photo/api.photo.factory.service';
+
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-photo',

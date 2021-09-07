@@ -21,11 +21,12 @@ import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import {ApiUserService} from '../../../../services/api/user/api.user.service';
+import {ApiUserService} from '../../../../providers/api/user/api.user.service';
+import {ApiUserFactoryService} from '../../../../providers/api/user/api.user.factory.service';
+
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {getUserService, UserService} from '../../../../services/data/user/user.service';
 import {getOnlineStorageService, StorageService} from '../../../../services/storage/storage.service';
-import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
 import {AuthService} from '../../../../services/auth/auth.service';
 import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
 

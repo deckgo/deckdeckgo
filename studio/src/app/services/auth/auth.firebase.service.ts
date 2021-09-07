@@ -10,9 +10,11 @@ import {EnvironmentConfigService} from '../environment/environment-config.servic
 
 import {AuthUser} from '../../models/auth/auth.user';
 
-import {ApiUserService} from '../api/user/api.user.service';
 import {UserFirebaseService} from '../data/user/user.firebase.service';
-import {ApiUserFactoryService} from '../api/user/api.user.factory.service';
+
+import {ApiUserService} from '../../providers/api/user/api.user.service';
+import {ApiUserFactoryService} from '../../providers/api/user/api.user.factory.service';
+
 import {AuthService} from './auth.service';
 
 export class AuthFirebaseService extends AuthService {

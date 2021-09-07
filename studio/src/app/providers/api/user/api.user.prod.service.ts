@@ -2,7 +2,7 @@ import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {ApiUserService} from './api.user.service';

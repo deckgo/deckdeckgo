@@ -1,7 +1,7 @@
 import {ApiPhotoService} from './api.photo.service';
 
 import {EnvironmentUnsplashConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 import store from '../../../stores/error.store';
 
