@@ -10,8 +10,9 @@ import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../.
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
 import {SlideService} from './slide.service';
-import {AuthFactoryService} from '../../auth/auth.factory.service';
-import {AuthIcService} from '../../auth/auth.ic.service';
+
+import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
+import {AuthIcService} from '../../../providers/auth/auth.ic.service';
 
 export class SlideIcService implements SlideService {
   private static instance: SlideIcService;

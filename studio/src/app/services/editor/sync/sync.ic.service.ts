@@ -11,8 +11,9 @@ import {internetComputer} from '../../../utils/core/environment.utils';
 import {internetIdentityAuth} from '../../../utils/core/ic.identity.utils';
 
 import {SyncService} from './sync.service';
-import {AuthFactoryService} from '../../auth/auth.factory.service';
-import {AuthIcService} from '../../auth/auth.ic.service';
+
+import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
+import {AuthIcService} from '../../../providers/auth/auth.ic.service';
 
 import {uploadWorker} from '../../../workers/sync.ic.worker';
 

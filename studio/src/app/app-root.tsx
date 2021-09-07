@@ -5,14 +5,14 @@ import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
 import authStore from './stores/auth.store';
 
-import {AuthService} from './services/auth/auth.service';
+import {AuthService} from './providers/auth/auth.service';
+import {AuthFactoryService} from './providers/auth/auth.factory.service';
 
 import {ThemeService} from './services/theme/theme.service';
 import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {AuthFactoryService} from './services/auth/auth.factory.service';
 import {SyncService} from './services/editor/sync/sync.service';
 import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
 

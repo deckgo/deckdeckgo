@@ -8,9 +8,10 @@ import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
 import {User} from '../../../models/data/user';
 
-import {AuthFactoryService} from '../../auth/auth.factory.service';
 import {UserService} from './user.service';
-import {AuthIcService} from '../../auth/auth.ic.service';
+
+import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
+import {AuthIcService} from '../../../providers/auth/auth.ic.service';
 
 import {initSlidesActor} from '../../../utils/core/ic.slide.utils';
 

@@ -11,8 +11,9 @@ import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.deck.utils';
 
 import {DeckService} from './deck.service';
-import {AuthIcService} from '../../auth/auth.ic.service';
-import {AuthFactoryService} from '../../auth/auth.factory.service';
+
+import {AuthIcService} from '../../../providers/auth/auth.ic.service';
+import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
 
 export class DeckIcService implements DeckService {
   private static instance: DeckIcService;

@@ -4,8 +4,8 @@ import i18n from '../../../../stores/i18n.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
 
-import {AuthService} from '../../../../services/auth/auth.service';
-import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
+import {AuthService} from '../../../../providers/auth/auth.service';
+import {AuthFactoryService} from '../../../../providers/auth/auth.factory.service';
 
 @Component({
   tag: 'app-signin-ic',

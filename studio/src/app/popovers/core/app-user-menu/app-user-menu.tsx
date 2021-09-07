@@ -7,8 +7,8 @@ import userStore from '../../../stores/user.store';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
+import {AuthService} from '../../../providers/auth/auth.service';
+import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
 
 @Component({
   tag: 'app-user-menu',

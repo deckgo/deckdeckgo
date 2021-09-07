@@ -27,8 +27,8 @@ import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.fa
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {getUserService, UserService} from '../../../../services/data/user/user.service';
 import {getOnlineStorageService, StorageService} from '../../../../services/storage/storage.service';
-import {AuthService} from '../../../../services/auth/auth.service';
-import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
+import {AuthService} from '../../../../providers/auth/auth.service';
+import {AuthFactoryService} from '../../../../providers/auth/auth.factory.service';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';

@@ -6,14 +6,14 @@ import authStore from '../../stores/auth.store';
 
 import {del} from 'idb-keyval';
 
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {AuthUser} from '../../models/auth/auth.user';
 
-import {UserFirebaseService} from '../data/user/user.firebase.service';
+import {UserFirebaseService} from '../../services/data/user/user.firebase.service';
 
-import {ApiUserProvider} from '../../providers/api/user/api.user.provider';
-import {ApiUserFactoryProvider} from '../../providers/api/user/api.user.factory.provider';
+import {ApiUserProvider} from '../api/user/api.user.provider';
+import {ApiUserFactoryProvider} from '../api/user/api.user.factory.provider';
 
 import {AuthService} from './auth.service';
 
