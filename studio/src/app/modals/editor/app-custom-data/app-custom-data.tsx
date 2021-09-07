@@ -4,8 +4,8 @@ import i18n from '../../../stores/i18n.store';
 
 import {Constants} from '../../../types/core/constants';
 
-import {getStorageService, StorageService} from '../../../providers/storage/storage.service';
-import {StorageOfflineService} from '../../../providers/storage/storage.offline.service';
+import {getStorageService, StorageProvider} from '../../../providers/storage/storage.provider';
+import {StorageOfflineProvider} from '../../../providers/storage/storage.offline.provider';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
@@ -16,8 +16,8 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 export class AppCustomData {
   @Element() el: HTMLElement;
 
-  private storageService: StorageService;
-  private storageOfflineService: StorageOfflineService;
+  private storageProvider: StorageProvider;
+  private storageOfflineProvider: StorageOfflineProvider;
 
   @State()
   private files: StorageFile[];
@@ -34,8 +34,8 @@ export class AppCustomData {
   private loading: boolean = true;
 
   constructor() {
-    this.storageService = getStorageService();
-    this.storageOfflineService = StorageOfflineService.getInstance();
+    this.storageProvider = getStorageService();
+    this.storageOfflineProvider = StorageOfflineProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -81,7 +81,7 @@ export class AppCustomData {
 
   private search(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await this.storageService.getFiles(this.paginationNext, 'data');
+      const list: StorageFilesList = await this.storageProvider.getFiles(this.paginationNext, 'data');
 
       if (!list) {
         resolve();
@@ -152,7 +152,7 @@ export class AppCustomData {
       if (filePicker.files && filePicker.files.length > 0) {
         this.uploading = true;
 
-        const storageFile: StorageFile = await this.storageOfflineService.uploadFile(filePicker.files[0], 'data', 10485760);
+        const storageFile: StorageFile = await this.storageOfflineProvider.uploadFile(filePicker.files[0], 'data', 10485760);
 
         if (storageFile) {
           await this.selectAndClose(storageFile);

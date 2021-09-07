@@ -2,7 +2,7 @@ import {h, Component, State, Event, EventEmitter} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
 
-import {getStorageService, StorageService} from '../../../../providers/storage/storage.service';
+import {getStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
 
@@ -20,10 +20,10 @@ export class AppBackgroundFolders {
   @Event()
   private selectFolder: EventEmitter<string>;
 
-  private storageService: StorageService;
+  private storageProvider: StorageProvider;
 
   constructor() {
-    this.storageService = getStorageService();
+    this.storageProvider = getStorageService();
   }
 
   async componentWillLoad() {
@@ -31,7 +31,7 @@ export class AppBackgroundFolders {
   }
 
   private async initFolders() {
-    const storage: StorageFoldersList | undefined = await this.storageService.getFolders('backgrounds');
+    const storage: StorageFoldersList | undefined = await this.storageProvider.getFolders('backgrounds');
 
     const rootFolder: StorageFolder[] = [{name: 'images'}];
 

@@ -18,21 +18,20 @@ import {deckSelector} from '../../../utils/editor/deck.utils';
 
 import {SlideFirebaseProvider} from '../../../providers/data/slide/slide.firebase.provider';
 import {DeckFirebaseProvider} from '../../../providers/data/deck/deck.firebase.provider';
-import {StorageFirebaseService} from '../../../providers/storage/storage.firebase.service';
+import {StorageFirebaseProvider} from '../../../providers/storage/storage.firebase.provider';
 import {SyncService} from './sync.service';
 
 export class SyncFirebaseService extends SyncService {
   private slideFirebaseService: SlideFirebaseProvider;
   private deckFirebaseProvider: DeckFirebaseProvider;
-
-  private storageFirebaseService: StorageFirebaseService;
+  private storageFirebaseProvider: StorageFirebaseProvider;
 
   constructor() {
     super();
 
     this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
     this.slideFirebaseService = SlideFirebaseProvider.getInstance();
-    this.storageFirebaseService = StorageFirebaseService.getInstance();
+    this.storageFirebaseProvider = StorageFirebaseProvider.getInstance();
   }
 
   // @Override
@@ -145,7 +144,7 @@ export class SyncFirebaseService extends SyncService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile | undefined = await this.storageFirebaseService.uploadFile(data, 'data', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageFirebaseProvider.uploadFile(data, 'data', 10485760);
 
         if (!storageFile) {
           reject(`Chart ${src} upload has failed.`);
@@ -228,7 +227,7 @@ export class SyncFirebaseService extends SyncService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile | undefined = await this.storageFirebaseService.uploadFile(data, 'images', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageFirebaseProvider.uploadFile(data, 'images', 10485760);
 
         if (!storageFile) {
           reject(`Image ${img.imgSrc} upload has failed.`);
@@ -398,7 +397,7 @@ export class SyncFirebaseService extends SyncService {
         }
 
         // 1. We upload the file to the storage cloud
-        const storageFile: StorageFile | undefined = await this.storageFirebaseService.uploadFile(data, 'images', 10485760);
+        const storageFile: StorageFile | undefined = await this.storageFirebaseProvider.uploadFile(data, 'images', 10485760);
 
         if (!storageFile) {
           reject(`Image ${img.imgSrc} upload has failed.`);

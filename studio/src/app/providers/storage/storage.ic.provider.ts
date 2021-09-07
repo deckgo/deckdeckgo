@@ -1,19 +1,19 @@
-import {StorageService} from './storage.service';
+import {StorageProvider} from './storage.provider';
 
 // TODO: implement storage for the internet computer
 
-export class StorageIcService implements StorageService {
-  private static instance: StorageIcService;
+export class StorageIcProvider implements StorageProvider {
+  private static instance: StorageIcProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!StorageIcService.instance) {
-      StorageIcService.instance = new StorageIcService();
+    if (!StorageIcProvider.instance) {
+      StorageIcProvider.instance = new StorageIcProvider();
     }
-    return StorageIcService.instance;
+    return StorageIcProvider.instance;
   }
 
   // @Override

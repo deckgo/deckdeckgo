@@ -2,20 +2,20 @@ import {keys, set} from 'idb-keyval';
 
 import store from '../../stores/error.store';
 
-import {StorageService} from './storage.service';
+import {StorageProvider} from './storage.provider';
 
-export class StorageOfflineService implements StorageService {
-  private static instance: StorageOfflineService;
+export class StorageOfflineProvider implements StorageProvider {
+  private static instance: StorageOfflineProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!StorageOfflineService.instance) {
-      StorageOfflineService.instance = new StorageOfflineService();
+    if (!StorageOfflineProvider.instance) {
+      StorageOfflineProvider.instance = new StorageOfflineProvider();
     }
-    return StorageOfflineService.instance;
+    return StorageOfflineProvider.instance;
   }
 
   // @Override

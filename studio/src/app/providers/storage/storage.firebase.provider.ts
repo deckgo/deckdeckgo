@@ -8,20 +8,20 @@ import authStore from '../../stores/auth.store';
 
 import {Constants} from '../../types/core/constants';
 
-import {StorageService} from './storage.service';
+import {StorageProvider} from './storage.provider';
 
-export class StorageFirebaseService implements StorageService {
-  private static instance: StorageFirebaseService;
+export class StorageFirebaseProvider implements StorageProvider {
+  private static instance: StorageFirebaseProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!StorageFirebaseService.instance) {
-      StorageFirebaseService.instance = new StorageFirebaseService();
+    if (!StorageFirebaseProvider.instance) {
+      StorageFirebaseProvider.instance = new StorageFirebaseProvider();
     }
-    return StorageFirebaseService.instance;
+    return StorageFirebaseProvider.instance;
   }
 
   // @Override

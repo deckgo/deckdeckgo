@@ -25,9 +25,9 @@ import {ApiUserProvider} from '../../../../providers/api/user/api.user.provider'
 import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.factory.provider';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
-import {getOnlineStorageService, StorageService} from '../../../../providers/storage/storage.service';
 
+import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
+import {getOnlineStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
 import {AuthProvider} from '../../../../providers/auth/auth.provider';
 import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
 
@@ -63,14 +63,13 @@ export class AppProfile {
   private readonly userProvider: UserProvider;
   private readonly apiUserProvider: ApiUserProvider;
   private readonly authProvider: AuthProvider;
+  private readonly storageOnlineProvider: StorageProvider;
 
   private imageHistoryService: ImageHistoryService;
 
   private profilePicture: File;
 
   private customLogo: File;
-
-  private storageOnlineService: StorageService;
 
   @State()
   private twitter: string = undefined;
@@ -100,7 +99,7 @@ export class AppProfile {
     this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userProvider = getUserService();
-    this.storageOnlineService = getOnlineStorageService();
+    this.storageOnlineProvider = getOnlineStorageService();
     this.authProvider = AuthFactoryProvider.getInstance();
   }
 
@@ -368,7 +367,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(this.profilePicture, 'avatars', 524288);
+        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.profilePicture, 'avatars', 524288);
 
         if (storageFile) {
           this.user.data.photo_url = storageFile.downloadUrl;
@@ -399,7 +398,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(this.customLogo, 'images', 524288);
+        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.customLogo, 'images', 524288);
 
         if (storageFile) {
           this.user.data.social.custom_logo_url = storageFile.downloadUrl;

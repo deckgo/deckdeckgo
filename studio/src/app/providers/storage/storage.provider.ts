@@ -4,11 +4,11 @@ import offlineStore from '../../stores/offline.store';
 import {EnvironmentAppConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
-import {StorageIcService} from './storage.ic.service';
-import {StorageFirebaseService} from './storage.firebase.service';
-import {StorageOfflineService} from './storage.offline.service';
+import {StorageIcProvider} from './storage.ic.provider';
+import {StorageFirebaseProvider} from './storage.firebase.provider';
+import {StorageOfflineProvider} from './storage.offline.provider';
 
-export interface StorageService {
+export interface StorageProvider {
   uploadFile(data: File, folder: string, maxSize: number, downloadUrl?: boolean): Promise<StorageFile | undefined>;
 
   getFiles(next: string | null, folder: string): Promise<StorageFilesList | null>;
@@ -16,15 +16,15 @@ export interface StorageService {
   getFolders(folder: string): Promise<StorageFoldersList | undefined>;
 }
 
-export const getStorageService = (): StorageService => {
+export const getStorageService = (): StorageProvider => {
   if (authStore.state.loggedIn && offlineStore.state.online) {
     return getOnlineStorageService();
   }
 
-  return StorageOfflineService.getInstance();
+  return StorageOfflineProvider.getInstance();
 };
 
-export const getOnlineStorageService = (): StorageService => {
+export const getOnlineStorageService = (): StorageProvider => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-  return cloud === 'ic' ? StorageIcService.getInstance() : StorageFirebaseService.getInstance();
+  return cloud === 'ic' ? StorageIcProvider.getInstance() : StorageFirebaseProvider.getInstance();
 };
