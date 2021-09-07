@@ -26,7 +26,7 @@ import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.fa
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
-import {getOnlineStorageService, StorageService} from '../../../../services/storage/storage.service';
+import {getOnlineStorageService, StorageService} from '../../../../providers/storage/storage.service';
 
 import {AuthProvider} from '../../../../providers/auth/auth.provider';
 import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';

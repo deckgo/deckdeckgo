@@ -7,7 +7,7 @@ import authStore from '../../../stores/auth.store';
 import {Deck} from '../../../models/data/deck';
 
 import {DeckImportService} from '../../../services/deck/deck-import.service';
-import {getOnlineStorageService, StorageService} from '../../../services/storage/storage.service';
+import {getOnlineStorageService, StorageService} from '../../../providers/storage/storage.service';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';

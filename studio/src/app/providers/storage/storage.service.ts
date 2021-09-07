@@ -2,7 +2,7 @@ import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 
 import {EnvironmentAppConfig} from '../../types/core/environment-config';
-import {EnvironmentConfigService} from '../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {StorageIcService} from './storage.ic.service';
 import {StorageFirebaseService} from './storage.firebase.service';

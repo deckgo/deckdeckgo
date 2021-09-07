@@ -2,7 +2,7 @@ import {h, Component, State, Event, EventEmitter} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
 
-import {getStorageService, StorageService} from '../../../../services/storage/storage.service';
+import {getStorageService, StorageService} from '../../../../providers/storage/storage.service';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
 
