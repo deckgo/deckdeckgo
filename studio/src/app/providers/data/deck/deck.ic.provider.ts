@@ -10,23 +10,23 @@ import {_SERVICE as DeckBucketActor, Deck as DeckIc} from '../../../canisters/de
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.deck.utils';
 
-import {DeckService} from './deck.service';
+import {DeckProvider} from './deck.provider';
 
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 
-export class DeckIcService implements DeckService {
-  private static instance: DeckIcService;
+export class DeckIcProvider implements DeckProvider {
+  private static instance: DeckIcProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!DeckIcService.instance) {
-      DeckIcService.instance = new DeckIcService();
+    if (!DeckIcProvider.instance) {
+      DeckIcProvider.instance = new DeckIcProvider();
     }
-    return DeckIcService.instance;
+    return DeckIcProvider.instance;
   }
 
   // @Override

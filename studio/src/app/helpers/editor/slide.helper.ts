@@ -11,17 +11,17 @@ import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
 import {TemplateService} from '../../providers/data/template/template.service';
-import {DeckOfflineService} from '../../providers/data/deck/deck.offline.service';
+import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineService} from '../../providers/data/slide/slide.offline.service';
 
 export class SlideHelper {
   private slideOfflineService: SlideOfflineService;
-  private deckOfflineService: DeckOfflineService;
+  private deckOfflineProvider: DeckOfflineProvider;
   private templateService: TemplateService;
 
   constructor() {
     this.slideOfflineService = SlideOfflineService.getInstance();
-    this.deckOfflineService = DeckOfflineService.getInstance();
+    this.deckOfflineProvider = DeckOfflineProvider.getInstance();
     this.templateService = TemplateService.getInstance();
   }
 
@@ -36,7 +36,7 @@ export class SlideHelper {
       busyStore.state.deckBusy = true;
 
       try {
-        const deck: Deck = await this.deckOfflineService.get(deckId);
+        const deck: Deck = await this.deckOfflineProvider.get(deckId);
 
         if (!deck || !deck.data) {
           errorStore.state.error = 'No deck could be fetched';

@@ -17,20 +17,20 @@ import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils
 import {deckSelector} from '../../../utils/editor/deck.utils';
 
 import {SlideFirebaseService} from '../../../providers/data/slide/slide.firebase.service';
-import {DeckFirebaseService} from '../../../providers/data/deck/deck.firebase.service';
+import {DeckFirebaseProvider} from '../../../providers/data/deck/deck.firebase.provider';
 import {StorageFirebaseService} from '../../storage/storage.firebase.service';
 import {SyncService} from './sync.service';
 
 export class SyncFirebaseService extends SyncService {
   private slideFirebaseService: SlideFirebaseService;
-  private deckFirebaseService: DeckFirebaseService;
+  private deckFirebaseProvider: DeckFirebaseProvider;
 
   private storageFirebaseService: StorageFirebaseService;
 
   constructor() {
     super();
 
-    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
     this.slideFirebaseService = SlideFirebaseService.getInstance();
     this.storageFirebaseService = StorageFirebaseService.getInstance();
   }
@@ -350,7 +350,7 @@ export class SyncFirebaseService extends SyncService {
           deck.data.footer = firebase.firestore.FieldValue.delete();
         }
 
-        const persistedDeck: Deck = await this.deckFirebaseService.update(deck);
+        const persistedDeck: Deck = await this.deckFirebaseProvider.update(deck);
 
         resolve(persistedDeck);
       } catch (err) {

@@ -8,20 +8,20 @@ import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {syncUpdateDeck} from '../../../utils/editor/sync.utils';
 
-import {DeckService} from './deck.service';
+import {DeckProvider} from './deck.provider';
 
-export class DeckOfflineService implements DeckService {
-  private static instance: DeckOfflineService;
+export class DeckOfflineProvider implements DeckProvider {
+  private static instance: DeckOfflineProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!DeckOfflineService.instance) {
-      DeckOfflineService.instance = new DeckOfflineService();
+    if (!DeckOfflineProvider.instance) {
+      DeckOfflineProvider.instance = new DeckOfflineProvider();
     }
-    return DeckOfflineService.instance;
+    return DeckOfflineProvider.instance;
   }
 
   create(deckData: DeckData): Promise<Deck> {

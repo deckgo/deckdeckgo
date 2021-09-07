@@ -19,7 +19,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../providers/data/template/template.service';
-import {DeckService, getDeckService} from '../../../providers/data/deck/deck.service';
+import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
 import {getSlideService, SlideService} from '../../../providers/data/slide/slide.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
@@ -50,7 +50,7 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckService: DeckService;
+  private readonly deckProvider: DeckProvider;
   private readonly slideService: SlideService;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
@@ -63,7 +63,7 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.deckService = getDeckService();
+    this.deckProvider = getDeckService();
     this.slideService = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
@@ -95,7 +95,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckService.entries(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckProvider.entries(authStore.state.authUser.uid);
 
       await this.templateService.init();
 

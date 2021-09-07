@@ -7,7 +7,7 @@ import {Slide} from '../../models/data/slide';
 import {importEditorData} from '../../utils/editor/import.utils';
 import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
-import {DeckFirebaseService} from '../../providers/data/deck/deck.firebase.service';
+import {DeckFirebaseProvider} from '../../providers/data/deck/deck.firebase.provider';
 import {getSlideService, SlideService} from '../../providers/data/slide/slide.service';
 
 export interface DeckDashboardCloneResult {
@@ -18,11 +18,11 @@ export interface DeckDashboardCloneResult {
 export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
-  private deckFirebaseService: DeckFirebaseService;
+  private deckFirebaseProvider: DeckFirebaseProvider;
   private slideService: SlideService;
 
   private constructor() {
-    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
     this.slideService = getSlideService();
   }
 
@@ -42,7 +42,7 @@ export class DeckDashboardService {
           deck_id_to: clone.id
         };
 
-        const updatedDeck: Deck = await this.deckFirebaseService.update(deck);
+        const updatedDeck: Deck = await this.deckFirebaseProvider.update(deck);
 
         resolve({
           from: updatedDeck,
@@ -67,7 +67,7 @@ export class DeckDashboardService {
         delete clone['api_id'];
         delete clone['meta'];
 
-        const createdDeck: Deck = await this.deckFirebaseService.create(clone);
+        const createdDeck: Deck = await this.deckFirebaseProvider.create(clone);
 
         resolve(createdDeck);
       } catch (err) {
