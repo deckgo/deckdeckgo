@@ -7,8 +7,8 @@ import {Slide} from '../../models/data/slide';
 import {importEditorData} from '../../utils/editor/import.utils';
 import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
-import {DeckFirebaseService} from '../data/deck/deck.firebase.service';
-import {getSlideService, SlideService} from '../data/slide/slide.service';
+import {DeckFirebaseService} from '../../providers/data/deck/deck.firebase.service';
+import {getSlideService, SlideService} from '../../providers/data/slide/slide.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;

@@ -10,9 +10,9 @@ import {Deck} from '../../models/data/deck';
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
-import {TemplateService} from '../../services/data/template/template.service';
-import {DeckOfflineService} from '../../services/data/deck/deck.offline.service';
-import {SlideOfflineService} from '../../services/data/slide/slide.offline.service';
+import {TemplateService} from '../../providers/data/template/template.service';
+import {DeckOfflineService} from '../../providers/data/deck/deck.offline.service';
+import {SlideOfflineService} from '../../providers/data/slide/slide.offline.service';
 
 export class SlideHelper {
   private slideOfflineService: SlideOfflineService;

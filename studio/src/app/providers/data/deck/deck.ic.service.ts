@@ -12,8 +12,8 @@ import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.
 
 import {DeckService} from './deck.service';
 
-import {AuthIcProvider} from '../../../providers/auth/auth.ic.provider';
-import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
+import {AuthIcProvider} from '../../auth/auth.ic.provider';
+import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 
 export class DeckIcService implements DeckService {
   private static instance: DeckIcService;

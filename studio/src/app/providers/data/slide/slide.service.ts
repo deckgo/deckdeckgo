@@ -4,7 +4,7 @@ import {SlideIcService} from './slide.ic.service';
 import {SlideFirebaseService} from './slide.firebase.service';
 import {SlideOfflineService} from './slide.offline.service';
 
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
 export interface SlideService {

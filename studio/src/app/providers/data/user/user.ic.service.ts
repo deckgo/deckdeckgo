@@ -10,8 +10,8 @@ import {User} from '../../../models/data/user';
 
 import {UserService} from './user.service';
 
-import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
-import {AuthIcProvider} from '../../../providers/auth/auth.ic.provider';
+import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
+import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
 import {initSlidesActor} from '../../../utils/core/ic.slide.utils';
 

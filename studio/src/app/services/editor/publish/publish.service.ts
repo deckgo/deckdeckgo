@@ -10,7 +10,7 @@ import authStore from '../../../stores/auth.store';
 import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 import {UserSocial} from '../../../models/data/user';
 
-import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';
+import {DeckFirebaseService} from '../../../providers/data/deck/deck.firebase.service';
 
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';

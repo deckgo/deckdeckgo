@@ -18,9 +18,9 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {TemplateService} from '../../../services/data/template/template.service';
-import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
-import {getSlideService, SlideService} from '../../../services/data/slide/slide.service';
+import {TemplateService} from '../../../providers/data/template/template.service';
+import {DeckService, getDeckService} from '../../../providers/data/deck/deck.service';
+import {getSlideService, SlideService} from '../../../providers/data/slide/slide.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';

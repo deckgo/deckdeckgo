@@ -11,8 +11,8 @@ import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
 import {SlideService} from './slide.service';
 
-import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
-import {AuthIcProvider} from '../../../providers/auth/auth.ic.provider';
+import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
+import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
 export class SlideIcService implements SlideService {
   private static instance: SlideIcService;

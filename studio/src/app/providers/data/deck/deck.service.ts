@@ -4,7 +4,7 @@ import {DeckIcService} from './deck.ic.service';
 import {DeckFirebaseService} from './deck.firebase.service';
 import {DeckOfflineService} from './deck.offline.service';
 
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
 export interface DeckService {

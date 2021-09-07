@@ -10,7 +10,7 @@ import {EnvironmentConfigService} from '../../services/environment/environment-c
 
 import {AuthUser} from '../../models/auth/auth.user';
 
-import {UserFirebaseService} from '../../services/data/user/user.firebase.service';
+import {UserFirebaseService} from '../data/user/user.firebase.service';
 
 import {ApiUserProvider} from '../api/user/api.user.provider';
 import {ApiUserFactoryProvider} from '../api/user/api.user.factory.provider';

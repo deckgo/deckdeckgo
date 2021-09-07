@@ -7,7 +7,7 @@ import i18n from '../../../../stores/i18n.store';
 import {signIn} from '../../../../utils/core/signin.utils';
 
 import {Template} from '../../../../models/data/template';
-import {TemplateService} from '../../../../services/data/template/template.service';
+import {TemplateService} from '../../../../providers/data/template/template.service';
 import authStore from '../../../../stores/auth.store';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 

@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import {PlatformService} from '../services/data/platform/platform.service';
+import {PlatformService} from '../providers/data/platform/platform.service';
 
 import {Token} from '../models/data/token';
 

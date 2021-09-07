@@ -32,8 +32,8 @@ import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils'
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
 import {selectSlide} from '../../../../utils/editor/deck.utils';
 
-import {DeckOfflineService} from '../../../../services/data/deck/deck.offline.service';
-import {SlideOfflineService} from '../../../../services/data/slide/slide.offline.service';
+import {DeckOfflineService} from '../../../../providers/data/deck/deck.offline.service';
+import {SlideOfflineService} from '../../../../providers/data/slide/slide.offline.service';
 
 import {DeckAction} from '../../../../types/editor/deck-action';
 

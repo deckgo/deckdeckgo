@@ -16,8 +16,8 @@ import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 import {deckSelector} from '../../../utils/editor/deck.utils';
 
-import {SlideFirebaseService} from '../../data/slide/slide.firebase.service';
-import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';
+import {SlideFirebaseService} from '../../../providers/data/slide/slide.firebase.service';
+import {DeckFirebaseService} from '../../../providers/data/deck/deck.firebase.service';
 import {StorageFirebaseService} from '../../storage/storage.firebase.service';
 import {SyncService} from './sync.service';
 

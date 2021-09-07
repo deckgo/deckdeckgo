@@ -1,6 +1,6 @@
 import {User} from '../../../models/data/user';
 
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 import {UserIcService} from './user.ic.service';
 import {UserFirebaseService} from './user.firebase.service';

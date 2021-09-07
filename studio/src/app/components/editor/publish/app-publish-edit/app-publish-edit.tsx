@@ -13,7 +13,7 @@ import {Deck} from '../../../../models/data/deck';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {DeckFirebaseService} from '../../../../services/data/deck/deck.firebase.service';
+import {DeckFirebaseService} from '../../../../providers/data/deck/deck.firebase.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
