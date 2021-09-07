@@ -15,7 +15,7 @@ import {InternetIdentityAuth} from '../../types/core/ic.identity';
 
 import {internetIdentityAuth} from '../../utils/core/ic.identity.utils';
 
-import {AuthProvider} from './auth.service';
+import {AuthProvider} from './auth.provider';
 
 import {initUserWorker} from '../../workers/user.ic.worker';
 

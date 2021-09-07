@@ -1,4 +1,4 @@
-import {AuthProvider} from './auth.service';
+import {AuthProvider} from './auth.provider';
 
 export class AuthOfflineProvider extends AuthProvider {
   // @Override
