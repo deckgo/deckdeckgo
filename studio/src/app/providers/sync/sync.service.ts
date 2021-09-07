@@ -1,9 +1,9 @@
 import {del, get, keys, update} from 'idb-keyval';
 
-import syncStore from '../../../stores/sync.store';
-import authStore from '../../../stores/auth.store';
+import syncStore from '../../stores/sync.store';
+import authStore from '../../stores/auth.store';
 
-import {SyncData, SyncPending, SyncPendingDeck} from '../../../types/editor/sync';
+import {SyncData, SyncPending, SyncPendingDeck} from '../../types/editor/sync';
 
 export abstract class SyncService {
   abstract upload(syncData: SyncData | undefined): Promise<void>;

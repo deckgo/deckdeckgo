@@ -1,6 +1,6 @@
-import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {EnvironmentAppConfig} from '../../types/core/environment-config';
 
-import {EnvironmentConfigService} from '../../environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {SyncService} from './sync.service';
 import {SyncOfflineService} from './sync.offline.service';

@@ -13,8 +13,8 @@ import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/editor/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {SyncService} from './services/editor/sync/sync.service';
-import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
+import {SyncService} from './providers/sync/sync.service';
+import {SyncFactoryService} from './providers/sync/sync.factory.service';
 
 import {toastController} from './utils/ionic/ionic.overlay';
 

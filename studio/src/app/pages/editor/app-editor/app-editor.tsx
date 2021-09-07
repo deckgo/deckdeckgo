@@ -39,8 +39,8 @@ import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
-import {SyncService} from '../../../services/editor/sync/sync.service';
-import {SyncFactoryService} from '../../../services/editor/sync/sync.factory.service';
+import {SyncService} from '../../../providers/sync/sync.service';
+import {SyncFactoryService} from '../../../providers/sync/sync.factory.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {SyncEvent} from '../../../types/editor/sync';

@@ -1,4 +1,4 @@
-import {SyncData} from '../../../types/editor/sync';
+import {SyncData} from '../../types/editor/sync';
 
 import {SyncService} from './sync.service';
 

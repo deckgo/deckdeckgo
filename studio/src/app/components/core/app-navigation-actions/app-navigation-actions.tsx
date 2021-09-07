@@ -16,8 +16,8 @@ import {AppIcon} from '../app-icon/app-icon';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-import {SyncService} from '../../../services/editor/sync/sync.service';
-import {SyncFactoryService} from '../../../services/editor/sync/sync.factory.service';
+import {SyncService} from '../../../providers/sync/sync.service';
+import {SyncFactoryService} from '../../../providers/sync/sync.factory.service';
 
 @Component({
   tag: 'app-navigation-actions',

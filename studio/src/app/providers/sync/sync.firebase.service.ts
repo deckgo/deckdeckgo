@@ -2,23 +2,23 @@ import firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
-import authStore from '../../../stores/auth.store';
-import syncStore from '../../../stores/sync.store';
-import offlineStore from '../../../stores/offline.store';
+import authStore from '../../stores/auth.store';
+import syncStore from '../../stores/sync.store';
+import offlineStore from '../../stores/offline.store';
 
-import {Deck, DeckAttributes} from '../../../models/data/deck';
-import {Slide, SlideAttributes} from '../../../models/data/slide';
+import {Deck, DeckAttributes} from '../../models/data/deck';
+import {Slide, SlideAttributes} from '../../models/data/slide';
 
-import {SlotType} from '../../../types/editor/slot-type';
-import {SyncData, SyncDataDeck, SyncDataSlide} from '../../../types/editor/sync';
+import {SlotType} from '../../types/editor/slot-type';
+import {SyncData, SyncDataDeck, SyncDataSlide} from '../../types/editor/sync';
 
-import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
-import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
-import {deckSelector} from '../../../utils/editor/deck.utils';
+import {FirestoreUtils} from '../../utils/editor/firestore.utils';
+import {firebase as firebaseEnabled} from '../../utils/core/environment.utils';
+import {deckSelector} from '../../utils/editor/deck.utils';
 
-import {SlideFirebaseProvider} from '../../../providers/data/slide/slide.firebase.provider';
-import {DeckFirebaseProvider} from '../../../providers/data/deck/deck.firebase.provider';
-import {StorageFirebaseProvider} from '../../../providers/storage/storage.firebase.provider';
+import {SlideFirebaseProvider} from '../data/slide/slide.firebase.provider';
+import {DeckFirebaseProvider} from '../data/deck/deck.firebase.provider';
+import {StorageFirebaseProvider} from '../storage/storage.firebase.provider';
 import {SyncService} from './sync.service';
 
 export class SyncFirebaseService extends SyncService {
