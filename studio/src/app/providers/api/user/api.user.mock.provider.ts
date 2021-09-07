@@ -2,13 +2,13 @@ import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 
-import {ApiUserService} from './api.user.service';
+import {ApiUserProvider} from './api.user.provider';
 
 /**
  * We don't have a staging API server currently, therefore we mock the calls.
  * @see https://github.com/deckgo/deckdeckgo/issues/274
  */
-export class ApiUserMockService extends ApiUserService {
+export class ApiUserMockProvider extends ApiUserProvider {
   // @Override
   query(apiUserInfo: ApiUserInfo | ApiUser, _token: string, _context: string, _method: string): Promise<ApiUser | undefined> {
     return new Promise<ApiUser>(async (resolve) => {

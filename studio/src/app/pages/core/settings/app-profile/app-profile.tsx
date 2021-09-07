@@ -21,8 +21,8 @@ import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import {ApiUserService} from '../../../../providers/api/user/api.user.service';
-import {ApiUserFactoryService} from '../../../../providers/api/user/api.user.factory.service';
+import {ApiUserProvider} from '../../../../providers/api/user/api.user.provider';
+import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.factory.provider';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {getUserService, UserService} from '../../../../services/data/user/user.service';
@@ -60,7 +60,7 @@ export class AppProfile {
   private saving: boolean = false;
 
   private userService: UserService;
-  private apiUserService: ApiUserService;
+  private apiUserProvider: ApiUserProvider;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -97,7 +97,7 @@ export class AppProfile {
   private readonly authService: AuthService;
 
   constructor() {
-    this.apiUserService = ApiUserFactoryService.getInstance();
+    this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = getUserService();
     this.storageOnlineService = getOnlineStorageService();
@@ -346,7 +346,7 @@ export class AppProfile {
       try {
         const token: string = await firebase.auth().currentUser.getIdToken();
 
-        await this.apiUserService.put(this.apiUser, token, this.apiUser.id);
+        await this.apiUserProvider.put(this.apiUser, token, this.apiUser.id);
 
         resolve();
       } catch (err) {
@@ -472,7 +472,7 @@ export class AppProfile {
 
     // We need the user token to access the API, therefore delete it here first
     const token: string = await firebase.auth().currentUser.getIdToken();
-    await this.apiUserService.delete(this.apiUser.id, token);
+    await this.apiUserProvider.delete(this.apiUser.id, token);
 
     // Then delete the user
     await this.userService.delete(authStore.state.authUser.uid);

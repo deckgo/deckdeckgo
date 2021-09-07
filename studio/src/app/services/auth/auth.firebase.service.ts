@@ -12,20 +12,20 @@ import {AuthUser} from '../../models/auth/auth.user';
 
 import {UserFirebaseService} from '../data/user/user.firebase.service';
 
-import {ApiUserService} from '../../providers/api/user/api.user.service';
-import {ApiUserFactoryService} from '../../providers/api/user/api.user.factory.service';
+import {ApiUserProvider} from '../../providers/api/user/api.user.provider';
+import {ApiUserFactoryProvider} from '../../providers/api/user/api.user.factory.provider';
 
 import {AuthService} from './auth.service';
 
 export class AuthFirebaseService extends AuthService {
-  private apiUserService: ApiUserService;
+  private apiUserProvider: ApiUserProvider;
 
   private firestoreUserService: UserFirebaseService;
 
   constructor() {
     super();
 
-    this.apiUserService = ApiUserFactoryService.getInstance();
+    this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.firestoreUserService = UserFirebaseService.getInstance();
   }
 
@@ -37,7 +37,7 @@ export class AuthFirebaseService extends AuthService {
       firebase.auth().onAuthStateChanged(async (firebaseUser: FirebaseUser | null) => {
         if (!firebaseUser) {
           authStore.reset();
-          await this.apiUserService.signOut();
+          await this.apiUserProvider.signOut();
         } else {
           const authUser: AuthUser = {
             uid: firebaseUser.uid,
@@ -63,7 +63,7 @@ export class AuthFirebaseService extends AuthService {
 
           authStore.state.authUser = {...authUser};
 
-          await this.apiUserService.signIn(authUser);
+          await this.apiUserProvider.signIn(authUser);
         }
       });
     } catch (err) {
@@ -82,7 +82,7 @@ export class AuthFirebaseService extends AuthService {
   async signOut() {
     await firebase.auth().signOut();
 
-    await this.apiUserService.signOut();
+    await this.apiUserProvider.signOut();
 
     await del('deckdeckgo_redirect');
     await del('deckdeckgo_redirect_info');

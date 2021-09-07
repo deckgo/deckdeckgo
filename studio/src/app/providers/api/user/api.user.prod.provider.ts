@@ -5,9 +5,9 @@ import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
-import {ApiUserService} from './api.user.service';
+import {ApiUserProvider} from './api.user.provider';
 
-export class ApiUserProdService extends ApiUserService {
+export class ApiUserProdProvider extends ApiUserProvider {
   // @Override
   query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser | undefined> {
     return new Promise<ApiUser | undefined>(async (resolve, reject) => {

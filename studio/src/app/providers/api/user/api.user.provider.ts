@@ -6,7 +6,7 @@ import apiUserStore from '../../../stores/api.user.store';
 import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
 import {AuthUser} from '../../../models/auth/auth.user';
 
-export abstract class ApiUserService {
+export abstract class ApiUserProvider {
   abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser | undefined>;
 
   abstract delete(userId: string, token: string): Promise<void>;
