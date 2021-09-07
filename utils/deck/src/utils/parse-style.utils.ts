@@ -1,5 +1,5 @@
-export function convertStyle(originalStyle: string): Promise<any> {
-  return new Promise<any>((resolve) => {
+export function convertStyle(originalStyle: string): Promise<Record<string, string> | undefined> {
+  return new Promise<Record<string, string> | undefined>((resolve) => {
     if (!originalStyle || originalStyle.length <= 0) {
       resolve(undefined);
       return;

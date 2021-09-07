@@ -1,6 +1,6 @@
 import {Component, Listen, h, Host, State, Prop, Event, EventEmitter, Element, Watch} from '@stencil/core';
 
-import {ItemReorderEventDetail} from '@ionic/core';
+import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {debounce} from '@deckdeckgo/utils';
 

@@ -1,22 +1,20 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
-import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import {isMobile} from '@deckdeckgo/utils';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 
-import offlineStore from '../../../../../stores/offline.store';
 import remoteStore from '../../../../../stores/remote.store';
 import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
-import errorStore from '../../../../../stores/error.store';
 import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
-import {selectDeckSlide} from '../../../../../utils/editor/deck.utils';
-
-import {BackupOfflineService} from '../../../../../services/editor/backup/backup.offline.service';
+import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
+import { selectDeckSlide } from '../../../../../utils/editor/deck.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
@@ -124,9 +122,6 @@ export class AppActionsDeck {
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-deck-actions',
-      componentProps: {
-        offline: offlineStore.state.offline
-      },
       event: $event,
       mode: 'ios'
     });
@@ -147,10 +142,6 @@ export class AppActionsDeck {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
           await this.openEmbed();
-        } else if (detail.data.action === MoreAction.OFFLINE) {
-          await this.goOnlineOffline();
-        } else if (detail.data.action === MoreAction.BACKUP) {
-          await this.backupOfflineData();
         }
       }
     });
@@ -176,18 +167,6 @@ export class AppActionsDeck {
     });
 
     await popover.present();
-  }
-
-  private async goOnlineOffline() {
-    const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-offline',
-      componentProps: {
-        offline: offlineStore.state.offline
-      },
-      cssClass: 'fullscreen'
-    });
-
-    await modal.present();
   }
 
   private async openRemote() {
@@ -231,14 +210,6 @@ export class AppActionsDeck {
 
     if (popover) {
       await popover.dismiss();
-    }
-  }
-
-  private async backupOfflineData() {
-    try {
-      await BackupOfflineService.getInstance().backup();
-    } catch (err) {
-      errorStore.state.error = `Something went wrong. ${err}.`;
     }
   }
 
@@ -304,24 +275,6 @@ export class AppActionsDeck {
 
           <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
 
-          <button
-            onMouseDown={($event) => $event.stopPropagation()}
-            onTouchStart={($event) => $event.stopPropagation()}
-            aria-label={offlineStore.state.offline ? i18n.state.editor.go_online : i18n.state.editor.go_offline}
-            onClick={() => this.goOnlineOffline()}
-            color="primary"
-            class="wider-devices ion-activatable">
-            <ion-ripple-effect></ion-ripple-effect>
-            <AppIcon name={offlineStore.state.offline ? 'cloud-done' : 'cloud-offline'} ariaLabel="" ariaHidden={true}></AppIcon>
-            {offlineStore.state.offline ? (
-              <ion-label aria-hidden="true">{i18n.state.editor.go_online}</ion-label>
-            ) : (
-              <ion-label aria-hidden="true">{i18n.state.editor.go_offline}</ion-label>
-            )}
-          </button>
-
-          {this.renderBackup()}
-
           <app-action-help class="wider-devices"></app-action-help>
 
           <button
@@ -354,26 +307,6 @@ export class AppActionsDeck {
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="contract" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.exit_fullscreen}</ion-label>
-      </button>
-    );
-  }
-
-  private renderBackup() {
-    if (!offlineStore.state.offline) {
-      return undefined;
-    }
-
-    return (
-      <button
-        onMouseDown={($event) => $event.stopPropagation()}
-        onTouchStart={($event) => $event.stopPropagation()}
-        aria-label={i18n.state.editor.backup}
-        onClick={() => this.backupOfflineData()}
-        color="primary"
-        class="wider-devices ion-activatable">
-        <ion-ripple-effect></ion-ripple-effect>
-        <AppIcon name="download" ariaLabel="" ariaHidden={true}></AppIcon>
-        <ion-label aria-hidden="true">{i18n.state.editor.backup}</ion-label>
       </button>
     );
   }

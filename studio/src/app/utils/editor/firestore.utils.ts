@@ -5,7 +5,11 @@ import {SlideAttributes} from '../../models/data/slide';
 import {DeckAttributes} from '../../models/data/deck';
 
 export class FirestoreUtils {
-  static filterDelete<T>(obj: T, replaceWithNull: boolean = false): T {
+  static filterDelete<T>(obj: T | null, replaceWithNull: boolean = false): T {
+    if (!obj) {
+      return obj;
+    }
+
     if (typeof obj !== 'object' || Array.isArray(obj)) {
       return obj;
     }

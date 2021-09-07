@@ -1,5 +1,6 @@
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
-import {OverlayEventDetail, popoverController} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
@@ -8,8 +9,10 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
-import { AppIcon } from '../../../../core/app-icon/app-icon';
-import { shareEnabled } from '../../../../../utils/core/environment.utils';
+import {AppIcon} from '../../../../core/app-icon/app-icon';
+import {share} from '../../../../../utils/core/environment.utils';
+
+import {popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-action-share'
@@ -21,7 +24,7 @@ export class AppActionShare {
 
   @Event() private openEmbed: EventEmitter<void>;
 
-  private shareEnabled: boolean = shareEnabled();
+  private shareEnabled: boolean = share();
 
   private async share($event: UIEvent) {
     if (deckStore.state.published) {

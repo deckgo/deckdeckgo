@@ -13,13 +13,13 @@ import {Deck} from '../../../../models/data/deck';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {DeckService} from '../../../../services/data/deck/deck.service';
+import {DeckFirebaseService} from '../../../../services/data/deck/deck.firebase.service';
 import {PublishService} from '../../../../services/editor/publish/publish.service';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -60,7 +60,7 @@ export class AppPublishEdit {
   @State()
   private pushToGitHub: boolean = true;
 
-  private deckService: DeckService;
+  private deckFirebaseService: DeckFirebaseService;
 
   private readonly debounceUpdateDeck: () => void;
 
@@ -71,7 +71,7 @@ export class AppPublishEdit {
   private destroyDeckListener;
 
   constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
 
     this.publishService = PublishService.getInstance();
 
@@ -151,7 +151,7 @@ export class AppPublishEdit {
 
         deckStore.state.deck.data.name = this.caption;
 
-        const updatedDeck: Deck = await this.deckService.update(deckStore.state.deck);
+        const updatedDeck: Deck = await this.deckFirebaseService.update(deckStore.state.deck);
         deckStore.state.deck = {...updatedDeck};
 
         this.disablePublish = false;

@@ -1,5 +1,6 @@
 import {EventEmitter} from '@stencil/core';
-import {modalController, OverlayEventDetail} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import busyStore from '../../stores/busy.store';
 import authStore from '../../stores/auth.store';
@@ -9,6 +10,7 @@ import {EditAction} from '../../types/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
+import { modalController } from '../../utils/ionic/ionic.overlay';
 
 export class ImageHelper {
   constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
@@ -23,13 +25,13 @@ export class ImageHelper {
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(selectedElement, slide, deck, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
-      await this.openCustomModalRestricted(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
+      await this.openModal(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
     } else if (imageAction.action === EditAction.OPEN_SVG_WAVES) {
       await this.openModal(selectedElement, slide, deck, 'app-waves');
     }
   }
 
-  private async openModal(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action?: EditAction) {
+  async openModal(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action?: EditAction) {
     const modal: HTMLIonModalElement = await modalController.create({
       component: componentTag
     });
@@ -54,7 +56,7 @@ export class ImageHelper {
   }
 
   async openCustomModalRestricted(selectedElement: HTMLElement, slide: boolean, deck: boolean, componentTag: string, action: EditAction) {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       return;
     }

@@ -1,14 +1,17 @@
 import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
-import {loadingController, modalController, OverlayEventDetail} from '@ionic/core';
+import type {OverlayEventDetail} from '@ionic/core';
 
 import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
 import {Deck} from '../../../models/data/deck';
 
-import {DeckService} from '../../../services/data/deck/deck.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import { AppIcon } from '../../core/app-icon/app-icon';
+import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
+
+import {AppIcon} from '../../core/app-icon/app-icon';
+
+import {loadingController, modalController} from '../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
@@ -17,6 +20,8 @@ import { AppIcon } from '../../core/app-icon/app-icon';
 })
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
+
+  @Prop() cloud: 'offline' | 'firebase' | 'ic';
 
   private deckService: DeckService;
   private deckDashboardService: DeckDashboardService;
@@ -28,7 +33,7 @@ export class AppDashboardDeckActions {
   private actionInProgress: boolean = false;
 
   constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckService = getDeckService();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
@@ -99,7 +104,7 @@ export class AppDashboardDeckActions {
     return new Promise<void>(async (resolve) => {
       $event.stopPropagation();
 
-      if (this.actionInProgress) {
+      if (this.actionInProgress || this.cloud !== 'firebase') {
         resolve();
         return;
       }
@@ -148,12 +153,7 @@ export class AppDashboardDeckActions {
 
     return (
       <Host>
-        <button
-          onClick={($event: UIEvent) => this.cloneDeck($event)}
-          title={i18n.state.dashboard.copy}
-          class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-          <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
-        </button>
+        {this.renderClone(disabled)}
 
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
@@ -162,6 +162,21 @@ export class AppDashboardDeckActions {
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>
+    );
+  }
+
+  private renderClone(disabled: boolean) {
+    if (this.cloud !== 'firebase') {
+      return undefined;
+    }
+
+    return (
+      <button
+        onClick={($event: UIEvent) => this.cloneDeck($event)}
+        title={i18n.state.dashboard.copy}
+        class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+        <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
+      </button>
     );
   }
 }

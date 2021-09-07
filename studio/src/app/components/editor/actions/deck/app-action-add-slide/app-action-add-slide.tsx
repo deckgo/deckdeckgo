@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 
-import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+import type {OverlayEventDetail} from '@ionic/core';
 
 import i18n from '../../../../../stores/i18n.store';
 
@@ -10,7 +10,7 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {DemoAction} from '../../../../../types/editor/demo-action';
 
-import {AnonymousService} from '../../../../../services/editor/anonymous/anonymous.service';
+import { modalController, popoverController } from '../../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-action-add-slide',
@@ -26,29 +26,13 @@ export class AppActionAddSlide {
   popoverCssClass: string;
 
   @Event({bubbles: true})
-  private signIn: EventEmitter<void>;
-
-  @Event({bubbles: true})
   private addSlide: EventEmitter<JSX.IntrinsicElements>;
 
   @Event({bubbles: true})
   private blockSlide: EventEmitter<boolean>;
 
-  private anonymousService: AnonymousService;
-
-  constructor() {
-    this.anonymousService = AnonymousService.getInstance();
-  }
-
   async onActionOpenSlideAdd($event: CustomEvent) {
     if (!$event || !$event.detail) {
-      return;
-    }
-
-    const couldAddSlide: boolean = await this.anonymousService.couldAddSlide(this.slidesLength);
-
-    if (!couldAddSlide) {
-      this.signIn.emit();
       return;
     }
 

@@ -4,15 +4,16 @@
     "allowUnreachableCode": false,
     "declaration": false,
     "experimentalDecorators": true,
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "module": "esnext",
-    "target": "es2017",
+    "target": "esnext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["node_modules/@types", "node_modules/@deckdeckgo"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]

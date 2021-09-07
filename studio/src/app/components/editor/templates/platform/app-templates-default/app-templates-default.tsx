@@ -1,14 +1,15 @@
-import {Component, Element, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
+import {Component, Element, Event, EventEmitter, Fragment, h} from '@stencil/core';
 
 import userStore from '../../../../../stores/user.store';
 import assetsStore from '../../../../../stores/assets.store';
 import i18n from '../../../../../stores/i18n.store';
+import offlineStore from '../../../../../stores/offline.store';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
 import {Template} from '../../../../../models/data/template';
 
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
-import {tenorEnabled} from '../../../../../utils/core/environment.utils';
+import {tenor} from '../../../../../utils/core/environment.utils';
 
 import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
 
@@ -22,9 +23,6 @@ import {AppIcon} from '../../../../core/app-icon/app-icon';
 })
 export class AppTemplatesDefault {
   @Element() el: HTMLElement;
-
-  @State()
-  private navigatorOnline: boolean = navigator.onLine;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
@@ -46,7 +44,7 @@ export class AppTemplatesDefault {
   @Event()
   composeTemplate: EventEmitter<InitTemplate>;
 
-  private tenorEnabled: boolean = tenorEnabled();
+  private tenorEnabled: boolean = tenor();
 
   async componentDidLoad() {
     await this.lazyLoadContent();
@@ -205,7 +203,7 @@ export class AppTemplatesDefault {
   }
 
   private renderGif() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // For the Gif template, we need to select a Gif in Tenor, which is not accessible offline
       return undefined;
     }
@@ -229,7 +227,7 @@ export class AppTemplatesDefault {
   }
 
   private renderYoutube() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // The youtube slide can't be use offline as we cannot browse youtube
       return undefined;
     }
@@ -247,7 +245,7 @@ export class AppTemplatesDefault {
   }
 
   private renderPlayground() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // The youtube slide can't be use offline as we cannot browse youtube
       return undefined;
     }
@@ -263,7 +261,7 @@ export class AppTemplatesDefault {
   }
 
   private renderAuthor() {
-    if (!this.navigatorOnline) {
+    if (!offlineStore.state.online) {
       // The author slide need the user data to be added which we don't have offline
       return undefined;
     }

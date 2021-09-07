@@ -215,8 +215,9 @@
     {"src": "/icons/ionicons/brush.svg", "ariaLabel": "Brush"},
     {"src": "/icons/ionicons/phone-portrait.svg", "ariaLabel": "Phone"},
     {"src": "/icons/ionicons/share.svg", "ariaLabel": "Share"},
-    {"src": "/icons/ionicons/cloud-done.svg", "ariaLabel": "Go Online"},
-    {"src": "/icons/ionicons/cloud-offline.svg", "ariaLabel": "Go Offline"},
+    {"src": "/icons/ionicons/cloud-done.svg", "ariaLabel": "Cloud sync ok"},
+    {"src": "/icons/ionicons/cloud-offline.svg", "ariaLabel": "Cloud sync in error"},
+    {"src": "/icons/ionicons/sync.svg", "ariaLabel": "Cloud syncing"},
     {"src": "/icons/ionicons/help.svg", "ariaLabel": "Help"},
     {"src": "/icons/ionicons/ellipsis-vertical.svg", "ariaLabel": "Menu"},
     {"src": "/icons/ionicons/contract.svg", "ariaLabel": "Exit Fullscreen"},
@@ -239,7 +240,9 @@
     {"src": "/icons/ionicons/settings.svg", "ariaLabel": "Settings"},
     {"src": "/icons/text.svg", "ariaLabel": "Text"},
     {"src": "/icons/ionicons/play.svg", "ariaLabel": "Present"},
-    {"src": "/icons/ionicons/download.svg", "ariaLabel": "Backup"},
-    {"src": "/icons/ionicons/flask.svg", "ariaLabel": "Transform element"}
+    {"src": "/icons/ionicons/download.svg", "ariaLabel": "Export"},
+    {"src": "/icons/ionicons/flask.svg", "ariaLabel": "Transform element"},
+    {"src": "/icons/ionicons/document.svg", "ariaLabel": "New presentation"},
+    {"src": "/icons/ionicons/folder-open.svg", "ariaLabel": "Open file"}
   ]
 }

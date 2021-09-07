@@ -92,6 +92,28 @@ app-editor {
     --padding-bottom: 12px;
   }
 
+  ion-content {
+    deckgo-deck {
+      visibility: hidden;
+      opacity: 0;
+
+      transition: opacity 0.15s ease-in-out;
+    }
+
+    &:not(.ready) {
+      app-breadcrumbs, app-actions-editor {
+        display: none;
+      }
+    }
+
+    &.ready {
+      deckgo-deck {
+        visibility: initial;
+        opacity: 1;
+      }
+    }
+  }
+
   deckgo-inline-editor {
     --deckgo-inline-editor-sticky-zindex: 10;
 
@@ -107,18 +129,15 @@ app-editor {
     }
   }
 
+  app-spinner p {
+    font-size: var(--font-size-normal);
+    color: var(--ion-color-medium);
+    text-align: center;
+  }
+
   @media screen and (min-width: 1140px) {
     main {
       max-width: 960px;
     }
-  }
-}
-
-@keyframes progress {
-  0% {
-    transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    transform: translate3d(100%, 0, 0);
   }
 }

@@ -1,6 +1,5 @@
 interface I18nCore {
   close: string;
-  free_open_source: string;
   loading: string;
   in_progress: string;
   yes: string;
@@ -67,12 +66,16 @@ interface I18nSign_in {
   hi: string;
   why: string;
   additionally: string;
+  internet_identity: string;
+  why_internet_computer: string;
+  accept_by_continuing: string;
 }
 
 interface I18nSettings {
   un_publish: string;
   cannot_undone: string;
   type_to_confirm: string;
+  type_ddg_to_confirm: string;
   i_understand: string;
   customization: string;
   edit_mode: string;
@@ -80,6 +83,7 @@ interface I18nSettings {
   profile: string;
   access_settings: string;
   access_templates: string;
+  access_dashboard: string;
   profile_note: string;
   name: string;
   email: string;
@@ -118,6 +122,7 @@ interface I18nDashboard {
 }
 
 interface I18nEditor {
+  loading: string;
   add_slide: string;
   help: string;
   share: string;
@@ -131,7 +136,7 @@ interface I18nEditor {
   go_offline: string;
   more: string;
   exit_fullscreen: string;
-  backup: string;
+  export: string;
   delete: string;
   notes: string;
   notes_display: string;
@@ -503,6 +508,24 @@ interface I18nImport {
   done: string;
 }
 
+interface I18nTools {
+  new: string;
+  new_presentation: string;
+  new_warning_text: string;
+  open: string;
+  user: string;
+}
+
+interface I18nSync {
+  cloud: string;
+  cloud_error: string;
+  cloud_in_progress: string;
+  cloud_idle: string;
+  cloud_pending: string;
+  info: string;
+  status: string;
+}
+
 interface I18n {
   lang: Languages;
   core: I18nCore;
@@ -522,4 +545,6 @@ interface I18n {
   shapes: I18nShapes;
   poll: I18nPoll;
   import: I18nImport;
+  tools: I18nTools;
+  sync: I18nSync;
 }

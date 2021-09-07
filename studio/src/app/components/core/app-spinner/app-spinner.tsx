@@ -9,6 +9,7 @@ export class AppSpinner {
     return (
       <div class="spinner">
         <ion-spinner color="medium"></ion-spinner>
+        <slot></slot>
       </div>
     );
   }

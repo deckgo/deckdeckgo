@@ -11,9 +11,6 @@ export class AppSigninPage {
   @Prop()
   redirect: string;
 
-  @Prop()
-  redirectId: string;
-
   @State()
   private signin: boolean;
 
@@ -43,9 +40,9 @@ export class AppSigninPage {
     if (this.signin) {
       return (
         <Fragment>
-          <app-navigation write={false}></app-navigation>
+          <app-navigation signIn={true}></app-navigation>
           <ion-content class="ion-padding fullscreen-padding">
-            <app-signin redirect={this.redirect} redirectId={this.redirectId}></app-signin>
+            <app-signin redirect={this.redirect}></app-signin>
           </ion-content>
         </Fragment>
       );

@@ -10,18 +10,18 @@ import {Deck} from '../../models/data/deck';
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
-import {DeckService} from '../../services/data/deck/deck.service';
-import {SlideService} from '../../services/data/slide/slide.service';
 import {TemplateService} from '../../services/data/template/template.service';
+import {DeckOfflineService} from '../../services/data/deck/deck.offline.service';
+import {SlideOfflineService} from '../../services/data/slide/slide.offline.service';
 
 export class SlideHelper {
-  private slideService: SlideService;
-  private deckService: DeckService;
+  private slideOfflineService: SlideOfflineService;
+  private deckOfflineService: DeckOfflineService;
   private templateService: TemplateService;
 
   constructor() {
-    this.slideService = SlideService.getInstance();
-    this.deckService = DeckService.getInstance();
+    this.slideOfflineService = SlideOfflineService.getInstance();
+    this.deckOfflineService = DeckOfflineService.getInstance();
     this.templateService = TemplateService.getInstance();
   }
 
@@ -36,7 +36,7 @@ export class SlideHelper {
       busyStore.state.deckBusy = true;
 
       try {
-        const deck: Deck = await this.deckService.get(deckId);
+        const deck: Deck = await this.deckOfflineService.get(deckId);
 
         if (!deck || !deck.data) {
           errorStore.state.error = 'No deck could be fetched';
@@ -82,7 +82,7 @@ export class SlideHelper {
   private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
     return new Promise<any>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideService.get(deck.id, slideId);
+        const slide: Slide = await this.slideOfflineService.get(deck.id, slideId);
 
         await TemplateUtils.loadSlideTemplate(slide);
 
@@ -115,7 +115,7 @@ export class SlideHelper {
         let element: JSX.IntrinsicElements = null;
 
         if (store.state.deck?.data) {
-          const slide: Slide = await this.slideService.get(store.state.deck.id, slideId);
+          const slide: Slide = await this.slideOfflineService.get(store.state.deck.id, slideId);
           element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
         }
 

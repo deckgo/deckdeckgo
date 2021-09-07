@@ -2,8 +2,14 @@ import {keys, set} from 'idb-keyval';
 
 import store from '../../stores/error.store';
 
-export class StorageOfflineService {
+import {StorageService} from './storage.service';
+
+export class StorageOfflineService implements StorageService {
   private static instance: StorageOfflineService;
+
+  private constructor() {
+    // Private constructor, singleton
+  }
 
   static getInstance() {
     if (!StorageOfflineService.instance) {
@@ -12,6 +18,7 @@ export class StorageOfflineService {
     return StorageOfflineService.instance;
   }
 
+  // @Override
   uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
@@ -27,7 +34,7 @@ export class StorageOfflineService {
           return;
         }
 
-        const key: string = `/assets/${folder}/${data.name}`;
+        const key: string = `/assets/local/${folder}/${data.name}`;
 
         await set(key, data);
 
@@ -43,6 +50,7 @@ export class StorageOfflineService {
     });
   }
 
+  // @Override
   getFiles(_next: string | null, folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       const storageKeys: IDBValidKey[] = await keys();
@@ -53,7 +61,7 @@ export class StorageOfflineService {
       }
 
       const filteredKeys: IDBValidKey[] = storageKeys.filter((key: IDBValidKey) => {
-        return (key as string).indexOf(`/assets/${folder}/`) > -1;
+        return (key as string).indexOf(`/assets/local/${folder}/`) > -1;
       });
 
       if (!filteredKeys || filteredKeys.length <= 0) {
@@ -74,5 +82,11 @@ export class StorageOfflineService {
         nextPageToken: undefined
       });
     });
+  }
+
+  // @Override
+  async getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
+    // Not implemented in offline
+    return undefined;
   }
 }

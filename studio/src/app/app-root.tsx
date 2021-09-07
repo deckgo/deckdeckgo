@@ -1,19 +1,22 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
 
-import {toastController} from '@ionic/core';
-
 import errorStore from './stores/error.store';
 import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
+import authStore from './stores/auth.store';
 
 import {AuthService} from './services/auth/auth.service';
 
 import {ThemeService} from './services/theme/theme.service';
-import {OfflineService} from './services/editor/offline/offline.service';
 import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
+import {AuthFactoryService} from './services/auth/auth.factory.service';
+import {SyncService} from './services/editor/sync/sync.service';
+import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
+
+import {toastController} from './utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-root',
@@ -23,12 +26,12 @@ export class AppRoot {
   @Element() el: HTMLElement;
 
   private readonly authService: AuthService;
-  private readonly offlineService: OfflineService;
 
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
   private readonly settingsService: SettingsService;
   private readonly langService: LangService;
+  private readonly syncService: SyncService;
 
   @State()
   private loading: boolean = true;
@@ -36,22 +39,24 @@ export class AppRoot {
   private destroyErrorListener;
   private destroyNavListener;
   private destroyShareListener;
+  private destroyAuthListener;
 
   private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
-    this.authService = AuthService.getInstance();
-    this.offlineService = OfflineService.getInstance();
+    this.authService = AuthFactoryService.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
     this.langService = LangService.getInstance();
+    this.syncService = SyncFactoryService.getInstance();
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncService.initSyncState());
+
     const promises: Promise<void>[] = [
       this.authService.init(),
-      this.offlineService.init(),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),
@@ -82,17 +87,10 @@ export class AppRoot {
   }
 
   disconnectedCallback() {
-    if (this.destroyErrorListener) {
-      this.destroyErrorListener();
-    }
-
-    if (this.destroyNavListener) {
-      this.destroyNavListener();
-    }
-
-    if (this.destroyShareListener) {
-      this.destroyShareListener();
-    }
+    this.destroyErrorListener?.();
+    this.destroyNavListener?.();
+    this.destroyShareListener?.();
+    this.destroyAuthListener?.();
   }
 
   @Listen('swUpdate', {target: 'window'})
@@ -180,16 +178,13 @@ export class AppRoot {
   }
 
   /**
-   * Note: Routes need to be flat as we path the return and deckId (redirect and redirectId) to the signin route. So no /settings/something but /something.
+   * Note: Routes need to be flat as we path the return and deckId (redirect) to the signin route. So no /settings/something but /something.
    */
   render() {
     return [
       <ion-app class={this.loading ? 'loading' : undefined}>
         <ion-router useHash={false}>
-          <ion-route url="/" component="app-dashboard-page" />
-
-          <ion-route url="/editor" component="app-editor" />
-          <ion-route url="/editor/:deckId" component="app-editor" />
+          <ion-route url="/" component="app-editor" />
 
           <ion-route url="/profile" component="app-profile" />
           <ion-route url="/customization" component="app-customization" />
@@ -199,7 +194,6 @@ export class AppRoot {
 
           <ion-route url="/signin" component="app-signin-page" />
           <ion-route url="/signin/:redirect" component="app-signin-page" />
-          <ion-route url="/signin/:redirect/:redirectId" component="app-signin-page" />
 
           <ion-route url="/poll" component="app-poll" />
           <ion-route url="/poll/:pollKey" component="app-poll" />

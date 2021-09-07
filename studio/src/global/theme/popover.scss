@@ -43,6 +43,10 @@ ion-popover.popover-menu {
 ion-popover.info {
   --min-width: 300px;
   --ion-backdrop-opacity: 0.32;
+
+  h2:first-of-type {
+    margin-top: 8px;
+  }
 }
 
 ion-popover.select-popover {

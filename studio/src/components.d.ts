@@ -20,6 +20,7 @@ import { SlotType } from "./app/types/editor/slot-type";
 import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
+import { IonicReorderEvent } from "./app/utils/ionic/ionic.reorder.event";
 import { ItemReorderEventDetail } from "@ionic/core";
 import { Template } from "./app/models/data/template";
 import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
@@ -135,6 +136,7 @@ export namespace Components {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
+        "cloud": 'offline' | 'firebase' | 'ic';
         "deck": Deck;
     }
     interface AppDashboardPage {
@@ -184,7 +186,6 @@ export namespace Components {
         "slideDidChange": EventEmitter<HTMLElement>;
     }
     interface AppEditor {
-        "deckId": string;
     }
     interface AppElementDelete {
     }
@@ -204,10 +205,6 @@ export namespace Components {
     interface AppGetHelp {
     }
     interface AppGif {
-    }
-    interface AppGoOffline {
-    }
-    interface AppGoOnline {
     }
     interface AppImage {
         "deck": boolean;
@@ -240,7 +237,6 @@ export namespace Components {
     interface AppMenu {
     }
     interface AppMoreDeckActions {
-        "offline": boolean;
     }
     interface AppMoreElementActions {
         "clone": boolean;
@@ -252,22 +248,16 @@ export namespace Components {
     }
     interface AppNavigation {
         "menuToggle": boolean;
-        "publish": boolean;
+        "signIn": boolean;
         "user": boolean;
-        "write": boolean;
     }
     interface AppNavigationActions {
-        "publish": boolean;
         "signIn": boolean;
-        "write": boolean;
     }
     interface AppNoTemplates {
     }
     interface AppNotes {
         "selectedElement": HTMLElement;
-    }
-    interface AppOffline {
-        "offline": boolean;
     }
     interface AppPhoto {
     }
@@ -333,11 +323,13 @@ export namespace Components {
     }
     interface AppSignin {
         "redirect": string;
-        "redirectId": string;
+    }
+    interface AppSigninFirebase {
+    }
+    interface AppSigninIc {
     }
     interface AppSigninPage {
         "redirect": string;
-        "redirectId": string;
     }
     interface AppSlideNavigate {
     }
@@ -368,6 +360,8 @@ export namespace Components {
     interface AppStartDeck {
         "importColor": 'dark' | 'light';
         "writeColor": 'primary' | 'dark' | 'light';
+    }
+    interface AppSyncInfo {
     }
     interface AppTemplate {
         "template": Template | undefined;
@@ -747,18 +741,6 @@ declare global {
         prototype: HTMLAppGifElement;
         new (): HTMLAppGifElement;
     };
-    interface HTMLAppGoOfflineElement extends Components.AppGoOffline, HTMLStencilElement {
-    }
-    var HTMLAppGoOfflineElement: {
-        prototype: HTMLAppGoOfflineElement;
-        new (): HTMLAppGoOfflineElement;
-    };
-    interface HTMLAppGoOnlineElement extends Components.AppGoOnline, HTMLStencilElement {
-    }
-    var HTMLAppGoOnlineElement: {
-        prototype: HTMLAppGoOnlineElement;
-        new (): HTMLAppGoOnlineElement;
-    };
     interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {
     }
     var HTMLAppImageElement: {
@@ -854,12 +836,6 @@ declare global {
     var HTMLAppNotesElement: {
         prototype: HTMLAppNotesElement;
         new (): HTMLAppNotesElement;
-    };
-    interface HTMLAppOfflineElement extends Components.AppOffline, HTMLStencilElement {
-    }
-    var HTMLAppOfflineElement: {
-        prototype: HTMLAppOfflineElement;
-        new (): HTMLAppOfflineElement;
     };
     interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {
     }
@@ -987,6 +963,18 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
+    interface HTMLAppSigninFirebaseElement extends Components.AppSigninFirebase, HTMLStencilElement {
+    }
+    var HTMLAppSigninFirebaseElement: {
+        prototype: HTMLAppSigninFirebaseElement;
+        new (): HTMLAppSigninFirebaseElement;
+    };
+    interface HTMLAppSigninIcElement extends Components.AppSigninIc, HTMLStencilElement {
+    }
+    var HTMLAppSigninIcElement: {
+        prototype: HTMLAppSigninIcElement;
+        new (): HTMLAppSigninIcElement;
+    };
     interface HTMLAppSigninPageElement extends Components.AppSigninPage, HTMLStencilElement {
     }
     var HTMLAppSigninPageElement: {
@@ -1046,6 +1034,12 @@ declare global {
     var HTMLAppStartDeckElement: {
         prototype: HTMLAppStartDeckElement;
         new (): HTMLAppStartDeckElement;
+    };
+    interface HTMLAppSyncInfoElement extends Components.AppSyncInfo, HTMLStencilElement {
+    }
+    var HTMLAppSyncInfoElement: {
+        prototype: HTMLAppSyncInfoElement;
+        new (): HTMLAppSyncInfoElement;
     };
     interface HTMLAppTemplateElement extends Components.AppTemplate, HTMLStencilElement {
     }
@@ -1215,8 +1209,6 @@ declare global {
         "app-fullscreen-info": HTMLAppFullscreenInfoElement;
         "app-get-help": HTMLAppGetHelpElement;
         "app-gif": HTMLAppGifElement;
-        "app-go-offline": HTMLAppGoOfflineElement;
-        "app-go-online": HTMLAppGoOnlineElement;
         "app-image": HTMLAppImageElement;
         "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
@@ -1233,7 +1225,6 @@ declare global {
         "app-navigation-actions": HTMLAppNavigationActionsElement;
         "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
-        "app-offline": HTMLAppOfflineElement;
         "app-photo": HTMLAppPhotoElement;
         "app-playground": HTMLAppPlaygroundElement;
         "app-playground-placeholder": HTMLAppPlaygroundPlaceholderElement;
@@ -1255,6 +1246,8 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
+        "app-signin-firebase": HTMLAppSigninFirebaseElement;
+        "app-signin-ic": HTMLAppSigninIcElement;
         "app-signin-page": HTMLAppSigninPageElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slide-preview": HTMLAppSlidePreviewElement;
@@ -1265,6 +1258,7 @@ declare global {
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
         "app-start-deck": HTMLAppStartDeckElement;
+        "app-sync-info": HTMLAppSyncInfoElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
         "app-templates": HTMLAppTemplatesElement;
@@ -1290,7 +1284,6 @@ declare namespace LocalJSX {
     interface AppActionAddSlide {
         "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
-        "onSignIn"?: (event: CustomEvent<void>) => void;
         "popoverCssClass"?: string;
         "slidesLength"?: number | undefined;
     }
@@ -1432,6 +1425,7 @@ declare namespace LocalJSX {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
+        "cloud"?: 'offline' | 'firebase' | 'ic';
         "deck"?: Deck;
         "onDeckCloned"?: (event: CustomEvent<DeckDashboardCloneResult>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
@@ -1492,7 +1486,6 @@ declare namespace LocalJSX {
         "slideDidChange"?: EventEmitter<HTMLElement>;
     }
     interface AppEditor {
-        "deckId"?: string;
     }
     interface AppElementDelete {
     }
@@ -1514,14 +1507,6 @@ declare namespace LocalJSX {
     interface AppGetHelp {
     }
     interface AppGif {
-    }
-    interface AppGoOffline {
-        "onDoneOffline"?: (event: CustomEvent<void>) => void;
-        "onInProgress"?: (event: CustomEvent<boolean>) => void;
-    }
-    interface AppGoOnline {
-        "onDoneOnline"?: (event: CustomEvent<void>) => void;
-        "onInProgress"?: (event: CustomEvent<boolean>) => void;
     }
     interface AppImage {
         "deck"?: boolean;
@@ -1559,7 +1544,6 @@ declare namespace LocalJSX {
     interface AppMenu {
     }
     interface AppMoreDeckActions {
-        "offline"?: boolean;
     }
     interface AppMoreElementActions {
         "clone"?: boolean;
@@ -1571,22 +1555,16 @@ declare namespace LocalJSX {
     }
     interface AppNavigation {
         "menuToggle"?: boolean;
-        "publish"?: boolean;
+        "signIn"?: boolean;
         "user"?: boolean;
-        "write"?: boolean;
     }
     interface AppNavigationActions {
-        "publish"?: boolean;
         "signIn"?: boolean;
-        "write"?: boolean;
     }
     interface AppNoTemplates {
     }
     interface AppNotes {
         "selectedElement"?: HTMLElement;
-    }
-    interface AppOffline {
-        "offline"?: boolean;
     }
     interface AppPhoto {
     }
@@ -1657,14 +1635,18 @@ declare namespace LocalJSX {
     }
     interface AppSignin {
         "redirect"?: string;
-        "redirectId"?: string;
+    }
+    interface AppSigninFirebase {
+        "onInProgress"?: (event: CustomEvent<boolean>) => void;
+    }
+    interface AppSigninIc {
+        "onInProgress"?: (event: CustomEvent<boolean>) => void;
     }
     interface AppSigninPage {
         "redirect"?: string;
-        "redirectId"?: string;
     }
     interface AppSlideNavigate {
-        "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+        "onReorder"?: (event: CustomEvent<IonicReorderEvent>) => void;
     }
     interface AppSlidePreview {
         "deckRef": HTMLDeckgoDeckElement;
@@ -1697,6 +1679,8 @@ declare namespace LocalJSX {
     interface AppStartDeck {
         "importColor"?: 'dark' | 'light';
         "writeColor"?: 'primary' | 'dark' | 'light';
+    }
+    interface AppSyncInfo {
     }
     interface AppTemplate {
         "template"?: Template | undefined;
@@ -1821,8 +1805,6 @@ declare namespace LocalJSX {
         "app-fullscreen-info": AppFullscreenInfo;
         "app-get-help": AppGetHelp;
         "app-gif": AppGif;
-        "app-go-offline": AppGoOffline;
-        "app-go-online": AppGoOnline;
         "app-image": AppImage;
         "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
@@ -1839,7 +1821,6 @@ declare namespace LocalJSX {
         "app-navigation-actions": AppNavigationActions;
         "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
-        "app-offline": AppOffline;
         "app-photo": AppPhoto;
         "app-playground": AppPlayground;
         "app-playground-placeholder": AppPlaygroundPlaceholder;
@@ -1861,6 +1842,8 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
+        "app-signin-firebase": AppSigninFirebase;
+        "app-signin-ic": AppSigninIc;
         "app-signin-page": AppSigninPage;
         "app-slide-navigate": AppSlideNavigate;
         "app-slide-preview": AppSlidePreview;
@@ -1871,6 +1854,7 @@ declare namespace LocalJSX {
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
         "app-start-deck": AppStartDeck;
+        "app-sync-info": AppSyncInfo;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
         "app-templates": AppTemplates;
@@ -1949,8 +1933,6 @@ declare module "@stencil/core" {
             "app-fullscreen-info": LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
             "app-get-help": LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
             "app-gif": LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
-            "app-go-offline": LocalJSX.AppGoOffline & JSXBase.HTMLAttributes<HTMLAppGoOfflineElement>;
-            "app-go-online": LocalJSX.AppGoOnline & JSXBase.HTMLAttributes<HTMLAppGoOnlineElement>;
             "app-image": LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
             "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
@@ -1967,7 +1949,6 @@ declare module "@stencil/core" {
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
             "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
-            "app-offline": LocalJSX.AppOffline & JSXBase.HTMLAttributes<HTMLAppOfflineElement>;
             "app-photo": LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
             "app-playground": LocalJSX.AppPlayground & JSXBase.HTMLAttributes<HTMLAppPlaygroundElement>;
             "app-playground-placeholder": LocalJSX.AppPlaygroundPlaceholder & JSXBase.HTMLAttributes<HTMLAppPlaygroundPlaceholderElement>;
@@ -1989,6 +1970,8 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
+            "app-signin-firebase": LocalJSX.AppSigninFirebase & JSXBase.HTMLAttributes<HTMLAppSigninFirebaseElement>;
+            "app-signin-ic": LocalJSX.AppSigninIc & JSXBase.HTMLAttributes<HTMLAppSigninIcElement>;
             "app-signin-page": LocalJSX.AppSigninPage & JSXBase.HTMLAttributes<HTMLAppSigninPageElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slide-preview": LocalJSX.AppSlidePreview & JSXBase.HTMLAttributes<HTMLAppSlidePreviewElement>;
@@ -1999,6 +1982,7 @@ declare module "@stencil/core" {
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-start-deck": LocalJSX.AppStartDeck & JSXBase.HTMLAttributes<HTMLAppStartDeckElement>;
+            "app-sync-info": LocalJSX.AppSyncInfo & JSXBase.HTMLAttributes<HTMLAppSyncInfoElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
             "app-templates": LocalJSX.AppTemplates & JSXBase.HTMLAttributes<HTMLAppTemplatesElement>;

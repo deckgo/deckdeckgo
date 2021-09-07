@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 
-import {InputChangeEventDetail} from '@ionic/core';
+import type {InputChangeEventDetail} from '@ionic/core';
 
 import templatesStore from '../../../../stores/templates.store';
 

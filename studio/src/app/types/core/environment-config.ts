@@ -24,7 +24,6 @@ export interface EnvironmentGoogleConfig {
 }
 
 export interface EnvironmentDeckDeckGoConfig {
-  mock: boolean;
   appUrl: string;
   globalAssetsUrl: string;
   pollUrl: string;
@@ -33,9 +32,15 @@ export interface EnvironmentDeckDeckGoConfig {
   socketUrl: string;
 }
 
+export interface EnvironmentAppConfig {
+  cloud: 'offline' | 'firebase' | 'ic';
+  mock: boolean;
+}
+
 export interface EnvironmentConfig {
+  app: EnvironmentAppConfig;
   deckdeckgo: EnvironmentDeckDeckGoConfig;
-  firebase: EnvironmentFirebaseConfig;
+  firebase?: EnvironmentFirebaseConfig;
   tenor?: EnvironmentTenorConfig;
   unsplash?: EnvironmentUnsplashConfig;
   google: EnvironmentGoogleConfig;

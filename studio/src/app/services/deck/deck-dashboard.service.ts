@@ -2,8 +2,13 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {Deck, DeckData} from '../../models/data/deck';
+import {Slide} from '../../models/data/slide';
 
-import {DeckService} from '../data/deck/deck.service';
+import {importEditorData} from '../../utils/editor/import.utils';
+import {FirestoreUtils} from '../../utils/editor/firestore.utils';
+
+import {DeckFirebaseService} from '../data/deck/deck.firebase.service';
+import {getSlideService, SlideService} from '../data/slide/slide.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;
@@ -13,10 +18,12 @@ export interface DeckDashboardCloneResult {
 export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
-  private deckService: DeckService;
+  private deckFirebaseService: DeckFirebaseService;
+  private slideService: SlideService;
 
   private constructor() {
-    this.deckService = DeckService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.slideService = getSlideService();
   }
 
   static getInstance() {
@@ -35,7 +42,7 @@ export class DeckDashboardService {
           deck_id_to: clone.id
         };
 
-        const updatedDeck: Deck = await this.deckService.update(deck);
+        const updatedDeck: Deck = await this.deckFirebaseService.update(deck);
 
         resolve({
           from: updatedDeck,
@@ -60,7 +67,7 @@ export class DeckDashboardService {
         delete clone['api_id'];
         delete clone['meta'];
 
-        const createdDeck: Deck = await this.deckService.create(clone);
+        const createdDeck: Deck = await this.deckFirebaseService.create(clone);
 
         resolve(createdDeck);
       } catch (err) {
@@ -91,6 +98,39 @@ export class DeckDashboardService {
         });
 
       resolve();
+    });
+  }
+
+  importData(deck: Deck): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideService.get(deck.id, slideId));
+        const slides: Slide[] = await Promise.all(promises || []);
+
+        const deckToImport: Deck = {...deck};
+
+        if (deckToImport.data.background && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.background)) {
+          deckToImport.data.background = null;
+        }
+
+        if (deckToImport.data.header && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.header)) {
+          deckToImport.data.header = null;
+        }
+
+        if (deckToImport.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.footer)) {
+          deckToImport.data.footer = null;
+        }
+
+        await importEditorData({
+          id: deck.id,
+          deck,
+          slides
+        });
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 }

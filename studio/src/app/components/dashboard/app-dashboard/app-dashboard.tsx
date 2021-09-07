@@ -17,13 +17,16 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {DeckService} from '../../../services/data/deck/deck.service';
-import {SlideService} from '../../../services/data/slide/slide.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
+import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
+import {getSlideService, SlideService} from '../../../services/data/slide/slide.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {loadingController} from '../../../utils/ionic/ionic.overlay';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -57,9 +60,11 @@ export class AppDashboard {
 
   private destroyListener;
 
+  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
+
   constructor() {
-    this.deckService = DeckService.getInstance();
-    this.slideService = SlideService.getInstance();
+    this.deckService = getDeckService();
+    this.slideService = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
   }
@@ -90,7 +95,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckService.getUserDecks(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckService.entries(authStore.state.authUser.uid);
 
       await this.templateService.init();
 
@@ -168,7 +173,12 @@ export class AppDashboard {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
+        console.log('About to request slide in IC');
+
         const slide: Slide = await this.slideService.get(deck.id, slideId);
+
+        console.log('Slide request done', slide);
+
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
         const style: any = await this.convertStyle(deck);
@@ -272,7 +282,7 @@ export class AppDashboard {
     await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
   }
 
-  private navigateDeck(deck: DeckAndFirstSlide) {
+  private async navigateDeck(deck: DeckAndFirstSlide) {
     if (!deck || !deck.deck || !deck.deck.id || deck.deck.id === undefined || deck.deck.id === '') {
       return;
     }
@@ -281,12 +291,22 @@ export class AppDashboard {
       return;
     }
 
-    const url: string = `/editor/${deck.deck.id}`;
+    const loading: HTMLIonLoadingElement = await loadingController.create({});
 
-    navStore.state.nav = {
-      url: url,
-      direction: NavDirection.RELOAD
-    };
+    await loading.present();
+
+    try {
+      await this.deckDashboardService.importData(deck.deck);
+
+      navStore.state.nav = {
+        url: '/',
+        direction: NavDirection.RELOAD
+      };
+    } catch (err) {
+      errorStore.state.error = err;
+    }
+
+    await loading.dismiss();
   }
 
   private removeDeletedDeck($event: CustomEvent): Promise<void> {
@@ -355,7 +375,7 @@ export class AppDashboard {
       }
 
       const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck.deck?.id === id;
+        return matchDeck?.deck?.id === id;
       });
 
       resolve(index);
@@ -438,13 +458,23 @@ export class AppDashboard {
 
   private renderAnonymousContent() {
     return (
-      <main class="ion-padding fit anonymous">
-        <h1>{i18n.state.dashboard.welcome}</h1>
+      <main class="ion-padding fit">
+        <h1>{i18n.state.nav.dashboard}</h1>
 
-        {this.renderNotLoggedInText()}
-        {this.renderCreateButton(true)}
+        {this.renderNotLoggedInContent()}
       </main>
     );
+  }
+
+  private renderNotLoggedInContent() {
+    return renderI18n(i18n.state.settings.access_dashboard, {
+      placeholder: '{0}',
+      value: (
+        <button type="button" class="app-button" onClick={() => signIn()}>
+          {i18n.state.nav.sign_in}
+        </button>
+      )
+    });
   }
 
   private renderGuardedContent() {
@@ -461,15 +491,6 @@ export class AppDashboard {
         {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
 
         {this.renderDecks()}
-      </Fragment>
-    );
-  }
-
-  private renderNotLoggedInText() {
-    return (
-      <Fragment>
-        <p>{renderI18n(i18n.state.dashboard.try, {placeholder: '{0}', value: <a onClick={() => signIn()}>{i18n.state.nav.sign_in.toLowerCase()}</a>})}</p>
-        <p class="ion-no-margin">{i18n.state.core.free_open_source}</p>
       </Fragment>
     );
   }
@@ -525,6 +546,7 @@ export class AppDashboard {
 
           <app-dashboard-deck-actions
             deck={deck.deck}
+            cloud={this.cloud}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
             onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
         </ion-card>

@@ -1,15 +1,16 @@
-import {Component, Element, EventEmitter, h, Prop, State, Event} from '@stencil/core';
-
-import {alertController} from '@ionic/core';
+import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment} from '@stencil/core';
 
 import i18n from '../../../../stores/i18n.store';
+import offlineStore from '../../../../stores/offline.store';
 
 import store from '../../../../stores/deck.store';
 
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
+import { alertController } from '../../../../utils/ionic/ionic.overlay';
+
 import {EditAction} from '../../../../types/editor/edit-action';
 
-import { AppIcon } from '../../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-edit-slide-qrcode'
@@ -163,17 +164,35 @@ export class AppEditSlideQRCode {
           onIonChange={() => this.onInputCustomUrlChange()}></ion-input>
       </ion-item>,
 
-      <ion-item class="action-button ion-margin-top">
-        <ion-button shape="round" onClick={() => this.action.emit(EditAction.OPEN_CUSTOM_LOGO)} color="tertiary">
-          <ion-label>{i18n.state.editor.your_logo}</ion-label>
-        </ion-button>
-      </ion-item>,
-
-      <ion-item class="action-button ion-margin-bottom">
-        <ion-button shape="round" onClick={() => this.action.emit(EditAction.DELETE_LOGO)} fill="outline" class="delete">
-          <ion-label>{i18n.state.editor.delete_logo}</ion-label>
-        </ion-button>
-      </ion-item>
+      this.renderLogoOptions()
     ];
+  }
+
+  // For simplicity reason, currently logo on QR code are limited to signed in and online users.
+  // PR Welcome:
+  // It would need an improvement in the QR-code slide so that it do not use an image tag but, a custom deckgo lazy loading image tag.
+  // In addition, handlers would have to be registered to handle the loading of images on and off line.
+  // In the sync process, when images are uploaded to the cloud, their new URLs should be updated on the slide attributes.
+  // Finally, instead of opening a "restricted custom modal", it should open the standard modal.
+  private renderLogoOptions() {
+    if (!offlineStore.state.online) {
+      return undefined;
+    }
+
+    return (
+      <Fragment>
+        <ion-item class="action-button ion-margin-top">
+          <ion-button shape="round" onClick={() => this.action.emit(EditAction.OPEN_CUSTOM_LOGO)} color="tertiary">
+            <ion-label>{i18n.state.editor.your_logo}</ion-label>
+          </ion-button>
+        </ion-item>
+
+        <ion-item class="action-button ion-margin-bottom">
+          <ion-button shape="round" onClick={() => this.action.emit(EditAction.DELETE_LOGO)} fill="outline" class="delete">
+            <ion-label>{i18n.state.editor.delete_logo}</ion-label>
+          </ion-button>
+        </ion-item>
+      </Fragment>
+    );
   }
 }

@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
 
-import {SegmentChangeEventDetail} from '@ionic/core';
+import type {SegmentChangeEventDetail} from '@ionic/core';
 
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
@@ -16,7 +16,7 @@ import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {SlotType} from '../../../types/editor/slot-type';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-create-slide',
@@ -53,7 +53,7 @@ export class AppCreateSlide {
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide
   // User template is also only possible if user is logged in
   private async addRestrictedSlide(template: SlideTemplate | Template, scope: SlideScope = SlideScope.DEFAULT, elements?: SlotType[]) {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       this.signIn.emit();
       await this.closePopover(null);
       return;
@@ -65,17 +65,6 @@ export class AppCreateSlide {
   private async addSlideTemplate(template: SlideTemplate | Template, scope: SlideScope = SlideScope.DEFAULT, elements?: SlotType[]) {
     const slide: JSX.IntrinsicElements = await CreateSlidesUtils.createSlide({template, scope: scope, elements});
     await this.closePopover(template, slide);
-  }
-
-  // User will need an account to upload her/his data
-  private async closePopoverRestricted(template: SlideTemplate, attributes: SlideAttributes) {
-    if (authStore.state.anonymous) {
-      this.signIn.emit();
-      await this.closePopover(null);
-      return;
-    }
-
-    await this.closePopover(template, null, attributes);
   }
 
   private async closePopoverWithoutResults() {
@@ -312,7 +301,7 @@ export class AppCreateSlide {
       return (
         <app-templates-charts
           class="container ion-margin-bottom"
-          onSelectedTemplate={($event: CustomEvent) => this.closePopoverRestricted($event.detail?.template, $event.detail?.attributes)}></app-templates-charts>
+          onSelectedTemplate={($event: CustomEvent) => this.closePopover($event.detail?.template, null, $event.detail?.attributes)}></app-templates-charts>
       );
     }
 

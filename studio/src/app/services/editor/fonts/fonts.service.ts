@@ -31,7 +31,7 @@ export class FontsService {
     }
   }
 
-  loadGoogleFont(googleFontsUrl: string, style: string): Promise<void> {
+  loadGoogleFont(googleFontsUrl: string, style: Record<string, string> | undefined): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!style || style === undefined || !style['font-family'] || style['font-family'] === undefined) {
         resolve(undefined);

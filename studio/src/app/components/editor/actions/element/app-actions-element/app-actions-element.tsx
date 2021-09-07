@@ -1,5 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
-import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
@@ -15,6 +16,7 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
+import { modalController, popoverController } from '../../../../../utils/ionic/ionic.overlay';
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {EditAction} from '../../../../../types/editor/edit-action';
@@ -98,7 +100,7 @@ export class AppActionsElement {
 
   async componentWillLoad() {
     this.imageHelper = new ImageHelper(this.slideDidChange, this.blockSlide, this.signIn);
-    this.shapeHelper = new ShapeHelper(this.slideDidChange, this.signIn);
+    this.shapeHelper = new ShapeHelper(this.slideDidChange);
   }
 
   async componentDidLoad() {
@@ -426,13 +428,7 @@ export class AppActionsElement {
             detail.data.action
           );
         } else if (detail.data.action === EditAction.OPEN_DATA) {
-          await this.imageHelper.openCustomModalRestricted(
-            this.selectedElement.element,
-            this.selectedElement?.type === 'slide',
-            false,
-            'app-custom-data',
-            detail.data.action
-          );
+          await this.imageHelper.openModal(this.selectedElement.element, this.selectedElement?.type === 'slide', false, 'app-custom-data', detail.data.action);
         }
       }
 

@@ -1,13 +1,27 @@
 import {createStore} from '@stencil/store';
 
 interface OfflineStore {
-  offline: OfflineDeck | undefined;
-  progress: number | undefined;
+  online: boolean;
 }
 
-const {state, onChange, reset} = createStore({
-  offline: undefined,
-  progress: undefined
+const {state} = createStore({
+  online: navigator?.onLine || false
 } as OfflineStore);
 
-export default {state, onChange, reset};
+window.addEventListener(
+  'online',
+  () => {
+    state.online = true;
+  },
+  {passive: true}
+);
+
+window.addEventListener(
+  'offline',
+  () => {
+    state.online = false;
+  },
+  {passive: true}
+);
+
+export default {state};
