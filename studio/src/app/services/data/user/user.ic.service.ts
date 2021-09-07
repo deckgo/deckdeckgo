@@ -10,8 +10,8 @@ import {User} from '../../../models/data/user';
 
 import {UserService} from './user.service';
 
-import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
-import {AuthIcService} from '../../../providers/auth/auth.ic.service';
+import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
+import {AuthIcProvider} from '../../../providers/auth/auth.ic.provider';
 
 import {initSlidesActor} from '../../../utils/core/ic.slide.utils';
 
@@ -31,7 +31,7 @@ export class UserIcService implements UserService {
 
   // @Override
   async update(user: User): Promise<void> {
-    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
 
     if (!identity) {
       return;
@@ -79,7 +79,7 @@ export class UserIcService implements UserService {
 
   // @Override
   async delete(_userId: string): Promise<void> {
-    const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
 
     if (!identity) {
       return;

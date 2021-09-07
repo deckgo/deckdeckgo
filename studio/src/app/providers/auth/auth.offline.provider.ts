@@ -1,6 +1,6 @@
-import {AuthService} from './auth.service';
+import {AuthProvider} from './auth.service';
 
-export class AuthOfflineService extends AuthService {
+export class AuthOfflineProvider extends AuthProvider {
   // @Override
   async init() {
     // Do nothing

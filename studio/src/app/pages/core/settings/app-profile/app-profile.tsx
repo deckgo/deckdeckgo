@@ -27,8 +27,9 @@ import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.fa
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 import {getUserService, UserService} from '../../../../services/data/user/user.service';
 import {getOnlineStorageService, StorageService} from '../../../../services/storage/storage.service';
-import {AuthService} from '../../../../providers/auth/auth.service';
-import {AuthFactoryService} from '../../../../providers/auth/auth.factory.service';
+
+import {AuthProvider} from '../../../../providers/auth/auth.provider';
+import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
@@ -94,14 +95,14 @@ export class AppProfile {
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
-  private readonly authService: AuthService;
+  private readonly authProvider: AuthProvider;
 
   constructor() {
     this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.userService = getUserService();
     this.storageOnlineService = getOnlineStorageService();
-    this.authService = AuthFactoryService.getInstance();
+    this.authProvider = AuthFactoryProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -459,7 +460,7 @@ export class AppProfile {
     if (this.cloud === 'ic') {
       await this.userService.delete(authStore.state.authUser.uid);
 
-      await this.authService.signOut();
+      await this.authProvider.signOut();
 
       return;
     }

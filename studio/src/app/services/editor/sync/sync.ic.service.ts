@@ -12,8 +12,8 @@ import {internetIdentityAuth} from '../../../utils/core/ic.identity.utils';
 
 import {SyncService} from './sync.service';
 
-import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
-import {AuthIcService} from '../../../providers/auth/auth.ic.service';
+import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
+import {AuthIcProvider} from '../../../providers/auth/auth.ic.provider';
 
 import {uploadWorker} from '../../../workers/sync.ic.worker';
 
@@ -37,7 +37,7 @@ export class SyncIcService extends SyncService {
         return;
       }
 
-      const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+      const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
 
       if (!identity) {
         return;

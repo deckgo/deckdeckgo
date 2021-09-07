@@ -15,11 +15,11 @@ import {InternetIdentityAuth} from '../../types/core/ic.identity';
 
 import {internetIdentityAuth} from '../../utils/core/ic.identity.utils';
 
-import {AuthService} from './auth.service';
+import {AuthProvider} from './auth.service';
 
 import {initUserWorker} from '../../workers/user.ic.worker';
 
-export class AuthIcService extends AuthService {
+export class AuthIcProvider extends AuthProvider {
   private authClient: AuthClient | undefined;
 
   // @Override

@@ -11,8 +11,8 @@ import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
 import {SlideService} from './slide.service';
 
-import {AuthFactoryService} from '../../../providers/auth/auth.factory.service';
-import {AuthIcService} from '../../../providers/auth/auth.ic.service';
+import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
+import {AuthIcProvider} from '../../../providers/auth/auth.ic.provider';
 
 export class SlideIcService implements SlideService {
   private static instance: SlideIcService;
@@ -31,7 +31,7 @@ export class SlideIcService implements SlideService {
   // @Override
   async get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
-      const identity: Identity | undefined = (AuthFactoryService.getInstance() as AuthIcService).getIdentity();
+      const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
 
       if (!identity) {
         reject('No internet identity.');

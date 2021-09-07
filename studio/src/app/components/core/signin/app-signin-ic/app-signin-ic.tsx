@@ -4,8 +4,8 @@ import i18n from '../../../../stores/i18n.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
 
-import {AuthService} from '../../../../providers/auth/auth.service';
-import {AuthFactoryService} from '../../../../providers/auth/auth.factory.service';
+import {AuthProvider} from '../../../../providers/auth/auth.provider';
+import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
 
 @Component({
   tag: 'app-signin-ic',
@@ -18,17 +18,17 @@ export class AppSignInIc {
   @State()
   private signInInProgress: boolean = false;
 
-  private readonly authService: AuthService;
+  private readonly authProvider: AuthProvider;
 
   constructor() {
-    this.authService = AuthFactoryService.getInstance();
+    this.authProvider = AuthFactoryProvider.getInstance();
   }
 
   private async signIn() {
     this.inProgress.emit(true);
     this.signInInProgress = true;
 
-    await this.authService.signIn();
+    await this.authProvider.signIn();
   }
 
   render() {

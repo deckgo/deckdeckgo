@@ -15,9 +15,9 @@ import {UserFirebaseService} from '../../services/data/user/user.firebase.servic
 import {ApiUserProvider} from '../api/user/api.user.provider';
 import {ApiUserFactoryProvider} from '../api/user/api.user.factory.provider';
 
-import {AuthService} from './auth.service';
+import {AuthProvider} from './auth.service';
 
-export class AuthFirebaseService extends AuthService {
+export class AuthFirebaseProvider extends AuthProvider {
   private apiUserProvider: ApiUserProvider;
 
   private firestoreUserService: UserFirebaseService;
