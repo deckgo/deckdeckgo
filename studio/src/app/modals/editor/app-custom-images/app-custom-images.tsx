@@ -5,7 +5,7 @@ import i18n from '../../../stores/i18n.store';
 import {Constants} from '../../../types/core/constants';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-import {StorageService} from '../../../services/storage/storage.service';
+import {getStorageService, StorageService} from '../../../services/storage/storage.service';
 import {StorageOfflineService} from '../../../services/storage/storage.offline.service';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
@@ -44,7 +44,7 @@ export class AppCustomImages {
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.storageService = StorageService.getInstance();
+    this.storageService = getStorageService();
     this.storageOfflineService = StorageOfflineService.getInstance();
   }
 

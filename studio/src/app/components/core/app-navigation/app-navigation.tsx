@@ -1,4 +1,6 @@
-import {Component, Prop, h} from '@stencil/core';
+import {Component, Prop, h, Host, State} from '@stencil/core';
+
+import {isIOS} from '@deckdeckgo/utils';
 
 import i18n from '../../../stores/i18n.store';
 import store from '../../../stores/deck.store';
@@ -13,27 +15,31 @@ import {AppIcon} from '../app-icon/app-icon';
 export class AppNavigation {
   @Prop() menuToggle: boolean = true;
 
+  @Prop() user: boolean = true;
+
   @Prop() signIn: boolean = false;
 
-  private async closeMenu() {
-    if (!document) {
-      return;
-    }
+  @State()
+  private hideICP: boolean = false;
 
+  private async closeMenu() {
     const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
     await element?.close();
   }
 
   render() {
     return (
-      <ion-header>
-        <ion-toolbar>
-          {this.renderTitle()}
-          {this.renderMenuToggle()}
+      <Host>
+        {this.renderICP()}
+        <ion-header>
+          <ion-toolbar>
+            {this.renderTitle()}
+            {this.renderMenuToggle()}
 
-          <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
-        </ion-toolbar>
-      </ion-header>
+            <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
+          </ion-toolbar>
+        </ion-header>
+      </Host>
     );
   }
 
@@ -73,6 +79,31 @@ export class AppNavigation {
           </ion-button>
         </ion-menu-toggle>
       </ion-buttons>
+    );
+  }
+
+  private renderICP() {
+    if (this.hideICP) {
+      return undefined;
+    }
+
+    return (
+      <header class={`icp ${isIOS() ? 'ios' : 'md'}`}>
+        <ion-button fill="clear" color="light" onClick={() => (this.hideICP = true)}>
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+
+        <p>
+          DeckDeckGo Internet Computer{' '}
+          <a
+            href="https://dev.to/daviddalbusco/we-received-a-grant-to-port-our-web-app-to-the-internet-computer-318o"
+            rel="noopener norefferer"
+            target="_blank"
+            aria-label="More information">
+            <ion-icon name="information-circle"></ion-icon>
+          </a>
+        </p>
+      </header>
     );
   }
 }

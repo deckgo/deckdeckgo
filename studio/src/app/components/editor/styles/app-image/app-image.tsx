@@ -1,6 +1,6 @@
 import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
+import {alertController} from '../../../../utils/ionic/ionic.overlay';
 
 import settingsStore from '../../../../stores/settings.store';
 import i18n from '../../../../stores/i18n.store';
@@ -13,7 +13,7 @@ import {Expanded} from '../../../../types/core/settings';
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
 import {SettingsUtils} from '../../../../utils/core/settings.utils';
-import {tenorEnabled, unsplashEnabled} from '../../../../utils/core/environment.utils';
+import {tenor, unsplash} from '../../../../utils/core/environment.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
 
@@ -46,8 +46,8 @@ export class AppImage {
   @State()
   private imagesHistoryEven: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
 
-  private tenorEnabled = tenorEnabled();
-  private unsplashEnabled = unsplashEnabled();
+  private tenorEnabled = tenor();
+  private unsplashEnabled = unsplash();
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();

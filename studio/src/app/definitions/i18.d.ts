@@ -1,6 +1,5 @@
 interface I18nCore {
   close: string;
-  free_open_source: string;
   loading: string;
   in_progress: string;
   yes: string;
@@ -67,12 +66,16 @@ interface I18nSign_in {
   hi: string;
   why: string;
   additionally: string;
+  internet_identity: string;
+  why_internet_computer: string;
+  accept_by_continuing: string;
 }
 
 interface I18nSettings {
   un_publish: string;
   cannot_undone: string;
   type_to_confirm: string;
+  type_ddg_to_confirm: string;
   i_understand: string;
   customization: string;
   edit_mode: string;
@@ -119,6 +122,7 @@ interface I18nDashboard {
 }
 
 interface I18nEditor {
+  loading: string;
   add_slide: string;
   help: string;
   share: string;

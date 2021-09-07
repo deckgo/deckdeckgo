@@ -1,6 +1,6 @@
 import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '@stencil/core';
 
-import {SegmentChangeEventDetail} from '@ionic/core';
+import type {SegmentChangeEventDetail} from '@ionic/core';
 
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';

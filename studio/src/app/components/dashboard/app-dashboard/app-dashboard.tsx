@@ -17,15 +17,16 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import {DeckOnlineService} from '../../../services/data/deck/deck.online.service';
-import {SlideOnlineService} from '../../../services/data/slide/slide.online.service';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../services/data/template/template.service';
+import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
+import {getSlideService, SlideService} from '../../../services/data/slide/slide.service';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
-import {loadingController} from '@ionic/core';
-import store from '../../../stores/error.store';
+import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {loadingController} from '../../../utils/ionic/ionic.overlay';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -49,8 +50,8 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckOnlineService: DeckOnlineService;
-  private readonly slideOnlineService: SlideOnlineService;
+  private readonly deckService: DeckService;
+  private readonly slideService: SlideService;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
 
@@ -59,9 +60,11 @@ export class AppDashboard {
 
   private destroyListener;
 
+  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
+
   constructor() {
-    this.deckOnlineService = DeckOnlineService.getInstance();
-    this.slideOnlineService = SlideOnlineService.getInstance();
+    this.deckService = getDeckService();
+    this.slideService = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
   }
@@ -92,7 +95,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckOnlineService.getUserDecks(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckService.entries(authStore.state.authUser.uid);
 
       await this.templateService.init();
 
@@ -170,7 +173,12 @@ export class AppDashboard {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideOnlineService.get(deck.id, slideId);
+        console.log('About to request slide in IC');
+
+        const slide: Slide = await this.slideService.get(deck.id, slideId);
+
+        console.log('Slide request done', slide);
+
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
         const style: any = await this.convertStyle(deck);
@@ -295,7 +303,7 @@ export class AppDashboard {
         direction: NavDirection.RELOAD
       };
     } catch (err) {
-      store.state.error = err;
+      errorStore.state.error = err;
     }
 
     await loading.dismiss();
@@ -367,7 +375,7 @@ export class AppDashboard {
       }
 
       const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck.deck?.id === id;
+        return matchDeck?.deck?.id === id;
       });
 
       resolve(index);
@@ -533,11 +541,12 @@ export class AppDashboard {
       }
 
       return (
-        <ion-card class="item ion-no-margin" onClick={async () => await this.navigateDeck(deck)} key={deck.deck.id}>
+        <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
           {this.renderDeck(deck)}
 
           <app-dashboard-deck-actions
             deck={deck.deck}
+            cloud={this.cloud}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
             onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
         </ion-card>

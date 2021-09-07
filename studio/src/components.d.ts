@@ -20,6 +20,7 @@ import { SlotType } from "./app/types/editor/slot-type";
 import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
+import { IonicReorderEvent } from "./app/utils/ionic/ionic.reorder.event";
 import { ItemReorderEventDetail } from "@ionic/core";
 import { Template } from "./app/models/data/template";
 import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
@@ -135,6 +136,7 @@ export namespace Components {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
+        "cloud": 'offline' | 'firebase' | 'ic';
         "deck": Deck;
     }
     interface AppDashboardPage {
@@ -247,6 +249,7 @@ export namespace Components {
     interface AppNavigation {
         "menuToggle": boolean;
         "signIn": boolean;
+        "user": boolean;
     }
     interface AppNavigationActions {
         "signIn": boolean;
@@ -320,6 +323,10 @@ export namespace Components {
     }
     interface AppSignin {
         "redirect": string;
+    }
+    interface AppSigninFirebase {
+    }
+    interface AppSigninIc {
     }
     interface AppSigninPage {
         "redirect": string;
@@ -956,6 +963,18 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
+    interface HTMLAppSigninFirebaseElement extends Components.AppSigninFirebase, HTMLStencilElement {
+    }
+    var HTMLAppSigninFirebaseElement: {
+        prototype: HTMLAppSigninFirebaseElement;
+        new (): HTMLAppSigninFirebaseElement;
+    };
+    interface HTMLAppSigninIcElement extends Components.AppSigninIc, HTMLStencilElement {
+    }
+    var HTMLAppSigninIcElement: {
+        prototype: HTMLAppSigninIcElement;
+        new (): HTMLAppSigninIcElement;
+    };
     interface HTMLAppSigninPageElement extends Components.AppSigninPage, HTMLStencilElement {
     }
     var HTMLAppSigninPageElement: {
@@ -1227,6 +1246,8 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
+        "app-signin-firebase": HTMLAppSigninFirebaseElement;
+        "app-signin-ic": HTMLAppSigninIcElement;
         "app-signin-page": HTMLAppSigninPageElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slide-preview": HTMLAppSlidePreviewElement;
@@ -1404,6 +1425,7 @@ declare namespace LocalJSX {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
+        "cloud"?: 'offline' | 'firebase' | 'ic';
         "deck"?: Deck;
         "onDeckCloned"?: (event: CustomEvent<DeckDashboardCloneResult>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
@@ -1534,6 +1556,7 @@ declare namespace LocalJSX {
     interface AppNavigation {
         "menuToggle"?: boolean;
         "signIn"?: boolean;
+        "user"?: boolean;
     }
     interface AppNavigationActions {
         "signIn"?: boolean;
@@ -1613,11 +1636,17 @@ declare namespace LocalJSX {
     interface AppSignin {
         "redirect"?: string;
     }
+    interface AppSigninFirebase {
+        "onInProgress"?: (event: CustomEvent<boolean>) => void;
+    }
+    interface AppSigninIc {
+        "onInProgress"?: (event: CustomEvent<boolean>) => void;
+    }
     interface AppSigninPage {
         "redirect"?: string;
     }
     interface AppSlideNavigate {
-        "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
+        "onReorder"?: (event: CustomEvent<IonicReorderEvent>) => void;
     }
     interface AppSlidePreview {
         "deckRef": HTMLDeckgoDeckElement;
@@ -1813,6 +1842,8 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
+        "app-signin-firebase": AppSigninFirebase;
+        "app-signin-ic": AppSigninIc;
         "app-signin-page": AppSigninPage;
         "app-slide-navigate": AppSlideNavigate;
         "app-slide-preview": AppSlidePreview;
@@ -1939,6 +1970,8 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
+            "app-signin-firebase": LocalJSX.AppSigninFirebase & JSXBase.HTMLAttributes<HTMLAppSigninFirebaseElement>;
+            "app-signin-ic": LocalJSX.AppSigninIc & JSXBase.HTMLAttributes<HTMLAppSigninIcElement>;
             "app-signin-page": LocalJSX.AppSigninPage & JSXBase.HTMLAttributes<HTMLAppSigninPageElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slide-preview": LocalJSX.AppSlidePreview & JSXBase.HTMLAttributes<HTMLAppSlidePreviewElement>;

@@ -1,5 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
-import {modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+
+import type {OverlayEventDetail} from '@ionic/core';
 
 import {isMobile} from '@deckdeckgo/utils';
 import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
@@ -12,6 +13,7 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../types/editor/more-action';
 
+import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
 import { selectDeckSlide } from '../../../../../utils/editor/deck.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';

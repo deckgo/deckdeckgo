@@ -4,18 +4,20 @@ import 'firebase/firestore';
 import {Deck, DeckData} from '../../../models/data/deck';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
-export class DeckOnlineService {
-  private static instance: DeckOnlineService;
+import {DeckService} from './deck.service';
+
+export class DeckFirebaseService implements DeckService {
+  private static instance: DeckFirebaseService;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!DeckOnlineService.instance) {
-      DeckOnlineService.instance = new DeckOnlineService();
+    if (!DeckFirebaseService.instance) {
+      DeckFirebaseService.instance = new DeckFirebaseService();
     }
-    return DeckOnlineService.instance;
+    return DeckFirebaseService.instance;
   }
 
   create(deck: DeckData): Promise<Deck> {
@@ -84,7 +86,8 @@ export class DeckOnlineService {
     });
   }
 
-  getUserDecks(userId: string): Promise<Deck[]> {
+  // @Override
+  entries(userId: string): Promise<Deck[]> {
     return new Promise<Deck[]>(async (resolve, reject) => {
       try {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
@@ -109,6 +112,7 @@ export class DeckOnlineService {
     });
   }
 
+  // @Override
   delete(deckId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {

@@ -5,6 +5,7 @@ import templatesStore from '../../../stores/templates.store';
 import authStore from '../../../stores/auth.store';
 
 import {Template, TemplateData} from '../../../models/data/template';
+import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 
 export class TemplateService {
   private static instance: TemplateService;
@@ -26,6 +27,10 @@ export class TemplateService {
     }
 
     if (templatesStore.state.user?.length > 0) {
+      return;
+    }
+
+    if (!firebaseEnabled()) {
       return;
     }
 

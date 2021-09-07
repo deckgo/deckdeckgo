@@ -6,9 +6,11 @@ import {Deck, DeckAttributes, DeckData} from '../../../models/data/deck';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
-import { syncUpdateDeck } from '../../../utils/editor/sync.utils';
+import {syncUpdateDeck} from '../../../utils/editor/sync.utils';
 
-export class DeckOfflineService {
+import {DeckService} from './deck.service';
+
+export class DeckOfflineService implements DeckService {
   private static instance: DeckOfflineService;
 
   private constructor() {
@@ -94,5 +96,15 @@ export class DeckOfflineService {
         reject(err);
       }
     });
+  }
+
+  // @Override
+  async entries(_userId: string): Promise<Deck[]> {
+    throw new Error('Not implemented');
+  }
+
+  // @Override
+  delete(_deckId: string): Promise<void> {
+    throw new Error('Not implemented');
   }
 }

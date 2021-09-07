@@ -36,6 +36,13 @@ function updateCSP(filename) {
     result = result.replace('ws://localhost:3333/', '');
     result = result.replace('http://localhost:3333/~dev-server', '');
 
+    // 4. Preload all modules for Internet Computer
+    const jsFiles = [];
+    findJSFiles('./www/build/', jsFiles);
+
+    const preload = [...new Set(jsFiles)].map((filename) => `<link rel="modulepreload" href="/build/${filename}">`).join('');
+    result = result.replace(/<\/body>/g, `${preload}</body>`);
+
     fs.writeFile(`${filename}`, result, 'utf8', function (err) {
       if (err) return console.log(err);
     });
@@ -62,6 +69,18 @@ function findHTMLFiles(dir, files) {
       findHTMLFiles(fullPath, files);
     } else if (path.extname(fullPath) === '.html') {
       files.push(fullPath);
+    }
+  });
+}
+
+function findJSFiles(dir, files) {
+  fs.readdirSync(dir).forEach((file) => {
+    const fullPath = path.join(dir, file);
+
+    if (fs.lstatSync(fullPath).isDirectory()) {
+      findJSFiles(fullPath, files);
+    } else if (path.extname(fullPath) === '.js' && fullPath.indexOf('app.') === -1 && fullPath.indexOf('index.') === -1) {
+      files.push(file);
     }
   });
 }

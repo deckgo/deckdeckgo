@@ -7,8 +7,8 @@ import {Slide} from '../../models/data/slide';
 import {importEditorData} from '../../utils/editor/import.utils';
 import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
-import {DeckOnlineService} from '../data/deck/deck.online.service';
-import {SlideOnlineService} from '../data/slide/slide.online.service';
+import {DeckFirebaseService} from '../data/deck/deck.firebase.service';
+import {getSlideService, SlideService} from '../data/slide/slide.service';
 
 export interface DeckDashboardCloneResult {
   from: Deck;
@@ -18,12 +18,12 @@ export interface DeckDashboardCloneResult {
 export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
-  private deckOnlineService: DeckOnlineService;
-  private slideOnlineService: SlideOnlineService;
+  private deckFirebaseService: DeckFirebaseService;
+  private slideService: SlideService;
 
   private constructor() {
-    this.deckOnlineService = DeckOnlineService.getInstance();
-    this.slideOnlineService = SlideOnlineService.getInstance();
+    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.slideService = getSlideService();
   }
 
   static getInstance() {
@@ -42,7 +42,7 @@ export class DeckDashboardService {
           deck_id_to: clone.id
         };
 
-        const updatedDeck: Deck = await this.deckOnlineService.update(deck);
+        const updatedDeck: Deck = await this.deckFirebaseService.update(deck);
 
         resolve({
           from: updatedDeck,
@@ -67,7 +67,7 @@ export class DeckDashboardService {
         delete clone['api_id'];
         delete clone['meta'];
 
-        const createdDeck: Deck = await this.deckOnlineService.create(clone);
+        const createdDeck: Deck = await this.deckFirebaseService.create(clone);
 
         resolve(createdDeck);
       } catch (err) {
@@ -104,7 +104,7 @@ export class DeckDashboardService {
   importData(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideOnlineService.get(deck.id, slideId));
+        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideService.get(deck.id, slideId));
         const slides: Slide[] = await Promise.all(promises || []);
 
         const deckToImport: Deck = {...deck};

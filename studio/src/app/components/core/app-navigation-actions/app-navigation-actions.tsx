@@ -1,7 +1,5 @@
 import {Component, Prop, h, Fragment, Element} from '@stencil/core';
 
-import {alertController, loadingController, popoverController} from '@ionic/core';
-
 import {del} from 'idb-keyval';
 
 import authStore from '../../../stores/auth.store';
@@ -12,12 +10,14 @@ import syncStore from '../../../stores/sync.store';
 import offlineStore from '../../../stores/offline.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
+import {alertController, loadingController, popoverController} from '../../../utils/ionic/ionic.overlay';
 
 import {AppIcon} from '../app-icon/app-icon';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
-import {SyncService} from '../../../services/editor/sync/sync.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import {SyncService} from '../../../services/editor/sync/sync.service';
+import {SyncFactoryService} from '../../../services/editor/sync/sync.factory.service';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -35,7 +35,7 @@ export class AppNavigationActions {
   private readonly imageHistoryService: ImageHistoryService;
 
   constructor() {
-    this.syncService = SyncService.getInstance();
+    this.syncService = SyncFactoryService.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 

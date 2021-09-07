@@ -1,6 +1,6 @@
 import {Component, Fragment, h, State} from '@stencil/core';
 
-import {modalController, OverlayEventDetail} from '@ionic/core';
+import type {OverlayEventDetail} from '@ionic/core';
 
 import authStore from '../../../../stores/auth.store';
 import errorStore from '../../../../stores/error.store';
@@ -14,6 +14,7 @@ import {signIn} from '../../../../utils/core/signin.utils';
 
 import {TemplateService} from '../../../../services/data/template/template.service';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
+import {modalController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-templates',

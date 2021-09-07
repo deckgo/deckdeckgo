@@ -1,7 +1,6 @@
 {
   "core": {
     "close": "Cerrar",
-    "free_open_source": "DeckDeckGo es gratuito y de código abierto 😃.",
     "loading": "Cargando...",
     "in_progress": "En progreso...",
     "yes": "Sí",
@@ -62,12 +61,16 @@
   "sign_in": {
     "hi": "¡Oh, hola 👋! Me alegro de tenerte.",
     "why": "Inicie sesión para guardar y compartir su presentación en línea.",
-    "additionally": "Además, empuje el código fuente de sus diapositivas a los repos con el registro de GitHub {0}."
+    "additionally": "Además, empuje el código fuente de sus diapositivas a los repos con el registro de GitHub {0}.",
+    "internet_identity": "Iniciar sesión con Identidad de Internet",
+    "why_internet_computer": "Inicie sesión para guardar su presentación en línea en la red blockchain de Internet Computer.",
+    "accept_by_continuing": "Al continuar, está indicando que acepta nuestra"
   },
   "settings": {
     "un_publish": "Ten en cuenta que, actualmente, las presentaciones que has compartido no se eliminan automáticamente de Internet. Si quieres dejar de publicarlas, envíanos un mensaje a uno de nuestros canales.",
-    "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación {0}.",
+    "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su usuario.",
     "type_to_confirm": "Por favor, escriba su nombre de usuario para confirmar.",
+    "type_ddg_to_confirm": "Por favor, escriba deckdeckgo para confirmar.",
     "i_understand": "Comprendo, borre mi usuario",
     "customization": "Personalización",
     "edit_mode": "Modo de edición",
@@ -75,7 +78,7 @@
     "profile": "Perfil",
     "access_settings": "{0} para acceder a tu perfil y configuración.",
     "access_templates": "{0} para usar tus propias plantillas.",
-    "access_dashboard": "{0} para guardar y compartir su presentación en línea.",
+    "access_dashboard": "{0} para guardar su presentación en línea.",
     "profile_note": "Tenga en cuenta que su actualización no tiene ningún efecto sobre las presentaciones que ya hubiera publicado.",
     "name": "Nombre",
     "email": "Correo electrónico",
@@ -108,10 +111,11 @@
     "no_slides": "Todavía no tienes ninguna diapositiva. Adelante, ¡crea tu primer paquete ahora!",
     "copy": "Copiar presentación",
     "delete": "Eliminar presentación",
-    "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación {0}.",
+    "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación.",
     "understand": "Comprendo, elimina mi presentación"
   },
   "editor": {
+    "loading": "El editor se está cargando ... ",
     "add_slide": "Añadir diapositiva",
     "help": "Ayuda",
     "share": "Compartir",

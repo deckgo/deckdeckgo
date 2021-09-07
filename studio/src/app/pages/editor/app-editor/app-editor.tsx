@@ -1,6 +1,8 @@
 import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
-import {ItemReorderEventDetail, modalController, OverlayEventDetail, popoverController} from '@ionic/core';
+import type {OverlayEventDetail} from '@ionic/core';
+
+import type {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
 
 import {get, set} from 'idb-keyval';
 
@@ -9,6 +11,7 @@ import busyStore from '../../../stores/busy.store';
 import colorStore from '../../../stores/color.store';
 import undoRedoStore from '../../../stores/undo-redo.store';
 import authStore from '../../../stores/auth.store';
+import i18n from '../../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
@@ -31,11 +34,13 @@ import {SlideHelper} from '../../../helpers/editor/slide.helper';
 import {SlotType} from '../../../types/editor/slot-type';
 
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
+import {modalController, popoverController} from '../../../utils/ionic/ionic.overlay';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 import {SyncService} from '../../../services/editor/sync/sync.service';
+import {SyncFactoryService} from '../../../services/editor/sync/sync.factory.service';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {SyncEvent} from '../../../types/editor/sync';
@@ -125,7 +130,7 @@ export class AppEditor {
 
   constructor() {
     this.fontsService = FontsService.getInstance();
-    this.syncService = SyncService.getInstance();
+    this.syncService = SyncFactoryService.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -671,7 +676,9 @@ export class AppEditor {
         return;
       }
 
-      await this.deckRef?.slideTo(this.activeIndex);
+      if (typeof this.deckRef?.slideTo === 'function') {
+        await this.deckRef?.slideTo(this.activeIndex);
+      }
     });
 
     this.slideResizeObserver.observe(this.mainRef);
@@ -682,7 +689,7 @@ export class AppEditor {
   }
 
   @Listen('signIn', {target: 'document'})
-  async signIn() {
+  signIn() {
     navigateSignIn();
   }
 
@@ -692,7 +699,7 @@ export class AppEditor {
   }
 
   @Listen('reorder', {target: 'document'})
-  async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
+  async onReorderSlides($event: CustomEvent<IonicReorderEvent>) {
     if (!$event || !$event.detail) {
       return;
     }
@@ -700,7 +707,7 @@ export class AppEditor {
     await this.reorderSlides($event.detail);
   }
 
-  private async reorderSlides(detail: ItemReorderEventDetail) {
+  private async reorderSlides(detail: IonicReorderEvent) {
     if (!detail) {
       return;
     }
@@ -753,12 +760,17 @@ export class AppEditor {
     this.actionsEditorRef?.selectStep($event?.detail);
   }
 
+  @Listen('deckDidLoad', {target: 'document'})
+  onDeckDidLoad() {
+    busyStore.state.deckReady = true;
+  }
+
   render() {
     const autoSlide: boolean = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content class="ion-no-padding" onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
+      <ion-content class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`} onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
         <div class="editor">
           {this.renderSlidesThumbnails()}
 
@@ -841,10 +853,14 @@ export class AppEditor {
   }
 
   private renderLoading() {
-    if (this.slidesFetched) {
+    if (this.slidesFetched && busyStore.state.deckReady) {
       return undefined;
     } else {
-      return <app-spinner></app-spinner>;
+      return (
+        <app-spinner>
+          <p>{i18n.state.editor.loading}</p>
+        </app-spinner>
+      );
     }
   }
 

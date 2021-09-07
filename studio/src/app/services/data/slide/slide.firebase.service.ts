@@ -3,20 +3,23 @@ import 'firebase/firestore';
 
 import {Slide, SlideData} from '../../../models/data/slide';
 
-export class SlideOnlineService {
-  private static instance: SlideOnlineService;
+import {SlideService} from './slide.service';
+
+export class SlideFirebaseService implements SlideService {
+  private static instance: SlideFirebaseService;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!SlideOnlineService.instance) {
-      SlideOnlineService.instance = new SlideOnlineService();
+    if (!SlideFirebaseService.instance) {
+      SlideFirebaseService.instance = new SlideFirebaseService();
     }
-    return SlideOnlineService.instance;
+    return SlideFirebaseService.instance;
   }
 
+  // @Override
   get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       const firestore: firebase.firestore.Firestore = firebase.firestore();

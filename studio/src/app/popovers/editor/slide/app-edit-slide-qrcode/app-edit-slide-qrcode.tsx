@@ -1,13 +1,13 @@
 import {Component, Element, EventEmitter, h, Prop, State, Event, Fragment} from '@stencil/core';
 
-import {alertController} from '@ionic/core';
-
 import i18n from '../../../../stores/i18n.store';
 import offlineStore from '../../../../stores/offline.store';
 
 import store from '../../../../stores/deck.store';
 
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
+import { alertController } from '../../../../utils/ionic/ionic.overlay';
+
 import {EditAction} from '../../../../types/editor/edit-action';
 
 import {AppIcon} from '../../../../components/core/app-icon/app-icon';

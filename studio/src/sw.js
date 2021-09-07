@@ -105,7 +105,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^(?=.*deckdeckgo\.com).*/,
+  /^(?=.*(deckdeckgo\.com|iey7l-kaaaa-aaaah-qadoa-cai\.ic0\.app|iey7l-kaaaa-aaaah-qadoa-cai\.raw\.ic0\.app)).*/,
   new workbox.strategies.NetworkFirst({
     cacheName: 'editor'
   })

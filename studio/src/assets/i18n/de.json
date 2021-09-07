@@ -1,7 +1,6 @@
 {
   "core": {
     "close": "Schließen",
-    "free_open_source": "DeckDeckGo is kostenlos und Open Source😃.",
     "loading": "Laden...",
     "in_progress": "Wird bearbeitet...",
     "yes": "Ja",
@@ -62,12 +61,16 @@
   "sign_in": {
     "hi": "Oh, hi 👋! Schön, dass du da bist.",
     "why": "Melde dich an, um deine Präsentationen Online zu speichern und teilen.",
-    "additionally": "Sichere zusätzlich den Quellcode deiner Folien auf einem GitHub {0} Repository."
+    "additionally": "Sichere zusätzlich den Quellcode deiner Folien auf einem GitHub {0} Repository.",
+    "internet_identity": "Mit Internet-Identität anmelden",
+    "why_internet_computer": "Melden Sie sich an, um Ihre Präsentationen online im Internet-Computer-Blockchain-Netzwerk zu speichern.",
+    "accept_by_continuing": "Indem Sie fortfahren, akzeptieren Sie unsere "
   },
   "settings": {
     "un_publish": "Bitte beachte, dass Präsentationen, die du geteilt hast, nicht automatisch wieder aus dem Netzt gelöscht werden. Falls du das Veröffentlichen rückgängig machen möchtest, schreibe uns bitte in einen unserer {0} Channels an.",
-    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deine Präsentation dauerhaft gelöscht.",
+    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deinen Benutzer dauerhaft gelöscht.",
     "type_to_confirm": "Gib deinen Nutzernamen zur Bestätigung ein.",
+    "type_ddg_to_confirm": "Gib deckdeckgo zur Bestätigung ein.",
     "i_understand": "Ich verstehe, lösche meinen Account.",
     "customization": "Anpassen",
     "edit_mode": "Bearbeitungsmodus",
@@ -75,7 +78,7 @@
     "profile": "Profil",
     "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen",
     "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
-    "access_dashboard": "{0} um deine Präsentationen Online zu speichern und teilen.",
+    "access_dashboard": "{0} um deine Präsentationen Online zu speichern.",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
     "name": "Name",
     "email": "Email",
@@ -108,10 +111,11 @@
     "no_slides": "Du hast noch keine Folien. Leg' los, entwerfe jetzt dein erstes Set!",
     "copy": "Kopiere die Präsentation",
     "delete": "Lösche die Präsentation",
-    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Deine Präsentation wird dauerhaft gelöscht. {0}",
+    "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deine Präsentation dauerhaft gelöscht.",
     "understand": "Ich verstehe, lösche meine Präsentation."
   },
   "editor": {
+    "loading": "Halt dich fest! Der Editor lädt...",
     "add_slide": "Folie hinzufügen",
     "help": "Hilfe",
     "share": "Teilen",

@@ -8,16 +8,23 @@ import authStore from '../../stores/auth.store';
 
 import {Constants} from '../../types/core/constants';
 
-export class StorageOnlineService {
-  private static instance: StorageOnlineService;
+import {StorageService} from './storage.service';
 
-  static getInstance() {
-    if (!StorageOnlineService.instance) {
-      StorageOnlineService.instance = new StorageOnlineService();
-    }
-    return StorageOnlineService.instance;
+export class StorageFirebaseService implements StorageService {
+  private static instance: StorageFirebaseService;
+
+  private constructor() {
+    // Private constructor, singleton
   }
 
+  static getInstance() {
+    if (!StorageFirebaseService.instance) {
+      StorageFirebaseService.instance = new StorageFirebaseService();
+    }
+    return StorageFirebaseService.instance;
+  }
+
+  // @Override
   uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
@@ -58,6 +65,7 @@ export class StorageOnlineService {
     });
   }
 
+  // @Override
   getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       try {
@@ -116,6 +124,7 @@ export class StorageOnlineService {
     });
   }
 
+  // @Override
   getFolders(folder: string): Promise<StorageFoldersList | undefined> {
     return new Promise<StorageFoldersList | null>(async (resolve) => {
       try {

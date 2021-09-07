@@ -1,0 +1,24 @@
+app-signin {
+  main {
+    background: white;
+    position: relative;
+
+    ion-buttons.back {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+
+    p {
+      margin: 0;
+
+      strong {
+        text-decoration: none;
+      }
+    }
+  }
+
+  strong {
+    text-decoration: underline;
+  }
+}

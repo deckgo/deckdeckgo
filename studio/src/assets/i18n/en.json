@@ -1,7 +1,6 @@
 {
   "core": {
     "close": "Close",
-    "free_open_source": "DeckDeckGo is free and open source 😃.",
     "loading": "Loading...",
     "in_progress": "In progress...",
     "yes": "Yes",
@@ -61,13 +60,17 @@
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Good to have you.",
-    "why": "Sign in to save and to share your presentations online.",
-    "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging."
+    "why": "Sign in to save and to share your presentation online.",
+    "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging.",
+    "internet_identity": "Sign in with Internet Identity",
+    "why_internet_computer": "Sign in to save your presentation online on the Internet Computer blockchain network.",
+    "accept_by_continuing": "By continuing, you are indicating that you accept our"
   },
   "settings": {
     "un_publish": "Please note that currently, the presentations you have shared are not automatically removed from internet. If you wish to un-publish them, drop us a message on one of our {0} channels.",
-    "cannot_undone": "This action cannot be undone. This will permanently delete your presentation {0}.",
+    "cannot_undone": "This action cannot be undone. This will permanently delete your user.",
     "type_to_confirm": "Please type your username to confirm.",
+    "type_ddg_to_confirm": "Please type deckdeckgo to confirm.",
     "i_understand": "I understand, delete my user",
     "customization": "Customization",
     "edit_mode": "Edit mode",
@@ -75,7 +78,7 @@
     "profile": "Profile",
     "access_settings": "{0} to access your profile and settings.",
     "access_templates": "{0} to use your own templates.",
-    "access_dashboard": "{0} to save and to share your presentation online.",
+    "access_dashboard": "{0} to save your presentation online.",
     "profile_note": "Note that your update has no effect on the presentations you would have already published.",
     "name": "Name",
     "email": "Email",
@@ -108,10 +111,11 @@
     "no_slides": "You don't have any slides yet. Go for it, create your first deck now!",
     "copy": "Copy presentation",
     "delete": "Delete presentation",
-    "cannot_undone": "This action cannot be undone. This will permanently delete your presentation {0}.",
+    "cannot_undone": "This action cannot be undone. This will permanently delete your presentation.",
     "understand": "I understand, delete my presentation"
   },
   "editor": {
+    "loading": "Hold tight! The editor is loading...",
     "add_slide": "Add slide",
     "help": "Help",
     "share": "Share",

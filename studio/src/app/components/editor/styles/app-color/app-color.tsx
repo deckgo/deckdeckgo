@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch, Method} from '@stencil/core';
 
-import {RangeChangeEventDetail} from '@ionic/core';
-
-import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
+import type {RangeChangeEventDetail} from '@ionic/core';
 
 import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 
@@ -14,7 +12,9 @@ import {ColorUtils, InitStyleColor} from '../../../../utils/editor/color.utils';
 
 import {EditMode} from '../../../../types/core/settings';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
+
+import {DeckdeckgoPaletteColor, DeckdeckgoPalette} from '../../../../utils/ddg/deckdeckgo-palette';
 
 @Component({
   tag: 'app-color',

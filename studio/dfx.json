@@ -1,0 +1,33 @@
+{
+  "canisters": {
+    "manager": {
+      "main": "canisters/manager/manager.mo",
+      "type": "motoko"
+    },
+    "users": {
+      "main": "canisters/users/users.mo",
+      "type": "motoko"
+    },
+    "assets": {
+      "dependencies": ["manager", "users"],
+      "frontend": {
+        "entrypoint": "www/index.html"
+      },
+      "source": ["www"],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "dfx": "0.8.0",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
