@@ -7,18 +7,18 @@ import authStore from '../../../stores/auth.store';
 import {Template, TemplateData} from '../../../models/data/template';
 import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 
-export class TemplateService {
-  private static instance: TemplateService;
+export class TemplateProvider {
+  private static instance: TemplateProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!TemplateService.instance) {
-      TemplateService.instance = new TemplateService();
+    if (!TemplateProvider.instance) {
+      TemplateProvider.instance = new TemplateProvider();
     }
-    return TemplateService.instance;
+    return TemplateProvider.instance;
   }
 
   async init() {

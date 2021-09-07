@@ -10,19 +10,19 @@ import {Deck} from '../../models/data/deck';
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
-import {TemplateService} from '../../providers/data/template/template.service';
+import {TemplateProvider} from '../../providers/data/template/template.provider';
 import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 
 export class SlideHelper {
   private deckOfflineProvider: DeckOfflineProvider;
   private slideOfflineProvider: SlideOfflineProvider;
-  private templateService: TemplateService;
+  private templateProvider: TemplateProvider;
 
   constructor() {
     this.slideOfflineProvider = SlideOfflineProvider.getInstance();
     this.deckOfflineProvider = DeckOfflineProvider.getInstance();
-    this.templateService = TemplateService.getInstance();
+    this.templateProvider = TemplateProvider.getInstance();
   }
 
   loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
@@ -51,7 +51,7 @@ export class SlideHelper {
           return;
         }
 
-        await this.templateService.init();
+        await this.templateProvider.init();
 
         const promises: Promise<any>[] = [];
         deck.data.slides.forEach((slideId: string) => {

@@ -18,7 +18,7 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {TemplateService} from '../../../providers/data/template/template.service';
+import {TemplateProvider} from '../../../providers/data/template/template.provider';
 import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
 import {getSlideService, SlideProvider} from '../../../providers/data/slide/slide.provider';
 
@@ -53,7 +53,7 @@ export class AppDashboard {
   private readonly deckProvider: DeckProvider;
   private readonly slideProvider: SlideProvider;
   private readonly deckDashboardService: DeckDashboardService;
-  private readonly templateService: TemplateService;
+  private readonly templateProvider: TemplateProvider;
 
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
@@ -66,7 +66,7 @@ export class AppDashboard {
     this.deckProvider = getDeckService();
     this.slideProvider = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
-    this.templateService = TemplateService.getInstance();
+    this.templateProvider = TemplateProvider.getInstance();
   }
 
   async componentWillLoad() {
@@ -97,7 +97,7 @@ export class AppDashboard {
     try {
       const userDecks: Deck[] = await this.deckProvider.entries(authStore.state.authUser.uid);
 
-      await this.templateService.init();
+      await this.templateProvider.init();
 
       this.decks = await this.fetchFirstSlides(userDecks);
       await this.filterDecks(null);

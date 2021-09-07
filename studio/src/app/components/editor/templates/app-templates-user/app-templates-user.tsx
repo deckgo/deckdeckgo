@@ -7,7 +7,7 @@ import i18n from '../../../../stores/i18n.store';
 import {signIn} from '../../../../utils/core/signin.utils';
 
 import {Template} from '../../../../models/data/template';
-import {TemplateService} from '../../../../providers/data/template/template.service';
+import {TemplateProvider} from '../../../../providers/data/template/template.provider';
 import authStore from '../../../../stores/auth.store';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
@@ -16,7 +16,7 @@ import {renderI18n} from '../../../../utils/core/i18n.utils';
   styleUrl: 'app-templates-user.scss'
 })
 export class AppTemplatesUser {
-  private templateService: TemplateService;
+  private templateProvider: TemplateProvider;
 
   @Event()
   navigateSignIn: EventEmitter<void>;
@@ -25,7 +25,7 @@ export class AppTemplatesUser {
   selectedTemplate: EventEmitter<Template>;
 
   constructor() {
-    this.templateService = TemplateService.getInstance();
+    this.templateProvider = TemplateProvider.getInstance();
   }
 
   async componentWillLoad() {
@@ -34,7 +34,7 @@ export class AppTemplatesUser {
 
   private async initTemplates() {
     try {
-      await this.templateService.init();
+      await this.templateProvider.init();
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
