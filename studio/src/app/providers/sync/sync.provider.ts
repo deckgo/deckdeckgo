@@ -1,4 +1,4 @@
-import {del, get, keys, update} from 'idb-keyval';
+import {del, delMany, get, keys, update} from 'idb-keyval';
 
 import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
@@ -74,6 +74,6 @@ export abstract class SyncProvider {
       return;
     }
 
-    await Promise.all(storageKeys.map((key: string) => del(key)));
+    await delMany(storageKeys);
   }
 }
