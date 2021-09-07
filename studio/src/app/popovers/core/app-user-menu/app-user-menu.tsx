@@ -7,8 +7,8 @@ import userStore from '../../../stores/user.store';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
-import {AuthService} from '../../../services/auth/auth.service';
-import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
+import {AuthProvider} from '../../../providers/auth/auth.provider';
+import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
 
 @Component({
   tag: 'app-user-menu',
@@ -17,14 +17,14 @@ import {AuthFactoryService} from '../../../services/auth/auth.factory.service';
 export class AppUserMenu {
   @Element() el: HTMLElement;
 
-  private readonly authService: AuthService;
+  private readonly authProvider: AuthProvider;
 
   constructor() {
-    this.authService = AuthFactoryService.getInstance();
+    this.authProvider = AuthFactoryProvider.getInstance();
   }
 
   private async signOut() {
-    await this.authService.signOut();
+    await this.authProvider.signOut();
 
     await this.closePopover();
 

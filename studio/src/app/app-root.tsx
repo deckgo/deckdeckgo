@@ -5,16 +5,16 @@ import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
 import authStore from './stores/auth.store';
 
-import {AuthService} from './services/auth/auth.service';
+import {AuthProvider} from './providers/auth/auth.provider';
+import {AuthFactoryProvider} from './providers/auth/auth.factory.provider';
 
 import {ThemeService} from './services/theme/theme.service';
 import {NavDirection, NavParams} from './stores/nav.store';
-import {ColorService} from './services/color/color.service';
+import {ColorService} from './services/editor/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {AuthFactoryService} from './services/auth/auth.factory.service';
-import {SyncService} from './services/editor/sync/sync.service';
-import {SyncFactoryService} from './services/editor/sync/sync.factory.service';
+import {SyncProvider} from './providers/sync/sync.provider';
+import {SyncFactoryProvider} from './providers/sync/sync.factory.provider';
 
 import {toastController} from './utils/ionic/ionic.overlay';
 
@@ -25,13 +25,13 @@ import {toastController} from './utils/ionic/ionic.overlay';
 export class AppRoot {
   @Element() el: HTMLElement;
 
-  private readonly authService: AuthService;
+  private readonly authProvider: AuthProvider;
+  private readonly syncProvider: SyncProvider;
 
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
   private readonly settingsService: SettingsService;
   private readonly langService: LangService;
-  private readonly syncService: SyncService;
 
   @State()
   private loading: boolean = true;
@@ -44,19 +44,19 @@ export class AppRoot {
   private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
-    this.authService = AuthFactoryService.getInstance();
+    this.authProvider = AuthFactoryProvider.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
     this.langService = LangService.getInstance();
-    this.syncService = SyncFactoryService.getInstance();
+    this.syncProvider = SyncFactoryProvider.getInstance();
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncService.initSyncState());
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncProvider.initSyncState());
 
     const promises: Promise<void>[] = [
-      this.authService.init(),
+      this.authProvider.init(),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),

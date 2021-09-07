@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import {PlatformService} from '../services/data/platform/platform.service';
+import {PlatformProvider} from '../providers/data/platform/platform.provider';
 
 import {Token} from '../models/data/token';
 
@@ -13,7 +13,7 @@ const {state, onChange} = createStore({
 } as TokenStore);
 
 onChange('token', async (token: Token | undefined) => {
-  await PlatformService.getInstance().merge(token);
+  await PlatformProvider.getInstance().merge(token);
 });
 
 export default {state, onChange};

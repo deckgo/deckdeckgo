@@ -21,13 +21,15 @@ import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import {ApiUserService} from '../../../../services/api/user/api.user.service';
+import {ApiUserProvider} from '../../../../providers/api/user/api.user.provider';
+import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.factory.provider';
+
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-import {getUserService, UserService} from '../../../../services/data/user/user.service';
-import {getOnlineStorageService, StorageService} from '../../../../services/storage/storage.service';
-import {ApiUserFactoryService} from '../../../../services/api/user/api.user.factory.service';
-import {AuthService} from '../../../../services/auth/auth.service';
-import {AuthFactoryService} from '../../../../services/auth/auth.factory.service';
+
+import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
+import {getOnlineStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
+import {AuthProvider} from '../../../../providers/auth/auth.provider';
+import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
@@ -58,16 +60,16 @@ export class AppProfile {
   @State()
   private saving: boolean = false;
 
-  private userService: UserService;
-  private apiUserService: ApiUserService;
+  private readonly userProvider: UserProvider;
+  private readonly apiUserProvider: ApiUserProvider;
+  private readonly authProvider: AuthProvider;
+  private readonly storageOnlineProvider: StorageProvider;
 
   private imageHistoryService: ImageHistoryService;
 
   private profilePicture: File;
 
   private customLogo: File;
-
-  private storageOnlineService: StorageService;
 
   @State()
   private twitter: string = undefined;
@@ -93,14 +95,12 @@ export class AppProfile {
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
-  private readonly authService: AuthService;
-
   constructor() {
-    this.apiUserService = ApiUserFactoryService.getInstance();
+    this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userService = getUserService();
-    this.storageOnlineService = getOnlineStorageService();
-    this.authService = AuthFactoryService.getInstance();
+    this.userProvider = getUserService();
+    this.storageOnlineProvider = getOnlineStorageService();
+    this.authProvider = AuthFactoryProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -313,7 +313,7 @@ export class AppProfile {
       }
 
       try {
-        await this.userService.update({
+        await this.userProvider.update({
           id: this.user.id,
           data: {
             ...this.user.data,
@@ -345,7 +345,7 @@ export class AppProfile {
       try {
         const token: string = await firebase.auth().currentUser.getIdToken();
 
-        await this.apiUserService.put(this.apiUser, token, this.apiUser.id);
+        await this.apiUserProvider.put(this.apiUser, token, this.apiUser.id);
 
         resolve();
       } catch (err) {
@@ -367,7 +367,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(this.profilePicture, 'avatars', 524288);
+        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.profilePicture, 'avatars', 524288);
 
         if (storageFile) {
           this.user.data.photo_url = storageFile.downloadUrl;
@@ -398,7 +398,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineService.uploadFile(this.customLogo, 'images', 524288);
+        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.customLogo, 'images', 524288);
 
         if (storageFile) {
           this.user.data.social.custom_logo_url = storageFile.downloadUrl;
@@ -456,9 +456,9 @@ export class AppProfile {
 
   private async deleteUserCloud() {
     if (this.cloud === 'ic') {
-      await this.userService.delete(authStore.state.authUser.uid);
+      await this.userProvider.delete(authStore.state.authUser.uid);
 
-      await this.authService.signOut();
+      await this.authProvider.signOut();
 
       return;
     }
@@ -471,10 +471,10 @@ export class AppProfile {
 
     // We need the user token to access the API, therefore delete it here first
     const token: string = await firebase.auth().currentUser.getIdToken();
-    await this.apiUserService.delete(this.apiUser.id, token);
+    await this.apiUserProvider.delete(this.apiUser.id, token);
 
     // Then delete the user
-    await this.userService.delete(authStore.state.authUser.uid);
+    await this.userProvider.delete(authStore.state.authUser.uid);
 
     // Decks and slides are delete with a cloud function triggered on auth.delete
 

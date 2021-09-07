@@ -12,7 +12,7 @@ import {AuthUser} from '../../../../models/auth/auth.user';
 
 import {signIn} from '../../../../utils/core/signin.utils';
 
-import {TemplateService} from '../../../../services/data/template/template.service';
+import {TemplateProvider} from '../../../../providers/data/template/template.provider';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {modalController} from '../../../../utils/ionic/ionic.overlay';
 
@@ -21,7 +21,7 @@ import {modalController} from '../../../../utils/ionic/ionic.overlay';
   styleUrl: 'app-templates.scss'
 })
 export class AppTemplates {
-  private templateService: TemplateService;
+  private templateProvider: TemplateProvider;
 
   private destroyListener;
 
@@ -29,7 +29,7 @@ export class AppTemplates {
   private loading: boolean = false;
 
   constructor() {
-    this.templateService = TemplateService.getInstance();
+    this.templateProvider = TemplateProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -50,7 +50,7 @@ export class AppTemplates {
     try {
       this.loading = true;
 
-      await this.templateService.init();
+      await this.templateProvider.init();
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
@@ -79,12 +79,12 @@ export class AppTemplates {
   private async createOrUpdateTemplate(template: Template) {
     try {
       if (template.id) {
-        const updatedTemplate: Template = await this.templateService.update(template);
+        const updatedTemplate: Template = await this.templateProvider.update(template);
         templatesStore.state.user = [
           ...templatesStore.state.user.map((mapTemplate: Template) => (mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate))
         ];
       } else {
-        const createdTemplate: Template = await this.templateService.create(template.data);
+        const createdTemplate: Template = await this.templateProvider.create(template.data);
         templatesStore.state.user = [createdTemplate, ...templatesStore.state.user];
       }
     } catch (err) {

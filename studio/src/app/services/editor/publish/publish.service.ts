@@ -10,7 +10,7 @@ import authStore from '../../../stores/auth.store';
 import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
 import {UserSocial} from '../../../models/data/user';
 
-import {DeckFirebaseService} from '../../data/deck/deck.firebase.service';
+import {DeckFirebaseProvider} from '../../../providers/data/deck/deck.firebase.provider';
 
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 import {EnvironmentFirebaseConfig} from '../../../types/core/environment-config';
@@ -20,10 +20,10 @@ import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils
 export class PublishService {
   private static instance: PublishService;
 
-  private deckFirebaseService: DeckFirebaseService;
+  private deckFirebaseProvider: DeckFirebaseProvider;
 
   private constructor() {
-    this.deckFirebaseService = DeckFirebaseService.getInstance();
+    this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
   }
 
   static getInstance() {
@@ -165,7 +165,7 @@ export class PublishService {
           }
         }
 
-        const updatedDeck: Deck = await this.deckFirebaseService.update(deckStore.state.deck);
+        const updatedDeck: Deck = await this.deckFirebaseProvider.update(deckStore.state.deck);
         deckStore.state.deck = {...updatedDeck};
 
         resolve();

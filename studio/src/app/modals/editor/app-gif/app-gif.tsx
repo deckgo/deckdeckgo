@@ -2,7 +2,8 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
-import {GifService} from '../../../services/tenor/gif/gif.service';
+import {TenorProvider} from '../../../providers/tenor/tenor.provider';
+
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 import { AppIcon } from '../../../components/core/app-icon/app-icon';
@@ -14,7 +15,7 @@ import { AppIcon } from '../../../components/core/app-icon/app-icon';
 export class AppGif {
   @Element() el: HTMLElement;
 
-  private gifService: GifService;
+  private tenorProvider: TenorProvider;
 
   @State()
   private categoriesOdd: TenorCategory[];
@@ -44,7 +45,7 @@ export class AppGif {
   private searching: boolean = false;
 
   constructor() {
-    this.gifService = GifService.getInstance();
+    this.tenorProvider = TenorProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
@@ -72,7 +73,7 @@ export class AppGif {
 
       const gif: TenorGif = $event.detail;
 
-      await this.gifService.registerShare(gif.id);
+      await this.tenorProvider.registerShare(gif.id);
 
       await this.imageHistoryService.push(gif);
 
@@ -86,7 +87,7 @@ export class AppGif {
     return new Promise<void>(async (resolve) => {
       this.searching = true;
 
-      const categories: TenorCategory[] = await this.gifService.getCategories();
+      const categories: TenorCategory[] = await this.tenorProvider.getCategories();
 
       this.searching = false;
 
@@ -116,7 +117,7 @@ export class AppGif {
 
       this.searching = true;
 
-      const tenorResponse: TenorSearchResponse | undefined = await this.gifService.getGifs(this.searchTerm, this.paginationNext);
+      const tenorResponse: TenorSearchResponse | undefined = await this.tenorProvider.getGifs(this.searchTerm, this.paginationNext);
 
       this.searching = false;
 

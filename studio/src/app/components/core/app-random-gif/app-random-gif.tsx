@@ -1,6 +1,6 @@
 import {Component, h, Prop, State} from '@stencil/core';
 
-import {GifService} from '../../../services/tenor/gif/gif.service';
+import {TenorProvider} from '../../../providers/tenor/tenor.provider';
 
 @Component({
   tag: 'app-random-gif',
@@ -13,10 +13,10 @@ export class AppRandomGif {
   @State()
   private gif: TenorGif;
 
-  private gifService: GifService;
+  private tenorProvider: TenorProvider;
 
   constructor() {
-    this.gifService = GifService.getInstance();
+    this.tenorProvider = TenorProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -30,7 +30,7 @@ export class AppRandomGif {
         return;
       }
 
-      const gifResponse: TenorSearchResponse | undefined = await this.gifService.getRandomGif(this.keyword);
+      const gifResponse: TenorSearchResponse | undefined = await this.tenorProvider.getRandomGif(this.keyword);
 
       this.gif = gifResponse?.results?.[0] ?? null;
 

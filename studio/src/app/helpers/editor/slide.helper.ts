@@ -10,19 +10,19 @@ import {Deck} from '../../models/data/deck';
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
-import {TemplateService} from '../../services/data/template/template.service';
-import {DeckOfflineService} from '../../services/data/deck/deck.offline.service';
-import {SlideOfflineService} from '../../services/data/slide/slide.offline.service';
+import {TemplateProvider} from '../../providers/data/template/template.provider';
+import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
+import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 
 export class SlideHelper {
-  private slideOfflineService: SlideOfflineService;
-  private deckOfflineService: DeckOfflineService;
-  private templateService: TemplateService;
+  private deckOfflineProvider: DeckOfflineProvider;
+  private slideOfflineProvider: SlideOfflineProvider;
+  private templateProvider: TemplateProvider;
 
   constructor() {
-    this.slideOfflineService = SlideOfflineService.getInstance();
-    this.deckOfflineService = DeckOfflineService.getInstance();
-    this.templateService = TemplateService.getInstance();
+    this.slideOfflineProvider = SlideOfflineProvider.getInstance();
+    this.deckOfflineProvider = DeckOfflineProvider.getInstance();
+    this.templateProvider = TemplateProvider.getInstance();
   }
 
   loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
@@ -36,7 +36,7 @@ export class SlideHelper {
       busyStore.state.deckBusy = true;
 
       try {
-        const deck: Deck = await this.deckOfflineService.get(deckId);
+        const deck: Deck = await this.deckOfflineProvider.get(deckId);
 
         if (!deck || !deck.data) {
           errorStore.state.error = 'No deck could be fetched';
@@ -51,7 +51,7 @@ export class SlideHelper {
           return;
         }
 
-        await this.templateService.init();
+        await this.templateProvider.init();
 
         const promises: Promise<any>[] = [];
         deck.data.slides.forEach((slideId: string) => {
@@ -82,7 +82,7 @@ export class SlideHelper {
   private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
     return new Promise<any>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideOfflineService.get(deck.id, slideId);
+        const slide: Slide = await this.slideOfflineProvider.get(deck.id, slideId);
 
         await TemplateUtils.loadSlideTemplate(slide);
 
@@ -115,7 +115,7 @@ export class SlideHelper {
         let element: JSX.IntrinsicElements = null;
 
         if (store.state.deck?.data) {
-          const slide: Slide = await this.slideOfflineService.get(store.state.deck.id, slideId);
+          const slide: Slide = await this.slideOfflineProvider.get(store.state.deck.id, slideId);
           element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
         }
 

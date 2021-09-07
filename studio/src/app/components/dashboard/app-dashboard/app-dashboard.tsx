@@ -18,9 +18,9 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {TemplateService} from '../../../services/data/template/template.service';
-import {DeckService, getDeckService} from '../../../services/data/deck/deck.service';
-import {getSlideService, SlideService} from '../../../services/data/slide/slide.service';
+import {TemplateProvider} from '../../../providers/data/template/template.provider';
+import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
+import {getSlideService, SlideProvider} from '../../../providers/data/slide/slide.provider';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
@@ -50,10 +50,10 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckService: DeckService;
-  private readonly slideService: SlideService;
+  private readonly deckProvider: DeckProvider;
+  private readonly slideProvider: SlideProvider;
   private readonly deckDashboardService: DeckDashboardService;
-  private readonly templateService: TemplateService;
+  private readonly templateProvider: TemplateProvider;
 
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
@@ -63,10 +63,10 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.deckService = getDeckService();
-    this.slideService = getSlideService();
+    this.deckProvider = getDeckService();
+    this.slideProvider = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
-    this.templateService = TemplateService.getInstance();
+    this.templateProvider = TemplateProvider.getInstance();
   }
 
   async componentWillLoad() {
@@ -95,9 +95,9 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckService.entries(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await this.deckProvider.entries(authStore.state.authUser.uid);
 
-      await this.templateService.init();
+      await this.templateProvider.init();
 
       this.decks = await this.fetchFirstSlides(userDecks);
       await this.filterDecks(null);
@@ -175,7 +175,7 @@ export class AppDashboard {
       try {
         console.log('About to request slide in IC');
 
-        const slide: Slide = await this.slideService.get(deck.id, slideId);
+        const slide: Slide = await this.slideProvider.get(deck.id, slideId);
 
         console.log('Slide request done', slide);
 
