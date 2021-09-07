@@ -2,22 +2,22 @@ import {User} from '../../../models/data/user';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
-import {UserIcService} from './user.ic.service';
-import {UserFirebaseService} from './user.firebase.service';
+import {UserIcProvider} from './user.ic.provider';
+import {UserFirebaseProvider} from './user.firebase.provider';
 
-export interface UserService {
+export interface UserProvider {
   update(user: User): Promise<void>;
 
   delete(userId: string): Promise<void>;
 }
 
-export const getUserService = (): UserService => {
+export const getUserService = (): UserProvider => {
   const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
 
   if (cloud === 'ic') {
-    return UserIcService.getInstance();
+    return UserIcProvider.getInstance();
   } else if (cloud === 'firebase') {
-    return UserFirebaseService.getInstance();
+    return UserFirebaseProvider.getInstance();
   }
 
   throw new Error('Not implemented');

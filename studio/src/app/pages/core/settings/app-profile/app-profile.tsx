@@ -25,7 +25,7 @@ import {ApiUserProvider} from '../../../../providers/api/user/api.user.provider'
 import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.factory.provider';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
-import {getUserService, UserService} from '../../../../providers/data/user/user.service';
+import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
 import {getOnlineStorageService, StorageService} from '../../../../services/storage/storage.service';
 
 import {AuthProvider} from '../../../../providers/auth/auth.provider';
@@ -60,8 +60,9 @@ export class AppProfile {
   @State()
   private saving: boolean = false;
 
-  private userService: UserService;
-  private apiUserProvider: ApiUserProvider;
+  private readonly userProvider: UserProvider;
+  private readonly apiUserProvider: ApiUserProvider;
+  private readonly authProvider: AuthProvider;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -95,12 +96,10 @@ export class AppProfile {
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
-  private readonly authProvider: AuthProvider;
-
   constructor() {
     this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userService = getUserService();
+    this.userProvider = getUserService();
     this.storageOnlineService = getOnlineStorageService();
     this.authProvider = AuthFactoryProvider.getInstance();
   }
@@ -315,7 +314,7 @@ export class AppProfile {
       }
 
       try {
-        await this.userService.update({
+        await this.userProvider.update({
           id: this.user.id,
           data: {
             ...this.user.data,
@@ -458,7 +457,7 @@ export class AppProfile {
 
   private async deleteUserCloud() {
     if (this.cloud === 'ic') {
-      await this.userService.delete(authStore.state.authUser.uid);
+      await this.userProvider.delete(authStore.state.authUser.uid);
 
       await this.authProvider.signOut();
 
@@ -476,7 +475,7 @@ export class AppProfile {
     await this.apiUserProvider.delete(this.apiUser.id, token);
 
     // Then delete the user
-    await this.userService.delete(authStore.state.authUser.uid);
+    await this.userProvider.delete(authStore.state.authUser.uid);
 
     // Decks and slides are delete with a cloud function triggered on auth.delete
 

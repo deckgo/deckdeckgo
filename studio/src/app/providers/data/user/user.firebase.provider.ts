@@ -6,20 +6,20 @@ import store from '../../../stores/user.store';
 import {AuthUser} from '../../../models/auth/auth.user';
 import {User, UserData} from '../../../models/data/user';
 
-import {UserService} from './user.service';
+import {UserProvider} from './user.provider';
 
-export class UserFirebaseService implements UserService {
-  private static instance: UserFirebaseService;
+export class UserFirebaseProvider implements UserProvider {
+  private static instance: UserFirebaseProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!UserFirebaseService.instance) {
-      UserFirebaseService.instance = new UserFirebaseService();
+    if (!UserFirebaseProvider.instance) {
+      UserFirebaseProvider.instance = new UserFirebaseProvider();
     }
-    return UserFirebaseService.instance;
+    return UserFirebaseProvider.instance;
   }
 
   create(authUser: AuthUser): Promise<void> {

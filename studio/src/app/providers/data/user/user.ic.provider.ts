@@ -8,25 +8,25 @@ import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
 import {User} from '../../../models/data/user';
 
-import {UserService} from './user.service';
+import {UserProvider} from './user.provider';
 
 import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
 import {initSlidesActor} from '../../../utils/core/ic.slide.utils';
 
-export class UserIcService implements UserService {
-  private static instance: UserIcService;
+export class UserIcProvider implements UserProvider {
+  private static instance: UserIcProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!UserIcService.instance) {
-      UserIcService.instance = new UserIcService();
+    if (!UserIcProvider.instance) {
+      UserIcProvider.instance = new UserIcProvider();
     }
-    return UserIcService.instance;
+    return UserIcProvider.instance;
   }
 
   // @Override
