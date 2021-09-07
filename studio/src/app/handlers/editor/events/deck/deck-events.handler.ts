@@ -33,7 +33,7 @@ import {SlideUtils} from '../../../../utils/editor/slide.utils';
 import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {DeckOfflineProvider} from '../../../../providers/data/deck/deck.offline.provider';
-import {SlideOfflineService} from '../../../../providers/data/slide/slide.offline.service';
+import {SlideOfflineProvider} from '../../../../providers/data/slide/slide.offline.provider';
 
 import {DeckAction} from '../../../../types/editor/deck-action';
 
@@ -41,14 +41,14 @@ export class DeckEventsHandler {
   private mainRef: HTMLElement;
 
   private deckOfflineProvider: DeckOfflineProvider;
-  private slideOfflineService: SlideOfflineService;
+  private slideOfflineProvider: SlideOfflineProvider;
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
 
   constructor() {
     this.deckOfflineProvider = DeckOfflineProvider.getInstance();
-    this.slideOfflineService = SlideOfflineService.getInstance();
+    this.slideOfflineProvider = SlideOfflineProvider.getInstance();
 
     this.debounceUpdateSlide = debounce(async (element: HTMLElement) => {
       await this.updateSlide(element);
@@ -253,7 +253,7 @@ export class DeckEventsHandler {
         slideData.attributes = attributes;
       }
 
-      const persistedSlide: Slide = await this.slideOfflineService.create(deck.id, slideData);
+      const persistedSlide: Slide = await this.slideOfflineProvider.create(deck.id, slideData);
 
       if (persistedSlide && persistedSlide.id) {
         slide.setAttribute('slide_id', persistedSlide.id);
@@ -478,7 +478,7 @@ export class DeckEventsHandler {
         }
 
         if (deckStore.state.deck) {
-          await this.slideOfflineService.update(deckStore.state.deck.id, slideUpdate);
+          await this.slideOfflineProvider.update(deckStore.state.deck.id, slideUpdate);
         }
 
         busyStore.state.deckBusy = false;
@@ -511,7 +511,7 @@ export class DeckEventsHandler {
         const currentDeck: Deck | null = deckStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
-          const slide: Slide = await this.slideOfflineService.get(currentDeck.id, slideId);
+          const slide: Slide = await this.slideOfflineProvider.get(currentDeck.id, slideId);
 
           if (slide && slide.data) {
             // As we cannot, I think, perform following atomically, it is safer to first remove the slide from the list of slides and then remove it effectively.
@@ -525,7 +525,7 @@ export class DeckEventsHandler {
             }
 
             // 2. Delete the slide
-            await this.slideOfflineService.delete(currentDeck.id, slideId);
+            await this.slideOfflineProvider.delete(currentDeck.id, slideId);
           }
         }
 

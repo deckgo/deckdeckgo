@@ -3,20 +3,20 @@ import 'firebase/firestore';
 
 import {Slide, SlideData} from '../../../models/data/slide';
 
-import {SlideService} from './slide.service';
+import {SlideProvider} from './slide.provider';
 
-export class SlideFirebaseService implements SlideService {
-  private static instance: SlideFirebaseService;
+export class SlideFirebaseProvider implements SlideProvider {
+  private static instance: SlideFirebaseProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!SlideFirebaseService.instance) {
-      SlideFirebaseService.instance = new SlideFirebaseService();
+    if (!SlideFirebaseProvider.instance) {
+      SlideFirebaseProvider.instance = new SlideFirebaseProvider();
     }
-    return SlideFirebaseService.instance;
+    return SlideFirebaseProvider.instance;
   }
 
   // @Override

@@ -8,20 +8,20 @@ import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {syncDeleteSlide, syncUpdateSlide} from '../../../utils/editor/sync.utils';
 
-import {SlideService} from './slide.service';
+import {SlideProvider} from './slide.provider';
 
-export class SlideOfflineService implements SlideService {
-  private static instance: SlideOfflineService;
+export class SlideOfflineProvider implements SlideProvider {
+  private static instance: SlideOfflineProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!SlideOfflineService.instance) {
-      SlideOfflineService.instance = new SlideOfflineService();
+    if (!SlideOfflineProvider.instance) {
+      SlideOfflineProvider.instance = new SlideOfflineProvider();
     }
-    return SlideOfflineService.instance;
+    return SlideOfflineProvider.instance;
   }
 
   create(deckId: string, slideData: SlideData): Promise<Slide> {

@@ -20,7 +20,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {TemplateService} from '../../../providers/data/template/template.service';
 import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
-import {getSlideService, SlideService} from '../../../providers/data/slide/slide.service';
+import {getSlideService, SlideProvider} from '../../../providers/data/slide/slide.provider';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
@@ -51,7 +51,7 @@ export class AppDashboard {
   private decks: DeckAndFirstSlide[] = null;
 
   private readonly deckProvider: DeckProvider;
-  private readonly slideService: SlideService;
+  private readonly slideProvider: SlideProvider;
   private readonly deckDashboardService: DeckDashboardService;
   private readonly templateService: TemplateService;
 
@@ -64,7 +64,7 @@ export class AppDashboard {
 
   constructor() {
     this.deckProvider = getDeckService();
-    this.slideService = getSlideService();
+    this.slideProvider = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
     this.templateService = TemplateService.getInstance();
   }
@@ -175,7 +175,7 @@ export class AppDashboard {
       try {
         console.log('About to request slide in IC');
 
-        const slide: Slide = await this.slideService.get(deck.id, slideId);
+        const slide: Slide = await this.slideProvider.get(deck.id, slideId);
 
         console.log('Slide request done', slide);
 

@@ -5,18 +5,18 @@ import errorStore from '../../../stores/error.store';
 
 import {Token} from '../../../models/data/token';
 
-export class PlatformService {
-  private static instance: PlatformService;
+export class PlatformProvider {
+  private static instance: PlatformProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!PlatformService.instance) {
-      PlatformService.instance = new PlatformService();
+    if (!PlatformProvider.instance) {
+      PlatformProvider.instance = new PlatformProvider();
     }
-    return PlatformService.instance;
+    return PlatformProvider.instance;
   }
 
   async merge(token: Token) {

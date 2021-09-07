@@ -9,23 +9,23 @@ import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../.
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
-import {SlideService} from './slide.service';
+import {SlideProvider} from './slide.provider';
 
 import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
-export class SlideIcService implements SlideService {
-  private static instance: SlideIcService;
+export class SlideIcProvider implements SlideProvider {
+  private static instance: SlideIcProvider;
 
   private constructor() {
     // Private constructor, singleton
   }
 
   static getInstance() {
-    if (!SlideIcService.instance) {
-      SlideIcService.instance = new SlideIcService();
+    if (!SlideIcProvider.instance) {
+      SlideIcProvider.instance = new SlideIcProvider();
     }
-    return SlideIcService.instance;
+    return SlideIcProvider.instance;
   }
 
   // @Override

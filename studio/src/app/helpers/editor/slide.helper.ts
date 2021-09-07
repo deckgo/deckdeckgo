@@ -12,15 +12,15 @@ import {TemplateUtils} from '../../utils/editor/template.utils';
 
 import {TemplateService} from '../../providers/data/template/template.service';
 import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
-import {SlideOfflineService} from '../../providers/data/slide/slide.offline.service';
+import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
 
 export class SlideHelper {
-  private slideOfflineService: SlideOfflineService;
   private deckOfflineProvider: DeckOfflineProvider;
+  private slideOfflineProvider: SlideOfflineProvider;
   private templateService: TemplateService;
 
   constructor() {
-    this.slideOfflineService = SlideOfflineService.getInstance();
+    this.slideOfflineProvider = SlideOfflineProvider.getInstance();
     this.deckOfflineProvider = DeckOfflineProvider.getInstance();
     this.templateService = TemplateService.getInstance();
   }
@@ -82,7 +82,7 @@ export class SlideHelper {
   private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
     return new Promise<any>(async (resolve) => {
       try {
-        const slide: Slide = await this.slideOfflineService.get(deck.id, slideId);
+        const slide: Slide = await this.slideOfflineProvider.get(deck.id, slideId);
 
         await TemplateUtils.loadSlideTemplate(slide);
 
@@ -115,7 +115,7 @@ export class SlideHelper {
         let element: JSX.IntrinsicElements = null;
 
         if (store.state.deck?.data) {
-          const slide: Slide = await this.slideOfflineService.get(store.state.deck.id, slideId);
+          const slide: Slide = await this.slideOfflineProvider.get(store.state.deck.id, slideId);
           element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
         }
 

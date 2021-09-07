@@ -16,13 +16,13 @@ import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 import {deckSelector} from '../../../utils/editor/deck.utils';
 
-import {SlideFirebaseService} from '../../../providers/data/slide/slide.firebase.service';
+import {SlideFirebaseProvider} from '../../../providers/data/slide/slide.firebase.provider';
 import {DeckFirebaseProvider} from '../../../providers/data/deck/deck.firebase.provider';
 import {StorageFirebaseService} from '../../storage/storage.firebase.service';
 import {SyncService} from './sync.service';
 
 export class SyncFirebaseService extends SyncService {
-  private slideFirebaseService: SlideFirebaseService;
+  private slideFirebaseService: SlideFirebaseProvider;
   private deckFirebaseProvider: DeckFirebaseProvider;
 
   private storageFirebaseService: StorageFirebaseService;
@@ -31,7 +31,7 @@ export class SyncFirebaseService extends SyncService {
     super();
 
     this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
-    this.slideFirebaseService = SlideFirebaseService.getInstance();
+    this.slideFirebaseService = SlideFirebaseProvider.getInstance();
     this.storageFirebaseService = StorageFirebaseService.getInstance();
   }
 
