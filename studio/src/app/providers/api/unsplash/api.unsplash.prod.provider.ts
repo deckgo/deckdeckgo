@@ -1,11 +1,11 @@
-import {ApiPhotoService} from './api.photo.service';
+import {ApiUnsplashProvider} from './api.unsplash.provider';
 
 import {EnvironmentUnsplashConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 import store from '../../../stores/error.store';
 
-export class ApiPhotoProdService extends ApiPhotoService {
+export class ApiUnsplashProdProvider extends ApiUnsplashProvider {
   // @Override
   getPhotos(searchTerm: string, next: string | number): Promise<UnsplashSearchResponse | undefined> {
     return new Promise<UnsplashSearchResponse>(async (resolve) => {

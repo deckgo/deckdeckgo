@@ -2,8 +2,8 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
-import {ApiPhotoService} from '../../../providers/api/photo/api.photo.service';
-import {ApiPhotoFactoryService} from '../../../providers/api/photo/api.photo.factory.service';
+import {ApiUnsplashProvider} from '../../../providers/api/unsplash/api.unsplash.provider';
+import {ApiUnsplashFactoryProvider} from '../../../providers/api/unsplash/api.unsplash.factory.provider';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
@@ -16,7 +16,7 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 export class AppPhoto {
   @Element() el: HTMLElement;
 
-  private photoService: ApiPhotoService;
+  private unsplashProvider: ApiUnsplashProvider;
   private imageHistoryService: ImageHistoryService;
 
   @State()
@@ -39,7 +39,7 @@ export class AppPhoto {
   private searching: boolean = false;
 
   constructor() {
-    this.photoService = ApiPhotoFactoryService.getInstance();
+    this.unsplashProvider = ApiUnsplashFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
@@ -65,7 +65,7 @@ export class AppPhoto {
 
       const photo: UnsplashPhoto = $event.detail;
 
-      await this.photoService.registerDownload(photo.id);
+      await this.unsplashProvider.registerDownload(photo.id);
 
       await this.imageHistoryService.push(photo);
 
@@ -104,7 +104,7 @@ export class AppPhoto {
 
       this.searching = true;
 
-      const unsplashResponse: UnsplashSearchResponse | undefined = await this.photoService.getPhotos(this.searchTerm, this.paginationNext);
+      const unsplashResponse: UnsplashSearchResponse | undefined = await this.unsplashProvider.getPhotos(this.searchTerm, this.paginationNext);
 
       this.searching = false;
 

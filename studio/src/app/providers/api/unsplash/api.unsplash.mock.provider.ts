@@ -1,6 +1,6 @@
-import {ApiPhotoService} from './api.photo.service';
+import {ApiUnsplashProvider} from './api.unsplash.provider';
 
-export class ApiPhotoMockService extends ApiPhotoService {
+export class ApiUnsplashMockProvider extends ApiUnsplashProvider {
   // @Override
   getPhotos(_searchTerm: string, _next: string | number): Promise<UnsplashSearchResponse | undefined> {
     return new Promise<UnsplashSearchResponse>(async (resolve) => {
