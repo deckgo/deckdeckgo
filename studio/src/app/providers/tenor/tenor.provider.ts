@@ -1,19 +1,19 @@
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {get, set} from 'idb-keyval';
 
-import store from '../../../stores/error.store';
+import store from '../../stores/error.store';
 
-import {EnvironmentTenorConfig} from '../../../types/core/environment-config';
+import {EnvironmentTenorConfig} from '../../types/core/environment-config';
 
-export class GifService {
-  private static instance: GifService;
+export class TenorProvider {
+  private static instance: TenorProvider;
 
   static getInstance() {
-    if (!GifService.instance) {
-      GifService.instance = new GifService();
+    if (!TenorProvider.instance) {
+      TenorProvider.instance = new TenorProvider();
     }
-    return GifService.instance;
+    return TenorProvider.instance;
   }
 
   getCategories(): Promise<TenorCategory[]> {
