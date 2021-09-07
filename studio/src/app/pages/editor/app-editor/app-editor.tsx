@@ -39,8 +39,9 @@ import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
-import {SyncService} from '../../../providers/sync/sync.service';
-import {SyncFactoryService} from '../../../providers/sync/sync.factory.service';
+
+import {SyncProvider} from '../../../providers/sync/sync.provider';
+import {SyncFactoryProvider} from '../../../providers/sync/sync.factory.provider';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {SyncEvent} from '../../../types/editor/sync';
@@ -126,11 +127,11 @@ export class AppEditor {
   private mainResizeObserver: ResizeObserver;
   private slideResizeObserver: ResizeObserver;
 
-  private syncService: SyncService;
+  private syncProvider: SyncProvider;
 
   constructor() {
     this.fontsService = FontsService.getInstance();
-    this.syncService = SyncFactoryService.getInstance();
+    this.syncProvider = SyncFactoryProvider.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -162,7 +163,7 @@ export class AppEditor {
         return;
       }
 
-      await this.syncService.upload(data.data);
+      await this.syncProvider.upload(data.data);
     };
   }
 

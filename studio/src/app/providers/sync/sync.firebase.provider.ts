@@ -19,9 +19,9 @@ import {deckSelector} from '../../utils/editor/deck.utils';
 import {SlideFirebaseProvider} from '../data/slide/slide.firebase.provider';
 import {DeckFirebaseProvider} from '../data/deck/deck.firebase.provider';
 import {StorageFirebaseProvider} from '../storage/storage.firebase.provider';
-import {SyncService} from './sync.service';
+import {SyncProvider} from './sync.provider';
 
-export class SyncFirebaseService extends SyncService {
+export class SyncFirebaseProvider extends SyncProvider {
   private slideFirebaseService: SlideFirebaseProvider;
   private deckFirebaseProvider: DeckFirebaseProvider;
   private storageFirebaseProvider: StorageFirebaseProvider;

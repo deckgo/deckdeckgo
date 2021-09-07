@@ -5,7 +5,7 @@ import authStore from '../../stores/auth.store';
 
 import {SyncData, SyncPending, SyncPendingDeck} from '../../types/editor/sync';
 
-export abstract class SyncService {
+export abstract class SyncProvider {
   abstract upload(syncData: SyncData | undefined): Promise<void>;
 
   protected async clean({syncedAt}: SyncData) {

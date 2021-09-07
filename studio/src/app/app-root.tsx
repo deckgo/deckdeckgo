@@ -13,8 +13,8 @@ import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/editor/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {SyncService} from './providers/sync/sync.service';
-import {SyncFactoryService} from './providers/sync/sync.factory.service';
+import {SyncProvider} from './providers/sync/sync.provider';
+import {SyncFactoryProvider} from './providers/sync/sync.factory.provider';
 
 import {toastController} from './utils/ionic/ionic.overlay';
 
@@ -26,12 +26,12 @@ export class AppRoot {
   @Element() el: HTMLElement;
 
   private readonly authProvider: AuthProvider;
+  private readonly syncProvider: SyncProvider;
 
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
   private readonly settingsService: SettingsService;
   private readonly langService: LangService;
-  private readonly syncService: SyncService;
 
   @State()
   private loading: boolean = true;
@@ -49,11 +49,11 @@ export class AppRoot {
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
     this.langService = LangService.getInstance();
-    this.syncService = SyncFactoryService.getInstance();
+    this.syncProvider = SyncFactoryProvider.getInstance();
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncService.initSyncState());
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncProvider.initSyncState());
 
     const promises: Promise<void>[] = [
       this.authProvider.init(),

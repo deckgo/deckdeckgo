@@ -10,14 +10,14 @@ import {InternetIdentityAuth} from '../../types/core/ic.identity';
 import {internetComputer} from '../../utils/core/environment.utils';
 import {internetIdentityAuth} from '../../utils/core/ic.identity.utils';
 
-import {SyncService} from './sync.service';
+import {SyncProvider} from './sync.provider';
 
 import {AuthFactoryProvider} from '../auth/auth.factory.provider';
 import {AuthIcProvider} from '../auth/auth.ic.provider';
 
 import {uploadWorker} from '../../workers/sync.ic.worker';
 
-export class SyncIcService extends SyncService {
+export class SyncIcProvider extends SyncProvider {
   // @Override
   async upload(syncData: SyncData | undefined) {
     try {

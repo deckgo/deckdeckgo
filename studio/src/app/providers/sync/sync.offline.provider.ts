@@ -1,8 +1,8 @@
 import {SyncData} from '../../types/editor/sync';
 
-import {SyncService} from './sync.service';
+import {SyncProvider} from './sync.provider';
 
-export class SyncOfflineService extends SyncService {
+export class SyncOfflineProvider extends SyncProvider {
   // @Override
   upload(_syncData: SyncData | undefined): Promise<void> {
     return Promise.resolve();
