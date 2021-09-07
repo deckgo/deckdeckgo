@@ -1,6 +1,6 @@
 import {Component, h, Prop, State} from '@stencil/core';
 
-import {GifService} from '../../../services/tenor/gif/gif.service';
+import {GifService} from '../../../providers/tenor/gif/gif.service';
 
 @Component({
   tag: 'app-random-gif',

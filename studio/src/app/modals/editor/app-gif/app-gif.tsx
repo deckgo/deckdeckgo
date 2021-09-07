@@ -2,7 +2,7 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
-import {GifService} from '../../../services/tenor/gif/gif.service';
+import {GifService} from '../../../providers/tenor/gif/gif.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 import { AppIcon } from '../../../components/core/app-icon/app-icon';
