@@ -1,6 +1,6 @@
 import {Component, Element, Method, Host, Prop, h, Watch, State} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-youtube',

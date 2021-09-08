@@ -1,6 +1,6 @@
 import {Component, Prop, h, Host, Element, State, Event, EventEmitter, Method} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 import {debounce} from '@deckdeckgo/utils';
 

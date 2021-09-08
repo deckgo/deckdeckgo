@@ -26,15 +26,6 @@
     "@deckdeckgo/slide-utils": "^4.0.3",
     "@deckdeckgo/utils": "^2.0.1"
   },
-  "devDependencies": {
-    "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git",
@@ -57,10 +48,5 @@
     "slideshow",
     "talk",
     "d3js"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

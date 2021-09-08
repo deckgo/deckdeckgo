@@ -23,15 +23,6 @@
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
-  "devDependencies": {
-    "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0"
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -54,10 +45,5 @@
     "slideshow",
     "talk",
     "pager"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

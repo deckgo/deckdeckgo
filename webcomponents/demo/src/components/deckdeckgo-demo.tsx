@@ -2,7 +2,7 @@ import {Component, h, Prop, State, Element, Method, Watch} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-demo',

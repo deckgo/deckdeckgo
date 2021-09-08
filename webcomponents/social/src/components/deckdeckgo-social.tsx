@@ -1,6 +1,6 @@
 import {Component, Method, Prop, State, Watch, h, Host} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 /**
  * @slot - A custom text to be displayed

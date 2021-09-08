@@ -24,19 +24,7 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@deckdeckgo/slide-utils": "^4.0.3",
-    "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "@types/jest": "26.0.23",
-    "@types/puppeteer": "5.4.3",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "jest": "26.4.2",
-    "jest-cli": "26.4.2",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0",
-    "puppeteer": "9.1.1"
+    "@deckdeckgo/slide-utils": "^4.0.3"
   },
   "license": "MIT",
   "repository": {
@@ -67,10 +55,5 @@
     "dev",
     "thepracticaldev",
     "github"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }
