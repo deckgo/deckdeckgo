@@ -82,7 +82,7 @@
 
 ### Fix
 
-- `Rollup: Unresolved Import Could not resolve './components' from ../webcomponents/slides/playground/dist/collection/index.js`
+- `Rollup: Unresolved Import Could not resolve './components' from ../templates/playground/dist/collection/index.js`
 
 # 1.1.0 (2020-07-10)
 
