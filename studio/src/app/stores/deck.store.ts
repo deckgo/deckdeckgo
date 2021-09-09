@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import { set } from 'idb-keyval';
+import {set} from 'idb-keyval';
 
 import {Deck} from '../models/data/deck';
 

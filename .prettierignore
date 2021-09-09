@@ -15,3 +15,5 @@ docs/storybook-static/**/*
 
 .cache
 public
+
+.dfx

@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 import {PublishService} from '../../../services/editor/publish/publish.service';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-publish',
@@ -90,7 +90,10 @@ export class AppPublish {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding fullscreen-padding">
-        <main class={this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'}>
+        <main
+          class={
+            this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '' ? 'published ion-padding' : 'ion-padding'
+          }>
           {this.renderMain()}
         </main>
       </ion-content>

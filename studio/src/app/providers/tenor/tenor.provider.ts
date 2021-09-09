@@ -102,7 +102,16 @@ export class TenorProvider {
       const anonymousId: string = await this.getAnonymousId();
 
       const searchUrl: string =
-        config.url + 'random?q=' + searchTerm + '&key=' + config.key + '&ar_range=standard&limit=' + 1 + '&anon_id=' + anonymousId + '&media_filter=minimal';
+        config.url +
+        'random?q=' +
+        searchTerm +
+        '&key=' +
+        config.key +
+        '&ar_range=standard&limit=' +
+        1 +
+        '&anon_id=' +
+        anonymousId +
+        '&media_filter=minimal';
 
       try {
         const rawResponse: Response = await fetch(searchUrl);

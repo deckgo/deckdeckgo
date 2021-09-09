@@ -15,5 +15,9 @@ export interface DeckProvider {
 
 export const getDeckService = (): DeckProvider => {
   const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-  return cloud === 'ic' ? DeckIcProvider.getInstance() : cloud === 'firebase' ? DeckFirebaseProvider.getInstance() : DeckOfflineProvider.getInstance();
+  return cloud === 'ic'
+    ? DeckIcProvider.getInstance()
+    : cloud === 'firebase'
+    ? DeckFirebaseProvider.getInstance()
+    : DeckOfflineProvider.getInstance();
 };

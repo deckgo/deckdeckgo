@@ -126,7 +126,8 @@ export class AppElementStyle {
       return;
     }
 
-    const elementTarget: boolean = this.selectedElement.type === 'element' && !this.selectedElement.slot?.image && !this.selectedElement.slot?.wordCloud;
+    const elementTarget: boolean =
+      this.selectedElement.type === 'element' && !this.selectedElement.slot?.image && !this.selectedElement.slot?.wordCloud;
     const transition: boolean =
       this.selectedElement.type === 'element' &&
       !this.selectedElement.slot?.code &&
@@ -153,13 +154,23 @@ export class AppElementStyle {
 
   private renderStyleOptions() {
     if (this.applyToTargetElement === TargetElement.QR_CODE) {
-      return <app-color-qrcode selectedElement={this.selectedElement.element} onColorChange={() => this.emitStyleChange()}></app-color-qrcode>;
+      return (
+        <app-color-qrcode selectedElement={this.selectedElement.element} onColorChange={() => this.emitStyleChange()}></app-color-qrcode>
+      );
     } else if (this.applyToTargetElement === TargetElement.CHART) {
-      return <app-color-chart selectedElement={this.selectedElement.element} onColorChange={() => this.emitStyleChange()}></app-color-chart>;
+      return (
+        <app-color-chart selectedElement={this.selectedElement.element} onColorChange={() => this.emitStyleChange()}></app-color-chart>
+      );
     } else if (this.applyToTargetElement === TargetElement.CODE) {
-      return <app-color-code selectedElement={this.selectedElement.element} onCodeDidChange={() => this.emitStyleChange()}></app-color-code>;
+      return (
+        <app-color-code selectedElement={this.selectedElement.element} onCodeDidChange={() => this.emitStyleChange()}></app-color-code>
+      );
     } else if (this.applyToTargetElement === TargetElement.WORD_CLOUD) {
-      return <app-color-word-cloud selectedElement={this.selectedElement.element} onWordCloudDidChange={() => this.emitStyleChange()}></app-color-word-cloud>;
+      return (
+        <app-color-word-cloud
+          selectedElement={this.selectedElement.element}
+          onWordCloudDidChange={() => this.emitStyleChange()}></app-color-word-cloud>
+      );
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (
         <app-color-sides
@@ -216,8 +227,14 @@ export class AppElementStyle {
     ];
 
     if (this.selectedElement.type === 'element') {
-      background.push(<app-border-radius selectedElement={this.selectedElement} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>);
-      background.push(<app-box-shadow selectedElement={this.selectedElement} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>);
+      background.push(
+        <app-border-radius
+          selectedElement={this.selectedElement}
+          onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
+      );
+      background.push(
+        <app-box-shadow selectedElement={this.selectedElement} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>
+      );
     }
 
     return background;

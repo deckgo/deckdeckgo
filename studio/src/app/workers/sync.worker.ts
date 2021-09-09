@@ -36,7 +36,7 @@ const syncData = async () => {
 
   const {updateDecks, deleteDecks, deleteSlides, updateSlides} = data;
 
-  if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length ===  0) {
+  if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length === 0) {
     return;
   }
 
@@ -56,24 +56,35 @@ const collectData = async (): Promise<SyncData | undefined> => {
 
   const syncedAt: Date = new Date();
 
-  const updateDecks: SyncDataDeck[] | undefined = (await getMany(uniqueSyncData(data.updateDecks).map(({key}: SyncPendingDeck) => key))).map((deck: Deck) => ({
+  const updateDecks: SyncDataDeck[] | undefined = (
+    await getMany(uniqueSyncData(data.updateDecks).map(({key}: SyncPendingDeck) => key))
+  ).map((deck: Deck) => ({
     deckId: deck.id,
     deck
   }));
 
   const deleteDecks: SyncDataDeck[] | undefined = uniqueSyncData(data.deleteDecks).map(({deckId}: SyncPendingDeck) => ({deckId}));
 
-  const updateSlides: SyncDataSlide[] | undefined = await Promise.all(uniqueSyncData(data.updateSlides).map((slide: SyncPendingSlide) => getSlide(slide)));
+  const updateSlides: SyncDataSlide[] | undefined = await Promise.all(
+    uniqueSyncData(data.updateSlides).map((slide: SyncPendingSlide) => getSlide(slide))
+  );
 
-  const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({deckId, slideId}));
+  const deleteSlides: SyncDataSlide[] | undefined = uniqueSyncData(data.deleteSlides).map(({deckId, slideId}: SyncPendingSlide) => ({
+    deckId,
+    slideId
+  }));
 
   return {
     updateDecks: deleteDecks
-      ? updateDecks?.filter(({deckId}: SyncDataDeck) => !deleteDecks.find(({deckId: deleteDeckId}: SyncDataDeck) => deleteDeckId === deckId))
+      ? updateDecks?.filter(
+          ({deckId}: SyncDataDeck) => !deleteDecks.find(({deckId: deleteDeckId}: SyncDataDeck) => deleteDeckId === deckId)
+        )
       : updateDecks,
     deleteDecks,
     updateSlides: deleteSlides
-      ? updateSlides?.filter(({slideId}: SyncDataSlide) => !deleteSlides.find(({slideId: deleteSlideId}: SyncDataSlide) => deleteSlideId === slideId))
+      ? updateSlides?.filter(
+          ({slideId}: SyncDataSlide) => !deleteSlides.find(({slideId: deleteSlideId}: SyncDataSlide) => deleteSlideId === slideId)
+        )
       : updateSlides,
     deleteSlides,
     syncedAt

@@ -309,7 +309,9 @@ export class AppBoxShadow {
               value={this.boxShadowProperties.get('blurRadius')}
               mode="md"
               disabled={!this.boxShadow}
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'blurRadius')}></ion-range>
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) =>
+                this.updateBoxShadowProperties($event, 'blurRadius')
+              }></ion-range>
           </ion-item>
           <ion-item-divider class="ion-padding-top">
             <ion-label>
@@ -324,7 +326,9 @@ export class AppBoxShadow {
               value={this.boxShadowProperties.get('spreadRadius')}
               mode="md"
               disabled={!this.boxShadow}
-              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) => this.updateBoxShadowProperties($event, 'spreadRadius')}></ion-range>
+              onIonChange={($event: CustomEvent<RangeChangeEventDetail>) =>
+                this.updateBoxShadowProperties($event, 'spreadRadius')
+              }></ion-range>
           </ion-item>
         </ion-list>
 

@@ -32,7 +32,12 @@ export class NodeUtils {
     }, []);
   }
 
-  static async findColors(node: HTMLElement, color: 'color' | 'background', deck: HTMLElement, slide: HTMLElement): Promise<string | undefined> {
+  static async findColors(
+    node: HTMLElement,
+    color: 'color' | 'background',
+    deck: HTMLElement,
+    slide: HTMLElement
+  ): Promise<string | undefined> {
     // Just in case
     if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
       return undefined;

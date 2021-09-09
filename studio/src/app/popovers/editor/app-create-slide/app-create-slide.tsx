@@ -148,7 +148,9 @@ export class AppCreateSlide {
   }
 
   private getSlideTemplate(): SlideTemplate | undefined {
-    return this.composeTemplate.scope === undefined ? SlideTemplate[(this.composeTemplate.template as SlideTemplate)?.toUpperCase()] : undefined;
+    return this.composeTemplate.scope === undefined
+      ? SlideTemplate[(this.composeTemplate.template as SlideTemplate)?.toUpperCase()]
+      : undefined;
   }
 
   private async selectTemplateUser($event: CustomEvent<Template>) {
@@ -196,7 +198,9 @@ export class AppCreateSlide {
         mode="md"
         value={this.templatesCategory}
         color="dark"
-        onIonChange={($event: CustomEvent<SegmentChangeEventDetail>) => (this.templatesCategory = $event?.detail?.value as 'default' | 'community' | 'user')}
+        onIonChange={($event: CustomEvent<SegmentChangeEventDetail>) =>
+          (this.templatesCategory = $event?.detail?.value as 'default' | 'community' | 'user')
+        }
         disabled={this.composeTemplate !== undefined}>
         <ion-segment-button mode="md" value="default">
           <ion-label>{i18n.state.editor.default}</ion-label>
@@ -218,7 +222,9 @@ export class AppCreateSlide {
       return <h2>{i18n.state.editor.add_new_slide}</h2>;
     }
 
-    return <h2>{this.composeTemplate?.template === SlideTemplate.CHART ? i18n.state.editor.select_chart : i18n.state.editor.compose_slide}</h2>;
+    return (
+      <h2>{this.composeTemplate?.template === SlideTemplate.CHART ? i18n.state.editor.select_chart : i18n.state.editor.compose_slide}</h2>
+    );
   }
 
   private renderToolbarAction() {
@@ -283,7 +289,9 @@ export class AppCreateSlide {
     return (
       <app-templates-default
         class="container ion-margin-bottom"
-        onSelectedTemplate={($event: CustomEvent) => this.closePopoverOpenTemplateOptions($event.detail?.template, $event.detail?.attributes)}
+        onSelectedTemplate={($event: CustomEvent) =>
+          this.closePopoverOpenTemplateOptions($event.detail?.template, $event.detail?.attributes)
+        }
         onAddSlideQRCode={() => this.addSlideQRCode()}
         onAddSlideAuthor={() => this.addRestrictedSlide(SlideTemplate.AUTHOR)}
         onAddSlideAspectRatio={() => this.addSlide(SlideTemplate['ASPECT-RATIO'])}
@@ -301,7 +309,9 @@ export class AppCreateSlide {
       return (
         <app-templates-charts
           class="container ion-margin-bottom"
-          onSelectedTemplate={($event: CustomEvent) => this.closePopover($event.detail?.template, null, $event.detail?.attributes)}></app-templates-charts>
+          onSelectedTemplate={($event: CustomEvent) =>
+            this.closePopover($event.detail?.template, null, $event.detail?.attributes)
+          }></app-templates-charts>
       );
     }
 
@@ -323,7 +333,11 @@ export class AppCreateSlide {
 
     if (slideTemplate === SlideTemplate.CONTENT) {
       return (
-        <app-templates-content highlight={true} highlightIndex={this.elements?.length} {...attr} style={this.composeTemplate.style}></app-templates-content>
+        <app-templates-content
+          highlight={true}
+          highlightIndex={this.elements?.length}
+          {...attr}
+          style={this.composeTemplate.style}></app-templates-content>
       );
     } else if (slideTemplate === SlideTemplate.SPLIT) {
       return <app-templates-split vertical={this.composeTemplate.attributes !== undefined} {...attr}></app-templates-split>;

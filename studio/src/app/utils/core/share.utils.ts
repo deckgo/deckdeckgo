@@ -23,7 +23,11 @@ export async function getShareText(deck: Deck | null, userName: string | undefin
   return getCommonShareText(deck, userName, 'DeckDeckGo');
 }
 
-export async function getShareTwitterText(deck: Deck | null, userName: string | undefined, userSocial: UserSocial | undefined): Promise<string> {
+export async function getShareTwitterText(
+  deck: Deck | null,
+  userName: string | undefined,
+  userSocial: UserSocial | undefined
+): Promise<string> {
   if (!userSocial || userSocial === undefined || !userSocial.twitter || userSocial.twitter === undefined || userSocial.twitter === '') {
     return getCommonShareText(deck, userName, '@deckdeckgo');
   }

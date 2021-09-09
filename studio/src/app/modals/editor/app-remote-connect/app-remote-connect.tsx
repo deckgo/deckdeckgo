@@ -6,7 +6,7 @@ import i18n from '../../../stores/i18n.store';
 import {RemoteService} from '../../../services/editor/remote/remote.service';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-remote-connect',

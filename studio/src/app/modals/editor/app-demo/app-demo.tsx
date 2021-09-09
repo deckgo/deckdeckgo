@@ -4,7 +4,7 @@ import i18n from '../../../stores/i18n.store';
 
 import {DemoAction} from '../../../types/editor/demo-action';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-demo',

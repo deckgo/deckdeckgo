@@ -81,7 +81,9 @@ export class AppTemplates {
       if (template.id) {
         const updatedTemplate: Template = await this.templateProvider.update(template);
         templatesStore.state.user = [
-          ...templatesStore.state.user.map((mapTemplate: Template) => (mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate))
+          ...templatesStore.state.user.map((mapTemplate: Template) =>
+            mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate
+          )
         ];
       } else {
         const createdTemplate: Template = await this.templateProvider.create(template.data);
@@ -156,7 +158,13 @@ export class AppTemplates {
 
   private renderTemplates() {
     return templatesStore.state.user.map((template: Template) => {
-      return <app-template-showcase template={template} editable={true} key={template.id} onClick={() => this.editTemplate(template)}></app-template-showcase>;
+      return (
+        <app-template-showcase
+          template={template}
+          editable={true}
+          key={template.id}
+          onClick={() => this.editTemplate(template)}></app-template-showcase>
+      );
     });
   }
 

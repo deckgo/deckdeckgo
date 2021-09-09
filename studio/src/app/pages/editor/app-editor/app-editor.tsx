@@ -767,11 +767,14 @@ export class AppEditor {
   }
 
   render() {
-    const autoSlide: boolean = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
+    const autoSlide: boolean =
+      deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
-      <ion-content class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`} onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
+      <ion-content
+        class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`}
+        onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
         <div class="editor">
           {this.renderSlidesThumbnails()}
 

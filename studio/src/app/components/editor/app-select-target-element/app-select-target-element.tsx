@@ -67,7 +67,11 @@ export class AppSelectTargetElement {
       : TargetElement.SLIDE;
 
     return (
-      <ion-segment mode="md" class="ion-padding-bottom" value={selectedValue} onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
+      <ion-segment
+        mode="md"
+        class="ion-padding-bottom"
+        value={selectedValue}
+        onIonChange={($event: CustomEvent) => this.selectApplyToAll($event)}>
         {this.renderQRCode()}
         {this.renderChart()}
         {this.renderSides()}

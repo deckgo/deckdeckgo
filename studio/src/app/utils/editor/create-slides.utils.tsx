@@ -2,7 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
-import { DeckdeckgoPlaygroundTheme } from '../ddg/deckdeckgo-playground-theme';
+import {DeckdeckgoPlaygroundTheme} from '../ddg/deckdeckgo-playground-theme';
 
 import userStore from '../../stores/user.store';
 
@@ -162,8 +162,10 @@ export class CreateSlidesUtils {
 
       const user: User | undefined = userStore.state.user;
 
-      const name: string = user && user.data && user.data.name && user.data.name !== undefined && user.data.name !== '' ? user.data.name : undefined;
-      const bio: string = user && user.data && user.data.bio && user.data.bio !== undefined && user.data.bio !== '' ? user.data.bio : undefined;
+      const name: string =
+        user && user.data && user.data.name && user.data.name !== undefined && user.data.name !== '' ? user.data.name : undefined;
+      const bio: string =
+        user && user.data && user.data.bio && user.data.bio !== undefined && user.data.bio !== '' ? user.data.bio : undefined;
 
       // prettier-ignore
       const author = <section slot="author">
@@ -226,7 +228,9 @@ export class CreateSlidesUtils {
         <deckgo-slide-qrcode
           key={uuid()}
           content={content}
-          img-src={`${EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
+          img-src={`${
+            EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
+          }/img/deckdeckgo-logo.svg`}>
           {title}
         </deckgo-slide-qrcode>
       );
@@ -267,7 +271,11 @@ export class CreateSlidesUtils {
           {...answerSlots}
 
           <div slot="how-to">
-            Go to <a href={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').pollUrl}>app.deckdeckgo.com/poll</a> and use the code {'{0}'}
+            Go to{' '}
+            <a href={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').pollUrl}>
+              app.deckdeckgo.com/poll
+            </a>{' '}
+            and use the code {'{0}'}
           </div>
           <div slot="awaiting-votes">Awaiting votes</div>
         </deckgo-slide-poll>
@@ -303,7 +311,11 @@ export class CreateSlidesUtils {
     });
   }
 
-  private static async createSlideTemplate(template: Template, elements: SlotType[], scope: SlideScope): Promise<JSX.IntrinsicElements | undefined> {
+  private static async createSlideTemplate(
+    template: Template,
+    elements: SlotType[],
+    scope: SlideScope
+  ): Promise<JSX.IntrinsicElements | undefined> {
     if (!template || !template.data) {
       return;
     }

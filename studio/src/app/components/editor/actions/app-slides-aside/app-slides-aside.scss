@@ -1,7 +1,6 @@
 @use "../../../../../global/theme/mixins/button";
 
 app-slides-aside {
-
   position: relative;
 
   aside {
@@ -43,7 +42,8 @@ app-slides-aside {
         margin-top: calc(var(--slides-aside-width) * 9 / 16);
       }
 
-      &.drag-start, &.drag-hover {
+      &.drag-start,
+      &.drag-hover {
         visibility: hidden;
         opacity: 0;
       }

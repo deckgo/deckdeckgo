@@ -55,7 +55,9 @@ export class AppColorTextBackground {
     }
 
     return ColorUtils.splitColor(
-      this.selectedElement.style.getPropertyValue('--color') ? this.selectedElement.style.getPropertyValue('--color') : this.selectedElement.style.color
+      this.selectedElement.style.getPropertyValue('--color')
+        ? this.selectedElement.style.getPropertyValue('--color')
+        : this.selectedElement.style.color
     );
   };
 
@@ -115,7 +117,9 @@ export class AppColorTextBackground {
     return (
       <app-expansion-panel
         expanded={this.colorType === 'text' ? settingsStore.state.panels.color : settingsStore.state.panels.background}
-        onExpansion={($event: CustomEvent<Expanded>) => SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})}>
+        onExpansion={($event: CustomEvent<Expanded>) =>
+          SettingsUtils.update(this.colorType === 'text' ? {color: $event.detail} : {background: $event.detail})
+        }>
         <ion-label slot="title">{i18n.state.editor.color}</ion-label>
 
         <app-color

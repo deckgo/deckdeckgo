@@ -192,7 +192,11 @@ export class SyncFirebaseProvider extends SyncProvider {
             img.imgSrc !== undefined &&
             img.imgSrc !== '' &&
             img.imgSrc.indexOf('http') === -1 &&
-            !(img.parentElement && img.parentElement.getAttribute('slot') === 'background' && !slideElement.hasAttribute('custom-background'))
+            !(
+              img.parentElement &&
+              img.parentElement.getAttribute('slot') === 'background' &&
+              !slideElement.hasAttribute('custom-background')
+            )
           );
         });
 

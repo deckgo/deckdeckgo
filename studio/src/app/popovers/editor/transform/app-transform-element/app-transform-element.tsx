@@ -33,7 +33,10 @@ export class AppTransformElement {
 
     const scope: SlideScope = SlideUtils.slideScope(this.selectedElement.parentElement);
 
-    const template: Template | undefined = await TemplateUtils.getTemplate(scope, this.selectedElement.parentElement?.nodeName.toLowerCase());
+    const template: Template | undefined = await TemplateUtils.getTemplate(
+      scope,
+      this.selectedElement.parentElement?.nodeName.toLowerCase()
+    );
 
     if (!template) {
       this.slotTypes = undefined;

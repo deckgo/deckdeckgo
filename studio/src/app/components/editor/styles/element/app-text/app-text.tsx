@@ -293,7 +293,9 @@ export class AppText {
             <ion-select-option value={FontSize.NORMAL}>{i18n.state.editor.normal}</ion-select-option>
             <ion-select-option value={FontSize.BIG}>{i18n.state.editor.big}</ion-select-option>
             <ion-select-option value={FontSize.VERY_BIG}>{i18n.state.editor.very_big}</ion-select-option>
-            {this.fontSize === FontSize.CUSTOM ? <ion-select-option value={FontSize.CUSTOM}>{i18n.state.editor.custom}</ion-select-option> : undefined}
+            {this.fontSize === FontSize.CUSTOM ? (
+              <ion-select-option value={FontSize.CUSTOM}>{i18n.state.editor.custom}</ion-select-option>
+            ) : undefined}
           </ion-select>
         </ion-item>
 

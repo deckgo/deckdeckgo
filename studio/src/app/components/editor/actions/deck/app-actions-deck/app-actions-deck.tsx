@@ -14,7 +14,7 @@ import i18n from '../../../../../stores/i18n.store';
 import {MoreAction} from '../../../../../types/editor/more-action';
 
 import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
-import { selectDeckSlide } from '../../../../../utils/editor/deck.utils';
+import {selectDeckSlide} from '../../../../../utils/editor/deck.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
@@ -171,7 +171,8 @@ export class AppActionsDeck {
 
   private async openRemote() {
     const connected: boolean =
-      remoteStore.state.connectionState !== ConnectionState.DISCONNECTED && remoteStore.state.connectionState !== ConnectionState.NOT_CONNECTED;
+      remoteStore.state.connectionState !== ConnectionState.DISCONNECTED &&
+      remoteStore.state.connectionState !== ConnectionState.NOT_CONNECTED;
 
     if (connected && remoteStore.state.pendingRequests && remoteStore.state.pendingRequests.length > 0) {
       await this.closeRemote();

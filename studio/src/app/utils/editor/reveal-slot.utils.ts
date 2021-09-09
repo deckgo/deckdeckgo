@@ -70,7 +70,10 @@ export class RevealSlotUtils {
           element.setAttribute('list-tag', SlotType.UL);
         }
       } else {
-        element = selectedElement.getAttribute('list-tag') === SlotType.UL ? document.createElement(SlotType.UL) : document.createElement(SlotType.OL);
+        element =
+          selectedElement.getAttribute('list-tag') === SlotType.UL
+            ? document.createElement(SlotType.UL)
+            : document.createElement(SlotType.OL);
       }
 
       // In case of deckgo-reveal-list the contenteditable should be set on the host not the slot

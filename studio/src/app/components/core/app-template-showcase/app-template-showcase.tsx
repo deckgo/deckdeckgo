@@ -6,7 +6,7 @@ import {Template, TemplateDataSlot} from '../../../models/data/template';
 
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
-import { AppIcon } from '../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-template-showcase',
@@ -90,7 +90,11 @@ export class AppTemplateShowcase {
     return (
       <p class={this.loaded ? 'show' : 'hidden'}>
         Created by{' '}
-        <a href={this.template.data.author?.url} rel="noopener norefferer" target="_blank" onClick={($event: UIEvent) => $event.stopPropagation()}>
+        <a
+          href={this.template.data.author?.url}
+          rel="noopener norefferer"
+          target="_blank"
+          onClick={($event: UIEvent) => $event.stopPropagation()}>
           {this.template.data.author?.name}
         </a>
       </p>

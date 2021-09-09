@@ -101,7 +101,11 @@ export class AppSlidesAside {
   private async updateSlide(updatedSlide: HTMLElement) {
     const slideIndex: number = SlideUtils.slideIndex(updatedSlide);
 
-    this.slides = [...this.slides.map((slide: HTMLElement, index: number) => (slideIndex === index ? (updatedSlide.cloneNode(true) as HTMLElement) : slide))];
+    this.slides = [
+      ...this.slides.map((slide: HTMLElement, index: number) =>
+        slideIndex === index ? (updatedSlide.cloneNode(true) as HTMLElement) : slide
+      )
+    ];
   }
 
   private async deleteSlide(deletedSlide: HTMLElement) {

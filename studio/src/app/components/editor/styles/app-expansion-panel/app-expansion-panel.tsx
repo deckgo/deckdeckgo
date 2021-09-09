@@ -2,7 +2,7 @@ import {Component, h, Prop, Event, EventEmitter} from '@stencil/core';
 
 import {Expanded} from '../../../../types/core/settings';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-expansion-panel',

@@ -59,7 +59,9 @@ export class AppTemplatesDefault {
     const slidesChart: HTMLElement | null = this.el.querySelector('deckgo-slide-chart.showcase');
     const slidesPoll: HTMLElement | null = this.el.querySelector('deckgo-slide-poll.showcase');
 
-    const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, slidesChart, slidesPoll].filter((element: HTMLElement | null) => element !== null);
+    const slides: HTMLElement[] = [slideGif, slideAuthor, slideQRCode, slidesChart, slidesPoll].filter(
+      (element: HTMLElement | null) => element !== null
+    );
 
     if (!slides || slides.length <= 0) {
       return;
@@ -294,7 +296,9 @@ export class AppTemplatesDefault {
         <deckgo-slide-qrcode
           class="showcase"
           content={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').appUrl}
-          img-src={`${EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl}/img/deckdeckgo-logo.svg`}>
+          img-src={`${
+            EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
+          }/img/deckdeckgo-logo.svg`}>
           <p slot="title">{i18n.state.templates.qr_code}</p>
         </deckgo-slide-qrcode>
       </div>
@@ -303,7 +307,10 @@ export class AppTemplatesDefault {
 
   private renderDemo() {
     return (
-      <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.SPLIT, attributes: {type: SlideSplitType.DEMO}})}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.SPLIT, attributes: {type: SlideSplitType.DEMO}})}>
         <deckgo-slide-split class="showcase" type="demo">
           <p slot="start">
             <ion-skeleton-text style={{width: '80%'}}></ion-skeleton-text>

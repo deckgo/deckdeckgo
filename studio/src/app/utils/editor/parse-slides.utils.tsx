@@ -14,7 +14,12 @@ import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export class ParseSlidesUtils {
-  static async parseSlide(deck: Deck, slide: Slide, contentEditable: boolean, ignoreSlideId: boolean = false): Promise<JSX.IntrinsicElements> {
+  static async parseSlide(
+    deck: Deck,
+    slide: Slide,
+    contentEditable: boolean,
+    ignoreSlideId: boolean = false
+  ): Promise<JSX.IntrinsicElements> {
     if (!document || !slide || !slide.data || !slide.data.template) {
       return null;
     }
@@ -74,7 +79,8 @@ export class ParseSlidesUtils {
     const defaultAttributes = {
       style: slide.data.attributes ? await convertStyle(slide.data.attributes.style) : undefined,
       src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
-      'custom-background': slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
+      'custom-background':
+        slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,
       'img-src': slide.data.attributes && slide.data.attributes.imgSrc ? slide.data.attributes.imgSrc : undefined,
       'img-alt': slide.data.attributes && slide.data.attributes.imgAlt ? slide.data.attributes.imgAlt : undefined
     };
@@ -87,15 +93,20 @@ export class ParseSlidesUtils {
 
     if (slide.data.template === SlideTemplate.CHART) {
       defaultAttributes['type'] = slide.data.attributes && slide.data.attributes.type ? slide.data.attributes.type : undefined;
-      defaultAttributes['inner-radius'] = slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined;
-      defaultAttributes['animation'] = slide.data.attributes && slide.data.attributes.animation ? slide.data.attributes.animation : undefined;
-      defaultAttributes['date-pattern'] = slide.data.attributes && slide.data.attributes.datePattern ? slide.data.attributes.datePattern : undefined;
-      defaultAttributes['y-axis-domain'] = slide.data.attributes && slide.data.attributes.yAxisDomain ? slide.data.attributes.yAxisDomain : undefined;
+      defaultAttributes['inner-radius'] =
+        slide.data.attributes && slide.data.attributes.innerRadius ? slide.data.attributes.innerRadius : undefined;
+      defaultAttributes['animation'] =
+        slide.data.attributes && slide.data.attributes.animation ? slide.data.attributes.animation : undefined;
+      defaultAttributes['date-pattern'] =
+        slide.data.attributes && slide.data.attributes.datePattern ? slide.data.attributes.datePattern : undefined;
+      defaultAttributes['y-axis-domain'] =
+        slide.data.attributes && slide.data.attributes.yAxisDomain ? slide.data.attributes.yAxisDomain : undefined;
       defaultAttributes['smooth'] = slide.data.attributes && slide.data.attributes.smooth === false ? 'false' : undefined;
       defaultAttributes['area'] = slide.data.attributes && slide.data.attributes.area === false ? 'false' : undefined;
       defaultAttributes['ticks'] = slide.data.attributes && slide.data.attributes.ticks ? slide.data.attributes.ticks : undefined;
       defaultAttributes['grid'] = slide.data.attributes && slide.data.attributes.grid ? 'true' : undefined;
-      defaultAttributes['separator'] = slide.data.attributes && slide.data.attributes.separator ? slide.data.attributes.separator : undefined;
+      defaultAttributes['separator'] =
+        slide.data.attributes && slide.data.attributes.separator ? slide.data.attributes.separator : undefined;
       defaultAttributes['custom-loader'] = 'true';
     }
 

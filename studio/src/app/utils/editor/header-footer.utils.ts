@@ -49,7 +49,10 @@ export class HeaderFooterUtils {
     return div;
   }
 
-  private static async createSocial(user: User, type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom'): Promise<HTMLElement> {
+  private static async createSocial(
+    user: User,
+    type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom'
+  ): Promise<HTMLElement> {
     const socialElement = document.createElement('deckgo-social');
 
     socialElement.setAttribute(type === 'custom' ? 'full-url' : type, user.data.social[type]);

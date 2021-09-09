@@ -340,7 +340,8 @@ export class DeckEventsHandler {
         const attributes: DeckAttributes = await this.getDeckAttributes(deck, true, currentDeck);
 
         // @ts-ignore
-        currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
+        currentDeck.data.attributes =
+          attributes && Object.keys(attributes).length > 0 ? attributes : firebase.firestore.FieldValue.delete();
 
         const slotsPromises: Promise<string>[] = ['background', 'header', 'footer'].map((slotName: 'background' | 'header' | 'footer') => {
           return this.getDeckSlot(deck, slotName);
@@ -348,7 +349,8 @@ export class DeckEventsHandler {
         const [background, header, footer] = await Promise.all(slotsPromises);
 
         // @ts-ignore
-        currentDeck.data.background = background && background !== undefined && background !== '' ? background : firebase.firestore.FieldValue.delete();
+        currentDeck.data.background =
+          background && background !== undefined && background !== '' ? background : firebase.firestore.FieldValue.delete();
 
         // @ts-ignore
         currentDeck.data.header = header && header !== undefined && header !== '' ? header : firebase.firestore.FieldValue.delete();
@@ -820,7 +822,11 @@ export class DeckEventsHandler {
     return result;
   }
 
-  private async cleanSlideCustomSlots(slide: HTMLElement, content: string, customAttribute: 'background' | 'header' | 'footer'): Promise<string> {
+  private async cleanSlideCustomSlots(
+    slide: HTMLElement,
+    content: string,
+    customAttribute: 'background' | 'header' | 'footer'
+  ): Promise<string> {
     if (!slide.hasAttribute(`custom-${customAttribute}`)) {
       const regex: RegExp = new RegExp(`<div slot="${customAttribute}"(.*?)<\/div>`, 'g');
       content = content.replace(regex, '');

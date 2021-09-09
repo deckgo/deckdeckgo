@@ -78,8 +78,16 @@ export class ContrastUtils {
   private static async calculateContrastRatioAlpha(bgColor: string, color: string): Promise<number> {
     const lumColor: number = this.calculateLuminance(extractRgb(color));
 
-    const onBlack: {luminanceOverlay: number; ratio: number} = await this.calculateColorContrastRatioWithBase(bgColor, lumColor, [0, 0, 0, 1]);
-    const onWhite: {luminanceOverlay: number; ratio: number} = await this.calculateColorContrastRatioWithBase(bgColor, lumColor, [255, 255, 255, 1]);
+    const onBlack: {luminanceOverlay: number; ratio: number} = await this.calculateColorContrastRatioWithBase(
+      bgColor,
+      lumColor,
+      [0, 0, 0, 1]
+    );
+    const onWhite: {luminanceOverlay: number; ratio: number} = await this.calculateColorContrastRatioWithBase(
+      bgColor,
+      lumColor,
+      [255, 255, 255, 1]
+    );
 
     const max = Math.max(onBlack.ratio, onWhite.ratio);
 

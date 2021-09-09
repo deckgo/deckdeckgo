@@ -1,5 +1,7 @@
 main {
-  deckgo-deck > *:not(deckgo-slide-gif) > *:not(deckgo-lazy-img):not(deckgo-reveal):not(deckgo-reveal-list):not(deckgo-drr):not(deckgo-demo) {
+  deckgo-deck
+    > *:not(deckgo-slide-gif)
+    > *:not(deckgo-lazy-img):not(deckgo-reveal):not(deckgo-reveal-list):not(deckgo-drr):not(deckgo-demo) {
     // Skeleton for new slides
     &[slot]:not([contentEditable]):not([editable]):not([slot="background"]):not([slot="social-link"]):not([slot="awaiting-votes"]):not([slot="how-to"]) {
       position: relative;

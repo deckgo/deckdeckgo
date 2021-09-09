@@ -63,7 +63,10 @@ export class AppTemplatesCharts {
 
   render() {
     return [
-      <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE}})}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE}})}>
         {/* Pie */}
         <deckgo-slide-chart
           class="showcase"
@@ -83,7 +86,9 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, innerRadius: 100}})}>
+        onClick={() =>
+          this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, innerRadius: 100}})
+        }>
         {/* Donut */}
         <deckgo-slide-chart
           class="showcase"
@@ -104,7 +109,9 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, animation: true}})}>
+        onClick={() =>
+          this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.PIE, animation: true}})
+        }>
         {/* Animated Pie */}
         <deckgo-slide-chart
           class="showcase"
@@ -122,7 +129,10 @@ export class AppTemplatesCharts {
         </deckgo-slide-chart>
       </div>,
 
-      <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE}})}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE}})}>
         {/* Area */}
         <deckgo-slide-chart
           class="showcase"
@@ -188,7 +198,9 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, animation: true}})}>
+        onClick={() =>
+          this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.LINE, animation: true}})
+        }>
         {/* Animated area */}
         <deckgo-slide-chart
           class="showcase"
@@ -208,7 +220,10 @@ export class AppTemplatesCharts {
         </deckgo-slide-chart>
       </div>,
 
-      <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}>
         {/* Bar */}
         <deckgo-slide-chart
           class="showcase"
@@ -225,7 +240,10 @@ export class AppTemplatesCharts {
         </deckgo-slide-chart>
       </div>,
 
-      <div class="item" custom-tappable onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}>
+      <div
+        class="item"
+        custom-tappable
+        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR}})}>
         {/* Grouped bars */}
         <deckgo-slide-chart
           class="showcase"
@@ -250,7 +268,9 @@ export class AppTemplatesCharts {
       <div
         class="item"
         custom-tappable
-        onClick={() => this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR, animation: true}})}>
+        onClick={() =>
+          this.selectedTemplate.emit({template: SlideTemplate.CHART, attributes: {type: SlideChartType.BAR, animation: true}})
+        }>
         {/* Animation bars */}
         <deckgo-slide-chart
           class="showcase"

@@ -5,7 +5,13 @@ import {_SERVICE as UserActor, UserId__1 as UserId} from '../../canisters/users/
 
 import {createActor} from './ic.utils';
 
-export const initSlidesActor = async ({identity, host}: {identity: Identity; host?: string}): Promise<{userActor: UserActor; ownerId: UserId}> => {
+export const initSlidesActor = async ({
+  identity,
+  host
+}: {
+  identity: Identity;
+  host?: string;
+}): Promise<{userActor: UserActor; ownerId: UserId}> => {
   const userActor: UserActor = await createSlidesActor({identity, host});
 
   const ownerId: UserId = await userActor.getUserId();

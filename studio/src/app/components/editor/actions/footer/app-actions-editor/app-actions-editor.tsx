@@ -182,7 +182,9 @@ export class AppActionsEditor {
   private renderFullscreen() {
     return (
       <app-bottom-sheet onSheetChanged={($event: CustomEvent<'open' | 'close'>) => this.sheetChanged($event)}>
-        <app-breadcrumbs slideNumber={this.slideNumber} onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-breadcrumbs>
+        <app-breadcrumbs
+          slideNumber={this.slideNumber}
+          onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-breadcrumbs>
 
         {this.renderActions()}
       </app-bottom-sheet>

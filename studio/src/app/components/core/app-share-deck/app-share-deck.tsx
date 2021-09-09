@@ -6,7 +6,7 @@ import shareStore from '../../../stores/share.store';
 
 import {getPublishedUrl, getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
 
-import { AppIcon } from '../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-share-deck',
@@ -45,7 +45,11 @@ export class AppShareDeck {
     }
 
     const text: string = await getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
-    const twitterText: string = await getShareTwitterText(shareStore.state.share.deck, shareStore.state.share.userName, shareStore.state.share.userSocial);
+    const twitterText: string = await getShareTwitterText(
+      shareStore.state.share.deck,
+      shareStore.state.share.userName,
+      shareStore.state.share.userSocial
+    );
     const publishedUrl: string = await getPublishedUrl(shareStore.state.share.deck);
 
     const shareOptions = {
@@ -104,13 +108,33 @@ export class AppShareDeck {
   render() {
     return (
       <web-social-share show={false} onClosed={() => this.resetShare()}>
-        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter" style={{color: '#00aced', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
-        <AppIcon name="linkedin" slot="linkedin" ariaLabel="Linkedin" style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
-        <AppIcon name="mail" slot="email" ariaLabel="Mail" style={{color: 'var(--ion-color-tertiary)', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
-        <AppIcon name="whatsapp" slot="whatsapp" ariaLabel="Whatsapp" style={{color: '#25D366', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon
+          name="twitter"
+          slot="twitter"
+          ariaLabel="Twitter"
+          style={{color: '#00aced', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon
+          name="linkedin"
+          slot="linkedin"
+          ariaLabel="Linkedin"
+          style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon
+          name="mail"
+          slot="email"
+          ariaLabel="Mail"
+          style={{color: 'var(--ion-color-tertiary)', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon
+          name="whatsapp"
+          slot="whatsapp"
+          ariaLabel="Whatsapp"
+          style={{color: '#25D366', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon name="copy" slot="copy" ariaLabel="Copy" style={{'font-size': '1.6rem', display: 'block'}}></AppIcon>
-        <AppIcon name="hackernews" slot="hackernews" ariaLabel="Hackernews" style={{color: '#ff6000', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
-        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter" ></AppIcon>
+        <AppIcon
+          name="hackernews"
+          slot="hackernews"
+          ariaLabel="Hackernews"
+          style={{color: '#ff6000', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
+        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter"></AppIcon>
         <svg slot="telegram" style={{color: '#0088cc', width: '1.6rem', display: 'block'}} viewBox="0 0 448 512">
           <path
             fill="currentColor"

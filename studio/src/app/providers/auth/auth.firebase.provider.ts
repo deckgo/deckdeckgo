@@ -46,16 +46,29 @@ export class AuthFirebaseProvider extends AuthProvider {
             email: firebaseUser.email,
             email_verified: firebaseUser.emailVerified,
             photo_url: firebaseUser.photoURL,
-            gitHub: firebaseUser.providerData && firebaseUser.providerData.length > 0 ? firebaseUser.providerData[0].providerId === 'github.com' : false
+            gitHub:
+              firebaseUser.providerData && firebaseUser.providerData.length > 0
+                ? firebaseUser.providerData[0].providerId === 'github.com'
+                : false
           };
 
           // Update anonymous user
           // Reference: https://github.com/firebase/firebaseui-web/issues/449
-          if (!authUser.name && firebaseUser.providerData && firebaseUser.providerData.length > 0 && firebaseUser.providerData[0].displayName) {
+          if (
+            !authUser.name &&
+            firebaseUser.providerData &&
+            firebaseUser.providerData.length > 0 &&
+            firebaseUser.providerData[0].displayName
+          ) {
             authUser.name = firebaseUser.providerData[0].displayName;
           }
 
-          if (!authUser.photo_url && firebaseUser.providerData && firebaseUser.providerData.length > 0 && firebaseUser.providerData[0].photoURL) {
+          if (
+            !authUser.photo_url &&
+            firebaseUser.providerData &&
+            firebaseUser.providerData.length > 0 &&
+            firebaseUser.providerData[0].photoURL
+          ) {
             authUser.photo_url = firebaseUser.providerData[0].photoURL;
           }
 

@@ -125,7 +125,10 @@ export class AppDeckImport {
           {renderI18n(i18n.state.import.export, {
             placeholder: '{0}',
             value: (
-              <a href="https://www.figma.com/community/plugin/950777256486678678/Figma-to-DeckDeckGo" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.figma.com/community/plugin/950777256486678678/Figma-to-DeckDeckGo"
+                target="_blank"
+                rel="noopener noreferrer">
                 plugin
               </a>
             )
