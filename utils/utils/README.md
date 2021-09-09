@@ -12,20 +12,9 @@ A collection of utils methods and functions developed and used across apps and c
 
 ## Table of contents
 
-- [Getting Started](#getting-started)
+-
 - [Methods](#methods)
 - [License](#license)
-
-## Getting Started
-
-If you would like to install and compile locally this project, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/utils/utils
-npm install
-npm run build
-```
 
 ## Methods
 

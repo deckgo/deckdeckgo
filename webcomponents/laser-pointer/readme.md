@@ -12,20 +12,8 @@ A Web Component to turn the mouse into a laser pointer.
 
 ## Table of contents
 
-- [Develop](#develop)
 - [Credits](#credits)
 - [License](#license)
-
-## Develop
-
-To develop and run this Web Component locally, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/laser-pointer
-npm install
-npm run start
-```
 
 ## Credits
 

@@ -15,7 +15,6 @@ This project is a collection of custom Webpack plugins used to build a [DeckDeck
 - [Webpack Markdown Plugin](#webpack-markdown-plugin)
 - [Webpack Info Plugin](#webpack-info-plugin)
 - [Webpack Notes Plugin](#webpack-notes-plugin)
-- [Getting Started](#getting-started)
 - [License](#license)
 
 ## Webpack Markdown Plugin
@@ -34,17 +33,6 @@ This Webpack plugin is a simple plugin which has for goal to display some inform
 ## Webpack Notes Plugin
 
 This Webpack plugin has for goal to remove your notes from your presentation, notably useful when you will run a production build before publishing your presentation online.
-
-## Getting Started
-
-If you would like to install and compile locally this project, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/webpack
-npm install
-npm run build
-```
 
 ## License
 
