@@ -18,7 +18,7 @@ export function initChartSize(el: HTMLElement): Promise<{width: number; height: 
 
       resolve({
         width: width,
-        height: height
+        height: height,
       });
 
       return;
@@ -40,7 +40,7 @@ export function initChartDataBar(el: HTMLElement, answerSlotName: string, index:
     resolve({
       key: `${index + 1}`,
       label: element.innerHTML,
-      value: Math.floor(Math.random() * 10 + 1)
+      value: Math.floor(Math.random() * 10 + 1),
     });
   });
 }

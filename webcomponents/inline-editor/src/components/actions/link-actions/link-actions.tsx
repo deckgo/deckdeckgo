@@ -5,7 +5,7 @@ import {AnchorLink, InputTargetEvent} from '../../../interfaces/interfaces';
 import {ToolbarActions} from '../../../types/enums';
 
 import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
-import { getSelection } from "../../../utils/selection.utils";
+import {getSelection} from '../../../utils/selection.utils';
 
 @Component({
   tag: 'deckgo-ie-link-actions',

@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop, State, Element, Event, EventEmitter, Build, Watch } from "@stencil/core";
+import {Component, h, Host, Prop, State, Element, Event, EventEmitter, Build, Watch} from '@stencil/core';
 
 import {unifyEvent} from '@deckdeckgo/utils';
 

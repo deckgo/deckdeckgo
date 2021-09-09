@@ -1,4 +1,4 @@
-import { Component, EventEmitter, h, Prop, State, Watch, Event, Host } from "@stencil/core";
+import {Component, EventEmitter, h, Prop, State, Watch, Event, Host} from '@stencil/core';
 
 import {debounce, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
 

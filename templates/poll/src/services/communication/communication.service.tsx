@@ -21,7 +21,7 @@ export class CommunicationService {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
         query: 'type=app',
-        path: path
+        path: path,
       });
 
       this.socket.on('connect', async () => {
@@ -56,7 +56,7 @@ export class CommunicationService {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
         query: 'type=app',
-        path: path
+        path: path,
       });
 
       this.socket.on('connect', async () => {
@@ -70,7 +70,7 @@ export class CommunicationService {
       this.socket.on('poll_updated', async (data: DeckdeckgoPoll) => {
         updatePoll({
           key: pollKey,
-          poll: data
+          poll: data,
         });
       });
 
@@ -87,7 +87,7 @@ export class CommunicationService {
 
       if (pollKey) {
         this.socket.emit('leave', {
-          key: pollKey
+          key: pollKey,
         });
       }
 

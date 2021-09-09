@@ -1,7 +1,7 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
-import { sass } from '@stencil/sass';
-import { postcss } from '@stencil/postcss';
+import {sass} from '@stencil/sass';
+import {postcss} from '@stencil/postcss';
 // @ts-ignore
 import autoprefixer from 'autoprefixer';
 
@@ -9,23 +9,23 @@ export const config: Config = {
   namespace: 'deckdeckgo-youtube',
   outputTargets: [
     {
-      type: 'dist'
+      type: 'dist',
     },
     {
-      type: 'docs-readme'
+      type: 'docs-readme',
     },
     {
       type: 'www',
-      serviceWorker: null // disable service workers
+      serviceWorker: null, // disable service workers
     },
     {
       type: 'dist-custom-elements-bundle',
-    }
+    },
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()]
-    })
-  ]
+      plugins: [autoprefixer()],
+    }),
+  ],
 };

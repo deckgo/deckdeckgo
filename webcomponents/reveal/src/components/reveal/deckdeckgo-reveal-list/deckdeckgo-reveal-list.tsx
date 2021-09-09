@@ -1,6 +1,6 @@
 import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent, Listen} from '@stencil/core';
 
-import { DeckDeckGoRevealComponent } from "@deckdeckgo/slide-utils";
+import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {DeckdeckgoRevealUtils} from '../deckdeckgo-reveal-utils';
 

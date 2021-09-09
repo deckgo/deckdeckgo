@@ -1,5 +1,5 @@
-import { ExecCommandAction, ExecCommandList, ExecCommandStyle } from "../interfaces/interfaces";
-import { ContentAlign, FontSize } from "../types/enums";
+import {ExecCommandAction, ExecCommandList, ExecCommandStyle} from '../interfaces/interfaces';
+import {ContentAlign, FontSize} from '../types/enums';
 
 export const execCommandNative = (action: ExecCommandAction) => {
   if (action.cmd === 'style') {
@@ -7,19 +7,19 @@ export const execCommandNative = (action: ExecCommandAction) => {
   } else if (action.cmd === 'list') {
     execCommandNativeList(action);
   }
-}
+};
 
 const execCommandNativeStyle = (action: ExecCommandAction) => {
   const detail: ExecCommandStyle = action.detail as ExecCommandStyle;
 
   // @ts-ignore
-  document.execCommand("styleWithCSS", false, true);
+  document.execCommand('styleWithCSS', false, true);
 
   switch (detail.style) {
     case 'color':
       document.execCommand('foreColor', false, detail.value);
       break;
-    case 'background-color' :
+    case 'background-color':
       document.execCommand('backColor', false, detail.value);
       break;
     case 'font-size':
@@ -35,7 +35,7 @@ const execCommandNativeStyle = (action: ExecCommandAction) => {
       document.execCommand(detail.value === 'line-through' ? 'strikeThrough' : 'underline', false, null);
       break;
   }
-}
+};
 
 const execCommandNativeList = (action: ExecCommandAction) => {
   const detail: ExecCommandList = action.detail as ExecCommandList;
@@ -44,11 +44,11 @@ const execCommandNativeList = (action: ExecCommandAction) => {
     case 'ol':
       document.execCommand('insertOrderedList', false, null);
       break;
-    case 'ul' :
+    case 'ul':
       document.execCommand('insertUnorderedList', false, null);
       break;
   }
-}
+};
 
 export const execCommandNativeAlign = (align: ContentAlign) => {
   switch (align) {
@@ -61,4 +61,4 @@ export const execCommandNativeAlign = (align: ContentAlign) => {
     default:
       document.execCommand('justifyLeft', false, null);
   }
-}
+};

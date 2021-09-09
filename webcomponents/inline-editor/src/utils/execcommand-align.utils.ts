@@ -1,5 +1,5 @@
-import { DeckdeckgoInlineEditorUtils } from "./utils";
-import { ContentAlign } from "../types/enums";
+import {DeckdeckgoInlineEditorUtils} from './utils';
+import {ContentAlign} from '../types/enums';
 
 export const execCommandAlign = async (anchorEvent: MouseEvent | TouchEvent, containers: string, align: ContentAlign) => {
   const anchorElement: HTMLElement = anchorEvent.target as HTMLElement;
@@ -10,4 +10,4 @@ export const execCommandAlign = async (anchorEvent: MouseEvent | TouchEvent, con
   }
 
   container.style.textAlign = container?.style.textAlign === align ? '' : align;
-}
+};

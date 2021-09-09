@@ -20,7 +20,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements-bundle',
-    }
+    },
   ],
   plugins: [
     sass(),

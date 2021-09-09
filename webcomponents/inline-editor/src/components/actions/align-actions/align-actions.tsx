@@ -2,8 +2,8 @@ import {Component, EventEmitter, h, Prop, Event, Host} from '@stencil/core';
 
 import {ContentAlign} from '../../../types/enums';
 
-import { execCommandAlign } from "../../../utils/execcommand-align.utils";
-import { execCommandNativeAlign } from "../../../utils/execcommnad-native.utils";
+import {execCommandAlign} from '../../../utils/execcommand-align.utils';
+import {execCommandNativeAlign} from '../../../utils/execcommnad-native.utils';
 
 @Component({
   tag: 'deckgo-ie-align-actions',

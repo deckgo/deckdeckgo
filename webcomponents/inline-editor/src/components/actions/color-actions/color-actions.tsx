@@ -75,7 +75,7 @@ export class ColorActions {
     selection?.removeAllRanges();
     selection?.addRange(this.range);
 
-    const observer: MutationObserver = new MutationObserver( (_mutations: MutationRecord[]) => {
+    const observer: MutationObserver = new MutationObserver((_mutations: MutationRecord[]) => {
       observer.disconnect();
 
       // No node were added so the style was modified

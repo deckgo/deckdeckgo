@@ -40,7 +40,7 @@
 
 ### Breaking Changes
 
-- remove fetch code through an url*
+- remove fetch code through an url\*
 - highlight lines per default not through background but, with more contrast against those not highlighted ("highlight opacity 1, no highlighted opacity 0.32")
 
 ### Features

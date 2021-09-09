@@ -8,9 +8,7 @@ export interface DeckdeckgoChart {
 
 export class DeckdeckgoChartUtils {
   static initSvg(el: HTMLElement, width: number, height: number): Selection<BaseType, any, HTMLElement, any> {
-    let svg: Selection<BaseType, any, HTMLElement, any> = select(el.shadowRoot.querySelector('svg'))
-      .attr('width', width)
-      .attr('height', height);
+    let svg: Selection<BaseType, any, HTMLElement, any> = select(el.shadowRoot.querySelector('svg')).attr('width', width).attr('height', height);
 
     this.clearSvg(svg);
 

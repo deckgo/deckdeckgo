@@ -1,1 +1,8 @@
 **/src/components.d.ts
+dist
+www
+loader
+.stencil
+
+webcomponents/*/src/**/readme.md
+templates/*/src/**/readme.md

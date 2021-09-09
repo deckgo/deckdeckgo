@@ -5,7 +5,7 @@ import {unifyEvent, debounce, isIOS} from '@deckdeckgo/utils';
 @Component({
   tag: 'deckgo-laser-pointer',
   styleUrl: 'laser-pointer.scss',
-  shadow: true
+  shadow: true,
 })
 export class DeckDeckGoLaserPointer {
   /**
@@ -82,7 +82,7 @@ export class DeckDeckGoLaserPointer {
   private initViewportSize() {
     this.size = {
       width: isIOS() && screen.width > window.innerWidth ? screen.width : window.innerWidth,
-      height: isIOS() && screen.height > window.innerHeight ? screen.height : window.innerHeight
+      height: isIOS() && screen.height > window.innerHeight ? screen.height : window.innerHeight,
     };
   }
 
@@ -160,7 +160,7 @@ export class DeckDeckGoLaserPointer {
     ctx,
     rgbColor,
     point,
-    lifePercent
+    lifePercent,
   }: {
     ctx: CanvasRenderingContext2D;
     rgbColor: string;
@@ -193,7 +193,7 @@ export class DeckDeckGoLaserPointer {
     this.points.push({
       x: unifyEvent($event).clientX,
       y: unifyEvent($event).clientY,
-      lifetime: 0
+      lifetime: 0,
     });
 
     this.idleMouseTimer = window.setTimeout(() => {

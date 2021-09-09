@@ -27,5 +27,5 @@ export enum DeckdeckgoHighlightCodeCarbonTheme {
   VERMINAL = 'verminal',
   VSCODE = 'vscode',
   YETI = 'yeti',
-  ZENBURN = 'zenburn'
+  ZENBURN = 'zenburn',
 }
