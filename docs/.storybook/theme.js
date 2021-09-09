@@ -31,5 +31,5 @@ export default create({
 
   brandTitle: 'DeckDeckGo',
   brandUrl: 'https://deckdeckgo.com',
-  brandImage: DeckDeckGo,
+  brandImage: DeckDeckGo
 });

@@ -26,5 +26,4 @@ export const Title = () => {
 </div>`;
 };
 
-Title.args = {
-};
+Title.args = {};

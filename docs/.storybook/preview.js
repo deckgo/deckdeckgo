@@ -12,11 +12,27 @@ export const parameters = {
         'Templates',
         ['Templates', 'Title', 'Content', 'Split', 'Poll', 'Aspect Ratio', 'GIF', 'Chart', 'Youtube', 'Author', 'QR Code', 'Playground'],
         'Components',
-        ['Color', 'Demo', 'Drag Resize Rotate', 'Highlight Code', 'Inline Editor', 'Laser Pointer', 'Lazy Image', 'Math', 'Pie Chart', 'Bar Chart', 'Line Chart', 'QR Code', 'Social', 'Word Cloud', 'Youtube'],
+        [
+          'Color',
+          'Demo',
+          'Drag Resize Rotate',
+          'Highlight Code',
+          'Inline Editor',
+          'Laser Pointer',
+          'Lazy Image',
+          'Math',
+          'Pie Chart',
+          'Bar Chart',
+          'Line Chart',
+          'QR Code',
+          'Social',
+          'Word Cloud',
+          'Youtube'
+        ],
         'Deck',
         ['Animation', 'Auto Slide', 'Background', 'Header Footer', 'Navigation', 'Pager', 'Size', 'More Features', 'Events', 'Actions'],
         'Miscellaneous',
-        ['Contact', 'Sponsor', 'Logo'],
+        ['Contact', 'Sponsor', 'Logo']
       ]
     }
   },

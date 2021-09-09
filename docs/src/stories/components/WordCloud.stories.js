@@ -35,5 +35,4 @@ WordCloud.args = {
   marginBottom: 32,
   marginLeft: 32,
   marginRight: 32
-
 };

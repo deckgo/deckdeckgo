@@ -27,5 +27,4 @@ export const Chart = () => {
 </div>`;
 };
 
-Chart.args = {
-};
+Chart.args = {};
