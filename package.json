@@ -8,6 +8,7 @@
     "cli",
     "docs",
     "remote",
+    "site",
     "webcomponents/*",
     "templates/*",
     "utils/*"
