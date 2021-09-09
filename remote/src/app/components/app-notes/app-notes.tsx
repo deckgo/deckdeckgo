@@ -6,7 +6,7 @@ import {Remarkable} from 'remarkable';
 
 @Component({
   tag: 'app-notes',
-  styleUrl: 'app-notes.scss',
+  styleUrl: 'app-notes.scss'
 })
 export class AppNotes {
   private destroyListener;
@@ -28,7 +28,7 @@ export class AppNotes {
           const md: Remarkable = new Remarkable({
             html: true,
             xhtmlOut: true,
-            breaks: true,
+            breaks: true
           });
 
           const codeRule = (inline: boolean) => (tokens, idx, _options, _env) => {

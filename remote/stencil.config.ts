@@ -21,23 +21,23 @@ export const config: Config = {
     {
       type: 'www',
       baseUrl: 'https://deckdeckgo.app',
-      copy: [{src: 'robots.txt'}],
-    },
+      copy: [{src: 'robots.txt'}]
+    }
   ],
   globalScript: globalScript,
   globalStyle: 'src/global/app.scss',
   plugins: [
     sass({
-      includePaths: ['../../node_modules/@deckdeckgo/deck-utils/styles/'],
+      includePaths: ['../../node_modules/@deckdeckgo/deck-utils/styles/']
     }),
     postcss({
-      plugins: [autoprefixer()],
+      plugins: [autoprefixer()]
     }),
-    builtins(),
+    builtins()
   ],
   nodeResolve: {browser: true},
   devServer: {
     openBrowser: false,
-    port: 3334,
-  },
+    port: 3334
+  }
 };

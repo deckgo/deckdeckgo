@@ -168,7 +168,7 @@ export class AccelerometerService {
       frequency: this.frequency,
       sensibility: this.sensibility,
       takeUntil: this.takeUntil,
-      delay: this.delay,
+      delay: this.delay
     });
   }
 

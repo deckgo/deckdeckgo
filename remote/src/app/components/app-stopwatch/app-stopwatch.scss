@@ -3,7 +3,8 @@
   width: var(--stopwatch-size, 18rem);
   max-height: var(--stopwatch-max-size, calc(100vh - 64px));
   max-width: var(--stopwatch-max-size, calc(100vh - 64px));
-  margin: var(--stopwatch-margin-top, 8px) var(--stopwatch-margin-end, 8px) var(--stopwatch-margin-bottom, 8px) var(--stopwatch-margin-start, 8px);
+  margin: var(--stopwatch-margin-top, 8px) var(--stopwatch-margin-end, 8px) var(--stopwatch-margin-bottom, 8px)
+    var(--stopwatch-margin-start, 8px);
   display: block;
 }
 

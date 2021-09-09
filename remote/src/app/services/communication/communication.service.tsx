@@ -9,7 +9,7 @@ import {
   DeckdeckgoEventNextPrevSlide,
   DeckdeckgoEventSlideAction,
   DeckdeckgoEventSlideTo,
-  ConnectionState,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 // Services
@@ -20,13 +20,14 @@ const configuration: RTCConfiguration = {
     {
       urls: 'turn:api.deckdeckgo.com:3478',
       username: 'user',
-      credential: 'deckdeckgo',
-    },
-  ],
+      credential: 'deckdeckgo'
+    }
+  ]
 };
 
 // @ts-ignore
-const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+const PeerConnection =
+  window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 
 // prettier-ignore
 // @ts-ignore
@@ -70,7 +71,7 @@ export class CommunicationService {
       this.socket = io.connect(url, {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
-        query: 'type=app',
+        query: 'type=app'
       });
 
       this.socket.on('connect', async () => {
@@ -153,7 +154,7 @@ export class CommunicationService {
     }
 
     this.socket.emit('join', {
-      room: this.room,
+      room: this.room
     });
   }
 
@@ -172,7 +173,7 @@ export class CommunicationService {
 
       if (this.socket) {
         this.socket.emit('leave', {
-          room: this.room,
+          room: this.room
         });
         this.socket.removeAllListeners();
         this.socket.disconnect();
@@ -201,7 +202,7 @@ export class CommunicationService {
         this.socket.emit('signal', {
           type: 'ice_candidate',
           message: JSON.stringify({candidate: evt.candidate}),
-          room: this.room,
+          room: this.room
         });
       }
     };
@@ -213,7 +214,7 @@ export class CommunicationService {
     this.socket.emit('signal', {
       type: 'app_here',
       room: this.room,
-      message: this.clientId,
+      message: this.clientId
     });
   }
 
@@ -223,7 +224,7 @@ export class CommunicationService {
         this.socket.emit('signal', {
           type: 'sending_local_description',
           message: JSON.stringify({sdp: this.rtcPeerConn.localDescription}),
-          room: this.room,
+          room: this.room
         });
       },
       (_err) => {

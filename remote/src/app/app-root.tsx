@@ -6,7 +6,7 @@ import {ThemeService} from './services/theme/theme.service';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.scss',
+  styleUrl: 'app-root.scss'
 })
 export class AppRoot {
   private timerService: TimerService;

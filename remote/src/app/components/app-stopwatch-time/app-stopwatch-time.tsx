@@ -4,7 +4,7 @@ import timerStore from '../../stores/timer.store';
 
 @Component({
   tag: 'app-stopwatch-time',
-  styleUrl: 'app-stopwatch-time.scss',
+  styleUrl: 'app-stopwatch-time.scss'
 })
 export class AppStopwatchTime {
   render() {

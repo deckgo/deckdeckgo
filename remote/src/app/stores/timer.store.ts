@@ -17,7 +17,7 @@ interface TimerStore {
 const {state, onChange, reset} = createStore({
   timer: undefined,
   remainingTime: 0,
-  remainingText: undefined,
+  remainingText: undefined
 } as TimerStore);
 
 onChange('timer', (interval: TimerInterval | undefined) => {

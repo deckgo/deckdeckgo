@@ -7,7 +7,7 @@ import accStore from '../../../stores/accelerometer.store';
 import {AccelerometerService} from '../../../services/accelerometer/accelerometer.service';
 
 @Component({
-  tag: 'app-experimental-settings',
+  tag: 'app-experimental-settings'
 })
 export class AppExperimentalSettings {
   @Element() el: HTMLElement;
@@ -90,13 +90,17 @@ export class AppExperimentalSettings {
       <h1 class="ion-padding-top">Experimental settings</h1>,
       <ion-list class="ion-padding-top ion-padding-bottom">
         <p>
-          Enabling this feature will allow you to swipe your slides like a Jedi or like if you were playing tennis with your phone. To detect the direction,
-          your phone's accelerometer will be used. Therefore understand that this is pretty experimental 😅
+          Enabling this feature will allow you to swipe your slides like a Jedi or like if you were playing tennis with your phone. To
+          detect the direction, your phone's accelerometer will be used. Therefore understand that this is pretty experimental 😅
         </p>
 
         <ion-item>
           <ion-label>Swipe like a Jedi</ion-label>
-          <ion-toggle slot="end" color="switcher" checked={accStore.state.enable} onIonChange={() => this.toggleAccelerometerSupport()}></ion-toggle>
+          <ion-toggle
+            slot="end"
+            color="switcher"
+            checked={accStore.state.enable}
+            onIonChange={() => this.toggleAccelerometerSupport()}></ion-toggle>
         </ion-item>
 
         <p style={{color: accStore.state.enable ? 'inherit' : 'var(--ion-color-medium)'}}>
@@ -115,7 +119,9 @@ export class AppExperimentalSettings {
         </ion-item>
 
         <p style={{color: accStore.state.enable ? 'inherit' : 'var(--ion-color-medium)'}}>
-          <ion-label>Debounce (trigger swipe after {(this.accelerometerTakeUntil / this.accelerometerFrequency).toFixed(2)} seconds)</ion-label>
+          <ion-label>
+            Debounce (trigger swipe after {(this.accelerometerTakeUntil / this.accelerometerFrequency).toFixed(2)} seconds)
+          </ion-label>
         </p>
 
         <ion-item>
@@ -158,7 +164,7 @@ export class AppExperimentalSettings {
             color="switcher"
             onIonChange={(e: CustomEvent<RangeChangeEventDetail>) => this.updateAccelerometerDelay(e)}></ion-range>
         </ion-item>
-      </ion-list>,
+      </ion-list>
     ];
   }
 }
