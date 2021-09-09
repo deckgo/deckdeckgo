@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "internal-ip": "^6.0.0",
-    "socket.io": "^2.3.0"
+    "internal-ip": "^6.2.0",
+    "socket.io": "2.3.0"
   }
 }
