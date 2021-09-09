@@ -27,7 +27,11 @@ export const Footer = ({action = true, lang}) => {
           <FormattedMessage id="footer.start.now" />
         </h3>
 
-        <LinkButton style={{marginTop: '1.25rem'}} targetUrl="https://app.deckdeckgo.com/editor" msgId="footer.write.presentation" color="primary"></LinkButton>
+        <LinkButton
+          style={{marginTop: '1.25rem'}}
+          targetUrl="https://app.deckdeckgo.com/editor"
+          msgId="footer.write.presentation"
+          color="primary"></LinkButton>
       </section>
     );
   }

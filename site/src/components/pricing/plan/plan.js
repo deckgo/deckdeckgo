@@ -39,12 +39,10 @@ export const Plan = ({lang}) => {
             id="pricing.community.free"
             values={{
               sponsorshipLink: (
-                <a
-                  href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
-                  rel="noopener noreferrer">
+                <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" rel="noopener noreferrer">
                   <FormattedMessage id="pricing.community.sponsorship" />
                 </a>
-              ),
+              )
             }}
           />
         </p>
@@ -93,14 +91,17 @@ export const Plan = ({lang}) => {
                     <Link to={`/${lang}/features/`}>
                       <FormattedMessage id="pricing.community.features" />
                     </Link>
-                  ),
+                  )
                 }}
               />
             </li>
           </ul>
         </aside>
 
-        <LinkButton targetUrl="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" msgId="pricing.sponsor.action" color="primary"></LinkButton>
+        <LinkButton
+          targetUrl="https://opencollective.com/deckdeckgo#category-CONTRIBUTE"
+          msgId="pricing.sponsor.action"
+          color="primary"></LinkButton>
       </article>
     );
   }

@@ -5,7 +5,8 @@
   font-weight: 300;
   font-display: swap;
   src: url("/assets/fonts/open-sans-v17-latin-300.eot"); /* IE9 Compat Modes */
-  src: local("Open Sans Light"), local("OpenSans-Light"), url("/assets/fonts/open-sans-v17-latin-300.eot?#iefix") format("embedded-opentype"),
+  src: local("Open Sans Light"), local("OpenSans-Light"),
+    url("/assets/fonts/open-sans-v17-latin-300.eot?#iefix") format("embedded-opentype"),
     /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-300.woff2") format("woff2"),
     /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-300.woff") format("woff"),
     /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-300.ttf") format("truetype"),
@@ -19,7 +20,8 @@
   font-weight: 400;
   font-display: swap;
   src: url("/assets/fonts/open-sans-v17-latin-regular.eot"); /* IE9 Compat Modes */
-  src: local("Open Sans Regular"), local("OpenSans-Regular"), url("/assets/fonts/open-sans-v17-latin-regular.eot?#iefix") format("embedded-opentype"),
+  src: local("Open Sans Regular"), local("OpenSans-Regular"),
+    url("/assets/fonts/open-sans-v17-latin-regular.eot?#iefix") format("embedded-opentype"),
     /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-regular.woff2") format("woff2"),
     /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-regular.woff") format("woff"),
     /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-regular.ttf") format("truetype"),

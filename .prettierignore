@@ -12,3 +12,6 @@ lib
 docs/storybook-static/**/*
 
 .firebase
+
+.cache
+public

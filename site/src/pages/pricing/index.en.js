@@ -5,7 +5,7 @@ import Layout from '../../components/core/layout/en';
 import {Footer} from '../../components/core/footer/footer';
 import {PricingHero} from '../../components/pricing/hero/hero';
 import {Plan} from '../../components/pricing/plan/plan';
-import { Try } from "../../components/pricing/try/try";
+import {Try} from '../../components/pricing/try/try';
 
 const PricingPages = (props) => {
   return (

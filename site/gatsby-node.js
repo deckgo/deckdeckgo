@@ -1,5 +1,5 @@
 require('dotenv').config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${process.env.NODE_ENV}`
 });
 
 const fs = require('fs');
@@ -15,7 +15,7 @@ exports.onCreateNode = async ({node, actions: {createNode}, createNodeId, getCac
       parentNodeId: node.id,
       createNode,
       createNodeId,
-      getCache,
+      getCache
     });
     if (fileNode) {
       node.remoteImage___NODE = fileNode.id;
@@ -39,8 +39,8 @@ exports.sourceNodes = async ({actions, createNodeId, createContentDigest}) => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.FIREBASE_FEED_TOKEN}`,
-      },
+        Authorization: `Bearer ${process.env.FIREBASE_FEED_TOKEN}`
+      }
     });
 
     if (!rawResponse || !rawResponse.ok) {
@@ -68,8 +68,8 @@ function createNodes(actions, createNodeId, createContentDigest, feed) {
       internal: {
         type: `${FEED_NODE_TYPE}`,
         content: JSON.stringify(entry),
-        contentDigest: createContentDigest(entry),
-      },
+        contentDigest: createContentDigest(entry)
+      }
     })
   );
 }

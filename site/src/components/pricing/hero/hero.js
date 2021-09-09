@@ -5,7 +5,6 @@ import {FormattedMessage} from 'react-intl';
 import {main, title, section, hero, subtitle} from './hero.module.scss';
 
 export const PricingHero = () => {
-
   return (
     <section className={section}>
       <main className={`${main} ${hero}`}>
@@ -19,5 +18,4 @@ export const PricingHero = () => {
       </main>
     </section>
   );
-
 };

@@ -55,7 +55,8 @@
   }
 
   @media (min-width: 768px) {
-    > p:first-of-type, > p:last-of-type {
+    > p:first-of-type,
+    > p:last-of-type {
       min-height: 52px;
     }
   }

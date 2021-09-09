@@ -71,7 +71,10 @@ export const LandingDeck = () => {
     return (
       <deckgo-deck ref={deck} embedded={true} direction-mobile="horizontal">
         <deckgo-slide-title
-          style={{'--background': 'linear-gradient(to top right, var(--color-quinary), var(--color-tertiary))', '--color': 'var(--color-primary-contrast)'}}>
+          style={{
+            '--background': 'linear-gradient(to top right, var(--color-quinary), var(--color-tertiary))',
+            '--color': 'var(--color-primary-contrast)'
+          }}>
           <h2 slot="title" style={{fontSize: 'var(--font-size-h1)', lineHeight: 'var(--line-height-h1)'}}>
             <FormattedMessage id="hero.deck.slide1.title" />
           </h2>
@@ -182,7 +185,7 @@ function Example() {
               color: 'var(--color-light-contrast)',
               padding: '16px',
               borderRadius: '8px',
-              boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.12)',
+              boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.12)'
             }}>
             <FormattedMessage id="hero.deck.slide7.title" />
           </h2>
@@ -201,7 +204,12 @@ function Example() {
           </div>
 
           <div slot="end">
-            <img data-src={`/assets/img/landing/illustrations/travel.svg`} aria-hidden="true" alt="" style={{width: 'calc(var(--slide-width) / 3)'}} />
+            <img
+              data-src={`/assets/img/landing/illustrations/travel.svg`}
+              aria-hidden="true"
+              alt=""
+              style={{width: 'calc(var(--slide-width) / 3)'}}
+            />
           </div>
 
           {renderSlideBackground()}
@@ -247,7 +255,14 @@ function Example() {
             <title>
               <FormattedMessage id="hero.deck.nav.prev" />
             </title>
-            <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="48" d="M328 112L184 256l144 144" />
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="48"
+              d="M328 112L184 256l144 144"
+            />
           </svg>
         </button>
 
@@ -262,7 +277,14 @@ function Example() {
             <title>
               <FormattedMessage id="hero.deck.nav.next" />
             </title>
-            <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="48" d="M184 112l144 144-144 144" />
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="48"
+              d="M184 112l144 144-144 144"
+            />
           </svg>
         </button>
       </>

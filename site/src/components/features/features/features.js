@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from "gatsby";
+import {Link} from 'gatsby';
 
 import {FormattedMessage, useIntl} from 'react-intl';
 
@@ -75,7 +75,6 @@ export const ListFeatures = ({lang}) => {
 
         <p className={enterprise}>
           <img loading="lazy" src="/assets/icons/ionicons/business.svg" alt={intl.formatMessage({id: 'features.enterprise.only'})} />{' '}
-
           <FormattedMessage
             id="features.enterprise.only.notice"
             values={{
@@ -83,7 +82,7 @@ export const ListFeatures = ({lang}) => {
                 <Link to={`/${lang}/enterprise/`}>
                   <FormattedMessage id="features.enterprise.organizations.link" />
                 </Link>
-              ),
+              )
             }}
           />
         </p>

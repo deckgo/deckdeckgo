@@ -41,9 +41,9 @@ const ServicesPage = (props) => {
             <a href="https://aws.amazon.com/sqs/" rel="noopener noreferrer">
               SQS
             </a>{' '}
-            to save and publish online the presentations as Progressive Web Apps. The choice behind this is mostly the fact that we thought that the S3 solution
-            was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS Lambda. Our AWS cloud server is set in{' '}
-            <samp>us-east-1</samp> (Virginia).
+            to save and publish online the presentations as Progressive Web Apps. The choice behind this is mostly the fact that we thought
+            that the S3 solution was a good one for our purpose but beside that, it was also challenging to run Haskell Webapps on AWS
+            Lambda. Our AWS cloud server is set in <samp>us-east-1</samp> (Virginia).
           </p>
 
           <h2>Google</h2>
@@ -61,8 +61,9 @@ const ServicesPage = (props) => {
             <a href="https://firebase.google.com/products/auth/" rel="noopener noreferrer">
               Authentication
             </a>
-            . Both feature are good match to serve and deploy easily Progressive Web Apps. Their Authentication is also interesting as it provides the social
-            login we were looking for (like email and GitHub). Our Firebase cloud server is set in <samp>nam5</samp> (<samp>us-central</samp>).
+            . Both feature are good match to serve and deploy easily Progressive Web Apps. Their Authentication is also interesting as it
+            provides the social login we were looking for (like email and GitHub). Our Firebase cloud server is set in <samp>nam5</samp> (
+            <samp>us-central</samp>).
           </p>
 
           <h2>Tenor and Unsplash</h2>
@@ -96,8 +97,8 @@ const ServicesPage = (props) => {
             <a href="https://mailchimp.com" rel="noopener noreferrer">
               Mailchimp
             </a>
-            . Upon creating an account users are opted into it but they can opt out through their account’s “Settings” page and at the link of the footer in any
-            of these non-administrative emails.
+            . Upon creating an account users are opted into it but they can opt out through their account’s “Settings” page and at the link
+            of the footer in any of these non-administrative emails.
           </p>
 
           <p>
