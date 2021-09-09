@@ -35,8 +35,8 @@ const dataChannelOptions = {
 const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
 
 // @ts-ignore
-const PeerConnection =
-  window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+// prettier-ignore
+const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 
 // @ts-ignore
 // prettier-ignore
