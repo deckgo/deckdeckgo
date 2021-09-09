@@ -519,7 +519,7 @@ export class DeckdeckgoInlineEditor {
         clearTimeout(this.iOSTimerScroll);
       }
 
-      this.iOSTimerScroll = setTimeout(() => {
+      this.iOSTimerScroll = window.setTimeout(() => {
         this.el.style.setProperty('--deckgo-inline-editor-sticky-scroll', `${window.scrollY}px`);
       }, 50);
 

@@ -34,10 +34,6 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1",
-    "@stencil/core": "^2.8.0",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "@stencil/utils": "0.0.5",
     "@types/d3-array": "^3.0.1",
     "@types/d3-axis": "^3.0.1",
     "@types/d3-ease": "^3.0.0",

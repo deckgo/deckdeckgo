@@ -1048,7 +1048,7 @@ export class DeckdeckgoDeck {
       return;
     }
 
-    this.idleMouseTimer = setTimeout(async () => {
+    this.idleMouseTimer = window.setTimeout(async () => {
       await this.showHideMouseCursor(false);
     }, this.idleMouseTimeout);
   }
@@ -1203,10 +1203,10 @@ export class DeckdeckgoDeck {
   async onAutoSlide() {
     let idleMouseTimer;
 
-    this.idleSlideLoopTimer = setTimeout(() => (idleMouseTimer = this.idleMouseTimer), this.idleMouseTimeout);
+    this.idleSlideLoopTimer = window.setTimeout(() => (idleMouseTimer = this.idleMouseTimer), this.idleMouseTimeout);
 
     if (this.autoSlide === 'true') {
-      this.slideLoopInterval = setInterval(async () => {
+      this.slideLoopInterval = window.setInterval(async () => {
         if (idleMouseTimer === this.idleMouseTimer) {
           const end: boolean = await this.isEnd();
 

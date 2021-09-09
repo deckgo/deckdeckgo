@@ -29,13 +29,8 @@
   },
   "devDependencies": {
     "@deckdeckgo/slide-utils": "^4.0.3",
-    "@stencil/core": "^2.8.0",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "@stencil/utils": "0.0.5",
     "@types/prismjs": "^1.16.6",
-    "autoprefixer": "^10.3.4",
-    "node-fetch": "^3.0.0"
+    "node-fetch": "^2.6.1"
   },
   "repository": {
     "type": "git",

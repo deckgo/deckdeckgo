@@ -196,7 +196,7 @@ export class DeckDeckGoLaserPointer {
       lifetime: 0
     });
 
-    this.idleMouseTimer = setTimeout(() => {
+    this.idleMouseTimer = window.setTimeout(() => {
       this.mouse = 'idle';
     }, this.idleMouseTimeout);
   }

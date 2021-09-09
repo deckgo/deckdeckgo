@@ -9,32 +9,32 @@ export const config: Config = {
   namespace: 'deckdeckgo-slide-poll',
   outputTargets: [
     {
-      type: 'dist'
+      type: 'dist',
     },
     {
       type: 'www',
-      serviceWorker: null
+      serviceWorker: null,
     },
     {
       type: 'docs-readme',
     },
     {
       type: 'dist-custom-elements-bundle',
-    }
+    },
   ],
   plugins: [
     sass({
-      includePaths: ['node_modules/@deckdeckgo/slide-utils/styles/']
+      includePaths: ['../../node_modules/@deckdeckgo/slide-utils/styles/'],
     }),
     postcss({
-      plugins: [autoprefixer()]
-    })
+      plugins: [autoprefixer()],
+    }),
   ],
   devServer: {
     openBrowser: false,
-    port: 3335
+    port: 3335,
   },
   nodeResolve: {
-    browser: true
-  }
+    browser: true,
+  },
 };

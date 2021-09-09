@@ -20,11 +20,11 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements-bundle',
-    }
+    },
   ],
   plugins: [
     sass({
-      includePaths: ['node_modules/@deckdeckgo/slide-utils/styles/'],
+      includePaths: ['../../node_modules/@deckdeckgo/slide-utils/styles/'],
     }),
     postcss({
       plugins: [autoprefixer()],
