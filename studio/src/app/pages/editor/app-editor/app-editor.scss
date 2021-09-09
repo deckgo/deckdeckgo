@@ -74,7 +74,7 @@ app-editor {
     @import "../../../../global/theme/editor/editor-deck-placeholder";
   }
 
-  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+  @import "../../../../../../node_modules/@deckdeckgo/deck-utils/css/deck";
 
   app-navigation,
   app-help {
@@ -101,7 +101,8 @@ app-editor {
     }
 
     &:not(.ready) {
-      app-breadcrumbs, app-actions-editor {
+      app-breadcrumbs,
+      app-actions-editor {
         display: none;
       }
     }

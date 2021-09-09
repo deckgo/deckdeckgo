@@ -9,6 +9,7 @@
     "docs",
     "remote",
     "site",
+    "studio",
     "webcomponents/*",
     "templates/*",
     "utils/*"

@@ -67,22 +67,15 @@
     "@deckdeckgo/slide-youtube": "^2.4.0",
     "@deckdeckgo/social": "^4.1.0",
     "@deckdeckgo/types": "^2.0.1",
-    "@deckdeckgo/word-cloud": "^1.1.0",
+    "@deckdeckgo/word-cloud": "^1.2.0",
     "@deckdeckgo/youtube": "^2.1.0",
-    "@ionic/core": "^5.6.14",
+    "@ionic/core": "^5.7.0",
     "@rollup/plugin-replace": "^3.0.0",
-    "@stencil/core": "^2.6.0",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
     "@stencil/store": "^1.4.1",
     "@types/resize-observer-browser": "^0.1.6",
     "@types/socket.io-client": "1.4.34",
     "@types/uuid": "^8.3.1",
     "@types/wicg-file-system-access": "^2020.9.2",
-    "autoprefixer": "^10.3.1",
-    "husky": "^7.0.1",
-    "prettier": "2.3.2",
-    "pretty-quick": "^3.1.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "web-social-share": "^7.2.0",
     "workbox-build": "5.1.4"
@@ -102,10 +95,5 @@
     "slides",
     "slideshow",
     "talk"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

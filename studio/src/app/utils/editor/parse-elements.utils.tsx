@@ -41,9 +41,9 @@ export class ParseElementsUtils {
     return new Promise<any>(async (resolve) => {
       const Elem: string = element.nodeName.toLowerCase();
 
-      const attributes: Record<string, string> = getAttributes(element);
+      const attributes: Record<string, string | Record<string, string> | undefined> = getAttributes(element);
       if (attributes.style) {
-        attributes.style = await convertStyle(attributes.style);
+        attributes.style = await convertStyle(attributes.style as string);
       }
 
       if (contentEditable && this.isContentEditable(element, attributes)) {
