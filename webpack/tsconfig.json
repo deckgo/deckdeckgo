@@ -7,9 +7,8 @@
     "strict": true,
     "removeComments": true,
     "strictNullChecks": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "skipLibCheck": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
