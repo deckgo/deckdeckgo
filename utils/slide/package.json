@@ -14,21 +14,12 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^2.0.0"
-  },
-  "devDependencies": {
-    "esbuild": "^0.11.22",
-    "husky": "^6.0.0",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.2.4"
+    "@deckdeckgo/utils": "^2.0.1"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "prepare": "npm run build",
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
     "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
@@ -47,10 +38,5 @@
     "slides",
     "slideshow",
     "talk"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

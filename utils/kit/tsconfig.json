@@ -7,7 +7,10 @@
     "noImplicitAny": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types"],
-    "outDir": "lib"
-  }
+    "typeRoots": ["../../node_modules/@types"],
+    "outDir": "lib",
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
