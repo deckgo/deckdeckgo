@@ -25,9 +25,9 @@ const configuration: RTCConfiguration = {
   ]
 };
 
+// prettier-ignore
 // @ts-ignore
-const PeerConnection =
-  window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 
 // prettier-ignore
 // @ts-ignore
