@@ -28,7 +28,12 @@ export class StorageFirebaseProvider implements StorageProvider {
   uploadFile(data: File, folder: string, maxSize: number, downloadUrl: boolean = true): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
-        if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
+        if (
+          !authStore.state.authUser ||
+          !authStore.state.authUser.uid ||
+          authStore.state.authUser.uid === '' ||
+          authStore.state.authUser.uid === undefined
+        ) {
           errorStore.state.error = 'Not logged in.';
           resolve(undefined);
           return;
@@ -69,7 +74,12 @@ export class StorageFirebaseProvider implements StorageProvider {
   getFiles(next: string | null, folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       try {
-        if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
+        if (
+          !authStore.state.authUser ||
+          !authStore.state.authUser.uid ||
+          authStore.state.authUser.uid === '' ||
+          authStore.state.authUser.uid === undefined
+        ) {
           errorStore.state.error = 'Not logged in.';
           resolve(null);
           return;
@@ -128,7 +138,12 @@ export class StorageFirebaseProvider implements StorageProvider {
   getFolders(folder: string): Promise<StorageFoldersList | undefined> {
     return new Promise<StorageFoldersList | null>(async (resolve) => {
       try {
-        if (!authStore.state.authUser || !authStore.state.authUser.uid || authStore.state.authUser.uid === '' || authStore.state.authUser.uid === undefined) {
+        if (
+          !authStore.state.authUser ||
+          !authStore.state.authUser.uid ||
+          authStore.state.authUser.uid === '' ||
+          authStore.state.authUser.uid === undefined
+        ) {
           errorStore.state.error = 'Not logged in.';
           resolve(undefined);
           return;

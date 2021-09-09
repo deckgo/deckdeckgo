@@ -1,1 +1,1 @@
-/// <reference path="../../node_modules/@ionic/core/dist/types/components.d.ts" />
+/// <reference path="../../../../node_modules/@ionic/core/dist/types/components.d.ts" />

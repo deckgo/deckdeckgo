@@ -1,7 +1,7 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
-import { sass } from '@stencil/sass';
-import { postcss } from '@stencil/postcss';
+import {sass} from '@stencil/sass';
+import {postcss} from '@stencil/postcss';
 // @ts-ignore
 import autoprefixer from 'autoprefixer';
 
@@ -19,7 +19,7 @@ export const config: Config = {
       serviceWorker: null // disable service workers
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [

@@ -139,14 +139,17 @@ export class PublishService {
           }
 
           if (userStore.state.user.data.social) {
-            (deck.data.meta.author as DeckMetaAuthor).social = Object.keys(userStore.state.user.data.social).reduce((acc: UserSocial, key: string) => {
-              // @ts-ignore
-              acc[key] =
-                userStore.state.user.data.social[key] !== null && userStore.state.user.data.social[key] !== undefined
-                  ? userStore.state.user.data.social[key]
-                  : firebase.firestore.FieldValue.delete();
-              return acc;
-            }, {} as UserSocial);
+            (deck.data.meta.author as DeckMetaAuthor).social = Object.keys(userStore.state.user.data.social).reduce(
+              (acc: UserSocial, key: string) => {
+                // @ts-ignore
+                acc[key] =
+                  userStore.state.user.data.social[key] !== null && userStore.state.user.data.social[key] !== undefined
+                    ? userStore.state.user.data.social[key]
+                    : firebase.firestore.FieldValue.delete();
+                return acc;
+              },
+              {} as UserSocial
+            );
           } else {
             (deck.data.meta.author as DeckMetaAuthor).social = firebase.firestore.FieldValue.delete();
           }

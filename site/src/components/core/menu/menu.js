@@ -11,7 +11,7 @@ export const Menu = forwardRef(({lang}, ref) => {
   useImperativeHandle(ref, () => ({
     open() {
       display();
-    },
+    }
   }));
 
   const [open, setOpen] = useState(false);

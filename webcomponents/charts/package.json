@@ -34,10 +34,6 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1",
-    "@stencil/core": "^2.8.0",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "@stencil/utils": "0.0.5",
     "@types/d3-array": "^3.0.1",
     "@types/d3-axis": "^3.0.1",
     "@types/d3-ease": "^3.0.0",
@@ -45,11 +41,7 @@
     "@types/d3-scale-chromatic": "^3.0.0",
     "@types/d3-selection": "^3.0.1",
     "@types/d3-shape": "^3.0.2",
-    "@types/d3-transition": "^3.0.1",
-    "autoprefixer": "^10.3.3",
-    "husky": "^7.0.2",
-    "prettier": "2.3.2",
-    "pretty-quick": "^3.1.1"
+    "@types/d3-transition": "^3.0.1"
   },
   "repository": {
     "type": "git",
@@ -73,10 +65,5 @@
     "slideshow",
     "talk",
     "d3js"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

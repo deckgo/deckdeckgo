@@ -8,7 +8,7 @@
 
 ### Features
 
-- consider mobile as small devices, not tablets 
+- consider mobile as small devices, not tablets
 
 # 8.2.1 (2021-05-29)
 

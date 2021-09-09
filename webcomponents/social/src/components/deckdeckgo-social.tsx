@@ -1,6 +1,6 @@
 import {Component, Method, Prop, State, Watch, h, Host} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 /**
  * @slot - A custom text to be displayed
@@ -9,7 +9,7 @@ import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 @Component({
   tag: 'deckgo-social',
   styleUrl: 'deckdeckgo-social.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSocial implements DeckdeckgoComponent {
   /**
@@ -50,7 +50,7 @@ export class DeckdeckgoSocial implements DeckdeckgoComponent {
       this.concatMediumUrl(),
       this.concatDevUrl(),
       this.concatGithubUrl(),
-      this.concatFullUrl(),
+      this.concatFullUrl()
     ];
 
     await Promise.all(promises);

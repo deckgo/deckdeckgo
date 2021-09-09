@@ -10,7 +10,7 @@ import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 import {EditAction} from '../../types/editor/edit-action';
 
-import { modalController } from '../../utils/ionic/ionic.overlay';
+import {modalController} from '../../utils/ionic/ionic.overlay';
 
 export class ShapeHelper {
   constructor(private didChange: EventEmitter<HTMLElement>) {}

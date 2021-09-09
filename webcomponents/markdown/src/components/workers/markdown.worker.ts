@@ -15,6 +15,6 @@ export const parseMarkdown = async (options: ParseMarkdownOptions) => {
 
   return marked(options.mdText, {
     renderer,
-    xhtml: true,
+    xhtml: true
   });
 };

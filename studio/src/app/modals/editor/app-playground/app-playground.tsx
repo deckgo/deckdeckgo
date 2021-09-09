@@ -1,13 +1,13 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
-import { DeckdeckgoPlaygroundTheme } from '../../../utils/ddg/deckdeckgo-playground-theme';
+import {DeckdeckgoPlaygroundTheme} from '../../../utils/ddg/deckdeckgo-playground-theme';
 
 import i18n from '../../../stores/i18n.store';
 
 import {PlaygroundAction} from '../../../types/editor/playground-action';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-playground',

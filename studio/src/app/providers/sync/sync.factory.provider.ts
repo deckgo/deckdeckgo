@@ -13,7 +13,8 @@ export class SyncFactoryProvider {
   static getInstance(): SyncProvider {
     if (!SyncFactoryProvider.instance) {
       const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-      SyncFactoryProvider.instance = cloud === 'offline' ? new SyncOfflineProvider() : cloud === 'ic' ? new SyncIcProvider() : new SyncFirebaseProvider();
+      SyncFactoryProvider.instance =
+        cloud === 'offline' ? new SyncOfflineProvider() : cloud === 'ic' ? new SyncIcProvider() : new SyncFirebaseProvider();
     }
     return SyncFactoryProvider.instance;
   }

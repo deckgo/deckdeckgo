@@ -1,0 +1,38 @@
+{
+  "name": "deckdeckgo",
+  "version": "4.10.0",
+  "author": "David Dal Busco",
+  "description": "The web open source editor for presentations",
+  "private": true,
+  "workspaces": [
+    "docs",
+    "webcomponents/*",
+    "templates/*",
+    "utils/*"
+  ],
+  "devDependencies": {
+    "@stencil/core": "^2.8.0",
+    "@stencil/postcss": "^2.0.0",
+    "@stencil/sass": "^1.4.1",
+    "@types/jest": "27.0.1",
+    "@types/puppeteer": "5.4.4",
+    "autoprefixer": "^10.3.4",
+    "esbuild": "^0.12.25",
+    "husky": "^7.0.2",
+    "jest": "^27.1.1",
+    "jest-cli": "^27.1.1",
+    "prettier": "2.3.2",
+    "pretty-quick": "^3.1.1",
+    "puppeteer": "10.2.0",
+    "typescript": "^4.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

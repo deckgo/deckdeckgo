@@ -105,7 +105,9 @@ export class AppPublishEdit {
     }
 
     this.caption = deckStore.state.deck.data.name;
-    this.description = deckStore.state.deck.data.meta?.description ? (deckStore.state.deck.data.meta.description as string) : await this.getFirstSlideContent();
+    this.description = deckStore.state.deck.data.meta?.description
+      ? (deckStore.state.deck.data.meta.description as string)
+      : await this.getFirstSlideContent();
     this.tags = deckStore.state.deck.data.meta?.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
     this.pushToGitHub = deckStore.state.deck.data.github ? deckStore.state.deck.data.github.publish : true;
   }
@@ -271,7 +273,10 @@ export class AppPublishEdit {
 
   private validateDescriptionInput() {
     this.validDescription =
-      !this.description || this.description === undefined || this.description === '' || this.description.length <= Constants.DECK.DESCRIPTION_MAX_LENGTH;
+      !this.description ||
+      this.description === undefined ||
+      this.description === '' ||
+      this.description.length <= Constants.DECK.DESCRIPTION_MAX_LENGTH;
   }
 
   private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
@@ -422,7 +427,10 @@ export class AppPublishEdit {
                 onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
             </ion-item>
 
-            <app-publish-tags tags={this.tags} disable-remove={disable} onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-publish-tags>
+            <app-publish-tags
+              tags={this.tags}
+              disable-remove={disable}
+              onRemoveTag={($event: CustomEvent) => this.removeTag($event)}></app-publish-tags>
           </ion-list>
 
           {this.renderGitHub(disable)}

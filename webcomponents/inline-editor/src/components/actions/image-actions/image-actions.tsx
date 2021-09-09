@@ -7,7 +7,7 @@ import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
 @Component({
   tag: 'deckgo-ie-image-actions',
   styleUrl: 'image-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class ImageActions {
   @Prop()
@@ -188,7 +188,7 @@ export class ImageActions {
 
       <deckgo-ie-action-button mobile={this.mobile} onAction={($event: CustomEvent<UIEvent>) => this.deleteImage($event.detail)}>
         <deckgo-ie-action-image class={'image-delete'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
+      </deckgo-ie-action-button>
     ];
   }
 }

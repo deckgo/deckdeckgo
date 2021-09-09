@@ -19,7 +19,7 @@ import {
   DeckdeckgoEventSlide,
   DeckdeckgoEventNextPrevSlide,
   DeckdeckgoEventDeckReveal,
-  ConnectionState,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 // Utils
@@ -32,7 +32,7 @@ import {AccelerometerService} from '../../services/accelerometer/accelerometer.s
 
 @Component({
   tag: 'app-remote',
-  styleUrl: 'app-remote.scss',
+  styleUrl: 'app-remote.scss'
 })
 export class AppRemote {
   @Element() el: HTMLElement;
@@ -87,7 +87,7 @@ export class AppRemote {
       if (state === ConnectionState.CONNECTED) {
         this.communicationService.emit({
           type: DeckdeckgoEventType.SLIDES_REQUEST,
-          emitter: DeckdeckgoEventEmitter.APP,
+          emitter: DeckdeckgoEventEmitter.APP
         });
       }
     });
@@ -162,7 +162,7 @@ export class AppRemote {
         this.deckAttributes = {
           ...attributes,
           direction: attributes.direction !== 'papyrus' ? attributes.direction : 'horizontal',
-          'direction-mobile': attributes.direction !== 'papyrus' ? attributes.direction : 'horizontal',
+          'direction-mobile': attributes.direction !== 'papyrus' ? attributes.direction : 'horizontal'
         };
 
         this.deckRevealOnMobile = !$event.mobile && isMobile() ? $event.deck.reveal : $event.deck.revealOnMobile;
@@ -292,7 +292,9 @@ export class AppRemote {
     const element: HTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (this.slideIndex + 1) + ')');
 
     this.extraPlayAction =
-      element && element.nodeName && (element.nodeName.toLowerCase() === 'deckgo-slide-youtube' || element.nodeName.toLowerCase() === 'deckgo-slide-video');
+      element &&
+      element.nodeName &&
+      (element.nodeName.toLowerCase() === 'deckgo-slide-youtube' || element.nodeName.toLowerCase() === 'deckgo-slide-video');
   }
 
   private async setNotes() {
@@ -333,7 +335,7 @@ export class AppRemote {
     this.communicationService.emit({
       type: type,
       emitter: DeckdeckgoEventEmitter.APP,
-      slideAnimation: slideAnimation,
+      slideAnimation: slideAnimation
     });
   }
 
@@ -458,7 +460,7 @@ export class AppRemote {
     this.communicationService.emit({
       type: DeckdeckgoEventType.SLIDE_ACTION,
       emitter: DeckdeckgoEventEmitter.APP,
-      action: this.action,
+      action: this.action
     });
 
     await this.actionPlayPause();
@@ -494,7 +496,7 @@ export class AppRemote {
 
   private async openConnectModal() {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-remote-connect',
+      component: 'app-remote-connect'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -512,8 +514,8 @@ export class AppRemote {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-remote-slide-picker',
       componentProps: {
-        slides: this.slides,
-      },
+        slides: this.slides
+      }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
@@ -531,7 +533,7 @@ export class AppRemote {
     this.communicationService.emit({
       type: DeckdeckgoEventType.SLIDE_TO,
       emitter: DeckdeckgoEventEmitter.APP,
-      index: newSlideIndex,
+      index: newSlideIndex
     });
   }
 
@@ -557,15 +559,15 @@ export class AppRemote {
           role: 'cancel',
           handler: () => {
             // Nothing
-          },
+          }
         },
         {
           text: 'Yes',
           handler: async () => {
             await this.disconnect();
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
 
     await alert.present();
@@ -646,7 +648,7 @@ export class AppRemote {
             {this.renderExtraActions()}
           </div>
           <app-notes></app-notes>
-        </main>,
+        </main>
       ];
     } else if (this.connectionState !== ConnectionState.DISCONNECTED) {
       let text: string = 'Not connected';
@@ -724,7 +726,10 @@ export class AppRemote {
 
       return (
         <div class="deck-action-button">
-          <button onClick={(e: UIEvent) => this.emitAction(e)} aria-label={icon} style={{'--action-button-background': 'var(--ion-color-tertiary'}}>
+          <button
+            onClick={(e: UIEvent) => this.emitAction(e)}
+            aria-label={icon}
+            style={{'--action-button-background': 'var(--ion-color-tertiary'}}>
             <ion-icon name={icon} class={`deck-action-button-icon-${icon}`}></ion-icon>
           </button>
         </div>

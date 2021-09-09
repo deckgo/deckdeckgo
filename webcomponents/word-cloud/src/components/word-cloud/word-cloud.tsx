@@ -1,6 +1,6 @@
 import {Component, Prop, h, Host, Element, State, Event, EventEmitter, Method} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 import {debounce} from '@deckdeckgo/utils';
 
@@ -15,7 +15,7 @@ import {draw} from '../utils/word-cloud-draw';
 @Component({
   tag: 'deckgo-word-cloud',
   styleUrl: 'word-cloud.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
@@ -191,7 +191,8 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
       return;
     }
 
-    const sizeMatch: boolean = this.svgRef.getAttribute('width') === `${this.width}` && this.svgRef.getAttribute('height') === `${this.height}`;
+    const sizeMatch: boolean =
+      this.svgRef.getAttribute('width') === `${this.width}` && this.svgRef.getAttribute('height') === `${this.height}`;
 
     if (words.join('') === this.editWords && sizeMatch) {
       // We do not repaint if the list of words did not change
@@ -208,7 +209,7 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
         words.map((d: string, index: number) => ({
           text: d,
           size: 10 + Math.random() * 110,
-          color: `var(--deckgo-word-count-fill-color-${index}, #${this.colors?.[index]})`,
+          color: `var(--deckgo-word-count-fill-color-${index}, #${this.colors?.[index]})`
         }))
       )
       .rotate(() => ~~(Math.random() * 2) * 90)
@@ -232,7 +233,7 @@ export class DeckdeckgoWordCloud implements DeckdeckgoComponent {
     return (
       <Host
         class={{
-          'deckgo-word-cloud-edit': this.editing,
+          'deckgo-word-cloud-edit': this.editing
         }}>
         <div
           class="deckgo-word-cloud-container"

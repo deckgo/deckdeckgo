@@ -7,7 +7,7 @@ import i18n from '../../../stores/i18n.store';
 import {Template, TemplateData} from '../../../models/data/template';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-template',
@@ -151,8 +151,10 @@ export class AppTemplate {
   }
 
   render() {
-    const errorCdn: string | undefined = !this.validCdn && this.templateData?.cdn !== '' && this.templateData?.cdn !== undefined ? 'error' : '';
-    const errorTag: string | undefined = !this.validTag && this.templateData?.tag !== '' && this.templateData?.tag !== undefined ? 'error' : '';
+    const errorCdn: string | undefined =
+      !this.validCdn && this.templateData?.cdn !== '' && this.templateData?.cdn !== undefined ? 'error' : '';
+    const errorTag: string | undefined =
+      !this.validTag && this.templateData?.tag !== '' && this.templateData?.tag !== undefined ? 'error' : '';
 
     return (
       <Fragment>

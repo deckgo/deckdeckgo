@@ -9,20 +9,20 @@ export const config: Config = {
   namespace: 'deckdeckgo-markdown',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null,
+      serviceWorker: null
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
-    }),
-  ],
+      plugins: [autoprefixer()]
+    })
+  ]
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from "gatsby";
+import {Link} from 'gatsby';
 
 import {FormattedMessage} from 'react-intl';
 
@@ -24,7 +24,7 @@ export const EnterpriseFeatures = ({lang}) => {
                 <Link to={`/${lang}/features/`}>
                   <FormattedMessage id="enterprise.community.link" />
                 </Link>
-              ),
+              )
             }}
           />
         </p>
@@ -40,7 +40,6 @@ export const EnterpriseFeatures = ({lang}) => {
         <Feature titleKey="features.enterprise.collaborate.title" msgKey="features.enterprise.collaborate.content" />
         <Feature titleKey="features.enterprise.library.title" msgKey="features.enterprise.library.content" />
         <Feature titleKey="features.enterprise.support.title" msgKey="features.enterprise.support.content" />
-
       </main>
     </section>
   );

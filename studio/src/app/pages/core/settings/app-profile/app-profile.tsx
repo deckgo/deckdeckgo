@@ -199,7 +199,8 @@ export class AppProfile {
 
   private validateUsernameInput() {
     if (this.cloud === 'ic') {
-      this.validUsername = this.apiUsername === null || this.apiUsername === undefined || this.apiUsername === '' || UserUtils.validUsername(this.apiUsername);
+      this.validUsername =
+        this.apiUsername === null || this.apiUsername === undefined || this.apiUsername === '' || UserUtils.validUsername(this.apiUsername);
       this.isValid();
 
       return;
@@ -218,7 +219,10 @@ export class AppProfile {
       this.validName =
         this.user &&
         this.user.data &&
-        (this.user.data.name === null || this.user.data.name === undefined || this.user.data.name === '' || UserUtils.validName(this.user.data.name));
+        (this.user.data.name === null ||
+          this.user.data.name === undefined ||
+          this.user.data.name === '' ||
+          UserUtils.validName(this.user.data.name));
       this.isValid();
 
       return;
@@ -237,7 +241,10 @@ export class AppProfile {
       this.validEmail =
         this.user &&
         this.user.data &&
-        (this.user.data.email === null || this.user.data.email === undefined || this.user.data.email === '' || UserUtils.validEmail(this.user.data.email));
+        (this.user.data.email === null ||
+          this.user.data.email === undefined ||
+          this.user.data.email === '' ||
+          UserUtils.validEmail(this.user.data.email));
       this.isValid();
 
       return;
@@ -630,7 +637,12 @@ export class AppProfile {
     const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
 
     return (
-      <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !validApiUser || !this.user} color="primary" shape="round">
+      <ion-button
+        type="submit"
+        class="ion-margin-top"
+        disabled={!this.valid || this.saving || !validApiUser || !this.user}
+        color="primary"
+        shape="round">
         <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
@@ -853,7 +865,10 @@ export class AppProfile {
       </p>,
       <div class="avatar">
         {this.user && this.user.data && this.user.data.social && this.user.data.social.custom_logo_url ? (
-          <deckgo-lazy-img slot="icon" img-src={this.user.data.social.custom_logo_url} aria-label={i18n.state.settings.custom_logo}></deckgo-lazy-img>
+          <deckgo-lazy-img
+            slot="icon"
+            img-src={this.user.data.social.custom_logo_url}
+            aria-label={i18n.state.settings.custom_logo}></deckgo-lazy-img>
         ) : (
           <deckgo-lazy-img
             slot="icon"

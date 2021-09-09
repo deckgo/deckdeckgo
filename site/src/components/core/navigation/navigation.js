@@ -51,7 +51,13 @@ const Navigation = ({data, fix, lang, navTheme}) => {
       <header className={`${header} ` + (fix ? `${fixStyle}` : scrolled ? `${fixStyle} animated` : '') + `${theme}`}>
         <nav className={nav}>
           <button className={menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
-            <img loading="lazy" src={`/assets/icons/ionicons/menu${navTheme ? '-dark' : ''}.svg`} aria-hidden="true" alt="" style={{width: '2rem'}} />
+            <img
+              loading="lazy"
+              src={`/assets/icons/ionicons/menu${navTheme ? '-dark' : ''}.svg`}
+              aria-hidden="true"
+              alt=""
+              style={{width: '2rem'}}
+            />
           </button>
 
           <div className={start}>

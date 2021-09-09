@@ -64,7 +64,12 @@ export class AppCustomization {
         <ion-label>
           {themeStore.state.darkTheme ? 'Dark' : 'Light'} theme {themeStore.state.darkTheme ? '🌑' : '☀️'}
         </ion-label>
-        <ion-toggle slot="end" checked={themeStore.state.darkTheme} mode="md" color="medium" onIonChange={async () => await this.toggleTheme()}></ion-toggle>
+        <ion-toggle
+          slot="end"
+          checked={themeStore.state.darkTheme}
+          mode="md"
+          color="medium"
+          onIonChange={async () => await this.toggleTheme()}></ion-toggle>
       </ion-item>
     );
   }

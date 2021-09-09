@@ -1,5 +1,5 @@
-import { Deck } from '../../models/data/deck';
-import { Slide } from '../../models/data/slide';
+import {Deck} from '../../models/data/deck';
+import {Slide} from '../../models/data/slide';
 
 export type SyncState = 'pending' | 'in_progress' | 'error' | 'idle';
 

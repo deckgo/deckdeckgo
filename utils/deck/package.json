@@ -13,26 +13,17 @@
     "url": "https://github.com/deckgo/deckdeckgo"
   },
   "homepage": "https://deckdeckgo.com",
-  "dependencies": {},
   "devDependencies": {
-    "@deckdeckgo/types": "^1.1.0",
-    "autoprefixer": "^10.2.5",
-    "clean-css-cli": "^5.3.0",
-    "esbuild": "^0.11.22",
-    "husky": "^6.0.0",
-    "node-sass": "^6.0.0",
-    "postcss": "^8.2.15",
-    "postcss-cli": "^8.3.1",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.2.4"
+    "@deckdeckgo/types": "^2.0.1",
+    "clean-css-cli": "^5.3.3",
+    "node-sass": "^6.0.1",
+    "postcss": "^8.3.6",
+    "postcss-cli": "^8.3.1"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "prepare": "npm run build",
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
     "build": "rimraf lib && rimraf css && node ./esbuild.js && npm run ts-declaration && npm run build-deck",
     "build-deck": "npm run build-deck-sass && npm run build-deck-autoprefix && npm run build-deck-cleancss",
@@ -55,10 +46,5 @@
     "slides",
     "slideshow",
     "talk"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

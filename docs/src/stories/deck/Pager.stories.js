@@ -28,5 +28,4 @@ export const Pager = () => {
 </div>`;
 };
 
-Pager.args = {
-};
+Pager.args = {};

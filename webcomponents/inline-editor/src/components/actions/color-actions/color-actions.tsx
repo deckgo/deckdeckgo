@@ -12,7 +12,7 @@ import {ExecCommandAction} from '../../../interfaces/interfaces';
 @Component({
   tag: 'deckgo-ie-color-actions',
   styleUrl: 'color-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class ColorActions {
   @Prop()
@@ -75,7 +75,7 @@ export class ColorActions {
     selection?.removeAllRanges();
     selection?.addRange(this.range);
 
-    const observer: MutationObserver = new MutationObserver( (_mutations: MutationRecord[]) => {
+    const observer: MutationObserver = new MutationObserver((_mutations: MutationRecord[]) => {
       observer.disconnect();
 
       // No node were added so the style was modified
@@ -96,8 +96,8 @@ export class ColorActions {
             const rgb: string = await hexToRgb($event.detail.hex);
             resolve(element && (element.style[this.action] === $event.detail.hex || element.style[this.action] === `rgb(${rgb})`));
           });
-        },
-      },
+        }
+      }
     });
   }
 
@@ -106,7 +106,10 @@ export class ColorActions {
 
     return (
       <Host class={cssClass}>
-        <deckgo-color color-rgb={this.colorRgb} onColorChange={($event: CustomEvent) => this.selectColor($event)} palette={this.palette}></deckgo-color>
+        <deckgo-color
+          color-rgb={this.colorRgb}
+          onColorChange={($event: CustomEvent) => this.selectColor($event)}
+          palette={this.palette}></deckgo-color>
       </Host>
     );
   }

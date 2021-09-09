@@ -4,7 +4,7 @@ import {version} from '../package.json';
 
 import {cleanup, nodeVersionWarning} from './utils/utils';
 import {initPresentation} from './presentation';
-import { initTemplate } from "./template";
+import {initTemplate} from './template';
 
 const USAGE_DOCS = `Usage:
 npm init deckdeckgo
@@ -43,7 +43,7 @@ async function run() {
       console.log('No goal selected. Process aborted.');
     }
   } catch (e) {
-    console.error(`\n${red('✖')} ${e.message}\n`);
+    console.error(`\n${red('✖')} ${e}\n`);
   }
 
   cleanup();
@@ -62,7 +62,7 @@ const ask = async (): Promise<GoalAnswer> => {
   const inquirer = require('inquirer');
 
   return inquirer.prompt(question);
-}
+};
 
 (async () => {
   try {

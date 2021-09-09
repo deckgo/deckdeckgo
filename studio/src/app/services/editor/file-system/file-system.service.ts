@@ -226,7 +226,15 @@ export class FileSystemService {
     };
   }
 
-  private listZipAssets({content, zippedAssets, subPath}: {content: JSZip; subPath: string; zippedAssets: {path: string; file: JSZip.JSZipObject}[]}) {
+  private listZipAssets({
+    content,
+    zippedAssets,
+    subPath
+  }: {
+    content: JSZip;
+    subPath: string;
+    zippedAssets: {path: string; file: JSZip.JSZipObject}[];
+  }) {
     content.folder(subPath).forEach((filename: string, file: JSZip.JSZipObject) =>
       zippedAssets.push({
         path: `${subPath}${filename}`,

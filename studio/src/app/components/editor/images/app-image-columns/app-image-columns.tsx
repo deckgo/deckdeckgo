@@ -52,7 +52,10 @@ export class AppImageColumns {
       return (
         <div class="image ion-padding" custom-tappable onClick={() => this.selectImage.emit(gif)}>
           <div class="image-container">
-            <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={gif.title ? gif.title : gif.media[0].tinygif.url} custom-loader={true}></deckgo-lazy-img>
+            <deckgo-lazy-img
+              imgSrc={gif.media[0].tinygif.url}
+              imgAlt={gif.title ? gif.title : gif.media[0].tinygif.url}
+              custom-loader={true}></deckgo-lazy-img>
           </div>
         </div>
       );

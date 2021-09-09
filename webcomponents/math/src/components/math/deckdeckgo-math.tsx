@@ -9,7 +9,7 @@ import {extractMath, Segment} from 'extract-math';
 @Component({
   tag: 'deckgo-math',
   styleUrl: 'deckdeckgo-math.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoMath {
   @Element() el: HTMLElement;
@@ -130,7 +130,7 @@ export class DeckdeckgoMath {
       macros: this.macros ? JSON.parse(this.macros) : null,
       strict: 'warn',
       trust: false,
-      throwOnError: true,
+      throwOnError: true
     });
   }
 
@@ -188,7 +188,7 @@ export class DeckdeckgoMath {
     return (
       <Host
         class={{
-          'deckgo-math-edit': this.editing,
+          'deckgo-math-edit': this.editing
         }}>
         <div
           class="deckgo-math-container"

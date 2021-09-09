@@ -81,7 +81,8 @@ export class AppDeckTransition {
   }
 
   private async initDeckAutoSlide() {
-    this.autoSlide = deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
+    this.autoSlide =
+      deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
   }
 
   private async animateDecks() {
@@ -285,16 +286,34 @@ export class AppDeckTransition {
       <app-expansion-panel expanded="close">
         <ion-label slot="title">{i18n.state.editor.animation}</ion-label>
         <div class="container ion-margin-bottom">
-          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'slide', i18n.state.editor.swipe, this.selectedAnimation === 'slide', () =>
-            this.applyAnimation('slide')
+          {this.renderDeckItem(
+            'animation',
+            'horizontal',
+            'horizontal',
+            'slide',
+            i18n.state.editor.swipe,
+            this.selectedAnimation === 'slide',
+            () => this.applyAnimation('slide')
           )}
 
-          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'fade', i18n.state.editor.fade, this.selectedAnimation === 'fade', () =>
-            this.applyAnimation('fade')
+          {this.renderDeckItem(
+            'animation',
+            'horizontal',
+            'horizontal',
+            'fade',
+            i18n.state.editor.fade,
+            this.selectedAnimation === 'fade',
+            () => this.applyAnimation('fade')
           )}
 
-          {this.renderDeckItem('animation', 'horizontal', 'horizontal', 'none', i18n.state.editor.instant, this.selectedAnimation === 'none', () =>
-            this.applyAnimation('none')
+          {this.renderDeckItem(
+            'animation',
+            'horizontal',
+            'horizontal',
+            'none',
+            i18n.state.editor.instant,
+            this.selectedAnimation === 'none',
+            () => this.applyAnimation('none')
           )}
         </div>
       </app-expansion-panel>
@@ -339,9 +358,15 @@ export class AppDeckTransition {
         <deckgo-slide-title
           style={{
             '--background': `${
-              !selected ? 'transparent' : i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'})` : 'transparent'
+              !selected
+                ? 'transparent'
+                : i % 2 > 0
+                ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'})`
+                : 'transparent'
             }`,
-            '--color': !selected ? 'inherit' : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`
+            '--color': !selected
+              ? 'inherit'
+              : `${i % 2 > 0 ? `var(--ion-color-${showcase === 'direction' ? 'primary' : 'tertiary'}-contrast)` : 'inherit'}`
           }}>
           <p slot="title">{text}</p>
         </deckgo-slide-title>

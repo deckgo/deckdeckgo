@@ -13,5 +13,9 @@ export interface SlideProvider {
 
 export const getSlideService = (): SlideProvider => {
   const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-  return cloud === 'ic' ? SlideIcProvider.getInstance() : cloud === 'firebase' ? SlideFirebaseProvider.getInstance() : SlideOfflineProvider.getInstance();
+  return cloud === 'ic'
+    ? SlideIcProvider.getInstance()
+    : cloud === 'firebase'
+    ? SlideFirebaseProvider.getInstance()
+    : SlideOfflineProvider.getInstance();
 };

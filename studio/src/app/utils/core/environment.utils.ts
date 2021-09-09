@@ -4,7 +4,10 @@ import {EnvironmentDeckDeckGoConfig, EnvironmentAppConfig} from '../../types/cor
 export const tenor = (): boolean => EnvironmentConfigService.getInstance().get('tenor') !== undefined;
 
 export const unsplash = (): boolean => {
-  return EnvironmentConfigService.getInstance().get('unsplash') !== undefined || EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').mock;
+  return (
+    EnvironmentConfigService.getInstance().get('unsplash') !== undefined ||
+    EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').mock
+  );
 };
 
 export const share = (): boolean => {

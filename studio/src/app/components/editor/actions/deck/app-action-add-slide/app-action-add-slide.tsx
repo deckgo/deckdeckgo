@@ -10,7 +10,7 @@ import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {DemoAction} from '../../../../../types/editor/demo-action';
 
-import { modalController, popoverController } from '../../../../../utils/ionic/ionic.overlay';
+import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-action-add-slide',
@@ -263,7 +263,10 @@ export class AppActionAddSlide {
 
   render() {
     return (
-      <app-action-busy aria-label={i18n.state.editor.add_slide} iconName="add" onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
+      <app-action-busy
+        aria-label={i18n.state.editor.add_slide}
+        iconName="add"
+        onActionReady={($event: CustomEvent) => this.onActionOpenSlideAdd($event)}>
         <ion-label aria-hidden="true">{i18n.state.editor.add_slide}</ion-label>
       </app-action-busy>
     );

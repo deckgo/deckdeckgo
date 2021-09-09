@@ -14,7 +14,15 @@ export const createManagerActor = ({identity, host}: {identity: Identity; host?:
   return createActor<ManagerActor>({canisterId: process.env.MANAGER_CANISTER_ID, idlFactory: ManagerFactory, identity, host});
 };
 
-export const createDeckBucketActor = ({identity, bucket, host}: {identity: Identity; bucket: Principal; host?: string}): Promise<DeckBucketActor> => {
+export const createDeckBucketActor = ({
+  identity,
+  bucket,
+  host
+}: {
+  identity: Identity;
+  bucket: Principal;
+  host?: string;
+}): Promise<DeckBucketActor> => {
   return createActor<DeckBucketActor>({canisterId: bucket, idlFactory: DeckBucketFactory, identity, host});
 };
 

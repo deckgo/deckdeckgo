@@ -1,1 +1,1 @@
-/// <reference path="../../node_modules/@deckdeckgo/remote/dist/types/components.d.ts" />
+/// <reference path="../../../../node_modules/@deckdeckgo/remote/dist/types/components.d.ts" />

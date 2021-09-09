@@ -11,16 +11,11 @@ export default {
     src: {control: 'text'},
     width: {control: 'number'},
     height: {control: 'number'},
-    allowFullscreen: {control: 'boolean'},
+    allowFullscreen: {control: 'boolean'}
   }
 };
 
-export const Youtube = ({
-  src,
-  width,
-  height,
-  allowFullscreen
-}) => {
+export const Youtube = ({src, width, height, allowFullscreen}) => {
   return `<deckgo-youtube src="${src}" width="${width}" height="${height}" allow-fullscreen="${allowFullscreen}" instant="true"></deckgo-youtube>`;
 };
 

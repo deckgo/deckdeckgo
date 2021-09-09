@@ -10,7 +10,7 @@ import {
   DeckdeckgoSlideAction,
   DeckdeckgoDeckDefinition,
   DeckdeckgoSlideDefinition,
-  ConnectionState,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 import {isMobile} from '@deckdeckgo/utils';
@@ -25,7 +25,7 @@ import {CommunicationService} from '../../services/communication/communication.s
 @Component({
   tag: 'deckgo-remote',
   styleUrl: 'deckdeckgo-remote.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoRemote {
   @Element() el: HTMLElement;
@@ -210,7 +210,7 @@ export class DeckdeckgoRemote {
             {x: this.startX, y: this.startY},
             {
               x: this.startX,
-              y: this.startY,
+              y: this.startY
             },
             event.color
           )
@@ -245,7 +245,7 @@ export class DeckdeckgoRemote {
           {x: this.startX, y: this.startY},
           {
             x: toX,
-            y: toY,
+            y: toY
           },
           event.color
         );
@@ -277,7 +277,7 @@ export class DeckdeckgoRemote {
           {x: this.startX, y: this.startY},
           {
             x: toX,
-            y: toY,
+            y: toY
           },
           event.color
         );
@@ -308,7 +308,7 @@ export class DeckdeckgoRemote {
         emitter: DeckdeckgoEventEmitter.DECK,
         length: this.length,
         deck: this.deck,
-        mobile: isMobile(),
+        mobile: isMobile()
       });
 
       resolve();
@@ -339,7 +339,7 @@ export class DeckdeckgoRemote {
         type: DeckdeckgoEventType.SLIDE_UPDATE,
         emitter: DeckdeckgoEventEmitter.DECK,
         index: index,
-        slide: slide,
+        slide: slide
       });
 
       resolve();
@@ -351,7 +351,7 @@ export class DeckdeckgoRemote {
     return new Promise<void>((resolve) => {
       this.communicationService.emit({
         type: DeckdeckgoEventType.DELETE_SLIDE,
-        emitter: DeckdeckgoEventEmitter.DECK,
+        emitter: DeckdeckgoEventEmitter.DECK
       });
 
       resolve();
@@ -364,7 +364,7 @@ export class DeckdeckgoRemote {
       this.communicationService.emit({
         type: DeckdeckgoEventType.DECK_REVEAL_UPDATE,
         emitter: DeckdeckgoEventEmitter.DECK,
-        reveal: reveal,
+        reveal: reveal
       });
 
       resolve();
@@ -406,7 +406,7 @@ export class DeckdeckgoRemote {
       type: DeckdeckgoEventType.SLIDE_TO,
       emitter: DeckdeckgoEventEmitter.DECK,
       index: index,
-      speed: speed,
+      speed: speed
     });
   }
 
@@ -415,7 +415,7 @@ export class DeckdeckgoRemote {
     this.communicationService.emit({
       type: DeckdeckgoEventType.SLIDE_ACTION,
       emitter: DeckdeckgoEventEmitter.DECK,
-      action: DeckdeckgoSlideAction.PLAY,
+      action: DeckdeckgoSlideAction.PLAY
     });
   }
 
@@ -424,7 +424,7 @@ export class DeckdeckgoRemote {
     this.communicationService.emit({
       type: DeckdeckgoEventType.SLIDE_ACTION,
       emitter: DeckdeckgoEventEmitter.DECK,
-      action: DeckdeckgoSlideAction.PAUSE,
+      action: DeckdeckgoSlideAction.PAUSE
     });
   }
 

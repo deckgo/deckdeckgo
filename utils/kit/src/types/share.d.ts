@@ -1,1 +1,1 @@
-/// <reference path="../../node_modules/web-social-share/dist/types/components.d.ts" />
+/// <reference path="../../../../node_modules/web-social-share/dist/types/components.d.ts" />

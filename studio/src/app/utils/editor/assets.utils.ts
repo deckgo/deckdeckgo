@@ -34,7 +34,13 @@ export const getSlidesOnlineCharts = async ({deck}: {deck: Deck}): Promise<UserA
   return getAssets<UserAsset>({deck, assets: getSlideOnlineCharts});
 };
 
-const getAssets = async <T>({deck, assets}: {deck: Deck; assets: ({slideId}: {slideId: string}) => Promise<T[] | undefined>}): Promise<T[]> => {
+const getAssets = async <T>({
+  deck,
+  assets
+}: {
+  deck: Deck;
+  assets: ({slideId}: {slideId: string}) => Promise<T[] | undefined>;
+}): Promise<T[]> => {
   if (!deck.data.slides || deck.data.slides.length <= 0) {
     return [];
   }
@@ -105,7 +111,9 @@ const getSlideOnlineImages = async ({slideId}: {slideId: string}): Promise<UserA
     return !isLocalImage(img);
   });
 
-  const promises: Promise<UserAsset | undefined>[] = list.map(({imgSrc}: HTMLDeckgoLazyImgElement) => getUserAsset({url: imgSrc, type: 'images'}));
+  const promises: Promise<UserAsset | undefined>[] = list.map(({imgSrc}: HTMLDeckgoLazyImgElement) =>
+    getUserAsset({url: imgSrc, type: 'images'})
+  );
 
   return (await Promise.all(promises)).filter((asset: UserAsset | undefined) => asset !== undefined);
 };

@@ -6,7 +6,7 @@ import {filterCodeLanguages} from '../../../utils/editor/prism.utils';
 
 import {PrismLanguage} from '../../../types/editor/prism-language';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-code-languages',
@@ -110,7 +110,9 @@ export class AppCodeLanguages {
       </ion-header>,
       <ion-content class="ion-padding">
         <ion-list>
-          <ion-radio-group value={this.currentLanguage ? this.currentLanguage.language : undefined}>{this.renderLanguages()}</ion-radio-group>
+          <ion-radio-group value={this.currentLanguage ? this.currentLanguage.language : undefined}>
+            {this.renderLanguages()}
+          </ion-radio-group>
         </ion-list>
       </ion-content>,
       <ion-footer>

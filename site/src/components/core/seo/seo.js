@@ -34,7 +34,7 @@ function SEO({description, lang, meta, title, canonical}) {
   return (
     <Helmet
       htmlAttributes={{
-        lang,
+        lang
       }}
       title={metaTitle}
       titleTemplate={title ? `%s | ${site.siteMetadata.title}` : `%s`}
@@ -42,68 +42,68 @@ function SEO({description, lang, meta, title, canonical}) {
       meta={[
         {
           name: `description`,
-          content: metaDescription,
+          content: metaDescription
         },
         {
           name: `author`,
-          content: site.siteMetadata.author,
+          content: site.siteMetadata.author
         },
         {
           property: `og:site_name`,
-          content: metaTitle,
+          content: metaTitle
         },
         {
           property: `og:title`,
-          content: metaTitle,
+          content: metaTitle
         },
         {
           property: `og:description`,
-          content: metaDescription,
+          content: metaDescription
         },
         {
           property: `og:type`,
-          content: `website`,
+          content: `website`
         },
         {
           property: `og:url`,
-          content: site.siteMetadata.url,
+          content: site.siteMetadata.url
         },
         {
           property: `og:image`,
-          content: `${site.siteMetadata.url}${site.siteMetadata.image}`,
+          content: `${site.siteMetadata.url}${site.siteMetadata.image}`
         },
         {
           property: `og:image:type`,
-          content: `image/png`,
+          content: `image/png`
         },
         {
           name: `twitter:card`,
-          content: `summary_large_image`,
+          content: `summary_large_image`
         },
         {
           name: `twitter:creator`,
-          content: site.siteMetadata.author,
+          content: site.siteMetadata.author
         },
         {
           name: `twitter:title`,
-          content: metaTitle,
+          content: metaTitle
         },
         {
           name: `twitter:description`,
-          content: metaDescription,
+          content: metaDescription
         },
         {
           name: `twitter:image:src`,
-          content: `${site.siteMetadata.url}${site.siteMetadata.image}`,
+          content: `${site.siteMetadata.url}${site.siteMetadata.image}`
         },
         {
           name: `twitter:creator`,
-          content: site.siteMetadata.twitterUsername,
+          content: site.siteMetadata.twitterUsername
         },
         {
           name: `twitter:site`,
-          content: site.siteMetadata.twitterUsername,
-        },
+          content: site.siteMetadata.twitterUsername
+        }
       ].concat(meta)}
     />
   );
@@ -112,14 +112,14 @@ function SEO({description, lang, meta, title, canonical}) {
 SEO.defaultProps = {
   lang: `en`,
   meta: [],
-  description: ``,
+  description: ``
 };
 
 SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
-  canonical: PropTypes.string,
+  canonical: PropTypes.string
 };
 
 export default SEO;

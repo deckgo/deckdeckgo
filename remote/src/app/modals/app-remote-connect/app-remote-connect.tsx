@@ -7,7 +7,7 @@ import {CommunicationService} from '../../services/communication/communication.s
 
 @Component({
   tag: 'app-remote-connect',
-  styleUrl: 'app-remote-connect.scss',
+  styleUrl: 'app-remote-connect.scss'
 })
 export class AppRemoteConnect {
   @Element() el: HTMLElement;
@@ -54,7 +54,7 @@ export class AppRemoteConnect {
         </ion-buttons>
       </app-header>,
 
-      <ion-content class="ion-padding">{this.renderContent()}</ion-content>,
+      <ion-content class="ion-padding">{this.renderContent()}</ion-content>
     ];
   }
 

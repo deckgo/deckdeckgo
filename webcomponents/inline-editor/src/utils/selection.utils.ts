@@ -20,4 +20,4 @@ export const getSelection = async (): Promise<Selection | undefined> => {
   }
 
   return undefined;
-}
+};

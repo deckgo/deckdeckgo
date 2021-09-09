@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-  <title>DeckDeckGo - QR Code</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>DeckDeckGo - QR Code</title>
 
-  <script type="module" src="/build/deckdeckgo-qrcode.esm.js"></script>
-  <script nomodule src="/build/deckdeckgo-qrcode.js"></script>
+    <script type="module" src="/build/deckdeckgo-qrcode.esm.js"></script>
+    <script nomodule src="/build/deckdeckgo-qrcode.js"></script>
+  </head>
+  <body>
+    <deckgo-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-size: 300px"></deckgo-qrcode>
 
-</head>
-<body>
+    <deckgo-qrcode
+      content="https://deckdeckgo.com"
+      cell-size="14"
+      style="--deckgo-qrcode-background-fill: white; --deckgo-qrcode-color-fill: #3880ff"
+    >
+      <img slot="logo" src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" />
+    </deckgo-qrcode>
 
-  <deckgo-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-size: 300px;"></deckgo-qrcode>
+    <deckgo-qrcode content="https://fluster.io" type="img" cell-size="10" style="--deckgo-qrcode-size: 300px"></deckgo-qrcode>
 
-  <deckgo-qrcode content="https://deckdeckgo.com" cell-size="14" style="--deckgo-qrcode-background-fill: white; --deckgo-qrcode-color-fill: #3880ff;">
-    <img slot="logo" src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg"/>
-  </deckgo-qrcode>
+    <deckgo-qrcode
+      content="https://deckdeckgo.com"
+      style="
+        --deckgo-qrcode-size: 200px;
+        --deckgo-qrcode-border-stroke: green;
+        --deckgo-qrcode-background-fill: yellow;
+        --deckgo-qrcode-color-fill: red;
+      "
+    ></deckgo-qrcode>
 
-  <deckgo-qrcode content="https://fluster.io" type="img" cell-size="10" style="--deckgo-qrcode-size: 300px;"></deckgo-qrcode>
-
-  <deckgo-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-size: 200px; --deckgo-qrcode-border-stroke: green; --deckgo-qrcode-background-fill: yellow; --deckgo-qrcode-color-fill: red;"></deckgo-qrcode>
-
-  <deckgo-qrcode content="https://fluster.io" type="img" cell-size="10"
-                 img-alt="Hello super"
-                 img-fill-color="ff00cc" img-background-color="0055ee" margin="80"
-                 style="--deckgo-qrcode-size: 300px;"></deckgo-qrcode>
-</body>
+    <deckgo-qrcode
+      content="https://fluster.io"
+      type="img"
+      cell-size="10"
+      img-alt="Hello super"
+      img-fill-color="ff00cc"
+      img-background-color="0055ee"
+      margin="80"
+      style="--deckgo-qrcode-size: 300px"
+    ></deckgo-qrcode>
+  </body>
 </html>

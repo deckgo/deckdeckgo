@@ -23,7 +23,11 @@ div.deckgo-tools {
    * @prop --deckgo-inline-editor-background-bottom: The bottom background of the toolbar (linear gradient)
    * @default white
    */
-  background-image: linear-gradient(to bottom, var(--deckgo-inline-editor-background-top, white), var(--deckgo-inline-editor-background-bottom, white));
+  background-image: linear-gradient(
+    to bottom,
+    var(--deckgo-inline-editor-background-top, white),
+    var(--deckgo-inline-editor-background-bottom, white)
+  );
   background-repeat: repeat-x;
 
   /**

@@ -1,4 +1,4 @@
-import { DeckdeckgoPalette, DeckdeckgoPaletteColor } from '../ddg/deckdeckgo-palette';
+import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '../ddg/deckdeckgo-palette';
 
 import colorStore from '../../stores/color.store';
 

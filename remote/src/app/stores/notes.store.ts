@@ -5,7 +5,7 @@ interface NotesStore {
 }
 
 const {state, onChange} = createStore({
-  currentSlide: undefined,
+  currentSlide: undefined
 } as NotesStore);
 
 export default {state, onChange};

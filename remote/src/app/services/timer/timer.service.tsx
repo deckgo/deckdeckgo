@@ -110,7 +110,7 @@ export class TimerService {
           timerStore.state.timer = {
             timerProgression: this.timerProgression,
             timerRemaining: timerRemaining,
-            timerLength: this.timerLength,
+            timerLength: this.timerLength
           };
 
           await this.showWarnNotification(timerRemaining);
@@ -140,31 +140,16 @@ export class TimerService {
     if (notification) {
       // Star Wars shamelessly taken from the awesome Peter Beverloo as in the Google example
       // https://tests.peter.sh/notification-generator/
-      await this.notificationService.showNotification('Your presentation is over', [
-        500,
-        110,
-        500,
-        110,
-        450,
-        110,
-        200,
-        110,
-        170,
-        40,
-        450,
-        110,
-        200,
-        110,
-        170,
-        40,
-        500,
-      ]);
+      await this.notificationService.showNotification(
+        'Your presentation is over',
+        [500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500]
+      );
     }
   }
 
   private emitStepEvent() {
     const stopTimer: CustomEvent<void> = new CustomEvent<void>('stopTimer', {
-      bubbles: true,
+      bubbles: true
     });
 
     document.dispatchEvent(stopTimer);

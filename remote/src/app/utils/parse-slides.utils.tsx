@@ -115,7 +115,7 @@ export class ParseSlidesUtils {
         'deckgo-slide-video',
         'deckgo-slide-poll',
         'deckgo-slide-aspect-ratio',
-        'deckgo-slide-playground',
+        'deckgo-slide-playground'
       ].indexOf(slide.template) > -1
     );
   }

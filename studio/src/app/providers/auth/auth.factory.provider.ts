@@ -13,7 +13,8 @@ export class AuthFactoryProvider {
   static getInstance(): AuthProvider {
     if (!AuthFactoryProvider.instance) {
       const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-      AuthFactoryProvider.instance = cloud === 'offline' ? new AuthOfflineProvider() : cloud === 'ic' ? new AuthIcProvider() : new AuthFirebaseProvider();
+      AuthFactoryProvider.instance =
+        cloud === 'offline' ? new AuthOfflineProvider() : cloud === 'ic' ? new AuthIcProvider() : new AuthFirebaseProvider();
     }
     return AuthFactoryProvider.instance;
   }

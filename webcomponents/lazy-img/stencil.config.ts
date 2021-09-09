@@ -1,13 +1,13 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
-import { sass } from '@stencil/sass';
-import { postcss } from '@stencil/postcss';
+import {sass} from '@stencil/sass';
+import {postcss} from '@stencil/postcss';
 // @ts-ignore
 import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
   namespace: 'deckdeckgo-lazy-img',
-  outputTargets:[
+  outputTargets: [
     {
       type: 'dist'
     },
@@ -16,10 +16,10 @@ export const config: Config = {
       serviceWorker: null
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [

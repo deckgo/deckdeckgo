@@ -15,7 +15,7 @@ export const EnterpriseHero = () => {
     }
 
     contact.scrollIntoView({
-      behavior: 'smooth',
+      behavior: 'smooth'
     });
   };
 

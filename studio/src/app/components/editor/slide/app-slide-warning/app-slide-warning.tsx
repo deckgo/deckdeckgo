@@ -13,7 +13,7 @@ import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
 
-import { popoverController } from '../../../../utils/ionic/ionic.overlay';
+import {popoverController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-slide-warning',

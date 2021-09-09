@@ -28,7 +28,7 @@
 ### Features
 
 - re-introduce the usage of `execCommand`
-- optionally fallback on the custom DOM manipulation option with property `command` 
+- optionally fallback on the custom DOM manipulation option with property `command`
 
 # 3.4.1 (2021-05-09)
 

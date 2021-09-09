@@ -25,20 +25,12 @@
   },
   "dependencies": {
     "@deckdeckgo/utils": "2.0.1",
-    "prismjs": "^1.23.0"
+    "prismjs": "^1.24.1"
   },
   "devDependencies": {
     "@deckdeckgo/slide-utils": "^4.0.3",
-    "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "@stencil/utils": "0.0.5",
-    "@types/prismjs": "^1.16.5",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "node-fetch": "^2.6.1",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0"
+    "@types/prismjs": "^1.16.6",
+    "node-fetch": "^2.6.1"
   },
   "repository": {
     "type": "git",
@@ -62,10 +54,5 @@
     "slideshow",
     "talk",
     "prismjs"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

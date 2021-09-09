@@ -16,10 +16,10 @@ export const config: Config = {
       serviceWorker: null
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   devServer: {
@@ -28,7 +28,7 @@ export const config: Config = {
   },
   plugins: [
     sass({
-      includePaths: ['node_modules/@deckdeckgo/slide-utils/styles/']
+      includePaths: ['../../node_modules/@deckdeckgo/slide-utils/styles/']
     }),
     postcss({
       plugins: [autoprefixer()]

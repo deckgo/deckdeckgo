@@ -9,7 +9,7 @@ interface AccelerometerStore {
 const {state, onChange} = createStore({
   enable: false,
   initialized: false,
-  trigger: undefined,
+  trigger: undefined
 } as AccelerometerStore);
 
 export default {state, onChange};

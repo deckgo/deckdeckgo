@@ -1,6 +1,6 @@
 import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} from '@stencil/core';
 
-import { DeckDeckGoRevealComponent } from "@deckdeckgo/slide-utils";
+import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {DeckdeckgoRevealUtils} from '../deckdeckgo-reveal-utils';
 
@@ -26,7 +26,7 @@ const RevealNthChild: FunctionalComponent<{index: number}> = ({index}) => {
 @Component({
   tag: 'deckgo-reveal',
   styleUrl: 'deckdeckgo-reveal.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoReveal implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
@@ -73,7 +73,7 @@ export class DeckdeckgoReveal implements DeckDeckGoRevealComponent {
     return (
       <Host
         class={{
-          'deckgo-reveal-visible': this.visibleIndex > 0,
+          'deckgo-reveal-visible': this.visibleIndex > 0
         }}>
         {<RevealNthChild index={this.visibleIndex} />}
         <slot />

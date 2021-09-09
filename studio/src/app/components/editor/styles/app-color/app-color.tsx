@@ -46,9 +46,12 @@ export class AppColor {
 
   private destroyListener;
 
-  private readonly debounceHandleHexInput: ($event: CustomEvent<KeyboardEvent>) => void = debounce(async ($event: CustomEvent<KeyboardEvent>) => {
-    await this.handleHexInput($event);
-  }, 500);
+  private readonly debounceHandleHexInput: ($event: CustomEvent<KeyboardEvent>) => void = debounce(
+    async ($event: CustomEvent<KeyboardEvent>) => {
+      await this.handleHexInput($event);
+    },
+    500
+  );
 
   private readonly debounceHandleRgbInput: ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => void = debounce(
     async ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => {
@@ -260,7 +263,8 @@ export class AppColor {
   }
 
   private renderColorPicker() {
-    const colorValue: string = !this.color || !this.color.hex ? this.defaultColor : this.color.hex.charAt(0) === '#' ? this.color.hex : `#${this.color.hex}`;
+    const colorValue: string =
+      !this.color || !this.color.hex ? this.defaultColor : this.color.hex.charAt(0) === '#' ? this.color.hex : `#${this.color.hex}`;
 
     return (
       <div class="color-picker item-input">

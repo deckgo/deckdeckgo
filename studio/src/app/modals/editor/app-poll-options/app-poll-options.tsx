@@ -2,7 +2,7 @@ import {Component, Element, EventEmitter, h, Listen, Prop, State} from '@stencil
 
 import i18n from '../../../stores/i18n.store';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-poll-options',

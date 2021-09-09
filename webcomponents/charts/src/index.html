@@ -217,7 +217,7 @@
       const nextBar = () => {
         const chart = document.querySelector('deckgo-bar-chart:nth-of-type(3)');
         chart?.next().then(() => {});
-      }
+      };
 
       function next(cmp) {
         const elem = document.getElementsByTagName(cmp);
@@ -247,14 +247,14 @@
           {label: 'Wind', values: [{key: '1', label: '1', value: 0}]},
           {
             label: 'Geothermal',
-            values: [{key: '1', label: '1', value: 0}],
+            values: [{key: '1', label: '1', value: 0}]
           },
           {label: 'Landfill Gas', values: [{key: '1', label: '1', value: 0}]},
           {
             label: 'Biomass',
-            values: [{key: '1', label: '1', value: 0}],
+            values: [{key: '1', label: '1', value: 0}]
           },
-          {label: 'Qualified Hydropower', values: [{key: '1', label: '1', value: 0}]},
+          {label: 'Qualified Hydropower', values: [{key: '1', label: '1', value: 0}]}
         ];
       });
     </script>

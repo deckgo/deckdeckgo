@@ -31,7 +31,10 @@ async function replaceSelection(container: HTMLElement, action: ExecCommandStyle
   const range: Range = selection.getRangeAt(0);
 
   // User selected a all list?
-  if (range.commonAncestorContainer && ['ol', 'ul', 'dl'].some((listType) => listType === range.commonAncestorContainer.nodeName.toLowerCase())) {
+  if (
+    range.commonAncestorContainer &&
+    ['ol', 'ul', 'dl'].some((listType) => listType === range.commonAncestorContainer.nodeName.toLowerCase())
+  ) {
     await updateSelection(range.commonAncestorContainer as HTMLElement, action, containers);
     return;
   }

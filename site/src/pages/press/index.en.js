@@ -15,8 +15,8 @@ const PressPage = (props) => {
           <h1>Press</h1>
 
           <p>
-            We don't provide unfortunately any press kit yet. We are open source and are welcoming any contributions, we would be happy to get your help to
-            create such material{' '}
+            We don't provide unfortunately any press kit yet. We are open source and are welcoming any contributions, we would be happy to
+            get your help to create such material{' '}
             <span role="img" aria-hidden={true}>
               😄
             </span>
@@ -47,7 +47,9 @@ const PressPage = (props) => {
           </article>
 
           <article className={article}>
-            <a href="https://medium.com/swlh/deckdeckgo-why-building-presentation-with-web-standards-makes-sense-1b6062a84fa" rel="noopener noreferrer">
+            <a
+              href="https://medium.com/swlh/deckdeckgo-why-building-presentation-with-web-standards-makes-sense-1b6062a84fa"
+              rel="noopener noreferrer">
               Why building presentations with web standards makes sense
             </a>
             <span>

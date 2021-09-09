@@ -12,7 +12,7 @@ import {TimerService} from '../../services/timer/timer.service';
 
 @Component({
   tag: 'app-timer',
-  styleUrl: 'app-timer.scss',
+  styleUrl: 'app-timer.scss'
 })
 export class AppTimer {
   @Element() el: HTMLElement;
@@ -203,7 +203,7 @@ export class AppTimer {
           value={startOfDay(new Date()).toDateString()}
           onIonCancel={() => this.toggleFabActivated()}
           onIonChange={(e: CustomEvent<DatetimeChangeEventDetail>) => this.initTimerLengthAndStartTimer(e)}></ion-datetime>
-      </ion-content>,
+      </ion-content>
     ];
   }
 
@@ -222,7 +222,10 @@ export class AppTimer {
             <p class="ion-padding-start ion-padding-end">Not timer running.</p>
           </a>
           <div class="deck-action-button deck-action-button-screen-center">
-            <button onClick={() => this.startAction()} aria-label="Start timer" style={{'--action-button-background': 'var(--ion-color-primary'}}>
+            <button
+              onClick={() => this.startAction()}
+              aria-label="Start timer"
+              style={{'--action-button-background': 'var(--ion-color-primary'}}>
               <div>
                 <ion-icon name="stopwatch" class="deck-action-button-icon-stopwatch"></ion-icon>
               </div>
@@ -240,7 +243,9 @@ export class AppTimer {
       return undefined;
     }
 
-    const style = {visibility: `${timerStore.state.remainingTime === null || timerStore.state.remainingTime === undefined ? 'hidden' : 'inherit'}`};
+    const style = {
+      visibility: `${timerStore.state.remainingTime === null || timerStore.state.remainingTime === undefined ? 'hidden' : 'inherit'}`
+    };
 
     return (
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" onClick={(e: UIEvent) => e.stopPropagation()} style={style}>

@@ -2,7 +2,7 @@ import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-youtube',

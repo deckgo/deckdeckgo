@@ -6,7 +6,7 @@ import {debounce} from '@deckdeckgo/utils';
 enum DeckdeckgoSlideChartType {
   LINE = 'line',
   PIE = 'pie',
-  BAR = 'bar',
+  BAR = 'bar'
 }
 
 /**
@@ -33,7 +33,7 @@ interface HTMLDeckgoChartElement extends HTMLElement {
 @Component({
   tag: 'deckgo-slide-chart',
   styleUrl: 'deckdeckgo-slide-chart.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
@@ -133,7 +133,11 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
       }
 
       const chart: HTMLDeckgoChartElement = this.el.shadowRoot.querySelector(
-        this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : this.type === DeckdeckgoSlideChartType.BAR ? 'deckgo-bar-chart' : 'deckgo-pie-chart'
+        this.type === DeckdeckgoSlideChartType.LINE
+          ? 'deckgo-line-chart'
+          : this.type === DeckdeckgoSlideChartType.BAR
+          ? 'deckgo-bar-chart'
+          : 'deckgo-pie-chart'
       );
 
       if (!chart) {
@@ -222,7 +226,11 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
     await this.initSize();
 
     const element: HTMLDeckgoChartElement = this.el.shadowRoot.querySelector(
-      this.type === DeckdeckgoSlideChartType.LINE ? 'deckgo-line-chart' : this.type === DeckdeckgoSlideChartType.BAR ? 'deckgo-bar-chart' : 'deckgo-pie-chart'
+      this.type === DeckdeckgoSlideChartType.LINE
+        ? 'deckgo-line-chart'
+        : this.type === DeckdeckgoSlideChartType.BAR
+        ? 'deckgo-bar-chart'
+        : 'deckgo-pie-chart'
     );
 
     await element?.draw(this.chartWidth, this.chartHeight);
@@ -299,7 +307,7 @@ export class DeckdeckgoSlideChart implements DeckdeckgoSlideResize {
 
   private renderChart() {
     const attrs = {
-      separator: this.separator ? this.separator : ';',
+      separator: this.separator ? this.separator : ';'
     };
 
     if (this.type === DeckdeckgoSlideChartType.LINE) {

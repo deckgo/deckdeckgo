@@ -5,11 +5,11 @@ import type {OverlayEventDetail} from '@ionic/core';
 import i18n from '../../../stores/i18n.store';
 
 import {getCodeLanguage} from '../../../utils/editor/prism.utils';
-import { alertController, modalController } from '../../../utils/ionic/ionic.overlay';
+import {alertController, modalController} from '../../../utils/ionic/ionic.overlay';
 
 import {PrismLanguage} from '../../../types/editor/prism-language';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-code',
@@ -173,7 +173,10 @@ export class AppCode {
 
           <ion-item class="ion-margin-top ion-margin-bottom">
             <ion-label>{i18n.state.editor.display_line_number}</ion-label>
-            <ion-checkbox slot="end" checked={this.lineNumbers} onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
+            <ion-checkbox
+              slot="end"
+              checked={this.lineNumbers}
+              onIonChange={($event: CustomEvent) => this.toggleLineNumbers($event)}></ion-checkbox>
           </ion-item>
         </ion-list>
       </Fragment>

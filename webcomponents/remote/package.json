@@ -25,20 +25,12 @@
   "dependencies": {
     "@deckdeckgo/remote-utils": "^2.0.1",
     "@deckdeckgo/utils": "^2.0.1",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "2.3.0"
   },
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1",
-    "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
     "@stencil/store": "^1.4.1",
-    "@types/socket.io-client": "^1.4.33",
-    "@types/webrtc": "0.0.27",
-    "autoprefixer": "^10.2.6",
-    "husky": "^6.0.0",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0",
+    "@types/socket.io-client": "1.4.33",
     "rollup-plugin-node-builtins": "^2.1.2"
   },
   "repository": {
@@ -64,10 +56,5 @@
     "slides",
     "slideshow",
     "talk"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

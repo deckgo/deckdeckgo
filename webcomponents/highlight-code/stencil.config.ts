@@ -19,7 +19,7 @@ export const config: Config = {
       type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [

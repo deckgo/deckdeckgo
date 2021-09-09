@@ -159,7 +159,10 @@ export class AppSignInFirebase {
   private renderGitHub() {
     return (
       <p class="ion-text-center ion-padding-start ion-padding-end ion-padding-bottom">
-        {renderI18n(i18n.state.sign_in.additionally, {placeholder: '{0}', value: <AppIcon name="github" ariaLabel="" ariaHidden={true}></AppIcon>})}
+        {renderI18n(i18n.state.sign_in.additionally, {
+          placeholder: '{0}',
+          value: <AppIcon name="github" ariaLabel="" ariaHidden={true}></AppIcon>
+        })}
       </p>
     );
   }

@@ -14,20 +14,8 @@ It is developed with [Stencil](https://stenciljs.com) and use [Remarkable](https
 
 ## Table of contents
 
-- [Develop](#develop)
 - [Author](#author)
 - [License](#license)
-
-## Develop
-
-To develop and run this Web Component locally, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/markdown
-npm install
-npm run start
-```
 
 ## Author
 

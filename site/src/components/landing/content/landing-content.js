@@ -86,7 +86,7 @@ export const LandingContent = () => {
   const deferVideoIntersectionObserverLoad = () => {
     videoObserver = new IntersectionObserver(onVideoIntersection, {
       rootMargin: '100px 0px',
-      threshold: 0.25,
+      threshold: 0.25
     });
 
     const elements = document.querySelectorAll('div.video');
@@ -166,7 +166,7 @@ export const LandingContent = () => {
                   <a href="https://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
                     GitHub
                   </a>
-                ),
+                )
               }}
             />
           </p>

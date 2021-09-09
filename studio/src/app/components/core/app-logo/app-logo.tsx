@@ -1,6 +1,6 @@
 import {Component, h} from '@stencil/core';
 
-import { AppIcon } from '../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
   tag: 'app-logo',

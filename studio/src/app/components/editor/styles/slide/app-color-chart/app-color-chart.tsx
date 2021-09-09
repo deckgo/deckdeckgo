@@ -53,9 +53,13 @@ export class AppColorDeckSlide {
     }
 
     if (this.applyColorType === ApplyColorType.FILL) {
-      return ColorUtils.splitColor(await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`)));
+      return ColorUtils.splitColor(
+        await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`))
+      );
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      return ColorUtils.splitColor(await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`)));
+      return ColorUtils.splitColor(
+        await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`))
+      );
     } else if (this.applyColorType === ApplyColorType.AXIS) {
       return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-axis-color'));
     } else if (this.applyColorType === ApplyColorType.GRID) {

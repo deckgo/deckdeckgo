@@ -1,6 +1,6 @@
 import {Component, Element, Method, Host, Prop, h, Watch, State} from '@stencil/core';
 
-import {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 import {formatPlaygroundSrc} from '../utils/deckdeckgo-playground.utils';
 
@@ -9,7 +9,7 @@ import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playgroun
 @Component({
   tag: 'deckgo-playground',
   styleUrl: 'deckdeckgo-playground.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   @Element() el: HTMLElement;

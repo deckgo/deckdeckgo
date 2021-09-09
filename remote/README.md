@@ -12,7 +12,6 @@ This Progressive Web App is build with the [Ionic PWA Toolkit](https://ionicfram
 ## Table of contents
 
 - [Features](#Features)
-- [Getting Started](#getting-started)
 - [License](#license)
 
 ## Features
@@ -22,17 +21,6 @@ Better than a description, the [DeckDeckGo] website implement a deck and receive
 1. Open the [DeckDeckGo] website 👉 [https://deckdeckgo.com](https://deckdeckgo.com)
 2. Start this Progressive Web App 👉 [https://deckdeckgo.app](https://deckdeckgo.app)
 3. Have fun 🎉
-
-## Getting Started
-
-If you wish to run this application locally, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo-app
-cd deckdeckgo-app
-npm install
-npm run start
-```
 
 ## License
 

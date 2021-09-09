@@ -61,13 +61,25 @@ const uploadDecks = async ({
     return;
   }
 
-  const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) => uploadDeck({deck, managerActor: managerActor, identity, host}));
+  const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) =>
+    uploadDeck({deck, managerActor: managerActor, identity, host})
+  );
   await Promise.all(promises);
 
   console.log('C synced');
 };
 
-const uploadDeck = async ({deck, managerActor, identity, host}: {deck: Deck; managerActor: ManagerActor; identity: Identity; host: string}) => {
+const uploadDeck = async ({
+  deck,
+  managerActor,
+  identity,
+  host
+}: {
+  deck: Deck;
+  managerActor: ManagerActor;
+  identity: Identity;
+  host: string;
+}) => {
   if (!deck) {
     return;
   }

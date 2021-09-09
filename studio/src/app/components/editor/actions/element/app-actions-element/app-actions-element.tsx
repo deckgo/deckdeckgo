@@ -16,7 +16,7 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
-import { modalController, popoverController } from '../../../../../utils/ionic/ionic.overlay';
+import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {EditAction} from '../../../../../types/editor/edit-action';
@@ -85,7 +85,11 @@ export class AppActionsElement {
       undoRedoStore.state.undo = [];
     }
 
-    undoRedoStore.state.undo.push({type: 'input', target: this.selectedElement.element, data: {innerHTML: undoRedoStore.state.elementInnerHTML}});
+    undoRedoStore.state.undo.push({
+      type: 'input',
+      target: this.selectedElement.element,
+      data: {innerHTML: undoRedoStore.state.elementInnerHTML}
+    });
 
     undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
   };
@@ -428,7 +432,13 @@ export class AppActionsElement {
             detail.data.action
           );
         } else if (detail.data.action === EditAction.OPEN_DATA) {
-          await this.imageHelper.openModal(this.selectedElement.element, this.selectedElement?.type === 'slide', false, 'app-custom-data', detail.data.action);
+          await this.imageHelper.openModal(
+            this.selectedElement.element,
+            this.selectedElement?.type === 'slide',
+            false,
+            'app-custom-data',
+            detail.data.action
+          );
         }
       }
 
@@ -651,7 +661,9 @@ export class AppActionsElement {
       }
 
       // If not slide, then parent is the container slide
-      this.slideDidChange.emit(this.selectedElement?.type === 'slide' ? this.selectedElement.element : this.selectedElement.element.parentElement);
+      this.slideDidChange.emit(
+        this.selectedElement?.type === 'slide' ? this.selectedElement.element : this.selectedElement.element.parentElement
+      );
 
       resolve();
     });
@@ -706,7 +718,13 @@ export class AppActionsElement {
       await this.detachMoveToolbarOnElement();
 
       this.elementResizeObserver = new ResizeObserver(async (entries) => {
-        if (entries && entries.length > 0 && entries[0].target && entries[0].target.nodeName && !isSlide(entries[0].target as HTMLElement)) {
+        if (
+          entries &&
+          entries.length > 0 &&
+          entries[0].target &&
+          entries[0].target.nodeName &&
+          !isSlide(entries[0].target as HTMLElement)
+        ) {
           await this.resizeSlideContent();
         }
       });
@@ -939,7 +957,9 @@ export class AppActionsElement {
   }
 
   private displayTransform() {
-    return (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.fixed) && this.selectedElement?.slot?.shape === undefined;
+    return (
+      (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.fixed) && this.selectedElement?.slot?.shape === undefined
+    );
   }
 
   render() {
@@ -1002,7 +1022,12 @@ export class AppActionsElement {
     const classSlide: string | undefined = `wider-devices ion-activatable ${displayed ? '' : 'hidden'}`;
 
     return (
-      <button onClick={() => this.clone()} aria-label={i18n.state.editor.copy} disabled={store.state.deckBusy} class={classSlide} tabindex={displayed ? 0 : -1}>
+      <button
+        onClick={() => this.clone()}
+        aria-label={i18n.state.editor.copy}
+        disabled={store.state.deckBusy}
+        class={classSlide}
+        tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.copy}</ion-label>
@@ -1072,7 +1097,11 @@ export class AppActionsElement {
     const classToggle: string | undefined = `wider-devices ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
-      <button aria-label={i18n.state.editor.transform} onClick={() => this.openTransform()} class={classToggle} tabindex={displayed ? 0 : -1}>
+      <button
+        aria-label={i18n.state.editor.transform}
+        onClick={() => this.openTransform()}
+        class={classToggle}
+        tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="flask" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.transform}</ion-label>
@@ -1090,7 +1119,11 @@ export class AppActionsElement {
         <AppIcon name="text" path="icons" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.add_text}</ion-label>
       </button>,
-      <button onClick={() => this.openShape('app-shape')} aria-label={i18n.state.editor.add_shape} class={classSlide} tabindex={displayed ? 0 : -1}>
+      <button
+        onClick={() => this.openShape('app-shape')}
+        aria-label={i18n.state.editor.add_shape}
+        class={classSlide}
+        tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="shapes" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.add_shape}</ion-label>
@@ -1142,7 +1175,11 @@ export class AppActionsElement {
     const classImage: string | undefined = `ion-activatable${this.selectedElement?.slot?.image ? '' : ' hidden'}`;
 
     return (
-      <button onClick={() => this.openImage()} aria-label={i18n.state.editor.image} class={classImage} tabindex={this.selectedElement?.slot?.image ? 0 : -1}>
+      <button
+        onClick={() => this.openImage()}
+        aria-label={i18n.state.editor.image}
+        class={classImage}
+        tabindex={this.selectedElement?.slot?.image ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.image}</ion-label>

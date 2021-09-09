@@ -14,13 +14,13 @@ async function showRevealElement(el: HTMLElement): Promise<boolean> {
 
   const nextElement: HTMLElement | undefined = Array.from(elements).find((element: HTMLElement) => {
     return (
-      ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'end' &&
-      ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== undefined
+      (element as unknown as DeckDeckGoRevealComponent).revealProgress !== 'end' &&
+      (element as unknown as DeckDeckGoRevealComponent).revealProgress !== undefined
     );
   });
 
   if (nextElement) {
-    await ((nextElement as unknown) as DeckDeckGoRevealComponent).reveal();
+    await (nextElement as unknown as DeckDeckGoRevealComponent).reveal();
     return false;
   }
 
@@ -40,13 +40,13 @@ async function hideRevealElement(el: HTMLElement): Promise<boolean> {
     .reverse()
     .find((element: HTMLElement) => {
       return (
-        ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== 'start' &&
-        ((element as unknown) as DeckDeckGoRevealComponent).revealProgress !== undefined
+        (element as unknown as DeckDeckGoRevealComponent).revealProgress !== 'start' &&
+        (element as unknown as DeckDeckGoRevealComponent).revealProgress !== undefined
       );
     });
 
   if (nextElement) {
-    await ((nextElement as unknown) as DeckDeckGoRevealComponent).hide();
+    await (nextElement as unknown as DeckDeckGoRevealComponent).hide();
     couldSwipe = false;
   }
 
@@ -61,7 +61,7 @@ export async function showAllRevealElements(el: HTMLElement): Promise<void> {
   }
 
   const promises: Promise<void>[] = Array.from(elements).map((element: HTMLElement) =>
-    ((element as unknown) as DeckDeckGoRevealComponent).revealAll()
+    (element as unknown as DeckDeckGoRevealComponent).revealAll()
   );
 
   await Promise.all(promises);
@@ -75,7 +75,7 @@ export async function hideAllRevealElements(el: HTMLElement): Promise<void> {
   }
 
   const promises: Promise<void>[] = Array.from(elements).map((element: HTMLElement) =>
-    ((element as unknown) as DeckDeckGoRevealComponent).hideAll()
+    (element as unknown as DeckDeckGoRevealComponent).hideAll()
   );
 
   await Promise.all(promises);

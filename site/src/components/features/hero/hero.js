@@ -5,12 +5,7 @@ import {FormattedMessage} from 'react-intl';
 import {main, title, section, hero, subtitle} from './hero.module.scss';
 
 export const FeaturesHero = () => {
-
-  return (
-    <>
-      {renderSectionHero()}
-    </>
-  );
+  return <>{renderSectionHero()}</>;
 
   function renderSectionHero() {
     return (
@@ -27,5 +22,4 @@ export const FeaturesHero = () => {
       </section>
     );
   }
-
 };

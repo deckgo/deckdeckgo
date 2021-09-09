@@ -28,11 +28,23 @@ const TeamPage = (props) => {
 
               <div className={social}>
                 <a href="https://twitter.com/daviddalbusco" rel="noopener noreferrer" aria-label="Twitter">
-                  <img loading="lazy" src="/assets/icons/ionicons/twitter.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/ionicons/twitter.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
 
                 <a href="https://daviddalbusco.com" rel="noopener noreferrer" aria-label="Website">
-                  <img loading="lazy" src="/assets/icons/ionicons/globe.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/ionicons/globe.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
 
                 <a href="https://dev.to/daviddalbusco" rel="noopener noreferrer" aria-label="Dev.to">
@@ -40,17 +52,30 @@ const TeamPage = (props) => {
                 </a>
 
                 <a href="https://medium.com/@david.dalbusco" rel="noopener noreferrer" aria-label="Medium">
-                  <img loading="lazy" src="/assets/icons/medium.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/medium.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
 
                 <a href="http://github.com/peterpeterparker" rel="noopener noreferrer" aria-label="GitHub">
-                  <img loading="lazy" src="/assets/icons/ionicons/github.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/ionicons/github.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
               </div>
 
               <p>
-                David is a freelancer by day and the creator of DeckDeckGo by night. He's also the organiser of the Ionic and Indie Hackers Meetup Zürich. He
-                used to play in a band called VanRonMaiden, which was probably the coolest band ever but, no one will ever know.
+                David is a freelancer by day and the creator of DeckDeckGo by night. He's also the organiser of the Ionic and Indie Hackers
+                Meetup Zürich. He used to play in a band called VanRonMaiden, which was probably the coolest band ever but, no one will ever
+                know.
               </p>
             </article>
 
@@ -67,15 +92,33 @@ const TeamPage = (props) => {
 
               <div className={social}>
                 <a href="https://twitter.com/nasmattia" rel="noopener noreferrer" aria-label="Twitter">
-                  <img loading="lazy" src="/assets/icons/ionicons/twitter.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/ionicons/twitter.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
 
                 <a href="https://nmattia.com" rel="noopener noreferrer" aria-label="Website">
-                  <img loading="lazy" src="/assets/icons/ionicons/globe.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/ionicons/globe.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
 
                 <a href="https://github.com/nmattia" rel="noopener noreferrer" aria-label="GitHub">
-                  <img loading="lazy" src="/assets/icons/ionicons/github.svg" aria-hidden="true" alt="" style={{width: '2rem', padding: '0.45rem'}} />
+                  <img
+                    loading="lazy"
+                    src="/assets/icons/ionicons/github.svg"
+                    aria-hidden="true"
+                    alt=""
+                    style={{width: '2rem', padding: '0.45rem'}}
+                  />
                 </a>
               </div>
 

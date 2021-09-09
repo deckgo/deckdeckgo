@@ -9,15 +9,15 @@ module.exports = {
     siteUrl: `https://deckdeckgo.com`,
     languages: {
       langs: ['en', 'fr'],
-      defaultLangKey: 'en',
-    },
+      defaultLangKey: 'en'
+    }
   },
   plugins: [
     {
       resolve: `gatsby-plugin-sass`,
       options: {
-        implementation: require('sass'),
-      },
+        implementation: require('sass')
+      }
     },
     'gatsby-plugin-sharp',
     'gatsby-plugin-react-helmet',
@@ -29,17 +29,17 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
-        path: './src/assets/images/',
+        path: './src/assets/images/'
       },
-      __key: 'images',
+      __key: 'images'
     },
     {
       resolve: 'gatsby-plugin-i18n',
       options: {
         langKeyDefault: 'en',
         useLangKeyLayout: true,
-        prefixDefault: true,
-      },
+        prefixDefault: true
+      }
     },
     {
       resolve: `gatsby-plugin-manifest`,
@@ -50,9 +50,9 @@ module.exports = {
         background_color: `#3a81fe`,
         theme_color: `#ffffff`,
         display: `standalone`,
-        icon: `static/assets/deckdeckgo.png`, // This path is relative to the root of the site.
-      },
+        icon: `static/assets/deckdeckgo.png` // This path is relative to the root of the site.
+      }
     },
-    `gatsby-plugin-robots-txt`,
-  ],
+    `gatsby-plugin-robots-txt`
+  ]
 };

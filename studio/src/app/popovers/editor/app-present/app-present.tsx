@@ -74,7 +74,12 @@ export class AppRemoteRequest {
         <ion-list>
           <ion-item>
             {this.renderLabel()}
-            <ion-toggle slot="end" mode="md" color="dark" checked={remoteStore.state.remote} onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
+            <ion-toggle
+              slot="end"
+              mode="md"
+              color="dark"
+              checked={remoteStore.state.remote}
+              onIonChange={() => this.toggleRemoteEnabled()}></ion-toggle>
           </ion-item>
         </ion-list>
       </Host>

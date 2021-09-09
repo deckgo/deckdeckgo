@@ -1,12 +1,8 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
-    "strict": true,
-    "noImplicitAny": false,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
     "outDir": "lib"
-  }
+  },
+  "extends": "../tsconfig.json",
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

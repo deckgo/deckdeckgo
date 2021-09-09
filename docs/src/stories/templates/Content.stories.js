@@ -26,5 +26,4 @@ export const Content = () => {
 </div>`;
 };
 
-Content.args = {
-};
+Content.args = {};

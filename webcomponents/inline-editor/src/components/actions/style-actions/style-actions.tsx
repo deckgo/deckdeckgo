@@ -5,7 +5,7 @@ import {ExecCommandAction} from '../../../interfaces/interfaces';
 @Component({
   tag: 'deckgo-ie-style-actions',
   styleUrl: 'style-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class StyleActions {
   @Prop()
@@ -37,8 +37,8 @@ export class StyleActions {
       detail: {
         style: 'font-weight',
         value: 'bold',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-weight'] === 'bold'),
-      },
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-weight'] === 'bold')
+      }
     });
   }
 
@@ -50,8 +50,8 @@ export class StyleActions {
       detail: {
         style: 'font-style',
         value: 'italic',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-style'] === 'italic'),
-      },
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-style'] === 'italic')
+      }
     });
   }
 
@@ -63,8 +63,8 @@ export class StyleActions {
       detail: {
         style: 'text-decoration',
         value: 'underline',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'underline'),
-      },
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'underline')
+      }
     });
   }
 
@@ -76,8 +76,8 @@ export class StyleActions {
       detail: {
         style: 'text-decoration',
         value: 'line-through',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'line-through'),
-      },
+        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'line-through')
+      }
     });
   }
 

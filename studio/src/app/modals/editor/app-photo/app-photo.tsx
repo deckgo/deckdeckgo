@@ -104,7 +104,10 @@ export class AppPhoto {
 
       this.searching = true;
 
-      const unsplashResponse: UnsplashSearchResponse | undefined = await this.unsplashProvider.getPhotos(this.searchTerm, this.paginationNext);
+      const unsplashResponse: UnsplashSearchResponse | undefined = await this.unsplashProvider.getPhotos(
+        this.searchTerm,
+        this.paginationNext
+      );
 
       this.searching = false;
 
@@ -205,7 +208,10 @@ export class AppPhoto {
 
         {this.renderPhotosPlaceHolder()}
 
-        <ion-infinite-scroll threshold="100px" disabled={this.disableInfiniteScroll} onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
+        <ion-infinite-scroll
+          threshold="100px"
+          disabled={this.disableInfiniteScroll}
+          onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
           <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>,

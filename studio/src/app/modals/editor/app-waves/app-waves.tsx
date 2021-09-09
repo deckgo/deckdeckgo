@@ -7,7 +7,7 @@ import i18n from '../../../stores/i18n.store';
 import {ColorUtils, InitStyleColor} from '../../../utils/editor/color.utils';
 import {WavesUtils} from '../../../utils/editor/waves.utils';
 
-import { AppIcon } from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-waves',

@@ -12,22 +12,6 @@ Make elements, texts or list items appear one line at a time.
 
 It is developed with [Stencil](https://stenciljs.com) for your presentations made with [DeckDeckGo].
 
-## Table of contents
-
-- [Getting Started](#getting-started)
-- [License](#license)
-
-## Getting Started
-
-To develop and run this Web Component locally, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/reveal
-npm install
-npm run start
-```
-
 ## License
 
 MIT © [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com)

@@ -9,24 +9,24 @@ export const config: Config = {
   namespace: 'deckdeckgo',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null,
+      serviceWorker: null
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
-    }),
+      plugins: [autoprefixer()]
+    })
   ],
   devServer: {
     openBrowser: false,
-    port: 3335,
-  },
+    port: 3335
+  }
 };

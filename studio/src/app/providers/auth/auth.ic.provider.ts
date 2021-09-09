@@ -54,7 +54,9 @@ export class AuthIcProvider extends AuthProvider {
 
         errorStore.state.error = 'There was an issue sign in with the internet identity.';
       },
-      ...(process.env.LOCAL_IDENTITY && {identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`})
+      ...(process.env.LOCAL_IDENTITY && {
+        identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`
+      })
     });
   }
 

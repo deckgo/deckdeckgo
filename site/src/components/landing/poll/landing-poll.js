@@ -26,7 +26,7 @@ export const LandingPoll = () => {
   const deferPollIntersectionObserverLoad = () => {
     pollObserver = new IntersectionObserver(onPollIntersection, {
       rootMargin: '100px 0px',
-      threshold: 0.25,
+      threshold: 0.25
     });
 
     pollObserver.observe(pollRef.current);
@@ -97,7 +97,7 @@ export const LandingPoll = () => {
           style={{
             '--deckgo-qrcode-color-fill': '#222428',
             '--deckgo-chart-fill-color-1': 'var(--color-primary)',
-            '--deckgo-chart-fill-color-2': 'var(--color-secondary)',
+            '--deckgo-chart-fill-color-2': 'var(--color-secondary)'
           }}>
           <h3 slot="question">
             <FormattedMessage id="hero.poll.description.slide.title" />
@@ -112,7 +112,7 @@ export const LandingPoll = () => {
             <FormattedMessage
               id="hero.poll.description.slide.howto"
               values={{
-                pollLink: <a href="https://app.deckdeckgo.com/poll">app.deckdeckgo.com/poll</a>,
+                pollLink: <a href="https://app.deckdeckgo.com/poll">app.deckdeckgo.com/poll</a>
               }}
             />{' '}
             {'{0}'}

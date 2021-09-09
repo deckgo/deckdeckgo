@@ -45,7 +45,9 @@ export class AppRandomGif {
   private renderGif() {
     if (this.gif?.media?.[0]?.nanogif?.url) {
       return (
-        <deckgo-lazy-img imgSrc={this.gif.media[0].nanogif.url} imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
+        <deckgo-lazy-img
+          imgSrc={this.gif.media[0].nanogif.url}
+          imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
       );
     } else {
       return undefined;

@@ -1,7 +1,6 @@
 @import "./deckdeckgo-slide";
 @import "./deckdeckgo-slide-slots";
 
-
 /**
  * @prop --slide-user-select: user select
  * @default none
@@ -79,7 +78,8 @@ div.deckgo-slide-split {
   text-align: var(--slide-split-text-align, inherit);
 
   padding: var(--slide-split-padding-top, var(--slide-padding-top-default)) var(--slide-split-padding-end, var(--slide-padding-end-default))
-    var(--slide-split-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-padding-start, var(--slide-padding-start-default));
+    var(--slide-split-padding-bottom, var(--slide-padding-bottom-default))
+    var(--slide-split-padding-start, var(--slide-padding-start-default));
 
   &.deckgo-slide-split-start {
     /**
@@ -137,8 +137,10 @@ div.deckgo-slide-split-vertical {
   display: var(--slide-split-title-display, none);
   max-height: fit-content;
 
-  padding: var(--slide-split-title-padding-top, var(--slide-padding-top-default)) var(--slide-split-title-padding-end, var(--slide-padding-end-default))
-    var(--slide-split-title-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-split-title-padding-start, var(--slide-padding-start-default));
+  padding: var(--slide-split-title-padding-top, var(--slide-padding-top-default))
+    var(--slide-split-title-padding-end, var(--slide-padding-end-default))
+    var(--slide-split-title-padding-bottom, var(--slide-padding-bottom-default))
+    var(--slide-split-title-padding-start, var(--slide-padding-start-default));
 }
 
 ::slotted([slot="title"]),

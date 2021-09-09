@@ -1,7 +1,7 @@
-import { Spinner } from "cli-spinner";
-import { bold } from "colorette";
+import {Spinner} from 'cli-spinner';
+import {bold} from 'colorette';
 
-import { npm } from "./utils";
+import {npm} from './utils';
 
 export const installDependencies = async (folder: string, step: string) => {
   const loading = new Spinner(bold(`[${step}] Installing dependencies...`));
@@ -11,4 +11,4 @@ export const installDependencies = async (folder: string, step: string) => {
   await npm('ci', folder);
 
   loading.stop(true);
-}
+};

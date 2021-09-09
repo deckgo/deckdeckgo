@@ -10,10 +10,14 @@ import {EditAction} from '../../types/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
-import { modalController } from '../../utils/ionic/ionic.overlay';
+import {modalController} from '../../utils/ionic/ionic.overlay';
 
 export class ImageHelper {
-  constructor(private didChange: EventEmitter<HTMLElement>, private blockSlide: EventEmitter<boolean>, private signIn: EventEmitter<void>) {}
+  constructor(
+    private didChange: EventEmitter<HTMLElement>,
+    private blockSlide: EventEmitter<boolean>,
+    private signIn: EventEmitter<void>
+  ) {}
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
@@ -64,7 +68,12 @@ export class ImageHelper {
     await this.openModal(selectedElement, slide, deck, componentTag, action);
   }
 
-  private appendImage(selectedElement: HTMLElement, slide: boolean, deck: boolean, image: UnsplashPhoto | TenorGif | StorageFile | Waves): Promise<void> {
+  private appendImage(
+    selectedElement: HTMLElement,
+    slide: boolean,
+    deck: boolean,
+    image: UnsplashPhoto | TenorGif | StorageFile | Waves
+  ): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!selectedElement || !image || !document) {
         resolve();
@@ -124,7 +133,11 @@ export class ImageHelper {
     });
   }
 
-  private updateDeckgoLazyImgAttributes(img: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, background: boolean = false): HTMLElement {
+  private updateDeckgoLazyImgAttributes(
+    img: HTMLElement,
+    image: UnsplashPhoto | TenorGif | StorageFile,
+    background: boolean = false
+  ): HTMLElement {
     const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
     if (deckgImg !== undefined) {
@@ -148,7 +161,9 @@ export class ImageHelper {
 
   private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
     return new Promise<void>((resolve) => {
-      let element: HTMLElement = SlotUtils.isNodeReveal(selectedElement) ? (selectedElement.firstElementChild as HTMLElement) : selectedElement;
+      let element: HTMLElement = SlotUtils.isNodeReveal(selectedElement)
+        ? (selectedElement.firstElementChild as HTMLElement)
+        : selectedElement;
 
       if (element.nodeName?.toLowerCase() === SlotType.IMG) {
         element = this.updateDeckgoLazyImgAttributes(element, image);
@@ -172,7 +187,11 @@ export class ImageHelper {
     });
   }
 
-  private async appendBackgroundImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile | Waves, deck: boolean): Promise<void> {
+  private async appendBackgroundImg(
+    selectedElement: HTMLElement,
+    image: UnsplashPhoto | TenorGif | StorageFile | Waves,
+    deck: boolean
+  ): Promise<void> {
     const currentSlotElement: HTMLElement = selectedElement.querySelector(":scope > [slot='background']");
 
     if (currentSlotElement) {
@@ -218,7 +237,12 @@ export class ImageHelper {
     this.didChange.emit(selectedElement);
   }
 
-  private async appendChildImg(selectedElement: HTMLElement, div: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile, deck: boolean) {
+  private async appendChildImg(
+    selectedElement: HTMLElement,
+    div: HTMLElement,
+    image: UnsplashPhoto | TenorGif | StorageFile,
+    deck: boolean
+  ) {
     const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
 
     const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);

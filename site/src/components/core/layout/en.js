@@ -23,7 +23,7 @@ const LayoutEn = (props) => (
       ...enterprise,
       ...features,
       ...pricing,
-      ...discover,
+      ...discover
     }}
   />
 );

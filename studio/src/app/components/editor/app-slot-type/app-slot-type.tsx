@@ -6,7 +6,7 @@ import {SlotType} from '../../../types/editor/slot-type';
 
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 
-import { AppIcon } from '../../core/app-icon/app-icon';
+import {AppIcon} from '../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-slot-type',

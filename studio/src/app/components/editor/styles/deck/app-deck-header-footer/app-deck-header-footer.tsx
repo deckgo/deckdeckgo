@@ -56,7 +56,10 @@ export class AppDeckHeaderFooter {
     await this.updateType(slotName, undefined);
   }
 
-  private async updateType(slotName: 'header' | 'footer', type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
+  private async updateType(
+    slotName: 'header' | 'footer',
+    type: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
     if (slotName === 'header') {
       this.headerType = type;
     } else if (slotName === 'footer') {
@@ -126,7 +129,10 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderHeaderFooter(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
+  private renderHeaderFooter(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
     if (!userStore.state.user || !userStore.state.user.data || !userStore.state.user.data.social) {
       return undefined;
     }
@@ -177,7 +183,10 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderTwitter(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
+  private renderTwitter(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
     if (
       !userStore.state.user.data.social.twitter ||
       userStore.state.user.data.social.twitter === '' ||
@@ -195,7 +204,10 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderLinkedin(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
+  private renderLinkedin(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
     if (
       !userStore.state.user.data.social.linkedin ||
       userStore.state.user.data.social.linkedin === '' ||
@@ -213,8 +225,15 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderDev(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
-    if (!userStore.state.user.data.social.dev || userStore.state.user.data.social.dev === '' || userStore.state.user.data.social.dev === undefined) {
+  private renderDev(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
+    if (
+      !userStore.state.user.data.social.dev ||
+      userStore.state.user.data.social.dev === '' ||
+      userStore.state.user.data.social.dev === undefined
+    ) {
       return undefined;
     }
 
@@ -227,8 +246,15 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderMedium(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
-    if (!userStore.state.user.data.social.medium || userStore.state.user.data.social.medium === '' || userStore.state.user.data.social.medium === undefined) {
+  private renderMedium(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
+    if (
+      !userStore.state.user.data.social.medium ||
+      userStore.state.user.data.social.medium === '' ||
+      userStore.state.user.data.social.medium === undefined
+    ) {
       return undefined;
     }
 
@@ -241,8 +267,15 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderGitHub(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
-    if (!userStore.state.user.data.social.github || userStore.state.user.data.social.github === '' || userStore.state.user.data.social.github === undefined) {
+  private renderGitHub(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
+    if (
+      !userStore.state.user.data.social.github ||
+      userStore.state.user.data.social.github === '' ||
+      userStore.state.user.data.social.github === undefined
+    ) {
       return undefined;
     }
 
@@ -255,8 +288,15 @@ export class AppDeckHeaderFooter {
     );
   }
 
-  private renderCustom(slotName: 'header' | 'footer', selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined) {
-    if (!userStore.state.user.data.social.custom || userStore.state.user.data.social.custom === '' || userStore.state.user.data.social.custom === undefined) {
+  private renderCustom(
+    slotName: 'header' | 'footer',
+    selectedType: 'twitter' | 'linkedin' | 'dev' | 'medium' | 'github' | 'custom' | undefined
+  ) {
+    if (
+      !userStore.state.user.data.social.custom ||
+      userStore.state.user.data.social.custom === '' ||
+      userStore.state.user.data.social.custom === undefined
+    ) {
       return undefined;
     }
 

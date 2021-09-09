@@ -3,7 +3,7 @@ import {Component, Prop, h} from '@stencil/core';
 @Component({
   tag: 'deckgo-ie-triangle',
   styleUrl: 'triangle.scss',
-  shadow: true,
+  shadow: true
 })
 export class Separator {
   @Prop()

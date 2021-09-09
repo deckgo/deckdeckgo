@@ -4,7 +4,7 @@ import themeStore from '../../stores/theme.store';
 
 @Component({
   tag: 'app-header',
-  styleUrl: 'app-header.scss',
+  styleUrl: 'app-header.scss'
 })
 export class AppHeader {
   render() {

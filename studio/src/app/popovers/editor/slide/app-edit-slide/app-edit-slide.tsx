@@ -73,7 +73,9 @@ export class AppEditSlide {
           onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>
       );
     } else if (this.selectedElement.slide?.author) {
-      return <app-edit-slide-author selectedElement={this.selectedElement.element} slideDidChange={this.slideDidChange}></app-edit-slide-author>;
+      return (
+        <app-edit-slide-author selectedElement={this.selectedElement.element} slideDidChange={this.slideDidChange}></app-edit-slide-author>
+      );
     } else {
       return <app-edit-slide-user selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-user>;
     }

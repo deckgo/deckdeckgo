@@ -7,22 +7,6 @@
 
 This project is the website of [DeckDeckGo].
 
-## Table of contents
-
-- [Getting Started](#getting-started)
-- [License](#license)
-
-## Getting Started
-
-To develop and run it locally, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/site
-npm install
-npm run start
-```
-
 ## License
 
 This site, respectively the website of [DeckDeckGo], is released under the GNU Affero General Public License. Copyright [David Dal Busco](mailto:david.dalbusco@outlook.com) and [Nicolas Mattia](mailto:nicolas@nmattia.com), Zürich, Switzerland. See COPYING for more details.

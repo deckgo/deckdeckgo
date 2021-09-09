@@ -1,4 +1,4 @@
-import { Config } from '@stencil/core';
+import {Config} from '@stencil/core';
 
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
@@ -7,7 +7,7 @@ import autoprefixer from 'autoprefixer';
 
 export const config: Config = {
   namespace: 'deckdeckgo-slide-qrcode',
-  outputTargets:[
+  outputTargets: [
     {
       type: 'dist'
     },
@@ -16,15 +16,15 @@ export const config: Config = {
       serviceWorker: null
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     }
   ],
   plugins: [
     sass({
-      includePaths: ['node_modules/@deckdeckgo/slide-utils/styles/']
+      includePaths: ['../../node_modules/@deckdeckgo/slide-utils/styles/']
     }),
     postcss({
       plugins: [autoprefixer()]

@@ -14,7 +14,6 @@ It also transmits the information for the live voting when you are interacting w
   - [Receiver](#receiver)
   - [Emitter](#emitter)
 - [Poll](#poll)
-- [Develop](#develop)
 - [License](#license)
 
 ## Remote control
@@ -46,17 +45,6 @@ This project also act as a middle point for the live voting when you are interac
 The voting ("where your audience are recording their votes") is implemented in [DeckDeckGo].
 
 The question and the display of the live results is implemented with a template in your presentation.
-
-## Develop
-
-If you would like to install and run locally this backend, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd backend
-npm install
-npm run start
-```
 
 ## License
 

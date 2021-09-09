@@ -15,7 +15,7 @@ import {DeckdeckgoSlideResize, hideLazyLoadImages, afterSwipe, lazyLoadContent} 
 @Component({
   tag: 'deckgo-slide-qrcode',
   styleUrl: 'deckdeckgo-slide-qrcode.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideQrcode implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;

@@ -17,7 +17,7 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 @Component({
   tag: 'deckgo-slide-author',
   styleUrl: 'deckdeckgo-slide-author.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -128,7 +128,9 @@ export class DeckdeckgoSlideAuthor implements DeckdeckgoSlide {
       <Host class={{'deckgo-slide-container': true}}>
         <div class="deckgo-slide">
           <slot name="title"></slot>
-          <div class={classAuthorStart} style={{'--slide-author-color-start-img-url': this.isLazyLoaded ? `url(${this.imgSrc})` : undefined}}>
+          <div
+            class={classAuthorStart}
+            style={{'--slide-author-color-start-img-url': this.isLazyLoaded ? `url(${this.imgSrc})` : undefined}}>
             {this.renderImage()}
           </div>
           <div class={classAuthorEnd}>

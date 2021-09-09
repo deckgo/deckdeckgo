@@ -23,20 +23,14 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "peerDependencies": {
-    "@deckdeckgo/highlight-code": "^3.2.0",
-    "@deckdeckgo/lazy-img": "^3.0.0"
+    "@deckdeckgo/highlight-code": "^3.3.1",
+    "@deckdeckgo/lazy-img": "^3.1.0"
   },
   "dependencies": {
-    "marked": "^2.0.6"
+    "marked": "^3.0.2"
   },
   "devDependencies": {
-    "@stencil/core": "^2.5.2",
-    "@stencil/postcss": "^2.0.0",
-    "@stencil/sass": "^1.4.1",
-    "@types/marked": "^2.0.3",
-    "autoprefixer": "^10.2.6",
-    "prettier": "2.3.0",
-    "pretty-quick": "^3.1.0"
+    "@types/marked": "^3.0.0"
   },
   "repository": {
     "type": "git",
@@ -63,10 +57,5 @@
     "remarkable",
     "render",
     "renderer"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  ]
 }

@@ -6,7 +6,7 @@ import offlineStore from '../../../../stores/offline.store';
 import store from '../../../../stores/deck.store';
 
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
-import { alertController } from '../../../../utils/ionic/ionic.overlay';
+import {alertController} from '../../../../utils/ionic/ionic.overlay';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 

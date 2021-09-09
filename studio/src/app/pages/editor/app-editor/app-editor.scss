@@ -101,7 +101,8 @@ app-editor {
     }
 
     &:not(.ready) {
-      app-breadcrumbs, app-actions-editor {
+      app-breadcrumbs,
+      app-actions-editor {
         display: none;
       }
     }

@@ -14,7 +14,7 @@ import {DeckdeckgoSlidePlay, hideLazyLoadImages, lazyLoadContent} from '@deckdec
 @Component({
   tag: 'deckgo-slide-youtube',
   styleUrl: 'deckdeckgo-slide-youtube.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideYoutube implements DeckdeckgoSlidePlay {
   @Element() el: HTMLElement;

@@ -8,7 +8,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import { AppIcon } from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-publish-done',
@@ -48,7 +48,10 @@ export class AppPublishDone {
         </h1>
 
         <p class="ion-text-center">
-          {renderI18n(i18n.state.publish_done.share, {placeholder: '{0}', value: <a onClick={() => this.share()}>{i18n.state.editor.share}</a>})}
+          {renderI18n(i18n.state.publish_done.share, {
+            placeholder: '{0}',
+            value: <a onClick={() => this.share()}>{i18n.state.editor.share}</a>
+          })}
         </p>
 
         <ion-button color="tertiary" shape="round" onClick={() => this.share()} class="ion-margin">
@@ -66,7 +69,12 @@ export class AppPublishDone {
       return undefined;
     }
 
-    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.github || !deckStore.state.deck.data.github.publish) {
+    if (
+      !deckStore.state.deck ||
+      !deckStore.state.deck.data ||
+      !deckStore.state.deck.data.github ||
+      !deckStore.state.deck.data.github.publish
+    ) {
       return undefined;
     }
 

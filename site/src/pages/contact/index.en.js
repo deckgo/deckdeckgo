@@ -40,7 +40,8 @@ const ContactPage = (props) => {
           </p>
 
           <p>
-            If you would like to contribute, that would be really awesome! For feature requests, issues or even better Pull Requests, find us on{' '}
+            If you would like to contribute, that would be really awesome! For feature requests, issues or even better Pull Requests, find
+            us on{' '}
             <a href="https://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
               GitHub
             </a>

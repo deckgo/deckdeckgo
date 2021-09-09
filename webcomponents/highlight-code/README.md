@@ -17,23 +17,11 @@ Furthermore, the inspiration for the design of the cards comes from the amazing 
 ## Table of contents
 
 - [Getting Started](#getting-started)
-- [Develop](#develop)
 - [License](#license)
 
 ## Getting Started
 
 To get started with this Web Component, have a look to its [documentation](https://docs.deckdeckgo.com/?path=/story/components-highlight-code--highlight-code).
-
-## Develop
-
-To develop and run this Web Component locally, proceed as following:
-
-```
-git clone https://github.com/deckgo/deckdeckgo
-cd deckdeckgo/webcomponents/highlight-code
-npm install
-npm run start
-```
 
 ## License
 

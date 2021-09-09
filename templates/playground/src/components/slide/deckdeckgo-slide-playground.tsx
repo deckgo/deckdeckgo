@@ -17,7 +17,7 @@ import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playgroun
 @Component({
   tag: 'deckgo-slide-playground',
   styleUrl: 'deckdeckgo-slide-playground.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlidePlayground implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;

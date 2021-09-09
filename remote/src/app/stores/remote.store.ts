@@ -17,7 +17,7 @@ interface RemoteStore {
 const {state, onChange} = createStore({
   state: ConnectionState.DISCONNECTED,
   $event: undefined,
-  rooms: [],
+  rooms: []
 } as RemoteStore);
 
 export default {state, onChange};
