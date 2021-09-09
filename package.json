@@ -6,6 +6,7 @@
   "private": true,
   "workspaces": [
     "cli",
+    "docs",
     "webcomponents/*",
     "templates/*",
     "utils/*"
