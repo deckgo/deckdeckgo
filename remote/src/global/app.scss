@@ -7,19 +7,19 @@
 */
 
 /** Core CSS required for ionic components to work property */
-@import "../../../node_modules/@ionic/core/css/core.css";
+@import "../../node_modules/@ionic/core/css/core.css";
 
 /** Basic CSS for apps built with Ionic */
-@import "../../../node_modules/@ionic/core/css/normalize.css";
-@import "../../../node_modules/@ionic/core/css/structure.css";
-@import "../../../node_modules/@ionic/core/css/typography.css";
+@import "../../node_modules/@ionic/core/css/normalize.css";
+@import "../../node_modules/@ionic/core/css/structure.css";
+@import "../../node_modules/@ionic/core/css/typography.css";
 
 /** Optional CSS utils that can be commented out */
-@import "../../../node_modules/@ionic/core/css/padding.css";
-@import "../../../node_modules/@ionic/core/css/float-elements.css";
-@import "../../../node_modules/@ionic/core/css/text-alignment.css";
-@import "../../../node_modules/@ionic/core/css/text-transformation.css";
-@import "../../../node_modules/@ionic/core/css/flex-utils.css";
+@import "../../node_modules/@ionic/core/css/padding.css";
+@import "../../node_modules/@ionic/core/css/float-elements.css";
+@import "../../node_modules/@ionic/core/css/text-alignment.css";
+@import "../../node_modules/@ionic/core/css/text-transformation.css";
+@import "../../node_modules/@ionic/core/css/flex-utils.css";
 
 /*
   The CSS Variables below can be used to theme your app.
@@ -41,4 +41,4 @@
 @import "theme/alert";
 @import "theme/shadow";
 
-@import "../../../node_modules/@deckdeckgo/deck-utils/css/deck";
+@import "node_modules/@deckdeckgo/deck-utils/css/deck";

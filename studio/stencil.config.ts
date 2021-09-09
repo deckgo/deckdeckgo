@@ -178,7 +178,7 @@ export const config: Config = {
     }),
     replace(canisterEnvIds(prod)),
     sass({
-      includePaths: ['../node_modules/@deckdeckgo/deck-utils/styles/']
+      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
     }),
     postcss({
       plugins: [autoprefixer()]
@@ -190,10 +190,6 @@ export const config: Config = {
     reloadStrategy: 'pageReload'
   },
   rollupPlugins: {
-    after: [
-      nodePolyfills({
-        include: ['node_modules/**/*.js', '../node_modules/**/*.js']
-      })
-    ]
+    after: [nodePolyfills()]
   }
 };

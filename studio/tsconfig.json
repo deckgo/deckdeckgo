@@ -13,19 +13,7 @@
     "jsx": "react",
     "jsxFactory": "h",
     "resolveJsonModule": true,
-    "typeRoots": ["../node_modules/@deckdeckgo"],
-    "types": [
-      "@types/wicg-file-system-access",
-      "@types/socket.io-client",
-      "@deckdeckgo/core",
-      "@deckdeckgo/remote",
-      "@deckdeckgo/inline-editor",
-      "@deckdeckgo/highlight-code",
-      "@deckdeckgo/slide-chart",
-      "@deckdeckgo/slide-poll",
-      "@deckdeckgo/slide-youtube"
-    ],
-    "skipLibCheck": true
+    "typeRoots": ["node_modules/@types", "node_modules/@deckdeckgo"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]

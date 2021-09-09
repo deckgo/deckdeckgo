@@ -6,9 +6,6 @@
   "private": true,
   "workspaces": [
     "docs",
-    "remote",
-    "site",
-    "studio",
     "webcomponents/*",
     "templates/*",
     "utils/*"

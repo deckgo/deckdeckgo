@@ -57,9 +57,13 @@
   },
   "devDependencies": {
     "@deckdeckgo/types": "^2.0.1",
+    "@stencil/core": "^2.8.0",
+    "@stencil/postcss": "^2.0.0",
+    "@stencil/sass": "^1.4.1",
     "@stencil/store": "^1.4.1",
     "@types/socket.io-client": "1.4.34",
     "@types/w3c-generic-sensor": "^1.0.5",
+    "autoprefixer": "^10.3.4",
     "rollup-plugin-node-builtins": "^2.1.2",
     "workbox-build": "6.2.4"
   },
