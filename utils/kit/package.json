@@ -36,7 +36,6 @@
   "devDependencies": {
     "@deckdeckgo/core": "^8.4.0",
     "@deckdeckgo/remote": "^2.2.0",
-    "@deckdeckgo/types": "^2.0.1",
     "@ionic/core": "^5.7.0",
     "@types/node": "^16.9.0",
     "@types/resize-observer-browser": "^0.1.6",
