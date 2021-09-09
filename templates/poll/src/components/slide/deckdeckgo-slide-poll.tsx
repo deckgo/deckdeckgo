@@ -25,7 +25,7 @@ import {CommunicationService} from '../../services/communication/communication.s
 @Component({
   tag: 'deckgo-slide-poll',
   styleUrl: 'deckdeckgo-slide-poll.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
   @Element() el: HTMLElement;
@@ -189,8 +189,8 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       this.chartData = [
         {
           label: question ? question.innerHTML : 'Poll',
-          values: activeBars,
-        },
+          values: activeBars
+        }
       ];
 
       this.chartData = [...this.chartData];
@@ -266,7 +266,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         {
           label: this.chartData[0].label as string,
           values: this.chartData[0].values,
-          answered: this.answeredOnce,
+          answered: this.answeredOnce
         },
         this.updatePollKeyCallback,
         this.updateVoteCallback
@@ -294,7 +294,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
         {
           label: this.chartData[0].label as string,
           values: this.chartData[0].values,
-          answered: this.answeredOnce,
+          answered: this.answeredOnce
         },
         this.pollKey
       );
@@ -334,7 +334,7 @@ export class DeckdeckgoSlidePoll implements DeckdeckgoSlideResize {
       this.chartData = [];
       this.chartData.push({
         label: poll.poll.label,
-        values: poll.poll.values as DeckdeckgoBarChartDataValue[],
+        values: poll.poll.values as DeckdeckgoBarChartDataValue[]
       });
 
       await this.initAnswersData();

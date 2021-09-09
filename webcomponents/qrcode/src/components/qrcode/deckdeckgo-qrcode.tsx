@@ -4,7 +4,7 @@ import * as QRCodeGenerator from '../utils/qrcode-generator/qrcode';
 
 enum DeckdeckgoQRCodeType {
   SVG = 'svg',
-  IMG = 'img',
+  IMG = 'img'
 }
 
 /**
@@ -13,7 +13,7 @@ enum DeckdeckgoQRCodeType {
 @Component({
   tag: 'deckgo-qrcode',
   styleUrl: 'deckdeckgo-qrcode.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoQRCode {
   @Element() el: HTMLElement;

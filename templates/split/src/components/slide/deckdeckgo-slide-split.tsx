@@ -7,7 +7,7 @@ import {
   beforeSwipe,
   lazyLoadContent,
   hideAllRevealElements,
-  showAllRevealElements,
+  showAllRevealElements
 } from '@deckdeckgo/slide-utils';
 
 /**
@@ -23,7 +23,7 @@ import {
 @Component({
   tag: 'deckgo-slide-split',
   styleUrl: 'deckdeckgo-slide-split.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideSplit implements DeckdeckgoSlide {
   @Element() el: HTMLElement;

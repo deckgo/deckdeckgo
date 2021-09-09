@@ -7,7 +7,7 @@ import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 @Component({
   tag: 'deckgo-demo',
   styleUrl: 'deckdeckgo-demo.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoDemo implements DeckdeckgoComponent {
   @Element() el: HTMLElement;

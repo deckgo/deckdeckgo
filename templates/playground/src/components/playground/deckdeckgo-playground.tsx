@@ -9,7 +9,7 @@ import {DeckdeckgoPlaygroundTheme} from '../../declarations/deckdeckgo-playgroun
 @Component({
   tag: 'deckgo-playground',
   styleUrl: 'deckdeckgo-playground.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoPlayground implements DeckdeckgoComponent {
   @Element() el: HTMLElement;

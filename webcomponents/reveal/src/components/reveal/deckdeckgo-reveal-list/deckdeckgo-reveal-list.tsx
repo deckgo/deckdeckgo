@@ -26,7 +26,7 @@ const RevealListNthChild: FunctionalComponent<{index: number}> = ({index}) => {
 @Component({
   tag: 'deckgo-reveal-list',
   styleUrl: 'deckdeckgo-reveal-list.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoRevealList implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
@@ -92,7 +92,7 @@ export class DeckdeckgoRevealList implements DeckDeckGoRevealComponent {
       <Host
         class={{
           'deckgo-reveal-all': this.focused,
-          'deckgo-reveal-visible': this.visibleIndex > 0,
+          'deckgo-reveal-visible': this.visibleIndex > 0
         }}>
         {<RevealListNthChild index={this.visibleIndex} />}
         {this.renderList()}

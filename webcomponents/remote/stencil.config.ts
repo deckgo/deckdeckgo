@@ -11,24 +11,24 @@ export const config: Config = {
   namespace: 'deckdeckgo-remote',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null,
+      serviceWorker: null
     },
     {
-      type: 'dist-custom-elements-bundle',
-    },
+      type: 'dist-custom-elements-bundle'
+    }
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
+      plugins: [autoprefixer()]
     }),
-    builtins(),
+    builtins()
   ],
   nodeResolve: {
-    browser: true,
-  },
+    browser: true
+  }
 };

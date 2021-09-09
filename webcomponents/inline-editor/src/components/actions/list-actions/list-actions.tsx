@@ -6,7 +6,7 @@ import {ExecCommandAction} from '../../../interfaces/interfaces';
 @Component({
   tag: 'deckgo-ie-list-actions',
   styleUrl: 'list-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class AlignActions {
   @Prop()
@@ -31,8 +31,8 @@ export class AlignActions {
       this.execCommand.emit({
         cmd: 'list',
         detail: {
-          type,
-        },
+          type
+        }
       });
 
       resolve();

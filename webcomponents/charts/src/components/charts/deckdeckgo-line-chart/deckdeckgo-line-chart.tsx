@@ -25,13 +25,13 @@ interface DeckdeckgoLineChartSerie {
 
 enum DeckdeckgoLineChartAxisDomain {
   EXTENT = 'extent',
-  MAX = 'max',
+  MAX = 'max'
 }
 
 @Component({
   tag: 'deckgo-line-chart',
   styleUrl: 'deckdeckgo-line-chart.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoLineChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
@@ -167,8 +167,14 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       this.serieIndex = 0;
 
-      this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width + this.marginLeft + this.marginRight, this.height + this.marginTop + this.marginBottom);
-      this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
+      this.svg = DeckdeckgoChartUtils.initSvg(
+        this.el,
+        this.width + this.marginLeft + this.marginRight,
+        this.height + this.marginTop + this.marginBottom
+      );
+      this.svg = this.svg
+        .append('g')
+        .attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
       this.series = await this.fetchData();
 
@@ -320,7 +326,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
       if (!allMinMax || allMinMax.length <= 0) {
         resolve({
           min: 0,
-          max: 0,
+          max: 0
         });
         return;
       }
@@ -341,7 +347,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       resolve({
         min: min,
-        max: max,
+        max: max
       });
     });
   }
@@ -364,7 +370,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
       resolve({
         min: min,
-        max: max,
+        max: max
       });
     });
   }
@@ -536,7 +542,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
                     ? series[i - 1]
                     : {
                         data: [],
-                        randomFillColor: this.randomFillColors[i - 1] || randomFillColor,
+                        randomFillColor: this.randomFillColors[i - 1] || randomFillColor
                       };
 
                 if (series?.length < i) {
@@ -549,7 +555,7 @@ export class DeckdeckgoLineChart implements DeckdeckgoChart {
 
                 data.data.push({
                   when: when,
-                  value: parseInt(values[i]),
+                  value: parseInt(values[i])
                 });
 
                 if (series && series.length >= i) {

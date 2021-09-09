@@ -3,7 +3,7 @@ import {Component, h, Event, EventEmitter, Prop, Host} from '@stencil/core';
 @Component({
   tag: 'deckgo-ie-action-button',
   styleUrl: 'action-button.scss',
-  shadow: true,
+  shadow: true
 })
 export class ActionButton {
   @Prop()

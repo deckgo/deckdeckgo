@@ -13,7 +13,7 @@ import {DeckdeckgoBarChartData, DeckdeckgoBarChartDataValue} from '@deckdeckgo/t
 @Component({
   tag: 'deckgo-bar-chart',
   styleUrl: 'deckdeckgo-bar-chart.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoBarChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
@@ -163,8 +163,14 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
         return;
       }
 
-      this.svg = DeckdeckgoChartUtils.initSvg(this.el, this.width + this.marginLeft + this.marginRight, this.height + this.marginTop + this.marginBottom);
-      this.svg = this.svg.append('g').attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
+      this.svg = DeckdeckgoChartUtils.initSvg(
+        this.el,
+        this.width + this.marginLeft + this.marginRight,
+        this.height + this.marginTop + this.marginBottom
+      );
+      this.svg = this.svg
+        .append('g')
+        .attr('transform', 'translate(' + (this.marginLeft + this.marginRight) + ',' + (this.marginTop + this.marginBottom) + ')');
 
       this.barDataIndex = 0;
       this.chartData = this.data;
@@ -199,7 +205,9 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
       return;
     }
 
-    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) => Math.floor(Math.random() * 16777215).toString(16));
+    this.randomColors = Array.from({length: this.chartData[0].values.length}, (_v, _i) =>
+      Math.floor(Math.random() * 16777215).toString(16)
+    );
 
     this.chartRandomColor.emit(this.randomColors);
   }
@@ -514,7 +522,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
               dataValues.push({
                 key: `${i}`,
                 label: keys.length >= i ? `${keys[i - 1]}` : `${i}`,
-                value: tmp,
+                value: tmp
               });
             } else if (lineCount === 0 && keys.length >= i) {
               keys[i - 1] = values[i];
@@ -524,7 +532,7 @@ export class DeckdeckgoBarChart implements DeckdeckgoChart {
           if (dataValues && dataValues.length > 0) {
             results.push({
               label: values[0],
-              values: dataValues,
+              values: dataValues
             });
           }
         }

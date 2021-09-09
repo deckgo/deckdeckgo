@@ -8,7 +8,7 @@ import {execCommandNativeAlign} from '../../../utils/execcommnad-native.utils';
 @Component({
   tag: 'deckgo-ie-align-actions',
   styleUrl: 'align-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class AlignActions {
   @Prop()

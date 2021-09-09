@@ -3,7 +3,7 @@ import {Component, h, Prop, Host} from '@stencil/core';
 @Component({
   tag: 'deckgo-ie-action-image',
   styleUrl: 'action-image.scss',
-  shadow: true,
+  shadow: true
 })
 export class ActionImage {
   @Prop()

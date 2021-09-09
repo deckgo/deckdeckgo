@@ -17,7 +17,7 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 @Component({
   tag: 'deckgo-slide-aspect-ratio',
   styleUrl: 'deckdeckgo-slide-aspect-ratio.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -127,7 +127,7 @@ export class DeckdeckgoSlideAspectRatio implements DeckdeckgoSlide {
       <Host
         class={{
           'deckgo-slide-container': true,
-          'deckgo-read-only': !this.editable,
+          'deckgo-read-only': !this.editable
         }}>
         <div class="deckgo-slide">
           <slot name="title"></slot>

@@ -32,7 +32,7 @@ interface DeckdeckgoSlideHTMLElement extends HTMLElement {
 @Component({
   tag: 'deckgo-deck',
   styleUrl: 'deckdeckgo-deck.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoDeck {
   @Element() el: HTMLElement;
@@ -270,7 +270,7 @@ export class DeckdeckgoDeck {
 
     this.observer = new IntersectionObserver(this.onIntersection, {
       rootMargin: '300px',
-      threshold: 0,
+      threshold: 0
     });
 
     slides.forEach((slide: HTMLElement) => {
@@ -532,7 +532,7 @@ export class DeckdeckgoDeck {
 
     return {
       width: slider.offsetParent.clientWidth,
-      height: slider.offsetParent.clientHeight,
+      height: slider.offsetParent.clientHeight
     };
   }
 
@@ -540,12 +540,12 @@ export class DeckdeckgoDeck {
     if (isIOS()) {
       return {
         width: screen.width > window.innerWidth ? screen.width : window.innerWidth,
-        height: screen.height > window.innerHeight ? screen.height : window.innerHeight,
+        height: screen.height > window.innerHeight ? screen.height : window.innerHeight
       };
     } else {
       return {
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: window.innerHeight
       };
     }
   }
@@ -627,7 +627,7 @@ export class DeckdeckgoDeck {
       slider,
       swipeNext: swipeLeft || swipeTop,
       deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX,
-      deltaY: swipeTop ? this.startY - currentY : currentY - this.startY,
+      deltaY: swipeTop ? this.startY - currentY : currentY - this.startY
     };
   }
 
@@ -722,7 +722,7 @@ export class DeckdeckgoDeck {
         orderedSlidesTagNames.push({
           template: slide.tagName ? slide.tagName.toLowerCase() : undefined,
           content: slide.innerHTML,
-          attributes: attributes,
+          attributes: attributes
         });
       }
 
@@ -734,7 +734,7 @@ export class DeckdeckgoDeck {
         attributes: attributes,
         background: background ? background.innerHTML : null,
         reveal: this.reveal,
-        revealOnMobile: this.revealOnMobile,
+        revealOnMobile: this.revealOnMobile
       };
 
       resolve(deck);
@@ -869,7 +869,7 @@ export class DeckdeckgoDeck {
         slider,
         swipeNext,
         deltaX: sliderSize.width,
-        deltaY: sliderSize.height,
+        deltaY: sliderSize.height
       };
 
       await this.swipeSlide(deltaX, emitEvent);
@@ -907,7 +907,9 @@ export class DeckdeckgoDeck {
         return;
       }
 
-      const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector('.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')');
+      const slide: DeckdeckgoSlideHTMLElement = this.el.querySelector(
+        '.deckgo-slide-container:nth-child(' + (indexPreviousSlide + 1) + ')'
+      );
 
       if (!slide) {
         // Might be a swipe after the first or last slide
@@ -996,7 +998,8 @@ export class DeckdeckgoDeck {
       const docEl = doc.documentElement;
 
       // @ts-ignore
-      const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+      const requestFullScreen =
+        docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
       // @ts-ignore
       const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 

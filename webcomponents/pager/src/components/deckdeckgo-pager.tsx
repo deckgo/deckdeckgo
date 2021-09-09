@@ -3,7 +3,7 @@ import {Component, EventEmitter, Event, Listen, State, Watch, h, Host} from '@st
 @Component({
   tag: 'deckgo-pager',
   styleUrl: 'deckdeckgo-pager.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoPager {
   @State() private activeIndex: number = 0;
@@ -74,7 +74,7 @@ export class DeckdeckgoPager {
       </text>,
       <text x="18" y="20.35" class="deckgo-pager-progression deckgo-pager-slides">
         {this.length > 0 ? this.activeIndex + 1 : 0}/{this.length}
-      </text>,
+      </text>
     ];
   }
 }

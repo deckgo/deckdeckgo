@@ -22,7 +22,7 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
 @Component({
   tag: 'deckgo-highlight-code',
   styleUrl: 'deckdeckgo-highlight-code.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
@@ -319,7 +319,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     if (code) {
       return parseCode({
         ...this.parseCodeOptions(),
-        code: code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'),
+        code: code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
       });
     }
 
@@ -334,7 +334,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       refCode: this.refCode,
       lineNumbers: this.lineNumbers,
       highlightLines: this.highlightLines,
-      language: this.language,
+      language: this.language
     };
   }
 
@@ -482,14 +482,14 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
 
     this.highlightRows = {
       start: allRows.indexOf(rows[0]),
-      end: allRows.indexOf(rows[rows.length - 1]),
+      end: allRows.indexOf(rows[rows.length - 1])
     };
   }
 
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
-      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU,
+      'deckgo-highlight-code-ubuntu': this.terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU
     };
 
     if (this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON) {
@@ -534,7 +534,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
         {this.renderCarbonCircle('red')}
         {this.renderCarbonCircle('yellow')}
         {this.renderCarbonCircle('green')}
-      </div>,
+      </div>
     ];
   }
 

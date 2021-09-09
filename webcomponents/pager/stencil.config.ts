@@ -9,23 +9,23 @@ export const config: Config = {
   namespace: 'deckdeckgo-pager',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+      serviceWorker: null // disable service workers
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
-    },
+      type: 'dist-custom-elements-bundle'
+    }
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
-    }),
-  ],
+      plugins: [autoprefixer()]
+    })
+  ]
 };

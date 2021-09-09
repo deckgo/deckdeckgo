@@ -15,7 +15,7 @@ import {DeckdeckgoSlide, hideLazyLoadImages, afterSwipe, lazyLoadContent} from '
 @Component({
   tag: 'deckgo-slide-gif',
   styleUrl: 'deckdeckgo-slide-gif.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
   @Element() el: HTMLElement;
@@ -102,7 +102,7 @@ export class DeckdeckgoSlideGif implements DeckdeckgoSlide {
         class={{
           'deckgo-slide-container': true,
           'deckgo-slide-container-fullscreen': this.fullscreen,
-          'deckgo-slide-gif-hidden': !this.loaded,
+          'deckgo-slide-gif-hidden': !this.loaded
         }}>
         <div class="deckgo-slide">
           <slot name="title"></slot>

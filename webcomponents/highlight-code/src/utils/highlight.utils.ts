@@ -1,7 +1,7 @@
 export const attachHighlightObserver = ({
   refContainer,
   refCode,
-  highlightLines,
+  highlightLines
 }: {
   refContainer: HTMLElement;
   refCode: HTMLElement;
@@ -61,13 +61,17 @@ const addHighlight = async ({highlightLines, refCode}: {highlightLines: string |
   refCode.classList.add('animate');
 };
 
-const findRowsToHighlight = async ({highlightLines}: {highlightLines: string | undefined}): Promise<{rows: number[]; rowsGroup: Record<string, number>}> => {
+const findRowsToHighlight = async ({
+  highlightLines
+}: {
+  highlightLines: string | undefined;
+}): Promise<{rows: number[]; rowsGroup: Record<string, number>}> => {
   const groups: string[] = highlightLines.split(' ');
 
   if (!groups || groups.length <= 0) {
     return {
       rows: [],
-      rowsGroup: {},
+      rowsGroup: {}
     };
   }
 
@@ -93,6 +97,6 @@ const findRowsToHighlight = async ({highlightLines}: {highlightLines: string | u
 
   return {
     rows,
-    rowsGroup,
+    rowsGroup
   };
 };

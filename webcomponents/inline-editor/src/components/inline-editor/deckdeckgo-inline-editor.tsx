@@ -21,7 +21,7 @@ import {execCommandNative} from '../../utils/execcommnad-native.utils';
 @Component({
   tag: 'deckgo-inline-editor',
   styleUrl: 'deckdeckgo-inline-editor.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoInlineEditor {
   @Element() el: HTMLElement;
@@ -264,7 +264,7 @@ export class DeckdeckgoInlineEditor {
   private attachSelectionChangeHandler() {
     if (!this.handleGlobalEvents) return;
     document.addEventListener('selectionchange', this.handleSelectionChange, {
-      passive: true,
+      passive: true
     });
   }
 
@@ -445,7 +445,7 @@ export class DeckdeckgoInlineEditor {
           this.anchorLink = {
             range: range,
             text: selection.toString(),
-            element: document.activeElement,
+            element: document.activeElement
           };
 
           await this.setToolbarAnchorPosition();
@@ -603,7 +603,8 @@ export class DeckdeckgoInlineEditor {
       if (this.isContainer(node)) {
         const nodeName: string = node.nodeName.toUpperCase();
 
-        this.disabledTitle = nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
+        this.disabledTitle =
+          nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
 
         this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
 
@@ -800,7 +801,7 @@ export class DeckdeckgoInlineEditor {
     this.customAction.emit({
       action: action,
       selection: this.selection,
-      anchorLink: this.anchorLink,
+      anchorLink: this.anchorLink
     });
   }
 
@@ -863,7 +864,10 @@ export class DeckdeckgoInlineEditor {
 
     return (
       <Host class={hostClass}>
-        <div class={classNames} ref={(el) => (this.tools = el as HTMLDivElement)} style={{left: `${this.toolsLeft}px`, top: `${this.toolsTop}px`}}>
+        <div
+          class={classNames}
+          ref={(el) => (this.tools = el as HTMLDivElement)}
+          style={{left: `${this.toolsLeft}px`, top: `${this.toolsTop}px`}}>
           <deckgo-ie-triangle style={{'--deckgo-ie-triangle-start': `${this.anchorEventLeft}px`}}></deckgo-ie-triangle>
           {this.renderActions()}
         </div>
@@ -967,7 +971,7 @@ export class DeckdeckgoInlineEditor {
         <deckgo-ie-action-image cssClass={'link'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>,
 
-      this.renderCustomActions(),
+      this.renderCustomActions()
     ];
   }
 
@@ -975,7 +979,7 @@ export class DeckdeckgoInlineEditor {
     const result = [
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openColorPicker(ToolbarActions.COLOR)}>
         <deckgo-ie-action-image cssClass={'pick-color'}></deckgo-ie-action-image>
-      </deckgo-ie-action-button>,
+      </deckgo-ie-action-button>
     ];
 
     if (this.backgroundColor) {
@@ -1002,7 +1006,9 @@ export class DeckdeckgoInlineEditor {
   }
 
   private renderCustomActions() {
-    return this.customActions ? this.customActions.split(',').map((customAction: string) => this.renderCustomAction(customAction)) : undefined;
+    return this.customActions
+      ? this.customActions.split(',').map((customAction: string) => this.renderCustomAction(customAction))
+      : undefined;
   }
 
   private renderCustomAction(customAction: string) {
@@ -1010,7 +1016,7 @@ export class DeckdeckgoInlineEditor {
       this.renderSeparator(),
       <deckgo-ie-action-button mobile={this.mobile} onClick={($event: UIEvent) => this.onCustomAction($event, customAction)}>
         <slot name={customAction}></slot>
-      </deckgo-ie-action-button>,
+      </deckgo-ie-action-button>
     ];
   }
 
@@ -1021,7 +1027,8 @@ export class DeckdeckgoInlineEditor {
 
     return (
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openListActions()}>
-        <deckgo-ie-action-image cssClass={this.contentList === ContentList.UNORDERED ? 'unordered-list' : 'ordered-list'}></deckgo-ie-action-image>
+        <deckgo-ie-action-image
+          cssClass={this.contentList === ContentList.UNORDERED ? 'unordered-list' : 'ordered-list'}></deckgo-ie-action-image>
       </deckgo-ie-action-button>
     );
   }
@@ -1035,7 +1042,11 @@ export class DeckdeckgoInlineEditor {
       <deckgo-ie-action-button mobile={this.mobile} onAction={() => this.openAlignmentActions()}>
         <deckgo-ie-action-image
           cssClass={
-            this.contentAlign === ContentAlign.LEFT ? 'left-align' : this.contentAlign === ContentAlign.CENTER ? 'center-align' : 'right-align'
+            this.contentAlign === ContentAlign.LEFT
+              ? 'left-align'
+              : this.contentAlign === ContentAlign.CENTER
+              ? 'center-align'
+              : 'right-align'
           }></deckgo-ie-action-image>
       </deckgo-ie-action-button>
     );

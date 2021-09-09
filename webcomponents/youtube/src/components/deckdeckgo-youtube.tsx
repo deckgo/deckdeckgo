@@ -5,7 +5,7 @@ import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 @Component({
   tag: 'deckgo-youtube',
   styleUrl: 'deckdeckgo-youtube.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoYoutube implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
@@ -277,7 +277,7 @@ export class DeckdeckgoYoutube implements DeckdeckgoComponent {
         JSON.stringify({
           event: 'command',
           func: play ? 'playVideo' : 'pauseVideo',
-          args: '',
+          args: ''
         }),
         '*'
       );

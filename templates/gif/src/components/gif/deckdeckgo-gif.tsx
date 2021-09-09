@@ -5,7 +5,7 @@ import {DeckdeckgoComponent, hideLazyLoadImages, lazyLoadImages} from '@deckdeck
 @Component({
   tag: 'deckgo-gif',
   styleUrl: 'deckdeckgo-gif.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoGif implements DeckdeckgoComponent {
   @Element() el: HTMLElement;
@@ -46,7 +46,7 @@ export class DeckdeckgoGif implements DeckdeckgoComponent {
       <Host
         class={{
           'deckgo-gif-fullscreen': this.fullscreen,
-          'deckgo-gif-hidden': !this.loaded,
+          'deckgo-gif-hidden': !this.loaded
         }}>
         <div class="deckgo-gif">
           <slot name="top"></slot>

@@ -8,7 +8,7 @@ export const parseCode = async ({
   code,
   lineNumbers,
   highlightLines,
-  language,
+  language
 }: {
   refContainer: HTMLDivElement | undefined;
   code: string | null | undefined;

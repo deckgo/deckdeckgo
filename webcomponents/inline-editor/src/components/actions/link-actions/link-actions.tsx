@@ -10,7 +10,7 @@ import {getSelection} from '../../../utils/selection.utils';
 @Component({
   tag: 'deckgo-ie-link-actions',
   styleUrl: 'link-actions.scss',
-  shadow: true,
+  shadow: true
 })
 export class LinkActions {
   private linkUrl: string;
@@ -55,7 +55,9 @@ export class LinkActions {
       }
 
       const selection: Selection | undefined = await getSelection();
-      let targetContainer: Node = this.anchorLink.range.commonAncestorContainer ? this.anchorLink.range.commonAncestorContainer : selection?.anchorNode;
+      let targetContainer: Node = this.anchorLink.range.commonAncestorContainer
+        ? this.anchorLink.range.commonAncestorContainer
+        : selection?.anchorNode;
 
       if (!targetContainer) {
         resolve();
@@ -80,7 +82,8 @@ export class LinkActions {
         const index: number = target.textContent.indexOf(this.anchorLink.text);
 
         const textBefore: string = index > -1 ? target.textContent.substr(0, index) : null;
-        const textAfter: string = index + this.anchorLink.text.length > -1 ? target.textContent.substr(index + this.anchorLink.text.length) : null;
+        const textAfter: string =
+          index + this.anchorLink.text.length > -1 ? target.textContent.substr(index + this.anchorLink.text.length) : null;
 
         if (textBefore) {
           target.parentElement.insertBefore(document.createTextNode(textBefore), target);
@@ -100,7 +103,10 @@ export class LinkActions {
         target.parentElement.replaceChild(a, target);
       }
 
-      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, targetContainer as HTMLElement);
+      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(
+        this.containers,
+        targetContainer as HTMLElement
+      );
 
       if (!container) {
         resolve();
@@ -130,7 +136,10 @@ export class LinkActions {
       return;
     }
 
-    if (this.toolbarActions === ToolbarActions.SELECTION && ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')) {
+    if (
+      this.toolbarActions === ToolbarActions.SELECTION &&
+      ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')
+    ) {
       await this.linkModified.emit(false);
     } else if (this.toolbarActions === ToolbarActions.LINK && $event.key.toLowerCase() === 'enter') {
       await this.createLink();

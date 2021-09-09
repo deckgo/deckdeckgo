@@ -63,8 +63,10 @@ div.deckgo-slide-author {
   align-items: var(--slide-author-align, inherit);
   text-align: var(--slide-author-text-align, inherit);
 
-  padding: var(--slide-author-padding-top, var(--slide-padding-top-default)) var(--slide-author-padding-end, var(--slide-padding-end-default))
-    var(--slide-author-padding-bottom, var(--slide-padding-bottom-default)) var(--slide-author-padding-start, var(--slide-padding-start-default));
+  padding: var(--slide-author-padding-top, var(--slide-padding-top-default))
+    var(--slide-author-padding-end, var(--slide-padding-end-default))
+    var(--slide-author-padding-bottom, var(--slide-padding-bottom-default))
+    var(--slide-author-padding-start, var(--slide-padding-start-default));
 
   &.deckgo-slide-author-start {
     /**

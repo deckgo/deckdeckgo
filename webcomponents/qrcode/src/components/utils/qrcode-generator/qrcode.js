@@ -76,7 +76,11 @@ export var qrcode = (function () {
         for (var c = -1; c <= 7; c += 1) {
           if (col + c <= -1 || _moduleCount <= col + c) continue;
 
-          if ((0 <= r && r <= 6 && (c == 0 || c == 6)) || (0 <= c && c <= 6 && (r == 0 || r == 6)) || (2 <= r && r <= 4 && 2 <= c && c <= 4)) {
+          if (
+            (0 <= r && r <= 6 && (c == 0 || c == 6)) ||
+            (0 <= c && c <= 6 && (r == 0 || r == 6)) ||
+            (2 <= r && r <= 4 && 2 <= c && c <= 4)
+          ) {
             _modules[row + r][col + c] = true;
           } else {
             _modules[row + r][col + c] = false;
@@ -552,7 +556,7 @@ export var qrcode = (function () {
         '██': '█',
         '█ ': '▀',
         ' █': '▄',
-        '  ': ' ',
+        '  ': ' '
       };
 
       var ascii = '';
@@ -655,7 +659,7 @@ export var qrcode = (function () {
         bytes.push(c & 0xff);
       }
       return bytes;
-    },
+    }
   };
 
   qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
@@ -736,7 +740,7 @@ export var qrcode = (function () {
     MODE_NUMBER: 1 << 0,
     MODE_ALPHA_NUM: 1 << 1,
     MODE_8BIT_BYTE: 1 << 2,
-    MODE_KANJI: 1 << 3,
+    MODE_KANJI: 1 << 3
   };
 
   //---------------------------------------------------------------------
@@ -747,7 +751,7 @@ export var qrcode = (function () {
     L: 1,
     M: 0,
     Q: 3,
-    H: 2,
+    H: 2
   };
 
   //---------------------------------------------------------------------
@@ -762,7 +766,7 @@ export var qrcode = (function () {
     PATTERN100: 4,
     PATTERN101: 5,
     PATTERN110: 6,
-    PATTERN111: 7,
+    PATTERN111: 7
   };
 
   //---------------------------------------------------------------------
@@ -810,7 +814,7 @@ export var qrcode = (function () {
       [6, 28, 54, 80, 106, 132, 158],
       [6, 32, 58, 84, 110, 136, 162],
       [6, 26, 54, 82, 110, 138, 166],
-      [6, 30, 58, 86, 114, 142, 170],
+      [6, 30, 58, 86, 114, 142, 170]
     ];
     var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
     var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
@@ -1413,7 +1417,7 @@ export var qrcode = (function () {
       [19, 148, 118, 6, 149, 119],
       [18, 75, 47, 31, 76, 48],
       [34, 54, 24, 34, 55, 25],
-      [20, 45, 15, 61, 46, 16],
+      [20, 45, 15, 61, 46, 16]
     ];
 
     var qrRSBlock = function (totalCount, dataCount) {

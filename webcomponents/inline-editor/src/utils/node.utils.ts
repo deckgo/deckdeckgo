@@ -15,7 +15,9 @@ export const findStyleNode = async (node: Node, style: string, containers: strin
   }
 
   const hasStyle: boolean =
-    (node as HTMLElement).style[style] !== null && (node as HTMLElement).style[style] !== undefined && (node as HTMLElement).style[style] !== '';
+    (node as HTMLElement).style[style] !== null &&
+    (node as HTMLElement).style[style] !== undefined &&
+    (node as HTMLElement).style[style] !== '';
 
   if (hasStyle) {
     return node;
@@ -31,5 +33,7 @@ export const getAnchorNode = (selection: Selection | undefined): HTMLElement | u
     return undefined;
   }
 
-  return anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.COMMENT_NODE ? (anchorNode as HTMLElement) : anchorNode.parentElement;
+  return anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.COMMENT_NODE
+    ? (anchorNode as HTMLElement)
+    : anchorNode.parentElement;
 };

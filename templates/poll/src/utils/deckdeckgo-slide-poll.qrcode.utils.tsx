@@ -23,7 +23,9 @@ export function initQRCodeSize(el: HTMLElement): Promise<void> {
       if (qrCode && width > 0 && height > 0) {
         qrCode.style.setProperty(
           '--deckgo-qrcode-size',
-          width > height ? `calc(${height}px - ${slotHowToHeight}px - ${paddingBottom}px)` : `calc(${width}px - ${slotHowToHeight}px - ${paddingBottom}px)`
+          width > height
+            ? `calc(${height}px - ${slotHowToHeight}px - ${paddingBottom}px)`
+            : `calc(${width}px - ${slotHowToHeight}px - ${paddingBottom}px)`
         );
       }
     }

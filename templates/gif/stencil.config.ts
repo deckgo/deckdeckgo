@@ -9,25 +9,25 @@ export const config: Config = {
   namespace: 'deckdeckgo-slide-gif',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null,
+      serviceWorker: null
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
-    },
+      type: 'dist-custom-elements-bundle'
+    }
   ],
   plugins: [
     sass({
-      includePaths: ['../../node_modules/@deckdeckgo/slide-utils/styles/'],
+      includePaths: ['../../node_modules/@deckdeckgo/slide-utils/styles/']
     }),
     postcss({
-      plugins: [autoprefixer()],
-    }),
-  ],
+      plugins: [autoprefixer()]
+    })
+  ]
 };

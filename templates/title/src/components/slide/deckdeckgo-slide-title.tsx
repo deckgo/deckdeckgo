@@ -7,7 +7,7 @@ import {
   beforeSwipe,
   lazyLoadContent,
   hideAllRevealElements,
-  showAllRevealElements,
+  showAllRevealElements
 } from '@deckdeckgo/slide-utils';
 
 /**
@@ -22,7 +22,7 @@ import {
 @Component({
   tag: 'deckgo-slide-title',
   styleUrl: 'deckdeckgo-slide-title.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoSlideTitle implements DeckdeckgoSlide {
   @Element() el: HTMLElement;

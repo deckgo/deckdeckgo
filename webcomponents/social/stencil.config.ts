@@ -9,23 +9,23 @@ export const config: Config = {
   namespace: 'deckdeckgo-social',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+      serviceWorker: null // disable service workers
     },
     {
-      type: 'dist-custom-elements-bundle',
-    },
+      type: 'dist-custom-elements-bundle'
+    }
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
-    }),
-  ],
+      plugins: [autoprefixer()]
+    })
+  ]
 };

@@ -12,7 +12,7 @@ interface ResizeMatrix {
 @Component({
   tag: 'deckgo-drr',
   styleUrl: 'deckdeckgo-drr.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoDragResizeRotate {
   @Element() el: HTMLElement;
@@ -335,8 +335,10 @@ export class DeckdeckgoDragResizeRotate {
       this.parentWidth = this.unit === 'percentage' ? parent.offsetWidth : this.convertToUnit(parent.offsetWidth, 'width');
       this.parentHeight = this.unit === 'percentage' ? parent.offsetHeight : this.convertToUnit(parent.offsetHeight, 'height');
     } else {
-      this.parentWidth = this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
-      this.parentHeight = this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
+      this.parentWidth =
+        this.unit === 'percentage' ? this.el.parentElement.offsetWidth : this.convertToUnit(this.el.parentElement.offsetWidth, 'width');
+      this.parentHeight =
+        this.unit === 'percentage' ? this.el.parentElement.offsetHeight : this.convertToUnit(this.el.parentElement.offsetHeight, 'height');
     }
   }
 
@@ -494,7 +496,7 @@ export class DeckdeckgoDragResizeRotate {
 
     return {
       x: this.dragBottom || this.dragTop ? 0 : currentX - this.startX,
-      y: this.dragStart || this.dragEnd ? 0 : currentY - this.startY,
+      y: this.dragStart || this.dragEnd ? 0 : currentY - this.startY
     };
   }
 
@@ -590,7 +592,7 @@ export class DeckdeckgoDragResizeRotate {
       a,
       b,
       c,
-      d,
+      d
     };
   }
 
@@ -635,7 +637,7 @@ export class DeckdeckgoDragResizeRotate {
           '--left': `${this.left}${widthUnit}`,
           '--rotate': this.rotate ? `${this.rotate}deg` : `0deg`,
           '--pointer-events': `${this.editing ? 'all' : 'none'}`,
-          '--user-select': `${this.text ? 'text' : 'none'}`,
+          '--user-select': `${this.text ? 'text' : 'none'}`
         }}
         class={`${this.selected ? 'selected' : ''} ${this.text ? 'text' : ''} ${this.drag !== 'none' ? 'draggable' : ''} ${
           this.drag !== 'none' && this.moving ? 'drag' : ''
@@ -681,7 +683,7 @@ export class DeckdeckgoDragResizeRotate {
         onMouseDown={() => (this.dragTopStart = true)}
         onTouchStart={() => (this.dragTopStart = true)}>
         <div></div>
-      </div>,
+      </div>
     ];
   }
 
@@ -710,7 +712,7 @@ export class DeckdeckgoDragResizeRotate {
         class="border start"
         onClick={($event) => $event.stopPropagation()}
         onMouseDown={() => (this.dragStart = true)}
-        onTouchStart={() => (this.dragStart = true)}></div>,
+        onTouchStart={() => (this.dragStart = true)}></div>
     ];
   }
 

@@ -14,7 +14,7 @@ import {
   DeckdeckgoEventEmitter,
   DeckdeckgoEventDeckRequest,
   DeckdeckgoEventType,
-  ConnectionState,
+  ConnectionState
 } from '@deckdeckgo/types';
 
 const configuration: RTCConfiguration = {
@@ -22,20 +22,21 @@ const configuration: RTCConfiguration = {
     {
       urls: 'turn:api.deckdeckgo.com:3478',
       username: 'user',
-      credential: 'deckdeckgo',
-    },
-  ],
+      credential: 'deckdeckgo'
+    }
+  ]
 };
 
 const dataChannelOptions = {
   ordered: false, //no guaranteed delivery, unreliable but faster
-  maxPacketLifeTime: 1000, //milliseconds
+  maxPacketLifeTime: 1000 //milliseconds
 };
 
 const DEFAULT_SOCKET_URL: string = 'https://api.deckdeckgo.com';
 
 // @ts-ignore
-const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+const PeerConnection =
+  window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 
 // @ts-ignore
 // prettier-ignore
@@ -77,13 +78,13 @@ export class CommunicationService {
       this.socket = io.connect(url, {
         reconnectionAttempts: 5,
         transports: ['websocket', 'xhr-polling'],
-        query: 'type=app',
+        query: 'type=app'
       });
 
       this.socket.on('connect', async () => {
         this.socket.emit('join', {
           room: this.room,
-          deck: true,
+          deck: true
         });
       });
 
@@ -103,7 +104,7 @@ export class CommunicationService {
             type: DeckdeckgoEventType.DECK_REQUEST,
             emitter: DeckdeckgoEventEmitter.APP,
             message: data.message,
-            fromSocketId: data.fromSocketId,
+            fromSocketId: data.fromSocketId
           } as DeckdeckgoEventDeckRequest;
 
           return;
@@ -163,7 +164,7 @@ export class CommunicationService {
 
       if (this.socket) {
         this.socket.emit('leave', {
-          room: this.room,
+          room: this.room
         });
         this.socket.removeAllListeners();
         this.socket.disconnect();
@@ -204,7 +205,7 @@ export class CommunicationService {
         this.socket.emit('signal', {
           type: 'ice_candidate',
           message: JSON.stringify({candidate: evt.candidate}),
-          room: this.room,
+          room: this.room
         });
       }
     };
@@ -217,7 +218,7 @@ export class CommunicationService {
           type: 'sending_local_description',
           message: JSON.stringify({sdp: this.rtcPeerConn.localDescription}),
           room: this.room,
-          toSocketId: appSocketId,
+          toSocketId: appSocketId
         });
       },
       (_err) => {
@@ -233,7 +234,7 @@ export class CommunicationService {
 
       if (this.socket) {
         this.socket.emit('connected', {
-          room: this.room,
+          room: this.room
         });
       }
     }

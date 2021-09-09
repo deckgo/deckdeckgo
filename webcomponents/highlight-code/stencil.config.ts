@@ -9,26 +9,26 @@ export const config: Config = {
   namespace: 'deckdeckgo-highlight-code',
   outputTargets: [
     {
-      type: 'dist',
+      type: 'dist'
     },
     {
       type: 'www',
-      serviceWorker: null,
+      serviceWorker: null
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     },
     {
-      type: 'dist-custom-elements-bundle',
-    },
+      type: 'dist-custom-elements-bundle'
+    }
   ],
   plugins: [
     sass(),
     postcss({
-      plugins: [autoprefixer()],
-    }),
+      plugins: [autoprefixer()]
+    })
   ],
   devServer: {
-    openBrowser: false,
-  },
+    openBrowser: false
+  }
 };

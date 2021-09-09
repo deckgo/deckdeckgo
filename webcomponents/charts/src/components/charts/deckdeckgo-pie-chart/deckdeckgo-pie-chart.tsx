@@ -21,7 +21,7 @@ interface DeckdeckgoPieChartData {
 @Component({
   tag: 'deckgo-pie-chart',
   styleUrl: 'deckdeckgo-pie-chart.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoPieChart implements DeckdeckgoChart {
   @Element() el: HTMLElement;
@@ -135,8 +135,10 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
 
       this.pieDataIndex = 0;
 
-      const maxWidth: number = this.width > this.marginLeft + this.marginRight ? this.width - this.marginLeft - this.marginRight : this.width;
-      const maxHeight: number = this.height > this.marginTop + this.marginBottom ? this.height - this.marginTop - this.marginBottom : this.height;
+      const maxWidth: number =
+        this.width > this.marginLeft + this.marginRight ? this.width - this.marginLeft - this.marginRight : this.width;
+      const maxHeight: number =
+        this.height > this.marginTop + this.marginBottom ? this.height - this.marginTop - this.marginBottom : this.height;
 
       this.svg = DeckdeckgoChartUtils.initSvg(this.el, maxWidth, maxHeight);
       this.svg = this.svg.append('g').attr('transform', 'translate(' + maxWidth / 2 + ',' + maxHeight / 2 + ')');
@@ -389,13 +391,13 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
             label: label,
             value: parseInt(values[1]),
             randomFillColor: this.randomColors?.[lineIndex] || undefined,
-            key: lineIndex + 1,
+            key: lineIndex + 1
           };
 
           if (!isNaN(pieData.value)) {
             if (results.length <= 0) {
               results.push({
-                values: [],
+                values: []
               });
             }
 
@@ -408,7 +410,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
               if (!isNaN(tmp)) {
                 if (results.length < i) {
                   results.push({
-                    values: [],
+                    values: []
                   });
                 }
 
@@ -416,7 +418,7 @@ export class DeckdeckgoPieChart implements DeckdeckgoChart {
                   label: label,
                   value: parseInt(values[i]),
                   randomFillColor: this.randomColors.length >= i ? this.randomColors[lineIndex] : undefined,
-                  key: lineIndex + 1,
+                  key: lineIndex + 1
                 };
 
                 results[i - 1].values.push(pieData);

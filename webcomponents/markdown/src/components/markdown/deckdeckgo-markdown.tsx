@@ -5,7 +5,7 @@ import {parseMarkdown} from '../workers/markdown.worker';
 @Component({
   tag: 'deckgo-markdown',
   styleUrl: 'deckdeckgo-markdown.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckgoMdParser {
   @Element() el: HTMLElement;
@@ -79,8 +79,8 @@ export class DeckgoMdParser {
         code: {
           highlightLines: this.highlightLines,
           terminal: this.terminal,
-          theme: this.theme,
-        },
+          theme: this.theme
+        }
       });
 
       await this.parseMarkdown(markdownHtmlContents);

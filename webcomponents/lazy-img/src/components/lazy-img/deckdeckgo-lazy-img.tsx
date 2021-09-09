@@ -7,7 +7,7 @@ import {DeckDeckGoCustomLoad} from '../interfaces/custom-load';
 @Component({
   tag: 'deckgo-lazy-img',
   styleUrl: 'deckdeckgo-lazy-img.scss',
-  shadow: true,
+  shadow: true
 })
 export class DeckdeckgoLazyImg {
   @Element() el: HTMLElement;
@@ -142,7 +142,7 @@ export class DeckdeckgoLazyImg {
     return new Promise<void>((resolve) => {
       this.observer = new IntersectionObserver(this.onIntersection, {
         rootMargin: this.observerRootMargin,
-        threshold: this.observerThreshold,
+        threshold: this.observerThreshold
       });
 
       this.observer.observe(this.el.shadowRoot.host);
@@ -210,7 +210,7 @@ export class DeckdeckgoLazyImg {
         this.customLoad.emit({
           imgElement: img,
           imgSrc: this.imgSrc,
-          imgSrcSet: this.imgSrcSet,
+          imgSrcSet: this.imgSrcSet
         });
 
         resolve();
