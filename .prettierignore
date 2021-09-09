@@ -6,3 +6,5 @@ loader
 
 webcomponents/*/src/**/readme.md
 templates/*/src/**/readme.md
+
+lib
