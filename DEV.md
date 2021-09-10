@@ -6,9 +6,9 @@ Beside the [infra](https://github.com/deckgo/deckdeckgo/tree/main/infra) and cod
 
 We are using `npm` **>= v7**.
 
-### Web Components, Templates, Utils and Docs
+### Web Components, Templates and Utils
 
-The [webcomponents](https://github.com/deckgo/deckdeckgo/tree/main/webcomponents), [templates](https://github.com/deckgo/deckdeckgo/tree/main/templates), [utils](https://github.com/deckgo/deckdeckgo/tree/main/templates) and [docs](https://github.com/deckgo/deckdeckgo/tree/main/templates) are npm [workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/).
+The [webcomponents](https://github.com/deckgo/deckdeckgo/tree/main/webcomponents), [templates](https://github.com/deckgo/deckdeckgo/tree/main/templates) and [utils](https://github.com/deckgo/deckdeckgo/tree/main/templates) are npm [workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/).
 
 To get the repo and install the dependencies run:
 
@@ -27,7 +27,7 @@ npm run start --workspace=docs
 npm run build --workspace=utils/kit
 ```
 
-### Apps, Backend and other projects
+### Apps, Docs, Backend and other projects
 
 The other projects are not part of the workspaces. Reason behind is that for production we want to rely on pined and published dependencies and not those build locally as npm v7 create simlinks.
 
