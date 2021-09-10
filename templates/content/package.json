@@ -28,7 +28,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git",
-    "directory": "webcomponents/slides/content"
+    "directory": "templates/content"
   },
   "author": "David Dal Busco",
   "license": "MIT",

@@ -29,7 +29,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git",
-    "directory": "webcomponents/slides/aspect-ratio"
+    "directory": "templates/aspect-ratio"
   },
   "author": "David Dal Busco",
   "license": "MIT",

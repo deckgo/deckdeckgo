@@ -34,7 +34,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git",
-    "directory": "webcomponents/slides/poll"
+    "directory": "templates/poll"
   },
   "author": "David Dal Busco",
   "license": "MIT",
