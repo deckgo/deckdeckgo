@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-gif
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-gif
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-gif
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/gif/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/gif/LICENSE
 
 # DeckDeckGo - Slide "Gif"
 

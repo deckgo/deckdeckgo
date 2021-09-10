@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/types
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/types
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/types
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/utils/types/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/utils/types/LICENSE
 
 # DeckDeckGo - Types
 

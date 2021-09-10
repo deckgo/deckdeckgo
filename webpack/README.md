@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/deckdeckgo-webpack-plugins
 [npm-badge-url]: https://www.npmjs.com/package/deckdeckgo-webpack-plugins
 [npm-license]: https://img.shields.io/npm/l/deckdeckgo-webpack-plugins
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webpack/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webpack/LICENSE
 
 # DeckDeckGo - Webpack Plugins
 

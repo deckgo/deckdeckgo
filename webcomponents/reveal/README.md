@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/core
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/core
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/core
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/core/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/core/LICENSE
 
 # DeckDeckGo - Reveal
 

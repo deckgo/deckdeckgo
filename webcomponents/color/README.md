@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/color
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/color
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/color
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/color/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/color/LICENSE
 
 # DeckDeckGo - Color Picker
 

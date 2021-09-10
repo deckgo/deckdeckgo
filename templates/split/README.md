@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-split
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-split
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-split
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/split/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/split/LICENSE
 
 # DeckDeckGo - Slide "Split"
 

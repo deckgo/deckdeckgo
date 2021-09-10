@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/markdown
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/markdown
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/markdown
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/markdown/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/markdown/LICENSE
 
 # DeckDeckGo - Markdown Parser
 

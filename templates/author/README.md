@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-author
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-author
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-author
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/author/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/author/LICENSE
 
 # DeckDeckGo - Slide "Author"
 

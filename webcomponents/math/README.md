@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/math
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/math
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/math
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/math/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/math/LICENSE
 
 # DeckDeckGo - Math
 

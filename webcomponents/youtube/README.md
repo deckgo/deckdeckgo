@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/youtube
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/youtube
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/youtube
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/youtube/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/youtube/LICENSE
 
 # DeckDeckGo - Youtube
 

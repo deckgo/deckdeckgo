@@ -1,7 +1,7 @@
 [![license][agpl-license]][agpl-license-url]
 
 [agpl-license]: https://img.shields.io/badge/License-AGPL%20v3-blue.svg
-[agpl-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/studio/GNU-AGPL-3.0
+[agpl-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/studio/GNU-AGPL-3.0
 
 # DeckDeckGo - Studio
 

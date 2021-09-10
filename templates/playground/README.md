@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-playground
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-playground
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-playground
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/playground/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/playground/LICENSE
 
 # DeckDeckGo - Slide "Playground"
 

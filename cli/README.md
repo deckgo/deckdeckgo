@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/create-deckdeckgo
 [npm-badge-url]: https://www.npmjs.com/package/create-deckdeckgo
 [npm-license]: https://img.shields.io/npm/l/create-deckdeckgo
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/cli/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/cli/LICENSE
 
 # DeckDeckGo - CLI
 

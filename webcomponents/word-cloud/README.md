@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/word-cloud
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/word-cloud
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/word-cloud
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/word-cloud/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/word-cloud/LICENSE
 
 # DeckDeckGo - Word Cloud
 

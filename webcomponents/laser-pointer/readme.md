@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/laser-pointer
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/laser-pointer
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/laser-pointer
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/laser-pointer/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/laser-pointer/LICENSE
 
 # DeckDeckGo - Laser Pointer
 

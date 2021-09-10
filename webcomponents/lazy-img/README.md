@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/lazy-img
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/lazy-img
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/lazy-img
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/lazy-img/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/lazy-img/LICENSE
 
 # DeckDeckGo - A dead simple Web Component to lazy load images
 

@@ -49,11 +49,11 @@ We would be grateful to get your help to translate our apps!
 
 The online editor ([studio](https://github.com/deckgo/deckdeckgo/tree/master/studio)) can be translated as following:
 
-1. Copy [en.json](https://github.com/deckgo/deckdeckgo/blob/master/studio/src/assets/i18n/en.json) to a new filename reflecting the language (such as for example `fr.json` for French)
+1. Copy [en.json](https://github.com/deckgo/deckdeckgo/blob/main/studio/src/assets/i18n/en.json) to a new filename reflecting the language (such as for example `fr.json` for French)
 2. Translate each keys of the newly created file
 3. Provide a PR
 
-If you would like to test your translations, either test these by overwriting temporarily [en.json](https://github.com/deckgo/deckdeckgo/blob/master/studio/src/assets/i18n/en.json) or add the new language as following:
+If you would like to test your translations, either test these by overwriting temporarily [en.json](https://github.com/deckgo/deckdeckgo/blob/main/studio/src/assets/i18n/en.json) or add the new language as following:
 
 1. Add it the to the list of supported languages in [languages.d.ts](https://github.com/deckgo/deckdeckgo/blob/main/studio/src/app/definitions/languages.d.ts)
 2. Add a related dynamic import in the state management [i18n.store.ts](https://github.com/deckgo/deckdeckgo/blob/bdc79b9cd1f52171bab2f772fa6905c710f3b2e0/studio/src/app/stores/i18n.store.ts#L11)
@@ -70,7 +70,7 @@ The new website of [DeckDeckGo] supports i18n. To provide a new language with a 
 1. Copy each [pages](https://github.com/deckgo/deckdeckgo/tree/master/site/src/pages/) to their new languages. For example `index.en.js` to `index.fr.js` to create a French page.
 2. Translate the text of the pages "index, enterprise and discover" in their related [json](https://github.com/deckgo/deckdeckgo/tree/master/site/src/assets/i18n/) data.
 3. Translate all other pages directly in their related Javascript files (we did not extract the text from the "simple" page).
-4. Provide a translation for the [meta](https://github.com/deckgo/deckdeckgo/blob/master/site/gatsby-config.js) description.
+4. Provide a translation for the [meta](https://github.com/deckgo/deckdeckgo/blob/main/site/gatsby-config.js) description.
 
 ### Remote
 

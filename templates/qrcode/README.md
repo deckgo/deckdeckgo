@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-qrcode
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-qrcode
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-qrcode
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/qrcode/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/qrcode/LICENSE
 
 # DeckDeckGo - Slide "QR Code"
 

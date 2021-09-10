@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-content
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-content
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-content
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/content/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/content/LICENSE
 
 # DeckDeckGo - Slide "Content"
 

@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/social
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/social
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/social
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/social/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/social/LICENSE
 
 # DeckDeckGo - Color Social
 

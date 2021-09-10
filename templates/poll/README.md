@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-poll
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-poll
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-poll
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/poll/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/poll/LICENSE
 
 # DeckDeckGo - Slide "Poll"
 

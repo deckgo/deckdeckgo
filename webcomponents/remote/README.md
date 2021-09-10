@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/remote
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/remote
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/remote
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/remote/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/remote/LICENSE
 
 # DeckDeckGo - Remote
 

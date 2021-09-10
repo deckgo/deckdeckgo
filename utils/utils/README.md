@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/utils
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/utils
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/utils
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/utils/utils/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/LICENSE
 
 # DeckDeckGo - Utils
 

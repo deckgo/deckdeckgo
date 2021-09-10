@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/slide-chart
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/slide-chart
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-chart
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/templates/chart/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/chart/LICENSE
 
 # DeckDeckGo - Slide "Chart"
 

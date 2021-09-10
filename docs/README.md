@@ -1,4 +1,4 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/deckgo/deckdeckgo/blob/master/docs/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/deckgo/deckdeckgo/blob/main/docs/LICENSE)
 
 # DeckDeckGo - Docs
 

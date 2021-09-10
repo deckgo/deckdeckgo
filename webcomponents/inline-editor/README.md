@@ -4,7 +4,7 @@
 [npm-badge]: https://img.shields.io/npm/v/@deckdeckgo/inline-editor
 [npm-badge-url]: https://www.npmjs.com/package/@deckdeckgo/inline-editor
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/inline-editor
-[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/master/webcomponents/inline-editor/LICENSE
+[npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/LICENSE
 
 # DeckDeckGo - WYSIWYG HTML Inline Editor Web Component
 
