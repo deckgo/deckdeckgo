@@ -223,7 +223,7 @@ export class AppActionsElement {
       return;
     }
 
-    await this.detachMoveToolbarOnElement();
+    await Promise.all([this.detachResizeSlideContent(), this.detachPasteEvent()]);
 
     await this.reset();
   }
@@ -683,7 +683,7 @@ export class AppActionsElement {
       : undefined;
 
     if (element) {
-      await this.attachResizeSlideContent();
+      await Promise.all([this.attachResizeSlideContent(), this.attachPasteEvent()]);
 
       await this.highlightElement(true);
 
@@ -715,7 +715,7 @@ export class AppActionsElement {
     }
 
     if (window && 'ResizeObserver' in window) {
-      await this.detachMoveToolbarOnElement();
+      await this.detachResizeSlideContent();
 
       this.elementResizeObserver = new ResizeObserver(async (entries) => {
         if (
@@ -736,7 +736,7 @@ export class AppActionsElement {
     }
   }
 
-  private detachMoveToolbarOnElement(): Promise<void> {
+  private detachResizeSlideContent(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (window && 'ResizeObserver' in window) {
         if (this.elementResizeObserver && this.selectedElement) {
@@ -750,6 +750,24 @@ export class AppActionsElement {
       resolve();
     });
   }
+
+  private async attachPasteEvent() {
+    await this.detachPasteEvent();
+
+    this.selectedElement?.element?.addEventListener('paste', this.filterPasteText);
+  }
+
+  private async detachPasteEvent() {
+    this.selectedElement?.element?.removeEventListener('paste', this.filterPasteText);
+  }
+
+  private filterPasteText = ($event: ClipboardEvent) => {
+    $event.preventDefault();
+
+    const text: string = $event.clipboardData.getData('text/plain');
+
+    document.execCommand('insertText', false, text);
+  };
 
   private async openStyle() {
     const popover: HTMLIonPopoverElement = await popoverController.create({
