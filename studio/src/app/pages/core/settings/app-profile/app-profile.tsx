@@ -5,7 +5,8 @@ import {loadingController, modalController} from '../../../../utils/ionic/ionic.
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
-import {User as FirebaseUser} from '@firebase/auth-types';
+
+import {User} from '@deckdeckgo/editor';
 
 import errorStore from '../../../../stores/error.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
@@ -15,7 +16,7 @@ import apiUserStore from '../../../../stores/api.user.store';
 import i18n from '../../../../stores/i18n.store';
 
 import {ApiUser} from '../../../../models/api/api.user';
-import {User} from '../../../../models/data/user';
+import {User as UserModel} from '../../../../models/data/user';
 
 import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
@@ -26,10 +27,9 @@ import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.fa
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
-import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
+import {updateUser} from '../../../../providers/data/user/user.provider';
 import {getOnlineStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
-import {AuthProvider} from '../../../../providers/auth/auth.provider';
-import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
+import {deleteAuth} from '../../../../providers/auth/auth.provider';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
@@ -42,7 +42,7 @@ export class AppProfile {
   @Element() el: HTMLElement;
 
   @State()
-  private user: User;
+  private user: UserModel;
 
   @State()
   private apiUser: ApiUser;
@@ -60,9 +60,7 @@ export class AppProfile {
   @State()
   private saving: boolean = false;
 
-  private readonly userProvider: UserProvider;
   private readonly apiUserProvider: ApiUserProvider;
-  private readonly authProvider: AuthProvider;
   private readonly storageOnlineProvider: StorageProvider;
 
   private imageHistoryService: ImageHistoryService;
@@ -98,9 +96,7 @@ export class AppProfile {
   constructor() {
     this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userProvider = getUserService();
     this.storageOnlineProvider = getOnlineStorageService();
-    this.authProvider = AuthFactoryProvider.getInstance();
   }
 
   async componentDidLoad() {
@@ -320,13 +316,14 @@ export class AppProfile {
       }
 
       try {
-        await this.userProvider.update({
+        // TODO: remove cast
+        await updateUser({
           id: this.user.id,
           data: {
             ...this.user.data,
             username: this.apiUsername
           }
-        });
+        } as User);
 
         resolve();
       } catch (err) {
@@ -442,7 +439,7 @@ export class AppProfile {
 
         await loading.present();
 
-        await this.deleteUserCloud();
+        await deleteAuth();
 
         await this.imageHistoryService.clear();
 
@@ -459,33 +456,6 @@ export class AppProfile {
           "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
-  }
-
-  private async deleteUserCloud() {
-    if (this.cloud === 'ic') {
-      await this.userProvider.delete(authStore.state.authUser.uid);
-
-      await this.authProvider.signOut();
-
-      return;
-    }
-
-    const firebaseUser: FirebaseUser = firebase.auth().currentUser;
-
-    if (!firebaseUser) {
-      return;
-    }
-
-    // We need the user token to access the API, therefore delete it here first
-    const token: string = await firebase.auth().currentUser.getIdToken();
-    await this.apiUserProvider.delete(this.apiUser.id, token);
-
-    // Then delete the user
-    await this.userProvider.delete(authStore.state.authUser.uid);
-
-    // Decks and slides are delete with a cloud function triggered on auth.delete
-
-    await firebaseUser.delete();
   }
 
   private async selectProfilePicture() {

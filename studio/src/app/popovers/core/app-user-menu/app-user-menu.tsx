@@ -7,8 +7,7 @@ import userStore from '../../../stores/user.store';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
-import {AuthProvider} from '../../../providers/auth/auth.provider';
-import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
+import {signOut} from '../../../providers/auth/auth.provider';
 
 @Component({
   tag: 'app-user-menu',
@@ -17,14 +16,8 @@ import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider
 export class AppUserMenu {
   @Element() el: HTMLElement;
 
-  private readonly authProvider: AuthProvider;
-
-  constructor() {
-    this.authProvider = AuthFactoryProvider.getInstance();
-  }
-
-  private async signOut() {
-    await this.authProvider.signOut();
+  private async signUserOut() {
+    await signOut();
 
     await this.closePopover();
 
@@ -89,7 +82,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
+        <ion-item onClick={() => this.signUserOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

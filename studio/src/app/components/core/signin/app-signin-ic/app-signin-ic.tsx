@@ -4,8 +4,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
 
-import {AuthProvider} from '../../../../providers/auth/auth.provider';
-import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
+import {signIn} from '../../../../providers/auth/auth.provider';
 
 @Component({
   tag: 'app-signin-ic',
@@ -18,17 +17,11 @@ export class AppSignInIc {
   @State()
   private signInInProgress: boolean = false;
 
-  private readonly authProvider: AuthProvider;
-
-  constructor() {
-    this.authProvider = AuthFactoryProvider.getInstance();
-  }
-
-  private async signIn() {
+  private async signUserIn() {
     this.inProgress.emit(true);
     this.signInInProgress = true;
 
-    await this.authProvider.signIn();
+    await signIn();
   }
 
   render() {
@@ -49,7 +42,7 @@ export class AppSignInIc {
     }
 
     return (
-      <ion-button shape="round" color="dark" onClick={async () => await this.signIn()}>
+      <ion-button shape="round" color="dark" onClick={async () => await this.signUserIn()}>
         <AppIcon name="dfinity" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.sign_in.internet_identity}</ion-label>
       </ion-button>

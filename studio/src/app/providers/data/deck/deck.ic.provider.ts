@@ -13,7 +13,6 @@ import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.
 import {DeckProvider} from './deck.provider';
 
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
-import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 
 export class DeckIcProvider implements DeckProvider {
   private static instance: DeckIcProvider;
@@ -31,7 +30,7 @@ export class DeckIcProvider implements DeckProvider {
 
   // @Override
   async entries(_userId: string): Promise<Deck[]> {
-    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
     if (!identity) {
       return [];
@@ -76,7 +75,7 @@ export class DeckIcProvider implements DeckProvider {
       return;
     }
 
-    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
     if (!identity) {
       return;

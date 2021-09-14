@@ -1,14 +1,11 @@
 import {Component, Event, h, Fragment, EventEmitter} from '@stencil/core';
 
-import firebase from '@firebase/app';
-import '@firebase/auth';
-import {UserCredential, OAuthCredential} from '@firebase/auth-types';
+import type {UserCredential, OAuthCredential} from '@firebase/auth-types';
 
 import navStore, {NavDirection} from '../../../../stores/nav.store';
 import tokenStore from '../../../../stores/token.store';
 import i18n from '../../../../stores/i18n.store';
 
-import {Utils} from '../../../../utils/core/utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
@@ -16,87 +13,35 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-co
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 import {AppIcon} from '../../app-icon/app-icon';
+import {Utils} from '../../../../utils/core/utils';
 
 @Component({
-  tag: 'app-signin-firebase',
-  styleUrl: 'app-signin-firebase.scss'
+  tag: 'app-signin-firebase'
 })
 export class AppSignInFirebase {
   @Event()
   inProgress: EventEmitter<boolean>;
 
+  private deckDeckGoConfig: EnvironmentDeckDeckGoConfig | undefined = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+  private signInSuccessWithAuthResult = (authResult, _redirectUrl) => {
+    this.inProgress.emit(true);
+
+    this.saveGithubCredentials(authResult);
+
+    this.navigateRedirect();
+
+    return false;
+  };
+
   async componentDidLoad() {
-    await this.setupFirebaseUI();
-  }
-
-  async disconnectedCallback() {
-    const ui = firebaseui.auth.AuthUI.getInstance();
-    if (ui) {
-      await ui.delete();
-    }
-  }
-
-  async setupFirebaseUI() {
     this.inProgress.emit(false);
 
     await Utils.injectJS({
-      id: 'firebase-ui-script',
-      src: 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js'
+      id: 'deckgo-firebase',
+      src: 'http://localhost:3335/build/deckdeckgo-firebase.esm.js',
+      module: true
     });
-    await Utils.injectCSS('firebase-ui-css', 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css');
-
-    const deckDeckGoConfig: EnvironmentDeckDeckGoConfig | undefined = EnvironmentConfigService.getInstance().get('deckdeckgo');
-
-    const appUrl: string = deckDeckGoConfig.appUrl;
-
-    const signInOptions = [];
-
-    // GitHub scope
-    signInOptions.push({
-      provider: firebase.auth.GithubAuthProvider.PROVIDER_ID,
-      scopes: ['public_repo']
-    });
-
-    signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
-
-    signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
-
-    const uiConfig = {
-      signInFlow: 'redirect',
-      signInSuccessUrl: appUrl,
-      signInOptions: signInOptions,
-      // tosUrl and privacyPolicyUrl accept either url string or a callback
-      // function.
-      // Terms of service url/callback.
-      tosUrl: 'https://deckdeckgo.com/terms',
-      // Privacy policy url/callback.
-      privacyPolicyUrl: 'https://deckdeckgo.com/privacy',
-      credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
-      autoUpgradeAnonymousUsers: false,
-      callbacks: {
-        signInSuccessWithAuthResult: (authResult, _redirectUrl) => {
-          this.inProgress.emit(true);
-
-          this.saveGithubCredentials(authResult);
-
-          this.navigateRedirect();
-
-          return false;
-        }
-      }
-    };
-
-    // @ts-ignore
-    window['firebase'] = firebase;
-
-    const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
-
-    if (!ui.isPendingRedirect()) {
-      ui.reset();
-    }
-
-    // The start method will wait until the DOM is loaded.
-    ui.start('#firebaseui-auth-container', uiConfig);
   }
 
   private navigateRedirect(redirectStatus: 'success' | 'failure' = 'success') {
@@ -144,7 +89,9 @@ export class AppSignInFirebase {
 
         {this.renderGitHub()}
 
-        <div id="firebaseui-auth-container"></div>
+        <deckgo-firebase-signin
+          app-url={this.deckDeckGoConfig.appUrl}
+          signInSuccessWithAuthResult={this.signInSuccessWithAuthResult}></deckgo-firebase-signin>
       </Fragment>
     );
   }

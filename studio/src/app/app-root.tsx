@@ -5,8 +5,7 @@ import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
 import authStore from './stores/auth.store';
 
-import {AuthProvider} from './providers/auth/auth.provider';
-import {AuthFactoryProvider} from './providers/auth/auth.factory.provider';
+import {initAuthProvider} from './providers/auth/auth.provider';
 
 import {ThemeService} from './services/theme/theme.service';
 import {NavDirection, NavParams} from './stores/nav.store';
@@ -25,7 +24,6 @@ import {toastController} from './utils/ionic/ionic.overlay';
 export class AppRoot {
   @Element() el: HTMLElement;
 
-  private readonly authProvider: AuthProvider;
   private readonly syncProvider: SyncProvider;
 
   private readonly themeService: ThemeService;
@@ -44,7 +42,6 @@ export class AppRoot {
   private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
-    this.authProvider = AuthFactoryProvider.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
@@ -56,7 +53,7 @@ export class AppRoot {
     this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncProvider.initSyncState());
 
     const promises: Promise<void>[] = [
-      this.authProvider.init(),
+      initAuthProvider(),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),

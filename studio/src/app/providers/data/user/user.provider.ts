@@ -1,24 +1,35 @@
-import {User} from '../../../models/data/user';
+import {User} from '@deckdeckgo/editor';
+
+import store from '../../../stores/user.store';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+
 import {UserIcProvider} from './user.ic.provider';
-import {UserFirebaseProvider} from './user.firebase.provider';
 
-export interface UserProvider {
-  update(user: User): Promise<void>;
+// TODO remove
+import {User as UserModel} from '../../../models/data/user';
 
-  delete(userId: string): Promise<void>;
-}
+export const updateUser = async (user: User) => {
+  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
-export const getUserService = (): UserProvider => {
-  const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-
-  if (cloud === 'ic') {
-    return UserIcProvider.getInstance();
-  } else if (cloud === 'firebase') {
-    return UserFirebaseProvider.getInstance();
+  if (!['firebase', 'ic'].includes(cloud)) {
+    return;
   }
 
-  throw new Error('Not implemented');
+  // TODO: extract IC
+  // TODO: remove type usermodel
+  if ('ic' === cloud) {
+    await UserIcProvider.getInstance().update(user as UserModel);
+    return;
+  }
+
+  const cdn: string = 'http://localhost:3335/build/index.esm.js';
+
+  const {updateUser} = await import(cdn);
+
+  const updatedUser: User = await updateUser(user);
+
+  // TODO: remove casting
+  store.state.user = {...updatedUser} as UserModel;
 };
