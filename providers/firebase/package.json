@@ -1,0 +1,54 @@
+{
+  "name": "@deckdeckgo/firebase",
+  "version": "1.0.0-alpha.0",
+  "description": "The Firebase connectors of the DeckDeckGo editor for slides",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/interface.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "COPYING",
+    "GNU-AGPL-3.0"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {
+    "firebase": "^8.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "webcomponents/core"
+  },
+  "author": "David Dal Busco",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "stencil",
+    "stenciljs",
+    "web components",
+    "pwa",
+    "progressive web app",
+    "presentation",
+    "slides",
+    "slideshow",
+    "talk"
+  ],
+  "devDependencies": {
+    "@deckdeckgo/editor": "file:../../utils/editor"
+  }
+}
