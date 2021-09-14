@@ -5,6 +5,7 @@
   "description": "The web open source editor for presentations",
   "private": true,
   "workspaces": [
+    "providers/*",
     "webcomponents/*",
     "templates/*",
     "utils/*"
