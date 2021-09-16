@@ -1,37 +1,27 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
 import {Token} from '@deckdeckgo/editor';
 
 import errorStore from '../../../stores/error.store';
 
-export class PlatformProvider {
-  private static instance: PlatformProvider;
+import {firebase} from '../../../utils/core/environment.utils';
 
-  private constructor() {
-    // Private constructor, singleton
+export const mergePlatformToken = async (token: Token) => {
+  if (!token) {
+    return;
   }
 
-  static getInstance() {
-    if (!PlatformProvider.instance) {
-      PlatformProvider.instance = new PlatformProvider();
-    }
-    return PlatformProvider.instance;
+  // TODO: Platform token for Internet Computer?
+
+  if (!firebase()) {
+    throw new Error('Merge token not supported');
   }
 
-  async merge(token: Token) {
-    if (!token) {
-      return;
-    }
+  try {
+    const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    try {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+    const {mergeToken} = await import(cdn);
 
-      token.data.updated_at = firebase.firestore.Timestamp.now() as unknown as Date;
-
-      await firestore.collection('tokens').doc(token.id).set(token.data, {merge: true});
-    } catch (err) {
-      errorStore.state.error = 'GitHub platform information not properly set up.';
-    }
+    await mergeToken(token.data);
+  } catch (err) {
+    errorStore.state.error = 'GitHub platform information not properly set up.';
   }
-}
+};

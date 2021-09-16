@@ -1,10 +1,9 @@
 import {Template, TemplateData} from '@deckdeckgo/editor';
 
-import {EnvironmentAppConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-
 import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
+
+import {firebase} from '../../../utils/core/environment.utils';
 
 export const initTemplates = async () => {
   if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
@@ -15,11 +14,9 @@ export const initTemplates = async () => {
     return;
   }
 
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
   // TODO: Template for Internet Computer
 
-  if (cloud !== 'firebase') {
+  if (!firebase()) {
     return;
   }
 
@@ -41,11 +38,9 @@ export const initTemplates = async () => {
 };
 
 export const createUserTemplate = async (templateData: TemplateData): Promise<Template | undefined> => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
   // TODO: Template for Internet Computer
 
-  if (cloud !== 'firebase') {
+  if (!firebase()) {
     throw new Error('Template cannot be created. Not supported.');
   }
 
@@ -57,11 +52,9 @@ export const createUserTemplate = async (templateData: TemplateData): Promise<Te
 };
 
 export const updateTemplate = async (template: Template): Promise<Template | undefined> => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
   // TODO: Template for Internet Computer
 
-  if (cloud !== 'firebase') {
+  if (!firebase()) {
     throw new Error('Template cannot be updated. Not supported.');
   }
 
