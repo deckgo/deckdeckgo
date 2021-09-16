@@ -65,7 +65,7 @@
 
 ### Features
 
-- clean `spellcheck` with `cleanContent` function
+- cleanSync `spellcheck` with `cleanContent` function
 
 <a name="3.2.1"></a>
 
@@ -130,7 +130,7 @@
 
 ### Features
 
-- clean attribute `editable` when `false` too
+- cleanSync attribute `editable` when `false` too
 
 <a name="2.6.0"></a>
 
@@ -288,7 +288,7 @@ To infinity and beyond 🚀
 
 ### Features
 
-- clean `custom-loader` attribute
+- cleanSync `custom-loader` attribute
 
 <a name="1.0.0-rc.2-1"></a>
 

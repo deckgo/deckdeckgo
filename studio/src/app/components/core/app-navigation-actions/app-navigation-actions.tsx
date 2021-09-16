@@ -17,8 +17,7 @@ import {AppIcon} from '../app-icon/app-icon';
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
-import {SyncProvider} from '../../../providers/sync/sync.provider';
-import {SyncFactoryProvider} from '../../../providers/sync/sync.factory.provider';
+import {clearSync} from '../../../providers/sync/sync.provider';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -32,11 +31,9 @@ export class AppNavigationActions {
 
   private loadInput!: HTMLInputElement;
 
-  private readonly syncProvider: SyncProvider;
   private readonly imageHistoryService: ImageHistoryService;
 
   constructor() {
-    this.syncProvider = SyncFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
@@ -106,7 +103,7 @@ export class AppNavigationActions {
     await loading.present();
 
     try {
-      await this.syncProvider.clear();
+      await clearSync();
 
       await this.imageHistoryService.clear();
 

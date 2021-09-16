@@ -9,14 +9,14 @@ export const uploadFile = ({
   data,
   folder,
   maxSize,
-  downloadUrl = true,
-  userId
+  userId,
+  downloadUrl = true
 }: {
   data: File;
   folder: string;
   maxSize: number;
-  downloadUrl: boolean;
   userId: string;
+  downloadUrl?: boolean;
 }): Promise<StorageFile | undefined> => {
   return new Promise<StorageFile>(async (resolve, reject) => {
     try {

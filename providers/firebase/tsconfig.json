@@ -1,4 +1,8 @@
 {
+  "compilerOptions": {
+    "types": ["@deckdeckgo/slide-chart", "@deckdeckgo/lazy-img"],
+    "skipLibCheck": true
+  },
   "extends": "../tsconfig.json",
   "include": ["src"],
   "exclude": ["node_modules"]

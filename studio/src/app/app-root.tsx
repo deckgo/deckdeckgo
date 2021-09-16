@@ -12,8 +12,7 @@ import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/editor/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {SyncProvider} from './providers/sync/sync.provider';
-import {SyncFactoryProvider} from './providers/sync/sync.factory.provider';
+import {initSyncState} from './providers/sync/sync.provider';
 
 import {toastController} from './utils/ionic/ionic.overlay';
 
@@ -23,8 +22,6 @@ import {toastController} from './utils/ionic/ionic.overlay';
 })
 export class AppRoot {
   @Element() el: HTMLElement;
-
-  private readonly syncProvider: SyncProvider;
 
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
@@ -46,11 +43,10 @@ export class AppRoot {
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
     this.langService = LangService.getInstance();
-    this.syncProvider = SyncFactoryProvider.getInstance();
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncProvider.initSyncState());
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await initSyncState());
 
     const promises: Promise<void>[] = [
       initAuthProvider(),
