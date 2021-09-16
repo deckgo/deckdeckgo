@@ -1,4 +1,4 @@
-import {User} from '@deckdeckgo/editor';
+import {User, UpdateUser} from '@deckdeckgo/editor';
 
 import store from '../../../stores/user.store';
 
@@ -22,7 +22,7 @@ export const updateUser = async (user: User) => {
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {updateUser} = await import(cdn);
+  const {updateUser}: {updateUser: UpdateUser} = await import(cdn);
 
   const updatedUser: User = await updateUser(user);
 

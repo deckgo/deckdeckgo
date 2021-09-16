@@ -1,10 +1,10 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {AuthUser, User, UserData} from '@deckdeckgo/editor';
+import {AuthUser, CreateUser, DeleteUser, UpdateUser, User, UserData} from '@deckdeckgo/editor';
 import {ApiUserData} from '../../types/api.user';
 
-export const createUser = (authUser: AuthUser): Promise<User> => {
+export const createUser: CreateUser = (authUser: AuthUser): Promise<User> => {
   return new Promise<User>(async (resolve, reject) => {
     if (!authUser || !authUser.uid) {
       reject('Authentication user not defined.');
@@ -37,7 +37,7 @@ export const createUser = (authUser: AuthUser): Promise<User> => {
   });
 };
 
-export const updateUser = (user: User): Promise<User> => {
+export const updateUser: UpdateUser = (user: User): Promise<User> => {
   return new Promise<User>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
@@ -62,7 +62,7 @@ export const updateUser = (user: User): Promise<User> => {
   });
 };
 
-export const deleteUser = (userId: string): Promise<void> => {
+export const deleteUser: DeleteUser = (userId: string): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
