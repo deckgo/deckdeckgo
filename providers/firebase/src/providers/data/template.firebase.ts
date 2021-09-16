@@ -6,6 +6,11 @@ import {Template, TemplateData} from '@deckdeckgo/editor';
 export const getUserTemplates = (userId: string): Promise<Template[]> => {
   return new Promise<Template[]>(async (resolve, reject) => {
     try {
+      if (!userId) {
+        resolve([]);
+        return;
+      }
+
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const snapshot: firebase.firestore.QuerySnapshot = await firestore

@@ -25,7 +25,7 @@ export const initTemplates = async () => {
 
     const {getUserTemplates} = await import(cdn);
 
-    const templates: Template[] = await getUserTemplates();
+    const templates: Template[] = await getUserTemplates(authStore.state.authUser?.uid);
 
     if (!templates) {
       return undefined;
