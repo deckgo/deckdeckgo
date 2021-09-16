@@ -1,4 +1,4 @@
-import {AuthUser, User} from '@deckdeckgo/editor';
+import {AuthUser, InitAuth, User, SignOut, SignIn, DeleteAuth} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import store from '../../stores/user.store';
@@ -24,9 +24,8 @@ export const initAuthProvider = async () => {
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {initAuth} = await import(cdn);
+  const {initAuth}: {initAuth: InitAuth} = await import(cdn);
 
-  // TODO: interface
   await initAuth({
     config: firebaseApiConfig(),
     success: onInitSuccess,
@@ -59,9 +58,7 @@ export const signOut = async () => {
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {signOut} = await import(cdn);
-
-  console.log('4', signOut);
+  const {signOut}: {signOut: SignOut} = await import(cdn);
 
   await signOut();
 };
@@ -81,9 +78,7 @@ export const signIn = async () => {
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {signIn} = await import(cdn);
-
-  console.log('5', signIn);
+  const {signIn}: {signIn: SignIn} = await import(cdn);
 
   await signIn();
 };
@@ -106,13 +101,13 @@ export const deleteAuth = async () => {
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {deleteAuth} = await import(cdn);
+  const {deleteAuth}: {deleteAuth: DeleteAuth} = await import(cdn);
 
   await deleteAuth({uid, config: firebaseApiConfig()});
   await signOut();
 };
 
-const firebaseApiConfig = () => {
+const firebaseApiConfig = (): Record<string, string | boolean> => {
   const firebaseConfig: Record<string, string> = EnvironmentConfigService.getInstance().get('firebase');
 
   const {mock}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');

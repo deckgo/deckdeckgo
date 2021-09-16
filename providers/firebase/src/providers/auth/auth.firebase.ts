@@ -4,19 +4,19 @@ import 'firebase/firestore';
 
 import {User as FirebaseUser} from '@firebase/auth-types';
 
-import {ApiUser, AuthUser, User} from '@deckdeckgo/editor';
+import {ApiUser, AuthUser, InitAuth, SignOut, SignIn, User, DeleteAuth} from '@deckdeckgo/editor';
 import {deleteApi, signInApi} from '@deckdeckgo/api';
 
 import {createUser, deleteUser} from '../data/user.firebase';
 
 import {ApiUserData} from '../../types/api.user';
 
-export const initAuth = ({
+export const initAuth: InitAuth = async ({
   config,
   success,
   reset
 }: {
-  config: Record<string, string>;
+  config: Record<string, string | boolean>;
   success: ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => Promise<void>;
   reset: () => Promise<void>;
 }) => {
@@ -91,15 +91,15 @@ const signInAwsApi = async ({config, authUser}: {config; authUser: AuthUser}): P
   });
 };
 
-export const signOut = async () => {
+export const signOut: SignOut = async () => {
   await firebase.auth().signOut();
 };
 
-export const signIn = async () => {
+export const signIn: SignIn = async () => {
   // Do nothing, with Firebase the state of the authentication is observed, see onAuthStateChanged, and we use Firebase UI to handle login form
 };
 
-export const deleteAuth = async ({user, config}: {user: User; config}) => {
+export const deleteAuth: DeleteAuth = async ({user, config}: {user: User; config}) => {
   const firebaseUser: FirebaseUser = firebase.auth().currentUser;
 
   if (!firebaseUser) {

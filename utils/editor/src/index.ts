@@ -11,5 +11,6 @@ export * from './models/data/user';
 export * from './models/storage/storage';
 
 export * from './types/sync';
+export * from './types/auth.provider';
 
 export * from './utils/deck.utils';
