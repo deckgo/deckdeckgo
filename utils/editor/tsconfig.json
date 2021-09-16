@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "typeRoots": ["../../node_modules/@types"],
+    "types": ["@deckdeckgo/core"],
+    "skipLibCheck": true,
     "outDir": "lib"
   },
   "extends": "../tsconfig.json",

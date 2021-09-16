@@ -1,9 +1,10 @@
+import {deckSelector} from '@deckdeckgo/editor';
+
 import assetsStore from '../../../stores/assets.store';
 import offlineStore from '../../../stores/offline.store';
 
 import {SlotType} from '../../../types/editor/slot-type';
 
-import {deckSelector} from '../../../utils/editor/deck.utils';
 import {ServiceWorkerUtils} from '../../../utils/core/service-worker.utils';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';

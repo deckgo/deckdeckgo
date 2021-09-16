@@ -1,11 +1,11 @@
 import {Component, Prop, h, Host, EventEmitter, Event, Fragment} from '@stencil/core';
 
+import {deckSelector, selectSlide} from '@deckdeckgo/editor';
+
 import busyStore from '../../../../stores/busy.store';
 import editorStore from '../../../../stores/editor.store';
 
 import {BreadcrumbsStep} from '../../../../types/editor/breadcrumbs-step';
-
-import {deckSelector, selectSlide} from '../../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-breadcrumbs',

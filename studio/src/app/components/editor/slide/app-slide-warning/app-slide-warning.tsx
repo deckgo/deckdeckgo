@@ -1,6 +1,7 @@
 import {Component, h, Host, Listen, State} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
+import {selectSlide} from '@deckdeckgo/editor';
 
 import i18n from '../../../../stores/i18n.store';
 
@@ -9,7 +10,6 @@ import settingsStore from '../../../../stores/settings.store';
 import {ContrastUtils} from '../../../../utils/editor/contrast.utils';
 import {NodeUtils} from '../../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
-import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
 

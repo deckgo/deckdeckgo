@@ -1,6 +1,7 @@
 import type {IonicReorderEvent} from '../../../../utils/ionic/ionic.reorder.event';
 
 import {debounce} from '@deckdeckgo/utils';
+import {selectSlide} from '@deckdeckgo/editor';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -32,7 +33,6 @@ import {Utils} from '../../../../utils/core/utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
-import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {DeckOfflineProvider} from '../../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../../providers/data/slide/slide.offline.provider';
