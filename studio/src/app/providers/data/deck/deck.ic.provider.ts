@@ -26,7 +26,6 @@ export class DeckIcProvider {
     return DeckIcProvider.instance;
   }
 
-  // @Override
   async entries(_userId: string): Promise<Deck[]> {
     const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
@@ -67,7 +66,6 @@ export class DeckIcProvider {
     }
   }
 
-  // @Override
   async delete(deckId: string): Promise<void> {
     if (!deckId) {
       return;

@@ -6,9 +6,7 @@ import {Slide, SlideData} from '@deckdeckgo/editor';
 
 import {syncDeleteSlide, syncUpdateSlide} from '../../../utils/editor/sync.utils';
 
-import {SlideProvider} from './slide.provider';
-
-export class SlideOfflineProvider implements SlideProvider {
+export class SlideOfflineProvider {
   private static instance: SlideOfflineProvider;
 
   private constructor() {
@@ -48,7 +46,6 @@ export class SlideOfflineProvider implements SlideProvider {
     });
   }
 
-  // @Override
   get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       try {

@@ -10,11 +10,9 @@ import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../.
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
-import {SlideProvider} from './slide.provider';
-
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
-export class SlideIcProvider implements SlideProvider {
+export class SlideIcProvider {
   private static instance: SlideIcProvider;
 
   private constructor() {
@@ -28,7 +26,6 @@ export class SlideIcProvider implements SlideProvider {
     return SlideIcProvider.instance;
   }
 
-  // @Override
   async get(deckId: string, slideId: string): Promise<Slide> {
     return new Promise<Slide>(async (resolve, reject) => {
       const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
