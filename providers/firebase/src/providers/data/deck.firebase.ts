@@ -3,7 +3,7 @@ import 'firebase/firestore';
 
 import {Deck, DeckData} from '@deckdeckgo/editor';
 
-import {FirestoreUtils} from '../../utils/firestore.utils';
+import {filterFieldDelete} from '../../utils/firestore.utils';
 
 export const deckEntries = (userId: string): Promise<Deck[]> => {
   return new Promise<Deck[]>(async (resolve, reject) => {
@@ -103,7 +103,7 @@ export const updateDeck = (deck: Deck): Promise<Deck> => {
     try {
       await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});
 
-      resolve(FirestoreUtils.filterDelete(deck));
+      resolve(filterFieldDelete<Deck>(deck));
     } catch (err) {
       reject(err);
     }

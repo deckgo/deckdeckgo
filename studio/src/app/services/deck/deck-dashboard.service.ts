@@ -1,11 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck, DeckData} from '@deckdeckgo/editor';
-import {Slide} from '@deckdeckgo/editor';
+import {Deck, Slide, DeckData} from '@deckdeckgo/editor';
 
 import {importEditorData} from '../../utils/editor/import.utils';
-import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
 import {DeckFirebaseProvider} from '../../providers/data/deck/deck.firebase.provider';
 import {getSlide} from '../../providers/data/slide/slide.provider';
@@ -104,20 +102,6 @@ export class DeckDashboardService {
       try {
         const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => getSlide(deck.id, slideId));
         const slides: Slide[] = await Promise.all(promises || []);
-
-        const deckToImport: Deck = {...deck};
-
-        if (deckToImport.data.background && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.background)) {
-          deckToImport.data.background = null;
-        }
-
-        if (deckToImport.data.header && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.header)) {
-          deckToImport.data.header = null;
-        }
-
-        if (deckToImport.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.footer)) {
-          deckToImport.data.footer = null;
-        }
 
         await importEditorData({
           id: deck.id,

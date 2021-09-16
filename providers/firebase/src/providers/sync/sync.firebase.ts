@@ -19,7 +19,7 @@ import {updateDeck} from '../data/deck.firebase';
 
 import {uploadFile} from '../storage/storage.firebase';
 
-import {FirestoreUtils} from '../../utils/firestore.utils';
+import {prepareAttributes} from '../../utils/firestore.utils';
 
 export const sync = async ({
   syncData,
@@ -287,7 +287,7 @@ const uploadSlideData = (deckId: string, slideId: string): Promise<void> => {
         return;
       }
 
-      slide.data.attributes = (await FirestoreUtils.prepareAttributes(slide.data.attributes)) as SlideAttributes;
+      slide.data.attributes = prepareAttributes<SlideAttributes>(slide.data.attributes);
 
       if (slide.data.content === null) {
         // @ts-ignore
@@ -349,7 +349,7 @@ const uploadDeckData = (deck: Deck): Promise<Deck> => {
         return;
       }
 
-      deck.data.attributes = (await FirestoreUtils.prepareAttributes(deck.data.attributes)) as DeckAttributes;
+      deck.data.attributes = prepareAttributes<DeckAttributes>(deck.data.attributes);
 
       if (deck.data.background === null) {
         // @ts-ignore

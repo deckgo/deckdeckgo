@@ -22,13 +22,9 @@ export const initAuthProvider = async () => {
     return;
   }
 
-  console.log('0');
-
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
   const {initAuth} = await import(cdn);
-
-  console.log('1', initAuth);
 
   // TODO: interface
   await initAuth({
@@ -36,8 +32,6 @@ export const initAuthProvider = async () => {
     success: onInitSuccess,
     reset: onInitReset
   });
-
-  console.log('2');
 };
 
 const onInitReset = async () => {
