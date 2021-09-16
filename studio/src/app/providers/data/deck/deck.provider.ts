@@ -1,4 +1,4 @@
-import {Deck} from '@deckdeckgo/editor';
+import {Deck, DeckEntries, DeleteDeck} from '@deckdeckgo/editor';
 
 import {DeckIcProvider} from './deck.ic.provider';
 import {DeckOfflineProvider} from './deck.offline.provider';
@@ -13,7 +13,7 @@ export const decks = async (userId: string): Promise<Deck[]> => {
   if (firebase()) {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {deckEntries} = await import(cdn);
+    const {deckEntries}: {deckEntries: DeckEntries} = await import(cdn);
 
     return deckEntries(userId);
   }
@@ -29,7 +29,7 @@ export const deleteDeck = async (deckId: string): Promise<void> => {
   if (firebase()) {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {deleteDeck: deleteUserDeck} = await import(cdn);
+    const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await import(cdn);
 
     return deleteUserDeck(deckId);
   }

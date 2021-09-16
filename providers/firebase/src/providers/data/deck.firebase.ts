@@ -1,11 +1,11 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck, DeckData} from '@deckdeckgo/editor';
+import {CreateDeck, Deck, DeckData, DeckEntries, DeleteDeck, GetDeck, UpdateDeck} from '@deckdeckgo/editor';
 
 import {filterFieldDelete} from '../../utils/firestore.utils';
 
-export const deckEntries = (userId: string): Promise<Deck[]> => {
+export const deckEntries: DeckEntries = (userId: string): Promise<Deck[]> => {
   return new Promise<Deck[]>(async (resolve, reject) => {
     try {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
@@ -30,7 +30,7 @@ export const deckEntries = (userId: string): Promise<Deck[]> => {
   });
 };
 
-export const deleteDeck = (deckId: string): Promise<void> => {
+export const deleteDeck: DeleteDeck = (deckId: string): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
@@ -44,7 +44,7 @@ export const deleteDeck = (deckId: string): Promise<void> => {
   });
 };
 
-export const createDeck = (deck: DeckData): Promise<Deck> => {
+export const createDeck: CreateDeck = (deck: DeckData): Promise<Deck> => {
   return new Promise<Deck>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
@@ -69,7 +69,7 @@ export const createDeck = (deck: DeckData): Promise<Deck> => {
   });
 };
 
-export const getDeck = (deckId: string): Promise<Deck> => {
+export const getDeck: GetDeck = (deckId: string): Promise<Deck> => {
   return new Promise<Deck>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
@@ -93,7 +93,7 @@ export const getDeck = (deckId: string): Promise<Deck> => {
   });
 };
 
-export const updateDeck = (deck: Deck): Promise<Deck> => {
+export const updateDeck: UpdateDeck = (deck: Deck): Promise<Deck> => {
   return new Promise<Deck>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 

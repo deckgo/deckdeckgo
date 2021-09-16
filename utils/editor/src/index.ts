@@ -12,5 +12,7 @@ export * from './models/storage/storage';
 
 export * from './types/sync';
 export * from './types/auth.provider';
+export * from './types/deck.provider';
+export * from './types/platform.provider';
 
 export * from './utils/deck.utils';

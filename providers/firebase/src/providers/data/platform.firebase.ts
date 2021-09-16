@@ -1,9 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Token} from '@deckdeckgo/editor';
+import {Token, MergeToken} from '@deckdeckgo/editor';
 
-export const mergeToken = async (token: Token) => {
+export const mergeToken: MergeToken = async (token: Token) => {
   if (!token) {
     return;
   }

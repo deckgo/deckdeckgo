@@ -1,4 +1,4 @@
-import {Token} from '@deckdeckgo/editor';
+import {Token, MergeToken} from '@deckdeckgo/editor';
 
 import errorStore from '../../../stores/error.store';
 
@@ -18,9 +18,9 @@ export const mergePlatformToken = async (token: Token) => {
   try {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {mergeToken} = await import(cdn);
+    const {mergeToken}: {mergeToken: MergeToken} = await import(cdn);
 
-    await mergeToken(token.data);
+    await mergeToken(token);
   } catch (err) {
     errorStore.state.error = 'GitHub platform information not properly set up.';
   }
