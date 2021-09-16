@@ -17,7 +17,7 @@ import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {decks} from '../../../providers/data/deck/deck.provider';
-import {getSlideService, SlideProvider} from '../../../providers/data/slide/slide.provider';
+import {getSlide} from '../../../providers/data/slide/slide.provider';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
@@ -48,7 +48,6 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly slideProvider: SlideProvider;
   private readonly deckDashboardService: DeckDashboardService;
 
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
@@ -59,7 +58,6 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.slideProvider = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
@@ -169,7 +167,7 @@ export class AppDashboard {
       try {
         console.log('About to request slide in IC');
 
-        const slide: Slide = await this.slideProvider.get(deck.id, slideId);
+        const slide: Slide = await getSlide(deck.id, slideId);
 
         console.log('Slide request done', slide);
 

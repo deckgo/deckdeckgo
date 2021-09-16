@@ -1,11 +1,6 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import {Slide} from '@deckdeckgo/editor';
 
-import {Slide, SlideData} from '@deckdeckgo/editor';
-
-import {SlideProvider} from './slide.provider';
-
-export class SlideFirebaseProvider implements SlideProvider {
+export class SlideFirebaseProvider {
   private static instance: SlideFirebaseProvider;
 
   private constructor() {
@@ -19,59 +14,19 @@ export class SlideFirebaseProvider implements SlideProvider {
     return SlideFirebaseProvider.instance;
   }
 
-  // @Override
-  get(deckId: string, slideId: string): Promise<Slide> {
-    return new Promise<Slide>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async update(deckId: string, slide: Slide): Promise<void> {
+    const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-      try {
-        const snapshot: firebase.firestore.DocumentSnapshot = await firestore.collection(`/decks/${deckId}/slides`).doc(slideId).get();
+    const {updateSlide} = await import(cdn);
 
-        if (!snapshot.exists) {
-          reject('Slide not found');
-          return;
-        }
-
-        const slide: SlideData = snapshot.data() as SlideData;
-
-        resolve({
-          id: snapshot.id,
-          data: slide
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return updateSlide(deckId, slide);
   }
 
-  update(deckId: string, slide: Slide): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  async delete(deckId: string, slideId: string): Promise<void> {
+    const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      slide.data.updated_at = now as unknown as Date;
+    const {deleteSlide} = await import(cdn);
 
-      try {
-        await firestore.collection(`/decks/${deckId}/slides`).doc(slide.id).set(slide.data, {merge: true});
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  delete(deckId: string, slideId: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-        await firestore.collection(`/decks/${deckId}/slides`).doc(slideId).delete();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return deleteSlide(deckId, slideId);
   }
 }

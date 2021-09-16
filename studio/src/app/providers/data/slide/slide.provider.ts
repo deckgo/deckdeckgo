@@ -1,21 +1,22 @@
 import {Slide} from '@deckdeckgo/editor';
 
 import {SlideIcProvider} from './slide.ic.provider';
-import {SlideFirebaseProvider} from './slide.firebase.provider';
 import {SlideOfflineProvider} from './slide.offline.provider';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {firebase, internetComputer} from '../../../utils/core/environment.utils';
 
-export interface SlideProvider {
-  get(deckId: string, slideId: string): Promise<Slide>;
-}
+export const getSlide = async (deckId: string, slideId: string): Promise<Slide> => {
+  if (internetComputer()) {
+    return SlideIcProvider.getInstance().get(deckId, slideId);
+  }
 
-export const getSlideService = (): SlideProvider => {
-  const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-  return cloud === 'ic'
-    ? SlideIcProvider.getInstance()
-    : cloud === 'firebase'
-    ? SlideFirebaseProvider.getInstance()
-    : SlideOfflineProvider.getInstance();
+  if (firebase()) {
+    const cdn: string = 'http://localhost:3335/build/index.esm.js';
+
+    const {getSlide: getUserSlide} = await import(cdn);
+
+    return getUserSlide(deckId, slideId);
+  }
+
+  return SlideOfflineProvider.getInstance().get(deckId, slideId);
 };
