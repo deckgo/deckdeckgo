@@ -6,7 +6,7 @@ import {User as FirebaseUser} from '@firebase/auth-types';
 
 import {AuthUser, User} from '@deckdeckgo/editor';
 
-import {createUser, deleteUser} from '../data/user.firebase.provider';
+import {createUser, deleteUser} from '../data/user.firebase';
 
 export const initAuth = ({
   config,
