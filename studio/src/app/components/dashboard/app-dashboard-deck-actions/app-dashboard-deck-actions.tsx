@@ -8,7 +8,7 @@ import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
+import {deleteDeck} from '../../../providers/data/deck/deck.provider';
 
 import {AppIcon} from '../../core/app-icon/app-icon';
 
@@ -24,7 +24,6 @@ export class AppDashboardDeckActions {
 
   @Prop() cloud: 'offline' | 'firebase' | 'ic';
 
-  private deckProvider: DeckProvider;
   private deckDashboardService: DeckDashboardService;
 
   @Event() deckDeleted: EventEmitter<string>;
@@ -34,7 +33,6 @@ export class AppDashboardDeckActions {
   private actionInProgress: boolean = false;
 
   constructor() {
-    this.deckProvider = getDeckService();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
 
@@ -86,7 +84,7 @@ export class AppDashboardDeckActions {
       await loading.present();
 
       try {
-        await this.deckProvider.delete(this.deck.id);
+        await deleteDeck(this.deck.id);
 
         this.deckDeleted.emit(this.deck.id);
       } catch (err) {

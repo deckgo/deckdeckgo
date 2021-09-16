@@ -10,11 +10,9 @@ import {_SERVICE as DeckBucketActor, Deck as DeckIc} from '../../../canisters/de
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.deck.utils';
 
-import {DeckProvider} from './deck.provider';
-
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
-export class DeckIcProvider implements DeckProvider {
+export class DeckIcProvider {
   private static instance: DeckIcProvider;
 
   private constructor() {

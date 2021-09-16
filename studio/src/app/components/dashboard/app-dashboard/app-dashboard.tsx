@@ -16,7 +16,7 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
+import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlideService, SlideProvider} from '../../../providers/data/slide/slide.provider';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
@@ -48,7 +48,6 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckProvider: DeckProvider;
   private readonly slideProvider: SlideProvider;
   private readonly deckDashboardService: DeckDashboardService;
 
@@ -60,7 +59,6 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.deckProvider = getDeckService();
     this.slideProvider = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
   }
@@ -91,7 +89,7 @@ export class AppDashboard {
     this.loading = true;
 
     try {
-      const userDecks: Deck[] = await this.deckProvider.entries(authStore.state.authUser.uid);
+      const userDecks: Deck[] = await decks(authStore.state.authUser.uid);
 
       await initTemplates();
 
