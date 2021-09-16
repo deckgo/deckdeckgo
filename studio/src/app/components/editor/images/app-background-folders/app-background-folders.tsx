@@ -1,5 +1,7 @@
 import {h, Component, State, Event, EventEmitter} from '@stencil/core';
 
+import {StorageFolder, StorageFoldersList} from '@deckdeckgo/editor';
+
 import i18n from '../../../../stores/i18n.store';
 
 import {getStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';

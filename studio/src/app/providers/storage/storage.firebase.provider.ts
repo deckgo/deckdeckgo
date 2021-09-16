@@ -3,6 +3,8 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
+import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 

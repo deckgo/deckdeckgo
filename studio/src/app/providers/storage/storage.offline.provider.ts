@@ -1,5 +1,7 @@
 import {keys, set} from 'idb-keyval';
 
+import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+
 import store from '../../stores/error.store';
 
 import {StorageProvider} from './storage.provider';

@@ -1,5 +1,7 @@
 import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 
+import {StorageFile} from '@deckdeckgo/editor';
+
 @Component({
   tag: 'app-image-columns',
   styleUrl: 'app-image-columns.scss',

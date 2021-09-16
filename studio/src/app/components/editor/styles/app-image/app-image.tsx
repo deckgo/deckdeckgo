@@ -1,5 +1,7 @@
 import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/core';
 
+import {StorageFile} from '@deckdeckgo/editor';
+
 import {alertController} from '../../../../utils/ionic/ionic.overlay';
 
 import settingsStore from '../../../../stores/settings.store';

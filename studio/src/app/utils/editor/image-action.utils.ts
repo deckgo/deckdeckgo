@@ -1,3 +1,5 @@
+import {StorageFile} from '@deckdeckgo/editor';
+
 export interface DeckgoImgAction {
   src: string;
   label: string;

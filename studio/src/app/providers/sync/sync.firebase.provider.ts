@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
-import {Deck, DeckAttributes, Slide, SlideAttributes} from '@deckdeckgo/editor';
+import {Deck, DeckAttributes, Slide, SlideAttributes, StorageFile} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import syncStore from '../../stores/sync.store';

@@ -1,3 +1,5 @@
+import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 

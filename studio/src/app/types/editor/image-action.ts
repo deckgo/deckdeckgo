@@ -1,3 +1,5 @@
+import {StorageFile} from '@deckdeckgo/editor';
+
 import {EditAction} from './edit-action';
 
 export interface ImageAction {

@@ -1,18 +1,18 @@
-interface StorageFile {
+export interface StorageFile {
   fullPath: string;
   name: string;
   downloadUrl: string | undefined;
 }
 
-interface StorageFilesList {
+export interface StorageFilesList {
   items: StorageFile[];
   nextPageToken: string | null;
 }
 
-interface StorageFolder {
+export interface StorageFolder {
   name: string;
 }
 
-interface StorageFoldersList {
+export interface StorageFoldersList {
   prefixes: StorageFolder[];
 }

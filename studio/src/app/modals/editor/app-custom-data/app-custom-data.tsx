@@ -1,5 +1,7 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+
 import i18n from '../../../stores/i18n.store';
 
 import {Constants} from '../../../types/core/constants';

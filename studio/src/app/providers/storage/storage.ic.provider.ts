@@ -1,5 +1,7 @@
 import {StorageProvider} from './storage.provider';
 
+import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+
 // TODO: implement storage for the internet computer
 
 export class StorageIcProvider implements StorageProvider {
