@@ -2,8 +2,10 @@ import {v4 as uuid} from 'uuid';
 
 import {del, get, set} from 'idb-keyval';
 
-import {Slide, SlideData} from '@deckdeckgo/editor';
+import {Slide, SlideData, SlideAttributes} from '@deckdeckgo/editor';
 
+import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {syncDeleteSlide, syncUpdateSlide} from '../../../utils/editor/sync.utils';
 
 export class SlideOfflineProvider {
@@ -64,6 +66,12 @@ export class SlideOfflineProvider {
         if (!slide || !slide.data) {
           reject('Invalid slide data');
           return;
+        }
+
+        slide.data.attributes = (await OfflineUtils.cleanAttributes(slide.data.attributes)) as SlideAttributes;
+
+        if (slide.data.content && FirestoreUtils.shouldAttributeBeCleaned(slide.data.content)) {
+          slide.data.content = null;
         }
 
         slide.data.updated_at = new Date();

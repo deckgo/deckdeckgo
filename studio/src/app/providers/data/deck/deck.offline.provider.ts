@@ -2,8 +2,10 @@ import {v4 as uuid} from 'uuid';
 
 import {get, set} from 'idb-keyval';
 
-import {Deck, DeckData} from '@deckdeckgo/editor';
+import {Deck, DeckData, DeckAttributes} from '@deckdeckgo/editor';
 
+import {OfflineUtils} from '../../../utils/editor/offline.utils';
+import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {syncUpdateDeck} from '../../../utils/editor/sync.utils';
 
 export class DeckOfflineProvider {
@@ -68,6 +70,20 @@ export class DeckOfflineProvider {
         }
 
         deck.data.updated_at = new Date();
+
+        if (deck.data.background && FirestoreUtils.shouldAttributeBeCleaned(deck.data.background)) {
+          deck.data.background = null;
+        }
+
+        if (deck.data.header && FirestoreUtils.shouldAttributeBeCleaned(deck.data.header)) {
+          deck.data.header = null;
+        }
+
+        if (deck.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deck.data.footer)) {
+          deck.data.footer = null;
+        }
+
+        deck.data.attributes = (await OfflineUtils.cleanAttributes(deck.data.attributes)) as DeckAttributes;
 
         await set(`/decks/${deck.id}`, deck);
 
