@@ -9,13 +9,15 @@ import {deleteApi, signInApi} from '@deckdeckgo/api';
 
 import {createUser, deleteUser} from '../data/user.firebase';
 
+import {ApiUserData} from '../../types/api.user';
+
 export const initAuth = ({
   config,
   success,
   reset
 }: {
   config: Record<string, string>;
-  success: ({authUser, user, apiUser}: {authUser: AuthUser | null; user: User | undefined; apiUser?: ApiUser}) => Promise<void>;
+  success: ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => Promise<void>;
   reset: () => Promise<void>;
 }) => {
   try {
@@ -62,7 +64,11 @@ export const initAuth = ({
 
         const apiUser: ApiUser | undefined = await signInAwsApi({config, authUser});
 
-        await success({authUser, user, apiUser});
+        // For Firebase we enhance the user with our API information
+        user.data.username = apiUser.username;
+        (user.data as ApiUserData).apiUserId = apiUser.id;
+
+        await success({authUser, user});
       }
     });
   } catch (err) {
@@ -93,7 +99,7 @@ export const signIn = async () => {
   // Do nothing, with Firebase the state of the authentication is observed, see onAuthStateChanged, and we use Firebase UI to handle login form
 };
 
-export const deleteAuth = async ({uid, apiUserId, config}: {uid: string; apiUserId: string; config}) => {
+export const deleteAuth = async ({user, config}: {user: User; config}) => {
   const firebaseUser: FirebaseUser = firebase.auth().currentUser;
 
   if (!firebaseUser) {
@@ -101,18 +107,24 @@ export const deleteAuth = async ({uid, apiUserId, config}: {uid: string; apiUser
   }
 
   // We need the user token to access the API, therefore delete it here first
-  await deleteAwsApi({apiUserId, config});
+  await deleteAwsApi({user, config});
 
   // Then delete the user
-  await deleteUser(uid);
+  await deleteUser(user.id);
 
   // Decks and slides are delete with a cloud function triggered on auth.delete
 
   await firebaseUser.delete();
 };
 
-const deleteAwsApi = async ({apiUserId, config}: {apiUserId: string; config}) => {
+const deleteAwsApi = async ({user, config}: {user: User; config}) => {
   const token: string = await firebase.auth().currentUser.getIdToken();
+
+  const apiUserId: string = (user.data as ApiUserData).apiUserId;
+
+  if (!apiUserId) {
+    return;
+  }
 
   const {mock, apiUrl} = config;
 

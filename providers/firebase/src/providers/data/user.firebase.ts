@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import {AuthUser, User, UserData} from '@deckdeckgo/editor';
+import {ApiUserData} from '../../types/api.user';
 
 export const createUser = (authUser: AuthUser): Promise<User> => {
   return new Promise<User>(async (resolve, reject) => {
@@ -43,8 +44,16 @@ export const updateUser = (user: User): Promise<User> => {
     const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
     user.data.updated_at = now as unknown as Date;
 
+    // We delete username and apiUserId as we do not want to save these information in Firestore
+    const data: ApiUserData = {
+      ...user.data
+    } as ApiUserData;
+
+    delete data.username;
+    delete data.apiUserId;
+
     try {
-      await firestore.collection('users').doc(user.id).set(user.data, {merge: true});
+      await firestore.collection('users').doc(user.id).set(data, {merge: true});
 
       resolve({...user});
     } catch (err) {

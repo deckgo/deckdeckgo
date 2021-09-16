@@ -1,8 +1,7 @@
-import {ApiUser, AuthUser, User} from '@deckdeckgo/editor';
+import {AuthUser, User} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import store from '../../stores/user.store';
-import apiUserStore from '../../stores/api.user.store';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
@@ -43,15 +42,12 @@ export const initAuthProvider = async () => {
 
 const onInitReset = async () => {
   authStore.reset();
-  apiUserStore.reset();
 };
 
-const onInitSuccess = async ({authUser, user, apiUser}: {authUser: AuthUser | null; user: User | undefined; apiUser?: ApiUser}) => {
+const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => {
   authStore.state.authUser = {...authUser};
 
   store.state.user = {...user};
-
-  apiUserStore.state.apiUser = apiUser ? {...apiUser} : undefined;
 };
 
 export const signOut = async () => {
@@ -118,7 +114,7 @@ export const deleteAuth = async () => {
 
   const {deleteAuth} = await import(cdn);
 
-  await deleteAuth({uid, apiUserId: apiUserStore.state.apiUser.id, config: firebaseApiConfig()});
+  await deleteAuth({uid, config: firebaseApiConfig()});
   await signOut();
 };
 
