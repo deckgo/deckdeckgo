@@ -7,9 +7,6 @@ import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
 import {UserIcProvider} from './user.ic.provider';
 
-// TODO remove
-import {User as UserModel} from '../../../models/data/user';
-
 export const updateUser = async (user: User) => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
@@ -20,7 +17,7 @@ export const updateUser = async (user: User) => {
   // TODO: extract IC
   // TODO: remove type usermodel
   if ('ic' === cloud) {
-    await UserIcProvider.getInstance().update(user as UserModel);
+    await UserIcProvider.getInstance().update(user);
     return;
   }
 
@@ -31,5 +28,5 @@ export const updateUser = async (user: User) => {
   const updatedUser: User = await updateUser(user);
 
   // TODO: remove casting
-  store.state.user = {...updatedUser} as UserModel;
+  store.state.user = {...updatedUser};
 };

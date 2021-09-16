@@ -2,13 +2,12 @@ import {Component, Fragment, h, State} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
 
+import {Template, AuthUser} from '@deckdeckgo/editor';
+
 import authStore from '../../../../stores/auth.store';
 import errorStore from '../../../../stores/error.store';
 import templatesStore from '../../../../stores/templates.store';
 import i18n from '../../../../stores/i18n.store';
-
-import {Template} from '../../../../models/data/template';
-import {AuthUser} from '../../../../models/auth/auth.user';
 
 import {signIn} from '../../../../utils/core/signin.utils';
 

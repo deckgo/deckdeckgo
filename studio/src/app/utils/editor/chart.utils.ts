@@ -1,4 +1,4 @@
-import {SlideChartType} from '../../models/data/slide';
+import {SlideChartType} from '@deckdeckgo/editor';
 
 export class ChartUtils {
   static initSlideChartType(element: HTMLElement): Promise<SlideChartType> {

@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid';
 
 import {get, getMany} from 'idb-keyval';
 
-import {Deck} from '../../models/data/deck';
+import {Deck} from '@deckdeckgo/editor';
 
 import {SlotType} from '../../types/editor/slot-type';
 

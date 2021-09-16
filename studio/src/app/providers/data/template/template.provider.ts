@@ -1,10 +1,11 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
+import {Template, TemplateData} from '@deckdeckgo/editor';
+
 import templatesStore from '../../../stores/templates.store';
 import authStore from '../../../stores/auth.store';
 
-import {Template, TemplateData} from '../../../models/data/template';
 import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
 
 export class TemplateProvider {
@@ -79,8 +80,8 @@ export class TemplateProvider {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      templateData.created_at = now;
-      templateData.updated_at = now;
+      templateData.created_at = now as unknown as Date;
+      templateData.updated_at = now as unknown as Date;
 
       firestore
         .collection('templates')
@@ -104,7 +105,7 @@ export class TemplateProvider {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      template.data.updated_at = now;
+      template.data.updated_at = now as unknown as Date;
 
       try {
         await firestore.collection('templates').doc(template.id).set(template.data, {merge: true});

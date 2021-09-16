@@ -6,7 +6,7 @@ import {loadingController, modalController} from '../../../../utils/ionic/ionic.
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import {User} from '@deckdeckgo/editor';
+import {ApiUser, User} from '@deckdeckgo/editor';
 
 import errorStore from '../../../../stores/error.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
@@ -14,9 +14,6 @@ import authStore from '../../../../stores/auth.store';
 import userStore from '../../../../stores/user.store';
 import apiUserStore from '../../../../stores/api.user.store';
 import i18n from '../../../../stores/i18n.store';
-
-import {ApiUser} from '../../../../models/api/api.user';
-import {User as UserModel} from '../../../../models/data/user';
 
 import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
@@ -42,7 +39,7 @@ export class AppProfile {
   @Element() el: HTMLElement;
 
   @State()
-  private user: UserModel;
+  private user: User;
 
   @State()
   private apiUser: ApiUser;

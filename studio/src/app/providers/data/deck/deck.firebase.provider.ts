@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck, DeckData} from '../../../models/data/deck';
+import {Deck, DeckData} from '@deckdeckgo/editor';
+
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 
 import {DeckProvider} from './deck.provider';
@@ -25,8 +26,8 @@ export class DeckFirebaseProvider implements DeckProvider {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      deck.created_at = now;
-      deck.updated_at = now;
+      deck.created_at = now as unknown as Date;
+      deck.updated_at = now as unknown as Date;
 
       firestore
         .collection('decks')
@@ -74,7 +75,7 @@ export class DeckFirebaseProvider implements DeckProvider {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      deck.data.updated_at = now;
+      deck.data.updated_at = now as unknown as Date;
 
       try {
         await firestore.collection('decks').doc(deck.id).set(deck.data, {merge: true});

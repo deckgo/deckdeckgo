@@ -1,8 +1,8 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State, Host} from '@stencil/core';
 
-import i18n from '../../../../stores/i18n.store';
+import {SlideAttributesYAxisDomain, SlideChartType} from '@deckdeckgo/editor';
 
-import {SlideAttributesYAxisDomain, SlideChartType} from '../../../../models/data/slide';
+import i18n from '../../../../stores/i18n.store';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 import {ChartUtils} from '../../../../utils/editor/chart.utils';

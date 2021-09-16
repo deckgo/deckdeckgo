@@ -2,14 +2,11 @@ import {h, JSX} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
+import {SlideAttributes, SlideTemplate, SlideScope, User, Deck, Template} from '@deckdeckgo/editor';
+
 import {DeckdeckgoPlaygroundTheme} from '../ddg/deckdeckgo-playground-theme';
 
 import userStore from '../../stores/user.store';
-
-import {SlideAttributes, SlideTemplate, SlideScope} from '../../models/data/slide';
-import {User} from '../../models/data/user';
-import {Deck} from '../../models/data/deck';
-import {Template} from '../../models/data/template';
 
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';

@@ -1,11 +1,10 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
+import {Deck, DeckData, Slide, SlideData} from '@deckdeckgo/editor';
+
 import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
-
-import {Deck, DeckData} from '../models/data/deck';
-import {Slide, SlideData} from '../models/data/slide';
 
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../types/editor/sync';
 import {InternetIdentityAuth} from '../types/core/ic.identity';

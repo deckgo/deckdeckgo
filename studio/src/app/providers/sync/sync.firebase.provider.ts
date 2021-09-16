@@ -2,12 +2,11 @@ import firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
+import {Deck, DeckAttributes, Slide, SlideAttributes} from '@deckdeckgo/editor';
+
 import authStore from '../../stores/auth.store';
 import syncStore from '../../stores/sync.store';
 import offlineStore from '../../stores/offline.store';
-
-import {Deck, DeckAttributes} from '../../models/data/deck';
-import {Slide, SlideAttributes} from '../../models/data/slide';
 
 import {SlotType} from '../../types/editor/slot-type';
 import {SyncData, SyncDataDeck, SyncDataSlide} from '../../types/editor/sync';

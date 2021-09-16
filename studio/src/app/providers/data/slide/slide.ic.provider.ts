@@ -1,10 +1,11 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
+import {Slide, SlideData} from '@deckdeckgo/editor';
+
 import {_SERVICE as ManagerActor} from '../../../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../../canisters/deck/deck.did';
 
-import {Slide, SlideData} from '../../../models/data/slide';
 import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../../utils/core/ic.deck.utils';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';

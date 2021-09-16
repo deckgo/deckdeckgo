@@ -1,12 +1,12 @@
 import {Identity} from '@dfinity/agent';
 
+import {User} from '@deckdeckgo/editor';
+
 import {UserSocial as UserSocialIc, User as UserIc} from '../../../canisters/users/users.did';
 
 import store from '../../../stores/user.store';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
-
-import {User} from '../../../models/data/user';
 
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 

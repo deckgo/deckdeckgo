@@ -2,12 +2,11 @@ import {Component, EventEmitter, Fragment, h, Prop, State} from '@stencil/core';
 
 import type {InputChangeEventDetail} from '@ionic/core';
 
+import {Template, TemplateDataProp, SlideScope} from '@deckdeckgo/editor';
+
 import templatesStore from '../../../../stores/templates.store';
 
 import {SelectedElement} from '../../../../types/editor/selected-element';
-
-import {Template, TemplateDataProp} from '../../../../models/data/template';
-import {SlideScope} from '../../../../models/data/slide';
 
 interface Property {
   prop: TemplateDataProp;

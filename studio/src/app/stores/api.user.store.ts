@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import {ApiUser} from '../models/api/api.user';
+import {ApiUser} from '@deckdeckgo/editor';
 
 interface ApiUserStore {
   apiUser: ApiUser | undefined;

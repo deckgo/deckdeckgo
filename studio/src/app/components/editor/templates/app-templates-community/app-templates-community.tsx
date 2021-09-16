@@ -1,8 +1,8 @@
 import {Component, Event, EventEmitter, h} from '@stencil/core';
 
-import templatesStore from '../../../../stores/templates.store';
+import {Template} from '@deckdeckgo/editor';
 
-import {Template} from '../../../../models/data/template';
+import templatesStore from '../../../../stores/templates.store';
 
 @Component({
   tag: 'app-templates-community'

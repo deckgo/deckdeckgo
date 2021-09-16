@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import {Template} from '../models/data/template';
+import {Template} from '@deckdeckgo/editor';
 
 import templates from '../../assets/templates.json';
 

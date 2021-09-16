@@ -1,4 +1,4 @@
-import {Deck} from '../../../models/data/deck';
+import {Deck} from '@deckdeckgo/editor';
 
 import {DeckIcProvider} from './deck.ic.provider';
 import {DeckFirebaseProvider} from './deck.firebase.provider';

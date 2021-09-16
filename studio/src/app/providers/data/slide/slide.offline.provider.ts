@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid';
 
 import {del, get, set} from 'idb-keyval';
 
-import {Slide, SlideAttributes, SlideData} from '../../../models/data/slide';
+import {Slide, SlideAttributes, SlideData} from '@deckdeckgo/editor';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';

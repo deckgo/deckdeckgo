@@ -4,8 +4,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {SlotType} from '../../../../types/editor/slot-type';
 
-import {SlideScope} from '../../../../models/data/slide';
-import {Template, TemplateDataSlot} from '../../../../models/data/template';
+import {SlideScope, Template, TemplateDataSlot} from '@deckdeckgo/editor';
 
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
 import {TemplateUtils} from '../../../../utils/editor/template.utils';

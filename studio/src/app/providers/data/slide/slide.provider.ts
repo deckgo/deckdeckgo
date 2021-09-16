@@ -1,4 +1,4 @@
-import {Slide} from '../../../models/data/slide';
+import {Slide} from '@deckdeckgo/editor';
 
 import {SlideIcProvider} from './slide.ic.provider';
 import {SlideFirebaseProvider} from './slide.firebase.provider';

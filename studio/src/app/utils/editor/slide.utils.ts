@@ -1,4 +1,4 @@
-import {SlideScope} from '../../models/data/slide';
+import {SlideScope} from '@deckdeckgo/editor';
 
 export class SlideUtils {
   static isSlideTemplate(scope: SlideScope | undefined): boolean {

@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid';
 
 import {get, set} from 'idb-keyval';
 
-import {Deck, DeckAttributes, DeckData} from '../../../models/data/deck';
+import {Deck, DeckAttributes, DeckData} from '@deckdeckgo/editor';
 
 import {OfflineUtils} from '../../../utils/editor/offline.utils';
 import {FirestoreUtils} from '../../../utils/editor/firestore.utils';

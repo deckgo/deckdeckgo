@@ -3,13 +3,12 @@ import {Identity} from '@dfinity/agent';
 
 import {del} from 'idb-keyval';
 
+import {AuthUser, User} from '@deckdeckgo/editor';
+
 import navStore, {NavDirection} from '../../stores/nav.store';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
-
-import {AuthUser} from '../../models/auth/auth.user';
-import {User} from '../../models/data/user';
 
 import {InternetIdentityAuth} from '../../types/core/ic.identity';
 

@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData} from '../../../models/data/deck';
+import {Deck, DeckData} from '@deckdeckgo/editor';
 
 import {_SERVICE as ManagerActor} from '../../../canisters/manager/manager.did';
 

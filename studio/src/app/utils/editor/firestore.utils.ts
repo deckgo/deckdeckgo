@@ -1,8 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {SlideAttributes} from '../../models/data/slide';
-import {DeckAttributes} from '../../models/data/deck';
+import {SlideAttributes} from '@deckdeckgo/editor';
+import {DeckAttributes} from '@deckdeckgo/editor';
 
 export class FirestoreUtils {
   static filterDelete<T>(obj: T | null, replaceWithNull: boolean = false): T {

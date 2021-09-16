@@ -1,10 +1,9 @@
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
-import apiUserStore from '../../../stores/api.user.store';
+import {ApiUser, ApiUserInfo, AuthUser} from '@deckdeckgo/editor';
 
-import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
-import {AuthUser} from '../../../models/auth/auth.user';
+import apiUserStore from '../../../stores/api.user.store';
 
 export abstract class ApiUserProvider {
   abstract query(apiUserInfo: ApiUserInfo | ApiUser, token: string, context: string, method: string): Promise<ApiUser | undefined>;

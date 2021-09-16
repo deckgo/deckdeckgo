@@ -2,14 +2,12 @@ import {Component, Fragment, h, JSX, State} from '@stencil/core';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
+import {Deck, Slide, AuthUser} from '@deckdeckgo/editor';
+
 import authStore from '../../../stores/auth.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
-
-import {Deck} from '../../../models/data/deck';
-import {Slide} from '../../../models/data/slide';
-import {AuthUser} from '../../../models/auth/auth.user';
 
 import {signIn} from '../../../utils/core/signin.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';

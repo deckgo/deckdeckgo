@@ -2,7 +2,7 @@ import {createStore} from '@stencil/store';
 
 import {set} from 'idb-keyval';
 
-import {Deck} from '../models/data/deck';
+import {Deck} from '@deckdeckgo/editor';
 
 interface DeckStore {
   deck: Deck | null;

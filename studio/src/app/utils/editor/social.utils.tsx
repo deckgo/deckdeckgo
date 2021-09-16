@@ -1,9 +1,9 @@
 import {h, JSX} from '@stencil/core';
 
+import {User, UserSocial} from '@deckdeckgo/editor';
+
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
-import {User, UserSocial} from '../../models/data/user';
 
 export class SocialUtils {
   static async createSocialLinks(user: User): Promise<JSX.IntrinsicElements[]> {

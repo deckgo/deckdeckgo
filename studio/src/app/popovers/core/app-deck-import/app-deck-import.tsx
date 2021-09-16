@@ -1,10 +1,10 @@
 import {Component, Element, Fragment, h, State} from '@stencil/core';
 
+import {Deck} from '@deckdeckgo/editor';
+
 import i18n from '../../../stores/i18n.store';
 import errorStore from '../../../stores/error.store';
 import authStore from '../../../stores/auth.store';
-
-import {Deck} from '../../../models/data/deck';
 
 import {DeckImportService} from '../../../services/deck/deck-import.service';
 import {getOnlineStorageService, StorageProvider} from '../../../providers/storage/storage.provider';

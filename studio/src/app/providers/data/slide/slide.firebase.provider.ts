@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Slide, SlideData} from '../../../models/data/slide';
+import {Slide, SlideData} from '@deckdeckgo/editor';
 
 import {SlideProvider} from './slide.provider';
 
@@ -49,7 +49,7 @@ export class SlideFirebaseProvider implements SlideProvider {
       const firestore: firebase.firestore.Firestore = firebase.firestore();
 
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      slide.data.updated_at = now;
+      slide.data.updated_at = now as unknown as Date;
 
       try {
         await firestore.collection(`/decks/${deckId}/slides`).doc(slide.id).set(slide.data, {merge: true});

@@ -1,10 +1,11 @@
 import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
+
 import type {OverlayEventDetail} from '@ionic/core';
+
+import {Deck} from '@deckdeckgo/editor';
 
 import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
-
-import {Deck} from '../../../models/data/deck';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';

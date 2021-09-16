@@ -6,9 +6,12 @@ import i18n from '../../../../stores/i18n.store';
 
 import {signIn} from '../../../../utils/core/signin.utils';
 
-import {Template} from '../../../../models/data/template';
-import {TemplateProvider} from '../../../../providers/data/template/template.provider';
+import {Template} from '@deckdeckgo/editor';
+
 import authStore from '../../../../stores/auth.store';
+
+import {TemplateProvider} from '../../../../providers/data/template/template.provider';
+
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
 @Component({

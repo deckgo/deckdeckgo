@@ -17,7 +17,7 @@ import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '
 
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
-import {SlideTemplate} from '../../../models/data/slide';
+import {SlideTemplate} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';

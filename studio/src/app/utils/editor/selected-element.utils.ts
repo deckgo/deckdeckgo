@@ -1,4 +1,6 @@
-import {SlideSplitType} from '../../models/data/slide';
+import {SlideSplitType} from '@deckdeckgo/editor';
+
+import {isSlide} from '@deckdeckgo/deck-utils';
 
 import {SlotType} from '../../types/editor/slot-type';
 import {SelectedElement} from '../../types/editor/selected-element';
@@ -6,8 +8,6 @@ import {SelectedElement} from '../../types/editor/selected-element';
 import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
 import {SlideUtils} from './slide.utils';
-
-import {isSlide} from '@deckdeckgo/deck-utils';
 
 export class SelectedElementUtils {
   static isElementSlide(element: HTMLElement): 'slide' | 'element' {

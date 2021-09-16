@@ -2,14 +2,11 @@ import {Component, Element, Event, EventEmitter, Fragment, h, JSX, State} from '
 
 import type {SegmentChangeEventDetail} from '@ionic/core';
 
+import {SlideAttributes, SlideTemplate, SlideScope, Deck, Template} from '@deckdeckgo/editor';
+
 import deckStore from '../../../stores/deck.store';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
-
-import {SlideAttributes, SlideTemplate, SlideScope} from '../../../models/data/slide';
-
-import {Deck} from '../../../models/data/deck';
-import {Template} from '../../../models/data/template';
 
 import {CreateSlidesUtils, InitTemplate} from '../../../utils/editor/create-slides.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';

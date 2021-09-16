@@ -1,6 +1,6 @@
-import apiUserStore from '../../../stores/api.user.store';
+import {ApiUser, ApiUserInfo} from '@deckdeckgo/editor';
 
-import {ApiUser, ApiUserInfo} from '../../../models/api/api.user';
+import apiUserStore from '../../../stores/api.user.store';
 
 import {ApiUserProvider} from './api.user.provider';
 

@@ -1,8 +1,8 @@
 import {createStore} from '@stencil/store';
 
-import {PlatformProvider} from '../providers/data/platform/platform.provider';
+import {Token} from '@deckdeckgo/editor';
 
-import {Token} from '../models/data/token';
+import {PlatformProvider} from '../providers/data/platform/platform.provider';
 
 interface TokenStore {
   token: Token | undefined;

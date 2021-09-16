@@ -1,7 +1,6 @@
 import {get, getMany} from 'idb-keyval';
 
-import {Slide} from '../models/data/slide';
-import {Deck} from '../models/data/deck';
+import {Deck, Slide} from '@deckdeckgo/editor';
 
 import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '../types/editor/sync';
 

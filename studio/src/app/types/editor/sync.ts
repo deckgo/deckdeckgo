@@ -1,5 +1,4 @@
-import {Deck} from '../../models/data/deck';
-import {Slide} from '../../models/data/slide';
+import {Deck, Slide} from '@deckdeckgo/editor';
 
 export type SyncState = 'pending' | 'in_progress' | 'error' | 'idle';
 

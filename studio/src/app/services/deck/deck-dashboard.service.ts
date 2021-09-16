@@ -1,8 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck, DeckData} from '../../models/data/deck';
-import {Slide} from '../../models/data/slide';
+import {Deck, DeckData} from '@deckdeckgo/editor';
+import {Slide} from '@deckdeckgo/editor';
 
 import {importEditorData} from '../../utils/editor/import.utils';
 import {FirestoreUtils} from '../../utils/editor/firestore.utils';

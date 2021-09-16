@@ -5,6 +5,8 @@ import type {OverlayEventDetail} from '@ionic/core';
 import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 
+import {SlideScope} from '@deckdeckgo/editor';
+
 import store from '../../../../../stores/busy.store';
 import i18n from '../../../../../stores/i18n.store';
 import undoRedoStore from '../../../../../stores/undo-redo.store';
@@ -25,7 +27,6 @@ import {DemoAction} from '../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {SelectedElement} from '../../../../../types/editor/selected-element';
 
-import {SlideScope} from '../../../../../models/data/slide';
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 import {CloneSlideUtils} from '../../../../../utils/editor/clone-slide.utils';
 import {AppIcon} from '../../../../core/app-icon/app-icon';

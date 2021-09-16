@@ -13,9 +13,6 @@ import {ApiUserFactoryProvider} from '../api/user/api.user.factory.provider';
 import {AuthIcProvider} from './auth.ic.provider';
 import {UserIcProvider} from '../data/user/user.ic.provider';
 
-// TODO remove
-import {User as UserModel} from '../../models/data/user';
-
 export const initAuthProvider = async () => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
@@ -57,8 +54,7 @@ const onInitReset = async () => {
 const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => {
   authStore.state.authUser = {...authUser};
 
-  // TODO: modify store type
-  store.state.user = {...user} as UserModel;
+  store.state.user = {...user};
 
   await ApiUserFactoryProvider.getInstance().signIn(authUser);
 };

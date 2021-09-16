@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck} from '../../models/data/deck';
+import {Deck} from '@deckdeckgo/editor';
 
 export class DeckImportService {
   private static instance: DeckImportService;

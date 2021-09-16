@@ -7,7 +7,7 @@ import {get, set} from 'idb-keyval';
 
 import {DeckdeckgoEventDeckRequest, ConnectionState} from '@deckdeckgo/types';
 
-import {Deck} from '../../../models/data/deck';
+import {Deck} from '@deckdeckgo/editor';
 
 export class RemoteService {
   private static instance: RemoteService;

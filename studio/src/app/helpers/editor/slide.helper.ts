@@ -1,11 +1,10 @@
 import {JSX} from '@stencil/core';
 
+import {Slide, Deck} from '@deckdeckgo/editor';
+
 import store from '../../stores/deck.store';
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
-
-import {Slide} from '../../models/data/slide';
-import {Deck} from '../../models/data/deck';
 
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';

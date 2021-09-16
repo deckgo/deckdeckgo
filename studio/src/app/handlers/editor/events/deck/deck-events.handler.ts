@@ -2,17 +2,9 @@ import type {IonicReorderEvent} from '../../../../utils/ionic/ionic.reorder.even
 
 import {debounce} from '@deckdeckgo/utils';
 
-import deckStore from '../../../../stores/deck.store';
-import errorStore from '../../../../stores/error.store';
-import busyStore from '../../../../stores/busy.store';
-import authStore from '../../../../stores/auth.store';
-
-import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
-
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck, DeckAttributes, DeckData} from '../../../../models/data/deck';
 import {
   Slide,
   SlideAttributes,
@@ -21,8 +13,18 @@ import {
   SlideData,
   SlideScope,
   SlideSplitType,
-  SlideTemplate
-} from '../../../../models/data/slide';
+  SlideTemplate,
+  Deck,
+  DeckAttributes,
+  DeckData
+} from '@deckdeckgo/editor';
+
+import deckStore from '../../../../stores/deck.store';
+import errorStore from '../../../../stores/error.store';
+import busyStore from '../../../../stores/busy.store';
+import authStore from '../../../../stores/auth.store';
+
+import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
 import {Constants} from '../../../../types/core/constants';
 
