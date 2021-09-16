@@ -27,7 +27,7 @@ import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.fa
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
 import {updateUser} from '../../../../providers/data/user/user.provider';
-import {getOnlineStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
+import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
 import {deleteAuth} from '../../../../providers/auth/auth.provider';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
@@ -60,7 +60,6 @@ export class AppProfile {
   private saving: boolean = false;
 
   private readonly apiUserProvider: ApiUserProvider;
-  private readonly storageOnlineProvider: StorageProvider;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -95,7 +94,6 @@ export class AppProfile {
   constructor() {
     this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.storageOnlineProvider = getOnlineStorageService();
   }
 
   async componentDidLoad() {
@@ -370,7 +368,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.profilePicture, 'avatars', 524288);
+        const storageFile: StorageFile = await uploadOnlineFile(this.profilePicture, 'avatars', 524288);
 
         if (storageFile) {
           this.user.data.photo_url = storageFile.downloadUrl;
@@ -401,7 +399,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.customLogo, 'images', 524288);
+        const storageFile: StorageFile = await uploadOnlineFile(this.customLogo, 'images', 524288);
 
         if (storageFile) {
           this.user.data.social.custom_logo_url = storageFile.downloadUrl;

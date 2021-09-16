@@ -1,10 +1,8 @@
-import {StorageProvider} from './storage.provider';
-
 import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
 
 // TODO: implement storage for the internet computer
 
-export class StorageIcProvider implements StorageProvider {
+export class StorageIcProvider {
   private static instance: StorageIcProvider;
 
   private constructor() {
@@ -18,17 +16,14 @@ export class StorageIcProvider implements StorageProvider {
     return StorageIcProvider.instance;
   }
 
-  // @Override
   async uploadFile(_data: File, _folder: string, _maxSize: number): Promise<StorageFile | undefined> {
     return undefined;
   }
 
-  // @Override
   async getFiles(_next: string | null, _folder: string): Promise<StorageFilesList | null> {
     return null;
   }
 
-  // @Override
   async getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
     return undefined;
   }

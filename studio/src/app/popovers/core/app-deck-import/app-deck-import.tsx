@@ -7,7 +7,7 @@ import errorStore from '../../../stores/error.store';
 import authStore from '../../../stores/auth.store';
 
 import {DeckImportService} from '../../../services/deck/deck-import.service';
-import {getOnlineStorageService, StorageProvider} from '../../../providers/storage/storage.provider';
+import {uploadOnlineFile} from '../../../providers/storage/storage.provider';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
@@ -24,11 +24,9 @@ export class AppDeckImport {
   @State()
   private progress: 'uploading' | 'initializing' | 'done' | undefined = undefined;
 
-  private storageOnlineProvider: StorageProvider;
   private deckImportService: DeckImportService;
 
   constructor() {
-    this.storageOnlineProvider = getOnlineStorageService();
     this.deckImportService = DeckImportService.getInstance();
   }
 
@@ -58,7 +56,7 @@ export class AppDeckImport {
   private async uploadFile(file: File) {
     this.progress = 'uploading';
 
-    await this.storageOnlineProvider.uploadFile(file, `decks`, 20971520, false);
+    await uploadOnlineFile(file, `decks`, 20971520, false);
 
     this.progress = 'initializing';
 

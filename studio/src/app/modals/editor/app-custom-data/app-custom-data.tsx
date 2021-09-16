@@ -6,7 +6,7 @@ import i18n from '../../../stores/i18n.store';
 
 import {Constants} from '../../../types/core/constants';
 
-import {getStorageService, StorageProvider} from '../../../providers/storage/storage.provider';
+import {getFiles} from '../../../providers/storage/storage.provider';
 import {StorageOfflineProvider} from '../../../providers/storage/storage.offline.provider';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
@@ -18,7 +18,6 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 export class AppCustomData {
   @Element() el: HTMLElement;
 
-  private storageProvider: StorageProvider;
   private storageOfflineProvider: StorageOfflineProvider;
 
   @State()
@@ -36,7 +35,6 @@ export class AppCustomData {
   private loading: boolean = true;
 
   constructor() {
-    this.storageProvider = getStorageService();
     this.storageOfflineProvider = StorageOfflineProvider.getInstance();
   }
 
@@ -83,7 +81,7 @@ export class AppCustomData {
 
   private search(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await this.storageProvider.getFiles(this.paginationNext, 'data');
+      const list: StorageFilesList = await getFiles(this.paginationNext, 'data');
 
       if (!list) {
         resolve();
