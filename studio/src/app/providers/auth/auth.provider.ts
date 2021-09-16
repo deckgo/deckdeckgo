@@ -1,14 +1,11 @@
-import {AuthUser, User} from '@deckdeckgo/editor';
+import {ApiUser, AuthUser, User} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import store from '../../stores/user.store';
 import apiUserStore from '../../stores/api.user.store';
 
-import {EnvironmentAppConfig} from '../../types/core/environment-config';
+import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
-// TODO move to firebase provider lib?
-import {ApiUserFactoryProvider} from '../api/user/api.user.factory.provider';
 
 import {AuthIcProvider} from './auth.ic.provider';
 import {UserIcProvider} from '../data/user/user.ic.provider';
@@ -34,11 +31,9 @@ export const initAuthProvider = async () => {
 
   console.log('1', initAuth);
 
-  const firebaseConfig: Record<string, string> = EnvironmentConfigService.getInstance().get('firebase');
-
   // TODO: interface
   await initAuth({
-    config: firebaseConfig,
+    config: firebaseApiConfig(),
     success: onInitSuccess,
     reset: onInitReset
   });
@@ -48,15 +43,15 @@ export const initAuthProvider = async () => {
 
 const onInitReset = async () => {
   authStore.reset();
-  await ApiUserFactoryProvider.getInstance().signOut();
+  apiUserStore.reset();
 };
 
-const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => {
+const onInitSuccess = async ({authUser, user, apiUser}: {authUser: AuthUser | null; user: User | undefined; apiUser?: ApiUser}) => {
   authStore.state.authUser = {...authUser};
 
   store.state.user = {...user};
 
-  await ApiUserFactoryProvider.getInstance().signIn(authUser);
+  apiUserStore.state.apiUser = apiUser ? {...apiUser} : undefined;
 };
 
 export const signOut = async () => {
@@ -78,7 +73,7 @@ export const signOut = async () => {
 
   console.log('4', signOut);
 
-  await signOut({success: async () => await ApiUserFactoryProvider.getInstance().signOut()});
+  await signOut();
 };
 
 export const signIn = async () => {
@@ -123,10 +118,19 @@ export const deleteAuth = async () => {
 
   const {deleteAuth} = await import(cdn);
 
-  await deleteAuth({uid, preDelete: onPreDelete});
+  await deleteAuth({uid, apiUserId: apiUserStore.state.apiUser.id, config: firebaseApiConfig()});
   await signOut();
 };
 
-const onPreDelete = async (token: string) => {
-  await ApiUserFactoryProvider.getInstance().delete(apiUserStore.state.apiUser.id, token);
+const firebaseApiConfig = () => {
+  const firebaseConfig: Record<string, string> = EnvironmentConfigService.getInstance().get('firebase');
+
+  const {mock}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
+  const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
+  return {
+    ...firebaseConfig,
+    mock,
+    apiUrl: config.apiUrl
+  };
 };

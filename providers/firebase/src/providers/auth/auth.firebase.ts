@@ -4,7 +4,8 @@ import 'firebase/firestore';
 
 import {User as FirebaseUser} from '@firebase/auth-types';
 
-import {AuthUser, User} from '@deckdeckgo/editor';
+import {ApiUser, AuthUser, User} from '@deckdeckgo/editor';
+import {deleteApi, signInApi} from '@deckdeckgo/api';
 
 import {createUser, deleteUser} from '../data/user.firebase';
 
@@ -14,7 +15,7 @@ export const initAuth = ({
   reset
 }: {
   config: Record<string, string>;
-  success: ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => Promise<void>;
+  success: ({authUser, user, apiUser}: {authUser: AuthUser | null; user: User | undefined; apiUser?: ApiUser}) => Promise<void>;
   reset: () => Promise<void>;
 }) => {
   try {
@@ -59,7 +60,9 @@ export const initAuth = ({
 
         const user: User = await createUser(authUser);
 
-        await success({authUser, user});
+        const apiUser: ApiUser | undefined = await signInAwsApi({config, authUser});
+
+        await success({authUser, user, apiUser});
       }
     });
   } catch (err) {
@@ -69,17 +72,28 @@ export const initAuth = ({
   }
 };
 
-export const signOut = async ({success}: {success: () => Promise<void>}) => {
-  await firebase.auth().signOut();
+const signInAwsApi = async ({config, authUser}: {config; authUser: AuthUser}): Promise<ApiUser | undefined> => {
+  const token: string = await firebase.auth().currentUser.getIdToken();
 
-  await success();
+  const {mock, apiUrl} = config;
+
+  return signInApi({
+    authUser,
+    token,
+    mock,
+    apiUrl
+  });
+};
+
+export const signOut = async () => {
+  await firebase.auth().signOut();
 };
 
 export const signIn = async () => {
   // Do nothing, with Firebase the state of the authentication is observed, see onAuthStateChanged, and we use Firebase UI to handle login form
 };
 
-export const deleteAuth = async ({uid, preDelete}: {uid: string; preDelete: (token: string) => Promise<void>}) => {
+export const deleteAuth = async ({uid, apiUserId, config}: {uid: string; apiUserId: string; config}) => {
   const firebaseUser: FirebaseUser = firebase.auth().currentUser;
 
   if (!firebaseUser) {
@@ -87,8 +101,7 @@ export const deleteAuth = async ({uid, preDelete}: {uid: string; preDelete: (tok
   }
 
   // We need the user token to access the API, therefore delete it here first
-  const token: string = await firebase.auth().currentUser.getIdToken();
-  await preDelete(token);
+  await deleteAwsApi({apiUserId, config});
 
   // Then delete the user
   await deleteUser(uid);
@@ -96,4 +109,17 @@ export const deleteAuth = async ({uid, preDelete}: {uid: string; preDelete: (tok
   // Decks and slides are delete with a cloud function triggered on auth.delete
 
   await firebaseUser.delete();
+};
+
+const deleteAwsApi = async ({apiUserId, config}: {apiUserId: string; config}) => {
+  const token: string = await firebase.auth().currentUser.getIdToken();
+
+  const {mock, apiUrl} = config;
+
+  await deleteApi({
+    userId: apiUserId,
+    token,
+    mock,
+    apiUrl
+  });
 };

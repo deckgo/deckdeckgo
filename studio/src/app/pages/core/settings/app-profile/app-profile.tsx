@@ -21,8 +21,8 @@ import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import {ApiUserProvider} from '../../../../providers/api/user/api.user.provider';
-import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.factory.provider';
+import {ApiUser} from '@deckdeckgo/firebase/src/providers/api/user/api.user';
+import {ApiUserFactory} from '@deckdeckgo/firebase/src/providers/api/user/api.user.factory';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
@@ -59,7 +59,7 @@ export class AppProfile {
   @State()
   private saving: boolean = false;
 
-  private readonly apiUserProvider: ApiUserProvider;
+  private readonly apiUserProvider: ApiUser;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -92,7 +92,7 @@ export class AppProfile {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.apiUserProvider = ApiUserFactoryProvider.getInstance();
+    this.apiUserProvider = ApiUserFactory.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
