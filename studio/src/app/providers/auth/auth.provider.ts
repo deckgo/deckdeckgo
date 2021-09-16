@@ -1,7 +1,7 @@
 import {AuthUser, InitAuth, User, SignOut, SignIn, DeleteAuth} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
-import store from '../../stores/user.store';
+import userStore from '../../stores/user.store';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
@@ -40,7 +40,7 @@ const onInitReset = async () => {
 const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => {
   authStore.state.authUser = {...authUser};
 
-  store.state.user = {...user};
+  userStore.state.user = {...user};
 };
 
 export const signOut = async () => {
@@ -90,11 +90,11 @@ export const deleteAuth = async () => {
     return;
   }
 
-  const uid: string = authStore.state.authUser.uid;
-
   // TODO: extract IC
   if ('ic' === cloud) {
+    const uid: string = authStore.state.authUser.uid;
     await UserIcProvider.getInstance().delete(uid);
+
     await signOut();
     return;
   }
@@ -103,7 +103,7 @@ export const deleteAuth = async () => {
 
   const {deleteAuth}: {deleteAuth: DeleteAuth} = await import(cdn);
 
-  await deleteAuth({uid, config: firebaseApiConfig()});
+  await deleteAuth({user: userStore.state.user, config: firebaseApiConfig()});
   await signOut();
 };
 
