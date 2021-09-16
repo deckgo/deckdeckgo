@@ -313,14 +313,13 @@ export class AppProfile {
       }
 
       try {
-        // TODO: remove cast
         await updateUser({
           id: this.user.id,
           data: {
             ...this.user.data,
             username: this.apiUsername
           }
-        } as User);
+        });
 
         resolve();
       } catch (err) {

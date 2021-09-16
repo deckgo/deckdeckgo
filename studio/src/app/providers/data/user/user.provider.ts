@@ -15,7 +15,6 @@ export const updateUser = async (user: User) => {
   }
 
   // TODO: extract IC
-  // TODO: remove type usermodel
   if ('ic' === cloud) {
     await UserIcProvider.getInstance().update(user);
     return;
@@ -27,6 +26,5 @@ export const updateUser = async (user: User) => {
 
   const updatedUser: User = await updateUser(user);
 
-  // TODO: remove casting
   store.state.user = {...updatedUser};
 };
