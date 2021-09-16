@@ -1,4 +1,4 @@
-import {Template, TemplateData} from '@deckdeckgo/editor';
+import {Template, TemplateData, GetUserTemplates, CreateTemplate, UpdateTemplate} from '@deckdeckgo/editor';
 
 import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
@@ -23,7 +23,7 @@ export const initTemplates = async () => {
   try {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {getUserTemplates} = await import(cdn);
+    const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await import(cdn);
 
     const templates: Template[] = await getUserTemplates(authStore.state.authUser?.uid);
 
@@ -46,7 +46,7 @@ export const createUserTemplate = async (templateData: TemplateData): Promise<Te
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {createTemplate} = await import(cdn);
+  const {createTemplate}: {createTemplate: CreateTemplate} = await import(cdn);
 
   return createTemplate(templateData);
 };
@@ -60,7 +60,7 @@ export const updateTemplate = async (template: Template): Promise<Template | und
 
   const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-  const {updateTemplate} = await import(cdn);
+  const {updateTemplate}: {updateTemplate: UpdateTemplate} = await import(cdn);
 
   return updateTemplate(template);
 };

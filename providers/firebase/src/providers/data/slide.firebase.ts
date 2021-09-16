@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Slide, SlideData} from '@deckdeckgo/editor';
+import {DeleteSlide, Slide, SlideData, UpdateSlide} from '@deckdeckgo/editor';
 
 export const getSlide = (deckId: string, slideId: string): Promise<Slide> => {
   return new Promise<Slide>(async (resolve, reject) => {
@@ -27,7 +27,7 @@ export const getSlide = (deckId: string, slideId: string): Promise<Slide> => {
   });
 };
 
-export const updateSlide = (deckId: string, slide: Slide): Promise<void> => {
+export const updateSlide: UpdateSlide = (deckId: string, slide: Slide): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
@@ -44,7 +44,7 @@ export const updateSlide = (deckId: string, slide: Slide): Promise<void> => {
   });
 };
 
-export const deleteSlide = (deckId: string, slideId: string): Promise<void> => {
+export const deleteSlide: DeleteSlide = (deckId: string, slideId: string): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
       const firestore: firebase.firestore.Firestore = firebase.firestore();

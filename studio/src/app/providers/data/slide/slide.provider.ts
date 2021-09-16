@@ -1,4 +1,4 @@
-import {Slide} from '@deckdeckgo/editor';
+import {Slide, GetSlide} from '@deckdeckgo/editor';
 
 import {SlideIcProvider} from './slide.ic.provider';
 import {SlideOfflineProvider} from './slide.offline.provider';
@@ -13,7 +13,7 @@ export const getSlide = async (deckId: string, slideId: string): Promise<Slide> 
   if (firebase()) {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {getSlide: getUserSlide} = await import(cdn);
+    const {getSlide: getUserSlide}: {getSlide: GetSlide} = await import(cdn);
 
     return getUserSlide(deckId, slideId);
   }

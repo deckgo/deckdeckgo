@@ -1,9 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Template, TemplateData} from '@deckdeckgo/editor';
+import {Template, TemplateData, GetUserTemplates, CreateTemplate, UpdateTemplate} from '@deckdeckgo/editor';
 
-export const getUserTemplates = (userId: string): Promise<Template[]> => {
+export const getUserTemplates: GetUserTemplates = (userId: string): Promise<Template[]> => {
   return new Promise<Template[]>(async (resolve, reject) => {
     try {
       if (!userId) {
@@ -33,7 +33,7 @@ export const getUserTemplates = (userId: string): Promise<Template[]> => {
   });
 };
 
-export const createTemplate = (templateData: TemplateData): Promise<Template> => {
+export const createTemplate: CreateTemplate = (templateData: TemplateData): Promise<Template> => {
   return new Promise<Template>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
@@ -58,7 +58,7 @@ export const createTemplate = (templateData: TemplateData): Promise<Template> =>
   });
 };
 
-export const updateTemplate = (template: Template): Promise<Template> => {
+export const updateTemplate: UpdateTemplate = (template: Template): Promise<Template> => {
   return new Promise<Template>(async (resolve, reject) => {
     const firestore: firebase.firestore.Firestore = firebase.firestore();
 
