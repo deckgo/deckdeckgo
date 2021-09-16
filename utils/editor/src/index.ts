@@ -11,10 +11,10 @@ export * from './models/data/user';
 export * from './models/storage/storage';
 
 export * from './types/sync';
-export * from './types/auth.provider';
-export * from './types/deck.provider';
-export * from './types/platform.provider';
-export * from './types/slide.provider';
-export * from './types/template.provider';
+export * from './providers/auth.provider';
+export * from './providers/deck.provider';
+export * from './providers/platform.provider';
+export * from './providers/slide.provider';
+export * from './providers/template.provider';
 
 export * from './utils/deck.utils';
