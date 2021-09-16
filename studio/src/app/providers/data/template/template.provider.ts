@@ -1,119 +1,73 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
 import {Template, TemplateData} from '@deckdeckgo/editor';
 
-import templatesStore from '../../../stores/templates.store';
+import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+
 import authStore from '../../../stores/auth.store';
+import templatesStore from '../../../stores/templates.store';
 
-import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
-
-export class TemplateProvider {
-  private static instance: TemplateProvider;
-
-  private constructor() {
-    // Private constructor, singleton
+export const initTemplates = async () => {
+  if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
+    return;
   }
 
-  static getInstance() {
-    if (!TemplateProvider.instance) {
-      TemplateProvider.instance = new TemplateProvider();
+  if (templatesStore.state.user?.length > 0) {
+    return;
+  }
+
+  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
+
+  // TODO: Template for Internet Computer
+
+  if (cloud !== 'firebase') {
+    return;
+  }
+
+  try {
+    const cdn: string = 'http://localhost:3335/build/index.esm.js';
+
+    const {getUserTemplates} = await import(cdn);
+
+    const templates: Template[] = await getUserTemplates();
+
+    if (!templates) {
+      return undefined;
     }
-    return TemplateProvider.instance;
+
+    templatesStore.state.user = [...templates];
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const createUserTemplate = async (templateData: TemplateData): Promise<Template | undefined> => {
+  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
+
+  // TODO: Template for Internet Computer
+
+  if (cloud !== 'firebase') {
+    throw new Error('Template cannot be created. Not supported.');
   }
 
-  async init() {
-    if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
-      return;
-    }
+  const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    if (templatesStore.state.user?.length > 0) {
-      return;
-    }
+  const {createTemplate} = await import(cdn);
 
-    if (!firebaseEnabled()) {
-      return;
-    }
+  return createTemplate(templateData);
+};
 
-    try {
-      const templates: Template[] = await this.getUserTemplates();
+export const updateTemplate = async (template: Template): Promise<Template | undefined> => {
+  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
-      if (!templates) {
-        return undefined;
-      }
+  // TODO: Template for Internet Computer
 
-      templatesStore.state.user = [...templates];
-    } catch (err) {
-      console.error(err);
-    }
+  if (cloud !== 'firebase') {
+    throw new Error('Template cannot be updated. Not supported.');
   }
 
-  private getUserTemplates(): Promise<Template[]> {
-    return new Promise<Template[]>(async (resolve, reject) => {
-      try {
-        const firestore: firebase.firestore.Firestore = firebase.firestore();
+  const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-        const userId: string = authStore.state.authUser.uid;
+  const {updateTemplate} = await import(cdn);
 
-        const snapshot: firebase.firestore.QuerySnapshot = await firestore
-          .collection('templates')
-          .where('owner_id', '==', userId)
-          .orderBy('updated_at', 'desc')
-          .get();
-
-        const templates: Template[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
-          return {
-            id: documentSnapshot.id,
-            data: documentSnapshot.data() as TemplateData
-          };
-        });
-
-        resolve(templates);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  create(templateData: TemplateData): Promise<Template> {
-    return new Promise<Template>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      templateData.created_at = now as unknown as Date;
-      templateData.updated_at = now as unknown as Date;
-
-      firestore
-        .collection('templates')
-        .add(templateData)
-        .then(
-          async (doc: firebase.firestore.DocumentReference) => {
-            resolve({
-              id: doc.id,
-              data: templateData
-            });
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
-  }
-
-  update(template: Template): Promise<Template> {
-    return new Promise<Template>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      template.data.updated_at = now as unknown as Date;
-
-      try {
-        await firestore.collection('templates').doc(template.id).set(template.data, {merge: true});
-
-        resolve(template);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-}
+  return updateTemplate(template);
+};

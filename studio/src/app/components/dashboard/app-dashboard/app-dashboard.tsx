@@ -16,7 +16,6 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 
 import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
-import {TemplateProvider} from '../../../providers/data/template/template.provider';
 import {DeckProvider, getDeckService} from '../../../providers/data/deck/deck.provider';
 import {getSlideService, SlideProvider} from '../../../providers/data/slide/slide.provider';
 
@@ -25,6 +24,7 @@ import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-even
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {loadingController} from '../../../utils/ionic/ionic.overlay';
+import {initTemplates} from '../../../providers/data/template/template.provider';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -51,7 +51,6 @@ export class AppDashboard {
   private readonly deckProvider: DeckProvider;
   private readonly slideProvider: SlideProvider;
   private readonly deckDashboardService: DeckDashboardService;
-  private readonly templateProvider: TemplateProvider;
 
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
@@ -64,7 +63,6 @@ export class AppDashboard {
     this.deckProvider = getDeckService();
     this.slideProvider = getSlideService();
     this.deckDashboardService = DeckDashboardService.getInstance();
-    this.templateProvider = TemplateProvider.getInstance();
   }
 
   async componentWillLoad() {
@@ -95,7 +93,7 @@ export class AppDashboard {
     try {
       const userDecks: Deck[] = await this.deckProvider.entries(authStore.state.authUser.uid);
 
-      await this.templateProvider.init();
+      await initTemplates();
 
       this.decks = await this.fetchFirstSlides(userDecks);
       await this.filterDecks(null);

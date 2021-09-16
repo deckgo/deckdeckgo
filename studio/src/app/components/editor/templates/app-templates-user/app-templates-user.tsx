@@ -10,34 +10,27 @@ import {Template} from '@deckdeckgo/editor';
 
 import authStore from '../../../../stores/auth.store';
 
-import {TemplateProvider} from '../../../../providers/data/template/template.provider';
-
 import {renderI18n} from '../../../../utils/core/i18n.utils';
+import {initTemplates} from '../../../../providers/data/template/template.provider';
 
 @Component({
   tag: 'app-templates-user',
   styleUrl: 'app-templates-user.scss'
 })
 export class AppTemplatesUser {
-  private templateProvider: TemplateProvider;
-
   @Event()
   navigateSignIn: EventEmitter<void>;
 
   @Event()
   selectedTemplate: EventEmitter<Template>;
 
-  constructor() {
-    this.templateProvider = TemplateProvider.getInstance();
-  }
-
   async componentWillLoad() {
-    await this.initTemplates();
+    await this.initUserTemplates();
   }
 
-  private async initTemplates() {
+  private async initUserTemplates() {
     try {
-      await this.templateProvider.init();
+      await initTemplates();
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
