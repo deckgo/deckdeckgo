@@ -1,4 +1,4 @@
-import {SyncData} from '../../types/editor/sync';
+import {SyncData} from '@deckdeckgo/editor';
 
 import {SyncProvider} from './sync.provider';
 

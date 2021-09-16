@@ -9,3 +9,5 @@ export * from './models/data/token';
 export * from './models/data/user';
 
 export * from './models/storage/storage';
+
+export * from './types/sync';

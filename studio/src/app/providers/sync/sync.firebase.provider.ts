@@ -2,14 +2,13 @@ import firebase from 'firebase/app';
 
 import {del, get, set} from 'idb-keyval';
 
-import {Deck, DeckAttributes, Slide, SlideAttributes, StorageFile} from '@deckdeckgo/editor';
+import {Deck, DeckAttributes, Slide, SlideAttributes, StorageFile, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import syncStore from '../../stores/sync.store';
 import offlineStore from '../../stores/offline.store';
 
 import {SlotType} from '../../types/editor/slot-type';
-import {SyncData, SyncDataDeck, SyncDataSlide} from '../../types/editor/sync';
 
 import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 import {firebase as firebaseEnabled} from '../../utils/core/environment.utils';

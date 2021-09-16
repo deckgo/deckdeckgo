@@ -1,10 +1,11 @@
 import {Identity} from '@dfinity/agent';
 
+import {SyncData} from '@deckdeckgo/editor';
+
 import authStore from '../../stores/auth.store';
 import syncStore from '../../stores/sync.store';
 import offlineStore from '../../stores/offline.store';
 
-import {SyncData} from '../../types/editor/sync';
 import {InternetIdentityAuth} from '../../types/core/ic.identity';
 
 import {internetComputer} from '../../utils/core/environment.utils';

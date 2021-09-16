@@ -1,8 +1,6 @@
 import {get, getMany} from 'idb-keyval';
 
-import {Deck, Slide} from '@deckdeckgo/editor';
-
-import {SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '../types/editor/sync';
+import {Deck, Slide, SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '@deckdeckgo/editor';
 
 // TODO: move Firestore merge to worker
 

@@ -17,7 +17,7 @@ import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '
 
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
-import {SlideTemplate} from '@deckdeckgo/editor';
+import {SlideTemplate, SyncEvent} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
@@ -44,7 +44,6 @@ import {SyncProvider} from '../../../providers/sync/sync.provider';
 import {SyncFactoryProvider} from '../../../providers/sync/sync.factory.provider';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
-import {SyncEvent} from '../../../types/editor/sync';
 
 import {worker} from '../../../workers/sync.worker.ts?worker';
 import {startSyncTimer, stopSyncTimer} from '../../../workers/sync.worker';
