@@ -1,6 +1,4 @@
-import {Template, Slide, SlideScope} from '@deckdeckgo/editor';
-
-import {Utils} from '../core/utils';
+import {Template, Slide, SlideScope, injectJS} from '@deckdeckgo/editor';
 
 import templatesStore from '../../stores/templates.store';
 
@@ -10,7 +8,7 @@ export class TemplateUtils {
       return;
     }
 
-    await Utils.injectJS({
+    await injectJS({
       id: `${template.data.tag}-script`,
       src: template.data.cdn,
       module: true

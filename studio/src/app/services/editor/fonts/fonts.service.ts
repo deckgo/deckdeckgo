@@ -1,6 +1,6 @@
 import assetsStore from '../../../stores/assets.store';
 
-import {Utils} from '../../../utils/core/utils';
+import {injectCSS} from '@deckdeckgo/editor';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
@@ -20,7 +20,10 @@ export class FontsService {
       const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
 
       const promises = assetsStore.state.fonts.map((font: GoogleFont) => {
-        return Utils.injectCSS(font.id, google.fontsUrl + font.name.replace(' ', '+'));
+        return injectCSS({
+          id: font.id,
+          src: google.fontsUrl + font.name.replace(' ', '+')
+        });
       });
 
       await Promise.all(promises);
@@ -47,7 +50,10 @@ export class FontsService {
         return;
       }
 
-      await Utils.injectCSS(font.id, this.getGoogleFontUrl(googleFontsUrl, font));
+      await injectCSS({
+        id: font.id,
+        src: this.getGoogleFontUrl(googleFontsUrl, font)
+      });
 
       resolve();
     });

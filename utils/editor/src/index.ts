@@ -24,3 +24,4 @@ export * from './providers/sync.provider';
 export * from './providers/unsplash.provider';
 
 export * from './utils/deck.utils';
+export * from './utils/script.utils';

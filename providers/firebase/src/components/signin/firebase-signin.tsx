@@ -1,9 +1,9 @@
 import {Component, ComponentInterface, h, Prop} from '@stencil/core';
 
+import {injectJS, injectCSS} from '@deckdeckgo/editor';
+
 import firebase from '@firebase/app';
 import '@firebase/auth';
-
-import {Utils} from '../../utils/utils';
 
 declare var firebaseui;
 
@@ -30,11 +30,14 @@ export class FirebaseSignIn implements ComponentInterface {
   }
 
   async setupFirebaseUI() {
-    await Utils.injectJS({
+    await injectJS({
       id: 'firebase-ui-script',
       src: 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js'
     });
-    await Utils.injectCSS('firebase-ui-css', 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css');
+    await injectCSS({
+      id: 'firebase-ui-css',
+      src: 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css'
+    });
 
     const signInOptions = [];
 
