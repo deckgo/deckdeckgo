@@ -7,6 +7,7 @@ import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 
 import {firebase as firebaseEnabled, internetComputer} from '../../utils/core/environment.utils';
+import {provider} from '../../utils/core/providers.utils';
 
 import {SyncIcProvider} from './sync.ic.provider';
 
@@ -35,9 +36,7 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {sync}: {sync: Sync} = await import(cdn);
+    const {sync}: {sync: Sync} = await provider<{sync: Sync}>();
 
     return sync({
       syncData,

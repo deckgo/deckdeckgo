@@ -1,4 +1,6 @@
-import {Deck, DeckData} from '@deckdeckgo/editor';
+import {Deck, DeckData, CreateDeck, UpdateDeck} from '@deckdeckgo/editor';
+
+import {provider} from '../../../utils/core/providers.utils';
 
 export class DeckFirebaseProvider {
   private static instance: DeckFirebaseProvider;
@@ -15,17 +17,13 @@ export class DeckFirebaseProvider {
   }
 
   async create(deck: DeckData): Promise<Deck> {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {createDeck: createUserDeck} = await import(cdn);
+    const {createDeck: createUserDeck}: {createDeck: CreateDeck} = await provider<{createDeck: CreateDeck}>();
 
     return createUserDeck(deck);
   }
 
   async update(deck: Deck): Promise<Deck> {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {updateDeck: updateUserDeck} = await import(cdn);
+    const {updateDeck: updateUserDeck}: {updateDeck: UpdateDeck} = await provider<{updateDeck: UpdateDeck}>();
 
     return updateUserDeck(deck);
   }

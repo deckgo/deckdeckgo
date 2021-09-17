@@ -6,6 +6,7 @@ import {StorageIcProvider} from './storage.ic.provider';
 import {StorageOfflineProvider} from './storage.offline.provider';
 
 import {firebase, internetComputer} from '../../utils/core/environment.utils';
+import {provider} from '../../utils/core/providers.utils';
 
 import {Constants} from '../../types/core/constants';
 
@@ -20,9 +21,7 @@ export const uploadOnlineFile = async (
   }
 
   if (firebase()) {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {uploadFile}: {uploadFile: UploadFile} = await import(cdn);
+    const {uploadFile}: {uploadFile: UploadFile} = await provider<{uploadFile: UploadFile}>();
 
     return uploadFile({
       data,
@@ -42,9 +41,7 @@ export const getFiles = async (next: string | null, folder: string): Promise<Sto
   }
 
   if (firebase()) {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {getFiles}: {getFiles: GetFiles} = await import(cdn);
+    const {getFiles}: {getFiles: GetFiles} = await provider<{getFiles: GetFiles}>();
 
     return getFiles({
       next,
@@ -63,9 +60,7 @@ export const getFolders = async (folder: string): Promise<StorageFoldersList | u
   }
 
   if (firebase()) {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {getFolders}: {getFolders: GetFolders} = await import(cdn);
+    const {getFolders}: {getFolders: GetFolders} = await provider<{getFolders: GetFolders}>();
 
     return getFolders({
       folder,

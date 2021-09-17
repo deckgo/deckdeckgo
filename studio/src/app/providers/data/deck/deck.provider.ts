@@ -4,6 +4,7 @@ import {DeckIcProvider} from './deck.ic.provider';
 import {DeckOfflineProvider} from './deck.offline.provider';
 
 import {firebase, internetComputer} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
 export const decks = async (userId: string): Promise<Deck[]> => {
   if (internetComputer()) {
@@ -11,9 +12,7 @@ export const decks = async (userId: string): Promise<Deck[]> => {
   }
 
   if (firebase()) {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {deckEntries}: {deckEntries: DeckEntries} = await import(cdn);
+    const {deckEntries}: {deckEntries: DeckEntries} = await provider<{deckEntries: DeckEntries}>();
 
     return deckEntries(userId);
   }
@@ -27,9 +26,7 @@ export const deleteDeck = async (deckId: string): Promise<void> => {
   }
 
   if (firebase()) {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await import(cdn);
+    const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await provider<{deleteDeck: DeleteDeck}>();
 
     return deleteUserDeck(deckId);
   }

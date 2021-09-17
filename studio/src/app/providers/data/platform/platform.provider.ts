@@ -3,6 +3,7 @@ import {Token, MergeToken} from '@deckdeckgo/editor';
 import errorStore from '../../../stores/error.store';
 
 import {firebase} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
 export const mergePlatformToken = async (token: Token) => {
   if (!token) {
@@ -16,9 +17,7 @@ export const mergePlatformToken = async (token: Token) => {
   }
 
   try {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {mergeToken}: {mergeToken: MergeToken} = await import(cdn);
+    const {mergeToken}: {mergeToken: MergeToken} = await provider<{mergeToken: MergeToken}>();
 
     await mergeToken(token);
   } catch (err) {

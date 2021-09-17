@@ -4,6 +4,7 @@ import {SlideIcProvider} from './slide.ic.provider';
 import {SlideOfflineProvider} from './slide.offline.provider';
 
 import {firebase, internetComputer} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
 export const getSlide = async (deckId: string, slideId: string): Promise<Slide> => {
   if (internetComputer()) {
@@ -11,9 +12,7 @@ export const getSlide = async (deckId: string, slideId: string): Promise<Slide> 
   }
 
   if (firebase()) {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {getSlide: getUserSlide}: {getSlide: GetSlide} = await import(cdn);
+    const {getSlide: getUserSlide}: {getSlide: GetSlide} = await provider<{getSlide: GetSlide}>();
 
     return getUserSlide(deckId, slideId);
   }

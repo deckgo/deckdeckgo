@@ -4,6 +4,7 @@ import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
 
 import {firebase} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
 export const initTemplates = async () => {
   if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
@@ -21,9 +22,7 @@ export const initTemplates = async () => {
   }
 
   try {
-    const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-    const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await import(cdn);
+    const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await provider<{getUserTemplates: GetUserTemplates}>();
 
     const templates: Template[] = await getUserTemplates(authStore.state.authUser?.uid);
 
@@ -44,9 +43,7 @@ export const createUserTemplate = async (templateData: TemplateData): Promise<Te
     throw new Error('Template cannot be created. Not supported.');
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {createTemplate}: {createTemplate: CreateTemplate} = await import(cdn);
+  const {createTemplate}: {createTemplate: CreateTemplate} = await provider<{createTemplate: CreateTemplate}>();
 
   return createTemplate(templateData);
 };
@@ -58,9 +55,7 @@ export const updateTemplate = async (template: Template): Promise<Template | und
     throw new Error('Template cannot be updated. Not supported.');
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {updateTemplate}: {updateTemplate: UpdateTemplate} = await import(cdn);
+  const {updateTemplate}: {updateTemplate: UpdateTemplate} = await provider<{updateTemplate: UpdateTemplate}>();
 
   return updateTemplate(template);
 };

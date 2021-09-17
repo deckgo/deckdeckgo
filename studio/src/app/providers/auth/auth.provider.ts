@@ -9,6 +9,8 @@ import {EnvironmentConfigService} from '../../services/environment/environment-c
 import {AuthIcProvider} from './auth.ic.provider';
 import {UserIcProvider} from '../data/user/user.ic.provider';
 
+import {provider} from '../../utils/core/providers.utils';
+
 export const initAuthProvider = async () => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
@@ -22,9 +24,7 @@ export const initAuthProvider = async () => {
     return;
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {initAuth}: {initAuth: InitAuth} = await import(cdn);
+  const {initAuth}: {initAuth: InitAuth} = await provider<{initAuth: InitAuth}>();
 
   await initAuth({
     config: firebaseApiConfig(),
@@ -56,9 +56,7 @@ export const signOut = async () => {
     return;
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {signOut}: {signOut: SignOut} = await import(cdn);
+  const {signOut}: {signOut: SignOut} = await provider<{signOut: SignOut}>();
 
   await signOut();
 };
@@ -76,9 +74,7 @@ export const signIn = async () => {
     return;
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {signIn}: {signIn: SignIn} = await import(cdn);
+  const {signIn}: {signIn: SignIn} = await provider<{signIn: SignIn}>();
 
   await signIn();
 };
@@ -99,9 +95,7 @@ export const deleteAuth = async () => {
     return;
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {deleteAuth}: {deleteAuth: DeleteAuth} = await import(cdn);
+  const {deleteAuth}: {deleteAuth: DeleteAuth} = await provider<{deleteAuth: DeleteAuth}>();
 
   await deleteAuth({user: userStore.state.user, config: firebaseApiConfig()});
   await signOut();

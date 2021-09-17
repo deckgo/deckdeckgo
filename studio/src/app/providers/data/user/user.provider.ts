@@ -5,6 +5,8 @@ import store from '../../../stores/user.store';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
+import {provider} from '../../../utils/core/providers.utils';
+
 import {UserIcProvider} from './user.ic.provider';
 
 export const updateUser = async (user: User) => {
@@ -20,9 +22,7 @@ export const updateUser = async (user: User) => {
     return;
   }
 
-  const cdn: string = 'http://localhost:3335/build/index.esm.js';
-
-  const {updateUser}: {updateUser: UpdateUser} = await import(cdn);
+  const {updateUser}: {updateUser: UpdateUser} = await provider<{updateUser: UpdateUser}>();
 
   const updatedUser: User = await updateUser(user);
 
