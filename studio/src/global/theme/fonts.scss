@@ -72,34 +72,38 @@
   --font-size-normal: 15px;
 }
 
-h1,
-h1 a {
-  font-size: 3.85rem;
-  font-weight: 700;
+main {
+  > h1,
+  > h1 a {
+    font-size: 3.85rem;
+    font-weight: 700;
 
-  @media screen and (max-width: 768px) {
-    font-size: 2.45rem;
+    margin-top: 0;
+
+    @media screen and (max-width: 768px) {
+      font-size: 2.45rem;
+    }
   }
-}
 
-h2,
-h2 a {
-  font-size: 1.75rem;
-  font-weight: 700;
-}
+  > h2,
+  > h2 a {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
 
-h3,
-h3 a {
-  font-size: 1.4166666666666667rem;
-  font-weight: 700;
-}
+  > h3,
+  > h3 a {
+    font-size: 1.4166666666666667rem;
+    font-weight: 700;
+  }
 
-h4,
-h4 a {
-  font-size: var(--font-size-normal);
-  margin-top: 48px;
-  margin-bottom: 8px;
-  letter-spacing: 0.04em;
+  > h4,
+  > h4 a {
+    font-size: var(--font-size-normal);
+    margin-top: 48px;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
 }
 
 ul,
