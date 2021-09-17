@@ -18,5 +18,6 @@ export * from './providers/platform.provider';
 export * from './providers/slide.provider';
 export * from './providers/template.provider';
 export * from './providers/user.provider';
+export * from './providers/storage.provider';
 
 export * from './utils/deck.utils';

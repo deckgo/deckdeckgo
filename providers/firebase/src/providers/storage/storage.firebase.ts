@@ -3,9 +3,9 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
-import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
 
-export const uploadFile = ({
+export const uploadFile: UploadFile = ({
   data,
   folder,
   maxSize,
@@ -53,7 +53,7 @@ export const uploadFile = ({
   });
 };
 
-export const getFiles = ({
+export const getFiles: GetFiles = ({
   next,
   maxResults,
   folder,
@@ -120,7 +120,7 @@ const toStorageFile = (ref: Reference): Promise<StorageFile> => {
   });
 };
 
-export const getFolders = ({folder, userId}: {folder: string; userId: string}): Promise<StorageFoldersList | undefined> => {
+export const getFolders: GetFolders = ({folder, userId}: {folder: string; userId: string}): Promise<StorageFoldersList | undefined> => {
   return new Promise<StorageFoldersList | null>(async (resolve, reject) => {
     try {
       if (!userId || userId === '' || userId === undefined) {

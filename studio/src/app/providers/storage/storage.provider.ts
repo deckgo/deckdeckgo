@@ -1,4 +1,4 @@
-import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 
@@ -22,9 +22,9 @@ export const uploadOnlineFile = async (
   if (firebase()) {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {updateFile} = await import(cdn);
+    const {uploadFile}: {uploadFile: UploadFile} = await import(cdn);
 
-    return updateFile({
+    return uploadFile({
       data,
       folder,
       maxSize,
@@ -44,7 +44,7 @@ export const getFiles = async (next: string | null, folder: string): Promise<Sto
   if (firebase()) {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {getFiles} = await import(cdn);
+    const {getFiles}: {getFiles: GetFiles} = await import(cdn);
 
     return getFiles({
       next,
@@ -65,7 +65,7 @@ export const getFolders = async (folder: string): Promise<StorageFoldersList | u
   if (firebase()) {
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {getFolders} = await import(cdn);
+    const {getFolders}: {getFolders: GetFolders} = await import(cdn);
 
     return getFolders({
       folder,
