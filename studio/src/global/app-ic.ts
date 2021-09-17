@@ -21,7 +21,8 @@ setupDeckGoConfig({
     key: '<@TENOR_KEY@>'
   },
   unsplash: {
-    url: '<@UNSPLASH_URL@>'
+    url: '<@UNSPLASH_URL@>',
+    cdn: 'http://localhost:5000/index.js'
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='

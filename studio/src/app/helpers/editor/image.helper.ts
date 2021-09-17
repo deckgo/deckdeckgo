@@ -2,7 +2,7 @@ import {EventEmitter} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
 
-import {StorageFile} from '@deckdeckgo/editor';
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
 import busyStore from '../../stores/busy.store';
 import authStore from '../../stores/auth.store';

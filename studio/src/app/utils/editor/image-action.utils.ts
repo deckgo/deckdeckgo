@@ -1,4 +1,4 @@
-import {StorageFile} from '@deckdeckgo/editor';
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
 export interface DeckgoImgAction {
   src: string;

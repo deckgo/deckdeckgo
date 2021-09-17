@@ -1,6 +1,6 @@
 import {get, set, del} from 'idb-keyval';
 
-import {StorageFile} from '@deckdeckgo/editor';
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
 export class ImageHistoryService {
   private static instance: ImageHistoryService;

@@ -1,4 +1,4 @@
-interface UnsplashUserLinks {
+export interface UnsplashUserLinks {
   self: string;
   html: string;
   photos: string;
@@ -6,13 +6,13 @@ interface UnsplashUserLinks {
   portfolio: string;
 }
 
-interface UnsplashUserProfileImage {
+export interface UnsplashUserProfileImage {
   small: string;
   medium: string;
   large: string;
 }
 
-interface UnsplashUser {
+export interface UnsplashUser {
   id?: string;
   username?: string;
   name: string;
@@ -28,7 +28,7 @@ interface UnsplashUser {
   links: UnsplashUserLinks;
 }
 
-interface UserCollection {
+export interface UserCollection {
   id: number;
   title: string;
   published_at: string | Date;
@@ -38,7 +38,7 @@ interface UserCollection {
   user: string;
 }
 
-interface UnsplashPhotoUrls {
+export interface UnsplashPhotoUrls {
   raw: string;
   full: string;
   regular: string;
@@ -46,14 +46,14 @@ interface UnsplashPhotoUrls {
   thumb: string;
 }
 
-interface UnsplashPhotoLinks {
+export interface UnsplashPhotoLinks {
   self: string;
   html: string;
   download: string;
   download_location: string;
 }
 
-interface UnsplashPhoto {
+export interface UnsplashPhoto {
   id: string;
   created_at?: string | Date;
   updated_at?: string | Date;
@@ -70,7 +70,7 @@ interface UnsplashPhoto {
   links: UnsplashPhotoLinks;
 }
 
-interface UnsplashSearchResponse {
+export interface UnsplashSearchResponse {
   total: number;
   total_pages: number;
   results: UnsplashPhoto[];

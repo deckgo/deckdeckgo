@@ -1,6 +1,6 @@
 import {Component, Event, EventEmitter, Prop, h} from '@stencil/core';
 
-import {StorageFile} from '@deckdeckgo/editor';
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
 @Component({
   tag: 'app-image-columns',

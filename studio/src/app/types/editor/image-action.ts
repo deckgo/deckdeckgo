@@ -1,4 +1,4 @@
-import {StorageFile} from '@deckdeckgo/editor';
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
 import {EditAction} from './edit-action';
 

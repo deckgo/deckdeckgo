@@ -17,6 +17,7 @@ export interface EnvironmentTenorConfig {
 
 export interface EnvironmentUnsplashConfig {
   url: string;
+  cdn: string;
 }
 
 export interface EnvironmentGoogleConfig {
