@@ -64,8 +64,9 @@ app-navigation-actions {
       color: var(--ion-color-danger);
     }
 
-    ion-icon {
-      &.rotate {
+    &.in_progress,
+    &.pending {
+      ion-icon {
         animation: rotate 4s linear infinite;
       }
     }
