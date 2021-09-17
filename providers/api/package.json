@@ -1,0 +1,30 @@
+{
+  "name": "@deckdeckgo/api",
+  "version": "1.0.0-alpha.0",
+  "author": "David Dal Busco",
+  "description": "The API (AWS) providers for the DeckDeckGo editor",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deckgo/deckdeckgo.git",
+    "directory": "providers/api"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
+    "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
+  },
+  "files": [
+    "lib",
+    "README.md",
+    "COPYING",
+    "GNU-AGPL-3.0"
+  ],
+  "devDependencies": {
+    "@deckdeckgo/editor": "file:../../utils/editor",
+    "esbuild": "^0.12.28",
+    "rimraf": "^3.0.2"
+  }
+}

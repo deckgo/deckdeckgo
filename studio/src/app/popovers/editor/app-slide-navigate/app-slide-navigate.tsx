@@ -3,10 +3,9 @@ import {Component, Element, State, h, EventEmitter, Event, Host} from '@stencil/
 import {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
 
 import {findSlidesTitle} from '@deckdeckgo/deck-utils';
+import {deckSelector, slideTo} from '@deckdeckgo/editor';
 
 import i18n from '../../../stores/i18n.store';
-
-import {deckSelector, slideTo} from '../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-slide-navigate',

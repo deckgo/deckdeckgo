@@ -1,7 +1,7 @@
 import {set, setMany} from 'idb-keyval';
 
-import {Deck} from '../../models/data/deck';
-import {Slide} from '../../models/data/slide';
+import {Deck} from '@deckdeckgo/editor';
+import {Slide} from '@deckdeckgo/editor';
 
 export interface ImportData {
   id: string;

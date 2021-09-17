@@ -1,10 +1,10 @@
 import {update} from 'idb-keyval';
 
+import {SyncPending, SyncPendingDeck, SyncPendingSlide} from '@deckdeckgo/editor';
+
 import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
-
-import {SyncPending, SyncPendingDeck, SyncPendingSlide} from '../../types/editor/sync';
 
 // We push data only and eliminate duplicates on the worker side when preparing the data
 

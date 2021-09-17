@@ -1,6 +1,6 @@
 import {FunctionalComponent, Fragment, h} from '@stencil/core';
 
-import {SlideTemplate} from '../../../../../models/data/slide';
+import {SlideTemplate} from '@deckdeckgo/editor';
 
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 

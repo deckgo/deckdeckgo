@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData} from '../../../models/data/deck';
+import {Deck, DeckData} from '@deckdeckgo/editor';
 
 import {_SERVICE as ManagerActor} from '../../../canisters/manager/manager.did';
 
@@ -10,12 +10,9 @@ import {_SERVICE as DeckBucketActor, Deck as DeckIc} from '../../../canisters/de
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 import {createDeckBucketActor, createManagerActor} from '../../../utils/core/ic.deck.utils';
 
-import {DeckProvider} from './deck.provider';
-
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
-import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 
-export class DeckIcProvider implements DeckProvider {
+export class DeckIcProvider {
   private static instance: DeckIcProvider;
 
   private constructor() {
@@ -29,9 +26,8 @@ export class DeckIcProvider implements DeckProvider {
     return DeckIcProvider.instance;
   }
 
-  // @Override
   async entries(_userId: string): Promise<Deck[]> {
-    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
     if (!identity) {
       return [];
@@ -70,13 +66,12 @@ export class DeckIcProvider implements DeckProvider {
     }
   }
 
-  // @Override
   async delete(deckId: string): Promise<void> {
     if (!deckId) {
       return;
     }
 
-    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
     if (!identity) {
       return;

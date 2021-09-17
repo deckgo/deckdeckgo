@@ -1,14 +1,12 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {Deck, DeckData} from '../../models/data/deck';
-import {Slide} from '../../models/data/slide';
+import {Deck, Slide, DeckData} from '@deckdeckgo/editor';
 
 import {importEditorData} from '../../utils/editor/import.utils';
-import {FirestoreUtils} from '../../utils/editor/firestore.utils';
 
 import {DeckFirebaseProvider} from '../../providers/data/deck/deck.firebase.provider';
-import {getSlideService, SlideProvider} from '../../providers/data/slide/slide.provider';
+import {getSlide} from '../../providers/data/slide/slide.provider';
 
 export interface DeckDashboardCloneResult {
   from: Deck;
@@ -19,11 +17,9 @@ export class DeckDashboardService {
   private static instance: DeckDashboardService;
 
   private deckFirebaseProvider: DeckFirebaseProvider;
-  private slideProvider: SlideProvider;
 
   private constructor() {
     this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
-    this.slideProvider = getSlideService();
   }
 
   static getInstance() {
@@ -104,22 +100,8 @@ export class DeckDashboardService {
   importData(deck: Deck): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => this.slideProvider.get(deck.id, slideId));
+        const promises: Promise<Slide>[] | undefined = deck.data.slides?.map((slideId: string) => getSlide(deck.id, slideId));
         const slides: Slide[] = await Promise.all(promises || []);
-
-        const deckToImport: Deck = {...deck};
-
-        if (deckToImport.data.background && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.background)) {
-          deckToImport.data.background = null;
-        }
-
-        if (deckToImport.data.header && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.header)) {
-          deckToImport.data.header = null;
-        }
-
-        if (deckToImport.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deckToImport.data.footer)) {
-          deckToImport.data.footer = null;
-        }
 
         await importEditorData({
           id: deck.id,

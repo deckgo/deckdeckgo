@@ -1,10 +1,10 @@
 import {keys, set} from 'idb-keyval';
 
+import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+
 import store from '../../stores/error.store';
 
-import {StorageProvider} from './storage.provider';
-
-export class StorageOfflineProvider implements StorageProvider {
+export class StorageOfflineProvider {
   private static instance: StorageOfflineProvider;
 
   private constructor() {
@@ -18,7 +18,6 @@ export class StorageOfflineProvider implements StorageProvider {
     return StorageOfflineProvider.instance;
   }
 
-  // @Override
   uploadFile(data: File, folder: string, maxSize: number): Promise<StorageFile | undefined> {
     return new Promise<StorageFile>(async (resolve) => {
       try {
@@ -50,8 +49,7 @@ export class StorageOfflineProvider implements StorageProvider {
     });
   }
 
-  // @Override
-  getFiles(_next: string | null, folder: string): Promise<StorageFilesList | null> {
+  getFiles(folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       const storageKeys: IDBValidKey[] = await keys();
 
@@ -84,8 +82,7 @@ export class StorageOfflineProvider implements StorageProvider {
     });
   }
 
-  // @Override
-  async getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
+  async getFolders(): Promise<StorageFoldersList | undefined> {
     // Not implemented in offline
     return undefined;
   }

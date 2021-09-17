@@ -17,7 +17,7 @@ import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '
 
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
-import {SlideTemplate} from '../../../models/data/slide';
+import {SlideTemplate, SyncEvent} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
@@ -40,11 +40,9 @@ import {SlideUtils} from '../../../utils/editor/slide.utils';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
-import {SyncProvider} from '../../../providers/sync/sync.provider';
-import {SyncFactoryProvider} from '../../../providers/sync/sync.factory.provider';
+import {sync} from '../../../providers/sync/sync.provider';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
-import {SyncEvent} from '../../../types/editor/sync';
 
 import {worker} from '../../../workers/sync.worker.ts?worker';
 import {startSyncTimer, stopSyncTimer} from '../../../workers/sync.worker';
@@ -127,11 +125,8 @@ export class AppEditor {
   private mainResizeObserver: ResizeObserver;
   private slideResizeObserver: ResizeObserver;
 
-  private syncProvider: SyncProvider;
-
   constructor() {
     this.fontsService = FontsService.getInstance();
-    this.syncProvider = SyncFactoryProvider.getInstance();
   }
 
   @Listen('ionRouteDidChange', {target: 'window'})
@@ -163,7 +158,7 @@ export class AppEditor {
         return;
       }
 
-      await this.syncProvider.upload(data.data);
+      await sync(data.data);
     };
   }
 

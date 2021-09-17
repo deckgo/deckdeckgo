@@ -1,12 +1,11 @@
 import {Component, Element, Event, EventEmitter, Fragment, h} from '@stencil/core';
 
+import {SlideAttributes, SlideSplitType, SlideTemplate, Template} from '@deckdeckgo/editor';
+
 import userStore from '../../../../../stores/user.store';
 import assetsStore from '../../../../../stores/assets.store';
 import i18n from '../../../../../stores/i18n.store';
 import offlineStore from '../../../../../stores/offline.store';
-
-import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
-import {Template} from '../../../../../models/data/template';
 
 import {InitTemplate} from '../../../../../utils/editor/create-slides.utils';
 import {tenor} from '../../../../../utils/core/environment.utils';

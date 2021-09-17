@@ -17,6 +17,7 @@ export interface EnvironmentTenorConfig {
 
 export interface EnvironmentUnsplashConfig {
   url: string;
+  cdn: string;
 }
 
 export interface EnvironmentGoogleConfig {
@@ -37,9 +38,14 @@ export interface EnvironmentAppConfig {
   mock: boolean;
 }
 
+export interface EnvironmentCloud {
+  cdn: string;
+}
+
 export interface EnvironmentConfig {
   app: EnvironmentAppConfig;
   deckdeckgo: EnvironmentDeckDeckGoConfig;
+  cloud?: EnvironmentCloud;
   firebase?: EnvironmentFirebaseConfig;
   tenor?: EnvironmentTenorConfig;
   unsplash?: EnvironmentUnsplashConfig;

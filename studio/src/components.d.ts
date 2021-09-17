@@ -9,7 +9,7 @@ import { EventEmitter, JSX } from "@stencil/core";
 import { SelectedElement } from "./app/types/editor/selected-element";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
-import { Deck } from "./app/models/data/deck";
+import { Deck, SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
 import { DeckDashboardCloneResult } from "./app/services/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { EditAction } from "./app/types/editor/edit-action";
@@ -22,8 +22,6 @@ import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
 import { IonicReorderEvent } from "./app/utils/ionic/ionic.reorder.event";
 import { ItemReorderEventDetail } from "@ionic/core";
-import { Template } from "./app/models/data/template";
-import { SlideAttributes, SlideTemplate } from "./app/models/data/slide";
 import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
     interface AppActionAddSlide {

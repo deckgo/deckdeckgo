@@ -2,13 +2,12 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
+import {Deck, DeckData, DeckMetaAuthor, UserSocial} from '@deckdeckgo/editor';
+
 import deckStore from '../../../stores/deck.store';
 import userStore from '../../../stores/user.store';
 import errorStore from '../../../stores/error.store';
 import authStore from '../../../stores/auth.store';
-
-import {Deck, DeckData, DeckMetaAuthor} from '../../../models/data/deck';
-import {UserSocial} from '../../../models/data/user';
 
 import {DeckFirebaseProvider} from '../../../providers/data/deck/deck.firebase.provider';
 
@@ -106,21 +105,21 @@ export class PublishService {
         if (!deck.data.meta) {
           deck.data.meta = {
             title: deck.data.name,
-            updated_at: now
+            updated_at: now as unknown as Date
           };
         } else {
           deck.data.meta.title = deck.data.name;
-          deck.data.meta.updated_at = now;
+          deck.data.meta.updated_at = now as unknown as Date;
         }
 
         if (description && description !== undefined && description !== '') {
           deck.data.meta.description = description;
         } else {
-          deck.data.meta.description = firebase.firestore.FieldValue.delete();
+          deck.data.meta.description = firebase.firestore.FieldValue.delete() as unknown as string;
         }
 
         if (!tags || tags.length <= 0) {
-          deck.data.meta.tags = firebase.firestore.FieldValue.delete();
+          deck.data.meta.tags = firebase.firestore.FieldValue.delete() as unknown as string[];
         } else {
           deck.data.meta.tags = tags;
         }
@@ -151,10 +150,10 @@ export class PublishService {
               {} as UserSocial
             );
           } else {
-            (deck.data.meta.author as DeckMetaAuthor).social = firebase.firestore.FieldValue.delete();
+            (deck.data.meta.author as DeckMetaAuthor).social = firebase.firestore.FieldValue.delete() as unknown as UserSocial;
           }
         } else if (deck.data.meta.author) {
-          deck.data.meta.author = firebase.firestore.FieldValue.delete();
+          deck.data.meta.author = firebase.firestore.FieldValue.delete() as unknown as DeckMetaAuthor;
         }
 
         // Update GitHub info (push or not) for GitHub users so next time user publish, the choice is kept

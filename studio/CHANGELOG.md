@@ -302,7 +302,7 @@
 ### Fix
 
 - re-hydrate editor with prerendering ([#797](https://github.com/deckgo/deckdeckgo/pull/797))
-- recursively clean Firestore FieldValue.delete ([#807](https://github.com/deckgo/deckdeckgo/pull/807) and [#806](https://github.com/deckgo/deckdeckgo/pull/806))
+- recursively cleanSync Firestore FieldValue.delete ([#807](https://github.com/deckgo/deckdeckgo/pull/807) and [#806](https://github.com/deckgo/deckdeckgo/pull/806))
 - improve dashboard navigation and style ([#788](https://github.com/deckgo/deckdeckgo/pull/788))
 - use user store to create author slide ([#787](https://github.com/deckgo/deckdeckgo/pull/787))
 - code editable attribute was sometimes missing ([#784](https://github.com/deckgo/deckdeckgo/pull/784))

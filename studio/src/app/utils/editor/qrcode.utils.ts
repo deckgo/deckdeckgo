@@ -1,4 +1,5 @@
-import {Deck} from '../../models/data/deck';
+import {Deck} from '@deckdeckgo/editor';
+
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 

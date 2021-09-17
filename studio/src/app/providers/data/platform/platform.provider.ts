@@ -1,37 +1,26 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import {Token, MergeToken} from '@deckdeckgo/editor';
 
 import errorStore from '../../../stores/error.store';
 
-import {Token} from '../../../models/data/token';
+import {firebase} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
-export class PlatformProvider {
-  private static instance: PlatformProvider;
-
-  private constructor() {
-    // Private constructor, singleton
+export const mergePlatformToken = async (token: Token) => {
+  if (!token) {
+    return;
   }
 
-  static getInstance() {
-    if (!PlatformProvider.instance) {
-      PlatformProvider.instance = new PlatformProvider();
-    }
-    return PlatformProvider.instance;
+  // TODO: Platform token for Internet Computer?
+
+  if (!firebase()) {
+    throw new Error('Merge token not supported');
   }
 
-  async merge(token: Token) {
-    if (!token) {
-      return;
-    }
+  try {
+    const {mergeToken}: {mergeToken: MergeToken} = await provider<{mergeToken: MergeToken}>();
 
-    try {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-      token.data.updated_at = firebase.firestore.Timestamp.now();
-
-      await firestore.collection('tokens').doc(token.id).set(token.data, {merge: true});
-    } catch (err) {
-      errorStore.state.error = 'GitHub platform information not properly set up.';
-    }
+    await mergeToken(token);
+  } catch (err) {
+    errorStore.state.error = 'GitHub platform information not properly set up.';
   }
-}
+};

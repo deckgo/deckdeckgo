@@ -1,5 +1,7 @@
 import {Build} from '@stencil/core';
 
+import {deckSelector, selectSlide} from '@deckdeckgo/editor';
+
 import remoteStore from '../../../../stores/remote.store';
 
 import {componentOnReady} from '../../../../utils/ionic/ionic.overlay';
@@ -10,8 +12,6 @@ import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, D
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
-
-import {deckSelector, selectSlide} from '../../../../utils/editor/deck.utils';
 
 import {RemoteService} from '../../../../services/editor/remote/remote.service';
 

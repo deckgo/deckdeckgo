@@ -3,13 +3,12 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 import {debounce} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 
+import {Deck} from '@deckdeckgo/editor';
+
 import deckStore from '../../../../stores/deck.store';
 import errorStore from '../../../../stores/error.store';
-import apiUserStore from '../../../../stores/api.user.store';
 import authStore from '../../../../stores/auth.store';
 import i18n from '../../../../stores/i18n.store';
-
-import {Deck} from '../../../../models/data/deck';
 
 import {Constants} from '../../../../types/core/constants';
 
@@ -481,7 +480,7 @@ export class AppPublishEdit {
       return (
         <ion-button
           type="submit"
-          disabled={!this.validTitle || !this.validDescription || this.disablePublish || !apiUserStore.state.apiUser}
+          disabled={!this.validTitle || !this.validDescription || this.disablePublish}
           color="tertiary"
           shape="round">
           <ion-label>{i18n.state.publish_edit.publish_now}</ion-label>

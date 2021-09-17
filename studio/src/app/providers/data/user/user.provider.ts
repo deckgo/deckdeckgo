@@ -1,24 +1,30 @@
-import {User} from '../../../models/data/user';
+import {User, UpdateUser} from '@deckdeckgo/editor';
+
+import store from '../../../stores/user.store';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+
+import {provider} from '../../../utils/core/providers.utils';
+
 import {UserIcProvider} from './user.ic.provider';
-import {UserFirebaseProvider} from './user.firebase.provider';
 
-export interface UserProvider {
-  update(user: User): Promise<void>;
+export const updateUser = async (user: User) => {
+  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
-  delete(userId: string): Promise<void>;
-}
-
-export const getUserService = (): UserProvider => {
-  const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-
-  if (cloud === 'ic') {
-    return UserIcProvider.getInstance();
-  } else if (cloud === 'firebase') {
-    return UserFirebaseProvider.getInstance();
+  if (!['firebase', 'ic'].includes(cloud)) {
+    return;
   }
 
-  throw new Error('Not implemented');
+  // TODO: extract IC
+  if ('ic' === cloud) {
+    await UserIcProvider.getInstance().update(user);
+    return;
+  }
+
+  const {updateUser}: {updateUser: UpdateUser} = await provider<{updateUser: UpdateUser}>();
+
+  const updatedUser: User = await updateUser(user);
+
+  store.state.user = {...updatedUser};
 };

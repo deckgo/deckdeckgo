@@ -1,4 +1,4 @@
-import {UserSocial} from '../../models/data/user';
+import {UserSocial} from '@deckdeckgo/editor';
 
 import {Time} from '../../canisters/deck/deck.did';
 

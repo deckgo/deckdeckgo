@@ -1,0 +1,73 @@
+deckgo-firebase-signin {
+  display: block;
+
+  form button {
+    &.firebaseui-idp-password,
+    &.firebaseui-idp-password:hover {
+      background-color: var(--ion-color-primary) !important;
+    }
+  }
+
+  .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
+    color: var(--ion-color-medium);
+  }
+
+  .firebaseui-textfield.mdl-textfield .firebaseui-label::after {
+    background-color: var(--ion-color-primary);
+  }
+
+  .mdl-button--primary.mdl-button--primary {
+    color: var(--ion-color-primary);
+
+    &:hover,
+    &:active {
+      background: transparent;
+    }
+  }
+
+  .mdl-button--raised.mdl-button--colored {
+    background: var(--ion-color-primary);
+    border-radius: 64px;
+
+    &:hover,
+    &:active {
+      background: var(--ion-color-primary);
+    }
+  }
+
+  button.firebaseui-idp-google > .firebaseui-idp-text {
+    color: black;
+  }
+
+  .firebaseui-idp-button {
+    font-family: var(--ion-font-family, inherit);
+    border-radius: 64px;
+    padding: 8px 16px 8px 30px;
+  }
+
+  p.firebaseui-tos {
+    color: black;
+    font-family: var(--ion-font-family, inherit);
+    padding-top: 16px;
+
+    a,
+    a:hover,
+    a:active,
+    a:focus {
+      text-decoration: none;
+    }
+  }
+
+  a.firebaseui-link {
+    text-decoration: none;
+    color: var(--ion-color-primary);
+  }
+
+  div.mdl-shadow--2dp {
+    box-shadow: none;
+
+    div.firebaseui-card-header {
+      display: none;
+    }
+  }
+}

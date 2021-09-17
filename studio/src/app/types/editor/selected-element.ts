@@ -1,5 +1,6 @@
+import {SlideScope} from '@deckdeckgo/editor';
+
 import {SlotType} from './slot-type';
-import {SlideScope} from '../../models/data/slide';
 
 export interface SelectedSlot {
   code: boolean;

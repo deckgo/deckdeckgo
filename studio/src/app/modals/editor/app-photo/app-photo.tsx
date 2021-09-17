@@ -1,13 +1,18 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import i18n from '../../../stores/i18n.store';
+import {UnsplashPhoto, GetUnsplashPhotos, UnsplashSearchResponse, RegisterUnsplashDownload} from '@deckdeckgo/editor';
 
-import {ApiUnsplashProvider} from '../../../providers/api/unsplash/api.unsplash.provider';
-import {ApiUnsplashFactoryProvider} from '../../../providers/api/unsplash/api.unsplash.factory.provider';
+import i18n from '../../../stores/i18n.store';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+
+import {EnvironmentUnsplashConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+
+import {unsplashProvider} from '../../../utils/core/providers.utils';
+import {unsplash} from '../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-photo',
@@ -16,7 +21,6 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 export class AppPhoto {
   @Element() el: HTMLElement;
 
-  private unsplashProvider: ApiUnsplashProvider;
   private imageHistoryService: ImageHistoryService;
 
   @State()
@@ -39,7 +43,6 @@ export class AppPhoto {
   private searching: boolean = false;
 
   constructor() {
-    this.unsplashProvider = ApiUnsplashFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
@@ -63,9 +66,22 @@ export class AppPhoto {
         return;
       }
 
+      if (!unsplash()) {
+        return;
+      }
+
+      const {url}: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
+
+      const {registerUnsplashDownload}: {registerUnsplashDownload: RegisterUnsplashDownload} = await unsplashProvider<{
+        registerUnsplashDownload: RegisterUnsplashDownload;
+      }>();
+
       const photo: UnsplashPhoto = $event.detail;
 
-      await this.unsplashProvider.registerDownload(photo.id);
+      await registerUnsplashDownload({
+        apiUrl: url,
+        photoId: photo.id
+      });
 
       await this.imageHistoryService.push(photo);
 
@@ -102,12 +118,21 @@ export class AppPhoto {
         return;
       }
 
+      if (!unsplash()) {
+        return;
+      }
+
       this.searching = true;
 
-      const unsplashResponse: UnsplashSearchResponse | undefined = await this.unsplashProvider.getPhotos(
-        this.searchTerm,
-        this.paginationNext
-      );
+      const {url}: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
+
+      const {getUnsplashPhotos}: {getUnsplashPhotos: GetUnsplashPhotos} = await unsplashProvider<{getUnsplashPhotos: GetUnsplashPhotos}>();
+
+      const unsplashResponse: UnsplashSearchResponse | undefined = await getUnsplashPhotos({
+        apiUrl: url,
+        searchTerm: this.searchTerm,
+        next: this.paginationNext
+      });
 
       this.searching = false;
 

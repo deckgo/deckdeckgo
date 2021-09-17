@@ -1,7 +1,6 @@
-import {Utils} from '../core/utils';
+import {Template, Slide, SlideScope} from '@deckdeckgo/editor';
 
-import {Template} from '../../models/data/template';
-import {Slide, SlideScope} from '../../models/data/slide';
+import {Utils} from '../core/utils';
 
 import templatesStore from '../../stores/templates.store';
 

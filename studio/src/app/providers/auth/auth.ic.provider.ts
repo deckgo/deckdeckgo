@@ -3,26 +3,35 @@ import {Identity} from '@dfinity/agent';
 
 import {del} from 'idb-keyval';
 
+import {AuthUser, User} from '@deckdeckgo/editor';
+
 import navStore, {NavDirection} from '../../stores/nav.store';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
 
-import {AuthUser} from '../../models/auth/auth.user';
-import {User} from '../../models/data/user';
-
 import {InternetIdentityAuth} from '../../types/core/ic.identity';
 
 import {internetIdentityAuth} from '../../utils/core/ic.identity.utils';
 
-import {AuthProvider} from './auth.provider';
-
 import {initUserWorker} from '../../workers/user.ic.worker';
 
-export class AuthIcProvider extends AuthProvider {
+export class AuthIcProvider {
+  private static instance: AuthIcProvider;
+
+  private constructor() {
+    // Private constructor, singleton
+  }
+
+  static getInstance() {
+    if (!AuthIcProvider.instance) {
+      AuthIcProvider.instance = new AuthIcProvider();
+    }
+    return AuthIcProvider.instance;
+  }
+
   private authClient: AuthClient | undefined;
 
-  // @Override
   async init() {
     this.authClient = await AuthClient.create();
     const isAuthenticated: boolean = (await this.authClient?.isAuthenticated()) || false;
@@ -38,7 +47,6 @@ export class AuthIcProvider extends AuthProvider {
     this.populateUser({user});
   }
 
-  // @Override
   async signIn() {
     const authClient: AuthClient = this.authClient || (await AuthClient.create());
 
@@ -60,7 +68,6 @@ export class AuthIcProvider extends AuthProvider {
     });
   }
 
-  // @Override
   async signOut() {
     await this.authClient?.logout();
 

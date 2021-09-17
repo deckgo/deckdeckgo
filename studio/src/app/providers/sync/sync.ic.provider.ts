@@ -1,24 +1,35 @@
 import {Identity} from '@dfinity/agent';
 
+import {SyncData} from '@deckdeckgo/editor';
+
 import authStore from '../../stores/auth.store';
 import syncStore from '../../stores/sync.store';
 import offlineStore from '../../stores/offline.store';
 
-import {SyncData} from '../../types/editor/sync';
 import {InternetIdentityAuth} from '../../types/core/ic.identity';
 
 import {internetComputer} from '../../utils/core/environment.utils';
 import {internetIdentityAuth} from '../../utils/core/ic.identity.utils';
 
-import {SyncProvider} from './sync.provider';
-
-import {AuthFactoryProvider} from '../auth/auth.factory.provider';
 import {AuthIcProvider} from '../auth/auth.ic.provider';
+import {cleanSync, isSyncPending} from './sync.provider';
 
 import {uploadWorker} from '../../workers/sync.ic.worker';
 
-export class SyncIcProvider extends SyncProvider {
-  // @Override
+export class SyncIcProvider {
+  private static instance: SyncIcProvider;
+
+  private constructor() {
+    // Private constructor, singleton
+  }
+
+  static getInstance() {
+    if (!SyncIcProvider.instance) {
+      SyncIcProvider.instance = new SyncIcProvider();
+    }
+    return SyncIcProvider.instance;
+  }
+
   async upload(syncData: SyncData | undefined) {
     try {
       if (!syncData) {
@@ -29,7 +40,7 @@ export class SyncIcProvider extends SyncProvider {
         return;
       }
 
-      if (!this.isSyncPending()) {
+      if (!isSyncPending()) {
         return;
       }
 
@@ -37,7 +48,7 @@ export class SyncIcProvider extends SyncProvider {
         return;
       }
 
-      const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+      const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
       if (!identity) {
         return;
@@ -53,7 +64,7 @@ export class SyncIcProvider extends SyncProvider {
         host: `${window.location}`
       });
 
-      await this.clean(syncData);
+      await cleanSync(syncData);
     } catch (err) {
       syncStore.state.sync = 'error';
       console.error(err);

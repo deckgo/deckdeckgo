@@ -5,16 +5,14 @@ import navStore from './stores/nav.store';
 import shareStore, {ShareData} from './stores/share.store';
 import authStore from './stores/auth.store';
 
-import {AuthProvider} from './providers/auth/auth.provider';
-import {AuthFactoryProvider} from './providers/auth/auth.factory.provider';
+import {initAuthProvider} from './providers/auth/auth.provider';
 
 import {ThemeService} from './services/theme/theme.service';
 import {NavDirection, NavParams} from './stores/nav.store';
 import {ColorService} from './services/editor/color/color.service';
 import {SettingsService} from './services/settings/settings.service';
 import {LangService} from './services/lang/lang.service';
-import {SyncProvider} from './providers/sync/sync.provider';
-import {SyncFactoryProvider} from './providers/sync/sync.factory.provider';
+import {initSyncState} from './providers/sync/sync.provider';
 
 import {toastController} from './utils/ionic/ionic.overlay';
 
@@ -24,9 +22,6 @@ import {toastController} from './utils/ionic/ionic.overlay';
 })
 export class AppRoot {
   @Element() el: HTMLElement;
-
-  private readonly authProvider: AuthProvider;
-  private readonly syncProvider: SyncProvider;
 
   private readonly themeService: ThemeService;
   private readonly colorService: ColorService;
@@ -44,19 +39,17 @@ export class AppRoot {
   private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
-    this.authProvider = AuthFactoryProvider.getInstance();
     this.themeService = ThemeService.getInstance();
     this.colorService = ColorService.getInstance();
     this.settingsService = SettingsService.getInstance();
     this.langService = LangService.getInstance();
-    this.syncProvider = SyncFactoryProvider.getInstance();
   }
 
   async componentWillLoad() {
-    this.destroyAuthListener = authStore.onChange('authUser', async () => await this.syncProvider.initSyncState());
+    this.destroyAuthListener = authStore.onChange('authUser', async () => await initSyncState());
 
     const promises: Promise<void>[] = [
-      this.authProvider.init(),
+      initAuthProvider(),
       this.themeService.initDarkModePreference(),
       this.colorService.init(),
       this.settingsService.init(),

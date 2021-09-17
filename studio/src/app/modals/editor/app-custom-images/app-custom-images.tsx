@@ -1,12 +1,14 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
+import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+
 import i18n from '../../../stores/i18n.store';
 
 import {Constants} from '../../../types/core/constants';
 
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
-import {getStorageService, StorageProvider} from '../../../providers/storage/storage.provider';
+import {getFiles} from '../../../providers/storage/storage.provider';
 import {StorageOfflineProvider} from '../../../providers/storage/storage.offline.provider';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
@@ -18,7 +20,6 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 export class AppCustomImages {
   @Element() el: HTMLElement;
 
-  private storageProvider: StorageProvider;
   private storageOfflineProvider: StorageOfflineProvider;
 
   private imageHistoryService: ImageHistoryService;
@@ -45,7 +46,6 @@ export class AppCustomImages {
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.storageProvider = getStorageService();
     this.storageOfflineProvider = StorageOfflineProvider.getInstance();
   }
 
@@ -96,7 +96,7 @@ export class AppCustomImages {
 
   private search(reset: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await this.storageProvider.getFiles(this.paginationNext, this.folder);
+      const list: StorageFilesList = await getFiles(this.paginationNext, this.folder);
 
       if (!list) {
         resolve();

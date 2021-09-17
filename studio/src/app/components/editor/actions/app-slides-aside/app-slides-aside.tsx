@@ -3,9 +3,9 @@ import {Component, Listen, h, Host, State, Prop, Event, EventEmitter, Element, W
 import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {debounce} from '@deckdeckgo/utils';
+import {deckSelector, slideTo, selectDeckSlide} from '@deckdeckgo/editor';
 
 import {isSlide} from '../../../../../../../utils/deck/src';
-import {deckSelector, slideTo, selectDeckSlide} from '../../../../utils/editor/deck.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
 
 @Component({

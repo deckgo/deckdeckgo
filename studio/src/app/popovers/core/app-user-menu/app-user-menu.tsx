@@ -2,13 +2,11 @@ import {Component, Element, Fragment, h} from '@stencil/core';
 
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import i18n from '../../../stores/i18n.store';
-import apiUserStore from '../../../stores/api.user.store';
 import userStore from '../../../stores/user.store';
 import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
-import {AuthProvider} from '../../../providers/auth/auth.provider';
-import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider';
+import {signOut} from '../../../providers/auth/auth.provider';
 
 @Component({
   tag: 'app-user-menu',
@@ -17,14 +15,8 @@ import {AuthFactoryProvider} from '../../../providers/auth/auth.factory.provider
 export class AppUserMenu {
   @Element() el: HTMLElement;
 
-  private readonly authProvider: AuthProvider;
-
-  constructor() {
-    this.authProvider = AuthFactoryProvider.getInstance();
-  }
-
-  private async signOut() {
-    await this.authProvider.signOut();
+  private async signUserOut() {
+    await signOut();
 
     await this.closePopover();
 
@@ -47,7 +39,7 @@ export class AppUserMenu {
       return undefined;
     }
 
-    const username: string | undefined = apiUserStore.state.apiUser?.username || userStore.state.user?.data?.username;
+    const username: string | undefined = userStore.state.user?.data?.username;
 
     if (!userStore.state.name && !username) {
       return undefined;
@@ -89,7 +81,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
+        <ion-item onClick={() => this.signUserOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

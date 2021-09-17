@@ -3,33 +3,25 @@ import {Component, Listen, State, h, Element} from '@stencil/core';
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
 
-import firebase from '@firebase/app';
-import '@firebase/auth';
-import {User as FirebaseUser} from '@firebase/auth-types';
+import {StorageFile} from '@deckdeckgo/editor';
+
+import {User} from '@deckdeckgo/editor';
 
 import errorStore from '../../../../stores/error.store';
 import navStore, {NavDirection} from '../../../../stores/nav.store';
 import authStore from '../../../../stores/auth.store';
 import userStore from '../../../../stores/user.store';
-import apiUserStore from '../../../../stores/api.user.store';
 import i18n from '../../../../stores/i18n.store';
-
-import {ApiUser} from '../../../../models/api/api.user';
-import {User} from '../../../../models/data/user';
 
 import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 
-import {ApiUserProvider} from '../../../../providers/api/user/api.user.provider';
-import {ApiUserFactoryProvider} from '../../../../providers/api/user/api.user.factory.provider';
-
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
-import {getUserService, UserProvider} from '../../../../providers/data/user/user.provider';
-import {getOnlineStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
-import {AuthProvider} from '../../../../providers/auth/auth.provider';
-import {AuthFactoryProvider} from '../../../../providers/auth/auth.factory.provider';
+import {updateUser} from '../../../../providers/data/user/user.provider';
+import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
+import {deleteAuth} from '../../../../providers/auth/auth.provider';
 
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
@@ -45,9 +37,6 @@ export class AppProfile {
   private user: User;
 
   @State()
-  private apiUser: ApiUser;
-
-  @State()
   private valid: boolean = true;
 
   private validUsername: boolean = true;
@@ -55,15 +44,7 @@ export class AppProfile {
   private validEmail: boolean = true;
 
   @State()
-  private apiUsername: string | undefined;
-
-  @State()
   private saving: boolean = false;
-
-  private readonly userProvider: UserProvider;
-  private readonly apiUserProvider: ApiUserProvider;
-  private readonly authProvider: AuthProvider;
-  private readonly storageOnlineProvider: StorageProvider;
 
   private imageHistoryService: ImageHistoryService;
 
@@ -96,18 +77,13 @@ export class AppProfile {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.apiUserProvider = ApiUserFactoryProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
-    this.userProvider = getUserService();
-    this.storageOnlineProvider = getOnlineStorageService();
-    this.authProvider = AuthFactoryProvider.getInstance();
   }
 
   async componentDidLoad() {
     this.destroyListener();
 
-    const promises: Promise<void>[] = [this.initUser(), this.initApiUser()];
-    await Promise.all(promises);
+    await this.initUser();
   }
 
   private async initUser() {
@@ -116,16 +92,6 @@ export class AppProfile {
     } else {
       this.destroyUserListener = userStore.onChange('user', async () => {
         await this.initUserData();
-      });
-    }
-  }
-
-  private async initApiUser() {
-    if (apiUserStore.state.apiUser) {
-      await this.initUsername();
-    } else {
-      this.destroyApiUserListener = apiUserStore.onChange('apiUser', async () => {
-        await this.initUsername();
       });
     }
   }
@@ -144,26 +110,12 @@ export class AppProfile {
     }
   }
 
-  private initUsername() {
-    if (!apiUserStore.state.apiUser || apiUserStore.state.apiUser === undefined || apiUserStore.state.apiUser.anonymous) {
-      return;
-    }
-
-    this.apiUser = apiUserStore.state.apiUser;
-
-    this.apiUsername = this.apiUser.username;
-
-    this.validateUsernameInput();
-  }
-
   private async initUserData() {
     if (!userStore.state.user || userStore.state.user === undefined || !userStore.state.user.data || userStore.state.user.data.anonymous) {
       return;
     }
 
     this.user = {...userStore.state.user};
-
-    this.apiUsername = userStore.state.user.data.username;
 
     this.validateNameInput();
     this.validateEmailInput();
@@ -194,19 +146,22 @@ export class AppProfile {
   }
 
   private handleUsernameInput($event: CustomEvent<KeyboardEvent>) {
-    this.apiUsername = ($event.target as InputTargetEvent).value;
+    this.user.data.username = ($event.target as InputTargetEvent).value;
   }
 
   private validateUsernameInput() {
     if (this.cloud === 'ic') {
       this.validUsername =
-        this.apiUsername === null || this.apiUsername === undefined || this.apiUsername === '' || UserUtils.validUsername(this.apiUsername);
+        this.user.data.username === null ||
+        this.user.data.username === undefined ||
+        this.user.data.username === '' ||
+        UserUtils.validUsername(this.user.data.username);
       this.isValid();
 
       return;
     }
 
-    this.validUsername = UserUtils.validUsername(this.apiUsername);
+    this.validUsername = UserUtils.validUsername(this.user.data.username);
     this.isValid();
   }
 
@@ -300,7 +255,6 @@ export class AppProfile {
         await this.uploadCustomLogo();
 
         await this.saveUser();
-        await this.saveApiUser();
 
         this.saving = false;
       } catch (err) {
@@ -314,49 +268,17 @@ export class AppProfile {
 
   private saveUser(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-      if (!this.valid || (!this.apiUser && this.cloud !== 'ic')) {
+      if (!this.valid) {
         resolve();
         return;
       }
 
       try {
-        await this.userProvider.update({
-          id: this.user.id,
-          data: {
-            ...this.user.data,
-            username: this.apiUsername
-          }
-        });
+        await updateUser(this.user);
 
         resolve();
       } catch (err) {
         reject("Your changes couldn't be saved");
-      }
-    });
-  }
-
-  private saveApiUser(): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (!this.valid || !this.apiUser) {
-        resolve();
-        return;
-      }
-
-      if (this.apiUsername === this.apiUser.username) {
-        resolve();
-        return;
-      }
-
-      this.apiUser.username = this.apiUsername;
-
-      try {
-        const token: string = await firebase.auth().currentUser.getIdToken();
-
-        await this.apiUserProvider.put(this.apiUser, token, this.apiUser.id);
-
-        resolve();
-      } catch (err) {
-        reject("Your username couldn't be saved");
       }
     });
   }
@@ -374,7 +296,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.profilePicture, 'avatars', 524288);
+        const storageFile: StorageFile = await uploadOnlineFile(this.profilePicture, 'avatars', 524288);
 
         if (storageFile) {
           this.user.data.photo_url = storageFile.downloadUrl;
@@ -405,7 +327,7 @@ export class AppProfile {
       }
 
       try {
-        const storageFile: StorageFile = await this.storageOnlineProvider.uploadFile(this.customLogo, 'images', 524288);
+        const storageFile: StorageFile = await uploadOnlineFile(this.customLogo, 'images', 524288);
 
         if (storageFile) {
           this.user.data.social.custom_logo_url = storageFile.downloadUrl;
@@ -422,7 +344,7 @@ export class AppProfile {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-user-delete',
       componentProps: {
-        username: this.apiUser?.username || this.apiUsername || 'deckdeckgo'
+        username: this.user.data.username || 'deckdeckgo'
       }
     });
 
@@ -442,7 +364,7 @@ export class AppProfile {
 
         await loading.present();
 
-        await this.deleteUserCloud();
+        await deleteAuth();
 
         await this.imageHistoryService.clear();
 
@@ -459,33 +381,6 @@ export class AppProfile {
           "Your user couldn't be deleted. Sign out and in again prior trying out again. If it still does not work, contact us per email.";
       }
     });
-  }
-
-  private async deleteUserCloud() {
-    if (this.cloud === 'ic') {
-      await this.userProvider.delete(authStore.state.authUser.uid);
-
-      await this.authProvider.signOut();
-
-      return;
-    }
-
-    const firebaseUser: FirebaseUser = firebase.auth().currentUser;
-
-    if (!firebaseUser) {
-      return;
-    }
-
-    // We need the user token to access the API, therefore delete it here first
-    const token: string = await firebase.auth().currentUser.getIdToken();
-    await this.apiUserProvider.delete(this.apiUser.id, token);
-
-    // Then delete the user
-    await this.userProvider.delete(authStore.state.authUser.uid);
-
-    // Decks and slides are delete with a cloud function triggered on auth.delete
-
-    await firebaseUser.delete();
   }
 
   private async selectProfilePicture() {
@@ -620,7 +515,7 @@ export class AppProfile {
       </ion-item>,
       <ion-item>
         <ion-input
-          value={this.apiUsername}
+          value={this.user && this.user.data ? this.user.data.username : undefined}
           debounce={500}
           minlength={3}
           maxlength={32}
@@ -634,23 +529,14 @@ export class AppProfile {
   }
 
   private renderSubmitForm() {
-    const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
-
     return (
-      <ion-button
-        type="submit"
-        class="ion-margin-top"
-        disabled={!this.valid || this.saving || !validApiUser || !this.user}
-        color="primary"
-        shape="round">
+      <ion-button type="submit" class="ion-margin-top" disabled={!this.valid || this.saving || !this.user} color="primary" shape="round">
         <ion-label>{i18n.state.core.submit}</ion-label>
       </ion-button>
     );
   }
 
   private renderDangerZone() {
-    const validApiUser: boolean = !this.apiUser || this.cloud === 'ic';
-
     return [
       <h1 class="danger-zone">{i18n.state.settings.danger_zone}</h1>,
       <p>{i18n.state.settings.no_way_back}</p>,
@@ -659,7 +545,7 @@ export class AppProfile {
         shape="round"
         fill="outline"
         onClick={() => this.presentConfirmDelete()}
-        disabled={this.saving || !validApiUser || !authStore.state.authUser}>
+        disabled={this.saving || !authStore.state.authUser}>
         <ion-label>{i18n.state.settings.delete_user}</ion-label>
       </ion-button>
     ];

@@ -6,9 +6,9 @@ Beside the [infra](https://github.com/deckgo/deckdeckgo/tree/main/infra) and cod
 
 We are using `npm` **>= v7**.
 
-### Web Components, Templates and Utils
+### Web Components, Templates, Providers and Utils
 
-The [webcomponents](https://github.com/deckgo/deckdeckgo/tree/main/webcomponents), [templates](https://github.com/deckgo/deckdeckgo/tree/main/templates) and [utils](https://github.com/deckgo/deckdeckgo/tree/main/templates) are npm [workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/).
+The [webcomponents](https://github.com/deckgo/deckdeckgo/tree/main/webcomponents), [templates](https://github.com/deckgo/deckdeckgo/tree/main/templates), [providers](https://github.com/deckgo/deckdeckgo/tree/main/providers) and [utils](https://github.com/deckgo/deckdeckgo/tree/main/templates) are npm [workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/).
 
 To get the repo and install the dependencies run:
 

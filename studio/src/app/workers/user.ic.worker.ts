@@ -1,8 +1,8 @@
 import {Identity} from '@dfinity/agent';
 
-import {_SERVICE as UserActor, User as UserIc, UserId__1 as UserId, UserSocial as UserSocialIc} from '../canisters/users/users.did';
+import {User} from '@deckdeckgo/editor';
 
-import {User} from '../models/data/user';
+import {_SERVICE as UserActor, User as UserIc, UserId__1 as UserId, UserSocial as UserSocialIc} from '../canisters/users/users.did';
 
 import {CanisterUtils} from '../utils/editor/canister.utils';
 import {initSlidesActor} from '../utils/core/ic.slide.utils';

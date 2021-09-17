@@ -1,7 +1,7 @@
 import {createStore} from '@stencil/store';
 
-import {Deck} from '../models/data/deck';
-import {UserSocial} from '../models/data/user';
+import {Deck} from '@deckdeckgo/editor';
+import {UserSocial} from '@deckdeckgo/editor';
 
 export interface ShareData {
   deck: Deck | null;

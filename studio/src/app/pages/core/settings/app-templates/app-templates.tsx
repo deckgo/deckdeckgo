@@ -2,45 +2,38 @@ import {Component, Fragment, h, State} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
 
+import {Template, AuthUser} from '@deckdeckgo/editor';
+
 import authStore from '../../../../stores/auth.store';
 import errorStore from '../../../../stores/error.store';
 import templatesStore from '../../../../stores/templates.store';
 import i18n from '../../../../stores/i18n.store';
 
-import {Template} from '../../../../models/data/template';
-import {AuthUser} from '../../../../models/auth/auth.user';
-
 import {signIn} from '../../../../utils/core/signin.utils';
-
-import {TemplateProvider} from '../../../../providers/data/template/template.provider';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
 import {modalController} from '../../../../utils/ionic/ionic.overlay';
+
+import {createUserTemplate, initTemplates, updateTemplate} from '../../../../providers/data/template/template.provider';
 
 @Component({
   tag: 'app-templates',
   styleUrl: 'app-templates.scss'
 })
 export class AppTemplates {
-  private templateProvider: TemplateProvider;
-
   private destroyListener;
 
   @State()
   private loading: boolean = false;
 
-  constructor() {
-    this.templateProvider = TemplateProvider.getInstance();
-  }
-
   async componentDidLoad() {
     this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
-      await this.initTemplates();
+      await this.initUserTemplates();
     });
 
-    await this.initTemplates();
+    await this.initUserTemplates();
   }
 
-  private async initTemplates() {
+  private async initUserTemplates() {
     if (!authStore.state.authUser) {
       return;
     }
@@ -50,7 +43,7 @@ export class AppTemplates {
     try {
       this.loading = true;
 
-      await this.templateProvider.init();
+      await initTemplates();
     } catch (err) {
       errorStore.state.error = 'Templates can not be fetched.';
     }
@@ -79,14 +72,14 @@ export class AppTemplates {
   private async createOrUpdateTemplate(template: Template) {
     try {
       if (template.id) {
-        const updatedTemplate: Template = await this.templateProvider.update(template);
+        const updatedTemplate: Template = await updateTemplate(template);
         templatesStore.state.user = [
           ...templatesStore.state.user.map((mapTemplate: Template) =>
             mapTemplate.id === updatedTemplate.id ? updatedTemplate : mapTemplate
           )
         ];
       } else {
-        const createdTemplate: Template = await this.templateProvider.create(template.data);
+        const createdTemplate: Template = await createUserTemplate(template.data);
         templatesStore.state.user = [createdTemplate, ...templatesStore.state.user];
       }
     } catch (err) {

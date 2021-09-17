@@ -1,21 +1,21 @@
-import {Slide} from '../../../models/data/slide';
+import {Slide, GetSlide} from '@deckdeckgo/editor';
 
 import {SlideIcProvider} from './slide.ic.provider';
-import {SlideFirebaseProvider} from './slide.firebase.provider';
 import {SlideOfflineProvider} from './slide.offline.provider';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentAppConfig} from '../../../types/core/environment-config';
+import {firebase, internetComputer} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
-export interface SlideProvider {
-  get(deckId: string, slideId: string): Promise<Slide>;
-}
+export const getSlide = async (deckId: string, slideId: string): Promise<Slide> => {
+  if (internetComputer()) {
+    return SlideIcProvider.getInstance().get(deckId, slideId);
+  }
 
-export const getSlideService = (): SlideProvider => {
-  const {cloud} = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app');
-  return cloud === 'ic'
-    ? SlideIcProvider.getInstance()
-    : cloud === 'firebase'
-    ? SlideFirebaseProvider.getInstance()
-    : SlideOfflineProvider.getInstance();
+  if (firebase()) {
+    const {getSlide: getUserSlide}: {getSlide: GetSlide} = await provider<{getSlide: GetSlide}>();
+
+    return getUserSlide(deckId, slideId);
+  }
+
+  return SlideOfflineProvider.getInstance().get(deckId, slideId);
 };

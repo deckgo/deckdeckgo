@@ -2,9 +2,9 @@ import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/co
 
 import type {OverlayEventDetail} from '@ionic/core';
 
-import i18n from '../../../../../stores/i18n.store';
+import {SlideAttributes, SlideSplitType, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
 
-import {SlideAttributes, SlideSplitType, SlideTemplate} from '../../../../../models/data/slide';
+import i18n from '../../../../../stores/i18n.store';
 
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';

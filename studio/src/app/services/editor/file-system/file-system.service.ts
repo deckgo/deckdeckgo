@@ -5,8 +5,8 @@ import {get, getMany} from 'idb-keyval';
 import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
 
-import {Deck} from '../../../models/data/deck';
-import {Slide} from '../../../models/data/slide';
+import {Deck} from '@deckdeckgo/editor';
+import {Slide} from '@deckdeckgo/editor';
 
 import {ImportAsset, ImportData, importEditorAssets, importEditorData} from '../../../utils/editor/import.utils';
 import {

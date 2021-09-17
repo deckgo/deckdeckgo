@@ -4,7 +4,7 @@ import {v4 as uuid} from 'uuid';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
-import {SlideTemplate} from '../../models/data/slide';
+import {SlideTemplate} from '@deckdeckgo/editor';
 
 import {getAttributes} from './attributes.utils';
 import {InitTemplate} from './create-slides.utils';

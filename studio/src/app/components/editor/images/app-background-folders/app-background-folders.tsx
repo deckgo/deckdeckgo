@@ -1,8 +1,10 @@
 import {h, Component, State, Event, EventEmitter} from '@stencil/core';
 
+import {StorageFolder, StorageFoldersList} from '@deckdeckgo/editor';
+
 import i18n from '../../../../stores/i18n.store';
 
-import {getStorageService, StorageProvider} from '../../../../providers/storage/storage.provider';
+import {getFolders} from '../../../../providers/storage/storage.provider';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
 
@@ -20,18 +22,12 @@ export class AppBackgroundFolders {
   @Event()
   private selectFolder: EventEmitter<string>;
 
-  private storageProvider: StorageProvider;
-
-  constructor() {
-    this.storageProvider = getStorageService();
-  }
-
   async componentWillLoad() {
     await this.initFolders();
   }
 
   private async initFolders() {
-    const storage: StorageFoldersList | undefined = await this.storageProvider.getFolders('backgrounds');
+    const storage: StorageFoldersList | undefined = await getFolders('backgrounds');
 
     const rootFolder: StorageFolder[] = [{name: 'images'}];
 

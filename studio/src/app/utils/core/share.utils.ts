@@ -1,10 +1,9 @@
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
-import i18n from '../../stores/i18n.store';
+import {Deck, UserSocial} from '@deckdeckgo/editor';
 
-import {Deck} from '../../models/data/deck';
-import {UserSocial} from '../../models/data/user';
+import i18n from '../../stores/i18n.store';
 
 import {i18nFormat} from './i18n.utils';
 

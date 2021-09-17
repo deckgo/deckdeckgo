@@ -1,8 +1,8 @@
 import {createStore} from '@stencil/store';
 
-import {PlatformProvider} from '../providers/data/platform/platform.provider';
+import {Token} from '@deckdeckgo/editor';
 
-import {Token} from '../models/data/token';
+import {mergePlatformToken} from '../providers/data/platform/platform.provider';
 
 interface TokenStore {
   token: Token | undefined;
@@ -13,7 +13,7 @@ const {state, onChange} = createStore({
 } as TokenStore);
 
 onChange('token', async (token: Token | undefined) => {
-  await PlatformProvider.getInstance().merge(token);
+  await mergePlatformToken(token);
 });
 
 export default {state, onChange};

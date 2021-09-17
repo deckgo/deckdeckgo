@@ -1,118 +1,61 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import {Template, TemplateData, GetUserTemplates, CreateTemplate, UpdateTemplate} from '@deckdeckgo/editor';
 
-import templatesStore from '../../../stores/templates.store';
 import authStore from '../../../stores/auth.store';
+import templatesStore from '../../../stores/templates.store';
 
-import {Template, TemplateData} from '../../../models/data/template';
-import {firebase as firebaseEnabled} from '../../../utils/core/environment.utils';
+import {firebase} from '../../../utils/core/environment.utils';
+import {provider} from '../../../utils/core/providers.utils';
 
-export class TemplateProvider {
-  private static instance: TemplateProvider;
-
-  private constructor() {
-    // Private constructor, singleton
+export const initTemplates = async () => {
+  if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
+    return;
   }
 
-  static getInstance() {
-    if (!TemplateProvider.instance) {
-      TemplateProvider.instance = new TemplateProvider();
-    }
-    return TemplateProvider.instance;
+  if (templatesStore.state.user?.length > 0) {
+    return;
   }
 
-  async init() {
-    if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
-      return;
-    }
+  // TODO: Template for Internet Computer
 
-    if (templatesStore.state.user?.length > 0) {
-      return;
-    }
+  if (!firebase()) {
+    return;
+  }
 
-    if (!firebaseEnabled()) {
-      return;
+  try {
+    const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await provider<{getUserTemplates: GetUserTemplates}>();
+
+    const templates: Template[] = await getUserTemplates(authStore.state.authUser?.uid);
+
+    if (!templates) {
+      return undefined;
     }
 
-    try {
-      const templates: Template[] = await this.getUserTemplates();
+    templatesStore.state.user = [...templates];
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-      if (!templates) {
-        return undefined;
-      }
+export const createUserTemplate = async (templateData: TemplateData): Promise<Template | undefined> => {
+  // TODO: Template for Internet Computer
 
-      templatesStore.state.user = [...templates];
-    } catch (err) {
-      console.error(err);
-    }
+  if (!firebase()) {
+    throw new Error('Template cannot be created. Not supported.');
   }
 
-  private getUserTemplates(): Promise<Template[]> {
-    return new Promise<Template[]>(async (resolve, reject) => {
-      try {
-        const firestore: firebase.firestore.Firestore = firebase.firestore();
+  const {createTemplate}: {createTemplate: CreateTemplate} = await provider<{createTemplate: CreateTemplate}>();
 
-        const userId: string = authStore.state.authUser.uid;
+  return createTemplate(templateData);
+};
 
-        const snapshot: firebase.firestore.QuerySnapshot = await firestore
-          .collection('templates')
-          .where('owner_id', '==', userId)
-          .orderBy('updated_at', 'desc')
-          .get();
+export const updateTemplate = async (template: Template): Promise<Template | undefined> => {
+  // TODO: Template for Internet Computer
 
-        const templates: Template[] = snapshot.docs.map((documentSnapshot: firebase.firestore.QueryDocumentSnapshot) => {
-          return {
-            id: documentSnapshot.id,
-            data: documentSnapshot.data() as TemplateData
-          };
-        });
-
-        resolve(templates);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  if (!firebase()) {
+    throw new Error('Template cannot be updated. Not supported.');
   }
 
-  create(templateData: TemplateData): Promise<Template> {
-    return new Promise<Template>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
+  const {updateTemplate}: {updateTemplate: UpdateTemplate} = await provider<{updateTemplate: UpdateTemplate}>();
 
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      templateData.created_at = now;
-      templateData.updated_at = now;
-
-      firestore
-        .collection('templates')
-        .add(templateData)
-        .then(
-          async (doc: firebase.firestore.DocumentReference) => {
-            resolve({
-              id: doc.id,
-              data: templateData
-            });
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
-  }
-
-  update(template: Template): Promise<Template> {
-    return new Promise<Template>(async (resolve, reject) => {
-      const firestore: firebase.firestore.Firestore = firebase.firestore();
-
-      const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
-      template.data.updated_at = now;
-
-      try {
-        await firestore.collection('templates').doc(template.id).set(template.data, {merge: true});
-
-        resolve(template);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-}
+  return updateTemplate(template);
+};

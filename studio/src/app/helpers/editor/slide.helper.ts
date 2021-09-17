@@ -1,28 +1,25 @@
 import {JSX} from '@stencil/core';
 
+import {Slide, Deck} from '@deckdeckgo/editor';
+
 import store from '../../stores/deck.store';
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
 
-import {Slide} from '../../models/data/slide';
-import {Deck} from '../../models/data/deck';
-
 import {ParseSlidesUtils} from '../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../utils/editor/template.utils';
 
-import {TemplateProvider} from '../../providers/data/template/template.provider';
 import {DeckOfflineProvider} from '../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../providers/data/slide/slide.offline.provider';
+import {initTemplates} from '../../providers/data/template/template.provider';
 
 export class SlideHelper {
   private deckOfflineProvider: DeckOfflineProvider;
   private slideOfflineProvider: SlideOfflineProvider;
-  private templateProvider: TemplateProvider;
 
   constructor() {
     this.slideOfflineProvider = SlideOfflineProvider.getInstance();
     this.deckOfflineProvider = DeckOfflineProvider.getInstance();
-    this.templateProvider = TemplateProvider.getInstance();
   }
 
   loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
@@ -51,7 +48,7 @@ export class SlideHelper {
           return;
         }
 
-        await this.templateProvider.init();
+        await initTemplates();
 
         const promises: Promise<any>[] = [];
         deck.data.slides.forEach((slideId: string) => {

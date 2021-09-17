@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import {SyncState} from '../types/editor/sync';
+import {SyncState} from '@deckdeckgo/editor';
 
 interface SyncStore {
   sync: SyncState;

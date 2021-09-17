@@ -2,15 +2,11 @@ import {v4 as uuid} from 'uuid';
 
 import {get, set} from 'idb-keyval';
 
-import {Deck, DeckAttributes, DeckData} from '../../../models/data/deck';
+import {Deck, DeckData} from '@deckdeckgo/editor';
 
-import {OfflineUtils} from '../../../utils/editor/offline.utils';
-import {FirestoreUtils} from '../../../utils/editor/firestore.utils';
 import {syncUpdateDeck} from '../../../utils/editor/sync.utils';
 
-import {DeckProvider} from './deck.provider';
-
-export class DeckOfflineProvider implements DeckProvider {
+export class DeckOfflineProvider {
   private static instance: DeckOfflineProvider;
 
   private constructor() {
@@ -73,20 +69,6 @@ export class DeckOfflineProvider implements DeckProvider {
 
         deck.data.updated_at = new Date();
 
-        if (deck.data.background && FirestoreUtils.shouldAttributeBeCleaned(deck.data.background)) {
-          deck.data.background = null;
-        }
-
-        if (deck.data.header && FirestoreUtils.shouldAttributeBeCleaned(deck.data.header)) {
-          deck.data.header = null;
-        }
-
-        if (deck.data.footer && FirestoreUtils.shouldAttributeBeCleaned(deck.data.footer)) {
-          deck.data.footer = null;
-        }
-
-        deck.data.attributes = (await OfflineUtils.cleanAttributes(deck.data.attributes)) as DeckAttributes;
-
         await set(`/decks/${deck.id}`, deck);
 
         await syncUpdateDeck(deck.id);
@@ -98,12 +80,10 @@ export class DeckOfflineProvider implements DeckProvider {
     });
   }
 
-  // @Override
   async entries(_userId: string): Promise<Deck[]> {
     throw new Error('Not implemented');
   }
 
-  // @Override
   delete(_deckId: string): Promise<void> {
     throw new Error('Not implemented');
   }

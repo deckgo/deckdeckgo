@@ -2,9 +2,9 @@ import {Component, h, Host, Listen, State, Event, EventEmitter, Element, Prop} f
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {debounce, isIOS, isLandscape} from '@deckdeckgo/utils';
+import {selectSlide} from '@deckdeckgo/editor';
 
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
-import {selectSlide} from '../../../../utils/editor/deck.utils';
 
 @Component({
   tag: 'app-slide-preview',

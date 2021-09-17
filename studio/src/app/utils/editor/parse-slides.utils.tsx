@@ -4,12 +4,12 @@ import {v4 as uuid} from 'uuid';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
+import {Slide, SlideTemplate, SlideScope, Deck} from '@deckdeckgo/editor';
+
 import {ParseElementsUtils} from './parse-elements.utils';
 
 import {QRCodeUtils} from './qrcode.utils';
 
-import {Slide, SlideTemplate, SlideScope} from '../../models/data/slide';
-import {Deck} from '../../models/data/deck';
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 

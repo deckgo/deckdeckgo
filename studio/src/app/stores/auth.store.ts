@@ -1,6 +1,6 @@
 import {createStore} from '@stencil/store';
 
-import {AuthUser} from '../models/auth/auth.user';
+import {AuthUser} from '@deckdeckgo/editor';
 
 interface AuthStore {
   authUser: AuthUser | null;

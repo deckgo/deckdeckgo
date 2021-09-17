@@ -1,21 +1,18 @@
 import {Identity} from '@dfinity/agent';
 
+import {User} from '@deckdeckgo/editor';
+
 import {UserSocial as UserSocialIc, User as UserIc} from '../../../canisters/users/users.did';
 
 import store from '../../../stores/user.store';
 
 import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
-import {User} from '../../../models/data/user';
-
-import {UserProvider} from './user.provider';
-
-import {AuthFactoryProvider} from '../../auth/auth.factory.provider';
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
 import {initSlidesActor} from '../../../utils/core/ic.slide.utils';
 
-export class UserIcProvider implements UserProvider {
+export class UserIcProvider {
   private static instance: UserIcProvider;
 
   private constructor() {
@@ -29,9 +26,8 @@ export class UserIcProvider implements UserProvider {
     return UserIcProvider.instance;
   }
 
-  // @Override
   async update(user: User): Promise<void> {
-    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
     if (!identity) {
       return;
@@ -77,9 +73,8 @@ export class UserIcProvider implements UserProvider {
     };
   }
 
-  // @Override
   async delete(_userId: string): Promise<void> {
-    const identity: Identity | undefined = (AuthFactoryProvider.getInstance() as AuthIcProvider).getIdentity();
+    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
 
     if (!identity) {
       return;

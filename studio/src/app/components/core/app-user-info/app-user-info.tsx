@@ -2,7 +2,6 @@ import {Component, Prop, h} from '@stencil/core';
 
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
-import apiUserStore from '../../../stores/api.user.store';
 
 @Component({
   tag: 'app-user-info',
@@ -48,7 +47,7 @@ export class AppUserInfo {
   }
 
   private renderUsername() {
-    const username: string | undefined = apiUserStore.state.apiUser?.username || userStore.state.user?.data?.username;
+    const username: string | undefined = userStore.state.user?.data?.username;
 
     if (!username || authStore.state.anonymous) {
       return undefined;

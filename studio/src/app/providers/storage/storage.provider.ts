@@ -1,30 +1,81 @@
+import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
+
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 
-import {EnvironmentAppConfig} from '../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
 import {StorageIcProvider} from './storage.ic.provider';
-import {StorageFirebaseProvider} from './storage.firebase.provider';
 import {StorageOfflineProvider} from './storage.offline.provider';
 
-export interface StorageProvider {
-  uploadFile(data: File, folder: string, maxSize: number, downloadUrl?: boolean): Promise<StorageFile | undefined>;
+import {firebase, internetComputer} from '../../utils/core/environment.utils';
+import {provider} from '../../utils/core/providers.utils';
 
-  getFiles(next: string | null, folder: string): Promise<StorageFilesList | null>;
+import {Constants} from '../../types/core/constants';
 
-  getFolders(folder: string): Promise<StorageFoldersList | undefined>;
-}
-
-export const getStorageService = (): StorageProvider => {
-  if (authStore.state.loggedIn && offlineStore.state.online) {
-    return getOnlineStorageService();
+export const uploadOnlineFile = async (
+  data: File,
+  folder: string,
+  maxSize: number,
+  downloadUrl?: boolean
+): Promise<StorageFile | undefined> => {
+  if (internetComputer()) {
+    return StorageIcProvider.getInstance().uploadFile(data, folder, maxSize);
   }
 
-  return StorageOfflineProvider.getInstance();
+  if (firebase()) {
+    const {uploadFile}: {uploadFile: UploadFile} = await provider<{uploadFile: UploadFile}>();
+
+    return uploadFile({
+      data,
+      folder,
+      maxSize,
+      downloadUrl,
+      userId: authStore.state.authUser.uid
+    });
+  }
+
+  throw new Error('No provider to upload file online.');
 };
 
-export const getOnlineStorageService = (): StorageProvider => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-  return cloud === 'ic' ? StorageIcProvider.getInstance() : StorageFirebaseProvider.getInstance();
+export const getFiles = async (next: string | null, folder: string): Promise<StorageFilesList | null> => {
+  if (!authStore.state.loggedIn || !offlineStore.state.online) {
+    return StorageOfflineProvider.getInstance().getFiles(folder);
+  }
+
+  if (internetComputer()) {
+    return StorageIcProvider.getInstance().getFiles(next, folder);
+  }
+
+  if (firebase()) {
+    const {getFiles}: {getFiles: GetFiles} = await provider<{getFiles: GetFiles}>();
+
+    return getFiles({
+      next,
+      maxResults: Constants.STORAGE.MAX_QUERY_RESULTS,
+      folder,
+      userId: authStore.state.authUser.uid
+    });
+  }
+
+  return StorageOfflineProvider.getInstance().getFiles(folder);
+};
+
+export const getFolders = async (folder: string): Promise<StorageFoldersList | undefined> => {
+  if (!authStore.state.loggedIn || !offlineStore.state.online) {
+    return StorageOfflineProvider.getInstance().getFolders();
+  }
+
+  if (internetComputer()) {
+    return StorageIcProvider.getInstance().getFolders(folder);
+  }
+
+  if (firebase()) {
+    const {getFolders}: {getFolders: GetFolders} = await provider<{getFolders: GetFolders}>();
+
+    return getFolders({
+      folder,
+      userId: authStore.state.authUser.uid
+    });
+  }
+
+  return StorageOfflineProvider.getInstance().getFolders();
 };
