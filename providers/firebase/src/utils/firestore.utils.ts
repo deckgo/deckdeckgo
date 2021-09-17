@@ -1,4 +1,5 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 export const filterFieldDelete = <T>(obj: T | null, replaceWithNull: boolean = false): T | null => {
   if (!obj) {
