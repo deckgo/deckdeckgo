@@ -1,11 +1,12 @@
 @use "../../../../global/theme/mixins/deck";
 @use "../../../../global/theme/mixins/dashboard";
+@use "../../../../global/theme/mixins/page";
 
 app-dashboard {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 
   main {
-    background: white;
+    @include page.input-colors;
 
     ion-router-link {
       padding-right: 4px;
@@ -61,8 +62,6 @@ app-dashboard {
     }
 
     ion-searchbar[class*="sc-ion-searchbar"] {
-      --background: var(--ion-color-light);
-      background: var(--ion-color-light);
       border: 1px solid #dedede;
       border-radius: 4px;
 

@@ -1,8 +1,9 @@
 @use "../../../../../global/theme/mixins/dashboard";
+@use "../../../../../global/theme/mixins/page";
 
 app-templates {
   main {
-    background: white;
+    @include page.input-colors;
 
     div.action {
       width: 100%;

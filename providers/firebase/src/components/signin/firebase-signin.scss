@@ -1,6 +1,10 @@
 deckgo-firebase-signin {
   display: block;
 
+  .firebaseui-container {
+    background: transparent;
+  }
+
   form button {
     &.firebaseui-idp-password,
     &.firebaseui-idp-password:hover {

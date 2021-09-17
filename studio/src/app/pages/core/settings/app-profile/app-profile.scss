@@ -1,6 +1,8 @@
+@use "../../../../../global/theme/mixins/page";
+
 app-profile {
   main {
-    background: white;
+    @include page.input-colors;
 
     ion-router-link {
       cursor: pointer;
