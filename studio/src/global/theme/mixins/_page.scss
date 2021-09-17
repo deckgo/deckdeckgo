@@ -1,0 +1,24 @@
+@mixin input-colors {
+  --ion-item-background: transparent;
+
+  ion-item.item-input,
+  div.item-input {
+    ion-input[class*="sc-ion-input"],
+    ion-textarea[class*="sc-ion-textarea"] {
+      --background: white;
+      background: white;
+    }
+  }
+
+  ion-searchbar[class*="sc-ion-searchbar"] {
+    --background: white;
+    background: white;
+  }
+
+  ion-item.item-select {
+    ion-select {
+      padding: 8px;
+      background: white;
+    }
+  }
+}

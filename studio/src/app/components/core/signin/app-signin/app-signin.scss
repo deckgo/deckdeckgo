@@ -1,6 +1,9 @@
+@use "../../../../../global/theme/mixins/page";
+
 app-signin {
   main {
-    background: white;
+    @include page.input-colors;
+
     position: relative;
 
     ion-buttons.back {

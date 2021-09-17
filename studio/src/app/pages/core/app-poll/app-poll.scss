@@ -1,8 +1,8 @@
+@use "../../../../global/theme/mixins/page";
+
 app-poll {
   main {
-    background: white;
-    --ion-background-color: white;
-    --ion-border-color: white;
+    @include page.input-colors;
 
     min-height: 100%;
 
@@ -16,6 +16,7 @@ app-poll {
       ion-item.item {
         --padding-start: 0;
         --ripple-color: var(--ion-color-primary);
+        --border-color: transparent;
 
         ion-label[class*="sc-ion-label"] {
           white-space: normal;

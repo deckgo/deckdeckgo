@@ -1,6 +1,8 @@
+@use "../../../../../global/theme/mixins/page";
+
 app-customization {
   main {
-    background: white;
+    @include page.input-colors;
 
     ion-list.dark-light-list {
       padding-bottom: 0;

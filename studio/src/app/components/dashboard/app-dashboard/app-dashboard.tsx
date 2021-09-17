@@ -25,6 +25,8 @@ import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {loadingController} from '../../../utils/ionic/ionic.overlay';
 import {initTemplates} from '../../../providers/data/template/template.provider';
+import {formatDate} from '../../../utils/core/date.utils';
+import {debounce} from '@deckdeckgo/utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -46,6 +48,11 @@ export class AppDashboard {
   @State()
   private loading: boolean;
 
+  @State()
+  private decksLoading: boolean = true;
+
+  private readonly debounceDecksLoading: () => void;
+
   private decks: DeckAndFirstSlide[] = null;
 
   private readonly deckDashboardService: DeckDashboardService;
@@ -59,6 +66,10 @@ export class AppDashboard {
 
   constructor() {
     this.deckDashboardService = DeckDashboardService.getInstance();
+
+    this.debounceDecksLoading = debounce(async () => {
+      this.decksLoading = false;
+    }, 150);
   }
 
   async componentWillLoad() {
@@ -270,8 +281,10 @@ export class AppDashboard {
     }
   }
 
-  private async blockSlide($event: CustomEvent) {
+  private async onSlidesDidLoad($event: CustomEvent) {
     await ($event?.target as HTMLDeckgoDeckElement).blockSlide(true);
+
+    this.debounceDecksLoading();
   }
 
   private async navigateDeck(deck: DeckAndFirstSlide) {
@@ -520,7 +533,7 @@ export class AppDashboard {
 
   private renderDecks() {
     if (this.filteredDecks && this.filteredDecks.length > 0) {
-      return <div class="container">{this.renderDecksCards()}</div>;
+      return <div class={`container ${this.decksLoading ? 'loading' : ''}`}>{this.renderDecksCards()}</div>;
     } else {
       return undefined;
     }
@@ -533,17 +546,28 @@ export class AppDashboard {
       }
 
       return (
-        <ion-card class="item ion-no-margin" onClick={() => this.navigateDeck(deck)} key={deck.deck.id}>
-          {this.renderDeck(deck)}
-
+        <article key={deck.deck.id} onClick={() => this.navigateDeck(deck)}>
           <app-dashboard-deck-actions
             deck={deck.deck}
             cloud={this.cloud}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
             onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
-        </ion-card>
+
+          <ion-card class="item ion-no-margin">{this.renderDeck(deck)}</ion-card>
+
+          {this.renderDeckInfo(deck)}
+        </article>
       );
     });
+  }
+
+  private renderDeckInfo(deck: DeckAndFirstSlide) {
+    return (
+      <aside>
+        <p>{deck.deck.data.name}</p>
+        <p>{formatDate(deck.deck.data.updated_at)}</p>
+      </aside>
+    );
   }
 
   private renderDeck(deck: DeckAndFirstSlide) {
@@ -557,7 +581,7 @@ export class AppDashboard {
           direction="horizontal"
           direction-mobile="horizontal"
           style={deck.style}
-          onSlidesDidLoad={($event: CustomEvent) => this.blockSlide($event)}>
+          onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
           {deck.slide}
           {deck.background}
           {deck.header}

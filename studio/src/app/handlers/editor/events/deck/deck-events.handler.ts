@@ -26,7 +26,7 @@ import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {Utils} from '../../../../utils/core/utils';
+import {now} from '../../../../utils/core/date.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';
@@ -268,7 +268,7 @@ export class DeckEventsHandler {
     return new Promise<Deck>(async (resolve, reject) => {
       try {
         let deck: DeckData = {
-          name: `Presentation ${await Utils.getNow()}`,
+          name: `Presentation ${now()}`,
           owner_id: authStore.state.authUser?.uid
         };
 

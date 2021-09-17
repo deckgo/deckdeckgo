@@ -1,11 +1,12 @@
 @use "../../../../global/theme/mixins/deck";
 @use "../../../../global/theme/mixins/dashboard";
+@use "../../../../global/theme/mixins/page";
 
 app-dashboard {
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 
   main {
-    background: white;
+    @include page.input-colors;
 
     ion-router-link {
       padding-right: 4px;
@@ -22,6 +23,36 @@ app-dashboard {
       cursor: pointer;
     }
 
+    div.container.loading {
+      article {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+
+    article {
+      cursor: pointer;
+
+      visibility: visible;
+      opacity: 1;
+
+      transition: opacity 0.1s ease-out;
+
+      aside {
+        font-size: var(--font-size-small);
+
+        p:first-of-type {
+          margin: 16px 0 4px;
+          font-weight: 700;
+        }
+
+        p:last-of-type {
+          margin: 2px 0;
+          font-size: var(--font-size-very-small);
+        }
+      }
+    }
+
     deckgo-deck {
       background: white;
 
@@ -31,8 +62,6 @@ app-dashboard {
     }
 
     ion-searchbar[class*="sc-ion-searchbar"] {
-      --background: var(--ion-color-light);
-      background: var(--ion-color-light);
       border: 1px solid #dedede;
       border-radius: 4px;
 
@@ -49,12 +78,6 @@ app-dashboard {
         height: calc(var(--card-width) * 9 / 16);
 
         cursor: pointer;
-
-        app-dashboard-deck-actions {
-          position: absolute;
-          top: 4px;
-          right: 4px;
-        }
 
         div.spinner {
           width: var(--slide-width);
