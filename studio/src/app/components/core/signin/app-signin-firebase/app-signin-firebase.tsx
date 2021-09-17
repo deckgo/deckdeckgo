@@ -1,5 +1,7 @@
 import {Component, Event, h, Fragment, EventEmitter} from '@stencil/core';
 
+import {injectJS} from '@deckdeckgo/editor';
+
 import type {UserCredential, OAuthCredential} from '@firebase/auth-types';
 
 import navStore, {NavDirection} from '../../../../stores/nav.store';
@@ -13,7 +15,6 @@ import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-co
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 import {AppIcon} from '../../app-icon/app-icon';
-import {Utils} from '../../../../utils/core/utils';
 
 @Component({
   tag: 'app-signin-firebase'
@@ -37,7 +38,7 @@ export class AppSignInFirebase {
   async componentDidLoad() {
     this.inProgress.emit(false);
 
-    await Utils.injectJS({
+    await injectJS({
       id: 'deckgo-firebase',
       src: 'http://localhost:3335/build/deckdeckgo-firebase.esm.js',
       module: true
