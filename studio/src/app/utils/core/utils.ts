@@ -1,5 +1,3 @@
-import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
-
 export interface InjectScript {
   id: string;
   src: string;
@@ -51,23 +49,6 @@ export class Utils {
       link.addEventListener('error', () => reject('Error loading css.'), {once: true});
       link.addEventListener('abort', () => reject('CSS loading aborted.'), {once: true});
       document.head.appendChild(link);
-    });
-  }
-
-  static getNow(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      const options: DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      };
-      const now: string = new Intl.DateTimeFormat('en-US', options).format(new Date());
-
-      resolve(now.replace(/,/g, '').replace(/:/g, '-'));
     });
   }
 }

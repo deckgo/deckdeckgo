@@ -12,10 +12,14 @@
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
 
-  width: 2rem;
-  height: 2rem;
+  width: 1.4rem;
+  height: 1.4rem;
 
-  margin: 4px;
+  margin: 4px 6px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
 
   display: flex;
   align-items: center;
