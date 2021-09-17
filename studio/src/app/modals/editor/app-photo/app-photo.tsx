@@ -1,6 +1,6 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {UnsplashPhoto, GetUnsplashPhotos, UnsplashSearchResponse, RegisterUnsplashDownload} from '@deckdeckgo/editor';
+import {UnsplashPhoto, UnsplashSearchResponse} from '@deckdeckgo/editor';
 
 import i18n from '../../../stores/i18n.store';
 
@@ -8,11 +8,8 @@ import {ImageHistoryService} from '../../../services/editor/image-history/image-
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
-import {EnvironmentUnsplashConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-
-import {unsplashProvider} from '../../../utils/core/providers.utils';
 import {unsplash} from '../../../utils/core/environment.utils';
+import {getUnsplashPhotos, registerUnsplashDownload} from '../../../providers/unsplash/unsplash.provider';
 
 @Component({
   tag: 'app-photo',
@@ -66,22 +63,9 @@ export class AppPhoto {
         return;
       }
 
-      if (!unsplash()) {
-        return;
-      }
-
-      const {url}: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
-
-      const {registerUnsplashDownload}: {registerUnsplashDownload: RegisterUnsplashDownload} = await unsplashProvider<{
-        registerUnsplashDownload: RegisterUnsplashDownload;
-      }>();
-
       const photo: UnsplashPhoto = $event.detail;
 
-      await registerUnsplashDownload({
-        apiUrl: url,
-        photoId: photo.id
-      });
+      await registerUnsplashDownload(photo);
 
       await this.imageHistoryService.push(photo);
 
@@ -122,16 +106,9 @@ export class AppPhoto {
         return;
       }
 
-      this.searching = true;
-
-      const {url}: EnvironmentUnsplashConfig = EnvironmentConfigService.getInstance().get('unsplash');
-
-      const {getUnsplashPhotos}: {getUnsplashPhotos: GetUnsplashPhotos} = await unsplashProvider<{getUnsplashPhotos: GetUnsplashPhotos}>();
-
       const unsplashResponse: UnsplashSearchResponse | undefined = await getUnsplashPhotos({
-        apiUrl: url,
         searchTerm: this.searchTerm,
-        next: this.paginationNext
+        paginationNext: this.paginationNext
       });
 
       this.searching = false;
