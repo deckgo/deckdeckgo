@@ -1,6 +1,6 @@
 import {del, delMany, get, keys, update} from 'idb-keyval';
 
-import {SyncData, SyncPending, SyncPendingDeck} from '@deckdeckgo/editor';
+import {Sync, SyncData, SyncPending, SyncPendingDeck} from '@deckdeckgo/editor';
 
 import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
@@ -37,7 +37,7 @@ export const sync = async (syncData: SyncData | undefined) => {
 
     const cdn: string = 'http://localhost:3335/build/index.esm.js';
 
-    const {sync} = await import(cdn);
+    const {sync}: {sync: Sync} = await import(cdn);
 
     return sync({
       syncData,

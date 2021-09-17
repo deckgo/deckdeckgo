@@ -9,6 +9,7 @@ import {
   Slide,
   SlideAttributes,
   StorageFile,
+  Sync,
   SyncData,
   SyncDataDeck,
   SyncDataSlide
@@ -21,7 +22,7 @@ import {uploadFile} from '../storage/storage.firebase';
 
 import {prepareAttributes} from '../../utils/firestore.utils';
 
-export const sync = async ({
+export const sync: Sync = async ({
   syncData,
   userId,
   clean
