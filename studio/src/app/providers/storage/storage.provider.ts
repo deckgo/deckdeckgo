@@ -1,6 +1,7 @@
 import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
+import offlineStore from '../../stores/offline.store';
 
 import {StorageIcProvider} from './storage.ic.provider';
 import {StorageOfflineProvider} from './storage.offline.provider';
@@ -36,6 +37,10 @@ export const uploadOnlineFile = async (
 };
 
 export const getFiles = async (next: string | null, folder: string): Promise<StorageFilesList | null> => {
+  if (!authStore.state.loggedIn || !offlineStore.state.online) {
+    return StorageOfflineProvider.getInstance().getFiles(folder);
+  }
+
   if (internetComputer()) {
     return StorageIcProvider.getInstance().getFiles(next, folder);
   }
@@ -51,10 +56,14 @@ export const getFiles = async (next: string | null, folder: string): Promise<Sto
     });
   }
 
-  return StorageOfflineProvider.getInstance().getFiles(next, folder);
+  return StorageOfflineProvider.getInstance().getFiles(folder);
 };
 
 export const getFolders = async (folder: string): Promise<StorageFoldersList | undefined> => {
+  if (!authStore.state.loggedIn || !offlineStore.state.online) {
+    return StorageOfflineProvider.getInstance().getFolders();
+  }
+
   if (internetComputer()) {
     return StorageIcProvider.getInstance().getFolders(folder);
   }
@@ -68,5 +77,5 @@ export const getFolders = async (folder: string): Promise<StorageFoldersList | u
     });
   }
 
-  return StorageOfflineProvider.getInstance().getFolders(folder);
+  return StorageOfflineProvider.getInstance().getFolders();
 };

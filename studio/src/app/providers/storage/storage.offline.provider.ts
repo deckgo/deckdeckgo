@@ -49,7 +49,7 @@ export class StorageOfflineProvider {
     });
   }
 
-  getFiles(_next: string | null, folder: string): Promise<StorageFilesList | null> {
+  getFiles(folder: string): Promise<StorageFilesList | null> {
     return new Promise<StorageFilesList | null>(async (resolve) => {
       const storageKeys: IDBValidKey[] = await keys();
 
@@ -82,7 +82,7 @@ export class StorageOfflineProvider {
     });
   }
 
-  async getFolders(_folder: string): Promise<StorageFoldersList | undefined> {
+  async getFolders(): Promise<StorageFoldersList | undefined> {
     // Not implemented in offline
     return undefined;
   }
