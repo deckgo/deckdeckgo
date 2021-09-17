@@ -4,7 +4,7 @@ import {DeckIcProvider} from './deck.ic.provider';
 import {DeckOfflineProvider} from './deck.offline.provider';
 
 import {firebase, internetComputer} from '../../../utils/core/environment.utils';
-import {provider} from '../../../utils/core/providers.utils';
+import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const decks = async (userId: string): Promise<Deck[]> => {
   if (internetComputer()) {
@@ -12,7 +12,7 @@ export const decks = async (userId: string): Promise<Deck[]> => {
   }
 
   if (firebase()) {
-    const {deckEntries}: {deckEntries: DeckEntries} = await provider<{deckEntries: DeckEntries}>();
+    const {deckEntries}: {deckEntries: DeckEntries} = await cloudProvider<{deckEntries: DeckEntries}>();
 
     return deckEntries(userId);
   }
@@ -26,7 +26,7 @@ export const deleteDeck = async (deckId: string): Promise<void> => {
   }
 
   if (firebase()) {
-    const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await provider<{deleteDeck: DeleteDeck}>();
+    const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await cloudProvider<{deleteDeck: DeleteDeck}>();
 
     return deleteUserDeck(deckId);
   }

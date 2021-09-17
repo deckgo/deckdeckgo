@@ -4,7 +4,7 @@ import {SlideIcProvider} from './slide.ic.provider';
 import {SlideOfflineProvider} from './slide.offline.provider';
 
 import {firebase, internetComputer} from '../../../utils/core/environment.utils';
-import {provider} from '../../../utils/core/providers.utils';
+import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const getSlide = async (deckId: string, slideId: string): Promise<Slide> => {
   if (internetComputer()) {
@@ -12,7 +12,7 @@ export const getSlide = async (deckId: string, slideId: string): Promise<Slide> 
   }
 
   if (firebase()) {
-    const {getSlide: getUserSlide}: {getSlide: GetSlide} = await provider<{getSlide: GetSlide}>();
+    const {getSlide: getUserSlide}: {getSlide: GetSlide} = await cloudProvider<{getSlide: GetSlide}>();
 
     return getUserSlide(deckId, slideId);
   }

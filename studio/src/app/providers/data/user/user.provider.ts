@@ -5,7 +5,7 @@ import store from '../../../stores/user.store';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
-import {provider} from '../../../utils/core/providers.utils';
+import {cloudProvider} from '../../../utils/core/providers.utils';
 
 import {UserIcProvider} from './user.ic.provider';
 
@@ -22,7 +22,7 @@ export const updateUser = async (user: User) => {
     return;
   }
 
-  const {updateUser}: {updateUser: UpdateUser} = await provider<{updateUser: UpdateUser}>();
+  const {updateUser}: {updateUser: UpdateUser} = await cloudProvider<{updateUser: UpdateUser}>();
 
   const updatedUser: User = await updateUser(user);
 

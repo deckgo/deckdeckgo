@@ -7,7 +7,7 @@ import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 
 import {firebase as firebaseEnabled, internetComputer} from '../../utils/core/environment.utils';
-import {provider} from '../../utils/core/providers.utils';
+import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {SyncIcProvider} from './sync.ic.provider';
 
@@ -36,7 +36,7 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    const {sync}: {sync: Sync} = await provider<{sync: Sync}>();
+    const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>();
 
     return sync({
       syncData,

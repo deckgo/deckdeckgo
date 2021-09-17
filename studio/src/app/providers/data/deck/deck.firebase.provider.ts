@@ -1,6 +1,6 @@
 import {Deck, DeckData, CreateDeck, UpdateDeck} from '@deckdeckgo/editor';
 
-import {provider} from '../../../utils/core/providers.utils';
+import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export class DeckFirebaseProvider {
   private static instance: DeckFirebaseProvider;
@@ -17,13 +17,13 @@ export class DeckFirebaseProvider {
   }
 
   async create(deck: DeckData): Promise<Deck> {
-    const {createDeck: createUserDeck}: {createDeck: CreateDeck} = await provider<{createDeck: CreateDeck}>();
+    const {createDeck: createUserDeck}: {createDeck: CreateDeck} = await cloudProvider<{createDeck: CreateDeck}>();
 
     return createUserDeck(deck);
   }
 
   async update(deck: Deck): Promise<Deck> {
-    const {updateDeck: updateUserDeck}: {updateDeck: UpdateDeck} = await provider<{updateDeck: UpdateDeck}>();
+    const {updateDeck: updateUserDeck}: {updateDeck: UpdateDeck} = await cloudProvider<{updateDeck: UpdateDeck}>();
 
     return updateUserDeck(deck);
   }

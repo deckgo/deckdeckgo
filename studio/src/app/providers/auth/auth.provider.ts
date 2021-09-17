@@ -9,7 +9,7 @@ import {EnvironmentConfigService} from '../../services/environment/environment-c
 import {AuthIcProvider} from './auth.ic.provider';
 import {UserIcProvider} from '../data/user/user.ic.provider';
 
-import {provider} from '../../utils/core/providers.utils';
+import {cloudProvider} from '../../utils/core/providers.utils';
 
 export const initAuthProvider = async () => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
@@ -24,7 +24,7 @@ export const initAuthProvider = async () => {
     return;
   }
 
-  const {initAuth}: {initAuth: InitAuth} = await provider<{initAuth: InitAuth}>();
+  const {initAuth}: {initAuth: InitAuth} = await cloudProvider<{initAuth: InitAuth}>();
 
   await initAuth({
     config: firebaseApiConfig(),
@@ -56,7 +56,7 @@ export const signOut = async () => {
     return;
   }
 
-  const {signOut}: {signOut: SignOut} = await provider<{signOut: SignOut}>();
+  const {signOut}: {signOut: SignOut} = await cloudProvider<{signOut: SignOut}>();
 
   await signOut();
 };
@@ -74,7 +74,7 @@ export const signIn = async () => {
     return;
   }
 
-  const {signIn}: {signIn: SignIn} = await provider<{signIn: SignIn}>();
+  const {signIn}: {signIn: SignIn} = await cloudProvider<{signIn: SignIn}>();
 
   await signIn();
 };
@@ -95,7 +95,7 @@ export const deleteAuth = async () => {
     return;
   }
 
-  const {deleteAuth}: {deleteAuth: DeleteAuth} = await provider<{deleteAuth: DeleteAuth}>();
+  const {deleteAuth}: {deleteAuth: DeleteAuth} = await cloudProvider<{deleteAuth: DeleteAuth}>();
 
   await deleteAuth({user: userStore.state.user, config: firebaseApiConfig()});
   await signOut();

@@ -4,7 +4,7 @@ import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
 
 import {firebase} from '../../../utils/core/environment.utils';
-import {provider} from '../../../utils/core/providers.utils';
+import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const initTemplates = async () => {
   if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
@@ -22,7 +22,7 @@ export const initTemplates = async () => {
   }
 
   try {
-    const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await provider<{getUserTemplates: GetUserTemplates}>();
+    const {getUserTemplates}: {getUserTemplates: GetUserTemplates} = await cloudProvider<{getUserTemplates: GetUserTemplates}>();
 
     const templates: Template[] = await getUserTemplates(authStore.state.authUser?.uid);
 
@@ -43,7 +43,7 @@ export const createUserTemplate = async (templateData: TemplateData): Promise<Te
     throw new Error('Template cannot be created. Not supported.');
   }
 
-  const {createTemplate}: {createTemplate: CreateTemplate} = await provider<{createTemplate: CreateTemplate}>();
+  const {createTemplate}: {createTemplate: CreateTemplate} = await cloudProvider<{createTemplate: CreateTemplate}>();
 
   return createTemplate(templateData);
 };
@@ -55,7 +55,7 @@ export const updateTemplate = async (template: Template): Promise<Template | und
     throw new Error('Template cannot be updated. Not supported.');
   }
 
-  const {updateTemplate}: {updateTemplate: UpdateTemplate} = await provider<{updateTemplate: UpdateTemplate}>();
+  const {updateTemplate}: {updateTemplate: UpdateTemplate} = await cloudProvider<{updateTemplate: UpdateTemplate}>();
 
   return updateTemplate(template);
 };
