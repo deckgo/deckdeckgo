@@ -54,11 +54,6 @@ export interface DeckAttributes {
   autoSlide?: boolean;
 }
 
-export interface DeckClone {
-  deck_id_from?: string;
-  deck_id_to?: string;
-}
-
 export interface DeckData {
   name: string;
 
@@ -78,8 +73,6 @@ export interface DeckData {
   deploy?: DeckDeploy;
 
   github?: DeckGitHub;
-
-  clone?: DeckClone;
 
   created_at?: Date | number | BigInt;
   updated_at?: Date | number | BigInt;

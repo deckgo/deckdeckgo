@@ -1,6 +1,7 @@
 import {Component, Fragment, h, JSX, State} from '@stencil/core';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
+import {debounce} from '@deckdeckgo/utils';
 
 import {Deck, Slide, AuthUser} from '@deckdeckgo/editor';
 
@@ -14,19 +15,19 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
+import {loadingController} from '../../../utils/ionic/ionic.overlay';
+import {formatDate} from '../../../utils/core/date.utils';
 
-import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
+import {initTemplates} from '../../../providers/data/template/template.provider';
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+
 import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {loadingController} from '../../../utils/ionic/ionic.overlay';
-import {initTemplates} from '../../../providers/data/template/template.provider';
-import {formatDate} from '../../../utils/core/date.utils';
-import {debounce} from '@deckdeckgo/utils';
+import {loadAndImport} from '../../../utils/core/dashboard.utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -55,8 +56,6 @@ export class AppDashboard {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private readonly deckDashboardService: DeckDashboardService;
-
   private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
@@ -65,8 +64,6 @@ export class AppDashboard {
   private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
-    this.deckDashboardService = DeckDashboardService.getInstance();
-
     this.debounceDecksLoading = debounce(async () => {
       this.decksLoading = false;
     }, 150);
@@ -104,9 +101,6 @@ export class AppDashboard {
 
       this.decks = await this.fetchFirstSlides(userDecks);
       await this.filterDecks(null);
-
-      // If some decks are currently cloned, we watch them to update GUI when clone has finished processing
-      await this.initWatchForClonedDecks();
     } catch (err) {
       errorStore.state.error = 'Cannot init your dashboard.';
     }
@@ -123,54 +117,16 @@ export class AppDashboard {
     this.chartEventsHandler.destroy();
   }
 
-  private fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {
-    return new Promise<DeckAndFirstSlide[]>(async (resolve) => {
-      if (!decks || decks.length <= 0) {
-        resolve([]);
-        return;
-      }
+  private async fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {
+    if (!decks || decks.length <= 0) {
+      return [];
+    }
 
-      const promises = [];
-      decks.forEach((deck: Deck) => {
-        if (deck && deck.data) {
-          if (deck.data.clone?.deck_id_from) {
-            promises.push(this.initDeckCloneInProgress(deck));
-          } else if (deck.data.slides && deck.data.slides.length >= 1) {
-            promises.push(this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
-          }
-        }
-      });
+    const promises: Promise<DeckAndFirstSlide>[] = decks
+      .filter((deck: Deck) => deck.data && deck.data.slides && deck.data.slides.length)
+      .map((deck: Deck) => this.initDeckAndFirstSlide(deck, deck.data.slides[0]));
 
-      const results: DeckAndFirstSlide[] = await Promise.all(promises);
-
-      resolve(results);
-    });
-  }
-
-  private initWatchForClonedDecks(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.decks || this.decks.length <= 0) {
-        resolve();
-        return;
-      }
-
-      const promises: Promise<void>[] = [];
-
-      this.decks.forEach((deck: DeckAndFirstSlide) => {
-        if (deck?.deck?.data?.clone !== undefined) {
-          promises.push(this.deckDashboardService.snapshot(deck.deck, this.watchClonedDeck));
-        }
-      });
-
-      if (promises.length <= 0) {
-        resolve();
-        return;
-      }
-
-      await Promise.all(promises);
-
-      resolve();
-    });
+    return Promise.all(promises);
   }
 
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
@@ -191,36 +147,6 @@ export class AppDashboard {
         const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
 
         await TemplateUtils.loadSlideTemplate(slide);
-
-        resolve({
-          deck,
-          slide: element,
-          style,
-          background,
-          header,
-          footer
-        });
-      } catch (err) {
-        resolve(undefined);
-      }
-    });
-  }
-
-  private initDeckCloneInProgress(deck: Deck): Promise<DeckAndFirstSlide> {
-    return new Promise<DeckAndFirstSlide>(async (resolve) => {
-      try {
-        const element: JSX.IntrinsicElements = (
-          <div class="spinner">
-            <ion-spinner color="primary"></ion-spinner>
-            <ion-label>Copy in progress...</ion-label>
-          </div>
-        );
-
-        const style: any = await this.convertStyle(deck);
-
-        const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
-        const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
-        const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
 
         resolve({
           deck,
@@ -292,26 +218,26 @@ export class AppDashboard {
       return;
     }
 
-    if (deck?.deck?.data?.clone) {
-      return;
-    }
-
     const loading: HTMLIonLoadingElement = await loadingController.create({});
 
     await loading.present();
 
     try {
-      await this.deckDashboardService.importData(deck.deck);
+      await loadAndImport(deck.deck);
 
-      navStore.state.nav = {
-        url: '/',
-        direction: NavDirection.RELOAD
-      };
+      this.navigateReloadEditor();
     } catch (err) {
       errorStore.state.error = err;
     }
 
     await loading.dismiss();
+  }
+
+  private navigateReloadEditor() {
+    navStore.state.nav = {
+      url: '/',
+      direction: NavDirection.RELOAD
+    };
   }
 
   private removeDeletedDeck($event: CustomEvent): Promise<void> {
@@ -338,35 +264,6 @@ export class AppDashboard {
     });
   }
 
-  private onClonedDeck($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail || $event.detail === undefined) {
-        resolve();
-        return;
-      }
-
-      const clone: DeckDashboardCloneResult = $event.detail;
-
-      const index: number = await this.findDeckIndex(clone?.from?.id ?? undefined);
-
-      if (index < 0) {
-        resolve();
-        return;
-      }
-
-      await this.updateClonedDeck(clone.from, index);
-
-      await this.addClonedDeck(clone.to, index);
-
-      await this.filterDecks(null);
-
-      await this.deckDashboardService.snapshot(clone.from, this.watchClonedDeck);
-      await this.deckDashboardService.snapshot(clone.to, this.watchClonedDeck);
-
-      resolve();
-    });
-  }
-
   private findDeckIndex(id: string): Promise<number> {
     return new Promise<number>(async (resolve) => {
       if (!this.decks || this.decks.length < 0) {
@@ -386,64 +283,6 @@ export class AppDashboard {
       resolve(index);
     });
   }
-
-  private updateClonedDeck(deck: Deck, index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!deck.data || !deck.data.slides || deck.data.slides.length <= 0) {
-        resolve();
-        return;
-      }
-
-      this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
-
-      resolve();
-    });
-  }
-
-  private addClonedDeck(deck: Deck, index: number): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const deckAndFirstSlide: DeckAndFirstSlide = await this.initDeckCloneInProgress(deck);
-
-      if (!this.decks || this.decks.length <= 0) {
-        // Well, should not happens
-        this.decks = [deckAndFirstSlide];
-
-        resolve();
-        return;
-      }
-
-      this.decks = [...this.decks.slice(0, index), deckAndFirstSlide, ...this.decks.slice(index)];
-
-      resolve();
-    });
-  }
-
-  private watchClonedDeck = async (deck: Deck, unsubscribe) => {
-    if (!deck || !deck.data) {
-      return;
-    }
-
-    if (!deck.data.slides || deck.data.slides.length <= 0) {
-      return;
-    }
-
-    // if element still contains cloned data we don't update it
-    if (deck.data.clone !== undefined) {
-      return;
-    }
-
-    const index: number = await this.findDeckIndex(deck.id);
-
-    if (index < 0) {
-      return;
-    }
-
-    this.decks[index] = await this.initDeckAndFirstSlide(deck, deck.data.slides[0]);
-
-    await this.filterDecks(null);
-
-    unsubscribe();
-  };
 
   render() {
     if (this.loading) {
@@ -551,7 +390,7 @@ export class AppDashboard {
             deck={deck.deck}
             cloud={this.cloud}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-            onDeckCloned={($event: CustomEvent) => this.onClonedDeck($event)}></app-dashboard-deck-actions>
+            onDeckCloned={() => this.navigateReloadEditor()}></app-dashboard-deck-actions>
 
           <ion-card class="item ion-no-margin">{this.renderDeck(deck)}</ion-card>
 
