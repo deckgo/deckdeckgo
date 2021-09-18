@@ -10,7 +10,6 @@ import { SelectedElement } from "./app/types/editor/selected-element";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { Deck, SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
-import { DeckDashboardCloneResult } from "./app/services/deck/deck-dashboard.service";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
@@ -1425,7 +1424,7 @@ declare namespace LocalJSX {
     interface AppDashboardDeckActions {
         "cloud"?: 'offline' | 'firebase' | 'ic';
         "deck"?: Deck;
-        "onDeckCloned"?: (event: CustomEvent<DeckDashboardCloneResult>) => void;
+        "onDeckCloned"?: (event: CustomEvent<void>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
     }
     interface AppDashboardPage {

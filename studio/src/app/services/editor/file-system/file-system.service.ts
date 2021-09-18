@@ -75,7 +75,6 @@ export class FileSystemService {
 
     delete deck.data.deploy;
     delete deck.data.github;
-    delete deck.data.clone;
 
     return deck;
   }

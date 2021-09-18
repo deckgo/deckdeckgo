@@ -7,12 +7,12 @@ import {Deck} from '@deckdeckgo/editor';
 import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
-import {DeckDashboardCloneResult, DeckDashboardService} from '../../../services/deck/deck-dashboard.service';
+import {loadingController, modalController} from '../../../utils/ionic/ionic.overlay';
+import {clone} from '../../../utils/core/dashboard.utils';
+
 import {deleteDeck} from '../../../providers/data/deck/deck.provider';
 
 import {AppIcon} from '../../core/app-icon/app-icon';
-
-import {loadingController, modalController} from '../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
@@ -24,28 +24,16 @@ export class AppDashboardDeckActions {
 
   @Prop() cloud: 'offline' | 'firebase' | 'ic';
 
-  private deckDashboardService: DeckDashboardService;
-
   @Event() deckDeleted: EventEmitter<string>;
-  @Event() deckCloned: EventEmitter<DeckDashboardCloneResult>;
+  @Event() deckCloned: EventEmitter<void>;
 
   @State()
   private actionInProgress: boolean = false;
-
-  constructor() {
-    this.deckDashboardService = DeckDashboardService.getInstance();
-  }
 
   private async presentConfirmDelete($event: UIEvent) {
     $event.stopPropagation();
 
     if (this.actionInProgress) {
-      return;
-    }
-
-    const disabled: boolean = this.deck?.data?.clone !== undefined;
-
-    if (disabled) {
       return;
     }
 
@@ -100,82 +88,50 @@ export class AppDashboardDeckActions {
   }
 
   private async cloneDeck($event: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      $event.stopPropagation();
+    $event.stopPropagation();
 
-      if (this.actionInProgress || this.cloud !== 'firebase') {
-        resolve();
-        return;
-      }
+    if (this.actionInProgress) {
+      return;
+    }
 
-      const disabled: boolean = this.deck?.data?.clone !== undefined;
+    this.actionInProgress = true;
 
-      if (disabled) {
-        resolve();
-        return;
-      }
+    const loading: HTMLIonLoadingElement = await loadingController.create({});
 
-      if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
-        resolve();
-        return;
-      }
+    await loading.present();
 
-      if (!this.deck.data) {
-        resolve();
-        return;
-      }
+    try {
+      await clone(this.deck);
 
-      this.actionInProgress = true;
+      this.deckCloned.emit();
+    } catch (err) {
+      store.state.error = err;
+    }
 
-      const loading: HTMLIonLoadingElement = await loadingController.create({});
+    await loading.dismiss();
 
-      await loading.present();
-
-      try {
-        const clone: DeckDashboardCloneResult = await this.deckDashboardService.clone(this.deck);
-
-        this.deckCloned.emit(clone);
-      } catch (err) {
-        store.state.error = err;
-      }
-
-      await loading.dismiss();
-
-      this.actionInProgress = false;
-
-      resolve();
-    });
+    this.actionInProgress = false;
   }
 
   render() {
-    const disabled: boolean = this.deck && this.deck.data && this.deck.data.clone !== undefined;
-
     return (
       <Host>
-        {this.renderClone(disabled)}
+        <button
+          onClick={($event: UIEvent) => this.cloneDeck($event)}
+          title={i18n.state.dashboard.copy}
+          disabled={this.actionInProgress}
+          class={this.actionInProgress ? 'disabled' : undefined}>
+          <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
+        </button>
 
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
-          class={this.actionInProgress || disabled ? 'disabled' : undefined}>
+          disabled={this.actionInProgress}
+          class={this.actionInProgress ? 'disabled' : undefined}>
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>
-    );
-  }
-
-  private renderClone(disabled: boolean) {
-    if (this.cloud !== 'firebase') {
-      return undefined;
-    }
-
-    return (
-      <button
-        onClick={($event: UIEvent) => this.cloneDeck($event)}
-        title={i18n.state.dashboard.copy}
-        class={this.actionInProgress || disabled ? 'disabled' : undefined}>
-        <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
-      </button>
     );
   }
 }
