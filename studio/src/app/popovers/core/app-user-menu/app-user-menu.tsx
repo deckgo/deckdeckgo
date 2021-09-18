@@ -7,6 +7,7 @@ import authStore from '../../../stores/auth.store';
 import syncStore from '../../../stores/sync.store';
 
 import {signOut} from '../../../providers/auth/auth.provider';
+import {clearEdit} from '../../../utils/editor/editor.utils';
 
 @Component({
   tag: 'app-user-menu',
@@ -17,6 +18,8 @@ export class AppUserMenu {
 
   private async signUserOut() {
     await signOut();
+
+    await clearEdit(true);
 
     await this.closePopover();
 

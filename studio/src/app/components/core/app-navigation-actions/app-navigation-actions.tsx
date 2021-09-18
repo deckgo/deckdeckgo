@@ -1,7 +1,5 @@
 import {Component, Prop, h, Fragment, Element} from '@stencil/core';
 
-import {del} from 'idb-keyval';
-
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
@@ -15,9 +13,7 @@ import {alertController, loadingController, popoverController} from '../../../ut
 import {AppIcon} from '../app-icon/app-icon';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
-
-import {clearSync} from '../../../providers/sync/sync.provider';
+import {clearEdit} from '../../../utils/editor/editor.utils';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -30,12 +26,6 @@ export class AppNavigationActions {
   @Prop() signIn: boolean = false;
 
   private loadInput!: HTMLInputElement;
-
-  private readonly imageHistoryService: ImageHistoryService;
-
-  constructor() {
-    this.imageHistoryService = ImageHistoryService.getInstance();
-  }
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -103,12 +93,8 @@ export class AppNavigationActions {
     await loading.present();
 
     try {
-      await clearSync();
-
-      await this.imageHistoryService.clear();
-
-      // By removing the reference to the current deck in indexeddb, it will create a new deck on reload
-      await del('deckdeckgo_deck_id');
+      // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean sync data if user signed out, not when a "New deck" is performed.
+      await clearEdit(authStore.state.loggedIn);
 
       this.emitReloadDeck();
     } catch (err) {

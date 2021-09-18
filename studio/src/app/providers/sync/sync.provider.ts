@@ -102,11 +102,6 @@ export const initSyncState = async () => {
 };
 
 export const clearSync = async () => {
-  // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean data if signed out after user has click "New deck".
-  if (authStore.state.loggedIn) {
-    return;
-  }
-
   await del('deckdeckgo_pending_sync');
 
   const storageKeys: string[] = (await keys<string>()).filter((key: string) => key.startsWith('/decks/') || key.startsWith('/assets/'));
