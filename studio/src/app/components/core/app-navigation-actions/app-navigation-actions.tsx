@@ -94,7 +94,7 @@ export class AppNavigationActions {
 
     try {
       // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean sync data if user signed out, not when a "New deck" is performed.
-      await clearEdit(authStore.state.loggedIn);
+      await clearEdit(!authStore.state.loggedIn);
 
       this.emitReloadDeck();
     } catch (err) {
