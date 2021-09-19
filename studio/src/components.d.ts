@@ -149,8 +149,6 @@ export namespace Components {
         "deckDidChange": EventEmitter<HTMLElement>;
         "deckElement": HTMLElement;
     }
-    interface AppDeckImport {
-    }
     interface AppDeckStyle {
         "deckDidChange": EventEmitter<HTMLElement>;
     }
@@ -353,10 +351,6 @@ export namespace Components {
         "slotTypes": SlotType[] | undefined;
     }
     interface AppSpinner {
-    }
-    interface AppStartDeck {
-        "importColor": 'dark' | 'light';
-        "writeColor": 'primary' | 'dark' | 'light';
     }
     interface AppSyncInfo {
     }
@@ -629,12 +623,6 @@ declare global {
     var HTMLAppDeckHeaderFooterElement: {
         prototype: HTMLAppDeckHeaderFooterElement;
         new (): HTMLAppDeckHeaderFooterElement;
-    };
-    interface HTMLAppDeckImportElement extends Components.AppDeckImport, HTMLStencilElement {
-    }
-    var HTMLAppDeckImportElement: {
-        prototype: HTMLAppDeckImportElement;
-        new (): HTMLAppDeckImportElement;
     };
     interface HTMLAppDeckStyleElement extends Components.AppDeckStyle, HTMLStencilElement {
     }
@@ -1026,12 +1014,6 @@ declare global {
         prototype: HTMLAppSpinnerElement;
         new (): HTMLAppSpinnerElement;
     };
-    interface HTMLAppStartDeckElement extends Components.AppStartDeck, HTMLStencilElement {
-    }
-    var HTMLAppStartDeckElement: {
-        prototype: HTMLAppStartDeckElement;
-        new (): HTMLAppStartDeckElement;
-    };
     interface HTMLAppSyncInfoElement extends Components.AppSyncInfo, HTMLStencilElement {
     }
     var HTMLAppSyncInfoElement: {
@@ -1188,7 +1170,6 @@ declare global {
         "app-deck-delete": HTMLAppDeckDeleteElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
-        "app-deck-import": HTMLAppDeckImportElement;
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
         "app-demo": HTMLAppDemoElement;
@@ -1254,7 +1235,6 @@ declare global {
         "app-slides-aside": HTMLAppSlidesAsideElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
-        "app-start-deck": HTMLAppStartDeckElement;
         "app-sync-info": HTMLAppSyncInfoElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
@@ -1442,8 +1422,6 @@ declare namespace LocalJSX {
         "deckElement"?: HTMLElement;
         "onNavigateSettings"?: (event: CustomEvent<void>) => void;
         "onNavigateSignIn"?: (event: CustomEvent<void>) => void;
-    }
-    interface AppDeckImport {
     }
     interface AppDeckStyle {
         "deckDidChange"?: EventEmitter<HTMLElement>;
@@ -1673,10 +1651,6 @@ declare namespace LocalJSX {
     }
     interface AppSpinner {
     }
-    interface AppStartDeck {
-        "importColor"?: 'dark' | 'light';
-        "writeColor"?: 'primary' | 'dark' | 'light';
-    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -1784,7 +1758,6 @@ declare namespace LocalJSX {
         "app-deck-delete": AppDeckDelete;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
-        "app-deck-import": AppDeckImport;
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
         "app-demo": AppDemo;
@@ -1850,7 +1823,6 @@ declare namespace LocalJSX {
         "app-slides-aside": AppSlidesAside;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
-        "app-start-deck": AppStartDeck;
         "app-sync-info": AppSyncInfo;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
@@ -1912,7 +1884,6 @@ declare module "@stencil/core" {
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
-            "app-deck-import": LocalJSX.AppDeckImport & JSXBase.HTMLAttributes<HTMLAppDeckImportElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
@@ -1978,7 +1949,6 @@ declare module "@stencil/core" {
             "app-slides-aside": LocalJSX.AppSlidesAside & JSXBase.HTMLAttributes<HTMLAppSlidesAsideElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
-            "app-start-deck": LocalJSX.AppStartDeck & JSXBase.HTMLAttributes<HTMLAppStartDeckElement>;
             "app-sync-info": LocalJSX.AppSyncInfo & JSXBase.HTMLAttributes<HTMLAppSyncInfoElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;
