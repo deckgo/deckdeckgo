@@ -1,7 +1,8 @@
 import {set, setMany} from 'idb-keyval';
 
-import {Deck} from '@deckdeckgo/editor';
-import {Slide} from '@deckdeckgo/editor';
+import {Deck, Slide} from '@deckdeckgo/editor';
+
+import {syncUpdateDeck, syncUpdateSlide} from './sync.utils';
 
 export interface ImportData {
   id: string;
@@ -23,4 +24,12 @@ export const importEditorData = async ({id, deck, slides}: ImportData) => {
 
 export const importEditorAssets = (assets: ImportAsset[]): Promise<void> => {
   return setMany(assets.map(({path, blob}: ImportAsset) => [path, blob]));
+};
+
+export const importEditorSync = async ({deck, slides}: ImportData) => {
+  await syncUpdateDeck(deck.id);
+
+  for (let {id: slideId} of slides) {
+    await syncUpdateSlide({deckId: deck.id, slideId});
+  }
 };

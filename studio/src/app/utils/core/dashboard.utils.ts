@@ -2,10 +2,9 @@ import {v4 as uuid} from 'uuid';
 
 import {Deck, Slide, DeckData} from '@deckdeckgo/editor';
 
-import {importEditorData} from '../editor/import.utils';
+import {ImportData, importEditorData, importEditorSync} from '../editor/import.utils';
 
 import {getSlide} from '../../providers/data/slide/slide.provider';
-import {syncUpdateDeck, syncUpdateSlide} from '../editor/sync.utils';
 
 export const clone = async (deck: Deck) => {
   const cloneDeck: Deck = cloneDeckData(deck);
@@ -20,18 +19,16 @@ export const clone = async (deck: Deck) => {
 
   cloneDeck.data.slides = cloneSlides.map(({id}: Slide) => id);
 
-  await importEditorData({
+  const importData: ImportData = {
     id: cloneDeck.id,
     deck: cloneDeck,
     slides: cloneSlides
-  });
+  };
+
+  await importEditorData(importData);
 
   // Add new deck and slides to list of data to sync
-  await syncUpdateDeck(cloneDeck.id);
-
-  for (let {id: slideId} of cloneSlides) {
-    await syncUpdateSlide({deckId: cloneDeck.id, slideId});
-  }
+  await importEditorSync(importData);
 };
 
 const cloneDeckData = (deck: Deck): Deck => {

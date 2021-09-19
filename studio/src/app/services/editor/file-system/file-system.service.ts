@@ -1,21 +1,21 @@
 import JSZip from 'jszip';
 
+import {validate as uuidValidate, v4 as uuid} from 'uuid';
+
 import {get, getMany} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
 import offlineStore from '../../../stores/offline.store';
 
-import {Deck} from '@deckdeckgo/editor';
-import {Slide} from '@deckdeckgo/editor';
+import {Deck, Slide, FileImportData, UserAsset} from '@deckdeckgo/editor';
 
-import {ImportAsset, ImportData, importEditorAssets, importEditorData} from '../../../utils/editor/import.utils';
+import {ImportAsset, ImportData, importEditorAssets, importEditorData, importEditorSync} from '../../../utils/editor/import.utils';
 import {
   getDeckBackgroundImage,
   getSlidesLocalCharts,
   getSlidesLocalImages,
   getSlidesOnlineCharts,
-  getSlidesOnlineImages,
-  UserAsset
+  getSlidesOnlineImages
 } from '../../../utils/editor/assets.utils';
 
 export class FileSystemService {
@@ -29,10 +29,16 @@ export class FileSystemService {
   }
 
   async importData(file: File) {
-    const {data, assets} = await this.unzip(file);
+    const {data, assets, sync} = await this.unzip(file);
 
     await importEditorAssets(assets);
     await importEditorData(data);
+
+    if (!sync) {
+      return;
+    }
+
+    await importEditorSync(data);
   }
 
   async exportData() {
@@ -187,12 +193,13 @@ export class FileSystemService {
   private async unzip(file: File): Promise<{
     data: ImportData;
     assets: ImportAsset[];
+    sync: boolean;
   }> {
     const zip = new JSZip();
 
     const content: JSZip = await zip.loadAsync(file);
 
-    const data: ImportData = await this.parseImportData(content);
+    const data: FileImportData = await this.parseImportData(content);
 
     const zippedAssets: {path: string; file: JSZip.JSZipObject}[] = [];
 
@@ -220,7 +227,7 @@ export class FileSystemService {
     const assets: ImportAsset[] = await Promise.all(promises);
 
     return {
-      data,
+      ...this.syncImportData(data),
       assets
     };
   }
@@ -242,7 +249,7 @@ export class FileSystemService {
     );
   }
 
-  private async parseImportData(content: JSZip): Promise<ImportData> {
+  private async parseImportData(content: JSZip): Promise<FileImportData> {
     let deck: string = await content.file('deck.json').async('text');
 
     // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
@@ -260,5 +267,63 @@ export class FileSystemService {
     }
 
     return JSON.parse(deck);
+  }
+
+  /**
+   * If data are exported from the editor, they contain ids, therefore imported without any further work.
+   * In case they are imported from other source, such as Figma, these are new data.
+   * They need to be imported with new ids and need to be added to the list of data to sync.
+   * @param id
+   * @param deck
+   * @param slides
+   * @private
+   */
+  private syncImportData({id, deck, slides}: FileImportData): {
+    data: ImportData;
+    sync: boolean;
+  } {
+    if (uuidValidate(id)) {
+      return {
+        data: {
+          id,
+          deck: deck as Deck,
+          slides: slides as Slide[]
+        },
+        sync: false
+      };
+    }
+
+    // Generate ids for new deck and slides (Figma import)
+
+    const deckId: string = uuid();
+    const now: Date = new Date();
+
+    const newSlides: Slide[] = slides.map((slide: Partial<Slide>) => ({
+      data: {
+        ...slide.data,
+        updated_at: now,
+        created_at: now
+      },
+      id: uuid()
+    })) as Slide[];
+
+    const newDeck: Deck = {
+      data: {
+        ...deck.data,
+        slides: newSlides.map(({id}: Slide) => id),
+        updated_at: now,
+        created_at: now
+      },
+      id: deckId
+    } as Deck;
+
+    return {
+      data: {
+        id: deckId,
+        deck: newDeck,
+        slides: newSlides
+      },
+      sync: true
+    };
   }
 }

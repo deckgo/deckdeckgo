@@ -2,15 +2,9 @@ import {v4 as uuid} from 'uuid';
 
 import {get, getMany} from 'idb-keyval';
 
-import {Deck, deckSelector} from '@deckdeckgo/editor';
+import {Deck, deckSelector, UserAsset} from '@deckdeckgo/editor';
 
 import {SlotType} from '../../types/editor/slot-type';
-
-export interface UserAsset {
-  key: string;
-  blob: Blob;
-  url?: string;
-}
 
 export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> => {
   return getDeckImage();
