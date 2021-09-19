@@ -115,6 +115,7 @@ interface I18nDashboard {
   try: string;
   filter: string;
   no_slides: string;
+  sync_slides: string;
   copy: string;
   delete: string;
   cannot_undone: string;

@@ -9,6 +9,7 @@ import authStore from '../../../stores/auth.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
+import syncStore from '../../../stores/sync.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
@@ -332,8 +333,6 @@ export class AppDashboard {
 
         {this.renderDecksFilter()}
 
-        {this.filteredDecks?.length > 0 ? undefined : this.renderCreateButton(false)}
-
         {this.renderDecks()}
       </Fragment>
     );
@@ -353,21 +352,11 @@ export class AppDashboard {
       );
     }
 
+    if (['pending', 'in_progress'].includes(syncStore.state.sync)) {
+      return <p>{i18n.state.dashboard.sync_slides}</p>;
+    }
+
     return <p>{i18n.state.dashboard.no_slides}</p>;
-  }
-
-  private renderCreateButton(withSignIn: boolean) {
-    return (
-      <div class="toolbar-actions ion-margin-top">
-        {withSignIn ? (
-          <ion-button shape="round" color="light" onClick={() => signIn()} style={{'margin-right': '8px'}}>
-            <ion-label>{i18n.state.nav.sign_in}</ion-label>
-          </ion-button>
-        ) : undefined}
-
-        <app-start-deck></app-start-deck>
-      </div>
-    );
   }
 
   private renderDecks() {

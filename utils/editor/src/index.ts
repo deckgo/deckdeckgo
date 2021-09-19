@@ -12,6 +12,7 @@ export * from './models/storage/storage';
 
 export * from './types/sync';
 export * from './types/unsplash';
+export * from './types/file-system';
 
 export * from './providers/auth.provider';
 export * from './providers/deck.provider';
