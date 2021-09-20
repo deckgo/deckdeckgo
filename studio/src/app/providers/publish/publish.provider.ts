@@ -9,7 +9,17 @@ import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
-export const publish = (description: string, tags: string[], github: boolean): Promise<void> => {
+export const publish = ({
+  name,
+  description,
+  tags,
+  github
+}: {
+  name: string;
+  description: string;
+  tags: string[];
+  github: boolean;
+}): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
       if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
@@ -22,7 +32,7 @@ export const publish = (description: string, tags: string[], github: boolean): P
         return;
       }
 
-      const deck: Deck = updateDeckMeta({description, tags, github});
+      const deck: Deck = updateDeckMeta({name, description, tags, github});
 
       const publishedDeck: Deck = await publishDeck(deck);
 
@@ -43,7 +53,7 @@ const publishDeck = async (deck: Deck): Promise<Deck> => {
   return publish({deck, config: firebaseConfig});
 };
 
-const updateDeckMeta = ({description, tags, github}: {description: string; tags: string[]; github: boolean}): Deck => {
+const updateDeckMeta = ({name, description, tags, github}: {name: string; description: string; tags: string[]; github: boolean}): Deck => {
   if (!userStore.state.user || !userStore.state.user.data) {
     throw new Error('No user');
   }
@@ -52,13 +62,15 @@ const updateDeckMeta = ({description, tags, github}: {description: string; tags:
 
   const deck: Deck = {...deckStore.state.deck};
 
+  deck.data.name = name;
+
   if (!deck.data.meta) {
     deck.data.meta = {
-      title: deck.data.name,
+      title: name,
       updated_at: now as unknown as Date
     };
   } else {
-    deck.data.meta.title = deck.data.name;
+    deck.data.meta.title = name;
     deck.data.meta.updated_at = now as unknown as Date;
   }
 
