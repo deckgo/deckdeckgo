@@ -32,7 +32,6 @@
     "@dfinity/candid": "^0.9.3",
     "@dfinity/identity": "^0.9.3",
     "@dfinity/principal": "^0.9.3",
-    "firebase": "^8.9.1",
     "idb-keyval": "^6.0.1",
     "jszip": "^3.7.1",
     "socket.io-client": "2.3.1",

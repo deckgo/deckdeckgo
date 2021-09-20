@@ -5,6 +5,8 @@ import {injectJS, injectCSS} from '@deckdeckgo/editor';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
+import type {UserCredential, OAuthCredential} from '@firebase/auth-types';
+
 declare var firebaseui;
 
 @Component({
@@ -16,7 +18,7 @@ export class FirebaseSignIn implements ComponentInterface {
   appUrl: string;
 
   @Prop()
-  signInSuccessWithAuthResult: (authResult, _redirectUrl) => void;
+  signInSuccess: ({uid, githubAccessToken}: {uid: string | undefined; githubAccessToken: string | undefined}) => void;
 
   async componentDidLoad() {
     await this.setupFirebaseUI();
@@ -79,6 +81,24 @@ export class FirebaseSignIn implements ComponentInterface {
 
     // The start method will wait until the DOM is loaded.
     ui.start('#firebaseui-auth-container', uiConfig);
+  }
+
+  private signInSuccessWithAuthResult = (userCred: UserCredential, _redirectUrl) => {
+    const githubAccessToken: string | undefined = this.getGithubAccessToken(userCred);
+
+    this.signInSuccess({uid: userCred?.user?.uid, githubAccessToken});
+  };
+
+  private getGithubAccessToken(userCred: UserCredential): string | undefined {
+    if (!userCred) {
+      return undefined;
+    }
+
+    if (!userCred.credential || userCred.credential.providerId !== 'github.com' || !(userCred.credential as OAuthCredential).accessToken) {
+      return undefined;
+    }
+
+    return (userCred.credential as OAuthCredential).accessToken;
   }
 
   render() {
