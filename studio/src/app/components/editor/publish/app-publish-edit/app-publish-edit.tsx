@@ -1,6 +1,5 @@
 import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
-import {debounce} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 
 import {Deck} from '@deckdeckgo/editor';
@@ -12,8 +11,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {DeckFirebaseProvider} from '../../../../providers/data/deck/deck.firebase.provider';
-import {PublishService} from '../../../../services/editor/publish/publish.service';
+import {publish} from '../../../../providers/publish/publish.provider';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
@@ -42,9 +40,6 @@ export class AppPublishEdit {
   private validDescription: boolean = true;
 
   @State()
-  private disablePublish: boolean = false;
-
-  @State()
   private publishing: boolean = false;
 
   @State()
@@ -59,25 +54,9 @@ export class AppPublishEdit {
   @State()
   private pushToGitHub: boolean = true;
 
-  private deckFirebaseProvider: DeckFirebaseProvider;
-
-  private readonly debounceUpdateDeck: () => void;
-
   @Event() private published: EventEmitter<string>;
 
-  private publishService: PublishService;
-
   private destroyDeckListener;
-
-  constructor() {
-    this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
-
-    this.publishService = PublishService.getInstance();
-
-    this.debounceUpdateDeck = debounce(async () => {
-      await this.updateDeck();
-    }, 500);
-  }
 
   async componentWillLoad() {
     await this.init();
@@ -134,51 +113,20 @@ export class AppPublishEdit {
     });
   }
 
-  private updateDeck(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.caption || this.caption === undefined || this.caption === '') {
-        resolve();
-        return;
-      }
-
-      this.disablePublish = true;
-
-      try {
-        if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.id) {
-          this.disablePublish = false;
-          resolve();
-          return;
-        }
-
-        deckStore.state.deck.data.name = this.caption;
-
-        const updatedDeck: Deck = await this.deckFirebaseProvider.update(deckStore.state.deck);
-        deckStore.state.deck = {...updatedDeck};
-
-        this.disablePublish = false;
-      } catch (err) {
-        this.disablePublish = false;
-        errorStore.state.error = err;
-      }
-
-      resolve();
-    });
-  }
-
   private async handleSubmit(e: Event) {
     e.preventDefault();
 
-    await this.publish();
+    await this.publishDeck();
   }
 
-  private publish(): Promise<void> {
+  private publishDeck(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       try {
         this.publishing = true;
 
         this.onSuccessfulPublish();
 
-        await this.publishService.publish(this.description, this.tags, this.pushToGitHub);
+        await publish({name: this.caption, description: this.description, tags: this.tags, github: this.pushToGitHub});
 
         resolve();
       } catch (err) {
@@ -231,21 +179,15 @@ export class AppPublishEdit {
     );
   }
 
-  private onCaptionInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
-    return new Promise<void>((resolve) => {
-      let title: string = ($event.target as InputTargetEvent).value;
-      if (title && title !== undefined && title !== '') {
-        if (!this.validCaption(title)) {
-          title = title.substr(0, Constants.DECK.TITLE_MAX_LENGTH);
-        }
+  private onCaptionInput($event: CustomEvent<KeyboardEvent>) {
+    let title: string = ($event.target as InputTargetEvent).value;
+    if (title && title !== undefined && title !== '') {
+      if (!this.validCaption(title)) {
+        title = title.substr(0, Constants.DECK.TITLE_MAX_LENGTH);
       }
+    }
 
-      this.caption = title;
-
-      this.debounceUpdateDeck();
-
-      resolve();
-    });
+    this.caption = title;
   }
 
   private validateCaptionInput() {
@@ -390,7 +332,7 @@ export class AppPublishEdit {
                 maxlength={Constants.DECK.TITLE_MAX_LENGTH}
                 required={true}
                 input-mode="text"
-                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onCaptionInput(e)}
+                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCaptionInput($event)}
                 onIonChange={() => this.validateCaptionInput()}></ion-input>
             </ion-item>
 
@@ -478,11 +420,7 @@ export class AppPublishEdit {
   private renderPublish(disable: boolean) {
     if (!disable) {
       return (
-        <ion-button
-          type="submit"
-          disabled={!this.validTitle || !this.validDescription || this.disablePublish}
-          color="tertiary"
-          shape="round">
+        <ion-button type="submit" disabled={!this.validTitle || !this.validDescription} color="tertiary" shape="round">
           <ion-label>{i18n.state.publish_edit.publish_now}</ion-label>
         </ion-button>
       );

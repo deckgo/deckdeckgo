@@ -1,10 +1,12 @@
 import {Component, Element, Listen, h, State} from '@stencil/core';
 
-import i18n from '../../../stores/i18n.store';
+import {Deck} from '@deckdeckgo/editor';
 
-import {PublishService} from '../../../services/editor/publish/publish.service';
+import i18n from '../../../stores/i18n.store';
+import deckStore from '../../../stores/deck.store';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
 
 @Component({
   tag: 'app-publish',
@@ -16,16 +18,13 @@ export class AppPublish {
   @State()
   private publishedUrl: string;
 
-  private publishService: PublishService;
-
   private unsubscribeSnapshot: () => void | undefined;
 
-  constructor() {
-    this.publishService = PublishService.getInstance();
-  }
-
   async componentWillLoad() {
-    this.unsubscribeSnapshot = await this.publishService.snapshot();
+    this.unsubscribeSnapshot = await snapshotDeck({
+      deckId: deckStore.state.deck.id,
+      onNext: (snapshot: Deck) => (deckStore.state.deck = {...snapshot})
+    });
   }
 
   async componentDidLoad() {

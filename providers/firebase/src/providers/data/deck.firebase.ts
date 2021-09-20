@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {CreateDeck, Deck, DeckData, DeckEntries, DeleteDeck, GetDeck, UpdateDeck} from '@deckdeckgo/editor';
+import {CreateDeck, Deck, DeckData, DeckEntries, DeleteDeck, GetDeck, UpdateDeck, SnapshotDeck} from '@deckdeckgo/editor';
 
 import {filterFieldDelete} from '../../utils/firestore.utils';
 
@@ -108,4 +108,34 @@ export const updateDeck: UpdateDeck = (deck: Deck): Promise<Deck> => {
       reject(err);
     }
   });
+};
+
+export const snapshotDeck: SnapshotDeck = async ({
+  deckId,
+  onNext,
+  onError
+}: {
+  deckId: string;
+  onNext: (snapshot: Deck) => void;
+  onError?: (error: string) => void;
+}): Promise<() => void | undefined> => {
+  if (!deckId) {
+    throw new Error('Deck id not provided');
+  }
+
+  const firestore: firebase.firestore.Firestore = firebase.firestore();
+
+  const unsubscribe: () => void | undefined = firestore
+    .collection('decks')
+    .doc(deckId)
+    .onSnapshot(
+      (deploySnapshot: firebase.firestore.DocumentSnapshot<DeckData>) =>
+        onNext({
+          id: deploySnapshot.id,
+          data: deploySnapshot.data()
+        }),
+      ({message}: firebase.firestore.FirestoreError) => onError(message)
+    );
+
+  return unsubscribe;
 };
