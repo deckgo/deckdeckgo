@@ -3,6 +3,8 @@ import {Component, Element, Fragment, h} from '@stencil/core';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 
+import {cloud} from '../../../utils/core/environment.utils';
+
 import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
@@ -13,11 +15,14 @@ import {AppIcon} from '../app-icon/app-icon';
 export class AppMenu {
   @Element() el: HTMLElement;
 
+  private signIn: boolean = cloud();
+
   render() {
     return (
       <ion-list>
         {this.renderUser()}
 
+        {this.renderEditor()}
         {this.renderDashboard()}
         {this.renderSettings()}
 
@@ -38,9 +43,22 @@ export class AppMenu {
     }
   }
 
-  private renderDashboard() {
+  private renderEditor() {
     return (
-      <ion-item button class="home" href="/dashboard" routerDirection="forward">
+      <ion-item button href="/" routerDirection="forward">
+        <AppIcon name="pencil" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+        <ion-label>{i18n.state.menu.editor}</ion-label>
+      </ion-item>
+    );
+  }
+
+  private renderDashboard() {
+    if (!this.signIn) {
+      return undefined;
+    }
+
+    return (
+      <ion-item button href="/dashboard" routerDirection="forward">
         <AppIcon name="apps" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.menu.dashboard}</ion-label>
       </ion-item>
@@ -50,7 +68,7 @@ export class AppMenu {
   private renderInteract() {
     return (
       <Fragment>
-        <ion-item button class="home" href="/poll" routerDirection="forward">
+        <ion-item button href="/poll" routerDirection="forward">
           <AppIcon name="chatbubble-ellipses" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.menu.poll}</ion-label>
         </ion-item>
@@ -64,26 +82,36 @@ export class AppMenu {
   }
 
   private renderSettings() {
+    if (!this.signIn) {
+      return this.renderCustomization();
+    }
+
     return (
       <app-expansion-panel expanded="close">
         <ion-label slot="title">Settings</ion-label>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true} lazy={true} slot="icon"></AppIcon>
 
         <ion-list class="settings">
-          <ion-item button class="home" href="/profile" routerDirection="forward">
+          <ion-item button href="/profile" routerDirection="forward">
             <ion-label>{i18n.state.nav.profile}</ion-label>
             <AppIcon name="person" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           </ion-item>
-          <ion-item button class="home" href="/customization" routerDirection="forward">
-            <ion-label>{i18n.state.nav.customization}</ion-label>
-            <AppIcon name="color-palette" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
-          </ion-item>
-          <ion-item button class="home" href="/templates" routerDirection="forward">
+          {this.renderCustomization()}
+          <ion-item button href="/templates" routerDirection="forward">
             <ion-label>{i18n.state.nav.templates}</ion-label>
             <AppIcon name="reader" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
           </ion-item>
         </ion-list>
       </app-expansion-panel>
+    );
+  }
+
+  private renderCustomization() {
+    return (
+      <ion-item button href="/customization" routerDirection="forward">
+        <ion-label>{i18n.state.nav.customization}</ion-label>
+        <AppIcon name="color-palette" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+      </ion-item>
     );
   }
 }

@@ -17,7 +17,7 @@ export class AppNavigation {
 
   @Prop() user: boolean = true;
 
-  @Prop() signIn: boolean = false;
+  @Prop() actions: boolean = true;
 
   @State()
   private hideICP: boolean = false;
@@ -36,7 +36,7 @@ export class AppNavigation {
             {this.renderTitle()}
             {this.renderMenuToggle()}
 
-            <app-navigation-actions signIn={this.signIn} slot="end"></app-navigation-actions>
+            {this.actions ? <app-navigation-actions slot="end"></app-navigation-actions> : undefined}
           </ion-toolbar>
         </ion-header>
       </Host>

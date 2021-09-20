@@ -40,7 +40,7 @@ export class AppSigninPage {
     if (this.signin) {
       return (
         <Fragment>
-          <app-navigation signIn={true}></app-navigation>
+          <app-navigation actions={false}></app-navigation>
           <ion-content class="ion-padding fullscreen-padding">
             <app-signin redirect={this.redirect}></app-signin>
           </ion-content>

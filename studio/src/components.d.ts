@@ -242,12 +242,11 @@ export namespace Components {
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
+        "actions": boolean;
         "menuToggle": boolean;
-        "signIn": boolean;
         "user": boolean;
     }
     interface AppNavigationActions {
-        "signIn": boolean;
     }
     interface AppNoTemplates {
     }
@@ -1529,12 +1528,11 @@ declare namespace LocalJSX {
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
+        "actions"?: boolean;
         "menuToggle"?: boolean;
-        "signIn"?: boolean;
         "user"?: boolean;
     }
     interface AppNavigationActions {
-        "signIn"?: boolean;
     }
     interface AppNoTemplates {
     }
