@@ -12,8 +12,8 @@ import i18n from '../../../../stores/i18n.store';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {DeckFirebaseProvider} from '../../../../providers/data/deck/deck.firebase.provider';
-import {PublishService} from '../../../../services/editor/publish/publish.service';
+import {publish} from '../../../../providers/publish/publish.provider';
+import {updateDeck} from '../../../../providers/data/deck/deck.provider';
 
 import {getPublishedUrl} from '../../../../utils/core/share.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
@@ -59,21 +59,13 @@ export class AppPublishEdit {
   @State()
   private pushToGitHub: boolean = true;
 
-  private deckFirebaseProvider: DeckFirebaseProvider;
-
   private readonly debounceUpdateDeck: () => void;
 
   @Event() private published: EventEmitter<string>;
 
-  private publishService: PublishService;
-
   private destroyDeckListener;
 
   constructor() {
-    this.deckFirebaseProvider = DeckFirebaseProvider.getInstance();
-
-    this.publishService = PublishService.getInstance();
-
     this.debounceUpdateDeck = debounce(async () => {
       await this.updateDeck();
     }, 500);
@@ -152,7 +144,7 @@ export class AppPublishEdit {
 
         deckStore.state.deck.data.name = this.caption;
 
-        const updatedDeck: Deck = await this.deckFirebaseProvider.update(deckStore.state.deck);
+        const updatedDeck: Deck = await updateDeck(deckStore.state.deck);
         deckStore.state.deck = {...updatedDeck};
 
         this.disablePublish = false;
@@ -168,17 +160,17 @@ export class AppPublishEdit {
   private async handleSubmit(e: Event) {
     e.preventDefault();
 
-    await this.publish();
+    await this.publishDeck();
   }
 
-  private publish(): Promise<void> {
+  private publishDeck(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       try {
         this.publishing = true;
 
         this.onSuccessfulPublish();
 
-        await this.publishService.publish(this.description, this.tags, this.pushToGitHub);
+        await publish(this.description, this.tags, this.pushToGitHub);
 
         resolve();
       } catch (err) {

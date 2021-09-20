@@ -1,4 +1,4 @@
-import {Deck, DeckEntries, DeleteDeck} from '@deckdeckgo/editor';
+import {Deck, DeckEntries, DeleteDeck, UpdateDeck, SnapshotDeck} from '@deckdeckgo/editor';
 
 import {DeckIcProvider} from './deck.ic.provider';
 import {DeckOfflineProvider} from './deck.offline.provider';
@@ -32,4 +32,36 @@ export const deleteDeck = async (deckId: string): Promise<void> => {
   }
 
   return DeckOfflineProvider.getInstance().delete(deckId);
+};
+
+export const updateDeck = async (deck: Deck): Promise<Deck> => {
+  if (internetComputer()) {
+    // TODO: publish?
+    throw new Error('Not implemented');
+  }
+
+  if (firebase()) {
+    const {updateDeck: updateUserDeck}: {updateDeck: UpdateDeck} = await cloudProvider<{updateDeck: UpdateDeck}>();
+
+    return updateUserDeck(deck);
+  }
+
+  return DeckOfflineProvider.getInstance().update(deck);
+};
+
+export const snapshotDeck = async ({
+  deckId,
+  onNext
+}: {
+  deckId: string;
+  onNext: (snapshot: Deck) => void;
+}): Promise<() => void | undefined> => {
+  if (firebase()) {
+    const {snapshotDeck: snapshotUserDeck}: {snapshotDeck: SnapshotDeck} = await cloudProvider<{snapshotDeck: SnapshotDeck}>();
+
+    return snapshotUserDeck({deckId, onNext});
+  }
+
+  // TODO: publish?
+  throw new Error('Not implemented');
 };

@@ -23,6 +23,7 @@ export * from './providers/user.provider';
 export * from './providers/storage.provider';
 export * from './providers/sync.provider';
 export * from './providers/unsplash.provider';
+export * from './providers/publish.provider';
 
 export * from './utils/deck.utils';
 export * from './utils/script.utils';
