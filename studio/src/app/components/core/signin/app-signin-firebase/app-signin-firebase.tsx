@@ -2,8 +2,6 @@ import {Component, Event, h, Fragment, EventEmitter} from '@stencil/core';
 
 import {injectJS} from '@deckdeckgo/editor';
 
-import type {UserCredential, OAuthCredential} from '@firebase/auth-types';
-
 import navStore, {NavDirection} from '../../../../stores/nav.store';
 import tokenStore from '../../../../stores/token.store';
 import i18n from '../../../../stores/i18n.store';
@@ -25,10 +23,10 @@ export class AppSignInFirebase {
 
   private deckDeckGoConfig: EnvironmentDeckDeckGoConfig | undefined = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
-  private signInSuccessWithAuthResult = (authResult, _redirectUrl) => {
+  private signInSuccess = ({uid, githubAccessToken}: {uid: string | undefined; githubAccessToken: string | undefined}) => {
     this.inProgress.emit(true);
 
-    this.saveGithubCredentials(authResult);
+    this.saveGithubCredentials({uid, githubAccessToken});
 
     this.navigateRedirect();
 
@@ -64,20 +62,16 @@ export class AppSignInFirebase {
     };
   }
 
-  private saveGithubCredentials(userCred: UserCredential) {
-    if (!userCred || !userCred.user || !userCred.user.uid) {
-      return;
-    }
-
-    if (!userCred.credential || userCred.credential.providerId !== 'github.com' || !(userCred.credential as OAuthCredential).accessToken) {
+  private saveGithubCredentials({uid, githubAccessToken}: {uid: string | undefined; githubAccessToken: string | undefined}) {
+    if (!uid || !githubAccessToken) {
       return;
     }
 
     tokenStore.state.token = {
-      id: userCred.user.uid,
+      id: uid,
       data: {
         github: {
-          token: (userCred.credential as OAuthCredential).accessToken
+          token: githubAccessToken
         }
       }
     };
@@ -90,9 +84,7 @@ export class AppSignInFirebase {
 
         {this.renderGitHub()}
 
-        <deckgo-firebase-signin
-          app-url={this.deckDeckGoConfig.appUrl}
-          signInSuccessWithAuthResult={this.signInSuccessWithAuthResult}></deckgo-firebase-signin>
+        <deckgo-firebase-signin app-url={this.deckDeckGoConfig.appUrl} signInSuccess={this.signInSuccess}></deckgo-firebase-signin>
       </Fragment>
     );
   }
