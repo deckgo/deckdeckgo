@@ -32,6 +32,7 @@ interface I18nMenu {
   dashboard: string;
   poll: string;
   remote_control: string;
+  editor: string;
 }
 
 interface I18nLinks {

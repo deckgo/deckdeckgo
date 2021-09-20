@@ -30,7 +30,8 @@
   "menu": {
     "dashboard": "Panel",
     "poll": "Encuesta",
-    "remote_control": "Control remoto"
+    "remote_control": "Control remoto",
+    "editor": "Editor"
   },
   "links": {
     "home": "Inicio",

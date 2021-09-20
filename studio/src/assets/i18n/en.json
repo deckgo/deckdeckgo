@@ -30,7 +30,8 @@
   "menu": {
     "dashboard": "Dashboard",
     "poll": "Poll",
-    "remote_control": "Remote control"
+    "remote_control": "Remote control",
+    "editor": "Editor"
   },
   "links": {
     "home": "Home",

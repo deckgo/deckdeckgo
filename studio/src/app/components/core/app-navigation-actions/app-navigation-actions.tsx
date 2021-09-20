@@ -1,4 +1,4 @@
-import {Component, Prop, h, Fragment, Element} from '@stencil/core';
+import {Component, h, Fragment, Element} from '@stencil/core';
 
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
@@ -14,6 +14,7 @@ import {AppIcon} from '../app-icon/app-icon';
 
 import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
 import {clearEdit} from '../../../utils/editor/editor.utils';
+import {cloud} from '../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-navigation-actions',
@@ -23,9 +24,9 @@ import {clearEdit} from '../../../utils/editor/editor.utils';
 export class AppNavigationActions {
   @Element() el: HTMLElement;
 
-  @Prop() signIn: boolean = false;
-
   private loadInput!: HTMLInputElement;
+
+  private signIn: boolean = cloud();
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -124,10 +125,6 @@ export class AppNavigationActions {
   }
 
   render() {
-    if (this.signIn) {
-      return undefined;
-    }
-
     return (
       <Fragment>
         {this.renderActions()}
@@ -172,7 +169,7 @@ export class AppNavigationActions {
   }
 
   private renderSignIn() {
-    if (authStore.state.loggedIn) {
+    if (authStore.state.loggedIn || !this.signIn) {
       return undefined;
     }
 
