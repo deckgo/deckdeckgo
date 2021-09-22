@@ -6,8 +6,6 @@ import userStore from '../../stores/user.store';
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
-import {UserIcProvider} from '../data/user/user.ic.provider';
-
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 export const initAuthProvider = async () => {
@@ -52,15 +50,6 @@ export const deleteAuth = async () => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
   if (!['firebase', 'ic'].includes(cloud)) {
-    return;
-  }
-
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    const uid: string = authStore.state.authUser.uid;
-    await UserIcProvider.getInstance().delete(uid);
-
-    await signOut();
     return;
   }
 

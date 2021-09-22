@@ -1,4 +1,5 @@
 import {AuthClient} from '@dfinity/auth-client';
+import {Identity} from '@dfinity/agent';
 
 import {AuthUser, InitAuth, SignOut, User, DeleteAuth} from '@deckdeckgo/editor';
 
@@ -6,6 +7,7 @@ import {InternetIdentityAuth} from '../../types/identity';
 
 import {internetIdentityAuth} from '../../utils/identity.utils';
 import {initUserWorker} from '../../workers/user.ic.worker';
+import {deleteUser} from '../data/user.ic';
 
 let authClient: AuthClient | undefined;
 
@@ -70,6 +72,10 @@ export const signIn = async ({onSuccess, onError}: {onSuccess: () => void; onErr
   });
 };
 
-export const deleteAuth: DeleteAuth = async (_param: {user: User; config}) => {
-  // TODO
+export const deleteAuth: DeleteAuth = ({user}: {user: User; config}): Promise<void> => {
+  return deleteUser(user.id);
+};
+
+export const getIdentity = (): Identity | undefined => {
+  return authClient?.getIdentity();
 };

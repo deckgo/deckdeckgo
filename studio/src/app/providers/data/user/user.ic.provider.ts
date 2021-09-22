@@ -72,22 +72,4 @@ export class UserIcProvider {
       }
     };
   }
-
-  async delete(_userId: string): Promise<void> {
-    const identity: Identity | undefined = AuthIcProvider.getInstance().getIdentity();
-
-    if (!identity) {
-      return;
-    }
-
-    const {userActor, ownerId} = await initUserActor({identity});
-
-    console.log('User IC about to DEL');
-    const t0 = performance.now();
-
-    await userActor.del(ownerId);
-
-    const t1 = performance.now();
-    console.log('User IC DEL done', t1 - t0);
-  }
 }
