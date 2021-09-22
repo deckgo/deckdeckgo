@@ -75,7 +75,7 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/deckdeckgo/tiers/backers.svg?avatarHeight=32"/></a>
 
-## Apps
+## Applications
 
 | Project            | Version                                                                                                                       | Online                                                     |                   Links                   |                               Changelog                                |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | :---------------------------------------: | :--------------------------------------------------------------------: |
