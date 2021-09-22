@@ -36,7 +36,7 @@
     "@deckdeckgo/core": "^8.4.0",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.0",
-    "@deckdeckgo/editor": "file:../utils/editor",
+    "@deckdeckgo/editor": "^1.0.0-beta.0",
     "@deckdeckgo/highlight-code": "^3.3.1",
     "@deckdeckgo/inline-editor": "^4.1.0",
     "@deckdeckgo/laser-pointer": "^1.1.0",
@@ -78,7 +78,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/deckgo/deckdeckgo.git"
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "studio"
   },
   "keywords": [
     "ionic",
