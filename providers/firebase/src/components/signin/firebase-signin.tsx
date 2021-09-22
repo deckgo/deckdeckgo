@@ -18,7 +18,7 @@ export class FirebaseSignIn implements ComponentInterface {
   appUrl: string;
 
   @Prop()
-  signInSuccess: ({uid, githubAccessToken}: {uid: string | undefined; githubAccessToken: string | undefined}) => void;
+  signInSuccess: (credentials: {uid: string | undefined; githubAccessToken: string | undefined} | undefined) => void;
 
   async componentDidLoad() {
     await this.setupFirebaseUI();
@@ -83,10 +83,12 @@ export class FirebaseSignIn implements ComponentInterface {
     ui.start('#firebaseui-auth-container', uiConfig);
   }
 
-  private signInSuccessWithAuthResult = (userCred: UserCredential, _redirectUrl) => {
+  private signInSuccessWithAuthResult = (userCred: UserCredential, _redirectUrl): boolean => {
     const githubAccessToken: string | undefined = this.getGithubAccessToken(userCred);
 
     this.signInSuccess({uid: userCred?.user?.uid, githubAccessToken});
+
+    return false;
   };
 
   private getGithubAccessToken(userCred: UserCredential): string | undefined {
