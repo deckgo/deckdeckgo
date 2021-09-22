@@ -73,9 +73,6 @@ export class AppDashboard {
   async componentWillLoad() {
     await this.imageEventsHandler.init();
     await this.chartEventsHandler.init();
-
-    const params = new URLSearchParams(window.location.search);
-    this.loading = params.get('signin') === 'success';
   }
 
   async componentDidLoad() {

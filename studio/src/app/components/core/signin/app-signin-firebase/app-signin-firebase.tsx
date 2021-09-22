@@ -43,22 +43,10 @@ export class AppSignInFirebase {
     });
   }
 
-  private navigateRedirect(redirectStatus: 'success' | 'failure' = 'success') {
-    const redirectUrl: string = localStorage.getItem('deckdeckgo_redirect');
-
-    localStorage.removeItem('deckdeckgo_redirect');
-
-    this.navigateRoot(redirectUrl, redirectStatus, NavDirection.RELOAD);
-  }
-
-  private navigateRoot(redirectUrl: string, redirectStatus: 'success' | 'failure', direction: NavDirection) {
-    // TODO: That's ugly
-    const url: string = !redirectUrl || redirectUrl.trim() === '' || redirectUrl.trim() === '/' ? '/' : '/' + redirectUrl + '/';
-
-    // Do not push a new page but reload as we might later face a DOM with contains two firebaseui which would not work
+  private navigateRedirect() {
     navStore.state.nav = {
-      url: url + `?signin=${redirectStatus}`,
-      direction
+      url: '/',
+      direction: NavDirection.RELOAD
     };
   }
 

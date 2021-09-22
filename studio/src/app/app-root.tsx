@@ -186,7 +186,6 @@ export class AppRoot {
           <ion-route url="/dashboard" component="app-dashboard-page" />
 
           <ion-route url="/signin" component="app-signin-page" />
-          <ion-route url="/signin/:redirect" component="app-signin-page" />
 
           <ion-route url="/poll" component="app-poll" />
           <ion-route url="/poll/:pollKey" component="app-poll" />

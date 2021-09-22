@@ -1,9 +1,10 @@
-import {Component, Prop, State, h} from '@stencil/core';
+import {Component, State, h} from '@stencil/core';
 
 import navStore, {NavDirection} from '../../../../stores/nav.store';
 import i18n from '../../../../stores/i18n.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
+
 import {EnvironmentAppConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
@@ -12,9 +13,6 @@ import {EnvironmentConfigService} from '../../../../services/environment/environ
   styleUrl: 'app-signin.scss'
 })
 export class AppSignIn {
-  @Prop()
-  redirect: string;
-
   @State()
   private signInInProgress: boolean = false;
 
@@ -53,16 +51,12 @@ export class AppSignIn {
   }
 
   private renderBackButton() {
-    if (this.signInInProgress) {
-      return undefined;
-    } else {
-      return (
-        <ion-buttons class="back">
-          <ion-button onClick={() => this.navigateBack()} color="dark" aria-label={i18n.state.core.close}>
-            <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
-          </ion-button>
-        </ion-buttons>
-      );
-    }
+    return (
+      <ion-buttons class="back">
+        <ion-button onClick={() => this.navigateBack()} color="dark" aria-label={i18n.state.core.close} disabled={this.signInInProgress}>
+          <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
+        </ion-button>
+      </ion-buttons>
+    );
   }
 }

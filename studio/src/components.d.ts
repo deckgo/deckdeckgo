@@ -316,14 +316,12 @@ export namespace Components {
     interface AppShareOptions {
     }
     interface AppSignin {
-        "redirect": string;
     }
     interface AppSigninFirebase {
     }
     interface AppSigninIc {
     }
     interface AppSigninPage {
-        "redirect": string;
     }
     interface AppSlideNavigate {
     }
@@ -1607,7 +1605,6 @@ declare namespace LocalJSX {
         "onSelectedOption"?: (event: CustomEvent<MoreAction>) => void;
     }
     interface AppSignin {
-        "redirect"?: string;
     }
     interface AppSigninFirebase {
         "onInProgress"?: (event: CustomEvent<boolean>) => void;
@@ -1616,7 +1613,6 @@ declare namespace LocalJSX {
         "onInProgress"?: (event: CustomEvent<boolean>) => void;
     }
     interface AppSigninPage {
-        "redirect"?: string;
     }
     interface AppSlideNavigate {
         "onReorder"?: (event: CustomEvent<IonicReorderEvent>) => void;
