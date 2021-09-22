@@ -2,6 +2,10 @@
 
 # [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-YY-ZZ)
 
+### Providers: New
+
+- api: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/api/CHANGELOG.md))
+
 ### Utils: New
 
 - editor: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
