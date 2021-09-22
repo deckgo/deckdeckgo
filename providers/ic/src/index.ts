@@ -7,3 +7,5 @@ export * from './providers/data/deck.ic';
 export * from './providers/data/slide.ic';
 
 export * from './providers/storage/storage.ic';
+
+export * from './providers/sync/sync.ic';
