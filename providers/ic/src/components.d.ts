@@ -9,6 +9,8 @@ export namespace Components {
     interface DeckgoIcSignin {
         "config": Record<string, string>;
         "i18n": Record<string, Record<string, string>>;
+        "signInError": (err?: string) => void;
+        "signInSuccess": () => void;
     }
 }
 declare global {
@@ -27,6 +29,8 @@ declare namespace LocalJSX {
         "config"?: Record<string, string>;
         "i18n"?: Record<string, Record<string, string>>;
         "onInProgress"?: (event: CustomEvent<boolean>) => void;
+        "signInError"?: (err?: string) => void;
+        "signInSuccess"?: () => void;
     }
     interface IntrinsicElements {
         "deckgo-ic-signin": DeckgoIcSignin;
