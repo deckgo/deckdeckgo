@@ -1,19 +1,19 @@
 {
   "canisters": {
     "manager": {
-      "main": "canisters/manager/manager.mo",
+      "main": "canisters/src/manager/manager.mo",
       "type": "motoko"
     },
     "users": {
-      "main": "canisters/users/users.mo",
+      "main": "canisters/src/users/users.mo",
       "type": "motoko"
     },
     "assets": {
       "dependencies": ["manager", "users"],
       "frontend": {
-        "entrypoint": "www/index.html"
+        "entrypoint": "studio/www/index.html"
       },
-      "source": ["www"],
+      "source": ["studio/www"],
       "type": "assets"
     }
   },

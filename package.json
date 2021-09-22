@@ -4,6 +4,10 @@
   "author": "David Dal Busco",
   "description": "The web open source editor for presentations",
   "private": true,
+  "scripts": {
+    "ic:types": "node ./canisters/scripts/ic.types.js",
+    "build": "npm run ic:types && cd studio && npm run build:ic"
+  },
   "workspaces": [
     "providers/*",
     "webcomponents/*",

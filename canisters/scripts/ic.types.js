@@ -5,7 +5,7 @@ const prettier = require('prettier');
 const {join, extname, basename} = require('path');
 const {existsSync, readdirSync, writeFileSync, lstatSync, copyFileSync, readFileSync} = require('fs');
 
-const copyTypes = async ({src, dest = `../providers/ic/src/canisters`}) => {
+const copyTypes = async ({src, dest = `./providers/ic/src/canisters`}) => {
   const promises = readdirSync(src)
     .filter((subFolder) => !['assets', 'idl'].includes(subFolder))
     .map(
