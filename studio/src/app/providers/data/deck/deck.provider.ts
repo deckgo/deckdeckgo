@@ -1,17 +1,12 @@
 import {Deck, DeckEntries, DeleteDeck, SnapshotDeck} from '@deckdeckgo/editor';
 
-import {DeckIcProvider} from './deck.ic.provider';
 import {DeckOfflineProvider} from './deck.offline.provider';
 
-import {firebase, internetComputer} from '../../../utils/core/environment.utils';
+import {cloud, firebase} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const decks = async (userId: string): Promise<Deck[]> => {
-  if (internetComputer()) {
-    return DeckIcProvider.getInstance().entries(userId);
-  }
-
-  if (firebase()) {
+  if (cloud()) {
     const {deckEntries}: {deckEntries: DeckEntries} = await cloudProvider<{deckEntries: DeckEntries}>();
 
     return deckEntries(userId);
@@ -21,11 +16,7 @@ export const decks = async (userId: string): Promise<Deck[]> => {
 };
 
 export const deleteDeck = async (deckId: string): Promise<void> => {
-  if (internetComputer()) {
-    return DeckIcProvider.getInstance().delete(deckId);
-  }
-
-  if (firebase()) {
+  if (cloud()) {
     const {deleteDeck: deleteUserDeck}: {deleteDeck: DeleteDeck} = await cloudProvider<{deleteDeck: DeleteDeck}>();
 
     return deleteUserDeck(deckId);
@@ -47,6 +38,6 @@ export const snapshotDeck = async ({
     return snapshotUserDeck({deckId, onNext});
   }
 
-  // TODO: publish?
+  // TODO: publish on the IC?
   throw new Error('Not implemented');
 };
