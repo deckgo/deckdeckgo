@@ -7,6 +7,19 @@
     <meta name="robots" content="noindex" />
 
     <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+    img-src 'self' data: blob: https:;
+    style-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com https://cdn.jsdelivr.net/;
+    font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+    script-src 'self' blob: 'unsafe-eval' <@SW_LOADER@> 'sha256-vay/aAFxtYsaISRoBsVDHCbAzow9u6P2gHHTewRPaJY=' 'sha256-Q4WsoEk996jr5AUtYVXE8AMljYZgUVD3cxqC2YHsvyQ=' https://www.gstatic.com https://apis.google.com https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+    connect-src 'self' blob: <@API_URLS@> https://deckdeckgo.com/ https://app.deckdeckgo.com/ http://deckdeckgo-studio-beta.web.app/ http://deckdeckgo-studio-staging.web.app/ https://iey7l-kaaaa-aaaah-qadoa-cai.ic0.app/ https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/ wss://api.deckdeckgo.com/ https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-prod.appspot.com/ https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-beta.appspot.com/ https://firebasestorage.googleapis.com/v0/b/deckdeckgo-studio-staging.appspot.com/ https://us-central1-deckdeckgo-studio-staging.cloudfunctions.net/ https://us-central1-deckdeckgo-studio-beta.cloudfunctions.net/ https://us-central1-deckdeckgo-studio-prod.cloudfunctions.net/ https://www.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com ws://localhost:3333/ https://raw.githubusercontent.com/deckgo/ https://api.tenor.com/ https://media.tenor.com/ https://images.unsplash.com/ https://formspree.io/xjvaebzk https://cdn.jsdelivr.net/;
+    object-src 'none';
+    base-uri 'none';
+    frame-src https: http://localhost:3333/~dev-server"
+    />
+
+    <meta
       name="viewport"
       content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
