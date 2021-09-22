@@ -5,7 +5,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   app: {
-    mock: false,
+    mock: true,
     cloud: 'firebase'
   },
   deckdeckgo: {
@@ -37,5 +37,8 @@ setupDeckGoConfig({
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
+  },
+  cloud: {
+    cdn: 'http://localhost:3335/build/index.esm.js'
   }
 });
