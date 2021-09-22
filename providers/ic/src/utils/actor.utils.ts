@@ -2,8 +2,6 @@ import {Actor, HttpAgent, ActorMethod, ActorSubclass, Identity} from '@dfinity/a
 import {IDL} from '@dfinity/candid';
 import {Principal} from '@dfinity/principal';
 
-// TODO: remove
-
 export const createActor = async <T = Record<string, ActorMethod>>({
   canisterId,
   idlFactory,

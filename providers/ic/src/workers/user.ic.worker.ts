@@ -4,11 +4,11 @@ import {User} from '@deckdeckgo/editor';
 
 import {_SERVICE as UserActor, User as UserIc, UserId__1 as UserId, UserSocial as UserSocialIc} from '../canisters/users/users.did';
 
-import {CanisterUtils} from '../utils/editor/canister.utils';
-import {initSlidesActor} from '../utils/core/ic.slide.utils';
-import {initIdentity} from '../utils/core/ic.identity.utils';
+import {toNullable, toTimestamp, fromNullable, fromUserSocial, fromTimestamp} from '../utils/did.utils';
+import {initUserActor} from '../utils/user.utils';
+import {initIdentity} from '../utils/identity.utils';
 
-import {InternetIdentityAuth} from '../types/core/ic.identity';
+import {InternetIdentityAuth} from '../types/identity';
 
 export const initUserWorker = async ({
   internetIdentity: {delegationChain, identityKey},
@@ -23,7 +23,7 @@ export const initUserWorker = async ({
 
   const identity: Identity = initIdentity({identityKey, delegationChain});
 
-  const {userActor, ownerId} = await initSlidesActor({identity, host});
+  const {userActor, ownerId} = await initUserActor({identity, host});
 
   console.log('User IC about to GET');
   const t0 = performance.now();
@@ -48,15 +48,15 @@ const createUser = async ({userActor, ownerId}: {userActor: UserActor; ownerId: 
   const newUser: UserIc = {
     userId: ownerId,
     data: {
-      name: CanisterUtils.toNullable<string>(null),
-      username: CanisterUtils.toNullable<string>(null),
-      bio: CanisterUtils.toNullable<string>(null),
-      photo_url: CanisterUtils.toNullable<string>(null),
-      email: CanisterUtils.toNullable<string>(null),
+      name: toNullable<string>(null),
+      username: toNullable<string>(null),
+      bio: toNullable<string>(null),
+      photo_url: toNullable<string>(null),
+      email: toNullable<string>(null),
       newsletter: [true],
-      social: CanisterUtils.toNullable<UserSocialIc>(null),
-      created_at: CanisterUtils.toTimestamp(now),
-      updated_at: CanisterUtils.toTimestamp(now)
+      social: toNullable<UserSocialIc>(null),
+      created_at: toTimestamp(now),
+      updated_at: toTimestamp(now)
     }
   };
 
@@ -72,7 +72,7 @@ const createUser = async ({userActor, ownerId}: {userActor: UserActor; ownerId: 
 };
 
 const get = async ({userActor, ownerId}: {userActor: UserActor; ownerId: UserId}): Promise<UserIc | undefined> => {
-  return CanisterUtils.fromNullable<UserIc>(await userActor.get(ownerId));
+  return fromNullable<UserIc>(await userActor.get(ownerId));
 };
 
 const convertUser = ({user}: {user: UserIc}): User => {
@@ -84,15 +84,15 @@ const convertUser = ({user}: {user: UserIc}): User => {
     id: userId.toText(),
     data: {
       anonymous: false,
-      name: CanisterUtils.fromNullable<string>(name),
-      username: CanisterUtils.fromNullable<string>(username),
-      email: CanisterUtils.fromNullable<string>(email),
-      newsletter: CanisterUtils.fromNullable<boolean>(newsletter),
-      photo_url: CanisterUtils.fromNullable<string>(photo_url),
-      social: CanisterUtils.fromUserSocial<UserSocialIc>(social),
-      bio: CanisterUtils.fromNullable<string>(bio),
-      created_at: CanisterUtils.fromTimestamp(created_at),
-      updated_at: CanisterUtils.fromTimestamp(updated_at)
+      name: fromNullable<string>(name),
+      username: fromNullable<string>(username),
+      email: fromNullable<string>(email),
+      newsletter: fromNullable<boolean>(newsletter),
+      photo_url: fromNullable<string>(photo_url),
+      social: fromUserSocial<UserSocialIc>(social),
+      bio: fromNullable<string>(bio),
+      created_at: fromTimestamp(created_at),
+      updated_at: fromTimestamp(updated_at)
     }
   };
 };

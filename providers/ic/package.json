@@ -55,5 +55,9 @@
     "slides",
     "slideshow",
     "talk"
-  ]
+  ],
+  "devDependencies": {
+    "@rollup/plugin-replace": "^3.0.0",
+    "rollup-plugin-node-polyfills": "^0.2.1"
+  }
 }

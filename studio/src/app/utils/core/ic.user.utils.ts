@@ -5,14 +5,16 @@ import {_SERVICE as UserActor, UserId__1 as UserId} from '../../canisters/users/
 
 import {createActor} from './ic.utils';
 
-export const initSlidesActor = async ({
+// TODO: remove
+
+export const initUserActor = async ({
   identity,
   host
 }: {
   identity: Identity;
   host?: string;
 }): Promise<{userActor: UserActor; ownerId: UserId}> => {
-  const userActor: UserActor = await createSlidesActor({identity, host});
+  const userActor: UserActor = await createUserActor({identity, host});
 
   const ownerId: UserId = await userActor.getUserId();
 
@@ -22,6 +24,6 @@ export const initSlidesActor = async ({
   };
 };
 
-const createSlidesActor = ({identity, host}: {identity: Identity; host?: string}): Promise<UserActor> => {
+const createUserActor = ({identity, host}: {identity: Identity; host?: string}): Promise<UserActor> => {
   return createActor<UserActor>({canisterId: process.env.USERS_CANISTER_ID, idlFactory: UserFactory, identity, host});
 };

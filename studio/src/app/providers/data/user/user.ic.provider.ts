@@ -10,7 +10,7 @@ import {CanisterUtils} from '../../../utils/editor/canister.utils';
 
 import {AuthIcProvider} from '../../auth/auth.ic.provider';
 
-import {initSlidesActor} from '../../../utils/core/ic.slide.utils';
+import {initUserActor} from '../../../utils/core/ic.user.utils';
 
 export class UserIcProvider {
   private static instance: UserIcProvider;
@@ -33,7 +33,7 @@ export class UserIcProvider {
       return;
     }
 
-    const {userActor, ownerId} = await initSlidesActor({identity});
+    const {userActor, ownerId} = await initUserActor({identity});
 
     const {data} = user;
 
@@ -80,7 +80,7 @@ export class UserIcProvider {
       return;
     }
 
-    const {userActor, ownerId} = await initSlidesActor({identity});
+    const {userActor, ownerId} = await initUserActor({identity});
 
     console.log('User IC about to DEL');
     const t0 = performance.now();

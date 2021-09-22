@@ -18,12 +18,6 @@ export const initAuthProvider = async () => {
     return;
   }
 
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    await AuthIcProvider.getInstance().init();
-    return;
-  }
-
   const {initAuth}: {initAuth: InitAuth} = await cloudProvider<{initAuth: InitAuth}>();
 
   await initAuth({

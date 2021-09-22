@@ -1,7 +1,7 @@
 import type {IonicReorderEvent} from '../../../../utils/ionic/ionic.reorder.event';
 
 import {debounce} from '@deckdeckgo/utils';
-import {selectSlide} from '@deckdeckgo/editor';
+import {selectSlide, now} from '@deckdeckgo/editor';
 
 import {
   Slide,
@@ -26,7 +26,6 @@ import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {now} from '../../../../utils/core/date.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../../utils/editor/slide.utils';

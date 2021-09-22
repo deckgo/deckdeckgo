@@ -1,8 +1,8 @@
 import {Identity} from '@dfinity/agent';
 import {DelegationChain, DelegationIdentity, Ed25519KeyIdentity} from '@dfinity/identity';
-
-import {InternetIdentityAuth} from '../../types/core/ic.identity';
 import {LocalStorage} from '@dfinity/auth-client';
+
+import {InternetIdentityAuth} from '../types/identity';
 
 // TODO: remove
 

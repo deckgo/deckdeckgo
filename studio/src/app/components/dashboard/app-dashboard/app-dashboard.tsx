@@ -3,7 +3,7 @@ import {Component, Fragment, h, JSX, State} from '@stencil/core';
 import {convertStyle} from '@deckdeckgo/deck-utils';
 import {debounce} from '@deckdeckgo/utils';
 
-import {Deck, Slide, AuthUser} from '@deckdeckgo/editor';
+import {Deck, Slide, AuthUser, formatDate} from '@deckdeckgo/editor';
 
 import authStore from '../../../stores/auth.store';
 import navStore, {NavDirection} from '../../../stores/nav.store';
@@ -17,7 +17,6 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {loadingController} from '../../../utils/ionic/ionic.overlay';
-import {formatDate} from '../../../utils/core/date.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';

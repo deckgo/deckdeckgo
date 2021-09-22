@@ -25,5 +25,6 @@ export * from './providers/sync.provider';
 export * from './providers/unsplash.provider';
 export * from './providers/publish.provider';
 
+export * from './utils/date.utils';
 export * from './utils/deck.utils';
 export * from './utils/script.utils';
