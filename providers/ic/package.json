@@ -34,6 +34,11 @@
   "peerDependencies": {
     "@ionic/core": "^5.7.0"
   },
+  "devDependencies": {
+    "@deckdeckgo/editor": "file:../../utils/editor",
+    "@rollup/plugin-replace": "^3.0.0",
+    "rollup-plugin-node-polyfills": "^0.2.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deckgo/deckdeckgo.git",
@@ -55,9 +60,5 @@
     "slides",
     "slideshow",
     "talk"
-  ],
-  "devDependencies": {
-    "@rollup/plugin-replace": "^3.0.0",
-    "rollup-plugin-node-polyfills": "^0.2.1"
-  }
+  ]
 }
