@@ -1,6 +1,6 @@
 import {AuthClient} from '@dfinity/auth-client';
 
-import {AuthUser, InitAuth, SignOut, SignIn, User, DeleteAuth} from '@deckdeckgo/editor';
+import {AuthUser, InitAuth, SignOut, User, DeleteAuth} from '@deckdeckgo/editor';
 
 import {InternetIdentityAuth} from '../../types/identity';
 
@@ -53,12 +53,21 @@ const populateUser = async ({
   await success({authUser, user});
 };
 
-export const signOut: SignOut = async () => {
-  // TODO
+export const signOut: SignOut = (): Promise<void> => {
+  return authClient?.logout();
 };
 
-export const signIn: SignIn = async () => {
-  // TODO
+export const signIn = async ({onSuccess, onError}: {onSuccess: () => void; onError: (err?: string) => void}) => {
+  // @ts-ignore
+  const authClient: AuthClient = authClient || (await AuthClient.create());
+
+  await authClient.login({
+    onSuccess,
+    onError,
+    ...(process.env.LOCAL_IDENTITY && {
+      identityProvider: `http://localhost:8000?canisterId=${process.env.LOCAL_IDENTITY_CANISTER_ID}#authorize`
+    })
+  });
 };
 
 export const deleteAuth: DeleteAuth = async (_param: {user: User; config}) => {

@@ -17,10 +17,6 @@ export interface SignOut {
   (): Promise<void>;
 }
 
-export interface SignIn {
-  (): Promise<void>;
-}
-
 export interface DeleteAuth {
   ({user, config}: {user: User; config: Record<string, string | boolean>}): Promise<void>;
 }

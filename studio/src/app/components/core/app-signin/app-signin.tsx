@@ -2,9 +2,10 @@ import {Component, State, h, Fragment, Listen, JSX} from '@stencil/core';
 
 import {injectJS} from '@deckdeckgo/editor';
 
-import navStore, {NavDirection} from '../../../stores/nav.store';
 import i18n from '../../../stores/i18n.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
 import tokenStore from '../../../stores/token.store';
+import errorStore from '../../../stores/error.store';
 
 import {AppIcon} from '../app-icon/app-icon';
 
@@ -41,6 +42,12 @@ export class AppSignIn {
     this.saveGithubCredentials(credentials);
 
     this.navigateRedirect();
+  };
+
+  private onSignInError = (err?: string) => {
+    console.error(err);
+
+    errorStore.state.error = 'There was an issue sign in with the internet identity.';
   };
 
   private navigateRedirect() {
@@ -94,7 +101,13 @@ export class AppSignIn {
 
     const Element = `deckgo-${cloud}-signin`;
 
-    this.signIn = <Element config={this.deckDeckGoConfig} signInSuccess={this.onSignInSuccess} i18n={i18n.state}></Element>;
+    this.signIn = (
+      <Element
+        config={this.deckDeckGoConfig}
+        signInSuccess={this.onSignInSuccess}
+        signInError={this.onSignInError}
+        i18n={i18n.state}></Element>
+    );
   }
 
   async navigateBack() {

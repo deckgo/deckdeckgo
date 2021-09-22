@@ -13,6 +13,12 @@ export class IcSignin implements ComponentInterface {
   @Prop()
   config: Record<string, string>;
 
+  @Prop()
+  signInSuccess: () => void;
+
+  @Prop()
+  signInError: (err?: string) => void;
+
   @Event()
   inProgress: EventEmitter<boolean>;
 
@@ -23,7 +29,7 @@ export class IcSignin implements ComponentInterface {
     this.inProgress.emit(true);
     this.signInInProgress = true;
 
-    await signIn();
+    await signIn({onSuccess: this.signInSuccess, onError: this.signInError});
   }
 
   render() {
