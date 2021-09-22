@@ -28,8 +28,12 @@
 - [Contributing](#contributing)
 - [Community](#community)
 - [Supporting](#supporting)
-- [Progressive Web Apps](#progressive-web-apps)
+- [Applications](#applications)
 - [Web Components](#web-components)
+- [Templates](#templates)
+- [Infrastructure](#infrastructure)
+- [Providers](#providers)
+- [Utils](#utils)
 - [Others](#others)
 
 ## Getting Started
@@ -71,7 +75,7 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/deckdeckgo/tiers/backers.svg?avatarHeight=32"/></a>
 
-## Progressive Web Apps
+## Apps
 
 | Project            | Version                                                                                                                       | Online                                                     |                   Links                   |                               Changelog                                |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | :---------------------------------------: | :--------------------------------------------------------------------: |
