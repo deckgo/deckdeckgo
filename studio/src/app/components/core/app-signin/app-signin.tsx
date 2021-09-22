@@ -94,7 +94,7 @@ export class AppSignIn {
 
     const Element = `deckgo-${cloud}-signin`;
 
-    this.signIn = <Element config={this.deckDeckGoConfig} signInSuccess={this.onSignInSuccess}></Element>;
+    this.signIn = <Element config={this.deckDeckGoConfig} signInSuccess={this.onSignInSuccess} i18n={i18n.state}></Element>;
   }
 
   async navigateBack() {
