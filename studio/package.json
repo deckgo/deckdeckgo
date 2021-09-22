@@ -26,12 +26,6 @@
   "dependencies": {
     "@deckdeckgo/deck-utils": "^4.1.0",
     "@deckdeckgo/utils": "^2.0.1",
-    "@dfinity/agent": "^0.9.3",
-    "@dfinity/auth-client": "^0.9.3",
-    "@dfinity/authentication": "^0.9.3",
-    "@dfinity/candid": "^0.9.3",
-    "@dfinity/identity": "^0.9.3",
-    "@dfinity/principal": "^0.9.3",
     "idb-keyval": "^6.0.1",
     "jszip": "^3.7.1",
     "socket.io-client": "2.3.1",
@@ -80,7 +74,6 @@
     "@types/uuid": "^8.3.1",
     "@types/wicg-file-system-access": "^2020.9.2",
     "autoprefixer": "^10.3.4",
-    "rollup-plugin-node-polyfills": "^0.2.1",
     "web-social-share": "^7.2.0",
     "workbox-build": "5.1.4"
   },

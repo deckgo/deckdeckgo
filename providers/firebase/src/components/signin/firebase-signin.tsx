@@ -15,7 +15,7 @@ declare var firebaseui;
 })
 export class FirebaseSignIn implements ComponentInterface {
   @Prop()
-  appUrl: string;
+  config: Record<string, string>;
 
   @Prop()
   signInSuccess: (credentials: {uid: string | undefined; githubAccessToken: string | undefined} | undefined) => void;
@@ -55,7 +55,7 @@ export class FirebaseSignIn implements ComponentInterface {
 
     const uiConfig = {
       signInFlow: 'redirect',
-      signInSuccessUrl: this.appUrl,
+      signInSuccessUrl: this.config.appUrl,
       signInOptions: signInOptions,
       // tosUrl and privacyPolicyUrl accept either url string or a callback
       // function.

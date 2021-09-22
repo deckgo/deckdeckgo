@@ -6,10 +6,8 @@ import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 
-import {firebase as firebaseEnabled, internetComputer} from '../../utils/core/environment.utils';
+import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
-
-import {SyncIcProvider} from './sync.ic.provider';
 
 export const sync = async (syncData: SyncData | undefined) => {
   try {
@@ -25,16 +23,11 @@ export const sync = async (syncData: SyncData | undefined) => {
       return;
     }
 
-    if (!firebaseEnabled() && !internetComputer()) {
+    if (!cloud()) {
       return;
     }
 
     syncStore.state.sync = 'in_progress';
-
-    if (internetComputer()) {
-      await SyncIcProvider.getInstance().upload(syncData);
-      return;
-    }
 
     const {sync}: {sync: Sync} = await cloudProvider<{sync: Sync}>();
 

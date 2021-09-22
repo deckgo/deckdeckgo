@@ -3,10 +3,9 @@ import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList,
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
 
-import {StorageIcProvider} from './storage.ic.provider';
 import {StorageOfflineProvider} from './storage.offline.provider';
 
-import {firebase, internetComputer} from '../../utils/core/environment.utils';
+import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {Constants} from '../../types/core/constants';
@@ -17,11 +16,7 @@ export const uploadOnlineFile = async (
   maxSize: number,
   downloadUrl?: boolean
 ): Promise<StorageFile | undefined> => {
-  if (internetComputer()) {
-    return StorageIcProvider.getInstance().uploadFile(data, folder, maxSize);
-  }
-
-  if (firebase()) {
+  if (cloud()) {
     const {uploadFile}: {uploadFile: UploadFile} = await cloudProvider<{uploadFile: UploadFile}>();
 
     return uploadFile({
@@ -41,11 +36,7 @@ export const getFiles = async (next: string | null, folder: string): Promise<Sto
     return StorageOfflineProvider.getInstance().getFiles(folder);
   }
 
-  if (internetComputer()) {
-    return StorageIcProvider.getInstance().getFiles(next, folder);
-  }
-
-  if (firebase()) {
+  if (cloud()) {
     const {getFiles}: {getFiles: GetFiles} = await cloudProvider<{getFiles: GetFiles}>();
 
     return getFiles({
@@ -64,11 +55,7 @@ export const getFolders = async (folder: string): Promise<StorageFoldersList | u
     return StorageOfflineProvider.getInstance().getFolders();
   }
 
-  if (internetComputer()) {
-    return StorageIcProvider.getInstance().getFolders(folder);
-  }
-
-  if (firebase()) {
+  if (cloud()) {
     const {getFolders}: {getFolders: GetFolders} = await cloudProvider<{getFolders: GetFolders}>();
 
     return getFolders({

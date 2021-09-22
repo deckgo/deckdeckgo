@@ -1,17 +1,12 @@
 import {Slide, GetSlide} from '@deckdeckgo/editor';
 
-import {SlideIcProvider} from './slide.ic.provider';
 import {SlideOfflineProvider} from './slide.offline.provider';
 
-import {firebase, internetComputer} from '../../../utils/core/environment.utils';
+import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const getSlide = async (deckId: string, slideId: string): Promise<Slide> => {
-  if (internetComputer()) {
-    return SlideIcProvider.getInstance().get(deckId, slideId);
-  }
-
-  if (firebase()) {
+  if (cloud()) {
     const {getSlide: getUserSlide}: {getSlide: GetSlide} = await cloudProvider<{getSlide: GetSlide}>();
 
     return getUserSlide(deckId, slideId);

@@ -6,11 +6,11 @@ import {Deck, DeckData, Slide, SlideData, SyncData, SyncDataDeck, SyncDataSlide}
 import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
 
-import {InternetIdentityAuth} from '../types/core/ic.identity';
+import {InternetIdentityAuth} from '../types/identity';
 
-import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/core/ic.deck.utils';
-import {CanisterUtils} from '../utils/editor/canister.utils';
-import {initIdentity} from '../utils/core/ic.identity.utils';
+import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/deck.utils';
+import {initIdentity} from '../utils/identity.utils';
+import {toArray, toTimestamp} from '../utils/did.utils';
 
 export const uploadWorker = async ({
   internetIdentity: {delegationChain, identityKey},
@@ -91,9 +91,9 @@ const uploadDeck = async ({
 
   await deckBucket.set({
     deckId: deck.id,
-    data: await CanisterUtils.toArray<DeckData>(deck.data),
-    created_at: CanisterUtils.toTimestamp((deck.data.created_at as Date) || new Date()),
-    updated_at: CanisterUtils.toTimestamp((deck.data.updated_at as Date) || new Date())
+    data: await toArray<DeckData>(deck.data),
+    created_at: toTimestamp((deck.data.created_at as Date) || new Date()),
+    updated_at: toTimestamp((deck.data.updated_at as Date) || new Date())
   });
 
   const t1 = performance.now();
@@ -177,9 +177,9 @@ const uploadSlide = async ({
 
   await deckBucket.setSlide({
     slideId: slide.id,
-    data: await CanisterUtils.toArray<SlideData>(slide.data),
-    created_at: CanisterUtils.toTimestamp((slide.data.created_at as Date) || new Date()),
-    updated_at: CanisterUtils.toTimestamp((slide.data.updated_at as Date) || new Date())
+    data: await toArray<SlideData>(slide.data),
+    created_at: toTimestamp((slide.data.created_at as Date) || new Date()),
+    updated_at: toTimestamp((slide.data.updated_at as Date) || new Date())
   });
 
   const t1 = performance.now();

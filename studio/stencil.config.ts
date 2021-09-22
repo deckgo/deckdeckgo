@@ -7,9 +7,6 @@ const autoprefixer = require('autoprefixer');
 import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
 import replace from '@rollup/plugin-replace';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
-
-import {canisterEnvIds} from './dfx.config';
 
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
@@ -174,7 +171,6 @@ export const config: Config = {
       delimiters: ['<@', '@>'],
       values: configValues
     }),
-    replace(canisterEnvIds(prod)),
     sass({
       includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
     }),
@@ -186,8 +182,5 @@ export const config: Config = {
   devServer: {
     openBrowser: false,
     reloadStrategy: 'pageReload'
-  },
-  rollupPlugins: {
-    after: [nodePolyfills()]
   }
 };

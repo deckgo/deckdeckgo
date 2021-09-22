@@ -1,4 +1,4 @@
-import {AuthUser, InitAuth, User, SignOut, SignIn, DeleteAuth} from '@deckdeckgo/editor';
+import {AuthUser, InitAuth, User, SignOut, DeleteAuth} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
@@ -6,21 +6,12 @@ import userStore from '../../stores/user.store';
 import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
-import {AuthIcProvider} from './auth.ic.provider';
-import {UserIcProvider} from '../data/user/user.ic.provider';
-
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 export const initAuthProvider = async () => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
   if (!['firebase', 'ic'].includes(cloud)) {
-    return;
-  }
-
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    await AuthIcProvider.getInstance().init();
     return;
   }
 
@@ -50,48 +41,15 @@ export const signOut = async () => {
     return;
   }
 
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    await AuthIcProvider.getInstance().signOut();
-    return;
-  }
-
   const {signOut}: {signOut: SignOut} = await cloudProvider<{signOut: SignOut}>();
 
   await signOut();
-};
-
-export const signIn = async () => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
-  if (!['firebase', 'ic'].includes(cloud)) {
-    return;
-  }
-
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    await AuthIcProvider.getInstance().signIn();
-    return;
-  }
-
-  const {signIn}: {signIn: SignIn} = await cloudProvider<{signIn: SignIn}>();
-
-  await signIn();
 };
 
 export const deleteAuth = async () => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
   if (!['firebase', 'ic'].includes(cloud)) {
-    return;
-  }
-
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    const uid: string = authStore.state.authUser.uid;
-    await UserIcProvider.getInstance().delete(uid);
-
-    await signOut();
     return;
   }
 
