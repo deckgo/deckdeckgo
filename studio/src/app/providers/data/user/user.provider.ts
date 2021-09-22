@@ -7,18 +7,10 @@ import {EnvironmentAppConfig} from '../../../types/core/environment-config';
 
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
-import {UserIcProvider} from './user.ic.provider';
-
 export const updateUser = async (user: User) => {
   const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
 
   if (!['firebase', 'ic'].includes(cloud)) {
-    return;
-  }
-
-  // TODO: extract IC
-  if ('ic' === cloud) {
-    await UserIcProvider.getInstance().update(user);
     return;
   }
 
