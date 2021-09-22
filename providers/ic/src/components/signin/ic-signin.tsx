@@ -4,9 +4,9 @@ import {signIn} from '../../providers/auth/auth.ic';
 
 @Component({
   tag: 'deckgo-ic-signin',
-  styleUrl: 'firebase-ic.scss'
+  styleUrl: 'ic-signin.scss'
 })
-export class FirebaseIc implements ComponentInterface {
+export class IcSignin implements ComponentInterface {
   @Prop()
   i18n: Record<string, Record<string, string>>;
 
