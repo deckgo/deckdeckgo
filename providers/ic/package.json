@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-beta.0",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
   "types": "dist/types/interface.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js",
+  "unpkg": "dist/deckdeckgo-ic/deckdeckgo-ic.esm.js",
   "files": [
     "dist/",
     "README.md",
@@ -35,7 +35,7 @@
     "@ionic/core": "^5.7.0"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "file:../../utils/editor",
+    "@deckdeckgo/editor": "^1.0.0-beta.0",
     "@rollup/plugin-replace": "^3.0.0",
     "rollup-plugin-node-polyfills": "^0.2.1"
   },
@@ -59,6 +59,9 @@
     "presentation",
     "slides",
     "slideshow",
-    "talk"
+    "talk",
+    "internet computer",
+    "dfinity",
+    "canister"
   ]
 }
