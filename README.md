@@ -28,8 +28,12 @@
 - [Contributing](#contributing)
 - [Community](#community)
 - [Supporting](#supporting)
-- [Progressive Web Apps](#progressive-web-apps)
+- [Applications](#applications)
 - [Web Components](#web-components)
+- [Templates](#templates)
+- [Infrastructure](#infrastructure)
+- [Providers](#providers)
+- [Utils](#utils)
 - [Others](#others)
 
 ## Getting Started
@@ -71,7 +75,7 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 <a href="https://opencollective.com/deckdeckgo#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/deckdeckgo/tiers/backers.svg?avatarHeight=32"/></a>
 
-## Progressive Web Apps
+## Applications
 
 | Project            | Version                                                                                                                       | Online                                                     |                   Links                   |                               Changelog                                |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | :---------------------------------------: | :--------------------------------------------------------------------: |
@@ -120,6 +124,15 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 | **Title**        | [`@deckdeckgo/slide-title`](https://www.npmjs.com/package/@deckdeckgo/slide-title)               | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-title/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-title)               |    [`README`](templates/title/README.md)     |    [`CHANGELOG`](templates/title/CHANGELOG.md)     |
 | **YouTube**      | [`@deckdeckgo/slide-youtube`](https://www.npmjs.com/package/@deckdeckgo/slide-youtube)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/slide-youtube/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/slide-youtube)           |   [`README`](templates/youtube/README.md)    |   [`CHANGELOG`](templates/youtube/CHANGELOG.md)    |
 
+## Infrastructure
+
+| Project               | Version                                                                                        |              Links              |               Changelog               |
+| --------------------- | ---------------------------------------------------------------------------------------------- | :-----------------------------: | :-----------------------------------: |
+| **AVS (Backend)**     | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.0.0&color=success) |  [`README`](backend/README.md)  |  [`CHANGELOG`](backend/CHANGELOG.md)  |
+| **AWS (Infra)**       | ![version](https://img.shields.io/static/v1.svg?label=production&message=up&color=success)     |   [`README`](infra/README.md)   |                                       |
+| **Firebase (Cloud)**  | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.2.1&color=success) |   [`README`](cloud/README.md)   |   [`CHANGELOG`](cloud/CHANGELOG.md)   |
+| **Internet Computer** | ![version](https://img.shields.io/static/v1.svg?label=alpha&message=up&color=blueviolet)       | [`README`](canisters/README.md) | [`CHANGELOG`](canisters/CHANGELOG.md) |
+
 ## Providers
 
 | Project               | Package                                                                      | Version                                                                                                                                      |                  Links                   |                   Changelog                    |
@@ -144,12 +157,9 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 | Project                          | Package                                                                                  | Version                                                                                                                                                      |                               Links                               |                                           Changelog                                            |
 | -------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
-| **Backend**                      |                                                                                          | ![version](https://img.shields.io/static/v1.svg?label=version&message=v2.0.0&color=success)                                                                  |                   [`README`](backend/README.md)                   |                              [`CHANGELOG`](backend/CHANGELOG.md)                               |
 | **CLI**                          | [`create-deckdeckgo`](https://www.npmjs.com/package/create-deckdeckgo)                   | [![version](https://img.shields.io/npm/v/create-deckdeckgo/latest.svg?color=success)](https://www.npmjs.com/package/create-deckdeckgo)                       |                     [`README`](cli/README.md)                     |                                [`CHANGELOG`](cli/CHANGELOG.md)                                 |
-| **Cloud**                        |                                                                                          | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.2.1&color=success)                                                               |                    [`README`](cloud/README.md)                    |                               [`CHANGELOG`](cloud/CHANGELOG.md)                                |
 | **Figma plugin**                 |                                                                                          | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.0.2&color=success)                                                                  |    [`Repo`](https://github.com/deckgo/figma-deckdeckgo-plugin)    |    [`CHANGELOG`](https://github.com/deckgo/figma-deckdeckgo-plugin/blob/main/CHANGELOG.md)     |
 | **Gatsby plugin highlight code** |                                                                                          | [![version](https://img.shields.io/npm/v/gatsby-remark-highlight-code/latest.svg?color=success)](https://www.npmjs.com/package/gatsby-remark-highlight-code) | [`Repo`](https://github.com/deckgo/gatsby-remark-highlight-code/) | [`CHANGELOG`](https://github.com/deckgo/gatsby-remark-highlight-code/blob/master/CHANGELOG.md) |
-| **Infrastructure**               |                                                                                          |                                                                                                                                                              |                    [`README`](infra/README.md)                    |                                                                                                |
 | **Starter kit**                  |                                                                                          | ![version](https://img.shields.io/static/v1.svg?label=version&message=v8.3.2&color=success)                                                                  |          [`Repo`](http://github.com/deckgo/starter-kit/)          |         [`CHANGELOG`](https://github.com/deckgo/starter-kit/blob/master/CHANGELOG.md)          |
 | **Studio kit**                   |                                                                                          | ![version](https://img.shields.io/static/v1.svg?label=version&message=v8.3.2&color=success)                                                                  |          [`Repo`](http://github.com/deckgo/studio-kit/)           |          [`CHANGELOG`](https://github.com/deckgo/studio-kit/blob/master/CHANGELOG.md)          |
 | **Template kit**                 |                                                                                          | ![version](https://img.shields.io/static/v1.svg?label=version&message=v1.1.0&color=success)                                                                  |         [`Repo`](http://github.com/deckgo/template-kit/)          |         [`CHANGELOG`](https://github.com/deckgo/template-kit/blob/master/CHANGELOG.md)         |
