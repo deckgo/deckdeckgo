@@ -5,6 +5,7 @@
 ### Providers: New
 
 - api: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/api/CHANGELOG.md))
+- firebase: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
 
 ### Utils: New
 

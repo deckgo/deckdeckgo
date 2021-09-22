@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/firebase",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-beta.0",
   "description": "The Firebase connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,9 +24,14 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/api": "^1.0.0-alpha.0",
+    "@deckdeckgo/api": "^1.0.0-beta.0",
     "firebase": "^8.9.1",
     "idb-keyval": "^6.0.1"
+  },
+  "devDependencies": {
+    "@deckdeckgo/editor": "^1.0.0-beta.0",
+    "@deckdeckgo/lazy-img": "^3.1.0",
+    "@deckdeckgo/slide-chart": "^2.5.0"
   },
   "repository": {
     "type": "git",
@@ -49,10 +54,5 @@
     "slides",
     "slideshow",
     "talk"
-  ],
-  "devDependencies": {
-    "@deckdeckgo/editor": "file:../../utils/editor",
-    "@deckdeckgo/lazy-img": "^3.1.0",
-    "@deckdeckgo/slide-chart": "^2.5.0"
-  }
+  ]
 }
