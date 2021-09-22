@@ -317,8 +317,6 @@ export namespace Components {
     }
     interface AppSignin {
     }
-    interface AppSigninIc {
-    }
     interface AppSigninPage {
     }
     interface AppSlideNavigate {
@@ -943,12 +941,6 @@ declare global {
         prototype: HTMLAppSigninElement;
         new (): HTMLAppSigninElement;
     };
-    interface HTMLAppSigninIcElement extends Components.AppSigninIc, HTMLStencilElement {
-    }
-    var HTMLAppSigninIcElement: {
-        prototype: HTMLAppSigninIcElement;
-        new (): HTMLAppSigninIcElement;
-    };
     interface HTMLAppSigninPageElement extends Components.AppSigninPage, HTMLStencilElement {
     }
     var HTMLAppSigninPageElement: {
@@ -1213,7 +1205,6 @@ declare global {
         "app-share-deck": HTMLAppShareDeckElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
-        "app-signin-ic": HTMLAppSigninIcElement;
         "app-signin-page": HTMLAppSigninPageElement;
         "app-slide-navigate": HTMLAppSlideNavigateElement;
         "app-slide-preview": HTMLAppSlidePreviewElement;
@@ -1597,9 +1588,6 @@ declare namespace LocalJSX {
     }
     interface AppSignin {
     }
-    interface AppSigninIc {
-        "onInProgress"?: (event: CustomEvent<boolean>) => void;
-    }
     interface AppSigninPage {
     }
     interface AppSlideNavigate {
@@ -1794,7 +1782,6 @@ declare namespace LocalJSX {
         "app-share-deck": AppShareDeck;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
-        "app-signin-ic": AppSigninIc;
         "app-signin-page": AppSigninPage;
         "app-slide-navigate": AppSlideNavigate;
         "app-slide-preview": AppSlidePreview;
@@ -1919,7 +1906,6 @@ declare module "@stencil/core" {
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
-            "app-signin-ic": LocalJSX.AppSigninIc & JSXBase.HTMLAttributes<HTMLAppSigninIcElement>;
             "app-signin-page": LocalJSX.AppSigninPage & JSXBase.HTMLAttributes<HTMLAppSigninPageElement>;
             "app-slide-navigate": LocalJSX.AppSlideNavigate & JSXBase.HTMLAttributes<HTMLAppSlideNavigateElement>;
             "app-slide-preview": LocalJSX.AppSlidePreview & JSXBase.HTMLAttributes<HTMLAppSlidePreviewElement>;

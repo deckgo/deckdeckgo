@@ -1,17 +1,17 @@
-import {Component, State, h, Fragment} from '@stencil/core';
+import {Component, State, h, Fragment, Listen, JSX} from '@stencil/core';
 
 import {injectJS} from '@deckdeckgo/editor';
 
-import navStore, {NavDirection} from '../../../../stores/nav.store';
-import i18n from '../../../../stores/i18n.store';
-import tokenStore from '../../../../stores/token.store';
+import navStore, {NavDirection} from '../../../stores/nav.store';
+import i18n from '../../../stores/i18n.store';
+import tokenStore from '../../../stores/token.store';
 
-import {AppIcon} from '../../app-icon/app-icon';
+import {AppIcon} from '../app-icon/app-icon';
 
-import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
-import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
-import {renderI18n} from '../../../../utils/core/i18n.utils';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-signin',
@@ -21,6 +21,9 @@ export class AppSignIn {
   @State()
   private signInInProgress: boolean = false;
 
+  @State()
+  private signIn: JSX.IntrinsicElements;
+
   private appConfig: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
   private deckDeckGoConfig: EnvironmentDeckDeckGoConfig | undefined = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
@@ -28,6 +31,8 @@ export class AppSignIn {
     this.signInInProgress = false;
 
     await this.loadSignIn();
+
+    await this.initSignIn();
   }
 
   private onSignInSuccess = (credentials: {uid: string | undefined; githubAccessToken: string | undefined} | undefined) => {
@@ -80,15 +85,28 @@ export class AppSignIn {
     });
   }
 
+  private async initSignIn() {
+    const {cloud} = this.appConfig;
+
+    if (cloud === 'offline') {
+      return;
+    }
+
+    const Element = `deckgo-${cloud}-signin`;
+
+    this.signIn = <Element config={this.deckDeckGoConfig} signInSuccess={this.onSignInSuccess}></Element>;
+  }
+
   async navigateBack() {
     navStore.state.nav = {
       direction: NavDirection.BACK
     };
   }
 
-  private updateInProgress = ({detail}: CustomEvent<boolean>) => {
+  @Listen('inProgress')
+  onInProgress({detail}: CustomEvent<boolean>) {
     this.signInInProgress = detail;
-  };
+  }
 
   render() {
     return [
@@ -107,21 +125,9 @@ export class AppSignIn {
 
         {this.renderGitHub()}
 
-        {this.renderSignInMethod()}
+        {this.signIn}
       </Fragment>
     );
-  }
-
-  private renderSignInMethod() {
-    const {cloud} = this.appConfig;
-
-    if (cloud === 'firebase') {
-      return <deckgo-firebase-signin app-url={this.deckDeckGoConfig.appUrl} signInSuccess={this.onSignInSuccess}></deckgo-firebase-signin>;
-    } else if (cloud === 'ic') {
-      return <app-signin-ic onInProgress={this.updateInProgress}></app-signin-ic>;
-    }
-
-    return undefined;
   }
 
   private renderBackButton() {
