@@ -1,8 +1,6 @@
 import {AuthClient} from '@dfinity/auth-client';
 import {Identity} from '@dfinity/agent';
 
-import {del} from 'idb-keyval';
-
 import {AuthUser, User} from '@deckdeckgo/editor';
 
 import navStore, {NavDirection} from '../../stores/nav.store';
@@ -70,9 +68,6 @@ export class AuthIcProvider {
 
   async signOut() {
     await this.authClient?.logout();
-
-    await del('deckdeckgo_redirect');
-    await del('deckdeckgo_redirect_info');
   }
 
   getIdentity(): Identity | undefined {

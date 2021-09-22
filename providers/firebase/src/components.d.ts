@@ -8,7 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoFirebaseSignin {
         "appUrl": string;
-        "signInSuccess": ({uid, githubAccessToken}: {uid: string | undefined; githubAccessToken: string | undefined}) => void;
+        "signInSuccess": (credentials: {uid: string | undefined; githubAccessToken: string | undefined} | undefined) => void;
     }
 }
 declare global {
@@ -25,7 +25,7 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoFirebaseSignin {
         "appUrl"?: string;
-        "signInSuccess"?: ({uid, githubAccessToken}: {uid: string | undefined; githubAccessToken: string | undefined}) => void;
+        "signInSuccess"?: (credentials: {uid: string | undefined; githubAccessToken: string | undefined} | undefined) => void;
     }
     interface IntrinsicElements {
         "deckgo-firebase-signin": DeckgoFirebaseSignin;

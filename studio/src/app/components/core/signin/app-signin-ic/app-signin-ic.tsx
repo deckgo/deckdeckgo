@@ -25,10 +25,12 @@ export class AppSignInIc {
   }
 
   render() {
+    if (this.signInInProgress) {
+      return <ion-spinner color="medium"></ion-spinner>;
+    }
+
     return (
       <Fragment>
-        {this.renderMsg()}
-
         <div class="actions">{this.renderAction()}</div>
 
         {this.renderTerms()}
@@ -37,23 +39,12 @@ export class AppSignInIc {
   }
 
   private renderAction() {
-    if (this.signInInProgress) {
-      return <ion-spinner color="medium"></ion-spinner>;
-    }
-
     return (
       <ion-button shape="round" color="dark" onClick={async () => await this.signUserIn()}>
         <AppIcon name="dfinity" path="icons" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.sign_in.internet_identity}</ion-label>
       </ion-button>
     );
-  }
-
-  private renderMsg() {
-    return [
-      <h1 class="ion-text-center ion-padding-start ion-padding-end">{i18n.state.sign_in.hi}</h1>,
-      <p class="ion-text-center ion-padding">{i18n.state.sign_in.why_internet_computer}</p>
-    ];
   }
 
   private renderTerms() {

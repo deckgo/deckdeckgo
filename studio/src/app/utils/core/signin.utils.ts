@@ -2,7 +2,7 @@ import navStore, {NavDirection} from '../../stores/nav.store';
 
 export const signIn = () => {
   navStore.state.nav = {
-    url: '/signin' + (window.location?.pathname ?? ''),
+    url: '/signin',
     direction: NavDirection.FORWARD
   };
 };

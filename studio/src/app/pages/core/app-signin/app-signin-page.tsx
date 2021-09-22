@@ -1,4 +1,4 @@
-import {Component, Fragment, h, Prop, State} from '@stencil/core';
+import {Component, Fragment, h, State} from '@stencil/core';
 
 import {AuthUser} from '@deckdeckgo/editor';
 
@@ -8,9 +8,6 @@ import authStore from '../../../stores/auth.store';
   tag: 'app-signin-page'
 })
 export class AppSigninPage {
-  @Prop()
-  redirect: string;
-
   @State()
   private signin: boolean;
 
@@ -42,7 +39,7 @@ export class AppSigninPage {
         <Fragment>
           <app-navigation actions={false}></app-navigation>
           <ion-content class="ion-padding fullscreen-padding">
-            <app-signin redirect={this.redirect}></app-signin>
+            <app-signin></app-signin>
           </ion-content>
         </Fragment>
       );
