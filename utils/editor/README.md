@@ -8,7 +8,7 @@
 
 # DeckDeckGo - Editor
 
-Types for the [DeckDeckGo] editor.
+Utils and types for the [DeckDeckGo] editor and its providers.
 
 ## License
 
