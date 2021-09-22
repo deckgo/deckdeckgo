@@ -122,10 +122,11 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 ## Providers
 
-| Project       | Package                                                                      | Version                                                                                                                                      |                  Links                   |                   Changelog                    |
-| ------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------: | :--------------------------------------------: |
-| **API (AWS)** | [`@deckdeckgo/api`](https://www.npmjs.com/package/@deckdeckgo/api)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/api/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/api)           |   [`README`](providers/api/README.md)    |   [`CHANGELOG`](providers/api/CHANGELOG.md)    |
-| **Firebase**  | [`@deckdeckgo/firebase`](https://www.npmjs.com/package/@deckdeckgo/firebase) | [![version](https://img.shields.io/npm/v/@deckdeckgo/firebase/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/firebase) | [`README`](providers/firebase/README.md) | [`CHANGELOG`](providers/firebase/CHANGELOG.md) |
+| Project               | Package                                                                      | Version                                                                                                                                      |                  Links                   |                   Changelog                    |
+| --------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------: | :--------------------------------------------: |
+| **API (AWS)**         | [`@deckdeckgo/api`](https://www.npmjs.com/package/@deckdeckgo/api)           | [![version](https://img.shields.io/npm/v/@deckdeckgo/api/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/api)           |   [`README`](providers/api/README.md)    |   [`CHANGELOG`](providers/api/CHANGELOG.md)    |
+| **Firebase**          | [`@deckdeckgo/firebase`](https://www.npmjs.com/package/@deckdeckgo/firebase) | [![version](https://img.shields.io/npm/v/@deckdeckgo/firebase/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/firebase) | [`README`](providers/firebase/README.md) | [`CHANGELOG`](providers/firebase/CHANGELOG.md) |
+| **Internet Computer** | [`@deckdeckgo/ic`](https://www.npmjs.com/package/@deckdeckgo/ic)             | [![version](https://img.shields.io/npm/v/@deckdeckgo/ic/latest.svg?color=success)](https://www.npmjs.com/package/@deckdeckgo/ic)             |    [`README`](providers/ic/README.md)    |    [`CHANGELOG`](providers/ic/CHANGELOG.md)    |
 
 ## Utils
 
