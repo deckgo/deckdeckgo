@@ -8,9 +8,6 @@ import {sass} from '@stencil/sass';
 import {postcss} from '@stencil/postcss';
 import replace from '@rollup/plugin-replace';
 
-// TODO: remove
-import nodePolyfills from 'rollup-plugin-node-polyfills';
-
 // @ts-ignore
 const dev: boolean = process.argv && process.argv.indexOf('--dev') > -1;
 // @ts-ignore
@@ -185,8 +182,5 @@ export const config: Config = {
   devServer: {
     openBrowser: false,
     reloadStrategy: 'pageReload'
-  },
-  rollupPlugins: {
-    after: [nodePolyfills()]
   }
 };
