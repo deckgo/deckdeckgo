@@ -4,8 +4,6 @@ import {LocalStorage} from '@dfinity/auth-client';
 
 import {InternetIdentityAuth} from '../types/identity';
 
-// TODO: remove
-
 export const internetIdentityAuth = async (): Promise<InternetIdentityAuth> => {
   const storage: LocalStorage = new LocalStorage('ic-');
 
