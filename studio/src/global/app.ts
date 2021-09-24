@@ -38,7 +38,13 @@ setupDeckGoConfig({
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
   },
   cloud: {
-    cdn: 'http://localhost:3335/build/index.esm.js'
+    api: {
+      cdn: 'https://unpkg.com/@deckdeckgo/firebase@latest/dist/deckdeckgo-firebase/index.esm.js'
+    },
+    signIn: {
+      cdn: 'https://unpkg.com/@deckdeckgo/firebase@latest/dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js',
+      tag: 'deckgo-firebase-signin'
+    }
   }
 });
 

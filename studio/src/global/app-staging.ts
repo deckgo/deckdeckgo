@@ -26,9 +26,6 @@ setupDeckGoConfig({
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
   },
-  cloud: {
-    cdn: 'http://localhost:3335/build/index.esm.js'
-  },
   firebase: {
     apiKey: '<@FIREBASE_API_KEY@>',
     authDomain: '<@FIREBASE_AUTH_DOMAIN@>',
@@ -39,5 +36,14 @@ setupDeckGoConfig({
     storageUrl: '<@FIREBASE_STORAGE_URL@>',
     functionsUrl: '<@FIREBASE_FUNCTIONS_URL@>',
     appId: '<@FIREBASE_APP_ID@>'
+  },
+  cloud: {
+    api: {
+      cdn: 'https://unpkg.com/@deckdeckgo/firebase@latest/dist/deckdeckgo-firebase/index.esm.js'
+    },
+    signIn: {
+      cdn: 'https://unpkg.com/@deckdeckgo/firebase@latest/dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js',
+      tag: 'deckgo-firebase-signin'
+    }
   }
 });
