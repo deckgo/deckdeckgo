@@ -30,7 +30,7 @@ const generate = async () => {
   try {
     await generate();
 
-    console.log(`i18n type declarations generated!`);
+    console.log(`i18n type declarations generated.`);
   } catch (err) {
     console.error(`Error while generating i18n types.`, err);
   }

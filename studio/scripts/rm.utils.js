@@ -6,7 +6,7 @@ module.exports.rmDir = (dir) => {
   try {
     fs.rmSync(dir, {recursive: true, force: true});
 
-    console.log(`${dir} is deleted!`);
+    console.log(`${dir} is deleted.`);
   } catch (err) {
     console.error(`Error while deleting ${dir}.`);
   }
@@ -21,7 +21,7 @@ module.exports.rmFiles = (dir, extension) => {
       fs.unlinkSync(file);
     }
 
-    console.log(`${extension} files are deleted!`);
+    console.log(`${extension} files are deleted.`);
   } catch (err) {
     console.error(`Error while deleting ${extension} files.`);
   }
