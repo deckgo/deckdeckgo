@@ -1,3 +1,10 @@
+# 1.0.0-beta.2 (2021-09-24)
+
+### Build
+
+- redo agent-js version
+- polyfill root node_modules
+
 # 1.0.0-beta.1 (2021-09-24)
 
 ### Build

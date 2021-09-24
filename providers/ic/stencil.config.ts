@@ -34,7 +34,11 @@ export const config: Config = {
     })
   ],
   rollupPlugins: {
-    after: [nodePolyfills()]
+    after: [
+      nodePolyfills({
+        include: ['node_modules/**/*.js', '../../node_modules/**/*.js']
+      })
+    ]
   },
   devServer: {
     openBrowser: false,
