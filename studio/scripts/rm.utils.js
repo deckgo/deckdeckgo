@@ -4,7 +4,7 @@ const path = require('path');
 // delete directory recursively
 module.exports.rmDir = (dir) => {
   try {
-    fs.rmdirSync(dir, {recursive: true});
+    fs.rmSync(dir, {recursive: true});
 
     console.log(`${dir} is deleted!`);
   } catch (err) {
