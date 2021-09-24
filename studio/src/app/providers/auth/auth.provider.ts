@@ -7,11 +7,10 @@ import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/cor
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {cloudProvider} from '../../utils/core/providers.utils';
+import {cloud} from '../../utils/core/environment.utils';
 
 export const initAuthProvider = async () => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
-  if (!['firebase', 'ic'].includes(cloud)) {
+  if (!cloud()) {
     return;
   }
 
@@ -35,9 +34,7 @@ const onInitSuccess = async ({authUser, user}: {authUser: AuthUser | null; user:
 };
 
 export const signOut = async () => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
-  if (!['firebase', 'ic'].includes(cloud)) {
+  if (!cloud()) {
     return;
   }
 
@@ -47,9 +44,7 @@ export const signOut = async () => {
 };
 
 export const deleteAuth = async () => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
-  if (!['firebase', 'ic'].includes(cloud)) {
+  if (!cloud()) {
     return;
   }
 

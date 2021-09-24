@@ -5,8 +5,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   app: {
-    mock: true,
-    cloud: 'offline'
+    mock: true
   },
   deckdeckgo: {
     appUrl: 'http://localhost:3333',

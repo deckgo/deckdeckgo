@@ -10,9 +10,10 @@ import errorStore from '../../../stores/error.store';
 import {AppIcon} from '../app-icon/app-icon';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
+import {firebase, cloud} from '../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-signin',
@@ -25,7 +26,6 @@ export class AppSignIn {
   @State()
   private signIn: JSX.IntrinsicElements;
 
-  private appConfig: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
   private deckDeckGoConfig: EnvironmentDeckDeckGoConfig | undefined = EnvironmentConfigService.getInstance().get('deckdeckgo');
 
   async componentDidLoad() {
@@ -79,9 +79,7 @@ export class AppSignIn {
   }
 
   private async loadSignIn() {
-    const {cloud} = this.appConfig;
-
-    if (cloud === 'offline') {
+    if (!cloud()) {
       return;
     }
 
@@ -93,9 +91,7 @@ export class AppSignIn {
   }
 
   private async initSignIn() {
-    const {cloud} = this.appConfig;
-
-    if (cloud === 'offline') {
+    if (!cloud()) {
       return;
     }
 
@@ -161,9 +157,7 @@ export class AppSignIn {
   }
 
   private renderGitHub() {
-    const {cloud} = this.appConfig;
-
-    if (cloud !== 'firebase') {
+    if (!firebase()) {
       return undefined;
     }
 

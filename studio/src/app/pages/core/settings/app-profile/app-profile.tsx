@@ -16,6 +16,7 @@ import i18n from '../../../../stores/i18n.store';
 import {UserUtils} from '../../../../utils/core/user.utils';
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
+import {firebase} from '../../../../utils/core/environment.utils';
 
 import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
@@ -23,7 +24,7 @@ import {updateUser} from '../../../../providers/data/user/user.provider';
 import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
 import {deleteAuth} from '../../../../providers/auth/auth.provider';
 
-import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 
 @Component({
@@ -74,7 +75,7 @@ export class AppProfile {
   private destroyApiUserListener;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
+  private firebase: boolean = firebase();
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
@@ -150,7 +151,7 @@ export class AppProfile {
   }
 
   private validateUsernameInput() {
-    if (this.cloud === 'ic') {
+    if (!this.firebase) {
       this.validUsername =
         this.user.data.username === null ||
         this.user.data.username === undefined ||
@@ -170,7 +171,7 @@ export class AppProfile {
   }
 
   private validateNameInput() {
-    if (this.cloud === 'ic') {
+    if (!this.firebase) {
       this.validName =
         this.user &&
         this.user.data &&
@@ -192,7 +193,7 @@ export class AppProfile {
   }
 
   private validateEmailInput() {
-    if (this.cloud === 'ic') {
+    if (!this.firebase) {
       this.validEmail =
         this.user &&
         this.user.data &&
@@ -470,7 +471,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={64}
-          required={this.cloud !== 'ic'}
+          required={this.firebase}
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleNameInput($event)}
@@ -490,7 +491,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={254}
-          required={this.cloud !== 'ic'}
+          required={this.firebase}
           input-mode="text"
           disabled={this.saving}
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleEmailInput($event)}
@@ -519,7 +520,7 @@ export class AppProfile {
           debounce={500}
           minlength={3}
           maxlength={32}
-          required={this.cloud !== 'ic'}
+          required={this.firebase}
           disabled={this.saving}
           input-mode="text"
           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleUsernameInput($event)}

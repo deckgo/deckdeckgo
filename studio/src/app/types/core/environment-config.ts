@@ -34,7 +34,6 @@ export interface EnvironmentDeckDeckGoConfig {
 }
 
 export interface EnvironmentAppConfig {
-  cloud: 'offline' | 'firebase' | 'ic';
   mock: boolean;
 }
 

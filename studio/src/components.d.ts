@@ -133,7 +133,6 @@ export namespace Components {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
-        "cloud": 'offline' | 'firebase' | 'ic';
         "deck": Deck;
     }
     interface AppDashboardPage {
@@ -1381,7 +1380,6 @@ declare namespace LocalJSX {
     interface AppDashboard {
     }
     interface AppDashboardDeckActions {
-        "cloud"?: 'offline' | 'firebase' | 'ic';
         "deck"?: Deck;
         "onDeckCloned"?: (event: CustomEvent<void>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
