@@ -3,7 +3,7 @@ import {resolve} from 'path';
 
 const config = (...pathSegments: string[]): Record<string, {ic?: string; local?: string}> => {
   try {
-    return require(resolve('../', '../', 'canisters', ...pathSegments));
+    return require(resolve('../', '../', ...pathSegments));
   } catch (err) {
     return {};
   }
@@ -15,7 +15,7 @@ const canisterLocalInternetId = (network: 'local' | string): Record<string, stri
   }
 
   try {
-    const wallets: {identities: {default: {local: string}}} = require(resolve('../', '../', 'canisters', '.dfx', 'local', 'wallets.json'));
+    const wallets: {identities: {default: {local: string}}} = require(resolve('../', '../', '.dfx', 'local', 'wallets.json'));
 
     return {'process.env.LOCAL_IDENTITY_CANISTER_ID': JSON.stringify(wallets.identities.default.local)};
   } catch (err) {

@@ -1,3 +1,9 @@
+# 1.0.0-beta.4 (2021-09-24)
+
+### Fix
+
+- read canister IDs for environment variables
+
 # 1.0.0-beta.3 (2021-09-24)
 
 ### Fix
