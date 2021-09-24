@@ -33,10 +33,6 @@ export class IcSignin implements ComponentInterface {
   }
 
   render() {
-    if (this.signInInProgress) {
-      return <ion-spinner color="medium"></ion-spinner>;
-    }
-
     return (
       <Fragment>
         <div class="actions">{this.renderAction()}</div>
@@ -47,6 +43,10 @@ export class IcSignin implements ComponentInterface {
   }
 
   private renderAction() {
+    if (this.signInInProgress) {
+      return <ion-spinner color="medium"></ion-spinner>;
+    }
+
     return (
       <ion-button shape="round" color="dark" onClick={async () => await this.signUserIn()}>
         <ion-icon
