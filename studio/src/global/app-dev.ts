@@ -15,9 +15,6 @@ setupDeckGoConfig({
     presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
   },
-  cloud: {
-    cdn: 'http://localhost:3335/build/index.esm.js'
-  },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
   }

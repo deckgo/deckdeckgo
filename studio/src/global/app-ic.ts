@@ -26,6 +26,9 @@ setupDeckGoConfig({
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
+  },
+  cloud: {
+    cdn: 'http://localhost:3335/build/index.esm.js'
   }
 });
 
