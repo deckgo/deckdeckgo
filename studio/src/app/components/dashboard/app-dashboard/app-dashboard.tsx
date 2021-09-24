@@ -17,6 +17,7 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {loadingController} from '../../../utils/ionic/ionic.overlay';
+import {loadAndImport} from '../../../utils/core/dashboard.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
@@ -24,10 +25,6 @@ import {initTemplates} from '../../../providers/data/template/template.provider'
 
 import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
 import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
-
-import {EnvironmentAppConfig} from '../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {loadAndImport} from '../../../utils/core/dashboard.utils';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -60,8 +57,6 @@ export class AppDashboard {
   private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
 
   private destroyListener;
-
-  private cloud: 'offline' | 'firebase' | 'ic' = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').cloud;
 
   constructor() {
     this.debounceDecksLoading = debounce(async () => {
@@ -373,7 +368,6 @@ export class AppDashboard {
         <article key={deck.deck.id} onClick={() => this.navigateDeck(deck)}>
           <app-dashboard-deck-actions
             deck={deck.deck}
-            cloud={this.cloud}
             onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
             onDeckCloned={() => this.navigateReloadEditor()}></app-dashboard-deck-actions>
 

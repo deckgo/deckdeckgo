@@ -5,8 +5,7 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   app: {
-    mock: true,
-    cloud: 'ic'
+    mock: true
   },
   deckdeckgo: {
     appUrl: 'https://deckdeckgo-studio-staging.web.app',

@@ -2,15 +2,11 @@ import {User, UpdateUser} from '@deckdeckgo/editor';
 
 import store from '../../../stores/user.store';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentAppConfig} from '../../../types/core/environment-config';
-
 import {cloudProvider} from '../../../utils/core/providers.utils';
+import {cloud} from '../../../utils/core/environment.utils';
 
 export const updateUser = async (user: User) => {
-  const {cloud}: EnvironmentAppConfig = EnvironmentConfigService.getInstance().get('app');
-
-  if (!['firebase', 'ic'].includes(cloud)) {
+  if (!cloud()) {
     return;
   }
 

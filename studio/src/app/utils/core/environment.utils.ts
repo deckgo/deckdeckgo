@@ -14,6 +14,4 @@ export const share = (): boolean => {
 
 export const firebase = (): boolean => EnvironmentConfigService.getInstance().get('firebase') !== undefined;
 
-export const internetComputer = (): boolean => EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app')?.cloud === 'ic';
-
-export const cloud = (): boolean => EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app')?.cloud !== 'offline';
+export const cloud = (): boolean => EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('cloud') !== undefined;

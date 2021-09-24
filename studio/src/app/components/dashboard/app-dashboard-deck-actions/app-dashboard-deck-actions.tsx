@@ -22,8 +22,6 @@ import {AppIcon} from '../../core/app-icon/app-icon';
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
 
-  @Prop() cloud: 'offline' | 'firebase' | 'ic';
-
   @Event() deckDeleted: EventEmitter<string>;
   @Event() deckCloned: EventEmitter<void>;
 
