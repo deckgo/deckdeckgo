@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -22,14 +22,6 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
-  },
-  "dependencies": {
-    "@dfinity/agent": "^0.10.0",
-    "@dfinity/auth-client": "^0.10.0",
-    "@dfinity/authentication": "^0.10.0",
-    "@dfinity/candid": "^0.10.0",
-    "@dfinity/identity": "^0.10.0",
-    "@dfinity/principal": "^0.10.0"
   },
   "peerDependencies": {
     "@ionic/core": "^5.7.0"
@@ -63,5 +55,13 @@
     "internet computer",
     "dfinity",
     "canister"
-  ]
+  ],
+  "dependencies": {
+    "@dfinity/agent": "^0.9.3",
+    "@dfinity/auth-client": "^0.9.3",
+    "@dfinity/authentication": "^0.9.3",
+    "@dfinity/candid": "^0.9.3",
+    "@dfinity/identity": "^0.9.3",
+    "@dfinity/principal": "^0.9.3"
+  }
 }
