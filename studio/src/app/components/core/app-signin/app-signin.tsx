@@ -10,7 +10,7 @@ import errorStore from '../../../stores/error.store';
 import {AppIcon} from '../app-icon/app-icon';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {firebase, cloud} from '../../../utils/core/environment.utils';
@@ -83,9 +83,13 @@ export class AppSignIn {
       return;
     }
 
+    const {signIn}: EnvironmentCloud = EnvironmentConfigService.getInstance().get('cloud');
+
+    const {cdn, tag} = signIn;
+
     await injectJS({
-      id: `deckgo-${cloud}`,
-      src: `http://localhost:3335/build/deckdeckgo-${cloud}.esm.js`,
+      id: `deckgo-${tag}`,
+      src: cdn,
       module: true
     });
   }
@@ -95,7 +99,11 @@ export class AppSignIn {
       return;
     }
 
-    const Element = `deckgo-${cloud}-signin`;
+    const {signIn}: EnvironmentCloud = EnvironmentConfigService.getInstance().get('cloud');
+
+    const {tag} = signIn;
+
+    const Element = `${tag}`;
 
     this.signIn = (
       <Element

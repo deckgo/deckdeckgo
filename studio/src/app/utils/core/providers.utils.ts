@@ -2,7 +2,9 @@ import {EnvironmentCloud, EnvironmentUnsplashConfig} from '../../types/core/envi
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export const cloudProvider = <T>(): Promise<T> => {
-  const {cdn}: EnvironmentCloud = EnvironmentConfigService.getInstance().get('cloud');
+  const {api}: EnvironmentCloud = EnvironmentConfigService.getInstance().get('cloud');
+
+  const {cdn} = api;
 
   return import(cdn);
 };

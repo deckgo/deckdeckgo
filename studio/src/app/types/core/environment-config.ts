@@ -37,8 +37,18 @@ export interface EnvironmentAppConfig {
   mock: boolean;
 }
 
-export interface EnvironmentCloud {
+export interface EnvironmentCloudApi {
   cdn: string;
+}
+
+export interface EnvironmentCloudSignIn {
+  cdn: string;
+  tag: string;
+}
+
+export interface EnvironmentCloud {
+  api: EnvironmentCloudApi;
+  signIn: EnvironmentCloudSignIn;
 }
 
 export interface EnvironmentConfig {
