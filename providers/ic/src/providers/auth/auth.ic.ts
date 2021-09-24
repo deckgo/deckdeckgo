@@ -9,6 +9,12 @@ import {internetIdentityAuth} from '../../utils/identity.utils';
 import {initUserWorker} from '../../workers/user.ic.worker';
 import {deleteUser} from '../data/user.ic';
 
+declare global {
+  interface Window {
+    authClient: AuthClient | undefined;
+  }
+}
+
 let authClient: AuthClient | undefined;
 
 export const initAuth: InitAuth = async ({
@@ -19,6 +25,7 @@ export const initAuth: InitAuth = async ({
   reset: () => Promise<void>;
 }) => {
   authClient = await AuthClient.create();
+
   const isAuthenticated: boolean = (await authClient?.isAuthenticated()) || false;
 
   if (!isAuthenticated) {
@@ -60,8 +67,7 @@ export const signOut: SignOut = (): Promise<void> => {
 };
 
 export const signIn = async ({onSuccess, onError}: {onSuccess: () => void; onError: (err?: string) => void}) => {
-  // @ts-ignore
-  const authClient: AuthClient = authClient || (await AuthClient.create());
+  authClient = authClient || (await AuthClient.create());
 
   await authClient.login({
     onSuccess,
