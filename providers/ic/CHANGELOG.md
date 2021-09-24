@@ -1,3 +1,10 @@
+# 1.0.0-beta.3 (2021-09-24)
+
+### Fix
+
+- global authclient
+- align spinner
+
 # 1.0.0-beta.2 (2021-09-24)
 
 ### Build
