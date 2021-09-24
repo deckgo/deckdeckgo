@@ -366,24 +366,24 @@ export class AppDashboard {
 
       return (
         <article key={deck.deck.id} onClick={() => this.navigateDeck(deck)}>
-          <app-dashboard-deck-actions
-            deck={deck.deck}
-            onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-            onDeckCloned={() => this.navigateReloadEditor()}></app-dashboard-deck-actions>
-
           <ion-card class="item ion-no-margin">{this.renderDeck(deck)}</ion-card>
 
-          {this.renderDeckInfo(deck)}
+          {this.renderAside(deck)}
         </article>
       );
     });
   }
 
-  private renderDeckInfo(deck: DeckAndFirstSlide) {
+  private renderAside(deck: DeckAndFirstSlide) {
     return (
       <aside>
         <p>{deck.deck.data.name}</p>
         <p>{formatDate(deck.deck.data.updated_at)}</p>
+
+        <app-dashboard-deck-actions
+          deck={deck.deck}
+          onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
+          onDeckCloned={() => this.navigateReloadEditor()}></app-dashboard-deck-actions>
       </aside>
     );
   }

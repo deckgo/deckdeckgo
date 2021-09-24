@@ -39,16 +39,28 @@ app-dashboard {
       transition: opacity 0.1s ease-out;
 
       aside {
+        display: grid;
+        grid-template-columns: 70% 30%;
+
         font-size: var(--font-size-small);
 
+        padding: 0 8px;
+
         p:first-of-type {
-          margin: 16px 0 4px;
+          margin: 12px 0 4px;
           font-weight: 700;
         }
 
         p:last-of-type {
-          margin: 2px 0;
+          margin: 2px 0 16px;
           font-size: var(--font-size-very-small);
+        }
+
+        app-dashboard-deck-actions {
+          grid-column-start: 2;
+          grid-column-end: 3;
+          grid-row-start: 1;
+          grid-row-end: 3;
         }
       }
     }
