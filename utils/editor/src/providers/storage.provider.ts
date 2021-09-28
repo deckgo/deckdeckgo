@@ -1,4 +1,4 @@
-import {StorageFile, StorageFilesList, StorageFoldersList} from '../models/storage/storage';
+import {StorageFile, StorageFilesList} from '../models/storage/storage';
 
 export interface UploadFile {
   ({
@@ -28,8 +28,4 @@ export interface GetFiles {
     folder: string;
     userId: string;
   }): Promise<StorageFilesList | null>;
-}
-
-export interface GetFolders {
-  ({folder, userId}: {folder: string; userId: string}): Promise<StorageFoldersList | undefined>;
 }

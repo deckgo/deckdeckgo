@@ -41,9 +41,6 @@ export class AppCustomImages {
   @State()
   private loading: boolean = true;
 
-  @State()
-  private folder: string = 'images';
-
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
     this.storageOfflineProvider = StorageOfflineProvider.getInstance();
@@ -96,7 +93,7 @@ export class AppCustomImages {
 
   private search(reset: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await getFiles(this.paginationNext, this.folder);
+      const list: StorageFilesList = await getFiles({next: this.paginationNext, folder: 'images'});
 
       if (!list) {
         resolve();
@@ -186,13 +183,6 @@ export class AppCustomImages {
     });
   }
 
-  private async openFolder($event: CustomEvent<string>) {
-    this.loading = true;
-    this.folder = $event.detail;
-
-    await this.search(true);
-  }
-
   render() {
     return [
       <ion-header>
@@ -206,8 +196,6 @@ export class AppCustomImages {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
-        <app-background-folders onSelectFolder={($event: CustomEvent<string>) => this.openFolder($event)}></app-background-folders>
-
         <app-image-columns
           imagesOdd={this.imagesOdd}
           imagesEven={this.imagesEven}
@@ -254,7 +242,7 @@ export class AppCustomImages {
   private renderToolbarAction() {
     if (!this.uploading) {
       return (
-        <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary" disabled={this.folder !== 'images'}>
+        <ion-button onClick={() => this.openFilePicker()} shape="round" color="tertiary">
           <AppIcon name="cloud-upload" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.editor.upload_image}</ion-label>
         </ion-button>

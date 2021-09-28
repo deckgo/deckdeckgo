@@ -1,4 +1,4 @@
-import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
 
 // TODO: implement storage for the internet computer
 
@@ -19,8 +19,4 @@ export const getFiles: GetFiles = async (_param: {
   userId: string;
 }): Promise<StorageFilesList | null> => {
   return null;
-};
-
-export const getFolders: GetFolders = async (_param: {folder: string; userId: string}): Promise<StorageFoldersList | undefined> => {
-  return undefined;
 };

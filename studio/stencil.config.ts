@@ -98,7 +98,6 @@ export const config: Config = {
         'app-close-menu',
         'app-slide-warning',
         'app-slide-preview',
-        'app-background-folders',
         'app-image-columns',
         'app-select-target-element',
         'app-share-options',

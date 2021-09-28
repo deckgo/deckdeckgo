@@ -1,4 +1,4 @@
-import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
@@ -31,7 +31,7 @@ export const uploadOnlineFile = async (
   throw new Error('No provider to upload file online.');
 };
 
-export const getFiles = async (next: string | null, folder: string): Promise<StorageFilesList | null> => {
+export const getFiles = async ({next, folder}: {next: string | null; folder: string}): Promise<StorageFilesList | null> => {
   if (!authStore.state.loggedIn || !offlineStore.state.online) {
     return StorageOfflineProvider.getInstance().getFiles(folder);
   }
@@ -48,21 +48,4 @@ export const getFiles = async (next: string | null, folder: string): Promise<Sto
   }
 
   return StorageOfflineProvider.getInstance().getFiles(folder);
-};
-
-export const getFolders = async (folder: string): Promise<StorageFoldersList | undefined> => {
-  if (!authStore.state.loggedIn || !offlineStore.state.online) {
-    return StorageOfflineProvider.getInstance().getFolders();
-  }
-
-  if (cloud()) {
-    const {getFolders}: {getFolders: GetFolders} = await cloudProvider<{getFolders: GetFolders}>();
-
-    return getFolders({
-      folder,
-      userId: authStore.state.authUser.uid
-    });
-  }
-
-  return StorageOfflineProvider.getInstance().getFolders();
 };

@@ -3,7 +3,7 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
-import {GetFiles, GetFolders, StorageFile, StorageFilesList, StorageFoldersList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
 
 export const uploadFile: UploadFile = ({
   data,
@@ -118,33 +118,4 @@ const toStorageFile = (ref: Reference): Promise<StorageFile> => {
       name: ref.name
     });
   });
-};
-
-export const getFolders: GetFolders = ({folder, userId}: {folder: string; userId: string}): Promise<StorageFoldersList | undefined> => {
-  return new Promise<StorageFoldersList | null>(async (resolve, reject) => {
-    try {
-      if (!userId || userId === '' || userId === undefined) {
-        reject('Not logged in.');
-        return;
-      }
-
-      const ref = firebase.storage().ref(`${userId}/assets/${folder}/`);
-
-      const results: ListResult = await ref.listAll();
-
-      resolve(toStorageFoldersList(results));
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-const toStorageFoldersList = (results: ListResult): StorageFoldersList | undefined => {
-  if (!results || !results.prefixes || results.prefixes.length <= 0) {
-    return undefined;
-  }
-
-  return {
-    prefixes: results.prefixes.map((prefix: Reference) => ({name: prefix.name}))
-  };
 };

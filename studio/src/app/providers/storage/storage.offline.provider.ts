@@ -1,6 +1,6 @@
 import {keys, set} from 'idb-keyval';
 
-import {StorageFile, StorageFilesList, StorageFoldersList} from '@deckdeckgo/editor';
+import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
 import store from '../../stores/error.store';
 
@@ -80,10 +80,5 @@ export class StorageOfflineProvider {
         nextPageToken: undefined
       });
     });
-  }
-
-  async getFolders(): Promise<StorageFoldersList | undefined> {
-    // Not implemented in offline
-    return undefined;
   }
 }
