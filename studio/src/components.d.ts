@@ -65,8 +65,6 @@ export namespace Components {
         "ariaLabel": string;
         "src": string;
     }
-    interface AppBackgroundFolders {
-    }
     interface AppBlock {
         "selectedElement": SelectedElement;
     }
@@ -453,12 +451,6 @@ declare global {
     var HTMLAppAvatarElement: {
         prototype: HTMLAppAvatarElement;
         new (): HTMLAppAvatarElement;
-    };
-    interface HTMLAppBackgroundFoldersElement extends Components.AppBackgroundFolders, HTMLStencilElement {
-    }
-    var HTMLAppBackgroundFoldersElement: {
-        prototype: HTMLAppBackgroundFoldersElement;
-        new (): HTMLAppBackgroundFoldersElement;
     };
     interface HTMLAppBlockElement extends Components.AppBlock, HTMLStencilElement {
     }
@@ -1123,7 +1115,6 @@ declare global {
         "app-actions-editor": HTMLAppActionsEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
         "app-avatar": HTMLAppAvatarElement;
-        "app-background-folders": HTMLAppBackgroundFoldersElement;
         "app-block": HTMLAppBlockElement;
         "app-border-radius": HTMLAppBorderRadiusElement;
         "app-bottom-sheet": HTMLAppBottomSheetElement;
@@ -1296,9 +1287,6 @@ declare namespace LocalJSX {
     interface AppAvatar {
         "ariaLabel"?: string;
         "src"?: string;
-    }
-    interface AppBackgroundFolders {
-        "onSelectFolder"?: (event: CustomEvent<string>) => void;
     }
     interface AppBlock {
         "onBlockChange"?: (event: CustomEvent<void>) => void;
@@ -1699,7 +1687,6 @@ declare namespace LocalJSX {
         "app-actions-editor": AppActionsEditor;
         "app-actions-element": AppActionsElement;
         "app-avatar": AppAvatar;
-        "app-background-folders": AppBackgroundFolders;
         "app-block": AppBlock;
         "app-border-radius": AppBorderRadius;
         "app-bottom-sheet": AppBottomSheet;
@@ -1823,7 +1810,6 @@ declare module "@stencil/core" {
             "app-actions-editor": LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
-            "app-background-folders": LocalJSX.AppBackgroundFolders & JSXBase.HTMLAttributes<HTMLAppBackgroundFoldersElement>;
             "app-block": LocalJSX.AppBlock & JSXBase.HTMLAttributes<HTMLAppBlockElement>;
             "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
             "app-bottom-sheet": LocalJSX.AppBottomSheet & JSXBase.HTMLAttributes<HTMLAppBottomSheetElement>;

@@ -81,7 +81,7 @@ export class AppCustomData {
 
   private search(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await getFiles(this.paginationNext, 'data');
+      const list: StorageFilesList = await getFiles({next: this.paginationNext, folder: 'data'});
 
       if (!list) {
         resolve();
