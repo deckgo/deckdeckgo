@@ -88,8 +88,8 @@ Without icon:
 | ---------- | ---------- | ----------------------------------------------------------------------------------------------- | -------- | ----------- |
 | `dev`      | `dev`      | Your Dev username. It will be concatenated automatically with https://dev.to/                   | `string` | `undefined` |
 | `fullUrl`  | `full-url` | In case you would like to provide the URI of your choice                                        | `string` | `undefined` |
-| `github`   | `github`   | Your Github username. It will be concatenated automatically with https://github.com/            | `string` | `undefined` |
-| `linkedin` | `linkedin` | Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/ | `string` | `undefined` |
+| `github`   | `github`   | Your GitHub username. It will be concatenated automatically with https://github.com/            | `string` | `undefined` |
+| `linkedin` | `linkedin` | Your LinkedIn username. It will be concatenated automatically with https://www.linkedin.com/in/ | `string` | `undefined` |
 | `medium`   | `medium`   | Your Medium username. username will be replaced automatically from https://username.medium.com/ | `string` | `undefined` |
 | `twitter`  | `twitter`  | Your Twitter username. It will be concatenated automatically with https://twitter.com/          | `string` | `undefined` |
 

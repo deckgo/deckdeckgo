@@ -6,9 +6,9 @@
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/slide-youtube
 [npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/templates/youtube/LICENSE
 
-# DeckDeckGo - Slide "Youtube"
+# DeckDeckGo - Slide "YouTube"
 
-This component is the slide/template "Youtube" of [DeckDeckGo].
+This component is the slide/template "YouTube" of [DeckDeckGo].
 
 It is developed with [Stencil](https://stenciljs.com).
 

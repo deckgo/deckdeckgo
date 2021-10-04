@@ -59,7 +59,7 @@ const PrivacyPage = (props) => {
               be managed through your Google privacy settings). We never post anything to your Google without your permission.
             </li>
             <li>
-              The email address associated with your GitHub account, if you choose to sign up using your Github credentials. DeckDeckGo will
+              The email address associated with your GitHub account, if you choose to sign up using your GitHub credentials. DeckDeckGo will
               also request permission to access additional information (these permissions are governed by GitHub’s privacy policies and can
               be managed through your GitHub privacy settings). We never post anything to your GitHub without your permission.
             </li>

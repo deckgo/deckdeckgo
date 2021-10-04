@@ -75,5 +75,5 @@ export default Layout;
 const log = Function.prototype.bind.call(console.log, console);
 log.apply(console, ['%cDeckDeckGo', 'color: #3880ff;font-size:2rem;font-weight: 300;']);
 log.apply(console, ['%cHey 👋! We are open source 😃.', 'color: #3dc2ff;font-size:1rem;font-weight: 300;']);
-log.apply(console, ['%cCome say hi and contribute to our project on Github.', 'color: #3dc2ff;font-size:1rem;font-weight: 300;']);
+log.apply(console, ['%cCome say hi and contribute to our project on GitHub.', 'color: #3dc2ff;font-size:1rem;font-weight: 300;']);
 log.apply(console, ['%chttps://github.com/deckgo/deckdeckgo', 'font-size:1rem;font-weight: 300;']);

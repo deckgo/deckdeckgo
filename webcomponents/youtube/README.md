@@ -6,9 +6,9 @@
 [npm-license]: https://img.shields.io/npm/l/@deckdeckgo/youtube
 [npm-license-url]: https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/youtube/LICENSE
 
-# DeckDeckGo - Youtube
+# DeckDeckGo - YouTube
 
-A Youtube Web Component player.
+A YouTube Web Component player.
 
 It acts as a layer over the [YouTube Player API Reference for iframe Embeds](https://developers.google.com/youtube/iframe_api_reference).
 
