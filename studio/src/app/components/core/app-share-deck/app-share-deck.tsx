@@ -116,7 +116,7 @@ export class AppShareDeck {
         <AppIcon
           name="linkedin"
           slot="linkedin"
-          ariaLabel="Linkedin"
+          ariaLabel="LinkedIn"
           style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon
           name="mail"

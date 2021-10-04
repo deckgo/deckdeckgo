@@ -17,7 +17,7 @@ const ServicesPage = (props) => {
           <p>
             We aim to be transparent, therefore, furthermore than open sourcing our all code on{' '}
             <a href="http://github.com/deckgo/deckdeckgo" rel="noopener noreferrer">
-              Github
+              GitHub
             </a>
             , here are the list of services we are using to provide DeckDeckGo.
           </p>
