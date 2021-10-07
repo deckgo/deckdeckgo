@@ -29,7 +29,7 @@ module {
 
     type DeckBucket = DeckBucket.DeckBucket;
 
-    public class Store() {
+    public class DecksStore() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
         private let canisterUtils: CanisterUtils.Utils = CanisterUtils.Utils();
