@@ -16,6 +16,8 @@ import IC "../common/ic";
 
 import DeckBucket "../deck/deck";
 
+import CanisterUtils "./canister.utils";
+
 module {
     type UserId = Types.UserId;
     type DeckId = Types.DeckId;
@@ -32,6 +34,8 @@ module {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
         private let ic : IC.Self = actor "aaaaa-aa";
+
+        private let canisterUtils: CanisterUtils.Utils = CanisterUtils.Utils();
 
         public func init(manager: Principal, user: UserId, deckId: DeckId): async (Bucket) {
             let deckBucket: Bucket = getDeck(user, deckId);
@@ -184,7 +188,7 @@ module {
 
                     switch (protectedDeck.bucketId) {
                         case (?bucketId) {
-                            await deleteCanister(bucketId);
+                            await canisterUtils.deleteCanister(bucketId);
 
                             let removedDeck: ?OwnerDeckBucket = ownerDecks.remove(deckId);
                             decks.put(user, ownerDecks);
@@ -215,7 +219,7 @@ module {
                     };
 
                     for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
-                        await deleteCanister(value.bucketId);
+                        await canisterUtils.deleteCanister(value.bucketId);
                     };
 
                     let removedDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.remove(user);
@@ -226,16 +230,6 @@ module {
                     return null;
                 }
             };
-        };
-
-        private func deleteCanister(bucketId: BucketId): async() {
-            let deckBucket = actor(Principal.toText(bucketId)): actor { transferCycles: () -> async () };
-
-            await deckBucket.transferCycles();
-
-            await ic.stop_canister({ canister_id = bucketId });
-
-            await ic.delete_canister({ canister_id = bucketId });
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, [(DeckId, OwnerDeckBucket)]> {
