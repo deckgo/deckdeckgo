@@ -1,8 +1,8 @@
 import Principal "mo:base/Principal";
 
-import Types "../common/types";
+import Types "../types/types";
 
-import IC "../common/ic";
+import IC "../types/ic";
 
 module {
 

@@ -8,10 +8,10 @@ import Cycles "mo:base/ExperimentalCycles";
 
 import Error "mo:base/Error";
 
-import Types "../common/types";
+import Types "../types/types";
 import BucketTypes "./manager.types";
 
-import Utils "../common/utils";
+import Utils "../types/utils";
 
 import DeckBucket "../deck/deck";
 

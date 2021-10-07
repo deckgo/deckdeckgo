@@ -3,7 +3,7 @@ import Principal "mo:base/Principal";
 import Time "mo:base/Time";
 import Blob "mo:base/Blob";
 
-import Types "../common/types";
+import Types "../types/types";
 
 module {
 

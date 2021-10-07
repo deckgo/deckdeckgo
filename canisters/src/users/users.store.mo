@@ -5,10 +5,10 @@ import Option "mo:base/Option";
 
 import Error "mo:base/Error";
 
-import Types "../common/types";
+import Types "../types/types";
 import UsersTypes "./users.types";
 
-import Utils "../common/utils";
+import Utils "../types/utils";
 
 module {
     type UserId = Types.UserId;
