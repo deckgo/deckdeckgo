@@ -14,20 +14,20 @@ import ManagerStore "./manager.store";
 actor Manager {
     type DeckId = Types.DeckId;
 
-    type OwnerBucket = BucketTypes.OwnerBucket;
-    type ProtectedBucket = BucketTypes.ProtectedBucket;
-    type ProtectedBuckets = BucketTypes.ProtectedBuckets;
+    type OwnerDeckBucket = BucketTypes.OwnerDeckBucket;
+    type Bucket = BucketTypes.Bucket;
+    type Buckets = BucketTypes.Buckets;
     type BucketId = BucketTypes.BucketId;
 
     let store: ManagerStore.Store = ManagerStore.Store();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, [(DeckId, OwnerBucket)])] = [];
+    private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
 
     public shared({ caller }) func init(deckId: DeckId): async (BucketId) {
         let self: Principal = Principal.fromActor(Manager);
 
-        let ({error; bucketId}): ProtectedBucket = await store.init(self, caller, deckId);
+        let ({error; bucketId}): Bucket = await store.init(self, caller, deckId);
 
         switch (error) {
             case (?error) {
@@ -47,7 +47,7 @@ actor Manager {
     };
 
     public shared query({ caller }) func get(deckId : DeckId) : async ?BucketId {
-        let ({error; bucketId}): ProtectedBucket = store.getDeck(caller, deckId);
+        let ({error; bucketId}): Bucket = store.getDeck(caller, deckId);
 
         switch (error) {
             case (?error) {
@@ -70,7 +70,7 @@ actor Manager {
     };
 
     public shared query({ caller }) func entries() : async [BucketId] {
-        let ({error; bucketIds}): ProtectedBuckets = store.getDecks(caller);
+        let ({error; bucketIds}): Buckets = store.getDecks(caller);
 
         switch (error) {
             case (?error) {
@@ -83,7 +83,7 @@ actor Manager {
     };
 
     public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
-        let deck: ProtectedBucket = await store.deleteDeck(caller, deckId);
+        let deck: Bucket = await store.deleteDeck(caller, deckId);
 
         switch (deck.error) {
             case (?error) {
