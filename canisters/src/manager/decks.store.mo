@@ -15,7 +15,7 @@ import Utils "../common/utils";
 
 import DeckBucket "../deck/deck";
 
-import CanisterUtils "./canister.utils";
+import CanisterUtils "../utils/canister.utils";
 
 module {
     type UserId = Types.UserId;
@@ -32,7 +32,7 @@ module {
     public class DecksStore() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
 
-        private let canisterUtils: CanisterUtils.Utils = CanisterUtils.Utils();
+        private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
         public func init(manager: Principal, user: UserId, deckId: DeckId): async (Bucket) {
             let deckBucket: Bucket = getDeck(user, deckId);

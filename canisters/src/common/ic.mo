@@ -1,7 +1,7 @@
 // Source: motoko playground
 // https://github.com/dfinity/motoko-playground/blob/3cf294725acf2213ca5e7c01bc59115781ab8ac4/service/pool/IC.mo
 
-// Also update controllers instead of constroller according doc https://sdk.dfinity.org/docs/interface-spec/index.html#ic-interface-overview
+// Also update controllers instead of controller according doc https://sdk.dfinity.org/docs/interface-spec/index.html#ic-interface-overview
 
 module {
     public type canister_id = Principal;

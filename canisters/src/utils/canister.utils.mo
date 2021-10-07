@@ -1,7 +1,6 @@
 import Principal "mo:base/Principal";
 
 import Types "../common/types";
-import BucketTypes "./manager.types";
 
 import IC "../common/ic";
 
@@ -9,9 +8,9 @@ module {
 
     type UserId = Types.UserId;
 
-    type BucketId = BucketTypes.BucketId;
+    type BucketId = IC.canister_id;
 
-    public class Utils() {
+    public class CanisterUtils() {
 
         private let ic : IC.Self = actor "aaaaa-aa";
 
