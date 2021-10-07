@@ -4,7 +4,6 @@ import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 import Blob "mo:base/Blob";
-import Cycles "mo:base/ExperimentalCycles";
 
 import Error "mo:base/Error";
 
@@ -14,7 +13,7 @@ import SlideDataTypes "./slide.data.types";
 
 import Utils "../common/utils";
 
-import IC "../common/ic";
+import WalletUtils "../utils/wallet.utils";
 
 actor class DeckBucket(owner: Types.UserId) = this {
 
@@ -34,7 +33,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
 
   private var slides: HashMap.HashMap<SlideId, Slide> = HashMap.HashMap<SlideId, Slide>(10, Text.equal, Text.hash);
 
-  private let ic : IC.Self = actor "aaaaa-aa";
+  private let walletUtils: WalletUtils.WalletUtils = WalletUtils.WalletUtils();
 
    /**
     * Deck
@@ -120,15 +119,7 @@ actor class DeckBucket(owner: Types.UserId) = this {
   // Or as only controllers can execute following is enough security?
 
   public shared({ caller }) func transferCycles(): async() {
-      let balance: Nat = Cycles.balance();
-
-      // We have to retain some cycles to be able to transfer some
-      let cycles: Nat = balance - 100_000_000_000;
-
-      if (cycles > 0) {
-        Cycles.add(cycles);
-        await ic.deposit_cycles({ canister_id = caller });
-      };
+      await walletUtils.transferCycles(caller);
   };
 
   system func preupgrade() {
