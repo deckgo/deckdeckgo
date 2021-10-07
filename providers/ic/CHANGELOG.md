@@ -1,3 +1,9 @@
+# 1.0.0-beta.5 (2021-10-07)
+
+### Refactor
+
+- manager deck related functions renamed
+
 # 1.0.0-beta.4 (2021-09-24)
 
 ### Fix
