@@ -27,10 +27,10 @@ export const createDeckBucketActor = ({
 };
 
 export const initDeckBucket = async ({managerActor, deckId}: {managerActor: ManagerActor; deckId: string}): Promise<Principal> => {
-  const existingBucket: Principal | undefined = fromNullable<Principal>(await managerActor.get(deckId));
+  const existingBucket: Principal | undefined = fromNullable<Principal>(await managerActor.getDeck(deckId));
 
   if (!existingBucket) {
-    return await managerActor.init(deckId);
+    return await managerActor.initDeck(deckId);
   }
 
   return existingBucket;

@@ -12,18 +12,18 @@ module {
 
     public type BucketId = IC.canister_id;
 
-    public type OwnerBucket = {
+    public type OwnerDeckBucket = {
         bucket: DeckBucket;
         bucketId: BucketId;
         owner: UserId;
     };
 
-    public type ProtectedBucket = {
+    public type Bucket = {
         bucketId: ?BucketId;
         error: ?Text;
     };
 
-    public type ProtectedBuckets = {
+    public type Buckets = {
         bucketIds: [BucketId];
         error: ?Text;
     };

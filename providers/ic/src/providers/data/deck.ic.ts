@@ -23,7 +23,7 @@ export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]>
 
   console.log('Deck IC about to request entries');
 
-  const buckets: Principal[] = await managerActor.entries();
+  const buckets: Principal[] = await managerActor.deckEntries();
 
   console.log('Deck IC entries done.', buckets);
 
@@ -83,7 +83,7 @@ export const deleteDeck: DeleteDeck = async (deckId: string): Promise<void> => {
 
   console.log('Deck IC about to delete deck and its slides');
 
-  await managerActor.del(deckId);
+  await managerActor.delDeck(deckId);
 
   console.log('Deck IC delete');
 };
