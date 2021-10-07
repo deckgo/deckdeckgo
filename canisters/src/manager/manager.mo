@@ -6,7 +6,7 @@ import Cycles "mo:base/ExperimentalCycles";
 
 import Error "mo:base/Error";
 
-import Types "../common/types";
+import Types "../types/types";
 
 import BucketTypes "./manager.types";
 import DecksStore "./decks.store";

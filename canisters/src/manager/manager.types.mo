@@ -1,7 +1,7 @@
 import Principal "mo:base/Principal";
 
-import Types "../common/types";
-import IC "../common/ic";
+import Types "../types/types";
+import IC "../types/ic";
 
 import DeckBucket "../deck/deck";
 

@@ -4,7 +4,7 @@ import Principal "mo:base/Principal";
 
 import Error "mo:base/Error";
 
-import Types "../common/types";
+import Types "../types/types";
 import UsersTypes "./users.types";
 
 import UsersStore "./users.store";
