@@ -11,7 +11,7 @@ import Error "mo:base/Error";
 import Types "../types/types";
 import BucketTypes "./manager.types";
 
-import Utils "../types/utils";
+import Utils "../utils/utils";
 
 import DeckBucket "../deck/deck";
 

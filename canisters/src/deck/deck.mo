@@ -11,7 +11,7 @@ import Types "../types/types";
 import DeckDataTypes "./deck.data.types";
 import SlideDataTypes "./slide.data.types";
 
-import Utils "../types/utils";
+import Utils "../utils/utils";
 
 import WalletUtils "../utils/wallet.utils";
 

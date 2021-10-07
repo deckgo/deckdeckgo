@@ -8,7 +8,7 @@ import Error "mo:base/Error";
 import Types "../types/types";
 import UsersTypes "./users.types";
 
-import Utils "../types/utils";
+import Utils "../utils/utils";
 
 module {
     type UserId = Types.UserId;
