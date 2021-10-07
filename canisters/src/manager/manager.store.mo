@@ -12,7 +12,6 @@ import Types "../common/types";
 import BucketTypes "./manager.types";
 
 import Utils "../common/utils";
-import IC "../common/ic";
 
 import DeckBucket "../deck/deck";
 
@@ -32,8 +31,6 @@ module {
 
     public class Store() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
-
-        private let ic : IC.Self = actor "aaaaa-aa";
 
         private let canisterUtils: CanisterUtils.Utils = CanisterUtils.Utils();
 
@@ -87,14 +84,7 @@ module {
 
             let canisterId: Principal = Principal.fromActor(b);
 
-            let controllers: ?[Principal] = ?[canisterId, user, manager];
-
-            await ic.update_settings(({canister_id = canisterId; settings = {
-                controllers = controllers;
-                freezing_threshold = null;
-                memory_allocation = null;
-                compute_allocation = null;
-            }}));
+            await canisterUtils.updateSettings(canisterId, manager, user);
 
             return b;
         };

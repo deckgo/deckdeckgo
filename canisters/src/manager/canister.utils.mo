@@ -1,10 +1,13 @@
 import Principal "mo:base/Principal";
 
+import Types "../common/types";
 import BucketTypes "./manager.types";
 
 import IC "../common/ic";
 
 module {
+
+    type UserId = Types.UserId;
 
     type BucketId = BucketTypes.BucketId;
 
@@ -21,6 +24,17 @@ module {
 
             await ic.delete_canister({ canister_id = bucketId });
         };
+
+        public func updateSettings(canisterId: Principal, manager: Principal, user: UserId): async () {
+            let controllers: ?[Principal] = ?[canisterId, user, manager];
+
+            await ic.update_settings(({canister_id = canisterId; settings = {
+                controllers = controllers;
+                freezing_threshold = null;
+                memory_allocation = null;
+                compute_allocation = null;
+            }}));
+        }
 
     }
 
