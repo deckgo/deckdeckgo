@@ -25,7 +25,7 @@ actor Manager {
     // Preserve the application state on upgrades
     private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
 
-    public shared({ caller }) func init(deckId: DeckId): async (BucketId) {
+    public shared({ caller }) func initDeck(deckId: DeckId): async (BucketId) {
         let self: Principal = Principal.fromActor(Manager);
 
         let ({error; bucketId}): Bucket = await decksStore.init(self, caller, deckId);
@@ -47,7 +47,7 @@ actor Manager {
         };
     };
 
-    public shared query({ caller }) func get(deckId : DeckId) : async ?BucketId {
+    public shared query({ caller }) func getDeck(deckId : DeckId) : async ?BucketId {
         let ({error; bucketId}): Bucket = decksStore.getDeck(caller, deckId);
 
         switch (error) {
@@ -70,7 +70,7 @@ actor Manager {
         };
     };
 
-    public shared query({ caller }) func entries() : async [BucketId] {
+    public shared query({ caller }) func deckEntries() : async [BucketId] {
         let ({error; bucketIds}): Buckets = decksStore.getDecks(caller);
 
         switch (error) {
@@ -83,7 +83,7 @@ actor Manager {
         };
     };
 
-    public shared({ caller }) func del(deckId : DeckId) : async (Bool) {
+    public shared({ caller }) func delDeck(deckId : DeckId) : async (Bool) {
         let deck: Bucket = await decksStore.deleteDeck(caller, deckId);
 
         switch (deck.error) {
