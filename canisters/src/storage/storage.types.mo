@@ -1,15 +1,15 @@
 module {
 
     public type Chunk = {
-        batchId : Nat;
-        content  : [Nat8];
+        batchId: Nat;
+        content: [Nat8];
     };
 
     public type AssetEncoding = {
-        modified       : Int;
-        contentChunks : [[Nat8]];
-        totalLength   : Nat;
-        certified      : Bool;
+        modified: Int;
+        contentChunks: [[Nat8]];
+        totalLength: Nat;
+        certified: Bool;
         // TODO do we need sha256         : [Nat8]; ?
     };
 
@@ -19,7 +19,7 @@ module {
     };
 
     public type Batch = {
-        expiresAt : Int;
+        expiresAt: Int;
         token: Text;
     };
 

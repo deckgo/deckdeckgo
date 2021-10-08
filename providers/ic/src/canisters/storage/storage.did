@@ -2,6 +2,12 @@ type UserId = principal;
 type StorageBucket = 
  service {
    create_batch: (record {token: text;}) -> (record {batchId: nat;});
+   create_chunk: (Chunk) -> (record {chunkId: nat;});
    transferCycles: () -> ();
+ };
+type Chunk = 
+ record {
+   batchId: nat;
+   content: vec nat8;
  };
 service : (UserId) -> StorageBucket

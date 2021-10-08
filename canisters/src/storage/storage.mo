@@ -18,6 +18,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
     private let BATCH_EXPIRY_NANOS = 300_000_000_000;
 
     private type Asset = StorageTypes.Asset;
+    private type Chunk = StorageTypes.Chunk;
 
     private let walletUtils: WalletUtils.WalletUtils = WalletUtils.WalletUtils();
 
@@ -34,13 +35,38 @@ actor class StorageBucket(owner: Types.UserId) = this {
 
     public shared({caller}) func create_batch({token: Text;}: {token: Text;}) : async ({batchId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to upload content.");
+            throw Error.reject("User does not have the permission to create a batch for upload.");
         };
 
         let nextBatchID: Nat = storageStore.createBatch(token);
 
         return {batchId = nextBatchID};
     };
+
+    public shared({caller}) func create_chunk(chunk: Chunk) : async ({chunkId : Nat}) {
+        if (Utils.isPrincipalNotEqual(caller, user)) {
+            throw Error.reject("User does not have the permission to a upload a chunk of content.");
+        };
+
+        let ({error; chunkId}: {chunkId: ?Nat; error: ?Text;}) = storageStore.createChunk(chunk);
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {
+                switch (chunkId) {
+                    case (?chunkId) {
+                        return {chunkId};
+                    };
+                    case null {
+                        throw Error.reject("Chunk not added to batch.");
+                    };
+                };
+            };
+        };
+    };
+
 
     /**
     * Canister mgmt

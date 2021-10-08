@@ -44,6 +44,30 @@ module {
             return nextBatchID;
         };
 
+        public func createChunk({batchId: Nat; content: [Nat8];}: Chunk) : ({chunkId: ?Nat; error: ?Text;}) {
+            switch (batches.get(batchId)) {
+                case (null) {
+                    return {chunkId = null; error = ?"Batch not found.";}
+                };
+                case (?batch) {
+                    // Extend batch timeout
+                    batches.put(batchId, {
+                        expiresAt = Time.now() + BATCH_EXPIRY_NANOS;
+                        token = batch.token;
+                    });
+
+                    nextChunkID := nextChunkID + 1;
+
+                    chunks.put(nextChunkID, {
+                        batchId;
+                        content;
+                    });
+
+                    return {chunkId = ?nextChunkID; error = null;};
+                };
+            };
+        };
+
         public func preupgrade(): HashMap.HashMap<Text, Asset> {
             return assets;
         };
