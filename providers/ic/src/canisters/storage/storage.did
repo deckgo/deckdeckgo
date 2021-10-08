@@ -1,0 +1,7 @@
+type UserId = principal;
+type StorageBucket = 
+ service {
+   create_batch: (record {token: text;}) -> (record {batchId: nat;});
+   transferCycles: () -> ();
+ };
+service : (UserId) -> StorageBucket
