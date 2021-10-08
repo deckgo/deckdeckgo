@@ -1,8 +1,6 @@
 import Nat "mo:base/Nat";
 import Text "mo:base/Text";
-import Time "mo:base/Time";
 import HashMap "mo:base/HashMap";
-import Hash "mo:base/Hash";
 import Iter "mo:base/Iter";
 import Error "mo:base/Error";
 
@@ -11,15 +9,15 @@ import StorageTypes "./storage.types";
 
 import Utils "../utils/utils";
 
+import StorageStore "./storage.store";
+
 import WalletUtils "../utils/wallet.utils";
 
 actor class StorageBucket(owner: Types.UserId) = this {
 
     private let BATCH_EXPIRY_NANOS = 300_000_000_000;
 
-    private type Chunk = StorageTypes.Chunk;
     private type Asset = StorageTypes.Asset;
-    private type Batch = StorageTypes.Batch;
 
     private let walletUtils: WalletUtils.WalletUtils = WalletUtils.WalletUtils();
 
@@ -28,20 +26,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
     // Preserve the application state on upgrades
     private stable var entries : [(Text, Asset)] = [];
 
-    private let batches: HashMap.HashMap<Nat, Batch> = HashMap.HashMap<Nat, Batch>(
-        0, Nat.equal, Hash.hash,
-    );
-
-    private let chunks: HashMap.HashMap<Nat, Chunk> = HashMap.HashMap<Nat, Chunk>(
-        0, Nat.equal, Hash.hash,
-    );
-
-    private var assets: HashMap.HashMap<Text, Asset> = HashMap.HashMap<Text, Asset>(
-        0, Text.equal, Text.hash,
-    );
-
-    private var nextBatchID: Nat = 0;
-    private var nextChunkID: Nat = 0;
+    let storageStore: StorageStore.StorageStore = StorageStore.StorageStore();
 
     /**
      * Upload
@@ -52,14 +37,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
             throw Error.reject("User does not have the permission to upload content.");
         };
 
-        nextBatchID := nextBatchID + 1;
-
-        let now: Time.Time = Time.now();
-
-        batches.put(nextBatchID, {
-            expiresAt = now + BATCH_EXPIRY_NANOS;
-            token = token;
-        });
+        let nextBatchID: Nat = storageStore.createBatch(token);
 
         return {batchId = nextBatchID};
     };
@@ -76,11 +54,11 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     system func preupgrade() {
-        entries := Iter.toArray(assets.entries());
+        entries := Iter.toArray(storageStore.preupgrade().entries());
     };
 
     system func postupgrade() {
-        assets := HashMap.fromIter<Text, Asset>(entries.vals(), 10, Text.equal, Text.hash);
+        storageStore.postupgrade(entries);
         entries := [];
     };
 }
