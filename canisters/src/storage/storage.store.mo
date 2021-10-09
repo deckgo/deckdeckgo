@@ -4,6 +4,7 @@ import Text "mo:base/Text";
 import Time "mo:base/Time";
 import Hash "mo:base/Hash";
 import Array "mo:base/Array";
+import Iter "mo:base/Iter";
 
 import StorageTypes "./storage.types";
 
@@ -31,6 +32,39 @@ module {
 
         private var nextBatchID: Nat = 0;
         private var nextChunkID: Nat = 0;
+
+        public func getAsset(url: Text): ({#asset: Asset; #error: Text}) {
+            if (Text.size(url) == 0) {
+                return #error "No url provided.";
+            };
+
+            let split: [Text] = Iter.toArray(Text.split(url, #text "?token="));
+            let path: Text = Text.trimStart(split[0], #char '/');
+            let token: Text = split[1];
+
+            let asset: ?Asset = assets.get(path);
+
+            switch (asset) {
+                case (?asset) {
+                    let compare: {#less; #equal; #greater} = Text.compare(token, asset.token);
+
+                    switch (compare) {
+                        case (#equal equal) {
+                            return #asset asset;
+                        };
+                        case (#less less) {
+                            return #error "Invalid token";
+                        };
+                        case (#greater greater) {
+                            return #error "Invalid token";
+                        };
+                    };    
+                };
+                case null {
+                    return #error "No asset.";
+                };
+            };
+        };
 
         public func createBatch(path: Text, token: Text) : (Nat) {
             nextBatchID := nextBatchID + 1;

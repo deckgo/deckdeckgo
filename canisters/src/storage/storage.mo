@@ -38,9 +38,20 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * HTTP
      */
 
-    public shared query({caller}) func http_request(request : HttpRequest) : async HttpResponse {
+    public shared query({caller}) func http_request({method: Text; url: Text;} : HttpRequest) : async HttpResponse {
         try {
-            // TODO: get and stream asset
+            if (Text.notEqual(method, "GET")) {
+                return {
+                    body = Blob.toArray(Text.encodeUtf8("Method Not Allowed."));
+                    headers = [];
+                    status_code = 405;
+                    streaming_strategy = null;
+                };
+            };
+
+            let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(url);
+
+            // TODO: use and stream asset
 
             return {
                 body = Blob.toArray(Text.encodeUtf8("Permission denied. Could not perform this operation."));
