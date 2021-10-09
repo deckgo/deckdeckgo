@@ -3,6 +3,7 @@ import Nat "mo:base/Nat";
 import Text "mo:base/Text";
 import Time "mo:base/Time";
 import Hash "mo:base/Hash";
+import Array "mo:base/Array";
 
 import StorageTypes "./storage.types";
 
@@ -31,14 +32,17 @@ module {
         private var nextBatchID: Nat = 0;
         private var nextChunkID: Nat = 0;
 
-        public func createBatch(token: Text) : (Nat) {
+        public func createBatch(path: Text, token: Text) : (Nat) {
             nextBatchID := nextBatchID + 1;
 
             let now: Time.Time = Time.now();
 
+            // TODO: clear expired batch and chunks?
+
             batches.put(nextBatchID, {
+                path;
+                token;
                 expiresAt = now + BATCH_EXPIRY_NANOS;
-                token = token;
             });
 
             return nextBatchID;
@@ -54,6 +58,7 @@ module {
                     batches.put(batchId, {
                         expiresAt = Time.now() + BATCH_EXPIRY_NANOS;
                         token = batch.token;
+                        path = batch.path;
                     });
 
                     nextChunkID := nextChunkID + 1;
@@ -66,6 +71,78 @@ module {
                     return {chunkId = ?nextChunkID; error = null;};
                 };
             };
+        };
+
+        public func commitBatch(
+            {batchId: Nat; chunkIds: [Nat]; contentType: Text;} : {
+                batchId: Nat;
+                contentType: Text;
+                chunkIds: [Nat];
+            },
+        ) : ({error: ?Text;}) {
+            let batch: ?Batch = batches.get(batchId);
+
+            switch (batch) {
+                case (null) {
+                    return {error = ?"No batch to commit.";}
+                };
+                case (?batch) {
+                    let error: {error: ?Text} = commitChunks({batchId; batch; chunkIds; contentType;});
+                    return error;
+                };
+            };
+        };
+
+        private func commitChunks(
+            {batchId: Nat; batch: Batch; chunkIds: [Nat]; contentType: Text;} : {
+                batchId: Nat;
+                batch: Batch;
+                contentType: Text;
+                chunkIds: [Nat];
+            },
+        ) : ({error: ?Text;}) {
+            var contentChunks : [[Nat8]] = [];
+
+            for (chunkId in chunkIds.vals()) {
+                let chunk: ?Chunk = chunks.get(chunkId);
+
+                switch (chunk) {
+                    case (?chunk) {
+                        if (Nat.notEqual(batchId, chunk.batchId)) {
+                            return {error = ?"Chunk not included in the provided batch"};
+                        };
+
+                        contentChunks := Array.append<[Nat8]>(contentChunks, [chunk.content]);
+                    };
+                    case null {
+                        return {error = ?"Chunk does not exist."};
+                    };
+                };
+            };
+
+            // TODO test expiry ?
+            // TODO clear chunks and batch
+
+            if (contentChunks.size() <= 0) {
+                return {error = ?"No chunk to commit."};
+            };
+
+            var totalLength = 0;
+            for (chunk in contentChunks.vals()) {
+                totalLength += chunk.size();
+            };
+
+            assets.put(batch.path, {
+                contentType;
+                token = batch.token;
+                encoding = {
+                    modified = Time.now();
+                    contentChunks;
+                    totalLength
+                };
+            });
+
+            return {error = null};
         };
 
         public func preupgrade(): HashMap.HashMap<Text, Asset> {

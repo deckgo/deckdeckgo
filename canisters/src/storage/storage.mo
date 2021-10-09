@@ -33,12 +33,12 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * Upload
      */
 
-    public shared({caller}) func create_batch({token: Text;}: {token: Text;}) : async ({batchId : Nat}) {
+    public shared({caller}) func create_batch({path: Text; token: Text;}: {path: Text; token: Text;}) : async ({batchId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
             throw Error.reject("User does not have the permission to create a batch for upload.");
         };
 
-        let nextBatchID: Nat = storageStore.createBatch(token);
+        let nextBatchID: Nat = storageStore.createBatch(path, token);
 
         return {batchId = nextBatchID};
     };
@@ -67,6 +67,26 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
+    public shared({caller}) func commit_batch(
+        {batchId: Nat; chunkIds: [Nat]; contentType: Text;} : {
+            batchId: Nat;
+            contentType: Text;
+            chunkIds: [Nat];
+        },
+    ) : async () {
+        if (Utils.isPrincipalNotEqual(caller, user)) {
+            throw Error.reject("User does not have the permission to commit a batch.");
+        };
+
+        let ({error}: {error: ?Text;}) = storageStore.commitBatch({batchId; contentType; chunkIds;});
+
+        switch (error) {
+            case (?error) {
+                throw Error.reject(error);
+            };
+            case null {};
+        };
+    };
 
     /**
     * Canister mgmt

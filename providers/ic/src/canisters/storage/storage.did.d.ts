@@ -4,7 +4,8 @@ export interface Chunk {
   batchId: bigint;
 }
 export interface StorageBucket {
-  create_batch: (arg_0: {token: string}) => Promise<{batchId: bigint}>;
+  commit_batch: (arg_0: {contentType: string; chunkIds: Array<bigint>; batchId: bigint}) => Promise<undefined>;
+  create_batch: (arg_0: {token: string; path: string}) => Promise<{batchId: bigint}>;
   create_chunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
   transferCycles: () => Promise<undefined>;
 }

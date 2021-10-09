@@ -9,18 +9,20 @@ module {
         modified: Int;
         contentChunks: [[Nat8]];
         totalLength: Nat;
-        certified: Bool;
-        // TODO do we need sha256         : [Nat8]; ?
+        // TODO: certified: Bool; should we use the certified flag?
+        // TODO: do we need sha256         : [Nat8]; ?
     };
 
     public type Asset = {
         encoding: AssetEncoding;
         contentType: Text;
+        token: Text;
     };
 
     public type Batch = {
+        path: Text; // /images/myimage.jpg
+        token: Text; // ?token=1223-3345-5564-3333
         expiresAt: Int;
-        token: Text;
     };
 
 }

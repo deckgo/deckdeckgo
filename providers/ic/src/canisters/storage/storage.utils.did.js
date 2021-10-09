@@ -5,7 +5,18 @@ export const idlFactory = ({IDL}) => {
     batchId: IDL.Nat
   });
   const StorageBucket = IDL.Service({
-    create_batch: IDL.Func([IDL.Record({token: IDL.Text})], [IDL.Record({batchId: IDL.Nat})], []),
+    commit_batch: IDL.Func(
+      [
+        IDL.Record({
+          contentType: IDL.Text,
+          chunkIds: IDL.Vec(IDL.Nat),
+          batchId: IDL.Nat
+        })
+      ],
+      [],
+      []
+    ),
+    create_batch: IDL.Func([IDL.Record({token: IDL.Text, path: IDL.Text})], [IDL.Record({batchId: IDL.Nat})], []),
     create_chunk: IDL.Func([Chunk], [IDL.Record({chunkId: IDL.Nat})], []),
     transferCycles: IDL.Func([], [], [])
   });
