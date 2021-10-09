@@ -48,10 +48,10 @@ module {
             return nextBatchID;
         };
 
-        public func createChunk({batchId: Nat; content: [Nat8];}: Chunk) : ({chunkId: ?Nat; error: ?Text;}) {
+        public func createChunk({batchId: Nat; content: [Nat8];}: Chunk) : ({#chunkId: Nat; #error: Text;}) {
             switch (batches.get(batchId)) {
                 case (null) {
-                    return {chunkId = null; error = ?"Batch not found.";}
+                    return #error "Batch not found.";
                 };
                 case (?batch) {
                     // Extend batch timeout
@@ -68,7 +68,7 @@ module {
                         content;
                     });
 
-                    return {chunkId = ?nextChunkID; error = null;};
+                    return #chunkId nextChunkID;
                 };
             };
         };

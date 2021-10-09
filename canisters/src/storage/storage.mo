@@ -48,21 +48,14 @@ actor class StorageBucket(owner: Types.UserId) = this {
             throw Error.reject("User does not have the permission to a upload a chunk of content.");
         };
 
-        let ({error; chunkId}: {chunkId: ?Nat; error: ?Text;}) = storageStore.createChunk(chunk);
+        let (result: {#chunkId: Nat; #error: Text;}) = storageStore.createChunk(chunk);
 
-        switch (error) {
-            case (?error) {
+        switch (result) {
+            case (#error error) {
                 throw Error.reject(error);
             };
-            case null {
-                switch (chunkId) {
-                    case (?chunkId) {
-                        return {chunkId};
-                    };
-                    case null {
-                        throw Error.reject("Chunk not added to batch.");
-                    };
-                };
+            case (#chunkId chunkId) {
+                return {chunkId};
             };
         };
     };
