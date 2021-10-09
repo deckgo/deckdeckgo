@@ -3,8 +3,10 @@ import Text "mo:base/Text";
 import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
 import Error "mo:base/Error";
+import Blob "mo:base/Blob";
 
 import Types "../types/types";
+import HTTP "../types/http";
 import StorageTypes "./storage.types";
 
 import Utils "../utils/utils";
@@ -20,6 +22,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
     private type Asset = StorageTypes.Asset;
     private type Chunk = StorageTypes.Chunk;
 
+    private type HttpRequest = HTTP.HttpRequest;
+    private type HttpResponse = HTTP.HttpResponse;
+
     private let walletUtils: WalletUtils.WalletUtils = WalletUtils.WalletUtils();
 
     private stable let user: Types.UserId = owner;
@@ -28,6 +33,30 @@ actor class StorageBucket(owner: Types.UserId) = this {
     private stable var entries : [(Text, Asset)] = [];
 
     let storageStore: StorageStore.StorageStore = StorageStore.StorageStore();
+
+    /**
+     * HTTP
+     */
+
+    public shared query({caller}) func http_request(request : HttpRequest) : async HttpResponse {
+        try {
+            // TODO: get and stream asset
+
+            return {
+                body = Blob.toArray(Text.encodeUtf8("Permission denied. Could not perform this operation."));
+                headers = [];
+                status_code = 403;
+                streaming_strategy = null;
+            };
+        } catch (err) {
+            return {
+                body = Blob.toArray(Text.encodeUtf8("Unexpected error: " # Error.message(err)));
+                headers = [];
+                status_code = 500;
+                streaming_strategy = null;
+            };
+        }
+    };
 
     /**
      * Upload
