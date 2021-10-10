@@ -11,14 +11,15 @@ export const idlFactory = ({IDL}) => {
     body: IDL.Vec(IDL.Nat8),
     headers: IDL.Vec(HeaderField)
   });
-  const StreamingCallbackToken = IDL.Record({
-    key: IDL.Text,
+  const StreamingCallbackToken__1 = IDL.Record({
+    token: IDL.Text,
+    path: IDL.Text,
     index: IDL.Nat,
-    content_encoding: IDL.Text
+    contentEncoding: IDL.Text
   });
   const StreamingStrategy = IDL.Variant({
     Callback: IDL.Record({
-      token: StreamingCallbackToken,
+      token: StreamingCallbackToken__1,
       callback: IDL.Func([], [], [])
     })
   });
@@ -27,6 +28,16 @@ export const idlFactory = ({IDL}) => {
     headers: IDL.Vec(HeaderField),
     streaming_strategy: IDL.Opt(StreamingStrategy),
     status_code: IDL.Nat16
+  });
+  const StreamingCallbackToken = IDL.Record({
+    token: IDL.Text,
+    path: IDL.Text,
+    index: IDL.Nat,
+    contentEncoding: IDL.Text
+  });
+  const StreamingCallbackHttpResponse = IDL.Record({
+    token: IDL.Opt(StreamingCallbackToken__1),
+    body: IDL.Vec(IDL.Nat8)
   });
   const StorageBucket = IDL.Service({
     commit_batch: IDL.Func(
@@ -43,6 +54,7 @@ export const idlFactory = ({IDL}) => {
     create_batch: IDL.Func([IDL.Record({token: IDL.Text, path: IDL.Text})], [IDL.Record({batchId: IDL.Nat})], []),
     create_chunk: IDL.Func([Chunk], [IDL.Record({chunkId: IDL.Nat})], []),
     http_request: IDL.Func([HttpRequest], [HttpResponse], ['query']),
+    http_request_streaming_callback: IDL.Func([StreamingCallbackToken], [StreamingCallbackHttpResponse], ['query']),
     transferCycles: IDL.Func([], [], [])
   });
   return StorageBucket;

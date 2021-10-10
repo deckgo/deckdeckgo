@@ -112,7 +112,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
                 // Hack: https://forum.dfinity.org/t/cryptic-error-from-icx-proxy/6944/8
                 // Issue: https://github.com/dfinity/candid/issues/273
 
-                let self: Principal = Principal.fromActor(StorageBucket);
+                let self: Principal = Principal.fromActor(this);
                 let canisterId: Text = Principal.toText(self);
 
                 let canister = actor (canisterId) : actor { http_request_streaming_callback : shared () -> async () };

@@ -3,13 +3,26 @@ type StreamingStrategy = variant {
                            Callback:
                             record {
                               callback: func () -> ();
-                              token: StreamingCallbackToken;
+                              token: StreamingCallbackToken__1;
                             };};
+type StreamingCallbackToken__1 = 
+ record {
+   contentEncoding: text;
+   index: nat;
+   path: text;
+   token: text;
+ };
 type StreamingCallbackToken = 
  record {
-   content_encoding: text;
+   contentEncoding: text;
    index: nat;
-   key: text;
+   path: text;
+   token: text;
+ };
+type StreamingCallbackHttpResponse = 
+ record {
+   body: vec nat8;
+   token: opt StreamingCallbackToken__1;
  };
 type StorageBucket = 
  service {
@@ -25,6 +38,8 @@ type StorageBucket =
                   }) -> (record {batchId: nat;});
    create_chunk: (Chunk) -> (record {chunkId: nat;});
    http_request: (HttpRequest) -> (HttpResponse) query;
+   http_request_streaming_callback: (StreamingCallbackToken) ->
+    (StreamingCallbackHttpResponse) query;
    transferCycles: () -> ();
  };
 type HttpResponse = 
