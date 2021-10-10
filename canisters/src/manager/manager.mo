@@ -8,17 +8,14 @@ import Error "mo:base/Error";
 
 import Types "../types/types";
 
-import BucketTypes "./manager.types";
+import ManagerTypes "./manager.types";
 import DecksStore "./decks.store";
 
 actor Manager {
     type DeckId = Types.DeckId;
 
-    type OwnerDeckBucket = BucketTypes.OwnerDeckBucket;
-
-    type Bucket = BucketTypes.Bucket;
-    type Buckets = BucketTypes.Buckets;
-    type BucketId = BucketTypes.BucketId;
+    type BucketId = ManagerTypes.BucketId;
+    type OwnerDeckBucket = ManagerTypes.OwnerDeckBucket;
 
     let decksStore: DecksStore.DecksStore = DecksStore.DecksStore();
 
@@ -28,33 +25,26 @@ actor Manager {
     public shared({ caller }) func initDeck(deckId: DeckId): async (BucketId) {
         let self: Principal = Principal.fromActor(Manager);
 
-        let ({error; bucketId}): Bucket = await decksStore.init(self, caller, deckId);
+        let result: {#bucketId: BucketId; #error: Text;} = await decksStore.init(self, caller, deckId);
 
-        switch (error) {
-            case (?error) {
+        switch (result) {
+            case (#error error) {
                 throw Error.reject(error);
             };
-            case null {
-                switch (bucketId) {
-                    case (?bucketId) {
-                        return bucketId;
-                    };
-                    case null {
-                        throw Error.reject("Cannot init deck bucket.");
-                    };
-                };
+            case (#bucketId bucketId) {
+                return bucketId;
             };
         };
     };
 
     public shared query({ caller }) func getDeck(deckId : DeckId) : async ?BucketId {
-        let ({error; bucketId}): Bucket = decksStore.getDeck(caller, deckId);
+        let result: {#bucketId: ?BucketId; #error: Text;} = decksStore.getDeck(caller, deckId);
 
-        switch (error) {
-            case (?error) {
+        switch (result) {
+            case (#error error) {
                 throw Error.reject(error);
             };
-            case null {
+            case (#bucketId bucketId) {
                 switch (bucketId) {
                     case (?bucketId) {
                         return ?bucketId;
@@ -71,27 +61,27 @@ actor Manager {
     };
 
     public shared query({ caller }) func deckEntries() : async [BucketId] {
-        let ({error; bucketIds}): Buckets = decksStore.getDecks(caller);
+        let result: {#bucketIds: [BucketId]; #error: Text;} = decksStore.getDecks(caller);
 
-        switch (error) {
-            case (?error) {
+        switch (result) {
+            case (#error error) {
                 throw Error.reject(error);
             };
-            case null {
+            case (#bucketIds bucketIds) {
                 return bucketIds;
             };
         };
     };
 
     public shared({ caller }) func delDeck(deckId : DeckId) : async (Bool) {
-        let deck: Bucket = await decksStore.deleteDeck(caller, deckId);
+        let result: {#bucketId: ?BucketId; #error: Text;} = await decksStore.deleteDeck(caller, deckId);
 
-        switch (deck.error) {
-            case (?error) {
+        switch (result) {
+            case (#error error) {
                 throw Error.reject(error);
             };
-            case null {
-                let exists: Bool = Option.isSome(deck.bucketId);
+            case (#bucketId bucketId) {
+                let exists: Bool = Option.isSome(bucketId);
                 return exists;
             };
         };
