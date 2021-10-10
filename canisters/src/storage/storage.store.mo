@@ -33,7 +33,7 @@ module {
         private var nextBatchID: Nat = 0;
         private var nextChunkID: Nat = 0;
 
-        public func getAsset(url: Text): ({#asset: Asset; #error: Text}) {
+        public func getAssetForUrl(url: Text): ({#asset: Asset; #error: Text}) {
             if (Text.size(url) == 0) {
                 return #error "No url provided.";
             };
@@ -42,6 +42,10 @@ module {
             let path: Text = Text.trimStart(split[0], #char '/');
             let token: Text = split[1];
 
+            return getAsset(path, token);
+        };
+
+        public func getAsset(path: Text, token: Text): ({#asset: Asset; #error: Text}) {
             let asset: ?Asset = assets.get(path);
 
             switch (asset) {
@@ -167,8 +171,9 @@ module {
             };
 
             assets.put(batch.path, {
-                contentType;
+                path = batch.path;
                 token = batch.token;
+                contentType;
                 encoding = {
                     modified = Time.now();
                     contentChunks;

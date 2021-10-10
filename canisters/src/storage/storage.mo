@@ -4,6 +4,7 @@ import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
 import Error "mo:base/Error";
 import Blob "mo:base/Blob";
+import Principal "mo:base/Principal";
 
 import Types "../types/types";
 import HTTP "../types/http";
@@ -20,10 +21,14 @@ actor class StorageBucket(owner: Types.UserId) = this {
     private let BATCH_EXPIRY_NANOS = 300_000_000_000;
 
     private type Asset = StorageTypes.Asset;
+    private type AssetEncoding = StorageTypes.AssetEncoding;
     private type Chunk = StorageTypes.Chunk;
 
     private type HttpRequest = HTTP.HttpRequest;
     private type HttpResponse = HTTP.HttpResponse;
+    private type StreamingCallbackHttpResponse = HTTP.StreamingCallbackHttpResponse;
+    private type StreamingCallbackToken = HTTP.StreamingCallbackToken;
+    private type StreamingStrategy = HTTP.StreamingStrategy;
 
     private let walletUtils: WalletUtils.WalletUtils = WalletUtils.WalletUtils();
 
@@ -49,9 +54,22 @@ actor class StorageBucket(owner: Types.UserId) = this {
                 };
             };
 
-            let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(url);
+            let (result: {#asset: Asset; #error: Text;}) = storageStore.getAssetForUrl(url);
 
-            // TODO: use and stream asset
+            switch (result) {
+                case (#asset {path: Text; token: Text; contentType: Text; encoding: AssetEncoding;}) {
+                    return {
+                        body = encoding.contentChunks[0];
+                        headers = [ ("Content-Type", contentType),
+                                    ("accept-ranges", "bytes"),
+                                    ("cache-control", "private, max-age=0") ];
+                        status_code = 200;
+                        streaming_strategy = createStrategy(path, token, 0, encoding);
+                    };
+                };
+                case (#error error) {
+                };
+            };
 
             return {
                 body = Blob.toArray(Text.encodeUtf8("Permission denied. Could not perform this operation."));
@@ -67,6 +85,62 @@ actor class StorageBucket(owner: Types.UserId) = this {
                 streaming_strategy = null;
             };
         }
+    };
+
+    public shared query({caller}) func http_request_streaming_callback(streamingToken: StreamingCallbackToken) : async StreamingCallbackHttpResponse {
+        let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(streamingToken.path, streamingToken.token);
+
+        switch (result) {
+            case (#asset {path: Text; token: Text; contentType: Text; encoding: AssetEncoding;}) {
+                return {
+                    token = createToken(path, token, streamingToken.index, encoding);
+                    body = encoding.contentChunks[streamingToken.index];
+                };
+            };
+            case (#error error) {
+                throw Error.reject("Streamed asset not found: " # error);
+            };
+        };
+    };
+
+    private func createStrategy(path: Text, token: Text, index: Nat, encoding: AssetEncoding) : ?StreamingStrategy {
+        let streamingToken: ?StreamingCallbackToken = createToken(path, token, index, encoding);
+
+        switch (streamingToken) {
+            case (null) { null };
+            case (?streamingToken) {
+                // Hack: https://forum.dfinity.org/t/cryptic-error-from-icx-proxy/6944/8
+                // Issue: https://github.com/dfinity/candid/issues/273
+
+                let self: Principal = Principal.fromActor(StorageBucket);
+                let canisterId: Text = Principal.toText(self);
+
+                let canister = actor (canisterId) : actor { http_request_streaming_callback : shared () -> async () };
+
+                return ?#Callback({
+                    token = streamingToken;
+                    callback = canister.http_request_streaming_callback;
+                });
+            };
+        };
+    };
+
+    private func createToken(path: Text, token: Text, chunkIndex: Nat, encoding: AssetEncoding) : ?StreamingCallbackToken {
+        // TODO encoding and sha
+        // TODO always gzip?
+
+        if (chunkIndex + 1 >= encoding.contentChunks.size()) {
+            return null;
+        };
+        
+        let streamingToken: ?StreamingCallbackToken = ?{
+            path;
+            token;
+            index = chunkIndex + 1;
+            contentEncoding = "gzip";
+        };
+
+        return streamingToken;
     };
 
     /**

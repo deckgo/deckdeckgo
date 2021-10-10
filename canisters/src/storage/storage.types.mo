@@ -14,9 +14,10 @@ module {
     };
 
     public type Asset = {
-        encoding: AssetEncoding;
-        contentType: Text;
+        path: Text;
         token: Text;
+        contentType: Text;
+        encoding: AssetEncoding;
     };
 
     public type Batch = {
