@@ -17,14 +17,4 @@ module {
         bucketId: BucketId;
         owner: UserId;
     };
-
-    public type Bucket = {
-        bucketId: ?BucketId;
-        error: ?Text;
-    };
-
-    public type Buckets = {
-        bucketIds: [BucketId];
-        error: ?Text;
-    };
 };

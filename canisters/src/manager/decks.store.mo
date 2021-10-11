@@ -9,7 +9,7 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../types/types";
-import BucketTypes "./manager.types";
+import ManagerTypes "./manager.types";
 
 import Utils "../utils/utils";
 
@@ -22,10 +22,8 @@ module {
     type DeckId = Types.DeckId;
     type SlideId = Types.SlideId;
 
-    type OwnerDeckBucket = BucketTypes.OwnerDeckBucket;
-    type Bucket = BucketTypes.Bucket;
-    type Buckets = BucketTypes.Buckets;
-    type BucketId = BucketTypes.BucketId;
+    type BucketId = ManagerTypes.BucketId;
+    type OwnerDeckBucket = ManagerTypes.OwnerDeckBucket;
 
     type DeckBucket = DeckBucket.DeckBucket;
 
@@ -34,26 +32,28 @@ module {
 
         private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-        public func init(manager: Principal, user: UserId, deckId: DeckId): async (Bucket) {
-            let deckBucket: Bucket = getDeck(user, deckId);
+        public func init(manager: Principal, user: UserId, deckId: DeckId): async ({#bucketId: BucketId; #error: Text;}) {
+            let deckBucket: {#bucketId: ?BucketId; #error: Text;} = getDeck(user, deckId);
 
-            switch (deckBucket.error) {
-                case (?error) {
-                    return deckBucket;
+            switch (deckBucket) {
+                case (#error error) {
+                    return #error error;
                 };
-                case null {
-                    switch (deckBucket.bucketId) {
+                case (#bucketId bucketId) {
+                    switch (bucketId) {
                         case (?bucketId) {
-                            return deckBucket;
+                            return #bucketId bucketId;
                         };
                         case null {
                             let b: DeckBucket = await initNewBucket(manager, user);
 
                             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
+                            let newBucketId: Principal = Principal.fromActor(b);
+
                             let newDeckBucket: OwnerDeckBucket = {
                                 bucket = b;
-                                bucketId = Principal.fromActor(b);
+                                bucketId = newBucketId;
                                 owner = user;
                             };
 
@@ -68,10 +68,7 @@ module {
                                 }
                             };
 
-                            return {
-                                bucketId = ?(Principal.fromActor(b));
-                                error = null;
-                            };
+                            return #bucketId newBucketId;
                         };
                     }
                 };
@@ -94,24 +91,20 @@ module {
             decks.put(user, ownerDecks);
         };
 
-        public func getDeck(user: UserId, deckId: DeckId): Bucket {
+        public func getDeck(user: UserId, deckId: DeckId): {#bucketId: ?BucketId; #error: Text;} {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
                 case (?ownerDecks) {
-                    let ownerDeck: Bucket = getOwnerDeck(user, deckId, ownerDecks);
-                    return ownerDeck;
+                    return getOwnerDeck(user, deckId, ownerDecks);
                 };
                 case null {
-                    return {
-                        bucketId = null;
-                        error = null;
-                    };
+                    return #bucketId null;
                 };
             };
         };
 
-        public func getDecks(user: UserId): Buckets {
+        public func getDecks(user: UserId): {#bucketIds: [BucketId]; #error: Text;} {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
@@ -120,80 +113,68 @@ module {
 
                     for ((deckId: DeckId, value: OwnerDeckBucket) in ownerDecks.entries()) {
                         if (Utils.isPrincipalNotEqual(user, value.owner)) {
-                            return {
-                                bucketIds = [];
-                                error = ?"User does not have the permission for one of the deck.";
-                            };
+                            return #error "User does not have the permission for one of the deck.";
                         };
 
                         results := Array.append(results, [value.bucketId]);
                     };
 
-                    return {
-                        bucketIds = results;
-                        error = null;
-                    };
+                    return #bucketIds results;
                 };
                 case null {
-                    return {
-                        bucketIds = [];
-                        error = null;
-                    }
+                    let empty: [BucketId] = [];
+                    return #bucketIds empty;
                 }
             };
         };
 
-        private func getOwnerDeck(user: UserId, deckId: DeckId, ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket>): Bucket {
+        private func getOwnerDeck(user: UserId, deckId: DeckId, ownerDecks: HashMap.HashMap<DeckId, OwnerDeckBucket>): {#bucketId: ?BucketId; #error: Text;} {
             let ownerDeck: ?OwnerDeckBucket = ownerDecks.get(deckId);
 
             switch ownerDeck {
                 case (?ownerDeck) {
                     if (Utils.isPrincipalEqual(user, ownerDeck.owner)) {
-                        return {
-                            bucketId = ?ownerDeck.bucketId;
-                            error = null;
-                        };
+                        let bucketId: ?BucketId = ?ownerDeck.bucketId;
+                        return #bucketId bucketId;
                     };
                 };
                 case null {
-                    return {
-                        bucketId = null;
-                        error = null;
-                    };
+                    return #bucketId null;
                 };
             };
 
-            return {
-                bucketId = null;
-                error = ?"User does not have the permission for the deck.";
-            };
+            return #error "User does not have the permission for the deck.";
         };
 
-        public func deleteDeck(user: UserId, deckId: DeckId) : async (Bucket) {
+        public func deleteDeck(user: UserId, deckId: DeckId) : async ({#bucketId: ?BucketId; #error: Text;}) {
             let ownerDecks: ?HashMap.HashMap<DeckId, OwnerDeckBucket> = decks.get(user);
 
             switch ownerDecks {
                 case (?ownerDecks) {
-                    let protectedDeck: Bucket = getOwnerDeck(user, deckId, ownerDecks);
+                    let protectedDeck: {#bucketId: ?BucketId; #error: Text;} = getOwnerDeck(user, deckId, ownerDecks);
 
-                    switch (protectedDeck.bucketId) {
-                        case (?bucketId) {
-                            await canisterUtils.deleteCanister(bucketId);
-
-                            let removedDeck: ?OwnerDeckBucket = ownerDecks.remove(deckId);
-                            decks.put(user, ownerDecks);
+                    switch (protectedDeck) {
+                        case (#error error) {
+                            return #error error;
                         };
-                        case null {};
-                    };
+                        case (#bucketId bucketId) {
+                            switch (bucketId) {
+                                case (?bucketId) {
+                                    await canisterUtils.deleteCanister(bucketId);
 
-                    return protectedDeck;
+                                    let removedDeck: ?OwnerDeckBucket = ownerDecks.remove(deckId);
+                                    decks.put(user, ownerDecks);
+                                };
+                                case null {};
+                            };
+
+                            return #bucketId bucketId;
+                        };
+                    };
                 };
                 case null {
-                    return {
-                        bucketId = null;
-                        error = null;
-                    };
-                }
+                    return #bucketId null;
+                };
             };
         };
 
