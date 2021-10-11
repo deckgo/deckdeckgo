@@ -22,10 +22,10 @@ module {
     type DeckId = Types.DeckId;
     type SlideId = Types.SlideId;
 
-    type BucketId = ManagerTypes.BucketId;
-    type OwnerDeckBucket = ManagerTypes.OwnerDeckBucket;
-
     type DeckBucket = DeckBucket.DeckBucket;
+
+    type BucketId = ManagerTypes.BucketId;
+    type OwnerDeckBucket = ManagerTypes.OwnerBucket<DeckBucket>;
 
     public class DecksStore() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);
