@@ -35,11 +35,15 @@ export const uploadFile = async ({
 
   const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket(host);
 
-  const {path, filename, token}: {path: string; filename: string; token: string} = await upload({data, folder, storageBucket: actor});
+  const {fullPath, filename, token}: {fullPath: string; filename: string; token: string} = await upload({
+    data,
+    folder,
+    storageBucket: actor
+  });
 
   return {
-    downloadUrl: `https://${bucket.toText()}.ic0.app/${path}?token=${token}`,
-    fullPath: path,
+    downloadUrl: `https://${bucket.toText()}.ic0.app/${fullPath}?token=${token}`,
+    fullPath,
     name: filename
   };
 };
@@ -77,12 +81,12 @@ const upload = async ({
   data: File;
   folder: string;
   storageBucket: StorageBucketActor;
-}): Promise<{path: string; filename: string; token: string}> => {
+}): Promise<{fullPath: string; filename: string; token: string}> => {
   const filename: string = encodeURI(data.name);
-  const path: string = `/${folder}/${filename}`;
+  const fullPath: string = `/${folder}/${filename}`;
   const token: string = uuid();
 
-  const {batchId} = await storageBucket.create_batch({path, token});
+  const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token});
 
   const promises = [];
 
@@ -109,15 +113,13 @@ const upload = async ({
   });
 
   return {
-    path,
+    fullPath,
     filename,
     token
   };
 };
 
-export const getFiles: GetFiles = async ({
-  folder
-}: {
+export const getFiles: GetFiles = async ({}: {
   next: string | null;
   maxResults: number;
   folder: string;
@@ -125,15 +127,17 @@ export const getFiles: GetFiles = async ({
 }): Promise<StorageFilesList | null> => {
   const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket();
 
-  const keys: {token: string; path: string}[] = await actor.list();
+  // TODO filter folder
+
+  const assets: {token: string; name: string; fullPath: string}[] = await actor.list();
 
   const host: string = `https://${bucket.toText()}.ic0.app`;
 
   return {
-    items: keys.map(({path, token}: {token: string; path: string}) => ({
-      downloadUrl: `${host}/${path}?token=${token}`,
-      fullPath: `/${folder}/${path}`,
-      name: path
+    items: assets.map(({name, fullPath, token}: {token: string; name: string; fullPath: string}) => ({
+      downloadUrl: `${host}/${fullPath}?token=${token}`,
+      fullPath,
+      name
     })),
     nextPageToken: null
   };

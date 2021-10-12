@@ -14,14 +14,16 @@ module {
     };
 
     public type Asset = {
-        path: Text;
+        name: Text;
+        fullPath: Text;
         token: Text;
         contentType: Text;
         encoding: AssetEncoding;
     };
 
     public type Batch = {
-        path: Text; // /images/myimage.jpg
+        name: Text; // myimage.jpg
+        fullPath: Text; // /images/myimage.jpg
         token: Text; // ?token=1223-3345-5564-3333
         expiresAt: Int;
     };

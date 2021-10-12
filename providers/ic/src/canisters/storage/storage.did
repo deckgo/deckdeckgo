@@ -8,15 +8,17 @@ type StreamingStrategy = variant {
 type StreamingCallbackToken__1 = 
  record {
    contentEncoding: text;
+   fullPath: text;
    index: nat;
-   path: text;
+   name: text;
    token: text;
  };
 type StreamingCallbackToken = 
  record {
    contentEncoding: text;
+   fullPath: text;
    index: nat;
-   path: text;
+   name: text;
    token: text;
  };
 type StreamingCallbackHttpResponse = 
@@ -33,7 +35,8 @@ type StorageBucket =
        contentType: text;
      }) -> ();
    create_batch: (record {
-                    path: text;
+                    fullPath: text;
+                    name: text;
                     token: text;
                   }) -> (record {batchId: nat;});
    create_chunk: (Chunk) -> (record {chunkId: nat;});
@@ -41,7 +44,8 @@ type StorageBucket =
    http_request_streaming_callback: (StreamingCallbackToken) ->
     (StreamingCallbackHttpResponse) query;
    list: () -> (vec record {
-                      path: text;
+                      fullPath: text;
+                      name: text;
                       token: text;
                     }) query;
    transferCycles: () -> ();

@@ -27,7 +27,8 @@ module {
     };
 
     public type StreamingCallbackToken = {
-        path: Text;
+        name: Text;
+        fullPath: Text;
         token: Text;
         contentEncoding : Text;
 

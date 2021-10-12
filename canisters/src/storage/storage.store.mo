@@ -39,14 +39,14 @@ module {
             };
 
             let split: [Text] = Iter.toArray(Text.split(url, #text "?token="));
-            let path: Text = Text.trimStart(split[0], #char '/');
+            let fullPath: Text = Text.trimStart(split[0], #char '/');
             let token: Text = split[1];
 
-            return getAsset(path, token);
+            return getAsset(fullPath, token);
         };
 
-        public func getAsset(path: Text, token: Text): ({#asset: Asset; #error: Text}) {
-            let asset: ?Asset = assets.get(path);
+        public func getAsset(fullPath: Text, token: Text): ({#asset: Asset; #error: Text}) {
+            let asset: ?Asset = assets.get(fullPath);
 
             switch (asset) {
                 case (?asset) {
@@ -70,13 +70,13 @@ module {
             };
         };
 
-        public func getKeys(): [{path: Text; token: Text;}] {
+        public func getKeys(): [{name: Text; fullPath: Text; token: Text;}] {
             let entries: Iter.Iter<(Text, Asset)> = assets.entries();
-            let keys: Iter.Iter<{path: Text; token: Text;}> = Iter.map(entries, func ((key: Text, value: Asset)) : {path: Text; token: Text;} { {path = key; token = value.token;} });
+            let keys: Iter.Iter<{name: Text; fullPath: Text; token: Text;}> = Iter.map(entries, func ((fullPath: Text, value: Asset)) : {name: Text; fullPath: Text; token: Text;} { {name = value.name; fullPath = fullPath; token = value.token;} });
             return Iter.toArray(keys);
         };
 
-        public func createBatch(path: Text, token: Text) : (Nat) {
+        public func createBatch(name: Text, fullPath: Text, token: Text) : (Nat) {
             nextBatchID := nextBatchID + 1;
 
             let now: Time.Time = Time.now();
@@ -84,7 +84,8 @@ module {
             // TODO: clear expired batch and chunks?
 
             batches.put(nextBatchID, {
-                path;
+                name;
+                fullPath;
                 token;
                 expiresAt = now + BATCH_EXPIRY_NANOS;
             });
@@ -100,9 +101,10 @@ module {
                 case (?batch) {
                     // Extend batch timeout
                     batches.put(batchId, {
-                        expiresAt = Time.now() + BATCH_EXPIRY_NANOS;
+                        name = batch.name;
+                        fullPath = batch.fullPath;
                         token = batch.token;
-                        path = batch.path;
+                        expiresAt = Time.now() + BATCH_EXPIRY_NANOS;
                     });
 
                     nextChunkID := nextChunkID + 1;
@@ -176,8 +178,9 @@ module {
                 totalLength += chunk.size();
             };
 
-            assets.put(batch.path, {
-                path = batch.path;
+            assets.put(batch.fullPath, {
+                name = batch.name;
+                fullPath = batch.fullPath;
                 token = batch.token;
                 contentType;
                 encoding = {

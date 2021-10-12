@@ -57,14 +57,14 @@ actor class StorageBucket(owner: Types.UserId) = this {
             let (result: {#asset: Asset; #error: Text;}) = storageStore.getAssetForUrl(url);
 
             switch (result) {
-                case (#asset {path: Text; token: Text; contentType: Text; encoding: AssetEncoding;}) {
+                case (#asset {name: Text; fullPath: Text; token: Text; contentType: Text; encoding: AssetEncoding;}) {
                     return {
                         body = encoding.contentChunks[0];
                         headers = [ ("Content-Type", contentType),
                                     ("accept-ranges", "bytes"),
                                     ("cache-control", "private, max-age=0") ];
                         status_code = 200;
-                        streaming_strategy = createStrategy(path, token, 0, encoding);
+                        streaming_strategy = createStrategy(name, fullPath, token, 0, encoding);
                     };
                 };
                 case (#error error) {
@@ -88,12 +88,12 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     public shared query({caller}) func http_request_streaming_callback(streamingToken: StreamingCallbackToken) : async StreamingCallbackHttpResponse {
-        let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(streamingToken.path, streamingToken.token);
+        let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(streamingToken.fullPath, streamingToken.token);
 
         switch (result) {
-            case (#asset {path: Text; token: Text; contentType: Text; encoding: AssetEncoding;}) {
+            case (#asset {name: Text; fullPath: Text; token: Text; contentType: Text; encoding: AssetEncoding;}) {
                 return {
-                    token = createToken(path, token, streamingToken.index, encoding);
+                    token = createToken(name, fullPath, token, streamingToken.index, encoding);
                     body = encoding.contentChunks[streamingToken.index];
                 };
             };
@@ -103,8 +103,8 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    private func createStrategy(path: Text, token: Text, index: Nat, encoding: AssetEncoding) : ?StreamingStrategy {
-        let streamingToken: ?StreamingCallbackToken = createToken(path, token, index, encoding);
+    private func createStrategy(name: Text, fullPath: Text, token: Text, index: Nat, encoding: AssetEncoding) : ?StreamingStrategy {
+        let streamingToken: ?StreamingCallbackToken = createToken(name, fullPath, token, index, encoding);
 
         switch (streamingToken) {
             case (null) { null };
@@ -125,7 +125,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    private func createToken(path: Text, token: Text, chunkIndex: Nat, encoding: AssetEncoding) : ?StreamingCallbackToken {
+    private func createToken(name: Text, fullPath: Text, token: Text, chunkIndex: Nat, encoding: AssetEncoding) : ?StreamingCallbackToken {
         // TODO encoding and sha
         // TODO always gzip?
 
@@ -134,7 +134,8 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
         
         let streamingToken: ?StreamingCallbackToken = ?{
-            path;
+            name;
+            fullPath;
             token;
             index = chunkIndex + 1;
             contentEncoding = "gzip";
@@ -147,12 +148,12 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * Upload
      */
 
-    public shared({caller}) func create_batch({path: Text; token: Text;}: {path: Text; token: Text;}) : async ({batchId : Nat}) {
+    public shared({caller}) func create_batch({name: Text; fullPath: Text; token: Text;}: {name: Text; fullPath: Text; token: Text;}) : async ({batchId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
             throw Error.reject("User does not have the permission to create a batch for upload.");
         };
 
-        let nextBatchID: Nat = storageStore.createBatch(path, token);
+        let nextBatchID: Nat = storageStore.createBatch(name, fullPath, token);
 
         return {batchId = nextBatchID};
     };
@@ -199,12 +200,12 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * List
      */
 
-    public shared query({ caller }) func list() : async [{path: Text; token: Text;}] {
+    public shared query({ caller }) func list() : async [{name: Text; fullPath: Text; token: Text;}] {
         if (Utils.isPrincipalNotEqual(caller, user)) {
             throw Error.reject("User does not have the permission to list the assets.");
         };
 
-        let keys: [{path: Text; token: Text;}] = storageStore.getKeys();
+        let keys: [{name: Text; fullPath: Text; token: Text;}] = storageStore.getKeys();
         return keys;
     };
 
