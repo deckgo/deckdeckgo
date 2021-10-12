@@ -62,6 +62,7 @@
     "@dfinity/authentication": "^0.10.0",
     "@dfinity/candid": "^0.10.0",
     "@dfinity/identity": "^0.10.0",
-    "@dfinity/principal": "^0.10.0"
+    "@dfinity/principal": "^0.10.0",
+    "uuid": "^3.4.0"
   }
 }

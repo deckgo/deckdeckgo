@@ -9,7 +9,7 @@ import {_SERVICE as DeckBucketActor, Deck as DeckIc} from '../../canisters/deck/
 
 import {getIdentity} from '../auth/auth.ic';
 
-import {createDeckBucketActor, createManagerActor} from '../../utils/deck.utils';
+import {createDeckBucketActor, createManagerActor} from '../../utils/manager.utils';
 import {fromArray, fromTimestamp} from '../../utils/did.utils';
 
 export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]> => {

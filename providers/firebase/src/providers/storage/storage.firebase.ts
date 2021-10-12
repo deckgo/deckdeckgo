@@ -3,9 +3,9 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
-import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
-export const uploadFile: UploadFile = ({
+export const uploadFile = ({
   data,
   folder,
   maxSize,

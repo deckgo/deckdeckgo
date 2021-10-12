@@ -1,20 +1,4 @@
-import {StorageFile, StorageFilesList} from '../models/storage/storage';
-
-export interface UploadFile {
-  ({
-    data,
-    folder,
-    maxSize,
-    userId,
-    downloadUrl
-  }: {
-    data: File;
-    folder: string;
-    maxSize: number;
-    userId: string;
-    downloadUrl?: boolean;
-  }): Promise<StorageFile | undefined>;
-}
+import {StorageFilesList} from '../models/storage/storage';
 
 export interface GetFiles {
   ({

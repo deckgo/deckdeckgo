@@ -7,7 +7,7 @@ import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../canisters/deck/deck.did';
 
 import {getIdentity} from '../auth/auth.ic';
-import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../utils/deck.utils';
+import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../utils/manager.utils';
 import {fromArray, fromTimestamp} from '../../utils/did.utils';
 
 export const getSlide = (deckId: string, slideId: string): Promise<Slide> => {

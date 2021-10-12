@@ -8,7 +8,7 @@ import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
 
 import {InternetIdentityAuth} from '../types/identity';
 
-import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/deck.utils';
+import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {toArray, toTimestamp} from '../utils/did.utils';
 
@@ -42,6 +42,8 @@ export const uploadWorker = async ({
   await deleteSlides({deleteSlides: slidesToDelete, identity, managerActor, host});
 
   // TODO: handle delete decks here?
+
+  // TODO: upload assets and update DOM through postMessage
 };
 
 const uploadDecks = async ({
