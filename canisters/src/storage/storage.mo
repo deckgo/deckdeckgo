@@ -196,6 +196,19 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     /**
+     * List
+     */
+
+    public shared query({ caller }) func list() : async [{path: Text; token: Text;}] {
+        if (Utils.isPrincipalNotEqual(caller, user)) {
+            throw Error.reject("User does not have the permission to list the assets.");
+        };
+
+        let keys: [{path: Text; token: Text;}] = storageStore.getKeys();
+        return keys;
+    };
+
+    /**
     * Canister mgmt
     */
 

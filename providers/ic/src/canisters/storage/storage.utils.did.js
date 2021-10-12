@@ -55,6 +55,7 @@ export const idlFactory = ({IDL}) => {
     create_chunk: IDL.Func([Chunk], [IDL.Record({chunkId: IDL.Nat})], []),
     http_request: IDL.Func([HttpRequest], [HttpResponse], ['query']),
     http_request_streaming_callback: IDL.Func([StreamingCallbackToken], [StreamingCallbackHttpResponse], ['query']),
+    list: IDL.Func([], [IDL.Vec(IDL.Record({token: IDL.Text, path: IDL.Text}))], ['query']),
     transferCycles: IDL.Func([], [], [])
   });
   return StorageBucket;

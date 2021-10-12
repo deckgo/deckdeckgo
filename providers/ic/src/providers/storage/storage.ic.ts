@@ -33,6 +33,18 @@ export const uploadFile = async ({
     throw new Error(`File is too big (max. ${maxSize / 1048576} Mb)`);
   }
 
+  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket(host);
+
+  const {path, filename, token}: {path: string; filename: string; token: string} = await upload({data, folder, storageBucket: actor});
+
+  return {
+    downloadUrl: `https://${bucket.toText()}.ic0.app/${path}?token=${token}`,
+    fullPath: path,
+    name: filename
+  };
+};
+
+const getStorageBucket = async (host?: string): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
   const identity: Identity | undefined = getIdentity();
 
   if (!identity) {
@@ -43,9 +55,12 @@ export const uploadFile = async ({
 
   const bucket: Principal = await initStorageBucket({managerActor});
 
-  const storageBucket: StorageBucketActor = await createStorageBucketActor({identity, bucket, host});
+  const actor: StorageBucketActor = await createStorageBucketActor({identity, bucket, host});
 
-  return upload({data, folder, storageBucket});
+  return {
+    bucket,
+    actor
+  };
 };
 
 const uploadChunk = async ({batchId, chunk, storageBucket}: {batchId: bigint; chunk: Blob; storageBucket: StorageBucketActor}) =>
@@ -62,7 +77,7 @@ const upload = async ({
   data: File;
   folder: string;
   storageBucket: StorageBucketActor;
-}): Promise<StorageFile> => {
+}): Promise<{path: string; filename: string; token: string}> => {
   const filename: string = encodeURI(data.name);
   const path: string = `/${folder}/${filename}`;
   const token: string = uuid();
@@ -93,22 +108,33 @@ const upload = async ({
     contentType: data.type
   });
 
-  // TODO: return StorageFile
-
   return {
-    downloadUrl: `https://..../${path}?token=${token}`,
-    fullPath: `${path}?token=${token}`,
-    name: filename
+    path,
+    filename,
+    token
   };
 };
 
-export const getFiles: GetFiles = async (_param: {
+export const getFiles: GetFiles = async ({
+  folder
+}: {
   next: string | null;
   maxResults: number;
   folder: string;
   userId: string;
 }): Promise<StorageFilesList | null> => {
-  // TODO: list entries
+  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket();
 
-  return null;
+  const keys: {token: string; path: string}[] = await actor.list();
+
+  const host: string = `https://${bucket.toText()}.ic0.app`;
+
+  return {
+    items: keys.map(({path, token}: {token: string; path: string}) => ({
+      downloadUrl: `${host}/${path}?token=${token}`,
+      fullPath: `/${folder}/${path}`,
+      name: path
+    })),
+    nextPageToken: null
+  };
 };

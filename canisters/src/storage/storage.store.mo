@@ -19,15 +19,15 @@ module {
         private let BATCH_EXPIRY_NANOS = 300_000_000_000;
 
         private let batches: HashMap.HashMap<Nat, Batch> = HashMap.HashMap<Nat, Batch>(
-            0, Nat.equal, Hash.hash,
+            10, Nat.equal, Hash.hash,
         );
 
         private let chunks: HashMap.HashMap<Nat, Chunk> = HashMap.HashMap<Nat, Chunk>(
-            0, Nat.equal, Hash.hash,
+            10, Nat.equal, Hash.hash,
         );
 
         private var assets: HashMap.HashMap<Text, Asset> = HashMap.HashMap<Text, Asset>(
-            0, Text.equal, Text.hash,
+            10, Text.equal, Text.hash,
         );
 
         private var nextBatchID: Nat = 0;
@@ -68,6 +68,12 @@ module {
                     return #error "No asset.";
                 };
             };
+        };
+
+        public func getKeys(): [{path: Text; token: Text;}] {
+            let entries: Iter.Iter<(Text, Asset)> = assets.entries();
+            let keys: Iter.Iter<{path: Text; token: Text;}> = Iter.map(entries, func ((key: Text, value: Asset)) : {path: Text; token: Text;} { {path = key; token = value.token;} });
+            return Iter.toArray(keys);
         };
 
         public func createBatch(path: Text, token: Text) : (Nat) {

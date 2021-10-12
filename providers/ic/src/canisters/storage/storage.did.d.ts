@@ -22,6 +22,7 @@ export interface StorageBucket {
   create_chunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
   http_request: (arg_0: HttpRequest) => Promise<HttpResponse>;
   http_request_streaming_callback: (arg_0: StreamingCallbackToken) => Promise<StreamingCallbackHttpResponse>;
+  list: () => Promise<Array<{token: string; path: string}>>;
   transferCycles: () => Promise<undefined>;
 }
 export interface StreamingCallbackHttpResponse {

@@ -40,6 +40,10 @@ type StorageBucket =
    http_request: (HttpRequest) -> (HttpResponse) query;
    http_request_streaming_callback: (StreamingCallbackToken) ->
     (StreamingCallbackHttpResponse) query;
+   list: () -> (vec record {
+                      path: text;
+                      token: text;
+                    }) query;
    transferCycles: () -> ();
  };
 type HttpResponse = 
