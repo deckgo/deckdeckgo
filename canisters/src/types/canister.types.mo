@@ -1,14 +1,14 @@
 import Principal "mo:base/Principal";
 
-import Types "../types/types";
-import IC "../types/ic";
+import Types "./types";
+import IC "./ic";
 
 module {
     type UserId = Types.UserId;
 
     public type BucketId = IC.canister_id;
 
-    public type OwnerBucket<T> = {
+    public type Bucket<T> = {
         bucket: T;
         bucketId: BucketId;
         owner: UserId;

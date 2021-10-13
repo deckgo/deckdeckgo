@@ -7,8 +7,7 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../types/types";
-
-import ManagerTypes "./manager.types";
+import CanisterTypes "../types/canister.types";
 
 import DecksStore "./decks.store";
 import StoragesStore "./storages.store";
@@ -22,10 +21,10 @@ actor Manager {
     type DeckBucket = DeckBucket.DeckBucket;
     type StorageBucket = StorageBucket.StorageBucket;
 
-    type BucketId = ManagerTypes.BucketId;
+    type BucketId = CanisterTypes.BucketId;
 
-    type OwnerDeckBucket = ManagerTypes.OwnerBucket<DeckBucket>;
-    type OwnerStorageBucket = ManagerTypes.OwnerBucket<StorageBucket>;
+    type OwnerDeckBucket = CanisterTypes.Bucket<DeckBucket>;
+    type OwnerStorageBucket = CanisterTypes.Bucket<StorageBucket>;
 
     let decksStore: DecksStore.DecksStore = DecksStore.DecksStore();
     let storagesStore: StoragesStore.StoragesStore = StoragesStore.StoragesStore();

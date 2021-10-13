@@ -9,7 +9,7 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../types/types";
-import ManagerTypes "./manager.types";
+import CanisterTypes "../types/canister.types";
 
 import Utils "../utils/utils";
 
@@ -22,8 +22,8 @@ module {
 
     type StorageBucket = StorageBucket.StorageBucket;
 
-    type BucketId = ManagerTypes.BucketId;
-    type OwnerStorageBucket = ManagerTypes.OwnerBucket<StorageBucket>;
+    type BucketId = CanisterTypes.BucketId;
+    type OwnerStorageBucket = CanisterTypes.Bucket<StorageBucket>;
 
     public class StoragesStore() {
         private var storages: HashMap.HashMap<UserId, OwnerStorageBucket> = HashMap.HashMap<UserId, OwnerStorageBucket>(10, Utils.isPrincipalEqual, Principal.hash);
