@@ -1,4 +1,9 @@
 import type {Principal} from '@dfinity/principal';
+export interface AssetKey {
+  token: string;
+  name: string;
+  fullPath: string;
+}
 export interface Chunk {
   content: Array<number>;
   batchId: bigint;
@@ -18,11 +23,11 @@ export interface HttpResponse {
 }
 export interface StorageBucket {
   commit_batch: (arg_0: {contentType: string; chunkIds: Array<bigint>; batchId: bigint}) => Promise<undefined>;
-  create_batch: (arg_0: {token: string; name: string; fullPath: string}) => Promise<{batchId: bigint}>;
+  create_batch: (arg_0: AssetKey) => Promise<{batchId: bigint}>;
   create_chunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
   http_request: (arg_0: HttpRequest) => Promise<HttpResponse>;
   http_request_streaming_callback: (arg_0: StreamingCallbackToken) => Promise<StreamingCallbackHttpResponse>;
-  list: () => Promise<Array<{token: string; name: string; fullPath: string}>>;
+  list: () => Promise<Array<AssetKey>>;
   transferCycles: () => Promise<undefined>;
 }
 export interface StreamingCallbackHttpResponse {
@@ -31,14 +36,12 @@ export interface StreamingCallbackHttpResponse {
 }
 export interface StreamingCallbackToken {
   token: string;
-  name: string;
   fullPath: string;
   index: bigint;
   contentEncoding: string;
 }
 export interface StreamingCallbackToken__1 {
   token: string;
-  name: string;
   fullPath: string;
   index: bigint;
   contentEncoding: string;

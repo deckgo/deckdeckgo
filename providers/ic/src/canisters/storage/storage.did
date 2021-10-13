@@ -10,7 +10,6 @@ type StreamingCallbackToken__1 =
    contentEncoding: text;
    fullPath: text;
    index: nat;
-   name: text;
    token: text;
  };
 type StreamingCallbackToken = 
@@ -18,7 +17,6 @@ type StreamingCallbackToken =
    contentEncoding: text;
    fullPath: text;
    index: nat;
-   name: text;
    token: text;
  };
 type StreamingCallbackHttpResponse = 
@@ -34,20 +32,12 @@ type StorageBucket =
        chunkIds: vec nat;
        contentType: text;
      }) -> ();
-   create_batch: (record {
-                    fullPath: text;
-                    name: text;
-                    token: text;
-                  }) -> (record {batchId: nat;});
+   create_batch: (AssetKey) -> (record {batchId: nat;});
    create_chunk: (Chunk) -> (record {chunkId: nat;});
    http_request: (HttpRequest) -> (HttpResponse) query;
    http_request_streaming_callback: (StreamingCallbackToken) ->
     (StreamingCallbackHttpResponse) query;
-   list: () -> (vec record {
-                      fullPath: text;
-                      name: text;
-                      token: text;
-                    }) query;
+   list: () -> (vec AssetKey) query;
    transferCycles: () -> ();
  };
 type HttpResponse = 
@@ -73,5 +63,11 @@ type Chunk =
  record {
    batchId: nat;
    content: vec nat8;
+ };
+type AssetKey = 
+ record {
+   fullPath: text;
+   name: text;
+   token: text;
  };
 service : (UserId) -> StorageBucket

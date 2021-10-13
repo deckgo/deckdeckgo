@@ -27,13 +27,12 @@ module {
     };
 
     public type StreamingCallbackToken = {
-        name: Text;
         fullPath: Text;
         token: Text;
         contentEncoding : Text;
 
         index : Nat;
-        
+
         // TODO: do we need sha256 ?
         // sha256 : ?[Nat8];
     };

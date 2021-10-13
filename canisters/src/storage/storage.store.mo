@@ -14,6 +14,8 @@ module {
     type Asset = StorageTypes.Asset;
     type Batch = StorageTypes.Batch;
 
+    type AssetKey = StorageTypes.AssetKey;
+
     public class StorageStore() {
 
         private let BATCH_EXPIRY_NANOS = 300_000_000_000;
@@ -50,7 +52,7 @@ module {
 
             switch (asset) {
                 case (?asset) {
-                    let compare: {#less; #equal; #greater} = Text.compare(token, asset.token);
+                    let compare: {#less; #equal; #greater} = Text.compare(token, asset.key.token);
 
                     switch (compare) {
                         case (#equal equal) {
@@ -62,7 +64,7 @@ module {
                         case (#greater greater) {
                             return #error "Invalid token";
                         };
-                    };    
+                    };
                 };
                 case null {
                     return #error "No asset.";
@@ -70,13 +72,13 @@ module {
             };
         };
 
-        public func getKeys(): [{name: Text; fullPath: Text; token: Text;}] {
+        public func getKeys(): [AssetKey] {
             let entries: Iter.Iter<(Text, Asset)> = assets.entries();
-            let keys: Iter.Iter<{name: Text; fullPath: Text; token: Text;}> = Iter.map(entries, func ((fullPath: Text, value: Asset)) : {name: Text; fullPath: Text; token: Text;} { {name = value.name; fullPath = fullPath; token = value.token;} });
+            let keys: Iter.Iter<AssetKey> = Iter.map(entries, func ((fullPath: Text, value: Asset)) : AssetKey { value.key });
             return Iter.toArray(keys);
         };
 
-        public func createBatch(name: Text, fullPath: Text, token: Text) : (Nat) {
+        public func createBatch(key: AssetKey) : (Nat) {
             nextBatchID := nextBatchID + 1;
 
             let now: Time.Time = Time.now();
@@ -84,9 +86,7 @@ module {
             // TODO: clear expired batch and chunks?
 
             batches.put(nextBatchID, {
-                name;
-                fullPath;
-                token;
+                key;
                 expiresAt = now + BATCH_EXPIRY_NANOS;
             });
 
@@ -101,9 +101,7 @@ module {
                 case (?batch) {
                     // Extend batch timeout
                     batches.put(batchId, {
-                        name = batch.name;
-                        fullPath = batch.fullPath;
-                        token = batch.token;
+                        key = batch.key;
                         expiresAt = Time.now() + BATCH_EXPIRY_NANOS;
                     });
 
@@ -178,10 +176,8 @@ module {
                 totalLength += chunk.size();
             };
 
-            assets.put(batch.fullPath, {
-                name = batch.name;
-                fullPath = batch.fullPath;
-                token = batch.token;
+            assets.put(batch.key.fullPath, {
+                key = batch.key;
                 contentType;
                 encoding = {
                     modified = Time.now();

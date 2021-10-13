@@ -6,7 +6,7 @@ import {GetFiles, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 import {getIdentity} from '../auth/auth.ic';
 
 import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
-import {_SERVICE as StorageBucketActor} from '../../canisters/storage/storage.did';
+import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/storage.did';
 
 import {createManagerActor, createStorageBucketActor, initStorageBucket} from '../../utils/manager.utils';
 
@@ -129,12 +129,12 @@ export const getFiles: GetFiles = async ({}: {
 
   // TODO filter folder
 
-  const assets: {token: string; name: string; fullPath: string}[] = await actor.list();
+  const assets: AssetKey[] = await actor.list();
 
   const host: string = `https://${bucket.toText()}.ic0.app`;
 
   return {
-    items: assets.map(({name, fullPath, token}: {token: string; name: string; fullPath: string}) => ({
+    items: assets.map(({name, fullPath, token}: AssetKey) => ({
       downloadUrl: `${host}/${fullPath}?token=${token}`,
       fullPath,
       name

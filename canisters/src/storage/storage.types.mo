@@ -13,18 +13,20 @@ module {
         // TODO: do we need sha256         : [Nat8]; ?
     };
 
+    public type AssetKey = {
+        name: Text; // myimage.jpg
+        fullPath: Text; // /images/myimage.jpg
+        token: Text; // ?token=1223-3345-5564-3333
+    };
+
     public type Asset = {
-        name: Text;
-        fullPath: Text;
-        token: Text;
+        key: AssetKey;
         contentType: Text;
         encoding: AssetEncoding;
     };
 
     public type Batch = {
-        name: Text; // myimage.jpg
-        fullPath: Text; // /images/myimage.jpg
-        token: Text; // ?token=1223-3345-5564-3333
+        key: AssetKey;
         expiresAt: Int;
     };
 

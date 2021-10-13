@@ -1,5 +1,10 @@
 export const idlFactory = ({IDL}) => {
   const UserId = IDL.Principal;
+  const AssetKey = IDL.Record({
+    token: IDL.Text,
+    name: IDL.Text,
+    fullPath: IDL.Text
+  });
   const Chunk = IDL.Record({
     content: IDL.Vec(IDL.Nat8),
     batchId: IDL.Nat
@@ -13,7 +18,6 @@ export const idlFactory = ({IDL}) => {
   });
   const StreamingCallbackToken__1 = IDL.Record({
     token: IDL.Text,
-    name: IDL.Text,
     fullPath: IDL.Text,
     index: IDL.Nat,
     contentEncoding: IDL.Text
@@ -32,7 +36,6 @@ export const idlFactory = ({IDL}) => {
   });
   const StreamingCallbackToken = IDL.Record({
     token: IDL.Text,
-    name: IDL.Text,
     fullPath: IDL.Text,
     index: IDL.Nat,
     contentEncoding: IDL.Text
@@ -53,33 +56,11 @@ export const idlFactory = ({IDL}) => {
       [],
       []
     ),
-    create_batch: IDL.Func(
-      [
-        IDL.Record({
-          token: IDL.Text,
-          name: IDL.Text,
-          fullPath: IDL.Text
-        })
-      ],
-      [IDL.Record({batchId: IDL.Nat})],
-      []
-    ),
+    create_batch: IDL.Func([AssetKey], [IDL.Record({batchId: IDL.Nat})], []),
     create_chunk: IDL.Func([Chunk], [IDL.Record({chunkId: IDL.Nat})], []),
     http_request: IDL.Func([HttpRequest], [HttpResponse], ['query']),
     http_request_streaming_callback: IDL.Func([StreamingCallbackToken], [StreamingCallbackHttpResponse], ['query']),
-    list: IDL.Func(
-      [],
-      [
-        IDL.Vec(
-          IDL.Record({
-            token: IDL.Text,
-            name: IDL.Text,
-            fullPath: IDL.Text
-          })
-        )
-      ],
-      ['query']
-    ),
+    list: IDL.Func([], [IDL.Vec(AssetKey)], ['query']),
     transferCycles: IDL.Func([], [], [])
   });
   return StorageBucket;
