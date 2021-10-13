@@ -6,6 +6,11 @@ export interface SyncWindowDeckBackground {
   storageFile: StorageFile;
 }
 
+export interface SyncWindowEvent {
+  msg: 'deckdeckgo_sync_deck_background';
+  data: SyncWindowDeckBackground;
+}
+
 export interface SyncWindow {
-  syncDeckBackground: (data: SyncWindowDeckBackground) => Promise<void>;
+  ($event: SyncWindowEvent): Promise<void>;
 }

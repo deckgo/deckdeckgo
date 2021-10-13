@@ -42,10 +42,13 @@ export const uploadDeckLocalImage = ({
       }
 
       // 2. We update the DOM and IDB (currently saved data)
-      await syncWindow.syncDeckBackground({
-        imgSrc,
-        deckId,
-        storageFile
+      await syncWindow({
+        msg: 'deckdeckgo_sync_deck_background',
+        data: {
+          imgSrc,
+          deckId,
+          storageFile
+        }
       });
 
       // 3. All good, we don't need the image in the indexedDB anymore

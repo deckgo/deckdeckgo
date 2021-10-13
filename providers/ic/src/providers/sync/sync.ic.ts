@@ -10,6 +10,18 @@ import {syncDeckBackground} from '../../utils/sync.window.utils';
 
 import {uploadWorker} from '../../workers/sync.ic.worker';
 
+import {SyncWindow, SyncWindowEvent} from '../../types/sync.window';
+
+// - we cannot use postmessage because of CORS
+// - we have to path the function separately for serialisation reason
+const syncWindow: SyncWindow = async ({msg, data}: SyncWindowEvent) => {
+  if (msg !== 'deckdeckgo_sync_deck_background') {
+    return;
+  }
+
+  await syncDeckBackground(data);
+};
+
 export const sync: Sync = async ({
   syncData,
   clean
@@ -26,14 +38,14 @@ export const sync: Sync = async ({
 
   const internetIdentity: InternetIdentityAuth = await internetIdentityAuth();
 
-  await uploadWorker({
-    internetIdentity,
-    syncData,
-    host: `${window.location}`,
-    syncWindow: {
-      syncDeckBackground
-    }
-  });
+  await uploadWorker(
+    {
+      internetIdentity,
+      syncData,
+      host: `${window.location}`
+    },
+    syncWindow
+  );
 
   await clean(syncData);
 };

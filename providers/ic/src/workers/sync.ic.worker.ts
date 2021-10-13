@@ -15,17 +15,18 @@ import {toArray, toTimestamp} from '../utils/did.utils';
 import {uploadDeckLocalImage} from '../utils/sync.worker.utils';
 import {updateDeckBackgroundImage} from '../utils/img.utils';
 
-export const uploadWorker = async ({
-  internetIdentity: {delegationChain, identityKey},
-  syncData,
-  host,
-  syncWindow
-}: {
-  internetIdentity: InternetIdentityAuth;
-  syncData: SyncData | undefined;
-  host: string;
-  syncWindow: SyncWindow;
-}) => {
+export const uploadWorker = async (
+  {
+    internetIdentity: {delegationChain, identityKey},
+    syncData,
+    host
+  }: {
+    internetIdentity: InternetIdentityAuth;
+    syncData: SyncData | undefined;
+    host: string;
+  },
+  syncWindow: SyncWindow
+) => {
   if (!syncData) {
     return;
   }
