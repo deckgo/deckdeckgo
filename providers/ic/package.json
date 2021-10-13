@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@deckdeckgo/editor": "^1.0.0-beta.0",
+    "@deckdeckgo/lazy-img": "^3.1.0",
     "@rollup/plugin-replace": "^3.0.0",
     "rollup-plugin-node-polyfills": "^0.2.1"
   },
@@ -63,6 +64,7 @@
     "@dfinity/candid": "^0.10.0",
     "@dfinity/identity": "^0.10.0",
     "@dfinity/principal": "^0.10.0",
+    "idb-keyval": "^6.0.2",
     "uuid": "^3.4.0"
   }
 }

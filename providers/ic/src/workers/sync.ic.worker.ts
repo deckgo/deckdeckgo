@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData, Slide, SlideData, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
+import {Deck, DeckData, Slide, SlideData, StorageFile, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
 
 import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
@@ -11,6 +11,8 @@ import {InternetIdentityAuth} from '../types/identity';
 import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {toArray, toTimestamp} from '../utils/did.utils';
+import {uploadDeckLocalImage} from '../utils/sync.worker.utils';
+import {updateDeckBackground} from '../utils/img.utils';
 
 export const uploadWorker = async ({
   internetIdentity: {delegationChain, identityKey},
@@ -43,7 +45,7 @@ export const uploadWorker = async ({
 
   // TODO: handle delete decks here?
 
-  // TODO: upload assets and update DOM through postMessage
+  // TODO: upload slides assets and update DOM through postMessage
 };
 
 const uploadDecks = async ({
@@ -66,7 +68,7 @@ const uploadDecks = async ({
   );
   await Promise.all(promises);
 
-  console.log('C synced');
+  console.log('Deck IC synced');
 };
 
 const uploadDeck = async ({
@@ -84,6 +86,65 @@ const uploadDeck = async ({
     return;
   }
 
+  // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
+  const {imgSrc, storageFile} = await uploadDeckBackgroundAssets({deck, host});
+
+  // 2. If we uploaded an asset, its URL has changed (no more local but available online)
+  const updateDeck: Deck = updateDeckBackground({deck, imgSrc, storageFile});
+
+  // 3. We can update the data in the IC
+  await uploadDeckData({deck: updateDeck, managerActor, identity, host});
+};
+
+const uploadDeckBackgroundAssets = async ({
+  deck,
+  host
+}: {
+  deck: Deck;
+  host: string;
+}): Promise<{imgSrc: string | undefined; storageFile: StorageFile | undefined}> => {
+  const {background} = deck.data;
+
+  if (!background) {
+    return {
+      imgSrc: undefined,
+      storageFile: undefined
+    };
+  }
+
+  const regex: RegExp = /((<deckgo-lazy-img.*?)(img-src=)(.*?")(.*?[^"]*)(.*?"))/g;
+
+  const results: string[][] = [...background.matchAll(regex)];
+
+  // Only one image in the background is currently supported
+  if (results?.length !== 1) {
+    return {
+      imgSrc: undefined,
+      storageFile: undefined
+    };
+  }
+
+  const imgSrc: string = results[0][5];
+
+  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, host});
+
+  return {
+    imgSrc,
+    storageFile
+  };
+};
+
+const uploadDeckData = async ({
+  deck,
+  managerActor,
+  identity,
+  host
+}: {
+  deck: Deck;
+  managerActor: ManagerActor;
+  identity: Identity;
+  host: string;
+}) => {
   console.log('Deck IC about to SET');
   const t0 = performance.now();
 

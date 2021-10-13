@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "skipLibCheck": true
+    "types": ["@deckdeckgo/lazy-img"],
+    "skipLibCheck": true,
+    "lib": ["dom", "esnext"]
   },
   "extends": "../tsconfig.json",
   "include": ["src"],
