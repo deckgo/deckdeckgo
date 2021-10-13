@@ -1,6 +1,6 @@
 import {Deck, StorageFile} from '@deckdeckgo/editor';
 
-export const updateDeckBackground = ({
+export const updateDeckBackgroundImage = ({
   deck,
   storageFile,
   imgSrc

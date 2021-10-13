@@ -4,21 +4,11 @@ import {Identity} from '@dfinity/agent';
 import {getIdentity} from '../auth/auth.ic';
 
 import {InternetIdentityAuth} from '../../types/identity';
-import {SyncICEvent} from '../../types/sync';
 
 import {internetIdentityAuth} from '../../utils/identity.utils';
-import {uploadDeckLocalImage} from '../../utils/sync.window.utils';
+import {syncDeckBackground} from '../../utils/sync.window.utils';
 
-import {worker} from '../../workers/sync.ic.worker.ts?worker';
 import {uploadWorker} from '../../workers/sync.ic.worker';
-
-worker.onmessage = async ({data}: MessageEvent<SyncICEvent>) => {
-  if (!data || data.msg !== 'deckdeckgo_sync_deck_background') {
-    return;
-  }
-
-  await uploadDeckLocalImage(data.data);
-};
 
 export const sync: Sync = async ({
   syncData,
@@ -39,7 +29,10 @@ export const sync: Sync = async ({
   await uploadWorker({
     internetIdentity,
     syncData,
-    host: `${window.location}`
+    host: `${window.location}`,
+    syncWindow: {
+      syncDeckBackground
+    }
   });
 
   await clean(syncData);

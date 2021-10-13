@@ -2,11 +2,11 @@ import {get, set} from 'idb-keyval';
 
 import {Deck, deckSelector} from '@deckdeckgo/editor';
 
-import {SyncICDeckBackground} from '../types/sync';
+import {SyncWindowDeckBackground} from '../types/sync.window';
 
-import {updateDeckBackground} from './img.utils';
+import {updateDeckBackgroundImage} from './img.utils';
 
-export const uploadDeckLocalImage = async (data: SyncICDeckBackground): Promise<void> => {
+export const syncDeckBackground = async (data: SyncWindowDeckBackground): Promise<void> => {
   // 1. We update the DOM
   updateDOM(data);
 
@@ -14,7 +14,7 @@ export const uploadDeckLocalImage = async (data: SyncICDeckBackground): Promise<
   await updateIDB(data);
 };
 
-const updateDOM = ({storageFile}: SyncICDeckBackground) => {
+const updateDOM = ({storageFile}: SyncWindowDeckBackground) => {
   const backgroundElement: HTMLElement | null = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
   const img: HTMLDeckgoLazyImgElement | null = backgroundElement?.querySelector('deckgo-lazy-img');
@@ -29,14 +29,14 @@ const updateDOM = ({storageFile}: SyncICDeckBackground) => {
   img.imgAlt = name;
 };
 
-const updateIDB = async ({storageFile, imgSrc, deckId}: SyncICDeckBackground) => {
+const updateIDB = async ({storageFile, imgSrc, deckId}: SyncWindowDeckBackground) => {
   const deck: Deck = await get(`/decks/${deckId}`);
 
   if (!deck) {
     throw new Error('Deck not found and that is really weird here.');
   }
 
-  const updateDeck: Deck = updateDeckBackground({deck, imgSrc, storageFile});
+  const updateDeck: Deck = updateDeckBackgroundImage({deck, imgSrc, storageFile});
 
   await set(`/decks/${deck.id}`, updateDeck);
 };

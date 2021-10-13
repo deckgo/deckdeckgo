@@ -7,21 +7,24 @@ import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
 
 import {InternetIdentityAuth} from '../types/identity';
+import {SyncWindow} from '../types/sync.window';
 
 import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {toArray, toTimestamp} from '../utils/did.utils';
 import {uploadDeckLocalImage} from '../utils/sync.worker.utils';
-import {updateDeckBackground} from '../utils/img.utils';
+import {updateDeckBackgroundImage} from '../utils/img.utils';
 
 export const uploadWorker = async ({
   internetIdentity: {delegationChain, identityKey},
   syncData,
-  host
+  host,
+  syncWindow
 }: {
   internetIdentity: InternetIdentityAuth;
   syncData: SyncData | undefined;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!syncData) {
     return;
@@ -37,7 +40,7 @@ export const uploadWorker = async ({
 
   const managerActor: ManagerActor = await createManagerActor({identity, host});
 
-  await uploadDecks({updateDecks, identity, managerActor, host});
+  await uploadDecks({updateDecks, identity, managerActor, host, syncWindow});
 
   await uploadSlides({updateSlides, identity, managerActor, host});
 
@@ -52,19 +55,21 @@ const uploadDecks = async ({
   updateDecks,
   identity,
   managerActor,
-  host
+  host,
+  syncWindow
 }: {
   updateDecks: SyncDataDeck[] | undefined;
   identity: Identity;
   managerActor: ManagerActor;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!updateDecks || updateDecks.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) =>
-    uploadDeck({deck, managerActor: managerActor, identity, host})
+    uploadDeck({deck, managerActor: managerActor, identity, host, syncWindow})
   );
   await Promise.all(promises);
 
@@ -75,22 +80,24 @@ const uploadDeck = async ({
   deck,
   managerActor,
   identity,
-  host
+  host,
+  syncWindow
 }: {
   deck: Deck;
   managerActor: ManagerActor;
   identity: Identity;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!deck) {
     return;
   }
 
   // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
-  const {imgSrc, storageFile} = await uploadDeckBackgroundAssets({deck, host});
+  const {imgSrc, storageFile} = await uploadDeckBackgroundAssets({deck, host, syncWindow});
 
   // 2. If we uploaded an asset, its URL has changed (no more local but available online)
-  const updateDeck: Deck = updateDeckBackground({deck, imgSrc, storageFile});
+  const updateDeck: Deck = updateDeckBackgroundImage({deck, imgSrc, storageFile});
 
   // 3. We can update the data in the IC
   await uploadDeckData({deck: updateDeck, managerActor, identity, host});
@@ -98,10 +105,12 @@ const uploadDeck = async ({
 
 const uploadDeckBackgroundAssets = async ({
   deck,
-  host
+  host,
+  syncWindow
 }: {
   deck: Deck;
   host: string;
+  syncWindow: SyncWindow;
 }): Promise<{imgSrc: string | undefined; storageFile: StorageFile | undefined}> => {
   const {background} = deck.data;
 
@@ -126,7 +135,7 @@ const uploadDeckBackgroundAssets = async ({
 
   const imgSrc: string = results[0][5];
 
-  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, host});
+  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, host, syncWindow});
 
   return {
     imgSrc,

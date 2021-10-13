@@ -4,16 +4,18 @@ import {StorageFile} from '@deckdeckgo/editor';
 
 import {uploadFileIC} from '../providers/storage/storage.ic';
 
-import {SyncICEvent} from '../types/sync';
+import {SyncWindow} from '../types/sync.window';
 
 export const uploadDeckLocalImage = ({
   imgSrc,
   deckId,
-  host
+  host,
+  syncWindow
 }: {
   imgSrc: string;
   deckId: string;
   host: string;
+  syncWindow: SyncWindow;
 }): Promise<StorageFile | undefined> => {
   return new Promise<StorageFile | undefined>(async (resolve, reject) => {
     try {
@@ -40,17 +42,13 @@ export const uploadDeckLocalImage = ({
       }
 
       // 2. We update the DOM and IDB (currently saved data)
-      // @ts-ignore
-      postMessage({
-        msg: 'deckdeckgo_sync_deck_background',
-        data: {
-          imgSrc,
-          deckId,
-          storageFile
-        }
-      } as SyncICEvent);
+      await syncWindow.syncDeckBackground({
+        imgSrc,
+        deckId,
+        storageFile
+      });
 
-      // 4. All good, we don't need the image in the indexedDB anymore
+      // 3. All good, we don't need the image in the indexedDB anymore
       await del(imgSrc);
 
       resolve(storageFile);
