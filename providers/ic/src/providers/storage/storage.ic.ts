@@ -59,7 +59,7 @@ export const uploadFileIC = async ({
   });
 
   return {
-    downloadUrl: `https://${bucket.toText()}.ic0.app/${fullPath}?token=${token}`,
+    downloadUrl: `https://${bucket.toText()}.raw.ic0.app/${fullPath}?token=${token}`,
     fullPath,
     name: filename
   };
@@ -112,7 +112,7 @@ const upload = async ({
   storageBucket: StorageBucketActor;
 }): Promise<{fullPath: string; filename: string; token: string}> => {
   const filename: string = encodeURI(data.name);
-  const fullPath: string = `/${folder}/${filename}`;
+  const fullPath: string = `${folder}/${filename}`;
   const token: string = uuid();
 
   const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token, folder});
@@ -162,7 +162,7 @@ export const getFiles: GetFiles = async ({
 
   const assets: AssetKey[] = await actor.list(toNullable<string>(folder));
 
-  const host: string = `https://${bucket.toText()}.ic0.app`;
+  const host: string = `https://${bucket.toText()}.raw.ic0.app`;
 
   return {
     items: assets.map(({name, fullPath, token}: AssetKey) => ({
