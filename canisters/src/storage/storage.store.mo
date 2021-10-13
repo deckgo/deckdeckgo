@@ -72,10 +72,20 @@ module {
             };
         };
 
-        public func getKeys(): [AssetKey] {
+        public func getKeys(folder: ?Text): [AssetKey] {
             let entries: Iter.Iter<(Text, Asset)> = assets.entries();
             let keys: Iter.Iter<AssetKey> = Iter.map(entries, func ((fullPath: Text, value: Asset)) : AssetKey { value.key });
-            return Iter.toArray(keys);
+            let allKeys: [AssetKey] = Iter.toArray(keys);
+
+            switch (folder) {
+                case null {
+                    return allKeys;
+                };
+                case (?folder) {
+                    let filteredKeys: [AssetKey] = Array.filter<AssetKey>(allKeys, func (key: AssetKey) : Bool { Text.equal(key.folder, folder) });
+                    return filteredKeys;
+                };
+            };
         };
 
         public func createBatch(key: AssetKey) : (Nat) {

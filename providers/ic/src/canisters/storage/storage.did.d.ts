@@ -3,6 +3,7 @@ export interface AssetKey {
   token: string;
   name: string;
   fullPath: string;
+  folder: string;
 }
 export interface Chunk {
   content: Array<number>;
@@ -27,7 +28,7 @@ export interface StorageBucket {
   create_chunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
   http_request: (arg_0: HttpRequest) => Promise<HttpResponse>;
   http_request_streaming_callback: (arg_0: StreamingCallbackToken) => Promise<StreamingCallbackHttpResponse>;
-  list: () => Promise<Array<AssetKey>>;
+  list: (arg_0: [] | [string]) => Promise<Array<AssetKey>>;
   transferCycles: () => Promise<undefined>;
 }
 export interface StreamingCallbackHttpResponse {

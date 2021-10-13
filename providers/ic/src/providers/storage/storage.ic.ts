@@ -1,6 +1,8 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
+import {v4 as uuid} from 'uuid';
+
 import {GetFiles, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
 import {getIdentity} from '../auth/auth.ic';
@@ -9,8 +11,7 @@ import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
 import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/storage.did';
 
 import {createManagerActor, createStorageBucketActor, initStorageBucket} from '../../utils/manager.utils';
-
-import {v4 as uuid} from 'uuid';
+import {toNullable} from '../../utils/did.utils';
 
 // TODO: studio should use offline upload and cron should interact with cloud and update DOM
 
@@ -86,7 +87,7 @@ const upload = async ({
   const fullPath: string = `/${folder}/${filename}`;
   const token: string = uuid();
 
-  const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token});
+  const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token, folder});
 
   const promises = [];
 
@@ -119,7 +120,9 @@ const upload = async ({
   };
 };
 
-export const getFiles: GetFiles = async ({}: {
+export const getFiles: GetFiles = async ({
+  folder
+}: {
   next: string | null;
   maxResults: number;
   folder: string;
@@ -127,9 +130,7 @@ export const getFiles: GetFiles = async ({}: {
 }): Promise<StorageFilesList | null> => {
   const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket();
 
-  // TODO filter folder
-
-  const assets: AssetKey[] = await actor.list();
+  const assets: AssetKey[] = await actor.list(toNullable<string>(folder));
 
   const host: string = `https://${bucket.toText()}.ic0.app`;
 

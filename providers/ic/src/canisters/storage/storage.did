@@ -37,7 +37,7 @@ type StorageBucket =
    http_request: (HttpRequest) -> (HttpResponse) query;
    http_request_streaming_callback: (StreamingCallbackToken) ->
     (StreamingCallbackHttpResponse) query;
-   list: () -> (vec AssetKey) query;
+   list: (opt text) -> (vec AssetKey) query;
    transferCycles: () -> ();
  };
 type HttpResponse = 
@@ -66,6 +66,7 @@ type Chunk =
  };
 type AssetKey = 
  record {
+   folder: text;
    fullPath: text;
    name: text;
    token: text;

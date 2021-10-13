@@ -15,6 +15,7 @@ module {
 
     public type AssetKey = {
         name: Text; // myimage.jpg
+        folder: Text; // images
         fullPath: Text; // /images/myimage.jpg
         token: Text; // ?token=1223-3345-5564-3333
     };

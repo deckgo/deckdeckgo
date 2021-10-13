@@ -201,12 +201,12 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * List
      */
 
-    public shared query({ caller }) func list() : async [AssetKey] {
+    public shared query({ caller }) func list(folder: ?Text) : async [AssetKey] {
         if (Utils.isPrincipalNotEqual(caller, user)) {
             throw Error.reject("User does not have the permission to list the assets.");
         };
 
-        let keys: [AssetKey] = storageStore.getKeys();
+        let keys: [AssetKey] = storageStore.getKeys(folder);
         return keys;
     };
 
