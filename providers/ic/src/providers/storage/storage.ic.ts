@@ -76,7 +76,7 @@ const getStorageBucket = async ({
     throw new Error('Invalid identity.');
   }
 
-  const managerActor: ManagerActor = await createManagerActor({identity});
+  const managerActor: ManagerActor = await createManagerActor({identity, host});
 
   const bucket: Principal = await initStorageBucket({managerActor});
 
