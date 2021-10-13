@@ -3,7 +3,7 @@ import {Principal} from '@dfinity/principal';
 
 import {v4 as uuid} from 'uuid';
 
-import {GetFiles, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
 
 import {getIdentity} from '../auth/auth.ic';
 
@@ -13,9 +13,21 @@ import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/
 import {createManagerActor, createStorageBucketActor, initStorageBucket} from '../../utils/manager.utils';
 import {toNullable} from '../../utils/did.utils';
 
-// TODO: studio should use offline upload and cron should interact with cloud and update DOM
+export const uploadFile: UploadFile = async ({
+  data,
+  folder,
+  maxSize
+}: {
+  data: File;
+  folder: string;
+  maxSize: number;
+  userId: string;
+  downloadUrl?: boolean;
+}): Promise<StorageFile | undefined> => {
+  return uploadFileIC({data, folder, maxSize});
+};
 
-export const uploadFile = async ({
+export const uploadFileIC = async ({
   data,
   maxSize,
   host,
@@ -24,7 +36,7 @@ export const uploadFile = async ({
   data: File;
   folder: string;
   maxSize: number;
-  host: string;
+  host?: string;
 }): Promise<StorageFile | undefined> => {
   if (!data || !data.name) {
     throw new Error('File not valid.');
