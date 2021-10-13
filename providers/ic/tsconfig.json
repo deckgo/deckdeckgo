@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["@deckdeckgo/lazy-img"],
+    "types": ["@deckdeckgo/lazy-img", "node"],
     "skipLibCheck": true,
     "lib": ["dom", "esnext"]
   },
