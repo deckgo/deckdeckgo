@@ -5,16 +5,19 @@ import {StorageFile} from '@deckdeckgo/editor';
 import {uploadFileIC} from '../providers/storage/storage.ic';
 
 import {SyncWindow} from '../types/sync.window';
+import {Identity} from '@dfinity/agent';
 
 export const uploadDeckLocalImage = ({
   imgSrc,
   deckId,
   host,
+  identity,
   syncWindow
 }: {
   imgSrc: string;
   deckId: string;
   host: string;
+  identity: Identity;
   syncWindow: SyncWindow;
 }): Promise<StorageFile | undefined> => {
   return new Promise<StorageFile | undefined>(async (resolve, reject) => {
@@ -33,6 +36,7 @@ export const uploadDeckLocalImage = ({
         data,
         folder: 'images',
         maxSize: 10485760,
+        identity,
         host
       });
 

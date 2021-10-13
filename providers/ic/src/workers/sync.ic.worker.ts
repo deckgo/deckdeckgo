@@ -95,7 +95,7 @@ const uploadDeck = async ({
   }
 
   // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
-  const {imgSrc, storageFile} = await uploadDeckBackgroundAssets({deck, host, syncWindow});
+  const {imgSrc, storageFile} = await uploadDeckBackgroundAssets({deck, host, identity, syncWindow});
 
   // 2. If we uploaded an asset, its URL has changed (no more local but available online)
   const updateDeck: Deck = updateDeckBackgroundImage({deck, imgSrc, storageFile});
@@ -106,10 +106,12 @@ const uploadDeck = async ({
 
 const uploadDeckBackgroundAssets = async ({
   deck,
+  identity,
   host,
   syncWindow
 }: {
   deck: Deck;
+  identity: Identity;
   host: string;
   syncWindow: SyncWindow;
 }): Promise<{imgSrc: string | undefined; storageFile: StorageFile | undefined}> => {
@@ -136,7 +138,7 @@ const uploadDeckBackgroundAssets = async ({
 
   const imgSrc: string = results[0][5];
 
-  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, host, syncWindow});
+  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, identity, host, syncWindow});
 
   return {
     imgSrc,

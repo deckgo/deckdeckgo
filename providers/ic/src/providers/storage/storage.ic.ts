@@ -24,19 +24,23 @@ export const uploadFile: UploadFile = async ({
   userId: string;
   downloadUrl?: boolean;
 }): Promise<StorageFile | undefined> => {
-  return uploadFileIC({data, folder, maxSize});
+  const identity: Identity | undefined = getIdentity();
+
+  return uploadFileIC({data, folder, maxSize, identity});
 };
 
 export const uploadFileIC = async ({
   data,
   maxSize,
   host,
-  folder
+  folder,
+  identity
 }: {
   data: File;
   folder: string;
   maxSize: number;
   host?: string;
+  identity: Identity;
 }): Promise<StorageFile | undefined> => {
   if (!data || !data.name) {
     throw new Error('File not valid.');
@@ -46,7 +50,7 @@ export const uploadFileIC = async ({
     throw new Error(`File is too big (max. ${maxSize / 1048576} Mb)`);
   }
 
-  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket(host);
+  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({host, identity});
 
   const {fullPath, filename, token}: {fullPath: string; filename: string; token: string} = await upload({
     data,
@@ -61,9 +65,13 @@ export const uploadFileIC = async ({
   };
 };
 
-const getStorageBucket = async (host?: string): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
-  const identity: Identity | undefined = getIdentity();
-
+const getStorageBucket = async ({
+  host,
+  identity
+}: {
+  host?: string;
+  identity: Identity | undefined;
+}): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
   if (!identity) {
     throw new Error('Invalid identity.');
   }
@@ -140,7 +148,9 @@ export const getFiles: GetFiles = async ({
   folder: string;
   userId: string;
 }): Promise<StorageFilesList | null> => {
-  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket();
+  const identity: Identity | undefined = getIdentity();
+
+  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({identity});
 
   const assets: AssetKey[] = await actor.list(toNullable<string>(folder));
 
