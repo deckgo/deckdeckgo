@@ -7,7 +7,8 @@ import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 
 import Types "../types/types";
-import HTTP "../types/http";
+import HTTP "../types/http.types";
+
 import StorageTypes "./storage.types";
 
 import Utils "../utils/utils";

@@ -2,7 +2,7 @@ import Principal "mo:base/Principal";
 
 import Types "../types/types";
 
-import IC "../types/ic";
+import IC "../types/ic.types";
 
 module {
 
