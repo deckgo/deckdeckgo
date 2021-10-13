@@ -88,7 +88,15 @@ const getStorageBucket = async ({
   };
 };
 
-const uploadChunk = async ({batchId, chunk, storageBucket}: {batchId: bigint; chunk: Blob; storageBucket: StorageBucketActor}) =>
+const uploadChunk = async ({
+  batchId,
+  chunk,
+  storageBucket
+}: {
+  batchId: bigint;
+  chunk: Blob;
+  storageBucket: StorageBucketActor;
+}): Promise<{chunkId: bigint}> =>
   storageBucket.create_chunk({
     batchId,
     content: [...new Uint8Array(await chunk.arrayBuffer())]
@@ -125,11 +133,11 @@ const upload = async ({
     );
   }
 
-  const chunkIds: bigint[] = await Promise.all(promises);
+  const chunkIds: {chunkId: bigint}[] = await Promise.all(promises);
 
   await storageBucket.commit_batch({
     batchId,
-    chunkIds,
+    chunkIds: chunkIds.map(({chunkId}: {chunkId: bigint}) => chunkId),
     contentType: data.type
   });
 
