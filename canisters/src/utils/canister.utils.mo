@@ -1,14 +1,14 @@
 import Principal "mo:base/Principal";
 
 import Types "../types/types";
-
 import IC "../types/ic.types";
+import CanisterTypes "../types/canister.types";
 
 module {
 
     type UserId = Types.UserId;
 
-    type BucketId = IC.canister_id;
+    type BucketId = CanisterTypes.BucketId;
 
     public class CanisterUtils() {
 
