@@ -10,7 +10,7 @@ const AboutPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>About DeckDeckGo</h1>
 
           <h3>Edit anywhere, display everywhere</h3>
@@ -44,7 +44,7 @@ const AboutPage = (props) => {
             </span>
             .
           </p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

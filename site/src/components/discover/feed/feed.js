@@ -31,11 +31,11 @@ export const Feed = () => {
 
   return (
     <section>
-      <main className={main}>
+      <div className={main}>
         {data.allFeed.nodes.map((feed) => (
           <Card key={feed.id} feed={feed} />
         ))}
-      </main>
+      </div>
     </section>
   );
 };

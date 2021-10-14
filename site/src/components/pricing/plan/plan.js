@@ -10,11 +10,11 @@ import {LinkButton} from '../../core/buttons/link-button';
 export const Plan = ({lang}) => {
   return (
     <section>
-      <main className={main}>
+      <div className={main}>
         {renderCommunity()}
 
         {renderEnterprise()}
-      </main>
+      </div>
     </section>
   );
 

@@ -14,7 +14,7 @@ const DiscoverPage = (props) => {
   return (
     <Layout location={props.location} sticky={false}>
       <section>
-        <main className={`${main} ${discoverStyles}`}>
+        <div className={`${main} ${discoverStyles}`}>
           <h1>
             <FormattedMessage id="discover.title" />
           </h1>
@@ -22,7 +22,7 @@ const DiscoverPage = (props) => {
           <p>
             <FormattedMessage id="discover.made.with.deckdeckdo" />
           </p>
-        </main>
+        </div>
       </section>
 
       <Feed></Feed>

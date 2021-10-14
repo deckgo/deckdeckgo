@@ -10,7 +10,7 @@ const ContactPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Contact</h1>
 
           <p>We would love to hear from you, ping us!</p>
@@ -47,7 +47,7 @@ const ContactPage = (props) => {
             </a>
             .
           </p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

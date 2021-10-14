@@ -10,7 +10,7 @@ const OpenSourcePage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Open Source</h1>
 
           <p>
@@ -35,7 +35,7 @@ const OpenSourcePage = (props) => {
             </a>
             .
           </p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

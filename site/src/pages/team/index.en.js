@@ -11,7 +11,7 @@ const TeamPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Team</h1>
 
           <div className={teamStylesMain}>
@@ -131,7 +131,7 @@ const TeamPage = (props) => {
               </p>
             </article>
           </div>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

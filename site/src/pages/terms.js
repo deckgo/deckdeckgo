@@ -10,7 +10,7 @@ const TermsPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Terms and Conditions of Use</h1>
 
           <h2>1. Terms</h2>
@@ -143,7 +143,7 @@ const TermsPage = (props) => {
           </p>
 
           <p>General Terms and Conditions applicable to Use of a Web Site and Platform.</p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

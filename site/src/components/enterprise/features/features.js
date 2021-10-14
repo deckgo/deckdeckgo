@@ -11,7 +11,7 @@ import {Feature} from '../../core/feature/feature';
 export const EnterpriseFeatures = ({lang}) => {
   return (
     <section className={section}>
-      <main className={main}>
+      <div className={main}>
         <h2>
           <FormattedMessage id="enterprise.features.title" />
         </h2>
@@ -40,7 +40,7 @@ export const EnterpriseFeatures = ({lang}) => {
         <Feature titleKey="features.enterprise.collaborate.title" msgKey="features.enterprise.collaborate.content" />
         <Feature titleKey="features.enterprise.library.title" msgKey="features.enterprise.library.content" />
         <Feature titleKey="features.enterprise.support.title" msgKey="features.enterprise.support.content" />
-      </main>
+      </div>
     </section>
   );
 };
