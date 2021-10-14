@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData, Slide, SlideData, StorageFile, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
+import {Deck, DeckData, Slide, SlideData, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
 
 import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
@@ -12,8 +12,8 @@ import {SyncWindow} from '../types/sync.window';
 import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {toArray, toTimestamp} from '../utils/did.utils';
-import {uploadDeckLocalImage} from '../utils/sync.worker.utils';
 import {updateDeckBackgroundImage} from '../utils/img.utils';
+import {uploadDeckBackgroundAssets} from '../utils/sync.storage.utils';
 
 export const uploadWorker = async (
   {
@@ -102,48 +102,6 @@ const uploadDeck = async ({
 
   // 3. We can update the data in the IC
   await uploadDeckData({deck: updateDeck, managerActor, identity, host});
-};
-
-const uploadDeckBackgroundAssets = async ({
-  deck,
-  identity,
-  host,
-  syncWindow
-}: {
-  deck: Deck;
-  identity: Identity;
-  host: string;
-  syncWindow: SyncWindow;
-}): Promise<{imgSrc: string | undefined; storageFile: StorageFile | undefined}> => {
-  const {background} = deck.data;
-
-  if (!background) {
-    return {
-      imgSrc: undefined,
-      storageFile: undefined
-    };
-  }
-
-  const regex: RegExp = /((<deckgo-lazy-img.*?)(img-src=)(.*?")(.*?[^"]*)(.*?"))/g;
-
-  const results: string[][] = [...background.matchAll(regex)];
-
-  // Only one image in the background is currently supported
-  if (results?.length !== 1) {
-    return {
-      imgSrc: undefined,
-      storageFile: undefined
-    };
-  }
-
-  const imgSrc: string = results[0][5];
-
-  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, identity, host, syncWindow});
-
-  return {
-    imgSrc,
-    storageFile
-  };
 };
 
 const uploadDeckData = async ({

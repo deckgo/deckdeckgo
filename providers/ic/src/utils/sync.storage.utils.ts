@@ -1,13 +1,56 @@
+import {Identity} from '@dfinity/agent';
+
 import {del, get} from 'idb-keyval';
 
-import {StorageFile} from '@deckdeckgo/editor';
+import {Deck, StorageFile} from '@deckdeckgo/editor';
+
+import {SyncWindow} from '../types/sync.window';
 
 import {uploadFileIC} from '../providers/storage/storage.ic';
 
-import {SyncWindow} from '../types/sync.window';
-import {Identity} from '@dfinity/agent';
+export const uploadDeckBackgroundAssets = async ({
+  deck,
+  identity,
+  host,
+  syncWindow
+}: {
+  deck: Deck;
+  identity: Identity;
+  host: string;
+  syncWindow: SyncWindow;
+}): Promise<{imgSrc: string | undefined; storageFile: StorageFile | undefined}> => {
+  const {background} = deck.data;
 
-export const uploadDeckLocalImage = ({
+  if (!background) {
+    return {
+      imgSrc: undefined,
+      storageFile: undefined
+    };
+  }
+
+  const regex: RegExp = /((<deckgo-lazy-img.*?)(img-src=)(.*?")(.*?[^"]*)(.*?"))/g;
+
+  const results: string[][] = [...background.matchAll(regex)];
+
+  // Only one image in the background is currently supported
+  if (results?.length !== 1) {
+    return {
+      imgSrc: undefined,
+      storageFile: undefined
+    };
+  }
+
+  const imgSrc: string = results[0][5];
+
+  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, identity, host, syncWindow});
+
+  return {
+    imgSrc,
+    storageFile
+  };
+};
+
+const uploadDeckLocalImage = ({
   imgSrc,
   deckId,
   host,
