@@ -116,7 +116,7 @@ export class ImageHelper {
 
           this.didChange.emit(selectedElement);
 
-          await (selectedElement as any).loadBackground();
+          await (selectedElement as HTMLDeckgoDeckElement).loadBackground();
         } else if (selectedElement.hasAttribute('custom-background')) {
           selectedElement.removeChild(currentSlotElement);
 
@@ -126,7 +126,7 @@ export class ImageHelper {
 
           // Refresh background, deck might have one defined which need to be replicated on the slide which
           if (selectedElement.parentElement) {
-            await (selectedElement.parentElement as any).loadBackground();
+            await (selectedElement.parentElement as HTMLDeckgoDeckElement).loadBackground();
           }
         }
       }
@@ -231,7 +231,7 @@ export class ImageHelper {
     selectedElement.appendChild(div);
 
     if (deck) {
-      await (selectedElement as any).loadBackground();
+      await (selectedElement as HTMLDeckgoDeckElement).loadBackground();
     } else {
       selectedElement.setAttribute('custom-background', '');
     }
@@ -255,7 +255,7 @@ export class ImageHelper {
     if (deck) {
       // prettier-ignore
       img.addEventListener("lazyImgDidLoad", async () => {
-        await (selectedElement as any).loadBackground();
+        await (selectedElement as HTMLDeckgoDeckElement).loadBackground();
         this.didChange.emit(selectedElement);
       }, { once: true });
     } else {
