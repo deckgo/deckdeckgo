@@ -32,7 +32,7 @@ export const Contact = () => {
 
   return (
     <section id="contact">
-      <main className={main}>
+      <div className={main}>
         <form className={form} onSubmit={($event) => submitForm($event)} action="https://formspree.io/xjvaebzk" method="POST">
           <h3 className={getintouch}>
             <FormattedMessage id="enterprise.contact.inquiry" />
@@ -81,7 +81,7 @@ Sihlquai 131
 8005 Zürich, Switzerland`}
           </p>
         </form>
-      </main>
+      </div>
     </section>
   );
 };

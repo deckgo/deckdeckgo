@@ -7,7 +7,7 @@ import {main, title, subtitle} from './hero.module.scss';
 export const Hero = () => {
   return (
     <section>
-      <main className={main}>
+      <div className={main}>
         <h1 className={title}>
           <FormattedMessage id="hero.title" />
         </h1>
@@ -15,7 +15,7 @@ export const Hero = () => {
         <section className={subtitle}>
           <FormattedMessage id="hero.subtitle" />
         </section>
-      </main>
+      </div>
     </section>
   );
 };

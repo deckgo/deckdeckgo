@@ -1,0 +1,21 @@
+.article {
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  align-items: center;
+  background: var(--color-secondary);
+  color: var(--color-secondary-contrast);
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+}
+
+.link {
+  max-width: calc(100vw - 64px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

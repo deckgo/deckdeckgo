@@ -11,7 +11,7 @@ const FaqPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Frequently asked questions</h1>
 
           <h3>Why DeckDeckGo?</h3>
@@ -92,7 +92,7 @@ const FaqPage = (props) => {
             The QR codes you add to your presentations are by default linked with the homepage. As soon as you share them, their content
             will automatically be updated with their online urls. Alternatively, you could also provide a custom url for their content.
           </p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

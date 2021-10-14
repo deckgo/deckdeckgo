@@ -30,7 +30,7 @@ export const EnterpriseHero = () => {
   function renderSectionHero() {
     return (
       <section className={section}>
-        <main className={`${main} ${hero}`}>
+        <div className={`${main} ${hero}`}>
           <h1 className={title}>
             <FormattedMessage id="enterprise.hero.title" />
           </h1>
@@ -40,7 +40,7 @@ export const EnterpriseHero = () => {
           </section>
 
           <ActionButton type="button" msgId="enterprise.hero.get.in.touch" color="primary" action={scrollTo}></ActionButton>
-        </main>
+        </div>
       </section>
     );
   }
@@ -48,7 +48,7 @@ export const EnterpriseHero = () => {
   function renderQuote() {
     return (
       <section>
-        <main className={`${main} ${quote}`}>
+        <div className={`${main} ${quote}`}>
           <blockquote>
             <span>❝</span>
             <p>
@@ -96,7 +96,7 @@ export const EnterpriseHero = () => {
               </svg>
             </button>
           </div>
-        </main>
+        </div>
       </section>
     );
   }

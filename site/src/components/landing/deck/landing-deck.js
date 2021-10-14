@@ -59,11 +59,11 @@ export const LandingDeck = () => {
 
   return (
     <section>
-      <main className={main}>
+      <div className={main}>
         <article className={`${container} ${deckLoaded ? 'loaded' : ''} ${mobile ? 'mobile' : ''}`}>{renderDeck()}</article>
 
         {renderSlideNavigation(deckIsBeginning || deckIsEnd ? 'light' : 'dark')}
-      </main>
+      </div>
     </section>
   );
 

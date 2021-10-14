@@ -10,7 +10,7 @@ const PrivacyPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Privacy Policy</h1>
 
           <p>Effective 3rd July 2019</p>
@@ -176,7 +176,7 @@ const PrivacyPage = (props) => {
           <h3>Questions</h3>
 
           <p>We welcome feedback about this policy at hello@deckdeckgo.com.</p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

@@ -11,7 +11,7 @@ const NewsletterPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Join our Newsletter</h1>
 
           <p>Sign up to receive time to time an email on the latest DeckDeckGo updates, features, and news!</p>
@@ -38,7 +38,7 @@ const NewsletterPage = (props) => {
               <ActionButton type="submit" msgId="common.subscribe" color="primary" style={{marginTop: '1.45rem'}}></ActionButton>
             </div>
           </form>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

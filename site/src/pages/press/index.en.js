@@ -11,7 +11,7 @@ const PressPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Press</h1>
 
           <p>
@@ -94,7 +94,7 @@ const PressPage = (props) => {
               <small>2019-09-01</small>
             </span>
           </article>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />
