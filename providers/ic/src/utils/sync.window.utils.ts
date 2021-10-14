@@ -7,14 +7,17 @@ import {SyncWindowDeckBackground} from '../types/sync.window';
 import {updateDeckBackgroundImage} from './img.utils';
 
 export const syncDeckBackground = async (data: SyncWindowDeckBackground): Promise<void> => {
-  // 1. We update the DOM
-  updateDOM(data);
+  // 1. We update the deck in the DOM
+  updateDeckDOM(data);
 
-  // 2. We update the indexedDB stored deck with the new downloadUrl.
+  // 2. We replicate the same changes to the slides in the DOM
+  await updateSlidesDOM(data);
+
+  // 3. We update the indexedDB stored deck with the new downloadUrl.
   await updateIDB(data);
 };
 
-const updateDOM = ({storageFile}: SyncWindowDeckBackground) => {
+const updateDeckDOM = ({storageFile}: SyncWindowDeckBackground) => {
   const backgroundElement: HTMLElement | null = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
   const img: HTMLDeckgoLazyImgElement | null = backgroundElement?.querySelector('deckgo-lazy-img');
@@ -27,6 +30,31 @@ const updateDOM = ({storageFile}: SyncWindowDeckBackground) => {
 
   img.imgSrc = downloadUrl;
   img.imgAlt = name;
+};
+
+const updateSlidesDOM = async ({storageFile}: SyncWindowDeckBackground) => {
+  const images: NodeListOf<HTMLDeckgoLazyImgElement> = document.querySelectorAll(
+    `${deckSelector} .deckgo-slide-container:not([custom-background]) *[slot="background"] deckgo-lazy-img`
+  );
+
+  if (!images) {
+    return;
+  }
+
+  const updateImage = async (img: HTMLDeckgoLazyImgElement) => {
+    const {downloadUrl, name} = storageFile;
+
+    img.imgSrc = downloadUrl;
+    img.imgAlt = name;
+  };
+
+  const promises: Promise<void>[] = Array.from(images).map((img: HTMLDeckgoLazyImgElement) => updateImage(img));
+
+  if (!promises) {
+    return;
+  }
+
+  await Promise.all(promises);
 };
 
 const updateIDB = async ({storageFile, imgSrc, deckId}: SyncWindowDeckBackground) => {
