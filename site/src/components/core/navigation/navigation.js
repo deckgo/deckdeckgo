@@ -9,6 +9,7 @@ import {header, dark as darkStyle, end, fix as fixStyle, home, menu, nav, start,
 
 import {LinkButton} from '../buttons/link-button';
 import {Menu} from '../menu/menu';
+import {Announcement} from '../announcement/announcement';
 
 const Navigation = ({data, fix, lang, navTheme}) => {
   const intl = useIntl();
@@ -49,6 +50,8 @@ const Navigation = ({data, fix, lang, navTheme}) => {
   return (
     <>
       <header className={`${header} ` + (fix ? `${fixStyle}` : scrolled ? `${fixStyle} animated` : '') + `${theme}`}>
+        <Announcement></Announcement>
+
         <nav className={nav}>
           <button className={menu} aria-label={intl.formatMessage({id: 'nav.menu'})} onClick={() => openMenu()}>
             <img
