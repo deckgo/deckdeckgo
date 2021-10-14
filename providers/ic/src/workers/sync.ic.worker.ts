@@ -6,12 +6,13 @@ import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 
 import {InternetIdentityAuth} from '../types/identity';
 import {SyncWindow} from '../types/sync.window';
+import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
 
 import {createManagerActor} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
-import {updateDeckBackgroundImage} from '../utils/img.utils';
-import {uploadDeckBackgroundAssets} from '../utils/sync.storage.utils';
+import {uploadDeckBackgroundAssets, uploadSlideAssets} from '../utils/sync.storage.utils';
 import {deleteSlide, uploadDeckData, uploadSlideData} from '../utils/sync.data.utils';
+import {updateDeckStorageData, updateSlideStorageData} from '../utils/sync.utils';
 
 export const uploadWorker = async (
   {
@@ -41,7 +42,7 @@ export const uploadWorker = async (
 
   await uploadDecks({updateDecks, identity, managerActor, host, syncWindow});
 
-  await uploadSlides({updateSlides, identity, managerActor, host});
+  await uploadSlides({updateSlides, identity, managerActor, host, syncWindow});
 
   await deleteSlides({deleteSlides: slidesToDelete, identity, managerActor, host});
 
@@ -93,10 +94,10 @@ const uploadDeck = async ({
   }
 
   // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
-  const {imgSrc, storageFile} = await uploadDeckBackgroundAssets({deck, host, identity, syncWindow});
+  const {src: imgSrc, storageFile}: SyncStorage = await uploadDeckBackgroundAssets({deck, host, identity, syncWindow});
 
   // 2. If we uploaded an asset, its URL has changed (no more local but available online)
-  const updateDeck: Deck = updateDeckBackgroundImage({deck, imgSrc, storageFile});
+  const updateDeck: Deck = updateDeckStorageData({deck, imgSrc, storageFile});
 
   // 3. We can update the data in the IC
   await uploadDeckData({deck: updateDeck, managerActor, identity, host});
@@ -106,19 +107,21 @@ const uploadSlides = async ({
   updateSlides,
   identity,
   managerActor,
-  host
+  host,
+  syncWindow
 }: {
   updateSlides: SyncDataSlide[] | undefined;
   identity: Identity;
   managerActor: ManagerActor;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!updateSlides || updateSlides.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) =>
-    uploadSlide({slide, deckId, managerActor: managerActor, identity, host})
+    uploadSlide({slide, deckId, managerActor: managerActor, identity, host, syncWindow})
   );
 
   await Promise.all(promises);
@@ -142,6 +145,7 @@ const deleteSlides = async ({
   const promises: Promise<void>[] = deleteSlides.map(({deckId, slideId}: SyncDataSlide) =>
     deleteSlide({slideId, deckId, identity, managerActor: managerActor, host})
   );
+
   await Promise.all(promises);
 };
 
@@ -150,17 +154,26 @@ const uploadSlide = async ({
   deckId,
   managerActor,
   identity,
-  host
+  host,
+  syncWindow
 }: {
   slide: Slide;
   deckId: string;
   managerActor: ManagerActor;
   identity: Identity;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!slide) {
     return;
   }
 
-  await uploadSlideData({slide, deckId, managerActor, identity, host});
+  // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
+  const {images, chart}: SyncStorageSlide = await uploadSlideAssets({slide, deckId, host, identity, syncWindow});
+
+  // 2. If we uploaded assets, there URL have changed (no more local but available online)
+  const updateSlide: Slide = updateSlideStorageData({slide, images, chart});
+
+  // 3. We can update the data in the IC
+  await uploadSlideData({slide: updateSlide, deckId, managerActor, identity, host});
 };

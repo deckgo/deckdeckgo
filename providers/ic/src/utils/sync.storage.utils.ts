@@ -2,11 +2,14 @@ import {Identity} from '@dfinity/agent';
 
 import {del, get} from 'idb-keyval';
 
-import {Deck, StorageFile} from '@deckdeckgo/editor';
+import {Deck, Slide, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
 
-import {SyncWindow} from '../types/sync.window';
+import {SyncWindow, SyncWindowEventMsg} from '../types/sync.window';
+import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
 
 import {uploadFileIC} from '../providers/storage/storage.ic';
+
+const imagesRegex: RegExp = /((<deckgo-lazy-img.*?)(img-src=)(.*?")(.*?[^"]*)(.*?"))/g;
 
 export const uploadDeckBackgroundAssets = async ({
   deck,
@@ -18,59 +21,150 @@ export const uploadDeckBackgroundAssets = async ({
   identity: Identity;
   host: string;
   syncWindow: SyncWindow;
-}): Promise<{imgSrc: string | undefined; storageFile: StorageFile | undefined}> => {
+}): Promise<SyncStorage> => {
   const {background} = deck.data;
 
   if (!background) {
-    return {
-      imgSrc: undefined,
-      storageFile: undefined
-    };
+    return undefined;
   }
 
-  const regex: RegExp = /((<deckgo-lazy-img.*?)(img-src=)(.*?")(.*?[^"]*)(.*?"))/g;
-
-  const results: string[][] = [...background.matchAll(regex)];
+  const results: string[][] = [...background.matchAll(imagesRegex)];
 
   // Only one image in the background is currently supported
   if (results?.length !== 1) {
-    return {
-      imgSrc: undefined,
-      storageFile: undefined
-    };
+    return undefined;
   }
 
-  const imgSrc: string = results[0][5];
+  const imgSrc: string | undefined = results[0][5];
 
-  const storageFile: StorageFile | undefined = await uploadDeckLocalImage({imgSrc, deckId: deck.id, identity, host, syncWindow});
+  return uploadData({
+    src: imgSrc,
+    deckId: deck.id,
+    identity,
+    host,
+    syncWindow,
+    msg: 'deckdeckgo_sync_deck_background'
+  });
+};
+
+export const uploadSlideAssets = async ({
+  deckId,
+  slide,
+  identity,
+  host,
+  syncWindow
+}: {
+  deckId: string;
+  slide: Slide;
+  identity: Identity;
+  host: string;
+  syncWindow: SyncWindow;
+}): Promise<SyncStorageSlide> => {
+  const images: SyncStorage[] | undefined = await uploadSlideImages({
+    deckId,
+    slide,
+    identity,
+    host,
+    syncWindow
+  });
+  const chart: SyncStorage | undefined = await uploadSlideChart({deckId, slide, identity, host, syncWindow});
 
   return {
-    imgSrc,
-    storageFile
+    images,
+    chart
   };
 };
 
-const uploadDeckLocalImage = ({
-  imgSrc,
+const uploadSlideImages = async ({
   deckId,
-  host,
+  slide,
   identity,
+  host,
   syncWindow
 }: {
-  imgSrc: string;
   deckId: string;
+  slide: Slide;
+  identity: Identity;
+  host: string;
+  syncWindow: SyncWindow;
+}): Promise<SyncStorage[] | undefined> => {
+  const {content} = slide.data;
+
+  if (!content) {
+    return undefined;
+  }
+
+  const results: string[][] = [...content.matchAll(imagesRegex)];
+
+  const promises: Promise<SyncStorage>[] | undefined = results?.map((result: string[]) => {
+    const imgSrc: string = result[5];
+
+    return uploadData({src: imgSrc, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_image'});
+  });
+
+  return Promise.all(promises);
+};
+
+const uploadSlideChart = async ({
+  deckId,
+  slide,
+  identity,
+  host,
+  syncWindow
+}: {
+  deckId: string;
+  slide: Slide;
+  identity: Identity;
+  host: string;
+  syncWindow: SyncWindow;
+}): Promise<SyncStorage | undefined> => {
+  const {content, template, attributes} = slide.data;
+
+  if (!content || template !== SlideTemplate.CHART || !attributes) {
+    return undefined;
+  }
+
+  const {src} = attributes;
+
+  return uploadData({src, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_chart'});
+};
+
+const uploadData = ({
+  src,
+  deckId,
+  slideId,
+  host,
+  identity,
+  syncWindow,
+  msg
+}: {
+  src: string | undefined;
+  deckId: string;
+  slideId?: string;
   host: string;
   identity: Identity;
   syncWindow: SyncWindow;
-}): Promise<StorageFile | undefined> => {
-  return new Promise<StorageFile | undefined>(async (resolve, reject) => {
+  msg: SyncWindowEventMsg;
+}): Promise<SyncStorage> => {
+  return new Promise<SyncStorage>(async (resolve, reject) => {
     try {
-      const data: File = await get(imgSrc);
+      if (!src || src === '' || /^https?:\/\/.+\/.+$/.test(src)) {
+        resolve({
+          src: undefined,
+          storageFile: undefined
+        });
+        return;
+      }
+
+      const data: File = await get(src);
 
       if (!data) {
         // We didn't the corresponding image. Instead of crashing an error we go through, user will notice that nothing is displayed.
         // Better than blocking the all process and reaching an intermediate state.
-        resolve(undefined);
+        resolve({
+          src: undefined,
+          storageFile: undefined
+        });
         return;
       }
 
@@ -84,24 +178,28 @@ const uploadDeckLocalImage = ({
       });
 
       if (!storageFile) {
-        reject(`Image ${imgSrc} upload has failed.`);
+        reject(`Data ${src} upload has failed.`);
         return;
       }
 
       // 2. We update the DOM and IDB (currently saved data)
       await syncWindow({
-        msg: 'deckdeckgo_sync_deck_background',
+        msg,
         data: {
-          imgSrc,
+          src,
           deckId,
+          slideId,
           storageFile
         }
       });
 
       // 3. All good, we don't need the image in the indexedDB anymore
-      await del(imgSrc);
+      await del(src);
 
-      resolve(storageFile);
+      resolve({
+        src,
+        storageFile
+      });
     } catch (err) {
       reject(err);
     }

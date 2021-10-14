@@ -4,7 +4,7 @@ import {Deck, deckSelector} from '@deckdeckgo/editor';
 
 import {SyncWindowDeckBackground} from '../types/sync.window';
 
-import {updateDeckBackgroundImage} from './img.utils';
+import {updateDeckStorageData} from './sync.utils';
 
 export const syncDeckBackground = async (data: SyncWindowDeckBackground): Promise<void> => {
   // 1. We update the deck in the DOM
@@ -57,14 +57,14 @@ const updateSlidesDOM = async ({storageFile}: SyncWindowDeckBackground) => {
   await Promise.all(promises);
 };
 
-const updateIDB = async ({storageFile, imgSrc, deckId}: SyncWindowDeckBackground) => {
+const updateIDB = async ({storageFile, src, deckId}: SyncWindowDeckBackground) => {
   const deck: Deck = await get(`/decks/${deckId}`);
 
   if (!deck) {
     throw new Error('Deck not found and that is really weird here.');
   }
 
-  const updateDeck: Deck = updateDeckBackgroundImage({deck, imgSrc, storageFile});
+  const updateDeck: Deck = updateDeckStorageData({deck, imgSrc: src, storageFile});
 
   await set(`/decks/${deck.id}`, updateDeck);
 };

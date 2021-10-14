@@ -1,13 +1,16 @@
 import {StorageFile} from '@deckdeckgo/editor';
 
 export interface SyncWindowDeckBackground {
-  imgSrc: string;
+  src: string;
   deckId: string;
+  slideId?: string;
   storageFile: StorageFile;
 }
 
+export type SyncWindowEventMsg = 'deckdeckgo_sync_deck_background' | 'deckdeckgo_sync_slide_image' | 'deckdeckgo_sync_slide_chart';
+
 export interface SyncWindowEvent {
-  msg: 'deckdeckgo_sync_deck_background';
+  msg: SyncWindowEventMsg;
   data: SyncWindowDeckBackground;
 }
 

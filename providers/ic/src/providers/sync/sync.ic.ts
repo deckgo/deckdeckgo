@@ -19,6 +19,8 @@ const syncWindow: SyncWindow = async ({msg, data}: SyncWindowEvent) => {
     return;
   }
 
+  // TODO: 'deckdeckgo_sync_slide_image' | 'deckdeckgo_sync_slide_chart'
+
   await syncDeckBackground(data);
 };
 
