@@ -197,6 +197,22 @@ const uploadSlide = async ({
     return;
   }
 
+  await uploadSlideData({slide, deckId, managerActor, identity, host});
+};
+
+const uploadSlideData = async ({
+  slide,
+  deckId,
+  managerActor,
+  identity,
+  host
+}: {
+  slide: Slide;
+  deckId: string;
+  managerActor: ManagerActor;
+  identity: Identity;
+  host: string;
+}) => {
   console.log('Slide IC about to SET');
   const t0 = performance.now();
 
