@@ -1,54 +1,28 @@
 import * as React from 'react';
+
 import {Link} from 'gatsby';
 
-// styles
-const pageStyles = {
-  color: '#232129',
-  padding: '96px',
-  fontFamily: '-apple-system, Roboto, sans-serif, serif'
-};
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320
-};
+import Layout from '../components/core/layout/en';
 
-const paragraphStyles = {
-  marginBottom: 48
-};
-const codeStyles = {
-  color: '#8A6534',
-  padding: 4,
-  backgroundColor: '#FFF4DB',
-  fontSize: '1.25rem',
-  borderRadius: 4
-};
+import {Footer} from '../components/core/footer/footer';
 
-// markup
-const IndexPage = () => {
+import {main} from '../themes/templates/template.module.scss';
+
+const Index404Page = (props) => {
   return (
-    <main style={pageStyles}>
-      <title>Not found</title>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry{' '}
-        <span role="img" aria-hidden={true}>
-          😔
-        </span>{' '}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === 'development' ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
-      </p>
-    </main>
+    <Layout location={props.location}>
+      <section>
+        <div className={main}>
+          <h1>Not found</h1>
+          <p>
+            <Link to="/">Go home</Link>.
+          </p>
+        </div>
+      </section>
+
+      <Footer action={false} lang="en" />
+    </Layout>
   );
 };
 
-export default IndexPage;
+export default Index404Page;
