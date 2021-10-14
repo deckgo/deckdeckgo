@@ -129,15 +129,15 @@ export const LandingContent = () => {
   return (
     <>
       <section>
-        <main className={main} ref={mainRef}>
+        <div className={main} ref={mainRef}>
           {renderDescription()}
-        </main>
+        </div>
       </section>
 
       <LandingPoll />
 
       <section>
-        <main className={`${main} ${remote}`}>{renderRemote()}</main>
+        <div className={`${main} ${remote}`}>{renderRemote()}</div>
       </section>
     </>
   );

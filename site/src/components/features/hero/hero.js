@@ -10,7 +10,7 @@ export const FeaturesHero = () => {
   function renderSectionHero() {
     return (
       <section className={section}>
-        <main className={`${main} ${hero}`}>
+        <div className={`${main} ${hero}`}>
           <h1 className={title}>
             <FormattedMessage id="features.hero.title" />
           </h1>
@@ -18,7 +18,7 @@ export const FeaturesHero = () => {
           <section className={subtitle}>
             <FormattedMessage id="features.hero.subtitle" />
           </section>
-        </main>
+        </div>
       </section>
     );
   }

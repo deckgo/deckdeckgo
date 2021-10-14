@@ -13,7 +13,7 @@ export const ListFeatures = ({lang}) => {
 
   return (
     <section className={section}>
-      <main className={main}>
+      <div className={main}>
         <h2>
           <FormattedMessage id="features.main.title" />
         </h2>
@@ -86,7 +86,7 @@ export const ListFeatures = ({lang}) => {
             }}
           />
         </p>
-      </main>
+      </div>
     </section>
   );
 };

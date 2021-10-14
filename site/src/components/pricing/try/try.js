@@ -7,7 +7,7 @@ import {main} from './try.module.scss';
 export const Try = () => {
   return (
     <section>
-      <main className={main}>
+      <div className={main}>
         <p>
           <FormattedMessage
             id="pricing.try.text"
@@ -20,7 +20,7 @@ export const Try = () => {
             }}
           />
         </p>
-      </main>
+      </div>
     </section>
   );
 };

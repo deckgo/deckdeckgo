@@ -64,7 +64,7 @@ const Layout = ({children, location, messages, sticky = true, navTheme}) => {
 
       <Navigation lang={langKey} navTheme={navTheme} />
 
-      <div className={sticky ? stickyStyles : undefined}>{children}</div>
+      <main className={sticky ? stickyStyles : undefined}>{children}</main>
     </IntlProvider>
   );
 };

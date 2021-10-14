@@ -10,7 +10,7 @@ const DeveloperPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Developer</h1>
 
           <h2>You know what's cool?</h2>
@@ -40,7 +40,7 @@ const DeveloperPage = (props) => {
               <code slot="code">npm init deckdeckgo</code>
             </deckgo-highlight-code>
           </div>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />

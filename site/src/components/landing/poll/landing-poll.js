@@ -73,7 +73,7 @@ export const LandingPoll = () => {
 
   return (
     <section className={section}>
-      <main className={main}>
+      <div className={main}>
         <h2>
           <FormattedMessage id="hero.poll.description.title" />
         </h2>
@@ -83,7 +83,7 @@ export const LandingPoll = () => {
         </p>
 
         {renderPollDemo()}
-      </main>
+      </div>
     </section>
   );
 

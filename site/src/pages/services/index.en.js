@@ -11,7 +11,7 @@ const ServicesPage = (props) => {
   return (
     <Layout location={props.location}>
       <section>
-        <main className={main}>
+        <div className={main}>
           <h1>Services</h1>
 
           <p>
@@ -104,7 +104,7 @@ const ServicesPage = (props) => {
           <p>
             All these services are covered in our <Link to="/privacy">Privacy Policy</Link> and <Link to="/terms">Terms of Services</Link>.
           </p>
-        </main>
+        </div>
       </section>
 
       <Footer action={false} lang="en" />
