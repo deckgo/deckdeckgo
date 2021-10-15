@@ -143,12 +143,12 @@ export class ImageHelper {
     const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
 
     if (deckgImg !== undefined) {
-      (img as any).imgSrc = deckgImg.src;
-      (img as any).imgAlt = deckgImg.label;
+      (img as HTMLDeckgoLazyImgElement).imgSrc = deckgImg.src;
+      (img as HTMLDeckgoLazyImgElement).imgAlt = deckgImg.label;
     }
 
     if (image && image !== undefined && image.hasOwnProperty('downloadUrl')) {
-      (img as any).customLoader = true;
+      (img as HTMLDeckgoLazyImgElement).customLoader = true;
 
       // We have to add the information as attributes because slots are going to be cloned to the slides background
       if (background) {

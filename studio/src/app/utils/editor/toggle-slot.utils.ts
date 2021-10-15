@@ -197,7 +197,7 @@ export class ToggleSlotUtils {
   private static updateLazyImage(selectedElement: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
       if (type === SlotType.IMG) {
-        (selectedElement as any).customLoader = true;
+        (selectedElement as HTMLDeckgoLazyImgElement).customLoader = true;
       }
 
       resolve();
