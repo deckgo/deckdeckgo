@@ -60,12 +60,12 @@ const updateDeckDOM = ({storageFile}: SyncWindowData) => {
   img.imgAlt = name;
 };
 
-const updateSlideImagesDOM = async ({slideId, storageFile}: SyncWindowData) => {
+const updateSlideImagesDOM = async ({slideId, storageFile, src}: SyncWindowData) => {
   const slideElement: HTMLElement | null = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
 
   const images: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement?.querySelectorAll('deckgo-lazy-img');
 
-  await updateImagesDOM({images, storageFile});
+  await updateImagesDOM({images, storageFile, src});
 };
 
 const updateSlideChartDOM = ({slideId, storageFile}: SyncWindowData) => {
@@ -80,16 +80,30 @@ const updateSlideChartDOM = ({slideId, storageFile}: SyncWindowData) => {
   slideElement.src = downloadUrl;
 };
 
-const updateSlidesDOM = async ({storageFile}: SyncWindowData) => {
+const updateSlidesDOM = async ({storageFile, src}: SyncWindowData) => {
   const images: NodeListOf<HTMLDeckgoLazyImgElement> = document.querySelectorAll(
     `${deckSelector} .deckgo-slide-container:not([custom-background]) *[slot="background"] deckgo-lazy-img`
   );
 
-  await updateImagesDOM({images, storageFile});
+  await updateImagesDOM({images, storageFile, src});
 };
 
-const updateImagesDOM = async ({storageFile, images}: {images: NodeListOf<HTMLDeckgoLazyImgElement>; storageFile: StorageFile}) => {
+const updateImagesDOM = async ({
+  storageFile,
+  images,
+  src
+}: {
+  images: NodeListOf<HTMLDeckgoLazyImgElement>;
+  storageFile: StorageFile;
+  src: string;
+}) => {
   if (!images || images.length <= 0) {
+    return;
+  }
+
+  const matchingImages: HTMLDeckgoLazyImgElement[] = Array.from(images).filter((img: HTMLDeckgoLazyImgElement) => img.imgSrc === src);
+
+  if (!matchingImages || matchingImages.length <= 0) {
     return;
   }
 
@@ -100,7 +114,7 @@ const updateImagesDOM = async ({storageFile, images}: {images: NodeListOf<HTMLDe
     img.imgAlt = name;
   };
 
-  const promises: Promise<void>[] = Array.from(images).map((img: HTMLDeckgoLazyImgElement) => updateImage(img));
+  const promises: Promise<void>[] = Array.from(matchingImages).map((img: HTMLDeckgoLazyImgElement) => updateImage(img));
 
   await Promise.all(promises);
 };
