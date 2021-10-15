@@ -61,7 +61,7 @@ export class AppUserMenu {
     return (
       <ion-list>
         <ion-item onClick={() => this.closePopover()}>
-          <ion-router-link href="/dashboard" routerDirection="forward">
+          <ion-router-link href="/decks" routerDirection="forward">
             <ion-label>{i18n.state.nav.dashboard}</ion-label>
           </ion-router-link>
         </ion-item>

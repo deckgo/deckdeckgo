@@ -36,10 +36,10 @@ interface DeckAndFirstSlide {
 }
 
 @Component({
-  tag: 'app-dashboard',
-  styleUrl: 'app-dashboard.scss'
+  tag: 'app-decks',
+  styleUrl: 'app-decks.scss'
 })
-export class AppDashboard {
+export class AppDecks {
   @State()
   private filteredDecks: DeckAndFirstSlide[] = null;
 
@@ -277,8 +277,17 @@ export class AppDashboard {
   }
 
   render() {
+    return (
+      <Fragment>
+        <app-navigation></app-navigation>
+        <ion-content class="ion-padding">{this.renderContent()}</ion-content>
+      </Fragment>
+    );
+  }
+
+  private renderContent() {
     if (this.loading) {
-      return this.renderLoading();
+      return <app-spinner></app-spinner>;
     }
 
     if (authStore.state.anonymous) {
@@ -286,10 +295,6 @@ export class AppDashboard {
     }
 
     return this.renderGuardedContent();
-  }
-
-  private renderLoading() {
-    return <app-spinner></app-spinner>;
   }
 
   private renderAnonymousContent() {

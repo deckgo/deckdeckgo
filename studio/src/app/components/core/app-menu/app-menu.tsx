@@ -58,7 +58,7 @@ export class AppMenu {
     }
 
     return (
-      <ion-item button href="/dashboard" routerDirection="forward">
+      <ion-item button href="/decks" routerDirection="forward">
         <AppIcon name="deck" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.menu.presentations}</ion-label>
       </ion-item>
