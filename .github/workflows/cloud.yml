@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Set Node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Install Dependencies
         run: npm ci
         working-directory: ./cloud/functions
@@ -20,5 +24,5 @@ jobs:
           args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: "default"
-          PROJECT_PATH: "./cloud"
+          PROJECT_ID: 'default'
+          PROJECT_PATH: './cloud'
