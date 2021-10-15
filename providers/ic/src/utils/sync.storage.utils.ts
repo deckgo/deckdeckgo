@@ -25,14 +25,20 @@ export const uploadDeckBackgroundAssets = async ({
   const {background} = deck.data;
 
   if (!background) {
-    return undefined;
+    return {
+      src: undefined,
+      storageFile: undefined
+    };
   }
 
   const results: string[][] = [...background.matchAll(imagesRegex)];
 
   // Only one image in the background is currently supported
   if (results?.length !== 1) {
-    return undefined;
+    return {
+      src: undefined,
+      storageFile: undefined
+    };
   }
 
   const imgSrc: string | undefined = results[0][5];
