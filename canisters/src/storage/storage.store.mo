@@ -153,8 +153,15 @@ module {
                 batch: Batch;
                 contentType: Text;
                 chunkIds: [Nat];
-            },
+            }
         ) : ({error: ?Text;}) {
+            // Test batch is not expired
+            let now: Time.Time = Time.now();
+            if (now > batch.expiresAt) {
+                clearExpiredBatches();
+                return {error = ?"Batch did not complete in time. Chunks cannot be commited."};
+            };
+
             var contentChunks : [[Nat8]] = [];
 
             for (chunkId in chunkIds.vals()) {
@@ -173,9 +180,6 @@ module {
                     };
                 };
             };
-
-            // TODO test expiry ?
-            // TODO clear chunks and batch
 
             if (contentChunks.size() <= 0) {
                 return {error = ?"No chunk to commit."};
@@ -196,7 +200,17 @@ module {
                 };
             });
 
+            clearBatch({batchId; chunkIds;});
+
             return {error = null};
+        };
+
+        private func clearBatch({batchId: Nat; chunkIds: [Nat];} : {batchId: Nat; chunkIds: [Nat];}) {
+            for (chunkId in chunkIds.vals()) {
+                chunks.delete(chunkId);
+            };
+
+            batches.delete(batchId);
         };
 
         private func clearExpiredBatches() {
