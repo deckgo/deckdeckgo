@@ -1,3 +1,9 @@
+# 3.4.0 (2021-10-15)
+
+### Features
+
+- update list of code supported by prismjs
+
 # 3.3.1 (2021-06-18)
 
 ### Fix
