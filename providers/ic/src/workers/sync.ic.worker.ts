@@ -12,7 +12,7 @@ import {createManagerActor} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {uploadDeckBackgroundAssets, uploadSlideAssets} from '../utils/sync.storage.utils';
 import {deleteSlide, uploadDeckData, uploadSlideData} from '../utils/sync.data.utils';
-import {updateDeckStorageData, updateSlideStorageData} from '../utils/sync.utils';
+import {updateDeckBackground, updateSlideChart, updateSlideImages} from '../utils/sync.utils';
 
 export const uploadWorker = async (
   {
@@ -97,7 +97,7 @@ const uploadDeck = async ({
   const {src: imgSrc, storageFile}: SyncStorage = await uploadDeckBackgroundAssets({deck, host, identity, syncWindow});
 
   // 2. If we uploaded an asset, its URL has changed (no more local but available online)
-  const updateDeck: Deck = updateDeckStorageData({deck, imgSrc, storageFile});
+  const updateDeck: Deck = updateDeckBackground({deck, imgSrc, storageFile});
 
   // 3. We can update the data in the IC
   await uploadDeckData({deck: updateDeck, managerActor, identity, host});
@@ -172,7 +172,8 @@ const uploadSlide = async ({
   const {images, chart}: SyncStorageSlide = await uploadSlideAssets({slide, deckId, host, identity, syncWindow});
 
   // 2. If we uploaded assets, there URL have changed (no more local but available online)
-  const updateSlide: Slide = updateSlideStorageData({slide, images, chart});
+  const updateChartSlide: Slide = updateSlideChart({slide, chart});
+  const updateSlide: Slide = updateSlideImages({slide: updateChartSlide, images});
 
   // 3. We can update the data in the IC
   await uploadSlideData({slide: updateSlide, deckId, managerActor, identity, host});

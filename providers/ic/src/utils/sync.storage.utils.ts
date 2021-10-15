@@ -126,6 +126,8 @@ const uploadSlideChart = async ({
 
   const {src} = attributes;
 
+  // TODO: Folder and file size
+
   return uploadData({src, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_chart'});
 };
 

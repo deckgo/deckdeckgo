@@ -1,7 +1,7 @@
 import {Deck, Slide, StorageFile} from '@deckdeckgo/editor';
 import {SyncStorage} from '../types/sync.storage';
 
-export const updateDeckStorageData = ({
+export const updateDeckBackground = ({
   deck,
   storageFile,
   imgSrc
@@ -24,20 +24,7 @@ export const updateDeckStorageData = ({
   };
 };
 
-export const updateSlideStorageData = ({
-  slide,
-  images,
-  chart
-}: {
-  slide: Slide;
-  images: SyncStorage[] | undefined;
-  chart: SyncStorage | undefined;
-}): Slide => {
-  const updateSlide: Slide = updateSlideChart({slide, chart});
-  return updateSlideImages({slide: updateSlide, images});
-};
-
-const updateSlideImages = ({slide, images}: {slide: Slide; images: SyncStorage[] | undefined}): Slide => {
+export const updateSlideImages = ({slide, images}: {slide: Slide; images: SyncStorage[] | undefined}): Slide => {
   if (!images) {
     return {...slide};
   }
@@ -62,7 +49,7 @@ const updateSlideImages = ({slide, images}: {slide: Slide; images: SyncStorage[]
   };
 };
 
-const updateSlideChart = ({slide, chart}: {slide: Slide; chart: SyncStorage | undefined}): Slide => {
+export const updateSlideChart = ({slide, chart}: {slide: Slide; chart: SyncStorage | undefined}): Slide => {
   if (!chart) {
     return {...slide};
   }

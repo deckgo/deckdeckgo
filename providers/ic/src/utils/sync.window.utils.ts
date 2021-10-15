@@ -1,12 +1,12 @@
 import {get, set} from 'idb-keyval';
 
-import {Deck, deckSelector} from '@deckdeckgo/editor';
+import {Deck, deckSelector, Slide, StorageFile} from '@deckdeckgo/editor';
 
-import {SyncWindowDeckBackground} from '../types/sync.window';
+import {SyncWindowData} from '../types/sync.window';
 
-import {updateDeckStorageData} from './sync.utils';
+import {updateDeckBackground, updateSlideChart, updateSlideImages} from './sync.utils';
 
-export const syncDeckBackground = async (data: SyncWindowDeckBackground): Promise<void> => {
+export const syncDeckBackground = async (data: SyncWindowData): Promise<void> => {
   // 1. We update the deck in the DOM
   updateDeckDOM(data);
 
@@ -14,10 +14,38 @@ export const syncDeckBackground = async (data: SyncWindowDeckBackground): Promis
   await updateSlidesDOM(data);
 
   // 3. We update the indexedDB stored deck with the new downloadUrl.
-  await updateIDB(data);
+  await updateDeckIDB(data);
 };
 
-const updateDeckDOM = ({storageFile}: SyncWindowDeckBackground) => {
+export const syncSlideImage = async (data: SyncWindowData): Promise<void> => {
+  const {slideId} = data;
+
+  if (!slideId) {
+    return;
+  }
+
+  // 1. We update the slide in the DOM
+  await updateSlideImagesDOM(data);
+
+  // 2. We update the indexedDB stored slide with the new downloadUrl.
+  await updateSlideImagesIDB(data);
+};
+
+export const syncSlideChart = async (data: SyncWindowData): Promise<void> => {
+  const {slideId} = data;
+
+  if (!slideId) {
+    return;
+  }
+
+  // 1. We update the slide in the DOM
+  updateSlideChartDOM(data);
+
+  // 2. We update the indexedDB stored slide with the new downloadUrl.
+  await updateSlideChartIDB(data);
+};
+
+const updateDeckDOM = ({storageFile}: SyncWindowData) => {
   const backgroundElement: HTMLElement | null = document.querySelector(`${deckSelector} > *[slot="background"]`);
 
   const img: HTMLDeckgoLazyImgElement | null = backgroundElement?.querySelector('deckgo-lazy-img');
@@ -32,12 +60,36 @@ const updateDeckDOM = ({storageFile}: SyncWindowDeckBackground) => {
   img.imgAlt = name;
 };
 
-const updateSlidesDOM = async ({storageFile}: SyncWindowDeckBackground) => {
+const updateSlideImagesDOM = async ({slideId, storageFile}: SyncWindowData) => {
+  const slideElement: HTMLElement | null = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
+
+  const images: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement?.querySelectorAll('deckgo-lazy-img');
+
+  await updateImagesDOM({images, storageFile});
+};
+
+const updateSlideChartDOM = ({slideId, storageFile}: SyncWindowData) => {
+  const slideElement: HTMLDeckgoSlideChartElement | null = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
+
+  if (!slideElement || !slideElement.nodeName || slideElement.nodeName.toLowerCase() !== 'deckgo-slide-chart') {
+    return;
+  }
+
+  const {downloadUrl} = storageFile;
+
+  slideElement.src = downloadUrl;
+};
+
+const updateSlidesDOM = async ({storageFile}: SyncWindowData) => {
   const images: NodeListOf<HTMLDeckgoLazyImgElement> = document.querySelectorAll(
     `${deckSelector} .deckgo-slide-container:not([custom-background]) *[slot="background"] deckgo-lazy-img`
   );
 
-  if (!images) {
+  await updateImagesDOM({images, storageFile});
+};
+
+const updateImagesDOM = async ({storageFile, images}: {images: NodeListOf<HTMLDeckgoLazyImgElement>; storageFile: StorageFile}) => {
+  if (!images || images.length <= 0) {
     return;
   }
 
@@ -50,21 +102,60 @@ const updateSlidesDOM = async ({storageFile}: SyncWindowDeckBackground) => {
 
   const promises: Promise<void>[] = Array.from(images).map((img: HTMLDeckgoLazyImgElement) => updateImage(img));
 
-  if (!promises) {
-    return;
-  }
-
   await Promise.all(promises);
 };
 
-const updateIDB = async ({storageFile, src, deckId}: SyncWindowDeckBackground) => {
+const updateDeckIDB = async ({storageFile, src, deckId}: SyncWindowData) => {
   const deck: Deck = await get(`/decks/${deckId}`);
 
   if (!deck) {
     throw new Error('Deck not found and that is really weird here.');
   }
 
-  const updateDeck: Deck = updateDeckStorageData({deck, imgSrc: src, storageFile});
+  const updateDeck: Deck = updateDeckBackground({deck, imgSrc: src, storageFile});
 
   await set(`/decks/${deck.id}`, updateDeck);
 };
+
+const updateSlideImagesIDB = async ({storageFile, src, slideId, deckId}: SyncWindowData) => {
+  const slide: Slide = await getSlide({deckId, slideId});
+
+  const updateSlide: Slide = updateSlideImages({
+    slide,
+    images: [
+      {
+        src,
+        storageFile
+      }
+    ]
+  });
+
+  await setSlide({deckId, slideId, slide: updateSlide});
+};
+
+const updateSlideChartIDB = async ({storageFile, src, slideId, deckId}: SyncWindowData) => {
+  const slide: Slide = await getSlide({deckId, slideId});
+
+  const updateSlide: Slide = updateSlideChart({
+    slide,
+    chart: {
+      src,
+      storageFile
+    }
+  });
+
+  await setSlide({deckId, slideId, slide: updateSlide});
+};
+
+const getSlide = async ({deckId, slideId}: {deckId: string; slideId: string}): Promise<Slide> => {
+  const slide: Slide = await get(`/decks/${deckId}/slides/${slideId}`);
+
+  if (!slide) {
+    throw new Error('Slide not found and that is really weird here.');
+  }
+
+  return slide;
+};
+
+const setSlide = async ({deckId, slideId, slide}: {deckId: string; slideId: string; slide: Slide}) =>
+  set(`/decks/${deckId}/slides/${slideId}`, slide);
