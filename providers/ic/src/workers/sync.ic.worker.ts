@@ -12,7 +12,7 @@ import {createManagerActor} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {uploadDeckBackgroundAssets, uploadSlideAssets} from '../utils/sync.storage.utils';
 import {deleteSlide, uploadDeckData, uploadSlideData} from '../utils/sync.data.utils';
-import {updateDeckBackground, updateSlideChart, updateSlideImages} from '../utils/sync.utils';
+import {updateDeckBackground, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
 
 export const uploadWorker = async (
   {

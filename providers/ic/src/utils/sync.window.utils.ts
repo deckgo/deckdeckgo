@@ -4,7 +4,7 @@ import {Deck, deckSelector, Slide, StorageFile} from '@deckdeckgo/editor';
 
 import {SyncWindowData} from '../types/sync.window';
 
-import {updateDeckBackground, updateSlideChart, updateSlideImages} from './sync.utils';
+import {updateDeckBackground, updateSlideChart, updateSlideImages} from './sync.attributes.utils';
 
 export const syncDeckBackground = async (data: SyncWindowData): Promise<void> => {
   // 1. We update the deck in the DOM
