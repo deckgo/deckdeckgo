@@ -18,7 +18,7 @@ module {
 
     public class StorageStore() {
 
-        private let BATCH_EXPIRY_NANOS = 300_000_000_000;
+        private let BATCH_EXPIRY_NANOS = 300_000_000_000; // 300 seconds, 5 minutes
 
         private let batches: HashMap.HashMap<Nat, Batch> = HashMap.HashMap<Nat, Batch>(
             10, Nat.equal, Hash.hash,
@@ -93,7 +93,7 @@ module {
 
             let now: Time.Time = Time.now();
 
-            // TODO: clear expired batch and chunks?
+            clearExpiredBatches();
 
             batches.put(nextBatchID, {
                 key;
@@ -197,6 +197,28 @@ module {
             });
 
             return {error = null};
+        };
+
+        private func clearExpiredBatches() {
+            let now: Time.Time = Time.now();
+
+            // Remove expired batches
+            let batchEntries: Iter.Iter<(Nat, Batch)> = batches.entries();
+            for ((batchId: Nat, batch: Batch) in batchEntries) {
+                if (now > batch.expiresAt) {
+                    batches.delete(batchId);
+                };
+            };
+            
+            // Remove chunk without existing batches (those we just deleted above)
+            for ((chunkId: Nat, chunk: Chunk) in chunks.entries()) {
+                switch (batches.get(chunk.batchId)) {
+                    case (null) { 
+                        chunks.delete(chunkId); 
+                    };
+                    case (?batch) {};
+                };
+            };
         };
 
         public func preupgrade(): HashMap.HashMap<Text, Asset> {
