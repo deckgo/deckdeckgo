@@ -29,6 +29,7 @@
 ### Web Components
 
 - charts: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/charts/CHANGELOG.md))
+- highlight-code: v3.4.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/highlight-code/CHANGELOG.md))
 - word-cloud: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/word-cloud/CHANGELOG.md))
 
 <a name="4.9.0"></a>
