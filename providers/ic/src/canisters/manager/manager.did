@@ -3,7 +3,11 @@ type BucketId = principal;
 service : {
   deckEntries: () -> (vec BucketId) query;
   delDeck: (DeckId) -> (bool);
+  delStorage: () -> (bool);
   deleteDecksAdmin: (principal) -> ();
+  deleteStorageAdmin: (principal) -> ();
   getDeck: (DeckId) -> (opt BucketId) query;
+  getStorage: () -> (opt BucketId) query;
   initDeck: (DeckId) -> (BucketId);
+  initStorage: () -> (BucketId);
 }

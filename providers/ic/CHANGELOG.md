@@ -1,3 +1,15 @@
+# 1.0.0-beta.10 (2021-10-15)
+
+### Features
+
+- sync all assets (images from deck, slides and elements and charts data) on the IC
+
+# 1.0.0-beta.6 -> 9 (2021-10-07)
+
+### Features
+
+- sync deck background asset on the IC
+
 # 1.0.0-beta.5 (2021-10-07)
 
 ### Refactor

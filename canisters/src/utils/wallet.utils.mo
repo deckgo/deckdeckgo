@@ -1,7 +1,7 @@
 import Principal "mo:base/Principal";
 import Cycles "mo:base/ExperimentalCycles";
 
-import IC "../types/ic";
+import IC "../types/ic.types";
 
 module {
 

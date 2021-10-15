@@ -6,8 +6,27 @@ import {getIdentity} from '../auth/auth.ic';
 import {InternetIdentityAuth} from '../../types/identity';
 
 import {internetIdentityAuth} from '../../utils/identity.utils';
+import {syncDeckBackground, syncSlideChart, syncSlideImage} from '../../utils/sync.window.utils';
 
 import {uploadWorker} from '../../workers/sync.ic.worker';
+
+import {SyncWindow, SyncWindowEvent} from '../../types/sync.window';
+
+// - we cannot use postmessage because of CORS
+// - we have to path the function separately for serialisation reason
+const syncWindow: SyncWindow = async ({msg, data}: SyncWindowEvent) => {
+  if (msg === 'deckdeckgo_sync_deck_background') {
+    await syncDeckBackground(data);
+  }
+
+  if (msg === 'deckdeckgo_sync_slide_image') {
+    await syncSlideImage(data);
+  }
+
+  if (msg === 'deckdeckgo_sync_slide_chart') {
+    await syncSlideChart(data);
+  }
+};
 
 export const sync: Sync = async ({
   syncData,
@@ -25,11 +44,14 @@ export const sync: Sync = async ({
 
   const internetIdentity: InternetIdentityAuth = await internetIdentityAuth();
 
-  await uploadWorker({
-    internetIdentity,
-    syncData,
-    host: `${window.location}`
-  });
+  await uploadWorker(
+    {
+      internetIdentity,
+      syncData,
+      host: `${window.location}`
+    },
+    syncWindow
+  );
 
   await clean(syncData);
 };

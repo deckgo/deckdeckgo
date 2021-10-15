@@ -81,8 +81,8 @@ export class ShapeHelper {
 
       const size: number = 10; // percent
 
-      if (typeof (slideElement as any).getContainer === 'function') {
-        const container: HTMLElement = await (slideElement as any).getContainer();
+      if (typeof (slideElement as HTMLDeckgoSlideAspectRatioElement).getContainer === 'function') {
+        const container: HTMLElement = await (slideElement as HTMLDeckgoSlideAspectRatioElement).getContainer();
         const height: number = (container.offsetWidth * size * ratio) / container.offsetHeight;
 
         deckGoDrr.style.setProperty('--height', `${height}`);
@@ -152,15 +152,16 @@ export class ShapeHelper {
   }
 
   private addShape(deckGoDrr: HTMLElement, slideElement: HTMLElement, src: string, label: string, type: 'svg' | 'img') {
-    const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
+    const deckgoImg: HTMLDeckgoLazyImgElement = document.createElement(SlotType.IMG);
 
     if (type === 'img') {
-      (deckgoImg as any).imgSrc = src;
-      (deckgoImg as any).imgAlt = label;
+      deckgoImg.imgSrc = src;
+      deckgoImg.customLoader = true;
     } else {
-      (deckgoImg as any).svgSrc = src;
-      (deckgoImg as any).svgAlt = label;
+      deckgoImg.svgSrc = src;
     }
+
+    deckgoImg.imgAlt = label;
 
     deckGoDrr.appendChild(deckgoImg);
 

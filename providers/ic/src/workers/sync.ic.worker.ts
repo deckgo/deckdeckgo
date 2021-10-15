@@ -1,26 +1,31 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData, Slide, SlideData, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
+import {Deck, Slide, SyncData, SyncDataDeck, SyncDataSlide} from '@deckdeckgo/editor';
 
 import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
-import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
 
 import {InternetIdentityAuth} from '../types/identity';
+import {SyncWindow} from '../types/sync.window';
+import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
 
-import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../utils/deck.utils';
+import {createManagerActor} from '../utils/manager.utils';
 import {initIdentity} from '../utils/identity.utils';
-import {toArray, toTimestamp} from '../utils/did.utils';
+import {uploadDeckBackgroundAssets, uploadSlideAssets} from '../utils/sync.storage.utils';
+import {deleteSlide, uploadDeckData, uploadSlideData} from '../utils/sync.data.utils';
+import {updateDeckBackground, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
 
-export const uploadWorker = async ({
-  internetIdentity: {delegationChain, identityKey},
-  syncData,
-  host
-}: {
-  internetIdentity: InternetIdentityAuth;
-  syncData: SyncData | undefined;
-  host: string;
-}) => {
+export const uploadWorker = async (
+  {
+    internetIdentity: {delegationChain, identityKey},
+    syncData,
+    host
+  }: {
+    internetIdentity: InternetIdentityAuth;
+    syncData: SyncData | undefined;
+    host: string;
+  },
+  syncWindow: SyncWindow
+) => {
   if (!syncData) {
     return;
   }
@@ -35,94 +40,90 @@ export const uploadWorker = async ({
 
   const managerActor: ManagerActor = await createManagerActor({identity, host});
 
-  await uploadDecks({updateDecks, identity, managerActor, host});
+  await uploadDecks({updateDecks, identity, managerActor, host, syncWindow});
 
-  await uploadSlides({updateSlides, identity, managerActor, host});
+  await uploadSlides({updateSlides, identity, managerActor, host, syncWindow});
 
   await deleteSlides({deleteSlides: slidesToDelete, identity, managerActor, host});
 
   // TODO: handle delete decks here?
+
+  // TODO: upload slides assets and update DOM through postMessage
 };
 
 const uploadDecks = async ({
   updateDecks,
   identity,
   managerActor,
-  host
+  host,
+  syncWindow
 }: {
   updateDecks: SyncDataDeck[] | undefined;
   identity: Identity;
   managerActor: ManagerActor;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!updateDecks || updateDecks.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateDecks.map(({deck}: SyncDataDeck) =>
-    uploadDeck({deck, managerActor: managerActor, identity, host})
+    uploadDeck({deck, managerActor: managerActor, identity, host, syncWindow})
   );
   await Promise.all(promises);
 
-  console.log('C synced');
+  console.log('Deck IC synced');
 };
 
 const uploadDeck = async ({
   deck,
   managerActor,
   identity,
-  host
+  host,
+  syncWindow
 }: {
   deck: Deck;
   managerActor: ManagerActor;
   identity: Identity;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!deck) {
     return;
   }
 
-  console.log('Deck IC about to SET');
-  const t0 = performance.now();
+  // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
+  const {src: imgSrc, storageFile}: SyncStorage = await uploadDeckBackgroundAssets({deck, host, identity, syncWindow});
 
-  const bucket: Principal = await initDeckBucket({managerActor, deckId: deck.id});
+  // 2. If we uploaded an asset, its URL has changed (no more local but available online)
+  const updateDeck: Deck = updateDeckBackground({deck, imgSrc, storageFile});
 
-  const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
-
-  await deckBucket.set({
-    deckId: deck.id,
-    data: await toArray<DeckData>(deck.data),
-    created_at: toTimestamp((deck.data.created_at as Date) || new Date()),
-    updated_at: toTimestamp((deck.data.updated_at as Date) || new Date())
-  });
-
-  const t1 = performance.now();
-  console.log('Deck IC SET done', t1 - t0);
-
-  const t2 = performance.now();
-
-  // TODO: remove, just for test
-  console.log('Deck IC Get:', await deckBucket.get(), performance.now() - t2);
+  // 3. We can update the data in the IC
+  await uploadDeckData({deck: updateDeck, managerActor, identity, host});
 };
 
 const uploadSlides = async ({
   updateSlides,
   identity,
   managerActor,
-  host
+  host,
+  syncWindow
 }: {
   updateSlides: SyncDataSlide[] | undefined;
   identity: Identity;
   managerActor: ManagerActor;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!updateSlides || updateSlides.length <= 0) {
     return;
   }
 
   const promises: Promise<void>[] = updateSlides.map(({slide, deckId}: SyncDataSlide) =>
-    uploadSlide({slide, deckId, managerActor: managerActor, identity, host})
+    uploadSlide({slide, deckId, managerActor: managerActor, identity, host, syncWindow})
   );
+
   await Promise.all(promises);
 };
 
@@ -144,6 +145,7 @@ const deleteSlides = async ({
   const promises: Promise<void>[] = deleteSlides.map(({deckId, slideId}: SyncDataSlide) =>
     deleteSlide({slideId, deckId, identity, managerActor: managerActor, host})
   );
+
   await Promise.all(promises);
 };
 
@@ -152,71 +154,27 @@ const uploadSlide = async ({
   deckId,
   managerActor,
   identity,
-  host
+  host,
+  syncWindow
 }: {
   slide: Slide;
   deckId: string;
   managerActor: ManagerActor;
   identity: Identity;
   host: string;
+  syncWindow: SyncWindow;
 }) => {
   if (!slide) {
     return;
   }
 
-  console.log('Slide IC about to SET');
-  const t0 = performance.now();
+  // 1. We upload the asset to the IC (worker side), update DOM and IDB (window side for thread safe reason) and clean the asset from IDB
+  const {images, chart}: SyncStorageSlide = await uploadSlideAssets({slide, deckId, host, identity, syncWindow});
 
-  const t4 = performance.now();
-  const bucket: Principal = await initDeckBucket({managerActor, deckId});
+  // 2. If we uploaded assets, there URL have changed (no more local but available online)
+  const updateChartSlide: Slide = updateSlideChart({slide, chart});
+  const updateSlide: Slide = updateSlideImages({slide: updateChartSlide, images});
 
-  const t5 = performance.now();
-  console.log('Bucket retrieved', t5 - t4);
-
-  const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
-
-  await deckBucket.setSlide({
-    slideId: slide.id,
-    data: await toArray<SlideData>(slide.data),
-    created_at: toTimestamp((slide.data.created_at as Date) || new Date()),
-    updated_at: toTimestamp((slide.data.updated_at as Date) || new Date())
-  });
-
-  const t1 = performance.now();
-  console.log('Slide IC SET done', t1 - t0);
-
-  const t2 = performance.now();
-
-  // TODO: remove, just for test
-  console.log('Slide IC Get:', await deckBucket.getSlide(slide.id), performance.now() - t2);
-};
-
-const deleteSlide = async ({
-  slideId,
-  deckId,
-  managerActor,
-  identity,
-  host
-}: {
-  slideId: string;
-  deckId: string;
-  managerActor: ManagerActor;
-  identity: Identity;
-  host: string;
-}) => {
-  if (!slideId) {
-    return;
-  }
-
-  console.log('Slide IC about to DEL');
-  const t0 = performance.now();
-
-  const bucket: Principal = await initDeckBucket({managerActor, deckId});
-
-  const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
-
-  await deckBucket.delSlide(slideId);
-
-  const t1 = performance.now();
-  console.log('Slide IC DEL done', t1 - t0);
+  // 3. We can update the data in the IC
+  await uploadSlideData({slide: updateSlide, deckId, managerActor, identity, host});
 };

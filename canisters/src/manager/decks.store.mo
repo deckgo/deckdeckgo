@@ -9,7 +9,7 @@ import Cycles "mo:base/ExperimentalCycles";
 import Error "mo:base/Error";
 
 import Types "../types/types";
-import ManagerTypes "./manager.types";
+import CanisterTypes "../types/canister.types";
 
 import Utils "../utils/utils";
 
@@ -22,10 +22,10 @@ module {
     type DeckId = Types.DeckId;
     type SlideId = Types.SlideId;
 
-    type BucketId = ManagerTypes.BucketId;
-    type OwnerDeckBucket = ManagerTypes.OwnerDeckBucket;
-
     type DeckBucket = DeckBucket.DeckBucket;
+
+    type BucketId = CanisterTypes.BucketId;
+    type OwnerDeckBucket = CanisterTypes.Bucket<DeckBucket>;
 
     public class DecksStore() {
         private var decks: HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>> = HashMap.HashMap<UserId, HashMap.HashMap<DeckId, OwnerDeckBucket>>(10, Utils.isPrincipalEqual, Principal.hash);

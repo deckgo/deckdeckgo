@@ -1,0 +1,78 @@
+type UserId = principal;
+type StreamingStrategy = variant {
+                           Callback:
+                            record {
+                              callback: func () -> ();
+                              token: StreamingCallbackToken__1;
+                            };};
+type StreamingCallbackToken__1 = 
+ record {
+   contentEncoding: text;
+   fullPath: text;
+   index: nat;
+   token: text;
+ };
+type StreamingCallbackToken = 
+ record {
+   contentEncoding: text;
+   fullPath: text;
+   index: nat;
+   token: text;
+ };
+type StreamingCallbackHttpResponse = 
+ record {
+   body: vec nat8;
+   token: opt StreamingCallbackToken__1;
+ };
+type StorageBucket = 
+ service {
+   commit_batch:
+    (record {
+       batchId: nat;
+       chunkIds: vec nat;
+       contentType: text;
+     }) -> ();
+   create_batch: (AssetKey) -> (record {batchId: nat;});
+   create_chunk: (Chunk) -> (record {chunkId: nat;});
+   del: (record {
+           fullPath: text;
+           token: text;
+         }) -> ();
+   http_request: (HttpRequest) -> (HttpResponse) query;
+   http_request_streaming_callback: (StreamingCallbackToken) ->
+    (StreamingCallbackHttpResponse) query;
+   list: (opt text) -> (vec AssetKey) query;
+   transferCycles: () -> ();
+ };
+type HttpResponse = 
+ record {
+   body: vec nat8;
+   headers: vec HeaderField;
+   status_code: nat16;
+   streaming_strategy: opt StreamingStrategy;
+ };
+type HttpRequest = 
+ record {
+   body: vec nat8;
+   headers: vec HeaderField;
+   method: text;
+   url: text;
+ };
+type HeaderField = 
+ record {
+   text;
+   text;
+ };
+type Chunk = 
+ record {
+   batchId: nat;
+   content: vec nat8;
+ };
+type AssetKey = 
+ record {
+   folder: text;
+   fullPath: text;
+   name: text;
+   token: text;
+ };
+service : (UserId) -> StorageBucket
