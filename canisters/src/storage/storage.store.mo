@@ -72,6 +72,19 @@ module {
             };
         };
 
+        public func deleteAsset(fullPath: Text, token: Text): ({#asset: Asset; #error: Text}) {
+            let (result: {#asset: Asset; #error: Text;}) = getAsset(fullPath, token);
+
+            switch (result) {
+                case (#asset asset) {
+                    assets.delete(fullPath);
+                };
+                case (#error error) {};
+            };
+
+            return result;
+        };
+
         public func getKeys(folder: ?Text): [AssetKey] {
             let entries: Iter.Iter<(Text, Asset)> = assets.entries();
             let keys: Iter.Iter<AssetKey> = Iter.map(entries, func ((fullPath: Text, value: Asset)) : AssetKey { value.key });

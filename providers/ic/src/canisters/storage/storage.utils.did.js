@@ -59,6 +59,7 @@ export const idlFactory = ({IDL}) => {
     ),
     create_batch: IDL.Func([AssetKey], [IDL.Record({batchId: IDL.Nat})], []),
     create_chunk: IDL.Func([Chunk], [IDL.Record({chunkId: IDL.Nat})], []),
+    del: IDL.Func([IDL.Record({token: IDL.Text, fullPath: IDL.Text})], [], []),
     http_request: IDL.Func([HttpRequest], [HttpResponse], ['query']),
     http_request_streaming_callback: IDL.Func([StreamingCallbackToken], [StreamingCallbackHttpResponse], ['query']),
     list: IDL.Func([IDL.Opt(IDL.Text)], [IDL.Vec(AssetKey)], ['query']),

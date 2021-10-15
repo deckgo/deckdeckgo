@@ -34,6 +34,10 @@ type StorageBucket =
      }) -> ();
    create_batch: (AssetKey) -> (record {batchId: nat;});
    create_chunk: (Chunk) -> (record {chunkId: nat;});
+   del: (record {
+           fullPath: text;
+           token: text;
+         }) -> ();
    http_request: (HttpRequest) -> (HttpResponse) query;
    http_request_streaming_callback: (StreamingCallbackToken) ->
     (StreamingCallbackHttpResponse) query;

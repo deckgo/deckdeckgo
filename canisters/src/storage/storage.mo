@@ -198,7 +198,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     /**
-     * List
+     * List and admin
      */
 
     public shared query({ caller }) func list(folder: ?Text) : async [AssetKey] {
@@ -208,6 +208,21 @@ actor class StorageBucket(owner: Types.UserId) = this {
 
         let keys: [AssetKey] = storageStore.getKeys(folder);
         return keys;
+    };
+
+    public shared({ caller }) func del({fullPath: Text; token: Text;}: {fullPath: Text; token: Text;}) : async () {
+        if (Utils.isPrincipalNotEqual(caller, user)) {
+            throw Error.reject("User does not have the permission to delete an asset.");
+        };
+
+        let (result: {#asset: Asset; #error: Text;}) = storageStore.deleteAsset(fullPath, token);
+
+        switch (result) {
+            case (#asset asset) {};
+            case (#error error) {
+                throw Error.reject("Asset cannot be deleted: " # error);
+            };
+        };
     };
 
     /**
