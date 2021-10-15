@@ -43,7 +43,8 @@ export const uploadDeckBackgroundAssets = async ({
     identity,
     host,
     syncWindow,
-    msg: 'deckdeckgo_sync_deck_background'
+    msg: 'deckdeckgo_sync_deck_background',
+    folder: 'images'
   });
 };
 
@@ -99,7 +100,16 @@ const uploadSlideImages = async ({
   const promises: Promise<SyncStorage>[] | undefined = results?.map((result: string[]) => {
     const imgSrc: string = result[5];
 
-    return uploadData({src: imgSrc, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_image'});
+    return uploadData({
+      src: imgSrc,
+      deckId,
+      slideId: slide.id,
+      identity,
+      host,
+      syncWindow,
+      msg: 'deckdeckgo_sync_slide_image',
+      folder: 'images'
+    });
   });
 
   return Promise.all(promises);
@@ -126,9 +136,7 @@ const uploadSlideChart = async ({
 
   const {src} = attributes;
 
-  // TODO: Folder and file size
-
-  return uploadData({src, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_chart'});
+  return uploadData({src, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_chart', folder: 'data'});
 };
 
 const uploadData = ({
@@ -138,7 +146,8 @@ const uploadData = ({
   host,
   identity,
   syncWindow,
-  msg
+  msg,
+  folder
 }: {
   src: string | undefined;
   deckId: string;
@@ -147,6 +156,7 @@ const uploadData = ({
   identity: Identity;
   syncWindow: SyncWindow;
   msg: SyncWindowEventMsg;
+  folder: 'images' | 'data';
 }): Promise<SyncStorage> => {
   return new Promise<SyncStorage>(async (resolve, reject) => {
     try {
@@ -173,7 +183,7 @@ const uploadData = ({
       // 1. We upload the file to the storage cloud
       const storageFile: StorageFile | undefined = await uploadFileIC({
         data,
-        folder: 'images',
+        folder,
         maxSize: 10485760,
         identity,
         host
