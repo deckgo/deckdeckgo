@@ -31,7 +31,8 @@
     "dashboard": "Dashboard",
     "poll": "Umfrage",
     "remote_control": "Fernsteuerung",
-    "editor": "Editor"
+    "editor": "Editor",
+    "presentations": "Präsentationen"
   },
   "links": {
     "home": "Home",

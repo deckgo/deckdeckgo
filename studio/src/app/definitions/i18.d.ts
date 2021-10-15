@@ -33,6 +33,7 @@ interface I18nMenu {
   poll: string;
   remote_control: string;
   editor: string;
+  presentations: string;
 }
 
 interface I18nLinks {

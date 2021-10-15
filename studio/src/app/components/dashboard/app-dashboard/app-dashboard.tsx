@@ -295,7 +295,7 @@ export class AppDashboard {
   private renderAnonymousContent() {
     return (
       <main class="ion-padding fit">
-        <h1>{i18n.state.nav.dashboard}</h1>
+        <h1>{i18n.state.menu.presentations}</h1>
 
         {this.renderNotLoggedInContent()}
       </main>
