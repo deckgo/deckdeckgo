@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   schedule:
-    - cron: "0 0 * * 4"
+    - cron: '0 0 * * 4'
 
 jobs:
   build:
@@ -13,6 +13,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Set Node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Install Dependencies
         run: npm ci
         working-directory: ./site
@@ -28,5 +32,5 @@ jobs:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: "default"
-          PROJECT_PATH: "./site"
+          PROJECT_ID: 'default'
+          PROJECT_PATH: './site'
