@@ -33,7 +33,7 @@ export class LangService {
 
   private initDefaultLang() {
     const browserLang: string | undefined = this.getBrowserLang();
-    i18n.state.lang = /(es|en|de)/gi.test(browserLang) ? (browserLang as Languages) : 'en';
+    i18n.state.lang = /(es|en|de|nl)/gi.test(browserLang) ? (browserLang as Languages) : 'en';
   }
 
   /**
