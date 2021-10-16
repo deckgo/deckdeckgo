@@ -2,20 +2,20 @@ import {Build} from '@stencil/core';
 
 import {deckSelector, selectSlide} from '@deckdeckgo/editor';
 
-import remoteStore from '../../../../stores/remote.store';
-
-import {componentOnReady} from '../../../../utils/ionic/ionic.overlay';
+import {componentOnReady} from '../../../utils/ionic/ionic.overlay';
 
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';
 import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, DeckdeckgoSlideDefinition} from '@deckdeckgo/types';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
+import remoteStore from '../../../stores/remote.store';
 
-import {RemoteService} from '../../../../services/editor/remote/remote.service';
+import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
-export class RemoteEventsHandler {
+import {RemoteService} from '../../../services/editor/remote/remote.service';
+
+export class RemoteEvents {
   private el: HTMLElement;
 
   private remoteService: RemoteService;

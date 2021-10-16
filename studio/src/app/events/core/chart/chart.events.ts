@@ -1,6 +1,6 @@
 import {get} from 'idb-keyval';
 
-export class ChartEventsHandler {
+export class ChartEvents {
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (document) {

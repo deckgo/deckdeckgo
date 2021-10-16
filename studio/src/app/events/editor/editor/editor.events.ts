@@ -1,6 +1,6 @@
-import {redo, undo} from '../../../../utils/editor/undo-redo.utils';
+import {redo, undo} from '../../../utils/editor/undo-redo.utils';
 
-export class EditorEventsHandler {
+export class EditorEvents {
   private mainRef: HTMLElement;
   private actionsEditorRef: HTMLAppActionsEditorElement | undefined;
 

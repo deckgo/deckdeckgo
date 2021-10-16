@@ -23,8 +23,8 @@ import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
 import {initTemplates} from '../../../providers/data/template/template.provider';
 
-import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
-import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import {ImageEvents} from '../../../events/core/image/image.events';
+import {ChartEvents} from '../../../events/core/chart/chart.events';
 
 interface DeckAndFirstSlide {
   deck: Deck;
@@ -53,8 +53,8 @@ export class AppDecks {
 
   private decks: DeckAndFirstSlide[] = null;
 
-  private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
-  private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
+  private imageEvents: ImageEvents = new ImageEvents();
+  private chartEvents: ChartEvents = new ChartEvents();
 
   private destroyListener;
 
@@ -65,8 +65,8 @@ export class AppDecks {
   }
 
   async componentWillLoad() {
-    await this.imageEventsHandler.init();
-    await this.chartEventsHandler.init();
+    await this.imageEvents.init();
+    await this.chartEvents.init();
   }
 
   async componentDidLoad() {
@@ -105,8 +105,8 @@ export class AppDecks {
       this.destroyListener();
     }
 
-    this.imageEventsHandler.destroy();
-    this.chartEventsHandler.destroy();
+    this.imageEvents.destroy();
+    this.chartEvents.destroy();
   }
 
   private async fetchFirstSlides(decks: Deck[]): Promise<DeckAndFirstSlide[]> {

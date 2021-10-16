@@ -2,7 +2,7 @@ import type {DeckDeckGoCustomLoad} from '@deckdeckgo/lazy-img';
 
 import {get} from 'idb-keyval';
 
-export class ImageEventsHandler {
+export class ImageEvents {
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (document) {
