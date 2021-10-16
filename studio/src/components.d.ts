@@ -63,11 +63,13 @@ export namespace Components {
         "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
+    interface AppAssetFiles {
+        "folder": 'data' | 'images';
+    }
     interface AppAssetImage {
         "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
     }
     interface AppAssets {
-        "folder": 'data' | 'images';
     }
     interface AppAvatar {
         "ariaLabel": string;
@@ -348,8 +350,6 @@ export namespace Components {
     }
     interface AppSpinner {
     }
-    interface AppStorage {
-    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -459,6 +459,12 @@ declare global {
     var HTMLAppActionsElementElement: {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
+    };
+    interface HTMLAppAssetFilesElement extends Components.AppAssetFiles, HTMLStencilElement {
+    }
+    var HTMLAppAssetFilesElement: {
+        prototype: HTMLAppAssetFilesElement;
+        new (): HTMLAppAssetFilesElement;
     };
     interface HTMLAppAssetImageElement extends Components.AppAssetImage, HTMLStencilElement {
     }
@@ -1006,12 +1012,6 @@ declare global {
         prototype: HTMLAppSpinnerElement;
         new (): HTMLAppSpinnerElement;
     };
-    interface HTMLAppStorageElement extends Components.AppStorage, HTMLStencilElement {
-    }
-    var HTMLAppStorageElement: {
-        prototype: HTMLAppStorageElement;
-        new (): HTMLAppStorageElement;
-    };
     interface HTMLAppSyncInfoElement extends Components.AppSyncInfo, HTMLStencilElement {
     }
     var HTMLAppSyncInfoElement: {
@@ -1141,6 +1141,7 @@ declare global {
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-editor": HTMLAppActionsEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
+        "app-asset-files": HTMLAppAssetFilesElement;
         "app-asset-image": HTMLAppAssetImageElement;
         "app-assets": HTMLAppAssetsElement;
         "app-avatar": HTMLAppAvatarElement;
@@ -1232,7 +1233,6 @@ declare global {
         "app-slides-aside": HTMLAppSlidesAsideElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
-        "app-storage": HTMLAppStorageElement;
         "app-sync-info": HTMLAppSyncInfoElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
@@ -1315,12 +1315,14 @@ declare namespace LocalJSX {
         "slideCopy"?: EventEmitter;
         "slideTransform"?: EventEmitter;
     }
+    interface AppAssetFiles {
+        "folder": 'data' | 'images';
+        "onSelectAsset"?: (event: CustomEvent<StorageFile>) => void;
+    }
     interface AppAssetImage {
         "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
     }
     interface AppAssets {
-        "folder": 'data' | 'images';
-        "onSelectAsset"?: (event: CustomEvent<StorageFile>) => void;
     }
     interface AppAvatar {
         "ariaLabel"?: string;
@@ -1643,8 +1645,6 @@ declare namespace LocalJSX {
     }
     interface AppSpinner {
     }
-    interface AppStorage {
-    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -1725,6 +1725,7 @@ declare namespace LocalJSX {
         "app-actions-deck": AppActionsDeck;
         "app-actions-editor": AppActionsEditor;
         "app-actions-element": AppActionsElement;
+        "app-asset-files": AppAssetFiles;
         "app-asset-image": AppAssetImage;
         "app-assets": AppAssets;
         "app-avatar": AppAvatar;
@@ -1816,7 +1817,6 @@ declare namespace LocalJSX {
         "app-slides-aside": AppSlidesAside;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
-        "app-storage": AppStorage;
         "app-sync-info": AppSyncInfo;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
@@ -1851,6 +1851,7 @@ declare module "@stencil/core" {
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-editor": LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
+            "app-asset-files": LocalJSX.AppAssetFiles & JSXBase.HTMLAttributes<HTMLAppAssetFilesElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
             "app-assets": LocalJSX.AppAssets & JSXBase.HTMLAttributes<HTMLAppAssetsElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
@@ -1942,7 +1943,6 @@ declare module "@stencil/core" {
             "app-slides-aside": LocalJSX.AppSlidesAside & JSXBase.HTMLAttributes<HTMLAppSlidesAsideElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
-            "app-storage": LocalJSX.AppStorage & JSXBase.HTMLAttributes<HTMLAppStorageElement>;
             "app-sync-info": LocalJSX.AppSyncInfo & JSXBase.HTMLAttributes<HTMLAppSyncInfoElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;

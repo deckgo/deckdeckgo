@@ -12,10 +12,10 @@ import {AppIcon} from '../../app-icon/app-icon';
 import {getFiles} from '../../../../providers/storage/storage.provider';
 
 @Component({
-  tag: 'app-assets',
-  styleUrl: 'app-assets.scss'
+  tag: 'app-asset-files',
+  styleUrl: 'app-asset-files.scss'
 })
-export class AppAssets implements ComponentInterface {
+export class AppAssetFiles implements ComponentInterface {
   private paginationNext: string | null;
 
   @Prop()

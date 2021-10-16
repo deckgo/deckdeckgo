@@ -11,10 +11,10 @@ import {signIn} from '../../../utils/core/signin.utils';
 import {ImageEvents} from '../../../events/core/image/image.events';
 
 @Component({
-  tag: 'app-storage',
-  styleUrl: 'app-storage.scss'
+  tag: 'app-assets',
+  styleUrl: 'app-assets.scss'
 })
-export class AppStorage implements ComponentInterface {
+export class AppAssets implements ComponentInterface {
   @State()
   private loading: boolean = true;
 
@@ -74,7 +74,7 @@ export class AppStorage implements ComponentInterface {
       <Fragment>
         {this.renderFilter()}
 
-        <app-assets folder={this.folder}></app-assets>
+        <app-asset-files folder={this.folder}></app-asset-files>
       </Fragment>
     );
   }

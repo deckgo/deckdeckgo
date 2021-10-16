@@ -150,6 +150,7 @@ export const config: Config = {
         'app-signin-page',
         'app-editor',
         'app-assets',
+        'app-asset-files',
         'app-asset-image'
       ]
     }
