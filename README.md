@@ -128,7 +128,7 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 
 | Project               | Version                                                                                        |              Links              |               Changelog               |
 | --------------------- | ---------------------------------------------------------------------------------------------- | :-----------------------------: | :-----------------------------------: |
-| **AVS (Backend)**     | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.0.0&color=success) |  [`README`](backend/README.md)  |  [`CHANGELOG`](backend/CHANGELOG.md)  |
+| **AWS (Backend)**     | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.0.0&color=success) |  [`README`](backend/README.md)  |  [`CHANGELOG`](backend/CHANGELOG.md)  |
 | **AWS (Infra)**       | ![version](https://img.shields.io/static/v1.svg?label=production&message=up&color=success)     |   [`README`](infra/README.md)   |                                       |
 | **Firebase (Cloud)**  | ![version](https://img.shields.io/static/v1.svg?label=production&message=v2.2.1&color=success) |   [`README`](cloud/README.md)   |   [`CHANGELOG`](cloud/CHANGELOG.md)   |
 | **Internet Computer** | ![version](https://img.shields.io/static/v1.svg?label=alpha&message=up&color=blueviolet)       | [`README`](canisters/README.md) | [`CHANGELOG`](canisters/CHANGELOG.md) |
