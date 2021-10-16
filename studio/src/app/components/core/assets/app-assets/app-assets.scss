@@ -1,0 +1,56 @@
+app-storage-files {
+  display: grid;
+  grid-template-columns: repeat(8, calc((100% - (7 * 16px)) / 8));
+  grid-auto-flow: row dense;
+  grid-gap: var(--deckgo-images-padding, 16px);
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(4, calc((100% - (3 * 16px)) / 4));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, calc((100% - (2 * 16px)) / 3));
+  }
+
+  article {
+    position: relative;
+
+    &.data {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      ion-icon {
+        font-size: 3rem;
+      }
+
+      ion-label {
+        max-width: 100%;
+        text-align: center;
+        padding-top: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: var(--font-size-very-small);
+      }
+    }
+  }
+
+  ion-infinite-scroll.infinite-scroll-enabled {
+    font-size: var(--font-size-very-small);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    div.infinite-loading {
+      margin-bottom: 0;
+    }
+  }
+
+  ion-label.empty {
+    grid-column-start: 1;
+    grid-column-end: 9;
+  }
+}

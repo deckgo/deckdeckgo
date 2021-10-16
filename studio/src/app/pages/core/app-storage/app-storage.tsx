@@ -1,11 +1,14 @@
 import {Component, h, Fragment, State, ComponentInterface} from '@stencil/core';
 
+import {debounce} from '@deckdeckgo/utils';
+
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
-import {debounce} from '@deckdeckgo/utils';
+
+import {ImageEvents} from '../../../events/core/image/image.events';
 
 @Component({
   tag: 'app-storage',
@@ -15,13 +18,20 @@ export class AppStorage implements ComponentInterface {
   @State()
   private loading: boolean = true;
 
+  @State()
+  private folder: 'data' | 'images' = 'images';
+
   private readonly debounceLoading: () => void;
+
+  private imageEvents: ImageEvents = new ImageEvents();
 
   constructor() {
     this.debounceLoading = debounce(() => (this.loading = false), 750);
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
+    await this.imageEvents.init();
+
     this.debounceLoading();
   }
 
@@ -60,6 +70,29 @@ export class AppStorage implements ComponentInterface {
   }
 
   private renderGuardedContent() {
-    return <div>TODO</div>;
+    return (
+      <Fragment>
+        {this.renderFilter()}
+
+        <app-storage-files folder={this.folder}></app-storage-files>
+      </Fragment>
+    );
+  }
+
+  private renderFilter() {
+    return (
+      <div class="select">
+        <ion-select
+          value={'images'}
+          placeholder={i18n.state.editor.list}
+          onIonChange={($event: CustomEvent) => (this.folder = $event.detail.value)}
+          interface="popover"
+          mode="md"
+          class="ion-padding-start ion-padding-end">
+          <ion-select-option value="images">Images</ion-select-option>
+          <ion-select-option value="data">Data</ion-select-option>
+        </ion-select>
+      </div>
+    );
   }
 }

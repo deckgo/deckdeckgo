@@ -148,7 +148,9 @@ export const config: Config = {
         'app-customization',
         'app-poll',
         'app-signin-page',
-        'app-editor'
+        'app-editor',
+        'app-assets',
+        'app-asset-image'
       ]
     }
   ],

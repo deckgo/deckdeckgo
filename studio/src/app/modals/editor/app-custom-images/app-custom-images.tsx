@@ -1,14 +1,11 @@
 import {Component, Element, Listen, State, h} from '@stencil/core';
 
-import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+import {StorageFile} from '@deckdeckgo/editor';
 
 import i18n from '../../../stores/i18n.store';
 
-import {Constants} from '../../../types/core/constants';
-
 import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
 
-import {getFiles} from '../../../providers/storage/storage.provider';
 import {StorageOfflineProvider} from '../../../providers/storage/storage.offline.provider';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
@@ -25,21 +22,7 @@ export class AppCustomImages {
   private imageHistoryService: ImageHistoryService;
 
   @State()
-  private imagesOdd: StorageFile[];
-
-  @State()
-  private imagesEven: StorageFile[];
-
-  @State()
-  private disableInfiniteScroll = false;
-
-  private paginationNext: string | null;
-
-  @State()
   private uploading: boolean = false;
-
-  @State()
-  private loading: boolean = true;
 
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
@@ -48,8 +31,6 @@ export class AppCustomImages {
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
-
-    await this.search();
   }
 
   @Listen('popstate', {target: 'window'})
@@ -61,90 +42,18 @@ export class AppCustomImages {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
 
-  private selectImage($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private async selectData(storageFile: StorageFile) {
+    if (this.uploading) {
+      return;
+    }
 
-      if (this.uploading) {
-        resolve();
-        return;
-      }
-
-      const image: StorageFile = $event.detail;
-
-      await this.selectAndClose(image);
-
-      resolve();
-    });
+    await this.selectAndClose(storageFile);
   }
 
-  private selectAndClose(image: StorageFile): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.imageHistoryService.push(image);
+  private async selectAndClose(image: StorageFile) {
+    await this.imageHistoryService.push(image);
 
-      await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(image);
-
-      resolve();
-    });
-  }
-
-  private search(reset: boolean = false): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const list: StorageFilesList = await getFiles({next: this.paginationNext, folder: 'images'});
-
-      if (!list) {
-        resolve();
-        return;
-      }
-
-      if (!list.items || list.items.length <= 0) {
-        this.emptyImages();
-
-        this.loading = false;
-
-        resolve();
-        return;
-      }
-
-      if (!this.imagesOdd || reset) {
-        this.imagesOdd = [];
-      }
-
-      if (!this.imagesEven || reset) {
-        this.imagesEven = [];
-      }
-
-      this.imagesOdd = [...this.imagesOdd, ...list.items.filter((_a, i) => !(i % 2))];
-      this.imagesEven = [...this.imagesEven, ...list.items.filter((_a, i) => i % 2)];
-
-      this.paginationNext = list.nextPageToken;
-
-      this.disableInfiniteScroll = list.items.length < Constants.STORAGE.MAX_QUERY_RESULTS || this.paginationNext === undefined;
-
-      this.loading = false;
-
-      resolve();
-    });
-  }
-
-  private emptyImages() {
-    this.imagesOdd = [];
-    this.imagesEven = [];
-
-    this.disableInfiniteScroll = true;
-  }
-
-  private searchNext(e: CustomEvent<void>): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.search();
-
-      (e.target as HTMLIonInfiniteScrollElement).complete();
-
-      resolve();
-    });
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(image);
   }
 
   private openFilePicker() {
@@ -196,21 +105,11 @@ export class AppCustomImages {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
-        <app-image-columns
-          imagesOdd={this.imagesOdd}
-          imagesEven={this.imagesEven}
-          onSelectImage={($event: CustomEvent) => this.selectImage($event)}></app-image-columns>
-
-        {this.renderImagesPlaceHolder()}
+        <app-assets
+          folder={'images'}
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-assets>
 
         <input type="file" accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp" onChange={() => this.upload()} />
-
-        <ion-infinite-scroll
-          threshold="100px"
-          disabled={this.disableInfiniteScroll}
-          onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
       </ion-content>,
       <ion-footer>
         <ion-toolbar>
@@ -218,25 +117,6 @@ export class AppCustomImages {
         </ion-toolbar>
       </ion-footer>
     ];
-  }
-
-  private renderImagesPlaceHolder() {
-    if (this.loading) {
-      return undefined;
-    }
-
-    if ((!this.imagesOdd || this.imagesOdd.length <= 0) && (!this.imagesEven || this.imagesEven.length <= 0)) {
-      return (
-        <div class="placeholder">
-          <div>
-            <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
-            <ion-label class="ion-text-center">{i18n.state.editor.your_collection_empty}</ion-label>
-          </div>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
   }
 
   private renderToolbarAction() {

@@ -6,10 +6,10 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
+import { Deck, SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
 import { SelectedElement } from "./app/types/editor/selected-element";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
-import { Deck, SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
@@ -62,6 +62,12 @@ export namespace Components {
         "slideTransform": EventEmitter;
         "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
+    }
+    interface AppAssetImage {
+        "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
+    }
+    interface AppAssets {
+        "folder": 'data' | 'images';
     }
     interface AppAvatar {
         "ariaLabel": string;
@@ -453,6 +459,18 @@ declare global {
     var HTMLAppActionsElementElement: {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
+    };
+    interface HTMLAppAssetImageElement extends Components.AppAssetImage, HTMLStencilElement {
+    }
+    var HTMLAppAssetImageElement: {
+        prototype: HTMLAppAssetImageElement;
+        new (): HTMLAppAssetImageElement;
+    };
+    interface HTMLAppAssetsElement extends Components.AppAssets, HTMLStencilElement {
+    }
+    var HTMLAppAssetsElement: {
+        prototype: HTMLAppAssetsElement;
+        new (): HTMLAppAssetsElement;
     };
     interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {
     }
@@ -1123,6 +1141,8 @@ declare global {
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-editor": HTMLAppActionsEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
+        "app-asset-image": HTMLAppAssetImageElement;
+        "app-assets": HTMLAppAssetsElement;
         "app-avatar": HTMLAppAvatarElement;
         "app-block": HTMLAppBlockElement;
         "app-border-radius": HTMLAppBorderRadiusElement;
@@ -1294,6 +1314,13 @@ declare namespace LocalJSX {
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
         "slideTransform"?: EventEmitter;
+    }
+    interface AppAssetImage {
+        "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
+    }
+    interface AppAssets {
+        "folder": 'data' | 'images';
+        "onSelectAsset"?: (event: CustomEvent<StorageFile>) => void;
     }
     interface AppAvatar {
         "ariaLabel"?: string;
@@ -1698,6 +1725,8 @@ declare namespace LocalJSX {
         "app-actions-deck": AppActionsDeck;
         "app-actions-editor": AppActionsEditor;
         "app-actions-element": AppActionsElement;
+        "app-asset-image": AppAssetImage;
+        "app-assets": AppAssets;
         "app-avatar": AppAvatar;
         "app-block": AppBlock;
         "app-border-radius": AppBorderRadius;
@@ -1822,6 +1851,8 @@ declare module "@stencil/core" {
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-editor": LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
+            "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
+            "app-assets": LocalJSX.AppAssets & JSXBase.HTMLAttributes<HTMLAppAssetsElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
             "app-block": LocalJSX.AppBlock & JSXBase.HTMLAttributes<HTMLAppBlockElement>;
             "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;

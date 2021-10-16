@@ -5,6 +5,6 @@ export const Constants = {
     MIN_SLIDES: 3
   },
   STORAGE: {
-    MAX_QUERY_RESULTS: 20
+    MAX_QUERY_RESULTS: 100
   }
 };
