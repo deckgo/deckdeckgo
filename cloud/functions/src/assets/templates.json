@@ -13,17 +13,17 @@
           {
             "name": "days",
             "type": "number",
-            "placeholder": "The amount of days before your presentations"
+            "placeholder": "The amount of days before your presentation"
           },
           {
             "name": "hours",
             "type": "number",
-            "placeholder": "The amount of hours before your presentations (max. 23)"
+            "placeholder": "The amount of hours before your presentation (max. 23)"
           },
           {
             "name": "minutes",
             "type": "number",
-            "placeholder": "The amount of minutes before your presentations (max. 59)"
+            "placeholder": "The amount of minutes before your presentation (max. 59)"
           },
           {
             "name": "until",
