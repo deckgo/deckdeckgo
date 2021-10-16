@@ -129,7 +129,7 @@ function getRemoteControlInfo(connected: boolean) {
         </ion-item>
     </ion-list>
 
-    <p class="ion-no-margin" style="padding-top: 8px; margin-bottom: 0; font-size: 12px;">If you can't connect or loose the connection, toggle off and on the remote to restart.</p>
+    <p class="ion-no-margin" style="padding-top: 8px; margin-bottom: 0; font-size: 12px;">If you can't connect or lose the connection, toggle off and on the remote to restart.</p>
 
     <p class="ion-no-margin ion-padding-top" style="margin-bottom: 0; font-size: 12px;">Your presentation's: ${remoteRoom}</p>`;
   }
