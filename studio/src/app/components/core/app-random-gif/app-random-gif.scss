@@ -1,16 +1,19 @@
 app-random-gif {
-  div.gif-container {
-    border-radius: 50%;
-    overflow: hidden;
-    --deckgo-lazy-img-width: 10rem;
-    --deckgo-lazy-img-height: 10rem;
-    width: 10rem;
-    height: 10rem;
-    min-width: 10rem;
-    min-height: 10rem;
+  display: block;
 
-    border: 1px solid var(--ion-color-tertiary);
-    background: rgba(var(--ion-color-tertiary-rgb), 0.4);
-    box-shadow: 1px 2px 8px 2px rgba(var(--ion-color-tertiary-rgb), 0.2);
+  border-radius: 50%;
+  overflow: hidden;
+
+  --deckgo-lazy-img-width: 10rem;
+  --deckgo-lazy-img-height: 10rem;
+  width: 10rem;
+  height: 10rem;
+  min-width: 10rem;
+  min-height: 10rem;
+
+  background: transparent;
+
+  &.imgLoaded {
+    box-shadow: 1px 2px 8px 2px rgba(var(--ion-color-dark-rgb), 0.2);
   }
 }

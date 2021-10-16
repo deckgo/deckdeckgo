@@ -1,4 +1,4 @@
-import {Component, h, Prop, State} from '@stencil/core';
+import {Component, ComponentInterface, h, Host, Listen, Prop, State} from '@stencil/core';
 
 import {TenorProvider} from '../../../providers/tenor/tenor.provider';
 
@@ -6,12 +6,15 @@ import {TenorProvider} from '../../../providers/tenor/tenor.provider';
   tag: 'app-random-gif',
   styleUrl: 'app-random-gif.scss'
 })
-export class AppRandomGif {
+export class AppRandomGif implements ComponentInterface {
   @Prop()
   keyword: string;
 
   @State()
-  private gif: TenorGif;
+  private gif: TenorGif | undefined;
+
+  @State()
+  private imgLoaded: boolean = false;
 
   private tenorProvider: TenorProvider;
 
@@ -19,27 +22,27 @@ export class AppRandomGif {
     this.tenorProvider = TenorProvider.getInstance();
   }
 
-  async componentDidLoad() {
-    await this.initRandomGifUrl();
+  componentWillLoad() {
+    this.initRandomGifUrl().then((gif: TenorGif | undefined) => (this.gif = gif));
   }
 
-  private initRandomGifUrl(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.keyword || this.keyword === undefined || this.keyword === '') {
-        resolve();
-        return;
-      }
+  @Listen('innerImgDidLoad')
+  onInnerImgDidLoad() {
+    this.imgLoaded = true;
+  }
 
-      const gifResponse: TenorSearchResponse | undefined = await this.tenorProvider.getRandomGif(this.keyword);
+  private async initRandomGifUrl(): Promise<TenorGif | undefined> {
+    if (!this.keyword || this.keyword === '') {
+      return undefined;
+    }
 
-      this.gif = gifResponse?.results?.[0] ?? null;
+    const gifResponse: TenorSearchResponse | undefined = await this.tenorProvider.getRandomGif(this.keyword);
 
-      resolve();
-    });
+    return gifResponse?.results?.[0];
   }
 
   render() {
-    return <div class="gif-container ion-margin">{this.renderGif()}</div>;
+    return <Host class={`ion-margin ${this.imgLoaded ? 'imgLoaded' : ''}`}>{this.renderGif()}</Host>;
   }
 
   private renderGif() {
@@ -49,8 +52,8 @@ export class AppRandomGif {
           imgSrc={this.gif.media[0].nanogif.url}
           imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
       );
-    } else {
-      return undefined;
     }
+
+    return undefined;
   }
 }

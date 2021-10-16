@@ -27,6 +27,11 @@
     "settings": "Ajustes",
     "dashboard": "Panel"
   },
+  "not_found": {
+    "title": "Not Found",
+    "text": "No pudimos encontrar la página que buscaba. {0}.",
+    "action": "Al editor"
+  },
   "menu": {
     "dashboard": "Panel",
     "poll": "Encuesta",

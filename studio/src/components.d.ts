@@ -23,6 +23,8 @@ import { IonicReorderEvent } from "./app/utils/ionic/ionic.reorder.event";
 import { ItemReorderEventDetail } from "@ionic/core";
 import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
+    interface App404 {
+    }
     interface AppActionAddSlide {
         "popoverCssClass": string;
         "slidesLength": number | undefined;
@@ -402,6 +404,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLApp404Element extends Components.App404, HTMLStencilElement {
+    }
+    var HTMLApp404Element: {
+        prototype: HTMLApp404Element;
+        new (): HTMLApp404Element;
+    };
     interface HTMLAppActionAddSlideElement extends Components.AppActionAddSlide, HTMLStencilElement {
     }
     var HTMLAppActionAddSlideElement: {
@@ -1099,6 +1107,7 @@ declare global {
         new (): HTMLAppYoutubeElement;
     };
     interface HTMLElementTagNameMap {
+        "app-404": HTMLApp404Element;
         "app-action-add-slide": HTMLAppActionAddSlideElement;
         "app-action-busy": HTMLAppActionBusyElement;
         "app-action-help": HTMLAppActionHelpElement;
@@ -1218,6 +1227,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface App404 {
+    }
     interface AppActionAddSlide {
         "onAddSlide"?: (event: CustomEvent<JSX.IntrinsicElements>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
@@ -1668,6 +1679,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface IntrinsicElements {
+        "app-404": App404;
         "app-action-add-slide": AppActionAddSlide;
         "app-action-busy": AppActionBusy;
         "app-action-help": AppActionHelp;
@@ -1790,6 +1802,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "app-404": LocalJSX.App404 & JSXBase.HTMLAttributes<HTMLApp404Element>;
             "app-action-add-slide": LocalJSX.AppActionAddSlide & JSXBase.HTMLAttributes<HTMLAppActionAddSlideElement>;
             "app-action-busy": LocalJSX.AppActionBusy & JSXBase.HTMLAttributes<HTMLAppActionBusyElement>;
             "app-action-help": LocalJSX.AppActionHelp & JSXBase.HTMLAttributes<HTMLAppActionHelpElement>;

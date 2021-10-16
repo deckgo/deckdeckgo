@@ -27,6 +27,11 @@
     "settings": "Einstellungen",
     "dashboard": "Dashboard"
   },
+  "not_found": {
+    "title": "Not Found",
+    "text": "Wir konnten die von Ihnen gesuchte Seite nicht finden. {0}.",
+    "action": "Zum Editor"
+  },
   "menu": {
     "dashboard": "Dashboard",
     "poll": "Umfrage",

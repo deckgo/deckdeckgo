@@ -95,6 +95,7 @@ export const config: Config = {
         'app-links',
         'app-dashboard-deck-actions',
         'app-decks',
+        'app-404',
         'app-close-menu',
         'app-slide-warning',
         'app-slide-preview',
