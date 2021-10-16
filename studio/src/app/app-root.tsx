@@ -183,7 +183,8 @@ export class AppRoot {
           <ion-route url="/customization" component="app-customization" />
           <ion-route url="/templates" component="app-templates" />
 
-          <ion-route url="/dashboard" component="app-dashboard-page" />
+          <ion-route url="/dashboard" component="app-decks" />
+          <ion-route url="/decks" component="app-decks" />
 
           <ion-route url="/signin" component="app-signin-page" />
 

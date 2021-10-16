@@ -94,7 +94,7 @@ export const config: Config = {
         'app-template-showcase',
         'app-links',
         'app-dashboard-deck-actions',
-        'app-dashboard',
+        'app-decks',
         'app-close-menu',
         'app-slide-warning',
         'app-slide-preview',
@@ -147,7 +147,6 @@ export const config: Config = {
         'app-customization',
         'app-poll',
         'app-signin-page',
-        'app-dashboard-page',
         'app-editor'
       ]
     }

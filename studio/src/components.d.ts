@@ -128,12 +128,8 @@ export namespace Components {
     }
     interface AppCustomization {
     }
-    interface AppDashboard {
-    }
     interface AppDashboardDeckActions {
         "deck": Deck;
-    }
-    interface AppDashboardPage {
     }
     interface AppDeckDelete {
         "deckName": string;
@@ -151,6 +147,8 @@ export namespace Components {
     }
     interface AppDeckTransition {
         "deckElement": HTMLDeckgoDeckElement;
+    }
+    interface AppDecks {
     }
     interface AppDemo {
         "selectedElement": HTMLElement;
@@ -572,23 +570,11 @@ declare global {
         prototype: HTMLAppCustomizationElement;
         new (): HTMLAppCustomizationElement;
     };
-    interface HTMLAppDashboardElement extends Components.AppDashboard, HTMLStencilElement {
-    }
-    var HTMLAppDashboardElement: {
-        prototype: HTMLAppDashboardElement;
-        new (): HTMLAppDashboardElement;
-    };
     interface HTMLAppDashboardDeckActionsElement extends Components.AppDashboardDeckActions, HTMLStencilElement {
     }
     var HTMLAppDashboardDeckActionsElement: {
         prototype: HTMLAppDashboardDeckActionsElement;
         new (): HTMLAppDashboardDeckActionsElement;
-    };
-    interface HTMLAppDashboardPageElement extends Components.AppDashboardPage, HTMLStencilElement {
-    }
-    var HTMLAppDashboardPageElement: {
-        prototype: HTMLAppDashboardPageElement;
-        new (): HTMLAppDashboardPageElement;
     };
     interface HTMLAppDeckDeleteElement extends Components.AppDeckDelete, HTMLStencilElement {
     }
@@ -619,6 +605,12 @@ declare global {
     var HTMLAppDeckTransitionElement: {
         prototype: HTMLAppDeckTransitionElement;
         new (): HTMLAppDeckTransitionElement;
+    };
+    interface HTMLAppDecksElement extends Components.AppDecks, HTMLStencilElement {
+    }
+    var HTMLAppDecksElement: {
+        prototype: HTMLAppDecksElement;
+        new (): HTMLAppDecksElement;
     };
     interface HTMLAppDemoElement extends Components.AppDemo, HTMLStencilElement {
     }
@@ -1135,14 +1127,13 @@ declare global {
         "app-custom-data": HTMLAppCustomDataElement;
         "app-custom-images": HTMLAppCustomImagesElement;
         "app-customization": HTMLAppCustomizationElement;
-        "app-dashboard": HTMLAppDashboardElement;
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
-        "app-dashboard-page": HTMLAppDashboardPageElement;
         "app-deck-delete": HTMLAppDeckDeleteElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
         "app-deck-style": HTMLAppDeckStyleElement;
         "app-deck-transition": HTMLAppDeckTransitionElement;
+        "app-decks": HTMLAppDecksElement;
         "app-demo": HTMLAppDemoElement;
         "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
@@ -1365,14 +1356,10 @@ declare namespace LocalJSX {
     }
     interface AppCustomization {
     }
-    interface AppDashboard {
-    }
     interface AppDashboardDeckActions {
         "deck"?: Deck;
         "onDeckCloned"?: (event: CustomEvent<void>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
-    }
-    interface AppDashboardPage {
     }
     interface AppDeckDelete {
         "deckName"?: string;
@@ -1397,6 +1384,8 @@ declare namespace LocalJSX {
         "deckElement"?: HTMLDeckgoDeckElement;
         "onDeckNeedChange"?: (event: CustomEvent<DeckAction>) => void;
         "onTransitionChange"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppDecks {
     }
     interface AppDemo {
         "selectedElement"?: HTMLElement;
@@ -1707,14 +1696,13 @@ declare namespace LocalJSX {
         "app-custom-data": AppCustomData;
         "app-custom-images": AppCustomImages;
         "app-customization": AppCustomization;
-        "app-dashboard": AppDashboard;
         "app-dashboard-deck-actions": AppDashboardDeckActions;
-        "app-dashboard-page": AppDashboardPage;
         "app-deck-delete": AppDeckDelete;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
         "app-deck-style": AppDeckStyle;
         "app-deck-transition": AppDeckTransition;
+        "app-decks": AppDecks;
         "app-demo": AppDemo;
         "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
@@ -1830,14 +1818,13 @@ declare module "@stencil/core" {
             "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
             "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
             "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
-            "app-dashboard": LocalJSX.AppDashboard & JSXBase.HTMLAttributes<HTMLAppDashboardElement>;
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
-            "app-dashboard-page": LocalJSX.AppDashboardPage & JSXBase.HTMLAttributes<HTMLAppDashboardPageElement>;
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
             "app-deck-transition": LocalJSX.AppDeckTransition & JSXBase.HTMLAttributes<HTMLAppDeckTransitionElement>;
+            "app-decks": LocalJSX.AppDecks & JSXBase.HTMLAttributes<HTMLAppDecksElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
             "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;

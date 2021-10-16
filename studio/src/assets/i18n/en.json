@@ -31,7 +31,8 @@
     "dashboard": "Dashboard",
     "poll": "Poll",
     "remote_control": "Remote control",
-    "editor": "Editor"
+    "editor": "Editor",
+    "presentations": "Presentations"
   },
   "links": {
     "home": "Home",
