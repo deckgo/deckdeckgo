@@ -468,7 +468,7 @@
     "template": "Plantilla",
     "tag": "Etiqueta",
     "definition": "Definición",
-    "cdn": "Damos soporte a Unpkg, Cloudfare y jsDelivr. Si desea utilizar otro CDN, {0}.",
+    "cdn": "Damos soporte a Unpkg, Cloudflare y jsDelivr. Si desea utilizar otro CDN, {0}.",
     "get_in_touch": "ponte en contacto",
     "url": "URL a los Módulos ES como por ejemplo {0}.",
     "tag_format": "La etiqueta no debe contener ninguna de las palabras clave reservadas {0}.",
