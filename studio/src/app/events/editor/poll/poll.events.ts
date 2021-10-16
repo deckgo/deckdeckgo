@@ -1,4 +1,4 @@
-export class PollEventsHandler {
+export class PollEvents {
   private el: HTMLElement;
 
   init(el: HTMLElement): Promise<void> {

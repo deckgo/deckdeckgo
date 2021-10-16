@@ -22,12 +22,12 @@ import {SlideTemplate, SyncEvent} from '@deckdeckgo/editor';
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 
-import {DeckEventsHandler} from '../../../handlers/editor/events/deck/deck-events.handler';
-import {RemoteEventsHandler} from '../../../handlers/editor/events/remote/remote-events.handler';
-import {EditorEventsHandler} from '../../../handlers/editor/events/editor/editor-events.handler';
-import {PollEventsHandler} from '../../../handlers/editor/events/poll/poll-events.handler';
-import {ImageEventsHandler} from '../../../handlers/core/events/image/image-events.handler';
-import {ChartEventsHandler} from '../../../handlers/core/events/chart/chart-events.handler';
+import {DeckEvents} from '../../../events/editor/deck/deck.events';
+import {RemoteEvents} from '../../../events/editor/remote/remote.events';
+import {EditorEvents} from '../../../events/editor/editor/editor.events';
+import {PollEvents} from '../../../events/editor/poll/poll.events';
+import {ImageEvents} from '../../../events/core/image/image.events';
+import {ChartEvents} from '../../../events/core/chart/chart.events';
 
 import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
@@ -84,12 +84,12 @@ export class AppEditor {
   @State()
   private activeIndex: number = 0;
 
-  private deckEventsHandler: DeckEventsHandler = new DeckEventsHandler();
-  private remoteEventsHandler: RemoteEventsHandler = new RemoteEventsHandler();
-  private editorEventsHandler: EditorEventsHandler = new EditorEventsHandler();
-  private pollEventsHandler: PollEventsHandler = new PollEventsHandler();
-  private imageEventsHandler: ImageEventsHandler = new ImageEventsHandler();
-  private chartEventsHandler: ChartEventsHandler = new ChartEventsHandler();
+  private deckEvents: DeckEvents = new DeckEvents();
+  private remoteEvents: RemoteEvents = new RemoteEvents();
+  private editorEvents: EditorEvents = new EditorEvents();
+  private pollEvents: PollEvents = new PollEvents();
+  private imageEvents: ImageEvents = new ImageEvents();
+  private chartEvents: ChartEvents = new ChartEvents();
 
   private editorHelper: SlideHelper = new SlideHelper();
 
@@ -140,8 +140,8 @@ export class AppEditor {
   }
 
   async init() {
-    await this.deckEventsHandler.init(this.mainRef);
-    await this.editorEventsHandler.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
+    await this.deckEvents.init(this.mainRef);
+    await this.editorEvents.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
 
     await this.initOrFetch();
 
@@ -191,13 +191,13 @@ export class AppEditor {
   async destroy() {
     await stopSyncTimer();
 
-    this.deckEventsHandler.destroy();
-    this.editorEventsHandler.destroy();
-    this.pollEventsHandler.destroy();
-    this.imageEventsHandler.destroy();
-    this.chartEventsHandler.destroy();
+    this.deckEvents.destroy();
+    this.editorEvents.destroy();
+    this.pollEvents.destroy();
+    this.imageEvents.destroy();
+    this.chartEvents.destroy();
 
-    await this.remoteEventsHandler.destroy();
+    await this.remoteEvents.destroy();
 
     deckStore.reset();
     undoRedoStore.reset();
@@ -244,16 +244,16 @@ export class AppEditor {
 
     await this.updateInlineEditorListener();
 
-    await this.remoteEventsHandler.init(this.el);
-    await this.pollEventsHandler.init(this.el);
-    await this.imageEventsHandler.init();
-    await this.chartEventsHandler.init();
+    await this.remoteEvents.init(this.el);
+    await this.pollEvents.init(this.el);
+    await this.imageEvents.init();
+    await this.chartEvents.init();
 
     this.initWindowResize();
   }
 
   async disconnectedCallback() {
-    await this.remoteEventsHandler.destroy();
+    await this.remoteEvents.destroy();
 
     this.removeWindowResize();
 
@@ -417,7 +417,7 @@ export class AppEditor {
       return;
     }
 
-    await this.editorEventsHandler.blockSlide(true);
+    await this.editorEvents.blockSlide(true);
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
@@ -425,7 +425,7 @@ export class AppEditor {
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-      await this.editorEventsHandler.blockSlide(false);
+      await this.editorEvents.blockSlide(false);
     });
 
     await modal.present();
@@ -542,7 +542,7 @@ export class AppEditor {
       return;
     }
 
-    await this.editorEventsHandler.selectDeck();
+    await this.editorEvents.selectDeck();
     await this.deckRef.toggleFullScreen();
 
     await this.openFullscreenInfo();
@@ -681,7 +681,7 @@ export class AppEditor {
   }
 
   private async initSlideSize() {
-    await this.deckEventsHandler.initSlideSize();
+    await this.deckEvents.initSlideSize();
   }
 
   @Listen('signIn', {target: 'document'})
@@ -713,9 +713,9 @@ export class AppEditor {
     }
 
     try {
-      await this.deckEventsHandler.updateDeckSlidesOrder(detail);
+      await this.deckEvents.updateDeckSlidesOrder(detail);
 
-      await this.remoteEventsHandler.updateRemoteSlidesOnMutation();
+      await this.remoteEvents.updateRemoteSlidesOnMutation();
 
       this.slides.splice(detail.to, 0, ...this.slides.splice(detail.from, 1));
       this.slides = [...this.slides];
@@ -730,9 +730,9 @@ export class AppEditor {
   private async updatePresenting(presenting: boolean) {
     this.presenting = presenting;
 
-    await this.remoteEventsHandler.updateRemoteReveal(this.fullscreen && this.presenting);
+    await this.remoteEvents.updateRemoteReveal(this.fullscreen && this.presenting);
 
-    await this.deckEventsHandler.toggleSlideEditable(!this.presenting);
+    await this.deckEvents.toggleSlideEditable(!this.presenting);
   }
 
   @Listen('remoteSlideDidChange', {target: 'document'})
@@ -741,7 +741,7 @@ export class AppEditor {
   }
 
   private async onSlideChange() {
-    await this.deckEventsHandler.toggleSlideEditable(!this.fullscreen || !this.presenting);
+    await this.deckEvents.toggleSlideEditable(!this.fullscreen || !this.presenting);
 
     const index: number = await this.deckRef?.getActiveIndex();
 

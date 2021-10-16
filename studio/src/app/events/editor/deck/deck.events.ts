@@ -1,4 +1,4 @@
-import type {IonicReorderEvent} from '../../../../utils/ionic/ionic.reorder.event';
+import type {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
 
 import {debounce} from '@deckdeckgo/utils';
 import {selectSlide, now} from '@deckdeckgo/editor';
@@ -17,25 +17,25 @@ import {
   DeckData
 } from '@deckdeckgo/editor';
 
-import deckStore from '../../../../stores/deck.store';
-import errorStore from '../../../../stores/error.store';
-import busyStore from '../../../../stores/busy.store';
-import authStore from '../../../../stores/auth.store';
-
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
-import {Constants} from '../../../../types/core/constants';
+import deckStore from '../../../stores/deck.store';
+import errorStore from '../../../stores/error.store';
+import busyStore from '../../../stores/busy.store';
+import authStore from '../../../stores/auth.store';
 
-import {SlotUtils} from '../../../../utils/editor/slot.utils';
-import {ParseElementsUtils} from '../../../../utils/editor/parse-elements.utils';
-import {SlideUtils} from '../../../../utils/editor/slide.utils';
+import {Constants} from '../../../types/core/constants';
 
-import {DeckOfflineProvider} from '../../../../providers/data/deck/deck.offline.provider';
-import {SlideOfflineProvider} from '../../../../providers/data/slide/slide.offline.provider';
+import {SlotUtils} from '../../../utils/editor/slot.utils';
+import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
+import {SlideUtils} from '../../../utils/editor/slide.utils';
 
-import {DeckAction} from '../../../../types/editor/deck-action';
+import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
+import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
 
-export class DeckEventsHandler {
+import {DeckAction} from '../../../types/editor/deck-action';
+
+export class DeckEvents {
   private mainRef: HTMLElement;
 
   private deckOfflineProvider: DeckOfflineProvider;
