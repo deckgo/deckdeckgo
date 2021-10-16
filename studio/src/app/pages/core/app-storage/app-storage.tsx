@@ -74,7 +74,7 @@ export class AppStorage implements ComponentInterface {
       <Fragment>
         {this.renderFilter()}
 
-        <app-storage-files folder={this.folder}></app-storage-files>
+        <app-assets folder={this.folder}></app-assets>
       </Fragment>
     );
   }
