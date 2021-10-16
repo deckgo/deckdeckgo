@@ -76,7 +76,7 @@ export class AppMenu {
     return (
       <ion-item button href="/storage" routerDirection="forward">
         <AppIcon name="storage" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
-        <ion-label>{i18n.state.menu.storage}</ion-label>
+        <ion-label>{i18n.state.menu.assets}</ion-label>
       </ion-item>
     );
   }
