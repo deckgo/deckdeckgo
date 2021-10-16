@@ -1,4 +1,4 @@
-import {Component, Fragment, h, JSX, State} from '@stencil/core';
+import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 import {debounce} from '@deckdeckgo/utils';
@@ -39,16 +39,17 @@ interface DeckAndFirstSlide {
   tag: 'app-decks',
   styleUrl: 'app-decks.scss'
 })
-export class AppDecks {
+export class AppDecks implements ComponentInterface {
   @State()
   private filteredDecks: DeckAndFirstSlide[] = null;
 
   @State()
-  private loading: boolean = false;
+  private loading: boolean = true;
 
   @State()
   private decksLoading: boolean = true;
 
+  private readonly debounceLoading: () => void;
   private readonly debounceDecksLoading: () => void;
 
   private decks: DeckAndFirstSlide[] = null;
@@ -59,9 +60,9 @@ export class AppDecks {
   private destroyListener;
 
   constructor() {
-    this.debounceDecksLoading = debounce(async () => {
-      this.decksLoading = false;
-    }, 150);
+    this.debounceDecksLoading = debounce(() => (this.decksLoading = false), 150);
+
+    this.debounceLoading = debounce(() => (this.loading = false), 750);
   }
 
   async componentWillLoad() {
@@ -79,12 +80,11 @@ export class AppDecks {
 
   private async initDashboard() {
     if (!authStore.state.authUser || authStore.state.anonymous) {
+      this.debounceLoading();
       return;
     }
 
     this.destroyListener();
-
-    this.loading = true;
 
     try {
       const userDecks: Deck[] = await decks(authStore.state.authUser.uid);
@@ -97,7 +97,7 @@ export class AppDecks {
       errorStore.state.error = 'Cannot init your dashboard.';
     }
 
-    this.loading = false;
+    this.debounceLoading();
   }
 
   disconnectedCallback() {

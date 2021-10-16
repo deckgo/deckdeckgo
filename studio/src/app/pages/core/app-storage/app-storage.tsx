@@ -1,18 +1,29 @@
-import {Component, h, Fragment, State} from '@stencil/core';
+import {Component, h, Fragment, State, ComponentInterface} from '@stencil/core';
 
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
+import {debounce} from '@deckdeckgo/utils';
 
 @Component({
   tag: 'app-storage',
   styleUrl: 'app-storage.scss'
 })
-export class AppStorage {
+export class AppStorage implements ComponentInterface {
   @State()
-  private loading: boolean = false;
+  private loading: boolean = true;
+
+  private readonly debounceLoading: () => void;
+
+  constructor() {
+    this.debounceLoading = debounce(() => (this.loading = false), 750);
+  }
+
+  componentWillLoad() {
+    this.debounceLoading();
+  }
 
   render() {
     return (
