@@ -38,7 +38,7 @@
     "remote_control": "Fernsteuerung",
     "editor": "Editor",
     "presentations": "Präsentationen",
-    "storage": "Abspeicherung"
+    "assets": "Medien"
   },
   "links": {
     "home": "Home",
@@ -87,7 +87,7 @@
     "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen.",
     "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
     "access_dashboard": "{0} um deine Präsentationen Online zu speichern.",
-    "access_storage": "{0} um auf Ihren Online-Speicher zuzugreifen (Bilder und Daten).",
+    "access_assets": "{0} um auf Ihren Online-Medien zuzugreifen (Bilder und Daten).",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
     "name": "Name",
     "email": "Email",

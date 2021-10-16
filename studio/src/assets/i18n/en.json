@@ -38,7 +38,7 @@
     "remote_control": "Remote control",
     "editor": "Editor",
     "presentations": "Presentations",
-    "storage": "Storage"
+    "assets": "Assets"
   },
   "links": {
     "home": "Home",
@@ -87,7 +87,7 @@
     "access_settings": "{0} to access your profile and settings.",
     "access_templates": "{0} to use your own templates.",
     "access_dashboard": "{0} to save your presentation online.",
-    "access_storage": "{0} to access your online storage (images and data).",
+    "access_assets": "{0} to access your online assets (images and data).",
     "profile_note": "Note that your update has no effect on the presentations you would have already published.",
     "name": "Name",
     "email": "Email",

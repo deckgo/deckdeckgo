@@ -51,7 +51,7 @@ export class AppStorage implements ComponentInterface {
 
     return (
       <main class="ion-padding fit">
-        <h1>{i18n.state.menu.storage}</h1>
+        <h1>{i18n.state.menu.assets}</h1>
 
         {authStore.state.anonymous ? this.renderNotLoggedInContent() : this.renderGuardedContent()}
       </main>
@@ -59,7 +59,7 @@ export class AppStorage implements ComponentInterface {
   }
 
   private renderNotLoggedInContent() {
-    return renderI18n(i18n.state.settings.access_storage, {
+    return renderI18n(i18n.state.settings.access_dashboard, {
       placeholder: '{0}',
       value: (
         <button type="button" class="app-button" onClick={() => signIn()}>

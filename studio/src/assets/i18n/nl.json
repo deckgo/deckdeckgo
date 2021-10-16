@@ -37,7 +37,8 @@
     "poll": "Poll",
     "remote_control": "Afstandsbediening",
     "editor": "Editor",
-    "presentations": "Presentaties"
+    "presentations": "Presentaties",
+    "assets": "Media"
   },
   "links": {
     "home": "Home",
@@ -86,6 +87,7 @@
     "access_settings": "{0} om toegang te krijgen tot uw profiel en instellingen.",
     "access_templates": "{0} om uw eigen sjablonen te gebruiken.",
     "access_dashboard": "{0} om uw presentatie online op te slaan.",
+    "access_assets": "{0} om toegang te krijgen tot uw online media (afbeeldingen en gegevens).",
     "profile_note": "Houd er rekening mee dat uw update geen effect heeft op de presentaties die u al reeds heeft gepubliceerd.",
     "name": "Naam",
     "email": "E-mail",
