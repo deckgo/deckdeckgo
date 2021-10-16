@@ -136,9 +136,16 @@ declare namespace LocalJSX {
          */
         "observerThreshold"?: number | number[];
         /**
-          * Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) as to be loaded.
+          * Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) has to be loaded.
          */
         "onCustomLoad"?: (event: CustomEvent<DeckDeckGoCustomLoad>) => void;
+        /**
+          * An event emitted when the shadowed image has loaded
+         */
+        "onInnerImgDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * An event emitted after initialization when the component did load
+         */
         "onLazyImgDidLoad"?: (event: CustomEvent<any>) => void;
         /**
           * The SVG image source (= URI) to lazy load and to parse (no <img/> tag will be use to render the svg) aria-label	string

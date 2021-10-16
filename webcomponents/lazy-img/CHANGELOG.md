@@ -1,3 +1,9 @@
+# 3.2.0 (2021-10-16)
+
+### Features
+
+- new event `innerImgDidLoad` emitted when shadowed image did load
+
 # 3.1.0 (2021-05-29)
 
 ### Build

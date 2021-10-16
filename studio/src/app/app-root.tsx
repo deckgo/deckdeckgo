@@ -183,13 +183,14 @@ export class AppRoot {
           <ion-route url="/customization" component="app-customization" />
           <ion-route url="/templates" component="app-templates" />
 
-          <ion-route url="/dashboard" component="app-decks" />
           <ion-route url="/decks" component="app-decks" />
 
           <ion-route url="/signin" component="app-signin-page" />
 
           <ion-route url="/poll" component="app-poll" />
           <ion-route url="/poll/:pollKey" component="app-poll" />
+
+          <ion-route url=":pathname" component="app-404" />
         </ion-router>
 
         <ion-menu id="ion-menu" side="start" type="overlay" swipeGesture={false} content-id="menu-content">

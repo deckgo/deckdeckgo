@@ -12,7 +12,15 @@ import {DeckDeckGoCustomLoad} from '../interfaces/custom-load';
 export class DeckdeckgoLazyImg {
   @Element() el: HTMLElement;
 
+  /**
+   * An event emitted after initialization when the component did load
+   */
   @Event() lazyImgDidLoad: EventEmitter;
+
+  /**
+   * An event emitted when the shadowed image has loaded
+   */
+  @Event() innerImgDidLoad: EventEmitter;
 
   /**
    * The image source (= src) to lazy load
@@ -107,7 +115,7 @@ export class DeckdeckgoLazyImg {
   private imgLoaded: boolean = false;
 
   /**
-   * Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) as to be loaded.
+   * Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) has to be loaded.
    */
   @Event()
   customLoad: EventEmitter<DeckDeckGoCustomLoad>;
@@ -263,6 +271,11 @@ export class DeckdeckgoLazyImg {
     });
   }
 
+  private onImgDidLoad() {
+    this.imgLoaded = true;
+    this.innerImgDidLoad.emit();
+  }
+
   render() {
     const hostClass: string = this.imgLoaded || this.svgContent ? 'loaded' : '';
 
@@ -282,6 +295,6 @@ export class DeckdeckgoLazyImg {
     // @ts-ignore
     return <img alt={this.imgLoaded ? (this.imgAlt ? this.imgAlt : this.imgSrc) : ''} loading={this.loading} sizes={this.imgSizes ? this.imgSizes : undefined} intrinsicsize={this.intrinsicsize}
                 width={this.imgWidth} height={this.imgHeight}
-                onLoad={() => this.imgLoaded = true} onError={() => this.loadError()}/>
+                onLoad={() => this.onImgDidLoad()} onError={() => this.loadError()}/>
   }
 }

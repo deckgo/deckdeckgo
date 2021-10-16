@@ -39,7 +39,7 @@
     "@deckdeckgo/highlight-code": "^3.3.1",
     "@deckdeckgo/inline-editor": "^4.1.0",
     "@deckdeckgo/laser-pointer": "^1.1.0",
-    "@deckdeckgo/lazy-img": "^3.1.0",
+    "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/markdown": "^2.1.0",
     "@deckdeckgo/math": "^2.1.0",
     "@deckdeckgo/qrcode": "^2.1.0",

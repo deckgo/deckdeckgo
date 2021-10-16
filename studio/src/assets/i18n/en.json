@@ -27,6 +27,11 @@
     "settings": "Settings",
     "dashboard": "Dashboard"
   },
+  "not_found": {
+    "title": "Not Found",
+    "text": "We couldn't find the page you were looking for. {0}.",
+    "action": "Go to the editor"
+  },
   "menu": {
     "dashboard": "Dashboard",
     "poll": "Poll",

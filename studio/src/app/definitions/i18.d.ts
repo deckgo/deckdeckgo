@@ -28,6 +28,12 @@ interface I18nNav {
   dashboard: string;
 }
 
+interface I18nNot_found {
+  title: string;
+  text: string;
+  action: string;
+}
+
 interface I18nMenu {
   dashboard: string;
   poll: string;
@@ -533,6 +539,7 @@ interface I18n {
   lang: Languages;
   core: I18nCore;
   nav: I18nNav;
+  not_found: I18nNot_found;
   menu: I18nMenu;
   links: I18nLinks;
   share: I18nShare;
