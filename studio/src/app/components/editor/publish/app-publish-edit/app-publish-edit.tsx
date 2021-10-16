@@ -149,7 +149,7 @@ export class AppPublishEdit {
     });
   }
 
-  // Even if we fixed the delay to publish to Cloudfare CDN (#195), sometimes if too quick, the presentation will not be correctly published
+  // Even if we fixed the delay to publish to Cloudflare CDN (#195), sometimes if too quick, the presentation will not be correctly published
   // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
   private async delayNavigation(newApiId: boolean) {
     this.progress = 0;
