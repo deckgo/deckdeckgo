@@ -81,10 +81,11 @@ The "Lazy Image" Web Component could be integrated using the tag `<deckgo-lazy-i
 
 ## Events
 
-| Event            | Description                                                                                                          | Type                                |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `customLoad`     | Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) as to be loaded. | `CustomEvent<DeckDeckGoCustomLoad>` |
-| `lazyImgDidLoad` |                                                                                                                      | `CustomEvent<any>`                  |
+| Event             | Description                                                                                                           | Type                                |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `customLoad`      | Emitted if component property custom-loader is set to true and if an image (img-src or img-src-set) has to be loaded. | `CustomEvent<DeckDeckGoCustomLoad>` |
+| `innerImgDidLoad` | An event emitted when the shadowed image has loaded                                                                   | `CustomEvent<any>`                  |
+| `lazyImgDidLoad`  | An event emitted after initialization when the component did load                                                     | `CustomEvent<any>`                  |
 
 
 ## Methods
