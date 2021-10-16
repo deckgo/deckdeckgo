@@ -40,6 +40,7 @@ interface I18nMenu {
   remote_control: string;
   editor: string;
   presentations: string;
+  storage: string;
 }
 
 interface I18nLinks {
@@ -92,6 +93,7 @@ interface I18nSettings {
   access_settings: string;
   access_templates: string;
   access_dashboard: string;
+  access_storage: string;
   profile_note: string;
   name: string;
   email: string;

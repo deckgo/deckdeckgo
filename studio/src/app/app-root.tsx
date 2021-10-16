@@ -185,6 +185,8 @@ export class AppRoot {
 
           <ion-route url="/decks" component="app-decks" />
 
+          <ion-route url="/storage" component="app-storage" />
+
           <ion-route url="/signin" component="app-signin-page" />
 
           <ion-route url="/poll" component="app-poll" />

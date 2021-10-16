@@ -342,6 +342,8 @@ export namespace Components {
     }
     interface AppSpinner {
     }
+    interface AppStorage {
+    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -986,6 +988,12 @@ declare global {
         prototype: HTMLAppSpinnerElement;
         new (): HTMLAppSpinnerElement;
     };
+    interface HTMLAppStorageElement extends Components.AppStorage, HTMLStencilElement {
+    }
+    var HTMLAppStorageElement: {
+        prototype: HTMLAppStorageElement;
+        new (): HTMLAppStorageElement;
+    };
     interface HTMLAppSyncInfoElement extends Components.AppSyncInfo, HTMLStencilElement {
     }
     var HTMLAppSyncInfoElement: {
@@ -1204,6 +1212,7 @@ declare global {
         "app-slides-aside": HTMLAppSlidesAsideElement;
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
+        "app-storage": HTMLAppStorageElement;
         "app-sync-info": HTMLAppSyncInfoElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
@@ -1607,6 +1616,8 @@ declare namespace LocalJSX {
     }
     interface AppSpinner {
     }
+    interface AppStorage {
+    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -1776,6 +1787,7 @@ declare namespace LocalJSX {
         "app-slides-aside": AppSlidesAside;
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
+        "app-storage": AppStorage;
         "app-sync-info": AppSyncInfo;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
@@ -1899,6 +1911,7 @@ declare module "@stencil/core" {
             "app-slides-aside": LocalJSX.AppSlidesAside & JSXBase.HTMLAttributes<HTMLAppSlidesAsideElement>;
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
+            "app-storage": LocalJSX.AppStorage & JSXBase.HTMLAttributes<HTMLAppStorageElement>;
             "app-sync-info": LocalJSX.AppSyncInfo & JSXBase.HTMLAttributes<HTMLAppSyncInfoElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;

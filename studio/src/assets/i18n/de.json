@@ -37,7 +37,8 @@
     "poll": "Umfrage",
     "remote_control": "Fernsteuerung",
     "editor": "Editor",
-    "presentations": "Präsentationen"
+    "presentations": "Präsentationen",
+    "storage": "Abspeicherung"
   },
   "links": {
     "home": "Home",
@@ -83,9 +84,10 @@
     "edit_mode": "Bearbeitungsmodus",
     "properties": "Eigenschaften",
     "profile": "Profil",
-    "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen",
+    "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen.",
     "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
     "access_dashboard": "{0} um deine Präsentationen Online zu speichern.",
+    "access_storage": "{0} um auf Ihren Online-Speicher zuzugreifen (Bilder und Daten).",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
     "name": "Name",
     "email": "Email",

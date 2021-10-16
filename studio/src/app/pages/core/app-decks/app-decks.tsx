@@ -44,7 +44,7 @@ export class AppDecks {
   private filteredDecks: DeckAndFirstSlide[] = null;
 
   @State()
-  private loading: boolean;
+  private loading: boolean = false;
 
   @State()
   private decksLoading: boolean = true;
