@@ -64,7 +64,7 @@ export class AppUnsplash {
   private clear() {
     this.searchTerm = undefined;
 
-    this.photos = null;
+    this.photos = undefined;
 
     this.disableInfiniteScroll = false;
 
@@ -84,6 +84,8 @@ export class AppUnsplash {
     if (!unsplash()) {
       return;
     }
+
+    this.searching = this.photos === undefined;
 
     const unsplashResponse: UnsplashSearchResponse | undefined = await getUnsplashPhotos({
       searchTerm: this.searchTerm,
