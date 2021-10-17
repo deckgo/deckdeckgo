@@ -55,13 +55,15 @@ export class ImageHistoryService {
     images: (UnsplashPhoto | TenorGif | StorageFile | Waves)[],
     image: UnsplashPhoto | TenorGif | StorageFile | Waves
   ): boolean {
-    const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile) => {
-      if (filteredPhoto.hasOwnProperty('fullPath')) {
-        return (filteredPhoto as StorageFile).fullPath === (image as StorageFile).fullPath;
-      } else {
-        return (filteredPhoto as UnsplashPhoto | TenorGif).id === (image as UnsplashPhoto | TenorGif).id;
-      }
-    });
+    const index: number = images
+      .filter((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile | Waves) => !filteredPhoto.hasOwnProperty('viewBox'))
+      .findIndex((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile | Waves) => {
+        if (filteredPhoto.hasOwnProperty('fullPath')) {
+          return (filteredPhoto as StorageFile).fullPath === (image as StorageFile).fullPath;
+        } else {
+          return (filteredPhoto as UnsplashPhoto | TenorGif).id === (image as UnsplashPhoto | TenorGif).id;
+        }
+      });
 
     return index >= 0;
   }
