@@ -23,7 +23,10 @@ export class AppMenu {
         {this.renderUser()}
 
         {this.renderEditor()}
-        {this.renderDashboard()}
+
+        {this.renderDecks()}
+        {this.renderStorage()}
+
         {this.renderSettings()}
 
         {this.renderInteract()}
@@ -52,7 +55,7 @@ export class AppMenu {
     );
   }
 
-  private renderDashboard() {
+  private renderDecks() {
     if (!this.signIn) {
       return undefined;
     }
@@ -61,6 +64,19 @@ export class AppMenu {
       <ion-item button href="/decks" routerDirection="forward">
         <AppIcon name="deck" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.menu.presentations}</ion-label>
+      </ion-item>
+    );
+  }
+
+  private renderStorage() {
+    if (!this.signIn) {
+      return undefined;
+    }
+
+    return (
+      <ion-item button href="/storage" routerDirection="forward">
+        <AppIcon name="storage" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+        <ion-label>{i18n.state.menu.assets}</ion-label>
       </ion-item>
     );
   }

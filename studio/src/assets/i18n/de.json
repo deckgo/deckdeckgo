@@ -37,7 +37,8 @@
     "poll": "Umfrage",
     "remote_control": "Fernsteuerung",
     "editor": "Editor",
-    "presentations": "Präsentationen"
+    "presentations": "Präsentationen",
+    "assets": "Medien"
   },
   "links": {
     "home": "Home",
@@ -83,9 +84,11 @@
     "edit_mode": "Bearbeitungsmodus",
     "properties": "Eigenschaften",
     "profile": "Profil",
-    "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen",
+    "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen.",
     "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
     "access_dashboard": "{0} um deine Präsentationen Online zu speichern.",
+    "access_assets": "{0} um auf Ihren Online-Medien zuzugreifen (Bilder und Daten).",
+    "info_assets": "Die Assets (Bilder und Daten), die Sie in Ihren Präsentationen verwenden und die in Ihren privaten Online-Medien hochgeladen wurden.",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
     "name": "Name",
     "email": "Email",
@@ -289,7 +292,7 @@
     "language": "Sprache",
     "filter_languages": "Filtere Sprachen",
     "your_data": "Deine Daten",
-    "your_collection_empty": "Deine Sammlung ist leer",
+    "your_collection_empty": "Deine Sammlung ist leer.",
     "upload_data": "Lade neue Daten hoch",
     "upload_image": "Lade neues Bild hoch",
     "demo": "Demo",

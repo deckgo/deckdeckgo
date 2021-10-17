@@ -1,0 +1,13 @@
+app-image-history {
+  ion-item {
+    &.history-empty {
+      --color: var(--ion-color-medium);
+    }
+  }
+
+  div.history-photos {
+    display: grid;
+    grid-template-columns: repeat(3, calc((100% - 32px) / 3));
+    grid-column-gap: 16px;
+  }
+}

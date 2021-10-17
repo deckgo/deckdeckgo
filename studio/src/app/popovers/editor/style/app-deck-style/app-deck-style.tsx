@@ -107,10 +107,10 @@ export class AppDeck {
           selectedElement={this.deckElement}
           deck={true}
           onColorChange={() => this.onDeckChange()}></app-color-text-background>,
-        <app-image
+        <app-image-choice
           selectedElement={this.deckElement}
           deck={true}
-          onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>
+          onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image-choice>
       ];
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
       return <app-deck-transition deckElement={this.deckElement} onTransitionChange={() => this.onDeckChange()}></app-deck-transition>;

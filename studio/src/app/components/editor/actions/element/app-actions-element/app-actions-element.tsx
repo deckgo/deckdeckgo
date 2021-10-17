@@ -429,7 +429,7 @@ export class AppActionsElement {
             this.selectedElement.element,
             this.selectedElement?.type === 'slide',
             false,
-            'app-custom-images',
+            'app-storage-images',
             detail.data.action
           );
         } else if (detail.data.action === EditAction.OPEN_DATA) {
@@ -437,7 +437,7 @@ export class AppActionsElement {
             this.selectedElement.element,
             this.selectedElement?.type === 'slide',
             false,
-            'app-custom-data',
+            'app-storage-data',
             detail.data.action
           );
         }

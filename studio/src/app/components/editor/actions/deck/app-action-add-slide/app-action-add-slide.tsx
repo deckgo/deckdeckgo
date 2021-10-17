@@ -146,7 +146,7 @@ export class AppActionAddSlide {
 
   private async openChart(attributes: SlideAttributes) {
     const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-custom-data'
+      component: 'app-storage-data'
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {

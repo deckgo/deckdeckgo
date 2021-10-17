@@ -23,7 +23,7 @@ export class ImageHelper {
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
-      await this.openModal(selectedElement, slide, deck, 'app-photo');
+      await this.openModal(selectedElement, slide, deck, 'app-unsplash');
     } else if (imageAction.action === EditAction.DELETE_BACKGROUND) {
       await this.deleteBackground(selectedElement, slide, deck);
     } else if (imageAction.action === EditAction.ADD_IMAGE && imageAction.image) {
@@ -31,7 +31,7 @@ export class ImageHelper {
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(selectedElement, slide, deck, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
-      await this.openModal(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
+      await this.openModal(selectedElement, slide, deck, 'app-storage-images', EditAction.OPEN_CUSTOM);
     } else if (imageAction.action === EditAction.OPEN_SVG_WAVES) {
       await this.openModal(selectedElement, slide, deck, 'app-waves');
     }

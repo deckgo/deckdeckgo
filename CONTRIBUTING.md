@@ -44,6 +44,7 @@ Some bugs (sh\*t happens) might not yet been reported. Likewise, your awesome id
 ## Translations (i18n)
 
 We would be grateful to get your help to translate our apps:
+
 - Editor
 - Site
 - Remote

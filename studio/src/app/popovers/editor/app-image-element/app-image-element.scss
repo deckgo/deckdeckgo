@@ -7,9 +7,4 @@ app-image-element {
       --color: var(--ion-color-medium);
     }
   }
-
-  app-image-columns {
-    --deckgo-images-padding: 4px;
-    --deckgo-images-font-size: calc(var(--font-size-very-small) - 4px);
-  }
 }

@@ -37,7 +37,8 @@
     "poll": "Encuesta",
     "remote_control": "Control remoto",
     "editor": "Editor",
-    "presentations": "Presentaciones"
+    "presentations": "Presentaciones",
+    "assets": "Depósito"
   },
   "links": {
     "home": "Inicio",
@@ -86,6 +87,8 @@
     "access_settings": "{0} para acceder a tu perfil y configuración.",
     "access_templates": "{0} para usar tus propias plantillas.",
     "access_dashboard": "{0} para guardar su presentación en línea.",
+    "access_assets": "{0} para acceder a su depositó en línea (imágenes y datos).",
+    "info_assets": "Los imágenes y datos que ha utilizado en sus presentaciones y que se han subido a su depositó privado en línea.",
     "profile_note": "Tenga en cuenta que su actualización no tiene ningún efecto sobre las presentaciones que ya hubiera publicado.",
     "name": "Nombre",
     "email": "Correo electrónico",
@@ -289,7 +292,7 @@
     "language": "Idioma",
     "filter_languages": "Filtrar idiomas",
     "your_data": "Tus datos",
-    "your_collection_empty": "Tu colección está vacía",
+    "your_collection_empty": "Tu colección está vacía.",
     "upload_data": "Subir un nuevo dato",
     "upload_image": "Subir una nueva imagen",
     "demo": "Demo",

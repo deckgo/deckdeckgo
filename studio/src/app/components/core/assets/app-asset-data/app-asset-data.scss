@@ -1,0 +1,22 @@
+app-asset-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 16px 0;
+
+  ion-icon {
+    font-size: 3rem;
+  }
+
+  ion-label {
+    max-width: calc(100% - 32px);
+    text-align: center;
+    padding-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--font-size-very-small);
+  }
+}

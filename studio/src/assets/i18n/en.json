@@ -37,7 +37,8 @@
     "poll": "Poll",
     "remote_control": "Remote control",
     "editor": "Editor",
-    "presentations": "Presentations"
+    "presentations": "Presentations",
+    "assets": "Assets"
   },
   "links": {
     "home": "Home",
@@ -86,6 +87,8 @@
     "access_settings": "{0} to access your profile and settings.",
     "access_templates": "{0} to use your own templates.",
     "access_dashboard": "{0} to save your presentation online.",
+    "access_assets": "{0} to access your online assets (images and data).",
+    "info_assets": "The assets (images and data) you have use in your presentations and that have been uploaded in your online private storage.",
     "profile_note": "Note that your update has no effect on the presentations you would have already published.",
     "name": "Name",
     "email": "Email",
@@ -289,7 +292,7 @@
     "language": "Language",
     "filter_languages": "Filter languages",
     "your_data": "Your data",
-    "your_collection_empty": "Your collection is empty",
+    "your_collection_empty": "Your collection is empty.",
     "upload_data": "Upload a new data",
     "upload_image": "Upload a new image",
     "demo": "Demo",
