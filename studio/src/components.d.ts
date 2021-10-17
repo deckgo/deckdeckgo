@@ -69,9 +69,6 @@ export namespace Components {
     interface AppAssetImage {
         "image": UnsplashPhoto | TenorGif | StorageFile | Waves | TenorCategory;
     }
-    interface AppAssets {
-        "folder": 'data' | 'images';
-    }
     interface AppAvatar {
         "ariaLabel": string;
         "src": string;
@@ -132,10 +129,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppCreateSlide {
-    }
-    interface AppCustomData {
-    }
-    interface AppCustomImages {
     }
     interface AppCustomization {
     }
@@ -351,6 +344,13 @@ export namespace Components {
     }
     interface AppStorage {
     }
+    interface AppStorageData {
+    }
+    interface AppStorageFiles {
+        "folder": 'data' | 'images';
+    }
+    interface AppStorageImages {
+    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -475,12 +475,6 @@ declare global {
         prototype: HTMLAppAssetImageElement;
         new (): HTMLAppAssetImageElement;
     };
-    interface HTMLAppAssetsElement extends Components.AppAssets, HTMLStencilElement {
-    }
-    var HTMLAppAssetsElement: {
-        prototype: HTMLAppAssetsElement;
-        new (): HTMLAppAssetsElement;
-    };
     interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {
     }
     var HTMLAppAvatarElement: {
@@ -588,18 +582,6 @@ declare global {
     var HTMLAppCreateSlideElement: {
         prototype: HTMLAppCreateSlideElement;
         new (): HTMLAppCreateSlideElement;
-    };
-    interface HTMLAppCustomDataElement extends Components.AppCustomData, HTMLStencilElement {
-    }
-    var HTMLAppCustomDataElement: {
-        prototype: HTMLAppCustomDataElement;
-        new (): HTMLAppCustomDataElement;
-    };
-    interface HTMLAppCustomImagesElement extends Components.AppCustomImages, HTMLStencilElement {
-    }
-    var HTMLAppCustomImagesElement: {
-        prototype: HTMLAppCustomImagesElement;
-        new (): HTMLAppCustomImagesElement;
     };
     interface HTMLAppCustomizationElement extends Components.AppCustomization, HTMLStencilElement {
     }
@@ -1015,6 +997,24 @@ declare global {
         prototype: HTMLAppStorageElement;
         new (): HTMLAppStorageElement;
     };
+    interface HTMLAppStorageDataElement extends Components.AppStorageData, HTMLStencilElement {
+    }
+    var HTMLAppStorageDataElement: {
+        prototype: HTMLAppStorageDataElement;
+        new (): HTMLAppStorageDataElement;
+    };
+    interface HTMLAppStorageFilesElement extends Components.AppStorageFiles, HTMLStencilElement {
+    }
+    var HTMLAppStorageFilesElement: {
+        prototype: HTMLAppStorageFilesElement;
+        new (): HTMLAppStorageFilesElement;
+    };
+    interface HTMLAppStorageImagesElement extends Components.AppStorageImages, HTMLStencilElement {
+    }
+    var HTMLAppStorageImagesElement: {
+        prototype: HTMLAppStorageImagesElement;
+        new (): HTMLAppStorageImagesElement;
+    };
     interface HTMLAppSyncInfoElement extends Components.AppSyncInfo, HTMLStencilElement {
     }
     var HTMLAppSyncInfoElement: {
@@ -1152,7 +1152,6 @@ declare global {
         "app-actions-element": HTMLAppActionsElementElement;
         "app-asset-data": HTMLAppAssetDataElement;
         "app-asset-image": HTMLAppAssetImageElement;
-        "app-assets": HTMLAppAssetsElement;
         "app-avatar": HTMLAppAvatarElement;
         "app-block": HTMLAppBlockElement;
         "app-border-radius": HTMLAppBorderRadiusElement;
@@ -1171,8 +1170,6 @@ declare global {
         "app-color-word-cloud": HTMLAppColorWordCloudElement;
         "app-copy-style": HTMLAppCopyStyleElement;
         "app-create-slide": HTMLAppCreateSlideElement;
-        "app-custom-data": HTMLAppCustomDataElement;
-        "app-custom-images": HTMLAppCustomImagesElement;
         "app-customization": HTMLAppCustomizationElement;
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
         "app-deck-delete": HTMLAppDeckDeleteElement;
@@ -1242,6 +1239,9 @@ declare global {
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
         "app-storage": HTMLAppStorageElement;
+        "app-storage-data": HTMLAppStorageDataElement;
+        "app-storage-files": HTMLAppStorageFilesElement;
+        "app-storage-images": HTMLAppStorageImagesElement;
         "app-sync-info": HTMLAppSyncInfoElement;
         "app-template": HTMLAppTemplateElement;
         "app-template-showcase": HTMLAppTemplateShowcaseElement;
@@ -1331,10 +1331,6 @@ declare namespace LocalJSX {
     interface AppAssetImage {
         "image": UnsplashPhoto | TenorGif | StorageFile | Waves | TenorCategory;
     }
-    interface AppAssets {
-        "folder": 'data' | 'images';
-        "onSelectAsset"?: (event: CustomEvent<StorageFile>) => void;
-    }
     interface AppAvatar {
         "ariaLabel"?: string;
         "src"?: string;
@@ -1409,10 +1405,6 @@ declare namespace LocalJSX {
     }
     interface AppCreateSlide {
         "onSignIn"?: (event: CustomEvent<void>) => void;
-    }
-    interface AppCustomData {
-    }
-    interface AppCustomImages {
     }
     interface AppCustomization {
     }
@@ -1656,6 +1648,14 @@ declare namespace LocalJSX {
     }
     interface AppStorage {
     }
+    interface AppStorageData {
+    }
+    interface AppStorageFiles {
+        "folder": 'data' | 'images';
+        "onSelectAsset"?: (event: CustomEvent<StorageFile>) => void;
+    }
+    interface AppStorageImages {
+    }
     interface AppSyncInfo {
     }
     interface AppTemplate {
@@ -1740,7 +1740,6 @@ declare namespace LocalJSX {
         "app-actions-element": AppActionsElement;
         "app-asset-data": AppAssetData;
         "app-asset-image": AppAssetImage;
-        "app-assets": AppAssets;
         "app-avatar": AppAvatar;
         "app-block": AppBlock;
         "app-border-radius": AppBorderRadius;
@@ -1759,8 +1758,6 @@ declare namespace LocalJSX {
         "app-color-word-cloud": AppColorWordCloud;
         "app-copy-style": AppCopyStyle;
         "app-create-slide": AppCreateSlide;
-        "app-custom-data": AppCustomData;
-        "app-custom-images": AppCustomImages;
         "app-customization": AppCustomization;
         "app-dashboard-deck-actions": AppDashboardDeckActions;
         "app-deck-delete": AppDeckDelete;
@@ -1830,6 +1827,9 @@ declare namespace LocalJSX {
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
         "app-storage": AppStorage;
+        "app-storage-data": AppStorageData;
+        "app-storage-files": AppStorageFiles;
+        "app-storage-images": AppStorageImages;
         "app-sync-info": AppSyncInfo;
         "app-template": AppTemplate;
         "app-template-showcase": AppTemplateShowcase;
@@ -1867,7 +1867,6 @@ declare module "@stencil/core" {
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-asset-data": LocalJSX.AppAssetData & JSXBase.HTMLAttributes<HTMLAppAssetDataElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
-            "app-assets": LocalJSX.AppAssets & JSXBase.HTMLAttributes<HTMLAppAssetsElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
             "app-block": LocalJSX.AppBlock & JSXBase.HTMLAttributes<HTMLAppBlockElement>;
             "app-border-radius": LocalJSX.AppBorderRadius & JSXBase.HTMLAttributes<HTMLAppBorderRadiusElement>;
@@ -1886,8 +1885,6 @@ declare module "@stencil/core" {
             "app-color-word-cloud": LocalJSX.AppColorWordCloud & JSXBase.HTMLAttributes<HTMLAppColorWordCloudElement>;
             "app-copy-style": LocalJSX.AppCopyStyle & JSXBase.HTMLAttributes<HTMLAppCopyStyleElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
-            "app-custom-data": LocalJSX.AppCustomData & JSXBase.HTMLAttributes<HTMLAppCustomDataElement>;
-            "app-custom-images": LocalJSX.AppCustomImages & JSXBase.HTMLAttributes<HTMLAppCustomImagesElement>;
             "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
             "app-deck-delete": LocalJSX.AppDeckDelete & JSXBase.HTMLAttributes<HTMLAppDeckDeleteElement>;
@@ -1957,6 +1954,9 @@ declare module "@stencil/core" {
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-storage": LocalJSX.AppStorage & JSXBase.HTMLAttributes<HTMLAppStorageElement>;
+            "app-storage-data": LocalJSX.AppStorageData & JSXBase.HTMLAttributes<HTMLAppStorageDataElement>;
+            "app-storage-files": LocalJSX.AppStorageFiles & JSXBase.HTMLAttributes<HTMLAppStorageFilesElement>;
+            "app-storage-images": LocalJSX.AppStorageImages & JSXBase.HTMLAttributes<HTMLAppStorageImagesElement>;
             "app-sync-info": LocalJSX.AppSyncInfo & JSXBase.HTMLAttributes<HTMLAppSyncInfoElement>;
             "app-template": LocalJSX.AppTemplate & JSXBase.HTMLAttributes<HTMLAppTemplateElement>;
             "app-template-showcase": LocalJSX.AppTemplateShowcase & JSXBase.HTMLAttributes<HTMLAppTemplateShowcaseElement>;

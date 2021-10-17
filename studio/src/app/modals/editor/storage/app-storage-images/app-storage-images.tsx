@@ -2,19 +2,19 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {StorageFile} from '@deckdeckgo/editor';
 
-import i18n from '../../../stores/i18n.store';
+import i18n from '../../../../stores/i18n.store';
 
-import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
 
-import {StorageOfflineProvider} from '../../../providers/storage/storage.offline.provider';
+import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
 
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 
 @Component({
-  tag: 'app-custom-images',
-  styleUrl: 'app-custom-images.scss'
+  tag: 'app-storage-images',
+  styleUrl: 'app-storage-images.scss'
 })
-export class AppCustomImages {
+export class AppStorageImages {
   @Element() el: HTMLElement;
 
   private storageOfflineProvider: StorageOfflineProvider;
@@ -105,9 +105,9 @@ export class AppCustomImages {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
-        <app-assets
+        <app-storage-files
           folder={'images'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-assets>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-storage-files>
 
         <input type="file" accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp" onChange={() => this.upload()} />
       </ion-content>,

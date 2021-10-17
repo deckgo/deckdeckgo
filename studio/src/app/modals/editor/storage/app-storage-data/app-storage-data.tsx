@@ -2,17 +2,17 @@ import {Component, Element, Listen, State, h} from '@stencil/core';
 
 import {StorageFile} from '@deckdeckgo/editor';
 
-import i18n from '../../../stores/i18n.store';
+import i18n from '../../../../stores/i18n.store';
 
-import {StorageOfflineProvider} from '../../../providers/storage/storage.offline.provider';
+import {StorageOfflineProvider} from '../../../../providers/storage/storage.offline.provider';
 
-import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {AppIcon} from '../../../../components/core/app-icon/app-icon';
 
 @Component({
-  tag: 'app-custom-data',
-  styleUrl: 'app-custom-data.scss'
+  tag: 'app-storage-data',
+  styleUrl: 'app-storage-data.scss'
 })
-export class AppCustomData {
+export class AppStorageData {
   @Element() el: HTMLElement;
 
   private storageOfflineProvider: StorageOfflineProvider;
@@ -98,9 +98,9 @@ export class AppCustomData {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
-        <app-assets
+        <app-storage-files
           folder={'data'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-assets>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-storage-files>
 
         <input type="file" accept=".csv" onChange={() => this.upload()} />
       </ion-content>,

@@ -31,7 +31,7 @@ export class ImageHelper {
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(selectedElement, slide, deck, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
-      await this.openModal(selectedElement, slide, deck, 'app-custom-images', EditAction.OPEN_CUSTOM);
+      await this.openModal(selectedElement, slide, deck, 'app-storage-images', EditAction.OPEN_CUSTOM);
     } else if (imageAction.action === EditAction.OPEN_SVG_WAVES) {
       await this.openModal(selectedElement, slide, deck, 'app-waves');
     }

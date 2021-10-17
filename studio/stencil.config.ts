@@ -48,11 +48,11 @@ export const config: Config = {
         'app-unsplash',
         'app-poll-options',
         'app-code-languages',
-        'app-custom-data',
+        'app-storage-data',
+        'app-storage-images',
         'app-demo',
         'app-publish',
         'app-embed',
-        'app-custom-images',
         'app-user-menu',
         'app-image-element',
         'app-present',
@@ -150,7 +150,7 @@ export const config: Config = {
         'app-signin-page',
         'app-editor',
         'app-storage',
-        'app-assets',
+        'app-storage-files',
         'app-asset-image'
       ]
     }

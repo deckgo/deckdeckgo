@@ -1,0 +1,5 @@
+@use "../../../../global/theme/mixins/assets";
+
+app-storage-files {
+  @include assets.assets;
+}

@@ -2,18 +2,18 @@ import {Component, ComponentInterface, EventEmitter, h, Host, State, Event, Prop
 
 import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
-import store from '../../../../stores/error.store';
-import i18n from '../../../../stores/i18n.store';
+import store from '../../../stores/error.store';
+import i18n from '../../../stores/i18n.store';
 
-import {Constants} from '../../../../types/core/constants';
+import {Constants} from '../../../types/core/constants';
 
-import {getFiles} from '../../../../providers/storage/storage.provider';
+import {getFiles} from '../../../providers/storage/storage.provider';
 
 @Component({
-  tag: 'app-assets',
-  styleUrl: 'app-assets.scss'
+  tag: 'app-storage-files',
+  styleUrl: 'app-storage-files.scss'
 })
-export class AppAssets implements ComponentInterface {
+export class AppStorageFiles implements ComponentInterface {
   private paginationNext: string | null;
 
   @Prop()

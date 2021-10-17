@@ -41,7 +41,7 @@ export class ShapeHelper {
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(slideElement, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
-      await this.openModal(slideElement, 'app-custom-images');
+      await this.openModal(slideElement, 'app-storage-images');
     } else if (imageAction.action === EditAction.ADD_IMAGE) {
       await this.appendContentShapeImage(slideElement, imageAction.image as UnsplashPhoto | TenorGif | StorageFile);
     }
