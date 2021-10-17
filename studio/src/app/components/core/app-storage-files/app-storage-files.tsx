@@ -85,7 +85,7 @@ export class AppStorageFiles implements ComponentInterface {
 
   render() {
     return (
-      <Host class="ion-padding-top ion-padding-bottom">
+      <Host>
         {this.renderContent()}
 
         <ion-infinite-scroll
