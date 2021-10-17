@@ -1,60 +1,11 @@
+@use "../../../../global/theme/mixins/assets";
+
 app-gif {
   ion-content {
     --background: var(--ion-color-light);
-  }
 
-  app-image-columns {
-    --deckgo-images-min-height: 5rem;
-    --deckgo-images-padding: 16px;
-  }
-
-  div.gifs-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    div.gifs-column {
-      display: block;
-      flex-grow: 1;
-      flex-basis: 50%;
-      max-width: 50%;
-
-      div.gifs-category,
-      div.gif {
-        position: relative;
-
-        div.gifs-category-container,
-        div.gif-container {
-          border-radius: 4px;
-          overflow: hidden;
-          position: relative;
-
-          deckgo-lazy-img {
-            --deckgo-lazy-img-width: 100%;
-            --deckgo-lazy-img-height: auto;
-            --deckgo-lazy-img-min-height: 5rem;
-            --deckgo-lazy-img-vertical-align: top;
-          }
-
-          div.gifs-category-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            background: rgba(0, 0, 0, 0.6);
-
-            h2 {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              color: white;
-            }
-          }
-        }
-      }
+    main {
+      @include assets.assets;
     }
   }
 }

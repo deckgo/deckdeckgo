@@ -224,7 +224,7 @@ export class AppUnsplash {
 
     return this.photos.map((photo: UnsplashPhoto, index: number) => {
       return (
-        <article custom-tappable onClick={async () => await this.selectPhoto(photo)} key={`file-${index}`}>
+        <article custom-tappable onClick={async () => await this.selectPhoto(photo)} key={`unsplash-${index}`}>
           <app-asset-image image={photo}></app-asset-image>
         </article>
       );

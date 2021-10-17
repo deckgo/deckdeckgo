@@ -67,7 +67,7 @@ export namespace Components {
         "data": StorageFile;
     }
     interface AppAssetImage {
-        "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
+        "image": UnsplashPhoto | TenorGif | StorageFile | Waves | TenorCategory;
     }
     interface AppAssets {
         "folder": 'data' | 'images';
@@ -1329,7 +1329,7 @@ declare namespace LocalJSX {
         "data": StorageFile;
     }
     interface AppAssetImage {
-        "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
+        "image": UnsplashPhoto | TenorGif | StorageFile | Waves | TenorCategory;
     }
     interface AppAssets {
         "folder": 'data' | 'images';

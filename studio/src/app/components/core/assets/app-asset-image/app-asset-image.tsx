@@ -8,7 +8,7 @@ import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 })
 export class AppAssetImage implements ComponentInterface {
   @Prop()
-  image!: UnsplashPhoto | TenorGif | StorageFile | Waves;
+  image!: UnsplashPhoto | TenorGif | StorageFile | Waves | TenorCategory;
 
   @State()
   private imgLoaded: boolean = false;
@@ -27,6 +27,8 @@ export class AppAssetImage implements ComponentInterface {
       return this.renderStockPhoto(this.image as UnsplashPhoto);
     } else if (this.image.hasOwnProperty('media')) {
       return this.renderGif(this.image as TenorGif);
+    } else if (this.image.hasOwnProperty('searchterm')) {
+      return this.renderGifGategory(this.image as TenorCategory);
     } else if (this.image.hasOwnProperty('downloadUrl')) {
       return this.renderCustomImage(this.image as StorageFile);
     } else if (this.image.hasOwnProperty('viewBox')) {
@@ -51,6 +53,17 @@ export class AppAssetImage implements ComponentInterface {
     }
 
     return undefined;
+  }
+
+  private renderGifGategory(category: TenorCategory) {
+    return (
+      <Fragment>
+        <div class="image-container">
+          <deckgo-lazy-img imgSrc={category.image} imgAlt={category.name} custom-loader={true}></deckgo-lazy-img>
+        </div>
+        <ion-label>{category.name}</ion-label>
+      </Fragment>
+    );
   }
 
   private renderPhotoCredits(photo: UnsplashPhoto) {
