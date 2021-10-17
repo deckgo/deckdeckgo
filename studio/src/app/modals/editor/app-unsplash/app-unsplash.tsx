@@ -156,16 +156,18 @@ export class AppUnsplash {
         </ion-header>
 
         <ion-content class="ion-padding">
-          {this.renderPhotos()}
+          <main>
+            {this.renderPhotos()}
 
-          {this.renderPhotosPlaceHolder()}
+            {this.renderPhotosPlaceHolder()}
 
-          <ion-infinite-scroll
-            threshold="100px"
-            disabled={this.disableInfiniteScroll}
-            onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}>
-            <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
-          </ion-infinite-scroll>
+            <ion-infinite-scroll
+              threshold="100px"
+              disabled={this.disableInfiniteScroll}
+              onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}>
+              <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </main>
         </ion-content>
 
         <ion-footer>

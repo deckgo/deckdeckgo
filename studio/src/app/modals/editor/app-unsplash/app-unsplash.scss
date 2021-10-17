@@ -4,6 +4,8 @@ app-unsplash {
   ion-content {
     --background: var(--ion-color-light);
 
-    @include assets.assets;
+    main {
+      @include assets.assets;
+    }
   }
 }
