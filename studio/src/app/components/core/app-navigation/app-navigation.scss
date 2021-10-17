@@ -107,7 +107,7 @@ app-navigation {
     letter-spacing: 0.06em;
   }
 
-  header.icp {
+  header.ic {
     background: var(--ion-color-secondary);
     color: var(--ion-color-secondary-contrast);
 
@@ -125,7 +125,7 @@ app-navigation {
       margin: 12px 0;
 
       @media screen and (max-width: 540px) {
-        max-width: 280px;
+        max-width: 75vw;
         overflow: hidden;
         white-space: pre;
         text-overflow: ellipsis;

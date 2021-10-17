@@ -20,7 +20,7 @@ export class AppNavigation {
   @Prop() actions: boolean = true;
 
   @State()
-  private hideICP: boolean = false;
+  private hideIC: boolean = localStorage.getItem('deckgo-hide-announcement-ic') !== null;
 
   private async closeMenu() {
     const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
@@ -83,24 +83,28 @@ export class AppNavigation {
   }
 
   private renderICP() {
-    if (this.hideICP) {
+    if (this.hideIC) {
       return undefined;
     }
 
     return (
-      <header class={`icp ${isIOS() ? 'ios' : 'md'}`}>
-        <ion-button fill="clear" color="light" onClick={() => (this.hideICP = true)}>
+      <header class={`ic ${isIOS() ? 'ios' : 'md'}`}>
+        <ion-button
+          fill="clear"
+          color="light"
+          onClick={() => {
+            this.hideIC = true;
+            localStorage.setItem('deckgo-hide-announcement-ic', 'true');
+          }}>
           <ion-icon name="close"></ion-icon>
         </ion-button>
 
         <p>
-          DeckDeckGo Internet Computer{' '}
           <a
-            href="https://dev.to/daviddalbusco/we-received-a-grant-to-port-our-web-app-to-the-internet-computer-318o"
+            href="https://medium.com/geekculture/bye-bye-amazon-google-hello-web-3-0-b01bfe8f8783"
             rel="noopener norefferer"
-            target="_blank"
-            aria-label="More information">
-            <ion-icon name="information-circle"></ion-icon>
+            target="_blank">
+            We are porting DeckDeckGo to DFINITY’s Internet Computer.
           </a>
         </p>
       </header>
