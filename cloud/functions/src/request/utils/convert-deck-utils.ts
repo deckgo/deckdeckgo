@@ -157,7 +157,7 @@ function convertAttributesToString(attributes: SlideAttributes | undefined): Pro
       return;
     }
 
-    // We loose the type but doing so we ensure that all attributes are converted to string in order to parse them to HTML in the API
+    // We lose the type but doing so we ensure that all attributes are converted to string in order to parse them to HTML in the API
     const result: SlideAttributes = {};
     Object.keys(attributes).forEach((key: string) => {
       // @ts-ignore
