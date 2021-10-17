@@ -119,6 +119,7 @@ export const config: Config = {
         'app-color-text-background',
         'app-color',
         'app-image-choice',
+        'app-image-history',
         'app-deck-fonts',
         'app-deck-transition',
         'app-deck-header-footer',
