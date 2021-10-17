@@ -1,3 +1,9 @@
+# 1.0.0-beta.11 (2021-10-17)
+
+### Features
+
+- delete storage asset
+
 # 1.0.0-beta.10 (2021-10-15)
 
 ### Features

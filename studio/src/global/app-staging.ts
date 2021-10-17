@@ -39,10 +39,10 @@ setupDeckGoConfig({
   },
   cloud: {
     api: {
-      cdn: 'https://unpkg.com/@deckdeckgo/firebase@latest/dist/deckdeckgo-firebase/index.esm.js'
+      cdn: 'https://unpkg.com/@deckdeckgo/firebase@1.0.0-beta.1/dist/deckdeckgo-firebase/index.esm.js'
     },
     signIn: {
-      cdn: 'https://unpkg.com/@deckdeckgo/firebase@latest/dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js',
+      cdn: 'https://unpkg.com/@deckdeckgo/firebase@1.0.0-beta.1/dist/deckdeckgo-firebase/deckdeckgo-firebase.esm.js',
       tag: 'deckgo-firebase-signin'
     }
   }

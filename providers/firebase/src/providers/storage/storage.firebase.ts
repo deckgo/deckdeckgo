@@ -3,7 +3,7 @@ import '@firebase/storage';
 
 import {Reference, ListResult, ListOptions} from '@firebase/storage-types';
 
-import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
 
 export const uploadFile: UploadFile = ({
   data,
@@ -88,6 +88,11 @@ export const getFiles: GetFiles = ({
       reject(err);
     }
   });
+};
+
+export const deleteFile: DeleteFile = async ({fullPath}: StorageFile): Promise<void> => {
+  const ref: Reference = firebase.storage().ref(fullPath);
+  return ref.delete();
 };
 
 const toStorageFilesList = (results: ListResult): Promise<StorageFilesList> => {

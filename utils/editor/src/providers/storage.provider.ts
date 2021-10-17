@@ -29,3 +29,7 @@ export interface GetFiles {
     userId: string;
   }): Promise<StorageFilesList | null>;
 }
+
+export interface DeleteFile {
+  (storageFile: StorageFile): Promise<void>;
+}
