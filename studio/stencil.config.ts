@@ -37,7 +37,6 @@ export const config: Config = {
       components: [
         'app-root',
         'app-user-delete',
-        'app-deck-delete',
         'app-template',
         'app-notes',
         'app-remote-connect',
@@ -77,7 +76,7 @@ export const config: Config = {
         'app-transform-element',
         'app-transform-slide',
         'app-slide-warning-info',
-        'app-element-delete',
+        'app-delete',
         'app-slide-navigate',
         'app-fullscreen-info',
         'app-navigation',

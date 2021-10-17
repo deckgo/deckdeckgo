@@ -1,11 +1,11 @@
 @use "../../../../global/theme/mixins/dashboard";
 
-:host {
+app-dashboard-deck-actions {
   display: flex;
   justify-content: flex-end;
   padding: 8px 0;
-}
 
-button {
-  @include dashboard.edit;
+  button {
+    @include dashboard.edit;
+  }
 }
