@@ -99,7 +99,6 @@ export const config: Config = {
         'app-close-menu',
         'app-slide-warning',
         'app-slide-preview',
-        'app-image-columns',
         'app-select-target-element',
         'app-share-options',
         'app-playground-placeholder',

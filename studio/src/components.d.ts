@@ -213,10 +213,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
         "slide": boolean;
     }
-    interface AppImageColumns {
-        "imagesEven": (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
-        "imagesOdd": (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
-    }
     interface AppImageElement {
         "selectedElement": HTMLElement;
         "slide": boolean;
@@ -749,12 +745,6 @@ declare global {
         prototype: HTMLAppImageChoiceElement;
         new (): HTMLAppImageChoiceElement;
     };
-    interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {
-    }
-    var HTMLAppImageColumnsElement: {
-        prototype: HTMLAppImageColumnsElement;
-        new (): HTMLAppImageColumnsElement;
-    };
     interface HTMLAppImageElementElement extends Components.AppImageElement, HTMLStencilElement {
     }
     var HTMLAppImageElementElement: {
@@ -1207,7 +1197,6 @@ declare global {
         "app-get-help": HTMLAppGetHelpElement;
         "app-gif": HTMLAppGifElement;
         "app-image-choice": HTMLAppImageChoiceElement;
-        "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
         "app-image-history": HTMLAppImageHistoryElement;
         "app-image-style": HTMLAppImageStyleElement;
@@ -1515,11 +1504,6 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;
     }
-    interface AppImageColumns {
-        "imagesEven"?: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
-        "imagesOdd"?: (UnsplashPhoto | TenorGif | StorageFile | Waves)[];
-        "onSelectImage"?: (event: CustomEvent<UnsplashPhoto | TenorGif | StorageFile | Waves>) => void;
-    }
     interface AppImageElement {
         "selectedElement"?: HTMLElement;
         "slide"?: boolean;
@@ -1801,7 +1785,6 @@ declare namespace LocalJSX {
         "app-get-help": AppGetHelp;
         "app-gif": AppGif;
         "app-image-choice": AppImageChoice;
-        "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
         "app-image-history": AppImageHistory;
         "app-image-style": AppImageStyle;
@@ -1929,7 +1912,6 @@ declare module "@stencil/core" {
             "app-get-help": LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
             "app-gif": LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
             "app-image-choice": LocalJSX.AppImageChoice & JSXBase.HTMLAttributes<HTMLAppImageChoiceElement>;
-            "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-history": LocalJSX.AppImageHistory & JSXBase.HTMLAttributes<HTMLAppImageHistoryElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;
