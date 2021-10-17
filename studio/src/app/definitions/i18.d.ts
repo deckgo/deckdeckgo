@@ -94,6 +94,7 @@ interface I18nSettings {
   access_templates: string;
   access_dashboard: string;
   access_assets: string;
+  info_assets: string;
   profile_note: string;
   name: string;
   email: string;

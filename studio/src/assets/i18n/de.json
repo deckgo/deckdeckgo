@@ -88,6 +88,7 @@
     "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
     "access_dashboard": "{0} um deine Präsentationen Online zu speichern.",
     "access_assets": "{0} um auf Ihren Online-Medien zuzugreifen (Bilder und Daten).",
+    "info_assets": "Die Assets (Bilder und Daten), die Sie in Ihren Präsentationen verwenden und die in Ihren privaten Online-Medien hochgeladen wurden.",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
     "name": "Name",
     "email": "Email",

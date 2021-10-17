@@ -59,7 +59,7 @@ export class AppStorage implements ComponentInterface {
   }
 
   private renderNotLoggedInContent() {
-    return renderI18n(i18n.state.settings.access_dashboard, {
+    return renderI18n(i18n.state.settings.access_assets, {
       placeholder: '{0}',
       value: (
         <button type="button" class="app-button" onClick={() => signIn()}>
@@ -72,6 +72,8 @@ export class AppStorage implements ComponentInterface {
   private renderGuardedContent() {
     return (
       <Fragment>
+        <ion-label>{i18n.state.settings.info_assets}</ion-label>
+
         {this.renderFilter()}
 
         <app-storage-files class="ion-padding-top ion-padding-bottom" folder={this.folder}></app-storage-files>
