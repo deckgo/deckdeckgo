@@ -1,4 +1,16 @@
 app-storage {
+  app-storage-files {
+    grid-template-columns: repeat(8, calc((100% - (7 * 32px)) / 8));
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(5, calc((100% - (4 * 32px)) / 5));
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(3, calc((100% - (2 * 32px)) / 3));
+    }
+  }
+
   div.select {
     width: fit-content;
 
