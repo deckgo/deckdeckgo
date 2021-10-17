@@ -150,6 +150,7 @@ export const config: Config = {
         'app-editor',
         'app-storage',
         'app-storage-files',
+        'app-storage-admin',
         'app-asset-image'
       ]
     }

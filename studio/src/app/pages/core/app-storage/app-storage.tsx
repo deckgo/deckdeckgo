@@ -76,7 +76,7 @@ export class AppStorage implements ComponentInterface {
 
         {this.renderFilter()}
 
-        <app-storage-files class="ion-padding-top ion-padding-bottom" folder={this.folder}></app-storage-files>
+        <app-storage-files class="ion-padding-top ion-padding-bottom" folder={this.folder} admin={true}></app-storage-files>
       </Fragment>
     );
   }

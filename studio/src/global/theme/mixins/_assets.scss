@@ -6,6 +6,14 @@
 
   article {
     position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &.data {
+      justify-content: flex-start;
+    }
   }
 
   ion-infinite-scroll.infinite-scroll-enabled {

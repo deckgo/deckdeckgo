@@ -340,9 +340,13 @@ export namespace Components {
     }
     interface AppStorage {
     }
+    interface AppStorageAdmin {
+        "storageFile": StorageFile;
+    }
     interface AppStorageData {
     }
     interface AppStorageFiles {
+        "admin": boolean;
         "folder": 'data' | 'images';
     }
     interface AppStorageImages {
@@ -987,6 +991,12 @@ declare global {
         prototype: HTMLAppStorageElement;
         new (): HTMLAppStorageElement;
     };
+    interface HTMLAppStorageAdminElement extends Components.AppStorageAdmin, HTMLStencilElement {
+    }
+    var HTMLAppStorageAdminElement: {
+        prototype: HTMLAppStorageAdminElement;
+        new (): HTMLAppStorageAdminElement;
+    };
     interface HTMLAppStorageDataElement extends Components.AppStorageData, HTMLStencilElement {
     }
     var HTMLAppStorageDataElement: {
@@ -1228,6 +1238,7 @@ declare global {
         "app-slot-type": HTMLAppSlotTypeElement;
         "app-spinner": HTMLAppSpinnerElement;
         "app-storage": HTMLAppStorageElement;
+        "app-storage-admin": HTMLAppStorageAdminElement;
         "app-storage-data": HTMLAppStorageDataElement;
         "app-storage-files": HTMLAppStorageFilesElement;
         "app-storage-images": HTMLAppStorageImagesElement;
@@ -1633,9 +1644,13 @@ declare namespace LocalJSX {
     }
     interface AppStorage {
     }
+    interface AppStorageAdmin {
+        "storageFile": StorageFile;
+    }
     interface AppStorageData {
     }
     interface AppStorageFiles {
+        "admin"?: boolean;
         "folder": 'data' | 'images';
         "onSelectAsset"?: (event: CustomEvent<StorageFile>) => void;
     }
@@ -1811,6 +1826,7 @@ declare namespace LocalJSX {
         "app-slot-type": AppSlotType;
         "app-spinner": AppSpinner;
         "app-storage": AppStorage;
+        "app-storage-admin": AppStorageAdmin;
         "app-storage-data": AppStorageData;
         "app-storage-files": AppStorageFiles;
         "app-storage-images": AppStorageImages;
@@ -1937,6 +1953,7 @@ declare module "@stencil/core" {
             "app-slot-type": LocalJSX.AppSlotType & JSXBase.HTMLAttributes<HTMLAppSlotTypeElement>;
             "app-spinner": LocalJSX.AppSpinner & JSXBase.HTMLAttributes<HTMLAppSpinnerElement>;
             "app-storage": LocalJSX.AppStorage & JSXBase.HTMLAttributes<HTMLAppStorageElement>;
+            "app-storage-admin": LocalJSX.AppStorageAdmin & JSXBase.HTMLAttributes<HTMLAppStorageAdminElement>;
             "app-storage-data": LocalJSX.AppStorageData & JSXBase.HTMLAttributes<HTMLAppStorageDataElement>;
             "app-storage-files": LocalJSX.AppStorageFiles & JSXBase.HTMLAttributes<HTMLAppStorageFilesElement>;
             "app-storage-images": LocalJSX.AppStorageImages & JSXBase.HTMLAttributes<HTMLAppStorageImagesElement>;
