@@ -259,8 +259,6 @@ export namespace Components {
     interface AppNotes {
         "selectedElement": HTMLElement;
     }
-    interface AppPhoto {
-    }
     interface AppPlayground {
         "selectedElement": HTMLElement;
     }
@@ -399,6 +397,8 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppUnpublish {
+    }
+    interface AppUnsplash {
     }
     interface AppUserDelete {
         "username": string;
@@ -835,12 +835,6 @@ declare global {
         prototype: HTMLAppNotesElement;
         new (): HTMLAppNotesElement;
     };
-    interface HTMLAppPhotoElement extends Components.AppPhoto, HTMLStencilElement {
-    }
-    var HTMLAppPhotoElement: {
-        prototype: HTMLAppPhotoElement;
-        new (): HTMLAppPhotoElement;
-    };
     interface HTMLAppPlaygroundElement extends Components.AppPlayground, HTMLStencilElement {
     }
     var HTMLAppPlaygroundElement: {
@@ -1111,6 +1105,12 @@ declare global {
         prototype: HTMLAppUnpublishElement;
         new (): HTMLAppUnpublishElement;
     };
+    interface HTMLAppUnsplashElement extends Components.AppUnsplash, HTMLStencilElement {
+    }
+    var HTMLAppUnsplashElement: {
+        prototype: HTMLAppUnsplashElement;
+        new (): HTMLAppUnsplashElement;
+    };
     interface HTMLAppUserDeleteElement extends Components.AppUserDelete, HTMLStencilElement {
     }
     var HTMLAppUserDeleteElement: {
@@ -1212,7 +1212,6 @@ declare global {
         "app-navigation-actions": HTMLAppNavigationActionsElement;
         "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
-        "app-photo": HTMLAppPhotoElement;
         "app-playground": HTMLAppPlaygroundElement;
         "app-playground-placeholder": HTMLAppPlaygroundPlaceholderElement;
         "app-poll": HTMLAppPollElement;
@@ -1258,6 +1257,7 @@ declare global {
         "app-transform-element": HTMLAppTransformElementElement;
         "app-transform-slide": HTMLAppTransformSlideElement;
         "app-unpublish": HTMLAppUnpublishElement;
+        "app-unsplash": HTMLAppUnsplashElement;
         "app-user-delete": HTMLAppUserDeleteElement;
         "app-user-info": HTMLAppUserInfoElement;
         "app-user-menu": HTMLAppUserMenuElement;
@@ -1554,8 +1554,6 @@ declare namespace LocalJSX {
     interface AppNotes {
         "selectedElement"?: HTMLElement;
     }
-    interface AppPhoto {
-    }
     interface AppPlayground {
         "selectedElement"?: HTMLElement;
     }
@@ -1716,6 +1714,8 @@ declare namespace LocalJSX {
     }
     interface AppUnpublish {
     }
+    interface AppUnsplash {
+    }
     interface AppUserDelete {
         "username"?: string;
     }
@@ -1800,7 +1800,6 @@ declare namespace LocalJSX {
         "app-navigation-actions": AppNavigationActions;
         "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
-        "app-photo": AppPhoto;
         "app-playground": AppPlayground;
         "app-playground-placeholder": AppPlaygroundPlaceholder;
         "app-poll": AppPoll;
@@ -1846,6 +1845,7 @@ declare namespace LocalJSX {
         "app-transform-element": AppTransformElement;
         "app-transform-slide": AppTransformSlide;
         "app-unpublish": AppUnpublish;
+        "app-unsplash": AppUnsplash;
         "app-user-delete": AppUserDelete;
         "app-user-info": AppUserInfo;
         "app-user-menu": AppUserMenu;
@@ -1927,7 +1927,6 @@ declare module "@stencil/core" {
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
             "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
-            "app-photo": LocalJSX.AppPhoto & JSXBase.HTMLAttributes<HTMLAppPhotoElement>;
             "app-playground": LocalJSX.AppPlayground & JSXBase.HTMLAttributes<HTMLAppPlaygroundElement>;
             "app-playground-placeholder": LocalJSX.AppPlaygroundPlaceholder & JSXBase.HTMLAttributes<HTMLAppPlaygroundPlaceholderElement>;
             "app-poll": LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
@@ -1973,6 +1972,7 @@ declare module "@stencil/core" {
             "app-transform-element": LocalJSX.AppTransformElement & JSXBase.HTMLAttributes<HTMLAppTransformElementElement>;
             "app-transform-slide": LocalJSX.AppTransformSlide & JSXBase.HTMLAttributes<HTMLAppTransformSlideElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
+            "app-unsplash": LocalJSX.AppUnsplash & JSXBase.HTMLAttributes<HTMLAppUnsplashElement>;
             "app-user-delete": LocalJSX.AppUserDelete & JSXBase.HTMLAttributes<HTMLAppUserDeleteElement>;
             "app-user-info": LocalJSX.AppUserInfo & JSXBase.HTMLAttributes<HTMLAppUserInfoElement>;
             "app-user-menu": LocalJSX.AppUserMenu & JSXBase.HTMLAttributes<HTMLAppUserMenuElement>;

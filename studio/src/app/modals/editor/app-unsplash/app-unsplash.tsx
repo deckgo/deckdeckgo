@@ -12,10 +12,10 @@ import {unsplash} from '../../../utils/core/environment.utils';
 import {getUnsplashPhotos, registerUnsplashDownload} from '../../../providers/unsplash/unsplash.provider';
 
 @Component({
-  tag: 'app-photo',
-  styleUrl: 'app-photo.scss'
+  tag: 'app-unsplash',
+  styleUrl: 'app-unsplash.scss'
 })
-export class AppPhoto {
+export class AppUnsplash {
   @Element() el: HTMLElement;
 
   private imageHistoryService: ImageHistoryService;

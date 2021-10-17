@@ -45,7 +45,7 @@ export const config: Config = {
         'app-gif',
         'app-playground',
         'app-youtube',
-        'app-photo',
+        'app-unsplash',
         'app-poll-options',
         'app-code-languages',
         'app-custom-data',
@@ -149,8 +149,8 @@ export const config: Config = {
         'app-poll',
         'app-signin-page',
         'app-editor',
+        'app-storage',
         'app-assets',
-        'app-asset-files',
         'app-asset-image'
       ]
     }

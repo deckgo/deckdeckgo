@@ -23,7 +23,7 @@ export class ImageHelper {
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
-      await this.openModal(selectedElement, slide, deck, 'app-photo');
+      await this.openModal(selectedElement, slide, deck, 'app-unsplash');
     } else if (imageAction.action === EditAction.DELETE_BACKGROUND) {
       await this.deleteBackground(selectedElement, slide, deck);
     } else if (imageAction.action === EditAction.ADD_IMAGE && imageAction.image) {

@@ -37,7 +37,7 @@ export class ShapeHelper {
 
   private async appendShapeImage(slideElement: HTMLElement, imageAction: ImageAction) {
     if (imageAction.action === EditAction.OPEN_PHOTOS) {
-      await this.openModal(slideElement, 'app-photo');
+      await this.openModal(slideElement, 'app-unsplash');
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(slideElement, 'app-gif');
     } else if (imageAction.action === EditAction.OPEN_CUSTOM) {
