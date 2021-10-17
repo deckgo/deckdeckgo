@@ -1,6 +1,8 @@
-import {Component, ComponentInterface, h, Host, Prop} from '@stencil/core';
-import {AppIcon} from '../../app-icon/app-icon';
+import {Component, ComponentInterface, h, Prop} from '@stencil/core';
+
 import {StorageFile} from '@deckdeckgo/editor';
+
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-asset-data',
@@ -11,11 +13,6 @@ export class AppAssetData implements ComponentInterface {
   data!: StorageFile;
 
   render() {
-    return (
-      <Host>
-        <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
-        <ion-label>{this.data.name}</ion-label>
-      </Host>
-    );
+    return <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>;
   }
 }

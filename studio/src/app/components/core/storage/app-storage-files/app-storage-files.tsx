@@ -2,12 +2,12 @@ import {Component, ComponentInterface, EventEmitter, h, Host, State, Event, Prop
 
 import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
-import store from '../../../stores/error.store';
-import i18n from '../../../stores/i18n.store';
+import store from '../../../../stores/error.store';
+import i18n from '../../../../stores/i18n.store';
 
-import {Constants} from '../../../types/core/constants';
+import {Constants} from '../../../../types/core/constants';
 
-import {getFiles} from '../../../providers/storage/storage.provider';
+import {getFiles} from '../../../../providers/storage/storage.provider';
 
 @Component({
   tag: 'app-storage-files',
@@ -18,6 +18,9 @@ export class AppStorageFiles implements ComponentInterface {
 
   @Prop()
   folder!: 'data' | 'images';
+
+  @Prop()
+  admin: boolean = false;
 
   @State()
   private loading: boolean = true;
@@ -37,6 +40,10 @@ export class AppStorageFiles implements ComponentInterface {
 
   @Watch('folder')
   async onFolderChange() {
+    await this.resetAndSearch();
+  }
+
+  async resetAndSearch() {
     this.disableInfiniteScroll = false;
     this.files = [];
     this.loading = true;
@@ -83,6 +90,12 @@ export class AppStorageFiles implements ComponentInterface {
     await ($event.target as HTMLIonInfiniteScrollElement).complete();
   }
 
+  private async removeStorageFile({detail}: CustomEvent<string>) {
+    this.files = [...this.files.filter(({fullPath}: StorageFile) => fullPath !== detail)];
+
+    await this.resetAndSearch();
+  }
+
   render() {
     return (
       <Host>
@@ -125,13 +138,25 @@ export class AppStorageFiles implements ComponentInterface {
       return (
         <article custom-tappable onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`}>
           <app-asset-image image={storageFile}></app-asset-image>
+
+          {this.admin && (
+            <app-storage-admin
+              storageFile={storageFile}
+              onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}></app-storage-admin>
+          )}
         </article>
       );
     }
 
     return (
-      <article custom-tappable onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`}>
+      <article custom-tappable class="data" onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`}>
         <app-asset-data data={storageFile}></app-asset-data>
+
+        {this.admin && (
+          <app-storage-admin
+            storageFile={storageFile}
+            onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}></app-storage-admin>
+        )}
       </article>
     );
   }

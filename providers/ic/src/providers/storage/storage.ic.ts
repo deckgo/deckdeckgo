@@ -3,7 +3,7 @@ import {Principal} from '@dfinity/principal';
 
 import {v4 as uuid} from 'uuid';
 
-import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
 
 import {getIdentity} from '../auth/auth.ic';
 
@@ -185,4 +185,15 @@ export const getFiles: GetFiles = async ({
     })),
     nextPageToken: null
   };
+};
+
+export const deleteFile: DeleteFile = async ({downloadUrl, fullPath}: StorageFile): Promise<void> => {
+  const identity: Identity | undefined = getIdentity();
+
+  const {actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({identity});
+
+  const {pathname}: URL = new URL(downloadUrl);
+  const token: string = pathname.replace('?token=', '');
+
+  return actor.del({fullPath, token});
 };

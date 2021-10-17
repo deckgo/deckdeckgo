@@ -2,7 +2,7 @@ import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, S
 
 import type {OverlayEventDetail} from '@ionic/core';
 
-import {debounce, isFullscreen, isIOS, isMobile} from '@deckdeckgo/utils';
+import {debounce, isFullscreen} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 
 import {SlideScope} from '@deckdeckgo/editor';
@@ -267,13 +267,13 @@ export class AppActionsElement {
 
   private async confirmDeleteElement($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: 'app-element-delete',
+      component: 'app-delete',
       event: $event,
-      mode: isMobile() && !isIOS() ? 'md' : 'ios'
+      mode: 'ios'
     });
 
-    popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data) {
+    popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
+      if (data) {
         await this.deleteElement();
       }
     });

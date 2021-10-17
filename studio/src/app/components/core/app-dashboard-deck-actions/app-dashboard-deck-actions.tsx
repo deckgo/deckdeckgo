@@ -7,7 +7,7 @@ import {Deck} from '@deckdeckgo/editor';
 import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
-import {loadingController, modalController} from '../../../utils/ionic/ionic.overlay';
+import {loadingController, popoverController} from '../../../utils/ionic/ionic.overlay';
 import {clone} from '../../../utils/core/dashboard.utils';
 
 import {deleteDeck} from '../../../providers/data/deck/deck.provider';
@@ -16,8 +16,7 @@ import {AppIcon} from '../../core/app-icon/app-icon';
 
 @Component({
   tag: 'app-dashboard-deck-actions',
-  styleUrl: 'app-dashboard-deck-actions.scss',
-  shadow: true
+  styleUrl: 'app-dashboard-deck-actions.scss'
 })
 export class AppDashboardDeckActions {
   @Prop() deck: Deck;
@@ -39,21 +38,19 @@ export class AppDashboardDeckActions {
       return;
     }
 
-    const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-deck-delete',
-      componentProps: {
-        deckName: this.deck.data.name,
-        published: this.deck.data.meta?.published
-      }
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-delete',
+      event: $event,
+      mode: 'ios'
     });
 
-    modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data) {
+    popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
+      if (data) {
         await this.deleteDeck();
       }
     });
 
-    await modal.present();
+    await popover.present();
   }
 
   private deleteDeck(): Promise<void> {

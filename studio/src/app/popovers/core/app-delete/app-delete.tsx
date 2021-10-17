@@ -3,10 +3,10 @@ import {Component, Element, h} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 
 @Component({
-  tag: 'app-element-delete',
-  styleUrl: 'app-element-delete.scss'
+  tag: 'app-delete',
+  styleUrl: 'app-delete.scss'
 })
-export class AppElementDelete {
+export class AppDelete {
   @Element() el: HTMLElement;
 
   async closePopover(confirm: boolean) {

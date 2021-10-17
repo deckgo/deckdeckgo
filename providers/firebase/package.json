@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/firebase",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "The Firebase connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,7 +24,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/api": "^1.0.0-beta.0",
+    "@deckdeckgo/api": "^1.0.0-beta.1",
     "firebase": "^8.9.1",
     "idb-keyval": "^6.0.1"
   },

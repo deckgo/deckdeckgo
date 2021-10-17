@@ -61,8 +61,9 @@ export class AppAssetImage implements ComponentInterface {
       <Fragment>
         <div class="image-container">
           <deckgo-lazy-img imgSrc={category.image} imgAlt={category.name} custom-loader={true}></deckgo-lazy-img>
+
+          <ion-label class="gif-category">{category.name}</ion-label>
         </div>
-        <ion-label>{category.name}</ion-label>
       </Fragment>
     );
   }
@@ -105,14 +106,11 @@ export class AppAssetImage implements ComponentInterface {
 
   private renderCustomImage(storageFile: StorageFile) {
     if (storageFile && storageFile.downloadUrl) {
-      const imgName: string = storageFile.name || storageFile.downloadUrl;
-
       return (
         <Fragment>
           <div class="image-container">
-            <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={imgName} custom-loader={true}></deckgo-lazy-img>
+            <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={storageFile.name} custom-loader={true}></deckgo-lazy-img>
           </div>
-          <ion-label>{imgName}</ion-label>
         </Fragment>
       );
     }

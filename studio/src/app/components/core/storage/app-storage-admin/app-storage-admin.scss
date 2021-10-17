@@ -1,0 +1,13 @@
+@use "../../../../../global/theme/mixins/dashboard";
+
+app-storage-admin {
+  @include dashboard.actions;
+
+  margin-top: 8px;
+
+  button {
+    @include dashboard.edit;
+
+    justify-self: flex-end;
+  }
+}

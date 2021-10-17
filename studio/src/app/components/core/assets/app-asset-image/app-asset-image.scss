@@ -3,13 +3,11 @@ app-asset-image {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: auto;
 
   div.image-container {
     border-radius: 4px;
     overflow: hidden;
-    position: relative;
-
     display: block;
 
     &.waves {
@@ -48,13 +46,10 @@ app-asset-image {
     margin-top: 4px;
   }
 
+  ion-label.gif-category,
   ion-label.photo-credits {
-    position: absolute;
-    bottom: 0;
-    right: 0;
     background: rgba(0, 0, 0, 0.4);
     padding: 4px 8px;
-    font-size: var(--deckgo-images-font-size, var(--font-size-very-small));
     color: white;
 
     a {
@@ -66,5 +61,25 @@ app-asset-image {
         color: white;
       }
     }
+  }
+
+  ion-label.gif-category {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--font-size-normal);
+    border-radius: 4px;
+    white-space: pre-wrap;
+    max-width: calc(100% - 16px);
+    text-align: center;
+  }
+
+  ion-label.photo-credits {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: var(--font-size-very-small);
+    border-top-left-radius: 2px;
   }
 }
