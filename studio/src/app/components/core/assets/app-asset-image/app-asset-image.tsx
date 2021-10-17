@@ -19,7 +19,9 @@ export class AppAssetImage implements ComponentInterface {
   }
 
   render() {
-    return <Host class={`${this.imgLoaded ? 'imgLoaded' : ''}`}>{this.renderImage()}</Host>;
+    const wave: boolean = this.image.hasOwnProperty('viewBox');
+
+    return <Host class={`${this.imgLoaded || wave ? 'imgLoaded' : ''}`}>{this.renderImage()}</Host>;
   }
 
   private renderImage() {
@@ -126,7 +128,7 @@ export class AppAssetImage implements ComponentInterface {
   private renderWaves(waves: Waves) {
     if (waves && waves.path) {
       return (
-        <div class="image-container">
+        <div class="image-container waves">
           <svg {...waves}>
             <path d={waves.path.d} />
           </svg>

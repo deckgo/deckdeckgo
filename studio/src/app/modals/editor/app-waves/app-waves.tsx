@@ -9,6 +9,8 @@ import {WavesUtils} from '../../../utils/editor/waves.utils';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
+import {ImageHistoryService} from '../../../services/editor/image-history/image-history.service';
+
 @Component({
   tag: 'app-waves',
   styleUrl: 'app-waves.scss'
@@ -30,6 +32,12 @@ export class AppWaves {
 
   @State()
   private waves: Waves | null = null;
+
+  private imageHistoryService: ImageHistoryService;
+
+  constructor() {
+    this.imageHistoryService = ImageHistoryService.getInstance();
+  }
 
   async componentWillLoad() {
     await this.generateWaves();
@@ -109,14 +117,12 @@ export class AppWaves {
     };
   }
 
-  private selectWave(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const svg: Waves = this.waves;
+  private async selectWave() {
+    const svg: Waves = this.waves;
 
-      await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(svg);
+    await this.imageHistoryService.push(svg);
 
-      resolve();
-    });
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(svg);
   }
 
   render() {

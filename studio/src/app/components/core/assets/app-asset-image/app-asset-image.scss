@@ -11,6 +11,17 @@ app-asset-image {
     position: relative;
 
     display: block;
+
+    &.waves {
+      display: flex;
+      flex-direction: column;
+      height: 56px;
+      justify-content: flex-start;
+
+      svg[wave="upward"] {
+        margin-top: auto;
+      }
+    }
   }
 
   &.imgLoaded {

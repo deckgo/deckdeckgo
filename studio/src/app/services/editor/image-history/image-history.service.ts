@@ -20,17 +20,41 @@ export class ImageHistoryService {
     return del('deckdeckgo_images');
   }
 
-  async push(image: UnsplashPhoto | TenorGif | StorageFile) {
+  async push(image: UnsplashPhoto | TenorGif | StorageFile | Waves) {
     if (!image) {
       return;
     }
 
-    let images: (UnsplashPhoto | TenorGif | StorageFile)[] = await this.get();
+    let images: (UnsplashPhoto | TenorGif | StorageFile | Waves)[] = await this.get();
 
     if (!images) {
       images = [];
     }
 
+    // We always add waves in the history
+    const exist: boolean = image.hasOwnProperty('viewBox') ? false : this.exists(images, image);
+
+    if (exist) {
+      return;
+    }
+
+    images.unshift(image);
+
+    if (images.length > 50) {
+      images.length = 50;
+    }
+
+    await set('deckdeckgo_images', images);
+  }
+
+  get(): Promise<(UnsplashPhoto | TenorGif | StorageFile)[]> {
+    return get('deckdeckgo_images');
+  }
+
+  private exists(
+    images: (UnsplashPhoto | TenorGif | StorageFile | Waves)[],
+    image: UnsplashPhoto | TenorGif | StorageFile | Waves
+  ): boolean {
     const index: number = images.findIndex((filteredPhoto: UnsplashPhoto | TenorGif | StorageFile) => {
       if (filteredPhoto.hasOwnProperty('fullPath')) {
         return (filteredPhoto as StorageFile).fullPath === (image as StorageFile).fullPath;
@@ -39,20 +63,6 @@ export class ImageHistoryService {
       }
     });
 
-    if (index >= 0) {
-      return;
-    }
-
-    images.unshift(image);
-
-    if (images.length > 10) {
-      images.length = 10;
-    }
-
-    await set('deckdeckgo_images', images);
-  }
-
-  get(): Promise<(UnsplashPhoto | TenorGif | StorageFile)[]> {
-    return get('deckdeckgo_images');
+    return index >= 0;
   }
 }
