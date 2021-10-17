@@ -40,6 +40,10 @@ export class AppStorageFiles implements ComponentInterface {
 
   @Watch('folder')
   async onFolderChange() {
+    await this.resetAndSearch();
+  }
+
+  async resetAndSearch() {
     this.disableInfiniteScroll = false;
     this.files = [];
     this.loading = true;
@@ -86,6 +90,12 @@ export class AppStorageFiles implements ComponentInterface {
     await ($event.target as HTMLIonInfiniteScrollElement).complete();
   }
 
+  private async removeStorageFile({detail}: CustomEvent<string>) {
+    this.files = [...this.files.filter(({fullPath}: StorageFile) => fullPath !== detail)];
+
+    await this.resetAndSearch();
+  }
+
   render() {
     return (
       <Host>
@@ -129,7 +139,11 @@ export class AppStorageFiles implements ComponentInterface {
         <article custom-tappable onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`}>
           <app-asset-image image={storageFile}></app-asset-image>
 
-          {this.admin && <app-storage-admin storageFile={storageFile}></app-storage-admin>}
+          {this.admin && (
+            <app-storage-admin
+              storageFile={storageFile}
+              onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}></app-storage-admin>
+          )}
         </article>
       );
     }
@@ -138,7 +152,11 @@ export class AppStorageFiles implements ComponentInterface {
       <article custom-tappable class="data" onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`}>
         <app-asset-data data={storageFile}></app-asset-data>
 
-        {this.admin && <app-storage-admin storageFile={storageFile}></app-storage-admin>}
+        {this.admin && (
+          <app-storage-admin
+            storageFile={storageFile}
+            onFileDeleted={async ($event: CustomEvent<string>) => await this.removeStorageFile($event)}></app-storage-admin>
+        )}
       </article>
     );
   }

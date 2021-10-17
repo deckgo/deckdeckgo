@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Host, Prop, h, State} from '@stencil/core';
+import {Component, ComponentInterface, Host, Prop, h, State, Event, EventEmitter} from '@stencil/core';
 
 import {StorageFile} from '@deckdeckgo/editor';
 
@@ -11,6 +11,8 @@ import store from '../../../../stores/error.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
 
+import {deleteFile} from '../../../../providers/storage/storage.provider';
+
 @Component({
   tag: 'app-storage-admin',
   styleUrl: 'app-storage-admin.scss'
@@ -21,6 +23,8 @@ export class AppStorageAdmin implements ComponentInterface {
 
   @State()
   private actionInProgress: boolean = false;
+
+  @Event() fileDeleted: EventEmitter<string>;
 
   private async presentConfirmDelete($event: UIEvent) {
     $event.stopPropagation();
@@ -52,7 +56,9 @@ export class AppStorageAdmin implements ComponentInterface {
     await loading.present();
 
     try {
-      // TODO
+      await deleteFile(this.storageFile);
+
+      this.fileDeleted.emit(this.storageFile.fullPath);
     } catch (err) {
       store.state.error = err;
     }

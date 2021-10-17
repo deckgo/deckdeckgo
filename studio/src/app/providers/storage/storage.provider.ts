@@ -1,4 +1,4 @@
-import {GetFiles, StorageFile, StorageFilesList, UploadFile} from '@deckdeckgo/editor';
+import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
 
 import authStore from '../../stores/auth.store';
 import offlineStore from '../../stores/offline.store';
@@ -48,4 +48,14 @@ export const getFiles = async ({next, folder}: {next: string | null; folder: str
   }
 
   return StorageOfflineProvider.getInstance().getFiles(folder);
+};
+
+export const deleteFile = async (storageFile: StorageFile) => {
+  if (cloud()) {
+    const {deleteFile}: {deleteFile: DeleteFile} = await cloudProvider<{deleteFile: DeleteFile}>();
+
+    return deleteFile(storageFile);
+  }
+
+  throw new Error('No provider to delete online file.');
 };

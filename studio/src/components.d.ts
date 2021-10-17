@@ -1645,6 +1645,7 @@ declare namespace LocalJSX {
     interface AppStorage {
     }
     interface AppStorageAdmin {
+        "onFileDeleted"?: (event: CustomEvent<string>) => void;
         "storageFile": StorageFile;
     }
     interface AppStorageData {
