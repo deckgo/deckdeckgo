@@ -30,7 +30,7 @@ export class AppAssetImage implements ComponentInterface {
     } else if (this.image.hasOwnProperty('media')) {
       return this.renderGif(this.image as TenorGif);
     } else if (this.image.hasOwnProperty('searchterm')) {
-      return this.renderGifGategory(this.image as TenorCategory);
+      return this.renderGifCategory(this.image as TenorCategory);
     } else if (this.image.hasOwnProperty('downloadUrl')) {
       return this.renderCustomImage(this.image as StorageFile);
     } else if (this.image.hasOwnProperty('viewBox')) {
@@ -42,14 +42,13 @@ export class AppAssetImage implements ComponentInterface {
 
   private renderGif(gif: TenorGif) {
     if (gif?.media?.[0]?.tinygif?.url) {
-      const imgName: string = gif.title ? gif.title : gif.media[0].tinygif.url;
+      const imgName: string = gif.title || 'GIF';
 
       return (
         <Fragment>
           <div class="image-container">
             <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={imgName} custom-loader={true}></deckgo-lazy-img>
           </div>
-          <ion-label>{imgName}</ion-label>
         </Fragment>
       );
     }
@@ -57,7 +56,7 @@ export class AppAssetImage implements ComponentInterface {
     return undefined;
   }
 
-  private renderGifGategory(category: TenorCategory) {
+  private renderGifCategory(category: TenorCategory) {
     return (
       <Fragment>
         <div class="image-container">
@@ -88,19 +87,15 @@ export class AppAssetImage implements ComponentInterface {
 
   private renderStockPhoto(photo: UnsplashPhoto) {
     if (photo.urls && photo.urls.thumb) {
-      const imgName: string = photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb;
+      const imgName: string = photo.description || 'Unsplash';
 
       return (
         <Fragment>
           <div class="image-container">
-            <deckgo-lazy-img
-              imgSrc={photo.urls.thumb}
-              imgAlt={photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb}
-              custom-loader={true}></deckgo-lazy-img>
+            <deckgo-lazy-img imgSrc={photo.urls.thumb} imgAlt={imgName} custom-loader={true}></deckgo-lazy-img>
 
             {this.renderPhotoCredits(photo)}
           </div>
-          <ion-label>{imgName}</ion-label>
         </Fragment>
       );
     }
