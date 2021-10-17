@@ -207,7 +207,7 @@ export namespace Components {
     }
     interface AppGif {
     }
-    interface AppImage {
+    interface AppImageChoice {
         "deck": boolean;
         "deleteBackground": boolean;
         "selectedElement": HTMLElement;
@@ -739,11 +739,11 @@ declare global {
         prototype: HTMLAppGifElement;
         new (): HTMLAppGifElement;
     };
-    interface HTMLAppImageElement extends Components.AppImage, HTMLStencilElement {
+    interface HTMLAppImageChoiceElement extends Components.AppImageChoice, HTMLStencilElement {
     }
-    var HTMLAppImageElement: {
-        prototype: HTMLAppImageElement;
-        new (): HTMLAppImageElement;
+    var HTMLAppImageChoiceElement: {
+        prototype: HTMLAppImageChoiceElement;
+        new (): HTMLAppImageChoiceElement;
     };
     interface HTMLAppImageColumnsElement extends Components.AppImageColumns, HTMLStencilElement {
     }
@@ -1196,7 +1196,7 @@ declare global {
         "app-fullscreen-info": HTMLAppFullscreenInfoElement;
         "app-get-help": HTMLAppGetHelpElement;
         "app-gif": HTMLAppGifElement;
-        "app-image": HTMLAppImageElement;
+        "app-image-choice": HTMLAppImageChoiceElement;
         "app-image-columns": HTMLAppImageColumnsElement;
         "app-image-element": HTMLAppImageElementElement;
         "app-image-style": HTMLAppImageStyleElement;
@@ -1497,7 +1497,7 @@ declare namespace LocalJSX {
     }
     interface AppGif {
     }
-    interface AppImage {
+    interface AppImageChoice {
         "deck"?: boolean;
         "deleteBackground"?: boolean;
         "onAction"?: (event: CustomEvent<ImageAction>) => void;
@@ -1784,7 +1784,7 @@ declare namespace LocalJSX {
         "app-fullscreen-info": AppFullscreenInfo;
         "app-get-help": AppGetHelp;
         "app-gif": AppGif;
-        "app-image": AppImage;
+        "app-image-choice": AppImageChoice;
         "app-image-columns": AppImageColumns;
         "app-image-element": AppImageElement;
         "app-image-style": AppImageStyle;
@@ -1911,7 +1911,7 @@ declare module "@stencil/core" {
             "app-fullscreen-info": LocalJSX.AppFullscreenInfo & JSXBase.HTMLAttributes<HTMLAppFullscreenInfoElement>;
             "app-get-help": LocalJSX.AppGetHelp & JSXBase.HTMLAttributes<HTMLAppGetHelpElement>;
             "app-gif": LocalJSX.AppGif & JSXBase.HTMLAttributes<HTMLAppGifElement>;
-            "app-image": LocalJSX.AppImage & JSXBase.HTMLAttributes<HTMLAppImageElement>;
+            "app-image-choice": LocalJSX.AppImageChoice & JSXBase.HTMLAttributes<HTMLAppImageChoiceElement>;
             "app-image-columns": LocalJSX.AppImageColumns & JSXBase.HTMLAttributes<HTMLAppImageColumnsElement>;
             "app-image-element": LocalJSX.AppImageElement & JSXBase.HTMLAttributes<HTMLAppImageElementElement>;
             "app-image-style": LocalJSX.AppImageStyle & JSXBase.HTMLAttributes<HTMLAppImageStyleElement>;

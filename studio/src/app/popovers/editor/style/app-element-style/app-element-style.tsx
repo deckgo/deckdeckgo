@@ -246,10 +246,10 @@ export class AppElementStyle {
     }
 
     return (
-      <app-image
+      <app-image-choice
         selectedElement={this.selectedElement.element}
         deck={true}
-        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image>
+        onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image-choice>
     );
   }
 

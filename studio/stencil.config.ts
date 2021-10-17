@@ -118,7 +118,7 @@ export const config: Config = {
         'app-expansion-panel',
         'app-color-text-background',
         'app-color',
-        'app-image',
+        'app-image-choice',
         'app-deck-fonts',
         'app-deck-transition',
         'app-deck-header-footer',

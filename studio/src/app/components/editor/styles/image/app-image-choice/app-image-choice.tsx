@@ -2,28 +2,28 @@ import {Component, Element, Prop, State, h, EventEmitter, Event} from '@stencil/
 
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
-import {alertController} from '../../../../utils/ionic/ionic.overlay';
+import {alertController} from '../../../../../utils/ionic/ionic.overlay';
 
-import settingsStore from '../../../../stores/settings.store';
-import i18n from '../../../../stores/i18n.store';
-import offlineStore from '../../../../stores/offline.store';
+import settingsStore from '../../../../../stores/settings.store';
+import i18n from '../../../../../stores/i18n.store';
+import offlineStore from '../../../../../stores/offline.store';
 
-import {EditAction} from '../../../../types/editor/edit-action';
-import {ImageAction} from '../../../../types/editor/image-action';
-import {Expanded} from '../../../../types/core/settings';
+import {EditAction} from '../../../../../types/editor/edit-action';
+import {ImageAction} from '../../../../../types/editor/image-action';
+import {Expanded} from '../../../../../types/core/settings';
 
-import {ImageHistoryService} from '../../../../services/editor/image-history/image-history.service';
+import {ImageHistoryService} from '../../../../../services/editor/image-history/image-history.service';
 
-import {SettingsUtils} from '../../../../utils/core/settings.utils';
-import {tenor, unsplash} from '../../../../utils/core/environment.utils';
+import {SettingsUtils} from '../../../../../utils/core/settings.utils';
+import {tenor, unsplash} from '../../../../../utils/core/environment.utils';
 
-import {AppIcon} from '../../../core/app-icon/app-icon';
+import {AppIcon} from '../../../../core/app-icon/app-icon';
 
 @Component({
-  tag: 'app-image',
-  styleUrl: 'app-image.scss'
+  tag: 'app-image-choice',
+  styleUrl: 'app-image-choice.scss'
 })
-export class AppImage {
+export class AppImageChoice {
   @Element() el: HTMLElement;
 
   @Event() private action: EventEmitter<ImageAction>;
