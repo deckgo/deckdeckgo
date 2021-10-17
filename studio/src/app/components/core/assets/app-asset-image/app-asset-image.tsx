@@ -1,4 +1,4 @@
-import {h, Component, Host, ComponentInterface, Prop, Listen, State} from '@stencil/core';
+import {h, Component, Host, ComponentInterface, Prop, Listen, State, Fragment} from '@stencil/core';
 
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
@@ -38,13 +38,15 @@ export class AppAssetImage implements ComponentInterface {
 
   private renderGif(gif: TenorGif) {
     if (gif?.media?.[0]?.tinygif?.url) {
+      const imgName: string = gif.title ? gif.title : gif.media[0].tinygif.url;
+
       return (
-        <div class="image-container">
-          <deckgo-lazy-img
-            imgSrc={gif.media[0].tinygif.url}
-            imgAlt={gif.title ? gif.title : gif.media[0].tinygif.url}
-            custom-loader={true}></deckgo-lazy-img>
-        </div>
+        <Fragment>
+          <div class="image-container">
+            <deckgo-lazy-img imgSrc={gif.media[0].tinygif.url} imgAlt={imgName} custom-loader={true}></deckgo-lazy-img>
+          </div>
+          <ion-label>{imgName}</ion-label>
+        </Fragment>
       );
     }
 
@@ -71,14 +73,20 @@ export class AppAssetImage implements ComponentInterface {
 
   private renderStockPhoto(photo: UnsplashPhoto) {
     if (photo.urls && photo.urls.thumb) {
+      const imgName: string = photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb;
+
       return (
-        <div class="image-container">
-          <deckgo-lazy-img
-            imgSrc={photo.urls.thumb}
-            imgAlt={photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb}
-            custom-loader={true}></deckgo-lazy-img>
-          {this.renderPhotoCredits(photo)}
-        </div>
+        <Fragment>
+          <div class="image-container">
+            <deckgo-lazy-img
+              imgSrc={photo.urls.thumb}
+              imgAlt={photo.description ? photo.description : photo.links && photo.links.html ? photo.links.html : photo.urls.thumb}
+              custom-loader={true}></deckgo-lazy-img>
+
+            {this.renderPhotoCredits(photo)}
+          </div>
+          <ion-label>{imgName}</ion-label>
+        </Fragment>
       );
     }
 
@@ -87,10 +95,15 @@ export class AppAssetImage implements ComponentInterface {
 
   private renderCustomImage(storageFile: StorageFile) {
     if (storageFile && storageFile.downloadUrl) {
+      const imgName: string = storageFile.name || storageFile.downloadUrl;
+
       return (
-        <div class="image-container">
-          <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={storageFile.downloadUrl} custom-loader={true}></deckgo-lazy-img>
-        </div>
+        <Fragment>
+          <div class="image-container">
+            <deckgo-lazy-img imgSrc={storageFile.downloadUrl} imgAlt={imgName} custom-loader={true}></deckgo-lazy-img>
+          </div>
+          <ion-label>{imgName}</ion-label>
+        </Fragment>
       );
     }
 

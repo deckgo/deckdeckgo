@@ -1,15 +1,15 @@
 app-assets {
   display: grid;
-  grid-template-columns: repeat(8, calc((100% - (7 * 16px)) / 8));
+  grid-template-columns: repeat(8, calc((100% - (7 * 32px)) / 8));
   grid-auto-flow: row dense;
-  grid-gap: var(--deckgo-images-padding, 16px);
+  grid-gap: var(--deckgo-images-padding, 32px);
 
-  @media (max-width: 992px) {
-    grid-template-columns: repeat(4, calc((100% - (3 * 16px)) / 4));
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(5, calc((100% - (4 * 32px)) / 5));
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(3, calc((100% - (2 * 16px)) / 3));
+    grid-template-columns: repeat(3, calc((100% - (2 * 32px)) / 3));
   }
 
   article {

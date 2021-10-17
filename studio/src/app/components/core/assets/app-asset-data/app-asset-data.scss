@@ -4,12 +4,14 @@ app-asset-data {
   justify-content: center;
   align-items: center;
 
+  margin: 16px 0;
+
   ion-icon {
     font-size: 3rem;
   }
 
   ion-label {
-    max-width: 100%;
+    max-width: calc(100% - 32px);
     text-align: center;
     padding-top: 4px;
     white-space: nowrap;
