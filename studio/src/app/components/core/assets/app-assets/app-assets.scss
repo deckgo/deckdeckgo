@@ -1,4 +1,4 @@
-app-asset-files {
+app-assets {
   display: grid;
   grid-template-columns: repeat(8, calc((100% - (7 * 16px)) / 8));
   grid-auto-flow: row dense;

@@ -105,9 +105,9 @@ export class AppCustomImages {
         </ion-toolbar>
       </ion-header>,
       <ion-content class="ion-padding">
-        <app-asset-files
+        <app-assets
           folder={'images'}
-          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-asset-files>
+          onSelectAsset={async ($event: CustomEvent<StorageFile>) => await this.selectData($event.detail)}></app-assets>
 
         <input type="file" accept="image/x-png,image/jpeg,image/gif,image/svg+xml,image/webp" onChange={() => this.upload()} />
       </ion-content>,
