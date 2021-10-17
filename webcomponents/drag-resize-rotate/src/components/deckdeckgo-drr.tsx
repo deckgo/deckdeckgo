@@ -211,7 +211,7 @@ export class DeckdeckgoDragResizeRotate {
       return;
     }
 
-    // If we click elsewhere or select another component, then this component should loose focus and values need to be reset for next usage
+    // If we click elsewhere or select another component, then this component should lose focus and values need to be reset for next usage
     if (!this.isTargetEvent($event)) {
       this.stopAndReset(false);
 

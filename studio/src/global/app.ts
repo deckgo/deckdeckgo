@@ -32,7 +32,7 @@ setupDeckGoConfig({
   },
   unsplash: {
     url: '<@UNSPLASH_URL@>',
-    cdn: 'http://localhost:5000/index.js'
+    cdn: 'https://unpkg.com/@deckdeckgo/api@latest/lib/index.js'
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='

@@ -12,7 +12,7 @@ The following guide is here to try to guide you through the process of contribut
 - [Technical facts](#technical-facts)
 - [Issues](#issues)
 - [Bugs and features requests](#bugs-and-features-requests)
-- [Translation](#translation)
+- [Translations (i18n)](#translation)
 - [Documentation](#documentation)
 
 ## How to get Involved
@@ -41,9 +41,14 @@ In any case, ping us to get start, your help would be super appreciated!
 
 Some bugs (sh\*t happens) might not yet been reported. Likewise, your awesome ideas to make [DeckDeckGo] better are always wanted. Therefore don't hesitate to open new [issues](https://github.com/deckgo/deckdeckgo/issues) but if you are unsure about if it's the right place or if you would like to discuss it first, go to [Slack](https://join.slack.com/t/deckdeckgo/shared_invite/enQtNzM0NjMwOTc3NTI0LTBlNmFhODNhYmRkMWUxZmU4ZTQ2MDJiNjlmYWZiODNjMDU5OGRjYThlZmZjMTc5YmQ3MzUzMDlhMzk0ZDgzMDY) for that purpose.
 
-## Translation
+## Translations (i18n)
 
-We would be grateful to get your help to translate our apps!
+We would be grateful to get your help to translate our apps:
+
+- Editor
+- Site
+- Remote
+- Docs
 
 ### Editor
 
