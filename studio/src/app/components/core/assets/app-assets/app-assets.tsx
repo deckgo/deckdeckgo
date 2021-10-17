@@ -7,8 +7,6 @@ import i18n from '../../../../stores/i18n.store';
 
 import {Constants} from '../../../../types/core/constants';
 
-import {AppIcon} from '../../app-icon/app-icon';
-
 import {getFiles} from '../../../../providers/storage/storage.provider';
 
 @Component({
@@ -132,9 +130,8 @@ export class AppAssets implements ComponentInterface {
     }
 
     return (
-      <article custom-tappable onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`} class="data">
-        <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
-        <ion-label>{storageFile.name}</ion-label>
+      <article custom-tappable onClick={() => this.selectAsset.emit(storageFile)} key={`file-${index}`}>
+        <app-asset-data data={storageFile}></app-asset-data>
       </article>
     );
   }

@@ -63,6 +63,9 @@ export namespace Components {
         "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
+    interface AppAssetData {
+        "data": StorageFile;
+    }
     interface AppAssetImage {
         "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
     }
@@ -459,6 +462,12 @@ declare global {
     var HTMLAppActionsElementElement: {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
+    };
+    interface HTMLAppAssetDataElement extends Components.AppAssetData, HTMLStencilElement {
+    }
+    var HTMLAppAssetDataElement: {
+        prototype: HTMLAppAssetDataElement;
+        new (): HTMLAppAssetDataElement;
     };
     interface HTMLAppAssetImageElement extends Components.AppAssetImage, HTMLStencilElement {
     }
@@ -1141,6 +1150,7 @@ declare global {
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-editor": HTMLAppActionsEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
+        "app-asset-data": HTMLAppAssetDataElement;
         "app-asset-image": HTMLAppAssetImageElement;
         "app-assets": HTMLAppAssetsElement;
         "app-avatar": HTMLAppAvatarElement;
@@ -1314,6 +1324,9 @@ declare namespace LocalJSX {
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
         "slideTransform"?: EventEmitter;
+    }
+    interface AppAssetData {
+        "data": StorageFile;
     }
     interface AppAssetImage {
         "image": UnsplashPhoto | TenorGif | StorageFile | Waves;
@@ -1725,6 +1738,7 @@ declare namespace LocalJSX {
         "app-actions-deck": AppActionsDeck;
         "app-actions-editor": AppActionsEditor;
         "app-actions-element": AppActionsElement;
+        "app-asset-data": AppAssetData;
         "app-asset-image": AppAssetImage;
         "app-assets": AppAssets;
         "app-avatar": AppAvatar;
@@ -1851,6 +1865,7 @@ declare module "@stencil/core" {
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-editor": LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
+            "app-asset-data": LocalJSX.AppAssetData & JSXBase.HTMLAttributes<HTMLAppAssetDataElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
             "app-assets": LocalJSX.AppAssets & JSXBase.HTMLAttributes<HTMLAppAssetsElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
