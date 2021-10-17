@@ -1,35 +1,5 @@
+@use "../../../../../global/theme/mixins/assets";
+
 app-assets {
-  display: grid;
-  grid-template-columns: repeat(8, calc((100% - (7 * 32px)) / 8));
-  grid-auto-flow: row dense;
-  grid-gap: var(--deckgo-images-padding, 32px);
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(5, calc((100% - (4 * 32px)) / 5));
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(3, calc((100% - (2 * 32px)) / 3));
-  }
-
-  article {
-    position: relative;
-  }
-
-  ion-infinite-scroll.infinite-scroll-enabled {
-    font-size: var(--font-size-very-small);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    div.infinite-loading {
-      margin-bottom: 0;
-    }
-  }
-
-  ion-label.empty {
-    grid-column-start: 1;
-    grid-column-end: 9;
-  }
+  @include assets.assets;
 }

@@ -1,4 +1,4 @@
-import {Component, Element, Listen, State, h} from '@stencil/core';
+import {Component, Element, Listen, State, h, Fragment} from '@stencil/core';
 
 import {UnsplashPhoto, UnsplashSearchResponse} from '@deckdeckgo/editor';
 
@@ -21,10 +21,7 @@ export class AppUnsplash {
   private imageHistoryService: ImageHistoryService;
 
   @State()
-  private photosOdd: UnsplashPhoto[];
-
-  @State()
-  private photosEven: UnsplashPhoto[];
+  private photos: UnsplashPhoto[];
 
   @State()
   private searchTerm: string;
@@ -56,181 +53,136 @@ export class AppUnsplash {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
 
-  private selectPhoto($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private async selectPhoto(photo: UnsplashPhoto) {
+    await registerUnsplashDownload(photo);
 
-      const photo: UnsplashPhoto = $event.detail;
+    await this.imageHistoryService.push(photo);
 
-      await registerUnsplashDownload(photo);
-
-      await this.imageHistoryService.push(photo);
-
-      await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
-
-      resolve();
-    });
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(photo);
   }
 
-  private clear(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.searchTerm = undefined;
+  private clear() {
+    this.searchTerm = undefined;
 
-      this.photosOdd = null;
-      this.photosEven = null;
+    this.photos = null;
 
-      this.disableInfiniteScroll = false;
+    this.disableInfiniteScroll = false;
 
-      this.paginationNext = 1;
-
-      resolve();
-    });
+    this.paginationNext = 1;
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
     this.searchTerm = ($event.target as InputTargetEvent).value;
   }
 
-  private search(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.searchTerm || this.searchTerm.length <= 0) {
-        await this.clear();
-        resolve();
-        return;
-      }
+  private async search() {
+    if (!this.searchTerm || this.searchTerm.length <= 0) {
+      this.clear();
+      return;
+    }
 
-      if (!unsplash()) {
-        return;
-      }
+    if (!unsplash()) {
+      return;
+    }
 
-      const unsplashResponse: UnsplashSearchResponse | undefined = await getUnsplashPhotos({
-        searchTerm: this.searchTerm,
-        paginationNext: this.paginationNext
-      });
-
-      this.searching = false;
-
-      if (!unsplashResponse) {
-        resolve();
-        return;
-      }
-
-      const photos: UnsplashPhoto[] = unsplashResponse.results;
-
-      if (!photos || photos.length <= 0) {
-        this.emptyPhotos();
-
-        resolve();
-        return;
-      }
-
-      if (!this.photosOdd) {
-        this.photosOdd = [];
-      }
-
-      if (!this.photosEven) {
-        this.photosEven = [];
-      }
-
-      const newSearchTerm: boolean = !this.previousSearchTerm || this.searchTerm !== this.previousSearchTerm;
-
-      if (newSearchTerm) {
-        this.photosOdd = [];
-        this.photosEven = [];
-      }
-
-      this.photosOdd = [...this.photosOdd, ...photos.filter((_a, i) => !(i % 2))];
-      this.photosEven = [...this.photosEven, ...photos.filter((_a, i) => i % 2)];
-
-      if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
-        // We just put a small delay because of the repaint
-        setTimeout(async () => {
-          await this.autoScrollToTop();
-        }, 100);
-      }
-
-      this.disableInfiniteScroll = this.paginationNext * 10 >= unsplashResponse.total;
-
-      this.paginationNext++;
-
-      this.previousSearchTerm = this.searchTerm;
-
-      resolve();
+    const unsplashResponse: UnsplashSearchResponse | undefined = await getUnsplashPhotos({
+      searchTerm: this.searchTerm,
+      paginationNext: this.paginationNext
     });
+
+    this.searching = false;
+
+    if (!unsplashResponse) {
+      return;
+    }
+
+    const photos: UnsplashPhoto[] = unsplashResponse.results;
+
+    if (!photos || photos.length <= 0) {
+      this.emptyPhotos();
+      return;
+    }
+
+    if (!this.photos) {
+      this.photos = [];
+    }
+
+    const newSearchTerm: boolean = !this.previousSearchTerm || this.searchTerm !== this.previousSearchTerm;
+
+    if (newSearchTerm) {
+      this.photos = [];
+    }
+
+    this.photos = [...this.photos, ...photos];
+
+    if (!this.paginationNext || this.paginationNext === 0 || newSearchTerm) {
+      // We just put a small delay because of the repaint
+      setTimeout(async () => {
+        await this.autoScrollToTop();
+      }, 100);
+    }
+
+    this.disableInfiniteScroll = this.paginationNext * 10 >= unsplashResponse.total;
+
+    this.paginationNext++;
+
+    this.previousSearchTerm = this.searchTerm;
   }
 
-  private autoScrollToTop(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const content: HTMLIonContentElement = this.el.querySelector('ion-content');
-
-      if (!content) {
-        resolve();
-        return;
-      }
-
-      await content.scrollToTop();
-
-      resolve();
-    });
+  private async autoScrollToTop() {
+    const content: HTMLIonContentElement | null = this.el.querySelector('ion-content');
+    await content?.scrollToTop();
   }
 
   private emptyPhotos() {
-    this.photosOdd = [];
-    this.photosEven = [];
-
+    this.photos = [];
     this.disableInfiniteScroll = true;
   }
 
-  private searchNext(e: CustomEvent<void>): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      await this.search();
+  private async searchNext($event: CustomEvent<void>) {
+    await this.search();
 
-      (e.target as HTMLIonInfiniteScrollElement).complete();
-
-      resolve();
-    });
+    await ($event.target as HTMLIonInfiniteScrollElement).complete();
   }
 
   render() {
-    return [
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
-          <ion-title class="ion-text-uppercase">{i18n.state.editor.stock_photo}</ion-title>
-        </ion-toolbar>
-      </ion-header>,
-      <ion-content class="ion-padding">
-        <app-image-columns
-          imagesOdd={this.photosOdd}
-          imagesEven={this.photosEven}
-          onSelectImage={($event: CustomEvent) => this.selectPhoto($event)}></app-image-columns>
+    return (
+      <Fragment>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-buttons slot="start">{this.renderCloseButton()}</ion-buttons>
+            <ion-title class="ion-text-uppercase">{i18n.state.editor.stock_photo}</ion-title>
+          </ion-toolbar>
+        </ion-header>
 
-        {this.renderPhotosPlaceHolder()}
+        <ion-content class="ion-padding">
+          {this.renderPhotos()}
 
-        <ion-infinite-scroll
-          threshold="100px"
-          disabled={this.disableInfiniteScroll}
-          onIonInfinite={(e: CustomEvent<void>) => this.searchNext(e)}>
-          <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-content>,
-      <ion-footer>
-        <ion-toolbar>
-          <ion-searchbar
-            debounce={500}
-            placeholder="Search"
-            value={this.searchTerm}
-            onIonClear={() => this.clear()}
-            onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
-            onIonChange={() => {
-              this.search();
-            }}></ion-searchbar>
-        </ion-toolbar>
-      </ion-footer>
-    ];
+          {this.renderPhotosPlaceHolder()}
+
+          <ion-infinite-scroll
+            threshold="100px"
+            disabled={this.disableInfiniteScroll}
+            onIonInfinite={async ($event: CustomEvent<void>) => await this.searchNext($event)}>
+            <ion-infinite-scroll-content loadingText={i18n.state.core.loading}></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-content>
+
+        <ion-footer>
+          <ion-toolbar>
+            <ion-searchbar
+              debounce={500}
+              placeholder="Search"
+              value={this.searchTerm}
+              onIonClear={() => this.clear()}
+              onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
+              onIonChange={async () => {
+                await this.search();
+              }}></ion-searchbar>
+          </ion-toolbar>
+        </ion-footer>
+      </Fragment>
+    );
   }
 
   private renderCloseButton() {
@@ -250,30 +202,28 @@ export class AppUnsplash {
   }
 
   private renderPhotosPlaceHolder() {
-    if ((!this.photosOdd || this.photosOdd.length <= 0) && (!this.photosEven || this.photosEven.length <= 0)) {
-      return (
-        <div class="photos-placeholder">
-          <div>
-            <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
-            <ion-label class="ion-text-center">{i18n.state.editor.photos_by_unsplash}</ion-label>
-            {this.renderPlaceHolderSearching()}
-          </div>
-        </div>
-      );
-    } else {
+    if (this.photos?.length > 0 || !this.searching) {
       return undefined;
     }
+
+    return (
+      <ion-label class="empty">
+        {i18n.state.editor.searching} <ion-spinner color="dark"></ion-spinner>
+      </ion-label>
+    );
   }
 
-  private renderPlaceHolderSearching() {
-    if (this.searching) {
-      return (
-        <p class="searching ion-margin-top">
-          {i18n.state.editor.searching} <ion-spinner color="medium"></ion-spinner>
-        </p>
-      );
-    } else {
+  private renderPhotos() {
+    if (!this.photos || this.photos.length <= 0) {
       return undefined;
     }
+
+    return this.photos.map((photo: UnsplashPhoto, index: number) => {
+      return (
+        <article custom-tappable onClick={async () => await this.selectPhoto(photo)} key={`file-${index}`}>
+          <app-asset-image image={photo}></app-asset-image>
+        </article>
+      );
+    });
   }
 }
