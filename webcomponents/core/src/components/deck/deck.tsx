@@ -5,9 +5,9 @@ import {getSlideDefinition, getAttributesDefinition} from '@deckdeckgo/deck-util
 
 import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
-import {DeckdeckgoDeckBackgroundUtils} from '../../utils/deckdeckgo-deck-background-utils';
+import {DeckdeckgoDeckBackgroundUtils} from '../utils/background-utils';
 
-import {HideSlides, RevealSlide, AnimationSlide} from '../../utils/deckdeckgo-deck-animation';
+import {HideSlides, RevealSlide, AnimationSlide} from '../utils/animation';
 
 interface Delta {
   slider: HTMLElement;
@@ -31,10 +31,10 @@ interface DeckdeckgoSlideHTMLElement extends HTMLElement {
 
 @Component({
   tag: 'deckgo-deck',
-  styleUrl: 'deckdeckgo-deck.scss',
+  styleUrl: 'deck.scss',
   shadow: true
 })
-export class DeckdeckgoDeck {
+export class DeckGoDeck {
   @Element() el: HTMLElement;
 
   @Prop() keyboard: boolean = true;
