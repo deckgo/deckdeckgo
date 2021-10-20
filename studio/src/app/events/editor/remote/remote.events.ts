@@ -1,8 +1,8 @@
 import {Build} from '@stencil/core';
 
-import {deckSelector, selectSlide} from '@deckdeckgo/editor';
+import {componentOnReady} from '@ionic/core';
 
-import {componentOnReady} from '../../../utils/ionic/ionic.overlay';
+import {deckSelector, selectSlide} from '@deckdeckgo/editor';
 
 import {debounce} from '@deckdeckgo/utils';
 import {getSlideDefinition} from '@deckdeckgo/deck-utils';

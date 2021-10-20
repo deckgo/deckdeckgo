@@ -1,5 +1,7 @@
 import {Component, h, Fragment, Element} from '@stencil/core';
 
+import {alertController, loadingController, popoverController} from '@ionic/core';
+
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
 import i18n from '../../../stores/i18n.store';
@@ -8,7 +10,6 @@ import syncStore from '../../../stores/sync.store';
 import offlineStore from '../../../stores/offline.store';
 
 import {signIn} from '../../../utils/core/signin.utils';
-import {alertController, loadingController, popoverController} from '../../../utils/ionic/ionic.overlay';
 
 import {AppIcon} from '../app-icon/app-icon';
 

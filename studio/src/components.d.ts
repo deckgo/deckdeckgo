@@ -19,7 +19,6 @@ import { SlotType } from "./app/types/editor/slot-type";
 import { ListStyle } from "./app/types/editor/list-style";
 import { TargetElement } from "./app/types/editor/target-element";
 import { MoreAction } from "./app/types/editor/more-action";
-import { IonicReorderEvent } from "./app/utils/ionic/ionic.reorder.event";
 import { ItemReorderEventDetail } from "@ionic/core";
 import { InitTemplate } from "./app/utils/editor/create-slides.utils";
 export namespace Components {
@@ -1612,7 +1611,7 @@ declare namespace LocalJSX {
     interface AppSigninPage {
     }
     interface AppSlideNavigate {
-        "onReorder"?: (event: CustomEvent<IonicReorderEvent>) => void;
+        "onReorder"?: (event: CustomEvent<ItemReorderEventDetail>) => void;
     }
     interface AppSlidePreview {
         "deckRef": HTMLDeckgoDeckElement;

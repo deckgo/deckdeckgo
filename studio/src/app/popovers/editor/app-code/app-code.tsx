@@ -1,11 +1,11 @@
 import {Component, Element, EventEmitter, Prop, State, h, Fragment} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {alertController, modalController} from '@ionic/core';
 
 import i18n from '../../../stores/i18n.store';
 
 import {getCodeLanguage} from '../../../utils/editor/prism.utils';
-import {alertController, modalController} from '../../../utils/ionic/ionic.overlay';
 
 import {PrismLanguage} from '../../../types/editor/prism-language';
 

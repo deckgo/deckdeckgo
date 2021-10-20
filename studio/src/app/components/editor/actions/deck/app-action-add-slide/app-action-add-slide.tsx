@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Prop} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {modalController, popoverController} from '@ionic/core';
 
 import {SlideAttributes, SlideSplitType, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
 
@@ -9,8 +10,6 @@ import i18n from '../../../../../stores/i18n.store';
 import {CreateSlidesUtils} from '../../../../../utils/editor/create-slides.utils';
 import {PlaygroundAction} from '../../../../../types/editor/playground-action';
 import {DemoAction} from '../../../../../types/editor/demo-action';
-
-import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-action-add-slide',

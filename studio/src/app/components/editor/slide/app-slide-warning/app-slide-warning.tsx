@@ -1,5 +1,7 @@
 import {Component, h, Host, Listen, State} from '@stencil/core';
 
+import {popoverController} from '@ionic/core';
+
 import {debounce} from '@deckdeckgo/utils';
 import {selectSlide} from '@deckdeckgo/editor';
 
@@ -12,8 +14,6 @@ import {NodeUtils} from '../../../../utils/editor/node.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
-
-import {popoverController} from '../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-slide-warning',

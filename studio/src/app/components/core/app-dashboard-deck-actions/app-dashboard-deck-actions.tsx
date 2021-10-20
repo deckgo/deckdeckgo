@@ -1,13 +1,13 @@
 import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {loadingController, popoverController} from '@ionic/core';
 
 import {Deck} from '@deckdeckgo/editor';
 
 import store from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
-import {loadingController, popoverController} from '../../../utils/ionic/ionic.overlay';
 import {clone} from '../../../utils/core/dashboard.utils';
 
 import {deleteDeck} from '../../../providers/data/deck/deck.provider';

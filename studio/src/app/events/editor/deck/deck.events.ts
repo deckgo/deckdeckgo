@@ -1,4 +1,4 @@
-import type {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
+import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {debounce} from '@deckdeckgo/utils';
 import {selectSlide, now} from '@deckdeckgo/editor';
@@ -877,7 +877,7 @@ export class DeckEvents {
     }
   }
 
-  updateDeckSlidesOrder(detail: IonicReorderEvent): Promise<void> {
+  updateDeckSlidesOrder(detail: ItemReorderEventDetail): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         if (!detail) {

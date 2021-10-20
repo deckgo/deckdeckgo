@@ -1,8 +1,7 @@
 import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
 
-import type {OverlayEventDetail} from '@ionic/core';
-
-import type {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
+import type {OverlayEventDetail, ItemReorderEventDetail} from '@ionic/core';
+import {modalController, popoverController} from '@ionic/core';
 
 import {get, set} from 'idb-keyval';
 
@@ -34,7 +33,6 @@ import {SlideHelper} from '../../../helpers/editor/slide.helper';
 import {SlotType} from '../../../types/editor/slot-type';
 
 import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
-import {modalController, popoverController} from '../../../utils/ionic/ionic.overlay';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
@@ -695,7 +693,7 @@ export class AppEditor {
   }
 
   @Listen('reorder', {target: 'document'})
-  async onReorderSlides($event: CustomEvent<IonicReorderEvent>) {
+  async onReorderSlides($event: CustomEvent<ItemReorderEventDetail>) {
     if (!$event || !$event.detail) {
       return;
     }
@@ -703,7 +701,7 @@ export class AppEditor {
     await this.reorderSlides($event.detail);
   }
 
-  private async reorderSlides(detail: IonicReorderEvent) {
+  private async reorderSlides(detail: ItemReorderEventDetail) {
     if (!detail) {
       return;
     }

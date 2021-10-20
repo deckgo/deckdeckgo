@@ -2,9 +2,8 @@ import {Component, ComponentInterface, Host, Prop, h, State, Event, EventEmitter
 
 import {StorageFile} from '@deckdeckgo/editor';
 
-import {OverlayEventDetail} from '@ionic/core';
-
-import {loadingController, popoverController} from '../../../../utils/ionic/ionic.overlay';
+import type {OverlayEventDetail} from '@ionic/core';
+import {loadingController, popoverController} from '@ionic/core';
 
 import i18n from '../../../../stores/i18n.store';
 import store from '../../../../stores/error.store';
