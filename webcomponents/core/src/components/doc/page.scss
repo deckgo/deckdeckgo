@@ -1,0 +1,47 @@
+:host {
+  display: block;
+
+  --ratio-A3: calc(297 / 420);
+  --ratio-A4: calc(210 / 297);
+  --ratio-A5: calc(148 / 210);
+
+  --doc-size: calc(min(var(--doc-height), var(--doc-width)) * (var(--doc-zoom, 130) / 100));
+  --font-size: calc(var(--doc-size) / 57.6);
+
+  height: var(--doc-size);
+  width: calc(var(--doc-size) * var(--ratio-A4));
+
+  margin: calc(var(--doc-size) * (var(--doc-margin, 25) / 297)) calc(var(--doc-size) * (var(--doc-margin, 25) / 210));
+
+  font-size: var(--font-size, 1em);
+}
+
+:host([size="A4"][orientation="landscape"]),
+:host([orientation="landscape"]) {
+  width: var(--doc-size);
+  height: calc(var(--doc-size) * var(--ratio-A4));
+}
+
+:host([size="A3"]) {
+  height: var(--doc-size);
+  width: calc(var(--doc-size) * var(--ratio-A3));
+}
+
+:host([size="A3"][orientation="landscape"]) {
+  width: var(--doc-size);
+  height: calc(var(--doc-size) * var(--ratio-A3));
+}
+
+:host([size="A5"]) {
+  height: var(--doc-size);
+  width: calc(var(--doc-size) * var(--ratio-A5));
+}
+
+:host([size="A5"][orientation="landscape"]) {
+  width: var(--doc-size);
+  height: calc(var(--doc-size) * var(--ratio-A5));
+}
+
+::slotted(*) {
+  height: 100%;
+}
