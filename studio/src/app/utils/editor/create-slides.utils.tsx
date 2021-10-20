@@ -3,8 +3,7 @@ import {h, JSX} from '@stencil/core';
 import {v4 as uuid} from 'uuid';
 
 import {SlideAttributes, SlideTemplate, SlideScope, User, Deck, Template} from '@deckdeckgo/editor';
-
-import {DeckdeckgoPlaygroundTheme} from '../ddg/deckdeckgo-playground-theme';
+import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
 import userStore from '../../stores/user.store';
 

@@ -24,18 +24,11 @@
   "dependencies": {
     "@deckdeckgo/deck-utils": "^4.1.0",
     "@deckdeckgo/utils": "^2.0.1",
-    "idb-keyval": "^6.0.1",
-    "jszip": "^3.7.1",
-    "socket.io-client": "2.3.1",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/core": "^8.4.0",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.0",
-    "@deckdeckgo/editor": "^1.0.0-beta.1",
     "@deckdeckgo/highlight-code": "^3.3.1",
     "@deckdeckgo/inline-editor": "^4.1.0",
     "@deckdeckgo/laser-pointer": "^1.1.0",
@@ -58,9 +51,16 @@
     "@deckdeckgo/slide-utils": "^4.0.3",
     "@deckdeckgo/slide-youtube": "^2.4.0",
     "@deckdeckgo/social": "^4.1.0",
-    "@deckdeckgo/types": "^2.0.1",
     "@deckdeckgo/word-cloud": "^1.2.0",
     "@deckdeckgo/youtube": "^2.1.0",
+    "idb-keyval": "^6.0.1",
+    "jszip": "^3.7.1",
+    "socket.io-client": "2.3.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@deckdeckgo/types": "^2.0.1",
+    "@deckdeckgo/editor": "^1.0.0-beta.1",
     "@ionic/core": "^5.7.0",
     "@rollup/plugin-replace": "^3.0.0",
     "@stencil/core": "^2.8.0",

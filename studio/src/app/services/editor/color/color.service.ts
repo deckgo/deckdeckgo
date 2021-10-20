@@ -2,7 +2,7 @@ import colorStore from '../../../stores/color.store';
 
 import {get} from 'idb-keyval';
 
-import {DeckdeckgoPalette, DEFAULT_PALETTE} from '../../../utils/ddg/deckdeckgo-palette';
+import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 export class ColorService {
   private static instance: ColorService;

@@ -1,4 +1,4 @@
-import {DeckdeckgoPlaygroundTheme} from '../../utils/ddg/deckdeckgo-playground-theme';
+import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
 export interface PlaygroundAction {
   src: string;

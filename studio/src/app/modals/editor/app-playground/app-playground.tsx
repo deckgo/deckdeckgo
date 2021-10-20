@@ -1,6 +1,6 @@
 import {Component, Element, h, Listen, Prop, State} from '@stencil/core';
 
-import {DeckdeckgoPlaygroundTheme} from '../../../utils/ddg/deckdeckgo-playground-theme';
+import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
 import i18n from '../../../stores/i18n.store';
 
