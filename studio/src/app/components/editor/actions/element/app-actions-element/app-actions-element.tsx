@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, JSX, Listen, Method, Prop, State} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {modalController, popoverController} from '@ionic/core';
 
 import {debounce, isFullscreen} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
@@ -18,7 +19,6 @@ import {ToggleSlotUtils} from '../../../../../utils/editor/toggle-slot.utils';
 import {RevealSlotUtils} from '../../../../../utils/editor/reveal-slot.utils';
 import {SlotUtils} from '../../../../../utils/editor/slot.utils';
 import {SelectedElementUtils} from '../../../../../utils/editor/selected-element.utils';
-import {modalController, popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 import {SlotType} from '../../../../../types/editor/slot-type';
 import {EditAction} from '../../../../../types/editor/edit-action';

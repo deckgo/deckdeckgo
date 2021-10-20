@@ -1,6 +1,7 @@
 import {Component, Fragment, h, State} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {modalController} from '@ionic/core';
 
 import {Template, AuthUser} from '@deckdeckgo/editor';
 
@@ -11,7 +12,6 @@ import i18n from '../../../../stores/i18n.store';
 
 import {signIn} from '../../../../utils/core/signin.utils';
 import {renderI18n} from '../../../../utils/core/i18n.utils';
-import {modalController} from '../../../../utils/ionic/ionic.overlay';
 
 import {createUserTemplate, initTemplates, updateTemplate} from '../../../../providers/data/template/template.provider';
 

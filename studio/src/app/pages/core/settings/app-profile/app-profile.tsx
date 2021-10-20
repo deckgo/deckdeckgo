@@ -1,7 +1,7 @@
 import {Component, Listen, State, h, Element} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
-import {loadingController, modalController} from '../../../../utils/ionic/ionic.overlay';
+import {loadingController, modalController} from '@ionic/core';
 
 import {StorageFile} from '@deckdeckgo/editor';
 

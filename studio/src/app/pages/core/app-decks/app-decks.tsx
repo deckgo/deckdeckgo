@@ -1,5 +1,7 @@
 import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/core';
 
+import {loadingController} from '@ionic/core';
+
 import {convertStyle} from '@deckdeckgo/deck-utils';
 import {debounce} from '@deckdeckgo/utils';
 
@@ -16,7 +18,6 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
-import {loadingController} from '../../../utils/ionic/ionic.overlay';
 import {loadAndImport} from '../../../utils/core/dashboard.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';

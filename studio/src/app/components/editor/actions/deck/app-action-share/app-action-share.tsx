@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {popoverController} from '@ionic/core';
 
 import deckStore from '../../../../../stores/deck.store';
 import userStore from '../../../../../stores/user.store';
@@ -11,8 +12,6 @@ import {MoreAction} from '../../../../../types/editor/more-action';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 import {share} from '../../../../../utils/core/environment.utils';
-
-import {popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-action-share'

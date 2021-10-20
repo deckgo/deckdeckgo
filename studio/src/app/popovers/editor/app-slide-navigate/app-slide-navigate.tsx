@@ -1,6 +1,6 @@
 import {Component, Element, State, h, EventEmitter, Event, Host} from '@stencil/core';
 
-import {IonicReorderEvent} from '../../../utils/ionic/ionic.reorder.event';
+import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {findSlidesTitle} from '@deckdeckgo/deck-utils';
 import {deckSelector, slideTo} from '@deckdeckgo/editor';
@@ -18,7 +18,7 @@ export class AppSlideNavigate {
   private slides: string[];
 
   @Event()
-  private reorder: EventEmitter<IonicReorderEvent>;
+  private reorder: EventEmitter<ItemReorderEventDetail>;
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
@@ -32,7 +32,7 @@ export class AppSlideNavigate {
     await slideTo(index);
   }
 
-  private onReorder($event: CustomEvent<IonicReorderEvent>) {
+  private onReorder($event: CustomEvent<ItemReorderEventDetail>) {
     this.reorder.emit($event?.detail);
   }
 
@@ -40,7 +40,7 @@ export class AppSlideNavigate {
     return (
       <Host>
         <ion-reorder-group
-          onIonItemReorder={($event: CustomEvent<IonicReorderEvent>) => this.onReorder($event)}
+          onIonItemReorder={($event: CustomEvent<ItemReorderEventDetail>) => this.onReorder($event)}
           disabled={!this.slides || this.slides.length <= 1}>
           {this.renderSlides()}
         </ion-reorder-group>

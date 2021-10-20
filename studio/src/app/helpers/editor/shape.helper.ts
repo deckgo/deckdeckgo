@@ -1,6 +1,7 @@
 import {EventEmitter} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {modalController} from '@ionic/core';
 
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
@@ -11,8 +12,6 @@ import {ImageAction} from '../../types/editor/image-action';
 import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
 import {EditAction} from '../../types/editor/edit-action';
-
-import {modalController} from '../../utils/ionic/ionic.overlay';
 
 export class ShapeHelper {
   constructor(private didChange: EventEmitter<HTMLElement>) {}

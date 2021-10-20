@@ -1,10 +1,10 @@
 import {Component, h, Element, Prop, Event, EventEmitter} from '@stencil/core';
 
+import {popoverController} from '@ionic/core';
+
 import i18n from '../../../../../stores/i18n.store';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
-
-import {popoverController} from '../../../../../utils/ionic/ionic.overlay';
 
 @Component({
   tag: 'app-action-help'

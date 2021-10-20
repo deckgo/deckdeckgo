@@ -1,6 +1,7 @@
 import {EventEmitter} from '@stencil/core';
 
 import type {OverlayEventDetail} from '@ionic/core';
+import {modalController} from '@ionic/core';
 
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
@@ -12,7 +13,6 @@ import {EditAction} from '../../types/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../types/editor/slot-type';
 import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
-import {modalController} from '../../utils/ionic/ionic.overlay';
 
 export class ImageHelper {
   constructor(
