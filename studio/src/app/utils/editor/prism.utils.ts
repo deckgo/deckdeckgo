@@ -1,4 +1,4 @@
-import {DeckdeckgoHighlightCodeLanguage, deckdeckgoHighlightCodeLanguages} from '../ddg/deckdeckgo-highlight-code-languages';
+import {DeckdeckgoHighlightCodeLanguage, deckdeckgoHighlightCodeLanguages} from '@deckdeckgo/highlight-code';
 
 import {PrismLanguage} from '../../types/editor/prism-language';
 

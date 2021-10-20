@@ -2,8 +2,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import i18n from '../../../../../stores/i18n.store';
 
-import {DeckdeckgoHighlightCodeCarbonTheme} from '../../../../../utils/ddg/deckdeckgo-highlight-code-carbon-theme';
-import {DeckdeckgoHighlightCodeTerminal} from '../../../../../utils/ddg/deckdeckgo-highlight-code-terminal';
+import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
 import {ColorUtils, InitStyleColor} from '../../../../../utils/editor/color.utils';
 import {setStyle} from '../../../../../utils/editor/undo-redo.utils';
