@@ -125,11 +125,7 @@ export class AppDecks implements ComponentInterface {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
-        console.log('About to request slide in IC');
-
         const slide: Slide = await getSlide(deck.id, slideId);
-
-        console.log('Slide request done', slide);
 
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
