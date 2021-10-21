@@ -11,3 +11,5 @@ export * from './providers/data/slide.firebase';
 export * from './providers/storage/storage.firebase';
 
 export * from './providers/sync/sync.firebase';
+
+export * from './providers/publish/publish.firebase';
