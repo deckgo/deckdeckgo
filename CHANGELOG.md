@@ -1,10 +1,11 @@
 <a name="5.0.0"></a>
 
-# [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-YY-ZZ)
+# [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-10-21)
 
 ### Applications
 
 - remote: v1.14.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+- studio: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
 
 ### Providers: New
 

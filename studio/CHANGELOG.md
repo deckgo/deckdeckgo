@@ -1,3 +1,9 @@
+# 5.0.0 (2021-10-21)
+
+### Features
+
+- offline first ([v5.0.0](https://github.com/deckgo/deckdeckgo/milestone/55?closed=1))
+
 # 4.10.0 (2021-09-04)
 
 ### Features
