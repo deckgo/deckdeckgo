@@ -19,6 +19,7 @@
 
 ### Others
 
+- figma-deckdeckgo-plugin: v2.0.0 ([CHANGELOG](https://github.com/deckgo/figma-deckdeckgo-plugin/blob/main/CHANGELOG.md))
 - utils: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="4.10.0"></a>
