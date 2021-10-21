@@ -10,7 +10,7 @@
 
 ### Utils: New
 
-- editor: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 
 ### Others
 
