@@ -2,6 +2,10 @@
 
 # [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-YY-ZZ)
 
+### Applications
+
+- remote: v1.14.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+
 ### Providers: New
 
 - api: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/api/CHANGELOG.md))
