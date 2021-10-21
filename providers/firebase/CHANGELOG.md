@@ -1,10 +1,10 @@
-# 1.0.0-beta.1 (2021-10-17)
+# 1.0.1 (2021-10-21)
 
-### Features
+### Fix
 
-- delete storage asset
+- missing `publish` export
 
-# 1.0.0-beta.0 (2021-09-22)
+# 1.0.0 (2021-10-21)
 
 ### Features
 

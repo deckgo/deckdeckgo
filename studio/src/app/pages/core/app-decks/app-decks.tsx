@@ -19,6 +19,8 @@ import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils'
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {loadAndImport} from '../../../utils/core/dashboard.utils';
+import {getEdit} from '../../../utils/editor/editor.utils';
+import {removeSyncBeforeUnload} from '../../../utils/core/sync.window.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
@@ -50,6 +52,9 @@ export class AppDecks implements ComponentInterface {
   @State()
   private decksLoading: boolean = true;
 
+  @State()
+  private currentDeckId: string | undefined;
+
   private readonly debounceLoading: () => void;
   private readonly debounceDecksLoading: () => void;
 
@@ -77,6 +82,8 @@ export class AppDecks implements ComponentInterface {
     });
 
     await this.initDashboard();
+
+    this.currentDeckId = await getEdit();
   }
 
   private async initDashboard() {
@@ -125,11 +132,7 @@ export class AppDecks implements ComponentInterface {
   private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
     return new Promise<DeckAndFirstSlide>(async (resolve) => {
       try {
-        console.log('About to request slide in IC');
-
         const slide: Slide = await getSlide(deck.id, slideId);
-
-        console.log('Slide request done', slide);
 
         const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
@@ -227,6 +230,9 @@ export class AppDecks implements ComponentInterface {
   }
 
   private navigateReloadEditor() {
+    // We are aware a sync is going to happen and we are navigating programmatically
+    removeSyncBeforeUnload();
+
     navStore.state.nav = {
       url: '/',
       direction: NavDirection.RELOAD
@@ -371,8 +377,10 @@ export class AppDecks implements ComponentInterface {
       }
 
       return (
-        <article key={deck.deck.id} onClick={() => this.navigateDeck(deck)}>
-          <ion-card class="item ion-no-margin">{this.renderDeck(deck)}</ion-card>
+        <article key={deck.deck.id}>
+          <ion-card custom-tappable class="item ion-no-margin" onClick={() => this.navigateDeck(deck)}>
+            {this.renderDeck(deck)}
+          </ion-card>
 
           {this.renderAside(deck)}
         </article>
@@ -388,6 +396,7 @@ export class AppDecks implements ComponentInterface {
 
         <app-dashboard-deck-actions
           deck={deck.deck}
+          disableDelete={deck.deck.id === this.currentDeckId}
           onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
           onDeckCloned={() => this.navigateReloadEditor()}></app-dashboard-deck-actions>
       </aside>

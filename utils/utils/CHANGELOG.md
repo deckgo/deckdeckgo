@@ -1,3 +1,9 @@
+# 2.1.0 (2021-10-21)
+
+### Fix
+
+- exclude accurate pointing device (mouse) from `isMobile` detection
+
 # 2.0.1 (2021-05-24)
 
 ### Fix

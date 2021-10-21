@@ -1,16 +1,26 @@
 <a name="5.0.0"></a>
 
-# [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-YY-ZZ)
+# [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-10-21)
+
+### Applications
+
+- remote: v1.14.4 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+- studio: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
 
 ### Providers: New
 
-- api: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/api/CHANGELOG.md))
-- firebase: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
-- ic: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+- api: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/api/CHANGELOG.md))
+- firebase: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+- ic: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
 ### Utils: New
 
-- editor: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+
+### Others
+
+- figma-deckdeckgo-plugin: v2.0.0 ([CHANGELOG](https://github.com/deckgo/figma-deckdeckgo-plugin/blob/main/CHANGELOG.md))
+- utils: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="4.10.0"></a>
 

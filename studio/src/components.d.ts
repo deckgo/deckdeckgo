@@ -133,6 +133,7 @@ export namespace Components {
     }
     interface AppDashboardDeckActions {
         "deck": Deck;
+        "disableDelete": boolean;
     }
     interface AppDeckFonts {
         "deckElement": HTMLElement;
@@ -1409,6 +1410,7 @@ declare namespace LocalJSX {
     }
     interface AppDashboardDeckActions {
         "deck"?: Deck;
+        "disableDelete"?: boolean;
         "onDeckCloned"?: (event: CustomEvent<void>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
     }

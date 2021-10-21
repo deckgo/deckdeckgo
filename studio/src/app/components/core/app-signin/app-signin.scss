@@ -24,4 +24,10 @@ app-signin {
   strong {
     text-decoration: underline;
   }
+
+  div.spinner {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+  }
 }

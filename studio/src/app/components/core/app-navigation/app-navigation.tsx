@@ -96,7 +96,7 @@ export class AppNavigation {
             this.hideIC = true;
             localStorage.setItem('deckgo-hide-announcement-ic', 'true');
           }}>
-          <ion-icon name="close"></ion-icon>
+          <AppIcon name="close" ariaLabel={i18n.state.core.close}></AppIcon>
         </ion-button>
 
         <p>

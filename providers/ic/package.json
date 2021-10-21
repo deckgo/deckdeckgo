@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/ic",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0",
   "description": "The Internet Computer connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -27,8 +27,8 @@
     "@ionic/core": "^5.7.0"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "^1.0.0-beta.1",
-    "@deckdeckgo/lazy-img": "^3.1.0",
+    "@deckdeckgo/editor": "^1.0.0",
+    "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/slide-chart": "^2.5.0",
     "@rollup/plugin-replace": "^3.0.0",
     "rollup-plugin-node-polyfills": "^0.2.1"

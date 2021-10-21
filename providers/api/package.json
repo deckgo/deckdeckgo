@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/api",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0",
   "author": "David Dal Busco",
   "description": "The API (AWS) providers for the DeckDeckGo editor",
   "license": "AGPL-3.0-or-later",
@@ -23,7 +23,7 @@
     "GNU-AGPL-3.0"
   ],
   "devDependencies": {
-    "@deckdeckgo/editor": "^1.0.0-beta.0",
+    "@deckdeckgo/editor": "^1.0.0",
     "esbuild": "^0.12.28",
     "rimraf": "^3.0.2"
   }

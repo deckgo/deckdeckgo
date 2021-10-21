@@ -112,29 +112,34 @@ export class AppShareDeck {
           name="twitter"
           slot="twitter"
           ariaLabel="Twitter"
+          lazy={true}
           style={{color: '#00aced', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon
           name="linkedin"
           slot="linkedin"
           ariaLabel="LinkedIn"
+          lazy={true}
           style={{color: '#0077b5', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon
           name="mail"
           slot="email"
           ariaLabel="Mail"
+          lazy={true}
           style={{color: 'var(--ion-color-tertiary)', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon
           name="whatsapp"
           slot="whatsapp"
           ariaLabel="Whatsapp"
+          lazy={true}
           style={{color: '#25D366', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon name="copy" slot="copy" ariaLabel="Copy" style={{'font-size': '1.6rem', display: 'block'}}></AppIcon>
         <AppIcon
           name="hackernews"
           slot="hackernews"
           ariaLabel="Hackernews"
+          lazy={true}
           style={{color: '#ff6000', 'font-size': '1.6rem', display: 'block'}}></AppIcon>
-        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter"></AppIcon>
+        <AppIcon name="twitter" slot="twitter" ariaLabel="Twitter" lazy={true}></AppIcon>
         <svg slot="telegram" style={{color: '#0088cc', width: '1.6rem', display: 'block'}} viewBox="0 0 448 512">
           <path
             fill="currentColor"

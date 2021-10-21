@@ -14,6 +14,7 @@ import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../types/core
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {firebase, cloud} from '../../../utils/core/environment.utils';
+import {removeSyncBeforeUnload} from '../../../utils/core/sync.window.utils';
 
 @Component({
   tag: 'app-signin',
@@ -34,6 +35,9 @@ export class AppSignIn {
     await this.loadSignIn();
 
     await this.initSignIn();
+
+    // We do not want to present a warning when user sign in
+    removeSyncBeforeUnload();
   }
 
   private onSignInSuccess = (credentials: {uid: string | undefined; githubAccessToken: string | undefined} | undefined) => {
@@ -142,7 +146,11 @@ export class AppSignIn {
 
         {this.renderGitHub()}
 
-        {this.signIn}
+        {this.signIn || (
+          <div class="spinner">
+            <ion-spinner color="medium"></ion-spinner>
+          </div>
+        )}
       </Fragment>
     );
   }

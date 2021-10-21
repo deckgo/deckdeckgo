@@ -21,7 +21,10 @@ export function isMobile(): boolean {
     return false;
   }
 
-  return window.matchMedia('(any-pointer:coarse)').matches;
+  const isTouchScreen: boolean = window.matchMedia('(any-pointer:coarse)').matches;
+  const isMouseScreen: boolean = window.matchMedia('(any-pointer:fine)').matches;
+
+  return isTouchScreen && !isMouseScreen;
 }
 
 export function isIOS(): boolean {
