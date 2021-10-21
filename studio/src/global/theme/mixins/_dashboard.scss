@@ -32,11 +32,11 @@
     color: var(--ion-color-dark);
   }
 
-  &.disabled {
+  &[disabled] {
     border: 1px solid var(--ion-color-light);
 
     ion-icon {
-      color: var(--ion-color-light);
+      color: rgba(var(--ion-color-dark-rgb), 0.2);
     }
   }
 }

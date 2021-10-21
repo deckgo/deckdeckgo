@@ -20,6 +20,9 @@ import {SlideTemplate, SyncEvent} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
+import {getEdit} from '../../../utils/editor/editor.utils';
+import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
+import {SlideUtils} from '../../../utils/editor/slide.utils';
 
 import {DeckEvents} from '../../../events/editor/deck/deck.events';
 import {RemoteEvents} from '../../../events/editor/remote/remote.events';
@@ -32,13 +35,10 @@ import {SlideHelper} from '../../../helpers/editor/slide.helper';
 
 import {SlotType} from '../../../types/editor/slot-type';
 
-import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
-import {SlideUtils} from '../../../utils/editor/slide.utils';
-
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
-import {sync} from '../../../providers/sync/sync.provider';
+import {initSyncState, sync} from '../../../providers/sync/sync.provider';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 
@@ -158,6 +158,8 @@ export class AppEditor {
 
       await sync(data.data);
     };
+
+    await initSyncState();
   }
 
   @Listen('reloadDeck', {target: 'document'})
@@ -175,7 +177,7 @@ export class AppEditor {
   }
 
   private async initOrFetch() {
-    const deckId: string | undefined = await get<string>('deckdeckgo_deck_id');
+    const deckId: string | undefined = await getEdit();
 
     if (!deckId) {
       await this.initSlide();
