@@ -140,13 +140,18 @@ export class AppNavigationActions {
 
     return (
       <Fragment>
-        <button class="ion-activatable" onClick={() => this.newDeck()} disabled={disabled} aria-label={i18n.state.tools.new_presentation}>
+        <button
+          key="new-deck-action"
+          class="ion-activatable"
+          onClick={() => this.newDeck()}
+          disabled={disabled}
+          aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
         </button>
 
-        <button class="ion-activatable" onClick={() => this.openFilePicker()} disabled={disabled}>
+        <button key="open-file-action" class="ion-activatable" onClick={() => this.openFilePicker()} disabled={disabled}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="folder-open" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.open}</ion-label>
@@ -160,7 +165,7 @@ export class AppNavigationActions {
           tabindex="-1"
         />
 
-        <button class="ion-activatable" onClick={() => this.exportData()}>
+        <button key="export-action" class="ion-activatable" onClick={() => this.exportData()}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="download" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.editor.export}</ion-label>
@@ -175,7 +180,7 @@ export class AppNavigationActions {
     }
 
     return (
-      <button class="ion-activatable" onClick={() => signIn()}>
+      <button key="sign-in-action" class="ion-activatable" onClick={() => signIn()}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="log-in" ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
@@ -189,7 +194,11 @@ export class AppNavigationActions {
         <Fragment>
           {this.renderCloudStatus()}
 
-          <button class="ion-activatable" onClick={(e: UIEvent) => this.openMenu(e)} aria-label={i18n.state.nav.menu}>
+          <button
+            key="user-menu-action"
+            class="ion-activatable"
+            onClick={(e: UIEvent) => this.openMenu(e)}
+            aria-label={i18n.state.nav.menu}>
             <ion-ripple-effect></ion-ripple-effect>
             <app-avatar src={userStore.state.photoUrl}></app-avatar>
             <ion-label>{userStore.state.name ?? i18n.state.tools.user}</ion-label>
@@ -215,15 +224,21 @@ export class AppNavigationActions {
         ? i18n.state.sync.cloud_pending
         : i18n.state.sync.cloud_idle;
 
+    const iconName: string =
+      syncStore.state.sync === 'error'
+        ? 'cloud-offline'
+        : ['in_progress', 'pending'].includes(syncStore.state.sync)
+        ? 'sync'
+        : 'cloud-done';
+
     return (
-      <button class={`cloud ${syncStore.state.sync}`} aria-label={label} onClick={($event: UIEvent) => this.openSyncInfo($event)}>
-        {syncStore.state.sync === 'error' ? (
-          <AppIcon name="cloud-offline" ariaHidden={true} ariaLabel=""></AppIcon>
-        ) : ['in_progress', 'pending'].includes(syncStore.state.sync) ? (
-          <AppIcon name="sync" ariaHidden={true} ariaLabel=""></AppIcon>
-        ) : (
-          <AppIcon name="cloud-done" ariaHidden={true} ariaLabel=""></AppIcon>
-        )}
+      <button
+        key="cloud-status-action"
+        class={`cloud ion-activatable ${syncStore.state.sync}`}
+        aria-label={label}
+        onClick={($event: UIEvent) => this.openSyncInfo($event)}>
+        <ion-ripple-effect></ion-ripple-effect>
+        <AppIcon name={iconName} ariaHidden={true} ariaLabel=""></AppIcon>
         <ion-label>{i18n.state.sync.cloud}</ion-label>
       </button>
     );
