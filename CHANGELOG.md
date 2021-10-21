@@ -12,6 +12,10 @@
 
 - editor: v1.0.0-beta.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 
+### Others
+
+- utils: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
+
 <a name="4.10.0"></a>
 
 # [4.10.0](https://github.com/deckgo/deckdeckgo/compare/v4.9.0...v4.10.0) (2021-09-04)
