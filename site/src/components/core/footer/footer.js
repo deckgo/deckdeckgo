@@ -29,7 +29,7 @@ export const Footer = ({action = true, lang}) => {
 
         <LinkButton
           style={{marginTop: '1.25rem'}}
-          targetUrl="https://app.deckdeckgo.com/editor"
+          targetUrl="https://app.deckdeckgo.com"
           msgId="footer.write.presentation"
           color="primary"></LinkButton>
       </section>

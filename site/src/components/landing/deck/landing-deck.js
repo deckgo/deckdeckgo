@@ -85,7 +85,7 @@ export const LandingDeck = () => {
 
             <LinkButton
               style={{marginTop: '1.25rem'}}
-              targetUrl="https://app.deckdeckgo.com/editor"
+              targetUrl="https://app.deckdeckgo.com"
               msgId="hero.deck.slide1.get.started"
               color="light"></LinkButton>
           </div>
@@ -226,7 +226,7 @@ function Example() {
 
             <LinkButton
               style={{marginTop: '1.25rem'}}
-              targetUrl="https://app.deckdeckgo.com/editor"
+              targetUrl="https://app.deckdeckgo.com"
               msgId="hero.deck.slide9.start.presentation"
               color="light"></LinkButton>
           </div>
