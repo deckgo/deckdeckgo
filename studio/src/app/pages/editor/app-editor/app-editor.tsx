@@ -38,7 +38,7 @@ import {SlotType} from '../../../types/editor/slot-type';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 import {FontsService} from '../../../services/editor/fonts/fonts.service';
 
-import {sync} from '../../../providers/sync/sync.provider';
+import {initSyncState, sync} from '../../../providers/sync/sync.provider';
 
 import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
 
@@ -158,6 +158,8 @@ export class AppEditor {
 
       await sync(data.data);
     };
+
+    await initSyncState();
   }
 
   @Listen('reloadDeck', {target: 'document'})

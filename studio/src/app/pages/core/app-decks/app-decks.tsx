@@ -20,6 +20,7 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {loadAndImport} from '../../../utils/core/dashboard.utils';
 import {getEdit} from '../../../utils/editor/editor.utils';
+import {removeSyncBeforeUnload} from '../../../utils/core/sync.window.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
@@ -229,6 +230,9 @@ export class AppDecks implements ComponentInterface {
   }
 
   private navigateReloadEditor() {
+    // We are aware a sync is going to happen and we are navigating programmatically
+    removeSyncBeforeUnload();
+
     navStore.state.nav = {
       url: '/',
       direction: NavDirection.RELOAD
