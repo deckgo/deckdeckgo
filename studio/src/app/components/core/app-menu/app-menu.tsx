@@ -104,7 +104,7 @@ export class AppMenu {
 
     return (
       <app-expansion-panel expanded="close">
-        <ion-label slot="title">Settings</ion-label>
+        <ion-label slot="title">{i18n.state.nav.settings}</ion-label>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true} lazy={true} slot="icon"></AppIcon>
 
         <ion-list class="settings">
