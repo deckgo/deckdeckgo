@@ -85,7 +85,7 @@ const Navigation = ({data, fix, lang, navTheme}) => {
             </a>
 
             <LinkButton
-              targetUrl="https://app.deckdeckgo.com/editor"
+              targetUrl="https://app.deckdeckgo.com"
               msgId="nav.write.presentation"
               color={(navTheme === 'features' || navTheme === 'pricing') && !scrolled ? 'light' : 'primary'}></LinkButton>
           </div>

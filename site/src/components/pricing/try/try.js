@@ -13,7 +13,7 @@ export const Try = () => {
             id="pricing.try.text"
             values={{
               tryLink: (
-                <a href="https://app.deckdeckgo.com/editor" rel="noopener noreferrer">
+                <a href="https://app.deckdeckgo.com" rel="noopener noreferrer">
                   <FormattedMessage id="pricing.try.link" />
                 </a>
               )
