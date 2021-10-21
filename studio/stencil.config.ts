@@ -35,7 +35,6 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'www',
-      baseUrl: 'https://deckdeckgo.com',
       serviceWorker: {
         swSrc: 'src/sw.js'
       },
