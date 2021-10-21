@@ -142,7 +142,11 @@ export class AppSignIn {
 
         {this.renderGitHub()}
 
-        {this.signIn}
+        {this.signIn || (
+          <div class="spinner">
+            <ion-spinner color="medium"></ion-spinner>
+          </div>
+        )}
       </Fragment>
     );
   }
