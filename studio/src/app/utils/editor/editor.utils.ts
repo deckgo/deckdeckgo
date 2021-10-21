@@ -1,8 +1,10 @@
-import {del} from 'idb-keyval';
+import {del, get} from 'idb-keyval';
 
 import {clearSync} from '../../providers/sync/sync.provider';
 
 import {ImageHistoryService} from '../../services/editor/image-history/image-history.service';
+
+export const getEdit = (): Promise<string | undefined> => get('deckdeckgo_deck_id');
 
 export const clearEdit = async (clearSyncData: boolean) => {
   if (clearSyncData) {

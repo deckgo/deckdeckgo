@@ -5,7 +5,7 @@ import {loadingController, popoverController} from '@ionic/core';
 
 import {Deck} from '@deckdeckgo/editor';
 
-import store from '../../../stores/error.store';
+import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
 import {clone} from '../../../utils/core/dashboard.utils';
@@ -19,7 +19,11 @@ import {AppIcon} from '../../core/app-icon/app-icon';
   styleUrl: 'app-dashboard-deck-actions.scss'
 })
 export class AppDashboardDeckActions {
-  @Prop() deck: Deck;
+  @Prop()
+  deck: Deck;
+
+  @Prop()
+  disableDelete: boolean;
 
   @Event() deckDeleted: EventEmitter<string>;
   @Event() deckCloned: EventEmitter<void>;
@@ -71,7 +75,7 @@ export class AppDashboardDeckActions {
 
         this.deckDeleted.emit(this.deck.id);
       } catch (err) {
-        store.state.error = err;
+        errorStore.state.error = err;
       }
 
       await loading.dismiss();
@@ -100,7 +104,7 @@ export class AppDashboardDeckActions {
 
       this.deckCloned.emit();
     } catch (err) {
-      store.state.error = err;
+      errorStore.state.error = err;
     }
 
     await loading.dismiss();
@@ -111,19 +115,14 @@ export class AppDashboardDeckActions {
   render() {
     return (
       <Host>
-        <button
-          onClick={($event: UIEvent) => this.cloneDeck($event)}
-          title={i18n.state.dashboard.copy}
-          disabled={this.actionInProgress}
-          class={this.actionInProgress ? 'disabled' : undefined}>
+        <button onClick={($event: UIEvent) => this.cloneDeck($event)} title={i18n.state.dashboard.copy} disabled={this.actionInProgress}>
           <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
 
         <button
           onClick={($event: UIEvent) => this.presentConfirmDelete($event)}
           title={i18n.state.dashboard.delete}
-          disabled={this.actionInProgress}
-          class={this.actionInProgress ? 'disabled' : undefined}>
+          disabled={this.actionInProgress || this.disableDelete}>
           <AppIcon name="trash" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
       </Host>
