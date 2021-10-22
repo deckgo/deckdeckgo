@@ -1,3 +1,11 @@
+<a name="X.Y.Z"></a>
+
+# [X.Y.Z](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (202A-BB-CC)
+
+### Others
+
+- deck-utils: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
+
 <a name="5.0.0"></a>
 
 # [5.0.0](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (2021-10-21)

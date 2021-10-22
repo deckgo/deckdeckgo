@@ -25,7 +25,7 @@
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/core": "^8.4.0",
-    "@deckdeckgo/deck-utils": "^4.1.0",
+    "@deckdeckgo/deck-utils": "^4.1.1",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.0",
     "@deckdeckgo/highlight-code": "^3.4.0",
@@ -73,6 +73,7 @@
     "@types/uuid": "^8.3.1",
     "@types/wicg-file-system-access": "^2020.9.4",
     "autoprefixer": "^10.3.7",
+    "prettier": "^2.4.1",
     "workbox-build": "5.1.4"
   },
   "repository": {
