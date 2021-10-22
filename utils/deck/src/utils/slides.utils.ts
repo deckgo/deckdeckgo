@@ -1,4 +1,4 @@
-import type {DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
+import {DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
 
 export const findSlidesTitle = async (deckSelector: string = 'deckgo-deck'): Promise<string[]> => {
   const slides: NodeListOf<HTMLElement> = document.querySelectorAll(`${deckSelector} > *`);

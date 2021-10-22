@@ -1,3 +1,9 @@
+# 4.1.1 (2021-10-22)
+
+### Build
+
+- re-publish for `types` dependency
+
 # 4.1.0 (2021-08-18)
 
 ### Features
