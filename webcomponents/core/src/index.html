@@ -37,8 +37,6 @@
       };
 
       const nextPage = ({srcElement, target, detail}) => {
-        console.log('el', srcElement, target, detail.outerHTML);
-
         const page = document.createElement('deckgo-page');
 
         const article = document.createElement('article');
@@ -48,10 +46,6 @@
         article.appendChild(detail);
 
         page.appendChild(article);
-
-        const doc = document.querySelector('deckgo-doc');
-
-        console.log(page, doc);
 
         target.after(page);
 

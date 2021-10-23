@@ -14,6 +14,10 @@ export const findParagraph = ({element, container}: {element: HTMLElement; conta
 
   const {parentElement} = element;
 
+  if (!parentElement) {
+    return undefined;
+  }
+
   if (parentElement.isEqualNode(container)) {
     return element;
   }

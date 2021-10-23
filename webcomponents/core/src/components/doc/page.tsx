@@ -60,21 +60,17 @@ export class DeckGoPage implements ComponentInterface {
     const selection: Selection | undefined = getSelection();
     const element: HTMLElement | undefined = getAnchorElement(selection);
 
-    if (!element) {
+    const paragraph: HTMLElement | undefined = findParagraph({element, container: this.slotRef});
+
+    if (!paragraph) {
       return;
     }
 
-    const top: number = element.offsetTop;
-    const offset: number = element.offsetHeight;
+    const top: number = paragraph.offsetTop;
+    const offset: number = paragraph.offsetHeight;
 
     // We also check top > offset to not throw the error on the first line
     if (this.el.scrollHeight < top + offset && top > offset) {
-      const paragraph: HTMLElement | undefined = findParagraph({element, container: this.slotRef});
-
-      if (!paragraph) {
-        return;
-      }
-
       this.pageEnd.emit(paragraph);
     }
   };
