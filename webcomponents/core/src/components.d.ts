@@ -98,6 +98,7 @@ declare namespace LocalJSX {
         "zoom"?: number;
     }
     interface DeckgoPage {
+        "onPageEnd"?: (event: CustomEvent<Node>) => void;
         "orientation"?: 'portrait' | 'landscape';
         "size"?: 'A4' | 'A3' | 'A5';
     }

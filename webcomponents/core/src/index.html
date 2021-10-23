@@ -16,10 +16,53 @@
   <body style="margin: 0; height: 100vh">
     <deckgo-doc>
       <deckgo-page orientation="portrait" size="A3">
-        <div contenteditable="true" style="outline: 1px solid grey">Hello</div>
+        <article contenteditable="true" style="outline: 1px solid grey">Hello</article>
       </deckgo-page>
     </deckgo-doc>
 
     <deckgo-inline-editor img-editable="true"> </deckgo-inline-editor>
+
+    <script>
+      // As in deckdeckgo-drr
+      const moveCursorToEnd = (element) => {
+        console.log(element);
+
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        range.collapse(false);
+
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      };
+
+      const nextPage = ({srcElement, target, detail}) => {
+        console.log('el', srcElement, target, detail.outerHTML);
+
+        const page = document.createElement('deckgo-page');
+
+        const article = document.createElement('article');
+        article.setAttribute('style', 'outline: 1px solid grey;');
+        article.setAttribute('contenteditable', 'true');
+
+        article.appendChild(detail);
+
+        page.appendChild(article);
+
+        const doc = document.querySelector('deckgo-doc');
+
+        console.log(page, doc);
+
+        target.after(page);
+
+        // For real implementation mutation observer or else
+        setTimeout(() => moveCursorToEnd(detail), 500);
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const doc = document.querySelector('deckgo-doc');
+        doc?.addEventListener('pageEnd', ($event) => nextPage($event));
+      });
+    </script>
   </body>
 </html>
