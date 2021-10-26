@@ -524,6 +524,9 @@ interface I18nTools {
   new: string;
   new_presentation: string;
   new_warning_text: string;
+  new_deck: string;
+  new_doc: string;
+  new_experimental: string;
   open: string;
   user: string;
 }

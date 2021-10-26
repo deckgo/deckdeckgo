@@ -1,6 +1,6 @@
 import {Component, h, Fragment, Element} from '@stencil/core';
 
-import {alertController, loadingController, popoverController} from '@ionic/core';
+import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 
 import authStore from '../../../stores/auth.store';
 import userStore from '../../../stores/user.store';
@@ -63,7 +63,7 @@ export class AppNavigationActions {
     try {
       await FileSystemService.getInstance().importData(this.loadInput.files[0]);
 
-      this.emitReloadDeck();
+      this.emitReloadEditor('deck');
     } catch (err) {
       errorStore.state.error = `Something went wrong. ${err}.`;
     }
@@ -71,25 +71,24 @@ export class AppNavigationActions {
     await loading.dismiss();
   }
 
-  private async newDeck() {
-    const alert: HTMLIonAlertElement = await alertController.create({
-      header: i18n.state.tools.new_presentation,
-      message: i18n.state.tools.new_warning_text,
-      buttons: [
-        i18n.state.core.cancel,
-        {
-          text: i18n.state.core.ok,
-          handler: async () => {
-            await this.clear();
-          }
-        }
-      ]
+  private async selectType($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-new',
+      event: $event,
+      mode: 'ios',
+      cssClass: 'info'
     });
 
-    await alert.present();
+    popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
+      if (data === 'deck' || data === 'doc') {
+        await this.newType(data);
+      }
+    });
+
+    await popover.present();
   }
 
-  private async clear() {
+  private async newType(type: 'deck' | 'doc') {
     const loading: HTMLIonLoadingElement = await loadingController.create({});
 
     await loading.present();
@@ -98,20 +97,21 @@ export class AppNavigationActions {
       // If the user is logged in, the data might be synced by next cron iteration. Therefore we only clean sync data if user signed out, not when a "New deck" is performed.
       await clearEdit(!authStore.state.loggedIn);
 
-      this.emitReloadDeck();
+      this.emitReloadEditor(type);
     } catch (err) {
-      errorStore.state.error = 'Something went wrong while cleaning the local data of current deck.';
+      errorStore.state.error = 'Something went wrong while cleaning the local data.';
     }
 
     await loading.dismiss();
   }
 
-  private emitReloadDeck() {
-    const initNewDeck: CustomEvent<void> = new CustomEvent<void>('reloadDeck', {
-      bubbles: true
+  private emitReloadEditor(detail: 'deck' | 'doc') {
+    const initNewEditor: CustomEvent<'deck' | 'doc'> = new CustomEvent<'deck' | 'doc'>('reloadEditor', {
+      bubbles: true,
+      detail
     });
 
-    this.el.dispatchEvent(initNewDeck);
+    this.el.dispatchEvent(initNewEditor);
   }
 
   private async openSyncInfo($event: UIEvent) {
@@ -141,9 +141,9 @@ export class AppNavigationActions {
     return (
       <Fragment>
         <button
-          key="new-deck-action"
+          key="new-select-action"
           class="ion-activatable"
-          onClick={() => this.newDeck()}
+          onClick={($event: UIEvent) => this.selectType($event)}
           disabled={disabled}
           aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>

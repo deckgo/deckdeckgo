@@ -17,6 +17,8 @@ export class AppDeckEditor implements ComponentInterface {
   @State()
   private hideNavigation: boolean = false;
 
+  private deckEditorRef: HTMLAppDeckEditorElement;
+
   @Listen('ionRouteDidChange', {target: 'window'})
   async onRouteDidChange($event: CustomEvent) {
     // ionViewDidEnter and ionViewDidLeave, kind of
@@ -41,6 +43,18 @@ export class AppDeckEditor implements ComponentInterface {
     this.hideNavigation = $event ? isIOS() && $event.detail : false;
   }
 
+  @Listen('reloadEditor', {target: 'document'})
+  async onReloadEditor({detail}: CustomEvent<'deck' | 'doc'>) {
+    if (detail !== this.type) {
+      this.type = detail;
+      return;
+    }
+
+    if (detail === 'deck') {
+      await this.deckEditorRef?.initNewDeck();
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -56,6 +70,10 @@ export class AppDeckEditor implements ComponentInterface {
       return <app-spinner></app-spinner>;
     }
 
-    return this.type === 'doc' ? <app-doc-editor></app-doc-editor> : <app-deck-editor></app-deck-editor>;
+    return this.type === 'doc' ? (
+      <app-doc-editor></app-doc-editor>
+    ) : (
+      <app-deck-editor ref={(el) => (this.deckEditorRef = el as HTMLAppDeckEditorElement)}></app-deck-editor>
+    );
   }
 }

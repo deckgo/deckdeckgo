@@ -1,0 +1,61 @@
+@use "../../../../global/theme/mixins/button";
+
+app-new {
+  div.type {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+
+    width: calc(100% - 8px);
+
+    grid-gap: 8px;
+    margin-top: 16px;
+
+    button {
+      @include button.action;
+
+      border: 2px solid var(--ion-color-light);
+      overflow: visible;
+
+      padding: 16px 0;
+
+      ion-icon {
+        font-size: 3rem;
+      }
+
+      ion-label {
+        margin: 4px 0;
+      }
+
+      &:focus {
+        background: transparent;
+      }
+
+      &.selected {
+        border: 2px solid var(--ion-color-primary);
+
+        mark {
+          background: var(--ion-color-primary);
+          color: var(--ion-color-primary-contrast);
+        }
+      }
+
+      mark {
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translate(-50%, 0);
+
+        background: var(--ion-color-light);
+        color: var(--ion-color-light-contrast);
+        padding: 4px;
+        border-radius: 4px;
+        font-size: var(--font-size-very-small);
+      }
+    }
+  }
+
+  p {
+    padding: 12px 24px;
+    margin: 0;
+  }
+}

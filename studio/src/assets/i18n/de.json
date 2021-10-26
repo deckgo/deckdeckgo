@@ -506,7 +506,10 @@
   "tools": {
     "new": "Neu",
     "new_presentation": "Erstelle eine neue Präsentation",
-    "new_warning_text": "Dadurch werden die aktuelle Präsentation und Folien ersetzt. Sind Sie sicher?",
+    "new_warning_text": "Dadurch werden die aktuelle Daten ersetzt. Sind Sie sicher?",
+    "new_deck": "Präsentation",
+    "new_doc": "Dokument",
+    "new_experimental": "Experimental",
     "open": "Öffnen",
     "user": "Benutzer*in"
   },

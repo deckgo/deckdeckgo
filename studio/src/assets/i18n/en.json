@@ -506,7 +506,10 @@
   "tools": {
     "new": "New",
     "new_presentation": "Start a new presentation",
-    "new_warning_text": "This will replace the current deck and slides. Are you sure?",
+    "new_warning_text": "This will replace the current data. Are you sure?",
+    "new_deck": "Presentation",
+    "new_doc": "Document",
+    "new_experimental": "Experimental",
     "open": "Open",
     "user": "User"
   },

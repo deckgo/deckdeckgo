@@ -10,7 +10,6 @@ export class AppDocEditor implements ComponentInterface {
   render() {
     return (
       <Fragment>
-        <app-navigation></app-navigation>
         <ion-content class={`ion-no-padding`}>
           <main>
             <deckgo-doc>

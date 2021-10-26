@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Element, h, JSX, Listen, State} from '@stencil/core';
+import {Component, ComponentInterface, Element, h, JSX, Listen, Method, State} from '@stencil/core';
 
 import type {OverlayEventDetail, ItemReorderEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
@@ -170,8 +170,8 @@ export class AppDeckEditor implements ComponentInterface {
     await initSyncState();
   }
 
-  @Listen('reloadDeck', {target: 'document'})
-  async onInitNewDeck() {
+  @Method()
+  async initNewDeck() {
     this.slidesFetched = false;
 
     await this.reset();

@@ -5,4 +5,9 @@ app-editor {
       visibility: hidden;
     }
   }
+
+  app-deck-editor,
+  app-doc-editor {
+    background: var(--ion-color-light);
+  }
 }

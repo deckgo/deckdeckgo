@@ -136,6 +136,7 @@ export namespace Components {
         "disableDelete": boolean;
     }
     interface AppDeckEditor {
+        "initNewDeck": () => Promise<void>;
     }
     interface AppDeckFonts {
         "deckElement": HTMLElement;
@@ -247,6 +248,8 @@ export namespace Components {
     }
     interface AppNavigationActions {
     }
+    interface AppNew {
+    }
     interface AppNoTemplates {
     }
     interface AppNotes {
@@ -263,6 +266,8 @@ export namespace Components {
     interface AppPollOptions {
         "selectedElement": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
+    }
+    interface AppPopoverConfirm {
     }
     interface AppPresent {
         "fullscreen": boolean;
@@ -815,6 +820,12 @@ declare global {
         prototype: HTMLAppNavigationActionsElement;
         new (): HTMLAppNavigationActionsElement;
     };
+    interface HTMLAppNewElement extends Components.AppNew, HTMLStencilElement {
+    }
+    var HTMLAppNewElement: {
+        prototype: HTMLAppNewElement;
+        new (): HTMLAppNewElement;
+    };
     interface HTMLAppNoTemplatesElement extends Components.AppNoTemplates, HTMLStencilElement {
     }
     var HTMLAppNoTemplatesElement: {
@@ -850,6 +861,12 @@ declare global {
     var HTMLAppPollOptionsElement: {
         prototype: HTMLAppPollOptionsElement;
         new (): HTMLAppPollOptionsElement;
+    };
+    interface HTMLAppPopoverConfirmElement extends Components.AppPopoverConfirm, HTMLStencilElement {
+    }
+    var HTMLAppPopoverConfirmElement: {
+        prototype: HTMLAppPopoverConfirmElement;
+        new (): HTMLAppPopoverConfirmElement;
     };
     interface HTMLAppPresentElement extends Components.AppPresent, HTMLStencilElement {
     }
@@ -1224,12 +1241,14 @@ declare global {
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
         "app-navigation-actions": HTMLAppNavigationActionsElement;
+        "app-new": HTMLAppNewElement;
         "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
         "app-playground": HTMLAppPlaygroundElement;
         "app-playground-placeholder": HTMLAppPlaygroundPlaceholderElement;
         "app-poll": HTMLAppPollElement;
         "app-poll-options": HTMLAppPollOptionsElement;
+        "app-popover-confirm": HTMLAppPopoverConfirmElement;
         "app-present": HTMLAppPresentElement;
         "app-profile": HTMLAppProfileElement;
         "app-publish": HTMLAppPublishElement;
@@ -1560,6 +1579,8 @@ declare namespace LocalJSX {
     }
     interface AppNavigationActions {
     }
+    interface AppNew {
+    }
     interface AppNoTemplates {
     }
     interface AppNotes {
@@ -1576,6 +1597,9 @@ declare namespace LocalJSX {
     interface AppPollOptions {
         "selectedElement"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
+    }
+    interface AppPopoverConfirm {
+        "onConfirm"?: (event: CustomEvent<boolean>) => void;
     }
     interface AppPresent {
         "fullscreen"?: boolean;
@@ -1820,12 +1844,14 @@ declare namespace LocalJSX {
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
         "app-navigation-actions": AppNavigationActions;
+        "app-new": AppNew;
         "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
         "app-playground": AppPlayground;
         "app-playground-placeholder": AppPlaygroundPlaceholder;
         "app-poll": AppPoll;
         "app-poll-options": AppPollOptions;
+        "app-popover-confirm": AppPopoverConfirm;
         "app-present": AppPresent;
         "app-profile": AppProfile;
         "app-publish": AppPublish;
@@ -1949,12 +1975,14 @@ declare module "@stencil/core" {
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
+            "app-new": LocalJSX.AppNew & JSXBase.HTMLAttributes<HTMLAppNewElement>;
             "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
             "app-playground": LocalJSX.AppPlayground & JSXBase.HTMLAttributes<HTMLAppPlaygroundElement>;
             "app-playground-placeholder": LocalJSX.AppPlaygroundPlaceholder & JSXBase.HTMLAttributes<HTMLAppPlaygroundPlaceholderElement>;
             "app-poll": LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
             "app-poll-options": LocalJSX.AppPollOptions & JSXBase.HTMLAttributes<HTMLAppPollOptionsElement>;
+            "app-popover-confirm": LocalJSX.AppPopoverConfirm & JSXBase.HTMLAttributes<HTMLAppPopoverConfirmElement>;
             "app-present": LocalJSX.AppPresent & JSXBase.HTMLAttributes<HTMLAppPresentElement>;
             "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-publish": LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
