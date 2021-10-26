@@ -39,11 +39,9 @@ export namespace Components {
         "toggleKeyboardAssist": (state: boolean) => Promise<void>;
     }
     interface DeckgoDoc {
-        "zoom": number;
-    }
-    interface DeckgoPage {
         "orientation": 'portrait' | 'landscape';
         "size": 'A4' | 'A3' | 'A5';
+        "zoom": number;
     }
 }
 declare global {
@@ -59,16 +57,9 @@ declare global {
         prototype: HTMLDeckgoDocElement;
         new (): HTMLDeckgoDocElement;
     };
-    interface HTMLDeckgoPageElement extends Components.DeckgoPage, HTMLStencilElement {
-    }
-    var HTMLDeckgoPageElement: {
-        prototype: HTMLDeckgoPageElement;
-        new (): HTMLDeckgoPageElement;
-    };
     interface HTMLElementTagNameMap {
         "deckgo-deck": HTMLDeckgoDeckElement;
         "deckgo-doc": HTMLDeckgoDocElement;
-        "deckgo-page": HTMLDeckgoPageElement;
     }
 }
 declare namespace LocalJSX {
@@ -95,17 +86,13 @@ declare namespace LocalJSX {
         "revealOnMobile"?: boolean;
     }
     interface DeckgoDoc {
-        "zoom"?: number;
-    }
-    interface DeckgoPage {
-        "onPageEnd"?: (event: CustomEvent<Node>) => void;
         "orientation"?: 'portrait' | 'landscape';
         "size"?: 'A4' | 'A3' | 'A5';
+        "zoom"?: number;
     }
     interface IntrinsicElements {
         "deckgo-deck": DeckgoDeck;
         "deckgo-doc": DeckgoDoc;
-        "deckgo-page": DeckgoPage;
     }
 }
 export { LocalJSX as JSX };
@@ -114,7 +101,6 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "deckgo-deck": LocalJSX.DeckgoDeck & JSXBase.HTMLAttributes<HTMLDeckgoDeckElement>;
             "deckgo-doc": LocalJSX.DeckgoDoc & JSXBase.HTMLAttributes<HTMLDeckgoDocElement>;
-            "deckgo-page": LocalJSX.DeckgoPage & JSXBase.HTMLAttributes<HTMLDeckgoPageElement>;
         }
     }
 }

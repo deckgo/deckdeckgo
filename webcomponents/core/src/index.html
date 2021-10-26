@@ -14,49 +14,10 @@
     ></script>
   </head>
   <body style="margin: 0; height: 100vh">
-    <deckgo-doc>
-      <deckgo-page orientation="portrait" size="A3">
-        <article contenteditable="true" style="outline: 1px solid grey">Hello</article>
-      </deckgo-page>
+    <deckgo-doc orientation="portrait">
+      <article contenteditable="true">Hello</article>
     </deckgo-doc>
 
-    <deckgo-inline-editor img-editable="true"> </deckgo-inline-editor>
-
-    <script>
-      // As in deckdeckgo-drr
-      const moveCursorToEnd = (element) => {
-        console.log(element);
-
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        range.collapse(false);
-
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-      };
-
-      const nextPage = ({srcElement, target, detail}) => {
-        const page = document.createElement('deckgo-page');
-
-        const article = document.createElement('article');
-        article.setAttribute('style', 'outline: 1px solid grey;');
-        article.setAttribute('contenteditable', 'true');
-
-        article.appendChild(detail);
-
-        page.appendChild(article);
-
-        target.after(page);
-
-        // For real implementation mutation observer or else
-        setTimeout(() => moveCursorToEnd(detail), 500);
-      };
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const doc = document.querySelector('deckgo-doc');
-        doc?.addEventListener('pageEnd', ($event) => nextPage($event));
-      });
-    </script>
+    <deckgo-inline-editor img-editable="true" containers="article"> </deckgo-inline-editor>
   </body>
 </html>

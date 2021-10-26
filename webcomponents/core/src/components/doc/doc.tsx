@@ -1,6 +1,8 @@
 import {Component, ComponentInterface, Host, h, Element, State, Prop, Watch} from '@stencil/core';
-import {containerSize} from '../utils/size.utils';
+
 import {debounce} from '@deckdeckgo/utils';
+
+import {containerSize} from '../utils/size.utils';
 
 @Component({
   tag: 'deckgo-doc',
@@ -10,11 +12,17 @@ import {debounce} from '@deckdeckgo/utils';
 export class DeckGoDoc implements ComponentInterface {
   @Element() el: HTMLElement;
 
+  @Prop({reflect: true})
+  size: 'A4' | 'A3' | 'A5' = 'A4';
+
+  @Prop({reflect: true})
+  orientation: 'portrait' | 'landscape' = 'portrait';
+
   @Prop()
   zoom: number;
 
   @State()
-  private size: {width: number; height: number};
+  private docSize: {width: number; height: number};
 
   private readonly debounceInitSize: () => void = debounce(() => this.initSize(), 100);
 
@@ -33,7 +41,7 @@ export class DeckGoDoc implements ComponentInterface {
   }
 
   private initSize() {
-    this.size = containerSize({embedded: true, container: this.el});
+    this.docSize = containerSize({embedded: true, container: this.el});
   }
 
   private initWindowResize() {
@@ -43,7 +51,7 @@ export class DeckGoDoc implements ComponentInterface {
   render() {
     const style: Record<string, string> = {
       ...(this.zoom && {'--doc-zoom': `${this.zoom}`}),
-      ...(this.size && {'--doc-width': `${this.size.width}px`, '--doc-height': `${this.size.height}px`})
+      ...(this.docSize && {'--doc-width': `${this.docSize.width}px`, '--doc-height': `${this.docSize.height}px`})
     };
 
     return (
