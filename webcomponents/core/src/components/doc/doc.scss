@@ -5,13 +5,13 @@
   --ratio-A4: calc(210 / 297);
   --ratio-A5: calc(148 / 210);
 
-  --doc-size: calc(min(var(--doc-height), var(--doc-width)) * (var(--doc-zoom, 130) / 100));
+  --doc-size: calc(var(--doc-width) * (var(--doc-zoom, 100) / 100));
 
   width: calc(var(--doc-size) * var(--ratio-A4));
 
   padding: calc(var(--doc-size) * (var(--doc-padding, 25) / 297));
 
-  --font-size: calc(var(--doc-size) / 57.6);
+  --font-size: calc(var(--doc-size) / 72); // 72 from max-width 720px
   font-size: var(--font-size, 1em);
 }
 

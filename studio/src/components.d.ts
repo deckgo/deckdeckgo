@@ -155,6 +155,8 @@ export namespace Components {
     interface AppDemo {
         "selectedElement": HTMLElement;
     }
+    interface AppDocEditor {
+    }
     interface AppEditMode {
     }
     interface AppEditSlide {
@@ -636,6 +638,12 @@ declare global {
     var HTMLAppDemoElement: {
         prototype: HTMLAppDemoElement;
         new (): HTMLAppDemoElement;
+    };
+    interface HTMLAppDocEditorElement extends Components.AppDocEditor, HTMLStencilElement {
+    }
+    var HTMLAppDocEditorElement: {
+        prototype: HTMLAppDocEditorElement;
+        new (): HTMLAppDocEditorElement;
     };
     interface HTMLAppEditModeElement extends Components.AppEditMode, HTMLStencilElement {
     }
@@ -1179,6 +1187,7 @@ declare global {
         "app-decks": HTMLAppDecksElement;
         "app-delete": HTMLAppDeleteElement;
         "app-demo": HTMLAppDemoElement;
+        "app-doc-editor": HTMLAppDocEditorElement;
         "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
@@ -1440,6 +1449,8 @@ declare namespace LocalJSX {
     }
     interface AppDemo {
         "selectedElement"?: HTMLElement;
+    }
+    interface AppDocEditor {
     }
     interface AppEditMode {
     }
@@ -1769,6 +1780,7 @@ declare namespace LocalJSX {
         "app-decks": AppDecks;
         "app-delete": AppDelete;
         "app-demo": AppDemo;
+        "app-doc-editor": AppDocEditor;
         "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
@@ -1896,6 +1908,7 @@ declare module "@stencil/core" {
             "app-decks": LocalJSX.AppDecks & JSXBase.HTMLAttributes<HTMLAppDecksElement>;
             "app-delete": LocalJSX.AppDelete & JSXBase.HTMLAttributes<HTMLAppDeleteElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
+            "app-doc-editor": LocalJSX.AppDocEditor & JSXBase.HTMLAttributes<HTMLAppDocEditorElement>;
             "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
