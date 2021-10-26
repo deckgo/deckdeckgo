@@ -15,6 +15,7 @@ export class AppNew implements ComponentInterface {
 
   async closePopover(confirm: boolean) {
     if (!confirm) {
+      await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
       return;
     }
 
