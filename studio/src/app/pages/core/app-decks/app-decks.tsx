@@ -13,6 +13,8 @@ import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 
+import {Editor} from '../../../types/editor/editor';
+
 import {signIn} from '../../../utils/core/signin.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
@@ -83,7 +85,8 @@ export class AppDecks implements ComponentInterface {
 
     await this.initDashboard();
 
-    this.currentDeckId = await getEdit();
+    const editor: Editor | undefined = await getEdit();
+    this.currentDeckId = editor?.id;
   }
 
   private async initDashboard() {

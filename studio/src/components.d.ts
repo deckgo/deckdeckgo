@@ -135,6 +135,8 @@ export namespace Components {
         "deck": Deck;
         "disableDelete": boolean;
     }
+    interface AppDeckEditor {
+    }
     interface AppDeckFonts {
         "deckElement": HTMLElement;
     }
@@ -596,6 +598,12 @@ declare global {
     var HTMLAppDashboardDeckActionsElement: {
         prototype: HTMLAppDashboardDeckActionsElement;
         new (): HTMLAppDashboardDeckActionsElement;
+    };
+    interface HTMLAppDeckEditorElement extends Components.AppDeckEditor, HTMLStencilElement {
+    }
+    var HTMLAppDeckEditorElement: {
+        prototype: HTMLAppDeckEditorElement;
+        new (): HTMLAppDeckEditorElement;
     };
     interface HTMLAppDeckFontsElement extends Components.AppDeckFonts, HTMLStencilElement {
     }
@@ -1180,6 +1188,7 @@ declare global {
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-customization": HTMLAppCustomizationElement;
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
+        "app-deck-editor": HTMLAppDeckEditorElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
         "app-deck-style": HTMLAppDeckStyleElement;
@@ -1422,6 +1431,8 @@ declare namespace LocalJSX {
         "disableDelete"?: boolean;
         "onDeckCloned"?: (event: CustomEvent<void>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
+    }
+    interface AppDeckEditor {
     }
     interface AppDeckFonts {
         "deckElement"?: HTMLElement;
@@ -1773,6 +1784,7 @@ declare namespace LocalJSX {
         "app-create-slide": AppCreateSlide;
         "app-customization": AppCustomization;
         "app-dashboard-deck-actions": AppDashboardDeckActions;
+        "app-deck-editor": AppDeckEditor;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
         "app-deck-style": AppDeckStyle;
@@ -1901,6 +1913,7 @@ declare module "@stencil/core" {
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
+            "app-deck-editor": LocalJSX.AppDeckEditor & JSXBase.HTMLAttributes<HTMLAppDeckEditorElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;

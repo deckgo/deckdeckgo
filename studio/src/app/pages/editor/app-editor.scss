@@ -1,0 +1,8 @@
+app-editor {
+  app-navigation,
+  app-help {
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import {createStore} from '@stencil/store';
 
-import {set} from 'idb-keyval';
-
 import {Deck} from '@deckdeckgo/editor';
+
+import {setEditDeckId} from '../utils/editor/editor.utils';
 
 interface DeckStore {
   deck: Deck | null;
@@ -25,7 +25,7 @@ onChange('deck', (deck: Deck | null) => {
     return;
   }
 
-  set('deckdeckgo_deck_id', deck.id).catch((err) => {
+  setEditDeckId(deck.id).catch((err) => {
     console.error('Failed to update IDB with new deck id', err);
   });
 });

@@ -1,16 +1,16 @@
-import {Component, Element, h, JSX, Listen, State} from '@stencil/core';
+import {Component, ComponentInterface, Element, h, JSX, Listen, State} from '@stencil/core';
 
 import type {OverlayEventDetail, ItemReorderEventDetail} from '@ionic/core';
 import {modalController, popoverController} from '@ionic/core';
 
 import {get, set} from 'idb-keyval';
 
-import deckStore from '../../../stores/deck.store';
-import busyStore from '../../../stores/busy.store';
-import colorStore from '../../../stores/color.store';
-import undoRedoStore from '../../../stores/undo-redo.store';
-import authStore from '../../../stores/auth.store';
-import i18n from '../../../stores/i18n.store';
+import deckStore from '../../stores/deck.store';
+import busyStore from '../../stores/busy.store';
+import colorStore from '../../stores/color.store';
+import undoRedoStore from '../../stores/undo-redo.store';
+import authStore from '../../stores/auth.store';
+import i18n from '../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 
@@ -18,38 +18,39 @@ import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
 import {SlideTemplate, SyncEvent} from '@deckdeckgo/editor';
 
-import {CreateSlidesUtils} from '../../../utils/editor/create-slides.utils';
-import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
-import {getEdit} from '../../../utils/editor/editor.utils';
-import {signIn as navigateSignIn} from '../../../utils/core/signin.utils';
-import {SlideUtils} from '../../../utils/editor/slide.utils';
+import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
+import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
+import {getEdit} from '../../utils/editor/editor.utils';
+import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
+import {SlideUtils} from '../../utils/editor/slide.utils';
 
-import {DeckEvents} from '../../../events/editor/deck/deck.events';
-import {RemoteEvents} from '../../../events/editor/remote/remote.events';
-import {EditorEvents} from '../../../events/editor/editor/editor.events';
-import {PollEvents} from '../../../events/editor/poll/poll.events';
-import {ImageEvents} from '../../../events/core/image/image.events';
-import {ChartEvents} from '../../../events/core/chart/chart.events';
+import {DeckEvents} from '../../events/editor/deck/deck.events';
+import {RemoteEvents} from '../../events/editor/remote/remote.events';
+import {EditorEvents} from '../../events/editor/editor/editor.events';
+import {PollEvents} from '../../events/editor/poll/poll.events';
+import {ImageEvents} from '../../events/core/image/image.events';
+import {ChartEvents} from '../../events/core/chart/chart.events';
 
-import {SlideHelper} from '../../../helpers/editor/slide.helper';
+import {SlideHelper} from '../../helpers/editor/slide.helper';
 
-import {SlotType} from '../../../types/editor/slot-type';
+import {SlotType} from '../../types/editor/slot-type';
+import {Editor} from '../../types/editor/editor';
 
-import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {FontsService} from '../../../services/editor/fonts/fonts.service';
+import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {FontsService} from '../../services/editor/fonts/fonts.service';
 
-import {initSyncState, sync} from '../../../providers/sync/sync.provider';
+import {initSyncState, sync} from '../../providers/sync/sync.provider';
 
-import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
+import {EnvironmentGoogleConfig} from '../../types/core/environment-config';
 
-import {worker} from '../../../workers/sync.worker.ts?worker';
-import {startSyncTimer, stopSyncTimer} from '../../../workers/sync.worker';
+import {worker} from '../../workers/sync.worker.ts?worker';
+import {startSyncTimer, stopSyncTimer} from '../../workers/sync.worker';
 
 @Component({
-  tag: 'app-editor',
-  styleUrl: 'app-editor.scss'
+  tag: 'app-deck-editor',
+  styleUrl: 'app-deck-editor.scss'
 })
-export class AppEditor {
+export class AppDeckEditor implements ComponentInterface {
   @Element() el: HTMLElement;
 
   @State()
@@ -100,9 +101,6 @@ export class AppEditor {
   private hideActions: boolean = false;
 
   @State()
-  private hideNavigation: boolean = false;
-
-  @State()
   private fullscreen: boolean = false;
 
   @State()
@@ -127,14 +125,24 @@ export class AppEditor {
     this.fontsService = FontsService.getInstance();
   }
 
-  @Listen('ionRouteDidChange', {target: 'window'})
-  async onRouteDidChange($event: CustomEvent) {
-    // ionViewDidEnter and ionViewDidLeave, kind of
-    if ($event?.detail?.to === '/') {
-      await this.init();
-    } else if ($event?.detail?.from === '/') {
-      await this.destroy();
-    }
+  async componentDidLoad() {
+    await this.init();
+
+    await this.initResize();
+
+    await this.updateInlineEditorListener();
+
+    await this.remoteEvents.init(this.el);
+    await this.pollEvents.init(this.el);
+    await this.imageEvents.init();
+    await this.chartEvents.init();
+
+    this.initWindowResize();
+  }
+
+  async disconnectedCallback() {
+    await this.destroy();
+    await this.disconnect();
   }
 
   async init() {
@@ -177,7 +185,8 @@ export class AppEditor {
   }
 
   private async initOrFetch() {
-    const deckId: string | undefined = await getEdit();
+    const editor: Editor | undefined = await getEdit();
+    const deckId: string | undefined = editor?.id;
 
     if (!deckId) {
       await this.initSlide();
@@ -201,6 +210,8 @@ export class AppEditor {
 
     deckStore.reset();
     undoRedoStore.reset();
+
+    await this.remoteEvents.destroy();
   }
 
   private async reset() {
@@ -239,22 +250,7 @@ export class AppEditor {
     this.deckRef?.setAttribute('direction-mobile', this.directionMobile);
   }
 
-  async componentDidLoad() {
-    await this.initResize();
-
-    await this.updateInlineEditorListener();
-
-    await this.remoteEvents.init(this.el);
-    await this.pollEvents.init(this.el);
-    await this.imageEvents.init();
-    await this.chartEvents.init();
-
-    this.initWindowResize();
-  }
-
-  async disconnectedCallback() {
-    await this.remoteEvents.destroy();
-
+  private async disconnect() {
     this.removeWindowResize();
 
     if (this.destroyBusyListener) {
@@ -689,9 +685,8 @@ export class AppEditor {
     navigateSignIn();
   }
 
-  private stickyToolbarActivated($event: CustomEvent) {
+  private stickyToolbarActivated($event: CustomEvent<boolean>) {
     this.hideActions = $event ? isMobile() && !isIOS() && $event.detail : false;
-    this.hideNavigation = $event ? isIOS() && $event.detail : false;
   }
 
   @Listen('reorder', {target: 'document'})
@@ -766,7 +761,6 @@ export class AppEditor {
       deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
 
     return [
-      <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>,
       <ion-content
         class={`ion-no-padding ${busyStore.state.deckReady ? 'ready' : ''}`}
         onClick={($event: MouseEvent | TouchEvent) => this.selectDeck($event)}>
@@ -842,7 +836,7 @@ export class AppEditor {
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
         sticky-mobile="true"
-        onStickyToolbarActivated={($event: CustomEvent) => this.stickyToolbarActivated($event)}
+        onStickyToolbarActivated={($event: CustomEvent<boolean>) => this.stickyToolbarActivated($event)}
         img-anchor="deckgo-lazy-img"
         list={false}
         palette={colorStore.state.history}

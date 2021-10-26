@@ -32,7 +32,7 @@
     --padding-bottom: 0;
   }
 
-  app-editor {
+  app-deck-editor {
     main {
       &.idle {
         deckgo-deck {
@@ -87,11 +87,11 @@
     --deckgo-inline-editor-transform: initial;
   }
 
-  app-editor-toolbar {
+  app-deck-editor-toolbar {
     --editor-toolbar-padding: 32px;
   }
 
-  ion-nav app-editor ion-content div.grid div.deck main {
+  ion-nav app-deck-editor ion-content div.grid div.deck main {
     left: 50%;
   }
 

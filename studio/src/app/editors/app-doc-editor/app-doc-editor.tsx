@@ -1,12 +1,12 @@
-import {Component, Fragment, h} from '@stencil/core';
+import {Component, ComponentInterface, Fragment, h} from '@stencil/core';
 
-import colorStore from '../../../stores/color.store';
+import colorStore from '../../stores/color.store';
 
 @Component({
   tag: 'app-doc-editor',
   styleUrl: 'app-doc-editor.scss'
 })
-export class AppDocEditor {
+export class AppDocEditor implements ComponentInterface {
   render() {
     return (
       <Fragment>

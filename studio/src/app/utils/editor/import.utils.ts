@@ -3,6 +3,7 @@ import {set, setMany} from 'idb-keyval';
 import {Deck, Slide} from '@deckdeckgo/editor';
 
 import {syncUpdateDeck, syncUpdateSlide} from './sync.utils';
+import {setEditDeckId} from './editor.utils';
 
 export interface ImportData {
   id: string;
@@ -19,7 +20,7 @@ export const importEditorData = async ({id, deck, slides}: ImportData) => {
   await setMany(slides.map((slide: Slide) => [`/decks/${id}/slides/${slide.id}`, slide]));
   await set(`/decks/${id}`, deck);
 
-  await set('deckdeckgo_deck_id', id);
+  await setEditDeckId(id);
 };
 
 export const importEditorAssets = (assets: ImportAsset[]): Promise<void> => {
