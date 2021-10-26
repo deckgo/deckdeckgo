@@ -29,6 +29,7 @@ import {Constants} from '../../../types/core/constants';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
+import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
@@ -38,8 +39,8 @@ import {DeckAction} from '../../../types/editor/deck-action';
 export class DeckEvents {
   private mainRef: HTMLElement;
 
-  private deckOfflineProvider: DeckOfflineProvider;
-  private slideOfflineProvider: SlideOfflineProvider;
+  private readonly deckOfflineProvider: DeckOfflineProvider;
+  private readonly slideOfflineProvider: SlideOfflineProvider;
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
@@ -215,14 +216,11 @@ export class DeckEvents {
         busyStore.state.deckBusy = true;
 
         if (!deckStore.state.deck) {
-          const persistedDeck: Deck = await this.createDeck();
-          deckStore.state.deck = {...persistedDeck};
+          await this.createDeck();
         }
 
         const persistedSlide: Slide = await this.postSlide(deckStore.state.deck, slide);
 
-        // Because of the offline mode, is kind of handy to handle the list on the client side too.
-        // But maybe in the future it is something which could be moved to the cloud.
         await this.updateDeckSlideList(deckStore.state.deck, persistedSlide, slide);
 
         busyStore.state.deckBusy = false;
@@ -271,13 +269,6 @@ export class DeckEvents {
           owner_id: authStore.state.authUser?.uid
         };
 
-        // Retrieve text and background color style randomly generated in the editor
-        const deckElement: HTMLElement = this.mainRef.querySelector('deckgo-deck');
-        if (deckElement) {
-          const attributes: DeckAttributes = await this.getDeckAttributes(deckElement, false);
-          deck.attributes = attributes;
-        }
-
         const persistedDeck: Deck = await this.deckOfflineProvider.create(deck);
         deckStore.state.deck = {...persistedDeck};
 
@@ -305,7 +296,7 @@ export class DeckEvents {
           deck.data.slides = [];
         }
 
-        const slideIndex: number = SlideUtils.slideIndex(slideElement);
+        const slideIndex: number = NodeUtils.nodeIndex(slideElement);
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);
@@ -455,6 +446,8 @@ export class DeckEvents {
           resolve();
           return;
         }
+
+        // TODO: we loose the created_at information here trade of not getting thee slide from indexedDB for performance reason
 
         const slideUpdate: Slide = {
           id: slide.getAttribute('slide_id'),

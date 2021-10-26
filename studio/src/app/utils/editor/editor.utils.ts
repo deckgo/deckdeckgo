@@ -20,3 +20,5 @@ export const clearEdit = async (clearSyncData: boolean) => {
 };
 
 export const setEditDeckId = (id: string): Promise<void> => set('deckdeckgo_editor', {id, type: 'deck'});
+
+export const setEditDocId = (id: string): Promise<void> => set('deckdeckgo_editor', {id, type: 'doc'});

@@ -22,7 +22,7 @@ import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 import {getEdit} from '../../utils/editor/editor.utils';
 import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
-import {SlideUtils} from '../../utils/editor/slide.utils';
+import {NodeUtils} from '../../utils/editor/node.utils';
 
 import {DeckEvents} from '../../events/editor/deck/deck.events';
 import {RemoteEvents} from '../../events/editor/remote/remote.events';
@@ -125,6 +125,11 @@ export class AppDeckEditor implements ComponentInterface {
     this.fontsService = FontsService.getInstance();
   }
 
+  async componentWillLoad() {
+    await this.imageEvents.init();
+    await this.chartEvents.init();
+  }
+
   async componentDidLoad() {
     await this.init();
 
@@ -134,8 +139,6 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.remoteEvents.init(this.el);
     await this.pollEvents.init(this.el);
-    await this.imageEvents.init();
-    await this.chartEvents.init();
 
     this.initWindowResize();
   }
@@ -384,7 +387,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   @Listen('slideDelete', {target: 'document'})
   async deleteSlide({detail: deletedSlide}: CustomEvent<HTMLElement>) {
-    const slideIndex: number = SlideUtils.slideIndex(deletedSlide);
+    const slideIndex: number = NodeUtils.nodeIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: JSX.IntrinsicElements, index: number) => slideIndex !== index)];
 

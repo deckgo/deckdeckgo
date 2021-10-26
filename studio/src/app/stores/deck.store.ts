@@ -11,11 +11,12 @@ interface DeckStore {
   syncing: boolean;
 }
 
-const {state, onChange, reset} = createStore({
+const {state, onChange, reset} = createStore<DeckStore>({
   deck: null,
   name: null,
-  published: false
-} as DeckStore);
+  published: false,
+  syncing: false
+});
 
 onChange('deck', (deck: Deck | null) => {
   state.name = deck?.data?.name && deck?.data?.name !== '' ? deck.data.name : null;

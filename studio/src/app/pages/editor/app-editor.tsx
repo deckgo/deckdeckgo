@@ -18,6 +18,7 @@ export class AppDeckEditor implements ComponentInterface {
   private hideNavigation: boolean = false;
 
   private deckEditorRef: HTMLAppDeckEditorElement;
+  private docEditorRef: HTMLAppDocEditorElement;
 
   @Listen('ionRouteDidChange', {target: 'window'})
   async onRouteDidChange($event: CustomEvent) {
@@ -52,6 +53,8 @@ export class AppDeckEditor implements ComponentInterface {
 
     if (detail === 'deck') {
       await this.deckEditorRef?.initNewDeck();
+    } else if (detail === 'doc') {
+      await this.docEditorRef?.initNewDoc();
     }
   }
 
@@ -71,7 +74,7 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     return this.type === 'doc' ? (
-      <app-doc-editor></app-doc-editor>
+      <app-doc-editor ref={(el) => (this.docEditorRef = el as HTMLAppDocEditorElement)}></app-doc-editor>
     ) : (
       <app-deck-editor ref={(el) => (this.deckEditorRef = el as HTMLAppDeckEditorElement)}></app-deck-editor>
     );

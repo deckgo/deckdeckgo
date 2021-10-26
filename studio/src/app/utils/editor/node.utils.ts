@@ -64,4 +64,8 @@ export class NodeUtils {
 
     return await this.findColors(node.parentElement, color, deck, slide);
   }
+
+  static nodeIndex(element: HTMLElement): number {
+    return Array.from(element.parentNode.children).indexOf(element);
+  }
 }

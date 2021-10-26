@@ -22,8 +22,8 @@ export class SlideHelper {
     this.deckOfflineProvider = DeckOfflineProvider.getInstance();
   }
 
-  loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
-    return new Promise<any[]>(async (resolve) => {
+  loadDeckAndRetrieveSlides(deckId: string): Promise<JSX.IntrinsicElements[]> {
+    return new Promise<JSX.IntrinsicElements[]>(async (resolve) => {
       if (!deckId) {
         errorStore.state.error = 'Deck is not defined';
         resolve(null);
@@ -50,7 +50,7 @@ export class SlideHelper {
 
         await initTemplates();
 
-        const promises: Promise<any>[] = [];
+        const promises: Promise<JSX.IntrinsicElements>[] = [];
         deck.data.slides.forEach((slideId: string) => {
           promises.push(this.fetchSlide(deck, slideId));
         });
@@ -77,7 +77,7 @@ export class SlideHelper {
   }
 
   private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
-    return new Promise<any>(async (resolve) => {
+    return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       try {
         const slide: Slide = await this.slideOfflineProvider.get(deck.id, slideId);
 

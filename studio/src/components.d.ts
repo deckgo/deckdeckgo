@@ -159,6 +159,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppDocEditor {
+        "initNewDoc": () => Promise<void>;
     }
     interface AppEditMode {
     }
