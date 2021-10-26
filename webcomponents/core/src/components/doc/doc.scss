@@ -7,6 +7,7 @@
 
   --doc-size: calc(var(--doc-width) * (var(--doc-zoom, 100) / 100));
 
+  min-height: var(--doc-size);
   width: calc(var(--doc-size) * var(--ratio-A4));
 
   padding: calc(var(--doc-size) * (var(--doc-padding, 25) / 297));
@@ -18,6 +19,7 @@
 :host([size="A4"][orientation="landscape"]),
 :host([orientation="landscape"]) {
   width: var(--doc-size);
+  min-height: calc(var(--doc-size) * var(--ratio-A4));
 }
 
 :host([size="A3"]) {
@@ -26,6 +28,7 @@
 
 :host([size="A3"][orientation="landscape"]) {
   width: var(--doc-size);
+  min-height: calc(var(--doc-size) * var(--ratio-A3));
 }
 
 :host([size="A5"]) {
@@ -34,6 +37,7 @@
 
 :host([size="A5"][orientation="landscape"]) {
   width: var(--doc-size);
+  min-height: calc(var(--doc-size) * var(--ratio-A5));
 }
 
 @media print {
