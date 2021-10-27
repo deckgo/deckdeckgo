@@ -25,15 +25,3 @@ export const findStyleNode = async (node: Node, style: string, containers: strin
 
   return await findStyleNode(node.parentNode, style, containers);
 };
-
-export const getAnchorNode = (selection: Selection | undefined): HTMLElement | undefined => {
-  const anchorNode: Node = selection?.anchorNode;
-
-  if (!anchorNode) {
-    return undefined;
-  }
-
-  return anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.COMMENT_NODE
-    ? (anchorNode as HTMLElement)
-    : anchorNode.parentElement;
-};

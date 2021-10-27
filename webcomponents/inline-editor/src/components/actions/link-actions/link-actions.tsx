@@ -1,11 +1,12 @@
 import {Component, Event, EventEmitter, h, Prop, Host} from '@stencil/core';
 
+import {getSelection} from '@deckdeckgo/utils';
+
 import {AnchorLink, InputTargetEvent} from '../../../interfaces/interfaces';
 
 import {ToolbarActions} from '../../../types/enums';
 
 import {DeckdeckgoInlineEditorUtils} from '../../../utils/utils';
-import {getSelection} from '../../../utils/selection.utils';
 
 @Component({
   tag: 'deckgo-ie-link-actions',
@@ -54,7 +55,7 @@ export class LinkActions {
         return;
       }
 
-      const selection: Selection | undefined = await getSelection();
+      const selection: Selection | null = getSelection();
       let targetContainer: Node = this.anchorLink.range.commonAncestorContainer
         ? this.anchorLink.range.commonAncestorContainer
         : selection?.anchorNode;

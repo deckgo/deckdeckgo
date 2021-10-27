@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/inline-editor",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "A WYSIWYG HTML Inline Editor Web Component",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@deckdeckgo/color": "^4.1.0",
-    "@deckdeckgo/utils": "^2.0.1"
+    "@deckdeckgo/utils": "^2.2.0"
   },
   "repository": {
     "type": "git",

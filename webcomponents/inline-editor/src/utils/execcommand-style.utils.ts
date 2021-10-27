@@ -1,10 +1,12 @@
 import {ExecCommandStyle} from '../interfaces/interfaces';
 
+import {getAnchorElement} from '@deckdeckgo/utils';
+
 import {DeckdeckgoInlineEditorUtils} from './utils';
-import {findStyleNode, getAnchorNode} from './node.utils';
+import {findStyleNode} from './node.utils';
 
 export async function execCommandStyle(selection: Selection, action: ExecCommandStyle, containers: string) {
-  const container: HTMLElement | undefined = getAnchorNode(selection);
+  const container: HTMLElement | null = getAnchorElement(selection);
 
   if (!container) {
     return;
