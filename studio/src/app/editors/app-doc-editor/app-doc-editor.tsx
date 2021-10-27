@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Fragment, h, JSX, Method, State} from '@stencil/core';
+import {Component, ComponentInterface, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
@@ -12,6 +12,8 @@ import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocEvents} from '../../events/editor/doc/doc.events';
 import {SectionHelper} from '../../helpers/editor/section.helper';
+
+import {NodeUtils} from '../../utils/editor/node.utils';
 
 @Component({
   tag: 'app-doc-editor',
@@ -55,6 +57,40 @@ export class AppDocEditor implements ComponentInterface {
     await this.initOrFetch();
   }
 
+  @Listen('keydown')
+  async handleEnterKey($event: KeyboardEvent) {
+    if ($event.key === 'Enter' && !$event.shiftKey) {
+      $event.preventDefault();
+
+      // TODO:
+      const selection = window.getSelection();
+      const node = selection.anchorNode;
+      const index: number = NodeUtils.nodeIndex(node.nodeType === 3 ? node.parentElement : (node as HTMLElement)) + 1;
+
+      // As in deckdeckgo-drr
+      const moveCursorToEnd = (element) => {
+        console.log(element);
+
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        range.collapse(false);
+
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      };
+
+      const docObserver: MutationObserver = new MutationObserver(() => {
+        docObserver.disconnect();
+        moveCursorToEnd(this.docRef.querySelector(`article *:nth-child(${index + 1})`));
+      });
+
+      docObserver.observe(this.docRef, {childList: true, subtree: true});
+
+      this.sections = [...this.sections.slice(0, index), this.emtpySection(), ...this.sections.slice(index)];
+    }
+  }
+
   private async initOrFetch() {
     const editor: Editor | undefined = await getEdit();
     const docId: string | undefined = editor?.id;
@@ -70,17 +106,21 @@ export class AppDocEditor implements ComponentInterface {
 
   private async initDoc() {
     const Title = 'h1';
-
     const title: JSX.IntrinsicElements = <Title key={uuid()}>Title</Title>;
-
-    const Section = 'section';
-
-    const section: JSX.IntrinsicElements = <Section key={uuid()}>Yolo</Section>;
 
     // We observe the first mutation to persist the created data
     this.docEvents.observeCreateDoc();
 
-    this.sections = [title, section];
+    this.sections = [title, this.emtpySection()];
+  }
+
+  private emtpySection(): JSX.IntrinsicElements {
+    const Section = 'section';
+    return (
+      <Section key={uuid()}>
+        <br />
+      </Section>
+    );
   }
 
   private async fetchDoc(docId: string) {
