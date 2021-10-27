@@ -1,3 +1,9 @@
+# 4.1.1
+
+### Refactor
+
+- selection utils extracted to utils lib
+
 # 4.1.0 (2021-05-29)
 
 ### Build

@@ -1,3 +1,9 @@
+# 2.2.0 (2021-10-27)
+
+### Features
+
+- new util functions to interact with the selection API
+
 # 2.1.0 (2021-10-21)
 
 ### Fix

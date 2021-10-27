@@ -2,9 +2,15 @@
 
 # [X.Y.Z](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (202A-BB-CC)
 
+### Web Components
+
+- drag-resize-rotate: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/drag-resize-rotate/CHANGELOG.md))
+- inline-editor: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/CHANGELOG.md)
+
 ### Others
 
 - deck-utils: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
+- utils: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.0.0"></a>
 
