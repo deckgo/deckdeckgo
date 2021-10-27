@@ -1,3 +1,9 @@
+# 2.2.1 (2021-10-27)
+
+### Refactor
+
+- move function to utils lib
+
 # 2.2.0 (2021-05-29)
 
 ### Build

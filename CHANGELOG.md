@@ -4,7 +4,8 @@
 
 ### Web Components
 
-- inline-editor: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/CHANGELOG.md))
+- drag-resize-rotate: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/drag-resize-rotate/CHANGELOG.md))
+- inline-editor: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/CHANGELOG.md)
 
 ### Others
 

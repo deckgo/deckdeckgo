@@ -1,6 +1,6 @@
 import {Component, h, Host, Prop, State, Element, Event, EventEmitter, Build, Watch} from '@stencil/core';
 
-import {unifyEvent} from '@deckdeckgo/utils';
+import {moveCursorToEnd, unifyEvent} from '@deckdeckgo/utils';
 
 interface ResizeMatrix {
   a: 0 | 1;
@@ -607,22 +607,9 @@ export class DeckdeckgoDragResizeRotate {
     if (element) {
       element.focus();
 
-      await this.moveCursorToEnd(element);
+      moveCursorToEnd(element);
     }
   };
-
-  // https://stackoverflow.com/a/3866442/5404186
-  private async moveCursorToEnd(contentEditableElement: HTMLElement) {
-    if (window && document && document.createRange && contentEditableElement) {
-      const range: Range = document.createRange();
-      range.selectNodeContents(contentEditableElement);
-      range.collapse(false);
-
-      const selection: Selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-  }
 
   render() {
     const widthUnit: string = this.unit === 'percentage' ? '%' : this.unit === 'viewport' ? 'vw' : this.unit;
