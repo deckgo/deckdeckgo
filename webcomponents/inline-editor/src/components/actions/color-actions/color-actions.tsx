@@ -1,11 +1,11 @@
 import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/core';
 
 import {DeckdeckgoPalette} from '@deckdeckgo/color';
+import {getAnchorElement} from '@deckdeckgo/utils';
 
-import {hexToRgb} from '@deckdeckgo/utils';
+import {hexToRgb, getSelection} from '@deckdeckgo/utils';
 
-import {getSelection} from '../../../utils/selection.utils';
-import {findStyleNode, getAnchorNode} from '../../../utils/node.utils';
+import {findStyleNode} from '../../../utils/node.utils';
 
 import {ExecCommandAction} from '../../../interfaces/interfaces';
 
@@ -40,11 +40,11 @@ export class ColorActions {
   }
 
   private async initColor() {
-    const selection: Selection | undefined = await getSelection();
+    const selection: Selection | null = getSelection();
 
     this.range = selection?.getRangeAt(0);
 
-    const container: HTMLElement | undefined = getAnchorNode(selection);
+    const container: HTMLElement | null = getAnchorElement(selection);
 
     if (!container) {
       return;
@@ -82,7 +82,11 @@ export class ColorActions {
       this.range = selection?.getRangeAt(0);
     });
 
-    const anchorNode: HTMLElement | undefined = getAnchorNode(selection);
+    const anchorNode: HTMLElement | null = getAnchorElement(selection);
+
+    if (!anchorNode) {
+      return;
+    }
 
     observer.observe(anchorNode, {childList: true});
 

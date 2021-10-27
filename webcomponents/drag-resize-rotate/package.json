@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/drag-resize-rotate",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A Web Component to drag, resize and rotate any element",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -22,9 +22,6 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
-  },
-  "dependencies": {
-    "@deckdeckgo/utils": "^2.0.1"
   },
   "license": "MIT",
   "repository": {
@@ -49,5 +46,8 @@
     "talk",
     "draggable",
     "resizable"
-  ]
+  ],
+  "dependencies": {
+    "@deckdeckgo/utils": "^2.2.0"
+  }
 }

@@ -5,14 +5,14 @@ import {debounce, isIOS, isMobile, isRTL, unifyEvent} from '@deckdeckgo/utils';
 import '@deckdeckgo/color';
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
+import {clearTheSelection, getSelection, getAnchorElement} from '@deckdeckgo/utils';
+
 import {ContentAlign, ContentList, FontSize, ToolbarActions} from '../../types/enums';
 
 import {AnchorLink, ExecCommandAction, InlineAction} from '../../interfaces/interfaces';
 
 import {DeckdeckgoInlineEditorUtils} from '../../utils/utils';
 import {execCommand} from '../../utils/execcommand.utils';
-import {clearTheSelection, getSelection} from '../../utils/selection.utils';
-import {getAnchorNode} from '../../utils/node.utils';
 import {execCommandNative} from '../../utils/execcommnad-native.utils';
 
 /**
@@ -413,7 +413,7 @@ export class DeckdeckgoInlineEditor {
   public displayTools(selection?: Selection): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!selection) {
-        selection = await getSelection();
+        selection = getSelection();
       }
 
       if (!this.anchorEvent) {
@@ -551,7 +551,7 @@ export class DeckdeckgoInlineEditor {
         return;
       }
 
-      const content: Node = getAnchorNode(selection);
+      const content: HTMLElement | null = getAnchorElement(selection);
 
       if (!content) {
         resolve();
@@ -674,7 +674,7 @@ export class DeckdeckgoInlineEditor {
   reset(clearSelection: boolean, blurActiveElement?: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (clearSelection) {
-        await clearTheSelection();
+        clearTheSelection();
       }
 
       await this.setToolsActivated(false);
@@ -836,7 +836,7 @@ export class DeckdeckgoInlineEditor {
   }
 
   private onAttributesChangesInitStyle() {
-    const anchorNode: HTMLElement | undefined = getAnchorNode(this.selection);
+    const anchorNode: HTMLElement | null = getAnchorElement(this.selection);
 
     const observer: MutationObserver = new MutationObserver(async () => {
       observer.disconnect();
