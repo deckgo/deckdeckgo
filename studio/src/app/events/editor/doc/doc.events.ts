@@ -85,8 +85,12 @@ export class DocEvents {
     await this.updateDocSectionList({sectionId, sectionElement: element});
   }
 
-  private async deleteSection(element: HTMLElement): Promise<string | undefined> {
-    const sectionId: string = element.getAttribute('section_id');
+  private async deleteSection(element: Node): Promise<string | undefined> {
+    if (element.nodeType === Node.TEXT_NODE || element.nodeType === Node.COMMENT_NODE) {
+      return;
+    }
+
+    const sectionId: string = (element as HTMLElement).getAttribute('section_id');
 
     if (!sectionId) {
       return undefined;
@@ -224,11 +228,13 @@ export class DocEvents {
         []
       );
 
-      const promises: Promise<string | undefined>[] = removedNodes.map((paragraph: HTMLElement) => this.deleteSection(paragraph));
+      const promises: Promise<string | undefined>[] = removedNodes.map((node: Node) => this.deleteSection(node));
       const removedSectionIds: (string | undefined)[] = await Promise.all(promises);
 
       await this.filterDocSectionList(removedSectionIds);
     } catch (err) {
+      console.log(err);
+
       errorStore.state.error = err;
       busyStore.state.deckBusy = false;
     }
