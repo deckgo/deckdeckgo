@@ -1,0 +1,168 @@
+@use "../../../../../../global/theme/mixins/button";
+
+app-actions-deck-editor {
+  background: transparent;
+  display: block;
+
+  &.hidden {
+    display: none;
+  }
+
+  app-actions-deck,
+  app-actions-element {
+    &.hidden {
+      display: none;
+    }
+
+    button {
+      @include button.action;
+
+      ion-label {
+        margin-bottom: 6px;
+      }
+
+      ion-icon {
+        font-size: 22px;
+        margin: 6px 0 4px;
+      }
+    }
+  }
+
+  &:not(.fullscreen) {
+    aside {
+      height: 100%;
+
+      padding: 8px 0;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      ion-buttons {
+        flex-direction: column;
+        width: 100%;
+
+        &:last-of-type {
+          margin-top: 32px;
+        }
+
+        button {
+          padding: 2px 12px;
+
+          ion-icon {
+            @include button.icon;
+          }
+        }
+      }
+
+      @media screen and (max-width: 1200px) {
+        padding: 0 16px;
+        min-height: 58px;
+
+        justify-content: center;
+        flex-direction: row;
+
+        width: fit-content;
+        margin: auto;
+
+        ion-buttons {
+          flex-direction: row;
+
+          &:last-of-type {
+            margin-top: inherit;
+
+            @media screen and (min-width: 540px) {
+              margin-left: 32px;
+            }
+          }
+        }
+      }
+
+      @media screen and (min-width: 1201px) {
+        app-action-add-slide,
+        button.hide-slide-navigate {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.fullscreen {
+    background: rgba(var(--ion-color-dark-rgb), 0.8);
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.12);
+
+    transition: opacity 0.2s ease-in;
+
+    visibility: visible;
+    opacity: 1;
+
+    &.hidden-bottom-sheet {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    app-breadcrumbs {
+      background: transparent;
+
+      outline: 1px solid transparent;
+
+      ion-label {
+        color: white;
+      }
+
+      button {
+        color: white;
+
+        &.selected:not([disabled])::after {
+          background: white;
+        }
+
+        &::after {
+          background: none;
+        }
+      }
+    }
+
+    aside {
+      display: flex;
+      justify-content: space-between;
+
+      color: white;
+
+      ion-buttons {
+        ion-icon {
+          color: white;
+        }
+      }
+    }
+  }
+
+  button {
+    ion-label {
+      user-select: none;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    button,
+    app-action-share,
+    app-action-busy,
+    app-action-help {
+      &.wider-devices {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    button,
+    app-action-share,
+    app-action-busy,
+    app-action-help {
+      &.small-devices {
+        display: none;
+      }
+    }
+  }
+}
