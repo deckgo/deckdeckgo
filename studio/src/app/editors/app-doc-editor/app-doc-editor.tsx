@@ -111,6 +111,9 @@ export class AppDocEditor implements ComponentInterface {
         <ion-content class={`ion-no-padding`}>
           <main>
             {this.renderLoading()}
+
+            <app-actions-doc-editor></app-actions-doc-editor>
+
             <deckgo-doc>
               <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
                 {this.sections}
