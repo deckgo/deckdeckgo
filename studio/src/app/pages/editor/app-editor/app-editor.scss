@@ -47,7 +47,7 @@ ion-nav app-editor ion-content {
       }
     }
 
-    app-actions-editor {
+    app-actions-deck-editor {
       position: absolute;
       top: 0;
       right: 0;
@@ -55,7 +55,7 @@ ion-nav app-editor ion-content {
     }
 
     @media screen and (max-width: 1200px) {
-      app-actions-editor {
+      app-actions-deck-editor {
         position: inherit;
         width: inherit;
       }
@@ -102,7 +102,7 @@ app-editor {
 
     &:not(.ready) {
       app-breadcrumbs,
-      app-actions-editor {
+      app-actions-deck-editor {
         display: none;
       }
     }
