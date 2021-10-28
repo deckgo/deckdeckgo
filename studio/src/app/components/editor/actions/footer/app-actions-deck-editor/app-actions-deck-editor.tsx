@@ -8,11 +8,11 @@ import undoRedoStore from '../../../../../stores/undo-redo.store';
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
 @Component({
-  tag: 'app-actions-editor',
-  styleUrl: 'app-actions-editor.scss',
+  tag: 'app-actions-deck-editor',
+  styleUrl: 'app-actions-deck-editor.scss',
   shadow: false
 })
-export class AppActionsEditor {
+export class AppActionsDeckEditor {
   @Element() el: HTMLElement;
 
   @Prop()

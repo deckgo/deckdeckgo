@@ -44,7 +44,7 @@ export namespace Components {
         "slides": JSX.IntrinsicElements[];
         "toggleFullScreen": EventEmitter;
     }
-    interface AppActionsEditor {
+    interface AppActionsDeckEditor {
         "fullscreen": boolean;
         "hideActions": boolean;
         "selectDeck": () => Promise<void>;
@@ -451,11 +451,11 @@ declare global {
         prototype: HTMLAppActionsDeckElement;
         new (): HTMLAppActionsDeckElement;
     };
-    interface HTMLAppActionsEditorElement extends Components.AppActionsEditor, HTMLStencilElement {
+    interface HTMLAppActionsDeckEditorElement extends Components.AppActionsDeckEditor, HTMLStencilElement {
     }
-    var HTMLAppActionsEditorElement: {
-        prototype: HTMLAppActionsEditorElement;
-        new (): HTMLAppActionsEditorElement;
+    var HTMLAppActionsDeckEditorElement: {
+        prototype: HTMLAppActionsDeckEditorElement;
+        new (): HTMLAppActionsDeckEditorElement;
     };
     interface HTMLAppActionsElementElement extends Components.AppActionsElement, HTMLStencilElement {
     }
@@ -1148,7 +1148,7 @@ declare global {
         "app-action-help": HTMLAppActionHelpElement;
         "app-action-share": HTMLAppActionShareElement;
         "app-actions-deck": HTMLAppActionsDeckElement;
-        "app-actions-editor": HTMLAppActionsEditorElement;
+        "app-actions-deck-editor": HTMLAppActionsDeckEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
         "app-asset-data": HTMLAppAssetDataElement;
         "app-asset-image": HTMLAppAssetImageElement;
@@ -1296,7 +1296,7 @@ declare namespace LocalJSX {
         "slides"?: JSX.IntrinsicElements[];
         "toggleFullScreen"?: EventEmitter;
     }
-    interface AppActionsEditor {
+    interface AppActionsDeckEditor {
         "fullscreen"?: boolean;
         "hideActions"?: boolean;
         "onActionPublish"?: (event: CustomEvent<void>) => void;
@@ -1738,7 +1738,7 @@ declare namespace LocalJSX {
         "app-action-help": AppActionHelp;
         "app-action-share": AppActionShare;
         "app-actions-deck": AppActionsDeck;
-        "app-actions-editor": AppActionsEditor;
+        "app-actions-deck-editor": AppActionsDeckEditor;
         "app-actions-element": AppActionsElement;
         "app-asset-data": AppAssetData;
         "app-asset-image": AppAssetImage;
@@ -1865,7 +1865,7 @@ declare module "@stencil/core" {
             "app-action-help": LocalJSX.AppActionHelp & JSXBase.HTMLAttributes<HTMLAppActionHelpElement>;
             "app-action-share": LocalJSX.AppActionShare & JSXBase.HTMLAttributes<HTMLAppActionShareElement>;
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
-            "app-actions-editor": LocalJSX.AppActionsEditor & JSXBase.HTMLAttributes<HTMLAppActionsEditorElement>;
+            "app-actions-deck-editor": LocalJSX.AppActionsDeckEditor & JSXBase.HTMLAttributes<HTMLAppActionsDeckEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
             "app-asset-data": LocalJSX.AppAssetData & JSXBase.HTMLAttributes<HTMLAppAssetDataElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
