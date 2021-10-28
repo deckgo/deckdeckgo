@@ -113,7 +113,7 @@ export class AppDeckEditor implements ComponentInterface {
   private destroyAuthListener;
 
   private deckRef!: HTMLDeckgoDeckElement;
-  private actionsEditorRef!: HTMLAppActionsEditorElement;
+  private actionsEditorRef!: HTMLAppActionsDeckEditorElement;
   private contentRef!: HTMLElement;
   private mainRef!: HTMLElement;
   private breadCrumbsRef!: HTMLAppBreadcrumbsElement;
@@ -806,8 +806,8 @@ export class AppDeckEditor implements ComponentInterface {
               slideNumber={this.activeIndex}
               onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event)}></app-breadcrumbs>
 
-            <app-actions-editor
-              ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsEditorElement)}
+            <app-actions-deck-editor
+              ref={(el) => (this.actionsEditorRef = el as HTMLAppActionsDeckEditorElement)}
               hideActions={this.hideActions}
               fullscreen={this.fullscreen}
               slides={this.slides}
@@ -816,7 +816,7 @@ export class AppDeckEditor implements ComponentInterface {
               onSlideCopy={($event: CustomEvent<HTMLElement>) => this.copySlide($event)}
               onSlideTransform={($event: CustomEvent<JSX.IntrinsicElements>) => this.transformSlide($event)}
               onElementFocus={($event: CustomEvent<HTMLElement>) => this.onElementFocus($event)}
-              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-editor>
+              onPresenting={($event: CustomEvent<boolean>) => this.updatePresenting($event?.detail)}></app-actions-deck-editor>
           </div>
         </div>
         {this.renderSlidePreview()}

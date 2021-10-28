@@ -1,0 +1,62 @@
+@use "../../../../../../global/theme/mixins/editor";
+
+app-expansion-panel {
+  display: block;
+
+  margin-bottom: 16px;
+  overflow: hidden;
+
+  @include editor.panel;
+
+  article {
+    background: white;
+
+    > div {
+      overflow: hidden;
+      transition: height 0.25s ease-in;
+    }
+
+    > ion-item {
+      font-size: var(--font-size-normal);
+
+      cursor: pointer;
+
+      &.hidden {
+        display: none;
+      }
+
+      div[slot="start"] {
+        margin: 8px 8px 8px 0;
+      }
+
+      ion-icon {
+        color: black;
+        font-size: var(--font-size-small);
+
+        transition: transform 0.25s ease-in;
+      }
+
+      div[slot="end"] {
+        opacity: 1;
+
+        transition: opacity 0.25s ease-in;
+      }
+    }
+
+    &.close {
+      > ion-item {
+        ion-icon {
+          transform: rotate(-90deg);
+        }
+
+        div[slot="end"] {
+          opacity: 0;
+        }
+      }
+    }
+
+    &:not(.close) {
+      padding-bottom: 12px;
+    }
+  }
+}
