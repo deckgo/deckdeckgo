@@ -10,7 +10,7 @@ import {findParagraph, isParagraph} from '../../../utils/editor/container.utils'
 import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/docs/doc.offline.provider';
-import {createOfflineSection, updateOfflineSection} from '../../../providers/data/docs/section.offline.provider';
+import {createOfflineSection, deleteOfflineSection, updateOfflineSection} from '../../../providers/data/docs/section.offline.provider';
 import {debounce} from '@deckdeckgo/utils';
 
 export class DocEvents {
@@ -45,6 +45,7 @@ export class DocEvents {
 
   private onTreeMutation = async (mutations: MutationRecord[]) => {
     await this.addSections(mutations);
+    await this.deleteSections(mutations);
   };
 
   private onAttributesMutation = async (mutations: MutationRecord[]) => {
@@ -84,6 +85,18 @@ export class DocEvents {
     await this.updateDocSectionList({sectionId, sectionElement: element});
   }
 
+  private async deleteSection(element: HTMLElement): Promise<string | undefined> {
+    const sectionId: string = element.getAttribute('section_id');
+
+    if (!sectionId) {
+      return undefined;
+    }
+
+    await deleteOfflineSection({docId: docStore.state.doc.id, sectionId});
+
+    return sectionId;
+  }
+
   private postSection(element: HTMLElement): Promise<Section> {
     return new Promise<Section>(async (resolve) => {
       const sectionData: SectionData = {
@@ -111,7 +124,7 @@ export class DocEvents {
         const doc: Doc = {...docStore.state.doc};
 
         if (!doc && !doc.data) {
-          reject('Missing doc to add the slide to the list');
+          reject('Missing doc to add the section to the list');
           return;
         }
 
@@ -137,6 +150,40 @@ export class DocEvents {
     });
   }
 
+  private filterDocSectionList(sectionIds: (string | undefined)[]): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const doc: Doc = {...docStore.state.doc};
+
+        if (!doc && !doc.data) {
+          reject('Missing doc to update the section to the list');
+          return;
+        }
+
+        if (doc.data.sections.length <= 0) {
+          resolve();
+          return;
+        }
+
+        const filterSectionIds: string[] = sectionIds.filter((id: string | undefined) => id !== undefined);
+
+        if (!filterSectionIds) {
+          resolve();
+          return;
+        }
+
+        doc.data.sections = [...doc.data.sections.filter((sectionId: string) => !filterSectionIds.includes(sectionId))];
+
+        const updatedDoc: Doc = await updateOfflineDoc(doc);
+        docStore.state.doc = {...updatedDoc};
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   private async addSections(mutations: MutationRecord[]) {
     try {
       if (!this.containerRef) {
@@ -149,11 +196,7 @@ export class DocEvents {
 
       const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
 
-      const addedParagraphs: HTMLElement[] = addedNodes
-        .filter((node: Node) => isParagraph({element: node, container: this.containerRef}))
-        .filter(
-          (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
-        ) as HTMLElement[];
+      const addedParagraphs: HTMLElement[] = this.filterParagraphs(addedNodes);
 
       await this.createDoc();
 
@@ -164,6 +207,39 @@ export class DocEvents {
       errorStore.state.error = err;
       busyStore.state.deckBusy = false;
     }
+  }
+
+  private async deleteSections(mutations: MutationRecord[]) {
+    try {
+      if (!this.containerRef) {
+        return;
+      }
+
+      if (!mutations || mutations.length <= 0) {
+        return;
+      }
+
+      const removedNodes: Node[] = mutations.reduce(
+        (acc: Node[], {removedNodes}: MutationRecord) => [...acc, ...Array.from(removedNodes)],
+        []
+      );
+
+      const promises: Promise<string | undefined>[] = removedNodes.map((paragraph: HTMLElement) => this.deleteSection(paragraph));
+      const removedSectionIds: (string | undefined)[] = await Promise.all(promises);
+
+      await this.filterDocSectionList(removedSectionIds);
+    } catch (err) {
+      errorStore.state.error = err;
+      busyStore.state.deckBusy = false;
+    }
+  }
+
+  private filterParagraphs(nodes: Node[]): HTMLElement[] {
+    return nodes
+      .filter((node: Node) => isParagraph({element: node, container: this.containerRef}))
+      .filter(
+        (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
+      ) as HTMLElement[];
   }
 
   private async updateData() {
@@ -226,7 +302,7 @@ export class DocEvents {
       return;
     }
 
-    // TODO: we loose the created_at information here trade of not getting thee slide from indexedDB for performance reason
+    // TODO: we loose the created_at information here trade of not getting the section from indexedDB for performance reason
 
     const sectionUpdate: Section = {
       id: sectionId,
