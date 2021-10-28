@@ -1,6 +1,6 @@
 import {del, delMany, get, keys, update} from 'idb-keyval';
 
-import {Sync, SyncData, SyncPending, SyncPendingDeck} from '@deckdeckgo/editor';
+import {Sync, SyncData, SyncPending, SyncPendingData} from '@deckdeckgo/editor';
 
 import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
@@ -57,7 +57,8 @@ const filterPending = async (syncedAt: Date) => {
     return undefined;
   }
 
-  const filter = (arr: SyncPendingDeck[]) => arr.filter(({queuedAt}: SyncPendingDeck) => queuedAt.getTime() > syncedAt.getTime());
+  const filter = (arr: SyncPendingData[]): SyncPendingData[] =>
+    arr?.filter(({queuedAt}: SyncPendingData) => queuedAt.getTime() > syncedAt.getTime());
 
   await update<SyncPending>(
     'deckdeckgo_pending_sync',
@@ -66,7 +67,11 @@ const filterPending = async (syncedAt: Date) => {
         updateDecks: filter(data.updateDecks),
         deleteDecks: filter(data.deleteDecks),
         updateSlides: filter(data.updateSlides),
-        deleteSlides: filter(data.deleteSlides)
+        deleteSlides: filter(data.deleteSlides),
+        updateDocs: filter(data.updateDocs),
+        deleteDocs: filter(data.deleteDocs),
+        updateSections: filter(data.updateSections),
+        deleteSections: filter(data.deleteSections)
       } as SyncPending)
   );
 };
@@ -84,9 +89,18 @@ export const initSyncState = async () => {
     return;
   }
 
-  const {updateDecks, deleteDecks, deleteSlides, updateSlides} = data;
+  const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteSections, updateSections} = data;
 
-  if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length === 0) {
+  if (
+    updateDecks.length === 0 &&
+    deleteDecks.length === 0 &&
+    deleteSlides.length === 0 &&
+    updateSlides.length === 0 &&
+    updateDocs.length === 0 &&
+    deleteDocs.length === 0 &&
+    deleteSections.length === 0 &&
+    updateSections.length === 0
+  ) {
     syncStore.state.sync = 'idle';
     return;
   }
@@ -97,7 +111,9 @@ export const initSyncState = async () => {
 export const clearSync = async () => {
   await del('deckdeckgo_pending_sync');
 
-  const storageKeys: string[] = (await keys<string>()).filter((key: string) => key.startsWith('/decks/') || key.startsWith('/assets/'));
+  const storageKeys: string[] = (await keys<string>()).filter(
+    (key: string) => key.startsWith('/decks/') || key.startsWith('/docs/') || key.startsWith('/assets/')
+  );
 
   if (!storageKeys.length) {
     return;

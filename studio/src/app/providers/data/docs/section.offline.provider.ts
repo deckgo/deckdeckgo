@@ -4,6 +4,8 @@ import {v4 as uuid} from 'uuid';
 
 import {Section, SectionData} from '@deckdeckgo/editor';
 
+import {syncDeleteSection, syncUpdateSection} from '../../../utils/editor/sync.utils';
+
 export const createOfflineSection = ({docId, sectionData}: {docId: string; sectionData: SectionData}): Promise<Section> => {
   return new Promise<Section>(async (resolve, reject) => {
     try {
@@ -22,8 +24,7 @@ export const createOfflineSection = ({docId, sectionData}: {docId: string; secti
 
       await set(`/docs/${docId}/sections/${section.id}`, section);
 
-      // TODO: sync
-      // await syncUpdateSlide({docId, slideId: slide.id});
+      await syncUpdateSection({docId, sectionId: section.id});
 
       resolve(section);
     } catch (err) {
@@ -47,8 +48,7 @@ export const updateOfflineSection = ({docId, section}: {docId: string; section: 
 
       await set(`/docs/${docId}/sections/${section.id}`, section);
 
-      // TODO sync
-      // await syncUpdateSlide({docId, slideId: slide.id});
+      await syncUpdateSection({docId, sectionId: section.id});
 
       resolve(section);
     } catch (err) {
@@ -62,8 +62,7 @@ export const deleteOfflineSection = ({docId, sectionId}: {docId: string; section
     try {
       await del(`/docs/${docId}/sections/${sectionId}`);
 
-      // TOD sync
-      // await syncDeleteSlide({deckId, slideId});
+      await syncDeleteSection({docId, sectionId});
 
       resolve();
     } catch (err) {

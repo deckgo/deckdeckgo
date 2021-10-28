@@ -4,6 +4,8 @@ import {v4 as uuid} from 'uuid';
 
 import {Doc, DocData} from '@deckdeckgo/editor';
 
+import {syncUpdateDoc} from '../../../utils/editor/sync.utils';
+
 export const createOfflineDoc = (docData: DocData): Promise<Doc> => {
   return new Promise<Doc>(async (resolve, reject) => {
     try {
@@ -22,8 +24,7 @@ export const createOfflineDoc = (docData: DocData): Promise<Doc> => {
 
       await set(`/docs/${docId}`, doc);
 
-      // TODO: sync update doc
-      // await syncUpdateDeck(deckId);
+      await syncUpdateDoc(docId);
 
       resolve(doc);
     } catch (err) {
@@ -48,8 +49,7 @@ export const updateOfflineDoc = (doc: Doc): Promise<Doc> => {
 
       await set(`/docs/${doc.id}`, doc);
 
-      // TODO: sync
-      // await syncUpdateDeck(deck.id);
+      await syncUpdateDoc(doc.id);
 
       resolve(doc);
     } catch (err) {
