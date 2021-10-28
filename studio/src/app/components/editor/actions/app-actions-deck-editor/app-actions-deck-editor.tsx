@@ -2,10 +2,10 @@ import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, 
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
-import editorStore from '../../../../../stores/editor.store';
-import undoRedoStore from '../../../../../stores/undo-redo.store';
+import editorStore from '../../../../stores/editor.store';
+import undoRedoStore from '../../../../stores/undo-redo.store';
 
-import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
+import {BreadcrumbsStep} from '../../../../types/editor/breadcrumbs-step';
 
 @Component({
   tag: 'app-actions-deck-editor',
