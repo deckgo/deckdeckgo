@@ -1,5 +1,3 @@
-import {debounce} from '@deckdeckgo/utils';
-
 import {Doc, DocData, now, Section, SectionData} from '@deckdeckgo/editor';
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
@@ -8,70 +6,64 @@ import busyStore from '../../../stores/busy.store';
 import docStore from '../../../stores/doc.store';
 import authStore from '../../../stores/auth.store';
 
-import {findParagraph} from '../../../utils/editor/container.utils';
+import {findParagraph, isParagraph} from '../../../utils/editor/container.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/docs/doc.offline.provider';
 import {createOfflineSection, updateOfflineSection} from '../../../providers/data/docs/section.offline.provider';
+import {debounce} from '@deckdeckgo/utils';
 
 export class DocEvents {
-  private docRef: HTMLDeckgoDocElement;
+  private containerRef: HTMLElement;
 
-  private observer: MutationObserver | undefined;
+  private treeObserver: MutationObserver | undefined;
+  private attributesObserver: MutationObserver | undefined;
+  private dataObserver: MutationObserver | undefined;
 
-  private readonly debounceUpdateSections: () => void = debounce(async () => await this.updateSections(), 500);
+  private stackDataMutations: MutationRecord[] = [];
 
-  private mutations: MutationRecord[] = [];
+  private readonly debounceUpdateInput: () => void = debounce(async () => await this.updateData(), 500);
 
-  init(docRef: HTMLDeckgoDocElement) {
-    this.docRef = docRef;
+  init(containerRef: HTMLElement) {
+    this.containerRef = containerRef;
 
-    this.observer = new MutationObserver(this.onMutation);
-    this.observer.observe(this.docRef, {childList: true, subtree: true, characterData: true, attributes: true});
-  }
+    this.treeObserver = new MutationObserver(this.onTreeMutation);
+    this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
 
-  observeCreateDoc() {
-    const docObserver: MutationObserver = new MutationObserver(this.onCreateDoc);
-    docObserver.observe(this.docRef, {childList: true, subtree: true, characterData: true, attributes: true});
+    this.attributesObserver = new MutationObserver(this.onAttributesMutation);
+    this.attributesObserver.observe(this.containerRef, {attributes: true, subtree: true});
+
+    this.dataObserver = new MutationObserver(this.onDataMutation);
+    this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true});
   }
 
   destroy() {
-    this.observer?.disconnect();
+    this.treeObserver?.disconnect();
+    this.attributesObserver?.disconnect();
+    this.dataObserver?.disconnect();
   }
 
-  private onMutation = (mutations: MutationRecord[]) => {
-    this.mutations.push(...mutations);
-
-    this.debounceUpdateSections();
+  private onTreeMutation = async (mutations: MutationRecord[]) => {
+    await this.addSections(mutations);
   };
 
-  private onCreateDoc = async (mutations: MutationRecord[], observer: MutationObserver) => {
-    try {
-      observer.disconnect();
-
-      if (!this.docRef) {
-        return;
-      }
-
-      const elements: Node[] = [...new Set(mutations.map(({addedNodes}: MutationRecord) => addedNodes[0]))];
-
-      busyStore.state.deckBusy = true;
-
-      await this.createNewDoc();
-
-      for (const element of Array.from(elements)) {
-        await this.createSection(element as HTMLElement);
-      }
-    } catch (err) {
-      errorStore.state.error = err;
-    }
-
-    busyStore.state.deckBusy = false;
+  private onAttributesMutation = async (mutations: MutationRecord[]) => {
+    await this.updateSections(mutations);
   };
 
-  private createNewDoc(): Promise<void> {
+  private onDataMutation = (mutations: MutationRecord[]) => {
+    this.stackDataMutations.push(...mutations);
+    this.debounceUpdateInput();
+  };
+
+  private createDoc(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
+        if (docStore.state.doc) {
+          resolve();
+          return;
+        }
+
         let docData: DocData = {
           name: `Document ${now()}`,
           owner_id: authStore.state.authUser?.uid
@@ -145,35 +137,28 @@ export class DocEvents {
     });
   }
 
-  private async updateSections() {
+  private async addSections(mutations: MutationRecord[]) {
     try {
-      if (!this.docRef) {
+      if (!this.containerRef) {
         return;
       }
 
-      if (!this.mutations || this.mutations.length <= 0) {
+      if (!mutations || mutations.length <= 0) {
         return;
       }
 
-      // TODO: contentEditable duplicate section_id on enter FIXME
-      // We might not need the stack
-      const mutations: MutationRecord[] = [...this.mutations];
-      this.mutations = [];
+      const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
 
-      const nodes: Node[] = [...new Set(mutations.map(({target}: MutationRecord) => target))];
+      const addedParagraphs: HTMLElement[] = addedNodes
+        .filter((node: Node) => isParagraph({element: node, container: this.containerRef}))
+        .filter(
+          (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
+        ) as HTMLElement[];
 
-      const sections: Node[] = nodes
-        .map((node: Node) => findParagraph({element: node, container: this.docRef.firstChild}))
-        .filter((filteredParagraph: Node | undefined) => filteredParagraph !== undefined);
+      await this.createDoc();
 
-      for (const element of sections) {
-        const section: HTMLElement = element as HTMLElement;
-
-        if (!section.getAttribute('section_id')) {
-          await this.createSection(section);
-        } else {
-          await this.updateSection(section);
-        }
+      for (const paragraph of addedParagraphs) {
+        await this.createSection(paragraph);
       }
     } catch (err) {
       errorStore.state.error = err;
@@ -181,7 +166,48 @@ export class DocEvents {
     }
   }
 
-  private async updateSection(section: HTMLElement) {
+  private async updateData() {
+    if (!this.stackDataMutations || this.stackDataMutations.length <= 0) {
+      return;
+    }
+
+    const mutations: MutationRecord[] = [...this.stackDataMutations];
+    this.stackDataMutations = [];
+
+    await this.updateSections(mutations);
+  }
+
+  private async updateSections(mutations: MutationRecord[]) {
+    try {
+      if (!this.containerRef) {
+        return;
+      }
+
+      if (!mutations || mutations.length <= 0) {
+        return;
+      }
+
+      const nodes: Node[] = mutations.reduce((acc: Node[], {target}: MutationRecord) => [...acc, target], []);
+
+      const updateParagraphs: HTMLElement[] = [
+        ...new Set(
+          nodes
+            .map((node: Node) => findParagraph({element: node, container: this.containerRef}))
+            .filter(
+              (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
+            ) as HTMLElement[]
+        )
+      ];
+
+      const promises: Promise<void>[] = updateParagraphs.map((paragraph: HTMLElement) => this.updateSection(paragraph));
+      await Promise.all(promises);
+    } catch (err) {
+      errorStore.state.error = err;
+      busyStore.state.deckBusy = false;
+    }
+  }
+
+  async updateSection(section: HTMLElement) {
     if (!section || !section.nodeName) {
       return;
     }

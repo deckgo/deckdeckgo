@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
+import {Component, ComponentInterface, Fragment, h, JSX, Method, State} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
@@ -30,13 +30,11 @@ export class AppDocEditor implements ComponentInterface {
 
   private readonly sectionHelper: SectionHelper = new SectionHelper();
 
-  private docRef!: HTMLDeckgoDocElement;
+  private containerRef!: HTMLElement;
 
   async componentDidLoad() {
     await this.imageEvents.init();
     await this.chartEvents.init();
-
-    this.docEvents.init(this.docRef);
 
     await this.initOrFetch();
   }
@@ -55,28 +53,11 @@ export class AppDocEditor implements ComponentInterface {
     await this.initOrFetch();
   }
 
-  @Listen('keydown')
-  async handleEnterKey($event: KeyboardEvent) {
-    if ($event.key === 'Enter' && !$event.shiftKey) {
-      this.addSection($event);
-    }
-  }
-
-  private addSection($event: KeyboardEvent) {
-    $event.preventDefault();
-
-    const index: number | undefined = this.sectionHelper.initAddSection(this.docRef);
-
-    if (!index) {
-      return;
-    }
-
-    this.sections = [...this.sections.slice(0, index), this.emtpySection(), ...this.sections.slice(index)];
-  }
-
   private async initOrFetch() {
     const editor: Editor | undefined = await getEdit();
     const docId: string | undefined = editor?.id;
+
+    this.observe(!docId);
 
     if (!docId) {
       await this.initDoc();
@@ -90,9 +71,6 @@ export class AppDocEditor implements ComponentInterface {
   private async initDoc() {
     const Title = 'h1';
     const title: JSX.IntrinsicElements = <Title key={uuid()}>Title</Title>;
-
-    // We observe the first mutation to persist the created data
-    this.docEvents.observeCreateDoc();
 
     this.sections = [title, this.emtpySection()];
   }
@@ -111,14 +89,32 @@ export class AppDocEditor implements ComponentInterface {
     this.sections = sections?.length > 0 ? [...sections] : [];
   }
 
+  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
+  private observe(init: boolean) {
+    if (init) {
+      this.docEvents.init(this.containerRef);
+      return;
+    }
+
+    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+      this.docEvents.init(this.containerRef);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+  }
+
   render() {
     return (
       <Fragment>
         <ion-content class={`ion-no-padding`}>
           <main>
             {this.renderLoading()}
-            <deckgo-doc ref={(el) => (this.docRef = el as HTMLDeckgoDocElement)}>
-              <article contentEditable={true}>{this.sections}</article>
+            <deckgo-doc>
+              <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
+                {this.sections}
+              </article>
             </deckgo-doc>
           </main>
         </ion-content>

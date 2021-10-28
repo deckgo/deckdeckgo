@@ -26,3 +26,13 @@ export const findParagraph = ({element, container}: {element: Node; container: N
 
   return findParagraph({element: parentElement, container});
 };
+
+export const isParagraph = ({element, container}: {element: Node; container: Node}): boolean => {
+  if (!element) {
+    return false;
+  }
+
+  const {parentElement} = element;
+
+  return parentElement?.isEqualNode(container);
+};
