@@ -1,15 +1,18 @@
 import {JSX} from '@stencil/core';
 
 import {Doc, Section} from '@deckdeckgo/editor';
+import {getAnchorElement, getSelection, moveCursorToEnd} from '@deckdeckgo/utils';
 
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
 import docStore from '../../stores/doc.store';
 
 import {ParseSectionsUtils} from '../../utils/editor/parse-sections.utils';
+import {NodeUtils} from '../../utils/editor/node.utils';
 
 import {getOfflineDoc} from '../../providers/data/docs/doc.offline.provider';
 import {getOfflineSection} from '../../providers/data/docs/section.offline.provider';
+import {findParagraph} from '../../utils/editor/container.utils';
 
 export class SectionHelper {
   loadDocAndRetrieveSections(docId: string): Promise<JSX.IntrinsicElements[] | null> {
@@ -72,5 +75,35 @@ export class SectionHelper {
         resolve(null);
       }
     });
+  }
+
+  initAddSection(docRef: HTMLDeckgoDocElement | undefined): number | undefined {
+    if (!docRef) {
+      return undefined;
+    }
+
+    const selection: Selection | null = getSelection();
+    const element: HTMLElement | null = getAnchorElement(selection);
+
+    if (!element) {
+      return undefined;
+    }
+
+    const paragraph: Node | undefined = findParagraph({element, container: docRef.firstChild});
+
+    if (!paragraph) {
+      return undefined;
+    }
+
+    const index: number = NodeUtils.nodeIndex(paragraph as HTMLElement) + 1;
+
+    const docObserver: MutationObserver = new MutationObserver(() => {
+      docObserver.disconnect();
+      moveCursorToEnd(docRef.querySelector(`article *:nth-child(${index + 1})`));
+    });
+
+    docObserver.observe(docRef, {childList: true, subtree: true});
+
+    return index;
   }
 }
