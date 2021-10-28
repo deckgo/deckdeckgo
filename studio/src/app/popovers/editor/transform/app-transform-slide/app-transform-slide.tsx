@@ -4,7 +4,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {InitTemplate} from '../../../../utils/editor/create-slides.utils';
 
-import {AppTemplatesFixed} from '../../../../components/editor/templates/platform/app-templates-fixed/app-templates-fixed';
+import {AppTemplatesFixed} from '../../../../components/editor/deck/slide/templates/platform/app-templates-fixed/app-templates-fixed';
 
 @Component({
   tag: 'app-transform-slide',
