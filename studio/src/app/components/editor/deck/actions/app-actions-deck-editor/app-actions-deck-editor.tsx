@@ -2,7 +2,7 @@ import {Component, Element, Event, Watch, EventEmitter, Fragment, h, Host, JSX, 
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
-import editorStore from '../../../../../stores/editor.store';
+import deckEditorStore from '../../../../../stores/deck-editor.store';
 import undoRedoStore from '../../../../../stores/undo-redo.store';
 
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
@@ -87,7 +87,7 @@ export class AppActionsDeckEditor {
 
     await this.actionsElementRef.touch(element, autoOpen);
 
-    editorStore.state.step = isSlide(element) ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
+    deckEditorStore.state.step = isSlide(element) ? BreadcrumbsStep.SLIDE : BreadcrumbsStep.ELEMENT;
   }
 
   @Method()
@@ -130,7 +130,7 @@ export class AppActionsDeckEditor {
   }
 
   private selectStepDeck() {
-    editorStore.state.step = BreadcrumbsStep.DECK;
+    deckEditorStore.state.step = BreadcrumbsStep.DECK;
   }
 
   @Method()
@@ -204,7 +204,7 @@ export class AppActionsDeckEditor {
   private renderDeckActions() {
     return (
       <app-actions-deck
-        class={editorStore.state.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
+        class={deckEditorStore.state.step != BreadcrumbsStep.DECK ? 'hidden' : undefined}
         fullscreen={this.fullscreen}
         slides={this.slides}
         animatePrevNextSlide={this.animatePrevNextSlide}
@@ -221,7 +221,7 @@ export class AppActionsDeckEditor {
       <app-actions-element
         onClick={($event: MouseEvent | TouchEvent) => this.selectDeckOnClick($event)}
         ref={(el) => (this.actionsElementRef = el as HTMLAppActionsElementElement)}
-        class={editorStore.state.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
+        class={deckEditorStore.state.step === BreadcrumbsStep.DECK ? 'hidden' : undefined}
         slideCopy={this.slideCopy}
         slideTransform={this.slideTransform}
         elementFocus={this.elementFocus}

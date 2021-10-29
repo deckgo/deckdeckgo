@@ -3,7 +3,7 @@ import {Component, Prop, h, Host, EventEmitter, Event, Fragment} from '@stencil/
 import {deckSelector, selectSlide} from '@deckdeckgo/editor';
 
 import busyStore from '../../../../../stores/busy.store';
-import editorStore from '../../../../../stores/editor.store';
+import deckEditorStore from '../../../../../stores/deck-editor.store';
 
 import {BreadcrumbsStep} from '../../../../../types/editor/breadcrumbs-step';
 
@@ -66,7 +66,7 @@ export class AppBreadcrumbs {
       <button
         onMouseDown={($event) => $event.stopPropagation()}
         onTouchStart={($event) => $event.stopPropagation()}
-        class={editorStore.state.step === step ? 'selected' : undefined}
+        class={deckEditorStore.state.step === step ? 'selected' : undefined}
         onClick={() => this.selectStep(step)}
         disabled={busyStore.state.deckBusy}>
         <ion-label>
