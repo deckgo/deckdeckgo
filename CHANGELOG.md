@@ -1,6 +1,10 @@
-<a name="X.Y.Z"></a>
+<a name="5.0.1"></a>
 
-# [X.Y.Z](https://github.com/deckgo/deckdeckgo/compare/v4.10.0...v5.0.0) (202A-BB-CC)
+# [5.0.1](https://github.com/deckgo/deckdeckgo/compare/v5.0.0...v5.0.1) (2021-10-29)
+
+### Applications
+
+- studio: v5.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
 
 ### Web Components
 
