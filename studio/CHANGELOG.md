@@ -1,3 +1,9 @@
+# 5.0.1 (2021-10-21)
+
+### Features
+
+- rename entry `deck.json` to `data.json` in file `.ddg`
+
 # 5.0.0 (2021-10-21)
 
 ### Features
