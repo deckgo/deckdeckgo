@@ -26,7 +26,7 @@ import {NodeUtils} from '../../utils/editor/node.utils';
 
 import {DeckEvents} from '../../events/editor/deck/deck.events';
 import {RemoteEvents} from '../../events/editor/remote/remote.events';
-import {EditorEvents} from '../../events/editor/editor/editor.events';
+import {DeckEditorEvents} from '../../events/editor/editor/deck-editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
@@ -84,8 +84,8 @@ export class AppDeckEditor implements ComponentInterface {
   private activeIndex: number = 0;
 
   private deckEvents: DeckEvents = new DeckEvents();
+  private deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
   private remoteEvents: RemoteEvents = new RemoteEvents();
-  private editorEvents: EditorEvents = new EditorEvents();
   private pollEvents: PollEvents = new PollEvents();
   private imageEvents: ImageEvents = new ImageEvents();
   private chartEvents: ChartEvents = new ChartEvents();
@@ -150,7 +150,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   async init() {
     await this.deckEvents.init(this.mainRef);
-    await this.editorEvents.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
+    await this.deckEditorEvents.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
 
     await this.initOrFetch();
 
@@ -204,7 +204,7 @@ export class AppDeckEditor implements ComponentInterface {
     await stopSyncTimer();
 
     this.deckEvents.destroy();
-    this.editorEvents.destroy();
+    this.deckEditorEvents.destroy();
     this.pollEvents.destroy();
     this.imageEvents.destroy();
     this.chartEvents.destroy();
@@ -416,7 +416,7 @@ export class AppDeckEditor implements ComponentInterface {
       return;
     }
 
-    await this.editorEvents.blockSlide(true);
+    await this.deckEditorEvents.blockSlide(true);
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
@@ -424,7 +424,7 @@ export class AppDeckEditor implements ComponentInterface {
     });
 
     modal.onDidDismiss().then(async (_detail: OverlayEventDetail) => {
-      await this.editorEvents.blockSlide(false);
+      await this.deckEditorEvents.blockSlide(false);
     });
 
     await modal.present();
@@ -541,7 +541,7 @@ export class AppDeckEditor implements ComponentInterface {
       return;
     }
 
-    await this.editorEvents.selectDeck();
+    await this.deckEditorEvents.selectDeck();
     await this.deckRef.toggleFullScreen();
 
     await this.openFullscreenInfo();

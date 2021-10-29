@@ -224,7 +224,7 @@ export class AppActionsElement {
       return;
     }
 
-    await Promise.all([this.detachResizeSlideContent(), this.detachPasteEvent()]);
+    await this.detachResizeSlideContent();
 
     await this.reset();
   }
@@ -684,7 +684,7 @@ export class AppActionsElement {
       : undefined;
 
     if (element) {
-      await Promise.all([this.attachResizeSlideContent(), this.attachPasteEvent()]);
+      await this.attachResizeSlideContent();
 
       await this.highlightElement(true);
 
@@ -751,24 +751,6 @@ export class AppActionsElement {
       resolve();
     });
   }
-
-  private async attachPasteEvent() {
-    await this.detachPasteEvent();
-
-    this.selectedElement?.element?.addEventListener('paste', this.filterPasteText);
-  }
-
-  private async detachPasteEvent() {
-    this.selectedElement?.element?.removeEventListener('paste', this.filterPasteText);
-  }
-
-  private filterPasteText = ($event: ClipboardEvent) => {
-    $event.preventDefault();
-
-    const text: string = $event.clipboardData.getData('text/plain');
-
-    document.execCommand('insertText', false, text);
-  };
 
   private async openStyle() {
     const popover: HTMLIonPopoverElement = await popoverController.create({

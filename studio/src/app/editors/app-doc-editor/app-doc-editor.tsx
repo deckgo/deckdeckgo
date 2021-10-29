@@ -12,6 +12,7 @@ import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocEvents} from '../../events/editor/doc/doc.events';
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
+import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
 
 @Component({
   tag: 'app-doc-editor',
@@ -27,10 +28,15 @@ export class AppDocEditor implements ComponentInterface {
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly docEvents: DocEvents = new DocEvents();
+  private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
   private containerRef!: HTMLElement;
+
+  componentWillLoad() {
+    this.docEditorEvents.init();
+  }
 
   async componentDidLoad() {
     await this.imageEvents.init();
@@ -44,6 +50,8 @@ export class AppDocEditor implements ComponentInterface {
     this.chartEvents.destroy();
 
     this.docEvents.destroy();
+
+    this.docEditorEvents.destroy();
   }
 
   @Method()

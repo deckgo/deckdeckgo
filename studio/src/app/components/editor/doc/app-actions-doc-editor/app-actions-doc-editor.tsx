@@ -22,10 +22,8 @@ export class AppActionsDocEditor {
   }
 
   private test() {
-    // TODO: catch clean paste events
     // TODO: export
     // TODO: tab
-    // TODO: refactor article
 
     document.execCommand('insertHTML', false, '<span id="myId">hi</span>');
   }

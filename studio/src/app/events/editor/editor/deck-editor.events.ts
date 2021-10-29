@@ -1,6 +1,7 @@
 import {redo, undo} from '../../../utils/editor/undo-redo.utils';
+import {attachPasteEvent, detachPasteEvent} from '../../../utils/editor/paste.utils';
 
-export class EditorEvents {
+export class DeckEditorEvents {
   private mainRef: HTMLElement;
   private actionsEditorRef: HTMLAppActionsDeckEditorElement | undefined;
 
@@ -14,6 +15,8 @@ export class EditorEvents {
       if (deck) {
         deck.addEventListener('keyup', this.onKeyUp, false);
       }
+
+      attachPasteEvent();
 
       document.addEventListener('blockSlide', this.onBlockSlide, false);
       document.addEventListener('keydown', this.onKeyDown, false);
@@ -30,6 +33,8 @@ export class EditorEvents {
     if (deck) {
       deck.removeEventListener('keyup', this.onKeyUp, true);
     }
+
+    detachPasteEvent();
 
     document.removeEventListener('blockSlide', this.onBlockSlide, true);
     document.removeEventListener('keydown', this.onKeyDown, true);
