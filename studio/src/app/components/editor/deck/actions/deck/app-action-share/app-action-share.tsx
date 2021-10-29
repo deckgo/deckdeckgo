@@ -3,7 +3,7 @@ import {Component, Element, Event, EventEmitter, h} from '@stencil/core';
 import type {OverlayEventDetail} from '@ionic/core';
 import {popoverController} from '@ionic/core';
 
-import deckStore from '../../../../../../stores/deck.store';
+import editorStore from '../../../../../../stores/editor.store';
 import userStore from '../../../../../../stores/user.store';
 import shareStore from '../../../../../../stores/share.store';
 import i18n from '../../../../../../stores/i18n.store';
@@ -26,7 +26,7 @@ export class AppActionShare {
   private shareEnabled: boolean = share();
 
   private async share($event: UIEvent) {
-    if (deckStore.state.published) {
+    if (editorStore.state.published) {
       await this.openShareOptions($event);
     } else if (this.shareEnabled) {
       this.actionPublish.emit();
@@ -48,7 +48,7 @@ export class AppActionShare {
       if (detail && detail.data) {
         if (detail.data.action === MoreAction.SHARE) {
           shareStore.state.share = {
-            deck: deckStore.state.deck,
+            deck: editorStore.state.deck,
             userName: userStore.state.name,
             userSocial: userStore.state.social
           };
@@ -64,7 +64,7 @@ export class AppActionShare {
   }
 
   render() {
-    if (!this.shareEnabled && !deckStore.state.published) {
+    if (!this.shareEnabled && !editorStore.state.published) {
       return undefined;
     }
 

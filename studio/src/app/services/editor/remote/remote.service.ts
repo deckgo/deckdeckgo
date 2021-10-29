@@ -1,6 +1,6 @@
 import {Build} from '@stencil/core';
 
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 import remoteStore from '../../../stores/remote.store';
 
 import {get, set} from 'idb-keyval';
@@ -42,7 +42,7 @@ export class RemoteService {
   }
 
   async getRoom(): Promise<string | null> {
-    const deck: Deck | null = deckStore.state.deck;
+    const deck: Deck | null = editorStore.state.deck;
 
     if (deck?.data?.name !== undefined && deck?.data?.name !== '') {
       return deck.data.name.replace(/\.|#/g, '_');

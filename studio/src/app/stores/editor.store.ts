@@ -4,13 +4,13 @@ import {Deck} from '@deckdeckgo/editor';
 
 import {setEditDeckId} from '../utils/editor/editor.utils';
 
-interface DeckStore {
+interface EditorStore {
   deck: Deck | null;
   name: string | null;
   published: boolean;
 }
 
-const {state, onChange, reset} = createStore<DeckStore>({
+const {state, onChange, reset} = createStore<EditorStore>({
   deck: null,
   name: null,
   published: false

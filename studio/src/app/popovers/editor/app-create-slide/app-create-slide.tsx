@@ -4,7 +4,7 @@ import type {SegmentChangeEventDetail} from '@ionic/core';
 
 import {SlideAttributes, SlideTemplate, SlideScope, Deck, Template} from '@deckdeckgo/editor';
 
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 import authStore from '../../../stores/auth.store';
 import i18n from '../../../stores/i18n.store';
 
@@ -44,7 +44,7 @@ export class AppCreateSlide {
   }
 
   private async addSlideQRCode() {
-    await this.addSlide(SlideTemplate.QRCODE, deckStore.state.deck);
+    await this.addSlide(SlideTemplate.QRCODE, editorStore.state.deck);
   }
 
   // We need the data in the user account (like twitter, profile image etc.) to generate the author slide

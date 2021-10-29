@@ -1,6 +1,6 @@
 import {Deck, DeckMetaAuthor, UserSocial, Publish} from '@deckdeckgo/editor';
 
-import deckStore from '../../stores/deck.store';
+import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
 import authStore from '../../stores/auth.store';
 
@@ -22,7 +22,7 @@ export const publish = ({
 }): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
+      if (!editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data) {
         reject('No deck found');
         return;
       }
@@ -36,7 +36,7 @@ export const publish = ({
 
       const publishedDeck: Deck = await publishDeck(deck);
 
-      deckStore.state.deck = {...publishedDeck};
+      editorStore.state.deck = {...publishedDeck};
 
       resolve();
     } catch (err) {
@@ -60,7 +60,7 @@ const updateDeckMeta = ({name, description, tags, github}: {name: string; descri
 
   const now: Date = new Date();
 
-  const deck: Deck = {...deckStore.state.deck};
+  const deck: Deck = {...editorStore.state.deck};
 
   deck.data.name = name;
 

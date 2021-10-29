@@ -1,6 +1,6 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
-import deckStore from '../../../../../stores/deck.store';
+import editorStore from '../../../../../stores/editor.store';
 import userStore from '../../../../../stores/user.store';
 import shareStore from '../../../../../stores/share.store';
 import authStore from '../../../../../stores/auth.store';
@@ -32,7 +32,7 @@ export class AppPublishDone {
 
   private share() {
     shareStore.state.share = {
-      deck: deckStore.state.deck,
+      deck: editorStore.state.deck,
       userName: userStore.state.name,
       userSocial: userStore.state.social
     };
@@ -70,15 +70,15 @@ export class AppPublishDone {
     }
 
     if (
-      !deckStore.state.deck ||
-      !deckStore.state.deck.data ||
-      !deckStore.state.deck.data.github ||
-      !deckStore.state.deck.data.github.publish
+      !editorStore.state.deck ||
+      !editorStore.state.deck.data ||
+      !editorStore.state.deck.data.github ||
+      !editorStore.state.deck.data.github.publish
     ) {
       return undefined;
     }
 
-    if (!deckStore.state.deck.data.github || !deckStore.state.deck.data.github.repo) {
+    if (!editorStore.state.deck.data.github || !editorStore.state.deck.data.github.repo) {
       return (
         <ion-label class="published-url ion-padding ion-text-center">
           {renderI18n(i18n.state.publish_done.source_processing, {
@@ -94,7 +94,7 @@ export class AppPublishDone {
         {renderI18n(i18n.state.publish_done.source_submitted, {
           placeholder: '{0}',
           value: (
-            <a href={`${deckStore.state.deck.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
+            <a href={`${editorStore.state.deck.data.github.repo.url}/pulls`} target="_blank" rel="noopener noreferrer">
               {i18n.state.publish_done.repository}
             </a>
           )

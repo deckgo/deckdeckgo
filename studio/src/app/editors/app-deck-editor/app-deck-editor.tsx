@@ -5,7 +5,7 @@ import {modalController, popoverController} from '@ionic/core';
 
 import {get, set} from 'idb-keyval';
 
-import deckStore from '../../stores/deck.store';
+import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
 import colorStore from '../../stores/color.store';
 import undoRedoStore from '../../stores/undo-redo.store';
@@ -211,7 +211,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.remoteEvents.destroy();
 
-    deckStore.reset();
+    editorStore.reset();
     undoRedoStore.reset();
 
     await this.remoteEvents.destroy();
@@ -232,7 +232,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     this.slides = [];
 
-    deckStore.reset();
+    editorStore.reset();
     undoRedoStore.reset();
   }
 
@@ -310,27 +310,27 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async initDeckStyle() {
-    if (deckStore.state.deck?.data?.attributes?.style) {
-      this.style = await convertStyle(deckStore.state.deck.data.attributes.style);
+    if (editorStore.state.deck?.data?.attributes?.style) {
+      this.style = await convertStyle(editorStore.state.deck.data.attributes.style);
     } else {
       this.style = undefined;
     }
 
-    if (deckStore.state.deck?.data?.attributes?.animation) {
-      this.animation = deckStore.state.deck.data.attributes.animation;
+    if (editorStore.state.deck?.data?.attributes?.animation) {
+      this.animation = editorStore.state.deck.data.attributes.animation;
     }
 
-    if (deckStore.state.deck?.data?.attributes?.direction) {
-      this.direction = deckStore.state.deck.data.attributes.direction;
+    if (editorStore.state.deck?.data?.attributes?.direction) {
+      this.direction = editorStore.state.deck.data.attributes.direction;
     }
 
-    if (deckStore.state.deck?.data?.attributes?.directionMobile) {
-      this.directionMobile = deckStore.state.deck.data.attributes.directionMobile;
+    if (editorStore.state.deck?.data?.attributes?.directionMobile) {
+      this.directionMobile = editorStore.state.deck.data.attributes.directionMobile;
     }
 
-    this.background = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.background, 'background');
-    this.header = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.header, 'header');
-    this.footer = await ParseDeckSlotsUtils.convert(deckStore.state.deck.data.footer, 'footer');
+    this.background = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.background, 'background');
+    this.header = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.header, 'header');
+    this.footer = await ParseDeckSlotsUtils.convert(editorStore.state.deck.data.footer, 'footer');
 
     const google: EnvironmentGoogleConfig = EnvironmentConfigService.getInstance().get('google');
     await this.fontsService.loadGoogleFont(google.fontsUrl, this.style);
@@ -761,7 +761,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   render() {
     const autoSlide: boolean =
-      deckStore.state.deck?.data?.attributes?.autoSlide !== undefined ? deckStore.state.deck.data.attributes.autoSlide : false;
+      editorStore.state.deck?.data?.attributes?.autoSlide !== undefined ? editorStore.state.deck.data.attributes.autoSlide : false;
 
     return [
       <ion-content

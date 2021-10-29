@@ -19,7 +19,7 @@ import {
 
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
 import authStore from '../../../stores/auth.store';
@@ -215,13 +215,13 @@ export class DeckEvents {
 
         busyStore.state.deckBusy = true;
 
-        if (!deckStore.state.deck) {
+        if (!editorStore.state.deck) {
           await this.createDeck();
         }
 
-        const persistedSlide: Slide = await this.postSlide(deckStore.state.deck, slide);
+        const persistedSlide: Slide = await this.postSlide(editorStore.state.deck, slide);
 
-        await this.updateDeckSlideList(deckStore.state.deck, persistedSlide, slide);
+        await this.updateDeckSlideList(editorStore.state.deck, persistedSlide, slide);
 
         busyStore.state.deckBusy = false;
 
@@ -270,7 +270,7 @@ export class DeckEvents {
         };
 
         const persistedDeck: Deck = await this.deckOfflineProvider.create(deck);
-        deckStore.state.deck = {...persistedDeck};
+        editorStore.state.deck = {...persistedDeck};
 
         resolve(persistedDeck);
       } catch (err) {
@@ -300,7 +300,7 @@ export class DeckEvents {
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);
-        deckStore.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
@@ -319,7 +319,7 @@ export class DeckEvents {
 
         busyStore.state.deckBusy = true;
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -347,7 +347,7 @@ export class DeckEvents {
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
 
-        deckStore.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
         busyStore.state.deckBusy = false;
 
@@ -370,7 +370,7 @@ export class DeckEvents {
 
         busyStore.state.deckBusy = true;
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -386,7 +386,7 @@ export class DeckEvents {
         currentDeck.data.name = title;
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-        deckStore.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
         busyStore.state.deckBusy = false;
 
@@ -411,7 +411,7 @@ export class DeckEvents {
 
       busyStore.state.deckBusy = true;
 
-      const currentDeck: Deck | null = deckStore.state.deck;
+      const currentDeck: Deck | null = editorStore.state.deck;
 
       if (!currentDeck || !currentDeck.data) {
         return;
@@ -424,7 +424,7 @@ export class DeckEvents {
       currentDeck.data.attributes.autoSlide = action.autoSlide;
 
       const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-      deckStore.state.deck = {...updatedDeck};
+      editorStore.state.deck = {...updatedDeck};
 
       busyStore.state.deckBusy = false;
     } catch (err) {
@@ -468,8 +468,8 @@ export class DeckEvents {
           slideUpdate.data.attributes = attributes;
         }
 
-        if (deckStore.state.deck) {
-          await this.slideOfflineProvider.update(deckStore.state.deck.id, slideUpdate);
+        if (editorStore.state.deck) {
+          await this.slideOfflineProvider.update(editorStore.state.deck.id, slideUpdate);
         }
 
         busyStore.state.deckBusy = false;
@@ -499,7 +499,7 @@ export class DeckEvents {
 
         const slideId: string = slide.getAttribute('slide_id');
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
           const slide: Slide = await this.slideOfflineProvider.get(currentDeck.id, slideId);
@@ -512,7 +512,7 @@ export class DeckEvents {
               currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
 
               const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-              deckStore.state.deck = {...updatedDeck};
+              editorStore.state.deck = {...updatedDeck};
             }
 
             // 2. Delete the slide
@@ -883,13 +883,13 @@ export class DeckEvents {
           return;
         }
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
           currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
           const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-          deckStore.state.deck = {...updatedDeck};
+          editorStore.state.deck = {...updatedDeck};
         }
 
         resolve();

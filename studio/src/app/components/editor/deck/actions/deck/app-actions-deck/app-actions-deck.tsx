@@ -8,7 +8,7 @@ import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 import {selectDeckSlide} from '@deckdeckgo/editor';
 
 import remoteStore from '../../../../../../stores/remote.store';
-import deckStore from '../../../../../../stores/deck.store';
+import editorStore from '../../../../../../stores/editor.store';
 import userStore from '../../../../../../stores/user.store';
 import shareStore from '../../../../../../stores/share.store';
 import i18n from '../../../../../../stores/i18n.store';
@@ -133,7 +133,7 @@ export class AppActionsDeck {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.SHARE) {
           shareStore.state.share = {
-            deck: deckStore.state.deck,
+            deck: editorStore.state.deck,
             userName: userStore.state.name,
             userSocial: userStore.state.social
           };

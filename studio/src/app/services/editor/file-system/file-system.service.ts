@@ -4,7 +4,7 @@ import {validate as uuidValidate, v4 as uuid} from 'uuid';
 
 import {get, getMany} from 'idb-keyval';
 
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 import docStore from '../../../stores/doc.store';
 import offlineStore from '../../../stores/offline.store';
 
@@ -61,11 +61,11 @@ export class FileSystemService {
     const doc: Doc | undefined = await this.getDoc();
     const paragraphs: Paragraph[] | undefined = await this.getParagraphs();
 
-    const localSlidesImages: UserAsset[] = await getSlidesLocalImages({deck: deckStore.state.deck});
-    const onlineSlidesImages: UserAsset[] = await getSlidesOnlineImages({deck: deckStore.state.deck});
+    const localSlidesImages: UserAsset[] = await getSlidesLocalImages({deck: editorStore.state.deck});
+    const onlineSlidesImages: UserAsset[] = await getSlidesOnlineImages({deck: editorStore.state.deck});
 
-    const localSlidesCharts: UserAsset[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
-    const onlineSlidesCharts: UserAsset[] = await getSlidesOnlineCharts({deck: deckStore.state.deck});
+    const localSlidesCharts: UserAsset[] = await getSlidesLocalCharts({deck: editorStore.state.deck});
+    const onlineSlidesCharts: UserAsset[] = await getSlidesOnlineCharts({deck: editorStore.state.deck});
 
     const deckBackground: UserAsset | undefined = await getDeckBackgroundImage();
 
@@ -92,13 +92,13 @@ export class FileSystemService {
     });
 
     await this.save({
-      filename: deckStore.state.deck?.data?.name || docStore.state.doc?.data?.name,
+      filename: editorStore.state.deck?.data?.name || docStore.state.doc?.data?.name,
       blob
     });
   }
 
   private isDeckEdited(): boolean {
-    return !deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data;
+    return !editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data;
   }
 
   private isDocEdited(): boolean {
@@ -106,11 +106,11 @@ export class FileSystemService {
   }
 
   private async getDeck(): Promise<Deck | undefined> {
-    if (!deckStore.state.deck) {
+    if (!editorStore.state.deck) {
       return undefined;
     }
 
-    const {id: deckId}: Deck = deckStore.state.deck;
+    const {id: deckId}: Deck = editorStore.state.deck;
 
     const deck: Deck | undefined = await get(`/decks/${deckId}`);
 
@@ -125,11 +125,11 @@ export class FileSystemService {
   }
 
   private async getSlides(): Promise<Slide[] | undefined> {
-    if (!deckStore.state.deck) {
+    if (!editorStore.state.deck) {
       return undefined;
     }
 
-    const deck: Deck = deckStore.state.deck;
+    const deck: Deck = editorStore.state.deck;
 
     if (!deck.data.slides || deck.data.slides.length <= 0) {
       return [];

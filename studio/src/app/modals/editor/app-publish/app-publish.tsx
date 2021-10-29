@@ -3,7 +3,7 @@ import {Component, Element, Listen, h, State} from '@stencil/core';
 import {Deck} from '@deckdeckgo/editor';
 
 import i18n from '../../../stores/i18n.store';
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
@@ -22,8 +22,8 @@ export class AppPublish {
 
   async componentWillLoad() {
     this.unsubscribeSnapshot = await snapshotDeck({
-      deckId: deckStore.state.deck.id,
-      onNext: (snapshot: Deck) => (deckStore.state.deck = {...snapshot})
+      deckId: editorStore.state.deck.id,
+      onNext: (snapshot: Deck) => (editorStore.state.deck = {...snapshot})
     });
   }
 

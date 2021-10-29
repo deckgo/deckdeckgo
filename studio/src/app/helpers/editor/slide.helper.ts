@@ -2,7 +2,7 @@ import {JSX} from '@stencil/core';
 
 import {Slide, Deck} from '@deckdeckgo/editor';
 
-import store from '../../stores/deck.store';
+import editorStore from '../../stores/editor.store';
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
 
@@ -41,7 +41,7 @@ export class SlideHelper {
           return;
         }
 
-        store.state.deck = {...deck};
+        editorStore.state.deck = {...deck};
 
         if (!deck.data.slides || deck.data.slides.length <= 0) {
           resolve([]);
@@ -111,9 +111,9 @@ export class SlideHelper {
 
         let element: JSX.IntrinsicElements = null;
 
-        if (store.state.deck?.data) {
-          const slide: Slide = await this.slideOfflineProvider.get(store.state.deck.id, slideId);
-          element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
+        if (editorStore.state.deck?.data) {
+          const slide: Slide = await this.slideOfflineProvider.get(editorStore.state.deck.id, slideId);
+          element = await ParseSlidesUtils.parseSlide(editorStore.state.deck, slide, true, true);
         }
 
         busyStore.state.deckBusy = false;

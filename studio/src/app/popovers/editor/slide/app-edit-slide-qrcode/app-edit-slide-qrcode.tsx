@@ -5,7 +5,7 @@ import {alertController} from '@ionic/core';
 import i18n from '../../../../stores/i18n.store';
 import offlineStore from '../../../../stores/offline.store';
 
-import store from '../../../../stores/deck.store';
+import editorStore from '../../../../stores/editor.store';
 
 import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
 
@@ -114,7 +114,7 @@ export class AppEditSlideQRCode {
         return;
       }
 
-      this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(store.state.deck));
+      this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(editorStore.state.deck));
       this.selectedElement.removeAttribute('custom-qrcode');
 
       this.customContent = undefined;
