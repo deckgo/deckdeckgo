@@ -23,7 +23,7 @@ export class AppActionsDocEditor {
 
   private test() {
     // TODO: export
-    // TODO: tab
+    // TODO: this component and add ddg cmp
 
     document.execCommand('insertHTML', false, '<span id="myId">hi</span>');
   }
