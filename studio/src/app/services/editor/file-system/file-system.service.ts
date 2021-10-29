@@ -31,17 +31,23 @@ export class FileSystemService {
     return FileSystemService.instance;
   }
 
-  async importData(file: File) {
+  async importData(file: File): Promise<'doc' | 'deck'> {
     const {data, assets, sync} = await this.unzip(file);
 
     await importEditorAssets(assets);
     await importEditorData(data);
 
+    const {doc} = data;
+
+    const result: 'doc' | 'deck' = doc !== undefined ? 'doc' : 'deck';
+
     if (!sync) {
-      return;
+      return result;
     }
 
     await importEditorSync(data);
+
+    return result;
   }
 
   async exportData() {
@@ -241,7 +247,7 @@ export class FileSystemService {
 
     const blob: Blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
 
-    zip.file('deck.json', blob, {
+    zip.file('data.json', blob, {
       base64: true
     });
 
@@ -324,7 +330,7 @@ export class FileSystemService {
   }
 
   private async parseImportData(content: JSZip): Promise<FileImportData> {
-    let deck: string = await content.file('deck.json').async('text');
+    let data: string = await content.file('data.json').async('text');
 
     // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
     if (!offlineStore.state.online) {
@@ -335,12 +341,12 @@ export class FileSystemService {
         .filter(({url}) => url !== undefined)
         .forEach(({url, key}: UserAsset) => {
           // deckgo-img img-src="" and slide src=""
-          deck = deck.replaceAll(`src=\\"${url}\\"`, `src=\\"${key}\\"`);
-          deck = deck.replaceAll(`src=\\"${url.replaceAll('&', '&amp;')}\\"`, `src=\\"${key}\\"`);
+          data = data.replaceAll(`src=\\"${url}\\"`, `src=\\"${key}\\"`);
+          data = data.replaceAll(`src=\\"${url.replaceAll('&', '&amp;')}\\"`, `src=\\"${key}\\"`);
         });
     }
 
-    return JSON.parse(deck);
+    return JSON.parse(data);
   }
 
   /**
@@ -350,9 +356,11 @@ export class FileSystemService {
    * @param id
    * @param deck
    * @param slides
+   * @param doc
+   * @param paragraphs
    * @private
    */
-  private syncImportData({id, deck, slides}: FileImportData): {
+  private syncImportData({id, deck, slides, doc, paragraphs}: FileImportData): {
     data: ImportData;
     sync: boolean;
   } {
@@ -360,8 +368,10 @@ export class FileSystemService {
       return {
         data: {
           id,
-          deck: deck as Deck,
-          slides: slides as Slide[]
+          ...(deck && {deck: deck as Deck}),
+          ...(slides && {slides: slides as Slide[]}),
+          ...(doc && {doc: doc as Doc}),
+          ...(paragraphs && {paragraphs: paragraphs as Paragraph[]})
         },
         sync: false
       };

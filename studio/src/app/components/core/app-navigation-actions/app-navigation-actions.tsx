@@ -61,12 +61,14 @@ export class AppNavigationActions {
     await loading.present();
 
     try {
-      await FileSystemService.getInstance().importData(this.loadInput.files[0]);
+      const type: 'doc' | 'deck' = await FileSystemService.getInstance().importData(this.loadInput.files[0]);
 
-      this.emitReloadEditor('deck');
+      this.emitReloadEditor(type);
     } catch (err) {
       errorStore.state.error = `Something went wrong. ${err}.`;
     }
+
+    this.loadInput.value = null;
 
     await loading.dismiss();
   }

@@ -16,7 +16,7 @@ export class AppActionsDocEditor {
   onTouchStart(_$event: TouchEvent) {}
 
   private test() {
-    // TODO: export
+    // TODO: reset deck and doc store on page change
     // TODO: this component and add ddg cmp
     // TODO: color bug
     // TODO: redo popover
