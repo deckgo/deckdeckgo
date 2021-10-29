@@ -1,6 +1,6 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {debounce} from '@deckdeckgo/utils';
+import {catchTab, debounce} from '@deckdeckgo/utils';
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -385,14 +385,6 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     this.refCode?.focus();
   }
 
-  private catchTab = async ($event: KeyboardEvent) => {
-    if ($event && $event.key === 'Tab') {
-      $event.preventDefault();
-
-      document.execCommand('insertHTML', false, '&#009');
-    }
-  };
-
   /**
    * @internal Used when integrated in DeckDeckGo presentations. Call `nextHighlight()`.
    */
@@ -507,7 +499,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
             contentEditable={this.editable}
             onBlur={async () => await this.applyCode()}
             onInput={() => this.inputCode()}
-            onKeyDown={($event: KeyboardEvent) => this.catchTab($event)}
+            onKeyDown={($event: KeyboardEvent) => catchTab($event)}
             ref={(el: HTMLElement | null) => (this.refCode = el as HTMLElement)}></code>
           <slot name="code"></slot>
         </div>
