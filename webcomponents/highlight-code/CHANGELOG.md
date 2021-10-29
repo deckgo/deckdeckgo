@@ -1,3 +1,9 @@
+# 3.4.1 (2021-10-29)
+
+### Refactor
+
+- move `catchTab` function to utils
+
 # 3.4.0 (2021-10-15)
 
 ### Features

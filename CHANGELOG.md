@@ -5,12 +5,13 @@
 ### Web Components
 
 - drag-resize-rotate: v2.2.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/drag-resize-rotate/CHANGELOG.md))
+- highlight-code: v3.4.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/highlight-code/CHANGELOG.md))
 - inline-editor: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/CHANGELOG.md)
 
 ### Others
 
 - deck-utils: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
-- utils: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
+- utils: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.0.0"></a>
 
