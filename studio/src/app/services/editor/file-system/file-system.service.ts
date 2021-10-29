@@ -250,7 +250,7 @@ export class FileSystemService {
   }
 
   private async parseImportData(content: JSZip): Promise<FileImportData> {
-    let deck: string = await content.file('data.json').async('text');
+    let data: string = await content.file('data.json').async('text');
 
     // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
     if (!offlineStore.state.online) {
@@ -261,12 +261,12 @@ export class FileSystemService {
         .filter(({url}) => url !== undefined)
         .forEach(({url, key}: UserAsset) => {
           // deckgo-img img-src="" and slide src=""
-          deck = deck.replaceAll(`src=\\"${url}\\"`, `src=\\"${key}\\"`);
-          deck = deck.replaceAll(`src=\\"${url.replaceAll('&', '&amp;')}\\"`, `src=\\"${key}\\"`);
+          data = data.replaceAll(`src=\\"${url}\\"`, `src=\\"${key}\\"`);
+          data = data.replaceAll(`src=\\"${url.replaceAll('&', '&amp;')}\\"`, `src=\\"${key}\\"`);
         });
     }
 
-    return JSON.parse(deck);
+    return JSON.parse(data);
   }
 
   /**
