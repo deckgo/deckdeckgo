@@ -10,7 +10,7 @@
 ### Others
 
 - deck-utils: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
-- utils: v2.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
+- utils: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.0.0"></a>
 

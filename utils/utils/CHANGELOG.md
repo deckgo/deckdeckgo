@@ -1,3 +1,9 @@
+# 2.3.0 (2021-10-27)
+
+### Features
+
+- content editable function to catch and insert tabs
+
 # 2.2.0 (2021-10-27)
 
 ### Features
