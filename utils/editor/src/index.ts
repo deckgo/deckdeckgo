@@ -28,5 +28,6 @@ export * from './providers/unsplash.provider';
 export * from './providers/publish.provider';
 
 export * from './utils/date.utils';
+export * from './utils/doc.utils';
 export * from './utils/deck.utils';
 export * from './utils/script.utils';

@@ -5,8 +5,6 @@ export class DocEditorEvents {
   init() {
     attachPasteEvent();
 
-    console.log('here');
-
     document.addEventListener('keydown', ($event: KeyboardEvent) => catchTab($event), false);
   }
 

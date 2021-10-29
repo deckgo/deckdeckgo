@@ -5,13 +5,16 @@ import {validate as uuidValidate, v4 as uuid} from 'uuid';
 import {get, getMany} from 'idb-keyval';
 
 import deckStore from '../../../stores/deck.store';
+import docStore from '../../../stores/doc.store';
 import offlineStore from '../../../stores/offline.store';
 
-import {Deck, Slide, FileImportData, UserAsset} from '@deckdeckgo/editor';
+import {Deck, Slide, FileImportData, UserAsset, Doc, Paragraph} from '@deckdeckgo/editor';
 
 import {ImportAsset, ImportData, importEditorAssets, importEditorData, importEditorSync} from '../../../utils/editor/import.utils';
 import {
   getDeckBackgroundImage,
+  getParagraphsLocalImages,
+  getParagraphsOnlineImages,
   getSlidesLocalCharts,
   getSlidesLocalImages,
   getSlidesOnlineCharts,
@@ -42,37 +45,67 @@ export class FileSystemService {
   }
 
   async exportData() {
-    if (!deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data) {
-      throw new Error('No deck found');
+    if (!this.isDeckEdited() && !this.isDocEdited()) {
+      throw new Error('No deck or doc found');
     }
 
-    const deck: Deck = await this.getDeck(deckStore.state.deck);
-    const slides: Slide[] = await this.getSlides(deckStore.state.deck);
+    const deck: Deck | undefined = await this.getDeck();
+    const slides: Slide[] | undefined = await this.getSlides();
 
-    const localImages: UserAsset[] = await getSlidesLocalImages({deck: deckStore.state.deck});
-    const localCharts: UserAsset[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
+    const doc: Doc | undefined = await this.getDoc();
+    const paragraphs: Paragraph[] | undefined = await this.getParagraphs();
 
-    const onlineImages: UserAsset[] = await getSlidesOnlineImages({deck: deckStore.state.deck});
-    const onlineCharts: UserAsset[] = await getSlidesOnlineCharts({deck: deckStore.state.deck});
+    const localSlidesImages: UserAsset[] = await getSlidesLocalImages({deck: deckStore.state.deck});
+    const onlineSlidesImages: UserAsset[] = await getSlidesOnlineImages({deck: deckStore.state.deck});
+
+    const localSlidesCharts: UserAsset[] = await getSlidesLocalCharts({deck: deckStore.state.deck});
+    const onlineSlidesCharts: UserAsset[] = await getSlidesOnlineCharts({deck: deckStore.state.deck});
 
     const deckBackground: UserAsset | undefined = await getDeckBackgroundImage();
 
+    const localParagraphsImages: UserAsset[] = await getParagraphsLocalImages({doc: docStore.state.doc});
+    const onlineParagraphsImages: UserAsset[] = await getParagraphsOnlineImages({doc: docStore.state.doc});
+
     const blob: Blob = await this.zip({
       data: {
-        id: deck.id,
-        deck,
-        slides
+        id: deck?.id || doc?.id,
+        ...(deck && {deck}),
+        ...(slides && {slides}),
+        ...(doc && {doc}),
+        ...(paragraphs && {paragraphs})
       },
-      assets: [...localImages, ...localCharts, ...onlineImages, ...onlineCharts, ...(deckBackground ? [deckBackground] : [])]
+      assets: [
+        ...localSlidesImages,
+        ...onlineSlidesImages,
+        ...localSlidesCharts,
+        ...onlineSlidesCharts,
+        ...(deckBackground ? [deckBackground] : []),
+        ...localParagraphsImages,
+        ...onlineParagraphsImages
+      ]
     });
 
     await this.save({
-      filename: deckStore.state.deck.data.name,
+      filename: deckStore.state.deck?.data?.name || docStore.state.doc?.data?.name,
       blob
     });
   }
 
-  private async getDeck({id: deckId}: Deck): Promise<Deck> {
+  private isDeckEdited(): boolean {
+    return !deckStore.state.deck || !deckStore.state.deck.id || !deckStore.state.deck.data;
+  }
+
+  private isDocEdited(): boolean {
+    return !docStore.state.doc || !docStore.state.doc.id || !docStore.state.doc.data;
+  }
+
+  private async getDeck(): Promise<Deck | undefined> {
+    if (!deckStore.state.deck) {
+      return undefined;
+    }
+
+    const {id: deckId}: Deck = deckStore.state.deck;
+
     const deck: Deck | undefined = await get(`/decks/${deckId}`);
 
     if (!deck) {
@@ -85,7 +118,13 @@ export class FileSystemService {
     return deck;
   }
 
-  private async getSlides(deck: Deck): Promise<Slide[]> {
+  private async getSlides(): Promise<Slide[] | undefined> {
+    if (!deckStore.state.deck) {
+      return undefined;
+    }
+
+    const deck: Deck = deckStore.state.deck;
+
     if (!deck.data.slides || deck.data.slides.length <= 0) {
       return [];
     }
@@ -98,7 +137,42 @@ export class FileSystemService {
     }
   }
 
-  private save({filename, blob}: {filename: string; blob: Blob}): Promise<void> {
+  private async getDoc(): Promise<Doc | undefined> {
+    if (!docStore.state.doc) {
+      return undefined;
+    }
+
+    const {id: docId}: Doc = docStore.state.doc;
+
+    const doc: Doc | undefined = await get(`/docs/${docId}`);
+
+    if (!doc) {
+      throw new Error('No doc found in IDB');
+    }
+
+    return doc;
+  }
+
+  private async getParagraphs(): Promise<Paragraph[] | undefined> {
+    if (!docStore.state.doc) {
+      return undefined;
+    }
+
+    const doc: Doc = docStore.state.doc;
+
+    if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
+      return [];
+    }
+
+    try {
+      const keys: string[] = doc.data.paragraphs.map((paragraphId: string) => `/docs/${doc.id}/paragraphs/${paragraphId}`);
+      return getMany<Paragraph>(keys);
+    } catch (err) {
+      throw new Error('Error while fetching paragraphs');
+    }
+  }
+
+  private save({filename, blob}: {filename: string | undefined; blob: Blob}): Promise<void> {
     if ('showSaveFilePicker' in window) {
       return this.exportNativeFileSystem(blob);
     }
@@ -137,7 +211,7 @@ export class FileSystemService {
     await writer.close();
   }
 
-  private async exportDownload({filename, blob}: {filename: string; blob: Blob}) {
+  private async exportDownload({filename, blob}: {filename: string | undefined; blob: Blob}) {
     const a: HTMLAnchorElement = document.createElement('a');
     a.style.display = 'none';
     document.body.appendChild(a);
@@ -145,7 +219,7 @@ export class FileSystemService {
     const url: string = window.URL.createObjectURL(blob);
 
     a.href = url;
-    a.download = `${filename}.ddg`;
+    a.download = `${filename || 'export'}.ddg`;
 
     a.click();
 

@@ -7,23 +7,19 @@ import {Component, Listen, h} from '@stencil/core';
 })
 export class AppActionsDocEditor {
   @Listen('keydown', {target: 'document', passive: true})
-  onKeyDown($event: KeyboardEvent) {
-    console.log($event);
-  }
+  onKeyDown(_$event: KeyboardEvent) {}
 
   @Listen('mousedown', {target: 'document', passive: true})
-  onMouseDown($event: MouseEvent) {
-    console.log($event);
-  }
+  onMouseDown(_$event: MouseEvent) {}
 
   @Listen('touchstart', {target: 'document', passive: true})
-  onTouchStart($event: TouchEvent) {
-    console.log($event);
-  }
+  onTouchStart(_$event: TouchEvent) {}
 
   private test() {
     // TODO: export
     // TODO: this component and add ddg cmp
+    // TODO: color bug
+    // TODO: redo popover
 
     document.execCommand('insertHTML', false, '<span id="myId">hi</span>');
   }
