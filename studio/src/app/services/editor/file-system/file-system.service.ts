@@ -5,7 +5,6 @@ import {validate as uuidValidate, v4 as uuid} from 'uuid';
 import {get, getMany} from 'idb-keyval';
 
 import editorStore from '../../../stores/editor.store';
-import docStore from '../../../stores/doc.store';
 import offlineStore from '../../../stores/offline.store';
 
 import {Deck, Slide, FileImportData, UserAsset, Doc, Paragraph} from '@deckdeckgo/editor';
@@ -69,8 +68,8 @@ export class FileSystemService {
 
     const deckBackground: UserAsset | undefined = await getDeckBackgroundImage();
 
-    const localParagraphsImages: UserAsset[] = await getParagraphsLocalImages({doc: docStore.state.doc});
-    const onlineParagraphsImages: UserAsset[] = await getParagraphsOnlineImages({doc: docStore.state.doc});
+    const localParagraphsImages: UserAsset[] = await getParagraphsLocalImages({doc: editorStore.state.doc});
+    const onlineParagraphsImages: UserAsset[] = await getParagraphsOnlineImages({doc: editorStore.state.doc});
 
     const blob: Blob = await this.zip({
       data: {
@@ -92,7 +91,7 @@ export class FileSystemService {
     });
 
     await this.save({
-      filename: editorStore.state.deck?.data?.name || docStore.state.doc?.data?.name,
+      filename: editorStore.state.deck?.data?.name || editorStore.state.doc?.data?.name,
       blob
     });
   }
@@ -102,7 +101,7 @@ export class FileSystemService {
   }
 
   private isDocEdited(): boolean {
-    return !docStore.state.doc || !docStore.state.doc.id || !docStore.state.doc.data;
+    return !editorStore.state.doc || !editorStore.state.doc.id || !editorStore.state.doc.data;
   }
 
   private async getDeck(): Promise<Deck | undefined> {
@@ -144,11 +143,11 @@ export class FileSystemService {
   }
 
   private async getDoc(): Promise<Doc | undefined> {
-    if (!docStore.state.doc) {
+    if (!editorStore.state.doc) {
       return undefined;
     }
 
-    const {id: docId}: Doc = docStore.state.doc;
+    const {id: docId}: Doc = editorStore.state.doc;
 
     const doc: Doc | undefined = await get(`/docs/${docId}`);
 
@@ -160,11 +159,11 @@ export class FileSystemService {
   }
 
   private async getParagraphs(): Promise<Paragraph[] | undefined> {
-    if (!docStore.state.doc) {
+    if (!editorStore.state.doc) {
       return undefined;
     }
 
-    const doc: Doc = docStore.state.doc;
+    const doc: Doc = editorStore.state.doc;
 
     if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
       return [];

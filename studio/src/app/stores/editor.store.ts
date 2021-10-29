@@ -1,16 +1,18 @@
 import {createStore} from '@stencil/store';
 
-import {Deck} from '@deckdeckgo/editor';
+import {Deck, Doc} from '@deckdeckgo/editor';
 
-import {setEditDeckId} from '../utils/editor/editor.utils';
+import {setEditDeckId, setEditDocId} from '../utils/editor/editor.utils';
 
 interface EditorStore {
+  doc: Doc | null;
   deck: Deck | null;
   name: string | null;
   published: boolean;
 }
 
 const {state, onChange, reset} = createStore<EditorStore>({
+  doc: null,
   deck: null,
   name: null,
   published: false
@@ -24,8 +26,25 @@ onChange('deck', (deck: Deck | null) => {
     return;
   }
 
+  state.doc = null;
+
   setEditDeckId(deck.id).catch((err) => {
     console.error('Failed to update IDB with new deck id', err);
+  });
+});
+
+onChange('doc', (doc: Doc | null) => {
+  state.name = doc?.data?.name && doc?.data?.name !== '' ? doc.data.name : null;
+  state.published = false;
+
+  if (!doc) {
+    return;
+  }
+
+  state.deck = null;
+
+  setEditDocId(doc.id).catch((err) => {
+    console.error('Failed to update IDB with new doc id', err);
   });
 });
 

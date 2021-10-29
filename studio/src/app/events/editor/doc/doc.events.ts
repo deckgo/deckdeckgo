@@ -3,7 +3,7 @@ import {cleanContent} from '@deckdeckgo/deck-utils';
 
 import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
-import docStore from '../../../stores/doc.store';
+import editorStore from '../../../stores/editor.store';
 import authStore from '../../../stores/auth.store';
 
 import {findParagraph, isParagraph} from '../../../utils/editor/paragraph.utils';
@@ -64,7 +64,7 @@ export class DocEvents {
   private createDoc(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        if (docStore.state.doc) {
+        if (editorStore.state.doc) {
           resolve();
           return;
         }
@@ -75,7 +75,7 @@ export class DocEvents {
         };
 
         const persistedDoc: Doc = await createOfflineDoc(docData);
-        docStore.state.doc = {...persistedDoc};
+        editorStore.state.doc = {...persistedDoc};
 
         resolve();
       } catch (err) {
@@ -100,7 +100,7 @@ export class DocEvents {
       return undefined;
     }
 
-    await deleteOfflineParagraph({docId: docStore.state.doc.id, paragraphId: paragraphId});
+    await deleteOfflineParagraph({docId: editorStore.state.doc.id, paragraphId: paragraphId});
 
     return paragraphId;
   }
@@ -116,7 +116,7 @@ export class DocEvents {
         paragraphData.content = content;
       }
 
-      const persistedParagraph: Paragraph = await createOfflineParagraph({docId: docStore.state.doc.id, paragraphData: paragraphData});
+      const persistedParagraph: Paragraph = await createOfflineParagraph({docId: editorStore.state.doc.id, paragraphData: paragraphData});
 
       if (persistedParagraph && persistedParagraph.id) {
         element.setAttribute('paragraph_id', persistedParagraph.id);
@@ -129,7 +129,7 @@ export class DocEvents {
   private updateDocParagraphList({paragraphId, paragraphElement}: {paragraphId: string; paragraphElement: HTMLElement}): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const doc: Doc = {...docStore.state.doc};
+        const doc: Doc = {...editorStore.state.doc};
 
         if (!doc && !doc.data) {
           reject('Missing doc to add the paragraph to the list');
@@ -149,7 +149,7 @@ export class DocEvents {
         doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
-        docStore.state.doc = {...updatedDoc};
+        editorStore.state.doc = {...updatedDoc};
 
         resolve();
       } catch (err) {
@@ -161,7 +161,7 @@ export class DocEvents {
   private filterDocParagraphList(paragraphIds: (string | undefined)[]): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const doc: Doc = {...docStore.state.doc};
+        const doc: Doc = {...editorStore.state.doc};
 
         if (!doc && !doc.data) {
           reject('Missing doc to update the paragraph to the list');
@@ -183,7 +183,7 @@ export class DocEvents {
         doc.data.paragraphs = [...doc.data.paragraphs.filter((paragraphId: string) => !filterParagraphIds.includes(paragraphId))];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
-        docStore.state.doc = {...updatedDoc};
+        editorStore.state.doc = {...updatedDoc};
 
         resolve();
       } catch (err) {
@@ -298,7 +298,7 @@ export class DocEvents {
       return;
     }
 
-    const docId: string = docStore.state.doc.id;
+    const docId: string = editorStore.state.doc.id;
 
     if (!docId || docId === undefined || docId === '') {
       errorStore.state.error = 'Doc is not defined';

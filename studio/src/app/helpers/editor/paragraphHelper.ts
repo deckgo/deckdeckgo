@@ -4,7 +4,7 @@ import {Doc, Paragraph} from '@deckdeckgo/editor';
 
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
-import docStore from '../../stores/doc.store';
+import editorStore from '../../stores/editor.store';
 
 import {ParseParagraphsUtils} from '../../utils/editor/parse-paragraphs.utils';
 
@@ -31,7 +31,7 @@ export class ParagraphHelper {
           return;
         }
 
-        docStore.state.doc = {...doc};
+        editorStore.state.doc = {...doc};
 
         if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
           resolve([]);
