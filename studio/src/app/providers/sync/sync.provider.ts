@@ -70,8 +70,8 @@ const filterPending = async (syncedAt: Date) => {
         deleteSlides: filter(data.deleteSlides),
         updateDocs: filter(data.updateDocs),
         deleteDocs: filter(data.deleteDocs),
-        updateSections: filter(data.updateSections),
-        deleteSections: filter(data.deleteSections)
+        updateParagraphs: filter(data.updateParagraphs),
+        deleteParagraphs: filter(data.deleteParagraphs)
       } as SyncPending)
   );
 };
@@ -89,7 +89,7 @@ export const initSyncState = async () => {
     return;
   }
 
-  const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteSections, updateSections} = data;
+  const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteParagraphs, updateParagraphs} = data;
 
   if (
     updateDecks.length === 0 &&
@@ -98,8 +98,8 @@ export const initSyncState = async () => {
     updateSlides.length === 0 &&
     updateDocs.length === 0 &&
     deleteDocs.length === 0 &&
-    deleteSections.length === 0 &&
-    updateSections.length === 0
+    deleteParagraphs.length === 0 &&
+    updateParagraphs.length === 0
   ) {
     syncStore.state.sync = 'idle';
     return;

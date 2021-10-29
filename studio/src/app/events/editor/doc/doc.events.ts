@@ -1,4 +1,4 @@
-import {Doc, DocData, now, Section, SectionData} from '@deckdeckgo/editor';
+import {Doc, DocData, now, Paragraph, ParagraphData} from '@deckdeckgo/editor';
 import {cleanContent} from '@deckdeckgo/deck-utils';
 
 import errorStore from '../../../stores/error.store';
@@ -6,11 +6,15 @@ import busyStore from '../../../stores/busy.store';
 import docStore from '../../../stores/doc.store';
 import authStore from '../../../stores/auth.store';
 
-import {findParagraph, isParagraph} from '../../../utils/editor/container.utils';
+import {findParagraph, isParagraph} from '../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/docs/doc.offline.provider';
-import {createOfflineSection, deleteOfflineSection, updateOfflineSection} from '../../../providers/data/docs/section.offline.provider';
+import {
+  createOfflineParagraph,
+  deleteOfflineParagraph,
+  updateOfflineParagraph
+} from '../../../providers/data/docs/paragraph.offline.provider';
 import {debounce} from '@deckdeckgo/utils';
 
 export class DocEvents {
@@ -44,12 +48,12 @@ export class DocEvents {
   }
 
   private onTreeMutation = async (mutations: MutationRecord[]) => {
-    await this.addSections(mutations);
-    await this.deleteSections(mutations);
+    await this.addParagraphs(mutations);
+    await this.deleteParagraphs(mutations);
   };
 
   private onAttributesMutation = async (mutations: MutationRecord[]) => {
-    await this.updateSections(mutations);
+    await this.updateParagraphs(mutations);
   };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
@@ -80,69 +84,69 @@ export class DocEvents {
     });
   }
 
-  private async createSection(element: HTMLElement) {
-    const {id: sectionId}: Section = await this.postSection(element);
-    await this.updateDocSectionList({sectionId, sectionElement: element});
+  private async createParagraph(element: HTMLElement) {
+    const {id: paragraphId}: Paragraph = await this.postParagraph(element);
+    await this.updateDocParagraphList({paragraphId, paragraphElement: element});
   }
 
-  private async deleteSection(element: Node): Promise<string | undefined> {
+  private async deleteParagraph(element: Node): Promise<string | undefined> {
     if (element.nodeType === Node.TEXT_NODE || element.nodeType === Node.COMMENT_NODE) {
       return;
     }
 
-    const sectionId: string = (element as HTMLElement).getAttribute('section_id');
+    const paragraphId: string = (element as HTMLElement).getAttribute('paragraph_id');
 
-    if (!sectionId) {
+    if (!paragraphId) {
       return undefined;
     }
 
-    await deleteOfflineSection({docId: docStore.state.doc.id, sectionId});
+    await deleteOfflineParagraph({docId: docStore.state.doc.id, paragraphId: paragraphId});
 
-    return sectionId;
+    return paragraphId;
   }
 
-  private postSection(element: HTMLElement): Promise<Section> {
-    return new Promise<Section>(async (resolve) => {
-      const sectionData: SectionData = {
+  private postParagraph(element: HTMLElement): Promise<Paragraph> {
+    return new Promise<Paragraph>(async (resolve) => {
+      const paragraphData: ParagraphData = {
         nodeName: element.nodeName.toLowerCase()
       };
 
       const content: string = await cleanContent(element.innerHTML);
       if (content && content.length > 0) {
-        sectionData.content = content;
+        paragraphData.content = content;
       }
 
-      const persistedSection: Section = await createOfflineSection({docId: docStore.state.doc.id, sectionData});
+      const persistedParagraph: Paragraph = await createOfflineParagraph({docId: docStore.state.doc.id, paragraphData: paragraphData});
 
-      if (persistedSection && persistedSection.id) {
-        element.setAttribute('section_id', persistedSection.id);
+      if (persistedParagraph && persistedParagraph.id) {
+        element.setAttribute('paragraph_id', persistedParagraph.id);
       }
 
-      resolve(persistedSection);
+      resolve(persistedParagraph);
     });
   }
 
-  private updateDocSectionList({sectionId, sectionElement}: {sectionId: string; sectionElement: HTMLElement}): Promise<void> {
+  private updateDocParagraphList({paragraphId, paragraphElement}: {paragraphId: string; paragraphElement: HTMLElement}): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const doc: Doc = {...docStore.state.doc};
 
         if (!doc && !doc.data) {
-          reject('Missing doc to add the section to the list');
+          reject('Missing doc to add the paragraph to the list');
           return;
         }
 
-        if (!sectionId) {
-          reject('Missing section ID to create or update the doc');
+        if (!paragraphId) {
+          reject('Missing paragraph ID to create or update the doc');
           return;
         }
 
-        if (!doc.data.sections || doc.data.sections.length <= 0) {
-          doc.data.sections = [];
+        if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
+          doc.data.paragraphs = [];
         }
 
-        const index: number = NodeUtils.nodeIndex(sectionElement);
-        doc.data.sections = [...doc.data.sections.slice(0, index), sectionId, ...doc.data.sections.slice(index)];
+        const index: number = NodeUtils.nodeIndex(paragraphElement);
+        doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
         docStore.state.doc = {...updatedDoc};
@@ -154,29 +158,29 @@ export class DocEvents {
     });
   }
 
-  private filterDocSectionList(sectionIds: (string | undefined)[]): Promise<void> {
+  private filterDocParagraphList(paragraphIds: (string | undefined)[]): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const doc: Doc = {...docStore.state.doc};
 
         if (!doc && !doc.data) {
-          reject('Missing doc to update the section to the list');
+          reject('Missing doc to update the paragraph to the list');
           return;
         }
 
-        if (doc.data.sections.length <= 0) {
+        if (doc.data.paragraphs.length <= 0) {
           resolve();
           return;
         }
 
-        const filterSectionIds: string[] = sectionIds.filter((id: string | undefined) => id !== undefined);
+        const filterParagraphIds: string[] = paragraphIds.filter((id: string | undefined) => id !== undefined);
 
-        if (!filterSectionIds) {
+        if (!filterParagraphIds) {
           resolve();
           return;
         }
 
-        doc.data.sections = [...doc.data.sections.filter((sectionId: string) => !filterSectionIds.includes(sectionId))];
+        doc.data.paragraphs = [...doc.data.paragraphs.filter((paragraphId: string) => !filterParagraphIds.includes(paragraphId))];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
         docStore.state.doc = {...updatedDoc};
@@ -188,7 +192,7 @@ export class DocEvents {
     });
   }
 
-  private async addSections(mutations: MutationRecord[]) {
+  private async addParagraphs(mutations: MutationRecord[]) {
     try {
       if (!this.containerRef) {
         return;
@@ -205,7 +209,7 @@ export class DocEvents {
       await this.createDoc();
 
       for (const paragraph of addedParagraphs) {
-        await this.createSection(paragraph);
+        await this.createParagraph(paragraph);
       }
     } catch (err) {
       errorStore.state.error = err;
@@ -213,7 +217,7 @@ export class DocEvents {
     }
   }
 
-  private async deleteSections(mutations: MutationRecord[]) {
+  private async deleteParagraphs(mutations: MutationRecord[]) {
     try {
       if (!this.containerRef) {
         return;
@@ -228,10 +232,10 @@ export class DocEvents {
         []
       );
 
-      const promises: Promise<string | undefined>[] = removedNodes.map((node: Node) => this.deleteSection(node));
-      const removedSectionIds: (string | undefined)[] = await Promise.all(promises);
+      const promises: Promise<string | undefined>[] = removedNodes.map((node: Node) => this.deleteParagraph(node));
+      const removedParagraphIds: (string | undefined)[] = await Promise.all(promises);
 
-      await this.filterDocSectionList(removedSectionIds);
+      await this.filterDocParagraphList(removedParagraphIds);
     } catch (err) {
       console.log(err);
 
@@ -256,10 +260,10 @@ export class DocEvents {
     const mutations: MutationRecord[] = [...this.stackDataMutations];
     this.stackDataMutations = [];
 
-    await this.updateSections(mutations);
+    await this.updateParagraphs(mutations);
   }
 
-  private async updateSections(mutations: MutationRecord[]) {
+  private async updateParagraphs(mutations: MutationRecord[]) {
     try {
       if (!this.containerRef) {
         return;
@@ -281,7 +285,7 @@ export class DocEvents {
         )
       ];
 
-      const promises: Promise<void>[] = updateParagraphs.map((paragraph: HTMLElement) => this.updateSection(paragraph));
+      const promises: Promise<void>[] = updateParagraphs.map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
       await Promise.all(promises);
     } catch (err) {
       errorStore.state.error = err;
@@ -289,8 +293,8 @@ export class DocEvents {
     }
   }
 
-  async updateSection(section: HTMLElement) {
-    if (!section || !section.nodeName) {
+  async updateParagraph(paragraph: HTMLElement) {
+    if (!paragraph || !paragraph.nodeName) {
       return;
     }
 
@@ -301,29 +305,29 @@ export class DocEvents {
       return;
     }
 
-    const sectionId: string = section.getAttribute('section_id');
+    const paragraphId: string = paragraph.getAttribute('paragraph_id');
 
-    if (!sectionId) {
-      errorStore.state.error = 'Section is not defined';
+    if (!paragraphId) {
+      errorStore.state.error = 'Paragraph is not defined';
       return;
     }
 
-    // TODO: we loose the created_at information here trade of not getting the section from indexedDB for performance reason
+    // TODO: we loose the created_at information here trade of not getting the paragraph from indexedDB for performance reason
 
-    const sectionUpdate: Section = {
-      id: sectionId,
+    const paragraphUpdate: Paragraph = {
+      id: paragraphId,
       data: {
-        nodeName: section.nodeName.toLowerCase()
+        nodeName: paragraph.nodeName.toLowerCase()
       }
     };
 
-    const content: string = await cleanContent(section.innerHTML);
+    const content: string = await cleanContent(paragraph.innerHTML);
     if (content && content.length > 0) {
-      sectionUpdate.data.content = content;
+      paragraphUpdate.data.content = content;
     } else {
-      sectionUpdate.data.content = null;
+      paragraphUpdate.data.content = null;
     }
 
-    await updateOfflineSection({docId, section: sectionUpdate});
+    await updateOfflineParagraph({docId, paragraph: paragraphUpdate});
   }
 }

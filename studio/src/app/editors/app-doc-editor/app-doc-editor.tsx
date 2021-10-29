@@ -11,7 +11,7 @@ import {getEdit} from '../../utils/editor/editor.utils';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocEvents} from '../../events/editor/doc/doc.events';
-import {SectionHelper} from '../../helpers/editor/section.helper';
+import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
 @Component({
   tag: 'app-doc-editor',
@@ -22,13 +22,13 @@ export class AppDocEditor implements ComponentInterface {
   private docFetched: boolean = false;
 
   @State()
-  private sections: JSX.IntrinsicElements[] = [];
+  private paragraphs: JSX.IntrinsicElements[] = [];
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly docEvents: DocEvents = new DocEvents();
 
-  private readonly sectionHelper: SectionHelper = new SectionHelper();
+  private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
   private containerRef!: HTMLElement;
 
@@ -72,7 +72,7 @@ export class AppDocEditor implements ComponentInterface {
     const Title = 'h1';
     const title: JSX.IntrinsicElements = <Title key={uuid()}>Title</Title>;
 
-    this.sections = [title, this.emtpySection()];
+    this.paragraphs = [title, this.emtpySection()];
   }
 
   private emtpySection(): JSX.IntrinsicElements {
@@ -85,8 +85,8 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private async fetchDoc(docId: string) {
-    const sections: JSX.IntrinsicElements[] = await this.sectionHelper.loadDocAndRetrieveSections(docId);
-    this.sections = sections?.length > 0 ? [...sections] : [];
+    const paragraphs: JSX.IntrinsicElements[] = await this.paragraphHelper.loadDocAndRetrieveParagraphs(docId);
+    this.paragraphs = paragraphs?.length > 0 ? [...paragraphs] : [];
   }
 
   // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
@@ -116,7 +116,7 @@ export class AppDocEditor implements ComponentInterface {
 
             <deckgo-doc>
               <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
-                {this.sections}
+                {this.paragraphs}
               </article>
             </deckgo-doc>
           </main>

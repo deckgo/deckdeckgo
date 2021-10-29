@@ -3,7 +3,7 @@ export interface DocData {
 
   owner_id: string | undefined;
 
-  sections?: string[];
+  paragraphs?: string[];
 
   created_at?: Date | number | BigInt;
   updated_at?: Date | number | BigInt;

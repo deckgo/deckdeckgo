@@ -1,7 +1,7 @@
 import {Deck} from '../models/data/deck';
 import {Slide} from '../models/data/slide';
 import {Doc} from '../models/data/doc';
-import {Section} from '../models/data/section';
+import {Paragraph} from '../models/data/paragraph';
 
 export type SyncState = 'pending' | 'in_progress' | 'error' | 'idle';
 
@@ -21,10 +21,10 @@ export interface SyncDataDoc {
   doc?: Doc;
 }
 
-export interface SyncDataSection {
+export interface SyncDataParagraph {
   docId: string;
-  sectionId: string;
-  section?: Section;
+  paragraphId: string;
+  paragraph?: Paragraph;
 }
 
 export interface SyncEvent {
@@ -40,8 +40,8 @@ export interface SyncData {
 
   updateDocs: SyncDataDoc[] | undefined;
   deleteDocs: SyncDataDoc[] | undefined;
-  updateSections: SyncDataSection[] | undefined;
-  deleteSections: SyncDataSection[] | undefined;
+  updateParagraphs: SyncDataParagraph[] | undefined;
+  deleteParagraphs: SyncDataParagraph[] | undefined;
 
   syncedAt: Date;
 }
@@ -63,8 +63,8 @@ export interface SyncPendingDoc extends SyncPendingData {
   docId: string;
 }
 
-export interface SyncPendingSection extends SyncPendingDoc {
-  sectionId: string;
+export interface SyncPendingParagraph extends SyncPendingDoc {
+  paragraphId: string;
 }
 
 export interface SyncPending {
@@ -75,6 +75,6 @@ export interface SyncPending {
 
   updateDocs: SyncPendingDoc[];
   deleteDocs: SyncPendingDoc[];
-  updateSections: SyncPendingSection[];
-  deleteSections: SyncPendingSection[];
+  updateParagraphs: SyncPendingParagraph[];
+  deleteParagraphs: SyncPendingParagraph[];
 }

@@ -3,18 +3,18 @@ import {get, getMany} from 'idb-keyval';
 import {
   Deck,
   Doc,
-  Section,
+  Paragraph,
   Slide,
   SyncData,
   SyncDataDeck,
   SyncDataDoc,
-  SyncDataSection,
+  SyncDataParagraph,
   SyncDataSlide,
   SyncPending,
   SyncPendingData,
   SyncPendingDeck,
   SyncPendingDoc,
-  SyncPendingSection,
+  SyncPendingParagraph,
   SyncPendingSlide
 } from '@deckdeckgo/editor';
 
@@ -49,7 +49,7 @@ const syncData = async () => {
     return;
   }
 
-  const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteSections, updateSections} = data;
+  const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteParagraphs, updateParagraphs} = data;
 
   if (
     updateDecks.length === 0 &&
@@ -58,8 +58,8 @@ const syncData = async () => {
     updateSlides.length === 0 &&
     updateDocs.length === 0 &&
     deleteDocs.length === 0 &&
-    deleteSections.length === 0 &&
-    updateSections.length === 0
+    deleteParagraphs.length === 0 &&
+    updateParagraphs.length === 0
   ) {
     return;
   }
@@ -135,14 +135,14 @@ const collectDocsData = async (data: SyncPending): Promise<Partial<SyncData>> =>
 
   const deleteDocs: SyncDataDoc[] | undefined = uniqueSyncData(data.deleteDocs).map(({docId}: SyncPendingDoc) => ({docId}));
 
-  const updateSections: SyncDataSection[] | undefined = await Promise.all(
-    uniqueSyncData(data.updateSections).map((section: SyncPendingSection) => getSection(section))
+  const updateParagraphs: SyncDataParagraph[] | undefined = await Promise.all(
+    uniqueSyncData(data.updateParagraphs).map((paragraph: SyncPendingParagraph) => getParagraph(paragraph))
   );
 
-  const deleteSections: SyncDataSection[] | undefined = uniqueSyncData(data.deleteSections).map(
-    ({docId, sectionId}: SyncPendingSection) => ({
+  const deleteParagraphs: SyncDataParagraph[] | undefined = uniqueSyncData(data.deleteParagraphs).map(
+    ({docId, paragraphId}: SyncPendingParagraph) => ({
       docId,
-      sectionId
+      paragraphId
     })
   );
 
@@ -151,13 +151,13 @@ const collectDocsData = async (data: SyncPending): Promise<Partial<SyncData>> =>
       ? updateDocs?.filter(({docId}: SyncDataDoc) => !deleteDocs.find(({docId: deleteDocId}: SyncDataDoc) => deleteDocId === docId))
       : updateDocs,
     deleteDocs,
-    updateSections: deleteSections
-      ? updateSections?.filter(
-          ({sectionId}: SyncDataSection) =>
-            !deleteSections.find(({sectionId: deleteSectionId}: SyncDataSection) => deleteSectionId === sectionId)
+    updateParagraphs: deleteParagraphs
+      ? updateParagraphs?.filter(
+          ({paragraphId}: SyncDataParagraph) =>
+            !deleteParagraphs.find(({paragraphId: deleteParagraphId}: SyncDataParagraph) => deleteParagraphId === paragraphId)
         )
-      : updateSections,
-    deleteSections
+      : updateParagraphs,
+    deleteParagraphs
   };
 };
 
@@ -171,13 +171,13 @@ const getSlide = async ({deckId, slideId, key}: SyncPendingSlide): Promise<SyncD
   };
 };
 
-const getSection = async ({docId, sectionId, key}: SyncPendingSection): Promise<SyncDataSection> => {
-  const section: Section | undefined = await get(key);
+const getParagraph = async ({docId, paragraphId, key}: SyncPendingParagraph): Promise<SyncDataParagraph> => {
+  const paragraph: Paragraph | undefined = await get(key);
 
   return {
     docId,
-    sectionId,
-    section
+    paragraphId,
+    paragraph
   };
 };
 

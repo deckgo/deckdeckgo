@@ -1,4 +1,4 @@
-export interface SectionData {
+export interface ParagraphData {
   content?: string;
 
   nodeName: string;
@@ -9,7 +9,7 @@ export interface SectionData {
   updated_at?: Date | number | BigInt;
 }
 
-export interface Section {
+export interface Paragraph {
   id: string;
-  data: SectionData;
+  data: ParagraphData;
 }

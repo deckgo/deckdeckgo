@@ -1,18 +1,18 @@
 import {JSX} from '@stencil/core';
 
-import {Doc, Section} from '@deckdeckgo/editor';
+import {Doc, Paragraph} from '@deckdeckgo/editor';
 
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
 import docStore from '../../stores/doc.store';
 
-import {ParseSectionsUtils} from '../../utils/editor/parse-sections.utils';
+import {ParseParagraphsUtils} from '../../utils/editor/parse-paragraphs.utils';
 
 import {getOfflineDoc} from '../../providers/data/docs/doc.offline.provider';
-import {getOfflineSection} from '../../providers/data/docs/section.offline.provider';
+import {getOfflineParagraph} from '../../providers/data/docs/paragraph.offline.provider';
 
-export class SectionHelper {
-  loadDocAndRetrieveSections(docId: string): Promise<JSX.IntrinsicElements[] | null> {
+export class ParagraphHelper {
+  loadDocAndRetrieveParagraphs(docId: string): Promise<JSX.IntrinsicElements[] | null> {
     return new Promise<JSX.IntrinsicElements[] | null>(async (resolve) => {
       if (!docId) {
         errorStore.state.error = 'Doc is not defined';
@@ -33,24 +33,24 @@ export class SectionHelper {
 
         docStore.state.doc = {...doc};
 
-        if (!doc.data.sections || doc.data.sections.length <= 0) {
+        if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
           resolve([]);
           return;
         }
 
-        const promises: Promise<JSX.IntrinsicElements>[] = doc.data.sections.map((sectionId: string) =>
-          this.fetchSection({doc, sectionId})
+        const promises: Promise<JSX.IntrinsicElements>[] = doc.data.paragraphs.map((paragraphId: string) =>
+          this.fetchParagraph({doc, paragraphId})
         );
-        const parsedSections: JSX.IntrinsicElements[] = await Promise.all(promises);
+        const parsedParagraphs: JSX.IntrinsicElements[] = await Promise.all(promises);
 
-        if (!parsedSections || parsedSections.length <= 0) {
+        if (!parsedParagraphs || parsedParagraphs.length <= 0) {
           resolve([]);
           return;
         }
 
         busyStore.state.deckBusy = false;
 
-        resolve(parsedSections);
+        resolve(parsedParagraphs);
       } catch (err) {
         errorStore.state.error = err;
         busyStore.state.deckBusy = false;
@@ -59,16 +59,16 @@ export class SectionHelper {
     });
   }
 
-  private fetchSection({doc, sectionId}: {doc: Doc; sectionId: string}): Promise<JSX.IntrinsicElements> {
+  private fetchParagraph({doc, paragraphId}: {doc: Doc; paragraphId: string}): Promise<JSX.IntrinsicElements> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       try {
-        const section: Section = await getOfflineSection({docId: doc.id, sectionId});
+        const paragraph: Paragraph = await getOfflineParagraph({docId: doc.id, paragraphId});
 
-        const element: JSX.IntrinsicElements = await ParseSectionsUtils.parseSection({section});
+        const element: JSX.IntrinsicElements = await ParseParagraphsUtils.parseParagraph({paragraph});
 
         resolve(element);
       } catch (err) {
-        errorStore.state.error = 'Something went wrong while loading and parsing a section';
+        errorStore.state.error = 'Something went wrong while loading and parsing a paragraph';
         resolve(null);
       }
     });

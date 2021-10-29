@@ -1,6 +1,6 @@
 import {update} from 'idb-keyval';
 
-import {SyncPending, SyncPendingDeck, SyncPendingDoc, SyncPendingSection, SyncPendingSlide} from '@deckdeckgo/editor';
+import {SyncPending, SyncPendingDeck, SyncPendingDoc, SyncPendingParagraph, SyncPendingSlide} from '@deckdeckgo/editor';
 
 import syncStore from '../../stores/sync.store';
 import authStore from '../../stores/auth.store';
@@ -94,13 +94,13 @@ export const syncDeleteDoc = async (docId: string) => {
   setPendingState();
 };
 
-export const syncUpdateSection = async ({docId, sectionId}: {docId: string; sectionId: string}) => {
+export const syncUpdateParagraph = async ({docId, paragraphId}: {docId: string; paragraphId: string}) => {
   await update('deckdeckgo_pending_sync', (data: SyncPending | undefined) => {
     if (!data) {
       data = initSyncPending();
     }
 
-    data.updateSections.push(pendingSection({docId, sectionId}));
+    data.updateParagraphs.push(pendingParagraph({docId, paragraphId}));
 
     return data;
   });
@@ -108,13 +108,13 @@ export const syncUpdateSection = async ({docId, sectionId}: {docId: string; sect
   setPendingState();
 };
 
-export const syncDeleteSection = async ({docId, sectionId}: {docId: string; sectionId: string}) => {
+export const syncDeleteParagraph = async ({docId, paragraphId}: {docId: string; paragraphId: string}) => {
   await update('deckdeckgo_pending_sync', (data: SyncPending | undefined) => {
     if (!data) {
       data = initSyncPending();
     }
 
-    data.deleteSections.push(pendingSection({docId, sectionId}));
+    data.deleteParagraphs.push(pendingParagraph({docId, paragraphId}));
 
     return data;
   });
@@ -129,8 +129,8 @@ const initSyncPending = (): SyncPending => ({
   updateSlides: [],
   updateDocs: [],
   deleteDocs: [],
-  deleteSections: [],
-  updateSections: []
+  deleteParagraphs: [],
+  updateParagraphs: []
 });
 
 const pendingDeck = (deckId: string): SyncPendingDeck => ({
@@ -152,10 +152,10 @@ const pendingDoc = (docId: string): SyncPendingDoc => ({
   queuedAt: new Date()
 });
 
-const pendingSection = ({docId, sectionId}: {docId: string; sectionId: string}): SyncPendingSection => ({
+const pendingParagraph = ({docId, paragraphId}: {docId: string; paragraphId: string}): SyncPendingParagraph => ({
   docId,
-  sectionId,
-  key: `/docs/${docId}/sections/${sectionId}`,
+  paragraphId,
+  key: `/docs/${docId}/paragraphs/${paragraphId}`,
   queuedAt: new Date()
 });
 
