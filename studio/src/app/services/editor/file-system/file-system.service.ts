@@ -167,7 +167,7 @@ export class FileSystemService {
 
     const blob: Blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
 
-    zip.file('deck.json', blob, {
+    zip.file('data.json', blob, {
       base64: true
     });
 
@@ -250,7 +250,7 @@ export class FileSystemService {
   }
 
   private async parseImportData(content: JSZip): Promise<FileImportData> {
-    let deck: string = await content.file('deck.json').async('text');
+    let deck: string = await content.file('data.json').async('text');
 
     // If user is offline, then we load the online content saved in the cloud locally too, better display the content than none
     if (!offlineStore.state.online) {
