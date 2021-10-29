@@ -18,7 +18,6 @@ export class AppActionsDocEditor {
   private test() {
     // TODO: this component and add ddg cmp
     // TODO: color bug
-    // TODO: redo popover
 
     document.execCommand('insertHTML', false, '<span id="myId">hi</span>');
   }

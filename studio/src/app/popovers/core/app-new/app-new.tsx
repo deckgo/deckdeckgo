@@ -40,9 +40,7 @@ export class AppNew implements ComponentInterface {
           </button>
         </div>
 
-        <p>
-          <small>{i18n.state.tools.new_warning_text}</small>
-        </p>
+        <p>{i18n.state.tools.new_warning_text}</p>
 
         <app-popover-confirm onConfirm={({detail}: CustomEvent<boolean>) => this.closePopover(detail)}></app-popover-confirm>
       </Host>

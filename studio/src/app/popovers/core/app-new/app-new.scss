@@ -55,7 +55,9 @@ app-new {
   }
 
   p {
-    padding: 12px 24px;
+    font-size: var(--font-size-small);
+    text-align: center;
+    padding: 8px 32px 14px;
     margin: 0;
   }
 }
