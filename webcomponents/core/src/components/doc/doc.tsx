@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Host, h, Element, State, Prop, Watch} from '@stencil/core';
+import {Component, ComponentInterface, Host, h, Element, State, Prop, Watch, EventEmitter, Event} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
 
@@ -24,6 +24,9 @@ export class DeckGoDoc implements ComponentInterface {
   @State()
   private docSize: {width: number; height: number};
 
+  @Event()
+  sizeDidChange: EventEmitter<{width: number; height: number}>;
+
   private readonly debounceInitSize: () => void = debounce(() => this.initSize(), 100);
 
   componentDidLoad() {
@@ -41,6 +44,14 @@ export class DeckGoDoc implements ComponentInterface {
   }
 
   private initSize() {
+    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+      this.sizeDidChange.emit(this.docSize);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.el, {attributes: true});
+
     this.docSize = containerSize({embedded: true, container: this.el});
   }
 

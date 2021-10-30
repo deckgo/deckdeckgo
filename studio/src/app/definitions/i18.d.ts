@@ -392,6 +392,7 @@ interface I18nEditor {
   slide_style: string;
   transform_element: string;
   transform_slide: string;
+  add_element: string;
 }
 
 interface I18nOffline {

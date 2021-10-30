@@ -54,6 +54,7 @@ export namespace Components {
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
     }
     interface AppActionsDocEditor {
+        "containerRef": HTMLElement | undefined;
     }
     interface AppActionsElement {
         "blurSelectedElement": () => Promise<void>;
@@ -1359,6 +1360,7 @@ declare namespace LocalJSX {
         "slides"?: JSX.IntrinsicElements[];
     }
     interface AppActionsDocEditor {
+        "containerRef"?: HTMLElement | undefined;
     }
     interface AppActionsElement {
         "elementFocus"?: EventEmitter;

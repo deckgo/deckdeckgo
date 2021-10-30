@@ -68,4 +68,12 @@ export class NodeUtils {
   static nodeIndex(element: HTMLElement): number {
     return Array.from(element.parentNode.children).indexOf(element);
   }
+
+  static isTextNode(element: Node | undefined): boolean {
+    return element?.nodeType === Node.TEXT_NODE || element?.nodeType === Node.COMMENT_NODE;
+  }
+
+  static toHTMLElement(element: Node | undefined): HTMLElement | undefined | null {
+    return this.isTextNode(element) ? element.parentElement : (element as HTMLElement);
+  }
 }

@@ -383,7 +383,8 @@
     "deck_style": "Deck stijl",
     "slide_style": "Slide stijl",
     "transform_element": "Transformeer element",
-    "transform_slide": "Transformeer slide"
+    "transform_slide": "Transformeer slide",
+    "add_element": "Voeg een afbeelding, code of nieuw element toe"
   },
   "offline": {
     "editing": "U bent offline aan het bewerken.",

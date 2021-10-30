@@ -383,7 +383,8 @@
     "deck_style": "Deck Style",
     "slide_style": "Folien Style",
     "transform_element": "Ändere Element",
-    "transform_slide": "Ändere Folie"
+    "transform_slide": "Ändere Folie",
+    "add_element": "Fügen Sie ein Bild, Code oder ein neues Element hinzu"
   },
   "offline": {
     "editing": "Du bearbeitest gerade offline.",

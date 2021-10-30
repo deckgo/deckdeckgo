@@ -86,6 +86,7 @@ declare namespace LocalJSX {
         "revealOnMobile"?: boolean;
     }
     interface DeckgoDoc {
+        "onSizeDidChange"?: (event: CustomEvent<{width: number; height: number}>) => void;
         "orientation"?: 'portrait' | 'landscape';
         "size"?: 'A4' | 'A3' | 'A5';
         "zoom"?: number;

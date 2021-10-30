@@ -1,0 +1,18 @@
+@use "../../../../../global/theme/mixins/button";
+
+app-actions-doc-editor {
+  display: block;
+
+  position: absolute;
+  top: var(--actions-top);
+  left: var(--actions-left);
+
+  transform: translate(-36px, 0);
+
+  button {
+    @include button.action;
+    @include button.icon;
+
+    padding: 3px;
+  }
+}
