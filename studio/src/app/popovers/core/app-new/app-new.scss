@@ -2,21 +2,31 @@
 
 app-new {
   div.type {
-    display: grid;
+    display: inline-grid;
     grid-template-columns: repeat(2, 50%);
 
-    width: calc(100% - 8px);
+    width: 100%;
 
-    grid-gap: 8px;
-    margin-top: 16px;
+    justify-items: center;
+
+    padding: 8px 16px 16px;
 
     button {
+      grid-row-start: 2;
+
       @include button.action;
 
-      border: 2px solid var(--ion-color-light);
-      overflow: visible;
+      height: 7rem;
+      width: 7rem;
+
+      overflow: hidden;
 
       padding: 16px 0;
+
+      border-radius: 50%;
+
+      border: 2px solid transparent;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
 
       ion-icon {
         font-size: 3rem;
@@ -32,23 +42,20 @@ app-new {
 
       &.selected {
         border: 2px solid var(--ion-color-primary);
-
-        mark {
-          background: var(--ion-color-primary);
-          color: var(--ion-color-primary-contrast);
-        }
       }
+    }
+
+    > div {
+      min-height: 30px;
+
+      grid-column-start: 2;
+      grid-column-end: 3;
 
       mark {
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translate(-50%, 0);
-
-        background: var(--ion-color-light);
-        color: var(--ion-color-light-contrast);
-        padding: 4px;
-        border-radius: 4px;
+        background: var(--ion-color-primary);
+        color: var(--ion-color-primary-contrast);
+        padding: 2px 6px;
+        border-radius: 16px;
         font-size: var(--font-size-very-small);
       }
     }

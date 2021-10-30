@@ -25,19 +25,24 @@ export class AppNew implements ComponentInterface {
   render() {
     return (
       <Host>
-        <div class="type ion-padding">
-          <button onClick={() => (this.type = 'deck')} class={`ion-activatable ${this.type === 'deck' ? 'selected' : ''}`}>
-            <ion-ripple-effect></ion-ripple-effect>
-            <AppIcon name="deck" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
-            <ion-label>{i18n.state.tools.new_deck}</ion-label>
-          </button>
+        <div class="type">
+          <div>{this.type === 'doc' && <mark>{i18n.state.tools.new_experimental}</mark>}</div>
 
-          <button onClick={() => (this.type = 'doc')} class={`ion-activatable ${this.type === 'doc' ? 'selected' : ''}`}>
-            <ion-ripple-effect></ion-ripple-effect>
-            <AppIcon name="doc" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
-            <ion-label>{i18n.state.tools.new_doc}</ion-label>
-            <mark>{i18n.state.tools.new_experimental}</mark>
-          </button>
+          <article>
+            <button onClick={() => (this.type = 'deck')} class={`ion-activatable ${this.type === 'deck' ? 'selected' : ''}`}>
+              <ion-ripple-effect></ion-ripple-effect>
+              <AppIcon name="deck" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+              <ion-label>{i18n.state.tools.new_deck}</ion-label>
+            </button>
+          </article>
+
+          <article>
+            <button onClick={() => (this.type = 'doc')} class={`ion-activatable ${this.type === 'doc' ? 'selected' : ''}`}>
+              <ion-ripple-effect></ion-ripple-effect>
+              <AppIcon name="doc" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+              <ion-label>{i18n.state.tools.new_doc}</ion-label>
+            </button>
+          </article>
         </div>
 
         <p>{i18n.state.tools.new_warning_text}</p>
