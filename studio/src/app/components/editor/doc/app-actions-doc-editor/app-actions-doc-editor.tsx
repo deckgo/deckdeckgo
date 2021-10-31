@@ -1,5 +1,7 @@
 import {Component, Listen, h, State, Host, Prop} from '@stencil/core';
 
+import {moveCursorToEnd} from '@deckdeckgo/utils';
+
 import i18n from '../../../../stores/i18n.store';
 
 import {findParagraph} from '../../../../utils/editor/paragraph.utils';
@@ -22,6 +24,8 @@ export class AppActionsDocEditor {
   @State()
   private left: number | undefined;
 
+  private paragraph: HTMLElement | undefined | null;
+
   @Listen('keydown', {target: 'document', passive: true})
   onKeyDown({code}: KeyboardEvent) {
     if (code !== 'Enter') {
@@ -41,25 +45,19 @@ export class AppActionsDocEditor {
     docObserver.observe(this.containerRef, {childList: true, subtree: true});
   }
 
-  @Listen('mouseup', {target: 'document', passive: true})
-  onMouseDown({target}: MouseEvent) {
-    this.initPosition(target);
-  }
-
-  @Listen('touchend', {target: 'document', passive: true})
-  onTouchStart({target}: TouchEvent) {
+  @Listen('click', {target: 'document', passive: true})
+  onMouseDown({target}: MouseEvent | TouchEvent) {
     this.initPosition(target);
   }
 
   @Listen('sizeDidChange', {target: 'document', passive: true})
   onSizeDidChange({target}: CustomEvent<{width: number; height: number}>) {
-    console.log(target, (target as HTMLElement)?.getBoundingClientRect()?.left);
-
     this.left = (target as HTMLElement)?.getBoundingClientRect()?.left;
   }
 
   private hide() {
     this.top = undefined;
+    this.paragraph = undefined;
   }
 
   private initPosition(target: EventTarget | null) {
@@ -70,20 +68,48 @@ export class AppActionsDocEditor {
 
     const paragraph: Node | undefined = findParagraph({element: target as Node, container: this.containerRef});
 
-    const element: HTMLElement | undefined | null = NodeUtils.toHTMLElement(paragraph);
+    this.paragraph = NodeUtils.toHTMLElement(paragraph);
 
-    if (!element) {
+    if (!this.paragraph) {
       this.hide();
       return;
     }
 
-    this.top = element.offsetTop;
+    this.top = this.paragraph.offsetTop;
   }
 
-  private action() {
-    // TODO: color bug and other small issues
+  // TODO: color bug and other small issues
+  // TODO: bug remove title text not saved
+  // TODO: bug "new doc -> new doc -> reload -> title twice"
 
-    document.execCommand('insertHTML', false, '<span>HERE</span>');
+  private initParagraph($event: UIEvent) {
+    if (!this.paragraph) {
+      return;
+    }
+
+    $event.stopPropagation();
+
+    if (this.paragraph.textContent === '') {
+      // TODO: display to create paragraph list
+
+      this.focusParagraph();
+
+      return;
+    }
+
+    this.focusParagraph();
+
+    // \n is useful to create a new adjacent node and not a node within the current paragraph
+    document.execCommand('insertHTML', false, '\n<section>\n</section>');
+
+    // TODO: display to create paragraph list
+
+    this.hide();
+  }
+
+  private focusParagraph() {
+    this.paragraph.focus();
+    moveCursorToEnd(this.paragraph);
   }
 
   render() {
@@ -96,7 +122,7 @@ export class AppActionsDocEditor {
       <Host style={style}>
         <button
           aria-label={i18n.state.editor.add_element}
-          onClick={() => this.action()}
+          onClick={($event: UIEvent) => this.initParagraph($event)}
           class="ion-activatable"
           onMouseDown={($event) => $event.stopPropagation()}
           onTouchStart={($event) => $event.stopPropagation()}>
