@@ -48,7 +48,7 @@ export class AppTransformElement {
 
   private async closePopover(type?: SlotType) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
-      type: type
+      type
     });
   }
 

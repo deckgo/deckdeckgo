@@ -345,7 +345,7 @@ export namespace Components {
         "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
-        "selectedElement": HTMLElement;
+        "selectedElement": HTMLElement | undefined;
         "skip": boolean;
         "slotTypes": SlotType[] | undefined;
     }
@@ -1697,7 +1697,7 @@ declare namespace LocalJSX {
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: HTMLElement | undefined;
         "skip"?: boolean;
         "slotTypes"?: SlotType[] | undefined;
     }

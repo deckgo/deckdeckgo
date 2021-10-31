@@ -14,7 +14,7 @@ import {AppIcon} from '../../../core/app-icon/app-icon';
 })
 export class AppSlotType {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedElement: HTMLElement | undefined;
 
   @Prop()
   skip: boolean = false;
@@ -30,47 +30,39 @@ export class AppSlotType {
 
   @Event() private selectType: EventEmitter<SlotType | null>;
 
-  async componentWillLoad() {
-    if (this.selectedElement) {
-      if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-        await this.initCurrentTypeList();
-      } else {
-        await this.initCurrentType();
-      }
+  componentWillLoad() {
+    if (!this.selectedElement) {
+      return;
     }
 
-    this.onlyTextTypes = this.selectedElement?.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
+    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+      this.initCurrentTypeList();
+    } else {
+      this.initCurrentType();
+    }
+
+    this.onlyTextTypes = this.selectedElement.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
   }
 
-  private initCurrentType(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      // prettier-ignore
-      const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
+  private initCurrentType() {
+    // prettier-ignore
+    const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
 
-      if (element.nodeName && element.nodeName !== '') {
-        this.currentType = await this.initSlotType(element.nodeName.toLowerCase());
-      }
-
-      resolve();
-    });
+    if (element.nodeName && element.nodeName !== '') {
+      this.currentType = this.initSlotType(element.nodeName.toLowerCase());
+    }
   }
 
-  private initCurrentTypeList(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.currentType = this.selectedElement.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
-
-      resolve();
-    });
+  private initCurrentTypeList() {
+    this.currentType = this.selectedElement.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
   }
 
-  private initSlotType(type: string): Promise<SlotType> {
-    return new Promise<SlotType>((resolve) => {
-      const templateKey: string = Object.keys(SlotType).find((key: string) => {
-        return type === SlotType[key];
-      });
-
-      resolve(SlotType[templateKey]);
+  private initSlotType(type: string): SlotType {
+    const templateKey: string = Object.keys(SlotType).find((key: string) => {
+      return type === SlotType[key];
     });
+
+    return SlotType[templateKey];
   }
 
   private select(type: SlotType | null) {
