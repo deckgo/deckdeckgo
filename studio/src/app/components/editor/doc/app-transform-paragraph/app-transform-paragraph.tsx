@@ -10,7 +10,7 @@ export class AppTransformParagraph implements ComponentInterface {
   private display: boolean = false;
 
   @State()
-  private position: {left: number; top: number} | undefined = undefined;
+  private position: {left: number; top: number; downward: boolean} | undefined = undefined;
 
   componentDidRender() {
     this.display = this.position !== undefined;
@@ -42,17 +42,29 @@ export class AppTransformParagraph implements ComponentInterface {
       return;
     }
 
-    const {left, height}: DOMRect = element.getBoundingClientRect();
+    const {left, height, top}: DOMRect = element.getBoundingClientRect();
+
+    console.log(window.innerHeight || screen.height, top);
+
+    // top + size + margin
+    const downward: boolean = top + 220 + 16 < (window.innerHeight || screen.height);
 
     this.position = {
-      top: element.offsetTop + height,
+      top: element.offsetTop + (downward ? height : -1 * height),
+      downward,
       left: left
     };
   }
 
   render() {
     const style: Record<string, string> =
-      this.position === undefined ? {} : {'--actions-top': `${this.position.top}px`, '--actions-left': `${this.position.left}px`};
+      this.position === undefined
+        ? {}
+        : {
+            '--actions-top': `${this.position.top}px`,
+            '--actions-left': `${this.position.left}px`,
+            '--actions-translate-y': `${this.position.downward ? '0' : '-100%'}`
+          };
 
     return (
       <Host style={style} class={this.display ? 'display' : 'hidden'}>

@@ -4,6 +4,7 @@ app-transform-paragraph {
   position: absolute;
   top: var(--actions-top);
   left: var(--actions-left);
+  transform: translate(0, var(--actions-translate-y));
 
   visibility: hidden;
   opacity: 0;
@@ -21,8 +22,7 @@ app-transform-paragraph {
     opacity: 1;
   }
 
-  height: 220px;
-  max-height: 30vh;
+  max-height: 220px;
 
   overflow: scroll;
 
