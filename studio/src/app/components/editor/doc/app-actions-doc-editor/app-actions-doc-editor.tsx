@@ -1,4 +1,4 @@
-import {Component, Listen, h, State, Host, Prop} from '@stencil/core';
+import {Component, Listen, h, State, Host, Prop, ComponentInterface, EventEmitter, Event} from '@stencil/core';
 
 import {moveCursorToEnd} from '@deckdeckgo/utils';
 
@@ -14,7 +14,7 @@ import {AppIcon} from '../../../core/app-icon/app-icon';
   styleUrl: 'app-actions-doc-editor.scss',
   shadow: false
 })
-export class AppActionsDocEditor {
+export class AppActionsDocEditor implements ComponentInterface {
   @Prop()
   containerRef: HTMLElement | undefined;
 
@@ -25,6 +25,9 @@ export class AppActionsDocEditor {
   private left: number | undefined;
 
   private paragraph: HTMLElement | undefined | null;
+
+  @Event()
+  selectParagraph: EventEmitter<HTMLElement | undefined>;
 
   @Listen('keydown', {target: 'document', passive: true})
   onKeyDown({code}: KeyboardEvent) {
@@ -57,10 +60,9 @@ export class AppActionsDocEditor {
 
   private hide() {
     this.top = undefined;
-    this.paragraph = undefined;
   }
 
-  private initPosition(target: EventTarget | null) {
+  private initPosition = (target: EventTarget | null) => {
     if (!this.containerRef || !target) {
       this.hide();
       return;
@@ -76,7 +78,7 @@ export class AppActionsDocEditor {
     }
 
     this.top = this.paragraph.offsetTop;
-  }
+  };
 
   // TODO: color bug and other small issues
   // TODO: bug remove title text not saved
@@ -89,20 +91,30 @@ export class AppActionsDocEditor {
 
     $event.stopPropagation();
 
-    if (this.paragraph.textContent === '') {
-      // TODO: display to create paragraph list
-
+    if (['', '\n'].includes(this.paragraph.textContent)) {
       this.focusParagraph();
+
+      this.selectParagraph.emit(this.paragraph);
 
       return;
     }
 
     this.focusParagraph();
 
+    const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
+      const section: Node | undefined = addedNodes.find((node: Node) => node.nodeName.toLowerCase() === 'section');
+
+      this.selectParagraph.emit(section as HTMLElement | undefined);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+
     // \n is useful to create a new adjacent node and not a node within the current paragraph
     document.execCommand('insertHTML', false, '\n<section>\n</section>');
-
-    // TODO: display to create paragraph list
 
     this.hide();
   }

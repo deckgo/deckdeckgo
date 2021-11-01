@@ -120,13 +120,14 @@ export class AppDocEditor implements ComponentInterface {
           <main>
             {this.renderLoading()}
 
-            <app-actions-doc-editor containerRef={this.containerRef}></app-actions-doc-editor>
-
             <deckgo-doc>
               <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
                 {this.paragraphs}
               </article>
             </deckgo-doc>
+
+            <app-actions-doc-editor containerRef={this.containerRef}></app-actions-doc-editor>
+            <app-transform-paragraph></app-transform-paragraph>
           </main>
         </ion-content>
 

@@ -406,6 +406,8 @@ export namespace Components {
     interface AppTransformElement {
         "selectedElement": HTMLElement;
     }
+    interface AppTransformParagraph {
+    }
     interface AppTransformSlide {
         "selectedElement": HTMLElement;
     }
@@ -1136,6 +1138,12 @@ declare global {
         prototype: HTMLAppTransformElementElement;
         new (): HTMLAppTransformElementElement;
     };
+    interface HTMLAppTransformParagraphElement extends Components.AppTransformParagraph, HTMLStencilElement {
+    }
+    var HTMLAppTransformParagraphElement: {
+        prototype: HTMLAppTransformParagraphElement;
+        new (): HTMLAppTransformParagraphElement;
+    };
     interface HTMLAppTransformSlideElement extends Components.AppTransformSlide, HTMLStencilElement {
     }
     var HTMLAppTransformSlideElement: {
@@ -1303,6 +1311,7 @@ declare global {
         "app-templates-user": HTMLAppTemplatesUserElement;
         "app-text": HTMLAppTextElement;
         "app-transform-element": HTMLAppTransformElementElement;
+        "app-transform-paragraph": HTMLAppTransformParagraphElement;
         "app-transform-slide": HTMLAppTransformSlideElement;
         "app-unpublish": HTMLAppUnpublishElement;
         "app-unsplash": HTMLAppUnsplashElement;
@@ -1361,6 +1370,7 @@ declare namespace LocalJSX {
     }
     interface AppActionsDocEditor {
         "containerRef"?: HTMLElement | undefined;
+        "onSelectParagraph"?: (event: CustomEvent<HTMLElement | undefined>) => void;
     }
     interface AppActionsElement {
         "elementFocus"?: EventEmitter;
@@ -1771,6 +1781,8 @@ declare namespace LocalJSX {
     interface AppTransformElement {
         "selectedElement"?: HTMLElement;
     }
+    interface AppTransformParagraph {
+    }
     interface AppTransformSlide {
         "selectedElement"?: HTMLElement;
     }
@@ -1910,6 +1922,7 @@ declare namespace LocalJSX {
         "app-templates-user": AppTemplatesUser;
         "app-text": AppText;
         "app-transform-element": AppTransformElement;
+        "app-transform-paragraph": AppTransformParagraph;
         "app-transform-slide": AppTransformSlide;
         "app-unpublish": AppUnpublish;
         "app-unsplash": AppUnsplash;
@@ -2042,6 +2055,7 @@ declare module "@stencil/core" {
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-text": LocalJSX.AppText & JSXBase.HTMLAttributes<HTMLAppTextElement>;
             "app-transform-element": LocalJSX.AppTransformElement & JSXBase.HTMLAttributes<HTMLAppTransformElementElement>;
+            "app-transform-paragraph": LocalJSX.AppTransformParagraph & JSXBase.HTMLAttributes<HTMLAppTransformParagraphElement>;
             "app-transform-slide": LocalJSX.AppTransformSlide & JSXBase.HTMLAttributes<HTMLAppTransformSlideElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-unsplash": LocalJSX.AppUnsplash & JSXBase.HTMLAttributes<HTMLAppUnsplashElement>;

@@ -71,7 +71,7 @@ export class AppSlotType {
 
   render() {
     return (
-      <ion-list class="article">
+      <ion-list class="article ion-no-padding">
         {this.renderSlot(
           SlotType.H1,
           <Fragment>
