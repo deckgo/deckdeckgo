@@ -1,5 +1,7 @@
 // TODO: same as in new core
 
+import {moveCursorToEnd} from '@deckdeckgo/utils';
+
 export const findParagraph = ({element, container}: {element: Node; container: Node}): Node | undefined => {
   if (!container) {
     return undefined;
@@ -35,4 +37,9 @@ export const isParagraph = ({element, container}: {element: Node; container: Nod
   const {parentElement} = element;
 
   return parentElement?.isEqualNode(container);
+};
+
+export const focusParagraph = ({paragraph}: {paragraph: HTMLElement}) => {
+  paragraph.focus();
+  moveCursorToEnd(paragraph);
 };

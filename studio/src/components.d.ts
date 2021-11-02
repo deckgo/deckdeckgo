@@ -407,6 +407,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppTransformParagraph {
+        "containerRef": HTMLElement | undefined;
     }
     interface AppTransformSlide {
         "selectedElement": HTMLElement;
@@ -1782,6 +1783,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppTransformParagraph {
+        "containerRef"?: HTMLElement | undefined;
     }
     interface AppTransformSlide {
         "selectedElement"?: HTMLElement;

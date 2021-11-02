@@ -1,10 +1,8 @@
 import {Component, Listen, h, State, Host, Prop, ComponentInterface, EventEmitter, Event} from '@stencil/core';
 
-import {moveCursorToEnd} from '@deckdeckgo/utils';
-
 import i18n from '../../../../stores/i18n.store';
 
-import {findParagraph} from '../../../../utils/editor/paragraph.utils';
+import {findParagraph, focusParagraph} from '../../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../../utils/editor/node.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
@@ -92,14 +90,14 @@ export class AppActionsDocEditor implements ComponentInterface {
     $event.stopPropagation();
 
     if (['', '\n'].includes(this.paragraph.textContent)) {
-      this.focusParagraph();
+      focusParagraph({paragraph: this.paragraph});
 
       this.selectParagraph.emit(this.paragraph);
 
       return;
     }
 
-    this.focusParagraph();
+    focusParagraph({paragraph: this.paragraph});
 
     const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
@@ -117,11 +115,6 @@ export class AppActionsDocEditor implements ComponentInterface {
     document.execCommand('insertHTML', false, '\n<section>\n</section>');
 
     this.hide();
-  }
-
-  private focusParagraph() {
-    this.paragraph.focus();
-    moveCursorToEnd(this.paragraph);
   }
 
   render() {

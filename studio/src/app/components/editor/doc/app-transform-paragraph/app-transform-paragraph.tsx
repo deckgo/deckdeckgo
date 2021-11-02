@@ -1,4 +1,10 @@
-import {Component, ComponentInterface, h, Host, Listen, State} from '@stencil/core';
+import {Component, ComponentInterface, h, Host, Listen, Prop, State} from '@stencil/core';
+
+import {SlotType} from '../../../../types/editor/slot-type';
+
+import {createHTMLElement} from '../../../../utils/editor/create-element.utils';
+import {SlotUtils} from '../../../../utils/editor/slot.utils';
+import {focusParagraph} from '../../../../utils/editor/paragraph.utils';
 
 @Component({
   tag: 'app-transform-paragraph',
@@ -6,11 +12,16 @@ import {Component, ComponentInterface, h, Host, Listen, State} from '@stencil/co
   shadow: false
 })
 export class AppTransformParagraph implements ComponentInterface {
+  @Prop()
+  containerRef: HTMLElement | undefined;
+
   @State()
   private display: boolean = false;
 
   @State()
   private position: {left: number; top: number; downward: boolean} | undefined = undefined;
+
+  private paragraph: HTMLElement | undefined | null;
 
   componentDidRender() {
     this.display = this.position !== undefined;
@@ -33,6 +44,7 @@ export class AppTransformParagraph implements ComponentInterface {
 
   private hide() {
     this.position = undefined;
+    this.paragraph = undefined;
   }
 
   @Listen('selectParagraph', {target: 'document', passive: true})
@@ -44,8 +56,6 @@ export class AppTransformParagraph implements ComponentInterface {
 
     const {left, height, top}: DOMRect = element.getBoundingClientRect();
 
-    console.log(window.innerHeight || screen.height, top);
-
     // top + size + margin
     const downward: boolean = top + 220 + 16 < (window.innerHeight || screen.height);
 
@@ -54,6 +64,48 @@ export class AppTransformParagraph implements ComponentInterface {
       downward,
       left: left
     };
+
+    this.paragraph = element;
+  }
+
+  private transformSlot(slotType: SlotType | null) {
+    const element: HTMLElement = createHTMLElement({slotType});
+
+    if (SlotUtils.isNodeEditable(element)) {
+      element.setAttribute('editable', 'true');
+    }
+
+    focusParagraph({paragraph: this.paragraph});
+
+    const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      const newNode: Node | undefined = mutations[0]?.addedNodes?.[0];
+
+      console.log('newNode', newNode);
+
+      // Move for flattening paragraphs
+      // this.containerRef.insertBefore(newNode, newNode?.parentNode);
+      // newNode?.parentNode.removeChild(newNode?.nextSibling);
+
+      // TODO: Delete not OK and force save
+      // List in inline-editor?
+
+      // focusParagraph({paragraph: newNode as HTMLElement});
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+
+    document.execCommand('insertHTML', false, `${element.outerHTML}`);
+
+    // document.execCommand('insertParagraph', false);
+
+    // document.execCommand('formatBlock', false, 'h3');
+
+    // document.execCommand('insertOrderedList', false);
+
+    this.hide();
   }
 
   render() {
@@ -68,7 +120,7 @@ export class AppTransformParagraph implements ComponentInterface {
 
     return (
       <Host style={style} class={this.display ? 'display' : 'hidden'}>
-        <app-slot-type></app-slot-type>
+        <app-slot-type onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
       </Host>
     );
   }

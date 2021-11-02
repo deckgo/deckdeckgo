@@ -127,7 +127,7 @@ export class AppDocEditor implements ComponentInterface {
             </deckgo-doc>
 
             <app-actions-doc-editor containerRef={this.containerRef}></app-actions-doc-editor>
-            <app-transform-paragraph></app-transform-paragraph>
+            <app-transform-paragraph containerRef={this.containerRef}></app-transform-paragraph>
           </main>
         </ion-content>
 
