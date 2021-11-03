@@ -259,7 +259,9 @@ export class DocEvents {
         const node: Node = addedNodes[0];
 
         return (
-          !isParagraph({element: node, container: this.containerRef}) && !NodeUtils.isTextNode(node) && node.nodeName.toLowerCase() !== 'br'
+          !isParagraph({element: node, container: this.containerRef}) &&
+          !NodeUtils.isTextNode(node) &&
+          node?.nodeName.toLowerCase() !== 'br'
         );
       });
 
