@@ -22,9 +22,6 @@ export class AppSlotType {
   @Prop()
   slotTypes: SlotType[] | undefined;
 
-  @Prop()
-  section: boolean = true;
-
   @State()
   private currentType: SlotType;
 
@@ -103,16 +100,15 @@ export class AppSlotType {
           </Fragment>
         )}
 
-        {this.section &&
-          this.renderSlot(
-            SlotType.SECTION,
-            <Fragment>
-              <span class="placeholder" slot="start">
-                &nbsp;
-              </span>
-              <p>{i18n.state.editor.paragraph}</p>
-            </Fragment>
-          )}
+        {this.renderSlot(
+          SlotType.SECTION,
+          <Fragment>
+            <span class="placeholder" slot="start">
+              &nbsp;
+            </span>
+            <p>{i18n.state.editor.paragraph}</p>
+          </Fragment>
+        )}
 
         {this.renderComplexTypes()}
 

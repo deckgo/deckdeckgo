@@ -23,6 +23,8 @@ export class AppTransformParagraph implements ComponentInterface {
 
   private paragraph: HTMLElement | undefined | null;
 
+  private slotTypes: SlotType[] = [SlotType.H1, SlotType.H2, SlotType.H3, SlotType.CODE, SlotType.IMG, SlotType.OL];
+
   componentDidRender() {
     this.display = this.position !== undefined;
   }
@@ -135,7 +137,9 @@ export class AppTransformParagraph implements ComponentInterface {
 
     return (
       <Host style={style} class={this.display ? 'display' : 'hidden'}>
-        <app-slot-type section={false} onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
+        <app-slot-type
+          slotTypes={this.slotTypes}
+          onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
       </Host>
     );
   }
