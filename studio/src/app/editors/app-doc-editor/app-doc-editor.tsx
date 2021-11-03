@@ -13,6 +13,7 @@ import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocEvents} from '../../events/editor/doc/doc.events';
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
+import {SlotType} from '../../types/editor/slot-type';
 
 @Component({
   tag: 'app-doc-editor',
@@ -65,7 +66,8 @@ export class AppDocEditor implements ComponentInterface {
     const editor: Editor | undefined = await getEdit();
     const docId: string | undefined = editor?.id;
 
-    this.observe(!docId);
+    this.initDocEvents(!docId);
+    this.initEditable();
 
     if (!docId) {
       await this.initDoc();
@@ -98,7 +100,7 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
-  private observe(init: boolean) {
+  private initDocEvents(init: boolean) {
     if (init) {
       this.docEvents.init(this.containerRef);
       return;
@@ -107,6 +109,20 @@ export class AppDocEditor implements ComponentInterface {
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
       this.docEvents.init(this.containerRef);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+  }
+
+  private initEditable() {
+    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      const elements: NodeListOf<HTMLElement> = this.containerRef.querySelectorAll<HTMLElement>(
+        `${SlotType.CODE}, ${SlotType.MATH}, ${SlotType.WORD_CLOUD}, ${SlotType.MARKDOWN}`
+      );
+      Array.from(elements).forEach((element: HTMLElement) => element.setAttribute('editable', 'true'));
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
