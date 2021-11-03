@@ -39,12 +39,24 @@ export class DocEvents {
 
     this.dataObserver = new MutationObserver(this.onDataMutation);
     this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true});
+
+    document.addEventListener('markdownDidChange', this.onCustomEventChange, false);
+    document.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
+    document.addEventListener('codeDidChange', this.onCustomEventChange, false);
+    document.addEventListener('mathDidChange', this.onCustomEventChange, false);
+    document.addEventListener('imgDidChange', this.onCustomEventChange, false);
   }
 
   destroy() {
     this.treeObserver?.disconnect();
     this.attributesObserver?.disconnect();
     this.dataObserver?.disconnect();
+
+    document.addEventListener('markdownDidChange', this.onCustomEventChange, true);
+    document.addEventListener('wordCloudDidChange', this.onCustomEventChange, true);
+    document.addEventListener('codeDidChange', this.onCustomEventChange, true);
+    document.addEventListener('mathDidChange', this.onCustomEventChange, true);
+    document.addEventListener('imgDidChange', this.onCustomEventChange, true);
   }
 
   private onTreeMutation = async (mutations: MutationRecord[]) => {
@@ -60,6 +72,16 @@ export class DocEvents {
   private onDataMutation = (mutations: MutationRecord[]) => {
     this.stackDataMutations.push(...mutations);
     this.debounceUpdateInput();
+  };
+
+  private onCustomEventChange = async ({detail}: CustomEvent<HTMLElement>) => {
+    const paragraph: Node | undefined = findParagraph({element: detail, container: this.containerRef});
+
+    if (!paragraph || NodeUtils.isTextNode(paragraph)) {
+      return;
+    }
+
+    await this.updateParagraph(paragraph as HTMLElement);
   };
 
   private createDoc(): Promise<void> {
@@ -321,7 +343,7 @@ export class DocEvents {
     }
   }
 
-  async updateParagraph(paragraph: HTMLElement) {
+  private async updateParagraph(paragraph: HTMLElement) {
     if (!paragraph || !paragraph.nodeName) {
       return;
     }
