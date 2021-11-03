@@ -69,43 +69,58 @@ export class AppTransformParagraph implements ComponentInterface {
   }
 
   private transformSlot(slotType: SlotType | null) {
+    focusParagraph({paragraph: this.paragraph});
+
+    if ([SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)) {
+      this.transformSlotTitle(slotType);
+    } else if ([SlotType.OL, SlotType.UL].includes(slotType)) {
+      this.addList();
+    } else {
+      this.addElementInSection(slotType);
+    }
+
+    this.hide();
+  }
+
+  private transformSlotTitle(slotType: SlotType) {
+    document.execCommand('formatBlock', false, slotType.toLowerCase());
+  }
+
+  private addElementInSection(slotType: SlotType) {
     const element: HTMLElement = createHTMLElement({slotType});
 
     if (SlotUtils.isNodeEditable(element)) {
       element.setAttribute('editable', 'true');
     }
 
-    focusParagraph({paragraph: this.paragraph});
+    document.execCommand('insertHTML', false, `${element.outerHTML}`);
+  }
 
+  /**
+   * In case of list we do a hack and move the list outside of the section / div in which it is rendered.
+   * Doing we unfortunately loose the "redo" option (undo will work).
+   * Problem is that subsequent paragraphs are going to be added within the same paragraph that contains the list.
+   * Not perfect though would still need improvements.
+   * @param slotType
+   * @private
+   */
+  private addList() {
     const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
       const newNode: Node | undefined = mutations[0]?.addedNodes?.[0];
 
-      console.log('newNode', newNode);
-
       // Move for flattening paragraphs
-      // this.containerRef.insertBefore(newNode, newNode?.parentNode);
-      // newNode?.parentNode.removeChild(newNode?.nextSibling);
+      this.containerRef.insertBefore(newNode, newNode?.parentNode);
+      newNode?.parentNode.removeChild(newNode?.nextSibling);
 
-      // TODO: Delete not OK and force save
-      // List in inline-editor?
-
-      // focusParagraph({paragraph: newNode as HTMLElement});
+      focusParagraph({paragraph: newNode as HTMLElement});
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
     docObserver.observe(this.containerRef, {childList: true, subtree: true});
 
-    document.execCommand('insertHTML', false, `${element.outerHTML}`);
-
-    // document.execCommand('insertParagraph', false);
-
-    // document.execCommand('formatBlock', false, 'h3');
-
-    // document.execCommand('insertOrderedList', false);
-
-    this.hide();
+    document.execCommand('insertOrderedList', false);
   }
 
   render() {
@@ -120,7 +135,7 @@ export class AppTransformParagraph implements ComponentInterface {
 
     return (
       <Host style={style} class={this.display ? 'display' : 'hidden'}>
-        <app-slot-type onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
+        <app-slot-type section={false} onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
       </Host>
     );
   }

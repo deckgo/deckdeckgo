@@ -50,10 +50,11 @@ export class DocEvents {
   private onTreeMutation = async (mutations: MutationRecord[]) => {
     await this.addParagraphs(mutations);
     await this.deleteParagraphs(mutations);
+    await this.updateAddedNodesParagraphs(mutations);
   };
 
   private onAttributesMutation = async (mutations: MutationRecord[]) => {
-    await this.updateParagraphs(mutations);
+    await this.updateParagraphs(mutations.filter(({attributeName}: MutationRecord) => ['style'].includes(attributeName)));
   };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
@@ -239,6 +240,31 @@ export class DocEvents {
     } catch (err) {
       console.log(err);
 
+      errorStore.state.error = err;
+      busyStore.state.deckBusy = false;
+    }
+  }
+
+  private async updateAddedNodesParagraphs(mutations: MutationRecord[]) {
+    try {
+      if (!this.containerRef) {
+        return;
+      }
+
+      if (!mutations || mutations.length <= 0) {
+        return;
+      }
+
+      const addedNodesMutations: MutationRecord[] = mutations.filter(({addedNodes}: MutationRecord) => {
+        const node: Node = addedNodes[0];
+
+        return (
+          !isParagraph({element: node, container: this.containerRef}) && !NodeUtils.isTextNode(node) && node.nodeName.toLowerCase() !== 'br'
+        );
+      });
+
+      await this.updateParagraphs(addedNodesMutations);
+    } catch (err) {
       errorStore.state.error = err;
       busyStore.state.deckBusy = false;
     }
