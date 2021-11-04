@@ -35,6 +35,9 @@ export class AppDocEditor implements ComponentInterface {
 
   private containerRef!: HTMLElement;
 
+  // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
+  private reloadAfterRender: boolean = false;
+
   componentWillLoad() {
     this.docEditorEvents.init();
   }
@@ -57,6 +60,23 @@ export class AppDocEditor implements ComponentInterface {
 
   @Method()
   async initNewDoc() {
+    this.resetDOM();
+
+    this.reloadAfterRender = true;
+    this.paragraphs = undefined;
+  }
+
+  async componentDidRender() {
+    if (!this.reloadAfterRender) {
+      return;
+    }
+
+    this.reloadAfterRender = false;
+
+    await this.reload();
+  }
+
+  private async reload() {
     this.docFetched = false;
 
     await this.initOrFetch();
@@ -97,6 +117,14 @@ export class AppDocEditor implements ComponentInterface {
   private async fetchDoc(docId: string) {
     const paragraphs: JSX.IntrinsicElements[] = await this.paragraphHelper.loadDocAndRetrieveParagraphs(docId);
     this.paragraphs = paragraphs?.length > 0 ? [...paragraphs] : [];
+  }
+
+  private resetDOM() {
+    if (!this.containerRef) {
+      return;
+    }
+
+    this.containerRef.innerHTML = '';
   }
 
   // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
