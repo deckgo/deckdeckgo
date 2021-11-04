@@ -38,19 +38,23 @@ export class ParagraphHelper {
           return;
         }
 
-        const promises: Promise<JSX.IntrinsicElements>[] = doc.data.paragraphs.map((paragraphId: string) =>
+        const promises: Promise<JSX.IntrinsicElements | undefined>[] = doc.data.paragraphs.map((paragraphId: string) =>
           this.fetchParagraph({doc, paragraphId})
         );
-        const parsedParagraphs: JSX.IntrinsicElements[] = await Promise.all(promises);
+        const parsedParagraphs: (JSX.IntrinsicElements | undefined)[] = await Promise.all(promises);
 
-        if (!parsedParagraphs || parsedParagraphs.length <= 0) {
+        const paragraphs: JSX.IntrinsicElements[] = parsedParagraphs.filter(
+          (paragraph: JSX.IntrinsicElements | undefined) => paragraph !== undefined
+        );
+
+        if (!paragraphs || paragraphs.length <= 0) {
           resolve([]);
           return;
         }
 
         busyStore.state.deckBusy = false;
 
-        resolve(parsedParagraphs);
+        resolve(paragraphs);
       } catch (err) {
         errorStore.state.error = err;
         busyStore.state.deckBusy = false;
@@ -59,17 +63,22 @@ export class ParagraphHelper {
     });
   }
 
-  private fetchParagraph({doc, paragraphId}: {doc: Doc; paragraphId: string}): Promise<JSX.IntrinsicElements> {
+  private fetchParagraph({doc, paragraphId}: {doc: Doc; paragraphId: string}): Promise<JSX.IntrinsicElements | undefined> {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       try {
-        const paragraph: Paragraph = await getOfflineParagraph({docId: doc.id, paragraphId});
+        const paragraph: Paragraph | undefined = await getOfflineParagraph({docId: doc.id, paragraphId});
+
+        if (!paragraph) {
+          resolve(undefined);
+          return;
+        }
 
         const element: JSX.IntrinsicElements = await ParseParagraphsUtils.parseParagraph({paragraph});
 
         resolve(element);
       } catch (err) {
         errorStore.state.error = 'Something went wrong while loading and parsing a paragraph';
-        resolve(null);
+        resolve(undefined);
       }
     });
   }

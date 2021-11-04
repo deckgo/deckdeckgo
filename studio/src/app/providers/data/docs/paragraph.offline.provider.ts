@@ -33,7 +33,7 @@ export const createOfflineParagraph = ({docId, paragraphData}: {docId: string; p
   });
 };
 
-export const getOfflineParagraph = ({docId, paragraphId}: {docId: string; paragraphId: string}): Promise<Paragraph> =>
+export const getOfflineParagraph = ({docId, paragraphId}: {docId: string; paragraphId: string}): Promise<Paragraph | undefined> =>
   get(`/docs/${docId}/paragraphs/${paragraphId}`);
 
 export const updateOfflineParagraph = ({docId, paragraph}: {docId: string; paragraph: Paragraph}): Promise<Paragraph> => {
