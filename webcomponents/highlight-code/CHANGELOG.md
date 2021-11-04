@@ -1,3 +1,9 @@
+# 3.4.2 (2021-11-04)
+
+### Fix
+
+- focus and text selection if editable
+
 # 3.4.1 (2021-10-29)
 
 ### Refactor
