@@ -18,6 +18,7 @@ import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 import {getEdit} from '../../utils/editor/editor.utils';
 
 import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
+import editorStore from '../../stores/editor.store';
 
 @Component({
   tag: 'app-doc-editor',
@@ -57,14 +58,23 @@ export class AppDocEditor implements ComponentInterface {
     this.imageEvents.destroy();
     this.chartEvents.destroy();
 
-    this.docEvents.destroy();
-
     this.docEditorEvents.destroy();
+
+    this.destroy();
+  }
+
+  /**
+   * Destroy global state and listener.
+   * @private
+   */
+  private destroy() {
+    this.docEvents.destroy();
+    editorStore.reset();
   }
 
   @Method()
   async initNewDoc() {
-    this.docEvents.destroy();
+    this.destroy();
 
     this.resetDOM();
 
