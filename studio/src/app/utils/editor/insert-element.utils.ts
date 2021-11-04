@@ -18,7 +18,7 @@ export const formatBlock = (slotType: SlotType) => {
  * Not perfect though would still need improvements.
  * @param slotType
  */
-export const insertOrderedList = ({container}: {container: HTMLElement}) => {
+export const insertUnorderedList = ({container}: {container: HTMLElement}) => {
   const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
     observer.disconnect();
 
@@ -34,7 +34,7 @@ export const insertOrderedList = ({container}: {container: HTMLElement}) => {
   const docObserver: MutationObserver = new MutationObserver(onRender);
   docObserver.observe(container, {childList: true, subtree: true});
 
-  document.execCommand('insertOrderedList', false);
+  document.execCommand('insertUnorderedList', false);
 };
 
 export const insertHTML = (slotType: SlotType) => {

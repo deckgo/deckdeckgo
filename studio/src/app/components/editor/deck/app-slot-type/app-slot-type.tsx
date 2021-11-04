@@ -154,7 +154,7 @@ export class AppSlotType {
     return (
       <Fragment>
         {this.renderSlot(
-          SlotType.OL,
+          SlotType.UL,
           <Fragment>
             <AppIcon name="list" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.list}</ion-label>

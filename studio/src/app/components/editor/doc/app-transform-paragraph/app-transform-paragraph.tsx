@@ -10,7 +10,7 @@ import {EditAction} from '../../../../types/editor/edit-action';
 import {focusParagraph} from '../../../../utils/editor/paragraph.utils';
 
 import {AppAssetChoice} from '../../common/app-asset-choice/app-asset-choice';
-import {insertOrderedList, formatBlock, insertHTML, insertImage} from '../../../../utils/editor/insert-element.utils';
+import {insertUnorderedList, formatBlock, insertHTML, insertImage} from '../../../../utils/editor/insert-element.utils';
 
 @Component({
   tag: 'app-transform-paragraph',
@@ -32,7 +32,7 @@ export class AppTransformParagraph implements ComponentInterface {
 
   private paragraph: HTMLElement | undefined | null;
 
-  private slotTypes: SlotType[] = [SlotType.H1, SlotType.H2, SlotType.H3, SlotType.CODE, SlotType.IMG, SlotType.OL];
+  private slotTypes: SlotType[] = [SlotType.H1, SlotType.H2, SlotType.H3, SlotType.CODE, SlotType.IMG, SlotType.UL];
 
   componentDidRender() {
     this.display = this.position !== undefined;
@@ -94,7 +94,7 @@ export class AppTransformParagraph implements ComponentInterface {
     if ([SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)) {
       formatBlock(slotType);
     } else if ([SlotType.OL, SlotType.UL].includes(slotType)) {
-      insertOrderedList({container: this.containerRef});
+      insertUnorderedList({container: this.containerRef});
     } else {
       insertHTML(slotType);
     }
