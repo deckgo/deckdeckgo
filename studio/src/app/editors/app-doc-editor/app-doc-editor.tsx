@@ -64,6 +64,8 @@ export class AppDocEditor implements ComponentInterface {
 
   @Method()
   async initNewDoc() {
+    this.docEvents.destroy();
+
     this.resetDOM();
 
     this.reloadAfterRender = true;
