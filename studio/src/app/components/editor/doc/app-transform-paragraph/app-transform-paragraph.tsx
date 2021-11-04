@@ -7,12 +7,10 @@ import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 import {SlotType} from '../../../../types/editor/slot-type';
 import {EditAction} from '../../../../types/editor/edit-action';
 
-import {createHTMLElement} from '../../../../utils/editor/create-element.utils';
-import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {focusParagraph} from '../../../../utils/editor/paragraph.utils';
 
 import {AppAssetChoice} from '../../common/app-asset-choice/app-asset-choice';
-import {initDeckgoLazyImgAttributes} from '../../../../utils/editor/image.utils';
+import {insertOrderedList, formatBlock, insertHTML, insertImage} from '../../../../utils/editor/insert-element.utils';
 
 @Component({
   tag: 'app-transform-paragraph',
@@ -87,95 +85,34 @@ export class AppTransformParagraph implements ComponentInterface {
       return;
     }
 
+    if (!this.containerRef) {
+      return;
+    }
+
     focusParagraph({paragraph: this.paragraph});
 
     if ([SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)) {
-      this.transformSlotTitle(slotType);
+      formatBlock(slotType);
     } else if ([SlotType.OL, SlotType.UL].includes(slotType)) {
-      this.addList();
+      insertOrderedList({container: this.containerRef});
     } else {
-      this.addElementInSection(slotType);
+      insertHTML(slotType);
     }
 
     this.hide();
   }
 
-  private transformSlotTitle(slotType: SlotType) {
-    document.execCommand('formatBlock', false, slotType.toLowerCase());
-  }
-
-  private addElementInSection(slotType: SlotType) {
-    const element: HTMLElement = createHTMLElement({slotType});
-
-    if (SlotUtils.isNodeEditable(element)) {
-      element.setAttribute('editable', 'true');
+  private async selectImage(action: EditAction, _image?: UnsplashPhoto | TenorGif | StorageFile | Waves) {
+    if (!this.paragraph || !this.containerRef) {
+      return;
     }
 
-    document.execCommand('insertHTML', false, `${element.outerHTML}`);
-  }
-
-  /**
-   * In case of list we do a hack and move the list outside of the section / div in which it is rendered.
-   * Doing we unfortunately loose the "redo" option (undo will work).
-   * Problem is that subsequent paragraphs are going to be added within the same paragraph that contains the list.
-   * Not perfect though would still need improvements.
-   * @param slotType
-   * @private
-   */
-  private addList() {
-    const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
-      observer.disconnect();
-
-      const newNode: Node | undefined = mutations[0]?.addedNodes?.[0];
-
-      // Move for flattening paragraphs
-      this.containerRef.insertBefore(newNode, newNode?.parentNode);
-      newNode?.parentNode.removeChild(newNode?.nextSibling);
-
-      focusParagraph({paragraph: newNode as HTMLElement});
-    };
-
-    const docObserver: MutationObserver = new MutationObserver(onRender);
-    docObserver.observe(this.containerRef, {childList: true, subtree: true});
-
-    document.execCommand('insertOrderedList', false);
-  }
-
-  private async selectImage(action: EditAction, _image?: UnsplashPhoto | TenorGif | StorageFile | Waves) {
     const modal: HTMLIonModalElement = await modalController.create({
       component: action === EditAction.OPEN_UNSPLASH ? 'app-unsplash' : action === EditAction.OPEN_GIFS ? 'app-gif' : 'app-storage-images'
     });
 
     modal.onDidDismiss().then(async ({data}: OverlayEventDetail<UnsplashPhoto | TenorGif | StorageFile>) => {
-      const deckgoImg: HTMLDeckgoLazyImgElement = document.createElement(SlotType.IMG);
-
-      const img: HTMLDeckgoLazyImgElement = initDeckgoLazyImgAttributes({
-        element: deckgoImg,
-        image: data
-      });
-
-      focusParagraph({paragraph: this.paragraph});
-
-      const onRender = async (mutations: MutationRecord[], observer: MutationObserver) => {
-        observer.disconnect();
-
-        const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
-
-        const imgNode: Node | undefined = addedNodes.find((node: Node) => node.nodeName?.toLowerCase() === SlotType.IMG);
-
-        if (!imgNode) {
-          return;
-        }
-
-        const element: HTMLDeckgoLazyImgElement = imgNode as HTMLDeckgoLazyImgElement;
-        element.customLoader = true;
-        await element.lazyLoad();
-      };
-
-      const docObserver: MutationObserver = new MutationObserver(onRender);
-      docObserver.observe(this.containerRef, {childList: true, subtree: true});
-
-      document.execCommand('insertHTML', false, `${img.outerHTML}`);
+      insertImage({image: data, paragraph: this.paragraph, container: this.containerRef});
     });
 
     await modal.present();
