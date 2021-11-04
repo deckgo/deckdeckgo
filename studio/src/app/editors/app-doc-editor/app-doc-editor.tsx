@@ -3,7 +3,6 @@ import {Component, ComponentInterface, Fragment, h, JSX, Method, State} from '@s
 import {v4 as uuid} from 'uuid';
 
 import colorStore from '../../stores/color.store';
-import i18n from '../../stores/i18n.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -206,11 +205,7 @@ export class AppDocEditor implements ComponentInterface {
     if (this.docFetched) {
       return undefined;
     } else {
-      return (
-        <app-spinner>
-          <p>{i18n.state.editor.loading}</p>
-        </app-spinner>
-      );
+      return <app-spinner></app-spinner>;
     }
   }
 }
