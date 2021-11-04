@@ -53,9 +53,6 @@ export namespace Components {
         "slides": JSX.IntrinsicElements[];
         "touch": (element: HTMLElement, autoOpen?: boolean) => Promise<void>;
     }
-    interface AppActionsDocEditor {
-        "containerRef": HTMLElement | undefined;
-    }
     interface AppActionsElement {
         "blurSelectedElement": () => Promise<void>;
         "elementFocus": EventEmitter;
@@ -64,6 +61,9 @@ export namespace Components {
         "slideTransform": EventEmitter;
         "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
+    }
+    interface AppAddParagraph {
+        "containerRef": HTMLElement | undefined;
     }
     interface AppAssetData {
         "data": StorageFile;
@@ -473,17 +473,17 @@ declare global {
         prototype: HTMLAppActionsDeckEditorElement;
         new (): HTMLAppActionsDeckEditorElement;
     };
-    interface HTMLAppActionsDocEditorElement extends Components.AppActionsDocEditor, HTMLStencilElement {
-    }
-    var HTMLAppActionsDocEditorElement: {
-        prototype: HTMLAppActionsDocEditorElement;
-        new (): HTMLAppActionsDocEditorElement;
-    };
     interface HTMLAppActionsElementElement extends Components.AppActionsElement, HTMLStencilElement {
     }
     var HTMLAppActionsElementElement: {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
+    };
+    interface HTMLAppAddParagraphElement extends Components.AppAddParagraph, HTMLStencilElement {
+    }
+    var HTMLAppAddParagraphElement: {
+        prototype: HTMLAppAddParagraphElement;
+        new (): HTMLAppAddParagraphElement;
     };
     interface HTMLAppAssetDataElement extends Components.AppAssetData, HTMLStencilElement {
     }
@@ -1201,8 +1201,8 @@ declare global {
         "app-action-share": HTMLAppActionShareElement;
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-deck-editor": HTMLAppActionsDeckEditorElement;
-        "app-actions-doc-editor": HTMLAppActionsDocEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
+        "app-add-paragraph": HTMLAppAddParagraphElement;
         "app-asset-data": HTMLAppAssetDataElement;
         "app-asset-image": HTMLAppAssetImageElement;
         "app-avatar": HTMLAppAvatarElement;
@@ -1369,10 +1369,6 @@ declare namespace LocalJSX {
         "slideNumber"?: number;
         "slides"?: JSX.IntrinsicElements[];
     }
-    interface AppActionsDocEditor {
-        "containerRef"?: HTMLElement | undefined;
-        "onSelectParagraph"?: (event: CustomEvent<HTMLElement | undefined>) => void;
-    }
     interface AppActionsElement {
         "elementFocus"?: EventEmitter;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
@@ -1386,6 +1382,10 @@ declare namespace LocalJSX {
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
         "slideTransform"?: EventEmitter;
+    }
+    interface AppAddParagraph {
+        "containerRef"?: HTMLElement | undefined;
+        "onSelectParagraph"?: (event: CustomEvent<HTMLElement | undefined>) => void;
     }
     interface AppAssetData {
         "data": StorageFile;
@@ -1813,8 +1813,8 @@ declare namespace LocalJSX {
         "app-action-share": AppActionShare;
         "app-actions-deck": AppActionsDeck;
         "app-actions-deck-editor": AppActionsDeckEditor;
-        "app-actions-doc-editor": AppActionsDocEditor;
         "app-actions-element": AppActionsElement;
+        "app-add-paragraph": AppAddParagraph;
         "app-asset-data": AppAssetData;
         "app-asset-image": AppAssetImage;
         "app-avatar": AppAvatar;
@@ -1946,8 +1946,8 @@ declare module "@stencil/core" {
             "app-action-share": LocalJSX.AppActionShare & JSXBase.HTMLAttributes<HTMLAppActionShareElement>;
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-deck-editor": LocalJSX.AppActionsDeckEditor & JSXBase.HTMLAttributes<HTMLAppActionsDeckEditorElement>;
-            "app-actions-doc-editor": LocalJSX.AppActionsDocEditor & JSXBase.HTMLAttributes<HTMLAppActionsDocEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
+            "app-add-paragraph": LocalJSX.AppAddParagraph & JSXBase.HTMLAttributes<HTMLAppAddParagraphElement>;
             "app-asset-data": LocalJSX.AppAssetData & JSXBase.HTMLAttributes<HTMLAppAssetDataElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;

@@ -6,14 +6,18 @@ import colorStore from '../../stores/color.store';
 import i18n from '../../stores/i18n.store';
 
 import {Editor} from '../../types/editor/editor';
+import {SlotType} from '../../types/editor/slot-type';
 
-import {getEdit} from '../../utils/editor/editor.utils';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocEvents} from '../../events/editor/doc/doc.events';
-import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
-import {SlotType} from '../../types/editor/slot-type';
+
+import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
+
+import {getEdit} from '../../utils/editor/editor.utils';
+
+import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
 
 @Component({
   tag: 'app-doc-editor',
@@ -170,8 +174,7 @@ export class AppDocEditor implements ComponentInterface {
               </article>
             </deckgo-doc>
 
-            <app-actions-doc-editor containerRef={this.containerRef}></app-actions-doc-editor>
-            <app-transform-paragraph containerRef={this.containerRef}></app-transform-paragraph>
+            <AppActionsDocEditor containerRef={this.containerRef}></AppActionsDocEditor>
           </main>
         </ion-content>
 
