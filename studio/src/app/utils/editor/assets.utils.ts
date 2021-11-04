@@ -47,7 +47,7 @@ const slideSelector = (id: string) => {
 };
 
 const paragraphSelector = (id: string) => {
-  return {selector: `${docSelector} > *[paragraph_id="${id}"]`};
+  return {selector: `${docSelector} > article *[paragraph_id="${id}"]`};
 };
 
 const getAssets = async <T>({
