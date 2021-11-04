@@ -1,10 +1,18 @@
 import {Component, ComponentInterface, h, Host, Listen, Prop, State} from '@stencil/core';
 
+import {modalController, OverlayEventDetail} from '@ionic/core';
+
+import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
+
 import {SlotType} from '../../../../types/editor/slot-type';
+import {EditAction} from '../../../../types/editor/edit-action';
 
 import {createHTMLElement} from '../../../../utils/editor/create-element.utils';
 import {SlotUtils} from '../../../../utils/editor/slot.utils';
 import {focusParagraph} from '../../../../utils/editor/paragraph.utils';
+
+import {AppAssetChoice} from '../../common/app-asset-choice/app-asset-choice';
+import {initDeckgoLazyImgAttributes} from '../../../../utils/editor/image.utils';
 
 @Component({
   tag: 'app-transform-paragraph',
@@ -20,6 +28,9 @@ export class AppTransformParagraph implements ComponentInterface {
 
   @State()
   private position: {left: number; top: number; downward: boolean} | undefined = undefined;
+
+  @State()
+  private selectImages: boolean = false;
 
   private paragraph: HTMLElement | undefined | null;
 
@@ -46,7 +57,7 @@ export class AppTransformParagraph implements ComponentInterface {
 
   private hide() {
     this.position = undefined;
-    this.paragraph = undefined;
+    this.selectImages = false;
   }
 
   @Listen('selectParagraph', {target: 'document', passive: true})
@@ -71,6 +82,11 @@ export class AppTransformParagraph implements ComponentInterface {
   }
 
   private transformSlot(slotType: SlotType | null) {
+    if (!this.selectImages && slotType === SlotType.IMG) {
+      this.selectImages = true;
+      return;
+    }
+
     focusParagraph({paragraph: this.paragraph});
 
     if ([SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)) {
@@ -125,6 +141,48 @@ export class AppTransformParagraph implements ComponentInterface {
     document.execCommand('insertOrderedList', false);
   }
 
+  private async selectImage(action: EditAction, _image?: UnsplashPhoto | TenorGif | StorageFile | Waves) {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: action === EditAction.OPEN_UNSPLASH ? 'app-unsplash' : action === EditAction.OPEN_GIFS ? 'app-gif' : 'app-storage-images'
+    });
+
+    modal.onDidDismiss().then(async ({data}: OverlayEventDetail<UnsplashPhoto | TenorGif | StorageFile>) => {
+      const deckgoImg: HTMLDeckgoLazyImgElement = document.createElement(SlotType.IMG);
+
+      const img: HTMLDeckgoLazyImgElement = initDeckgoLazyImgAttributes({
+        element: deckgoImg,
+        image: data
+      });
+
+      focusParagraph({paragraph: this.paragraph});
+
+      const onRender = async (mutations: MutationRecord[], observer: MutationObserver) => {
+        observer.disconnect();
+
+        const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
+
+        const imgNode: Node | undefined = addedNodes.find((node: Node) => node.nodeName?.toLowerCase() === SlotType.IMG);
+
+        if (!imgNode) {
+          return;
+        }
+
+        const element: HTMLDeckgoLazyImgElement = imgNode as HTMLDeckgoLazyImgElement;
+        element.customLoader = true;
+        await element.lazyLoad();
+      };
+
+      const docObserver: MutationObserver = new MutationObserver(onRender);
+      docObserver.observe(this.containerRef, {childList: true, subtree: true});
+
+      document.execCommand('insertHTML', false, `${img.outerHTML}`);
+    });
+
+    await modal.present();
+
+    this.hide();
+  }
+
   render() {
     const style: Record<string, string> =
       this.position === undefined
@@ -136,11 +194,35 @@ export class AppTransformParagraph implements ComponentInterface {
           };
 
     return (
-      <Host style={style} class={this.display ? 'display' : 'hidden'}>
-        <app-slot-type
-          slotTypes={this.slotTypes}
-          onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
+      <Host style={style} class={`${this.display ? 'display' : 'hidden'} ${this.selectImages ? 'images' : ''}`}>
+        {this.renderSlots()}
+        {this.renderSelectImages()}
       </Host>
+    );
+  }
+
+  private renderSlots() {
+    if (this.selectImages) {
+      return undefined;
+    }
+
+    return (
+      <app-slot-type
+        slotTypes={this.slotTypes}
+        onSelectType={({detail}: CustomEvent<SlotType>) => this.transformSlot(detail)}></app-slot-type>
+    );
+  }
+
+  private renderSelectImages() {
+    if (!this.selectImages) {
+      return undefined;
+    }
+
+    return (
+      <AppAssetChoice
+        selectAction={async (action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile | Waves) =>
+          await this.selectImage(action, image)
+        }></AppAssetChoice>
     );
   }
 }

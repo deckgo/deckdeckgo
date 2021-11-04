@@ -1,5 +1,5 @@
 export enum EditAction {
-  OPEN_PHOTOS,
+  OPEN_UNSPLASH,
   OPEN_GIFS,
   OPEN_CUSTOM,
   DELETE_BACKGROUND,

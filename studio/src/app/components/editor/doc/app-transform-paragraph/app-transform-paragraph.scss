@@ -15,13 +15,13 @@ app-transform-paragraph {
   box-shadow: 1px 2px 8px 2px rgba(var(--ion-color-dark-rgb), 0.2);
 
   border-radius: 4px;
-  overflow: hidden;
 
   &.display {
     visibility: visible;
     opacity: 1;
   }
 
+  width: 220px;
   max-height: 220px;
 
   overflow: scroll;
@@ -34,5 +34,13 @@ app-transform-paragraph {
     ion-item {
       --background: white;
     }
+  }
+
+  &.images {
+    padding: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

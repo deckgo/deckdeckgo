@@ -12,7 +12,7 @@ import {ImageAction} from '../../types/editor/image-action';
 import {EditAction} from '../../types/editor/edit-action';
 import {SlotUtils} from '../../utils/editor/slot.utils';
 import {SlotType} from '../../types/editor/slot-type';
-import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
+import {initDeckgoLazyImgAttributes} from '../../utils/editor/image.utils';
 
 export class ImageHelper {
   constructor(
@@ -22,7 +22,7 @@ export class ImageHelper {
   ) {}
 
   async imageAction(selectedElement: HTMLElement, slide: boolean, deck: boolean, imageAction: ImageAction) {
-    if (imageAction.action === EditAction.OPEN_PHOTOS) {
+    if (imageAction.action === EditAction.OPEN_UNSPLASH) {
       await this.openModal(selectedElement, slide, deck, 'app-unsplash');
     } else if (imageAction.action === EditAction.DELETE_BACKGROUND) {
       await this.deleteBackground(selectedElement, slide, deck);
@@ -135,44 +135,18 @@ export class ImageHelper {
     });
   }
 
-  private updateDeckgoLazyImgAttributes(
-    img: HTMLElement,
-    image: UnsplashPhoto | TenorGif | StorageFile,
-    background: boolean = false
-  ): HTMLElement {
-    const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
-
-    if (deckgImg !== undefined) {
-      (img as HTMLDeckgoLazyImgElement).imgSrc = deckgImg.src;
-      (img as HTMLDeckgoLazyImgElement).imgAlt = deckgImg.label;
-    }
-
-    if (image && image !== undefined && image.hasOwnProperty('downloadUrl')) {
-      (img as HTMLDeckgoLazyImgElement).customLoader = true;
-
-      // We have to add the information as attributes because slots are going to be cloned to the slides background
-      if (background) {
-        img.setAttribute('custom-loader', 'true');
-      }
-    }
-
-    img.setAttribute('contentEditable', 'false');
-
-    return img;
-  }
-
   private appendContentImg(selectedElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile): Promise<void> {
     return new Promise<void>((resolve) => {
-      let element: HTMLElement = SlotUtils.isNodeReveal(selectedElement)
-        ? (selectedElement.firstElementChild as HTMLElement)
-        : selectedElement;
+      let element: HTMLDeckgoLazyImgElement = SlotUtils.isNodeReveal(selectedElement)
+        ? (selectedElement.firstElementChild as HTMLDeckgoLazyImgElement)
+        : (selectedElement as HTMLDeckgoLazyImgElement);
 
       if (element.nodeName?.toLowerCase() === SlotType.IMG) {
-        element = this.updateDeckgoLazyImgAttributes(element, image);
+        element = initDeckgoLazyImgAttributes({element, image});
       } else {
-        const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
+        const deckgoImg: HTMLDeckgoLazyImgElement = document.createElement(SlotType.IMG);
 
-        const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image);
+        const img: HTMLDeckgoLazyImgElement = initDeckgoLazyImgAttributes({element: deckgoImg, image});
 
         element.appendChild(img);
       }
@@ -245,9 +219,9 @@ export class ImageHelper {
     image: UnsplashPhoto | TenorGif | StorageFile,
     deck: boolean
   ) {
-    const deckgoImg: HTMLElement = document.createElement(SlotType.IMG);
+    const deckgoImg: HTMLDeckgoLazyImgElement = document.createElement(SlotType.IMG);
 
-    const img: HTMLElement = this.updateDeckgoLazyImgAttributes(deckgoImg, image, true);
+    const img: HTMLElement = initDeckgoLazyImgAttributes({element: deckgoImg, image, background: true});
     div.appendChild(img);
 
     selectedElement.appendChild(div);

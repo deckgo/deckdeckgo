@@ -65,7 +65,9 @@ export class AppSlotType {
     return SlotType[templateKey];
   }
 
-  private select(type: SlotType | null) {
+  private select($event: UIEvent, type: SlotType | null) {
+    $event.stopPropagation();
+
     this.selectType.emit(type && this.currentType !== type ? type : null);
   }
 
@@ -124,7 +126,7 @@ export class AppSlotType {
     }
 
     return (
-      <a onClick={() => this.select(slotType)} class={this.currentType === slotType ? 'current' : ''}>
+      <a onClick={($event: UIEvent) => this.select($event, slotType)} class={this.currentType === slotType ? 'current' : ''}>
         <ion-item>{item}</ion-item>
       </a>
     );
@@ -136,7 +138,7 @@ export class AppSlotType {
     }
 
     return (
-      <a class="skip" onClick={() => this.select(null)}>
+      <a class="skip" onClick={($event: UIEvent) => this.select($event, null)}>
         <ion-item>
           <p>{i18n.state.editor.skip}</p>
         </ion-item>

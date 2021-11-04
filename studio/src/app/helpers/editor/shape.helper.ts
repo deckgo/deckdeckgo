@@ -10,7 +10,7 @@ import busyStore from '../../stores/busy.store';
 import {ShapeAction, ShapeActionSVG} from '../../types/editor/shape-action';
 import {ImageAction} from '../../types/editor/image-action';
 import {SlotType} from '../../types/editor/slot-type';
-import {DeckgoImgAction, ImageActionUtils} from '../../utils/editor/image-action.utils';
+import {DeckgoImgAttributes, extractAttributes} from '../../utils/editor/image.utils';
 import {EditAction} from '../../types/editor/edit-action';
 
 export class ShapeHelper {
@@ -35,7 +35,7 @@ export class ShapeHelper {
   }
 
   private async appendShapeImage(slideElement: HTMLElement, imageAction: ImageAction) {
-    if (imageAction.action === EditAction.OPEN_PHOTOS) {
+    if (imageAction.action === EditAction.OPEN_UNSPLASH) {
       await this.openModal(slideElement, 'app-unsplash');
     } else if (imageAction.action === EditAction.OPEN_GIFS) {
       await this.openModal(slideElement, 'app-gif');
@@ -53,7 +53,7 @@ export class ShapeHelper {
   }
 
   private async appendContentShapeImage(slideElement: HTMLElement, image: UnsplashPhoto | TenorGif | StorageFile) {
-    const deckgImg: DeckgoImgAction | undefined = ImageActionUtils.extractAttributes(image);
+    const deckgImg: DeckgoImgAttributes | undefined = extractAttributes(image);
 
     if (deckgImg !== undefined) {
       busyStore.state.deckBusy = true;
