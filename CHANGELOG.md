@@ -1,3 +1,11 @@
+<a name="X.Y.Z"></a>
+
+# [X.Y.Z](https://github.com/deckgo/deckdeckgo/compare/v5.0.1...vX.Y.Z) (202A-BB-CC)
+
+### Web Components
+
+- highlight-code: v3.4.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/highlight-code/CHANGELOG.md))
+
 <a name="5.0.1"></a>
 
 # [5.0.1](https://github.com/deckgo/deckdeckgo/compare/v5.0.0...v5.0.1) (2021-10-29)

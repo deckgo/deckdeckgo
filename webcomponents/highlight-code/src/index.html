@@ -279,5 +279,23 @@ program = [
     <deckgo-highlight-code language="t4">
       <code slot="code"> The date and time now is: <#= DateTime.Now #> </code>
     </deckgo-highlight-code>
+
+    <h1>Add editable:</h1>
+
+    <button>Add</button>
+
+    <script>
+      const addCode = () => {
+        const deckgo = document.createElement('deckgo-highlight-code');
+        const code = document.createElement('code');
+        code.setAttribute('slot', 'code');
+        deckgo.appendChild(code);
+        deckgo.setAttribute('editable', 'true');
+        document.querySelector('body').appendChild(deckgo);
+      };
+
+      const btn = document.querySelector('button:last-of-type');
+      btn.addEventListener('click', addCode);
+    </script>
   </body>
 </html>
