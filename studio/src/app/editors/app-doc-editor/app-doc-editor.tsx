@@ -3,6 +3,7 @@ import {Component, ComponentInterface, Fragment, h, JSX, Method, State} from '@s
 import {v4 as uuid} from 'uuid';
 
 import colorStore from '../../stores/color.store';
+import editorStore from '../../stores/editor.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -17,7 +18,6 @@ import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 import {getEdit} from '../../utils/editor/editor.utils';
 
 import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
-import editorStore from '../../stores/editor.store';
 
 @Component({
   tag: 'app-doc-editor',
