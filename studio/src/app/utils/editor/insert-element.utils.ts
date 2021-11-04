@@ -7,35 +7,9 @@ import {focusParagraph} from './paragraph.utils';
 import {createHTMLElement} from './create-element.utils';
 import {initDeckgoLazyImgAttributes} from './image.utils';
 
-export const formatBlock = (slotType: SlotType) => {
-  document.execCommand('formatBlock', false, slotType.toLowerCase());
-};
+export const formatBlock = (slotType: SlotType) => document.execCommand('formatBlock', false, slotType.toLowerCase());
 
-/**
- * In case of list we do a hack and move the list outside of the section / div in which it is rendered.
- * Doing we unfortunately loose the "redo" option (undo will work).
- * Problem is that subsequent paragraphs are going to be added within the same paragraph that contains the list.
- * Not perfect though would still need improvements.
- * @param slotType
- */
-export const insertUnorderedList = ({container}: {container: HTMLElement}) => {
-  const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
-    observer.disconnect();
-
-    const newNode: Node | undefined = mutations[0]?.addedNodes?.[0];
-
-    // Move for flattening paragraphs
-    container.insertBefore(newNode, newNode?.parentNode);
-    newNode?.parentNode.removeChild(newNode?.nextSibling);
-
-    focusParagraph({paragraph: newNode as HTMLElement});
-  };
-
-  const docObserver: MutationObserver = new MutationObserver(onRender);
-  docObserver.observe(container, {childList: true, subtree: true});
-
-  document.execCommand('insertUnorderedList', false);
-};
+export const insertUnorderedList = () => document.execCommand('insertUnorderedList', false);
 
 export const insertHTML = (slotType: SlotType) => {
   const element: HTMLElement = createHTMLElement({slotType});

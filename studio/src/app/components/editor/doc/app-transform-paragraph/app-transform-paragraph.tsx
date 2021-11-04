@@ -94,7 +94,7 @@ export class AppTransformParagraph implements ComponentInterface {
     if ([SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)) {
       formatBlock(slotType);
     } else if ([SlotType.OL, SlotType.UL].includes(slotType)) {
-      insertUnorderedList({container: this.containerRef});
+      insertUnorderedList();
     } else {
       insertHTML(slotType);
     }
