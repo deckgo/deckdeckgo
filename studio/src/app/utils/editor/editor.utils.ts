@@ -6,7 +6,31 @@ import {clearSync} from '../../providers/sync/sync.provider';
 
 import {ImageHistoryService} from '../../services/editor/image-history/image-history.service';
 
-export const getEdit = (): Promise<Editor | undefined> => get('deckdeckgo_editor');
+export const getEdit = async (): Promise<Editor | undefined> => {
+  let edit: Editor | undefined = await get('deckdeckgo_editor');
+
+  if (!edit) {
+    edit = await migrateDeckId();
+  }
+
+  return edit;
+};
+
+// TODO: remove after a while, key used to be 'deckdeckgo_deck_id' and is now 'deckdeckgo_editor'
+const migrateDeckId = async (): Promise<Editor | undefined> => {
+  const deckId: string | undefined = await get('deckdeckgo_deck_id');
+
+  if (!deckId) {
+    return undefined;
+  }
+
+  await setEditDeckId(deckId);
+
+  return {
+    id: deckId,
+    type: 'deck'
+  };
+};
 
 export const clearEdit = async (clearSyncData: boolean) => {
   if (clearSyncData) {
