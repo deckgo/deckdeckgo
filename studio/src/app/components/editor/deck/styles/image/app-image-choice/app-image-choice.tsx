@@ -61,7 +61,10 @@ export class AppImageChoice {
         <ion-label slot="title">{i18n.state.editor.images}</ion-label>
 
         <div class="image-actions ion-margin">
-          <AppAssetChoice selectAction={this.selectAction}></AppAssetChoice>
+          <AppAssetChoice
+            selectAction={async (action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile | Waves) =>
+              await this.selectAction(action, image)
+            }></AppAssetChoice>
           {this.renderWaves()}
           {this.renderDeleteAction()}
         </div>
