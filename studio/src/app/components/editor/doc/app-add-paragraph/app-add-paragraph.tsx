@@ -78,10 +78,6 @@ export class AppAddParagraph implements ComponentInterface {
     this.top = this.paragraph.offsetTop;
   };
 
-  // TODO: color bug and other small issues
-  // TODO: bug remove title text not saved
-  // TODO: bug "new doc -> new doc -> reload -> title twice"
-
   private initParagraph($event: UIEvent) {
     if (!this.paragraph) {
       return;
