@@ -1,6 +1,6 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {catchTab, debounce} from '@deckdeckgo/utils';
+import {catchTab, debounce, moveCursorToEnd} from '@deckdeckgo/utils';
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -96,6 +96,8 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
 
   @State()
   private highlightRows: {start: number; end: number} | undefined = undefined;
+
+  private editFocused: boolean = false;
 
   constructor() {
     this.debounceUpdateSlot = debounce(async () => {
@@ -343,6 +345,8 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       return;
     }
 
+    this.editFocused = false;
+
     await this.copyCodeToSlot();
 
     await this.parseSlottedCode();
@@ -378,11 +382,18 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   }
 
   private edit() {
-    if (!this.editable) {
+    if (!this.editable || this.editFocused) {
       return;
     }
 
-    this.refCode?.focus();
+    if (!this.refCode) {
+      return;
+    }
+
+    this.editFocused = true;
+
+    this.refCode.focus();
+    moveCursorToEnd(this.refCode);
   }
 
   /**
