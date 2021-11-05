@@ -22,7 +22,7 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {loadAndImport} from '../../../utils/core/dashboard.utils';
 import {getEdit} from '../../../utils/editor/editor.utils';
-import {removeSyncBeforeUnload} from '../../../utils/core/sync.window.utils';
+import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';

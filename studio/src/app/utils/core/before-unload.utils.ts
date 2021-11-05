@@ -20,3 +20,11 @@ export const syncBeforeUnload = (sync: SyncState) => {
     removeSyncBeforeUnload();
   }
 };
+
+export const busyBeforeUnload = (busy: boolean | undefined) => {
+  if (busy === true) {
+    addSyncBeforeUnload();
+  } else {
+    removeSyncBeforeUnload();
+  }
+};

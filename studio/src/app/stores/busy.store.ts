@@ -7,11 +7,11 @@ interface BusyStore {
   docReady: boolean;
 }
 
-const {state} = createStore<BusyStore>({
+const {state, onChange} = createStore<BusyStore>({
   busy: undefined,
   slideReady: false,
   deckReady: false,
   docReady: false
 });
 
-export default {state};
+export default {state, onChange};
