@@ -24,6 +24,10 @@ app-doc-editor {
         content: "Write your document...";
         color: rgba(var(--ion-color-medium-rgb), 0.6);
       }
+
+      deckgo-lazy-img {
+        display: block;
+      }
     }
   }
 }

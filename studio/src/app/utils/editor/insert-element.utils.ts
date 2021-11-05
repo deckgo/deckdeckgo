@@ -37,6 +37,8 @@ export const insertImage = ({
     image
   });
 
+  const br: HTMLBRElement = document.createElement('br');
+
   focusParagraph({paragraph});
 
   const onRender = async (mutations: MutationRecord[], observer: MutationObserver) => {
@@ -58,5 +60,5 @@ export const insertImage = ({
   const docObserver: MutationObserver = new MutationObserver(onRender);
   docObserver.observe(container, {childList: true, subtree: true});
 
-  document.execCommand('insertHTML', false, `${img.outerHTML}`);
+  document.execCommand('insertHTML', false, `${img.outerHTML}${br.outerHTML}`);
 };
