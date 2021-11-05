@@ -26,6 +26,8 @@ const migrateDeckId = async (): Promise<Editor | undefined> => {
 
   await setEditDeckId(deckId);
 
+  await del('deckdeckgo_deck_id');
+
   return {
     id: deckId,
     type: 'deck'
