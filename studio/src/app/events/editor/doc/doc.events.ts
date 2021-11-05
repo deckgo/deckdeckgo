@@ -28,6 +28,8 @@ export class DocEvents {
 
   private readonly debounceUpdateInput: () => void = debounce(async () => await this.updateData(), 500);
 
+  private debounceBusyEnd: () => void = debounce(() => (busyStore.state.deckBusy = false), 500);
+
   init(containerRef: HTMLElement) {
     this.containerRef = containerRef;
 
@@ -60,13 +62,21 @@ export class DocEvents {
   }
 
   private onTreeMutation = async (mutations: MutationRecord[]) => {
+    busyStore.state.deckBusy = true;
+
     await this.addParagraphs(mutations);
     await this.deleteParagraphs(mutations);
     await this.updateAddedNodesParagraphs(mutations);
+
+    this.debounceBusyEnd();
   };
 
   private onAttributesMutation = async (mutations: MutationRecord[]) => {
+    busyStore.state.deckBusy = true;
+
     await this.updateParagraphs(mutations.filter(({attributeName}: MutationRecord) => ['style'].includes(attributeName)));
+
+    this.debounceBusyEnd();
   };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
@@ -236,7 +246,6 @@ export class DocEvents {
       }
     } catch (err) {
       errorStore.state.error = err;
-      busyStore.state.deckBusy = false;
     }
   }
 
@@ -260,10 +269,7 @@ export class DocEvents {
 
       await this.filterDocParagraphList(removedParagraphIds);
     } catch (err) {
-      console.log(err);
-
       errorStore.state.error = err;
-      busyStore.state.deckBusy = false;
     }
   }
 
@@ -290,7 +296,6 @@ export class DocEvents {
       await this.updateParagraphs(addedNodesMutations);
     } catch (err) {
       errorStore.state.error = err;
-      busyStore.state.deckBusy = false;
     }
   }
 
@@ -307,10 +312,14 @@ export class DocEvents {
       return;
     }
 
+    busyStore.state.deckBusy = true;
+
     const mutations: MutationRecord[] = [...this.stackDataMutations];
     this.stackDataMutations = [];
 
     await this.updateParagraphs(mutations);
+
+    this.debounceBusyEnd();
   }
 
   private async updateParagraphs(mutations: MutationRecord[]) {
@@ -339,7 +348,6 @@ export class DocEvents {
       await Promise.all(promises);
     } catch (err) {
       errorStore.state.error = err;
-      busyStore.state.deckBusy = false;
     }
   }
 

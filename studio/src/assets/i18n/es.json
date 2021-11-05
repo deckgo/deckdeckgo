@@ -384,7 +384,8 @@
     "slide_style": "Estilo de la diapositiva",
     "transform_element": "Elemento de transformación",
     "transform_slide": "Transformar diapositiva",
-    "add_element": "Add an image, code, or new part"
+    "add_element": "Add an image, code, or new part",
+    "saving": "Guardando..."
   },
   "offline": {
     "editing": "Estás editando sin conexión.",

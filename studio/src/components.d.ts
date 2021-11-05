@@ -301,6 +301,8 @@ export namespace Components {
     }
     interface AppRoot {
     }
+    interface AppSaveParagraphsIndicator {
+    }
     interface AppSelectTargetElement {
         "chart": boolean;
         "code": boolean;
@@ -947,6 +949,12 @@ declare global {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
+    interface HTMLAppSaveParagraphsIndicatorElement extends Components.AppSaveParagraphsIndicator, HTMLStencilElement {
+    }
+    var HTMLAppSaveParagraphsIndicatorElement: {
+        prototype: HTMLAppSaveParagraphsIndicatorElement;
+        new (): HTMLAppSaveParagraphsIndicatorElement;
+    };
     interface HTMLAppSelectTargetElementElement extends Components.AppSelectTargetElement, HTMLStencilElement {
     }
     var HTMLAppSelectTargetElementElement: {
@@ -1280,6 +1288,7 @@ declare global {
         "app-remote-request": HTMLAppRemoteRequestElement;
         "app-reveal": HTMLAppRevealElement;
         "app-root": HTMLAppRootElement;
+        "app-save-paragraphs-indicator": HTMLAppSaveParagraphsIndicatorElement;
         "app-select-target-element": HTMLAppSelectTargetElementElement;
         "app-shape": HTMLAppShapeElement;
         "app-share-deck": HTMLAppShareDeckElement;
@@ -1658,6 +1667,8 @@ declare namespace LocalJSX {
     }
     interface AppRoot {
     }
+    interface AppSaveParagraphsIndicator {
+    }
     interface AppSelectTargetElement {
         "chart"?: boolean;
         "code"?: boolean;
@@ -1892,6 +1903,7 @@ declare namespace LocalJSX {
         "app-remote-request": AppRemoteRequest;
         "app-reveal": AppReveal;
         "app-root": AppRoot;
+        "app-save-paragraphs-indicator": AppSaveParagraphsIndicator;
         "app-select-target-element": AppSelectTargetElement;
         "app-shape": AppShape;
         "app-share-deck": AppShareDeck;
@@ -2025,6 +2037,7 @@ declare module "@stencil/core" {
             "app-remote-request": LocalJSX.AppRemoteRequest & JSXBase.HTMLAttributes<HTMLAppRemoteRequestElement>;
             "app-reveal": LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "app-save-paragraphs-indicator": LocalJSX.AppSaveParagraphsIndicator & JSXBase.HTMLAttributes<HTMLAppSaveParagraphsIndicatorElement>;
             "app-select-target-element": LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
             "app-shape": LocalJSX.AppShape & JSXBase.HTMLAttributes<HTMLAppShapeElement>;
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;

@@ -393,6 +393,7 @@ interface I18nEditor {
   transform_element: string;
   transform_slide: string;
   add_element: string;
+  saving: string;
 }
 
 interface I18nOffline {

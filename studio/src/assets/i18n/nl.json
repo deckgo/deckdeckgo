@@ -384,7 +384,8 @@
     "slide_style": "Slide stijl",
     "transform_element": "Transformeer element",
     "transform_slide": "Transformeer slide",
-    "add_element": "Voeg een afbeelding, code of nieuw element toe"
+    "add_element": "Voeg een afbeelding, code of nieuw element toe",
+    "saving": "Bezig met opslaan..."
   },
   "offline": {
     "editing": "U bent offline aan het bewerken.",
