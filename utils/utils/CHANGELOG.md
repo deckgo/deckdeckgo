@@ -1,3 +1,13 @@
+# 2.4.0 (2021-11-05)
+
+### Features
+
+- move cursor to start
+
+### Fix
+
+- lazy load all images async / await
+
 # 2.3.0 (2021-10-29)
 
 ### Features
