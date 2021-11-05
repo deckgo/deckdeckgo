@@ -8,6 +8,7 @@
 
 ### Other
 
+- editor: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - utils: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.0.1"></a>
