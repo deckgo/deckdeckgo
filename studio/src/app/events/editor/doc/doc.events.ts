@@ -28,7 +28,7 @@ export class DocEvents {
 
   private readonly debounceUpdateInput: () => void = debounce(async () => await this.updateData(), 500);
 
-  private debounceBusyEnd: () => void = debounce(() => (busyStore.state.deckBusy = false), 500);
+  private debounceBusyEnd: () => void = debounce(() => (busyStore.state.busy = false), 500);
 
   init(containerRef: HTMLElement) {
     this.containerRef = containerRef;
@@ -62,7 +62,7 @@ export class DocEvents {
   }
 
   private onTreeMutation = async (mutations: MutationRecord[]) => {
-    busyStore.state.deckBusy = true;
+    busyStore.state.busy = true;
 
     await this.addParagraphs(mutations);
     await this.deleteParagraphs(mutations);
@@ -72,7 +72,7 @@ export class DocEvents {
   };
 
   private onAttributesMutation = async (mutations: MutationRecord[]) => {
-    busyStore.state.deckBusy = true;
+    busyStore.state.busy = true;
 
     await this.updateParagraphs(mutations.filter(({attributeName}: MutationRecord) => ['style'].includes(attributeName)));
 
@@ -312,7 +312,7 @@ export class DocEvents {
       return;
     }
 
-    busyStore.state.deckBusy = true;
+    busyStore.state.busy = true;
 
     const mutations: MutationRecord[] = [...this.stackDataMutations];
     this.stackDataMutations = [];

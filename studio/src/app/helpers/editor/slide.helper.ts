@@ -30,7 +30,7 @@ export class SlideHelper {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       try {
         const deck: Deck = await this.deckOfflineProvider.get(deckId);
@@ -65,12 +65,12 @@ export class SlideHelper {
           return;
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve(parsedSlides);
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve(null);
       }
     });
@@ -116,12 +116,12 @@ export class SlideHelper {
           element = await ParseSlidesUtils.parseSlide(editorStore.state.deck, slide, true, true);
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve(element);
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve(null);
       }
     });

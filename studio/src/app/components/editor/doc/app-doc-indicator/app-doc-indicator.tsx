@@ -12,8 +12,8 @@ export class AppDocIndicator implements ComponentInterface {
   render() {
     return (
       <Host>
-        {busyStore.state.deckBusy ? i18n.state.editor.saving : ''}
-        {!busyStore.state.docReady && !busyStore.state.deckBusy ? i18n.state.core.loading : ''}
+        {busyStore.state.busy ? i18n.state.editor.saving : ''}
+        {!busyStore.state.docReady && !busyStore.state.busy ? i18n.state.core.loading : ''}
       </Host>
     );
   }

@@ -68,7 +68,7 @@ export class AppBreadcrumbs {
         onTouchStart={($event) => $event.stopPropagation()}
         class={deckEditorStore.state.step === step ? 'selected' : undefined}
         onClick={() => this.selectStep(step)}
-        disabled={busyStore.state.deckBusy}>
+        disabled={busyStore.state.busy}>
         <ion-label>
           {step}{' '}
           {step === 'slide' ? (
@@ -83,6 +83,6 @@ export class AppBreadcrumbs {
   }
 
   private renderSeparator() {
-    return <ion-label class={`separator ${busyStore.state.deckBusy ? 'busy' : ''}`}>&#62;</ion-label>;
+    return <ion-label class={`separator ${busyStore.state.busy ? 'busy' : ''}`}>&#62;</ion-label>;
   }
 }

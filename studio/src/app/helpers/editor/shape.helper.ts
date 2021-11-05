@@ -29,7 +29,7 @@ export class ShapeHelper {
   }
 
   private async appendShapeSVG(slideElement: HTMLElement, shapeAction: ShapeActionSVG) {
-    busyStore.state.deckBusy = true;
+    busyStore.state.busy = true;
 
     await this.appendContentShape(slideElement, shapeAction.ratio, shapeAction.src, shapeAction.label, 'svg');
   }
@@ -47,7 +47,7 @@ export class ShapeHelper {
   }
 
   async cloneShape(shapeElement: HTMLElement) {
-    busyStore.state.deckBusy = true;
+    busyStore.state.busy = true;
 
     await this.cloneShapeElement(shapeElement);
   }
@@ -56,7 +56,7 @@ export class ShapeHelper {
     const deckgImg: DeckgoImgAttributes | undefined = extractAttributes(image);
 
     if (deckgImg !== undefined) {
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       await this.appendContentShape(slideElement, 1, deckgImg.src, deckgImg.label, 'img');
     }

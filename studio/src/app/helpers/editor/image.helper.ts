@@ -82,7 +82,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       if (slide || deck) {
         await this.appendBackgroundImg(selectedElement, image as UnsplashPhoto | TenorGif | StorageFile, deck);
@@ -109,7 +109,7 @@ export class ImageHelper {
       const currentSlotElement: HTMLElement = selectedElement.querySelector(":scope > [slot='background']");
 
       if (currentSlotElement) {
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
         if (deck) {
           selectedElement.removeChild(currentSlotElement);
@@ -249,7 +249,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       selectedElement.removeAttribute('img-src');
 
@@ -266,7 +266,7 @@ export class ImageHelper {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       selectedElement.setAttribute(attribute, image.downloadUrl);
 

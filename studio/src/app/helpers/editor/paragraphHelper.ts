@@ -59,7 +59,7 @@ export class ParagraphHelper {
         resolve(paragraphs);
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
         resolve(null);
       }
     });

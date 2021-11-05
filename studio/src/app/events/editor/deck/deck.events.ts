@@ -213,7 +213,7 @@ export class DeckEvents {
           return;
         }
 
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
         if (!editorStore.state.deck) {
           await this.createDeck();
@@ -223,12 +223,12 @@ export class DeckEvents {
 
         await this.updateDeckSlideList(editorStore.state.deck, persistedSlide, slide);
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -317,7 +317,7 @@ export class DeckEvents {
           return;
         }
 
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
         const currentDeck: Deck | null = editorStore.state.deck;
 
@@ -349,12 +349,12 @@ export class DeckEvents {
 
         editorStore.state.deck = {...updatedDeck};
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -368,7 +368,7 @@ export class DeckEvents {
           return;
         }
 
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
         const currentDeck: Deck | null = editorStore.state.deck;
 
@@ -388,12 +388,12 @@ export class DeckEvents {
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
         editorStore.state.deck = {...updatedDeck};
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -409,7 +409,7 @@ export class DeckEvents {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       const currentDeck: Deck | null = editorStore.state.deck;
 
@@ -426,10 +426,10 @@ export class DeckEvents {
       const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
       editorStore.state.deck = {...updatedDeck};
 
-      busyStore.state.deckBusy = false;
+      busyStore.state.busy = false;
     } catch (err) {
       errorStore.state.error = err;
-      busyStore.state.deckBusy = false;
+      busyStore.state.busy = false;
     }
   }
 
@@ -472,12 +472,12 @@ export class DeckEvents {
           await this.slideOfflineProvider.update(editorStore.state.deck.id, slideUpdate);
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -520,12 +520,12 @@ export class DeckEvents {
           }
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
