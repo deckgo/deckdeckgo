@@ -123,6 +123,8 @@ export class AppDocEditor implements ComponentInterface {
     const section: JSX.IntrinsicElements = <Section key={uuid()}></Section>;
 
     this.paragraphs = firefox ? [title] : [title, section];
+
+    busyStore.state.docReady = true;
   }
 
   private async fetchDoc(docId: string) {
