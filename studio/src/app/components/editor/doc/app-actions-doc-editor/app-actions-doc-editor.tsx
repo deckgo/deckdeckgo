@@ -9,7 +9,7 @@ export const AppActionsDocEditor: FunctionalComponent<AppActionsDocEditorProps> 
     <Fragment>
       <app-add-paragraph containerRef={containerRef}></app-add-paragraph>
       <app-transform-paragraph containerRef={containerRef}></app-transform-paragraph>
-      <app-save-paragraphs-indicator></app-save-paragraphs-indicator>
+      <app-doc-indicator></app-doc-indicator>
     </Fragment>
   );
 };

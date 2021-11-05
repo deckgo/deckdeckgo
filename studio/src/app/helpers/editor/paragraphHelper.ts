@@ -20,13 +20,14 @@ export class ParagraphHelper {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.docReady = false;
 
       try {
         const doc: Doc = await getOfflineDoc(docId);
 
         if (!doc || !doc.data) {
           errorStore.state.error = 'No doc could be fetched';
+          busyStore.state.docReady = true;
           resolve(null);
           return;
         }
@@ -34,6 +35,7 @@ export class ParagraphHelper {
         editorStore.state.doc = {...doc};
 
         if (!doc.data.paragraphs || doc.data.paragraphs.length <= 0) {
+          busyStore.state.docReady = true;
           resolve([]);
           return;
         }
@@ -48,16 +50,16 @@ export class ParagraphHelper {
         );
 
         if (!paragraphs || paragraphs.length <= 0) {
+          busyStore.state.docReady = true;
           resolve([]);
           return;
         }
 
-        busyStore.state.deckBusy = false;
-
+        busyStore.state.docReady = true;
         resolve(paragraphs);
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.deckBusy = true;
         resolve(null);
       }
     });

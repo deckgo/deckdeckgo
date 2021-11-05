@@ -6,6 +6,7 @@ import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 
 import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
+import busyStore from '../../stores/busy.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -26,9 +27,6 @@ import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-e
   styleUrl: 'app-doc-editor.scss'
 })
 export class AppDocEditor implements ComponentInterface {
-  @State()
-  private docFetched: boolean = false;
-
   @State()
   private paragraphs: JSX.IntrinsicElements[] = [];
 
@@ -94,8 +92,6 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private async reload() {
-    this.docFetched = false;
-
     await this.initOrFetch();
   }
 
@@ -112,8 +108,6 @@ export class AppDocEditor implements ComponentInterface {
     } else {
       await this.fetchDoc(docId);
     }
-
-    this.docFetched = true;
   }
 
   private async initDoc() {
@@ -215,10 +209,10 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private renderLoading() {
-    if (this.docFetched) {
+    if (busyStore.state.docReady) {
       return undefined;
-    } else {
-      return <app-spinner></app-spinner>;
     }
+
+    return <app-spinner></app-spinner>;
   }
 }

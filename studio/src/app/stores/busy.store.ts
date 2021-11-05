@@ -4,12 +4,14 @@ interface BusyStore {
   deckBusy: boolean | undefined;
   slideReady: boolean;
   deckReady: boolean;
+  docReady: boolean;
 }
 
-const {state} = createStore({
+const {state} = createStore<BusyStore>({
   deckBusy: undefined,
   slideReady: false,
-  deckReady: false
-} as BusyStore);
+  deckReady: false,
+  docReady: false
+});
 
 export default {state};

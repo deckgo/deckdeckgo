@@ -164,6 +164,8 @@ export namespace Components {
     interface AppDocEditor {
         "initNewDoc": () => Promise<void>;
     }
+    interface AppDocIndicator {
+    }
     interface AppEditMode {
     }
     interface AppEditSlide {
@@ -300,8 +302,6 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppRoot {
-    }
-    interface AppSaveParagraphsIndicator {
     }
     interface AppSelectTargetElement {
         "chart": boolean;
@@ -673,6 +673,12 @@ declare global {
         prototype: HTMLAppDocEditorElement;
         new (): HTMLAppDocEditorElement;
     };
+    interface HTMLAppDocIndicatorElement extends Components.AppDocIndicator, HTMLStencilElement {
+    }
+    var HTMLAppDocIndicatorElement: {
+        prototype: HTMLAppDocIndicatorElement;
+        new (): HTMLAppDocIndicatorElement;
+    };
     interface HTMLAppEditModeElement extends Components.AppEditMode, HTMLStencilElement {
     }
     var HTMLAppEditModeElement: {
@@ -948,12 +954,6 @@ declare global {
     var HTMLAppRootElement: {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
-    };
-    interface HTMLAppSaveParagraphsIndicatorElement extends Components.AppSaveParagraphsIndicator, HTMLStencilElement {
-    }
-    var HTMLAppSaveParagraphsIndicatorElement: {
-        prototype: HTMLAppSaveParagraphsIndicatorElement;
-        new (): HTMLAppSaveParagraphsIndicatorElement;
     };
     interface HTMLAppSelectTargetElementElement extends Components.AppSelectTargetElement, HTMLStencilElement {
     }
@@ -1242,6 +1242,7 @@ declare global {
         "app-delete": HTMLAppDeleteElement;
         "app-demo": HTMLAppDemoElement;
         "app-doc-editor": HTMLAppDocEditorElement;
+        "app-doc-indicator": HTMLAppDocIndicatorElement;
         "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
@@ -1288,7 +1289,6 @@ declare global {
         "app-remote-request": HTMLAppRemoteRequestElement;
         "app-reveal": HTMLAppRevealElement;
         "app-root": HTMLAppRootElement;
-        "app-save-paragraphs-indicator": HTMLAppSaveParagraphsIndicatorElement;
         "app-select-target-element": HTMLAppSelectTargetElementElement;
         "app-shape": HTMLAppShapeElement;
         "app-share-deck": HTMLAppShareDeckElement;
@@ -1516,6 +1516,8 @@ declare namespace LocalJSX {
     }
     interface AppDocEditor {
     }
+    interface AppDocIndicator {
+    }
     interface AppEditMode {
     }
     interface AppEditSlide {
@@ -1666,8 +1668,6 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppRoot {
-    }
-    interface AppSaveParagraphsIndicator {
     }
     interface AppSelectTargetElement {
         "chart"?: boolean;
@@ -1857,6 +1857,7 @@ declare namespace LocalJSX {
         "app-delete": AppDelete;
         "app-demo": AppDemo;
         "app-doc-editor": AppDocEditor;
+        "app-doc-indicator": AppDocIndicator;
         "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
@@ -1903,7 +1904,6 @@ declare namespace LocalJSX {
         "app-remote-request": AppRemoteRequest;
         "app-reveal": AppReveal;
         "app-root": AppRoot;
-        "app-save-paragraphs-indicator": AppSaveParagraphsIndicator;
         "app-select-target-element": AppSelectTargetElement;
         "app-shape": AppShape;
         "app-share-deck": AppShareDeck;
@@ -1991,6 +1991,7 @@ declare module "@stencil/core" {
             "app-delete": LocalJSX.AppDelete & JSXBase.HTMLAttributes<HTMLAppDeleteElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
             "app-doc-editor": LocalJSX.AppDocEditor & JSXBase.HTMLAttributes<HTMLAppDocEditorElement>;
+            "app-doc-indicator": LocalJSX.AppDocIndicator & JSXBase.HTMLAttributes<HTMLAppDocIndicatorElement>;
             "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
@@ -2037,7 +2038,6 @@ declare module "@stencil/core" {
             "app-remote-request": LocalJSX.AppRemoteRequest & JSXBase.HTMLAttributes<HTMLAppRemoteRequestElement>;
             "app-reveal": LocalJSX.AppReveal & JSXBase.HTMLAttributes<HTMLAppRevealElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
-            "app-save-paragraphs-indicator": LocalJSX.AppSaveParagraphsIndicator & JSXBase.HTMLAttributes<HTMLAppSaveParagraphsIndicatorElement>;
             "app-select-target-element": LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
             "app-shape": LocalJSX.AppShape & JSXBase.HTMLAttributes<HTMLAppShapeElement>;
             "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
