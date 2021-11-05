@@ -13,6 +13,8 @@ import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 
+import {Editor} from '../../../types/editor/editor';
+
 import {signIn} from '../../../utils/core/signin.utils';
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
@@ -20,7 +22,7 @@ import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
 import {loadAndImport} from '../../../utils/core/dashboard.utils';
 import {getEdit} from '../../../utils/editor/editor.utils';
-import {removeSyncBeforeUnload} from '../../../utils/core/sync.window.utils';
+import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
@@ -83,7 +85,8 @@ export class AppDecks implements ComponentInterface {
 
     await this.initDashboard();
 
-    this.currentDeckId = await getEdit();
+    const editor: Editor | undefined = await getEdit();
+    this.currentDeckId = editor?.id;
   }
 
   private async initDashboard() {

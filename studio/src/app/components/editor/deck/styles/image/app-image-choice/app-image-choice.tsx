@@ -4,14 +4,13 @@ import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 
 import settingsStore from '../../../../../../stores/settings.store';
 import i18n from '../../../../../../stores/i18n.store';
-import offlineStore from '../../../../../../stores/offline.store';
 
 import {EditAction} from '../../../../../../types/editor/edit-action';
 import {ImageAction} from '../../../../../../types/editor/image-action';
 import {Expanded} from '../../../../../../types/core/settings';
 
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-import {tenor, unsplash} from '../../../../../../utils/core/environment.utils';
+import {AppAssetChoice} from '../../../../common/app-asset-choice/app-asset-choice';
 
 @Component({
   tag: 'app-image-choice',
@@ -33,9 +32,6 @@ export class AppImageChoice {
 
   @Prop()
   deck: boolean = false;
-
-  private tenorEnabled = tenor();
-  private unsplashEnabled = unsplash();
 
   private async selectAction(action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile | Waves) {
     const data: ImageAction = {
@@ -65,9 +61,10 @@ export class AppImageChoice {
         <ion-label slot="title">{i18n.state.editor.images}</ion-label>
 
         <div class="image-actions ion-margin">
-          {this.renderStockPhotos()}
-          {this.renderGif()}
-          {this.renderCustom()}
+          <AppAssetChoice
+            selectAction={async (action: EditAction, image?: UnsplashPhoto | TenorGif | StorageFile | Waves) =>
+              await this.selectAction(action, image)
+            }></AppAssetChoice>
           {this.renderWaves()}
           {this.renderDeleteAction()}
         </div>
@@ -82,48 +79,6 @@ export class AppImageChoice {
     );
   }
 
-  private renderStockPhotos() {
-    if (!offlineStore.state.online) {
-      // Unsplash not available offline
-      return undefined;
-    }
-
-    if (!this.unsplashEnabled) {
-      return undefined;
-    }
-
-    return (
-      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_PHOTOS)} color="primary">
-        <ion-label>{i18n.state.editor.stock_photo}</ion-label>
-      </ion-button>
-    );
-  }
-
-  private renderGif() {
-    if (!offlineStore.state.online) {
-      // Tenor not available offline
-      return undefined;
-    }
-
-    if (!this.tenorEnabled) {
-      return undefined;
-    }
-
-    return (
-      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_GIFS)} color="secondary">
-        <ion-label>{i18n.state.editor.gif}</ion-label>
-      </ion-button>
-    );
-  }
-
-  private renderCustom() {
-    return (
-      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_CUSTOM)} color="tertiary">
-        <ion-label>{i18n.state.editor.your_images}</ion-label>
-      </ion-button>
-    );
-  }
-
   private renderWaves() {
     if (!this.deck && !this.slide) {
       // Waves only available for background
@@ -131,7 +86,7 @@ export class AppImageChoice {
     }
 
     return (
-      <ion-button shape="round" onClick={() => this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
+      <ion-button shape="round" onClick={async () => await this.selectAction(EditAction.OPEN_SVG_WAVES)} color="quaternary">
         <ion-label>{i18n.state.editor.waves}</ion-label>
       </ion-button>
     );
@@ -142,7 +97,7 @@ export class AppImageChoice {
       return undefined;
     } else {
       return (
-        <ion-button shape="round" onClick={() => this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
+        <ion-button shape="round" onClick={async () => await this.selectAction(EditAction.DELETE_BACKGROUND)} fill="outline" class="delete">
           <ion-label>{i18n.state.core.reset}</ion-label>
         </ion-button>
       );

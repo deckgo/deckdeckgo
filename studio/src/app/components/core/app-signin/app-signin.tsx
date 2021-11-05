@@ -14,7 +14,7 @@ import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../types/core
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {firebase, cloud} from '../../../utils/core/environment.utils';
-import {removeSyncBeforeUnload} from '../../../utils/core/sync.window.utils';
+import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
 
 @Component({
   tag: 'app-signin',

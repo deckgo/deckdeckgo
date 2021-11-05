@@ -3,7 +3,7 @@ import {Component, Prop, h, Host, State} from '@stencil/core';
 import {isIOS} from '@deckdeckgo/utils';
 
 import i18n from '../../../stores/i18n.store';
-import store from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 
 import {AppIcon} from '../app-icon/app-icon';
 
@@ -44,7 +44,7 @@ export class AppNavigation {
   }
 
   private renderTitle() {
-    const titleClass = store.state.name && store.state.name !== '' ? 'title deck-name-visible' : 'title';
+    const titleClass = editorStore.state.name && editorStore.state.name !== '' ? 'title deck-name-visible' : 'title';
 
     return (
       <div class={titleClass}>
@@ -52,7 +52,7 @@ export class AppNavigation {
           {this.renderLogo()}
         </ion-router-link>
 
-        <ion-label class="deck-name">{store.state.name}</ion-label>
+        <ion-label class="display-name">{editorStore.state.name}</ion-label>
       </div>
     );
   }

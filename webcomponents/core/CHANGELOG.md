@@ -1,3 +1,9 @@
+# 9.0.0 (2021-11-05)
+
+### Features
+
+- new `deckgo-doc` core component for documents
+
 # 8.4.0 (2021-08-19)
 
 ### Features

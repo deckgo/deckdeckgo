@@ -271,12 +271,12 @@
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
-          if (!deck) {
+          if (!index) {
             resolve();
             return;
           }
 
-          const index = await deck.getActiveIndex();
+          const index = await index.getActiveIndex();
 
           const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
@@ -295,12 +295,12 @@
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
-          if (!deck) {
+          if (!index) {
             resolve();
             return;
           }
 
-          const index = await deck.getActiveIndex();
+          const index = await index.getActiveIndex();
 
           const youtubeSlideElement = document.querySelector('.deckgo-slide-container:nth-child(' + (index + 1) + ')');
 
@@ -319,12 +319,12 @@
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
-          if (!deck) {
+          if (!index) {
             resolve();
             return;
           }
 
-          deck.reveal = !deck.reveal;
+          index.reveal = !index.reveal;
 
           resolve();
         });
@@ -334,12 +334,12 @@
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
-          if (!deck) {
+          if (!index) {
             resolve();
             return;
           }
 
-          deck.animation = 'fade';
+          index.animation = 'fade';
 
           resolve();
         });
@@ -349,12 +349,12 @@
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
-          if (!deck) {
+          if (!index) {
             resolve();
             return;
           }
 
-          deck.direction = 'vertical';
+          index.direction = 'vertical';
 
           resolve();
         });
@@ -364,12 +364,12 @@
         return new Promise(async (resolve) => {
           const deck = document.getElementById('slider');
 
-          if (!deck) {
+          if (!index) {
             resolve();
             return;
           }
 
-          deck.autoSlide = deck.autoSlide === 'true' ? 'false' : 'true';
+          index.autoSlide = index.autoSlide === 'true' ? 'false' : 'true';
 
           resolve();
         });

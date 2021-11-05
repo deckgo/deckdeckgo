@@ -1,6 +1,6 @@
 import {Component, Element, h, Prop} from '@stencil/core';
 
-import editorStore from '../../../../stores/editor.store';
+import deckEditorStore from '../../../../stores/deck-editor.store';
 import i18n from '../../../../stores/i18n.store';
 
 @Component({
@@ -19,17 +19,17 @@ export class AppCopyStyle {
 
   private async copyStyle() {
     const style: string | null = this.selectedElement?.getAttribute('style');
-    editorStore.state.style = style && style !== '' ? style : null;
+    deckEditorStore.state.style = style && style !== '' ? style : null;
 
     await this.closePopover();
   }
 
   private async applyStyle() {
-    if (!editorStore.state.style) {
+    if (!deckEditorStore.state.style) {
       return;
     }
 
-    this.selectedElement.setAttribute('style', editorStore.state.style);
+    this.selectedElement.setAttribute('style', deckEditorStore.state.style);
 
     await this.closePopover();
   }
@@ -44,7 +44,7 @@ export class AppCopyStyle {
         <a
           onClick={() => this.applyStyle()}
           aria-label={i18n.state.editor.apply_style}
-          class={editorStore.state.style !== null ? undefined : 'disabled'}>
+          class={deckEditorStore.state.style !== null ? undefined : 'disabled'}>
           <p>{i18n.state.editor.apply_style}</p>
         </a>
       </div>

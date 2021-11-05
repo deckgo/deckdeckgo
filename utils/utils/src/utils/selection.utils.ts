@@ -35,14 +35,26 @@ export const getAnchorElement = (selection: Selection | undefined): HTMLElement 
 };
 
 // https://stackoverflow.com/a/3866442/5404186
-export const moveCursorToEnd = (element: HTMLElement) => {
-  if (window && document && document.createRange && element) {
-    const range: Range = document.createRange();
-    range.selectNodeContents(element);
-    range.collapse(false);
+export const moveCursorToEnd = (element: Node | undefined) => {
+  moveCursor({element, collapse: 'end'});
+};
 
-    const selection: Selection | null = getSelection();
-    selection?.removeAllRanges();
-    selection?.addRange(range);
+export const moveCursorToStart = (element: Node | undefined) => {
+  moveCursor({element, collapse: 'start'});
+};
+
+const moveCursor = ({element, collapse}: {element: Node | undefined; collapse: 'start' | 'end'}) => {
+  if (!element) {
+    return;
   }
+
+  const range: Range = document.createRange();
+  range.selectNodeContents(element);
+  range.collapse(collapse === 'start');
+
+  const selection: Selection | null = getSelection();
+  selection?.removeAllRanges();
+  selection?.addRange(range);
+
+  range.detach();
 };

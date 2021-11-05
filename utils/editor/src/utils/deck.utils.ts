@@ -1,4 +1,4 @@
-export const deckSelector: string = 'app-editor > ion-content div.deck > main > deckgo-deck';
+export const deckSelector: string = 'app-deck-editor > ion-content div.deck > main > deckgo-deck';
 
 export const slideTo = async (index: number) => {
   const deck: HTMLDeckgoDeckElement | null = document.querySelector(deckSelector);

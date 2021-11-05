@@ -22,7 +22,7 @@ export class AppActionBusy {
     return (
       <button
         onClick={(e: UIEvent) => this.action(e)}
-        disabled={store.state.deckBusy}
+        disabled={store.state.busy}
         class="ion-activatable"
         onMouseDown={($event) => $event.stopPropagation()}
         onTouchStart={($event) => $event.stopPropagation()}>

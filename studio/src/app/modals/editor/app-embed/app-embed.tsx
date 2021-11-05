@@ -1,6 +1,6 @@
 import {Component, Element, h, Listen, State} from '@stencil/core';
 
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
@@ -21,7 +21,7 @@ export class AppEmbed {
   private embedCodeElement!: HTMLIonTextareaElement;
 
   async componentWillLoad() {
-    const url: string = await getPublishedUrl(deckStore.state.deck);
+    const url: string = await getPublishedUrl(editorStore.state.deck);
     this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 

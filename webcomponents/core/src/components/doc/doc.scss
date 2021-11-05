@@ -1,0 +1,61 @@
+:host {
+  display: block;
+
+  --ratio-A3: calc(297 / 420);
+  --ratio-A4: calc(210 / 297);
+  --ratio-A5: calc(148 / 210);
+
+  --doc-size: calc(var(--doc-width) * (var(--doc-zoom, 100) / 100));
+
+  min-height: var(--doc-size);
+  width: calc(var(--doc-size) * var(--ratio-A4));
+
+  padding: calc(var(--doc-size) * (var(--doc-padding, 25) / 297));
+
+  --font-size: calc(var(--doc-size) / 72); // 72 from max-width 720px
+  font-size: var(--font-size, 1em);
+}
+
+:host([size="A4"][orientation="landscape"]),
+:host([orientation="landscape"]) {
+  width: var(--doc-size);
+  min-height: calc(var(--doc-size) * var(--ratio-A4));
+}
+
+:host([size="A3"]) {
+  width: calc(var(--doc-size) * var(--ratio-A3));
+}
+
+:host([size="A3"][orientation="landscape"]) {
+  width: var(--doc-size);
+  min-height: calc(var(--doc-size) * var(--ratio-A3));
+}
+
+:host([size="A5"]) {
+  width: calc(var(--doc-size) * var(--ratio-A5));
+}
+
+:host([size="A5"][orientation="landscape"]) {
+  width: var(--doc-size);
+  min-height: calc(var(--doc-size) * var(--ratio-A5));
+}
+
+@media print {
+  :host {
+    --doc-size: 297mm;
+    --doc-zoom: 100;
+  }
+
+  :host([size="A3"]) {
+    --doc-size: 420mm;
+  }
+
+  :host([size="A5"]) {
+    --doc-size: 210mm;
+  }
+}
+
+::slotted(*) {
+  outline: none;
+  width: 100%;
+}

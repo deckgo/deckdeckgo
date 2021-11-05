@@ -1,6 +1,22 @@
 import {get, getMany} from 'idb-keyval';
 
-import {Deck, Slide, SyncData, SyncDataDeck, SyncDataSlide, SyncPending, SyncPendingDeck, SyncPendingSlide} from '@deckdeckgo/editor';
+import {
+  Deck,
+  Doc,
+  Paragraph,
+  Slide,
+  SyncData,
+  SyncDataDeck,
+  SyncDataDoc,
+  SyncDataParagraph,
+  SyncDataSlide,
+  SyncPending,
+  SyncPendingData,
+  SyncPendingDeck,
+  SyncPendingDoc,
+  SyncPendingParagraph,
+  SyncPendingSlide
+} from '@deckdeckgo/editor';
 
 // TODO: move Firestore merge to worker
 
@@ -21,6 +37,8 @@ export const stopSyncTimer = async () => {
   timer = undefined;
 };
 
+// TODO: there is probably a way to refactor these functions with the help of generic or the abstract interface...
+
 const syncData = async () => {
   // TODO: Avoid atomic errors, window updating while worker running. If we can move Firestore and ICP to the worker it solves everything though.
 
@@ -31,9 +49,18 @@ const syncData = async () => {
     return;
   }
 
-  const {updateDecks, deleteDecks, deleteSlides, updateSlides} = data;
+  const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteParagraphs, updateParagraphs} = data;
 
-  if (updateDecks.length === 0 && deleteDecks.length === 0 && deleteSlides.length === 0 && updateSlides.length === 0) {
+  if (
+    updateDecks.length === 0 &&
+    deleteDecks.length === 0 &&
+    deleteSlides.length === 0 &&
+    updateSlides.length === 0 &&
+    updateDocs.length === 0 &&
+    deleteDocs.length === 0 &&
+    deleteParagraphs.length === 0 &&
+    updateParagraphs.length === 0
+  ) {
     return;
   }
 
@@ -53,6 +80,17 @@ const collectData = async (): Promise<SyncData | undefined> => {
 
   const syncedAt: Date = new Date();
 
+  const decksData: Partial<SyncData> = await collectDecksData(data);
+  const docsData: Partial<SyncData> = await collectDocsData(data);
+
+  return {
+    ...decksData,
+    ...docsData,
+    syncedAt
+  } as SyncData;
+};
+
+const collectDecksData = async (data: SyncPending): Promise<Partial<SyncData>> => {
   const updateDecks: SyncDataDeck[] | undefined = (
     await getMany(uniqueSyncData(data.updateDecks).map(({key}: SyncPendingDeck) => key))
   ).map((deck: Deck) => ({
@@ -83,8 +121,43 @@ const collectData = async (): Promise<SyncData | undefined> => {
           ({slideId}: SyncDataSlide) => !deleteSlides.find(({slideId: deleteSlideId}: SyncDataSlide) => deleteSlideId === slideId)
         )
       : updateSlides,
-    deleteSlides,
-    syncedAt
+    deleteSlides
+  };
+};
+
+const collectDocsData = async (data: SyncPending): Promise<Partial<SyncData>> => {
+  const updateDocs: SyncDataDoc[] | undefined = (await getMany(uniqueSyncData(data.updateDocs).map(({key}: SyncPendingDoc) => key))).map(
+    (doc: Doc) => ({
+      docId: doc.id,
+      doc
+    })
+  );
+
+  const deleteDocs: SyncDataDoc[] | undefined = uniqueSyncData(data.deleteDocs).map(({docId}: SyncPendingDoc) => ({docId}));
+
+  const updateParagraphs: SyncDataParagraph[] | undefined = await Promise.all(
+    uniqueSyncData(data.updateParagraphs).map((paragraph: SyncPendingParagraph) => getParagraph(paragraph))
+  );
+
+  const deleteParagraphs: SyncDataParagraph[] | undefined = uniqueSyncData(data.deleteParagraphs).map(
+    ({docId, paragraphId}: SyncPendingParagraph) => ({
+      docId,
+      paragraphId
+    })
+  );
+
+  return {
+    updateDocs: deleteDocs
+      ? updateDocs?.filter(({docId}: SyncDataDoc) => !deleteDocs.find(({docId: deleteDocId}: SyncDataDoc) => deleteDocId === docId))
+      : updateDocs,
+    deleteDocs,
+    updateParagraphs: deleteParagraphs
+      ? updateParagraphs?.filter(
+          ({paragraphId}: SyncDataParagraph) =>
+            !deleteParagraphs.find(({paragraphId: deleteParagraphId}: SyncDataParagraph) => deleteParagraphId === paragraphId)
+        )
+      : updateParagraphs,
+    deleteParagraphs
   };
 };
 
@@ -98,9 +171,19 @@ const getSlide = async ({deckId, slideId, key}: SyncPendingSlide): Promise<SyncD
   };
 };
 
-const uniqueSyncData = (data: SyncPendingDeck[]): SyncPendingDeck[] => {
-  return data.reduce((acc: SyncPendingDeck[], curr: SyncPendingDeck) => {
-    const index: number = acc.findIndex(({key}: SyncPendingDeck) => key === curr.key);
+const getParagraph = async ({docId, paragraphId, key}: SyncPendingParagraph): Promise<SyncDataParagraph> => {
+  const paragraph: Paragraph | undefined = await get(key);
+
+  return {
+    docId,
+    paragraphId,
+    paragraph
+  };
+};
+
+const uniqueSyncData = (data: SyncPendingData[]): SyncPendingData[] => {
+  return data.reduce((acc: SyncPendingData[], curr: SyncPendingData) => {
+    const index: number = acc.findIndex(({key}: SyncPendingData) => key === curr.key);
 
     if (index === -1) {
       acc.push(curr);

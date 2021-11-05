@@ -14,7 +14,7 @@ import {AppIcon} from '../../../core/app-icon/app-icon';
 })
 export class AppSlotType {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedElement: HTMLElement | undefined;
 
   @Prop()
   skip: boolean = false;
@@ -30,56 +30,50 @@ export class AppSlotType {
 
   @Event() private selectType: EventEmitter<SlotType | null>;
 
-  async componentWillLoad() {
-    if (this.selectedElement) {
-      if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-        await this.initCurrentTypeList();
-      } else {
-        await this.initCurrentType();
-      }
+  componentWillLoad() {
+    if (!this.selectedElement) {
+      return;
     }
 
-    this.onlyTextTypes = this.selectedElement?.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
+    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
+      this.initCurrentTypeList();
+    } else {
+      this.initCurrentType();
+    }
+
+    this.onlyTextTypes = this.selectedElement.parentElement?.nodeName?.toLowerCase() === 'deckgo-slide-poll';
   }
 
-  private initCurrentType(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      // prettier-ignore
-      const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
+  private initCurrentType() {
+    // prettier-ignore
+    const element: HTMLElement = SlotUtils.isNodeReveal(this.selectedElement) ? this.selectedElement.firstElementChild as HTMLElement : this.selectedElement;
 
-      if (element.nodeName && element.nodeName !== '') {
-        this.currentType = await this.initSlotType(element.nodeName.toLowerCase());
-      }
+    if (element.nodeName && element.nodeName !== '') {
+      this.currentType = this.initSlotType(element.nodeName.toLowerCase());
+    }
+  }
 
-      resolve();
+  private initCurrentTypeList() {
+    this.currentType = this.selectedElement.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
+  }
+
+  private initSlotType(type: string): SlotType {
+    const templateKey: string = Object.keys(SlotType).find((key: string) => {
+      return type === SlotType[key];
     });
+
+    return SlotType[templateKey];
   }
 
-  private initCurrentTypeList(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.currentType = this.selectedElement.getAttribute('list-tag') === SlotType.UL ? SlotType.UL : SlotType.OL;
+  private select($event: UIEvent, type: SlotType | null) {
+    $event.stopPropagation();
 
-      resolve();
-    });
-  }
-
-  private initSlotType(type: string): Promise<SlotType> {
-    return new Promise<SlotType>((resolve) => {
-      const templateKey: string = Object.keys(SlotType).find((key: string) => {
-        return type === SlotType[key];
-      });
-
-      resolve(SlotType[templateKey]);
-    });
-  }
-
-  private select(type: SlotType | null) {
     this.selectType.emit(type && this.currentType !== type ? type : null);
   }
 
   render() {
     return (
-      <ion-list class="article">
+      <ion-list class="article ion-no-padding">
         {this.renderSlot(
           SlotType.H1,
           <Fragment>
@@ -132,7 +126,7 @@ export class AppSlotType {
     }
 
     return (
-      <a onClick={() => this.select(slotType)} class={this.currentType === slotType ? 'current' : ''}>
+      <a onClick={($event: UIEvent) => this.select($event, slotType)} class={this.currentType === slotType ? 'current' : ''}>
         <ion-item>{item}</ion-item>
       </a>
     );
@@ -144,7 +138,7 @@ export class AppSlotType {
     }
 
     return (
-      <a class="skip" onClick={() => this.select(null)}>
+      <a class="skip" onClick={($event: UIEvent) => this.select($event, null)}>
         <ion-item>
           <p>{i18n.state.editor.skip}</p>
         </ion-item>
@@ -160,7 +154,7 @@ export class AppSlotType {
     return (
       <Fragment>
         {this.renderSlot(
-          SlotType.OL,
+          SlotType.UL,
           <Fragment>
             <AppIcon name="list" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
             <ion-label>{i18n.state.editor.list}</ion-label>

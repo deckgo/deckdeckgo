@@ -8,6 +8,10 @@
 
   outline: none;
 
+  /* Safari overflow hidden does not work with border-radius without following isolation */
+  /* https://stackoverflow.com/a/58283449 */
+  isolation: isolate;
+
   color: inherit;
 
   border-radius: 8px;

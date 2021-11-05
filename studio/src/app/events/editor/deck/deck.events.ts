@@ -19,7 +19,7 @@ import {
 
 import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
 
-import deckStore from '../../../stores/deck.store';
+import editorStore from '../../../stores/editor.store';
 import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
 import authStore from '../../../stores/auth.store';
@@ -29,6 +29,7 @@ import {Constants} from '../../../types/core/constants';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
+import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
@@ -38,8 +39,8 @@ import {DeckAction} from '../../../types/editor/deck-action';
 export class DeckEvents {
   private mainRef: HTMLElement;
 
-  private deckOfflineProvider: DeckOfflineProvider;
-  private slideOfflineProvider: SlideOfflineProvider;
+  private readonly deckOfflineProvider: DeckOfflineProvider;
+  private readonly slideOfflineProvider: SlideOfflineProvider;
 
   private readonly debounceUpdateSlide: (slide: HTMLElement) => void;
   private readonly debounceUpdateDeckTitle: (title: string) => void;
@@ -212,25 +213,22 @@ export class DeckEvents {
           return;
         }
 
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
-        if (!deckStore.state.deck) {
-          const persistedDeck: Deck = await this.createDeck();
-          deckStore.state.deck = {...persistedDeck};
+        if (!editorStore.state.deck) {
+          await this.createDeck();
         }
 
-        const persistedSlide: Slide = await this.postSlide(deckStore.state.deck, slide);
+        const persistedSlide: Slide = await this.postSlide(editorStore.state.deck, slide);
 
-        // Because of the offline mode, is kind of handy to handle the list on the client side too.
-        // But maybe in the future it is something which could be moved to the cloud.
-        await this.updateDeckSlideList(deckStore.state.deck, persistedSlide, slide);
+        await this.updateDeckSlideList(editorStore.state.deck, persistedSlide, slide);
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -271,15 +269,8 @@ export class DeckEvents {
           owner_id: authStore.state.authUser?.uid
         };
 
-        // Retrieve text and background color style randomly generated in the editor
-        const deckElement: HTMLElement = this.mainRef.querySelector('deckgo-deck');
-        if (deckElement) {
-          const attributes: DeckAttributes = await this.getDeckAttributes(deckElement, false);
-          deck.attributes = attributes;
-        }
-
         const persistedDeck: Deck = await this.deckOfflineProvider.create(deck);
-        deckStore.state.deck = {...persistedDeck};
+        editorStore.state.deck = {...persistedDeck};
 
         resolve(persistedDeck);
       } catch (err) {
@@ -305,11 +296,11 @@ export class DeckEvents {
           deck.data.slides = [];
         }
 
-        const slideIndex: number = SlideUtils.slideIndex(slideElement);
+        const slideIndex: number = NodeUtils.nodeIndex(slideElement);
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);
-        deckStore.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
         resolve();
       } catch (err) {
@@ -326,9 +317,9 @@ export class DeckEvents {
           return;
         }
 
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -356,14 +347,14 @@ export class DeckEvents {
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
 
-        deckStore.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -377,9 +368,9 @@ export class DeckEvents {
           return;
         }
 
-        busyStore.state.deckBusy = true;
+        busyStore.state.busy = true;
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (!currentDeck || !currentDeck.data) {
           resolve();
@@ -395,14 +386,14 @@ export class DeckEvents {
         currentDeck.data.name = title;
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-        deckStore.state.deck = {...updatedDeck};
+        editorStore.state.deck = {...updatedDeck};
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -418,9 +409,9 @@ export class DeckEvents {
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
-      const currentDeck: Deck | null = deckStore.state.deck;
+      const currentDeck: Deck | null = editorStore.state.deck;
 
       if (!currentDeck || !currentDeck.data) {
         return;
@@ -433,12 +424,12 @@ export class DeckEvents {
       currentDeck.data.attributes.autoSlide = action.autoSlide;
 
       const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-      deckStore.state.deck = {...updatedDeck};
+      editorStore.state.deck = {...updatedDeck};
 
-      busyStore.state.deckBusy = false;
+      busyStore.state.busy = false;
     } catch (err) {
       errorStore.state.error = err;
-      busyStore.state.deckBusy = false;
+      busyStore.state.busy = false;
     }
   }
 
@@ -455,6 +446,8 @@ export class DeckEvents {
           resolve();
           return;
         }
+
+        // TODO: we loose the created_at information here trade of not getting thee slide from indexedDB for performance reason
 
         const slideUpdate: Slide = {
           id: slide.getAttribute('slide_id'),
@@ -475,16 +468,16 @@ export class DeckEvents {
           slideUpdate.data.attributes = attributes;
         }
 
-        if (deckStore.state.deck) {
-          await this.slideOfflineProvider.update(deckStore.state.deck.id, slideUpdate);
+        if (editorStore.state.deck) {
+          await this.slideOfflineProvider.update(editorStore.state.deck.id, slideUpdate);
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -506,7 +499,7 @@ export class DeckEvents {
 
         const slideId: string = slide.getAttribute('slide_id');
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data) {
           const slide: Slide = await this.slideOfflineProvider.get(currentDeck.id, slideId);
@@ -519,7 +512,7 @@ export class DeckEvents {
               currentDeck.data.slides.splice(currentDeck.data.slides.indexOf(slideId), 1);
 
               const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-              deckStore.state.deck = {...updatedDeck};
+              editorStore.state.deck = {...updatedDeck};
             }
 
             // 2. Delete the slide
@@ -527,12 +520,12 @@ export class DeckEvents {
           }
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve();
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve();
       }
     });
@@ -890,13 +883,13 @@ export class DeckEvents {
           return;
         }
 
-        const currentDeck: Deck | null = deckStore.state.deck;
+        const currentDeck: Deck | null = editorStore.state.deck;
 
         if (currentDeck && currentDeck.data && currentDeck.data.slides && detail.to < currentDeck.data.slides.length) {
           currentDeck.data.slides.splice(detail.to, 0, ...currentDeck.data.slides.splice(detail.from, 1));
 
           const updatedDeck: Deck = await this.deckOfflineProvider.update(currentDeck);
-          deckStore.state.deck = {...updatedDeck};
+          editorStore.state.deck = {...updatedDeck};
         }
 
         resolve();

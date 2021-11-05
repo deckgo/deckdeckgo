@@ -2,7 +2,7 @@ import {JSX} from '@stencil/core';
 
 import {Slide, Deck} from '@deckdeckgo/editor';
 
-import store from '../../stores/deck.store';
+import editorStore from '../../stores/editor.store';
 import errorStore from '../../stores/error.store';
 import busyStore from '../../stores/busy.store';
 
@@ -22,15 +22,15 @@ export class SlideHelper {
     this.deckOfflineProvider = DeckOfflineProvider.getInstance();
   }
 
-  loadDeckAndRetrieveSlides(deckId: string): Promise<any[]> {
-    return new Promise<any[]>(async (resolve) => {
+  loadDeckAndRetrieveSlides(deckId: string): Promise<JSX.IntrinsicElements[]> {
+    return new Promise<JSX.IntrinsicElements[]>(async (resolve) => {
       if (!deckId) {
         errorStore.state.error = 'Deck is not defined';
         resolve(null);
         return;
       }
 
-      busyStore.state.deckBusy = true;
+      busyStore.state.busy = true;
 
       try {
         const deck: Deck = await this.deckOfflineProvider.get(deckId);
@@ -41,7 +41,7 @@ export class SlideHelper {
           return;
         }
 
-        store.state.deck = {...deck};
+        editorStore.state.deck = {...deck};
 
         if (!deck.data.slides || deck.data.slides.length <= 0) {
           resolve([]);
@@ -50,7 +50,7 @@ export class SlideHelper {
 
         await initTemplates();
 
-        const promises: Promise<any>[] = [];
+        const promises: Promise<JSX.IntrinsicElements>[] = [];
         deck.data.slides.forEach((slideId: string) => {
           promises.push(this.fetchSlide(deck, slideId));
         });
@@ -65,19 +65,19 @@ export class SlideHelper {
           return;
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve(parsedSlides);
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve(null);
       }
     });
   }
 
   private fetchSlide(deck: Deck, slideId: string): Promise<JSX.IntrinsicElements> {
-    return new Promise<any>(async (resolve) => {
+    return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       try {
         const slide: Slide = await this.slideOfflineProvider.get(deck.id, slideId);
 
@@ -111,17 +111,17 @@ export class SlideHelper {
 
         let element: JSX.IntrinsicElements = null;
 
-        if (store.state.deck?.data) {
-          const slide: Slide = await this.slideOfflineProvider.get(store.state.deck.id, slideId);
-          element = await ParseSlidesUtils.parseSlide(store.state.deck, slide, true, true);
+        if (editorStore.state.deck?.data) {
+          const slide: Slide = await this.slideOfflineProvider.get(editorStore.state.deck.id, slideId);
+          element = await ParseSlidesUtils.parseSlide(editorStore.state.deck, slide, true, true);
         }
 
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
 
         resolve(element);
       } catch (err) {
         errorStore.state.error = err;
-        busyStore.state.deckBusy = false;
+        busyStore.state.busy = false;
         resolve(null);
       }
     });

@@ -224,7 +224,7 @@ export class AppActionsElement {
       return;
     }
 
-    await Promise.all([this.detachResizeSlideContent(), this.detachPasteEvent()]);
+    await this.detachResizeSlideContent();
 
     await this.reset();
   }
@@ -288,12 +288,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.deckBusy && this.selectedElement?.type === 'slide') {
+      if (store.state.busy && this.selectedElement?.type === 'slide') {
         resolve();
         return;
       }
 
-      store.state.deckBusy = true;
+      store.state.busy = true;
 
       if (this.selectedElement.type === 'slide') {
         this.slideDelete.emit(this.selectedElement.element);
@@ -339,7 +339,7 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.deckBusy || this.selectedElement?.slot?.shape === undefined) {
+      if (store.state.busy || this.selectedElement?.slot?.shape === undefined) {
         resolve();
         return;
       }
@@ -357,12 +357,12 @@ export class AppActionsElement {
         return;
       }
 
-      if (store.state.deckBusy || this.selectedElement?.type === 'element') {
+      if (store.state.busy || this.selectedElement?.type === 'element') {
         resolve();
         return;
       }
 
-      store.state.deckBusy = true;
+      store.state.busy = true;
 
       this.slideCopy.emit(this.selectedElement.element);
 
@@ -684,7 +684,7 @@ export class AppActionsElement {
       : undefined;
 
     if (element) {
-      await Promise.all([this.attachResizeSlideContent(), this.attachPasteEvent()]);
+      await this.attachResizeSlideContent();
 
       await this.highlightElement(true);
 
@@ -751,24 +751,6 @@ export class AppActionsElement {
       resolve();
     });
   }
-
-  private async attachPasteEvent() {
-    await this.detachPasteEvent();
-
-    this.selectedElement?.element?.addEventListener('paste', this.filterPasteText);
-  }
-
-  private async detachPasteEvent() {
-    this.selectedElement?.element?.removeEventListener('paste', this.filterPasteText);
-  }
-
-  private filterPasteText = ($event: ClipboardEvent) => {
-    $event.preventDefault();
-
-    const text: string = $event.clipboardData.getData('text/plain');
-
-    document.execCommand('insertText', false, text);
-  };
 
   private async openStyle() {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -1010,7 +992,7 @@ export class AppActionsElement {
       <button
         onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
         aria-label={i18n.state.editor.delete}
-        disabled={store.state.deckBusy && this.selectedElement?.type === 'slide'}
+        disabled={store.state.busy && this.selectedElement?.type === 'slide'}
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="trash-bin" ariaLabel="" ariaHidden={true}></AppIcon>
@@ -1026,7 +1008,7 @@ export class AppActionsElement {
       <button
         onClick={() => this.openNotes()}
         aria-label={i18n.state.editor.notes}
-        disabled={store.state.deckBusy}
+        disabled={store.state.busy}
         class={classElement}
         tabindex={this.selectedElement?.type === 'slide' ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
@@ -1044,7 +1026,7 @@ export class AppActionsElement {
       <button
         onClick={() => this.clone()}
         aria-label={i18n.state.editor.copy}
-        disabled={store.state.deckBusy}
+        disabled={store.state.busy}
         class={classSlide}
         tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
@@ -1062,7 +1044,7 @@ export class AppActionsElement {
       <button
         onClick={($event: UIEvent) => this.openCopyStyle($event)}
         aria-label={i18n.state.editor.format}
-        disabled={store.state.deckBusy}
+        disabled={store.state.busy}
         class={classSlide}
         tabindex={displayed ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
@@ -1208,7 +1190,7 @@ export class AppActionsElement {
 
   private renderMore() {
     return (
-      <button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.deckBusy} class="small-devices ion-activatable">
+      <button onClick={(e: UIEvent) => this.openMoreActions(e)} disabled={store.state.busy} class="small-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="ellipsis-vertical" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.more}</ion-label>

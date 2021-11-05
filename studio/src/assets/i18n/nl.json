@@ -383,7 +383,9 @@
     "deck_style": "Deck stijl",
     "slide_style": "Slide stijl",
     "transform_element": "Transformeer element",
-    "transform_slide": "Transformeer slide"
+    "transform_slide": "Transformeer slide",
+    "add_element": "Voeg een afbeelding, code of nieuw element toe",
+    "saving": "Bezig met opslaan..."
   },
   "offline": {
     "editing": "U bent offline aan het bewerken.",
@@ -506,7 +508,10 @@
   "tools": {
     "new": "Nieuw",
     "new_presentation": "Een nieuwe presentatie maken",
-    "new_warning_text": "Dit vervangt het huidige deck en de slides. Weet u dat zeker?",
+    "new_warning_text": "Dit vervangt het huidige gegevens. Weet u dat zeker?",
+    "new_deck": "Presentatie",
+    "new_doc": "Document ",
+    "new_experimental": "Experimenteel",
     "open": "Openen",
     "user": "Gebruiker"
   },

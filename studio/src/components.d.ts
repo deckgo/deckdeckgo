@@ -62,6 +62,9 @@ export namespace Components {
         "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
+    interface AppAddParagraph {
+        "containerRef": HTMLElement | undefined;
+    }
     interface AppAssetData {
         "data": StorageFile;
     }
@@ -135,6 +138,9 @@ export namespace Components {
         "deck": Deck;
         "disableDelete": boolean;
     }
+    interface AppDeckEditor {
+        "initNewDeck": () => Promise<void>;
+    }
     interface AppDeckFonts {
         "deckElement": HTMLElement;
     }
@@ -154,6 +160,11 @@ export namespace Components {
     }
     interface AppDemo {
         "selectedElement": HTMLElement;
+    }
+    interface AppDocEditor {
+        "initNewDoc": () => Promise<void>;
+    }
+    interface AppDocIndicator {
     }
     interface AppEditMode {
     }
@@ -243,6 +254,8 @@ export namespace Components {
     }
     interface AppNavigationActions {
     }
+    interface AppNew {
+    }
     interface AppNoTemplates {
     }
     interface AppNotes {
@@ -259,6 +272,8 @@ export namespace Components {
     interface AppPollOptions {
         "selectedElement": HTMLElement;
         "slideDidChange": EventEmitter<HTMLElement>;
+    }
+    interface AppPopoverConfirm {
     }
     interface AppPresent {
         "fullscreen": boolean;
@@ -332,7 +347,7 @@ export namespace Components {
         "deckRef": HTMLDeckgoDeckElement;
     }
     interface AppSlotType {
-        "selectedElement": HTMLElement;
+        "selectedElement": HTMLElement | undefined;
         "skip": boolean;
         "slotTypes": SlotType[] | undefined;
     }
@@ -392,6 +407,9 @@ export namespace Components {
     }
     interface AppTransformElement {
         "selectedElement": HTMLElement;
+    }
+    interface AppTransformParagraph {
+        "containerRef": HTMLElement | undefined;
     }
     interface AppTransformSlide {
         "selectedElement": HTMLElement;
@@ -462,6 +480,12 @@ declare global {
     var HTMLAppActionsElementElement: {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
+    };
+    interface HTMLAppAddParagraphElement extends Components.AppAddParagraph, HTMLStencilElement {
+    }
+    var HTMLAppAddParagraphElement: {
+        prototype: HTMLAppAddParagraphElement;
+        new (): HTMLAppAddParagraphElement;
     };
     interface HTMLAppAssetDataElement extends Components.AppAssetData, HTMLStencilElement {
     }
@@ -595,6 +619,12 @@ declare global {
         prototype: HTMLAppDashboardDeckActionsElement;
         new (): HTMLAppDashboardDeckActionsElement;
     };
+    interface HTMLAppDeckEditorElement extends Components.AppDeckEditor, HTMLStencilElement {
+    }
+    var HTMLAppDeckEditorElement: {
+        prototype: HTMLAppDeckEditorElement;
+        new (): HTMLAppDeckEditorElement;
+    };
     interface HTMLAppDeckFontsElement extends Components.AppDeckFonts, HTMLStencilElement {
     }
     var HTMLAppDeckFontsElement: {
@@ -636,6 +666,18 @@ declare global {
     var HTMLAppDemoElement: {
         prototype: HTMLAppDemoElement;
         new (): HTMLAppDemoElement;
+    };
+    interface HTMLAppDocEditorElement extends Components.AppDocEditor, HTMLStencilElement {
+    }
+    var HTMLAppDocEditorElement: {
+        prototype: HTMLAppDocEditorElement;
+        new (): HTMLAppDocEditorElement;
+    };
+    interface HTMLAppDocIndicatorElement extends Components.AppDocIndicator, HTMLStencilElement {
+    }
+    var HTMLAppDocIndicatorElement: {
+        prototype: HTMLAppDocIndicatorElement;
+        new (): HTMLAppDocIndicatorElement;
     };
     interface HTMLAppEditModeElement extends Components.AppEditMode, HTMLStencilElement {
     }
@@ -799,6 +841,12 @@ declare global {
         prototype: HTMLAppNavigationActionsElement;
         new (): HTMLAppNavigationActionsElement;
     };
+    interface HTMLAppNewElement extends Components.AppNew, HTMLStencilElement {
+    }
+    var HTMLAppNewElement: {
+        prototype: HTMLAppNewElement;
+        new (): HTMLAppNewElement;
+    };
     interface HTMLAppNoTemplatesElement extends Components.AppNoTemplates, HTMLStencilElement {
     }
     var HTMLAppNoTemplatesElement: {
@@ -834,6 +882,12 @@ declare global {
     var HTMLAppPollOptionsElement: {
         prototype: HTMLAppPollOptionsElement;
         new (): HTMLAppPollOptionsElement;
+    };
+    interface HTMLAppPopoverConfirmElement extends Components.AppPopoverConfirm, HTMLStencilElement {
+    }
+    var HTMLAppPopoverConfirmElement: {
+        prototype: HTMLAppPopoverConfirmElement;
+        new (): HTMLAppPopoverConfirmElement;
     };
     interface HTMLAppPresentElement extends Components.AppPresent, HTMLStencilElement {
     }
@@ -1093,6 +1147,12 @@ declare global {
         prototype: HTMLAppTransformElementElement;
         new (): HTMLAppTransformElementElement;
     };
+    interface HTMLAppTransformParagraphElement extends Components.AppTransformParagraph, HTMLStencilElement {
+    }
+    var HTMLAppTransformParagraphElement: {
+        prototype: HTMLAppTransformParagraphElement;
+        new (): HTMLAppTransformParagraphElement;
+    };
     interface HTMLAppTransformSlideElement extends Components.AppTransformSlide, HTMLStencilElement {
     }
     var HTMLAppTransformSlideElement: {
@@ -1150,6 +1210,7 @@ declare global {
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-deck-editor": HTMLAppActionsDeckEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
+        "app-add-paragraph": HTMLAppAddParagraphElement;
         "app-asset-data": HTMLAppAssetDataElement;
         "app-asset-image": HTMLAppAssetImageElement;
         "app-avatar": HTMLAppAvatarElement;
@@ -1172,6 +1233,7 @@ declare global {
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-customization": HTMLAppCustomizationElement;
         "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
+        "app-deck-editor": HTMLAppDeckEditorElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
         "app-deck-style": HTMLAppDeckStyleElement;
@@ -1179,6 +1241,8 @@ declare global {
         "app-decks": HTMLAppDecksElement;
         "app-delete": HTMLAppDeleteElement;
         "app-demo": HTMLAppDemoElement;
+        "app-doc-editor": HTMLAppDocEditorElement;
+        "app-doc-indicator": HTMLAppDocIndicatorElement;
         "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
@@ -1206,12 +1270,14 @@ declare global {
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
         "app-navigation-actions": HTMLAppNavigationActionsElement;
+        "app-new": HTMLAppNewElement;
         "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
         "app-playground": HTMLAppPlaygroundElement;
         "app-playground-placeholder": HTMLAppPlaygroundPlaceholderElement;
         "app-poll": HTMLAppPollElement;
         "app-poll-options": HTMLAppPollOptionsElement;
+        "app-popover-confirm": HTMLAppPopoverConfirmElement;
         "app-present": HTMLAppPresentElement;
         "app-profile": HTMLAppProfileElement;
         "app-publish": HTMLAppPublishElement;
@@ -1255,6 +1321,7 @@ declare global {
         "app-templates-user": HTMLAppTemplatesUserElement;
         "app-text": HTMLAppTextElement;
         "app-transform-element": HTMLAppTransformElementElement;
+        "app-transform-paragraph": HTMLAppTransformParagraphElement;
         "app-transform-slide": HTMLAppTransformSlideElement;
         "app-unpublish": HTMLAppUnpublishElement;
         "app-unsplash": HTMLAppUnsplashElement;
@@ -1324,6 +1391,10 @@ declare namespace LocalJSX {
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
         "slideTransform"?: EventEmitter;
+    }
+    interface AppAddParagraph {
+        "containerRef"?: HTMLElement | undefined;
+        "onSelectParagraph"?: (event: CustomEvent<HTMLElement | undefined>) => void;
     }
     interface AppAssetData {
         "data": StorageFile;
@@ -1414,6 +1485,8 @@ declare namespace LocalJSX {
         "onDeckCloned"?: (event: CustomEvent<void>) => void;
         "onDeckDeleted"?: (event: CustomEvent<string>) => void;
     }
+    interface AppDeckEditor {
+    }
     interface AppDeckFonts {
         "deckElement"?: HTMLElement;
         "onFontsChange"?: (event: CustomEvent<void>) => void;
@@ -1440,6 +1513,10 @@ declare namespace LocalJSX {
     }
     interface AppDemo {
         "selectedElement"?: HTMLElement;
+    }
+    interface AppDocEditor {
+    }
+    interface AppDocIndicator {
     }
     interface AppEditMode {
     }
@@ -1538,6 +1615,8 @@ declare namespace LocalJSX {
     }
     interface AppNavigationActions {
     }
+    interface AppNew {
+    }
     interface AppNoTemplates {
     }
     interface AppNotes {
@@ -1554,6 +1633,9 @@ declare namespace LocalJSX {
     interface AppPollOptions {
         "selectedElement"?: HTMLElement;
         "slideDidChange"?: EventEmitter<HTMLElement>;
+    }
+    interface AppPopoverConfirm {
+        "onConfirm"?: (event: CustomEvent<boolean>) => void;
     }
     interface AppPresent {
         "fullscreen"?: boolean;
@@ -1637,7 +1719,7 @@ declare namespace LocalJSX {
     }
     interface AppSlotType {
         "onSelectType"?: (event: CustomEvent<SlotType | null>) => void;
-        "selectedElement"?: HTMLElement;
+        "selectedElement"?: HTMLElement | undefined;
         "skip"?: boolean;
         "slotTypes"?: SlotType[] | undefined;
     }
@@ -1711,6 +1793,9 @@ declare namespace LocalJSX {
     interface AppTransformElement {
         "selectedElement"?: HTMLElement;
     }
+    interface AppTransformParagraph {
+        "containerRef"?: HTMLElement | undefined;
+    }
     interface AppTransformSlide {
         "selectedElement"?: HTMLElement;
     }
@@ -1740,6 +1825,7 @@ declare namespace LocalJSX {
         "app-actions-deck": AppActionsDeck;
         "app-actions-deck-editor": AppActionsDeckEditor;
         "app-actions-element": AppActionsElement;
+        "app-add-paragraph": AppAddParagraph;
         "app-asset-data": AppAssetData;
         "app-asset-image": AppAssetImage;
         "app-avatar": AppAvatar;
@@ -1762,6 +1848,7 @@ declare namespace LocalJSX {
         "app-create-slide": AppCreateSlide;
         "app-customization": AppCustomization;
         "app-dashboard-deck-actions": AppDashboardDeckActions;
+        "app-deck-editor": AppDeckEditor;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
         "app-deck-style": AppDeckStyle;
@@ -1769,6 +1856,8 @@ declare namespace LocalJSX {
         "app-decks": AppDecks;
         "app-delete": AppDelete;
         "app-demo": AppDemo;
+        "app-doc-editor": AppDocEditor;
+        "app-doc-indicator": AppDocIndicator;
         "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
@@ -1796,12 +1885,14 @@ declare namespace LocalJSX {
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
         "app-navigation-actions": AppNavigationActions;
+        "app-new": AppNew;
         "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
         "app-playground": AppPlayground;
         "app-playground-placeholder": AppPlaygroundPlaceholder;
         "app-poll": AppPoll;
         "app-poll-options": AppPollOptions;
+        "app-popover-confirm": AppPopoverConfirm;
         "app-present": AppPresent;
         "app-profile": AppProfile;
         "app-publish": AppPublish;
@@ -1845,6 +1936,7 @@ declare namespace LocalJSX {
         "app-templates-user": AppTemplatesUser;
         "app-text": AppText;
         "app-transform-element": AppTransformElement;
+        "app-transform-paragraph": AppTransformParagraph;
         "app-transform-slide": AppTransformSlide;
         "app-unpublish": AppUnpublish;
         "app-unsplash": AppUnsplash;
@@ -1867,6 +1959,7 @@ declare module "@stencil/core" {
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-deck-editor": LocalJSX.AppActionsDeckEditor & JSXBase.HTMLAttributes<HTMLAppActionsDeckEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
+            "app-add-paragraph": LocalJSX.AppAddParagraph & JSXBase.HTMLAttributes<HTMLAppAddParagraphElement>;
             "app-asset-data": LocalJSX.AppAssetData & JSXBase.HTMLAttributes<HTMLAppAssetDataElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
@@ -1889,6 +1982,7 @@ declare module "@stencil/core" {
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
             "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
+            "app-deck-editor": LocalJSX.AppDeckEditor & JSXBase.HTMLAttributes<HTMLAppDeckEditorElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
             "app-deck-style": LocalJSX.AppDeckStyle & JSXBase.HTMLAttributes<HTMLAppDeckStyleElement>;
@@ -1896,6 +1990,8 @@ declare module "@stencil/core" {
             "app-decks": LocalJSX.AppDecks & JSXBase.HTMLAttributes<HTMLAppDecksElement>;
             "app-delete": LocalJSX.AppDelete & JSXBase.HTMLAttributes<HTMLAppDeleteElement>;
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
+            "app-doc-editor": LocalJSX.AppDocEditor & JSXBase.HTMLAttributes<HTMLAppDocEditorElement>;
+            "app-doc-indicator": LocalJSX.AppDocIndicator & JSXBase.HTMLAttributes<HTMLAppDocIndicatorElement>;
             "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;
@@ -1923,12 +2019,14 @@ declare module "@stencil/core" {
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
             "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
+            "app-new": LocalJSX.AppNew & JSXBase.HTMLAttributes<HTMLAppNewElement>;
             "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
             "app-playground": LocalJSX.AppPlayground & JSXBase.HTMLAttributes<HTMLAppPlaygroundElement>;
             "app-playground-placeholder": LocalJSX.AppPlaygroundPlaceholder & JSXBase.HTMLAttributes<HTMLAppPlaygroundPlaceholderElement>;
             "app-poll": LocalJSX.AppPoll & JSXBase.HTMLAttributes<HTMLAppPollElement>;
             "app-poll-options": LocalJSX.AppPollOptions & JSXBase.HTMLAttributes<HTMLAppPollOptionsElement>;
+            "app-popover-confirm": LocalJSX.AppPopoverConfirm & JSXBase.HTMLAttributes<HTMLAppPopoverConfirmElement>;
             "app-present": LocalJSX.AppPresent & JSXBase.HTMLAttributes<HTMLAppPresentElement>;
             "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-publish": LocalJSX.AppPublish & JSXBase.HTMLAttributes<HTMLAppPublishElement>;
@@ -1972,6 +2070,7 @@ declare module "@stencil/core" {
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-text": LocalJSX.AppText & JSXBase.HTMLAttributes<HTMLAppTextElement>;
             "app-transform-element": LocalJSX.AppTransformElement & JSXBase.HTMLAttributes<HTMLAppTransformElementElement>;
+            "app-transform-paragraph": LocalJSX.AppTransformParagraph & JSXBase.HTMLAttributes<HTMLAppTransformParagraphElement>;
             "app-transform-slide": LocalJSX.AppTransformSlide & JSXBase.HTMLAttributes<HTMLAppTransformSlideElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-unsplash": LocalJSX.AppUnsplash & JSXBase.HTMLAttributes<HTMLAppUnsplashElement>;

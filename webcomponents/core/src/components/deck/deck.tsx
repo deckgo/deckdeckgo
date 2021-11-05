@@ -1,6 +1,6 @@
 import {Component, Element, Listen, Method, Prop, State, Event, EventEmitter, h, Watch, Host} from '@stencil/core';
 
-import {isIOS, unifyEvent, isMobile, isFullscreen, debounce, isAndroidTablet, isIPad} from '@deckdeckgo/utils';
+import {unifyEvent, isMobile, isFullscreen, debounce, isAndroidTablet, isIPad} from '@deckdeckgo/utils';
 import {getSlideDefinition, getAttributesDefinition} from '@deckdeckgo/deck-utils';
 
 import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
@@ -8,9 +8,9 @@ import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttribute
 import {DeckdeckgoDeckBackgroundUtils} from '../utils/background-utils';
 
 import {HideSlides, RevealSlide, AnimationSlide} from '../utils/animation';
+import {containerSize} from '../utils/size.utils';
 
 interface Delta {
-  slider: HTMLElement;
   swipeNext: boolean;
   deltaX: number;
   deltaY: number;
@@ -81,7 +81,7 @@ export class DeckGoDeck {
 
   @Prop({reflect: true}) animation: 'slide' | 'fade' | 'none' = 'slide';
 
-  @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+  @Prop({reflect: true, mutable: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
   @Prop() autoSlide: 'true' | 'false' = 'false';
@@ -98,6 +98,20 @@ export class DeckGoDeck {
 
   // We do not consider iPad and Tablet as "mobile" devices. With mobile we mean smaller devices, phones.
   private mobile: boolean = isMobile() && !(isIPad() || isAndroidTablet());
+
+  private containerRef!: HTMLDivElement;
+
+  private readonly debounceWindowResize: () => void = debounce(async () => {
+    await this.initSlideSize();
+
+    if (this.dir !== 'papyrus') {
+      await this.slideTo(this.activeIndex);
+    }
+
+    const toggleFullscreen: boolean = isFullscreen();
+    await this.hideOrClearMouseCursorTimer(toggleFullscreen);
+    await this.showHideActionsSlot(toggleFullscreen);
+  }, 100);
 
   async componentWillLoad() {
     await this.initRtl();
@@ -128,6 +142,8 @@ export class DeckGoDeck {
     if (this.idleMouseTimer > 0) {
       clearTimeout(this.idleMouseTimer);
     }
+
+    window?.removeEventListener('resize', this.debounceWindowResize);
   }
 
   private initRtl(): Promise<void> {
@@ -142,105 +158,70 @@ export class DeckGoDeck {
   }
 
   private initWindowResize() {
-    if (window) {
-      window.addEventListener(
-        'resize',
-        debounce(async () => {
-          await this.initSlideSize();
-
-          if (this.dir !== 'papyrus') {
-            await this.slideTo(this.activeIndex);
-          }
-
-          const toggleFullscreen: boolean = isFullscreen();
-          await this.hideOrClearMouseCursorTimer(toggleFullscreen);
-          await this.showHideActionsSlot(toggleFullscreen);
-        }, 100)
-      );
-    }
+    window?.addEventListener('resize', this.debounceWindowResize);
   }
 
   @Method()
-  initSlideSize(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
+  async initSlideSize() {
+    if (!this.embedded) {
+      await this.initSlideSizeStandard();
+      return;
+    }
 
-      if (!slider) {
-        resolve();
-        return;
-      }
-
-      if (!this.embedded) {
-        await this.initSlideSizeStandard(slider);
-      } else {
-        await this.initSlideSizeEmbedded(slider);
-      }
-
-      resolve();
-    });
+    await this.initSlideSizeEmbedded();
   }
 
-  private initSlideSizeStandard(slider: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!window || !screen) {
-        resolve();
-        return;
-      }
+  private async initSlideSizeStandard() {
+    const sliderSize: {width: number; height: number} = this.containerSize();
 
-      const sliderSize: {width: number; height: number} = await this.getSliderSize();
+    this.containerRef?.style.setProperty('--slide-width', `${sliderSize.width}px`);
 
-      slider.style.setProperty('--slide-width', `${sliderSize.width}px`);
+    if (this.dir === 'papyrus') {
+      this.containerRef?.style.setProperty('--slide-min-height', `${sliderSize.height}px`);
+      this.containerRef?.style.removeProperty('--slide-height');
+    } else {
+      this.containerRef?.style.removeProperty('--slide-min-height');
+      this.containerRef?.style.setProperty('--slide-height', `${sliderSize.height}px`);
+    }
 
-      if (this.dir === 'papyrus') {
-        slider.style.setProperty('--slide-min-height', `${sliderSize.height}px`);
-        slider.style.removeProperty('--slide-height');
-      } else {
-        slider.style.removeProperty('--slide-min-height');
-        slider.style.setProperty('--slide-height', `${sliderSize.height}px`);
-      }
-
-      await this.initFontSize(slider, {height: sliderSize.height, width: sliderSize.width});
-
-      resolve();
-    });
+    await this.initFontSize({height: sliderSize.height, width: sliderSize.width});
   }
 
-  private initSlideSizeEmbedded(slider: HTMLElement): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!slider.offsetParent) {
-        resolve();
-        return;
-      }
-
-      if (slider.offsetParent) {
-        if (slider.offsetParent.clientWidth > 0) {
-          slider.style.setProperty('--slide-width', '' + slider.offsetParent.clientWidth + 'px');
-        }
-
-        if (slider.offsetParent.clientHeight > 0 && this.dir === 'papyrus') {
-          slider.style.setProperty('--slide-min-height', '' + slider.offsetParent.clientHeight + 'px');
-          slider.style.removeProperty('--slide-height');
-        }
-
-        if (slider.offsetParent.clientHeight > 0 && this.dir !== 'papyrus') {
-          slider.style.removeProperty('--slide-min-height');
-          slider.style.setProperty('--slide-height', '' + slider.offsetParent.clientHeight + 'px');
-        }
-
-        await this.initFontSize(slider, {height: slider.offsetParent.clientHeight, width: slider.offsetParent.clientWidth});
-      }
-
-      resolve();
-    });
+  private containerSize(): {width: number; height: number} {
+    return containerSize({embedded: this.embedded, container: this.containerRef});
   }
 
-  private async initFontSize(slider: HTMLElement, {height, width}: {height: number; width: number}) {
+  private async initSlideSizeEmbedded() {
+    if (!this.containerRef || !this.containerRef.offsetParent) {
+      return;
+    }
+
+    const offsetParent = this.containerRef.offsetParent;
+
+    if (offsetParent.clientWidth > 0) {
+      this.containerRef.style.setProperty('--slide-width', '' + offsetParent.clientWidth + 'px');
+    }
+
+    if (offsetParent.clientHeight > 0 && this.dir === 'papyrus') {
+      this.containerRef.style.setProperty('--slide-min-height', '' + offsetParent.clientHeight + 'px');
+      this.containerRef.style.removeProperty('--slide-height');
+    }
+
+    if (offsetParent.clientHeight > 0 && this.dir !== 'papyrus') {
+      this.containerRef.style.removeProperty('--slide-min-height');
+      this.containerRef.style.setProperty('--slide-height', '' + offsetParent.clientHeight + 'px');
+    }
+
+    await this.initFontSize({height: offsetParent.clientHeight, width: offsetParent.clientWidth});
+  }
+
+  private async initFontSize({height, width}: {height: number; width: number}) {
     // 576px height = font-size 16px or 1em (relative to the font-size of its direct or nearest parent)
     const fontSize: number = height / 576;
     const ratioFontSize: number = ((width / 16) * 9) / 576;
 
-    slider.style.setProperty('--slide-auto-font-size', `${fontSize}em`);
-    slider.style.setProperty('--slide-auto-ratio-font-size', `${ratioFontSize}em`);
+    this.containerRef?.style.setProperty('--slide-auto-font-size', `${fontSize}em`);
+    this.containerRef?.style.setProperty('--slide-auto-ratio-font-size', `${ratioFontSize}em`);
   }
 
   private initKeyboardAssist() {
@@ -427,7 +408,7 @@ export class DeckGoDeck {
     this.moveX(delta);
     this.moveY(delta);
 
-    delta.slider.style.setProperty('--transformXDuration', '0ms');
+    this.containerRef?.style.setProperty('--transformXDuration', '0ms');
   }
 
   private moveX(delta: Delta) {
@@ -437,7 +418,7 @@ export class DeckGoDeck {
 
     const transformX: number = delta.swipeNext ? this.deckMove - delta.deltaX : this.deckMove + delta.deltaX;
 
-    delta.slider.style.setProperty('--transformX', transformX + 'px');
+    this.containerRef?.style.setProperty('--transformX', transformX + 'px');
 
     this.slideDrag.emit(transformX);
   }
@@ -449,7 +430,7 @@ export class DeckGoDeck {
 
     const transformY: number = delta.swipeNext ? this.deckMove - delta.deltaY : this.deckMove + delta.deltaY;
 
-    delta.slider.style.setProperty('--transformY', transformY + 'px');
+    this.containerRef?.style.setProperty('--transformY', transformY + 'px');
 
     this.slideDrag.emit(transformY);
   }
@@ -482,7 +463,7 @@ export class DeckGoDeck {
       }
 
       if (couldSwipeNext || couldSwipePrevious) {
-        const sliderSize: {width: number; height: number} = await this.getSliderSize();
+        const sliderSize: {width: number; height: number} = this.containerSize();
 
         const autoSwipeHorizontal: boolean = delta.deltaX > sliderSize.width / this.autoSwipeRatio;
         const autoSwipeVertical: boolean = delta.deltaY > sliderSize.height / this.autoSwipeRatio;
@@ -513,61 +494,30 @@ export class DeckGoDeck {
         }
       }
 
-      await this.doSwipeSlide(delta.slider);
+      await this.doSwipeSlide();
 
       resolve();
     });
-  }
-
-  private async getSliderSize(): Promise<{width: number; height: number}> {
-    if (!this.embedded) {
-      return this.getSliderSizeNotEmbededd();
-    }
-
-    const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
-
-    if (!slider || !slider.offsetParent || slider.offsetParent.clientWidth <= 0) {
-      return this.getSliderSizeNotEmbededd();
-    }
-
-    return {
-      width: slider.offsetParent.clientWidth,
-      height: slider.offsetParent.clientHeight
-    };
-  }
-
-  private async getSliderSizeNotEmbededd(): Promise<{width: number; height: number}> {
-    if (isIOS()) {
-      return {
-        width: screen.width > window.innerWidth ? screen.width : window.innerWidth,
-        height: screen.height > window.innerHeight ? screen.height : window.innerHeight
-      };
-    } else {
-      return {
-        width: window.innerWidth,
-        height: window.innerHeight
-      };
-    }
   }
 
   private isNextChange(swipeLeft: boolean): boolean {
     return (swipeLeft && !this.rtl) || (!swipeLeft && this.rtl);
   }
 
-  private doSwipeSlide(slider: HTMLElement, speed?: number | undefined): Promise<void> {
+  private doSwipeSlide(speed?: number | undefined): Promise<void> {
     return new Promise<void>((resolve) => {
       if (this.dir === 'horizontal') {
-        slider.style.setProperty('--transformX', this.deckMove + 'px');
+        this.containerRef?.style.setProperty('--transformX', this.deckMove + 'px');
       }
 
       if (this.dir === 'vertical') {
-        slider.style.setProperty('--transformY', this.deckMove + 'px');
+        this.containerRef?.style.setProperty('--transformY', this.deckMove + 'px');
       }
 
       if (this.animation === 'slide') {
-        slider.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
+        this.containerRef?.style.setProperty('--transformXDuration', '' + (!isNaN(speed) ? speed : 300) + 'ms');
       } else {
-        slider.style.setProperty('--transformXDuration', '0ms');
+        this.containerRef?.style.setProperty('--transformXDuration', '0ms');
       }
 
       if (this.dir === 'papyrus') {
@@ -605,12 +555,6 @@ export class DeckGoDeck {
       return null;
     }
 
-    const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
-
-    if (!slider) {
-      return null;
-    }
-
     const currentX: number = unifyEvent($event).clientX;
     const currentY: number = unifyEvent($event).clientY;
 
@@ -624,7 +568,6 @@ export class DeckGoDeck {
     const swipeTop: boolean = this.startY > currentY && this.dir === 'vertical';
 
     return {
-      slider,
       swipeNext: swipeLeft || swipeTop,
       deltaX: swipeLeft ? this.startX - currentX : currentX - this.startX,
       deltaY: swipeTop ? this.startY - currentY : currentY - this.startY
@@ -863,10 +806,9 @@ export class DeckGoDeck {
 
     // We might want first to show hide stuffs in the slide before swiping
     if (couldSwipe) {
-      const sliderSize: {width: number; height: number} = await this.getSliderSize();
+      const sliderSize: {width: number; height: number} = this.containerSize();
 
       const deltaX: Delta = {
-        slider,
         swipeNext,
         deltaX: sliderSize.width,
         deltaY: sliderSize.height
@@ -941,13 +883,13 @@ export class DeckGoDeck {
       return;
     }
 
-    const sliderSize: {width: number; height: number} = await this.getSliderSize();
+    const sliderSize: {width: number; height: number} = this.containerSize();
 
     this.deckMove = index * (this.dir === 'horizontal' ? sliderSize.width : sliderSize.height) * (this.rtl ? 1 : -1);
 
     this.activeIndex = index;
 
-    await this.doSwipeSlide(slider, speed);
+    await this.doSwipeSlide(speed);
 
     // In case we are sliding to a slide which received focus before being displayed (previously outside viewport)
     // a scroll on the parent element would have been applied by the browser. Therefore we set it back to the origin, as we takes care of the positioning of the slider.
@@ -1069,14 +1011,7 @@ export class DeckGoDeck {
         return;
       }
 
-      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
-
-      if (!slider) {
-        resolve();
-        return;
-      }
-
-      slider.style.setProperty('cursor', show ? 'inherit' : 'none');
+      this.containerRef?.style.setProperty('cursor', show ? 'inherit' : 'none');
       this.mouseInactivity.emit(show);
 
       this.cursorHidden = !show;
@@ -1085,21 +1020,12 @@ export class DeckGoDeck {
     });
   }
 
-  private showHideActionsSlot(toggleFullscreen: boolean): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const slider: HTMLElement = this.el.shadowRoot.querySelector('div.deckgo-deck');
-
-      if (!slider) {
-        resolve();
-        return;
-      }
-
-      if (toggleFullscreen) {
-        slider.style.setProperty('--slide-actions-display', 'none');
-      } else {
-        slider.style.removeProperty('--slide-actions-display');
-      }
-    });
+  private async showHideActionsSlot(toggleFullscreen: boolean) {
+    if (toggleFullscreen) {
+      this.containerRef?.style.setProperty('--slide-actions-display', 'none');
+    } else {
+      this.containerRef?.style.removeProperty('--slide-actions-display');
+    }
   }
 
   /* END: Full screen */
@@ -1107,16 +1033,23 @@ export class DeckGoDeck {
   /* BEGIN: Utils */
 
   @Method()
-  doPrint(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (window) {
-        await this.lazyLoadAllContent();
+  async doPrint() {
+    const dir: 'horizontal' | 'vertical' | 'papyrus' = this.direction;
 
-        window.print();
-      }
+    window.addEventListener('afterprint', () => (this.direction = dir), {once: true});
 
-      resolve();
-    });
+    const onRender = async (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      await Promise.all([this.lazyLoadAllContent(), this.revealAllContent()]);
+
+      window.print();
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.el, {attributes: true});
+
+    this.direction = 'vertical';
   }
 
   @Method()
@@ -1234,7 +1167,7 @@ export class DeckGoDeck {
       <Host class={`${this.dir}`}>
         <main>
           {this.renderAnimation()}
-          <div class="deckgo-deck">
+          <div class="deckgo-deck" ref={(el: HTMLDivElement | null) => (this.containerRef = el as HTMLDivElement)}>
             <slot />
             <slot name="actions"></slot>
             <slot name="background"></slot>

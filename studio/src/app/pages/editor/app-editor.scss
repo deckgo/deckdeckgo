@@ -1,0 +1,13 @@
+app-editor {
+  app-navigation,
+  app-help {
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+
+  app-deck-editor,
+  app-doc-editor {
+    background: var(--ion-color-light);
+  }
+}

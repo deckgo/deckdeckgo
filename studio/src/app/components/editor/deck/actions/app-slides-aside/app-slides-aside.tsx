@@ -6,7 +6,7 @@ import {debounce} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {deckSelector, slideTo, selectDeckSlide} from '@deckdeckgo/editor';
 
-import {SlideUtils} from '../../../../../utils/editor/slide.utils';
+import {NodeUtils} from '../../../../../utils/editor/node.utils';
 
 @Component({
   tag: 'app-slides-aside',
@@ -99,7 +99,7 @@ export class AppSlidesAside {
   }
 
   private async updateSlide(updatedSlide: HTMLElement) {
-    const slideIndex: number = SlideUtils.slideIndex(updatedSlide);
+    const slideIndex: number = NodeUtils.nodeIndex(updatedSlide);
 
     this.slides = [
       ...this.slides.map((slide: HTMLElement, index: number) =>
@@ -109,7 +109,7 @@ export class AppSlidesAside {
   }
 
   private async deleteSlide(deletedSlide: HTMLElement) {
-    const slideIndex: number = SlideUtils.slideIndex(deletedSlide);
+    const slideIndex: number = NodeUtils.nodeIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: HTMLElement, index: number) => slideIndex !== index)];
   }

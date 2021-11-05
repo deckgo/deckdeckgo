@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid';
 
 import {get, getMany} from 'idb-keyval';
 
-import {Deck, deckSelector, UserAsset} from '@deckdeckgo/editor';
+import {Deck, deckSelector, docSelector, UserAsset, Doc} from '@deckdeckgo/editor';
 
 import {SlotType} from '../../types/editor/slot-type';
 
@@ -10,35 +10,61 @@ export const getDeckBackgroundImage = async (): Promise<UserAsset | undefined> =
   return getDeckImage();
 };
 
-export const getSlidesLocalImages = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
-  return getAssets<UserAsset>({deck, assets: getSlideLocalImages});
+export const getSlidesLocalImages = async ({deck}: {deck: Deck | undefined}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({
+    elementIds: deck?.data?.slides,
+    assets: getLocalImages,
+    selector: slideSelector
+  });
 };
 
-export const getSlidesLocalCharts = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
-  return getAssets<UserAsset>({deck, assets: getSlideLocalCharts});
+export const getSlidesOnlineImages = async ({deck}: {deck: Deck | undefined}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({elementIds: deck?.data?.slides, assets: getSlideOnlineImages, selector: slideSelector});
 };
 
-export const getSlidesOnlineImages = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
-  return getAssets<UserAsset>({deck, assets: getSlideOnlineImages});
+export const getSlidesLocalCharts = async ({deck}: {deck: Deck | undefined}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({elementIds: deck?.data?.slides, assets: getSlideLocalCharts, selector: slideSelector});
 };
 
-export const getSlidesOnlineCharts = async ({deck}: {deck: Deck}): Promise<UserAsset[]> => {
-  return getAssets<UserAsset>({deck, assets: getSlideOnlineCharts});
+export const getSlidesOnlineCharts = async ({deck}: {deck: Deck | undefined}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({elementIds: deck?.data?.slides, assets: getSlideOnlineCharts, selector: slideSelector});
+};
+
+export const getParagraphsLocalImages = async ({doc}: {doc: Doc | undefined}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({
+    elementIds: doc?.data?.paragraphs,
+    assets: getLocalImages,
+    selector: paragraphSelector
+  });
+};
+
+export const getParagraphsOnlineImages = async ({doc}: {doc: Doc | undefined}): Promise<UserAsset[]> => {
+  return getAssets<UserAsset>({elementIds: doc?.data?.paragraphs, assets: getSlideOnlineImages, selector: paragraphSelector});
+};
+
+const slideSelector = (id: string) => {
+  return {selector: `${deckSelector} > *[slide_id="${id}"]`};
+};
+
+const paragraphSelector = (id: string) => {
+  return {selector: `${docSelector} > article *[paragraph_id="${id}"]`};
 };
 
 const getAssets = async <T>({
-  deck,
+  elementIds,
+  selector,
   assets
 }: {
-  deck: Deck;
-  assets: ({slideId}: {slideId: string}) => Promise<T[] | undefined>;
+  elementIds: string[] | undefined;
+  selector: (id: string) => {selector: string};
+  assets: ({selector}: {selector: string}) => Promise<T[] | undefined>;
 }): Promise<T[]> => {
-  if (!deck.data.slides || deck.data.slides.length <= 0) {
+  if (!elementIds || elementIds.length <= 0) {
     return [];
   }
 
   try {
-    const data: (T[] | undefined)[] = await Promise.all(deck.data.slides.map((slideId: string) => assets({slideId})));
+    const data: (T[] | undefined)[] = await Promise.all(elementIds.map((id: string) => assets(selector(id))));
     return [].concat(...data.filter((files: T[] | undefined) => files?.length));
   } catch (err) {
     throw new Error('Error while getting slides images');
@@ -70,8 +96,8 @@ const getDeckImage = async (): Promise<UserAsset | undefined> => {
   };
 };
 
-const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
-  const imgs: HTMLDeckgoLazyImgElement[] | undefined = getSlideImages({slideId});
+const getLocalImages = async ({selector}: {selector: string}): Promise<UserAsset[] | undefined> => {
+  const imgs: HTMLDeckgoLazyImgElement[] | undefined = getImages({selector});
 
   if (!imgs || imgs.length <= 0) {
     return undefined;
@@ -91,8 +117,8 @@ const getSlideLocalImages = async ({slideId}: {slideId: string}): Promise<UserAs
   }));
 };
 
-const getSlideOnlineImages = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
-  const imgs: HTMLDeckgoLazyImgElement[] | undefined = getSlideImages({slideId});
+const getSlideOnlineImages = async ({selector}: {selector: string}): Promise<UserAsset[] | undefined> => {
+  const imgs: HTMLDeckgoLazyImgElement[] | undefined = getImages({selector});
 
   if (!imgs || imgs.length <= 0) {
     return undefined;
@@ -110,14 +136,14 @@ const getSlideOnlineImages = async ({slideId}: {slideId: string}): Promise<UserA
   return (await Promise.all(promises)).filter((asset: UserAsset | undefined) => asset !== undefined);
 };
 
-const getSlideImages = ({slideId}: {slideId: string}): HTMLDeckgoLazyImgElement[] | undefined => {
-  const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
+const getImages = ({selector}: {selector: string}): HTMLDeckgoLazyImgElement[] | undefined => {
+  const element: HTMLElement = document.querySelector(selector);
 
-  if (!slideElement) {
+  if (!element) {
     return undefined;
   }
 
-  const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = slideElement.querySelectorAll(SlotType.IMG);
+  const imgs: NodeListOf<HTMLDeckgoLazyImgElement> = element.querySelectorAll(SlotType.IMG);
 
   if (!imgs || imgs.length <= 0) {
     return undefined;
@@ -125,14 +151,14 @@ const getSlideImages = ({slideId}: {slideId: string}): HTMLDeckgoLazyImgElement[
 
   // Filter deck background (which are cloned from the deck to the slides)
   return Array.from(imgs).filter((img: HTMLDeckgoLazyImgElement) => {
-    return !(img.parentElement?.getAttribute('slot') === 'background' && !slideElement.hasAttribute('custom-background'));
+    return !(img.parentElement?.getAttribute('slot') === 'background' && !element.hasAttribute('custom-background'));
   });
 };
 
 const isLocalImage = ({imgSrc}: HTMLDeckgoLazyImgElement): boolean => imgSrc !== undefined && imgSrc !== '' && !imgSrc.startsWith('http');
 
-const getSlideLocalCharts = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
-  const src: string = getChartSrc({slideId});
+const getSlideLocalCharts = async ({selector}: {selector: string}): Promise<UserAsset[] | undefined> => {
+  const src: string = getChartSrc({selector});
 
   if (!src || src === undefined || src === '') {
     return undefined;
@@ -146,8 +172,8 @@ const getSlideLocalCharts = async ({slideId}: {slideId: string}): Promise<UserAs
   ];
 };
 
-const getSlideOnlineCharts = async ({slideId}: {slideId: string}): Promise<UserAsset[] | undefined> => {
-  const src: string = getChartSrc({slideId});
+const getSlideOnlineCharts = async ({selector}: {selector: string}): Promise<UserAsset[] | undefined> => {
+  const src: string = getChartSrc({selector});
 
   if (!src || src === undefined || src === '') {
     return undefined;
@@ -157,8 +183,8 @@ const getSlideOnlineCharts = async ({slideId}: {slideId: string}): Promise<UserA
   return asset ? [asset] : undefined;
 };
 
-const getChartSrc = ({slideId}: {slideId: string}): string | undefined => {
-  const slideElement: HTMLElement = document.querySelector(`${deckSelector} > *[slide_id="${slideId}"]`);
+const getChartSrc = ({selector}: {selector: string}): string | undefined => {
+  const slideElement: HTMLElement = document.querySelector(selector);
 
   if (!slideElement) {
     return undefined;

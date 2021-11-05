@@ -3,6 +3,8 @@ export * from './models/api/api.user';
 export * from './models/auth/auth.user';
 
 export * from './models/data/deck';
+export * from './models/data/doc';
+export * from './models/data/paragraph';
 export * from './models/data/slide';
 export * from './models/data/template';
 export * from './models/data/token';
@@ -26,5 +28,6 @@ export * from './providers/unsplash.provider';
 export * from './providers/publish.provider';
 
 export * from './utils/date.utils';
+export * from './utils/doc.utils';
 export * from './utils/deck.utils';
 export * from './utils/script.utils';

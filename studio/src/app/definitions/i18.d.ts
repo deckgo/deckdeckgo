@@ -392,6 +392,8 @@ interface I18nEditor {
   slide_style: string;
   transform_element: string;
   transform_slide: string;
+  add_element: string;
+  saving: string;
 }
 
 interface I18nOffline {
@@ -524,6 +526,9 @@ interface I18nTools {
   new: string;
   new_presentation: string;
   new_warning_text: string;
+  new_deck: string;
+  new_doc: string;
+  new_experimental: string;
   open: string;
   user: string;
 }

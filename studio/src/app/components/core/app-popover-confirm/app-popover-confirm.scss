@@ -1,0 +1,23 @@
+app-popover-confirm {
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  border-top: 1px solid var(--ion-color-light);
+
+  button {
+    height: 2em;
+
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: none;
+
+    overflow: hidden;
+    position: relative;
+
+    &:first-of-type {
+      border-right: 1px solid var(--ion-color-light);
+    }
+  }
+}

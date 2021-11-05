@@ -4,7 +4,7 @@ import {isSlide} from '@deckdeckgo/deck-utils';
 
 import {Deck} from '@deckdeckgo/editor';
 
-import deckStore from '../../../../../stores/deck.store';
+import editorStore from '../../../../../stores/editor.store';
 import errorStore from '../../../../../stores/error.store';
 import authStore from '../../../../../stores/auth.store';
 import i18n from '../../../../../stores/i18n.store';
@@ -61,7 +61,7 @@ export class AppPublishEdit {
   async componentWillLoad() {
     await this.init();
 
-    this.destroyDeckListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
+    this.destroyDeckListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
       this.publishing = this.publishing || deck.data.deploy?.api?.status === 'scheduled';
     });
@@ -78,16 +78,16 @@ export class AppPublishEdit {
   }
 
   private async init() {
-    if (!deckStore.state.deck || !deckStore.state.deck.data) {
+    if (!editorStore.state.deck || !editorStore.state.deck.data) {
       return;
     }
 
-    this.caption = deckStore.state.deck.data.name;
-    this.description = deckStore.state.deck.data.meta?.description
-      ? (deckStore.state.deck.data.meta.description as string)
+    this.caption = editorStore.state.deck.data.name;
+    this.description = editorStore.state.deck.data.meta?.description
+      ? (editorStore.state.deck.data.meta.description as string)
       : await this.getFirstSlideContent();
-    this.tags = deckStore.state.deck.data.meta?.tags ? (deckStore.state.deck.data.meta.tags as string[]) : [];
-    this.pushToGitHub = deckStore.state.deck.data.github ? deckStore.state.deck.data.github.publish : true;
+    this.tags = editorStore.state.deck.data.meta?.tags ? (editorStore.state.deck.data.meta.tags as string[]) : [];
+    this.pushToGitHub = editorStore.state.deck.data.github ? editorStore.state.deck.data.github.publish : true;
   }
 
   private getFirstSlideContent(): Promise<string> {
@@ -138,13 +138,13 @@ export class AppPublishEdit {
   }
 
   private onSuccessfulPublish() {
-    const currentDeck: Deck = {...deckStore.state.deck};
+    const currentDeck: Deck = {...editorStore.state.deck};
 
-    const destroyDeckDeployListener = deckStore.onChange('deck', async (deck: Deck | undefined) => {
+    const destroyDeckDeployListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       if (deck?.data?.deploy?.api?.status === 'successful') {
         destroyDeckDeployListener();
 
-        await this.delayNavigation(currentDeck.data.api_id !== deckStore.state.deck.data.api_id);
+        await this.delayNavigation(currentDeck.data.api_id !== editorStore.state.deck.data.api_id);
       }
     });
   }
@@ -171,7 +171,7 @@ export class AppPublishEdit {
 
         // Just for display so the progress bar reaches 100% for the eyes
         setTimeout(async () => {
-          const publishedUrl: string = await getPublishedUrl(deckStore.state.deck);
+          const publishedUrl: string = await getPublishedUrl(editorStore.state.deck);
           this.published.emit(publishedUrl);
         }, 200);
       },
@@ -387,7 +387,7 @@ export class AppPublishEdit {
   }
 
   private renderFailure() {
-    if (deckStore.state.deck?.data?.deploy?.api?.status !== 'failure') {
+    if (editorStore.state.deck?.data?.deploy?.api?.status !== 'failure') {
       return undefined;
     }
 
@@ -469,7 +469,7 @@ export class AppPublishEdit {
   }
 
   private renderGitHubText() {
-    if (!deckStore.state.deck || !deckStore.state.deck.data || !deckStore.state.deck.data.github) {
+    if (!editorStore.state.deck || !editorStore.state.deck.data || !editorStore.state.deck.data.github) {
       return <p class="meta-text">{i18n.state.publish_edit.source_push}</p>;
     }
 

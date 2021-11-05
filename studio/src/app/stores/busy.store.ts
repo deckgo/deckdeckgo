@@ -1,15 +1,17 @@
 import {createStore} from '@stencil/store';
 
 interface BusyStore {
-  deckBusy: boolean | undefined;
+  busy: boolean | undefined;
   slideReady: boolean;
   deckReady: boolean;
+  docReady: boolean;
 }
 
-const {state} = createStore({
-  deckBusy: undefined,
+const {state, onChange} = createStore<BusyStore>({
+  busy: undefined,
   slideReady: false,
-  deckReady: false
-} as BusyStore);
+  deckReady: false,
+  docReady: false
+});
 
-export default {state};
+export default {state, onChange};

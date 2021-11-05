@@ -383,7 +383,9 @@
     "deck_style": "Deck Style",
     "slide_style": "Folien Style",
     "transform_element": "Ändere Element",
-    "transform_slide": "Ändere Folie"
+    "transform_slide": "Ändere Folie",
+    "add_element": "Fügen Sie ein Bild, Code oder ein neues Element hinzu",
+    "saving": "Wird gespeichert..."
   },
   "offline": {
     "editing": "Du bearbeitest gerade offline.",
@@ -506,7 +508,10 @@
   "tools": {
     "new": "Neu",
     "new_presentation": "Erstelle eine neue Präsentation",
-    "new_warning_text": "Dadurch werden die aktuelle Präsentation und Folien ersetzt. Sind Sie sicher?",
+    "new_warning_text": "Dadurch werden die aktuelle Daten ersetzt. Sind Sie sicher?",
+    "new_deck": "Präsentation",
+    "new_doc": "Dokument",
+    "new_experimental": "Experimental",
     "open": "Öffnen",
     "user": "Benutzer*in"
   },

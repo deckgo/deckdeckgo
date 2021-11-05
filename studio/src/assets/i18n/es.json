@@ -383,7 +383,9 @@
     "deck_style": "Estilo del paquete",
     "slide_style": "Estilo de la diapositiva",
     "transform_element": "Elemento de transformación",
-    "transform_slide": "Transformar diapositiva"
+    "transform_slide": "Transformar diapositiva",
+    "add_element": "Add an image, code, or new part",
+    "saving": "Guardando..."
   },
   "offline": {
     "editing": "Estás editando sin conexión.",
@@ -506,7 +508,10 @@
   "tools": {
     "new": "Nueva",
     "new_presentation": "Crea una nueva presentación",
-    "new_warning_text": "Esto reemplazará la presentación y las diapositivas. ¿Está seguro?",
+    "new_warning_text": "Esto reemplazará los datos. ¿Está seguro?",
+    "new_deck": "Presentación",
+    "new_doc": "Documento",
+    "new_experimental": "Experimental",
     "open": "Abrir",
     "user": "Usuarie"
   },

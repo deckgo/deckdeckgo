@@ -1,6 +1,6 @@
-@use "../../../../global/theme/editor/editor-fullscreen";
+@use "../../../global/theme/editor/editor-fullscreen";
 
-ion-nav app-editor ion-content {
+ion-nav app-deck-editor ion-content {
   div.editor {
     height: 100%;
     width: 100%;
@@ -63,25 +63,20 @@ ion-nav app-editor ion-content {
   }
 }
 
-app-editor {
-  @import "../../../../global/theme/editor/editor-deck-header-footer";
-  @import "../../../../global/theme/editor/editor-deck-social";
-  @import "../../../../global/theme/editor/editor-deck-transition";
-  @import "../../../../global/theme/editor/editor-loading";
+app-deck-editor {
+  @import "../../../global/theme/editor/editor-deck-header-footer";
+  @import "../../../global/theme/editor/editor-deck-social";
+  @import "../../../global/theme/editor/editor-deck-transition";
+  @import "../../../global/theme/editor/editor-loading";
 
   main {
-    @import "../../../../global/theme/editor/editor-deck";
-    @import "../../../../global/theme/editor/editor-deck-placeholder";
+    @import "../../../global/theme/editor/editor-deck";
+    @import "../../../global/theme/editor/editor-deck-placeholder";
   }
 
   @import "node_modules/@deckdeckgo/deck-utils/css/deck";
 
-  app-navigation,
-  app-help {
-    &.hidden {
-      visibility: hidden;
-    }
-  }
+  height: 100%;
 
   ion-content {
     --overflow: hidden;

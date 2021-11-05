@@ -10,12 +10,13 @@ import userStore from '../../stores/user.store';
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
-import {QRCodeUtils} from './qrcode.utils';
-import {SocialUtils} from './social.utils';
 import {SlotType} from '../../types/editor/slot-type';
 
+import {QRCodeUtils} from './qrcode.utils';
+import {SocialUtils} from './social.utils';
 import {TemplateUtils} from './template.utils';
 import {SlideUtils} from './slide.utils';
+import {createElement} from './create-element.utils';
 
 export interface InitTemplate {
   template: SlideTemplate | Template;
@@ -69,8 +70,8 @@ export class CreateSlidesUtils {
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-title key={uuid()}>
-          {this.createElement(elements[0], 'title')}
-          {elements.length >= 2 ? this.createElement(elements[1], 'content') : undefined}
+          {createElement({slotType: elements[0], slotName: 'title'})}
+          {elements.length >= 2 ? createElement({slotType: elements[1], slotName: 'content'}) : undefined}
         </deckgo-slide-title>
       );
 
@@ -87,8 +88,8 @@ export class CreateSlidesUtils {
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-content key={uuid()} style={style}>
-          {this.createElement(elements[0], 'title')}
-          {elements.length >= 2 ? this.createElement(elements[1], 'content') : undefined}
+          {createElement({slotType: elements[0], slotName: 'title'})}
+          {elements.length >= 2 ? createElement({slotType: elements[1], slotName: 'content'}) : undefined}
         </deckgo-slide-content>
       );
 
@@ -106,33 +107,13 @@ export class CreateSlidesUtils {
       // @ts-ignore
       // prettier-ignore
       const slide: JSX.IntrinsicElements = (<deckgo-slide-split key={uuid()} {...attributes}>
-          {this.createElement(elements[0], 'start')}
-          {this.createElement(elements[1], 'end')}
+          {createElement({slotType: elements[0], slotName: 'start'})}
+          {createElement({slotType: elements[1], slotName: 'end'})}
         </deckgo-slide-split>
       );
 
       resolve(slide);
     });
-  }
-
-  private static createElement(slotType: SlotType, slotName: string | undefined): JSX.IntrinsicElements {
-    const Element = slotType.toString();
-
-    return (
-      <Element slot={slotName}>
-        {slotType === SlotType.OL || slotType === SlotType.UL ? (
-          <li>{'\u200B'}</li>
-        ) : slotType === SlotType.CODE ? (
-          <code slot="code"></code>
-        ) : slotType === SlotType.MATH ? (
-          <code slot="math"></code>
-        ) : slotType === SlotType.WORD_CLOUD ? (
-          <code slot="words"></code>
-        ) : slotType === SlotType.MARKDOWN ? (
-          <div slot="markdown"></div>
-        ) : undefined}
-      </Element>
-    );
   }
 
   static createSlideGif(src: string): Promise<JSX.IntrinsicElements> {
@@ -325,7 +306,7 @@ export class CreateSlidesUtils {
         {!elements || elements.length <= 0
           ? undefined
           : elements.map((element: SlotType, i: number) => {
-              return this.createElement(element, template.data.slots?.[i]?.name);
+              return createElement({slotType: element, slotName: template.data.slots?.[i]?.name});
             })}
       </Element>
     );
