@@ -134,9 +134,9 @@ export class DocEvents {
         nodeName: element.nodeName.toLowerCase()
       };
 
-      const content: string = await cleanContent(element.innerHTML);
+      const content: string[] = await Promise.all(this.toParagraphContent(element));
       if (content && content.length > 0) {
-        paragraphData.content = content;
+        paragraphData.children = content;
       }
 
       const persistedParagraph: Paragraph = await createOfflineParagraph({docId: editorStore.state.doc.id, paragraphData: paragraphData});
@@ -371,13 +371,27 @@ export class DocEvents {
       }
     };
 
-    const content: string = await cleanContent(paragraph.innerHTML);
+    const content: string[] = await Promise.all(this.toParagraphContent(paragraph));
     if (content && content.length > 0) {
-      paragraphUpdate.data.content = content;
+      paragraphUpdate.data.children = content;
     } else {
-      paragraphUpdate.data.content = null;
+      paragraphUpdate.data.children = null;
     }
 
     await updateOfflineParagraph({docId, paragraph: paragraphUpdate});
+  }
+
+  private toParagraphContent(paragraph: HTMLElement): Promise<string>[] {
+    return Array.from(paragraph.childNodes).reduce((acc: Promise<string>[], node: Node) => {
+      if (NodeUtils.isTextNode(node)) {
+        acc.push(Promise.resolve(node.nodeValue));
+      }
+
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        acc.push(cleanContent((node as HTMLElement).outerHTML));
+      }
+
+      return acc;
+    }, []);
   }
 }

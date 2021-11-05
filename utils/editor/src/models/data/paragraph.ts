@@ -1,5 +1,5 @@
 export interface ParagraphData {
-  content?: string;
+  children?: string[];
 
   nodeName: string;
 

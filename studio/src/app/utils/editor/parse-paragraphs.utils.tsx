@@ -20,8 +20,8 @@ export class ParseParagraphsUtils {
       // Create a div to parse back to JSX its children
       const div = document.createElement('div');
 
-      if (paragraph.data.content && paragraph.data.content !== undefined) {
-        div.innerHTML = paragraph.data.content;
+      if (paragraph.data.children?.length > 0) {
+        div.innerHTML = paragraph.data.children.join('');
         content = await ParseElementsUtils.parseElements(div, true, false);
       }
 
