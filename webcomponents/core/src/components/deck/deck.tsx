@@ -81,7 +81,7 @@ export class DeckGoDeck {
 
   @Prop({reflect: true}) animation: 'slide' | 'fade' | 'none' = 'slide';
 
-  @Prop({reflect: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
+  @Prop({reflect: true, mutable: true}) direction: 'horizontal' | 'vertical' | 'papyrus' = 'horizontal';
   @Prop({reflect: true}) directionMobile: 'horizontal' | 'vertical' | 'papyrus' = 'papyrus';
 
   @Prop() autoSlide: 'true' | 'false' = 'false';
@@ -1033,16 +1033,23 @@ export class DeckGoDeck {
   /* BEGIN: Utils */
 
   @Method()
-  doPrint(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (window) {
-        await this.lazyLoadAllContent();
+  async doPrint() {
+    const dir: 'horizontal' | 'vertical' | 'papyrus' = this.direction;
 
-        window.print();
-      }
+    window.addEventListener('afterprint', () => (this.direction = dir), {once: true});
 
-      resolve();
-    });
+    const onRender = async (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      await Promise.all([this.lazyLoadAllContent(), this.revealAllContent()]);
+
+      window.print();
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.el, {attributes: true});
+
+    this.direction = 'vertical';
   }
 
   @Method()

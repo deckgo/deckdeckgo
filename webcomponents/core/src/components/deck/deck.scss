@@ -101,12 +101,20 @@ div.deckgo-deck {
 }
 
 @media print {
-  div.deckgo-deck {
-    display: initial;
-    position: initial;
+  :host(.vertical),
+  :host(.horizontal) {
+    main {
+      overflow: visible;
+    }
   }
 
-  ::slotted([slot="background"]) {
-    display: none;
+  :host(.papyrus) {
+    main {
+      overflow-x: visible;
+    }
+  }
+
+  :host > * {
+    page-break-after: always;
   }
 }
