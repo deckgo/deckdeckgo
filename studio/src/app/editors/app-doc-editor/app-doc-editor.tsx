@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Fragment, h, JSX, Method, State} from '@stencil/core';
+import {Component, ComponentInterface, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
@@ -19,6 +19,7 @@ import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
 import {getEdit} from '../../utils/editor/editor.utils';
+import {printDoc} from '../../utils/editor/print.utils';
 
 import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
 
@@ -69,6 +70,25 @@ export class AppDocEditor implements ComponentInterface {
   private destroy() {
     this.docEvents.destroy();
     editorStore.reset();
+  }
+
+  @Listen('keydown', {target: 'document'})
+  onKeyDown($event: KeyboardEvent) {
+    const {key, ctrlKey, metaKey} = $event;
+
+    if (key === 'p' && (ctrlKey || metaKey)) {
+      this.print($event);
+    }
+  }
+
+  private print($event: KeyboardEvent) {
+    if (!this.containerRef) {
+      return;
+    }
+
+    $event.preventDefault();
+
+    printDoc({element: this.containerRef});
   }
 
   @Method()

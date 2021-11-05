@@ -12,6 +12,7 @@ app-doc-editor {
     margin: 32px auto;
 
     article {
+      background: white;
       white-space: pre-wrap;
 
       h1:nth-child(1):empty:not(:focus):after {

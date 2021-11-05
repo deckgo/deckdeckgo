@@ -1,0 +1,15 @@
+@media print {
+  body {
+    position: relative;
+    background: white;
+  }
+
+  app-root.hidden {
+    display: none;
+  }
+
+  deckgo-lazy-img {
+    -webkit-print-color-adjust: exact; /* Chrome, Safari, Edge */
+    color-adjust: exact;
+  }
+}

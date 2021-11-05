@@ -24,17 +24,12 @@ export function lazyLoadSelectedImages(images: HTMLElement[]): Promise<void> {
   });
 }
 
-export function lazyLoadSelectedLazyImagesComponent(components: HTMLElement[]): Promise<void> {
-  return new Promise<void>((resolve) => {
-    if (!components) {
-      resolve();
-      return;
-    }
-
-    components.forEach(async (component: HTMLElement) => {
-      await (component as any).lazyLoad();
-    });
-
-    resolve();
-  });
+// For simplicity reason we do not import the dependency here
+interface HTMLDeckgoLazyImgElement extends HTMLElement {
+  lazyLoad: () => Promise<void>;
 }
+
+export const lazyLoadSelectedLazyImagesComponent = async (components: HTMLElement[]): Promise<void> => {
+  const promises: Promise<void>[] = components.map((cmp: HTMLElement) => (cmp as HTMLDeckgoLazyImgElement).lazyLoad());
+  await Promise.all(promises);
+};
