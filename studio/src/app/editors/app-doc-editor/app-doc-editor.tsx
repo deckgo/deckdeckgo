@@ -2,6 +2,8 @@ import {Component, ComponentInterface, Fragment, h, JSX, Method, State} from '@s
 
 import {v4 as uuid} from 'uuid';
 
+import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
+
 import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
 
@@ -103,6 +105,7 @@ export class AppDocEditor implements ComponentInterface {
 
     this.initDocEvents(!docId);
     this.initEditable();
+    this.initFocus();
 
     if (!docId) {
       await this.initDoc();
@@ -114,19 +117,18 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   private async initDoc() {
+    /**
+     * Pragmatic hack for Firefox: we cannot use the css selector :empty in Firefox because if user enter text in a first empty title, the text is not added within the title but before it.
+     */
+    const firefox: boolean = isFirefox();
+
     const Title = 'h1';
-    const title: JSX.IntrinsicElements = <Title key={uuid()}>Title</Title>;
+    const title: JSX.IntrinsicElements = <Title key={uuid()}>{firefox ? '\u200B' : ''}</Title>;
 
-    this.paragraphs = [title, this.emtpySection()];
-  }
-
-  private emtpySection(): JSX.IntrinsicElements {
     const Section = 'section';
-    return (
-      <Section key={uuid()}>
-        <br />
-      </Section>
-    );
+    const section: JSX.IntrinsicElements = <Section key={uuid()}></Section>;
+
+    this.paragraphs = firefox ? [title] : [title, section];
   }
 
   private async fetchDoc(docId: string) {
@@ -166,6 +168,17 @@ export class AppDocEditor implements ComponentInterface {
         `${SlotType.CODE}, ${SlotType.MATH}, ${SlotType.WORD_CLOUD}, ${SlotType.MARKDOWN}`
       );
       Array.from(elements).forEach((element: HTMLElement) => element.setAttribute('editable', 'true'));
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+  }
+
+  private initFocus() {
+    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      moveCursorToStart(this.containerRef?.firstChild?.firstChild);
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);

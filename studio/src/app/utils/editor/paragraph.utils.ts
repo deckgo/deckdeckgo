@@ -1,6 +1,7 @@
 // TODO: same as in new core
 
 import {moveCursorToEnd} from '@deckdeckgo/utils';
+import {NodeUtils} from './node.utils';
 
 export const findParagraph = ({element, container}: {element: Node; container: Node}): Node | undefined => {
   if (!container) {
@@ -39,7 +40,10 @@ export const isParagraph = ({element, container}: {element: Node; container: Nod
   return parentElement?.isEqualNode(container);
 };
 
-export const focusParagraph = ({paragraph}: {paragraph: HTMLElement}) => {
-  paragraph.focus();
+export const focusParagraph = ({paragraph}: {paragraph: Node | undefined}) => {
+  if (!NodeUtils.isTextNode(paragraph)) {
+    (paragraph as HTMLElement).focus();
+  }
+
   moveCursorToEnd(paragraph);
 };

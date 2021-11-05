@@ -50,7 +50,7 @@
     "@deckdeckgo/slide-utils": "^4.0.3",
     "@deckdeckgo/slide-youtube": "^2.4.0",
     "@deckdeckgo/social": "^4.1.0",
-    "@deckdeckgo/utils": "^2.3.0",
+    "@deckdeckgo/utils": "file:../utils/utils",
     "@deckdeckgo/word-cloud": "^1.2.0",
     "@deckdeckgo/youtube": "^2.1.0",
     "@ionic/core": "^5.8.4",
