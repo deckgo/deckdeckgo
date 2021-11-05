@@ -1,6 +1,5 @@
-// TODO: same as in new core
-
 import {moveCursorToEnd} from '@deckdeckgo/utils';
+
 import {NodeUtils} from './node.utils';
 
 export const findParagraph = ({element, container}: {element: Node; container: Node}): Node | undefined => {
