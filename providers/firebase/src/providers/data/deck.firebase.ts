@@ -3,23 +3,23 @@ import {CreateDeck, Deck, DeckData, DeckEntries, DeleteDeck, GetDeck, UpdateDeck
 import {createEntry, deleteEntry, entries, getEntry, snapshotEntry, updateEntry} from '../../utils/data/firestore.queries';
 
 export const deckEntries: DeckEntries = (userId: string): Promise<Deck[]> => {
-  return entries<DeckData>({userId, collection: 'deck'});
+  return entries<DeckData>({userId, collection: 'decks'});
 };
 
 export const deleteDeck: DeleteDeck = (deckId: string): Promise<void> => {
-  return deleteEntry({id: deckId, collection: 'deck'});
+  return deleteEntry({id: deckId, collection: 'decks'});
 };
 
 export const createDeck: CreateDeck = (deck: DeckData): Promise<Deck> => {
-  return createEntry<DeckData>({data: deck, collection: 'deck'});
+  return createEntry<DeckData>({data: deck, collection: 'decks'});
 };
 
 export const getDeck: GetDeck = (deckId: string): Promise<Deck> => {
-  return getEntry<DeckData>({id: deckId, collection: 'deck'});
+  return getEntry<DeckData>({id: deckId, collection: 'decks'});
 };
 
 export const updateDeck: UpdateDeck = (deck: Deck): Promise<Deck> => {
-  return updateEntry<Deck>({entry: deck, collection: 'deck'});
+  return updateEntry<Deck>({entry: deck, collection: 'decks'});
 };
 
 export const snapshotDeck: SnapshotDeck = async ({
@@ -31,5 +31,5 @@ export const snapshotDeck: SnapshotDeck = async ({
   onNext: (snapshot: Deck) => void;
   onError?: (error: string) => void;
 }): Promise<() => void | undefined> => {
-  return snapshotEntry<DeckData>({id: deckId, collection: 'deck', onNext, onError});
+  return snapshotEntry<DeckData>({id: deckId, collection: 'decks', onNext, onError});
 };
