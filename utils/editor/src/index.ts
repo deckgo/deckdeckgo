@@ -18,6 +18,8 @@ export * from './types/file-system';
 
 export * from './providers/auth.provider';
 export * from './providers/deck.provider';
+export * from './providers/doc.provider';
+export * from './providers/paragraph.provider';
 export * from './providers/platform.provider';
 export * from './providers/slide.provider';
 export * from './providers/template.provider';

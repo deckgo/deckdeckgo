@@ -5,7 +5,7 @@ export interface GetSlide {
 }
 
 export interface UpdateSlide {
-  (deckId: string, slide: Slide): Promise<void>;
+  (deckId: string, slide: Slide): Promise<Slide>;
 }
 
 export interface DeleteSlide {
