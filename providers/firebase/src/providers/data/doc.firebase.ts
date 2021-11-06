@@ -1,6 +1,6 @@
 import {CreateDoc, Doc, DocData, DocEntries, DeleteDoc, GetDoc, UpdateDoc, SnapshotDoc} from '@deckdeckgo/editor';
 
-import {createEntry, deleteEntry, entries, getEntry, snapshotEntry, updateEntry} from '../../utils/firestore.queries';
+import {createEntry, deleteEntry, entries, getEntry, snapshotEntry, updateEntry} from '../../utils/data/firestore.queries';
 
 export const docEntries: DocEntries = (userId: string): Promise<Doc[]> => {
   return entries<DocData>({userId, collection: 'doc'});

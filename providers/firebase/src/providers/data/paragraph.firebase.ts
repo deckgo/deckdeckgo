@@ -1,5 +1,5 @@
 import {DeleteParagraph, Paragraph, ParagraphData, UpdateParagraph} from '@deckdeckgo/editor';
-import {deleteEntry, getEntry, updateEntry} from '../../utils/firestore.queries';
+import {deleteEntry, getEntry, updateEntry} from '../../utils/data/firestore.queries';
 
 export const getParagraph = (docId: string, paragraphId: string): Promise<Paragraph> => {
   return getEntry<ParagraphData>({id: paragraphId, collection: `/docs/${docId}/paragraphs`});

@@ -1,5 +1,5 @@
 import {DeleteSlide, Slide, SlideData, UpdateSlide} from '@deckdeckgo/editor';
-import {deleteEntry, getEntry, updateEntry} from '../../utils/firestore.queries';
+import {deleteEntry, getEntry, updateEntry} from '../../utils/data/firestore.queries';
 
 export const getSlide = (deckId: string, slideId: string): Promise<Slide> => {
   return getEntry<SlideData>({id: slideId, collection: `/decks/${deckId}/slides`});
