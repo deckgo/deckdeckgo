@@ -16,7 +16,7 @@ import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '
 
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
 
-import {SlideTemplate, SyncEvent} from '@deckdeckgo/editor';
+import {SlideTemplate} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
@@ -39,12 +39,7 @@ import {Editor} from '../../types/editor/editor';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {FontsService} from '../../services/editor/fonts/fonts.service';
 
-import {initSyncState, sync} from '../../providers/sync/sync.provider';
-
 import {EnvironmentGoogleConfig} from '../../types/core/environment-config';
-
-import {worker} from '../../workers/sync.worker.ts?worker';
-import {startSyncTimer, stopSyncTimer} from '../../workers/sync.worker';
 
 @Component({
   tag: 'app-deck-editor',
@@ -155,22 +150,6 @@ export class AppDeckEditor implements ComponentInterface {
     await this.initOrFetch();
 
     this.fullscreen = isFullscreen() && !isMobile();
-
-    await this.syncData();
-  }
-
-  private async syncData() {
-    await startSyncTimer();
-
-    worker.onmessage = async ({data}: MessageEvent<SyncEvent>) => {
-      if (!data || data.msg !== 'deckdeckgo_sync') {
-        return;
-      }
-
-      await sync(data.data);
-    };
-
-    await initSyncState();
   }
 
   @Method()
@@ -201,8 +180,6 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   async destroy() {
-    await stopSyncTimer();
-
     this.deckEvents.destroy();
     this.deckEditorEvents.destroy();
     this.pollEvents.destroy();
