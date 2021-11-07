@@ -184,6 +184,7 @@ export class AppRoot {
           <ion-route url="/templates" component="app-templates" />
 
           <ion-route url="/decks" component="app-decks" />
+          <ion-route url="/docs" component="app-docs" />
 
           <ion-route url="/storage" component="app-storage" />
 

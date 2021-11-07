@@ -9,12 +9,12 @@ import authStore from '../../../stores/auth.store';
 import {findParagraph, isParagraph} from '../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
 
-import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/docs/doc.offline.provider';
+import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/doc/doc.offline.provider';
 import {
   createOfflineParagraph,
   deleteOfflineParagraph,
   updateOfflineParagraph
-} from '../../../providers/data/docs/paragraph.offline.provider';
+} from '../../../providers/data/paragraph/paragraph.offline.provider';
 import {debounce} from '@deckdeckgo/utils';
 
 export class DocEvents {

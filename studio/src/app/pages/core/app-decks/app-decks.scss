@@ -8,21 +8,6 @@ app-decks {
   main {
     @include page.input-colors;
 
-    ion-router-link {
-      padding-right: 4px;
-    }
-
-    a,
-    a:link,
-    a:visited,
-    a:hover,
-    a:active {
-      text-decoration: none;
-
-      touch-action: manipulation;
-      cursor: pointer;
-    }
-
     div.container.loading {
       article {
         visibility: hidden;
@@ -39,7 +24,7 @@ app-decks {
       aside {
         @include dashboard.actions;
 
-        app-dashboard-deck-actions {
+        app-dashboard-actions {
           grid-column-start: 2;
           grid-column-end: 3;
           grid-row-start: 1;
@@ -56,12 +41,7 @@ app-decks {
       @include deck.padding;
     }
 
-    ion-searchbar[class*="sc-ion-searchbar"] {
-      border: 1px solid #dedede;
-      border-radius: 4px;
-
-      --placeholder-opacity: 0.33;
-    }
+    @include dashboard.searchbar;
 
     div.container {
       @include dashboard.grid;
@@ -73,39 +53,6 @@ app-decks {
         height: calc(var(--card-width) * 9 / 16);
 
         cursor: pointer;
-
-        div.spinner {
-          width: var(--slide-width);
-          height: var(--slide-height);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          ion-label {
-            margin: 8px;
-          }
-        }
-      }
-    }
-
-    div.toolbar-actions {
-      width: 100%;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      padding-top: 4px;
-
-      @media screen and (max-width: 768px) {
-        ion-button {
-          max-width: 128px;
-
-          ion-label {
-            white-space: initial;
-          }
-        }
       }
     }
   }

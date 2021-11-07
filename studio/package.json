@@ -61,7 +61,7 @@
     "web-social-share": "^7.2.0"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "^2.0.0",
+    "@deckdeckgo/editor": "file:../utils/editor",
     "@deckdeckgo/types": "^2.0.1",
     "@rollup/plugin-replace": "^3.0.0",
     "@stencil/core": "^2.9.0",

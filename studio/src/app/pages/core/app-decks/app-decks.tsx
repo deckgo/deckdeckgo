@@ -8,21 +8,17 @@ import {debounce} from '@deckdeckgo/utils';
 import {Deck, Slide, AuthUser, formatDate} from '@deckdeckgo/editor';
 
 import authStore from '../../../stores/auth.store';
-import navStore, {NavDirection} from '../../../stores/nav.store';
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 import syncStore from '../../../stores/sync.store';
 
 import {Editor} from '../../../types/editor/editor';
 
-import {signIn} from '../../../utils/core/signin.utils';
-import {renderI18n} from '../../../utils/core/i18n.utils';
 import {ParseDeckSlotsUtils} from '../../../utils/editor/parse-deck-slots.utils';
 import {ParseSlidesUtils} from '../../../utils/editor/parse-slides.utils';
 import {TemplateUtils} from '../../../utils/editor/template.utils';
-import {loadAndImport} from '../../../utils/core/dashboard.utils';
+import {loadAndImportDeck, navigateReloadEditor} from '../../../utils/core/dashboard.utils';
 import {getEdit} from '../../../utils/editor/editor.utils';
-import {removeSyncBeforeUnload} from '../../../utils/core/before-unload.utils';
 
 import {decks} from '../../../providers/data/deck/deck.provider';
 import {getSlide} from '../../../providers/data/slide/slide.provider';
@@ -30,11 +26,12 @@ import {initTemplates} from '../../../providers/data/template/template.provider'
 
 import {ImageEvents} from '../../../events/core/image/image.events';
 import {ChartEvents} from '../../../events/core/chart/chart.events';
+import {AppAnonymousContent} from '../../../components/core/app-anonymous-content/app-anonymous-content';
 
 interface DeckAndFirstSlide {
   deck: Deck;
   slide: JSX.IntrinsicElements | undefined;
-  style: any;
+  style: Record<string, string> | undefined;
   background: JSX.IntrinsicElements | undefined;
   header: JSX.IntrinsicElements | undefined;
   footer: JSX.IntrinsicElements | undefined;
@@ -57,8 +54,8 @@ export class AppDecks implements ComponentInterface {
   @State()
   private currentDeckId: string | undefined;
 
-  private readonly debounceLoading: () => void;
-  private readonly debounceDecksLoading: () => void;
+  private readonly debounceLoading: () => void = debounce(() => (this.loading = false), 750);
+  private readonly debounceDecksLoading: () => void = debounce(() => (this.decksLoading = false), 150);
 
   private decks: DeckAndFirstSlide[] = null;
 
@@ -66,12 +63,6 @@ export class AppDecks implements ComponentInterface {
   private chartEvents: ChartEvents = new ChartEvents();
 
   private destroyListener;
-
-  constructor() {
-    this.debounceDecksLoading = debounce(() => (this.decksLoading = false), 150);
-
-    this.debounceLoading = debounce(() => (this.loading = false), 750);
-  }
 
   async componentWillLoad() {
     await this.imageEvents.init();
@@ -86,7 +77,7 @@ export class AppDecks implements ComponentInterface {
     await this.initDashboard();
 
     const editor: Editor | undefined = await getEdit();
-    this.currentDeckId = editor?.id;
+    this.currentDeckId = editor?.type === 'deck' ? editor?.id : undefined;
   }
 
   private async initDashboard() {
@@ -103,7 +94,7 @@ export class AppDecks implements ComponentInterface {
       await initTemplates();
 
       this.decks = await this.fetchFirstSlides(userDecks);
-      await this.filterDecks(null);
+      this.filterDecks(null);
     } catch (err) {
       errorStore.state.error = 'Cannot init your dashboard.';
     }
@@ -112,9 +103,7 @@ export class AppDecks implements ComponentInterface {
   }
 
   disconnectedCallback() {
-    if (this.destroyListener) {
-      this.destroyListener();
-    }
+    this.destroyListener?.();
 
     this.imageEvents.destroy();
     this.chartEvents.destroy();
@@ -132,78 +121,67 @@ export class AppDecks implements ComponentInterface {
     return Promise.all(promises);
   }
 
-  private initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
-    return new Promise<DeckAndFirstSlide>(async (resolve) => {
-      try {
-        const slide: Slide = await getSlide(deck.id, slideId);
+  private async initDeckAndFirstSlide(deck: Deck, slideId: string): Promise<DeckAndFirstSlide> {
+    try {
+      const slide: Slide = await getSlide(deck.id, slideId);
 
-        const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
+      const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
 
-        const style: any = await this.convertStyle(deck);
+      const style: Record<string, string> | undefined = await this.convertStyle(deck);
 
-        const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
-        const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
-        const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
+      const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
+      const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
+      const footer: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.footer, 'footer');
 
-        await TemplateUtils.loadSlideTemplate(slide);
+      await TemplateUtils.loadSlideTemplate(slide);
 
-        resolve({
-          deck,
-          slide: element,
-          style,
-          background,
-          header,
-          footer
-        });
-      } catch (err) {
-        resolve(undefined);
-      }
-    });
+      return {
+        deck,
+        slide: element,
+        style,
+        background,
+        header,
+        footer
+      };
+    } catch (err) {
+      return undefined;
+    }
   }
 
-  private async convertStyle(deck: Deck): Promise<any> {
-    let style: any;
+  private async convertStyle(deck: Deck): Promise<Record<string, string> | undefined> {
+    let style: Record<string, string> | undefined = undefined;
     if (deck.data?.attributes?.style) {
       style = await convertStyle(deck.data.attributes.style);
-    } else {
-      style = undefined;
     }
 
     return style;
   }
 
-  private filterDecks(value: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!value || value === undefined || value === '') {
-        this.filteredDecks = this.decks ? [...this.decks] : [];
+  private filterDecks(value: string | null) {
+    if (!value || value === undefined || value === '') {
+      this.filteredDecks = this.decks ? [...this.decks] : [];
+      return;
+    }
 
-        resolve();
-        return;
-      }
+    if (!this.decks || this.decks.length <= 0) {
+      this.filteredDecks = this.decks ? [...this.decks] : [];
+      return;
+    }
 
-      if (!this.decks || this.decks.length <= 0) {
-        this.filteredDecks = this.decks ? [...this.decks] : [];
-
-        resolve();
-        return;
-      }
-
-      const matchingDecks: DeckAndFirstSlide[] = this.decks.filter((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck.deck?.data?.name?.toLowerCase().indexOf(value.toLowerCase()) > -1;
-      });
-
-      this.filteredDecks = [...matchingDecks];
-
-      resolve();
+    const matchingDecks: DeckAndFirstSlide[] = this.decks.filter((matchDeck: DeckAndFirstSlide) => {
+      return matchDeck.deck?.data?.name?.toLowerCase().indexOf(value.toLowerCase()) > -1;
     });
+
+    this.filteredDecks = [...matchingDecks];
   }
 
-  private async filterDecksOnChange(e: CustomEvent) {
-    if (e && e.detail) {
-      await this.filterDecks(e.detail.value);
-    } else {
-      await this.filterDecks(null);
+  private filterDecksOnChange($event: CustomEvent) {
+    if ($event && $event.detail) {
+      this.filterDecks($event.detail.value);
+      return;
     }
+
+    this.filterDecks(null);
   }
 
   private async onSlidesDidLoad($event: CustomEvent) {
@@ -222,9 +200,9 @@ export class AppDecks implements ComponentInterface {
     await loading.present();
 
     try {
-      await loadAndImport(deck.deck);
+      await loadAndImportDeck(deck.deck);
 
-      this.navigateReloadEditor();
+      navigateReloadEditor();
     } catch (err) {
       errorStore.state.error = err;
     }
@@ -232,57 +210,35 @@ export class AppDecks implements ComponentInterface {
     await loading.dismiss();
   }
 
-  private navigateReloadEditor() {
-    // We are aware a sync is going to happen and we are navigating programmatically
-    removeSyncBeforeUnload();
+  private removeDeletedDeck($event: CustomEvent) {
+    if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
+      return;
+    }
 
-    navStore.state.nav = {
-      url: '/',
-      direction: NavDirection.RELOAD
-    };
+    const deckId: string = $event.detail;
+
+    const index: number = this.findDeckIndex(deckId);
+
+    if (index < 0) {
+      return;
+    }
+
+    this.decks.splice(index, 1);
+
+    this.filterDecks(null);
   }
 
-  private removeDeletedDeck($event: CustomEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!$event || !$event.detail || $event.detail === undefined || $event.detail === '') {
-        resolve();
-        return;
-      }
+  private findDeckIndex(id: string): number {
+    if (!this.decks || this.decks.length < 0) {
+      return -1;
+    }
 
-      const deckId: string = $event.detail;
+    if (!id || id === undefined || id === '') {
+      return -1;
+    }
 
-      const index: number = await this.findDeckIndex(deckId);
-
-      if (index < 0) {
-        resolve();
-        return;
-      }
-
-      this.decks.splice(index, 1);
-
-      await this.filterDecks(null);
-
-      resolve();
-    });
-  }
-
-  private findDeckIndex(id: string): Promise<number> {
-    return new Promise<number>(async (resolve) => {
-      if (!this.decks || this.decks.length < 0) {
-        resolve(-1);
-        return;
-      }
-
-      if (!id || id === undefined || id === '') {
-        resolve(-1);
-        return;
-      }
-
-      const index: number = this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
-        return matchDeck?.deck?.id === id;
-      });
-
-      resolve(index);
+    return this.decks.findIndex((matchDeck: DeckAndFirstSlide) => {
+      return matchDeck?.deck?.id === id;
     });
   }
 
@@ -301,34 +257,9 @@ export class AppDecks implements ComponentInterface {
     }
 
     if (authStore.state.anonymous) {
-      return this.renderAnonymousContent();
+      return <AppAnonymousContent title={i18n.state.menu.presentations} text={i18n.state.settings.access_decks}></AppAnonymousContent>;
     }
 
-    return this.renderGuardedContent();
-  }
-
-  private renderAnonymousContent() {
-    return (
-      <main class="ion-padding fit">
-        <h1>{i18n.state.menu.presentations}</h1>
-
-        {this.renderNotLoggedInContent()}
-      </main>
-    );
-  }
-
-  private renderNotLoggedInContent() {
-    return renderI18n(i18n.state.settings.access_dashboard, {
-      placeholder: '{0}',
-      value: (
-        <button type="button" class="app-button" onClick={() => signIn()}>
-          {i18n.state.nav.sign_in}
-        </button>
-      )
-    });
-  }
-
-  private renderGuardedContent() {
     return <main class="ion-padding fit">{this.renderYourPresentations()}</main>;
   }
 
@@ -352,7 +283,7 @@ export class AppDecks implements ComponentInterface {
           animated={false}
           placeholder={i18n.state.dashboard.filter}
           onClick={($event) => $event.stopImmediatePropagation()}
-          onIonChange={(e: CustomEvent) => this.filterDecksOnChange(e)}
+          onIonChange={($event: CustomEvent) => this.filterDecksOnChange($event)}
           class="ion-no-padding ion-margin-top ion-margin-bottom"
         />
       );
@@ -366,11 +297,11 @@ export class AppDecks implements ComponentInterface {
   }
 
   private renderDecks() {
-    if (this.filteredDecks && this.filteredDecks.length > 0) {
+    if (this.filteredDecks?.length > 0) {
       return <div class={`container ${this.decksLoading ? 'loading' : ''}`}>{this.renderDecksCards()}</div>;
-    } else {
-      return undefined;
     }
+
+    return undefined;
   }
 
   private renderDecksCards() {
@@ -397,33 +328,29 @@ export class AppDecks implements ComponentInterface {
         <p>{deck.deck.data.name}</p>
         <p>{formatDate(deck.deck.data.updated_at)}</p>
 
-        <app-dashboard-deck-actions
-          deck={deck.deck}
+        <app-dashboard-actions
+          data={{deck: deck.deck}}
           disableDelete={deck.deck.id === this.currentDeckId}
-          onDeckDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
-          onDeckCloned={() => this.navigateReloadEditor()}></app-dashboard-deck-actions>
+          onDeleted={($event: CustomEvent) => this.removeDeletedDeck($event)}
+          onCloned={() => navigateReloadEditor()}></app-dashboard-actions>
       </aside>
     );
   }
 
   private renderDeck(deck: DeckAndFirstSlide) {
-    if (!deck) {
-      return undefined;
-    } else {
-      return (
-        <deckgo-deck
-          embedded={true}
-          keyboard={false}
-          direction="horizontal"
-          direction-mobile="horizontal"
-          style={deck.style}
-          onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
-          {deck.slide}
-          {deck.background}
-          {deck.header}
-          {deck.footer}
-        </deckgo-deck>
-      );
-    }
+    return (
+      <deckgo-deck
+        embedded={true}
+        keyboard={false}
+        direction="horizontal"
+        direction-mobile="horizontal"
+        style={deck.style}
+        onSlidesDidLoad={($event: CustomEvent) => this.onSlidesDidLoad($event)}>
+        {deck.slide}
+        {deck.background}
+        {deck.header}
+        {deck.footer}
+      </deckgo-deck>
+    );
   }
 }

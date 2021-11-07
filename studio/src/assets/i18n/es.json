@@ -38,7 +38,8 @@
     "remote_control": "Control remoto",
     "editor": "Editor",
     "presentations": "Presentaciones",
-    "assets": "Depósito"
+    "assets": "Depósito",
+    "documents": "Documentos"
   },
   "links": {
     "home": "Inicio",
@@ -86,7 +87,8 @@
     "profile": "Perfil",
     "access_settings": "{0} para acceder a tu perfil y configuración.",
     "access_templates": "{0} para usar tus propias plantillas.",
-    "access_dashboard": "{0} para guardar su presentación en línea.",
+    "access_decks": "{0} para guardar su presentación en línea.",
+    "access_docs": "{0} para guardar su documentos en línea.",
     "access_assets": "{0} para acceder a su depositó en línea (imágenes y datos).",
     "info_assets": "Los imágenes y datos que ha utilizado en sus presentaciones y que se han subido a su depositó privado en línea.",
     "profile_note": "Tenga en cuenta que su actualización no tiene ningún efecto sobre las presentaciones que ya hubiera publicado.",
@@ -116,10 +118,13 @@
   "dashboard": {
     "welcome": "Bienvenido a DeckDeckGo 👋",
     "your_presentations": "Tus presentaciones",
+    "your_documents": "Tus documentos",
     "try": "Puedes probar ahora mismo nuestro editor de diapositivas pero, amablemente, te pediremos que {0} después de tres diapositivas. Creemos que es más seguro así, porque tu contenido se guarda en la nube.",
     "filter": "Filtrar tus presentaciones",
     "no_slides": "Todavía no tienes ninguna diapositiva.",
+    "no_docs": "Todavía no tienes ninguna documentos.",
     "sync_slides": "Tus diapositivas se están sincronizando.",
+    "sync_docs": "Tus documentos se están sincronizando.",
     "copy": "Copiar presentación",
     "delete": "Eliminar presentación",
     "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su presentación.",

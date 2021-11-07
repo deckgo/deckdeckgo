@@ -3,30 +3,29 @@ import {Component, Event, EventEmitter, h, Prop, Host, State} from '@stencil/cor
 import type {OverlayEventDetail} from '@ionic/core';
 import {loadingController, popoverController} from '@ionic/core';
 
-import {Deck} from '@deckdeckgo/editor';
-
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
-import {clone} from '../../../utils/core/dashboard.utils';
+import {clone, DeckOrDoc} from '../../../utils/core/dashboard.utils';
 
 import {deleteDeck} from '../../../providers/data/deck/deck.provider';
+import {deleteDoc} from '../../../providers/data/doc/doc.provider';
 
 import {AppIcon} from '../../core/app-icon/app-icon';
 
 @Component({
-  tag: 'app-dashboard-deck-actions',
-  styleUrl: 'app-dashboard-deck-actions.scss'
+  tag: 'app-dashboard-actions',
+  styleUrl: 'app-dashboard-actions.scss'
 })
-export class AppDashboardDeckActions {
+export class AppDashboardActions {
   @Prop()
-  deck: Deck;
+  data: DeckOrDoc;
 
   @Prop()
   disableDelete: boolean;
 
-  @Event() deckDeleted: EventEmitter<string>;
-  @Event() deckCloned: EventEmitter<void>;
+  @Event() deleted: EventEmitter<string>;
+  @Event() cloned: EventEmitter<void>;
 
   @State()
   private actionInProgress: boolean = false;
@@ -38,7 +37,7 @@ export class AppDashboardDeckActions {
       return;
     }
 
-    if (!this.deck || !this.deck.data) {
+    if (!this.data) {
       return;
     }
 
@@ -50,16 +49,16 @@ export class AppDashboardDeckActions {
 
     popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
       if (data) {
-        await this.deleteDeck();
+        await this.deleteData();
       }
     });
 
     await popover.present();
   }
 
-  private deleteDeck(): Promise<void> {
+  private deleteData(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.deck || !this.deck.id || this.deck.id === undefined || this.deck.id === '') {
+      if (!this.data) {
         resolve();
         return;
       }
@@ -71,9 +70,13 @@ export class AppDashboardDeckActions {
       await loading.present();
 
       try {
-        await deleteDeck(this.deck.id);
+        if (this.data.doc) {
+          await deleteDoc(this.data.doc.id);
+        } else {
+          await deleteDeck(this.data.deck.id);
+        }
 
-        this.deckDeleted.emit(this.deck.id);
+        this.deleted.emit(this.data.deck?.id || this.data.doc?.id);
       } catch (err) {
         errorStore.state.error = err;
       }
@@ -86,7 +89,7 @@ export class AppDashboardDeckActions {
     });
   }
 
-  private async cloneDeck($event: UIEvent): Promise<void> {
+  private async cloneData($event: UIEvent): Promise<void> {
     $event.stopPropagation();
 
     if (this.actionInProgress) {
@@ -100,9 +103,9 @@ export class AppDashboardDeckActions {
     await loading.present();
 
     try {
-      await clone(this.deck);
+      await clone(this.data);
 
-      this.deckCloned.emit();
+      this.cloned.emit();
     } catch (err) {
       errorStore.state.error = err;
     }
@@ -115,7 +118,7 @@ export class AppDashboardDeckActions {
   render() {
     return (
       <Host>
-        <button onClick={($event: UIEvent) => this.cloneDeck($event)} title={i18n.state.dashboard.copy} disabled={this.actionInProgress}>
+        <button onClick={($event: UIEvent) => this.cloneData($event)} title={i18n.state.dashboard.copy} disabled={this.actionInProgress}>
           <AppIcon name="copy" ariaLabel="" ariaHidden={true}></AppIcon>
         </button>
 
