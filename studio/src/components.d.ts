@@ -251,11 +251,12 @@ export namespace Components {
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
-        "actions": boolean;
+        "actions": 'all' | 'none' | 'editor-less';
         "menuToggle": boolean;
         "user": boolean;
     }
     interface AppNavigationActions {
+        "editorActions": boolean;
     }
     interface AppNew {
     }
@@ -1621,11 +1622,12 @@ declare namespace LocalJSX {
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
-        "actions"?: boolean;
+        "actions"?: 'all' | 'none' | 'editor-less';
         "menuToggle"?: boolean;
         "user"?: boolean;
     }
     interface AppNavigationActions {
+        "editorActions"?: boolean;
     }
     interface AppNew {
     }

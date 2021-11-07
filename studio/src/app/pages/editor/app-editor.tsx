@@ -89,7 +89,7 @@ export class AppDeckEditor implements ComponentInterface {
   render() {
     return (
       <Fragment>
-        <app-navigation class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>
+        <app-navigation actions="all" class={this.hideNavigation ? 'hidden' : undefined}></app-navigation>
 
         {this.renderEditor()}
       </Fragment>
