@@ -1,4 +1,4 @@
-import {Component, h, Fragment, Element} from '@stencil/core';
+import {Component, h, Fragment, Element, Prop} from '@stencil/core';
 
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 
@@ -24,6 +24,9 @@ import {cloud} from '../../../utils/core/environment.utils';
 })
 export class AppNavigationActions {
   @Element() el: HTMLElement;
+
+  @Prop()
+  editorActions: boolean = false;
 
   private loadInput!: HTMLInputElement;
 
@@ -130,7 +133,7 @@ export class AppNavigationActions {
   render() {
     return (
       <Fragment>
-        {this.renderActions()}
+        {this.editorActions && this.renderActions()}
         {this.renderSignIn()}
         {this.renderLoggedInActions()}
       </Fragment>

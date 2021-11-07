@@ -41,6 +41,7 @@ interface I18nMenu {
   editor: string;
   presentations: string;
   assets: string;
+  documents: string;
 }
 
 interface I18nLinks {
@@ -92,7 +93,8 @@ interface I18nSettings {
   profile: string;
   access_settings: string;
   access_templates: string;
-  access_dashboard: string;
+  access_decks: string;
+  access_docs: string;
   access_assets: string;
   info_assets: string;
   profile_note: string;
@@ -123,10 +125,13 @@ interface I18nSettings {
 interface I18nDashboard {
   welcome: string;
   your_presentations: string;
+  your_documents: string;
   try: string;
   filter: string;
   no_slides: string;
+  no_docs: string;
   sync_slides: string;
+  sync_docs: string;
   copy: string;
   delete: string;
   cannot_undone: string;

@@ -49,7 +49,7 @@ export const updateUser: UpdateUser = (user: User): Promise<User> => {
       ...user.data
     } as ApiUserData;
 
-    delete data.username;
+    delete (data as UserData).username;
     delete data.apiUserId;
 
     try {

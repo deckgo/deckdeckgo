@@ -6,10 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
-import { Deck, SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
+import { SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
 import { SelectedElement } from "./app/types/editor/selected-element";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
+import { DeckOrDoc } from "./app/utils/core/dashboard.utils";
 import { DeckAction } from "./app/types/editor/deck-action";
 import { EditAction } from "./app/types/editor/edit-action";
 import { ImageHelper } from "./app/helpers/editor/image.helper";
@@ -134,8 +135,8 @@ export namespace Components {
     }
     interface AppCustomization {
     }
-    interface AppDashboardDeckActions {
-        "deck": Deck;
+    interface AppDashboardActions {
+        "data": DeckOrDoc;
         "disableDelete": boolean;
     }
     interface AppDeckEditor {
@@ -165,6 +166,8 @@ export namespace Components {
         "initNewDoc": () => Promise<void>;
     }
     interface AppDocIndicator {
+    }
+    interface AppDocs {
     }
     interface AppEditMode {
     }
@@ -248,11 +251,12 @@ export namespace Components {
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
-        "actions": boolean;
+        "actions": 'all' | 'none' | 'editor-less';
         "menuToggle": boolean;
         "user": boolean;
     }
     interface AppNavigationActions {
+        "editorActions": boolean;
     }
     interface AppNew {
     }
@@ -613,11 +617,11 @@ declare global {
         prototype: HTMLAppCustomizationElement;
         new (): HTMLAppCustomizationElement;
     };
-    interface HTMLAppDashboardDeckActionsElement extends Components.AppDashboardDeckActions, HTMLStencilElement {
+    interface HTMLAppDashboardActionsElement extends Components.AppDashboardActions, HTMLStencilElement {
     }
-    var HTMLAppDashboardDeckActionsElement: {
-        prototype: HTMLAppDashboardDeckActionsElement;
-        new (): HTMLAppDashboardDeckActionsElement;
+    var HTMLAppDashboardActionsElement: {
+        prototype: HTMLAppDashboardActionsElement;
+        new (): HTMLAppDashboardActionsElement;
     };
     interface HTMLAppDeckEditorElement extends Components.AppDeckEditor, HTMLStencilElement {
     }
@@ -678,6 +682,12 @@ declare global {
     var HTMLAppDocIndicatorElement: {
         prototype: HTMLAppDocIndicatorElement;
         new (): HTMLAppDocIndicatorElement;
+    };
+    interface HTMLAppDocsElement extends Components.AppDocs, HTMLStencilElement {
+    }
+    var HTMLAppDocsElement: {
+        prototype: HTMLAppDocsElement;
+        new (): HTMLAppDocsElement;
     };
     interface HTMLAppEditModeElement extends Components.AppEditMode, HTMLStencilElement {
     }
@@ -1232,7 +1242,7 @@ declare global {
         "app-copy-style": HTMLAppCopyStyleElement;
         "app-create-slide": HTMLAppCreateSlideElement;
         "app-customization": HTMLAppCustomizationElement;
-        "app-dashboard-deck-actions": HTMLAppDashboardDeckActionsElement;
+        "app-dashboard-actions": HTMLAppDashboardActionsElement;
         "app-deck-editor": HTMLAppDeckEditorElement;
         "app-deck-fonts": HTMLAppDeckFontsElement;
         "app-deck-header-footer": HTMLAppDeckHeaderFooterElement;
@@ -1243,6 +1253,7 @@ declare global {
         "app-demo": HTMLAppDemoElement;
         "app-doc-editor": HTMLAppDocEditorElement;
         "app-doc-indicator": HTMLAppDocIndicatorElement;
+        "app-docs": HTMLAppDocsElement;
         "app-edit-mode": HTMLAppEditModeElement;
         "app-edit-slide": HTMLAppEditSlideElement;
         "app-edit-slide-author": HTMLAppEditSlideAuthorElement;
@@ -1479,11 +1490,11 @@ declare namespace LocalJSX {
     }
     interface AppCustomization {
     }
-    interface AppDashboardDeckActions {
-        "deck"?: Deck;
+    interface AppDashboardActions {
+        "data"?: DeckOrDoc;
         "disableDelete"?: boolean;
-        "onDeckCloned"?: (event: CustomEvent<void>) => void;
-        "onDeckDeleted"?: (event: CustomEvent<string>) => void;
+        "onCloned"?: (event: CustomEvent<void>) => void;
+        "onDeleted"?: (event: CustomEvent<string>) => void;
     }
     interface AppDeckEditor {
     }
@@ -1517,6 +1528,8 @@ declare namespace LocalJSX {
     interface AppDocEditor {
     }
     interface AppDocIndicator {
+    }
+    interface AppDocs {
     }
     interface AppEditMode {
     }
@@ -1609,11 +1622,12 @@ declare namespace LocalJSX {
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
-        "actions"?: boolean;
+        "actions"?: 'all' | 'none' | 'editor-less';
         "menuToggle"?: boolean;
         "user"?: boolean;
     }
     interface AppNavigationActions {
+        "editorActions"?: boolean;
     }
     interface AppNew {
     }
@@ -1847,7 +1861,7 @@ declare namespace LocalJSX {
         "app-copy-style": AppCopyStyle;
         "app-create-slide": AppCreateSlide;
         "app-customization": AppCustomization;
-        "app-dashboard-deck-actions": AppDashboardDeckActions;
+        "app-dashboard-actions": AppDashboardActions;
         "app-deck-editor": AppDeckEditor;
         "app-deck-fonts": AppDeckFonts;
         "app-deck-header-footer": AppDeckHeaderFooter;
@@ -1858,6 +1872,7 @@ declare namespace LocalJSX {
         "app-demo": AppDemo;
         "app-doc-editor": AppDocEditor;
         "app-doc-indicator": AppDocIndicator;
+        "app-docs": AppDocs;
         "app-edit-mode": AppEditMode;
         "app-edit-slide": AppEditSlide;
         "app-edit-slide-author": AppEditSlideAuthor;
@@ -1981,7 +1996,7 @@ declare module "@stencil/core" {
             "app-copy-style": LocalJSX.AppCopyStyle & JSXBase.HTMLAttributes<HTMLAppCopyStyleElement>;
             "app-create-slide": LocalJSX.AppCreateSlide & JSXBase.HTMLAttributes<HTMLAppCreateSlideElement>;
             "app-customization": LocalJSX.AppCustomization & JSXBase.HTMLAttributes<HTMLAppCustomizationElement>;
-            "app-dashboard-deck-actions": LocalJSX.AppDashboardDeckActions & JSXBase.HTMLAttributes<HTMLAppDashboardDeckActionsElement>;
+            "app-dashboard-actions": LocalJSX.AppDashboardActions & JSXBase.HTMLAttributes<HTMLAppDashboardActionsElement>;
             "app-deck-editor": LocalJSX.AppDeckEditor & JSXBase.HTMLAttributes<HTMLAppDeckEditorElement>;
             "app-deck-fonts": LocalJSX.AppDeckFonts & JSXBase.HTMLAttributes<HTMLAppDeckFontsElement>;
             "app-deck-header-footer": LocalJSX.AppDeckHeaderFooter & JSXBase.HTMLAttributes<HTMLAppDeckHeaderFooterElement>;
@@ -1992,6 +2007,7 @@ declare module "@stencil/core" {
             "app-demo": LocalJSX.AppDemo & JSXBase.HTMLAttributes<HTMLAppDemoElement>;
             "app-doc-editor": LocalJSX.AppDocEditor & JSXBase.HTMLAttributes<HTMLAppDocEditorElement>;
             "app-doc-indicator": LocalJSX.AppDocIndicator & JSXBase.HTMLAttributes<HTMLAppDocIndicatorElement>;
+            "app-docs": LocalJSX.AppDocs & JSXBase.HTMLAttributes<HTMLAppDocsElement>;
             "app-edit-mode": LocalJSX.AppEditMode & JSXBase.HTMLAttributes<HTMLAppEditModeElement>;
             "app-edit-slide": LocalJSX.AppEditSlide & JSXBase.HTMLAttributes<HTMLAppEditSlideElement>;
             "app-edit-slide-author": LocalJSX.AppEditSlideAuthor & JSXBase.HTMLAttributes<HTMLAppEditSlideAuthorElement>;

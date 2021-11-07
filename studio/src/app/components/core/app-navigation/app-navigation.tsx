@@ -17,7 +17,7 @@ export class AppNavigation {
 
   @Prop() user: boolean = true;
 
-  @Prop() actions: boolean = true;
+  @Prop() actions: 'all' | 'none' | 'editor-less' = 'editor-less';
 
   @State()
   private hideIC: boolean = localStorage.getItem('deckgo-hide-announcement-ic') !== null;
@@ -36,7 +36,9 @@ export class AppNavigation {
             {this.renderTitle()}
             {this.renderMenuToggle()}
 
-            {this.actions ? <app-navigation-actions slot="end"></app-navigation-actions> : undefined}
+            {this.actions !== 'none' ? (
+              <app-navigation-actions editor-actions={this.actions === 'all'} slot="end"></app-navigation-actions>
+            ) : undefined}
           </ion-toolbar>
         </ion-header>
       </Host>

@@ -1,0 +1,38 @@
+@use "../../../../global/theme/mixins/dashboard";
+@use "../../../../global/theme/mixins/page";
+
+app-docs {
+  main {
+    @include page.input-colors;
+  }
+
+  article {
+    aside {
+      @include dashboard.actions;
+
+      app-dashboard-actions {
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }
+    }
+  }
+
+  @include dashboard.searchbar;
+
+  div.container {
+    @include dashboard.grid;
+
+    ion-card.item {
+      position: relative;
+
+      width: var(--card-width);
+      height: calc(var(--card-width) * 297 / 210);
+
+      cursor: pointer;
+
+      background: white;
+    }
+  }
+}

@@ -25,6 +25,7 @@ export class AppMenu {
         {this.renderEditor()}
 
         {this.renderDecks()}
+        {this.renderDocs()}
         {this.renderStorage()}
 
         {this.renderSettings()}
@@ -64,6 +65,19 @@ export class AppMenu {
       <ion-item button href="/decks" routerDirection="forward">
         <AppIcon name="deck" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
         <ion-label>{i18n.state.menu.presentations}</ion-label>
+      </ion-item>
+    );
+  }
+
+  private renderDocs() {
+    if (!this.signIn) {
+      return undefined;
+    }
+
+    return (
+      <ion-item button href="/docs" routerDirection="forward">
+        <AppIcon name="doc" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+        <ion-label>{i18n.state.menu.documents}</ion-label>
       </ion-item>
     );
   }

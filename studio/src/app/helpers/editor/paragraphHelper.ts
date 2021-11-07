@@ -8,8 +8,8 @@ import editorStore from '../../stores/editor.store';
 
 import {ParseParagraphsUtils} from '../../utils/editor/parse-paragraphs.utils';
 
-import {getOfflineDoc} from '../../providers/data/docs/doc.offline.provider';
-import {getOfflineParagraph} from '../../providers/data/docs/paragraph.offline.provider';
+import {getOfflineDoc} from '../../providers/data/doc/doc.offline.provider';
+import {getOfflineParagraph} from '../../providers/data/paragraph/paragraph.offline.provider';
 
 export class ParagraphHelper {
   loadDocAndRetrieveParagraphs(docId: string): Promise<JSX.IntrinsicElements[] | null> {

@@ -38,7 +38,8 @@
     "remote_control": "Fernsteuerung",
     "editor": "Editor",
     "presentations": "Präsentationen",
-    "assets": "Medien"
+    "assets": "Medien",
+    "documents": "Dokumente"
   },
   "links": {
     "home": "Home",
@@ -86,7 +87,8 @@
     "profile": "Profil",
     "access_settings": "{0} um zu deinem Profil und Einstellungen zu gelangen.",
     "access_templates": "{0} um deine eigenen Vorlagen zu verwenden.",
-    "access_dashboard": "{0} um deine Präsentationen Online zu speichern.",
+    "access_decks": "{0} um deine Präsentationen Online zu speichern.",
+    "access_docs": "{0} um deine Dokumente Online zu speichern.",
     "access_assets": "{0} um auf Ihren Online-Medien zuzugreifen (Bilder und Daten).",
     "info_assets": "Die Assets (Bilder und Daten), die Sie in Ihren Präsentationen verwenden und die in Ihren privaten Online-Medien hochgeladen wurden.",
     "profile_note": "Beachte, dass deine Änderungen keinen Effekt haben, wenn die Präsentation bereits veröffentlicht wurde.",
@@ -116,10 +118,13 @@
   "dashboard": {
     "welcome": "Willkommen bei DeckDeckGo 👋",
     "your_presentations": "Deine Präsentationen",
+    "your_documents": "Deine Dokumente",
     "try": "Du kannst unseren Editor sofort mit bis zu drei Folien ausprobieren. Um mehr Folien zu erstellen, möchten wir dich bitten, einen Accout erstellen. Dies ist sicherer, da deine Folien in der Cloud sicher gespeichert werden kann.",
     "filter": "Deine Präsentationen filtern",
     "no_slides": "Du hast keine Folien.",
+    "no_docs": "Du hast keine Dokumente.",
     "sync_slides": "Deine Folien werden synchronisiert.",
+    "sync_docs": "Deine Dokumente werden synchronisiert.",
     "copy": "Kopiere die Präsentation",
     "delete": "Lösche die Präsentation",
     "cannot_undone": "Diese Aktion kann nicht rückgängig gemacht werden. Damit wird deine Präsentation dauerhaft gelöscht.",

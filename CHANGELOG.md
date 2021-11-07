@@ -2,6 +2,10 @@
 
 # [X.Y.Z](https://github.com/deckgo/deckdeckgo/compare/v5.0.1...vX.Y.Z) (202A-BB-CC)
 
+### Providers
+
+- firebase: v1.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+
 ### Web Components
 
 - core: v9.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/core/CHANGELOG.md))
@@ -9,7 +13,7 @@
 
 ### Other
 
-- editor: v2.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v2.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - utils: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.0.1"></a>

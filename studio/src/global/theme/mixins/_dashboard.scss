@@ -82,3 +82,12 @@
     font-size: var(--font-size-very-small);
   }
 }
+
+@mixin searchbar {
+  ion-searchbar[class*="sc-ion-searchbar"] {
+    border: 1px solid #dedede;
+    border-radius: 4px;
+
+    --placeholder-opacity: 0.33;
+  }
+}
