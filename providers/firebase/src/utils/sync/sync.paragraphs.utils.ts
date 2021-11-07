@@ -89,7 +89,7 @@ const uploadParagraphData = (docId: string, paragraphId: string): Promise<void> 
         return;
       }
 
-      if (paragraph.data.children === null || paragraph.data.children.length <= 0) {
+      if (paragraph.data.children === null || paragraph.data.children?.length <= 0) {
         // @ts-ignore
         paragraph.data.children = firebase.firestore.FieldValue.delete();
       }
