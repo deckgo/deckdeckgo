@@ -15,8 +15,11 @@ import StoragesStore "./storages.store";
 import DeckBucket "../deck/deck";
 import StorageBucket "../storage/storage";
 
+import CanisterUtils "../utils/canister.utils";
+
 actor Manager {
     type DeckId = Types.DeckId;
+    type UserId = Types.UserId;
 
     type DeckBucket = DeckBucket.DeckBucket;
     type StorageBucket = StorageBucket.StorageBucket;
@@ -24,14 +27,15 @@ actor Manager {
     type BucketId = CanisterTypes.BucketId;
 
     type OwnerDeckBucket = CanisterTypes.Bucket<DeckBucket>;
-    type OwnerStorageBucket = CanisterTypes.Bucket<StorageBucket>;
+
+    private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
     let decksStore: DecksStore.DecksStore = DecksStore.DecksStore();
-    let storagesStore: StoragesStore.StoragesStore = StoragesStore.StoragesStore();
+    let storagesStore: StoragesStore.StoragesStore<StorageBucket> = StoragesStore.StoragesStore<StorageBucket>();
 
     // Preserve the application state on upgrades
     private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
-    private stable var storages : [(Principal, OwnerStorageBucket)] = [];
+    private stable var storages : [(Principal, CanisterTypes.Bucket<StorageBucket>)] = [];
 
     /**
      * Decks
@@ -122,7 +126,7 @@ actor Manager {
     public shared({ caller }) func initStorage(): async (BucketId) {
         let self: Principal = Principal.fromActor(Manager);
 
-        let result: {#bucketId: BucketId; #error: Text;} = await storagesStore.init(self, caller);
+        let result: {#bucketId: BucketId; #error: Text;} = await storagesStore.init(self, caller, initNewBucket);
 
         switch (result) {
             case (#error error) {
@@ -132,6 +136,26 @@ actor Manager {
                 return bucketId;
             };
         };
+    };
+
+
+    private func initNewBucket(manager: Principal, user: UserId): async (Principal) {
+        Cycles.add(1_000_000_000_000);
+        let b: StorageBucket = await StorageBucket.StorageBucket(user);
+
+        let canisterId: Principal = Principal.fromActor(b);
+
+        await canisterUtils.updateSettings(canisterId, manager, user);
+
+        let newStorageBucket: CanisterTypes.Bucket<StorageBucket> = {
+            bucket = b;
+            bucketId = canisterId;
+            owner = user;
+        };
+
+        storagesStore.putStorage(user, newStorageBucket);
+
+        return canisterId;
     };
 
     public shared query({ caller }) func getStorage() : async ?BucketId {

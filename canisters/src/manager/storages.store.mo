@@ -4,7 +4,6 @@ import Text "mo:base/Text";
 import Option "mo:base/Option";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
-import Cycles "mo:base/ExperimentalCycles";
 
 import Error "mo:base/Error";
 
@@ -23,14 +22,13 @@ module {
     type StorageBucket = StorageBucket.StorageBucket;
 
     type BucketId = CanisterTypes.BucketId;
-    type OwnerStorageBucket = CanisterTypes.Bucket<StorageBucket>;
 
-    public class StoragesStore() {
-        private var storages: HashMap.HashMap<UserId, OwnerStorageBucket> = HashMap.HashMap<UserId, OwnerStorageBucket>(10, Utils.isPrincipalEqual, Principal.hash);
+    public class StoragesStore<T>() {
+        private var storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> = HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>(10, Utils.isPrincipalEqual, Principal.hash);
 
         private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-        public func init(manager: Principal, user: UserId): async ({#bucketId: BucketId; #error: Text;}) {
+        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId) -> async (Principal)): async ({#bucketId: BucketId; #error: Text;}) {
             let storageBucket: {#bucketId: ?BucketId; #error: Text;} = getStorage(user);
 
             switch (storageBucket) {
@@ -43,17 +41,7 @@ module {
                             return #bucketId bucketId;
                         };
                         case null {
-                            let b: StorageBucket = await initNewBucket(manager, user);
-
-                            let newBucketId: Principal = Principal.fromActor(b);
-
-                            let newStorageBucket: OwnerStorageBucket = {
-                                bucket = b;
-                                bucketId = newBucketId;
-                                owner = user;
-                            };
-
-                            storages.put(user, newStorageBucket);
+                            let newBucketId: Principal = await initNewBucket(manager, user);
 
                             return #bucketId newBucketId;
                         };
@@ -62,19 +50,8 @@ module {
             };
         };
 
-        private func initNewBucket(manager: Principal, user: UserId): async (StorageBucket) {
-            Cycles.add(1_000_000_000_000);
-            let b: StorageBucket = await StorageBucket.StorageBucket(user);
-
-            let canisterId: Principal = Principal.fromActor(b);
-
-            await canisterUtils.updateSettings(canisterId, manager, user);
-
-            return b;
-        };
-
         public func getStorage(user: UserId): {#bucketId: ?BucketId; #error: Text;} {
-            let bucket: ?OwnerStorageBucket = storages.get(user);
+            let bucket: ?CanisterTypes.Bucket<T> = storages.get(user);
 
             switch bucket {
                 case (?bucket) {
@@ -113,12 +90,17 @@ module {
             };
         };
 
-        public func preupgrade(): HashMap.HashMap<UserId, OwnerStorageBucket> {
+        // https://forum.dfinity.org/t/parametric-polymorphism-and-async/1192/2
+        public func putStorage(user: UserId, newStorageBucket: CanisterTypes.Bucket<T>) {
+            storages.put(user, newStorageBucket);
+        };
+
+        public func preupgrade(): HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> {
             return storages;
         };
 
-        public func postupgrade(stableStorages: [(UserId, OwnerStorageBucket)]) {
-            storages := HashMap.fromIter<UserId, OwnerStorageBucket>(stableStorages.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
+        public func postupgrade(stableStorages: [(UserId, CanisterTypes.Bucket<T>)]) {
+            storages := HashMap.fromIter<UserId, CanisterTypes.Bucket<T>>(stableStorages.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
         };
     }
 
