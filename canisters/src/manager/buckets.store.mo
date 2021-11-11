@@ -17,15 +17,15 @@ module {
 
     type BucketId = CanisterTypes.BucketId;
 
-    public class StoragesStore<T>() {
-        private var storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> = HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>(10, Utils.isPrincipalEqual, Principal.hash);
+    public class BucketsStore<T>() {
+        private var buckets: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> = HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>(10, Utils.isPrincipalEqual, Principal.hash);
 
         private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>) -> async (Principal)): async ({#bucketId: BucketId; #error: Text;}) {
-            let storageBucket: {#bucketId: ?BucketId; #error: Text;} = getStorage(user);
+        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>) -> async (Principal)): async ({#bucketId: BucketId; #error: Text;}) {
+            let bucket: {#bucketId: ?BucketId; #error: Text;} = getBucket(user);
 
-            switch (storageBucket) {
+            switch (bucket) {
                 case (#error error) {
                     return #error error;
                 };
@@ -35,7 +35,7 @@ module {
                             return #bucketId bucketId;
                         };
                         case null {
-                            let newBucketId: Principal = await initNewBucket(manager, user, storages);
+                            let newBucketId: Principal = await initNewBucket(manager, user, buckets);
 
                             return #bucketId newBucketId;
                         };
@@ -44,8 +44,8 @@ module {
             };
         };
 
-        public func getStorage(user: UserId): {#bucketId: ?BucketId; #error: Text;} {
-            let bucket: ?CanisterTypes.Bucket<T> = storages.get(user);
+        public func getBucket(user: UserId): {#bucketId: ?BucketId; #error: Text;} {
+            let bucket: ?CanisterTypes.Bucket<T> = buckets.get(user);
 
             switch bucket {
                 case (?bucket) {
@@ -59,11 +59,11 @@ module {
                 };
             };
 
-            return #error "User does not have the permission for the storage.";
+            return #error "User does not have the permission for the bucket.";
         };
 
-        public func deleteStorage(user: UserId) : async ({#bucketId: ?BucketId; #error: Text;}) {
-            let bucket: {#bucketId: ?BucketId; #error: Text;} = getStorage(user);
+        public func deleteBucket(user: UserId) : async ({#bucketId: ?BucketId; #error: Text;}) {
+            let bucket: {#bucketId: ?BucketId; #error: Text;} = getBucket(user);
 
             switch (bucket) {
                 case (#error error) {
@@ -74,7 +74,7 @@ module {
                         case (?bucketId) {
                             await canisterUtils.deleteCanister(bucketId);
 
-                            storages.delete(user);
+                            buckets.delete(user);
                         };
                         case null {};
                     };
@@ -85,11 +85,11 @@ module {
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> {
-            return storages;
+            return buckets;
         };
 
-        public func postupgrade(stableStorages: [(UserId, CanisterTypes.Bucket<T>)]) {
-            storages := HashMap.fromIter<UserId, CanisterTypes.Bucket<T>>(stableStorages.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
+        public func postupgrade(stableBuckets: [(UserId, CanisterTypes.Bucket<T>)]) {
+            buckets := HashMap.fromIter<UserId, CanisterTypes.Bucket<T>>(stableBuckets.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
         };
     }
 

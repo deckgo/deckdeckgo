@@ -10,7 +10,7 @@ import Types "../types/types";
 import CanisterTypes "../types/canister.types";
 
 import DecksStore "./decks.store";
-import StoragesStore "./storages.store";
+import BucketsStore "./buckets.store";
 
 import DeckBucket "../deck/deck";
 import StorageBucket "../storage/storage";
@@ -31,7 +31,7 @@ actor Manager {
     private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
     let decksStore: DecksStore.DecksStore = DecksStore.DecksStore();
-    let storagesStore: StoragesStore.StoragesStore<StorageBucket> = StoragesStore.StoragesStore<StorageBucket>();
+    let storagesStore: BucketsStore.BucketsStore<StorageBucket> = BucketsStore.BucketsStore<StorageBucket>();
 
     // Preserve the application state on upgrades
     private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
@@ -159,7 +159,7 @@ actor Manager {
     };
 
     public shared query({ caller }) func getStorage() : async ?BucketId {
-        let result: {#bucketId: ?BucketId; #error: Text;} = storagesStore.getStorage(caller);
+        let result: {#bucketId: ?BucketId; #error: Text;} = storagesStore.getBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -181,7 +181,7 @@ actor Manager {
     };
 
     public shared({ caller }) func delStorage() : async (Bool) {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteStorage(caller);
+        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -197,7 +197,7 @@ actor Manager {
     // TODO: inter-canister call secure caller === user canister or this canister
 
     public func deleteStorageAdmin(user: Principal) : async () {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteStorage(user);
+        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteBucket(user);
 
         switch (result) {
             case (#error error) {
