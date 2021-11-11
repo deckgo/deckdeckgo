@@ -5,21 +5,15 @@ import Option "mo:base/Option";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
 
-import Error "mo:base/Error";
-
 import Types "../types/types";
 import CanisterTypes "../types/canister.types";
 
 import Utils "../utils/utils";
 
-import StorageBucket "../storage/storage";
-
 import CanisterUtils "../utils/canister.utils";
 
 module {
     type UserId = Types.UserId;
-
-    type StorageBucket = StorageBucket.StorageBucket;
 
     type BucketId = CanisterTypes.BucketId;
 
