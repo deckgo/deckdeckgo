@@ -5,7 +5,7 @@ service : {
   delDeck: (DeckId) -> (bool);
   delStorage: () -> (bool);
   deleteDecksAdmin: (principal) -> ();
-  deleteStorageAdmin: (principal) -> ();
+  deleteStorageAdmin: (principal) -> (bool);
   getDeck: (DeckId) -> (opt BucketId) query;
   getStorage: () -> (opt BucketId) query;
   initDeck: (DeckId) -> (BucketId);

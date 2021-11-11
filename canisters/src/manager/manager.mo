@@ -124,22 +124,10 @@ actor Manager {
      */
 
     public shared({ caller }) func initStorage(): async (BucketId) {
-        let self: Principal = Principal.fromActor(Manager);
-
-        let result: {#bucketId: BucketId; #error: Text;} = await storagesStore.init(self, caller, initNewBucket);
-
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketId bucketId) {
-                return bucketId;
-            };
-        };
+        return await initBucket<StorageBucket>(caller, storagesStore, initNewStorageBucket);
     };
 
-
-    private func initNewBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<StorageBucket>>): async (Principal) {
+    private func initNewStorageBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<StorageBucket>>): async (Principal) {
         Cycles.add(1_000_000_000_000);
         let b: StorageBucket = await StorageBucket.StorageBucket(user);
 
@@ -181,7 +169,37 @@ actor Manager {
     };
 
     public shared({ caller }) func delStorage() : async (Bool) {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteBucket(caller);
+        return await delBucket<StorageBucket>(caller, storagesStore);
+    };
+
+    // TODO: do we need inter-canister call or do we solves this in another way?
+    // TODO: inter-canister call secure caller === user canister or this canister
+
+    public func deleteStorageAdmin(user: Principal) : async (Bool) {
+        return await delBucket<StorageBucket>(user, storagesStore);
+    };
+
+    /**
+     * Buckets
+     */
+
+    private func initBucket<T>(caller: Principal, store: BucketsStore.BucketsStore<T>, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>) -> async (Principal)): async (BucketId) {
+        let self: Principal = Principal.fromActor(Manager);
+
+        let result: {#bucketId: BucketId; #error: Text;} = await store.init(self, caller, initNewBucket);
+
+        switch (result) {
+            case (#error error) {
+                throw Error.reject(error);
+            };
+            case (#bucketId bucketId) {
+                return bucketId;
+            };
+        };
+    };
+
+    private func delBucket<T>(caller: Principal, store: BucketsStore.BucketsStore<T>) : async (Bool) {
+        let result: {#bucketId: ?BucketId; #error: Text;} = await store.deleteBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -191,19 +209,6 @@ actor Manager {
                 let exists: Bool = Option.isSome(bucketId);
                 return exists;
             };
-        };
-    };
-
-    // TODO: inter-canister call secure caller === user canister or this canister
-
-    public func deleteStorageAdmin(user: Principal) : async () {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteBucket(user);
-
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketId bucketId) {};
         };
     };
 

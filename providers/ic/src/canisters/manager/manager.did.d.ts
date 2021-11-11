@@ -6,7 +6,7 @@ export interface _SERVICE {
   delDeck: (arg_0: DeckId) => Promise<boolean>;
   delStorage: () => Promise<boolean>;
   deleteDecksAdmin: (arg_0: Principal) => Promise<undefined>;
-  deleteStorageAdmin: (arg_0: Principal) => Promise<undefined>;
+  deleteStorageAdmin: (arg_0: Principal) => Promise<boolean>;
   getDeck: (arg_0: DeckId) => Promise<[] | [BucketId]>;
   getStorage: () => Promise<[] | [BucketId]>;
   initDeck: (arg_0: DeckId) => Promise<BucketId>;
