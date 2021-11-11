@@ -63,7 +63,7 @@ actor User {
     };
 
     public shared({ caller }) func del(userId: UserId) : async (Bool) {
-        await Manager.deleteDecksAdmin(userId);
+        let result: Bool = await Manager.deleteDeckAdmin(userId);
 
         let user: ProtectedUser = store.deleteUser(caller, userId);
 

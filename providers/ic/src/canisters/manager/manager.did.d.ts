@@ -1,14 +1,12 @@
 import type {Principal} from '@dfinity/principal';
 export type BucketId = Principal;
-export type DeckId = string;
 export interface _SERVICE {
-  deckEntries: () => Promise<Array<BucketId>>;
-  delDeck: (arg_0: DeckId) => Promise<boolean>;
+  delDeck: () => Promise<boolean>;
   delStorage: () => Promise<boolean>;
-  deleteDecksAdmin: (arg_0: Principal) => Promise<undefined>;
+  deleteDeckAdmin: (arg_0: Principal) => Promise<boolean>;
   deleteStorageAdmin: (arg_0: Principal) => Promise<boolean>;
-  getDeck: (arg_0: DeckId) => Promise<[] | [BucketId]>;
+  getDeck: () => Promise<[] | [BucketId]>;
   getStorage: () => Promise<[] | [BucketId]>;
-  initDeck: (arg_0: DeckId) => Promise<BucketId>;
+  initDeck: () => Promise<BucketId>;
   initStorage: () => Promise<BucketId>;
 }
