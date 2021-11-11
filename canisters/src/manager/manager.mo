@@ -139,7 +139,7 @@ actor Manager {
     };
 
 
-    private func initNewBucket(manager: Principal, user: UserId): async (Principal) {
+    private func initNewBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<StorageBucket>>): async (Principal) {
         Cycles.add(1_000_000_000_000);
         let b: StorageBucket = await StorageBucket.StorageBucket(user);
 
@@ -153,7 +153,7 @@ actor Manager {
             owner = user;
         };
 
-        storagesStore.putStorage(user, newStorageBucket);
+        storages.put(user, newStorageBucket);
 
         return canisterId;
     };

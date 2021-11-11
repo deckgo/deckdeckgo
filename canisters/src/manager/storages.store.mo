@@ -28,7 +28,7 @@ module {
 
         private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId) -> async (Principal)): async ({#bucketId: BucketId; #error: Text;}) {
+        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>) -> async (Principal)): async ({#bucketId: BucketId; #error: Text;}) {
             let storageBucket: {#bucketId: ?BucketId; #error: Text;} = getStorage(user);
 
             switch (storageBucket) {
@@ -41,7 +41,7 @@ module {
                             return #bucketId bucketId;
                         };
                         case null {
-                            let newBucketId: Principal = await initNewBucket(manager, user);
+                            let newBucketId: Principal = await initNewBucket(manager, user, storages);
 
                             return #bucketId newBucketId;
                         };
@@ -88,11 +88,6 @@ module {
                     return #bucketId bucketId;
                 };
             };
-        };
-
-        // https://forum.dfinity.org/t/parametric-polymorphism-and-async/1192/2
-        public func putStorage(user: UserId, newStorageBucket: CanisterTypes.Bucket<T>) {
-            storages.put(user, newStorageBucket);
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> {
