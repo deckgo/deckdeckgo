@@ -11,60 +11,57 @@ import CanisterTypes "../types/canister.types";
 
 import BucketsStore "./buckets.store";
 
-import DeckBucket "../deck/deck";
+import DataBucket "../data/data";
 import StorageBucket "../storage/storage";
 
 import CanisterUtils "../utils/canister.utils";
 
 actor Manager {
-    type DeckId = Types.DeckId;
     type UserId = Types.UserId;
 
-    type DeckBucket = DeckBucket.DeckBucket;
+    type DataBucket = DataBucket.DataBucket;
     type StorageBucket = StorageBucket.StorageBucket;
 
     type BucketId = CanisterTypes.BucketId;
 
-    type OwnerDeckBucket = CanisterTypes.Bucket<DeckBucket>;
-
     private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-    let decksStore: BucketsStore.BucketsStore<DeckBucket> = BucketsStore.BucketsStore<DeckBucket>();
+    let dataStore: BucketsStore.BucketsStore<DataBucket> = BucketsStore.BucketsStore<DataBucket>();
     let storagesStore: BucketsStore.BucketsStore<StorageBucket> = BucketsStore.BucketsStore<StorageBucket>();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, CanisterTypes.Bucket<DeckBucket>)] = [];
+    private stable var data : [(Principal, CanisterTypes.Bucket<DataBucket>)] = [];
     private stable var storages : [(Principal, CanisterTypes.Bucket<StorageBucket>)] = [];
 
     /**
-     * Decks
+     * Data
      */
 
-    public shared({ caller }) func initDeck(): async (BucketId) {
-        return await initBucket<DeckBucket>(caller, decksStore, initNewDeckBucket);
+    public shared({ caller }) func initData(): async (BucketId) {
+        return await initBucket<DataBucket>(caller, dataStore, initNewDataBucket);
     };
 
-    private func initNewDeckBucket(manager: Principal, user: UserId, decks: HashMap.HashMap<UserId, CanisterTypes.Bucket<DeckBucket>>): async (Principal) {
+    private func initNewDataBucket(manager: Principal, user: UserId, data: HashMap.HashMap<UserId, CanisterTypes.Bucket<DataBucket>>): async (Principal) {
         Cycles.add(1_000_000_000_000);
-        let b: DeckBucket = await DeckBucket.DeckBucket(user);
+        let b: DataBucket = await DataBucket.DataBucket(user);
 
         let canisterId: Principal = Principal.fromActor(b);
 
         await canisterUtils.updateSettings(canisterId, manager, user);
 
-        let newDeckBucket: CanisterTypes.Bucket<DeckBucket> = {
+        let newDataBucket: CanisterTypes.Bucket<DataBucket> = {
             bucket = b;
             bucketId = canisterId;
             owner = user;
         };
 
-        decks.put(user, newDeckBucket);
+        data.put(user, newDataBucket);
 
         return canisterId;
     };
 
-    public shared query({ caller }) func getDeck() : async ?BucketId {
-        let result: {#bucketId: ?BucketId; #error: Text;} = decksStore.getBucket(caller);
+    public shared query({ caller }) func getData() : async ?BucketId {
+        let result: {#bucketId: ?BucketId; #error: Text;} = dataStore.getBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -85,15 +82,15 @@ actor Manager {
         };
     };
 
-    public shared({ caller }) func delDeck() : async (Bool) {
-        return await delBucket<DeckBucket>(caller, decksStore);
+    public shared({ caller }) func delData() : async (Bool) {
+        return await delBucket<DataBucket>(caller, dataStore);
     };
 
     // TODO: do we need inter-canister call or do we solves this in another way?
     // TODO: inter-canister call secure caller === user canister or this canister
 
-    public func deleteDeckAdmin(user: Principal) : async (Bool) {
-        return await delBucket<DeckBucket>(user, decksStore);
+    public func deleteDataAdmin(user: Principal) : async (Bool) {
+        return await delBucket<DataBucket>(user, dataStore);
     };
 
     /**
@@ -194,13 +191,13 @@ actor Manager {
      */
 
     system func preupgrade() {
-        decks := Iter.toArray(decksStore.preupgrade().entries());
+        data := Iter.toArray(dataStore.preupgrade().entries());
         storages := Iter.toArray(storagesStore.preupgrade().entries());
     };
 
     system func postupgrade() {
-        decksStore.postupgrade(decks);
-        decks := [];
+        dataStore.postupgrade(data);
+        data := [];
 
         storagesStore.postupgrade(storages);
         storages := [];

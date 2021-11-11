@@ -1,11 +1,11 @@
 type BucketId = principal;
 service : {
-  delDeck: () -> (bool);
+  delData: () -> (bool);
   delStorage: () -> (bool);
-  deleteDeckAdmin: (principal) -> (bool);
+  deleteDataAdmin: (principal) -> (bool);
   deleteStorageAdmin: (principal) -> (bool);
-  getDeck: () -> (opt BucketId) query;
+  getData: () -> (opt BucketId) query;
   getStorage: () -> (opt BucketId) query;
-  initDeck: () -> (BucketId);
+  initData: () -> (BucketId);
   initStorage: () -> (BucketId);
 }

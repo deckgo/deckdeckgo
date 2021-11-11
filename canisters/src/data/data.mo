@@ -15,7 +15,7 @@ import Utils "../utils/utils";
 
 import WalletUtils "../utils/wallet.utils";
 
-actor class DeckBucket(owner: Types.UserId) = this {
+actor class DataBucket(owner: Types.UserId) = this {
 
   type UserId = Types.UserId;
   type DeckId = Types.DeckId;
