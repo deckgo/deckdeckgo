@@ -1,3 +1,14 @@
+# 3.4.3 (2021-11-12)
+
+### Fix
+
+- required languages scripts need to be loaded before loading main language script ([#1387](https://github.com/deckgo/deckdeckgo/pull/1387))
+
+### Build
+
+- bump `prismjs`
+- bump `@deckdeckgo/utils`
+
 # 3.4.2 (2021-11-04)
 
 ### Fix
