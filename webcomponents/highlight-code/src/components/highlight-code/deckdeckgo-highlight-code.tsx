@@ -142,7 +142,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       return;
     }
 
-    if (this.language && !this.loaded) {
+    if (this.language === $event.detail && !this.loaded) {
       await this.parse();
 
       this.loaded = true;
