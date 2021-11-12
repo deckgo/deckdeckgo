@@ -47,7 +47,7 @@ actor Manager {
 
         let canisterId: Principal = Principal.fromActor(b);
 
-        await canisterUtils.updateSettings(canisterId, manager, user);
+        await canisterUtils.updateSettings(canisterId, manager);
 
         let newDataBucket: CanisterTypes.Bucket<DataBucket> = {
             bucket = b;
@@ -107,7 +107,7 @@ actor Manager {
 
         let canisterId: Principal = Principal.fromActor(b);
 
-        await canisterUtils.updateSettings(canisterId, manager, user);
+        await canisterUtils.updateSettings(canisterId, manager);
 
         let newStorageBucket: CanisterTypes.Bucket<StorageBucket> = {
             bucket = b;
