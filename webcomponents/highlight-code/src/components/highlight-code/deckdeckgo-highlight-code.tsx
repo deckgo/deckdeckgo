@@ -1,6 +1,6 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {catchTab, debounce, moveCursorToEnd} from '@deckdeckgo/utils';
+import {catchTab, debounce, injectJS, moveCursorToEnd} from '@deckdeckgo/utils';
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -77,9 +77,6 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   private themeStyle: string | undefined;
 
   @State()
-  private languagesToLoad: string[];
-
-  @State()
   private loaded: boolean = false;
 
   private refContainer!: HTMLDivElement;
@@ -112,7 +109,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   }
 
   async componentDidLoad() {
-    const languageWasLoaded: boolean = await this.languageDidLoad();
+    const languageWasLoaded: boolean = this.languageDidLoad();
 
     await this.loadLanguages();
 
@@ -145,11 +142,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       return;
     }
 
-    if (this.languagesToLoad) {
-      this.languagesToLoad = this.languagesToLoad.filter((lang) => lang !== $event.detail);
-    }
-
-    if (this.language && !this.loaded && (this.languagesToLoad === undefined || this.languagesToLoad.length <= 0)) {
+    if (this.language && !this.loaded) {
       await this.parse();
 
       this.loaded = true;
@@ -164,20 +157,17 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     await this.parseSlottedCode();
   }
 
-  private languageDidLoad(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      if (!document || !this.language || this.language === '') {
-        resolve(false);
-        return;
-      }
+  private languageDidLoad(): boolean {
+    if (!document || !this.language || this.language === '') {
+      return false;
+    }
 
-      const scripts = document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']");
-      if (scripts) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
+    const scripts: HTMLScriptElement | null = document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']");
+    if (scripts) {
+      return true;
+    }
+
+    return false;
   }
 
   @Watch('language')
@@ -187,42 +177,36 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
 
   private async loadLanguages(reload: boolean = false) {
     this.loaded = false;
+
     if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
       console.error(`Language ${this.language} is not supported`);
       return;
     }
-    await this.initLanguagesToLoad();
 
-    await this.loadLanguagesRequire();
+    await this.loadRequiredLanguages();
 
     await this.loadScript(this.language, reload);
   }
 
-  private async initLanguagesToLoad() {
+  private async loadRequiredLanguages() {
     if (!this.language) {
       return;
     }
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
-    this.languagesToLoad = definition.require && definition.require.length > 0 ? [this.language, ...definition.require] : [this.language];
-  }
 
-  private async loadLanguagesRequire() {
-    const promises: Promise<void>[] = [];
-
-    const definition = deckdeckgoHighlightCodeLanguages[this.language];
-    if (definition.require) {
-      promises.push(...definition.require.map((extraScript) => this.loadScript(extraScript, false, true)));
-    }
-
-    if (promises.length <= 0) {
+    if (!definition.require || definition.require.length <= 0) {
       return;
     }
 
+    // Load now the required languages scripts because Prism needs these to be loaded before the actual main language script
+    const promises: Promise<string>[] = definition.require.map((language: string) =>
+      injectJS(`deckdeckgo-prism-${language}`, this.scriptSrc(language))
+    );
     await Promise.all(promises);
   }
 
-  private loadScript(lang: string, reload: boolean = false, requireScript: boolean = false): Promise<void> {
+  private loadScript(lang: string, reload: boolean = false): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (!document || !lang || lang === '') {
         resolve();
@@ -262,11 +246,11 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
         // if the language definition doesn't exist or if unpkg is down, display code anyway
         this.prismLanguageLoaded.emit(lang);
       };
+
       const definition = deckdeckgoHighlightCodeLanguages[this.language];
+      const language = definition.main ? definition.main : lang;
 
-      let language = !requireScript && definition.main ? definition.main : lang;
-
-      script.src = 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
+      script.src = this.scriptSrc(language);
       script.setAttribute('deckdeckgo-prism', language);
       script.defer = true;
 
@@ -274,6 +258,10 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
 
       script.addEventListener('load', () => resolve(), {once: true});
     });
+  }
+
+  private scriptSrc(language: string): string {
+    return 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
   }
 
   @Watch('lineNumbers')

@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/highlight-code",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "description": "A Web Component to highlight your code",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,8 +24,8 @@
     "test.watch": "npm run config && stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@deckdeckgo/utils": "^2.3.0",
-    "prismjs": "^1.24.1"
+    "@deckdeckgo/utils": "^2.4.0",
+    "prismjs": "^1.25.0"
   },
   "devDependencies": {
     "@deckdeckgo/slide-utils": "^4.0.3",
