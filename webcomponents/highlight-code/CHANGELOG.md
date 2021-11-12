@@ -1,3 +1,9 @@
+# 3.4.4 (2021-11-12)
+
+### Fix
+
+- miscellaneous languages on the same page and loading
+
 # 3.4.3 (2021-11-12)
 
 ### Fix
