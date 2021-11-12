@@ -1,114 +1,76 @@
-import Option "mo:base/Option";
-import Principal "mo:base/Principal";
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
-import Blob "mo:base/Blob";
 
+import Result "mo:base/Result";
 import Error "mo:base/Error";
 
 import Types "../types/types";
-import DeckDataTypes "./deck.data.types";
-import SlideDataTypes "./slide.data.types";
+import DataTypes "./data.types";
 
 import Utils "../utils/utils";
 
 import WalletUtils "../utils/wallet.utils";
 
+import DataStore "./data.store";
+
 actor class DataBucket(owner: Types.UserId) = this {
 
   type UserId = Types.UserId;
-  type DeckId = Types.DeckId;
-  type SlideId = Types.SlideId;
 
-  type Deck = DeckDataTypes.Deck;
-  type Slide = SlideDataTypes.Slide;
+  type Data = DataTypes.Data;
 
   private stable let user: Types.UserId = owner;
 
-  private stable var deck: ?Deck = null;
-
-  // Preserve the application state on upgrades
-  private stable var entries : [(SlideId, Slide)] = [];
-
-  private var slides: HashMap.HashMap<SlideId, Slide> = HashMap.HashMap<SlideId, Slide>(10, Text.equal, Text.hash);
-
   private let walletUtils: WalletUtils.WalletUtils = WalletUtils.WalletUtils();
 
+  private let store: DataStore.DataStore<Data> = DataStore.DataStore<Data>();
+
+  // Preserve the application state on upgrades
+  private stable var entries : [(Text, Data)] = [];
+
    /**
-    * Deck
+    * Data
     */
 
-  public shared query({ caller }) func get() : async Deck {
+  public shared query({ caller }) func get(key: Text) : async (Data) {
     if (Utils.isPrincipalNotEqual(caller, user)) {
-        throw Error.reject("User does not have the permission to get the deck.");
+        throw Error.reject("User does not have the permission to get the data.");
     };
 
-    switch (deck) {
-        case (?deck) {
-            return deck;
+    let result: Result.Result<Data, Text> = store.get(key);
+
+    switch (result) {
+        case (#err error) {
+            throw Error.reject(error);
         };
-        case null {
-            throw Error.reject("Deck not found.");
-        };
-    };
-  };
-
-  public shared({ caller }) func set(newDeck: Deck) : async () {
-    if (Utils.isPrincipalNotEqual(caller, user)) {
-        throw Error.reject("User does not have the permission to set the deck.");
-    };
-
-    switch (deck) {
-      case (?deck) {
-        if (deck.deckId != newDeck.deckId) {
-          throw Error.reject("The provided Deck ID does not match the one of this deck.");
-        };
-      };
-      case null {};
-    };
-
-    deck := ?newDeck;
-  };
-
-  /**
-   * Slides
-   */
-
-  public shared query({ caller }) func getSlide(slideId: SlideId) : async Slide {
-    if (Utils.isPrincipalNotEqual(caller, user)) {
-        throw Error.reject("User does not have the permission to get the slide.");
-    };
-
-    let slide: ?Slide = slides.get(slideId);
-
-    switch (slide) {
-        case (?slide) {
-            return slide;
-        };
-        case null {
-            throw Error.reject("Slide not found.");
+        case (#ok obj) {
+            return obj;
         };
     };
   };
 
-  public shared({ caller }) func setSlide(slide: Slide) : async () {
+  public shared({ caller }) func set(key: Text, data: Data) : async () {
     if (Utils.isPrincipalNotEqual(caller, user)) {
-        throw Error.reject("User does not have the permission to set the slide.");
+        throw Error.reject("User does not have the permission to set data.");
     };
 
-    slides.put(slide.slideId, slide);
+    store.put(key, data);
   };
 
-  public shared({ caller }) func delSlide(slideId: SlideId) : async (Bool) {
+  public shared({ caller }) func del(key: Text) : async () {
     if (Utils.isPrincipalNotEqual(caller, user)) {
-        throw Error.reject("User does not have the permission to delete the slide.");
+        throw Error.reject("User does not have the permission to delete the data.");
     };
 
-    let slide: ?Slide = slides.remove(slideId);
+    let result: Result.Result<Data, Text> = store.del(key);
 
-    let exists: Bool = Option.isSome(slide);
-    return exists;
+    switch (result) {
+        case (#ok obj) {};
+        case (#err error) {
+            throw Error.reject("Data cannot be deleted: " # error);
+        };
+    };
   };
 
   /**
@@ -123,12 +85,12 @@ actor class DataBucket(owner: Types.UserId) = this {
   };
 
   system func preupgrade() {
-    entries := Iter.toArray(slides.entries());
+      entries := Iter.toArray(store.preupgrade().entries());
   };
 
   system func postupgrade() {
-    slides := HashMap.fromIter<SlideId, Slide>(entries.vals(), 10, Text.equal, Text.hash);
-    entries := [];
+      store.postupgrade(entries);
+      entries := [];
   };
 
 };

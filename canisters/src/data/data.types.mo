@@ -1,16 +1,11 @@
 import Text "mo:base/Text";
-import Principal "mo:base/Principal";
 import Time "mo:base/Time";
 import Blob "mo:base/Blob";
 
-import Types "../types/types";
-
 module {
 
-    type DeckId = Types.DeckId;
-
-    public type Deck = {
-        deckId: DeckId;
+    public type Data = {
+        id: Text;
 
         data: Blob;
 
