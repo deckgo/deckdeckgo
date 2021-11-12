@@ -81,7 +81,7 @@ module {
 
             let canisterId: Principal = Principal.fromActor(b);
 
-            await canisterUtils.updateSettings(canisterId, manager, user);
+            await canisterUtils.updateSettings(canisterId, manager);
 
             return b;
         };
