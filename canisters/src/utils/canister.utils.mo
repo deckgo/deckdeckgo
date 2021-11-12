@@ -24,8 +24,8 @@ module {
             await ic.delete_canister({ canister_id = bucketId });
         };
 
-        public func updateSettings(canisterId: Principal, manager: Principal, user: UserId): async () {
-            let controllers: ?[Principal] = ?[canisterId, user, manager];
+        public func updateSettings(canisterId: Principal, manager: Principal): async () {
+            let controllers: ?[Principal] = ?[canisterId, manager];
 
             await ic.update_settings(({canister_id = canisterId; settings = {
                 controllers = controllers;
