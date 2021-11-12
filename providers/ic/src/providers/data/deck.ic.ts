@@ -3,14 +3,12 @@ import {Principal} from '@dfinity/principal';
 
 import {Deck, DeckEntries, DeckData, DeleteDeck} from '@deckdeckgo/editor';
 
-import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
-
-import {_SERVICE as DeckBucketActor, Deck as DeckIc} from '../../canisters/deck/deck.did';
+import {_SERVICE as DataBucketActor, Data} from '../../canisters/data/data.did';
 
 import {getIdentity} from '../auth/auth.ic';
 
-import {createDeckBucketActor, createManagerActor} from '../../utils/manager.utils';
 import {fromArray, fromTimestamp} from '../../utils/did.utils';
+import {getDataBucket} from '../../utils/manager.utils';
 
 export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]> => {
   const identity: Identity | undefined = getIdentity();
@@ -19,9 +17,9 @@ export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]>
     return [];
   }
 
-  const managerActor: ManagerActor = await createManagerActor({identity});
-
   console.log('Deck IC about to request entries');
+
+  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
 
   const buckets: Principal[] = await managerActor.deckEntries();
 
@@ -77,13 +75,11 @@ export const deleteDeck: DeleteDeck = async (deckId: string): Promise<void> => {
     return;
   }
 
-  // We delete the all canister of the related deckId
-
-  const managerActor: ManagerActor = await createManagerActor({identity});
-
   console.log('Deck IC about to delete deck and its slides');
 
-  await managerActor.delDeck(deckId);
+  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
+
+  await actor.del(`/decks/${deckId}`);
 
   console.log('Deck IC delete');
 };

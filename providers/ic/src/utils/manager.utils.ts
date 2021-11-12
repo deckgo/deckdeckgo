@@ -1,14 +1,15 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
+import {IDL} from '@dfinity/candid';
 
 import {idlFactory as ManagerFactory} from '../canisters/manager/manager.utils.did';
 import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
 
-import {idlFactory as DeckBucketFactory} from '../canisters/deck/deck.utils.did';
-import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
+import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
+import {idlFactory as DataIdlFactory} from '../canisters/data/data.utils.did';
 
-import {idlFactory as StorageBucketFactory} from '../canisters/storage/storage.utils.did';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {idlFactory as StorageIdlFactory} from '../canisters/storage/storage.utils.did';
 
 import {createActor} from './actor.utils';
 import {fromNullable} from './did.utils';
@@ -17,41 +18,78 @@ export const createManagerActor = ({identity, host}: {identity: Identity; host?:
   return createActor<ManagerActor>({canisterId: process.env.MANAGER_CANISTER_ID, idlFactory: ManagerFactory, identity, host});
 };
 
-export const createDeckBucketActor = ({
+export const getDataBucket = async ({
+  host,
+  identity
+}: {
+  host?: string;
+  identity: Identity | undefined;
+}): Promise<{bucket: Principal; actor: DataBucketActor}> => {
+  return getBucket<DataBucketActor>({host, identity, idlFactory: DataIdlFactory, initBucket: initDataBucket});
+};
+
+export const getStorageBucket = async ({
+  host,
+  identity
+}: {
+  host?: string;
+  identity: Identity | undefined;
+}): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
+  return getBucket<StorageBucketActor>({host, identity, idlFactory: StorageIdlFactory, initBucket: initStorageBucket});
+};
+
+const getBucket = async <T>({
+  host,
+  identity,
+  idlFactory,
+  initBucket
+}: {
+  host?: string;
+  identity: Identity | undefined;
+  idlFactory: IDL.InterfaceFactory;
+  initBucket: ({managerActor}: {managerActor: ManagerActor}) => Promise<Principal>;
+}): Promise<{bucket: Principal; actor: T}> => {
+  if (!identity) {
+    throw new Error('Invalid identity.');
+  }
+
+  const managerActor: ManagerActor = await createManagerActor({identity, host});
+
+  const bucket: Principal = await initBucket({managerActor});
+
+  const actor: T = await createBucketActor<T>({identity, bucket, idlFactory, host});
+
+  return {
+    bucket,
+    actor
+  };
+};
+
+const createBucketActor = <T>({
   identity,
   bucket,
+  idlFactory,
   host
 }: {
   identity: Identity;
   bucket: Principal;
+  idlFactory: IDL.InterfaceFactory;
   host?: string;
-}): Promise<DeckBucketActor> => {
-  return createActor<DeckBucketActor>({canisterId: bucket, idlFactory: DeckBucketFactory, identity, host});
+}): Promise<T> => {
+  return createActor<T>({canisterId: bucket, idlFactory, identity, host});
 };
 
-export const createStorageBucketActor = ({
-  identity,
-  bucket,
-  host
-}: {
-  identity: Identity;
-  bucket: Principal;
-  host?: string;
-}): Promise<StorageBucketActor> => {
-  return createActor<StorageBucketActor>({canisterId: bucket, idlFactory: StorageBucketFactory, identity, host});
-};
-
-export const initDeckBucket = async ({managerActor, deckId}: {managerActor: ManagerActor; deckId: string}): Promise<Principal> => {
-  const existingBucket: Principal | undefined = fromNullable<Principal>(await managerActor.getDeck(deckId));
+const initDataBucket = async ({managerActor}: {managerActor: ManagerActor}): Promise<Principal> => {
+  const existingBucket: Principal | undefined = fromNullable<Principal>(await managerActor.getData());
 
   if (!existingBucket) {
-    return await managerActor.initDeck(deckId);
+    return await managerActor.initData();
   }
 
   return existingBucket;
 };
 
-export const initStorageBucket = async ({managerActor}: {managerActor: ManagerActor}): Promise<Principal> => {
+const initStorageBucket = async ({managerActor}: {managerActor: ManagerActor}): Promise<Principal> => {
   const existingBucket: Principal | undefined = fromNullable<Principal>(await managerActor.getStorage());
 
   if (!existingBucket) {

@@ -3,12 +3,12 @@ import {Principal} from '@dfinity/principal';
 
 import {Slide, SlideData} from '@deckdeckgo/editor';
 
-import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
-import {_SERVICE as DeckBucketActor, Slide as SlideIc} from '../../canisters/deck/deck.did';
+import {_SERVICE as DataBucketActor, Data} from '../../canisters/data/data.did';
 
 import {getIdentity} from '../auth/auth.ic';
-import {createDeckBucketActor, createManagerActor, initDeckBucket} from '../../utils/manager.utils';
+
 import {fromArray, fromTimestamp} from '../../utils/did.utils';
+import {getDataBucket} from '../../utils/manager.utils';
 
 export const getSlide = (deckId: string, slideId: string): Promise<Slide> => {
   return new Promise<Slide>(async (resolve, reject) => {
@@ -20,13 +20,9 @@ export const getSlide = (deckId: string, slideId: string): Promise<Slide> => {
     }
 
     try {
-      const managerActor: ManagerActor = await createManagerActor({identity});
+      const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
 
-      const bucket: Principal = await initDeckBucket({managerActor, deckId});
-
-      const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
-
-      const slide: SlideIc = await deckBucket.getSlide(slideId);
+      const slide: Data = await actor.get(`/decks/${deckId}/slides/${slideId}`);
 
       const data: SlideData = await fromArray<SlideData>(slide.data);
 
