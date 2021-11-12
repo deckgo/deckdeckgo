@@ -44,10 +44,19 @@ actor class DataBucket(owner: Types.UserId) = this {
         case (#err error) {
             throw Error.reject(error);
         };
-        case (#ok obj) {
-            return obj;
+        case (#ok value) {
+            return value;
         };
     };
+  };
+
+  public shared query({ caller }) func list(filter: ?Text) : async [Data] {
+      if (Utils.isPrincipalNotEqual(caller, user)) {
+        throw Error.reject("User does not have the permission to list the data.");
+    };
+
+    let results: [Data] = store.entries(filter);
+    return results;
   };
 
   public shared({ caller }) func set(key: Text, data: Data) : async () {
@@ -66,7 +75,7 @@ actor class DataBucket(owner: Types.UserId) = this {
     let result: Result.Result<Data, Text> = store.del(key);
 
     switch (result) {
-        case (#ok obj) {};
+        case (#ok value) {};
         case (#err error) {
             throw Error.reject("Data cannot be deleted: " # error);
         };

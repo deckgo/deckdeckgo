@@ -4,6 +4,7 @@ type DataBucket =
  service {
    del: (text) -> ();
    get: (text) -> (Data) query;
+   list: (opt text) -> (vec Data) query;
    set: (text, Data) -> ();
    transferCycles: () -> ();
  };

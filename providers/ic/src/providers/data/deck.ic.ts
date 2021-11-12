@@ -7,7 +7,7 @@ import {_SERVICE as DataBucketActor, Data} from '../../canisters/data/data.did';
 
 import {getIdentity} from '../auth/auth.ic';
 
-import {fromArray, fromTimestamp} from '../../utils/did.utils';
+import {fromArray, fromTimestamp, toNullable} from '../../utils/did.utils';
 import {getDataBucket} from '../../utils/manager.utils';
 
 export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]> => {
@@ -18,48 +18,31 @@ export const deckEntries: DeckEntries = async (_userId: string): Promise<Deck[]>
   }
 
   console.log('Deck IC about to request entries');
+  const t0 = performance.now();
 
   const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
 
-  const buckets: Principal[] = await managerActor.deckEntries();
+  const data: Data[] = await actor.list(toNullable<string>('/decks/'));
 
-  console.log('Deck IC entries done.', buckets);
+  const promises: Promise<Deck>[] = data.map((data: Data) => fromData({data, identity}));
+  const decks: Deck[] = await Promise.all(promises);
 
-  const promises: Promise<DeckIc | undefined>[] = buckets.map((bucket: Principal) => getDeckIc({bucket, identity}));
-
-  const decksIc: DeckIc[] = await Promise.all(promises);
-
-  console.log('Deck IC decks done.', decksIc);
-
-  const decksPromises: Promise<Deck>[] = decksIc
-    ?.filter((deck: DeckIc | undefined) => deck !== undefined)
-    .map((deck: DeckIc) => fromDeck({deck, identity}));
-  const decks: Deck[] = await Promise.all(decksPromises);
+  const t1 = performance.now();
+  console.log(`Deck IC decks done. ${t1 - t0}`, decks);
 
   return decks;
 };
 
-const getDeckIc = async ({bucket, identity}: {bucket: Principal; identity: Identity}): Promise<DeckIc | undefined> => {
-  try {
-    const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket});
-
-    return await deckBucket.get();
-  } catch (err) {
-    console.error('Deck cannot be found.', bucket);
-    return undefined;
-  }
-};
-
-const fromDeck = async ({deck, identity}: {deck: DeckIc; identity: Identity}): Promise<Deck> => {
-  const data: DeckData = await fromArray<DeckData>(deck.data);
+const fromData = async ({data, identity}: {data: Data; identity: Identity}): Promise<Deck> => {
+  const deckData: DeckData = await fromArray<DeckData>(data.data);
 
   return {
-    id: deck.deckId,
+    id: data.id,
     data: {
-      ...data,
+      ...deckData,
       owner_id: identity.getPrincipal().toText(),
-      created_at: fromTimestamp(deck.created_at),
-      updated_at: fromTimestamp(deck.updated_at)
+      created_at: fromTimestamp(data.created_at),
+      updated_at: fromTimestamp(data.updated_at)
     }
   };
 };

@@ -10,6 +10,7 @@ export const idlFactory = ({IDL}) => {
   const DataBucket = IDL.Service({
     del: IDL.Func([IDL.Text], [], []),
     get: IDL.Func([IDL.Text], [Data], ['query']),
+    list: IDL.Func([IDL.Opt(IDL.Text)], [IDL.Vec(Data)], ['query']),
     set: IDL.Func([IDL.Text, Data], [], []),
     transferCycles: IDL.Func([], [], [])
   });
