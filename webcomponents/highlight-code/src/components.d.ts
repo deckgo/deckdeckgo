@@ -86,6 +86,10 @@ declare namespace LocalJSX {
          */
         "onCodeDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         /**
+          * Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway.
+         */
+        "onPrismLanguageError"?: (event: CustomEvent<string>) => void;
+        /**
           * Emitted when a language is fetched and loaded
          */
         "onPrismLanguageLoaded"?: (event: CustomEvent<string>) => void;
