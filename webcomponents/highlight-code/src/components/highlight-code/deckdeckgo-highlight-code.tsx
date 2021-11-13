@@ -1,18 +1,18 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {catchTab, debounce, injectJS, moveCursorToEnd} from '@deckdeckgo/utils';
+import {catchTab, debounce, moveCursorToEnd} from '@deckdeckgo/utils';
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
 import {parseCode} from '../../utils/parse.utils';
 import {loadGoogleFonts} from '../../utils/fonts.utils';
+import {injectRequiredJS, loadMainScript, StateRequiredJS} from '../../utils/inject.utils';
 
 import {CarbonThemeStyle} from '../styles/carbon-theme.style';
 import {HighlightStyle} from '../styles/highlight.style';
 
 import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
 import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
-
 import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
 
 /**
@@ -32,6 +32,12 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
    */
   @Event()
   prismLanguageLoaded: EventEmitter<string>;
+
+  /**
+   * Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway.
+   */
+  @Event()
+  prismLanguageError: EventEmitter<string>;
 
   /**
    * Emitted when the code was edited (see attribute editable). Propagate the root component itself
@@ -136,17 +142,25 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     this.themeStyle = theme;
   }
 
-  @Listen('prismLanguageLoaded', {target: 'document'})
-  async languageLoaded($event: CustomEvent) {
-    if (!$event || !$event.detail) {
+  @Listen('prismLanguageLoaded', {target: 'document', passive: true})
+  async onLanguageLoaded({detail}: CustomEvent<string>) {
+    if (this.language !== detail || this.loaded) {
       return;
     }
 
-    if (this.language === $event.detail && !this.loaded) {
-      await this.parse();
+    await this.parse();
 
-      this.loaded = true;
+    this.loaded = true;
+  }
+
+  @Listen('prismLanguageError', {target: 'document', passive: true})
+  async onLanguageError({detail}: CustomEvent<string>) {
+    if (this.language !== detail) {
+      return;
     }
+
+    this.language = 'javascript';
+    this.prismLanguageLoaded.emit(this.language);
   }
 
   private async parse() {
@@ -183,85 +197,55 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       return;
     }
 
-    await this.loadRequiredLanguages();
+    const loadingScript: 'attached' | 'loaded' | 'error' = await this.loadRequiredLanguages();
 
-    await this.loadScript(this.language, reload);
+    // We need all required scripts to be loaded. If multiple components are use within the same page, it is possible that the required scripts are attached to the DOM and are still loading.
+    // loadScript will trigger an event on the document, therefore those who do not loadScript will receive the event anyway when everything is ready.
+    if (loadingScript === 'attached') {
+      return;
+    }
+
+    if (loadingScript === 'error') {
+      this.fallbackJavascript();
+      return;
+    }
+
+    const state: 'loaded' | 'error' = await loadMainScript({lang: this.language, reload, prismLanguageLoaded: this.prismLanguageLoaded});
+
+    if (state === 'loaded') {
+      return;
+    }
+
+    this.fallbackJavascript();
   }
 
-  private async loadRequiredLanguages() {
+  private fallbackJavascript() {
+    console.error('A required script for the language could not be fetched therefore, falling back to JavaScript to display code anyway.');
+    this.prismLanguageError.emit(this.language);
+  }
+
+  private async loadRequiredLanguages(): Promise<'attached' | 'loaded' | 'error'> {
     if (!this.language) {
-      return;
+      return 'error';
     }
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
 
     if (!definition.require || definition.require.length <= 0) {
-      return;
+      return 'loaded';
     }
 
     // Load now the required languages scripts because Prism needs these to be loaded before the actual main language script
-    const promises: Promise<string>[] = definition.require.map((language: string) =>
-      injectJS(`deckdeckgo-prism-${language}`, this.scriptSrc(language))
-    );
-    await Promise.all(promises);
-  }
+    const promises: Promise<StateRequiredJS>[] = definition.require.map((lang: string) => injectRequiredJS({lang}));
+    const states: StateRequiredJS[] = await Promise.all(promises);
 
-  private loadScript(lang: string, reload: boolean = false): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document || !lang || lang === '') {
-        resolve();
-        return;
-      }
+    const stateError: StateRequiredJS | undefined = states.find((state: StateRequiredJS) => ['error', 'abort'].includes(state));
+    if (stateError !== undefined) {
+      return 'error';
+    }
 
-      // No need to load javascript, it is there
-      if (lang === 'javascript') {
-        this.prismLanguageLoaded.emit('javascript');
-
-        resolve();
-        return;
-      }
-
-      const scripts = document.querySelector("[deckdeckgo-prism='" + lang + "']");
-      if (scripts) {
-        if (reload) {
-          this.prismLanguageLoaded.emit(lang);
-        }
-
-        resolve();
-        return;
-      }
-
-      const script = document.createElement('script');
-
-      script.onload = async () => {
-        script.setAttribute('deckdeckgo-prism-loaded', lang);
-        this.prismLanguageLoaded.emit(lang);
-      };
-
-      script.onerror = async () => {
-        if (script.parentElement) {
-          script.parentElement.removeChild(script);
-        }
-
-        // if the language definition doesn't exist or if unpkg is down, display code anyway
-        this.prismLanguageLoaded.emit(lang);
-      };
-
-      const definition = deckdeckgoHighlightCodeLanguages[this.language];
-      const language = definition.main ? definition.main : lang;
-
-      script.src = this.scriptSrc(language);
-      script.setAttribute('deckdeckgo-prism', language);
-      script.defer = true;
-
-      document.head.appendChild(script);
-
-      script.addEventListener('load', () => resolve(), {once: true});
-    });
-  }
-
-  private scriptSrc(language: string): string {
-    return 'https://unpkg.com/prismjs@latest/components/prism-' + language + '.js';
+    const stateNotLoaded: StateRequiredJS | undefined = states.find((state: StateRequiredJS) => state !== 'loaded');
+    return stateNotLoaded !== undefined ? 'attached' : 'loaded';
   }
 
   @Watch('lineNumbers')
