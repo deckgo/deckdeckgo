@@ -9,51 +9,59 @@ import Error "mo:base/Error";
 import Types "../types/types";
 import CanisterTypes "../types/canister.types";
 
-import DecksStore "./decks.store";
-import StoragesStore "./storages.store";
+import BucketsStore "./buckets.store";
 
-import DeckBucket "../deck/deck";
+import DataBucket "../data/data";
 import StorageBucket "../storage/storage";
 
-actor Manager {
-    type DeckId = Types.DeckId;
+import CanisterUtils "../utils/canister.utils";
 
-    type DeckBucket = DeckBucket.DeckBucket;
+actor Manager {
+    type UserId = Types.UserId;
+
+    type DataBucket = DataBucket.DataBucket;
     type StorageBucket = StorageBucket.StorageBucket;
 
     type BucketId = CanisterTypes.BucketId;
 
-    type OwnerDeckBucket = CanisterTypes.Bucket<DeckBucket>;
-    type OwnerStorageBucket = CanisterTypes.Bucket<StorageBucket>;
+    private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-    let decksStore: DecksStore.DecksStore = DecksStore.DecksStore();
-    let storagesStore: StoragesStore.StoragesStore = StoragesStore.StoragesStore();
+    let dataStore: BucketsStore.BucketsStore<DataBucket> = BucketsStore.BucketsStore<DataBucket>();
+    let storagesStore: BucketsStore.BucketsStore<StorageBucket> = BucketsStore.BucketsStore<StorageBucket>();
 
     // Preserve the application state on upgrades
-    private stable var decks : [(Principal, [(DeckId, OwnerDeckBucket)])] = [];
-    private stable var storages : [(Principal, OwnerStorageBucket)] = [];
+    private stable var data : [(Principal, CanisterTypes.Bucket<DataBucket>)] = [];
+    private stable var storages : [(Principal, CanisterTypes.Bucket<StorageBucket>)] = [];
 
     /**
-     * Decks
+     * Data
      */
 
-    public shared({ caller }) func initDeck(deckId: DeckId): async (BucketId) {
-        let self: Principal = Principal.fromActor(Manager);
-
-        let result: {#bucketId: BucketId; #error: Text;} = await decksStore.init(self, caller, deckId);
-
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketId bucketId) {
-                return bucketId;
-            };
-        };
+    public shared({ caller }) func initData(): async (BucketId) {
+        return await initBucket<DataBucket>(caller, dataStore, initNewDataBucket);
     };
 
-    public shared query({ caller }) func getDeck(deckId : DeckId) : async ?BucketId {
-        let result: {#bucketId: ?BucketId; #error: Text;} = decksStore.getDeck(caller, deckId);
+    private func initNewDataBucket(manager: Principal, user: UserId, data: HashMap.HashMap<UserId, CanisterTypes.Bucket<DataBucket>>): async (Principal) {
+        Cycles.add(1_000_000_000_000);
+        let b: DataBucket = await DataBucket.DataBucket(user);
+
+        let canisterId: Principal = Principal.fromActor(b);
+
+        await canisterUtils.updateSettings(canisterId, manager);
+
+        let newDataBucket: CanisterTypes.Bucket<DataBucket> = {
+            bucket = b;
+            bucketId = canisterId;
+            owner = user;
+        };
+
+        data.put(user, newDataBucket);
+
+        return canisterId;
+    };
+
+    public shared query({ caller }) func getData() : async ?BucketId {
+        let result: {#bucketId: ?BucketId; #error: Text;} = dataStore.getBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -66,8 +74,7 @@ actor Manager {
                     };
                     case null {
                         // We do not throw a "Not found error" here.
-                        // For performance reason, in web app we first query if the deck exists and then if not, we init it
-                        // Most ofen the deck will exist already
+                        // For performance reason, in web app we first query if the bucket exists and then if not, we init it.
                         return null;
                     };
                 };
@@ -75,44 +82,15 @@ actor Manager {
         };
     };
 
-    public shared query({ caller }) func deckEntries() : async [BucketId] {
-        let result: {#bucketIds: [BucketId]; #error: Text;} = decksStore.getDecks(caller);
-
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketIds bucketIds) {
-                return bucketIds;
-            };
-        };
+    public shared({ caller }) func delData() : async (Bool) {
+        return await delBucket<DataBucket>(caller, dataStore);
     };
 
-    public shared({ caller }) func delDeck(deckId : DeckId) : async (Bool) {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await decksStore.deleteDeck(caller, deckId);
-
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketId bucketId) {
-                let exists: Bool = Option.isSome(bucketId);
-                return exists;
-            };
-        };
-    };
-
+    // TODO: do we need inter-canister call or do we solves this in another way?
     // TODO: inter-canister call secure caller === user canister or this canister
 
-    public func deleteDecksAdmin(user: Principal) : async () {
-        let error: ?Text = await decksStore.deleteDecks(user);
-
-        switch (error) {
-            case (?error) {
-                throw Error.reject(error);
-            };
-            case null {};
-        };
+    public func deleteDataAdmin(user: Principal) : async (Bool) {
+        return await delBucket<DataBucket>(user, dataStore);
     };
 
     /**
@@ -120,22 +98,30 @@ actor Manager {
      */
 
     public shared({ caller }) func initStorage(): async (BucketId) {
-        let self: Principal = Principal.fromActor(Manager);
+        return await initBucket<StorageBucket>(caller, storagesStore, initNewStorageBucket);
+    };
 
-        let result: {#bucketId: BucketId; #error: Text;} = await storagesStore.init(self, caller);
+    private func initNewStorageBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<StorageBucket>>): async (Principal) {
+        Cycles.add(1_000_000_000_000);
+        let b: StorageBucket = await StorageBucket.StorageBucket(user);
 
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketId bucketId) {
-                return bucketId;
-            };
+        let canisterId: Principal = Principal.fromActor(b);
+
+        await canisterUtils.updateSettings(canisterId, manager);
+
+        let newStorageBucket: CanisterTypes.Bucket<StorageBucket> = {
+            bucket = b;
+            bucketId = canisterId;
+            owner = user;
         };
+
+        storages.put(user, newStorageBucket);
+
+        return canisterId;
     };
 
     public shared query({ caller }) func getStorage() : async ?BucketId {
-        let result: {#bucketId: ?BucketId; #error: Text;} = storagesStore.getStorage(caller);
+        let result: {#bucketId: ?BucketId; #error: Text;} = storagesStore.getBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -148,7 +134,7 @@ actor Manager {
                     };
                     case null {
                         // We do not throw a "Not found error" here.
-                        // For performance reason, in web app we first query if the storage exists and then if not, we init it.
+                        // For performance reason, in web app we first query if the bucket exists and then if not, we init it.
                         return null;
                     };
                 };
@@ -157,7 +143,37 @@ actor Manager {
     };
 
     public shared({ caller }) func delStorage() : async (Bool) {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteStorage(caller);
+        return await delBucket<StorageBucket>(caller, storagesStore);
+    };
+
+    // TODO: do we need inter-canister call or do we solves this in another way?
+    // TODO: inter-canister call secure caller === user canister or this canister
+
+    public func deleteStorageAdmin(user: Principal) : async (Bool) {
+        return await delBucket<StorageBucket>(user, storagesStore);
+    };
+
+    /**
+     * Buckets
+     */
+
+    private func initBucket<T>(caller: Principal, store: BucketsStore.BucketsStore<T>, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>) -> async (Principal)): async (BucketId) {
+        let self: Principal = Principal.fromActor(Manager);
+
+        let result: {#bucketId: BucketId; #error: Text;} = await store.init(self, caller, initNewBucket);
+
+        switch (result) {
+            case (#error error) {
+                throw Error.reject(error);
+            };
+            case (#bucketId bucketId) {
+                return bucketId;
+            };
+        };
+    };
+
+    private func delBucket<T>(caller: Principal, store: BucketsStore.BucketsStore<T>) : async (Bool) {
+        let result: {#bucketId: ?BucketId; #error: Text;} = await store.deleteBucket(caller);
 
         switch (result) {
             case (#error error) {
@@ -170,31 +186,18 @@ actor Manager {
         };
     };
 
-    // TODO: inter-canister call secure caller === user canister or this canister
-
-    public func deleteStorageAdmin(user: Principal) : async () {
-        let result: {#bucketId: ?BucketId; #error: Text;} = await storagesStore.deleteStorage(user);
-
-        switch (result) {
-            case (#error error) {
-                throw Error.reject(error);
-            };
-            case (#bucketId bucketId) {};
-        };
-    };
-
     /**
      * Stable memory for upgrade
      */
 
     system func preupgrade() {
-        decks := Iter.toArray(decksStore.preupgrade().entries());
+        data := Iter.toArray(dataStore.preupgrade().entries());
         storages := Iter.toArray(storagesStore.preupgrade().entries());
     };
 
     system func postupgrade() {
-        decksStore.postupgrade(decks);
-        decks := [];
+        dataStore.postupgrade(data);
+        data := [];
 
         storagesStore.postupgrade(storages);
         storages := [];

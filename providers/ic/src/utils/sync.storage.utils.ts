@@ -2,7 +2,7 @@ import {Identity} from '@dfinity/agent';
 
 import {del, get} from 'idb-keyval';
 
-import {Deck, Slide, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
+import {Deck, deckSelector, docSelector, Paragraph, Slide, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
 
 import {SyncWindow, SyncWindowEventMsg} from '../types/sync.window';
 import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
@@ -45,7 +45,7 @@ export const uploadDeckBackgroundAssets = async ({
 
   return uploadData({
     src: imgSrc,
-    deckId: deck.id,
+    key: `/decks/${deck.id}`,
     identity,
     host,
     syncWindow,
@@ -108,8 +108,8 @@ const uploadSlideImages = async ({
 
     return uploadData({
       src: imgSrc,
-      deckId,
-      slideId: slide.id,
+      key: `/decks/${deckId}/slides/${slide.id}`,
+      selector: `${deckSelector} > *[slide_id="${slide.id}"]`,
       identity,
       host,
       syncWindow,
@@ -142,13 +142,22 @@ const uploadSlideChart = async ({
 
   const {src} = attributes;
 
-  return uploadData({src, deckId, slideId: slide.id, identity, host, syncWindow, msg: 'deckdeckgo_sync_slide_chart', folder: 'data'});
+  return uploadData({
+    src,
+    key: `/decks/${deckId}/slides/${slide.id}`,
+    selector: `${deckSelector} > *[slide_id="${slide.id}"]`,
+    identity,
+    host,
+    syncWindow,
+    msg: 'deckdeckgo_sync_slide_chart',
+    folder: 'data'
+  });
 };
 
 const uploadData = ({
   src,
-  deckId,
-  slideId,
+  key,
+  selector,
   host,
   identity,
   syncWindow,
@@ -156,8 +165,8 @@ const uploadData = ({
   folder
 }: {
   src: string | undefined;
-  deckId: string;
-  slideId?: string;
+  key: string;
+  selector?: string;
   host: string;
   identity: Identity;
   syncWindow: SyncWindow;
@@ -205,8 +214,8 @@ const uploadData = ({
         msg,
         data: {
           src,
-          deckId,
-          slideId,
+          key,
+          selector,
           storageFile
         }
       });
@@ -222,4 +231,45 @@ const uploadData = ({
       reject(err);
     }
   });
+};
+
+export const uploadParagraphImages = async ({
+  docId,
+  paragraph,
+  identity,
+  host,
+  syncWindow
+}: {
+  docId: string;
+  paragraph: Paragraph;
+  identity: Identity;
+  host: string;
+  syncWindow: SyncWindow;
+}): Promise<SyncStorage[] | undefined> => {
+  const {children} = paragraph.data;
+
+  if (!children || children.length <= 0) {
+    return undefined;
+  }
+
+  const content: string = children.join('');
+
+  const results: string[][] = [...content.matchAll(imagesRegex)];
+
+  const promises: Promise<SyncStorage>[] | undefined = results?.map((result: string[]) => {
+    const imgSrc: string = result[5];
+
+    return uploadData({
+      src: imgSrc,
+      key: `/docs/${docId}/paragraphs/${paragraph.id}`,
+      selector: `${docSelector} > article *[paragraph_id="${paragraph.id}"]`,
+      identity,
+      host,
+      syncWindow,
+      msg: 'deckdeckgo_sync_paragraph_image',
+      folder: 'images'
+    });
+  });
+
+  return Promise.all(promises);
 };

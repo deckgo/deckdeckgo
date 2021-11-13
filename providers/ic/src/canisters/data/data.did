@@ -1,0 +1,18 @@
+type UserId = principal;
+type Time = int;
+type DataBucket = 
+ service {
+   del: (text) -> ();
+   get: (text) -> (Data) query;
+   list: (opt text) -> (vec Data) query;
+   set: (text, Data) -> ();
+   transferCycles: () -> ();
+ };
+type Data = 
+ record {
+   created_at: Time;
+   data: blob;
+   id: text;
+   updated_at: Time;
+ };
+service : (UserId) -> DataBucket

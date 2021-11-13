@@ -1,114 +1,82 @@
-import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
+import {Deck, DeckData, Doc, DocData, Paragraph, ParagraphData, Slide, SlideData} from '@deckdeckgo/editor';
 
-import {Deck, DeckData, Slide, SlideData} from '@deckdeckgo/editor';
+import {_SERVICE as DataBucketActor, Data} from '../canisters/data/data.did';
 
-import {_SERVICE as ManagerActor} from '../canisters/manager/manager.did';
-import {_SERVICE as DeckBucketActor} from '../canisters/deck/deck.did';
-
-import {createDeckBucketActor, initDeckBucket} from './manager.utils';
 import {toArray, toTimestamp} from './did.utils';
 
-export const uploadDeckData = async ({
-  deck,
-  managerActor,
-  identity,
-  host
-}: {
-  deck: Deck;
-  managerActor: ManagerActor;
-  identity: Identity;
-  host: string;
-}) => {
-  console.log('Deck IC about to SET');
+export const uploadDeckData = async ({deck, actor}: {deck: Deck; actor: DataBucketActor}) => {
+  await uploadData({
+    key: `/decks/${deck.id}`,
+    data: {
+      id: deck.id,
+      data: await toArray<DeckData>(deck.data),
+      created_at: toTimestamp((deck.data.created_at as Date) || new Date()),
+      updated_at: toTimestamp((deck.data.updated_at as Date) || new Date())
+    },
+    actor
+  });
+};
+
+export const uploadSlideData = async ({deckId, slide, actor}: {deckId: string; slide: Slide; actor: DataBucketActor}) => {
+  await uploadData({
+    key: `/decks/${deckId}/slides/${slide.id}`,
+    data: {
+      id: slide.id,
+      data: await toArray<SlideData>(slide.data),
+      created_at: toTimestamp((slide.data.created_at as Date) || new Date()),
+      updated_at: toTimestamp((slide.data.updated_at as Date) || new Date())
+    },
+    actor
+  });
+};
+
+export const uploadDocData = async ({doc, actor}: {doc: Doc; actor: DataBucketActor}) => {
+  await uploadData({
+    key: `/docs/${doc.id}`,
+    data: {
+      id: doc.id,
+      data: await toArray<DocData>(doc.data),
+      created_at: toTimestamp((doc.data.created_at as Date) || new Date()),
+      updated_at: toTimestamp((doc.data.updated_at as Date) || new Date())
+    },
+    actor
+  });
+};
+
+export const uploadParagraphData = async ({docId, paragraph, actor}: {docId: string; paragraph: Paragraph; actor: DataBucketActor}) => {
+  await uploadData({
+    key: `/docs/${docId}/paragraphs/${paragraph.id}`,
+    data: {
+      id: paragraph.id,
+      data: await toArray<ParagraphData>(paragraph.data),
+      created_at: toTimestamp((paragraph.data.created_at as Date) || new Date()),
+      updated_at: toTimestamp((paragraph.data.updated_at as Date) || new Date())
+    },
+    actor
+  });
+};
+
+const uploadData = async ({data, key, actor}: {data: Data; key: string; actor: DataBucketActor}) => {
+  console.log(`Data IC (${key}) about to SET`);
   const t0 = performance.now();
 
-  const bucket: Principal = await initDeckBucket({managerActor, deckId: deck.id});
-
-  const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
-
-  await deckBucket.set({
-    deckId: deck.id,
-    data: await toArray<DeckData>(deck.data),
-    created_at: toTimestamp((deck.data.created_at as Date) || new Date()),
-    updated_at: toTimestamp((deck.data.updated_at as Date) || new Date())
-  });
+  await actor.set(key, data);
 
   const t1 = performance.now();
-  console.log('Deck IC SET done', t1 - t0);
+  console.log(`Data IC SET (${key}) done:`, t1 - t0);
 
   const t2 = performance.now();
 
   // TODO: remove, just for test
-  console.log('Deck IC Get:', await deckBucket.get(), performance.now() - t2);
+  console.log(`Data IC GET (${key}):`, await actor.get(key), performance.now() - t2);
 };
 
-export const uploadSlideData = async ({
-  slide,
-  deckId,
-  managerActor,
-  identity,
-  host
-}: {
-  slide: Slide;
-  deckId: string;
-  managerActor: ManagerActor;
-  identity: Identity;
-  host: string;
-}) => {
-  console.log('Slide IC about to SET');
+export const deleteData = async ({key, actor}: {key: string; actor: DataBucketActor}) => {
+  console.log('Data IC about to DEL');
   const t0 = performance.now();
 
-  const t4 = performance.now();
-  const bucket: Principal = await initDeckBucket({managerActor, deckId});
-
-  const t5 = performance.now();
-  console.log('Bucket retrieved', t5 - t4);
-
-  const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
-
-  await deckBucket.setSlide({
-    slideId: slide.id,
-    data: await toArray<SlideData>(slide.data),
-    created_at: toTimestamp((slide.data.created_at as Date) || new Date()),
-    updated_at: toTimestamp((slide.data.updated_at as Date) || new Date())
-  });
+  await actor.del(key);
 
   const t1 = performance.now();
-  console.log('Slide IC SET done', t1 - t0);
-
-  const t2 = performance.now();
-
-  // TODO: remove, just for test
-  console.log('Slide IC Get:', await deckBucket.getSlide(slide.id), performance.now() - t2);
-};
-
-export const deleteSlide = async ({
-  slideId,
-  deckId,
-  managerActor,
-  identity,
-  host
-}: {
-  slideId: string;
-  deckId: string;
-  managerActor: ManagerActor;
-  identity: Identity;
-  host: string;
-}) => {
-  if (!slideId) {
-    return;
-  }
-
-  console.log('Slide IC about to DEL');
-  const t0 = performance.now();
-
-  const bucket: Principal = await initDeckBucket({managerActor, deckId});
-
-  const deckBucket: DeckBucketActor = await createDeckBucketActor({identity, bucket, host});
-
-  await deckBucket.delSlide(slideId);
-
-  const t1 = performance.now();
-  console.log('Slide IC DEL done', t1 - t0);
+  console.log('Data IC DEL done', t1 - t0);
 };

@@ -7,11 +7,10 @@ import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@
 
 import {getIdentity} from '../auth/auth.ic';
 
-import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
 import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/storage.did';
 
-import {createManagerActor, createStorageBucketActor, initStorageBucket} from '../../utils/manager.utils';
 import {toNullable} from '../../utils/did.utils';
+import {getStorageBucket} from '../../utils/manager.utils';
 
 export const uploadFile: UploadFile = async ({
   data,
@@ -62,29 +61,6 @@ export const uploadFileIC = async ({
     downloadUrl: `https://${bucket.toText()}.raw.ic0.app/${fullPath}?token=${token}`,
     fullPath,
     name: filename
-  };
-};
-
-const getStorageBucket = async ({
-  host,
-  identity
-}: {
-  host?: string;
-  identity: Identity | undefined;
-}): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
-  if (!identity) {
-    throw new Error('Invalid identity.');
-  }
-
-  const managerActor: ManagerActor = await createManagerActor({identity, host});
-
-  const bucket: Principal = await initStorageBucket({managerActor});
-
-  const actor: StorageBucketActor = await createStorageBucketActor({identity, bucket, host});
-
-  return {
-    bucket,
-    actor
   };
 };
 
