@@ -183,32 +183,55 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       return;
     }
 
-    const loadScript: boolean = await this.loadRequiredLanguages();
+    const loadingScript: 'attached' | 'loaded' | 'error' = await this.loadRequiredLanguages();
 
     // We need all required scripts to be loaded. If multiple components are use within the same page, it is possible that the required scripts are attached to the DOM and are still loading.
     // loadScript will trigger an event on the document, therefore those who do not loadScript will receive the event anyway when everything is ready.
-    if (!loadScript) {
+    if (loadingScript === 'attached') {
       return;
     }
 
-    await loadMainScript({lang: this.language, reload, prismLanguageLoaded: this.prismLanguageLoaded});
+    if (loadingScript === 'error') {
+      this.fallbackJavascript();
+      return;
+    }
+
+    const state: 'loaded' | 'error' = await loadMainScript({lang: this.language, reload, prismLanguageLoaded: this.prismLanguageLoaded});
+
+    if (state === 'loaded') {
+      return;
+    }
+
+    this.fallbackJavascript();
   }
 
-  private async loadRequiredLanguages(): Promise<boolean> {
+  private fallbackJavascript() {
+    this.language = 'javascript';
+    this.prismLanguageLoaded.emit(this.language);
+  }
+
+  private async loadRequiredLanguages(): Promise<'attached' | 'loaded' | 'error'> {
     if (!this.language) {
-      return false;
+      return 'error';
     }
 
     const definition = deckdeckgoHighlightCodeLanguages[this.language];
 
     if (!definition.require || definition.require.length <= 0) {
-      return true;
+      return 'loaded';
     }
 
     // Load now the required languages scripts because Prism needs these to be loaded before the actual main language script
     const promises: Promise<StateRequiredJS>[] = definition.require.map((lang: string) => injectRequiredJS({lang}));
     const states: StateRequiredJS[] = await Promise.all(promises);
-    return states.filter((state: StateRequiredJS) => state !== 'loaded') !== null;
+
+    const stateError: StateRequiredJS | undefined = states.find((state: StateRequiredJS) => ['error', 'abort'].includes(state));
+    if (stateError !== undefined) {
+      return 'error';
+    }
+
+    const stateNotLoaded: StateRequiredJS | undefined = states.find((state: StateRequiredJS) => state !== 'loaded');
+    return stateNotLoaded !== undefined ? 'attached' : 'loaded';
   }
 
   @Watch('lineNumbers')

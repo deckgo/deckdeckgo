@@ -39,10 +39,10 @@ export const loadMainScript = ({
   lang: string;
   reload?: boolean;
   prismLanguageLoaded: EventEmitter<string>;
-}): Promise<void> => {
-  return new Promise<void>(async (resolve) => {
+}): Promise<'loaded' | 'error'> => {
+  return new Promise<'loaded' | 'error'>(async (resolve) => {
     if (!document || !lang || lang === '') {
-      resolve();
+      resolve('error');
       return;
     }
 
@@ -50,7 +50,7 @@ export const loadMainScript = ({
     if (lang === 'javascript') {
       prismLanguageLoaded.emit('javascript');
 
-      resolve();
+      resolve('loaded');
       return;
     }
 
@@ -60,7 +60,7 @@ export const loadMainScript = ({
         prismLanguageLoaded.emit(lang);
       }
 
-      resolve();
+      resolve('loaded');
       return;
     }
 
@@ -78,6 +78,8 @@ export const loadMainScript = ({
 
       // if the language definition doesn't exist or if unpkg is down, display code anyway
       prismLanguageLoaded.emit(lang);
+
+      resolve('error');
     };
 
     const definition = deckdeckgoHighlightCodeLanguages[lang];
@@ -89,7 +91,7 @@ export const loadMainScript = ({
 
     document.head.appendChild(script);
 
-    script.addEventListener('load', () => resolve(), {once: true});
+    script.addEventListener('load', () => resolve('loaded'), {once: true});
   });
 };
 
