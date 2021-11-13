@@ -1,4 +1,4 @@
-import {Deck, Slide, StorageFile} from '@deckdeckgo/editor';
+import {Deck, Paragraph, Slide, StorageFile} from '@deckdeckgo/editor';
 import {SyncStorage} from '../types/sync.storage';
 
 export const updateDeckBackground = ({
@@ -45,6 +45,35 @@ export const updateSlideImages = ({slide, images}: {slide: Slide; images: SyncSt
       ...slide.data,
       updated_at: new Date(),
       content
+    }
+  };
+};
+
+export const updateParagraphImages = ({paragraph, images}: {paragraph: Paragraph; images: SyncStorage[] | undefined}): Paragraph => {
+  if (!images) {
+    return {...paragraph};
+  }
+
+  const validImages: {src: string; storageFile: StorageFile}[] = images.filter(
+    ({src, storageFile}: SyncStorage) => src !== undefined && storageFile !== undefined
+  );
+
+  let {children} = paragraph.data;
+
+  children = children?.map((content: string) => {
+    validImages.forEach(({src, storageFile}: SyncStorage) => {
+      content = updateImgSrcAlt({data: content, storageFile, imgSrc: src});
+    });
+
+    return content;
+  });
+
+  return {
+    id: paragraph.id,
+    data: {
+      ...paragraph.data,
+      updated_at: new Date(),
+      children
     }
   };
 };

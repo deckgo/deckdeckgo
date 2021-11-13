@@ -6,7 +6,7 @@ import {getIdentity} from '../auth/auth.ic';
 import {InternetIdentityAuth} from '../../types/identity';
 
 import {internetIdentityAuth} from '../../utils/identity.utils';
-import {syncDeckBackground, syncSlideChart, syncSlideImage} from '../../utils/sync.window.utils';
+import {syncDeckBackground, syncParagraphImage, syncSlideChart, syncSlideImage} from '../../utils/sync.window.utils';
 
 import {uploadWorker} from '../../workers/sync.ic.worker';
 
@@ -25,6 +25,10 @@ const syncWindow: SyncWindow = async ({msg, data}: SyncWindowEvent) => {
 
   if (msg === 'deckdeckgo_sync_slide_chart') {
     await syncSlideChart(data);
+  }
+
+  if (msg === 'deckdeckgo_sync_paragraph_image') {
+    await syncParagraphImage(data);
   }
 };
 
