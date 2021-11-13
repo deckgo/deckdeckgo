@@ -1,3 +1,13 @@
+# 3.5.0 (2021-11-13)
+
+### Feature
+
+- fallback to JavaScript to display code anyway if the main language or a required one cannot be loaded
+
+### Fix
+
+- definitely solve required scripts loading if multiple components with the same complex languages are use in the same page
+
 # 3.4.4 (2021-11-12)
 
 ### Fix
