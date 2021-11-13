@@ -64,3 +64,33 @@ export const deleteData = async ({key}: {key: string}): Promise<void> => {
 
   console.log('Data IC delete');
 };
+
+export const getData = <T, D>({key}: {key: string}): Promise<T> => {
+  return new Promise<T>(async (resolve, reject) => {
+    const identity: Identity | undefined = getIdentity();
+
+    if (!identity) {
+      reject('No internet identity.');
+      return;
+    }
+
+    try {
+      const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
+
+      const entry: Data = await actor.get(key);
+
+      const data: D = await fromArray<D>(entry.data);
+
+      resolve({
+        id: entry.id,
+        data: {
+          ...data,
+          created_at: fromTimestamp(entry.created_at),
+          updated_at: fromTimestamp(entry.updated_at)
+        }
+      } as unknown as T);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
