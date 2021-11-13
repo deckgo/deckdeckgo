@@ -5,7 +5,7 @@ import {deckdeckgoHighlightCodeLanguages} from '../declarations/deckdeckgo-highl
 export type StateRequiredJS = 'loaded' | 'attached' | 'error' | 'abort';
 
 export const injectRequiredJS = ({lang}: {lang: string}): Promise<StateRequiredJS> => {
-  return new Promise<StateRequiredJS>((resolve, reject) => {
+  return new Promise<StateRequiredJS>((resolve) => {
     let script: HTMLScriptElement | null = document.querySelector(`deckdeckgo-prism-${lang}`);
 
     if (script) {
@@ -24,8 +24,8 @@ export const injectRequiredJS = ({lang}: {lang: string}): Promise<StateRequiredJ
       resolve('loaded');
     });
 
-    script.addEventListener('error', () => reject('error'));
-    script.addEventListener('abort', () => reject('abort'));
+    script.addEventListener('error', () => resolve('error'));
+    script.addEventListener('abort', () => resolve('abort'));
 
     document.head.appendChild(script);
   });
@@ -75,9 +75,6 @@ export const loadMainScript = ({
       if (script.parentElement) {
         script.parentElement.removeChild(script);
       }
-
-      // if the language definition doesn't exist or if unpkg is down, display code anyway
-      prismLanguageLoaded.emit(lang);
 
       resolve('error');
     };

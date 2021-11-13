@@ -34,6 +34,12 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   prismLanguageLoaded: EventEmitter<string>;
 
   /**
+   * Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway.
+   */
+  @Event()
+  prismLanguageError: EventEmitter<string>;
+
+  /**
    * Emitted when the code was edited (see attribute editable). Propagate the root component itself
    */
   @Event()
@@ -136,17 +142,25 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     this.themeStyle = theme;
   }
 
-  @Listen('prismLanguageLoaded', {target: 'document'})
-  async languageLoaded($event: CustomEvent) {
-    if (!$event || !$event.detail) {
+  @Listen('prismLanguageLoaded', {target: 'document', passive: true})
+  async onLanguageLoaded({detail}: CustomEvent<string>) {
+    if (this.language !== detail || this.loaded) {
       return;
     }
 
-    if (this.language === $event.detail && !this.loaded) {
-      await this.parse();
+    await this.parse();
 
-      this.loaded = true;
+    this.loaded = true;
+  }
+
+  @Listen('prismLanguageError', {target: 'document', passive: true})
+  async onLanguageError({detail}: CustomEvent<string>) {
+    if (this.language !== detail) {
+      return;
     }
+
+    this.language = 'javascript';
+    this.prismLanguageLoaded.emit(this.language);
   }
 
   private async parse() {
@@ -206,8 +220,8 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   }
 
   private fallbackJavascript() {
-    this.language = 'javascript';
-    this.prismLanguageLoaded.emit(this.language);
+    console.error('A required script for the language could not be fetched therefore, falling back to JavaScript to display code anyway.');
+    this.prismLanguageError.emit(this.language);
   }
 
   private async loadRequiredLanguages(): Promise<'attached' | 'loaded' | 'error'> {

@@ -72,10 +72,11 @@ If you are displaying your code in an Ubuntu terminal, you could also displays a
 
 ## Events
 
-| Event                 | Description                                                                                    | Type                       |
-| --------------------- | ---------------------------------------------------------------------------------------------- | -------------------------- |
-| `codeDidChange`       | Emitted when the code was edited (see attribute editable). Propagate the root component itself | `CustomEvent<HTMLElement>` |
-| `prismLanguageLoaded` | Emitted when a language is fetched and loaded                                                  | `CustomEvent<string>`      |
+| Event                 | Description                                                                                                            | Type                       |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `codeDidChange`       | Emitted when the code was edited (see attribute editable). Propagate the root component itself                         | `CustomEvent<HTMLElement>` |
+| `prismLanguageError`  | Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway. | `CustomEvent<string>`      |
+| `prismLanguageLoaded` | Emitted when a language is fetched and loaded                                                                          | `CustomEvent<string>`      |
 
 
 ## Methods
