@@ -45,7 +45,7 @@ const fromData = async <T, D>({data, identity}: {data: Data; identity: Identity}
   } as unknown as T;
 };
 
-export const deleteEntry = async ({key}: {key: string}): Promise<void> => {
+export const deleteData = async ({key}: {key: string}): Promise<void> => {
   if (!key) {
     return;
   }
