@@ -53,7 +53,7 @@ export class AppStorage implements ComponentInterface {
       <main class="ion-padding fit">
         <h1>{i18n.state.menu.assets}</h1>
 
-        {authStore.state.anonymous ? this.renderNotLoggedInContent() : this.renderGuardedContent()}
+        {!authStore.state.authUser ? this.renderNotLoggedInContent() : this.renderGuardedContent()}
       </main>
     );
   }

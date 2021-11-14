@@ -51,7 +51,6 @@ const createUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
   const id: string = uuid();
 
   const data: UserData = {
-    anonymous: false,
     created_at: toTimestamp(now),
     updated_at: toTimestamp(now)
   };

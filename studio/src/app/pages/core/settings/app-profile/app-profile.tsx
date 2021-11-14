@@ -112,7 +112,7 @@ export class AppProfile {
   }
 
   private async initUserData() {
-    if (!userStore.state.user || userStore.state.user === undefined || !userStore.state.user.data || userStore.state.user.data.anonymous) {
+    if (!userStore.state.user || userStore.state.user === undefined || !userStore.state.user.data) {
       return;
     }
 
@@ -421,7 +421,7 @@ export class AppProfile {
   }
 
   private renderGuardedContent() {
-    if (!authStore.state.authUser || authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       return this.renderNotLoggedInContent();
     } else {
       return [this.renderUserContent(), this.renderDangerZone()];

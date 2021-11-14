@@ -15,8 +15,7 @@ export const signInApi = ({
   token: string;
 }): Promise<ApiUserModel | undefined> => {
   return new Promise<ApiUserModel | undefined>(async (resolve) => {
-    // If anonymous do nothing
-    if (!authUser || authUser.anonymous) {
+    if (!authUser || !authUser.uid) {
       resolve(undefined);
       return;
     }
@@ -135,8 +134,8 @@ export const getApi = ({userId, mock, apiUrl}: {userId: string; mock: boolean; a
 
 const createUserInfo = (authUser: AuthUser): ApiUserInfo => {
   return {
-    anonymous: authUser.anonymous,
+    anonymous: false,
     firebase_uid: authUser.uid,
-    email: authUser.anonymous ? null : authUser.email
+    email: authUser.email
   } as ApiUserInfo;
 };

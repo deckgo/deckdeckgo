@@ -34,12 +34,23 @@ export const initAuth: InitAuth = async ({
 
   const internetIdentity: InternetIdentityAuth = await internetIdentityAuth();
 
+  await initUser({success});
+
   const user: User = await initUserWorker({internetIdentity, host: `${window.location}`});
 
-  await populateUser({user, success});
+  await authenticatedUser({user, success});
 };
 
-const populateUser = async ({
+// If first sign-in, initializing the canister can take a while therefore we already emit a not fully authenticated user
+const initUser = async ({success}: {success: ({authUser, user}: {authUser: AuthUser | null; user: User | undefined}) => Promise<void>}) => {
+  const authUser: AuthUser = {
+    state: 'initialization'
+  } as AuthUser;
+
+  await success({authUser, user: undefined});
+};
+
+const authenticatedUser = async ({
   user,
   success
 }: {
@@ -52,8 +63,7 @@ const populateUser = async ({
 
   const authUser: AuthUser = {
     uid: id,
-    anonymous: false,
-    gitHub: false,
+    state: 'authenticated',
     name,
     email,
     photo_url

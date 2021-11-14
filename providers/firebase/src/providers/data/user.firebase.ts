@@ -84,7 +84,6 @@ const createUserData = (authUser: AuthUser): Promise<User> => {
       const now: firebase.firestore.Timestamp = firebase.firestore.Timestamp.now();
 
       const user: UserData = {
-        anonymous: authUser.anonymous,
         newsletter: true,
         created_at: now as unknown as Date,
         updated_at: now as unknown as Date
@@ -121,10 +120,6 @@ const updateUserWithAuthData = (authUser: AuthUser, user: UserData): Promise<Use
       if (userNeedUpdate(authUser, user)) {
         const firestore: firebase.firestore.Firestore = firebase.firestore();
 
-        if (user.anonymous !== authUser.anonymous) {
-          user.anonymous = authUser.anonymous;
-        }
-
         if (!user.name && authUser.name) {
           user.name = authUser.name;
         }
@@ -150,9 +145,7 @@ const updateUserWithAuthData = (authUser: AuthUser, user: UserData): Promise<Use
 };
 
 const userNeedUpdate = (authUser: AuthUser, user: UserData): boolean => {
-  if (user.anonymous !== authUser.anonymous) {
-    return true;
-  } else if (!user.name && authUser.name) {
+  if (!user.name && authUser.name) {
     return true;
   } else if (!user.email && authUser.email) {
     return true;

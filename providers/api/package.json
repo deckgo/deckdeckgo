@@ -23,7 +23,7 @@
     "GNU-AGPL-3.0"
   ],
   "devDependencies": {
-    "@deckdeckgo/editor": "^1.0.0",
+    "@deckdeckgo/editor": "file:utils/editor",
     "esbuild": "^0.12.28",
     "rimraf": "^3.0.2"
   }

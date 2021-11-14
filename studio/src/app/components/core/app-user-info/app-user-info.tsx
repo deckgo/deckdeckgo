@@ -49,7 +49,7 @@ export class AppUserInfo {
   private renderUsername() {
     const username: string | undefined = userStore.state.user?.data?.username;
 
-    if (!username || authStore.state.anonymous) {
+    if (!username || username === '') {
       return undefined;
     }
 

@@ -81,7 +81,7 @@ export class AppDecks implements ComponentInterface {
   }
 
   private async initDashboard() {
-    if (!authStore.state.authUser || authStore.state.anonymous) {
+    if (!authStore.state.loggedIn) {
       this.debounceLoading();
       return;
     }
@@ -256,7 +256,7 @@ export class AppDecks implements ComponentInterface {
       return <app-spinner></app-spinner>;
     }
 
-    if (authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       return <AppAnonymousContent title={i18n.state.menu.presentations} text={i18n.state.settings.access_decks}></AppAnonymousContent>;
     }
 

@@ -10,8 +10,6 @@ export interface UserSocial {
 }
 
 export interface UserData {
-  anonymous: boolean;
-
   name?: string;
   email?: string;
   newsletter?: boolean;
