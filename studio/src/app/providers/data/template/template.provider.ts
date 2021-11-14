@@ -7,7 +7,7 @@ import {firebase} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const initTemplates = async () => {
-  if (!authStore.state.authUser || authStore.state.authUser.anonymous) {
+  if (!authStore.state.authUser || !authStore.state.loggedIn) {
     return;
   }
 

@@ -34,17 +34,20 @@ export class AppUserMenu {
   }
 
   render() {
-    return [this.renderUserInfo(), this.renderActions()];
+    return (
+      <Fragment>
+        {this.renderUserInfo()}
+        {this.renderActions()}
+      </Fragment>
+    );
   }
 
   private renderUserInfo() {
-    if (authStore.state.anonymous) {
+    if (!authStore.state.loggedIn) {
       return undefined;
     }
 
-    const username: string | undefined = userStore.state.user?.data?.username;
-
-    if (!userStore.state.name && !username) {
+    if (!userStore.state.name) {
       return undefined;
     }
 
@@ -84,7 +87,9 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item onClick={() => this.signUserOut()} disabled={['pending', 'in_progress'].includes(syncStore.state.sync)}>
+        <ion-item
+          onClick={() => this.signUserOut()}
+          disabled={['pending', 'in_progress'].includes(syncStore.state.sync) || !authStore.state.loggedIn}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

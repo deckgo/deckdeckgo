@@ -4,12 +4,8 @@
       "main": "canisters/src/manager/manager.mo",
       "type": "motoko"
     },
-    "users": {
-      "main": "canisters/src/users/users.mo",
-      "type": "motoko"
-    },
     "assets": {
-      "dependencies": ["manager", "users"],
+      "dependencies": ["manager"],
       "frontend": {
         "entrypoint": "studio/www/index.html"
       },

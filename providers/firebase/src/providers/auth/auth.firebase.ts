@@ -28,8 +28,8 @@ export const initAuth: InitAuth = async ({
         await reset();
       } else {
         const authUser: AuthUser = {
+          state: 'authenticated',
           uid: firebaseUser.uid,
-          anonymous: firebaseUser.isAnonymous,
           name: firebaseUser.displayName,
           email: firebaseUser.email,
           email_verified: firebaseUser.emailVerified,

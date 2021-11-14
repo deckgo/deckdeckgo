@@ -1,9 +1,9 @@
 export interface AuthUser {
-  uid: string;
+  state: 'initialization' | 'authenticated';
 
-  anonymous: boolean;
+  uid?: string;
 
-  gitHub: boolean;
+  gitHub?: boolean;
 
   name?: string;
   email?: string;

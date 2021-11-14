@@ -100,7 +100,7 @@ export class AppTemplates {
   }
 
   private renderGuardedContent() {
-    if (!authStore.state.authUser || authStore.state.anonymous) {
+    if (!authStore.state.authUser) {
       return this.renderNotLoggedInContent();
     }
 

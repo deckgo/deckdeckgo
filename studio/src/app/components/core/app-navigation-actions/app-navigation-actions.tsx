@@ -194,7 +194,7 @@ export class AppNavigationActions {
   }
 
   private renderLoggedInActions() {
-    if (authStore.state.loggedIn && userStore.state.loaded) {
+    if (authStore.state.authUser !== null) {
       return (
         <Fragment>
           {this.renderCloudStatus()}
