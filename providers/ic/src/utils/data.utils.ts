@@ -45,7 +45,7 @@ const fromData = async <T, D>({data, identity}: {data: Data; identity: Identity}
   } as unknown as T;
 };
 
-export const deleteData = async ({key}: {key: string}): Promise<void> => {
+export const deleteData = async ({key, actor}: {key: string; actor?: DataBucketActor}): Promise<void> => {
   if (!key) {
     return;
   }
@@ -57,12 +57,14 @@ export const deleteData = async ({key}: {key: string}): Promise<void> => {
   }
 
   console.log('Data IC about to delete data and its slides');
+  const t0 = performance.now();
 
-  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
+  const dataActor: DataBucketActor = actor || (await getDataActor({identity}));
 
-  await actor.del(key);
+  await dataActor.del(key);
 
-  console.log('Data IC delete');
+  const t1 = performance.now();
+  console.log('Data IC delete', t1 - t0);
 };
 
 export const getData = <T, D>({key}: {key: string}): Promise<T> => {
@@ -115,6 +117,9 @@ export const setData = <T, D>({
     }
 
     try {
+      console.log(`Data IC (${key}) about to SET`);
+      const t0 = performance.now();
+
       const dataActor: DataBucketActor = actor || (await getDataActor({identity}));
 
       const now: Date = new Date();
@@ -126,13 +131,21 @@ export const setData = <T, D>({
         updated_at: toTimestamp(now)
       });
 
-      resolve({
+      const t1 = performance.now();
+      console.log(`Data IC SET (${key}) done:`, t1 - t0);
+
+      const result: T = {
         id,
         data: {
           ...data,
           updated_at: now
         }
-      } as unknown as T);
+      } as unknown as T;
+
+      const t2 = performance.now();
+      console.log(`Data IC GET (${key}):`, await actor.get(key), performance.now() - t2);
+
+      resolve(result);
     } catch (err) {
       reject(err);
     }
