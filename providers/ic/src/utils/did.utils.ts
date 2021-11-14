@@ -1,5 +1,3 @@
-import {UserSocial} from '@deckdeckgo/editor';
-
 import {toDate} from '@deckdeckgo/editor';
 
 import {Time} from '../canisters/data/data.did';
@@ -38,38 +36,6 @@ export const fromValue = (value: string): any => {
   } catch (err) {
     return Array.isArray(value) ? value[0] : value;
   }
-};
-
-export const fromUserSocial = <T>(userSocial: [] | [T]): UserSocial | undefined => {
-  const result: UserSocial = Object.keys(userSocial?.[0] || {}).reduce((acc: UserSocial, key: string) => {
-    const value = fromValue(userSocial[0][key]);
-    if (value) {
-      acc[key] = value;
-    }
-    return acc;
-  }, {} as UserSocial);
-
-  return Object.keys(result).length ? result : undefined;
-};
-
-export const toUserSocial = <T>(social: UserSocial | undefined): [] | [T] => {
-  if (!social) {
-    return [];
-  }
-
-  const {dev, linkedin, twitter, custom_logo_url, custom, github, medium} = social;
-
-  return [
-    {
-      dev: toNullable<string>(dev),
-      linkedin: toNullable<string>(linkedin),
-      twitter: toNullable<string>(twitter),
-      custom_logo_url: toNullable<string>(custom_logo_url),
-      custom: toNullable<string>(custom),
-      github: toNullable<string>(github),
-      medium: toNullable<string>(medium)
-    } as unknown as T
-  ];
 };
 
 export const toArray = async <T>(data: T): Promise<Array<number>> => {
