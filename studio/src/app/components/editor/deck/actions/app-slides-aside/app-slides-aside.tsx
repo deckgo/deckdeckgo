@@ -4,9 +4,7 @@ import type {ItemReorderEventDetail} from '@ionic/core';
 
 import {debounce} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
-import {deckSelector, slideTo, selectDeckSlide} from '@deckdeckgo/editor';
-
-import {NodeUtils} from '../../../../../utils/editor/node.utils';
+import {deckSelector, slideTo, selectDeckSlide, nodeIndex} from '@deckdeckgo/editor';
 
 @Component({
   tag: 'app-slides-aside',
@@ -99,7 +97,7 @@ export class AppSlidesAside {
   }
 
   private async updateSlide(updatedSlide: HTMLElement) {
-    const slideIndex: number = NodeUtils.nodeIndex(updatedSlide);
+    const slideIndex: number = nodeIndex(updatedSlide);
 
     this.slides = [
       ...this.slides.map((slide: HTMLElement, index: number) =>
@@ -109,7 +107,7 @@ export class AppSlidesAside {
   }
 
   private async deleteSlide(deletedSlide: HTMLElement) {
-    const slideIndex: number = NodeUtils.nodeIndex(deletedSlide);
+    const slideIndex: number = nodeIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: HTMLElement, index: number) => slideIndex !== index)];
   }
