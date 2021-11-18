@@ -1,6 +1,5 @@
 import {moveCursorToEnd} from '@deckdeckgo/utils';
-
-import {NodeUtils} from './node.utils';
+import {isTextNode} from '@deckdeckgo/editor';
 
 export const findParagraph = ({element, container}: {element: Node; container: Node}): Node | undefined => {
   if (!container) {
@@ -40,7 +39,7 @@ export const isParagraph = ({element, container}: {element: Node; container: Nod
 };
 
 export const focusParagraph = ({paragraph}: {paragraph: Node | undefined}) => {
-  if (!NodeUtils.isTextNode(paragraph)) {
+  if (!isTextNode(paragraph)) {
     (paragraph as HTMLElement).focus();
   }
 

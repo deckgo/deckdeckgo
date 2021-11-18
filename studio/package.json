@@ -25,9 +25,10 @@
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/core": "^9.0.0",
-    "@deckdeckgo/deck-utils": "^4.1.1",
+    "@deckdeckgo/deck-utils": "file:../utils/deck",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.1",
+    "@deckdeckgo/editor": "file:../utils/editor",
     "@deckdeckgo/highlight-code": "^3.4.2",
     "@deckdeckgo/inline-editor": "^4.1.1",
     "@deckdeckgo/laser-pointer": "^1.1.0",
@@ -61,7 +62,6 @@
     "web-social-share": "^7.2.0"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "file:../utils/editor",
     "@deckdeckgo/types": "^2.0.1",
     "@rollup/plugin-replace": "^3.0.0",
     "@stencil/core": "^2.9.0",

@@ -14,10 +14,13 @@ import {
   SlideTemplate,
   Deck,
   DeckAttributes,
-  DeckData
+  DeckData,
+  nodeIndex,
+  cleanNode,
+  isElementNode
 } from '@deckdeckgo/editor';
 
-import {cleanContent, isSlide} from '@deckdeckgo/deck-utils';
+import {isSlide} from '@deckdeckgo/deck-utils';
 
 import editorStore from '../../../stores/editor.store';
 import errorStore from '../../../stores/error.store';
@@ -29,7 +32,6 @@ import {Constants} from '../../../types/core/constants';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
-import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
@@ -238,8 +240,8 @@ export class DeckEvents {
     return new Promise<Slide>(async (resolve) => {
       const slideData: SlideData = this.initSlideData(slide);
 
-      const content: string = await this.cleanSlideContent(slide);
-      if (content && content.length > 0) {
+      const content: string | null = this.cleanSlide(slide);
+      if (content?.length > 0) {
         slideData.content = content;
       }
 
@@ -296,7 +298,7 @@ export class DeckEvents {
           deck.data.slides = [];
         }
 
-        const slideIndex: number = NodeUtils.nodeIndex(slideElement);
+        const slideIndex: number = nodeIndex(slideElement);
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);
@@ -331,10 +333,9 @@ export class DeckEvents {
         // @ts-ignore
         currentDeck.data.attributes = attributes && Object.keys(attributes).length > 0 ? attributes : null;
 
-        const slotsPromises: Promise<string>[] = ['background', 'header', 'footer'].map((slotName: 'background' | 'header' | 'footer') => {
-          return this.getDeckSlot(deck, slotName);
-        });
-        const [background, header, footer] = await Promise.all(slotsPromises);
+        const [background, header, footer]: (string | null)[] = ['background', 'header', 'footer'].map(
+          (slotName: 'background' | 'header' | 'footer') => this.getDeckSlot(deck, slotName)
+        );
 
         // @ts-ignore
         currentDeck.data.background = background && background !== undefined && background !== '' ? background : null;
@@ -454,8 +455,8 @@ export class DeckEvents {
           data: this.initSlideData(slide)
         };
 
-        const content: string = await this.cleanSlideContent(slide);
-        if (content && content.length > 0) {
+        const content: string | null = this.cleanSlide(slide);
+        if (content?.length > 0) {
           slideUpdate.data.content = content;
         } else {
           // @ts-ignore
@@ -785,37 +786,37 @@ export class DeckEvents {
     return attributes;
   }
 
-  private async getDeckSlot(deck: HTMLElement, slotName: 'background' | 'header' | 'footer'): Promise<string | null> {
+  private getDeckSlot(deck: HTMLElement, slotName: 'background' | 'header' | 'footer'): string | null {
     const slotElement: HTMLElement = deck.querySelector(`:scope > [slot='${slotName}']`);
 
     if (!slotElement) {
       return null;
     }
 
-    return cleanContent(slotElement.innerHTML);
-  }
+    const node: Node | null = cleanNode({node: slotElement});
 
-  private async cleanSlideContent(slide: HTMLElement): Promise<string> {
-    const content: string = await this.filterSlideContentSlots(slide);
-
-    if (!content || content.length <= 0) {
-      return content;
+    if (!node || !isElementNode(node)) {
+      return null;
     }
 
-    let result: string = await cleanContent(content);
+    return (node as HTMLElement).innerHTML;
+  }
 
-    result = await this.cleanSlideCustomSlots(slide, result, 'background');
-    result = await this.cleanSlideCustomSlots(slide, result, 'header');
-    result = await this.cleanSlideCustomSlots(slide, result, 'footer');
+  private cleanSlide(slide: HTMLElement): string | null {
+    let result: string | null = this.cleanSlideContent(slide);
+
+    if (!result) {
+      return null;
+    }
+
+    result = this.cleanSlideCustomSlots(slide, result, 'background');
+    result = this.cleanSlideCustomSlots(slide, result, 'header');
+    result = this.cleanSlideCustomSlots(slide, result, 'footer');
 
     return result;
   }
 
-  private async cleanSlideCustomSlots(
-    slide: HTMLElement,
-    content: string,
-    customAttribute: 'background' | 'header' | 'footer'
-  ): Promise<string> {
+  private cleanSlideCustomSlots(slide: HTMLElement, content: string, customAttribute: 'background' | 'header' | 'footer'): string {
     if (!slide.hasAttribute(`custom-${customAttribute}`)) {
       const regex: RegExp = new RegExp(`<div slot="${customAttribute}"(.*?)<\/div>`, 'g');
       content = content.replace(regex, '');
@@ -824,17 +825,13 @@ export class DeckEvents {
     return content;
   }
 
-  private async filterSlideContentSlots(slide: HTMLElement): Promise<string | null> {
-    if (!slide || !document) {
-      return null;
-    }
-
-    const div = document.createElement('div');
+  private cleanSlideContent(slide: HTMLElement): string | null {
+    const div: HTMLDivElement = document.createElement('div');
 
     const elements: HTMLElement[] = Array.prototype.slice.call(slide.childNodes);
     elements.forEach((e: HTMLElement) => {
-      if (e.nodeName && e.nodeType === 1 && e.hasAttribute('slot')) {
-        div.appendChild(e.cloneNode(true));
+      if (isElementNode(e) && e.hasAttribute('slot')) {
+        div.appendChild(cleanNode({node: e}));
       }
     });
 

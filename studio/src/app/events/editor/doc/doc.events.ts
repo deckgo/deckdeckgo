@@ -1,5 +1,4 @@
-import {Doc, DocData, now, Paragraph, ParagraphData} from '@deckdeckgo/editor';
-import {cleanContent} from '@deckdeckgo/deck-utils';
+import {Doc, DocData, now, Paragraph, ParagraphData, nodeIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
 
 import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
@@ -7,7 +6,6 @@ import editorStore from '../../../stores/editor.store';
 import authStore from '../../../stores/auth.store';
 
 import {findParagraph, isParagraph} from '../../../utils/editor/paragraph.utils';
-import {NodeUtils} from '../../../utils/editor/node.utils';
 
 import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/doc/doc.offline.provider';
 import {
@@ -87,7 +85,7 @@ export class DocEvents {
   private onCustomEventChange = async ({detail}: CustomEvent<HTMLElement>) => {
     const paragraph: Node | undefined = findParagraph({element: detail, container: this.containerRef});
 
-    if (!paragraph || NodeUtils.isTextNode(paragraph)) {
+    if (!paragraph || isTextNode(paragraph)) {
       return;
     }
 
@@ -144,7 +142,7 @@ export class DocEvents {
         nodeName: element.nodeName.toLowerCase()
       };
 
-      const content: string[] = await Promise.all(this.toParagraphContent(element));
+      const content: string[] = this.toParagraphContent(element);
       if (content && content.length > 0) {
         paragraphData.children = content;
       }
@@ -178,7 +176,7 @@ export class DocEvents {
           doc.data.paragraphs = [];
         }
 
-        const index: number = NodeUtils.nodeIndex(paragraphElement);
+        const index: number = nodeIndex(paragraphElement);
         doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
@@ -286,11 +284,7 @@ export class DocEvents {
       const addedNodesMutations: MutationRecord[] = mutations.filter(({addedNodes}: MutationRecord) => {
         const node: Node = addedNodes[0];
 
-        return (
-          !isParagraph({element: node, container: this.containerRef}) &&
-          !NodeUtils.isTextNode(node) &&
-          node?.nodeName.toLowerCase() !== 'br'
-        );
+        return !isParagraph({element: node, container: this.containerRef}) && !isTextNode(node) && node?.nodeName.toLowerCase() !== 'br';
       });
 
       await this.updateParagraphs(addedNodesMutations);
@@ -379,7 +373,8 @@ export class DocEvents {
       }
     };
 
-    const content: string[] = await Promise.all(this.toParagraphContent(paragraph));
+    const content: string[] = this.toParagraphContent(paragraph);
+
     if (content && content.length > 0) {
       paragraphUpdate.data.children = content;
     } else {
@@ -389,14 +384,18 @@ export class DocEvents {
     await updateOfflineParagraph({docId, paragraph: paragraphUpdate});
   }
 
-  private toParagraphContent(paragraph: HTMLElement): Promise<string>[] {
-    return Array.from(paragraph.childNodes).reduce((acc: Promise<string>[], node: Node) => {
-      if (NodeUtils.isTextNode(node)) {
-        acc.push(Promise.resolve(node.nodeValue));
+  private toParagraphContent(paragraph: HTMLElement): string[] {
+    return Array.from(paragraph.childNodes).reduce((acc: string[], node: Node) => {
+      if (isTextNode(node)) {
+        acc.push(node.nodeValue);
       }
 
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        acc.push(cleanContent((node as HTMLElement).outerHTML));
+      if (isElementNode(node)) {
+        const cleanedNode: Node | null = cleanNode({node});
+
+        if (cleanedNode) {
+          acc.push((cleanedNode as HTMLElement).outerHTML);
+        }
       }
 
       return acc;
