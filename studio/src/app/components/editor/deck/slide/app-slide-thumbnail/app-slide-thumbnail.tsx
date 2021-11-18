@@ -1,7 +1,7 @@
 import {Component, h, Host, Element, Prop} from '@stencil/core';
 
-import {cleanContent} from '@deckdeckgo/deck-utils';
 import {debounce} from '@deckdeckgo/utils';
+import {cleanNode} from '@deckdeckgo/editor';
 
 @Component({
   tag: 'app-slide-thumbnail',
@@ -61,9 +61,13 @@ export class AppSlideThumbnail {
       return;
     }
 
-    const content: string = await cleanContent(this.slide.outerHTML);
+    const node: Node | null = cleanNode({node: this.slide});
 
-    this.deckPreviewRef.innerHTML = content;
+    if (!node) {
+      return;
+    }
+
+    this.deckPreviewRef.innerHTML = (node as HTMLElement).outerHTML;
 
     await Promise.all([this.lazyLoadImages(), this.lazyLoadCharts()]);
   }

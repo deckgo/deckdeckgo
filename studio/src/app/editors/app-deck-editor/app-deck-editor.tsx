@@ -13,16 +13,13 @@ import authStore from '../../stores/auth.store';
 import i18n from '../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
-
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
-
-import {SlideTemplate} from '@deckdeckgo/editor';
+import {SlideTemplate, nodeIndex} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 import {getEdit} from '../../utils/editor/editor.utils';
 import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
-import {NodeUtils} from '../../utils/editor/node.utils';
 
 import {DeckEvents} from '../../events/editor/deck/deck.events';
 import {RemoteEvents} from '../../events/editor/remote/remote.events';
@@ -364,7 +361,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   @Listen('slideDelete', {target: 'document'})
   async deleteSlide({detail: deletedSlide}: CustomEvent<HTMLElement>) {
-    const slideIndex: number = NodeUtils.nodeIndex(deletedSlide);
+    const slideIndex: number = nodeIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: JSX.IntrinsicElements, index: number) => slideIndex !== index)];
 

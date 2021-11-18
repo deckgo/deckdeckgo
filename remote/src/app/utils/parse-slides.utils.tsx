@@ -3,8 +3,7 @@ import {h, JSX} from '@stencil/core';
 import {v4 as uuid} from 'uuid';
 
 import {DeckdeckgoDeckDefinition, DeckdeckgoSlideDefinition, DeckdeckgoAttributeDefinition} from '@deckdeckgo/types';
-
-import {cleanContent} from '@deckdeckgo/deck-utils';
+import {cleanNode} from '@deckdeckgo/editor';
 
 import {ParseElementsUtils} from './parse-elements.utils';
 import {ParseAttributesUtils} from './parse-attributes.utils';
@@ -67,7 +66,17 @@ export class ParseSlidesUtils {
         return;
       }
 
-      let result: string = await cleanContent(slide.content);
+      const div: HTMLDivElement = document.createElement('div');
+      div.innerHTML = slide.content;
+
+      const cleanDiv: HTMLDivElement = document.createElement('div');
+
+      const elements: HTMLElement[] = Array.prototype.slice.call(div.childNodes);
+      elements.forEach((e: HTMLElement) => {
+        cleanDiv.appendChild(cleanNode({node: e}));
+      });
+
+      let result: string = div.innerHTML;
 
       const customBackground: boolean = await this.hasCustomBackground(slide);
 
