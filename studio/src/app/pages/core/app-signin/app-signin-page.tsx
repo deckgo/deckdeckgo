@@ -24,7 +24,7 @@ export class AppSigninPage {
   }
 
   private async initSignedIn() {
-    this.signin = authStore.state.authUser === undefined;
+    this.signin = authStore.state.authUser === null;
   }
 
   disconnectedCallback() {
