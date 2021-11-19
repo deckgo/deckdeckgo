@@ -52,7 +52,7 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 
   const template: string = await htmlTemplate();
 
-  let updatedTemplate: string = Object.entries<string>(deckPublishData).reduce((acc: string, [key, value]: [string, string]) => {
+  let updatedTemplate: string = Object.entries(deckPublishData).reduce((acc: string, [key, value]: [string, string]) => {
     acc.replaceAll(`{{DECKDECKGO_${key.toUpperCase()}}}`, value || '');
     acc.replaceAll(`<!-- DECKDECKGO_${key.toUpperCase()} -->`, value || '');
     return acc;
@@ -61,7 +61,7 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
   const {attributes, slides} = deckPublishData;
 
   const attr: string = attributes
-    ? Object.entries<string>(deckPublishData).reduce((acc: string, [key, value]: [string, string]) => `${acc}; ${key}: ${value}`, '')
+    ? Object.entries(deckPublishData).reduce((acc: string, [key, value]: [string, string]) => `${acc}; ${key}: ${value}`, '')
     : undefined;
 
   updatedTemplate = updatedTemplate.replace(
