@@ -33,5 +33,6 @@ export * from './utils/date.utils';
 export * from './utils/doc.utils';
 export * from './utils/deck.utils';
 export * from './utils/node.utils';
+export * from './utils/publish.utils';
 export * from './utils/script.utils';
 export * from './utils/fonts.utils';

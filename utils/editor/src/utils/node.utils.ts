@@ -1,10 +1,10 @@
-export const cleanNode = ({node}: {node: Node}): Node | null => {
+export const cleanNode = ({node, deep = true}: {node: Node; deep?: boolean}): Node | null => {
   if (isTextNode(node)) {
     return node;
   }
 
   if (isElementNode(node)) {
-    const clone: HTMLElement = node.cloneNode(true) as HTMLElement;
+    const clone: HTMLElement = node.cloneNode(deep) as HTMLElement;
     clone.removeAttribute('contenteditable');
     clone.removeAttribute('editable');
     clone.removeAttribute('spellcheck');
