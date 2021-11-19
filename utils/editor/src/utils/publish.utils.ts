@@ -4,7 +4,7 @@ import {deckSelector} from './deck.utils';
 import {getGoogleFontUrl, GoogleFont, googleFonts} from './fonts.utils';
 import {cleanNode, isElementNode} from './node.utils';
 
-interface DeckPublishData {
+export interface DeckPublishData {
   title: string;
   description: string;
   author: string;
