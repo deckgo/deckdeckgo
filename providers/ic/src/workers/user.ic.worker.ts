@@ -32,7 +32,7 @@ export const initUserWorker = async ({
   console.log('User IC about to GET');
   const t0 = performance.now();
 
-  const user: User | undefined = await getData<User, UserData>({key: `/user`});
+  const user: User | undefined = await getData<User, UserData>({key: `/user`, actor});
 
   const t1 = performance.now();
   console.log('User IC GET done', t1 - t0, user);

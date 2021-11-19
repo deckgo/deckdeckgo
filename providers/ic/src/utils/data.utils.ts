@@ -50,16 +50,10 @@ export const deleteData = async ({key, actor}: {key: string; actor?: DataBucketA
     return;
   }
 
-  const identity: Identity | undefined = getIdentity();
-
-  if (!identity) {
-    return;
-  }
-
   console.log('Data IC about to delete data and its slides');
   const t0 = performance.now();
 
-  const dataActor: DataBucketActor = actor || (await getDataActor({identity}));
+  const dataActor: DataBucketActor = actor || (await getDataActor());
 
   await dataActor.del(key);
 
@@ -67,19 +61,12 @@ export const deleteData = async ({key, actor}: {key: string; actor?: DataBucketA
   console.log('Data IC delete', t1 - t0);
 };
 
-export const getData = <T, D>({key}: {key: string}): Promise<T> => {
+export const getData = <T, D>({key, actor}: {key: string; actor?: DataBucketActor}): Promise<T> => {
   return new Promise<T>(async (resolve, reject) => {
-    const identity: Identity | undefined = getIdentity();
-
-    if (!identity) {
-      reject('No internet identity.');
-      return;
-    }
-
     try {
-      const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
+      const dataActor: DataBucketActor = actor || (await getDataActor());
 
-      const entry: Data = await actor.get(key);
+      const entry: Data = await dataActor.get(key);
 
       const data: D = await fromArray<D>(entry.data);
 
@@ -109,18 +96,11 @@ export const setData = <T, D>({
   actor?: DataBucketActor;
 }): Promise<T> => {
   return new Promise<T>(async (resolve, reject) => {
-    const identity: Identity | undefined = getIdentity();
-
-    if (!identity) {
-      reject('No internet identity.');
-      return;
-    }
-
     try {
       console.log(`Data IC (${key}) about to SET`);
       const t0 = performance.now();
 
-      const dataActor: DataBucketActor = actor || (await getDataActor({identity}));
+      const dataActor: DataBucketActor = actor || (await getDataActor());
 
       const now: Date = new Date();
 
@@ -152,7 +132,13 @@ export const setData = <T, D>({
   });
 };
 
-const getDataActor = async ({identity}: {identity: Identity | undefined}): Promise<DataBucketActor> => {
+const getDataActor = async (): Promise<DataBucketActor> => {
+  const identity: Identity | undefined = getIdentity();
+
+  if (!identity) {
+    throw new Error('No internet identity.');
+  }
+
   const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
   return actor;
 };
