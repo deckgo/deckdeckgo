@@ -8,4 +8,6 @@ service : {
   getStorage: () -> (opt BucketId) query;
   initData: () -> (BucketId);
   initStorage: () -> (BucketId);
+  installCodeData: (blob) -> ();
+  installCodeStorage: (blob) -> ();
 }

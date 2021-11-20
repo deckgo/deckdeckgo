@@ -84,6 +84,12 @@ module {
             };
         };
 
+        public func installCode(wasmModule: Blob): async() {
+            for ((key: UserId, value: CanisterTypes.Bucket<T>) in buckets.entries()) {
+                await canisterUtils.installCode(value.bucketId, wasmModule);
+            };
+        };
+
         public func preupgrade(): HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> {
             return buckets;
         };

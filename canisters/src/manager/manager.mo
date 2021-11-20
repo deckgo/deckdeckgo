@@ -93,6 +93,12 @@ actor Manager {
         return await delBucket<DataBucket>(user, dataStore);
     };
 
+    // TODO: secure caller = david
+    // TODO: performance
+    public func installCodeData(wasmModule: Blob): async() {
+        await dataStore.installCode(wasmModule);
+    };
+
     /**
      * Storages
      */
@@ -151,6 +157,12 @@ actor Manager {
 
     public func deleteStorageAdmin(user: Principal) : async (Bool) {
         return await delBucket<StorageBucket>(user, storagesStore);
+    };
+
+    // TODO: secure caller = david
+    // TODO: performance
+    public func installCodeStorage(wasmModule: Blob): async() {
+        await storagesStore.installCode(wasmModule);
     };
 
     /**

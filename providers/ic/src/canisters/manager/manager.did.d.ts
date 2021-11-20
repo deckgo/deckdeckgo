@@ -9,4 +9,6 @@ export interface _SERVICE {
   getStorage: () => Promise<[] | [BucketId]>;
   initData: () => Promise<BucketId>;
   initStorage: () => Promise<BucketId>;
+  installCodeData: (arg_0: Array<number>) => Promise<undefined>;
+  installCodeStorage: (arg_0: Array<number>) => Promise<undefined>;
 }

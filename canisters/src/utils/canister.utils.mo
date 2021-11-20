@@ -33,7 +33,16 @@ module {
                 memory_allocation = null;
                 compute_allocation = null;
             }}));
-        }
+        };
+
+        public func installCode(canisterId: Principal, wasmModule: Blob): async() {
+            await ic.install_code({
+                arg = "";
+                wasm_module = wasmModule;
+                mode = #upgrade;
+                canister_id = canisterId;
+            });
+        };
 
     }
 
