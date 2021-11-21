@@ -42,6 +42,10 @@ const copyFile = async ({srcPath, destPath}) => {
     return;
   }
 
+  if (extname(srcPath) === '.mjs') {
+    return;
+  }
+
   const buffer = readFileSync(srcPath);
   const config = await prettier.resolveConfig('./prettierrc');
   const output = prettier.format(buffer.toString('utf-8'), {parser: 'babel', ...config});
@@ -51,21 +55,18 @@ const copyFile = async ({srcPath, destPath}) => {
 
 const copyAdminManagerMjs = ({src}) => {
   const buffer = readFileSync(`${src}manager/manager.did.js`);
-  writeFileSync('./canisters/scripts/ic.manager.did.mjs', buffer.toString('utf-8'));
-};
-
-const copy = async ({src}) => {
-  await copyTypes({src});
-  copyAdminManagerMjs({src});
+  writeFileSync(`${src}manager/manager.did.mjs`, buffer.toString('utf-8'));
 };
 
 (async () => {
   try {
     if (existsSync('.dfx/local/canisters/')) {
-      await copy({src: `.dfx/local/canisters/`});
+      await copyTypes({src: `.dfx/local/canisters/`});
     } else if (existsSync('.dfx/ic/canisters/')) {
-      await copy({src: `.dfx/ic/canisters/`});
+      await copyTypes({src: `.dfx/ic/canisters/`});
     }
+
+    copyAdminManagerMjs({src: '.dfx/local/canisters/'});
 
     console.log(`Internet Computer types declarations generated!`);
   } catch (err) {

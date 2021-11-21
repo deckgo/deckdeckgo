@@ -13,7 +13,7 @@ const {Secp256k1KeyIdentity} = pkgIdentity;
 import pkgAgent from '@dfinity/agent';
 const {HttpAgent, Actor} = pkgAgent;
 
-import {idlFactory} from './ic.manager.did.mjs';
+import {idlFactory} from '../../.dfx/local/canisters/manager/manager.did.mjs';
 
 const managerPrincipal = () => {
   const buffer = readFileSync('./canister_ids.json');
@@ -43,7 +43,8 @@ const initIdentity = () => {
       canisterId
     });
 
-    console.log(await actor.getData());
+    const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
+    await actor.installCodeData([...new Uint8Array(buffer)]);
   } catch (e) {
     console.error(e);
   }
