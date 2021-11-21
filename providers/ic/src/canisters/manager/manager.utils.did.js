@@ -9,8 +9,7 @@ export const idlFactory = ({IDL}) => {
     getStorage: IDL.Func([], [IDL.Opt(BucketId)], ['query']),
     initData: IDL.Func([], [BucketId], []),
     initStorage: IDL.Func([], [BucketId], []),
-    installCodeData: IDL.Func([IDL.Vec(IDL.Nat8)], [], []),
-    installCodeStorage: IDL.Func([IDL.Vec(IDL.Nat8)], [], [])
+    installCode: IDL.Func([IDL.Vec(IDL.Nat8), IDL.Text], [], [])
   });
 };
 export const init = ({IDL}) => {

@@ -44,7 +44,7 @@ const initIdentity = () => {
     });
 
     const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
-    await actor.installCodeData([...new Uint8Array(buffer)]);
+    await actor.installCode([...new Uint8Array(buffer)], 'data');
   } catch (e) {
     console.error(e);
   }

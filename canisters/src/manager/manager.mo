@@ -1,20 +1,16 @@
-import Iter "mo:base/Iter";
-import HashMap "mo:base/HashMap";
-import Principal "mo:base/Principal";
-import Option "mo:base/Option";
-import Cycles "mo:base/ExperimentalCycles";
-
-import Error "mo:base/Error";
-
-import Types "../types/types";
-import CanisterTypes "../types/canister.types";
-
 import BucketsStore "./buckets.store";
-
-import DataBucket "../data/data";
-import StorageBucket "../storage/storage";
-
+import CanisterTypes "../types/canister.types";
 import CanisterUtils "../utils/canister.utils";
+import Cycles "mo:base/ExperimentalCycles";
+import DataBucket "../data/data";
+import Error "mo:base/Error";
+import HashMap "mo:base/HashMap";
+import Iter "mo:base/Iter";
+import Option "mo:base/Option";
+import Principal "mo:base/Principal";
+import StorageBucket "../storage/storage";
+import Text "mo:base/Text";
+import Types "../types/types";
 
 actor Manager {
     type UserId = Types.UserId;
@@ -93,12 +89,6 @@ actor Manager {
         return await delBucket<DataBucket>(user, dataStore);
     };
 
-    // TODO: secure caller = david
-    // TODO: performance
-    public func installCodeData(wasmModule: Blob): async() {
-        await dataStore.installCode(wasmModule);
-    };
-
     /**
      * Storages
      */
@@ -159,12 +149,6 @@ actor Manager {
         return await delBucket<StorageBucket>(user, storagesStore);
     };
 
-    // TODO: secure caller = david
-    // TODO: performance
-    public func installCodeStorage(wasmModule: Blob): async() {
-        await storagesStore.installCode(wasmModule);
-    };
-
     /**
      * Buckets
      */
@@ -195,6 +179,28 @@ actor Manager {
                 let exists: Bool = Option.isSome(bucketId);
                 return exists;
             };
+        };
+    };
+
+    /**
+     * Admin
+     */
+
+    // TODO: protect caller = david
+    // TODO: performance
+    public shared({ caller }) func installCode(wasmModule: Blob, store: Text): async() {
+        // let self: Principal = Principal.fromActor(Manager);
+        // 
+        // if (Utils.isPrincipalNotEqual(caller, self)) {
+        //    throw Error.reject("User does not have the permission to install code in the canisters of the users.");
+        // };
+
+        if (Text.equal(store, "data")) {
+            await dataStore.installCode(wasmModule);
+        };
+
+        if (Text.equal(store, "storage")) {
+            await storagesStore.installCode(wasmModule);
         };
     };
 
