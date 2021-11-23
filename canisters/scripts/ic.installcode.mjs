@@ -43,8 +43,14 @@ const initIdentity = () => {
       canisterId
     });
 
+    const list = await actor.list('data');
+
+    const {owner, bucketId} = list[0];
+
     const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
-    await actor.installCode([...new Uint8Array(buffer)], 'data');
+
+    // TODO: IDL error: missing magic bytes
+    await actor.installCode(bucketId, owner, [...new Uint8Array(buffer)]);
   } catch (e) {
     console.error(e);
   }

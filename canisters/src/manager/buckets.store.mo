@@ -84,10 +84,15 @@ module {
             };
         };
 
-        public func installCode(wasmModule: Blob): async() {
-            for ((key: UserId, value: CanisterTypes.Bucket<T>) in buckets.entries()) {
-                await canisterUtils.installCode(value.bucketId, wasmModule);
-            };
+        public func entries(): [{bucketId: BucketId; owner: UserId;}] {
+            let entries: Iter.Iter<(UserId, CanisterTypes.Bucket<T>)> = buckets.entries();
+            let values: Iter.Iter<{bucketId: BucketId; owner: UserId;}> = Iter.map(entries, func ((key: UserId, value: CanisterTypes.Bucket<T>)) : {bucketId: BucketId; owner: UserId;} { 
+                {
+                    bucketId = value.bucketId;
+                    owner = value.owner;
+                };
+             });
+            return Iter.toArray(values);
         };
 
         public func preupgrade(): HashMap.HashMap<UserId, CanisterTypes.Bucket<T>> {

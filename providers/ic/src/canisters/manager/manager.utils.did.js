@@ -1,5 +1,6 @@
 export const idlFactory = ({IDL}) => {
   const BucketId = IDL.Principal;
+  const UserId = IDL.Principal;
   return IDL.Service({
     delData: IDL.Func([], [IDL.Bool], []),
     delStorage: IDL.Func([], [IDL.Bool], []),
@@ -9,7 +10,8 @@ export const idlFactory = ({IDL}) => {
     getStorage: IDL.Func([], [IDL.Opt(BucketId)], ['query']),
     initData: IDL.Func([], [BucketId], []),
     initStorage: IDL.Func([], [BucketId], []),
-    installCode: IDL.Func([IDL.Vec(IDL.Nat8), IDL.Text], [], [])
+    installCode: IDL.Func([IDL.Principal, UserId, IDL.Vec(IDL.Nat8)], [], []),
+    list: IDL.Func([IDL.Text], [IDL.Vec(IDL.Record({owner: UserId, bucketId: BucketId}))], ['query'])
   });
 };
 export const init = ({IDL}) => {

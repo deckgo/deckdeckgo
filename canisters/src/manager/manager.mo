@@ -187,21 +187,21 @@ actor Manager {
      */
 
     // TODO: protect caller = david
-    // TODO: performance
-    public shared({ caller }) func installCode(wasmModule: Blob, store: Text): async() {
-        // let self: Principal = Principal.fromActor(Manager);
-        // 
-        // if (Utils.isPrincipalNotEqual(caller, self)) {
-        //    throw Error.reject("User does not have the permission to install code in the canisters of the users.");
-        // };
-
+    public shared query({ caller }) func list(store: Text) : async [{bucketId: BucketId; owner: UserId;}] {
         if (Text.equal(store, "data")) {
-            await dataStore.installCode(wasmModule);
+            return dataStore.entries();
         };
 
         if (Text.equal(store, "storage")) {
-            await storagesStore.installCode(wasmModule);
+            return storagesStore.entries();
         };
+
+        throw Error.reject("Type of store not supported");
+    };
+
+    // TODO: protect caller = david
+    public shared({ caller }) func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
+        await canisterUtils.installCode(canisterId, owner, wasmModule);
     };
 
     /**
