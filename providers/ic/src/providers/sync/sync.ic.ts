@@ -52,7 +52,7 @@ export const sync: Sync = async ({
     {
       internetIdentity,
       syncData,
-      host: `${window.location}`
+      host: `https://ic0.app`
     },
     syncWindow
   );
