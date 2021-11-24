@@ -5,7 +5,7 @@ import {_SERVICE as DataBucketActor, Data} from '../canisters/data/data.did';
 
 import {getIdentity} from '../providers/auth/auth.ic';
 
-import {fromArray, fromTimestamp, toArray, toNullable, toTimestamp} from './did.utils';
+import {fromArray, fromNullable, fromTimestamp, toArray, toNullable, toTimestamp} from './did.utils';
 import {getDataBucket} from './manager.utils';
 
 export const entries = async <T, D>({filter}: {filter?: string}): Promise<T[]> => {
@@ -61,12 +61,17 @@ export const deleteData = async ({key, actor}: {key: string; actor?: DataBucketA
   console.log('Data IC delete', t1 - t0);
 };
 
-export const getData = <T, D>({key, actor}: {key: string; actor?: DataBucketActor}): Promise<T> => {
-  return new Promise<T>(async (resolve, reject) => {
+export const getData = <T, D>({key, actor}: {key: string; actor?: DataBucketActor}): Promise<T | undefined> => {
+  return new Promise<T | undefined>(async (resolve, reject) => {
     try {
       const dataActor: DataBucketActor = actor || (await getDataActor());
 
-      const entry: Data = await dataActor.get(key);
+      const entry: Data | undefined = fromNullable<Data>(await dataActor.get(key));
+
+      if (!entry) {
+        resolve(undefined);
+        return;
+      }
 
       const data: D = await fromArray<D>(entry.data);
 

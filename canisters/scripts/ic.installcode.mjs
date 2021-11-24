@@ -47,6 +47,10 @@ const initIdentity = () => {
 
     console.log({list});
 
+    if (list.length <= 0) {
+      return;
+    }
+
     const {owner, bucketId} = list[0];
 
     const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);

@@ -7,7 +7,7 @@ export interface Data {
 }
 export interface DataBucket {
   del: (arg_0: string) => Promise<undefined>;
-  get: (arg_0: string) => Promise<Data>;
+  get: (arg_0: string) => Promise<[] | [Data]>;
   list: (arg_0: [] | [string]) => Promise<Array<Data>>;
   set: (arg_0: string, arg_1: Data) => Promise<undefined>;
   transferCycles: () => Promise<undefined>;
