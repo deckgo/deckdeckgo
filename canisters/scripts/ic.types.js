@@ -42,11 +42,20 @@ const copyFile = async ({srcPath, destPath}) => {
     return;
   }
 
+  if (extname(srcPath) === '.mjs') {
+    return;
+  }
+
   const buffer = readFileSync(srcPath);
   const config = await prettier.resolveConfig('./prettierrc');
   const output = prettier.format(buffer.toString('utf-8'), {parser: 'babel', ...config});
 
   writeFileSync(destPath.replace('.did.js', '.utils.did.js'), output);
+};
+
+const copyAdminManagerMjs = ({src}) => {
+  const buffer = readFileSync(`${src}manager/manager.did.js`);
+  writeFileSync(`${src}manager/manager.did.mjs`, buffer.toString('utf-8'));
 };
 
 (async () => {
@@ -56,6 +65,8 @@ const copyFile = async ({srcPath, destPath}) => {
     } else if (existsSync('.dfx/ic/canisters/')) {
       await copyTypes({src: `.dfx/ic/canisters/`});
     }
+
+    copyAdminManagerMjs({src: '.dfx/local/canisters/'});
 
     console.log(`Internet Computer types declarations generated!`);
   } catch (err) {

@@ -1,20 +1,16 @@
-import Iter "mo:base/Iter";
-import HashMap "mo:base/HashMap";
-import Principal "mo:base/Principal";
-import Option "mo:base/Option";
-import Cycles "mo:base/ExperimentalCycles";
-
-import Error "mo:base/Error";
-
-import Types "../types/types";
-import CanisterTypes "../types/canister.types";
-
 import BucketsStore "./buckets.store";
-
-import DataBucket "../data/data";
-import StorageBucket "../storage/storage";
-
+import CanisterTypes "../types/canister.types";
 import CanisterUtils "../utils/canister.utils";
+import Cycles "mo:base/ExperimentalCycles";
+import DataBucket "../data/data";
+import Error "mo:base/Error";
+import HashMap "mo:base/HashMap";
+import Iter "mo:base/Iter";
+import Option "mo:base/Option";
+import Principal "mo:base/Principal";
+import StorageBucket "../storage/storage";
+import Text "mo:base/Text";
+import Types "../types/types";
 
 actor Manager {
     type UserId = Types.UserId;
@@ -184,6 +180,28 @@ actor Manager {
                 return exists;
             };
         };
+    };
+
+    /**
+     * Admin
+     */
+
+    // TODO: protect caller = david
+    public shared query({ caller }) func list(store: Text) : async [{bucketId: BucketId; owner: UserId;}] {
+        if (Text.equal(store, "data")) {
+            return dataStore.entries();
+        };
+
+        if (Text.equal(store, "storage")) {
+            return storagesStore.entries();
+        };
+
+        throw Error.reject("Type of store not supported");
+    };
+
+    // TODO: protect caller = david
+    public shared({ caller }) func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
+        await canisterUtils.installCode(canisterId, owner, wasmModule);
     };
 
     /**

@@ -33,7 +33,19 @@ module {
                 memory_allocation = null;
                 compute_allocation = null;
             }}));
-        }
+        };
+
+        // TODO: does not work out
+        // Arg [68, 73, 68, 76, 0, 0] ?
+        // https://forum.dfinity.org/t/install-code-actor-class-leads-to-error-empty-input-and-too-few-arguments/8984
+        public func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
+            await ic.install_code({
+                arg = Principal.toBlob(owner);
+                wasm_module = wasmModule;
+                mode = #upgrade;
+                canister_id = canisterId;
+            });
+        };
 
     }
 
