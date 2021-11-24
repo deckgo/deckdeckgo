@@ -1,3 +1,4 @@
+type UserId = principal;
 type BucketId = principal;
 service : {
   delData: () -> (bool);
@@ -8,4 +9,9 @@ service : {
   getStorage: () -> (opt BucketId) query;
   initData: () -> (BucketId);
   initStorage: () -> (BucketId);
+  installCode: (principal, UserId, blob) -> ();
+  list: (text) -> (vec record {
+                         bucketId: BucketId;
+                         owner: UserId;
+                       }) query;
 }

@@ -5,6 +5,7 @@
   "description": "The web open source editor for presentations",
   "private": true,
   "scripts": {
+    "ic:install:data": "node canisters/scripts/ic.installcode.mjs",
     "ic:types": "node ./canisters/scripts/ic.types.js",
     "build": "npm run ic:types && cd studio && npm run build:ic"
   },
@@ -25,6 +26,7 @@
     "husky": "^7.0.2",
     "jest": "^27.1.1",
     "jest-cli": "^27.1.1",
+    "node-fetch": "^2.6.1",
     "prettier": "2.3.2",
     "pretty-quick": "^3.1.1",
     "puppeteer": "10.2.0",
