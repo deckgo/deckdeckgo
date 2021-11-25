@@ -128,7 +128,7 @@ export const setData = <T, D>({
       } as unknown as T;
 
       const t2 = performance.now();
-      console.log(`Data IC GET (${key}):`, await actor.get(key), performance.now() - t2);
+      console.log(`Data IC GET (${key}):`, await dataActor.get(key), performance.now() - t2);
 
       resolve(result);
     } catch (err) {
