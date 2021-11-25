@@ -180,7 +180,7 @@ export class AppNavigationActions {
   }
 
   private renderSignIn() {
-    if (authStore.state.loggedIn || !this.signIn) {
+    if (authStore.state.authUser !== null || !this.signIn) {
       return undefined;
     }
 
