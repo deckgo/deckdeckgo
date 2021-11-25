@@ -16,6 +16,7 @@ import {publish, publishUrl} from '../../../../../providers/publish/publish.prov
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
+import {firebase} from '../../../../../utils/core/environment.utils';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -54,6 +55,8 @@ export class AppPublishEdit {
   private pushToGitHub: boolean = true;
 
   @Event() private published: EventEmitter<string>;
+
+  private firebaseEnabled: boolean = firebase();
 
   private destroyDeckListener;
 
@@ -378,7 +381,7 @@ export class AppPublishEdit {
           <div class="ion-padding ion-text-center publish">{this.renderPublish(disable)}</div>
         </form>
 
-        <p class="small">{i18n.state.publish_edit.social_card}</p>
+        <p class="small">{this.firebaseEnabled && i18n.state.publish_edit.social_card}</p>
 
         {this.renderFailure()}
       </article>
