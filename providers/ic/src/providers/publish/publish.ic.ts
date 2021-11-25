@@ -11,42 +11,54 @@ import {setData} from '../../utils/data.utils';
 import {getStorageBucket} from '../../utils/manager.utils';
 import {upload} from '../../utils/storage.utils';
 
+interface StorageUpload {
+  actor: StorageBucketActor;
+  html: string;
+  filename: string;
+  pathname: string;
+}
+
 export const publish: Publish = async ({deck: deckSource}: {deck: Deck; config: Record<string, string>}): Promise<Deck> => {
   const {id, data} = deckSource;
 
-  // 1. Update deck meta information
-  const deck: Deck = await setData<Deck, DeckData>({key: `/decks/${id}`, id, data});
+  // 1. Init and fill HTML
+  const uploadData: StorageUpload = await initUpload({deck: deckSource});
 
-  // 2. Init and fill HTML
-  const uploadData: {actor: StorageBucketActor; html: string; filename: string} = await initUpload({deck});
+  // 2. Update deck published meta
+  const publishData: DeckData = updateDeckMetaData({data, uploadData});
 
-  // 5. Upload
+  // 3. Update deck meta information
+  const deck: Deck = await setData<Deck, DeckData>({key: `/decks/${id}`, id, data: publishData});
+
+  // 4. Upload
   await uploadFileIC(uploadData);
 
-  // 6. Tells the snapshot the process is over
+  // 5. Tells the snapshot the process is over
   emitDeckPublished(deck);
 
   return deck;
 };
 
-const initUpload = async ({deck}: {deck: Deck}): Promise<{actor: StorageBucketActor; html: string; filename: string}> => {
+const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
   const {html, deckPublishData}: {html: string; deckPublishData: DeckPublishData} = await initIndexHTML({deck});
 
-  // 3. Get actor
+  // 1. Get actor
   const identity: Identity | undefined = getIdentity();
   const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({identity});
 
-  // 4. Folder and filename
+  // 2. Folder and filename
   const folder: string = 'static';
   const filename: string = encodeURI(deckPublishData.title);
+  const url: string = `https://${bucket.toText()}.raw.ic0.app/${folder}/${filename}`;
 
-  // 4. Update URL
-  const indexHTML = html.replace('{{DECKDECKGO_URL}}', `https://${bucket.toText()}.raw.ic0.app/${folder}/${filename}`);
+  // 3. Update URL
+  const indexHTML = html.replace('{{DECKDECKGO_URL}}', url);
 
   return {
     html: indexHTML,
     actor,
-    filename
+    filename,
+    pathname: new URL(url).pathname
   };
 };
 
@@ -110,4 +122,21 @@ const emitDeckPublished = (deck: Deck) => {
 
   const $event: CustomEvent<Deck> = new CustomEvent('deckPublished', {detail: deployedDeck});
   document.dispatchEvent($event);
+};
+
+const updateDeckMetaData = ({data, uploadData}: {data: DeckData; uploadData: StorageUpload}): DeckData => {
+  const {pathname} = uploadData;
+
+  const now: Date = new Date();
+
+  return {
+    ...data,
+    meta: {
+      ...(data.meta || {title: data.name}),
+      pathname,
+      published: true,
+      published_at: now,
+      updated_at: now
+    }
+  };
 };
