@@ -64,14 +64,8 @@ export class AppUserMenu {
     return (
       <ion-list>
         <ion-item onClick={() => this.closePopover()}>
-          <ion-router-link href="/decks" routerDirection="forward">
-            <ion-label>{i18n.state.nav.dashboard}</ion-label>
-          </ion-router-link>
-        </ion-item>
-
-        <ion-item onClick={() => this.closePopover()}>
-          <ion-router-link href="/customization" routerDirection="forward">
-            <ion-label>{i18n.state.nav.customization}</ion-label>
+          <ion-router-link href="/profile" routerDirection="forward">
+            <ion-label>{i18n.state.nav.profile}</ion-label>
           </ion-router-link>
         </ion-item>
 
@@ -82,8 +76,8 @@ export class AppUserMenu {
         </ion-item>
 
         <ion-item onClick={() => this.closePopover()}>
-          <ion-router-link href="/profile" routerDirection="forward">
-            <ion-label>{i18n.state.nav.profile}</ion-label>
+          <ion-router-link href="/customization" routerDirection="forward">
+            <ion-label>{i18n.state.nav.customization}</ion-label>
           </ion-router-link>
         </ion-item>
 
