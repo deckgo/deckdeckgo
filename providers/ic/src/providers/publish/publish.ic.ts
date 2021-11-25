@@ -106,7 +106,7 @@ const htmlTemplate = async (): Promise<string> => {
 
 const uploadFileIC = async ({filename, html, actor}: {filename: string; html: string; actor: StorageBucketActor}): Promise<void> => {
   await upload({
-    data: new Blob([JSON.stringify(html)], {type: 'application/json; charset=utf-8'}),
+    data: new Blob([html], {type: 'text/html'}),
     filename,
     folder: 'p',
     storageBucket: actor
