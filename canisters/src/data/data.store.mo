@@ -5,7 +5,11 @@ import Array "mo:base/Array";
 
 import Result "mo:base/Result";
 
+import Filter "./data.filter";
+
 module {
+    type DataFilter = Filter.DataFilter;
+
     public class DataStore<T>() {
         private var data: HashMap.HashMap<Text, T> = HashMap.HashMap<Text, T>(10, Text.equal, Text.hash);
 
@@ -30,20 +34,21 @@ module {
             return entry;
         };
 
-        public func entries(filter: ?Text): [T] {
+        public func entries(filter: ?DataFilter): [(Text, T)] {
             let entries: Iter.Iter<(Text, T)> = data.entries();
 
             switch (filter) {
                 case null {
-                    let values: Iter.Iter<T> = Iter.map(entries, func ((key: Text, value: T)) : T { value });
-                    return Iter.toArray(values);
+                    return Iter.toArray(entries);
                 };
                 case (?filter) {
                     let keyValues: [(Text, T)] = Iter.toArray(entries);
 
-                    let values: [T] = Array.mapFilter<(Text, T), T>(keyValues, func ((key: Text, value: T)) : ?T {
-                        if (Text.startsWith(key, #text filter)) {
-                            return ?value;
+                    let {startsWith; notContains} = filter;
+
+                    let values: [(Text, T)] = Array.mapFilter<(Text, T), (Text, T)>(keyValues, func ((key: Text, value: T)) : ?(Text, T) {
+                        if (Filter.startsWith(key, startsWith) and not Filter.contains(key, notContains)) {
+                            return ?(key, value);
                         };
 
                         return null;

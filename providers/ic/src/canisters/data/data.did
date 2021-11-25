@@ -1,10 +1,18 @@
 type UserId = principal;
 type Time = int;
+type DataFilter = 
+ record {
+   notContains: opt text;
+   startsWith: opt text;
+ };
 type DataBucket = 
  service {
    del: (text) -> ();
    get: (text) -> (opt Data) query;
-   list: (opt text) -> (vec Data) query;
+   list: (opt DataFilter) -> (vec record {
+                                    text;
+                                    Data;
+                                  }) query;
    set: (text, Data) -> ();
    transferCycles: () -> ();
  };
