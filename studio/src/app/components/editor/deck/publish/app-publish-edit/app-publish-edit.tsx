@@ -11,9 +11,8 @@ import i18n from '../../../../../stores/i18n.store';
 
 import {Constants} from '../../../../../types/core/constants';
 
-import {publish} from '../../../../../providers/publish/publish.provider';
+import {publish, publishUrl} from '../../../../../providers/publish/publish.provider';
 
-import {getPublishedUrl} from '../../../../../utils/core/share.utils';
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
@@ -171,7 +170,7 @@ export class AppPublishEdit {
 
         // Just for display so the progress bar reaches 100% for the eyes
         setTimeout(async () => {
-          const publishedUrl: string = await getPublishedUrl(editorStore.state.deck);
+          const publishedUrl: string = await publishUrl(editorStore.state.deck);
           this.published.emit(publishedUrl);
         }, 200);
       },

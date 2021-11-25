@@ -4,7 +4,9 @@ import 'web-social-share';
 
 import shareStore from '../../../stores/share.store';
 
-import {getPublishedUrl, getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
+import {publishUrl} from '../../../providers/publish/publish.provider';
+
+import {getShareText, getShareTwitterText} from '../../../utils/core/share.utils';
 
 import {AppIcon} from '../app-icon/app-icon';
 
@@ -27,8 +29,8 @@ export class AppShareDeck {
   }
 
   private async shareMobile() {
-    const text: string = await getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
-    const publishedUrl: string = await getPublishedUrl(shareStore.state.share.deck);
+    const text: string = getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
+    const publishedUrl: string = await publishUrl(shareStore.state.share.deck);
 
     // @ts-ignore
     await navigator.share({
@@ -44,13 +46,13 @@ export class AppShareDeck {
       return;
     }
 
-    const text: string = await getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
-    const twitterText: string = await getShareTwitterText(
+    const text: string = getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
+    const twitterText: string = getShareTwitterText(
       shareStore.state.share.deck,
       shareStore.state.share.userName,
       shareStore.state.share.userSocial
     );
-    const publishedUrl: string = await getPublishedUrl(shareStore.state.share.deck);
+    const publishedUrl: string = await publishUrl(shareStore.state.share.deck);
 
     const shareOptions = {
       displayNames: true,

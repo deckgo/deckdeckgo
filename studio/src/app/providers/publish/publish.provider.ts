@@ -1,4 +1,4 @@
-import {Deck, DeckMetaAuthor, UserSocial, Publish} from '@deckdeckgo/editor';
+import {Deck, DeckMetaAuthor, UserSocial, Publish, PublishUrl} from '@deckdeckgo/editor';
 
 import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
@@ -43,6 +43,17 @@ export const publish = ({
       reject(err);
     }
   });
+};
+
+export const publishUrl = async (deck: Deck | null): Promise<string> => {
+  if (!cloud()) {
+    throw new Error('No publish url if offline.');
+  }
+
+  const {publishUrl}: {publishUrl: PublishUrl} = await cloudProvider<{publishUrl: PublishUrl}>();
+
+  const url: string = await publishUrl();
+  return `${url}${deck?.data?.meta?.pathname}`;
 };
 
 const publishDeck = async (deck: Deck): Promise<Deck> => {

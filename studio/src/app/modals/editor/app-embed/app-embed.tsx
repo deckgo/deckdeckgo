@@ -4,7 +4,7 @@ import editorStore from '../../../stores/editor.store';
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
-import {getPublishedUrl} from '../../../utils/core/share.utils';
+import {publishUrl} from '../../../providers/publish/publish.provider';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
@@ -21,7 +21,7 @@ export class AppEmbed {
   private embedCodeElement!: HTMLIonTextareaElement;
 
   async componentWillLoad() {
-    const url: string = await getPublishedUrl(editorStore.state.deck);
+    const url: string = await publishUrl(editorStore.state.deck);
     this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 

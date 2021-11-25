@@ -1,7 +1,7 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData, Publish, DeckPublishData, publishData} from '@deckdeckgo/editor';
+import {Deck, DeckData, Publish, PublishUrl, DeckPublishData, publishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../../canisters/storage/storage.did';
 
@@ -39,12 +39,16 @@ export const publish: Publish = async ({deck: deckSource}: {deck: Deck; config: 
   return deck;
 };
 
+export const publishUrl: PublishUrl = async () => {
+  const {bucket}: {bucket: Principal; actor: StorageBucketActor} = await getBucket();
+  return `https://${bucket.toText()}.raw.ic0.app`;
+};
+
 const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
   const {html, deckPublishData}: {html: string; deckPublishData: DeckPublishData} = await initIndexHTML({deck});
 
   // 1. Get actor
-  const identity: Identity | undefined = getIdentity();
-  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({identity});
+  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getBucket();
 
   // 2. Folder and filename
   const folder: string = 'static';
@@ -60,6 +64,11 @@ const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
     filename,
     pathname: new URL(url).pathname
   };
+};
+
+const getBucket = (): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
+  const identity: Identity | undefined = getIdentity();
+  return getStorageBucket({identity});
 };
 
 const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckPublishData: DeckPublishData}> => {
