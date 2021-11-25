@@ -76,21 +76,23 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 
   const template: string = await htmlTemplate();
 
-  let updatedTemplate: string = Object.entries(deckPublishData).reduce((acc: string, [key, value]: [string, string]) => {
-    acc.replaceAll(`{{DECKDECKGO_${key.toUpperCase()}}}`, value || '');
-    acc.replaceAll(`<!-- DECKDECKGO_${key.toUpperCase()} -->`, value || '');
-    return acc;
-  }, template);
+  let updatedTemplate: string = Object.entries(deckPublishData).reduce(
+    (acc: string, [key, value]: [string, string]) =>
+      acc
+        .replaceAll(`{{DECKDECKGO_${key.toUpperCase()}}}`, value || '')
+        .replaceAll(`<!-- DECKDECKGO_${key.toUpperCase()} -->`, value || ''),
+    template
+  );
 
   const {attributes, slides} = deckPublishData;
 
-  const attr: string = attributes
-    ? Object.entries(deckPublishData).reduce((acc: string, [key, value]: [string, string]) => `${acc}; ${key}: ${value}`, '')
+  const attr: string | undefined = attributes
+    ? Object.entries(attributes).reduce((acc: string, [key, value]: [string, string]) => `${acc}; ${key}: ${value}`, '')
     : undefined;
 
   updatedTemplate = updatedTemplate.replace(
     '<!-- DECKDECKGO_DECK -->',
-    `<deckgo-deck id="slider" embedded="true" ${attr || ''}>${slides.map((slide: string) => slide)}</deckgo-deck>`
+    `<deckgo-deck id="slider" embedded="true" ${attr || ''}>${slides.join('')}</deckgo-deck>`
   );
 
   return {
