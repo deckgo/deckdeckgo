@@ -32,9 +32,11 @@ import {Constants} from '../../../types/core/constants';
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';
 import {SlideUtils} from '../../../utils/editor/slide.utils';
+import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 
 import {DeckOfflineProvider} from '../../../providers/data/deck/deck.offline.provider';
 import {SlideOfflineProvider} from '../../../providers/data/slide/slide.offline.provider';
+import {publishUrl} from '../../../providers/publish/publish.provider';
 
 import {DeckAction} from '../../../types/editor/deck-action';
 
@@ -72,6 +74,8 @@ export class DeckEvents {
     this.mainRef.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
     this.mainRef.addEventListener('linkCreated', this.onCustomEventChange, false);
     this.mainRef.addEventListener('drrDidChange', this.onCustomEventChange, false);
+
+    this.mainRef.addEventListener('deckDidLoad', this.onDeckDidLoad, {once: true});
 
     if (!document) {
       return;
@@ -116,6 +120,11 @@ export class DeckEvents {
     if ($event && $event.target && $event.target instanceof HTMLElement) {
       await this.createSlide($event.target);
     }
+  };
+
+  private onDeckDidLoad = async () => {
+    const url: string = await publishUrl(editorStore.state.deck);
+    updateSlidesQRCode(url);
   };
 
   private onSlidesDidLoad = async () => {
@@ -658,11 +667,9 @@ export class DeckEvents {
 
     if (slide.hasAttribute('custom-qrcode')) {
       attributes.customQRCode = true;
-      attributes.content = (slide as any).content;
+      attributes.content = (slide as HTMLDeckgoSlideQrcodeElement).content;
     } else if (cleanFields) {
-      // @ts-ignore
       attributes.customQRCode = null;
-      // @ts-ignore
       attributes.content = null;
     }
 
