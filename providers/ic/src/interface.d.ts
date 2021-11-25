@@ -9,3 +9,5 @@ export * from './providers/data/slide.ic';
 export * from './providers/storage/storage.ic';
 
 export * from './providers/sync/sync.ic';
+
+export * from './providers/publish/publish.ic';

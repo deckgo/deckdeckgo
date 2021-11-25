@@ -23,6 +23,9 @@ export const publish: Publish = async ({deck: deckSource}: {deck: Deck; config: 
   // 5. Upload
   await uploadFileIC(uploadData);
 
+  // 6. Tells the snapshot the process is over
+  emitDeckPublished(deck);
+
   return deck;
 };
 
@@ -87,4 +90,24 @@ const uploadFileIC = async ({filename, html, actor}: {filename: string; html: st
     folder: 'static',
     storageBucket: actor
   });
+};
+
+const emitDeckPublished = (deck: Deck) => {
+  const {id, data} = deck;
+
+  const deployedDeck: Deck = {
+    id,
+    data: {
+      ...data,
+      deploy: {
+        api: {
+          status: 'successful',
+          updated_at: new Date()
+        }
+      }
+    }
+  };
+
+  const $event: CustomEvent<Deck> = new CustomEvent('deckPublished', {detail: deployedDeck});
+  document.dispatchEvent($event);
 };

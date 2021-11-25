@@ -4,7 +4,7 @@ import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
 import authStore from '../../stores/auth.store';
 
-import {firebase as firebaseEnabled} from '../../utils/core/environment.utils';
+import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
@@ -27,8 +27,8 @@ export const publish = ({
         return;
       }
 
-      if (!firebaseEnabled()) {
-        reject('Firebase is not enabled therefore publishing cannot be triggered');
+      if (!cloud()) {
+        reject('Publish is only available with a compatible cloud provider.');
         return;
       }
 

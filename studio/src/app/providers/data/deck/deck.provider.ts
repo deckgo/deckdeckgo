@@ -2,7 +2,7 @@ import {Deck, DeckEntries, DeleteDeck, SnapshotDeck} from '@deckdeckgo/editor';
 
 import {DeckOfflineProvider} from './deck.offline.provider';
 
-import {cloud, firebase} from '../../../utils/core/environment.utils';
+import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const decks = async (userId: string): Promise<Deck[]> => {
@@ -32,12 +32,11 @@ export const snapshotDeck = async ({
   deckId: string;
   onNext: (snapshot: Deck) => void;
 }): Promise<() => void | undefined> => {
-  if (firebase()) {
+  if (cloud()) {
     const {snapshotDeck: snapshotUserDeck}: {snapshotDeck: SnapshotDeck} = await cloudProvider<{snapshotDeck: SnapshotDeck}>();
 
     return snapshotUserDeck({deckId, onNext});
   }
 
-  // TODO: publish on the IC?
-  throw new Error('Not implemented');
+  throw new Error('No publish offline');
 };

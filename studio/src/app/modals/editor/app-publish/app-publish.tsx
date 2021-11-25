@@ -37,9 +37,7 @@ export class AppPublish {
   }
 
   async closeModal() {
-    if (this.unsubscribeSnapshot) {
-      this.unsubscribeSnapshot();
-    }
+    this.unsubscribeSnapshot?.();
 
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
