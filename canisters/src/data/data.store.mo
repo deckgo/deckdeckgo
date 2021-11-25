@@ -13,30 +13,21 @@ module {
             data.put(key, value);
         };
 
-        public func get(key: Text): Result.Result<T, Text> {
-            let value: ?T = data.get(key);
-
-            switch (value) {
-                case (?value) {
-                    return #ok value;
-                };
-                case null {
-                    return #err "Not found.";
-                };
-            };
+        public func get(key: Text): ?T {
+            return data.get(key);
         };
 
-        public func del(key: Text): Result.Result<T, Text> {
-            let result: Result.Result<T, Text> = get(key);
+        public func del(key: Text): ?T {
+            let entry: ?T = get(key);
 
-            switch (result) {
-                case (#ok value) {
+            switch (entry) {
+                case (?entry) {
                     data.delete(key);
                 };
-                case (#err error) {};
+                case (null) {};
             };
 
-            return result;
+            return entry;
         };
 
         public func entries(filter: ?Text): [T] {
@@ -49,8 +40,8 @@ module {
                 };
                 case (?filter) {
                     let keyValues: [(Text, T)] = Iter.toArray(entries);
-                    
-                    let values: [T] = Array.mapFilter<(Text, T), T>(keyValues, func ((key: Text, value: T)) : ?T { 
+
+                    let values: [T] = Array.mapFilter<(Text, T), T>(keyValues, func ((key: Text, value: T)) : ?T {
                         if (Text.startsWith(key, #text filter)) {
                             return ?value;
                         };

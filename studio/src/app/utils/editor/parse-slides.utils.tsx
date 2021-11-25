@@ -4,22 +4,15 @@ import {v4 as uuid} from 'uuid';
 
 import {convertStyle} from '@deckdeckgo/deck-utils';
 
-import {Slide, SlideTemplate, SlideScope, Deck} from '@deckdeckgo/editor';
+import {Slide, SlideTemplate, SlideScope} from '@deckdeckgo/editor';
 
 import {ParseElementsUtils} from './parse-elements.utils';
-
-import {QRCodeUtils} from './qrcode.utils';
 
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export class ParseSlidesUtils {
-  static async parseSlide(
-    deck: Deck,
-    slide: Slide,
-    contentEditable: boolean,
-    ignoreSlideId: boolean = false
-  ): Promise<JSX.IntrinsicElements> {
+  static async parseSlide(slide: Slide, contentEditable: boolean, ignoreSlideId: boolean = false): Promise<JSX.IntrinsicElements> {
     if (!document || !slide || !slide.data || !slide.data.template) {
       return null;
     }
@@ -27,11 +20,10 @@ export class ParseSlidesUtils {
     const template: SlideTemplate | undefined = SlideTemplate[slide.data.template.toUpperCase()];
     const slideTag: string = template ? `deckgo-slide-${template.toLowerCase()}` : slide.data.template;
 
-    return this.parseSlideElement(deck, slide, slideTag, contentEditable, ignoreSlideId);
+    return this.parseSlideElement(slide, slideTag, contentEditable, ignoreSlideId);
   }
 
   private static parseSlideElement(
-    deck: Deck,
     slide: Slide,
     slideTag: string,
     contentEditable: boolean,
@@ -55,7 +47,7 @@ export class ParseSlidesUtils {
           }, {})
         : {};
 
-      const defaultAttributes = await this.parseDefaultAttributes(slide, deck);
+      const defaultAttributes = await this.parseDefaultAttributes(slide);
 
       const attributes = {
         ...userAttributes,
@@ -75,7 +67,7 @@ export class ParseSlidesUtils {
     });
   }
 
-  private static async parseDefaultAttributes(slide: Slide, deck: Deck) {
+  private static async parseDefaultAttributes(slide: Slide) {
     const defaultAttributes = {
       style: slide.data.attributes ? await convertStyle(slide.data.attributes.style) : undefined,
       src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
@@ -86,8 +78,7 @@ export class ParseSlidesUtils {
     };
 
     if (slide.data.template === SlideTemplate.QRCODE) {
-      defaultAttributes['content'] =
-        slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : QRCodeUtils.getPresentationUrl(deck);
+      defaultAttributes['content'] = slide.data.attributes && slide.data.attributes.content ? slide.data.attributes.content : undefined;
       defaultAttributes['custom-qrcode'] = slide.data.attributes && slide.data.attributes.content ? 'true' : undefined;
     }
 
@@ -116,9 +107,9 @@ export class ParseSlidesUtils {
     }
 
     if (slide.data.template === SlideTemplate.POLL) {
-      const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      defaultAttributes['pollLink'] = deckDeckGoConfig.pollUrl;
-      defaultAttributes['socketUrl'] = deckDeckGoConfig.socketUrl;
+      const {pollUrl, socketUrl}: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+      defaultAttributes['pollLink'] = pollUrl;
+      defaultAttributes['socketUrl'] = socketUrl;
     }
 
     if (slide.data.template === SlideTemplate.AUTHOR) {

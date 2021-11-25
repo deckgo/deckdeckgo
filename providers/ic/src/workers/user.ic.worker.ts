@@ -7,7 +7,6 @@ import {User, UserData} from '@deckdeckgo/editor';
 
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
 
-import {toTimestamp} from '../utils/did.utils';
 import {initIdentity} from '../utils/identity.utils';
 import {getDataBucket} from '../utils/manager.utils';
 import {getData, setData} from '../utils/data.utils';
@@ -32,7 +31,7 @@ export const initUserWorker = async ({
   console.log('User IC about to GET');
   const t0 = performance.now();
 
-  const user: User | undefined = await getData<User, UserData>({key: `/user`});
+  const user: User | undefined = await getData<User, UserData>({key: `/user`, actor});
 
   const t1 = performance.now();
   console.log('User IC GET done', t1 - t0, user);
@@ -51,8 +50,8 @@ const createUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
   const id: string = uuid();
 
   const data: UserData = {
-    created_at: toTimestamp(now),
-    updated_at: toTimestamp(now)
+    created_at: now,
+    updated_at: now
   };
 
   console.log('User IC about to SET');

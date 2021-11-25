@@ -25,11 +25,10 @@ export interface EnvironmentGoogleConfig {
 }
 
 export interface EnvironmentDeckDeckGoConfig {
-  appUrl: string;
+  website: string;
   globalAssetsUrl: string;
   pollUrl: string;
   apiUrl?: string;
-  presentationUrl: string;
   socketUrl: string;
 }
 

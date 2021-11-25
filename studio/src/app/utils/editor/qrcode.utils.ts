@@ -1,16 +1,13 @@
-import {Deck} from '@deckdeckgo/editor';
+export const updateSlidesQRCode = (publishUrl: string) => {
+  const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-slide-qrcode');
 
-import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
-import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-
-export class QRCodeUtils {
-  static getPresentationUrl(deck: Deck): string {
-    if (deck && deck.data && deck.data.meta && deck.data.meta.pathname && deck.data.meta.pathname !== '') {
-      const config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-      return config.presentationUrl + deck.data.meta.pathname;
-    }
-
-    const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
-    return deckDeckGoConfig.appUrl;
+  if (!slides || slides.length <= 0) {
+    return;
   }
-}
+
+  for (const slide of Array.from(slides)) {
+    if (!slide.hasAttribute('custom-qrcode')) {
+      slide.setAttribute('content', publishUrl);
+    }
+  }
+};

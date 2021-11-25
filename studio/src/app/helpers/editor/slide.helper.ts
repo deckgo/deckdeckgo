@@ -83,7 +83,7 @@ export class SlideHelper {
 
         await TemplateUtils.loadSlideTemplate(slide);
 
-        const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, true);
+        const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, true);
 
         resolve(element);
       } catch (err) {
@@ -113,7 +113,7 @@ export class SlideHelper {
 
         if (editorStore.state.deck?.data) {
           const slide: Slide = await this.slideOfflineProvider.get(editorStore.state.deck.id, slideId);
-          element = await ParseSlidesUtils.parseSlide(editorStore.state.deck, slide, true, true);
+          element = await ParseSlidesUtils.parseSlide(slide, true, true);
         }
 
         busyStore.state.busy = false;

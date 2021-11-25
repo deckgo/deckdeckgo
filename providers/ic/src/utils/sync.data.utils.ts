@@ -15,5 +15,3 @@ export const uploadDocData = async ({doc, actor}: {doc: Doc; actor: DataBucketAc
 
 export const uploadParagraphData = async ({docId, paragraph, actor}: {docId: string; paragraph: Paragraph; actor: DataBucketActor}) =>
   setData<Paragraph, ParagraphData>({key: `/docs/${docId}/paragraphs/${paragraph.id}`, id: paragraph.id, data: paragraph.data, actor});
-
-export const deleteData = async ({key, actor}: {key: string; actor: DataBucketActor}) => deleteData({key, actor});

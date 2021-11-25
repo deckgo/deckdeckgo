@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import '@firebase/auth';
 import 'firebase/firestore';
 
-import {Deck, DeckMetaAuthor, Publish, UserSocial} from '@deckdeckgo/editor';
+import {Deck, DeckMetaAuthor, Publish, UserSocial, PublishUrl} from '@deckdeckgo/editor';
 
 import {updateDeck} from '../data/deck.firebase';
 
@@ -15,6 +15,8 @@ export const publish: Publish = async ({deck: deckSource, config}: {deck: Deck; 
 
   return deck;
 };
+
+export const publishUrl: PublishUrl = async () => 'https://beta.deckdeckgo.io';
 
 const updateDeckMeta = async (deckSource: Deck): Promise<Deck> => {
   const deck: Deck = cleanDeckMeta(deckSource);

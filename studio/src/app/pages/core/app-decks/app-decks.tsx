@@ -125,7 +125,7 @@ export class AppDecks implements ComponentInterface {
     try {
       const slide: Slide = await getSlide(deck.id, slideId);
 
-      const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(deck, slide, false);
+      const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, false);
 
       const style: Record<string, string> | undefined = await this.convertStyle(deck);
 

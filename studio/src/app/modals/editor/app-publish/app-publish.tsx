@@ -6,7 +6,10 @@ import i18n from '../../../stores/i18n.store';
 import editorStore from '../../../stores/editor.store';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
+
+import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
 
 @Component({
   tag: 'app-publish',
@@ -37,43 +40,15 @@ export class AppPublish {
   }
 
   async closeModal() {
-    if (this.unsubscribeSnapshot) {
-      this.unsubscribeSnapshot();
-    }
+    this.unsubscribeSnapshot?.();
 
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
   }
 
-  private async published($event: CustomEvent) {
-    if ($event && $event.detail) {
-      this.publishedUrl = $event.detail;
+  private published({detail}: CustomEvent<string>) {
+    this.publishedUrl = detail;
 
-      await this.updateSlidesQRCode();
-    }
-  }
-
-  private updateSlidesQRCode(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!document) {
-        resolve();
-        return;
-      }
-
-      const slides: NodeListOf<HTMLElement> = document.querySelectorAll('deckgo-slide-qrcode');
-
-      if (!slides) {
-        resolve();
-        return;
-      }
-
-      for (const slide of Array.from(slides)) {
-        if (!slide.hasAttribute('custom-qrcode')) {
-          slide.setAttribute('content', this.publishedUrl);
-        }
-      }
-
-      resolve();
-    });
+    updateSlidesQRCode(this.publishedUrl);
   }
 
   render() {
@@ -111,7 +86,7 @@ export class AppPublish {
     if (this.publishedUrl && this.publishedUrl !== undefined && this.publishedUrl !== '') {
       return <app-publish-done publishedUrl={this.publishedUrl}></app-publish-done>;
     } else {
-      return <app-publish-edit onPublished={($event: CustomEvent) => this.published($event)}></app-publish-edit>;
+      return <app-publish-edit onPublished={($event: CustomEvent<string>) => this.published($event)}></app-publish-edit>;
     }
   }
 }

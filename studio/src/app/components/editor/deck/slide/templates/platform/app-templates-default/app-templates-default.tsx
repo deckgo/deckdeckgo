@@ -294,7 +294,7 @@ export class AppTemplatesDefault {
       <div class="item" custom-tappable onClick={() => this.addSlideQRCode.emit()}>
         <deckgo-slide-qrcode
           class="showcase"
-          content={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').appUrl}
+          content={EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').website}
           img-src={`${
             EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
           }/img/deckdeckgo-logo.svg`}>

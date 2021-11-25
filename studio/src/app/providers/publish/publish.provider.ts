@@ -1,13 +1,14 @@
-import {Deck, DeckMetaAuthor, UserSocial, Publish} from '@deckdeckgo/editor';
+import {Deck, DeckMetaAuthor, UserSocial, Publish, PublishUrl} from '@deckdeckgo/editor';
 
 import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
 import authStore from '../../stores/auth.store';
 
-import {firebase as firebaseEnabled} from '../../utils/core/environment.utils';
+import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 
 export const publish = ({
   name,
@@ -27,8 +28,8 @@ export const publish = ({
         return;
       }
 
-      if (!firebaseEnabled()) {
-        reject('Firebase is not enabled therefore publishing cannot be triggered');
+      if (!cloud()) {
+        reject('Publish is only available with a compatible cloud provider.');
         return;
       }
 
@@ -43,6 +44,18 @@ export const publish = ({
       reject(err);
     }
   });
+};
+
+export const publishUrl = async (deck: Deck | null): Promise<string> => {
+  if (cloud() && deck?.data?.meta?.published) {
+    const {publishUrl}: {publishUrl: PublishUrl} = await cloudProvider<{publishUrl: PublishUrl}>();
+
+    const url: string = await publishUrl();
+    return `${url}${deck?.data?.meta?.pathname}`;
+  }
+
+  const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+  return deckDeckGoConfig.website;
 };
 
 const publishDeck = async (deck: Deck): Promise<Deck> => {

@@ -43,10 +43,9 @@ setupDeckGoConfig({
     mock: true
   },
   deckdeckgo: {
-    appUrl: 'http://localhost:3333',
+    website: 'https://deckdeckgo.com',
     globalAssetsUrl: 'http://localhost:3333/assets',
     pollUrl: 'http://localhost:3333/poll',
-    presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
   },
   google: {

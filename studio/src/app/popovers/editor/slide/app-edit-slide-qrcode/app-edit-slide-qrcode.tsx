@@ -7,7 +7,7 @@ import offlineStore from '../../../../stores/offline.store';
 
 import editorStore from '../../../../stores/editor.store';
 
-import {QRCodeUtils} from '../../../../utils/editor/qrcode.utils';
+import {publishUrl} from '../../../../providers/publish/publish.provider';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 
@@ -114,7 +114,9 @@ export class AppEditSlideQRCode {
         return;
       }
 
-      this.selectedElement.setAttribute('content', QRCodeUtils.getPresentationUrl(editorStore.state.deck));
+      const url: string = await publishUrl(editorStore.state.deck);
+
+      this.selectedElement.setAttribute('content', url);
       this.selectedElement.removeAttribute('custom-qrcode');
 
       this.customContent = undefined;

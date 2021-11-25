@@ -43,11 +43,10 @@ setupDeckGoConfig({
     mock: true
   },
   deckdeckgo: {
-    appUrl: 'https://deckdeckgo-studio-staging.web.app',
+    website: 'https://deckdeckgo.com',
     globalAssetsUrl: 'https://deckdeckgo-studio-staging.web.app/assets',
     pollUrl: 'https://deckdeckgo-studio-staging.web.app/poll',
     apiUrl: '<@API_URL@>',
-    presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
   },
   tenor: {
