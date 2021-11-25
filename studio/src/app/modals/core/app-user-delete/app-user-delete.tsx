@@ -3,6 +3,7 @@ import {Component, Element, Listen, Prop, State, h} from '@stencil/core';
 import i18n from '../../../stores/i18n.store';
 
 import {UserUtils} from '../../../utils/core/user.utils';
+import {firebase} from '../../../utils/core/environment.utils';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
@@ -20,6 +21,8 @@ export class AppUserDelete {
   username: string;
 
   private inputUsername: string;
+
+  private firebaseEnabled: boolean = firebase();
 
   async componentDidLoad() {
     history.pushState({modal: true}, null);
@@ -84,7 +87,7 @@ export class AppUserDelete {
           </ion-button>
         </form>
 
-        <app-unpublish></app-unpublish>
+        {this.firebaseEnabled && <app-unpublish></app-unpublish>}
       </ion-content>
     ];
   }

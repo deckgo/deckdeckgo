@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import {AuthUser, CreateUser, DeleteUser, UpdateUser, User, UserData} from '@deckdeckgo/editor';
+import {AuthUser, CreateUser, UpdateUser, User, UserData} from '@deckdeckgo/editor';
 import {ApiUserData} from '../../types/api.user';
 
 export const createUser: CreateUser = (authUser: AuthUser): Promise<User> => {
@@ -62,7 +62,7 @@ export const updateUser: UpdateUser = (user: User): Promise<User> => {
   });
 };
 
-export const deleteUser: DeleteUser = (userId: string): Promise<void> => {
+export const deleteUser = (userId: string): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
       const firestore: firebase.firestore.Firestore = firebase.firestore();

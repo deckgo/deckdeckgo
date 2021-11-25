@@ -82,13 +82,6 @@ actor Manager {
         return await delBucket<DataBucket>(caller, dataStore);
     };
 
-    // TODO: do we need inter-canister call or do we solves this in another way?
-    // TODO: inter-canister call secure caller === user canister or this canister
-
-    public func deleteDataAdmin(user: Principal) : async (Bool) {
-        return await delBucket<DataBucket>(user, dataStore);
-    };
-
     /**
      * Storages
      */
@@ -140,13 +133,6 @@ actor Manager {
 
     public shared({ caller }) func delStorage() : async (Bool) {
         return await delBucket<StorageBucket>(caller, storagesStore);
-    };
-
-    // TODO: do we need inter-canister call or do we solves this in another way?
-    // TODO: inter-canister call secure caller === user canister or this canister
-
-    public func deleteStorageAdmin(user: Principal) : async (Bool) {
-        return await delBucket<StorageBucket>(user, storagesStore);
     };
 
     /**
