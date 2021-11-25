@@ -1,6 +1,6 @@
-import {DeleteUser, UpdateUser, User, UserData} from '@deckdeckgo/editor';
+import {UpdateUser, User, UserData} from '@deckdeckgo/editor';
 
-import {deleteData, setData} from '../../utils/data.utils';
+import {setData} from '../../utils/data.utils';
 
 export const updateUser: UpdateUser = async (user: User): Promise<User> => {
   console.log('User IC about to SET', updateUser);
@@ -15,5 +15,3 @@ export const updateUser: UpdateUser = async (user: User): Promise<User> => {
 
   return updatedUser;
 };
-
-export const deleteUser: DeleteUser = async (_userId: string): Promise<void> => deleteData({key: `/user`});

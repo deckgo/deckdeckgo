@@ -3,11 +3,14 @@ import {Identity} from '@dfinity/agent';
 
 import {AuthUser, InitAuth, SignOut, User, DeleteAuth} from '@deckdeckgo/editor';
 
+import {_SERVICE as ManagerActor} from '../../canisters/manager/manager.did';
+
 import {InternetIdentityAuth} from '../../types/identity';
 
 import {internetIdentityAuth} from '../../utils/identity.utils';
+import {createManagerActor} from '../../utils/manager.utils';
+
 import {initUserWorker} from '../../workers/user.ic.worker';
-import {deleteUser} from '../data/user.ic';
 
 declare global {
   interface Window {
@@ -88,8 +91,15 @@ export const signIn = async ({onSuccess, onError}: {onSuccess: () => void; onErr
   });
 };
 
-export const deleteAuth: DeleteAuth = ({user}: {user: User; config}): Promise<void> => {
-  return deleteUser(user.id);
+export const deleteAuth: DeleteAuth = async (_auth: {user: User; config}): Promise<void> => {
+  const identity: Identity | undefined = getIdentity();
+
+  if (!identity) {
+    throw new Error('Invalid identity.');
+  }
+
+  const managerActor: ManagerActor = await createManagerActor({identity});
+  await Promise.all([managerActor.delData(), managerActor.delStorage()]);
 };
 
 export const getIdentity = (): Identity | undefined => {

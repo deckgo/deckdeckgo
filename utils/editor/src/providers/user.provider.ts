@@ -8,7 +8,3 @@ export interface CreateUser {
 export interface UpdateUser {
   (user: User): Promise<User>;
 }
-
-export interface DeleteUser {
-  (userId: string): Promise<void>;
-}
