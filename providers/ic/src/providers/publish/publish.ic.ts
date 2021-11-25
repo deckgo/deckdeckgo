@@ -51,7 +51,7 @@ const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
   const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getBucket();
 
   // 2. Folder and filename
-  const folder: string = 'static';
+  const folder: string = 'p';
   const filename: string = encodeURI(deckPublishData.title);
   const url: string = `https://${bucket.toText()}.raw.ic0.app/${folder}/${filename}`;
 
@@ -108,7 +108,7 @@ const uploadFileIC = async ({filename, html, actor}: {filename: string; html: st
   await upload({
     data: new Blob([JSON.stringify(html)], {type: 'application/json; charset=utf-8'}),
     filename,
-    folder: 'static',
+    folder: 'p',
     storageBucket: actor
   });
 };
