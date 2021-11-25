@@ -11,9 +11,10 @@ import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
 
 import {initIdentity} from '../utils/identity.utils';
 import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
-import {deleteData, uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
+import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
 import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
 import {getDataBucket} from '../utils/manager.utils';
+import {deleteData} from '../utils/data.utils';
 
 export const uploadWorker = async (
   {
