@@ -7,12 +7,13 @@ import {DeckdeckgoPlaygroundTheme} from '@deckdeckgo/slide-playground';
 
 import userStore from '../../stores/user.store';
 
+import {publishUrl} from '../../providers/publish/publish.provider';
+
 import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {SlotType} from '../../types/editor/slot-type';
 
-import {QRCodeUtils} from './qrcode.utils';
 import {SocialUtils} from './social.utils';
 import {TemplateUtils} from './template.utils';
 import {SlideUtils} from './slide.utils';
@@ -196,15 +197,15 @@ export class CreateSlidesUtils {
   }
 
   private static createSlideQRCode(deck: Deck): Promise<JSX.IntrinsicElements> {
-    return new Promise<JSX.IntrinsicElements>((resolve) => {
+    return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       const title = <h1 slot="title"></h1>;
 
-      const content: string = QRCodeUtils.getPresentationUrl(deck);
+      const url: string = await publishUrl(deck);
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-qrcode
           key={uuid()}
-          content={content}
+          content={url}
           img-src={`${
             EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
           }/img/deckdeckgo-logo.svg`}>

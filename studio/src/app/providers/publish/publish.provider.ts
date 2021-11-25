@@ -8,6 +8,7 @@ import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
+import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
 
 export const publish = ({
   name,
@@ -46,14 +47,15 @@ export const publish = ({
 };
 
 export const publishUrl = async (deck: Deck | null): Promise<string> => {
-  if (!cloud()) {
-    throw new Error('No publish url if offline.');
+  if (cloud() && deck?.data?.meta?.published) {
+    const {publishUrl}: {publishUrl: PublishUrl} = await cloudProvider<{publishUrl: PublishUrl}>();
+
+    const url: string = await publishUrl();
+    return `${url}${deck?.data?.meta?.pathname}`;
   }
 
-  const {publishUrl}: {publishUrl: PublishUrl} = await cloudProvider<{publishUrl: PublishUrl}>();
-
-  const url: string = await publishUrl();
-  return `${url}${deck?.data?.meta?.pathname}`;
+  const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+  return deckDeckGoConfig.website;
 };
 
 const publishDeck = async (deck: Deck): Promise<Deck> => {

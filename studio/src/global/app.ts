@@ -43,11 +43,10 @@ setupDeckGoConfig({
     mock: false
   },
   deckdeckgo: {
-    appUrl: 'https://app.deckdeckgo.com',
+    website: 'https://deckdeckgo.com',
     globalAssetsUrl: 'https://app.deckdeckgo.com/assets',
     pollUrl: 'https://app.deckdeckgo.com/poll',
     apiUrl: '<@API_URL@>',
-    presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
   },
   firebase: {

@@ -43,11 +43,10 @@ setupDeckGoConfig({
     mock: false
   },
   deckdeckgo: {
-    appUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app',
+    website: 'https://deckdeckgo.com',
     globalAssetsUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/assets',
     pollUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/poll',
     apiUrl: '<@API_URL@>',
-    presentationUrl: '<@PRESENTATION_URL@>',
     socketUrl: '<@SOCKET_URL@>'
   },
   tenor: {
