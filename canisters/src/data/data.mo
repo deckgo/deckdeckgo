@@ -8,6 +8,8 @@ import Error "mo:base/Error";
 import Types "../types/types";
 import DataTypes "./data.types";
 
+import Filter "./data.filter";
+
 import Utils "../utils/utils";
 
 import WalletUtils "../utils/wallet.utils";
@@ -19,6 +21,7 @@ actor class DataBucket(owner: Types.UserId) = this {
   type UserId = Types.UserId;
 
   type Data = DataTypes.Data;
+  type DataFilter = Filter.DataFilter;
 
   private stable let user: Types.UserId = owner;
 
@@ -42,12 +45,12 @@ actor class DataBucket(owner: Types.UserId) = this {
     return entry;
   };
 
-  public shared query({ caller }) func list(filter: ?Text) : async [Data] {
+  public shared query({ caller }) func list(filter: ?DataFilter) : async [(Text, Data)] {
       if (Utils.isPrincipalNotEqual(caller, user)) {
         throw Error.reject("User does not have the permission to list the data.");
     };
 
-    let results: [Data] = store.entries(filter);
+    let results: [(Text, Data)] = store.entries(filter);
     return results;
   };
 

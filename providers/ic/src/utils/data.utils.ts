@@ -1,14 +1,14 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
-import {_SERVICE as DataBucketActor, Data} from '../canisters/data/data.did';
+import {_SERVICE as DataBucketActor, Data, DataFilter} from '../canisters/data/data.did';
 
 import {getIdentity} from '../providers/auth/auth.ic';
 
 import {fromArray, fromNullable, fromTimestamp, toArray, toNullable, toTimestamp} from './did.utils';
 import {getDataBucket} from './manager.utils';
 
-export const entries = async <T, D>({filter}: {filter?: string}): Promise<T[]> => {
+export const entries = async <T, D>({startsWith, notContains}: {startsWith?: string; notContains?: string}): Promise<T[]> => {
   const identity: Identity | undefined = getIdentity();
 
   if (!identity) {
@@ -20,9 +20,14 @@ export const entries = async <T, D>({filter}: {filter?: string}): Promise<T[]> =
 
   const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
 
-  const data: Data[] = await actor.list(toNullable<string>(filter));
+  const data: [string, Data][] = await actor.list(
+    toNullable<DataFilter>({
+      startsWith: toNullable<string>(startsWith),
+      notContains: toNullable<string>(notContains)
+    })
+  );
 
-  const promises: Promise<T>[] = data.map((data: Data) => fromData<T, D>({data, identity}));
+  const promises: Promise<T>[] = data.map(([, data]: [string, Data]) => fromData<T, D>({data, identity}));
   const datas: T[] = await Promise.all(promises);
 
   const t1 = performance.now();

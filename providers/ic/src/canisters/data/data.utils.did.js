@@ -7,10 +7,14 @@ export const idlFactory = ({IDL}) => {
     data: IDL.Vec(IDL.Nat8),
     created_at: Time
   });
+  const DataFilter = IDL.Record({
+    notContains: IDL.Opt(IDL.Text),
+    startsWith: IDL.Opt(IDL.Text)
+  });
   const DataBucket = IDL.Service({
     del: IDL.Func([IDL.Text], [], []),
     get: IDL.Func([IDL.Text], [IDL.Opt(Data)], ['query']),
-    list: IDL.Func([IDL.Opt(IDL.Text)], [IDL.Vec(Data)], ['query']),
+    list: IDL.Func([IDL.Opt(DataFilter)], [IDL.Vec(IDL.Tuple(IDL.Text, Data))], ['query']),
     set: IDL.Func([IDL.Text, Data], [], []),
     transferCycles: IDL.Func([], [], [])
   });
