@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import {readFileSync} from 'fs';
 
 import fetch from 'node-fetch';
