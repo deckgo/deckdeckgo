@@ -1,6 +1,6 @@
 import type {Principal} from '@dfinity/principal';
 export interface AssetKey {
-  token: string;
+  token: [] | [string];
   name: string;
   fullPath: string;
   folder: string;
@@ -26,7 +26,7 @@ export interface StorageBucket {
   commit_batch: (arg_0: {contentType: string; chunkIds: Array<bigint>; batchId: bigint}) => Promise<undefined>;
   create_batch: (arg_0: AssetKey) => Promise<{batchId: bigint}>;
   create_chunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
-  del: (arg_0: {token: string; fullPath: string}) => Promise<undefined>;
+  del: (arg_0: {token: [] | [string]; fullPath: string}) => Promise<undefined>;
   http_request: (arg_0: HttpRequest) => Promise<HttpResponse>;
   http_request_streaming_callback: (arg_0: StreamingCallbackToken) => Promise<StreamingCallbackHttpResponse>;
   list: (arg_0: [] | [string]) => Promise<Array<AssetKey>>;
@@ -37,13 +37,13 @@ export interface StreamingCallbackHttpResponse {
   body: Array<number>;
 }
 export interface StreamingCallbackToken {
-  token: string;
+  token: [] | [string];
   fullPath: string;
   index: bigint;
   contentEncoding: string;
 }
 export interface StreamingCallbackToken__1 {
-  token: string;
+  token: [] | [string];
   fullPath: string;
   index: bigint;
   contentEncoding: string;

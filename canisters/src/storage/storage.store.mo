@@ -44,25 +44,20 @@ module {
             let fullPath: Text = Text.trimStart(split[0], #char '/');
             let token: Text = split[1];
 
-            return getAsset(fullPath, token);
+            return getAsset(fullPath, ?token);
         };
 
-        public func getAsset(fullPath: Text, token: Text): ({#asset: Asset; #error: Text}) {
+        public func getAsset(fullPath: Text, token: ?Text): ({#asset: Asset; #error: Text}) {
             let asset: ?Asset = assets.get(fullPath);
 
             switch (asset) {
                 case (?asset) {
-                    let compare: {#less; #equal; #greater} = Text.compare(token, asset.key.token);
-
-                    switch (compare) {
-                        case (#equal equal) {
+                    switch (asset.key.token) {
+                        case (?assetToken) {
+                            return getProtectedAsset(asset, assetToken, token);
+                        };
+                        case (null) {
                             return #asset asset;
-                        };
-                        case (#less less) {
-                            return #error "Invalid token";
-                        };
-                        case (#greater greater) {
-                            return #error "Invalid token";
                         };
                     };
                 };
@@ -72,7 +67,30 @@ module {
             };
         };
 
-        public func deleteAsset(fullPath: Text, token: Text): ({#asset: Asset; #error: Text}) {
+        public func getProtectedAsset(asset: Asset, assetToken: Text, token: ?Text): ({#asset: Asset; #error: Text}) {
+            switch (token) {
+                case null {
+                    return #error "No token provided.";
+                };
+                case (?token) {
+                    let compare: {#less; #equal; #greater} = Text.compare(token, assetToken);
+
+                    switch (compare) {
+                        case (#equal equal) {
+                            return #asset asset;
+                        };
+                        case (#less less) {
+                            return #error "Invalid token.";
+                        };
+                        case (#greater greater) {
+                            return #error "Invalid token.";
+                        };
+                    };
+                };
+            };
+        };
+
+        public func deleteAsset(fullPath: Text, token: ?Text): ({#asset: Asset; #error: Text}) {
             let (result: {#asset: Asset; #error: Text;}) = getAsset(fullPath, token);
 
             switch (result) {

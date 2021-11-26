@@ -3,8 +3,6 @@ type BucketId = principal;
 service : {
   delData: () -> (bool);
   delStorage: () -> (bool);
-  deleteDataAdmin: (principal) -> (bool);
-  deleteStorageAdmin: (principal) -> (bool);
   getData: () -> (opt BucketId) query;
   getStorage: () -> (opt BucketId) query;
   initData: () -> (BucketId);
