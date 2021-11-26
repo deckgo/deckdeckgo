@@ -210,7 +210,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
         return keys;
     };
 
-    public shared({ caller }) func del({fullPath: Text; token: Text;}: {fullPath: Text; token: Text;}) : async () {
+    public shared({ caller }) func del({fullPath; token;}: {fullPath: Text; token: ?Text;}) : async () {
         if (Utils.isPrincipalNotEqual(caller, user)) {
             throw Error.reject("User does not have the permission to delete an asset.");
         };

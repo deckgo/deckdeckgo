@@ -1,6 +1,8 @@
 import {Identity} from '@dfinity/agent';
 import {Principal} from '@dfinity/principal';
 
+import {v4 as uuid} from 'uuid';
+
 import {GetFiles, StorageFile, StorageFilesList, UploadFile, DeleteFile} from '@deckdeckgo/editor';
 
 import {getIdentity} from '../auth/auth.ic';
@@ -54,7 +56,8 @@ export const uploadFileIC = async ({
     data,
     filename: encodeURI(data.name),
     folder,
-    storageBucket: actor
+    storageBucket: actor,
+    token: uuid()
   });
 
   return {
@@ -98,5 +101,5 @@ export const deleteFile: DeleteFile = async ({downloadUrl, fullPath}: StorageFil
   const {pathname}: URL = new URL(downloadUrl);
   const token: string = pathname.replace('?token=', '');
 
-  return actor.del({fullPath, token});
+  return actor.del({fullPath, token: toNullable<string>(token?.length > 0 ? token : undefined)});
 };

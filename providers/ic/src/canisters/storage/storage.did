@@ -10,14 +10,14 @@ type StreamingCallbackToken__1 =
    contentEncoding: text;
    fullPath: text;
    index: nat;
-   token: text;
+   token: opt text;
  };
 type StreamingCallbackToken = 
  record {
    contentEncoding: text;
    fullPath: text;
    index: nat;
-   token: text;
+   token: opt text;
  };
 type StreamingCallbackHttpResponse = 
  record {
@@ -36,7 +36,7 @@ type StorageBucket =
    create_chunk: (Chunk) -> (record {chunkId: nat;});
    del: (record {
            fullPath: text;
-           token: text;
+           token: opt text;
          }) -> ();
    http_request: (HttpRequest) -> (HttpResponse) query;
    http_request_streaming_callback: (StreamingCallbackToken) ->
@@ -73,6 +73,6 @@ type AssetKey =
    folder: text;
    fullPath: text;
    name: text;
-   token: text;
+   token: opt text;
  };
 service : (UserId) -> StorageBucket

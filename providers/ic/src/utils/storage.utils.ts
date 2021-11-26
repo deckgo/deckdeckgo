@@ -1,25 +1,26 @@
-import {v4 as uuid} from 'uuid';
-
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+
+import {toNullable} from './did.utils';
 
 export const upload = async ({
   data,
   filename,
   folder,
-  storageBucket
+  storageBucket,
+  token
 }: {
   data: Blob;
   folder: string;
   filename: string;
   storageBucket: StorageBucketActor;
+  token?: string;
 }): Promise<{fullPath: string; filename: string; token: string}> => {
   const fullPath: string = `${folder}/${filename}`;
-  const token: string = uuid();
 
   console.log('About to upload to the IC');
   const t0 = performance.now();
 
-  const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token, folder});
+  const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token: toNullable<string>(token), folder});
 
   const t1 = performance.now();
   console.log('Upload create_batch', t1 - t0);
