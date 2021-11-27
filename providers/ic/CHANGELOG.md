@@ -1,3 +1,9 @@
+# 2.0.1 (2021-11-27)
+
+### Fix
+
+- expose docs and paragraphs providers
+
 # 2.0.0 (2021-11-27)
 
 ### Features
