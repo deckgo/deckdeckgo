@@ -1,3 +1,14 @@
+# 3.0.0 (2021-11-27)
+
+### Breaking Changes
+
+- rework authentication and delete user
+
+### Features
+
+- function that collect and prepare the (deck) publish data
+- new entry to retrieve published urls
+
 # 2.1.0 (2021-11-07)
 
 ### Features
