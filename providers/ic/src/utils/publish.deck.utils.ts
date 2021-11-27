@@ -94,7 +94,7 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 };
 
 const htmlTemplate = async (): Promise<string> => {
-  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/deck.html');
+  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/p/deck.html');
   return htmlTemplate.text();
 };
 
