@@ -77,7 +77,7 @@ module {
             };
         };
 
-        public func getProtectedAsset(asset: Asset, assetToken: Text, token: ?Text): Result.Result<Asset, Text> {
+        private func getProtectedAsset(asset: Asset, assetToken: Text, token: ?Text): Result.Result<Asset, Text> {
             switch (token) {
                 case null {
                     return #err "No token provided.";
