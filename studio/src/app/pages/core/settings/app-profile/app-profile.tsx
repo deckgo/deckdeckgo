@@ -306,7 +306,7 @@ export class AppProfile {
 
         resolve();
       } catch (err) {
-        reject('Could not upload your profile picture!');
+        reject(`Could not upload your profile picture! ${err}`);
       }
     });
   }
