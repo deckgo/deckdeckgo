@@ -7,20 +7,25 @@ export const upload = async ({
   filename,
   folder,
   storageBucket,
-  token
+  token,
+  fullPath
 }: {
   data: Blob;
   folder: string;
   filename: string;
   storageBucket: StorageBucketActor;
   token?: string;
+  fullPath?: string;
 }): Promise<{fullPath: string; filename: string; token: string}> => {
-  const fullPath: string = `${folder}/${filename}`;
-
   console.log('About to upload to the IC');
   const t0 = performance.now();
 
-  const {batchId} = await storageBucket.create_batch({name: filename, fullPath, token: toNullable<string>(token), folder});
+  const {batchId} = await storageBucket.create_batch({
+    name: filename,
+    fullPath: fullPath || `${folder}/${filename}`,
+    token: toNullable<string>(token),
+    folder
+  });
 
   const t1 = performance.now();
   console.log('Upload create_batch', t1 - t0);
