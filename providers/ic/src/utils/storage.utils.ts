@@ -9,7 +9,7 @@ export const upload = async ({
   storageBucket,
   headers,
   token,
-  fullPath
+  fullPath: storagePath
 }: {
   data: Blob;
   folder: string;
@@ -22,9 +22,11 @@ export const upload = async ({
   console.log('About to upload to the IC');
   const t0 = performance.now();
 
+  const fullPath: string = storagePath || `${folder}/${filename}`;
+
   const {batchId} = await storageBucket.initUpload({
     name: filename,
-    fullPath: fullPath || `${folder}/${filename}`,
+    fullPath,
     token: toNullable<string>(token),
     folder
   });
