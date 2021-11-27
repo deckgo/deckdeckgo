@@ -3,7 +3,7 @@ import {UpdateUser, User, UserData} from '@deckdeckgo/editor';
 import {setData} from '../../utils/data.utils';
 
 export const updateUser: UpdateUser = async (user: User): Promise<User> => {
-  console.log('User IC about to SET', updateUser);
+  console.log('User IC about to SET');
   const t0 = performance.now();
 
   const {data, id} = user;
