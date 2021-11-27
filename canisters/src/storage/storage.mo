@@ -138,7 +138,6 @@ actor class StorageBucket(owner: Types.UserId) = this {
             token = key.token;
             headers;
             index = chunkIndex + 1;
-            contentEncoding = "gzip";
             sha256 = null;
         };
 
