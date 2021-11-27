@@ -57,7 +57,8 @@ export const uploadFileIC = async ({
     filename: encodeURI(data.name),
     folder,
     storageBucket: actor,
-    token: uuid()
+    token: uuid(),
+    headers: [['cache-control', 'private, max-age=0']]
   });
 
   return {

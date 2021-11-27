@@ -6,6 +6,8 @@ import Hash "mo:base/Hash";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
 
+import Result "mo:base/Result";
+
 import StorageTypes "./storage.types";
 
 module {
@@ -35,19 +37,27 @@ module {
         private var nextBatchID: Nat = 0;
         private var nextChunkID: Nat = 0;
 
-        public func getAssetForUrl(url: Text): ({#asset: Asset; #error: Text}) {
+        /**
+         * Getter, list and delete
+         */
+
+        public func getAssetForUrl(url: Text): Result.Result<Asset, Text> {
             if (Text.size(url) == 0) {
-                return #error "No url provided.";
+                return #err "No url provided.";
             };
 
             let split: [Text] = Iter.toArray(Text.split(url, #text "?token="));
             let fullPath: Text = Text.trimStart(split[0], #char '/');
-            let token: Text = split[1];
+            
+            if (split.size() > 1) {
+                let token: Text = split[1];
+                return getAsset(fullPath, ?token);
+            };
 
-            return getAsset(fullPath, ?token);
+            return getAsset(fullPath, null);
         };
 
-        public func getAsset(fullPath: Text, token: ?Text): ({#asset: Asset; #error: Text}) {
+        public func getAsset(fullPath: Text, token: ?Text): Result.Result<Asset, Text> {
             let asset: ?Asset = assets.get(fullPath);
 
             switch (asset) {
@@ -57,47 +67,47 @@ module {
                             return getProtectedAsset(asset, assetToken, token);
                         };
                         case (null) {
-                            return #asset asset;
+                            return #ok asset;
                         };
                     };
                 };
                 case null {
-                    return #error "No asset.";
+                    return #err "No asset.";
                 };
             };
         };
 
-        public func getProtectedAsset(asset: Asset, assetToken: Text, token: ?Text): ({#asset: Asset; #error: Text}) {
+        private func getProtectedAsset(asset: Asset, assetToken: Text, token: ?Text): Result.Result<Asset, Text> {
             switch (token) {
                 case null {
-                    return #error "No token provided.";
+                    return #err "No token provided.";
                 };
                 case (?token) {
                     let compare: {#less; #equal; #greater} = Text.compare(token, assetToken);
 
                     switch (compare) {
                         case (#equal equal) {
-                            return #asset asset;
+                            return #ok asset;
                         };
                         case (#less less) {
-                            return #error "Invalid token.";
+                            return #err "Invalid token.";
                         };
                         case (#greater greater) {
-                            return #error "Invalid token.";
+                            return #err "Invalid token.";
                         };
                     };
                 };
             };
         };
 
-        public func deleteAsset(fullPath: Text, token: ?Text): ({#asset: Asset; #error: Text}) {
-            let (result: {#asset: Asset; #error: Text;}) = getAsset(fullPath, token);
+        public func deleteAsset(fullPath: Text, token: ?Text): Result.Result<Asset, Text> {
+            let result: Result.Result<Asset, Text> = getAsset(fullPath, token);
 
             switch (result) {
-                case (#asset asset) {
+                case (#ok asset) {
                     assets.delete(fullPath);
                 };
-                case (#error error) {};
+                case (#err error) {};
             };
 
             return result;
@@ -118,6 +128,10 @@ module {
                 };
             };
         };
+
+        /**
+         * Upload batch and chunks
+         */
 
         public func createBatch(key: AssetKey) : (Nat) {
             nextBatchID := nextBatchID + 1;
@@ -159,9 +173,9 @@ module {
         };
 
         public func commitBatch(
-            {batchId: Nat; chunkIds: [Nat]; contentType: Text;} : {
+            {batchId; chunkIds; headers} : {
                 batchId: Nat;
-                contentType: Text;
+                headers: [(Text, Text)];
                 chunkIds: [Nat];
             },
         ) : ({error: ?Text;}) {
@@ -172,17 +186,17 @@ module {
                     return {error = ?"No batch to commit.";}
                 };
                 case (?batch) {
-                    let error: {error: ?Text} = commitChunks({batchId; batch; chunkIds; contentType;});
+                    let error: {error: ?Text} = commitChunks({batchId; batch; chunkIds; headers;});
                     return error;
                 };
             };
         };
 
         private func commitChunks(
-            {batchId: Nat; batch: Batch; chunkIds: [Nat]; contentType: Text;} : {
+            {batchId; batch; chunkIds; headers} : {
                 batchId: Nat;
                 batch: Batch;
-                contentType: Text;
+                headers: [(Text, Text)];
                 chunkIds: [Nat];
             }
         ) : ({error: ?Text;}) {
@@ -223,7 +237,7 @@ module {
 
             assets.put(batch.key.fullPath, {
                 key = batch.key;
-                contentType;
+                headers;
                 encoding = {
                     modified = Time.now();
                     contentChunks;

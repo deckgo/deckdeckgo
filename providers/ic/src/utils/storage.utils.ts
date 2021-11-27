@@ -1,4 +1,4 @@
-import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {_SERVICE as StorageBucketActor, HeaderField} from '../canisters/storage/storage.did';
 
 import {toNullable} from './did.utils';
 
@@ -7,12 +7,14 @@ export const upload = async ({
   filename,
   folder,
   storageBucket,
+  headers,
   token,
-  fullPath
+  fullPath: storagePath
 }: {
   data: Blob;
   folder: string;
   filename: string;
+  headers: HeaderField[];
   storageBucket: StorageBucketActor;
   token?: string;
   fullPath?: string;
@@ -20,9 +22,11 @@ export const upload = async ({
   console.log('About to upload to the IC');
   const t0 = performance.now();
 
-  const {batchId} = await storageBucket.create_batch({
+  const fullPath: string = storagePath || `${folder}/${filename}`;
+
+  const {batchId} = await storageBucket.initUpload({
     name: filename,
-    fullPath: fullPath || `${folder}/${filename}`,
+    fullPath,
     token: toNullable<string>(token),
     folder
   });
@@ -51,10 +55,10 @@ export const upload = async ({
   const t2 = performance.now();
   console.log('Upload upload chunks', t2 - t1);
 
-  await storageBucket.commit_batch({
+  await storageBucket.commitUpload({
     batchId,
     chunkIds: chunkIds.map(({chunkId}: {chunkId: bigint}) => chunkId),
-    contentType: data.type
+    headers: [['Content-Type', data.type], ['accept-ranges', 'bytes'], ...headers]
   });
 
   const t3 = performance.now();
@@ -77,7 +81,7 @@ const uploadChunk = async ({
   chunk: Blob;
   storageBucket: StorageBucketActor;
 }): Promise<{chunkId: bigint}> =>
-  storageBucket.create_chunk({
+  storageBucket.uploadChunk({
     batchId,
     content: [...new Uint8Array(await chunk.arrayBuffer())]
   });

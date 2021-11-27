@@ -88,13 +88,14 @@ export class AppProfile {
   }
 
   private async initUser() {
-    if (userStore.state.user) {
+    if (userStore.state.user && authStore.state.loggedIn) {
       await this.initUserData();
-    } else {
-      this.destroyUserListener = userStore.onChange('user', async () => {
-        await this.initUserData();
-      });
+      return;
     }
+
+    this.destroyUserListener = userStore.onChange('user', async () => {
+      await this.initUserData();
+    });
   }
 
   disconnectedCallback() {

@@ -6,6 +6,8 @@ import Error "mo:base/Error";
 import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 
+import Result "mo:base/Result";
+
 import Types "../types/types";
 import HTTP "../types/http.types";
 
@@ -28,6 +30,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
 
     private type HttpRequest = HTTP.HttpRequest;
     private type HttpResponse = HTTP.HttpResponse;
+    private type HeaderField = HTTP.HeaderField;
     private type StreamingCallbackHttpResponse = HTTP.StreamingCallbackHttpResponse;
     private type StreamingCallbackToken = HTTP.StreamingCallbackToken;
     private type StreamingStrategy = HTTP.StreamingStrategy;
@@ -56,20 +59,18 @@ actor class StorageBucket(owner: Types.UserId) = this {
                 };
             };
 
-            let (result: {#asset: Asset; #error: Text;}) = storageStore.getAssetForUrl(url);
+            let result: Result.Result<Asset, Text> = storageStore.getAssetForUrl(url);
 
             switch (result) {
-                case (#asset {key: AssetKey; contentType: Text; encoding: AssetEncoding;}) {
+                case (#ok {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
                     return {
                         body = encoding.contentChunks[0];
-                        headers = [ ("Content-Type", contentType),
-                                    ("accept-ranges", "bytes"),
-                                    ("cache-control", "private, max-age=0") ];
+                        headers;
                         status_code = 200;
-                        streaming_strategy = createStrategy(key, 0, encoding);
+                        streaming_strategy = createStrategy(key, encoding, headers);
                     };
                 };
-                case (#error error) {
+                case (#err error) {
                 };
             };
 
@@ -90,23 +91,23 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     public shared query({caller}) func http_request_streaming_callback(streamingToken: StreamingCallbackToken) : async StreamingCallbackHttpResponse {
-        let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(streamingToken.fullPath, streamingToken.token);
+        let result: Result.Result<Asset, Text> = storageStore.getAsset(streamingToken.fullPath, streamingToken.token);
 
         switch (result) {
-            case (#asset {key: AssetKey; contentType: Text; encoding: AssetEncoding;}) {
+            case (#ok {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
                 return {
-                    token = createToken(key, streamingToken.index, encoding);
+                    token = createToken(key, streamingToken.index, encoding, headers);
                     body = encoding.contentChunks[streamingToken.index];
                 };
             };
-            case (#error error) {
+            case (#err error) {
                 throw Error.reject("Streamed asset not found: " # error);
             };
         };
     };
 
-    private func createStrategy(key: AssetKey, index: Nat, encoding: AssetEncoding) : ?StreamingStrategy {
-        let streamingToken: ?StreamingCallbackToken = createToken(key, index, encoding);
+    private func createStrategy(key: AssetKey, encoding: AssetEncoding, headers: [HeaderField]) : ?StreamingStrategy {
+        let streamingToken: ?StreamingCallbackToken = createToken(key, 0, encoding, headers);
 
         switch (streamingToken) {
             case (null) { null };
@@ -127,10 +128,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    private func createToken(key: AssetKey, chunkIndex: Nat, encoding: AssetEncoding) : ?StreamingCallbackToken {
-        // TODO encoding and sha
-        // TODO always gzip?
-
+    private func createToken(key: AssetKey, chunkIndex: Nat, encoding: AssetEncoding, headers: [HeaderField]) : ?StreamingCallbackToken {
         if (chunkIndex + 1 >= encoding.contentChunks.size()) {
             return null;
         };
@@ -138,8 +136,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
         let streamingToken: ?StreamingCallbackToken = ?{
             fullPath = key.fullPath;
             token = key.token;
+            headers;
             index = chunkIndex + 1;
-            contentEncoding = "gzip";
+            sha256 = null;
         };
 
         return streamingToken;
@@ -149,9 +148,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * Upload
      */
 
-    public shared({caller}) func create_batch(key: AssetKey) : async ({batchId : Nat}) {
+    public shared({caller}) func initUpload(key: AssetKey) : async ({batchId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to create a batch for upload.");
+            throw Error.reject("User does not have the permission to upload data.");
         };
 
         let nextBatchID: Nat = storageStore.createBatch(key);
@@ -159,9 +158,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
         return {batchId = nextBatchID};
     };
 
-    public shared({caller}) func create_chunk(chunk: Chunk) : async ({chunkId : Nat}) {
+    public shared({caller}) func uploadChunk(chunk: Chunk) : async ({chunkId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to a upload a chunk of content.");
+            throw Error.reject("User does not have the permission to a upload any chunks of content.");
         };
 
         let (result: {#chunkId: Nat; #error: Text;}) = storageStore.createChunk(chunk);
@@ -176,18 +175,18 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    public shared({caller}) func commit_batch(
-        {batchId: Nat; chunkIds: [Nat]; contentType: Text;} : {
+    public shared({caller}) func commitUpload(
+        {batchId; chunkIds; headers;} : {
             batchId: Nat;
-            contentType: Text;
+            headers: [HeaderField];
             chunkIds: [Nat];
         },
     ) : async () {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to commit a batch.");
+            throw Error.reject("User does not have the permission to commit an upload.");
         };
 
-        let ({error}: {error: ?Text;}) = storageStore.commitBatch({batchId; contentType; chunkIds;});
+        let ({error}: {error: ?Text;}) = storageStore.commitBatch({batchId; headers; chunkIds;});
 
         switch (error) {
             case (?error) {
@@ -198,7 +197,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     /**
-     * List and admin
+     * List and delete
      */
 
     public shared query({ caller }) func list(folder: ?Text) : async [AssetKey] {
@@ -215,11 +214,11 @@ actor class StorageBucket(owner: Types.UserId) = this {
             throw Error.reject("User does not have the permission to delete an asset.");
         };
 
-        let (result: {#asset: Asset; #error: Text;}) = storageStore.deleteAsset(fullPath, token);
+        let result: Result.Result<Asset, Text> = storageStore.deleteAsset(fullPath, token);
 
         switch (result) {
-            case (#asset asset) {};
-            case (#error error) {
+            case (#ok asset) {};
+            case (#err error) {
                 throw Error.reject("Asset cannot be deleted: " # error);
             };
         };

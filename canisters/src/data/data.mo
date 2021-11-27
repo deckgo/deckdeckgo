@@ -2,7 +2,6 @@ import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 
-import Result "mo:base/Result";
 import Error "mo:base/Error";
 
 import Types "../types/types";

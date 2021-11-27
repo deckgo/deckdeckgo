@@ -1,6 +1,6 @@
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData, PublishUrl, DeckPublishData, publishData} from '@deckdeckgo/editor';
+import {Deck, DeckData, DeckPublishData, publishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
@@ -34,11 +34,6 @@ export const publishDeck = async ({deck: deckSource}: {deck: Deck}): Promise<Dec
   emitDeckPublished(deck);
 
   return deck;
-};
-
-export const publishUrl: PublishUrl = async () => {
-  const {bucket}: {bucket: Principal; actor: StorageBucketActor} = await getPublishBucket();
-  return `https://${bucket.toText()}.raw.ic0.app`;
 };
 
 const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
@@ -94,7 +89,7 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 };
 
 const htmlTemplate = async (): Promise<string> => {
-  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/deck.html');
+  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/p/deck.html');
   return htmlTemplate.text();
 };
 
@@ -103,7 +98,8 @@ const uploadFileIC = async ({filename, html, actor}: {filename: string; html: st
     data: new Blob([html], {type: 'text/html'}),
     filename,
     folder: 'p',
-    storageBucket: actor
+    storageBucket: actor,
+    headers: [['Cache-Control', 'max-age=3600']]
   });
 };
 

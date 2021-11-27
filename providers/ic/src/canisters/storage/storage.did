@@ -7,16 +7,18 @@ type StreamingStrategy = variant {
                             };};
 type StreamingCallbackToken__1 = 
  record {
-   contentEncoding: text;
    fullPath: text;
+   headers: vec HeaderField;
    index: nat;
+   sha256: opt vec nat8;
    token: opt text;
  };
 type StreamingCallbackToken = 
  record {
-   contentEncoding: text;
    fullPath: text;
+   headers: vec HeaderField;
    index: nat;
+   sha256: opt vec nat8;
    token: opt text;
  };
 type StreamingCallbackHttpResponse = 
@@ -26,14 +28,12 @@ type StreamingCallbackHttpResponse =
  };
 type StorageBucket = 
  service {
-   commit_batch:
+   commitUpload:
     (record {
        batchId: nat;
        chunkIds: vec nat;
-       contentType: text;
+       headers: vec HeaderField__1;
      }) -> ();
-   create_batch: (AssetKey) -> (record {batchId: nat;});
-   create_chunk: (Chunk) -> (record {chunkId: nat;});
    del: (record {
            fullPath: text;
            token: opt text;
@@ -41,8 +41,10 @@ type StorageBucket =
    http_request: (HttpRequest) -> (HttpResponse) query;
    http_request_streaming_callback: (StreamingCallbackToken) ->
     (StreamingCallbackHttpResponse) query;
+   initUpload: (AssetKey) -> (record {batchId: nat;});
    list: (opt text) -> (vec AssetKey) query;
    transferCycles: () -> ();
+   uploadChunk: (Chunk) -> (record {chunkId: nat;});
  };
 type HttpResponse = 
  record {
@@ -57,6 +59,11 @@ type HttpRequest =
    headers: vec HeaderField;
    method: text;
    url: text;
+ };
+type HeaderField__1 = 
+ record {
+   text;
+   text;
  };
 type HeaderField = 
  record {
