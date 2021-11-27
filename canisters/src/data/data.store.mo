@@ -3,8 +3,6 @@ import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
 
-import Result "mo:base/Result";
-
 import Filter "./data.filter";
 
 module {

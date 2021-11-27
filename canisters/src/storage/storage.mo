@@ -6,6 +6,8 @@ import Error "mo:base/Error";
 import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 
+import Result "mo:base/Result";
+
 import Types "../types/types";
 import HTTP "../types/http.types";
 
@@ -57,10 +59,10 @@ actor class StorageBucket(owner: Types.UserId) = this {
                 };
             };
 
-            let (result: {#asset: Asset; #error: Text;}) = storageStore.getAssetForUrl(url);
+            let result: Result.Result<Asset, Text> = storageStore.getAssetForUrl(url);
 
             switch (result) {
-                case (#asset {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
+                case (#ok {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
                     return {
                         body = encoding.contentChunks[0];
                         headers;
@@ -68,7 +70,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
                         streaming_strategy = createStrategy(key, 0, encoding, headers);
                     };
                 };
-                case (#error error) {
+                case (#err error) {
                 };
             };
 
@@ -89,16 +91,16 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     public shared query({caller}) func http_request_streaming_callback(streamingToken: StreamingCallbackToken) : async StreamingCallbackHttpResponse {
-        let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(streamingToken.fullPath, streamingToken.token);
+        let result: Result.Result<Asset, Text> = storageStore.getAsset(streamingToken.fullPath, streamingToken.token);
 
         switch (result) {
-            case (#asset {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
+            case (#ok {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
                 return {
                     token = createToken(key, streamingToken.index, encoding, headers);
                     body = encoding.contentChunks[streamingToken.index];
                 };
             };
-            case (#error error) {
+            case (#err error) {
                 throw Error.reject("Streamed asset not found: " # error);
             };
         };
@@ -196,7 +198,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     /**
-     * List and admin
+     * List and delete
      */
 
     public shared query({ caller }) func list(folder: ?Text) : async [AssetKey] {
@@ -213,11 +215,11 @@ actor class StorageBucket(owner: Types.UserId) = this {
             throw Error.reject("User does not have the permission to delete an asset.");
         };
 
-        let (result: {#asset: Asset; #error: Text;}) = storageStore.deleteAsset(fullPath, token);
+        let result: Result.Result<Asset, Text> = storageStore.deleteAsset(fullPath, token);
 
         switch (result) {
-            case (#asset asset) {};
-            case (#error error) {
+            case (#ok asset) {};
+            case (#err error) {
                 throw Error.reject("Asset cannot be deleted: " # error);
             };
         };

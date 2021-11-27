@@ -4,8 +4,16 @@
       "main": "canisters/src/manager/manager.mo",
       "type": "motoko"
     },
+    "storage": {
+      "main": "canisters/src/storage/storage.mo",
+      "type": "motoko"
+    },
+    "data": {
+      "main": "canisters/src/data/data.mo",
+      "type": "motoko"
+    },
     "assets": {
-      "dependencies": ["manager"],
+      "dependencies": ["manager", "storage", "data"],
       "frontend": {
         "entrypoint": "studio/www/index.html"
       },
