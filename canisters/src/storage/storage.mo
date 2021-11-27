@@ -67,7 +67,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
                         body = encoding.contentChunks[0];
                         headers;
                         status_code = 200;
-                        streaming_strategy = createStrategy(key, 0, encoding, headers);
+                        streaming_strategy = createStrategy(key, encoding, headers);
                     };
                 };
                 case (#err error) {
@@ -106,8 +106,8 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    private func createStrategy(key: AssetKey, index: Nat, encoding: AssetEncoding, headers: [HeaderField]) : ?StreamingStrategy {
-        let streamingToken: ?StreamingCallbackToken = createToken(key, index, encoding, headers);
+    private func createStrategy(key: AssetKey, encoding: AssetEncoding, headers: [HeaderField]) : ?StreamingStrategy {
+        let streamingToken: ?StreamingCallbackToken = createToken(key, 0, encoding, headers);
 
         switch (streamingToken) {
             case (null) { null };
