@@ -159,9 +159,9 @@ module {
         };
 
         public func commitBatch(
-            {batchId: Nat; chunkIds: [Nat]; contentType: Text;} : {
+            {batchId; chunkIds; headers} : {
                 batchId: Nat;
-                contentType: Text;
+                headers: [(Text, Text)];
                 chunkIds: [Nat];
             },
         ) : ({error: ?Text;}) {
@@ -172,17 +172,17 @@ module {
                     return {error = ?"No batch to commit.";}
                 };
                 case (?batch) {
-                    let error: {error: ?Text} = commitChunks({batchId; batch; chunkIds; contentType;});
+                    let error: {error: ?Text} = commitChunks({batchId; batch; chunkIds; headers;});
                     return error;
                 };
             };
         };
 
         private func commitChunks(
-            {batchId: Nat; batch: Batch; chunkIds: [Nat]; contentType: Text;} : {
+            {batchId; batch; chunkIds; headers} : {
                 batchId: Nat;
                 batch: Batch;
-                contentType: Text;
+                headers: [(Text, Text)];
                 chunkIds: [Nat];
             }
         ) : ({error: ?Text;}) {
@@ -223,7 +223,7 @@ module {
 
             assets.put(batch.key.fullPath, {
                 key = batch.key;
-                contentType;
+                headers;
                 encoding = {
                     modified = Time.now();
                     contentChunks;

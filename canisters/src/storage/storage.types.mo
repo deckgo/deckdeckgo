@@ -9,8 +9,6 @@ module {
         modified: Int;
         contentChunks: [[Nat8]];
         totalLength: Nat;
-        // TODO: certified: Bool; should we use the certified flag?
-        // TODO: do we need sha256         : [Nat8]; ?
     };
 
     public type AssetKey = {
@@ -22,7 +20,7 @@ module {
 
     public type Asset = {
         key: AssetKey;
-        contentType: Text;
+        headers: [(Text, Text)];
         encoding: AssetEncoding;
     };
 

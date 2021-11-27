@@ -28,6 +28,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
 
     private type HttpRequest = HTTP.HttpRequest;
     private type HttpResponse = HTTP.HttpResponse;
+    private type HeaderField = HTTP.HeaderField;
     private type StreamingCallbackHttpResponse = HTTP.StreamingCallbackHttpResponse;
     private type StreamingCallbackToken = HTTP.StreamingCallbackToken;
     private type StreamingStrategy = HTTP.StreamingStrategy;
@@ -59,14 +60,12 @@ actor class StorageBucket(owner: Types.UserId) = this {
             let (result: {#asset: Asset; #error: Text;}) = storageStore.getAssetForUrl(url);
 
             switch (result) {
-                case (#asset {key: AssetKey; contentType: Text; encoding: AssetEncoding;}) {
+                case (#asset {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
                     return {
                         body = encoding.contentChunks[0];
-                        headers = [ ("Content-Type", contentType),
-                                    ("accept-ranges", "bytes"),
-                                    ("cache-control", "private, max-age=0") ];
+                        headers;
                         status_code = 200;
-                        streaming_strategy = createStrategy(key, 0, encoding);
+                        streaming_strategy = createStrategy(key, 0, encoding, headers);
                     };
                 };
                 case (#error error) {
@@ -93,9 +92,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
         let (result: {#asset: Asset; #error: Text;}) = storageStore.getAsset(streamingToken.fullPath, streamingToken.token);
 
         switch (result) {
-            case (#asset {key: AssetKey; contentType: Text; encoding: AssetEncoding;}) {
+            case (#asset {key: AssetKey; headers: [HeaderField]; encoding: AssetEncoding;}) {
                 return {
-                    token = createToken(key, streamingToken.index, encoding);
+                    token = createToken(key, streamingToken.index, encoding, headers);
                     body = encoding.contentChunks[streamingToken.index];
                 };
             };
@@ -105,8 +104,8 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    private func createStrategy(key: AssetKey, index: Nat, encoding: AssetEncoding) : ?StreamingStrategy {
-        let streamingToken: ?StreamingCallbackToken = createToken(key, index, encoding);
+    private func createStrategy(key: AssetKey, index: Nat, encoding: AssetEncoding, headers: [HeaderField]) : ?StreamingStrategy {
+        let streamingToken: ?StreamingCallbackToken = createToken(key, index, encoding, headers);
 
         switch (streamingToken) {
             case (null) { null };
@@ -127,10 +126,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    private func createToken(key: AssetKey, chunkIndex: Nat, encoding: AssetEncoding) : ?StreamingCallbackToken {
-        // TODO encoding and sha
-        // TODO always gzip?
-
+    private func createToken(key: AssetKey, chunkIndex: Nat, encoding: AssetEncoding, headers: [HeaderField]) : ?StreamingCallbackToken {
         if (chunkIndex + 1 >= encoding.contentChunks.size()) {
             return null;
         };
@@ -138,8 +134,10 @@ actor class StorageBucket(owner: Types.UserId) = this {
         let streamingToken: ?StreamingCallbackToken = ?{
             fullPath = key.fullPath;
             token = key.token;
+            headers;
             index = chunkIndex + 1;
             contentEncoding = "gzip";
+            sha256 = null;
         };
 
         return streamingToken;
@@ -177,9 +175,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
     };
 
     public shared({caller}) func commit_batch(
-        {batchId: Nat; chunkIds: [Nat]; contentType: Text;} : {
+        {batchId; chunkIds; headers;} : {
             batchId: Nat;
-            contentType: Text;
+            headers: [HeaderField];
             chunkIds: [Nat];
         },
     ) : async () {
@@ -187,7 +185,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
             throw Error.reject("User does not have the permission to commit a batch.");
         };
 
-        let ({error}: {error: ?Text;}) = storageStore.commitBatch({batchId; contentType; chunkIds;});
+        let ({error}: {error: ?Text;}) = storageStore.commitBatch({batchId; headers; chunkIds;});
 
         switch (error) {
             case (?error) {
