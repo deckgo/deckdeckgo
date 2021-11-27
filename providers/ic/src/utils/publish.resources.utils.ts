@@ -2,7 +2,7 @@ import {Principal} from '@dfinity/principal';
 
 import {Deck} from '@deckdeckgo/editor';
 
-import {_SERVICE as StorageBucketActor, AssetKey} from '../canisters/storage/storage.did';
+import {_SERVICE as StorageBucketActor, AssetKey, HeaderField} from '../canisters/storage/storage.did';
 
 import {getPublishBucket} from './publish.utils';
 import {toNullable} from './did.utils';
@@ -14,6 +14,7 @@ interface Kit {
   src: string;
   filename: string;
   mimeType: KitMimeType;
+  headers: HeaderField[];
   updateContent?: ({content, deck}: {deck: Deck; content: string}) => string;
 }
 
@@ -58,7 +59,11 @@ const kit: Kit[] = [
   const {pathname}: URL = new URL(resource.src);
   return {
     ...resource,
-    filename: pathname.split('/').pop()
+    filename: pathname.split('/').pop(),
+    headers: [
+      ['Cache-Control', 'max-age=31536000'],
+      ['Content-Encoding', 'br']
+    ]
   } as Kit;
 });
 
@@ -81,13 +86,13 @@ export const uploadResources = async ({deck}: {deck: Deck}) => {
 };
 
 const addKitIC = async ({kit, actor, deck}: {kit: Kit; actor: StorageBucketActor; deck: Deck}) => {
-  const {src, filename, mimeType, updateContent} = kit;
+  const {src, filename, mimeType, updateContent, headers} = kit;
 
   const content: string = await downloadKit(src);
 
   const updatedContent: string = updateContent ? updateContent({content, deck}) : content;
 
-  await uploadKit({filename, content: updatedContent, actor, mimeType, fullPath: src.replace(kitPath, '')});
+  await uploadKit({filename, content: updatedContent, actor, mimeType, headers, fullPath: src.replace(kitPath, '')});
 };
 
 const uploadKit = async ({
@@ -95,20 +100,23 @@ const uploadKit = async ({
   fullPath,
   content,
   actor,
-  mimeType
+  mimeType,
+  headers
 }: {
   filename: string;
   fullPath: string;
   content: string;
   actor: StorageBucketActor;
   mimeType: KitMimeType;
+  headers: HeaderField[];
 }): Promise<void> => {
   await upload({
     data: new Blob([content], {type: mimeType}),
     filename,
     folder: 'resources',
     storageBucket: actor,
-    fullPath
+    fullPath,
+    headers
   });
 };
 

@@ -103,7 +103,11 @@ const uploadFileIC = async ({filename, html, actor}: {filename: string; html: st
     data: new Blob([html], {type: 'text/html'}),
     filename,
     folder: 'p',
-    storageBucket: actor
+    storageBucket: actor,
+    headers: [
+      ['Cache-Control', 'max-age=3600'],
+      ['Content-Encoding', 'br']
+    ]
   });
 };
 

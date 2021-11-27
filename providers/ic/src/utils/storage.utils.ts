@@ -1,4 +1,4 @@
-import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {_SERVICE as StorageBucketActor, HeaderField} from '../canisters/storage/storage.did';
 
 import {toNullable} from './did.utils';
 
@@ -7,12 +7,14 @@ export const upload = async ({
   filename,
   folder,
   storageBucket,
+  headers,
   token,
   fullPath
 }: {
   data: Blob;
   folder: string;
   filename: string;
+  headers: HeaderField[];
   storageBucket: StorageBucketActor;
   token?: string;
   fullPath?: string;
@@ -54,12 +56,7 @@ export const upload = async ({
   await storageBucket.commitUpload({
     batchId,
     chunkIds: chunkIds.map(({chunkId}: {chunkId: bigint}) => chunkId),
-    headers: [
-      ['Content-Type', data.type],
-      ['accept-ranges', 'bytes'],
-      ['cache-control', 'private, max-age=0'],
-      ['Content-Encoding', 'gzip']
-    ]
+    headers: [['Content-Type', data.type], ['accept-ranges', 'bytes'], ...headers]
   });
 
   const t3 = performance.now();
