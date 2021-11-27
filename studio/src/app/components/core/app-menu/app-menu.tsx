@@ -124,12 +124,12 @@ export class AppMenu {
         <ion-list class="settings">
           <ion-item button href="/profile" routerDirection="forward">
             <ion-label>{i18n.state.nav.profile}</ion-label>
-            <AppIcon name="person" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+            <AppIcon name="person" ariaLabel="" ariaHidden={true} lazy={false} slot="start"></AppIcon>
           </ion-item>
           {this.renderCustomization()}
           <ion-item button href="/templates" routerDirection="forward">
             <ion-label>{i18n.state.nav.templates}</ion-label>
-            <AppIcon name="reader" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+            <AppIcon name="reader" ariaLabel="" ariaHidden={true} lazy={false} slot="start"></AppIcon>
           </ion-item>
         </ion-list>
       </app-expansion-panel>
@@ -140,7 +140,7 @@ export class AppMenu {
     return (
       <ion-item button href="/customization" routerDirection="forward">
         <ion-label>{i18n.state.nav.customization}</ion-label>
-        <AppIcon name="color-palette" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
+        <AppIcon name="color-palette" ariaLabel="" ariaHidden={true} lazy={false} slot="start"></AppIcon>
       </ion-item>
     );
   }
