@@ -2,6 +2,10 @@
 
 # [X.Y.Z](https://github.com/deckgo/deckdeckgo/compare/v5.0.1...vX.Y.Z) (202A-BB-CC)
 
+### Applications
+
+- remote: v1.15.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+
 ### Providers
 
 - firebase: v1.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
@@ -13,6 +17,7 @@
 
 ### Others
 
+- deck-utils: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
 - editor: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - gatsby-remark-highlight-code: v3.0.2 ([CHANGELOG](https://github.com/deckgo/gatsby-remark-highlight-code/blob/master/CHANGELOG.md))
 - utils: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))

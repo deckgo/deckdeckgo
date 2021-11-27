@@ -1,6 +1,6 @@
 {
   "name": "deckdeckgo-remote",
-  "version": "1.14.4",
+  "version": "1.15.0",
   "author": "David Dal Busco",
   "description": "Present and interact with your lightweight DeckDeckGo's presentation",
   "license": "AGPL-3.0-or-later",
@@ -19,10 +19,10 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/core": "^8.4.0",
-    "@deckdeckgo/deck-utils": "file:../utils/deck",
+    "@deckdeckgo/deck-utils": "^5.0.0",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.1",
-    "@deckdeckgo/editor": "file:../utils/editor",
+    "@deckdeckgo/editor": "^3.0.0",
     "@deckdeckgo/highlight-code": "^3.4.2",
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/markdown": "^2.1.0",

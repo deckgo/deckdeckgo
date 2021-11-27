@@ -1,3 +1,9 @@
+# 1.15.0 (2021-10-21)
+
+### Feature
+
+- clean content DOM based method
+
 # 1.14.4 (2021-10-21)
 
 ### Build

@@ -1,3 +1,9 @@
+# 5.0.0 (2021-11-27)
+
+### Breaking Changes
+
+- remove method `cleanContent`
+
 # 4.1.1 (2021-10-22)
 
 ### Build
