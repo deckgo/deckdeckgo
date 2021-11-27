@@ -20,7 +20,7 @@ export const upload = async ({
   console.log('About to upload to the IC');
   const t0 = performance.now();
 
-  const {batchId} = await storageBucket.create_batch({
+  const {batchId} = await storageBucket.initUpload({
     name: filename,
     fullPath: fullPath || `${folder}/${filename}`,
     token: toNullable<string>(token),
@@ -51,10 +51,15 @@ export const upload = async ({
   const t2 = performance.now();
   console.log('Upload upload chunks', t2 - t1);
 
-  await storageBucket.commit_batch({
+  await storageBucket.commitUpload({
     batchId,
     chunkIds: chunkIds.map(({chunkId}: {chunkId: bigint}) => chunkId),
-    contentType: data.type
+    headers: [
+      ['Content-Type', data.type],
+      ['accept-ranges', 'bytes'],
+      ['cache-control', 'private, max-age=0'],
+      ['Content-Encoding', 'gzip']
+    ]
   });
 
   const t3 = performance.now();
@@ -77,7 +82,7 @@ const uploadChunk = async ({
   chunk: Blob;
   storageBucket: StorageBucketActor;
 }): Promise<{chunkId: bigint}> =>
-  storageBucket.create_chunk({
+  storageBucket.uploadChunk({
     batchId,
     content: [...new Uint8Array(await chunk.arrayBuffer())]
   });
