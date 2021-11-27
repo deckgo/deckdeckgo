@@ -48,9 +48,13 @@ module {
 
             let split: [Text] = Iter.toArray(Text.split(url, #text "?token="));
             let fullPath: Text = Text.trimStart(split[0], #char '/');
-            let token: Text = split[1];
+            
+            if (split.size() > 1) {
+                let token: Text = split[1];
+                return getAsset(fullPath, ?token);
+            };
 
-            return getAsset(fullPath, ?token);
+            return getAsset(fullPath, null);
         };
 
         public func getAsset(fullPath: Text, token: ?Text): Result.Result<Asset, Text> {
