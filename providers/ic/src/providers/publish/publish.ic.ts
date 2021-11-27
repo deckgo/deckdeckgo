@@ -4,9 +4,7 @@ import {publishDeck} from '../../utils/publish.deck.utils';
 import {uploadResources} from '../../utils/publish.resources.utils';
 
 export const publish: Publish = async ({deck}: {deck: Deck; config: Record<string, string>}): Promise<Deck> => {
-  await uploadResources();
+  await uploadResources({deck});
 
-  const publishedDeck: Deck = await publishDeck({deck});
-
-  return publishedDeck;
+  return await publishDeck({deck});
 };

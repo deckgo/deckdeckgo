@@ -1,5 +1,7 @@
 import {Principal} from '@dfinity/principal';
 
+import {Deck} from '@deckdeckgo/editor';
+
 import {_SERVICE as StorageBucketActor, AssetKey} from '../canisters/storage/storage.did';
 
 import {getPublishBucket} from './publish.utils';
@@ -12,6 +14,7 @@ interface Kit {
   src: string;
   filename: string;
   mimeType: KitMimeType;
+  updateContent?: ({content, deck}: {deck: Deck; content: string}) => string;
 }
 
 const kitPath: string = 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/';
@@ -31,7 +34,9 @@ const kit: Kit[] = [
   },
   {
     src: `${kitPath}manifest.webmanifest`,
-    mimeType: 'application/manifest+json'
+    mimeType: 'application/manifest+json',
+    updateContent: ({content, deck}: {deck: Deck; content: string}) =>
+      content.replace('{{DECKDECKGO_AUTHOR}}', deck.data.meta?.author?.name || 'DeckDeckGo')
   },
   {
     src: `${kitPath}build/index.css`,
@@ -57,7 +62,7 @@ const kit: Kit[] = [
   } as Kit;
 });
 
-export const uploadResources = async () => {
+export const uploadResources = async ({deck}: {deck: Deck}) => {
   // 1. Get actor
   const {actor}: {bucket: Principal; actor: StorageBucketActor} = await getPublishBucket();
 
@@ -71,15 +76,18 @@ export const uploadResources = async () => {
     return;
   }
 
-  const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor}));
+  const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor, deck}));
   await Promise.all(promises);
 };
 
-const addKitIC = async ({kit, actor}: {kit: Kit; actor: StorageBucketActor}) => {
-  const {src, filename, mimeType} = kit;
+const addKitIC = async ({kit, actor, deck}: {kit: Kit; actor: StorageBucketActor; deck: Deck}) => {
+  const {src, filename, mimeType, updateContent} = kit;
 
   const content: string = await downloadKit(src);
-  await uploadKit({filename, content, actor, mimeType, fullPath: src.replace(kitPath, '')});
+
+  const updatedContent: string = updateContent ? updateContent({content, deck}) : content;
+
+  await uploadKit({filename, content: updatedContent, actor, mimeType, fullPath: src.replace(kitPath, '')});
 };
 
 const uploadKit = async ({
