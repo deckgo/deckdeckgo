@@ -99,10 +99,7 @@ const uploadFileIC = async ({filename, html, actor}: {filename: string; html: st
     filename,
     folder: 'p',
     storageBucket: actor,
-    headers: [
-      ['Cache-Control', 'max-age=3600'],
-      ['Content-Encoding', 'gzip']
-    ]
+    headers: [['Cache-Control', 'max-age=3600']]
   });
 };
 

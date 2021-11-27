@@ -60,10 +60,7 @@ const kit: Kit[] = [
   return {
     ...resource,
     filename: pathname.split('/').pop(),
-    headers: [
-      ['Cache-Control', 'max-age=31536000'],
-      ['Content-Encoding', 'br']
-    ]
+    headers: [['Cache-Control', 'max-age=31536000']]
   } as Kit;
 });
 
