@@ -149,9 +149,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
      * Upload
      */
 
-    public shared({caller}) func create_batch(key: AssetKey) : async ({batchId : Nat}) {
+    public shared({caller}) func initUpload(key: AssetKey) : async ({batchId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to create a batch for upload.");
+            throw Error.reject("User does not have the permission to upload data.");
         };
 
         let nextBatchID: Nat = storageStore.createBatch(key);
@@ -159,9 +159,9 @@ actor class StorageBucket(owner: Types.UserId) = this {
         return {batchId = nextBatchID};
     };
 
-    public shared({caller}) func create_chunk(chunk: Chunk) : async ({chunkId : Nat}) {
+    public shared({caller}) func uploadChunk(chunk: Chunk) : async ({chunkId : Nat}) {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to a upload a chunk of content.");
+            throw Error.reject("User does not have the permission to a upload any chunks of content.");
         };
 
         let (result: {#chunkId: Nat; #error: Text;}) = storageStore.createChunk(chunk);
@@ -176,7 +176,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
         };
     };
 
-    public shared({caller}) func commit_batch(
+    public shared({caller}) func commitUpload(
         {batchId; chunkIds; headers;} : {
             batchId: Nat;
             headers: [HeaderField];
@@ -184,7 +184,7 @@ actor class StorageBucket(owner: Types.UserId) = this {
         },
     ) : async () {
         if (Utils.isPrincipalNotEqual(caller, user)) {
-            throw Error.reject("User does not have the permission to commit a batch.");
+            throw Error.reject("User does not have the permission to commit an upload.");
         };
 
         let ({error}: {error: ?Text;}) = storageStore.commitBatch({batchId; headers; chunkIds;});
