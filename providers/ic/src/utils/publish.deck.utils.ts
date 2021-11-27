@@ -1,6 +1,6 @@
 import {Principal} from '@dfinity/principal';
 
-import {Deck, DeckData, PublishUrl, DeckPublishData, publishData} from '@deckdeckgo/editor';
+import {Deck, DeckData, DeckPublishData, publishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
@@ -34,11 +34,6 @@ export const publishDeck = async ({deck: deckSource}: {deck: Deck}): Promise<Dec
   emitDeckPublished(deck);
 
   return deck;
-};
-
-export const publishUrl: PublishUrl = async () => {
-  const {bucket}: {bucket: Principal; actor: StorageBucketActor} = await getPublishBucket();
-  return `https://${bucket.toText()}.raw.ic0.app`;
 };
 
 const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
