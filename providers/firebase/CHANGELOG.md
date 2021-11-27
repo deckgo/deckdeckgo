@@ -1,3 +1,10 @@
+# 2.0.0 (2021-11-27)
+
+### Features
+
+- rework authentication and user deletion
+- support for documents
+
 # 1.1.1 (2021-11-07)
 
 ### Build

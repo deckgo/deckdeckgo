@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/firebase",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "The Firebase connectors of the DeckDeckGo editor for slides",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -29,7 +29,7 @@
     "idb-keyval": "^6.0.1"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "file:utils/editor",
+    "@deckdeckgo/editor": "^3.0.0",
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/slide-chart": "^2.5.0"
   },
