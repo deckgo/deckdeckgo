@@ -10,6 +10,7 @@ export interface Chunk {
   batchId: bigint;
 }
 export type HeaderField = [string, string];
+export type HeaderField__1 = [string, string];
 export interface HttpRequest {
   url: string;
   method: string;
@@ -23,14 +24,14 @@ export interface HttpResponse {
   status_code: number;
 }
 export interface StorageBucket {
-  commit_batch: (arg_0: {contentType: string; chunkIds: Array<bigint>; batchId: bigint}) => Promise<undefined>;
-  create_batch: (arg_0: AssetKey) => Promise<{batchId: bigint}>;
-  create_chunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
+  commitUpload: (arg_0: {headers: Array<HeaderField__1>; chunkIds: Array<bigint>; batchId: bigint}) => Promise<undefined>;
   del: (arg_0: {token: [] | [string]; fullPath: string}) => Promise<undefined>;
   http_request: (arg_0: HttpRequest) => Promise<HttpResponse>;
   http_request_streaming_callback: (arg_0: StreamingCallbackToken) => Promise<StreamingCallbackHttpResponse>;
+  initUpload: (arg_0: AssetKey) => Promise<{batchId: bigint}>;
   list: (arg_0: [] | [string]) => Promise<Array<AssetKey>>;
   transferCycles: () => Promise<undefined>;
+  uploadChunk: (arg_0: Chunk) => Promise<{chunkId: bigint}>;
 }
 export interface StreamingCallbackHttpResponse {
   token: [] | [StreamingCallbackToken__1];
@@ -38,15 +39,17 @@ export interface StreamingCallbackHttpResponse {
 }
 export interface StreamingCallbackToken {
   token: [] | [string];
+  sha256: [] | [Array<number>];
   fullPath: string;
+  headers: Array<HeaderField>;
   index: bigint;
-  contentEncoding: string;
 }
 export interface StreamingCallbackToken__1 {
   token: [] | [string];
+  sha256: [] | [Array<number>];
   fullPath: string;
+  headers: Array<HeaderField>;
   index: bigint;
-  contentEncoding: string;
 }
 export type StreamingStrategy = {
   Callback: {
