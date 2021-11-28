@@ -49,7 +49,7 @@ const updatePhotoUrl = ({photo_url, html}: {photo_url: string | undefined; html:
 
   const photoUrlRegExp: RegExp = new RegExp('<!-- DECKDECKGO_PHOTO_URL -->.*?\\/>');
 
-  const alreadyContainsPhotoUrl: boolean = photoUrlRegExp.test(photo_url);
+  const alreadyContainsPhotoUrl: boolean = photoUrlRegExp.test(html);
 
   const img: string = `<img loading="lazy" src="${photo_url}" />`;
 
