@@ -44,16 +44,16 @@ const kit: Kit[] = [
     mimeType: 'text/css'
   },
   {
-    src: `${kitPath}build/index-KBD4IHFC.js`,
+    src: `${kitPath}build/index-KEIQ3UJL.js`,
+    mimeType: 'text/javascript'
+  },
+  {
+    src: `${kitPath}build/deck/index-Q2TQ3TUD.js`,
     mimeType: 'text/javascript'
   },
   {
     src: `${kitPath}build/deck/index.css`,
     mimeType: 'text/css'
-  },
-  {
-    src: `${kitPath}build/deck/index-VTCYBTMV.js`,
-    mimeType: 'text/javascript'
   }
 ].map((resource: {src: string; mimeType: KitMimeType}) => {
   const {pathname}: URL = new URL(resource.src);
