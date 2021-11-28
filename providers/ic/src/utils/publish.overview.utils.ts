@@ -38,7 +38,7 @@ const updatePhotoUrl = ({photo_url, html}: {photo_url: string | undefined; html:
     return html;
   }
 
-  return html.replace('<!-- DECKDECKGO_PHOTO_URL -->', `<img loading="lazy" src="${photo_url}" />`);
+  return html.replace('<!-- DECKDECKGO_PHOTO_URL -->', `<img role="presentation" alt="" loading="lazy" src="${photo_url}" />`);
 };
 
 const updateDeckList = async ({
