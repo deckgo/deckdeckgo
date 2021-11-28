@@ -18,7 +18,7 @@ export const publishOverview = async ({
 
   let html: string = updateTemplate({template, deckPublishData});
 
-  html = updateDeckList({deckId, template: html, deckPublishData});
+  html = updateDeckList({deckId, template: html, deckPublishData, storageUpload});
 
   const {actor} = storageUpload;
 
@@ -43,10 +43,12 @@ const htmlTemplate = async (): Promise<string> => {
 const updateDeckList = ({
   deckId,
   template,
+  storageUpload,
   deckPublishData
 }: {
   deckId: string;
   template: string;
+  storageUpload: StorageUpload;
   deckPublishData: DeckPublishData;
 }): string => {
   const deckRegExp: RegExp = new RegExp(`<li.*?deck-id="${deckId}".*?li>`);
@@ -54,8 +56,9 @@ const updateDeckList = ({
   const alreadyPublished: boolean = deckRegExp.test(template);
 
   const {title} = deckPublishData;
+  const {deckUrl} = storageUpload;
 
-  const li: string = `<li deck-id="${deckId}">${title}</li>`;
+  const li: string = `<li deck-id="${deckId}"><a href="${deckUrl}">${title}</a></li>`;
 
   if (alreadyPublished) {
     return template.replace(deckRegExp, li);
