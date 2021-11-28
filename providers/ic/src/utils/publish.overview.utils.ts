@@ -73,7 +73,11 @@ const updateDeckList = async ({
 
   const index: number = list.indexOf(li);
 
-  return template.replace(/<!-- DECKDECKGO_DATA -->/, [...list.slice(0, index), li, ...list.slice(index)].join(''));
+  if (index > -1) {
+    return template.replace(/<!-- DECKDECKGO_DATA -->/, list.map((entry: string, i: number) => (i === index ? li : entry)).join(''));
+  }
+
+  return template.replace(/<!-- DECKDECKGO_DATA -->/, [li, ...list].join(''));
 };
 
 const htmlSource = async ({bucketUrl}: StorageUpload): Promise<string | undefined> => {
