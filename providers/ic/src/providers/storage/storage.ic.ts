@@ -11,7 +11,7 @@ import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/
 
 import {toNullable} from '../../utils/did.utils';
 import {getStorageBucket} from '../../utils/manager.utils';
-import {upload} from '../../utils/storage.utils';
+import {encodeFilename, upload} from '../../utils/storage.utils';
 
 export const uploadFile: UploadFile = async ({
   data,
@@ -54,7 +54,7 @@ export const uploadFileIC = async ({
 
   const {fullPath, filename, token}: {fullPath: string; filename: string; token: string} = await upload({
     data,
-    filename: encodeURI(data.name),
+    filename: encodeFilename(data.name),
     folder,
     storageBucket: actor,
     token: uuid(),
