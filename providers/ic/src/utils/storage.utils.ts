@@ -85,3 +85,5 @@ const uploadChunk = async ({
     batchId,
     content: [...new Uint8Array(await chunk.arrayBuffer())]
   });
+
+export const encodeFilename = (filename: string): string => encodeURI(filename.toLowerCase().replace(/\s/g, '-'));
