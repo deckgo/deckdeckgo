@@ -14,29 +14,18 @@ export const publishOverview = async ({
   storageUpload: StorageUpload;
   deckPublishData: DeckPublishData;
 }): Promise<void> => {
-  const template: string = await htmlSource(storageUpload);
+  const template: string = await htmlTemplate();
 
   const {photo_url, ...data} = deckPublishData;
 
   let html: string = updateTemplate({template, data});
   html = updatePhotoUrl({html, photo_url});
-  html = updateDeckList({deckId, template: html, deckPublishData, storageUpload});
 
-  console.log('3567', html);
+  html = await updateDeckList({deckId, template: html, deckPublishData, storageUpload});
 
   const {actor} = storageUpload;
 
   await uploadOverviewIC({html, actor});
-};
-
-const htmlSource = async ({bucketUrl}: StorageUpload): Promise<string> => {
-  const response: Response = await fetch(bucketUrl);
-
-  if (response.ok) {
-    return response.text();
-  }
-
-  return await htmlTemplate();
 };
 
 const htmlTemplate = async (): Promise<string> => {
@@ -49,20 +38,10 @@ const updatePhotoUrl = ({photo_url, html}: {photo_url: string | undefined; html:
     return html;
   }
 
-  const photoUrlRegExp: RegExp = new RegExp('<!-- DECKDECKGO_PHOTO_URL -->.*?\\/>');
-
-  const alreadyContainsPhotoUrl: boolean = photoUrlRegExp.test(html);
-
-  const img: string = `<!-- DECKDECKGO_PHOTO_URL --><img loading="lazy" src="${photo_url}" />`;
-
-  if (alreadyContainsPhotoUrl) {
-    return html.replace(photoUrlRegExp, img);
-  }
-
-  return html.replace('<!-- DECKDECKGO_PHOTO_URL -->', img);
+  return html.replace('<!-- DECKDECKGO_PHOTO_URL -->', `<img loading="lazy" src="${photo_url}" />`);
 };
 
-const updateDeckList = ({
+const updateDeckList = async ({
   deckId,
   template,
   storageUpload,
@@ -72,21 +51,39 @@ const updateDeckList = ({
   template: string;
   storageUpload: StorageUpload;
   deckPublishData: DeckPublishData;
-}): string => {
-  const deckRegExp: RegExp = new RegExp(`<li.*?deck-id="${deckId}".*?li>`);
-
-  const alreadyPublished: boolean = deckRegExp.test(template);
-
+}): Promise<string> => {
   const {title} = deckPublishData;
   const {deckUrl} = storageUpload;
 
   const li: string = `<li deck-id="${deckId}"><a href="${deckUrl}">${title}</a></li>`;
 
-  if (alreadyPublished) {
-    return template.replace(deckRegExp, li);
+  const source: string | undefined = await htmlSource(storageUpload);
+
+  if (!source) {
+    return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}`);
   }
 
-  return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}<!-- DECKDECKGO_DATA -->`);
+  const matches: RegExpMatchArray[] = [...source.matchAll(/<li\x20.*?deck-id=".*".*?li>/gm)];
+
+  if (!matches || matches.length <= 0) {
+    return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}`);
+  }
+
+  const list: string[] = matches.map((match: RegExpMatchArray) => match[0]);
+
+  const index: number = list.indexOf(li);
+
+  return template.replace(/<!-- DECKDECKGO_DATA -->/, [...list.slice(0, index), li, ...list.slice(index)].join(''));
+};
+
+const htmlSource = async ({bucketUrl}: StorageUpload): Promise<string | undefined> => {
+  const response: Response = await fetch(bucketUrl);
+
+  if (response.ok) {
+    return response.text();
+  }
+
+  return undefined;
 };
 
 const uploadOverviewIC = async ({html, actor}: {html: string; actor: StorageBucketActor}): Promise<void> => {
@@ -95,7 +92,7 @@ const uploadOverviewIC = async ({html, actor}: {html: string; actor: StorageBuck
     filename: 'index.html',
     folder: 'resources',
     storageBucket: actor,
-    headers: [['Cache-Control', 'max-age=3600']],
+    headers: [['Cache-Control', 'max-age=0']],
     fullPath: '/'
   });
 };
