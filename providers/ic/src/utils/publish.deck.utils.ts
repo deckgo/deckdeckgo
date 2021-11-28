@@ -76,7 +76,9 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
   const {attributes, slides} = deckPublishData;
 
   const attr: string | undefined = attributes
-    ? Object.entries(attributes).reduce((acc: string, [key, value]: [string, string]) => `${acc}; ${key}: ${value}`, '')
+    ? Object.entries(attributes)
+        .reduce((acc: string, [key, value]: [string, string]) => `${key}="${value}"; ${acc}`, '')
+        .trim()
     : undefined;
 
   updatedTemplate = updatedTemplate.replace(
