@@ -63,7 +63,7 @@ const updateDeckList = async ({
     return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}`);
   }
 
-  const matches: RegExpMatchArray[] = [...source.matchAll(/<li\x20.*?deck-id=".*".*?li>/gm)];
+  const matches: RegExpMatchArray[] = [...source.matchAll(/<li\x20.*?deck-id=".*?".*?li>/gm)];
 
   if (!matches || matches.length <= 0) {
     return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}`);
