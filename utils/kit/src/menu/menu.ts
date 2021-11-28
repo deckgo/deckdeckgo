@@ -41,7 +41,7 @@ async function buildMenuListActions(): Promise<string> {
   return result;
 }
 
-customElements.define('menu-list', MenuList);
+customElements.get('menu-list') || customElements.define('menu-list', MenuList);
 
 export async function openMenu($event: UIEvent) {
   $event.preventDefault();

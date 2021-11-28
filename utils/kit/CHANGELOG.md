@@ -1,3 +1,9 @@
+# 4.0.2 (2021-11-28)
+
+### Features
+
+- define custom elements only if not defined yet
+
 # 4.0.1 (2021-05-24)
 
 ### Fix

@@ -60,7 +60,7 @@ function getSlideTitle(slide: HTMLElement, index: number) {
   }
 }
 
-customElements.define('deckgo-chapters', Chapters);
+customElements.get('deckgo-chapters') || customElements.define('deckgo-chapters', Chapters);
 
 export async function presentSlidePicker() {
   const menuButton = document.querySelector('ion-menu-button');
