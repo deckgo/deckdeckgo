@@ -108,6 +108,10 @@ const updateDeckMeta = ({name, description, tags, github}: {name: string; descri
       (deck.data.meta.author as DeckMetaAuthor).name = userStore.state.user.data.name;
     }
 
+    if (userStore.state.user.data.bio) {
+      (deck.data.meta.author as DeckMetaAuthor).bio = userStore.state.user.data.bio;
+    }
+
     if (userStore.state.user.data.photo_url) {
       (deck.data.meta.author as DeckMetaAuthor).photo_url = userStore.state.user.data.photo_url;
     }

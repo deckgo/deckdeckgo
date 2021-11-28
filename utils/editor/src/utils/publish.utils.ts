@@ -8,6 +8,7 @@ export interface DeckPublishData {
   title: string;
   description: string;
   author: string;
+  bio: string | undefined;
   photo_url: string | undefined;
   slides: string[];
   background: string | undefined;
@@ -28,6 +29,7 @@ export const publishData = ({deck}: {deck: Deck}): DeckPublishData => {
     title: (meta?.title || data.name)?.trim(),
     description: (meta?.description || data.name)?.trim(),
     author: meta?.author?.name || 'DeckDeckGo',
+    bio: meta?.author?.bio,
     photo_url: meta?.author?.photo_url,
     slides: getSlides(),
     background: background ? `<div slot="background">${background}</div>` : undefined,

@@ -20,7 +20,7 @@
 ### Others
 
 - deck-utils: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
-- editor: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v3.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - kit: v4.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/kit/CHANGELOG.md))
 - gatsby-remark-highlight-code: v3.0.2 ([CHANGELOG](https://github.com/deckgo/gatsby-remark-highlight-code/blob/master/CHANGELOG.md))
 - utils: v2.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
