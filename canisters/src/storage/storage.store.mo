@@ -47,7 +47,7 @@ module {
             };
 
             let split: [Text] = Iter.toArray(Text.split(url, #text "?token="));
-            let fullPath: Text = Text.trimStart(split[0], #char '/');
+            let fullPath: Text = "/" # Text.trimStart(split[0], #char '/');
             
             if (split.size() > 1) {
                 let token: Text = split[1];
