@@ -5,7 +5,7 @@ import {Deck, DeckData, DeckPublishData, publishData} from '@deckdeckgo/editor';
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
 import {setData} from './data.utils';
-import {upload} from './storage.utils';
+import {encodeFilename, upload} from './storage.utils';
 import {getPublishBucket} from './publish.utils';
 
 interface StorageUpload {
@@ -44,7 +44,7 @@ const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
 
   // 2. Folder and filename
   const folder: string = 'p';
-  const filename: string = encodeURI(deckPublishData.title);
+  const filename: string = encodeFilename(deckPublishData.title);
   const url: string = `https://${bucket.toText()}.raw.ic0.app/${folder}/${filename}`;
 
   // 3. Update URL
