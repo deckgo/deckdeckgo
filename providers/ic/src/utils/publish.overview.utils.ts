@@ -22,6 +22,8 @@ export const publishOverview = async ({
   html = updatePhotoUrl({html, photo_url});
   html = updateDeckList({deckId, template: html, deckPublishData, storageUpload});
 
+  console.log('3567', html);
+
   const {actor} = storageUpload;
 
   await uploadOverviewIC({html, actor});
@@ -51,7 +53,7 @@ const updatePhotoUrl = ({photo_url, html}: {photo_url: string | undefined; html:
 
   const alreadyContainsPhotoUrl: boolean = photoUrlRegExp.test(html);
 
-  const img: string = `<img loading="lazy" src="${photo_url}" />`;
+  const img: string = `<!-- DECKDECKGO_PHOTO_URL --><img loading="lazy" src="${photo_url}" />`;
 
   if (alreadyContainsPhotoUrl) {
     return html.replace(photoUrlRegExp, img);
