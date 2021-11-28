@@ -6,37 +6,38 @@ import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
 import {setData} from './data.utils';
 import {encodeFilename, upload} from './storage.utils';
-import {getPublishBucket} from './publish.utils';
+import {getPublishBucket, StorageUpload, updateTemplate} from './publish.utils';
 
-interface StorageUpload {
-  actor: StorageBucketActor;
-  html: string;
-  filename: string;
-  pathname: string;
-}
-
-export const publishDeck = async ({deck: deckSource}: {deck: Deck}): Promise<Deck> => {
+export const publishDeck = async ({
+  deck: deckSource
+}: {
+  deck: Deck;
+}): Promise<{deck: Deck; storageUpload: StorageUpload; deckPublishData: DeckPublishData}> => {
   const {id, data} = deckSource;
 
   // 1. Init and fill HTML
-  const uploadData: StorageUpload = await initUpload({deck: deckSource});
+  const {storageUpload, deckPublishData} = await initUpload({deck: deckSource});
 
   // 2. Update deck published meta
-  const publishData: DeckData = updateDeckMetaData({data, uploadData});
+  const publishData: DeckData = updateDeckMetaData({data, storageUpload});
 
   // 3. Update deck meta information
   const deck: Deck = await setData<Deck, DeckData>({key: `/decks/${id}`, id, data: publishData});
 
   // 4. Upload
-  await uploadFileIC(uploadData);
+  await uploadFileIC(storageUpload);
 
   // 5. Tells the snapshot the process is over
   emitDeckPublished(deck);
 
-  return deck;
+  return {
+    storageUpload,
+    deckPublishData,
+    deck
+  };
 };
 
-const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
+const initUpload = async ({deck}: {deck: Deck}): Promise<{storageUpload: StorageUpload; deckPublishData: DeckPublishData}> => {
   const {html, deckPublishData}: {html: string; deckPublishData: DeckPublishData} = await initIndexHTML({deck});
 
   // 1. Get actor
@@ -45,16 +46,23 @@ const initUpload = async ({deck}: {deck: Deck}): Promise<StorageUpload> => {
   // 2. Folder and filename
   const folder: string = 'p';
   const filename: string = encodeFilename(deckPublishData.title);
-  const url: string = `https://${bucket.toText()}.raw.ic0.app/${folder}/${filename}`;
+  const pathname: string = `/${folder}/${filename}`;
+  const bucketUrl: string = `https://${bucket.toText()}.raw.ic0.app`;
+  const deckUrl: string = `${bucketUrl}${pathname}`;
 
   // 3. Update URL
-  const indexHTML = html.replace('{{DECKDECKGO_URL}}', url);
+  const indexHTML = html.replace('{{DECKDECKGO_URL}}', deckUrl);
 
   return {
-    html: indexHTML,
-    actor,
-    filename,
-    pathname: new URL(url).pathname
+    storageUpload: {
+      html: indexHTML,
+      actor,
+      filename,
+      pathname,
+      deckUrl,
+      bucketUrl
+    },
+    deckPublishData
   };
 };
 
@@ -63,18 +71,14 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 
   const template: string = await htmlTemplate();
 
-  let updatedTemplate: string = Object.entries(deckPublishData).reduce(
-    (acc: string, [key, value]: [string, string]) =>
-      acc
-        .replaceAll(`{{DECKDECKGO_${key.toUpperCase()}}}`, value || '')
-        .replaceAll(`<!-- DECKDECKGO_${key.toUpperCase()} -->`, value || ''),
-    template
-  );
+  let updatedTemplate: string = updateTemplate({template, data: deckPublishData});
 
   const {attributes, slides} = deckPublishData;
 
   const attr: string | undefined = attributes
-    ? Object.entries(attributes).reduce((acc: string, [key, value]: [string, string]) => `${acc}; ${key}: ${value}`, '')
+    ? Object.entries(attributes)
+        .reduce((acc: string, [key, value]: [string, string]) => `${key}="${value}"; ${acc}`, '')
+        .trim()
     : undefined;
 
   updatedTemplate = updatedTemplate.replace(
@@ -123,8 +127,8 @@ const emitDeckPublished = (deck: Deck) => {
   document.dispatchEvent($event);
 };
 
-const updateDeckMetaData = ({data, uploadData}: {data: DeckData; uploadData: StorageUpload}): DeckData => {
-  const {pathname} = uploadData;
+const updateDeckMetaData = ({data, storageUpload}: {data: DeckData; storageUpload: StorageUpload}): DeckData => {
+  const {pathname} = storageUpload;
 
   const now: Date = new Date();
 

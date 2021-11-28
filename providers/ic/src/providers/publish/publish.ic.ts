@@ -7,11 +7,16 @@ import {_SERVICE as StorageBucketActor} from '../../canisters/storage/storage.di
 import {publishDeck} from '../../utils/publish.deck.utils';
 import {uploadResources} from '../../utils/publish.resources.utils';
 import {getPublishBucket} from '../../utils/publish.utils';
+import {publishOverview} from '../../utils/publish.overview.utils';
 
 export const publish: Publish = async ({deck}: {deck: Deck; config: Record<string, string>}): Promise<Deck> => {
   await uploadResources({deck});
 
-  return await publishDeck({deck});
+  const {storageUpload, deckPublishData, deck: updatedDeck} = await publishDeck({deck});
+
+  await publishOverview({storageUpload, deckPublishData, deckId: updatedDeck.id});
+
+  return updatedDeck;
 };
 
 export const publishUrl: PublishUrl = async () => {

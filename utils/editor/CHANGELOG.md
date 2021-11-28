@@ -1,3 +1,15 @@
+# 3.1.0 (2021-11-28)
+
+### Features
+
+- optional `bio` in publish data and deck author
+
+# 3.0.1 (2021-11-28)
+
+### Features
+
+- optional `photo_url` in publish data
+
 # 3.0.0 (2021-11-27)
 
 ### Breaking Changes

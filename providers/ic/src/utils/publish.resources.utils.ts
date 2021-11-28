@@ -18,42 +18,42 @@ interface Kit {
   updateContent?: ({content, deck}: {deck: Deck; content: string}) => string;
 }
 
-const kitPath: string = 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/';
+const kitPath: string = 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist';
 
 const kit: Kit[] = [
   {
-    src: `${kitPath}workbox-c837f436.js`,
+    src: `${kitPath}/workbox-c837f436.js`,
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}service-worker.js`,
+    src: `${kitPath}/service-worker.js`,
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}robots.txt`,
+    src: `${kitPath}/robots.txt`,
     mimeType: 'text/plain'
   },
   {
-    src: `${kitPath}manifest.webmanifest`,
+    src: `${kitPath}/manifest.webmanifest`,
     mimeType: 'application/manifest+json',
     updateContent: ({content, deck}: {deck: Deck; content: string}) =>
       content.replace('{{DECKDECKGO_AUTHOR}}', deck.data.meta?.author?.name || 'DeckDeckGo')
   },
   {
-    src: `${kitPath}build/index.css`,
+    src: `${kitPath}/build/index.css`,
     mimeType: 'text/css'
   },
   {
-    src: `${kitPath}build/index-KBD4IHFC.js`,
+    src: `${kitPath}/build/index-KEIQ3UJL.js`,
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}build/deck/index.css`,
+    src: `${kitPath}/build/deck/index-Q2TQ3TUD.js`,
+    mimeType: 'text/javascript'
+  },
+  {
+    src: `${kitPath}/build/deck/index.css`,
     mimeType: 'text/css'
-  },
-  {
-    src: `${kitPath}build/deck/index-VTCYBTMV.js`,
-    mimeType: 'text/javascript'
   }
 ].map((resource: {src: string; mimeType: KitMimeType}) => {
   const {pathname}: URL = new URL(resource.src);

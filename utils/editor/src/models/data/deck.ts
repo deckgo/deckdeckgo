@@ -24,6 +24,7 @@ export interface DeckGitHub {
 
 export interface DeckMetaAuthor {
   name: string;
+  bio?: string;
   photo_url?: string;
   social?: UserSocial;
 }
