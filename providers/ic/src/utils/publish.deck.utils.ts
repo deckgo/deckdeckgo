@@ -71,7 +71,7 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 
   const template: string = await htmlTemplate();
 
-  let updatedTemplate: string = updateTemplate({template, deckPublishData});
+  let updatedTemplate: string = updateTemplate({template, data: deckPublishData});
 
   const {attributes, slides} = deckPublishData;
 

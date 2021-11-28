@@ -23,8 +23,8 @@ export const getPublishBucket = (): Promise<{bucket: Principal; actor: StorageBu
   return getStorageBucket({identity});
 };
 
-export const updateTemplate = ({template, deckPublishData}: {template: string; deckPublishData: DeckPublishData}): string =>
-  Object.entries(deckPublishData).reduce(
+export const updateTemplate = ({template, data}: {template: string; data: Partial<DeckPublishData>}): string =>
+  Object.entries(data).reduce(
     (acc: string, [key, value]: [string, string]) =>
       acc
         .replaceAll(`{{DECKDECKGO_${key.toUpperCase()}}}`, value || '')

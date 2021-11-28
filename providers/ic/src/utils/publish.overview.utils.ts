@@ -16,8 +16,10 @@ export const publishOverview = async ({
 }): Promise<void> => {
   const template: string = await htmlSource(storageUpload);
 
-  let html: string = updateTemplate({template, deckPublishData});
+  const {photo_url, ...data} = deckPublishData;
 
+  let html: string = updateTemplate({template, data});
+  html = updatePhotoUrl({html, photo_url});
   html = updateDeckList({deckId, template: html, deckPublishData, storageUpload});
 
   const {actor} = storageUpload;
@@ -38,6 +40,24 @@ const htmlSource = async ({bucketUrl}: StorageUpload): Promise<string> => {
 const htmlTemplate = async (): Promise<string> => {
   const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/index.html');
   return htmlTemplate.text();
+};
+
+const updatePhotoUrl = ({photo_url, html}: {photo_url: string | undefined; html: string}): string => {
+  if (!photo_url) {
+    return html;
+  }
+
+  const photoUrlRegExp: RegExp = new RegExp('<!-- DECKDECKGO_PHOTO_URL -->.*?\\/>');
+
+  const alreadyContainsPhotoUrl: boolean = photoUrlRegExp.test(photo_url);
+
+  const img: string = `<img loading="lazy" src="${photo_url}" />`;
+
+  if (alreadyContainsPhotoUrl) {
+    return html.replace(photoUrlRegExp, img);
+  }
+
+  return html.replace('<!-- DECKDECKGO_PHOTO_URL -->', img);
 };
 
 const updateDeckList = ({
