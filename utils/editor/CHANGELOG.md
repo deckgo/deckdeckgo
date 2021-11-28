@@ -1,3 +1,9 @@
+# 3.0.1 (2021-11-27)
+
+### Features
+
+- optional `photo_url` in publish data
+
 # 3.0.0 (2021-11-27)
 
 ### Breaking Changes
