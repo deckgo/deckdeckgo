@@ -58,7 +58,7 @@
     "canister"
   ],
   "dependencies": {
-    "@deckdeckgo/editor": "^3.0.0",
+    "@deckdeckgo/editor": "^3.0.1",
     "@dfinity/agent": "^0.10.0",
     "@dfinity/auth-client": "^0.10.0",
     "@dfinity/authentication": "^0.10.0",
