@@ -49,9 +49,15 @@ module {
             let split: [Text] = Iter.toArray(Text.split(url, #text "?token="));
             let fullPath: Text = "/" # Text.trimStart(split[0], #char '/');
             
+            // Token protected assets
             if (split.size() > 1) {
                 let token: Text = split[1];
                 return getAsset(fullPath, ?token);
+            };
+
+            // Map /index.html to / because we are using / as root
+            if (fullPath == "/index.html") {
+                return getAsset("/", null);
             };
 
             return getAsset(fullPath, null);
