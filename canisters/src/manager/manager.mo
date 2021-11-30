@@ -1,16 +1,20 @@
-import BucketsStore "./buckets.store";
-import CanisterTypes "../types/canister.types";
-import CanisterUtils "../utils/canister.utils";
 import Cycles "mo:base/ExperimentalCycles";
-import DataBucket "../data/data";
 import Error "mo:base/Error";
 import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
 import Option "mo:base/Option";
 import Principal "mo:base/Principal";
-import StorageBucket "../storage/storage";
 import Text "mo:base/Text";
+
 import Types "../types/types";
+
+import CanisterUtils "../utils/canister.utils";
+
+import BucketTypes "./bucket.types";
+import BucketStore "./bucket.store";
+
+import DataBucket "../data/data";
+import StorageBucket "../storage/storage";
 
 actor Manager {
     type UserId = Types.UserId;
@@ -18,16 +22,16 @@ actor Manager {
     type DataBucket = DataBucket.DataBucket;
     type StorageBucket = StorageBucket.StorageBucket;
 
-    type BucketId = CanisterTypes.BucketId;
+    type BucketId = BucketTypes.BucketId;
 
     private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-    let dataStore: BucketsStore.BucketsStore<DataBucket> = BucketsStore.BucketsStore<DataBucket>();
-    let storagesStore: BucketsStore.BucketsStore<StorageBucket> = BucketsStore.BucketsStore<StorageBucket>();
+    let dataStore: BucketStore.BucketStore<DataBucket> = BucketStore.BucketStore<DataBucket>();
+    let storagesStore: BucketStore.BucketStore<StorageBucket> = BucketStore.BucketStore<StorageBucket>();
 
     // Preserve the application state on upgrades
-    private stable var data : [(Principal, CanisterTypes.Bucket<DataBucket>)] = [];
-    private stable var storages : [(Principal, CanisterTypes.Bucket<StorageBucket>)] = [];
+    private stable var data : [(Principal, BucketTypes.Bucket<DataBucket>)] = [];
+    private stable var storages : [(Principal, BucketTypes.Bucket<StorageBucket>)] = [];
 
     /**
      * Data
@@ -37,7 +41,7 @@ actor Manager {
         return await initBucket<DataBucket>(caller, dataStore, initNewDataBucket);
     };
 
-    private func initNewDataBucket(manager: Principal, user: UserId, data: HashMap.HashMap<UserId, CanisterTypes.Bucket<DataBucket>>): async (Principal) {
+    private func initNewDataBucket(manager: Principal, user: UserId, data: HashMap.HashMap<UserId, BucketTypes.Bucket<DataBucket>>): async (Principal) {
         Cycles.add(1_000_000_000_000);
         let b: DataBucket = await DataBucket.DataBucket(user);
 
@@ -45,7 +49,7 @@ actor Manager {
 
         await canisterUtils.updateSettings(canisterId, manager);
 
-        let newDataBucket: CanisterTypes.Bucket<DataBucket> = {
+        let newDataBucket: BucketTypes.Bucket<DataBucket> = {
             bucket = b;
             bucketId = canisterId;
             owner = user;
@@ -90,7 +94,7 @@ actor Manager {
         return await initBucket<StorageBucket>(caller, storagesStore, initNewStorageBucket);
     };
 
-    private func initNewStorageBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, CanisterTypes.Bucket<StorageBucket>>): async (Principal) {
+    private func initNewStorageBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, BucketTypes.Bucket<StorageBucket>>): async (Principal) {
         Cycles.add(1_000_000_000_000);
         let b: StorageBucket = await StorageBucket.StorageBucket(user);
 
@@ -98,7 +102,7 @@ actor Manager {
 
         await canisterUtils.updateSettings(canisterId, manager);
 
-        let newStorageBucket: CanisterTypes.Bucket<StorageBucket> = {
+        let newStorageBucket: BucketTypes.Bucket<StorageBucket> = {
             bucket = b;
             bucketId = canisterId;
             owner = user;
@@ -139,7 +143,7 @@ actor Manager {
      * Buckets
      */
 
-    private func initBucket<T>(caller: Principal, store: BucketsStore.BucketsStore<T>, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, CanisterTypes.Bucket<T>>) -> async (Principal)): async (BucketId) {
+    private func initBucket<T>(caller: Principal, store: BucketStore.BucketStore<T>, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, BucketTypes.Bucket<T>>) -> async (Principal)): async (BucketId) {
         let self: Principal = Principal.fromActor(Manager);
 
         let result: {#bucketId: BucketId; #error: Text;} = await store.init(self, caller, initNewBucket);
@@ -154,7 +158,7 @@ actor Manager {
         };
     };
 
-    private func delBucket<T>(caller: Principal, store: BucketsStore.BucketsStore<T>) : async (Bool) {
+    private func delBucket<T>(caller: Principal, store: BucketStore.BucketStore<T>) : async (Bool) {
         let result: {#bucketId: ?BucketId; #error: Text;} = await store.deleteBucket(caller);
 
         switch (result) {
