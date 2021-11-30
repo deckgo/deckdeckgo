@@ -7,7 +7,8 @@
   "scripts": {
     "ic:install:data": "node canisters/scripts/ic.installcode.mjs",
     "ic:types": "node ./canisters/scripts/ic.types.js",
-    "build": "npm run ic:types && cd studio && npm run build:ic"
+    "build": "npm run ic:types && cd studio && npm run build:ic",
+    "postbuild": "prettier --write providers/ic"
   },
   "workspaces": [
     "providers/*",
