@@ -2,26 +2,25 @@ import Principal "mo:base/Principal";
 
 import Types "../types/types";
 import IC "../types/ic.types";
-import CanisterTypes "../types/canister.types";
 
 module {
 
-    type UserId = Types.UserId;
+    private type UserId = Types.UserId;
 
-    type BucketId = CanisterTypes.BucketId;
+    private type CanisterId = IC.canister_id;
 
     public class CanisterUtils() {
 
         private let ic : IC.Self = actor "aaaaa-aa";
 
-        public func deleteCanister(bucketId: BucketId): async() {
-            let deckBucket = actor(Principal.toText(bucketId)): actor { transferCycles: () -> async () };
+        public func deleteCanister(canisterId: CanisterId): async() {
+            let deckBucket = actor(Principal.toText(canisterId)): actor { transferCycles: () -> async () };
 
             await deckBucket.transferCycles();
 
-            await ic.stop_canister({ canister_id = bucketId });
+            await ic.stop_canister({ canister_id = canisterId });
 
-            await ic.delete_canister({ canister_id = bucketId });
+            await ic.delete_canister({ canister_id = canisterId });
         };
 
         public func updateSettings(canisterId: Principal, manager: Principal): async () {
