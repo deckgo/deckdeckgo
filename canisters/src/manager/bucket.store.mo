@@ -4,6 +4,7 @@ import Text "mo:base/Text";
 import Option "mo:base/Option";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
+import Result "mo:base/Result";
 
 import Types "../types/types";
 import BucketTypes "./bucket.types";
@@ -14,63 +15,71 @@ import CanisterUtils "../utils/canister.utils";
 module {
     private type UserId = Types.UserId;
 
-    private type BucketId = BucketTypes.BucketId;
+    private type Bucket = BucketTypes.Bucket;
 
     public class BucketStore() {
-        private var buckets: HashMap.HashMap<UserId, BucketTypes.Bucket> = HashMap.HashMap<UserId, BucketTypes.Bucket>(10, Utils.isPrincipalEqual, Principal.hash);
+        private var buckets: HashMap.HashMap<UserId, Bucket> = HashMap.HashMap<UserId, Bucket>(10, Utils.isPrincipalEqual, Principal.hash);
 
         private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, BucketTypes.Bucket>) -> async (Principal)): async ({#bucketId: BucketId; #error: Text;}) {
-            let bucket: {#bucketId: ?BucketId; #error: Text;} = getBucket(user);
+        public func init(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId) -> async (Principal)): async (Result.Result<Bucket, Text>) {
+            let result: Result.Result<?Bucket, Text> = getBucket(user);
 
-            switch (bucket) {
-                case (#error error) {
-                    return #error error;
+            switch (result) {
+                case (#err error) {
+                    return #err error;
                 };
-                case (#bucketId bucketId) {
-                    switch (bucketId) {
-                        case (?bucketId) {
-                            return #bucketId bucketId;
+                case (#ok bucket) {
+                    switch (bucket) {
+                        case (?bucket) {
+                            return #ok bucket;
                         };
                         case null {
-                            let newBucketId: Principal = await initNewBucket(manager, user, buckets);
+                            // TODO: insert partial bucket in store first and handle the partial state in frontend
 
-                            return #bucketId newBucketId;
+                            let newBucketId: Principal = await initNewBucket(manager, user);
+
+                            let newDataBucket: BucketTypes.Bucket = {
+                                bucketId = ?newBucketId;
+                                owner = user;
+                            };
+
+                            buckets.put(user, newDataBucket);
+
+                            return #ok newDataBucket;
                         };
                     }
                 };
             };
         };
 
-        public func getBucket(user: UserId): {#bucketId: ?BucketId; #error: Text;} {
-            let bucket: ?BucketTypes.Bucket = buckets.get(user);
+        public func getBucket(user: UserId): Result.Result<?Bucket, Text> {
+            let bucket: ?Bucket = buckets.get(user);
 
             switch bucket {
-                case (?bucket) {
-                    if (Utils.isPrincipalEqual(user, bucket.owner)) {
-                        let bucketId: ?BucketId = ?bucket.bucketId;
-                        return #bucketId bucketId;
+                case (?{owner}) {
+                    if (Utils.isPrincipalEqual(user, owner)) {
+                        return #ok bucket;
                     };
                 };
                 case null {
-                    return #bucketId null;
+                    return #ok null;
                 };
             };
 
-            return #error "User does not have the permission for the bucket.";
+            return #err "User does not have the permission for the bucket.";
         };
 
-        public func deleteBucket(user: UserId) : async ({#bucketId: ?BucketId; #error: Text;}) {
-            let bucket: {#bucketId: ?BucketId; #error: Text;} = getBucket(user);
+        public func deleteBucket(user: UserId) : async (Result.Result<?Bucket, Text>) {
+            let bucket: Result.Result<?Bucket, Text> = getBucket(user);
 
             switch (bucket) {
-                case (#error error) {
-                    return #error error;
+                case (#err error) {
+                    return #err error;
                 };
-                case (#bucketId bucketId) {
-                    switch (bucketId) {
-                        case (?bucketId) {
+                case (#ok bucket) {
+                    switch (bucket) {
+                        case (?{bucketId}) {
                             await canisterUtils.deleteCanister(bucketId);
 
                             buckets.delete(user);
@@ -78,14 +87,14 @@ module {
                         case null {};
                     };
 
-                    return #bucketId bucketId;
+                    return #ok bucket;
                 };
             };
         };
 
-        public func entries(): [{bucketId: BucketId; owner: UserId;}] {
-            let entries: Iter.Iter<(UserId, BucketTypes.Bucket)> = buckets.entries();
-            let values: Iter.Iter<{bucketId: BucketId; owner: UserId;}> = Iter.map(entries, func ((key: UserId, value: BucketTypes.Bucket)) : {bucketId: BucketId; owner: UserId;} {
+        public func entries(): [Bucket] {
+            let entries: Iter.Iter<(UserId, Bucket)> = buckets.entries();
+            let values: Iter.Iter<Bucket> = Iter.map(entries, func ((key: UserId, value: Bucket)) : Bucket {
                 {
                     bucketId = value.bucketId;
                     owner = value.owner;
@@ -94,12 +103,12 @@ module {
             return Iter.toArray(values);
         };
 
-        public func preupgrade(): HashMap.HashMap<UserId, BucketTypes.Bucket> {
+        public func preupgrade(): HashMap.HashMap<UserId, Bucket> {
             return buckets;
         };
 
-        public func postupgrade(stableBuckets: [(UserId, BucketTypes.Bucket)]) {
-            buckets := HashMap.fromIter<UserId, BucketTypes.Bucket>(stableBuckets.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
+        public func postupgrade(stableBuckets: [(UserId, Bucket)]) {
+            buckets := HashMap.fromIter<UserId, Bucket>(stableBuckets.vals(), 10, Utils.isPrincipalEqual, Principal.hash);
         };
     }
 

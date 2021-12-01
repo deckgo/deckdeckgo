@@ -1,15 +1,18 @@
+type UserId__1 = principal;
 type UserId = principal;
 type BucketId = principal;
+type Bucket = 
+ record {
+   bucketId: opt BucketId;
+   owner: UserId;
+ };
 service : {
   delData: () -> (bool);
   delStorage: () -> (bool);
-  getData: () -> (opt BucketId) query;
-  getStorage: () -> (opt BucketId) query;
-  initData: () -> (BucketId);
-  initStorage: () -> (BucketId);
-  installCode: (principal, UserId, blob) -> ();
-  list: (text) -> (vec record {
-                         bucketId: BucketId;
-                         owner: UserId;
-                       }) query;
+  getData: () -> (opt Bucket) query;
+  getStorage: () -> (opt Bucket) query;
+  initData: () -> (Bucket);
+  initStorage: () -> (Bucket);
+  installCode: (principal, UserId__1, blob) -> ();
+  list: (text) -> (vec Bucket) query;
 }

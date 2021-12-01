@@ -13,14 +13,19 @@ module {
 
         private let ic : IC.Self = actor "aaaaa-aa";
 
-        public func deleteCanister(canisterId: CanisterId): async() {
-            let deckBucket = actor(Principal.toText(canisterId)): actor { transferCycles: () -> async () };
+        public func deleteCanister(canisterId: ?CanisterId): async() {
+            switch (canisterId) {
+                case (?canisterId) {
+                    let deckBucket = actor(Principal.toText(canisterId)): actor { transferCycles: () -> async () };
 
-            await deckBucket.transferCycles();
+                    await deckBucket.transferCycles();
 
-            await ic.stop_canister({ canister_id = canisterId });
+                    await ic.stop_canister({ canister_id = canisterId });
 
-            await ic.delete_canister({ canister_id = canisterId });
+                    await ic.delete_canister({ canister_id = canisterId });
+                };
+                case null {};
+            }
         };
 
         public func updateSettings(canisterId: Principal, manager: Principal): async () {
