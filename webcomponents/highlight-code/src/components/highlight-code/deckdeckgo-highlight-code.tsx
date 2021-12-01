@@ -1,6 +1,6 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {catchTab, debounce, moveCursorToEnd} from '@deckdeckgo/utils';
+import {catchTab, debounce, getSelection, moveCursorToEnd} from '@deckdeckgo/utils';
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -459,6 +459,26 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
       start: allRows.indexOf(rows[0]),
       end: allRows.indexOf(rows[rows.length - 1])
     };
+  }
+
+  @Listen('copy', {target: 'window'})
+  onCopyCleanZeroWidthSpaces($event: ClipboardEvent) {
+    const {target, clipboardData} = $event;
+
+    if (!target || !clipboardData || !this.el.isEqualNode(target as Node)) {
+      return;
+    }
+
+    const selection: Selection | null = getSelection();
+
+    if (!selection) {
+      return;
+    }
+
+    $event.preventDefault();
+
+    const text: string = selection.toString().replace(/\u200B/g, '');
+    clipboardData.setData('text/plain', text);
   }
 
   render() {
