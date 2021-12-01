@@ -26,22 +26,22 @@ actor Manager {
 
     private let canisterUtils: CanisterUtils.CanisterUtils = CanisterUtils.CanisterUtils();
 
-    let dataStore: BucketStore.BucketStore<DataBucket> = BucketStore.BucketStore<DataBucket>();
-    let storagesStore: BucketStore.BucketStore<StorageBucket> = BucketStore.BucketStore<StorageBucket>();
+    let dataStore: BucketStore.BucketStore = BucketStore.BucketStore();
+    let storagesStore: BucketStore.BucketStore = BucketStore.BucketStore();
 
     // Preserve the application state on upgrades
-    private stable var data : [(Principal, BucketTypes.Bucket<DataBucket>)] = [];
-    private stable var storages : [(Principal, BucketTypes.Bucket<StorageBucket>)] = [];
+    private stable var data : [(Principal, BucketTypes.Bucket)] = [];
+    private stable var storages : [(Principal, BucketTypes.Bucket)] = [];
 
     /**
      * Data
      */
 
     public shared({ caller }) func initData(): async (BucketId) {
-        return await initBucket<DataBucket>(caller, dataStore, initNewDataBucket);
+        return await initBucket(caller, dataStore, initNewDataBucket);
     };
 
-    private func initNewDataBucket(manager: Principal, user: UserId, data: HashMap.HashMap<UserId, BucketTypes.Bucket<DataBucket>>): async (Principal) {
+    private func initNewDataBucket(manager: Principal, user: UserId, data: HashMap.HashMap<UserId, BucketTypes.Bucket>): async (Principal) {
         Cycles.add(1_000_000_000_000);
         let b: DataBucket = await DataBucket.DataBucket(user);
 
@@ -49,8 +49,7 @@ actor Manager {
 
         await canisterUtils.updateSettings(canisterId, manager);
 
-        let newDataBucket: BucketTypes.Bucket<DataBucket> = {
-            bucket = b;
+        let newDataBucket: BucketTypes.Bucket = {
             bucketId = canisterId;
             owner = user;
         };
@@ -83,7 +82,7 @@ actor Manager {
     };
 
     public shared({ caller }) func delData() : async (Bool) {
-        return await delBucket<DataBucket>(caller, dataStore);
+        return await delBucket(caller, dataStore);
     };
 
     /**
@@ -91,10 +90,10 @@ actor Manager {
      */
 
     public shared({ caller }) func initStorage(): async (BucketId) {
-        return await initBucket<StorageBucket>(caller, storagesStore, initNewStorageBucket);
+        return await initBucket(caller, storagesStore, initNewStorageBucket);
     };
 
-    private func initNewStorageBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, BucketTypes.Bucket<StorageBucket>>): async (Principal) {
+    private func initNewStorageBucket(manager: Principal, user: UserId, storages: HashMap.HashMap<UserId, BucketTypes.Bucket>): async (Principal) {
         Cycles.add(1_000_000_000_000);
         let b: StorageBucket = await StorageBucket.StorageBucket(user);
 
@@ -102,8 +101,7 @@ actor Manager {
 
         await canisterUtils.updateSettings(canisterId, manager);
 
-        let newStorageBucket: BucketTypes.Bucket<StorageBucket> = {
-            bucket = b;
+        let newStorageBucket: BucketTypes.Bucket = {
             bucketId = canisterId;
             owner = user;
         };
@@ -136,14 +134,14 @@ actor Manager {
     };
 
     public shared({ caller }) func delStorage() : async (Bool) {
-        return await delBucket<StorageBucket>(caller, storagesStore);
+        return await delBucket(caller, storagesStore);
     };
 
     /**
      * Buckets
      */
 
-    private func initBucket<T>(caller: Principal, store: BucketStore.BucketStore<T>, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, BucketTypes.Bucket<T>>) -> async (Principal)): async (BucketId) {
+    private func initBucket(caller: Principal, store: BucketStore.BucketStore, initNewBucket: (manager: Principal, user: UserId, buckets: HashMap.HashMap<UserId, BucketTypes.Bucket>) -> async (Principal)): async (BucketId) {
         let self: Principal = Principal.fromActor(Manager);
 
         let result: {#bucketId: BucketId; #error: Text;} = await store.init(self, caller, initNewBucket);
@@ -158,7 +156,7 @@ actor Manager {
         };
     };
 
-    private func delBucket<T>(caller: Principal, store: BucketStore.BucketStore<T>) : async (Bool) {
+    private func delBucket(caller: Principal, store: BucketStore.BucketStore) : async (Bool) {
         let result: {#bucketId: ?BucketId; #error: Text;} = await store.deleteBucket(caller);
 
         switch (result) {
