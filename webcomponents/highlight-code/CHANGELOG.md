@@ -1,3 +1,9 @@
+# 3.6.0 (2021-12-01)
+
+### Fix
+
+- clean zero width spaces on copy
+
 # 3.5.0 (2021-11-13)
 
 ### Feature
