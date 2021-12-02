@@ -6,6 +6,7 @@ import {UserUtils} from '../../../utils/core/user.utils';
 import {firebase} from '../../../utils/core/environment.utils';
 
 import {AppIcon} from '../../../components/core/app-icon/app-icon';
+import {renderI18n} from '../../../utils/core/i18n.utils';
 
 @Component({
   tag: 'app-user-delete',
@@ -71,7 +72,12 @@ export class AppUserDelete {
         <p>{i18n.state.settings.cannot_undone}</p>
 
         <form onSubmit={(e: Event) => this.handleSubmit(e)}>
-          <p>{this.username === 'deckdeckgo' ? i18n.state.settings.type_ddg_to_confirm : i18n.state.settings.type_to_confirm}</p>
+          <p>
+            {renderI18n(this.username === 'deckdeckgo' ? i18n.state.settings.type_ddg_to_confirm : i18n.state.settings.type_to_confirm, {
+              placeholder: '{0}',
+              value: <strong>{this.username}</strong>
+            })}
+          </p>
 
           <ion-item>
             <ion-input

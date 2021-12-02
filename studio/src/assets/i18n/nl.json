@@ -78,8 +78,8 @@
   "settings": {
     "un_publish": "Houd er rekening mee dat de presentaties die u hebt gedeeld momenteel niet automatisch van internet worden verwijderd. Als u de publicatie ervan wilt ongedaan maken, stuur ons dan een bericht op een van onze {0} kanalen.",
     "cannot_undone": "Deze actie kan niet ongedaan gemaakt worden. Hiermee wordt uw gebruiker definitief verwijderd.",
-    "type_to_confirm": "Typ uw gebruikersnaam om te bevestigen.",
-    "type_ddg_to_confirm": "Typ deckdeckgo om te bevestigen.",
+    "type_to_confirm": "Typ uw gebruikersnaam {0} om te bevestigen.",
+    "type_ddg_to_confirm": "Typ {0} om te bevestigen.",
     "i_understand": "Ik begrijp het, verwijder mijn gebruiker",
     "customization": "Personalisering",
     "edit_mode": "Bewerkingsmodus",
