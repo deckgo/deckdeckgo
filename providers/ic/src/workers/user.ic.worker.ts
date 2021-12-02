@@ -12,13 +12,16 @@ import {getData, setData} from '../utils/data.utils';
 
 import {InternetIdentityAuth} from '../types/identity';
 
-export const initUserWorker = async ({
-  internetIdentity: {delegationChain, identityKey},
-  host
-}: {
-  internetIdentity: InternetIdentityAuth;
-  host: string;
-}): Promise<User> => {
+export const initUserWorker = async (
+  {
+    internetIdentity: {delegationChain, identityKey},
+    host
+  }: {
+    internetIdentity: InternetIdentityAuth;
+    host: string;
+  },
+  onInitUserSuccess: (user: User) => Promise<void>
+): Promise<User> => {
   if (!delegationChain || !identityKey) {
     return;
   }
@@ -28,10 +31,15 @@ export const initUserWorker = async ({
   const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity, host});
 
   if (!actor) {
-    // TODO Poll till ready
+    setTimeout(async () => await initUserWorker({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess), 2000);
     return;
   }
 
+  const user: User = await initUser({actor});
+  await onInitUserSuccess(user);
+};
+
+const initUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
   console.log('User IC about to GET');
   const t0 = performance.now();
 

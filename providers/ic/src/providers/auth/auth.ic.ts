@@ -39,9 +39,9 @@ export const initAuth: InitAuth = async ({
 
   await initUser({success});
 
-  const user: User = await initUserWorker({internetIdentity, host: `https://ic0.app`});
+  const onInitUserSuccess: (user: User) => Promise<void> = async (user: User) => await authenticatedUser({user, success});
 
-  await authenticatedUser({user, success});
+  await initUserWorker({internetIdentity, host: `https://ic0.app`}, onInitUserSuccess);
 };
 
 // If first sign-in, initializing the canister can take a while therefore we already emit a not fully authenticated user

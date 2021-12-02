@@ -13,7 +13,7 @@ import {uploadWorker} from '../../workers/sync.ic.worker';
 import {SyncWindow, SyncWindowEvent} from '../../types/sync.window';
 
 // - we cannot use postmessage because of CORS
-// - we have to path the function separately for serialisation reason
+// - we have to path the function separately in the function's call for serialisation reason (not within the object)
 const syncWindow: SyncWindow = async ({msg, data}: SyncWindowEvent) => {
   if (msg === 'deckdeckgo_sync_deck_background') {
     await syncDeckBackground(data);
