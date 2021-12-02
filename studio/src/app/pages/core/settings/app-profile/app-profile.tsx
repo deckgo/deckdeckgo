@@ -251,6 +251,10 @@ export class AppProfile {
         return;
       }
 
+      const loading: HTMLIonLoadingElement = await loadingController.create({});
+
+      await loading.present();
+
       try {
         this.saving = true;
 
@@ -264,6 +268,8 @@ export class AppProfile {
         errorStore.state.error = err;
         this.saving = false;
       }
+
+      await loading.dismiss();
 
       resolve();
     });
