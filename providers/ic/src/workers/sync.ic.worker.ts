@@ -47,8 +47,15 @@ export const uploadWorker = async (
     deleteParagraphs: paragraphsToDelete
   } = syncData;
 
+  const promises: [Promise<BucketActor<DataBucketActor>>, Promise<BucketActor<StorageBucketActor>>] = [
+    getDataBucket({host, identity}),
+    getStorageBucket({host, identity})
+  ];
+
+  const [dataBucket, storageBucket] = await Promise.all(promises);
+
   // For performance reason, we query the actor only once. We might not need it but, most often we will and multiple times.
-  const {actor}: BucketActor<DataBucketActor> = await getDataBucket({host, identity});
+  const {actor}: BucketActor<DataBucketActor> = dataBucket;
 
   // In case the bucket does not yet exist, do not sync yet and wait for next poll
   // Can most probably not happens since user auth create such bucket and triggers the sync when ready
@@ -56,9 +63,8 @@ export const uploadWorker = async (
     return;
   }
 
+  // TODO: what's the impact in term of performance to query it every time? indeed we need to init it the very first time to initialize the bucket but, we might not need it to sync data most of the time?
   // We query the storage actor until it is initialized and use it to upload the assets
-  const storageBucket: BucketActor<StorageBucketActor> = await getStorageBucket({host, identity});
-
   const {actor: storageActor} = storageBucket;
 
   if (!storageActor) {
