@@ -12,7 +12,18 @@ import {getData, setData} from '../utils/data.utils';
 
 import {InternetIdentityAuth} from '../types/identity';
 
-export const initUserWorker = async (
+export const initUserWorker = (
+  {
+    internetIdentity,
+    host
+  }: {
+    internetIdentity: InternetIdentityAuth;
+    host: string;
+  },
+  onInitUserSuccess: (user: User) => Promise<void>
+): Promise<void> => initUser({internetIdentity, host}, onInitUserSuccess);
+
+const initUser = async (
   {
     internetIdentity: {delegationChain, identityKey},
     host
@@ -21,25 +32,32 @@ export const initUserWorker = async (
     host: string;
   },
   onInitUserSuccess: (user: User) => Promise<void>
-): Promise<User> => {
-  if (!delegationChain || !identityKey) {
-    return;
-  }
+) =>
+  new Promise<void>(async (resolve) => {
+    if (!delegationChain || !identityKey) {
+      resolve();
+      return;
+    }
 
-  const identity: Identity = initIdentity({identityKey, delegationChain});
+    const identity: Identity = initIdentity({identityKey, delegationChain});
 
-  const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity, host});
+    const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity, host});
 
-  if (!actor) {
-    setTimeout(async () => await initUserWorker({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess), 2000);
-    return;
-  }
+    if (!actor) {
+      setTimeout(async () => {
+        await initUser({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess);
+        resolve();
+      }, 2000);
+      return;
+    }
 
-  const user: User = await initUser({actor});
-  await onInitUserSuccess(user);
-};
+    const user: User = await initUserData({actor});
+    await onInitUserSuccess(user);
 
-const initUser = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
+    resolve();
+  });
+
+const initUserData = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
   console.log('User IC about to GET');
   const t0 = performance.now();
 
