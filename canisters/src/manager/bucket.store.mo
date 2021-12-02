@@ -5,6 +5,7 @@ import Option "mo:base/Option";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
 import Result "mo:base/Result";
+import Error "mo:base/Error";
 
 import Types "../types/types";
 import BucketTypes "./bucket.types";
@@ -35,21 +36,50 @@ module {
                             return #ok bucket;
                         };
                         case null {
-                            // TODO: insert partial bucket in store first and handle the partial state in frontend
-
-                            let newBucketId: Principal = await initNewBucket(manager, user);
-
-                            let newDataBucket: BucketTypes.Bucket = {
-                                bucketId = ?newBucketId;
-                                owner = user;
-                            };
-
-                            buckets.put(user, newDataBucket);
-
-                            return #ok newDataBucket;
+                            return await initBucket(manager, user, initNewBucket);
                         };
                     }
                 };
+            };
+        };
+
+        private func initBucket(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId) -> async (Principal)): async (Result.Result<Bucket, Text>) {
+            initEmptyBucket(user);
+
+            let newBucketResult: Result.Result<Bucket, Text> = await createBucket(manager, user, initNewBucket);
+
+            return newBucketResult;
+        };
+
+        // We add an entry in the list of bucket to know that we are creating a bucket for the user
+        // In the frontend, if we get an entry without bucket, we poll until we get it
+        // Doing so we aim to avoid issue if the user refresh is browser, for example, while the creation of the bucket is on going (can least up to 30s)
+        private func initEmptyBucket(user: UserId) {
+            let newDataBucket: BucketTypes.Bucket = {
+                bucketId = null;
+                owner = user;
+            };
+
+            buckets.put(user, newDataBucket);
+        };
+
+        private func createBucket(manager: Principal, user: UserId, initNewBucket: (manager: Principal, user: UserId) -> async (Principal)): async (Result.Result<Bucket, Text>) {
+            try {
+                let newBucketId: Principal = await initNewBucket(manager, user);
+
+                let newDataBucket: BucketTypes.Bucket = {
+                    bucketId = ?newBucketId;
+                    owner = user;
+                };
+
+                buckets.put(user, newDataBucket);
+
+                return #ok newDataBucket;
+            } catch (error) {
+                // If it fails, remove the pending empty bucket entry from the list
+                buckets.delete(user);
+
+                return #err ("Cannot create bucket." # Error.message(error));
             };
         };
 
