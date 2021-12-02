@@ -3,6 +3,7 @@ import {Identity} from '@dfinity/agent';
 import {Deck, Doc, Paragraph, Slide, SyncData, SyncDataDeck, SyncDataDoc, SyncDataParagraph, SyncDataSlide} from '@deckdeckgo/editor';
 
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
+import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
 import {InternetIdentityAuth} from '../types/identity';
 import {SyncWindow} from '../types/sync.window';
@@ -12,7 +13,7 @@ import {initIdentity} from '../utils/identity.utils';
 import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
 import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
 import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
-import {BucketActor, getDataBucket} from '../utils/manager.utils';
+import {BucketActor, getDataBucket, getStorageBucket} from '../utils/manager.utils';
 import {deleteData} from '../utils/data.utils';
 
 export const uploadWorker = async (
@@ -50,11 +51,17 @@ export const uploadWorker = async (
   const {actor}: BucketActor<DataBucketActor> = await getDataBucket({host, identity});
 
   // In case the bucket does not yet exist, do not sync yet and wait for next poll
+  // Can most probably not happens since user auth create such bucket and triggers the sync when ready
   if (!actor) {
     return;
   }
 
-  // TODO What to do if storage canister is not ready
+  // We query the storage actor until it is initialized
+  const {actor: storageActor}: BucketActor<StorageBucketActor> = await getStorageBucket({host, identity});
+
+  if (!storageActor) {
+    return;
+  }
 
   await uploadDecks({updateDecks, identity, actor, host, syncWindow});
 
