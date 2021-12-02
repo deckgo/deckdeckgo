@@ -109,7 +109,7 @@ const uploadKit = async ({
     data: new Blob([content], {type: mimeType}),
     filename,
     folder: 'resources',
-    storageBucket: actor,
+    storageActor: actor,
     fullPath,
     headers
   });

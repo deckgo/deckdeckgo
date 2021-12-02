@@ -4,6 +4,10 @@ import {del, get} from 'idb-keyval';
 
 import {Deck, deckSelector, docSelector, Paragraph, Slide, SlideTemplate, StorageFile} from '@deckdeckgo/editor';
 
+import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+
+import {BucketActor} from './manager.utils';
+
 import {SyncWindow, SyncWindowEventMsg} from '../types/sync.window';
 import {SyncStorage, SyncStorageSlide} from '../types/sync.storage';
 
@@ -14,13 +18,13 @@ const imagesRegex: RegExp = /((<deckgo-lazy-img.*?)(img-src=)(.*?")(.*?[^"]*)(.*
 export const uploadDeckBackgroundAssets = async ({
   deck,
   identity,
-  host,
-  syncWindow
+  syncWindow,
+  storageBucket
 }: {
   deck: Deck;
   identity: Identity;
-  host: string;
   syncWindow: SyncWindow;
+  storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorage> => {
   const {background} = deck.data;
 
@@ -47,10 +51,10 @@ export const uploadDeckBackgroundAssets = async ({
     src: imgSrc,
     key: `/decks/${deck.id}`,
     identity,
-    host,
     syncWindow,
     msg: 'deckdeckgo_sync_deck_background',
-    folder: 'images'
+    folder: 'images',
+    storageBucket
   });
 };
 
@@ -58,23 +62,23 @@ export const uploadSlideAssets = async ({
   deckId,
   slide,
   identity,
-  host,
-  syncWindow
+  syncWindow,
+  storageBucket
 }: {
   deckId: string;
   slide: Slide;
   identity: Identity;
-  host: string;
   syncWindow: SyncWindow;
+  storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorageSlide> => {
   const images: SyncStorage[] | undefined = await uploadSlideImages({
     deckId,
     slide,
     identity,
-    host,
-    syncWindow
+    syncWindow,
+    storageBucket
   });
-  const chart: SyncStorage | undefined = await uploadSlideChart({deckId, slide, identity, host, syncWindow});
+  const chart: SyncStorage | undefined = await uploadSlideChart({deckId, slide, identity, syncWindow, storageBucket});
 
   return {
     images,
@@ -86,14 +90,14 @@ const uploadSlideImages = async ({
   deckId,
   slide,
   identity,
-  host,
-  syncWindow
+  syncWindow,
+  storageBucket
 }: {
   deckId: string;
   slide: Slide;
   identity: Identity;
-  host: string;
   syncWindow: SyncWindow;
+  storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorage[] | undefined> => {
   const {content} = slide.data;
 
@@ -111,10 +115,10 @@ const uploadSlideImages = async ({
       key: `/decks/${deckId}/slides/${slide.id}`,
       selector: `${deckSelector} > *[slide_id="${slide.id}"]`,
       identity,
-      host,
       syncWindow,
       msg: 'deckdeckgo_sync_slide_image',
-      folder: 'images'
+      folder: 'images',
+      storageBucket
     });
   });
 
@@ -125,14 +129,14 @@ const uploadSlideChart = async ({
   deckId,
   slide,
   identity,
-  host,
-  syncWindow
+  syncWindow,
+  storageBucket
 }: {
   deckId: string;
   slide: Slide;
   identity: Identity;
-  host: string;
   syncWindow: SyncWindow;
+  storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorage | undefined> => {
   const {content, template, attributes} = slide.data;
 
@@ -147,10 +151,10 @@ const uploadSlideChart = async ({
     key: `/decks/${deckId}/slides/${slide.id}`,
     selector: `${deckSelector} > *[slide_id="${slide.id}"]`,
     identity,
-    host,
     syncWindow,
     msg: 'deckdeckgo_sync_slide_chart',
-    folder: 'data'
+    folder: 'data',
+    storageBucket
   });
 };
 
@@ -158,20 +162,20 @@ const uploadData = ({
   src,
   key,
   selector,
-  host,
   identity,
   syncWindow,
   msg,
-  folder
+  folder,
+  storageBucket
 }: {
   src: string | undefined;
   key: string;
   selector?: string;
-  host: string;
   identity: Identity;
   syncWindow: SyncWindow;
   msg: SyncWindowEventMsg;
   folder: 'images' | 'data';
+  storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorage> => {
   return new Promise<SyncStorage>(async (resolve, reject) => {
     try {
@@ -201,7 +205,7 @@ const uploadData = ({
         folder,
         maxSize: 10485760,
         identity,
-        host
+        storageBucket
       });
 
       if (!storageFile) {
@@ -237,14 +241,14 @@ export const uploadParagraphImages = async ({
   docId,
   paragraph,
   identity,
-  host,
-  syncWindow
+  syncWindow,
+  storageBucket
 }: {
   docId: string;
   paragraph: Paragraph;
   identity: Identity;
-  host: string;
   syncWindow: SyncWindow;
+  storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorage[] | undefined> => {
   const {children} = paragraph.data;
 
@@ -264,10 +268,10 @@ export const uploadParagraphImages = async ({
       key: `/docs/${docId}/paragraphs/${paragraph.id}`,
       selector: `${docSelector} > article *[paragraph_id="${paragraph.id}"]`,
       identity,
-      host,
       syncWindow,
       msg: 'deckdeckgo_sync_paragraph_image',
-      folder: 'images'
+      folder: 'images',
+      storageBucket
     });
   });
 

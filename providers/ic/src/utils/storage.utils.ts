@@ -12,7 +12,7 @@ export const upload = async ({
   data,
   filename,
   folder,
-  storageBucket,
+  storageActor,
   headers,
   token,
   fullPath: storagePath
@@ -21,7 +21,7 @@ export const upload = async ({
   folder: string;
   filename: string;
   headers: HeaderField[];
-  storageBucket: StorageBucketActor;
+  storageActor: StorageBucketActor;
   token?: string;
   fullPath?: string;
 }): Promise<{fullPath: string; filename: string; token: string}> => {
@@ -30,7 +30,7 @@ export const upload = async ({
 
   const fullPath: string = storagePath || `/${folder}/${filename}`;
 
-  const {batchId} = await storageBucket.initUpload({
+  const {batchId} = await storageActor.initUpload({
     name: filename,
     fullPath,
     token: toNullable<string>(token),
@@ -51,7 +51,7 @@ export const upload = async ({
       uploadChunk({
         batchId,
         chunk,
-        storageBucket
+        storageActor
       })
     );
   }
@@ -61,7 +61,7 @@ export const upload = async ({
   const t2 = performance.now();
   console.log('Upload upload chunks', t2 - t1);
 
-  await storageBucket.commitUpload({
+  await storageActor.commitUpload({
     batchId,
     chunkIds: chunkIds.map(({chunkId}: {chunkId: bigint}) => chunkId),
     headers: [['Content-Type', data.type], ['accept-ranges', 'bytes'], ...headers]
@@ -81,13 +81,13 @@ export const upload = async ({
 const uploadChunk = async ({
   batchId,
   chunk,
-  storageBucket
+  storageActor
 }: {
   batchId: bigint;
   chunk: Blob;
-  storageBucket: StorageBucketActor;
+  storageActor: StorageBucketActor;
 }): Promise<{chunkId: bigint}> =>
-  storageBucket.uploadChunk({
+  storageActor.uploadChunk({
     batchId,
     content: [...new Uint8Array(await chunk.arrayBuffer())]
   });

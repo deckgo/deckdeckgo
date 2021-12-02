@@ -33,13 +33,15 @@ export const uploadFileIC = async ({
   maxSize,
   host,
   folder,
-  identity
+  identity,
+  storageBucket
 }: {
   data: File;
   folder: string;
   maxSize: number;
   host?: string;
   identity: Identity;
+  storageBucket?: BucketActor<StorageBucketActor>;
 }): Promise<StorageFile> => {
   if (!data || !data.name) {
     throw new Error('File not valid.');
@@ -49,7 +51,7 @@ export const uploadFileIC = async ({
     throw new Error(`File is too big (max. ${maxSize / 1048576} Mb)`);
   }
 
-  const {actor, bucketId}: BucketActor<StorageBucketActor> = await getStorageBucket({host, identity});
+  const {actor, bucketId}: BucketActor<StorageBucketActor> = storageBucket || (await getStorageBucket({host, identity}));
 
   if (!actor || !bucketId) {
     throw new Error('Storage bucket is not initialized.');
@@ -59,7 +61,7 @@ export const uploadFileIC = async ({
     data,
     filename: encodeFilename(data.name),
     folder,
-    storageBucket: actor,
+    storageActor: actor,
     token: uuid(),
     headers: [['cache-control', 'private, max-age=0']]
   });
