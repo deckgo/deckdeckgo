@@ -1,5 +1,4 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 
 import {v4 as uuid} from 'uuid';
 
@@ -10,8 +9,8 @@ import {getIdentity} from '../auth/auth.ic';
 import {_SERVICE as StorageBucketActor, AssetKey} from '../../canisters/storage/storage.did';
 
 import {toNullable} from '../../utils/did.utils';
-import {getStorageBucket} from '../../utils/manager.utils';
-import {encodeFilename, upload} from '../../utils/storage.utils';
+import {BucketActor, getStorageBucket} from '../../utils/manager.utils';
+import {encodeFilename, getStorageActor, upload} from '../../utils/storage.utils';
 
 export const uploadFile: UploadFile = async ({
   data,
@@ -50,7 +49,11 @@ export const uploadFileIC = async ({
     throw new Error(`File is too big (max. ${maxSize / 1048576} Mb)`);
   }
 
-  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({host, identity});
+  const {actor, bucketId}: BucketActor<StorageBucketActor> = await getStorageBucket({host, identity});
+
+  if (!actor || !bucketId) {
+    throw new Error('Storage bucket is not initialized.');
+  }
 
   const {fullPath, filename, token}: {fullPath: string; filename: string; token: string} = await upload({
     data,
@@ -62,7 +65,7 @@ export const uploadFileIC = async ({
   });
 
   return {
-    downloadUrl: `https://${bucket.toText()}.raw.ic0.app/${fullPath}?token=${token}`,
+    downloadUrl: `https://${bucketId.toText()}.raw.ic0.app/${fullPath}?token=${token}`,
     fullPath,
     name: filename
   };
@@ -76,13 +79,11 @@ export const getFiles: GetFiles = async ({
   folder: string;
   userId: string;
 }): Promise<StorageFilesList | null> => {
-  const identity: Identity | undefined = getIdentity();
-
-  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({identity});
+  const {actor, bucketId}: BucketActor<StorageBucketActor> = await getStorageActor();
 
   const assets: AssetKey[] = await actor.list(toNullable<string>(folder));
 
-  const host: string = `https://${bucket.toText()}.raw.ic0.app`;
+  const host: string = `https://${bucketId.toText()}.raw.ic0.app`;
 
   return {
     items: assets.map(({name, fullPath, token}: AssetKey) => ({
@@ -95,9 +96,7 @@ export const getFiles: GetFiles = async ({
 };
 
 export const deleteFile: DeleteFile = async ({downloadUrl, fullPath}: StorageFile): Promise<void> => {
-  const identity: Identity | undefined = getIdentity();
-
-  const {actor}: {bucket: Principal; actor: StorageBucketActor} = await getStorageBucket({identity});
+  const {actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
   const {pathname}: URL = new URL(downloadUrl);
   const token: string = pathname.replace('?token=', '');

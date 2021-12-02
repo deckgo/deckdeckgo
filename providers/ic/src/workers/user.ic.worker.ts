@@ -1,5 +1,4 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 
 import {v4 as uuid} from 'uuid';
 
@@ -8,7 +7,7 @@ import {User, UserData} from '@deckdeckgo/editor';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
 
 import {initIdentity} from '../utils/identity.utils';
-import {getDataBucket} from '../utils/manager.utils';
+import {BucketActor, getDataBucket} from '../utils/manager.utils';
 import {getData, setData} from '../utils/data.utils';
 
 import {InternetIdentityAuth} from '../types/identity';
@@ -26,7 +25,12 @@ export const initUserWorker = async ({
 
   const identity: Identity = initIdentity({identityKey, delegationChain});
 
-  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity, host});
+  const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity, host});
+
+  if (!actor) {
+    // TODO Poll till ready
+    return;
+  }
 
   console.log('User IC about to GET');
   const t0 = performance.now();

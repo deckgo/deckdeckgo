@@ -1,6 +1,12 @@
+import {Identity} from '@dfinity/agent';
+
 import {_SERVICE as StorageBucketActor, HeaderField} from '../canisters/storage/storage.did';
 
 import {toNullable} from './did.utils';
+
+import {getIdentity} from '../providers/auth/auth.ic';
+
+import {BucketActor, getStorageBucket} from './manager.utils';
 
 export const upload = async ({
   data,
@@ -87,3 +93,26 @@ const uploadChunk = async ({
   });
 
 export const encodeFilename = (filename: string): string => encodeURI(filename.toLowerCase().replace(/\s/g, '-'));
+
+export const getStorageActor = async (): Promise<BucketActor<StorageBucketActor>> => {
+  const identity: Identity | undefined = getIdentity();
+
+  if (!identity) {
+    throw new Error('No internet identity.');
+  }
+
+  const result: BucketActor<StorageBucketActor> = await getStorageBucket({identity});
+
+  const {actor, bucketId} = result;
+
+  if (!actor) {
+    throw new Error('No actor initialized.');
+  }
+
+  // That would be strange
+  if (!bucketId) {
+    throw new Error('No bucket principal defined');
+  }
+
+  return result;
+};

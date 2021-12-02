@@ -1,12 +1,10 @@
-import {Principal} from '@dfinity/principal';
-
 import {Deck} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor, AssetKey, HeaderField} from '../canisters/storage/storage.did';
 
-import {getPublishBucket} from './publish.utils';
 import {toNullable} from './did.utils';
-import {upload} from './storage.utils';
+import {getStorageActor, upload} from './storage.utils';
+import {BucketActor} from './manager.utils';
 
 type KitMimeType = 'text/javascript' | 'text/plain' | 'application/manifest+json' | 'text/css';
 
@@ -66,7 +64,7 @@ const kit: Kit[] = [
 
 export const uploadResources = async ({deck}: {deck: Deck}) => {
   // 1. Get actor
-  const {actor}: {bucket: Principal; actor: StorageBucketActor} = await getPublishBucket();
+  const {actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
   const assetKeys: AssetKey[] = await actor.list(toNullable<string>('resources'));
   const keys: string[] = assetKeys.map(({name}: AssetKey) => name);

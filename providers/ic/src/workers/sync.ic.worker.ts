@@ -1,5 +1,4 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 
 import {Deck, Doc, Paragraph, Slide, SyncData, SyncDataDeck, SyncDataDoc, SyncDataParagraph, SyncDataSlide} from '@deckdeckgo/editor';
 
@@ -13,7 +12,7 @@ import {initIdentity} from '../utils/identity.utils';
 import {uploadDeckBackgroundAssets, uploadParagraphImages, uploadSlideAssets} from '../utils/sync.storage.utils';
 import {uploadDeckData, uploadDocData, uploadParagraphData, uploadSlideData} from '../utils/sync.data.utils';
 import {updateDeckBackground, updateParagraphImages, updateSlideChart, updateSlideImages} from '../utils/sync.attributes.utils';
-import {getDataBucket} from '../utils/manager.utils';
+import {BucketActor, getDataBucket} from '../utils/manager.utils';
 import {deleteData} from '../utils/data.utils';
 
 export const uploadWorker = async (
@@ -48,7 +47,14 @@ export const uploadWorker = async (
   } = syncData;
 
   // For performance reason, we query the actor only once. We might not need it but, most often we will and multiple times.
-  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({host, identity});
+  const {actor}: BucketActor<DataBucketActor> = await getDataBucket({host, identity});
+
+  // In case the bucket does not yet exist, do not sync yet and wait for next poll
+  if (!actor) {
+    return;
+  }
+
+  // TODO What to do if storage canister is not ready
 
   await uploadDecks({updateDecks, identity, actor, host, syncWindow});
 
