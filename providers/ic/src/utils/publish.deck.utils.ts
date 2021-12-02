@@ -1,12 +1,11 @@
-import {Principal} from '@dfinity/principal';
-
 import {Deck, DeckData, DeckPublishData, publishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
 import {setData} from './data.utils';
-import {encodeFilename, upload} from './storage.utils';
-import {getPublishBucket, StorageUpload, updateTemplate} from './publish.utils';
+import {encodeFilename, getStorageActor, upload} from './storage.utils';
+import {StorageUpload, updateTemplate} from './publish.utils';
+import {BucketActor} from './manager.utils';
 
 export const publishDeck = async ({
   deck: deckSource
@@ -41,13 +40,13 @@ const initUpload = async ({deck}: {deck: Deck}): Promise<{storageUpload: Storage
   const {html, deckPublishData}: {html: string; deckPublishData: DeckPublishData} = await initIndexHTML({deck});
 
   // 1. Get actor
-  const {bucket, actor}: {bucket: Principal; actor: StorageBucketActor} = await getPublishBucket();
+  const {bucketId, actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
   // 2. Folder and filename
   const folder: string = 'p';
   const filename: string = encodeFilename(deckPublishData.title);
   const pathname: string = `/${folder}/${filename}`;
-  const bucketUrl: string = `https://${bucket.toText()}.raw.ic0.app`;
+  const bucketUrl: string = `https://${bucketId.toText()}.raw.ic0.app`;
   const deckUrl: string = `${bucketUrl}${pathname}`;
 
   // 3. Update URL
@@ -102,7 +101,7 @@ const uploadFileIC = async ({filename, html, actor}: {filename: string; html: st
     data: new Blob([html], {type: 'text/html'}),
     filename,
     folder: 'p',
-    storageBucket: actor,
+    storageActor: actor,
     headers: [['Cache-Control', 'max-age=3600']]
   });
 };

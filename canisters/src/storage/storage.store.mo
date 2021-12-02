@@ -5,7 +5,6 @@ import Time "mo:base/Time";
 import Hash "mo:base/Hash";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
-
 import Result "mo:base/Result";
 
 import StorageTypes "./storage.types";

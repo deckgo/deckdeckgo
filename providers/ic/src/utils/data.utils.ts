@@ -1,12 +1,11 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 
 import {_SERVICE as DataBucketActor, Data, DataFilter} from '../canisters/data/data.did';
 
 import {getIdentity} from '../providers/auth/auth.ic';
 
 import {fromArray, fromNullable, fromTimestamp, toArray, toNullable, toTimestamp} from './did.utils';
-import {getDataBucket} from './manager.utils';
+import {BucketActor, getDataBucket} from './manager.utils';
 
 export const entries = async <T, D>({startsWith, notContains}: {startsWith?: string; notContains?: string}): Promise<T[]> => {
   const identity: Identity | undefined = getIdentity();
@@ -18,7 +17,11 @@ export const entries = async <T, D>({startsWith, notContains}: {startsWith?: str
   console.log('Data IC about to request entries');
   const t0 = performance.now();
 
-  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
+  const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity});
+
+  if (!actor) {
+    return [];
+  }
 
   const data: [string, Data][] = await actor.list(
     toNullable<DataFilter>({
@@ -149,6 +152,11 @@ const getDataActor = async (): Promise<DataBucketActor> => {
     throw new Error('No internet identity.');
   }
 
-  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity});
+  const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity});
+
+  if (!actor) {
+    throw new Error('No actor initialized.');
+  }
+
   return actor;
 };

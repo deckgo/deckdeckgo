@@ -1,12 +1,18 @@
+import {Identity} from '@dfinity/agent';
+
 import {_SERVICE as StorageBucketActor, HeaderField} from '../canisters/storage/storage.did';
 
 import {toNullable} from './did.utils';
+
+import {getIdentity} from '../providers/auth/auth.ic';
+
+import {BucketActor, getStorageBucket} from './manager.utils';
 
 export const upload = async ({
   data,
   filename,
   folder,
-  storageBucket,
+  storageActor,
   headers,
   token,
   fullPath: storagePath
@@ -15,7 +21,7 @@ export const upload = async ({
   folder: string;
   filename: string;
   headers: HeaderField[];
-  storageBucket: StorageBucketActor;
+  storageActor: StorageBucketActor;
   token?: string;
   fullPath?: string;
 }): Promise<{fullPath: string; filename: string; token: string}> => {
@@ -24,7 +30,7 @@ export const upload = async ({
 
   const fullPath: string = storagePath || `/${folder}/${filename}`;
 
-  const {batchId} = await storageBucket.initUpload({
+  const {batchId} = await storageActor.initUpload({
     name: filename,
     fullPath,
     token: toNullable<string>(token),
@@ -45,7 +51,7 @@ export const upload = async ({
       uploadChunk({
         batchId,
         chunk,
-        storageBucket
+        storageActor
       })
     );
   }
@@ -55,7 +61,7 @@ export const upload = async ({
   const t2 = performance.now();
   console.log('Upload upload chunks', t2 - t1);
 
-  await storageBucket.commitUpload({
+  await storageActor.commitUpload({
     batchId,
     chunkIds: chunkIds.map(({chunkId}: {chunkId: bigint}) => chunkId),
     headers: [['Content-Type', data.type], ['accept-ranges', 'bytes'], ...headers]
@@ -75,15 +81,38 @@ export const upload = async ({
 const uploadChunk = async ({
   batchId,
   chunk,
-  storageBucket
+  storageActor
 }: {
   batchId: bigint;
   chunk: Blob;
-  storageBucket: StorageBucketActor;
+  storageActor: StorageBucketActor;
 }): Promise<{chunkId: bigint}> =>
-  storageBucket.uploadChunk({
+  storageActor.uploadChunk({
     batchId,
     content: [...new Uint8Array(await chunk.arrayBuffer())]
   });
 
 export const encodeFilename = (filename: string): string => encodeURI(filename.toLowerCase().replace(/\s/g, '-'));
+
+export const getStorageActor = async (): Promise<BucketActor<StorageBucketActor>> => {
+  const identity: Identity | undefined = getIdentity();
+
+  if (!identity) {
+    throw new Error('No internet identity.');
+  }
+
+  const result: BucketActor<StorageBucketActor> = await getStorageBucket({identity});
+
+  const {actor, bucketId} = result;
+
+  if (!actor) {
+    throw new Error('No actor initialized.');
+  }
+
+  // That would be strange
+  if (!bucketId) {
+    throw new Error('No bucket principal defined');
+  }
+
+  return result;
+};

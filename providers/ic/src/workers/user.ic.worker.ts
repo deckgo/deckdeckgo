@@ -1,5 +1,4 @@
 import {Identity} from '@dfinity/agent';
-import {Principal} from '@dfinity/principal';
 
 import {v4 as uuid} from 'uuid';
 
@@ -8,26 +7,57 @@ import {User, UserData} from '@deckdeckgo/editor';
 import {_SERVICE as DataBucketActor} from '../canisters/data/data.did';
 
 import {initIdentity} from '../utils/identity.utils';
-import {getDataBucket} from '../utils/manager.utils';
+import {BucketActor, getDataBucket} from '../utils/manager.utils';
 import {getData, setData} from '../utils/data.utils';
 
 import {InternetIdentityAuth} from '../types/identity';
 
-export const initUserWorker = async ({
-  internetIdentity: {delegationChain, identityKey},
-  host
-}: {
-  internetIdentity: InternetIdentityAuth;
-  host: string;
-}): Promise<User> => {
-  if (!delegationChain || !identityKey) {
-    return;
-  }
+export const initUserWorker = (
+  {
+    internetIdentity,
+    host
+  }: {
+    internetIdentity: InternetIdentityAuth;
+    host: string;
+  },
+  onInitUserSuccess: (user: User) => Promise<void>
+): Promise<void> => initUser({internetIdentity, host}, onInitUserSuccess);
 
-  const identity: Identity = initIdentity({identityKey, delegationChain});
+const initUser = async (
+  {
+    internetIdentity: {delegationChain, identityKey},
+    host
+  }: {
+    internetIdentity: InternetIdentityAuth;
+    host: string;
+  },
+  onInitUserSuccess: (user: User) => Promise<void>
+) =>
+  new Promise<void>(async (resolve) => {
+    if (!delegationChain || !identityKey) {
+      resolve();
+      return;
+    }
 
-  const {actor}: {bucket: Principal; actor: DataBucketActor} = await getDataBucket({identity, host});
+    const identity: Identity = initIdentity({identityKey, delegationChain});
 
+    const {actor}: BucketActor<DataBucketActor> = await getDataBucket({identity, host});
+
+    if (!actor) {
+      setTimeout(async () => {
+        await initUser({internetIdentity: {delegationChain, identityKey}, host}, onInitUserSuccess);
+        resolve();
+      }, 2000);
+      return;
+    }
+
+    const user: User = await initUserData({actor});
+    await onInitUserSuccess(user);
+
+    resolve();
+  });
+
+const initUserData = async ({actor}: {actor: DataBucketActor}): Promise<User> => {
   console.log('User IC about to GET');
   const t0 = performance.now();
 

@@ -1,13 +1,6 @@
-import {Principal} from '@dfinity/principal';
-import {Identity} from '@dfinity/agent';
-
 import {DeckPublishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
-
-import {getIdentity} from '../providers/auth/auth.ic';
-
-import {getStorageBucket} from './manager.utils';
 
 export interface StorageUpload {
   actor: StorageBucketActor;
@@ -17,11 +10,6 @@ export interface StorageUpload {
   deckUrl: string;
   bucketUrl: string;
 }
-
-export const getPublishBucket = (): Promise<{bucket: Principal; actor: StorageBucketActor}> => {
-  const identity: Identity | undefined = getIdentity();
-  return getStorageBucket({identity});
-};
 
 export const updateTemplate = ({template, data}: {template: string; data: Partial<DeckPublishData>}): string =>
   Object.entries(data).reduce(

@@ -1,15 +1,20 @@
 export const idlFactory = ({IDL}) => {
-  const BucketId = IDL.Principal;
   const UserId = IDL.Principal;
+  const BucketId = IDL.Principal;
+  const Bucket = IDL.Record({
+    owner: UserId,
+    bucketId: IDL.Opt(BucketId)
+  });
+  const UserId__1 = IDL.Principal;
   return IDL.Service({
     delData: IDL.Func([], [IDL.Bool], []),
     delStorage: IDL.Func([], [IDL.Bool], []),
-    getData: IDL.Func([], [IDL.Opt(BucketId)], ['query']),
-    getStorage: IDL.Func([], [IDL.Opt(BucketId)], ['query']),
-    initData: IDL.Func([], [BucketId], []),
-    initStorage: IDL.Func([], [BucketId], []),
-    installCode: IDL.Func([IDL.Principal, UserId, IDL.Vec(IDL.Nat8)], [], []),
-    list: IDL.Func([IDL.Text], [IDL.Vec(IDL.Record({owner: UserId, bucketId: BucketId}))], ['query'])
+    getData: IDL.Func([], [IDL.Opt(Bucket)], ['query']),
+    getStorage: IDL.Func([], [IDL.Opt(Bucket)], ['query']),
+    initData: IDL.Func([], [Bucket], []),
+    initStorage: IDL.Func([], [Bucket], []),
+    installCode: IDL.Func([IDL.Principal, UserId__1, IDL.Vec(IDL.Nat8)], [], []),
+    list: IDL.Func([IDL.Text], [IDL.Vec(Bucket)], ['query'])
   });
 };
 export const init = ({IDL}) => {

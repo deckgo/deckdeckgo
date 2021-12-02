@@ -78,8 +78,8 @@
   "settings": {
     "un_publish": "Ten en cuenta que, actualmente, las presentaciones que has compartido no se eliminan automáticamente de Internet. Si quieres dejar de publicarlas, envíanos un mensaje a uno de nuestros canales.",
     "cannot_undone": "Esta acción no se puede deshacer. Esto eliminará permanentemente su usuario.",
-    "type_to_confirm": "Por favor, escriba su nombre de usuario para confirmar.",
-    "type_ddg_to_confirm": "Por favor, escriba deckdeckgo para confirmar.",
+    "type_to_confirm": "Por favor, escriba su nombre {0} de usuario para confirmar.",
+    "type_ddg_to_confirm": "Por favor, escriba {0} para confirmar.",
     "i_understand": "Comprendo, borre mi usuario",
     "customization": "Personalización",
     "edit_mode": "Modo de edición",

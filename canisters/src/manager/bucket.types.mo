@@ -7,7 +7,7 @@ module {
     public type BucketId = IC.canister_id;
 
     public type Bucket = {
-        bucketId: BucketId;
+        bucketId: ?BucketId;
         owner: Types.UserId;
     };
 };

@@ -26,6 +26,7 @@ import {deleteAuth} from '../../../../providers/auth/auth.provider';
 
 import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
+import {clearEdit} from '../../../../utils/editor/editor.utils';
 
 @Component({
   tag: 'app-profile',
@@ -369,6 +370,8 @@ export class AppProfile {
         await deleteAuth();
 
         await this.imageHistoryService.clear();
+
+        await clearEdit(true);
 
         navStore.state.nav = {
           url: '/',

@@ -95,7 +95,7 @@ const uploadOverviewIC = async ({html, actor}: {html: string; actor: StorageBuck
     data: new Blob([html], {type: 'text/html'}),
     filename: 'index.html',
     folder: 'resources',
-    storageBucket: actor,
+    storageActor: actor,
     headers: [['Cache-Control', 'max-age=0']],
     fullPath: '/'
   });
