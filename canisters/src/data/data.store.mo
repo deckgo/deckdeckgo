@@ -45,7 +45,7 @@ module {
                     let {startsWith; notContains} = filter;
 
                     let values: [(Text, T)] = Array.mapFilter<(Text, T), (Text, T)>(keyValues, func ((key: Text, value: T)) : ?(Text, T) {
-                        if (Filter.startsWith(key, startsWith) and not Filter.contains(key, notContains)) {
+                        if (Filter.startsWith(key, startsWith) and Filter.notContains(key, notContains)) {
                             return ?(key, value);
                         };
 

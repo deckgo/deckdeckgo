@@ -18,13 +18,13 @@ module {
         };
     };
 
-    public func contains(key: Text, contains: ?Text): Bool {
-        switch (contains) {
+    public func notContains(key: Text, notContains: ?Text): Bool {
+        switch (notContains) {
             case null {
                 return true;
             };
-            case (?contains) {
-                return Text.contains(key, #text contains);
+            case (?notContains) {
+                return not Text.contains(key, #text notContains);
             };
         };
     };
