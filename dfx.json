@@ -10,7 +10,10 @@
         "entrypoint": "studio/www/index.html"
       },
       "source": ["studio/www"],
-      "type": "assets"
+      "type": "assets",
+      "initialization_values": {
+        "memory_allocation": "8GB"
+      }
     }
   },
   "defaults": {
