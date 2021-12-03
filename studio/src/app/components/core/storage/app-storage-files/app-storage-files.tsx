@@ -1,6 +1,6 @@
-import {Component, ComponentInterface, EventEmitter, h, Host, State, Event, Prop, Watch} from '@stencil/core';
+import {Component, ComponentInterface, EventEmitter, h, Host, State, Event, Prop, Watch, Method} from '@stencil/core';
 
-import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
+import {AuthUser, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
 import store from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
@@ -8,6 +8,7 @@ import i18n from '../../../../stores/i18n.store';
 import {Constants} from '../../../../types/core/constants';
 
 import {getFiles} from '../../../../providers/storage/storage.provider';
+import authStore from '../../../../stores/auth.store';
 
 @Component({
   tag: 'app-storage-files',
@@ -34,8 +35,18 @@ export class AppStorageFiles implements ComponentInterface {
   @Event()
   selectAsset: EventEmitter<StorageFile>;
 
-  componentWillLoad() {
-    this.search().then(() => {});
+  private destroyListener;
+
+  async componentDidLoad() {
+    this.destroyListener = authStore.onChange('authUser', async (_authUser: AuthUser | null) => {
+      await this.search();
+    });
+
+    await this.search();
+  }
+
+  disconnectedCallback() {
+    this.destroyListener?.();
   }
 
   @Watch('folder')
@@ -43,6 +54,7 @@ export class AppStorageFiles implements ComponentInterface {
     await this.resetAndSearch();
   }
 
+  @Method()
   async resetAndSearch() {
     this.disableInfiniteScroll = false;
     this.files = [];
@@ -52,6 +64,10 @@ export class AppStorageFiles implements ComponentInterface {
   }
 
   private async search() {
+    if (!authStore.state.loggedIn) {
+      return;
+    }
+
     const {items, nextPageToken}: StorageFilesList = await this.loadFiles();
 
     this.files = [...this.files, ...items];

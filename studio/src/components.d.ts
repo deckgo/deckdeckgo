@@ -367,6 +367,7 @@ export namespace Components {
     interface AppStorageFiles {
         "admin": boolean;
         "folder": 'data' | 'images';
+        "resetAndSearch": () => Promise<void>;
     }
     interface AppStorageImages {
     }
