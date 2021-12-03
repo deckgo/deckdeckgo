@@ -181,7 +181,7 @@ const getParagraph = async ({docId, paragraphId, key}: SyncPendingParagraph): Pr
   };
 };
 
-const uniqueSyncData = (data: SyncPendingData[]): SyncPendingData[] => {
+const uniqueSyncData = (data: SyncPendingData[] | undefined): SyncPendingData[] => {
   return (data || []).reduce((acc: SyncPendingData[], curr: SyncPendingData) => {
     const index: number = acc.findIndex(({key}: SyncPendingData) => key === curr.key);
 

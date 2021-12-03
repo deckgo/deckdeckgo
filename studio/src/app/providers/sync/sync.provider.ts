@@ -92,14 +92,14 @@ export const initSyncState = async () => {
   const {updateDecks, deleteDecks, deleteSlides, updateSlides, updateDocs, deleteDocs, deleteParagraphs, updateParagraphs} = data;
 
   if (
-    updateDecks?.length === 0 &&
-    deleteDecks?.length === 0 &&
-    deleteSlides?.length === 0 &&
-    updateSlides?.length === 0 &&
-    updateDocs?.length === 0 &&
-    deleteDocs?.length === 0 &&
-    deleteParagraphs?.length === 0 &&
-    updateParagraphs?.length === 0
+    (!updateDecks || updateDecks.length === 0) &&
+    (!deleteDecks || deleteDecks.length === 0) &&
+    (!deleteSlides || deleteSlides.length === 0) &&
+    (!updateSlides || updateSlides.length === 0) &&
+    (!updateDocs || updateDocs.length === 0) &&
+    (!deleteDocs || deleteDocs.length === 0) &&
+    (!deleteParagraphs || deleteParagraphs.length === 0) &&
+    (!updateParagraphs || updateParagraphs.length === 0)
   ) {
     syncStore.state.sync = 'idle';
     return;
