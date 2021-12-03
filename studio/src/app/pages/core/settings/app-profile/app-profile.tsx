@@ -76,6 +76,7 @@ export class AppProfile {
   private destroyApiUserListener;
 
   private config: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');
+
   private firebase: boolean = firebase();
 
   constructor() {
@@ -496,6 +497,10 @@ export class AppProfile {
   }
 
   private renderEmail() {
+    if (!this.firebase) {
+      return undefined;
+    }
+
     return [
       <ion-item class="item-title">
         <ion-label>{i18n.state.settings.email}</ion-label>
