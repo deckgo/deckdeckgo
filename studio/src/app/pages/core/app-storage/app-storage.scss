@@ -1,3 +1,5 @@
+@use "../../../../global/theme/mixins/button";
+
 app-storage {
   app-storage-files {
     grid-template-columns: repeat(8, calc((100% - (7 * 32px)) / 8));
@@ -11,12 +13,25 @@ app-storage {
     }
   }
 
-  div.select {
-    width: fit-content;
-    margin: 16px 0 8px;
+  div.filter {
+    display: flex;
+    align-items: center;
 
-    ion-select {
-      background: white;
+    margin: 16px 16px 4px 0;
+
+    div.select {
+      margin: 0 8px 0 0;
+
+      ion-select {
+        background: white;
+      }
+    }
+
+    button.refresh {
+      @include button.action;
+
+      padding: 6px;
+      border-radius: 50%;
     }
   }
 }

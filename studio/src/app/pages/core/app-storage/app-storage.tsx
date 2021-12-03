@@ -9,6 +9,7 @@ import {renderI18n} from '../../../utils/core/i18n.utils';
 import {signIn} from '../../../utils/core/signin.utils';
 
 import {ImageEvents} from '../../../events/core/image/image.events';
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 @Component({
   tag: 'app-storage',
@@ -24,6 +25,8 @@ export class AppStorage implements ComponentInterface {
   private readonly debounceLoading: () => void;
 
   private imageEvents: ImageEvents = new ImageEvents();
+
+  private storageFilesRef: HTMLAppStorageFilesElement | undefined;
 
   constructor() {
     this.debounceLoading = debounce(() => (this.loading = false), 750);
@@ -76,24 +79,35 @@ export class AppStorage implements ComponentInterface {
 
         {this.renderFilter()}
 
-        <app-storage-files class="ion-padding-top ion-padding-bottom" folder={this.folder} admin={true}></app-storage-files>
+        <app-storage-files
+          class="ion-padding-top ion-padding-bottom"
+          folder={this.folder}
+          admin={true}
+          ref={(el) => (this.storageFilesRef = el as HTMLAppStorageFilesElement)}></app-storage-files>
       </Fragment>
     );
   }
 
   private renderFilter() {
     return (
-      <div class="select">
-        <ion-select
-          value={'images'}
-          placeholder={i18n.state.editor.list}
-          onIonChange={($event: CustomEvent) => (this.folder = $event.detail.value)}
-          interface="popover"
-          mode="md"
-          class="ion-padding-start ion-padding-end">
-          <ion-select-option value="images">Images</ion-select-option>
-          <ion-select-option value="data">Data</ion-select-option>
-        </ion-select>
+      <div class="filter">
+        <div class="select">
+          <ion-select
+            value={'images'}
+            placeholder={i18n.state.editor.list}
+            onIonChange={($event: CustomEvent) => (this.folder = $event.detail.value)}
+            interface="popover"
+            mode="md"
+            class="ion-padding-start ion-padding-end">
+            <ion-select-option value="images">Images</ion-select-option>
+            <ion-select-option value="data">Data</ion-select-option>
+          </ion-select>
+        </div>
+
+        <button class="ion-activatable refresh" onClick={async () => await this.storageFilesRef?.resetAndSearch()}>
+          <ion-ripple-effect></ion-ripple-effect>
+          <AppIcon name="sync" ariaLabel={i18n.state.core.close}></AppIcon>
+        </button>
       </div>
     );
   }

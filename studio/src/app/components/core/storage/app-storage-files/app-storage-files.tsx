@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, EventEmitter, h, Host, State, Event, Prop, Watch} from '@stencil/core';
+import {Component, ComponentInterface, EventEmitter, h, Host, State, Event, Prop, Watch, Method} from '@stencil/core';
 
 import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
@@ -43,6 +43,7 @@ export class AppStorageFiles implements ComponentInterface {
     await this.resetAndSearch();
   }
 
+  @Method()
   async resetAndSearch() {
     this.disableInfiniteScroll = false;
     this.files = [];
