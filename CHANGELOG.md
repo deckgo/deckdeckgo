@@ -4,7 +4,7 @@
 
 ### Applications
 
-- remote: v1.15.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+- remote: v1.15.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
 
 ### Providers
 
