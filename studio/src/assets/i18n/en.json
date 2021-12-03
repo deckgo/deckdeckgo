@@ -526,6 +526,7 @@
     "cloud_in_progress": "Saving...",
     "cloud_idle": "All changes saved.",
     "cloud_pending": "Saving...",
+    "cloud_init": "Initializing...",
     "info": "Every change that you make is automatically saved to your cloud.",
     "status": "Status"
   }

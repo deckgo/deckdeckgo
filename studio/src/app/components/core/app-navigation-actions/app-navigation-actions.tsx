@@ -141,7 +141,7 @@ export class AppNavigationActions {
   }
 
   private renderActions() {
-    const disabled: boolean = syncStore.state.sync === 'pending' || syncStore.state.sync === 'in_progress';
+    const disabled: boolean = ['in_progress', 'pending', 'init'].includes(syncStore.state.sync);
 
     return (
       <Fragment>
@@ -225,6 +225,8 @@ export class AppNavigationActions {
         ? i18n.state.sync.cloud_error
         : syncStore.state.sync === 'in_progress'
         ? i18n.state.sync.cloud_in_progress
+        : syncStore.state.sync === 'init'
+        ? i18n.state.sync.cloud_init
         : syncStore.state.sync === 'pending'
         ? i18n.state.sync.cloud_pending
         : i18n.state.sync.cloud_idle;
@@ -232,7 +234,7 @@ export class AppNavigationActions {
     const iconName: string =
       syncStore.state.sync === 'error'
         ? 'cloud-offline'
-        : ['in_progress', 'pending'].includes(syncStore.state.sync)
+        : ['in_progress', 'pending', 'init'].includes(syncStore.state.sync)
         ? 'sync'
         : 'cloud-done';
 

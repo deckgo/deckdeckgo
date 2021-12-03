@@ -20,6 +20,8 @@ export class AppSyncInfo {
         ? i18n.state.sync.cloud_error
         : syncStore.state.sync === 'in_progress'
         ? i18n.state.sync.cloud_in_progress
+        : syncStore.state.sync === 'init'
+        ? i18n.state.sync.cloud_init
         : syncStore.state.sync === 'pending'
         ? i18n.state.sync.cloud_pending
         : i18n.state.sync.cloud_idle;

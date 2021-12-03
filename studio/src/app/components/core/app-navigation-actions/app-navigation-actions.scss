@@ -65,7 +65,8 @@ app-navigation-actions {
     }
 
     &.in_progress,
-    &.pending {
+    &.pending,
+    &.init {
       ion-icon {
         animation: rotate 4s linear infinite;
       }

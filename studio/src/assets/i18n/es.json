@@ -526,6 +526,7 @@
     "cloud_in_progress": "Guardando...",
     "cloud_idle": "Se han guardado todos los cambios.",
     "cloud_pending": "Guardando...",
+    "cloud_init": "Inicializando...",
     "info": "Todos los cambios que hagas se guardan automáticamente en el cloud.",
     "status": "Estado"
   }
