@@ -1,4 +1,4 @@
-import {Component, Element, h, Listen, State} from '@stencil/core';
+import {Component, Element, h, Listen} from '@stencil/core';
 
 import {toastController} from '@ionic/core';
 
@@ -17,8 +17,7 @@ import {LangService} from './services/lang/lang.service';
 import {initSyncState} from './providers/sync/sync.provider';
 
 @Component({
-  tag: 'app-root',
-  styleUrl: 'app-root.scss'
+  tag: 'app-root'
 })
 export class AppRoot {
   @Element() el: HTMLElement;
@@ -27,9 +26,6 @@ export class AppRoot {
   private readonly colorService: ColorService;
   private readonly settingsService: SettingsService;
   private readonly langService: LangService;
-
-  @State()
-  private loading: boolean = true;
 
   private destroyErrorListener;
   private destroyNavListener;
@@ -62,8 +58,6 @@ export class AppRoot {
   }
 
   async componentDidLoad() {
-    this.loading = false;
-
     this.destroyErrorListener = errorStore.onChange('error', (error: string | undefined) => {
       if (error && error !== undefined) {
         this.toastError(error);
@@ -175,7 +169,7 @@ export class AppRoot {
    */
   render() {
     return [
-      <ion-app class={this.loading ? 'loading' : undefined}>
+      <ion-app>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-editor" />
 
