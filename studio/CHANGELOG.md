@@ -1,3 +1,21 @@
+# 5.1.0 (2021-12-03)
+
+### Features - IC
+
+- publish presentations to PWA including new overview pagee
+- templates support
+- storage administration
+- delete users and canisters
+
+### Features
+
+- introduces an auth state for initialization that takes some time
+- add refresh option to storage files page
+
+### Fix
+
+- load storage files (in dedicated page) when auth ready
+
 # 5.0.1 (2021-10-21)
 
 ### Features
