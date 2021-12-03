@@ -1,3 +1,19 @@
+# 3.0.0 (2021-12-03)
+
+### Breaking Changes
+
+- better handle bucket creation ("pending bucket")
+
+### Features
+
+- publish overview
+- templates support
+- lower case and dashed filename for storage
+
+### Fix
+
+- expose doc providers
+
 # 2.1.0 (2021-11-28)
 
 ### Features
