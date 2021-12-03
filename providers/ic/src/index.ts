@@ -7,6 +7,7 @@ export * from './providers/data/deck.ic';
 export * from './providers/data/doc.ic';
 export * from './providers/data/slide.ic';
 export * from './providers/data/paragraph.ic';
+export * from './providers/data/template.ic';
 
 export * from './providers/storage/storage.ic';
 

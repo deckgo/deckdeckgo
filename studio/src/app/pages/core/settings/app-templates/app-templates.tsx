@@ -34,7 +34,7 @@ export class AppTemplates {
   }
 
   private async initUserTemplates() {
-    if (!authStore.state.authUser) {
+    if (!authStore.state.loggedIn) {
       return;
     }
 

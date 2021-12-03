@@ -31,12 +31,12 @@ export const entries = async <T, D>({startsWith, notContains}: {startsWith?: str
   );
 
   const promises: Promise<T>[] = data.map(([, data]: [string, Data]) => fromData<T, D>({data, identity}));
-  const datas: T[] = await Promise.all(promises);
+  const results: T[] = await Promise.all(promises);
 
   const t1 = performance.now();
-  console.log(`Data IC datas done. ${t1 - t0}`, datas);
+  console.log(`Data IC entries done. ${t1 - t0}`, results);
 
-  return datas;
+  return results;
 };
 
 const fromData = async <T, D>({data, identity}: {data: Data; identity: Identity}): Promise<T> => {
