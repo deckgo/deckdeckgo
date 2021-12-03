@@ -1,5 +1,3 @@
-import {SyncState} from '@deckdeckgo/editor';
-
 const onBeforeUnload = ($event: BeforeUnloadEvent) => {
   $event.preventDefault();
   return ($event.returnValue = 'Are you sure you want to exit?');
@@ -13,8 +11,8 @@ export const removeSyncBeforeUnload = () => {
   window.removeEventListener('beforeunload', onBeforeUnload, {capture: true});
 };
 
-export const syncBeforeUnload = (sync: SyncState) => {
-  if (['pending', 'in_progress'].includes(sync)) {
+export const syncBeforeUnload = (dirty: boolean) => {
+  if (dirty) {
     addSyncBeforeUnload();
   } else {
     removeSyncBeforeUnload();

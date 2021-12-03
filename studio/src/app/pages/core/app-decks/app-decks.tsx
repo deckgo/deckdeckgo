@@ -289,7 +289,7 @@ export class AppDecks implements ComponentInterface {
       );
     }
 
-    if (['pending', 'in_progress', 'init'].includes(syncStore.state.sync)) {
+    if (syncStore.state.dirty) {
       return <p>{i18n.state.dashboard.sync_slides}</p>;
     }
 
