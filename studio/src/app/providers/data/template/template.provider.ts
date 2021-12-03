@@ -3,7 +3,7 @@ import {Template, TemplateData, GetUserTemplates, CreateTemplate, UpdateTemplate
 import authStore from '../../../stores/auth.store';
 import templatesStore from '../../../stores/templates.store';
 
-import {firebase} from '../../../utils/core/environment.utils';
+import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
 
 export const initTemplates = async () => {
@@ -15,9 +15,7 @@ export const initTemplates = async () => {
     return;
   }
 
-  // TODO: Template for Internet Computer
-
-  if (!firebase()) {
+  if (!cloud()) {
     return;
   }
 
@@ -37,9 +35,7 @@ export const initTemplates = async () => {
 };
 
 export const createUserTemplate = async (templateData: TemplateData): Promise<Template | undefined> => {
-  // TODO: Template for Internet Computer
-
-  if (!firebase()) {
+  if (!cloud()) {
     throw new Error('Template cannot be created. Not supported.');
   }
 
@@ -49,9 +45,7 @@ export const createUserTemplate = async (templateData: TemplateData): Promise<Te
 };
 
 export const updateTemplate = async (template: Template): Promise<Template | undefined> => {
-  // TODO: Template for Internet Computer
-
-  if (!firebase()) {
+  if (!cloud()) {
     throw new Error('Template cannot be updated. Not supported.');
   }
 
