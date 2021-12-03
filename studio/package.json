@@ -54,7 +54,7 @@
     "@deckdeckgo/utils": "^2.4.0",
     "@deckdeckgo/word-cloud": "^1.2.0",
     "@deckdeckgo/youtube": "^2.1.0",
-    "@ionic/core": "^5.8.4",
+    "@ionic/core": "^5.9.1",
     "idb-keyval": "^6.0.3",
     "jszip": "^3.7.1",
     "socket.io-client": "2.3.1",
