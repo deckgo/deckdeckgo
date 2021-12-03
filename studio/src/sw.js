@@ -48,7 +48,7 @@ workbox.routing.registerRoute(
 
 // Cache the images
 workbox.routing.registerRoute(
-  /^(?!.*(?:unsplash|giphy|tenor|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?!.*(?:unsplash|giphy|tenor|firebasestorage|ic0))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
@@ -61,7 +61,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /^(?=.*(?:unsplash|giphy|tenor|firebasestorage))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
+  /^(?=.*(?:unsplash|giphy|tenor|firebasestorage|ic0))(?=.*(?:png|jpg|jpeg|svg|webp|gif)).*/,
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'cors-images',
     plugins: [
@@ -78,7 +78,7 @@ workbox.routing.registerRoute(
 
 // Cache the data
 workbox.routing.registerRoute(
-  /^(?=.*(?:githubusercontent|firebasestorage))(?=.*(?:csv|json)).*/,
+  /^(?=.*(?:githubusercontent|firebasestorage|ic0))(?=.*(?:csv|json)).*/,
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'data-content',
     plugins: [
