@@ -1,3 +1,9 @@
+# 3.1.1 (2021-12-03)
+
+### Features
+
+- add `init` to sync state type
+
 # 3.1.0 (2021-11-28)
 
 ### Features

@@ -526,6 +526,7 @@
     "cloud_in_progress": "Wird gespeichert...",
     "cloud_idle": "In Cloud gespeichert.",
     "cloud_pending": "Wird gespeichert...",
+    "cloud_init": "Initialisierend...",
     "info": "Alle Änderungen werden automatisch in dem Cloud gespeichert.",
     "status": "Status"
   }

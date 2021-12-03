@@ -544,6 +544,7 @@ interface I18nSync {
   cloud_in_progress: string;
   cloud_idle: string;
   cloud_pending: string;
+  cloud_init: string;
   info: string;
   status: string;
 }

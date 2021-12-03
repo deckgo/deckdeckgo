@@ -78,7 +78,7 @@ const filterPending = async (syncedAt: Date) => {
 
 export const initSyncState = async () => {
   if (!authStore.state.loggedIn) {
-    syncStore.state.sync = 'idle';
+    syncStore.state.sync = authStore.state.authUser?.state === 'initialization' ? 'init' : 'idle';
     return;
   }
 

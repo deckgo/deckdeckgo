@@ -81,9 +81,7 @@ export class AppUserMenu {
           </ion-router-link>
         </ion-item>
 
-        <ion-item
-          onClick={() => this.signUserOut()}
-          disabled={['pending', 'in_progress'].includes(syncStore.state.sync) || !authStore.state.loggedIn}>
+        <ion-item onClick={() => this.signUserOut()} disabled={syncStore.state.dirty || !authStore.state.loggedIn}>
           <ion-label>{i18n.state.nav.sign_out}</ion-label>
         </ion-item>
       </ion-list>

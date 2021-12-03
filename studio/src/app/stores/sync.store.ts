@@ -6,12 +6,18 @@ import {syncBeforeUnload} from '../utils/core/before-unload.utils';
 
 interface SyncStore {
   sync: SyncState;
+  dirty: boolean;
 }
 
 const {state, onChange} = createStore<SyncStore>({
-  sync: 'idle'
+  sync: 'idle',
+  dirty: false
 });
 
-onChange('sync', (sync: SyncState) => syncBeforeUnload(sync));
+onChange('sync', (sync: SyncState) => {
+  state.dirty = ['pending', 'in_progress', 'init'].includes(sync);
+
+  syncBeforeUnload(state.dirty);
+});
 
 export default {state, onChange};

@@ -3,7 +3,7 @@ import {Slide} from '../models/data/slide';
 import {Doc} from '../models/data/doc';
 import {Paragraph} from '../models/data/paragraph';
 
-export type SyncState = 'pending' | 'in_progress' | 'error' | 'idle';
+export type SyncState = 'init' | 'pending' | 'in_progress' | 'error' | 'idle';
 
 export interface SyncDataDeck {
   deckId: string;
