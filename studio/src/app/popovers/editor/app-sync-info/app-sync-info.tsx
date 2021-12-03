@@ -29,8 +29,8 @@ export class AppSyncInfo {
     return (
       <div class="ion-padding">
         <h2>{i18n.state.sync.status}</h2>
-        <p>{label}</p>
         <p>{i18n.state.sync.info}</p>
+        <p>{label}</p>
         <div class="ion-text-center">
           <ion-button size="small" shape="round" color="primary" onClick={() => this.closePopover()}>
             {i18n.state.core.got_it}
