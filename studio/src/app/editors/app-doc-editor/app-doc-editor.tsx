@@ -13,7 +13,7 @@ import {SlotType} from '../../types/editor/slot-type';
 
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
-import {DocEvents} from '../../events/editor/doc/doc.events';
+import {DocDataEvents} from '../../events/editor/doc/doc.data.events';
 import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
 import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
 
@@ -34,7 +34,7 @@ export class AppDocEditor implements ComponentInterface {
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
-  private readonly docEvents: DocEvents = new DocEvents();
+  private readonly docDataEvents: DocDataEvents = new DocDataEvents();
   private readonly docUndoRedoEvents: DocUndoRedoEvents = new DocUndoRedoEvents();
   private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
 
@@ -70,7 +70,7 @@ export class AppDocEditor implements ComponentInterface {
    * @private
    */
   private destroy() {
-    this.docEvents.destroy();
+    this.docDataEvents.destroy();
     this.docUndoRedoEvents.destroy();
 
     editorStore.reset();
@@ -167,14 +167,14 @@ export class AppDocEditor implements ComponentInterface {
   // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
   private initDocEvents(init: boolean) {
     if (init) {
-      this.docEvents.init(this.containerRef);
+      this.docDataEvents.init(this.containerRef);
       this.docUndoRedoEvents.init(this.containerRef);
       return;
     }
 
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
-      this.docEvents.init(this.containerRef);
+      this.docDataEvents.init(this.containerRef);
       this.docUndoRedoEvents.init(this.containerRef);
     };
 

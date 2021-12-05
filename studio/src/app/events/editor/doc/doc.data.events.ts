@@ -15,7 +15,7 @@ import {
 } from '../../../providers/data/paragraph/paragraph.offline.provider';
 import {debounce} from '@deckdeckgo/utils';
 
-export class DocEvents {
+export class DocDataEvents {
   private containerRef: HTMLElement;
 
   private treeObserver: MutationObserver | undefined;

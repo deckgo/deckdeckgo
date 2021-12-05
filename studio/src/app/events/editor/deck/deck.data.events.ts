@@ -40,7 +40,7 @@ import {publishUrl} from '../../../providers/publish/publish.provider';
 
 import {DeckAction} from '../../../types/editor/deck-action';
 
-export class DeckEvents {
+export class DeckDataEvents {
   private mainRef: HTMLElement;
 
   private readonly deckOfflineProvider: DeckOfflineProvider;

@@ -21,7 +21,7 @@ import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 import {getEdit} from '../../utils/editor/editor.utils';
 import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 
-import {DeckEvents} from '../../events/editor/deck/deck.events';
+import {DeckDataEvents} from '../../events/editor/deck/deck.data.events';
 import {RemoteEvents} from '../../events/editor/remote/remote.events';
 import {DeckEditorEvents} from '../../events/editor/editor/deck-editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
@@ -75,7 +75,7 @@ export class AppDeckEditor implements ComponentInterface {
   @State()
   private activeIndex: number = 0;
 
-  private deckEvents: DeckEvents = new DeckEvents();
+  private deckDataEvents: DeckDataEvents = new DeckDataEvents();
   private deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
   private remoteEvents: RemoteEvents = new RemoteEvents();
   private pollEvents: PollEvents = new PollEvents();
@@ -141,7 +141,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   async init() {
-    await this.deckEvents.init(this.mainRef);
+    await this.deckDataEvents.init(this.mainRef);
     await this.deckEditorEvents.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
 
     await this.initOrFetch();
@@ -177,7 +177,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   async destroy() {
-    this.deckEvents.destroy();
+    this.deckDataEvents.destroy();
     this.deckEditorEvents.destroy();
     this.pollEvents.destroy();
     this.imageEvents.destroy();
@@ -654,7 +654,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async initSlideSize() {
-    await this.deckEvents.initSlideSize();
+    await this.deckDataEvents.initSlideSize();
   }
 
   @Listen('signIn', {target: 'document'})
@@ -685,7 +685,7 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     try {
-      await this.deckEvents.updateDeckSlidesOrder(detail);
+      await this.deckDataEvents.updateDeckSlidesOrder(detail);
 
       await this.remoteEvents.updateRemoteSlidesOnMutation();
 
@@ -704,7 +704,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.remoteEvents.updateRemoteReveal(this.fullscreen && this.presenting);
 
-    await this.deckEvents.toggleSlideEditable(!this.presenting);
+    await this.deckDataEvents.toggleSlideEditable(!this.presenting);
   }
 
   @Listen('remoteSlideDidChange', {target: 'document'})
@@ -713,7 +713,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async onSlideChange() {
-    await this.deckEvents.toggleSlideEditable(!this.fullscreen || !this.presenting);
+    await this.deckDataEvents.toggleSlideEditable(!this.fullscreen || !this.presenting);
 
     const index: number = await this.deckRef?.getActiveIndex();
 
