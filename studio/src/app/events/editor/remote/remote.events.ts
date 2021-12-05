@@ -118,10 +118,10 @@ export class RemoteEvents {
       });
     }
 
-    this.el.removeEventListener('slideDelete', this.onSlideDelete, true);
-    this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate, true);
-    this.el.removeEventListener('pollUpdated', this.pollUpdated, true);
-    this.el.removeEventListener('deckDidChange', this.deckDidChange, true);
+    this.el.removeEventListener('slideDelete', this.onSlideDelete);
+    this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate);
+    this.el.removeEventListener('pollUpdated', this.pollUpdated);
+    this.el.removeEventListener('deckDidChange', this.deckDidChange);
   }
 
   private initRemote(): Promise<void> {
@@ -155,10 +155,10 @@ export class RemoteEvents {
 
       await this.initDeckMove();
 
-      this.el.addEventListener('slideDelete', this.onSlideDelete, false);
-      this.el.addEventListener('slideDidUpdate', this.slideDidUpdate, false);
-      this.el.addEventListener('pollUpdated', this.pollUpdated, false);
-      this.el.addEventListener('deckDidChange', this.deckDidChange, false);
+      this.el.addEventListener('slideDelete', this.onSlideDelete);
+      this.el.addEventListener('slideDidUpdate', this.slideDidUpdate);
+      this.el.addEventListener('pollUpdated', this.pollUpdated);
+      this.el.addEventListener('deckDidChange', this.deckDidChange);
 
       resolve();
     });
