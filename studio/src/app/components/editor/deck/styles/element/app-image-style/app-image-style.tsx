@@ -8,7 +8,7 @@ import i18n from '../../../../../../stores/i18n.store';
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
 
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 enum ImageSize {
   SMALL = '25%',

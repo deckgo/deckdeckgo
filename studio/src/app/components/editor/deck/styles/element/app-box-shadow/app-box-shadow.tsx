@@ -9,7 +9,7 @@ import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.u
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 import {SelectedElement} from '../../../../../../types/editor/selected-element';
 
 @Component({

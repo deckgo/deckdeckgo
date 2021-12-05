@@ -3,7 +3,7 @@ import {Component, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 import i18n from '../../../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-color-word-cloud'
