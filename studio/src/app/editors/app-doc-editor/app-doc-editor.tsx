@@ -14,7 +14,7 @@ import {SlotType} from '../../types/editor/slot-type';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocDataEvents} from '../../events/editor/doc/doc.data.events';
-import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
+import {DocEditorEvents} from '../../events/editor/editor/doc.editor.events';
 import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
 
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';

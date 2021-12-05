@@ -23,7 +23,7 @@ import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 
 import {DeckDataEvents} from '../../events/editor/deck/deck.data.events';
 import {RemoteEvents} from '../../events/editor/remote/remote.events';
-import {DeckEditorEvents} from '../../events/editor/editor/deck-editor.events';
+import {DeckEditorEvents} from '../../events/editor/editor/deck.editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
