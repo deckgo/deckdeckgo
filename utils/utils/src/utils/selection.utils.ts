@@ -52,9 +52,42 @@ const moveCursor = ({element, collapse}: {element: Node | undefined; collapse: '
   range.selectNodeContents(element);
   range.collapse(collapse === 'start');
 
+  addRangeAndDetach(range);
+};
+
+export const moveCursorToOffset = ({element, offset}: {element: Node | undefined; offset: number}) => {
+  if (!element) {
+    return;
+  }
+
+  const range: Range = document.createRange();
+  range.setStart(element, offset);
+
+  addRangeAndDetach(range);
+};
+
+const addRangeAndDetach = (range: Range) => {
   const selection: Selection | null = getSelection();
   selection?.removeAllRanges();
   selection?.addRange(range);
 
   range.detach();
+};
+
+export const caretPosition = ({target}: {target: Node}): number | undefined => {
+  const selection: Selection | null = getSelection();
+
+  const range: Range | undefined = selection?.getRangeAt(0);
+  const clonedRange: Range | undefined = range?.cloneRange();
+
+  if (!clonedRange || !range) {
+    return undefined;
+  }
+
+  const {endContainer, endOffset} = range;
+
+  clonedRange.selectNodeContents(target);
+  clonedRange.setEnd(endContainer, endOffset);
+
+  return clonedRange.toString().length;
 };

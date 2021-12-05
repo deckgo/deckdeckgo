@@ -1,5 +1,6 @@
-import {attachPasteEvent, detachPasteEvent} from '../../../utils/editor/paste.utils';
 import {catchTab} from '@deckdeckgo/utils';
+
+import {attachPasteEvent, detachPasteEvent} from '../../../utils/editor/paste.utils';
 
 export class DocEditorEvents {
   init() {

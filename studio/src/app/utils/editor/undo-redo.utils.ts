@@ -121,10 +121,13 @@ export const undoRedo = async ({
 
   const {type, data, target} = undoChange;
 
-  if (type === 'input') {
-    to.push({type, target, data: {innerHTML: target.innerHTML}});
+  // In case of decks, we are using HTMLElement only
+  const element: HTMLElement = target as HTMLElement;
 
-    undoRedoElement(target, data as UndoRedoChangeElement);
+  if (type === 'input') {
+    to.push({type, target, data: {innerHTML: element.innerHTML}});
+
+    undoRedoElement(element, data as UndoRedoChangeElement);
   }
 
   if (type === 'style') {
@@ -133,11 +136,11 @@ export const undoRedo = async ({
       target,
       data: {
         ...data,
-        value: target.getAttribute('style')
+        value: element.getAttribute('style')
       }
     });
 
-    await undoRedoSetStyle(target, data as UndoRedoChangeStyle);
+    await undoRedoSetStyle(element, data as UndoRedoChangeStyle);
   }
 
   if (type === 'attribute') {
@@ -148,11 +151,11 @@ export const undoRedo = async ({
       target,
       data: {
         ...data,
-        value: target.getAttribute(attribute)
+        value: element.getAttribute(attribute)
       }
     });
 
-    undoRedoSetAttribute(target, data as UndoRedoChangeAttribute);
+    undoRedoSetAttribute(element, data as UndoRedoChangeAttribute);
   }
 
   return {

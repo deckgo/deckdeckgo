@@ -14,8 +14,13 @@ export interface UndoRedoChangeElement {
   innerHTML: string;
 }
 
+export interface UndoRedoInputElement {
+  offset: number;
+  oldValue: string;
+}
+
 export interface UndoRedoChange {
   type: 'input' | 'attribute' | 'style';
-  target: HTMLElement;
-  data: UndoRedoChangeAttribute | UndoRedoChangeElement | UndoRedoChangeStyle;
+  target: Node;
+  data: UndoRedoChangeAttribute | UndoRedoChangeElement | UndoRedoChangeStyle | UndoRedoInputElement;
 }

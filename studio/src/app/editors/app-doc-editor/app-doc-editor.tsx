@@ -15,6 +15,7 @@ import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocEvents} from '../../events/editor/doc/doc.events';
 import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
+import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
 
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
@@ -34,6 +35,7 @@ export class AppDocEditor implements ComponentInterface {
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly docEvents: DocEvents = new DocEvents();
+  private readonly docUndoRedoEvents: DocUndoRedoEvents = new DocUndoRedoEvents();
   private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
@@ -69,6 +71,8 @@ export class AppDocEditor implements ComponentInterface {
    */
   private destroy() {
     this.docEvents.destroy();
+    this.docUndoRedoEvents.destroy();
+
     editorStore.reset();
   }
 
@@ -164,12 +168,14 @@ export class AppDocEditor implements ComponentInterface {
   private initDocEvents(init: boolean) {
     if (init) {
       this.docEvents.init(this.containerRef);
+      this.docUndoRedoEvents.init(this.containerRef);
       return;
     }
 
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
       this.docEvents.init(this.containerRef);
+      this.docUndoRedoEvents.init(this.containerRef);
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
