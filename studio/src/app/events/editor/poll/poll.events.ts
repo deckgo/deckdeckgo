@@ -5,14 +5,14 @@ export class PollEvents {
     return new Promise<void>(async (resolve) => {
       this.el = el;
 
-      this.el.addEventListener('slideDidUpdate', this.slideDidUpdate, false);
+      this.el.addEventListener('slideDidUpdate', this.slideDidUpdate);
 
       resolve();
     });
   }
 
   destroy() {
-    this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate, true);
+    this.el.removeEventListener('slideDidUpdate', this.slideDidUpdate);
   }
 
   private slideDidUpdate = async ($event: CustomEvent) => {

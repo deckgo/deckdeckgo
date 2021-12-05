@@ -40,11 +40,11 @@ export class DocDataEvents {
     this.dataObserver = new MutationObserver(this.onDataMutation);
     this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true});
 
-    document.addEventListener('markdownDidChange', this.onCustomEventChange, false);
-    document.addEventListener('wordCloudDidChange', this.onCustomEventChange, false);
-    document.addEventListener('codeDidChange', this.onCustomEventChange, false);
-    document.addEventListener('mathDidChange', this.onCustomEventChange, false);
-    document.addEventListener('imgDidChange', this.onCustomEventChange, false);
+    document.addEventListener('markdownDidChange', this.onCustomEventChange);
+    document.addEventListener('wordCloudDidChange', this.onCustomEventChange);
+    document.addEventListener('codeDidChange', this.onCustomEventChange);
+    document.addEventListener('mathDidChange', this.onCustomEventChange);
+    document.addEventListener('imgDidChange', this.onCustomEventChange);
   }
 
   destroy() {
@@ -52,11 +52,11 @@ export class DocDataEvents {
     this.attributesObserver?.disconnect();
     this.dataObserver?.disconnect();
 
-    document.addEventListener('markdownDidChange', this.onCustomEventChange, true);
-    document.addEventListener('wordCloudDidChange', this.onCustomEventChange, true);
-    document.addEventListener('codeDidChange', this.onCustomEventChange, true);
-    document.addEventListener('mathDidChange', this.onCustomEventChange, true);
-    document.addEventListener('imgDidChange', this.onCustomEventChange, true);
+    document.addEventListener('markdownDidChange', this.onCustomEventChange);
+    document.addEventListener('wordCloudDidChange', this.onCustomEventChange);
+    document.addEventListener('codeDidChange', this.onCustomEventChange);
+    document.addEventListener('mathDidChange', this.onCustomEventChange);
+    document.addEventListener('imgDidChange', this.onCustomEventChange);
   }
 
   private onTreeMutation = async (mutations: MutationRecord[]) => {

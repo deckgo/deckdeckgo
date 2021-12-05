@@ -4,7 +4,7 @@ export class ChartEvents {
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (document) {
-        document.addEventListener('chartCustomLoad', this.onCustomLoad, false);
+        document.addEventListener('chartCustomLoad', this.onCustomLoad);
       }
 
       resolve();
@@ -12,7 +12,7 @@ export class ChartEvents {
   }
 
   destroy() {
-    document.removeEventListener('chartCustomLoad', this.onCustomLoad, true);
+    document.removeEventListener('chartCustomLoad', this.onCustomLoad);
   }
 
   private onCustomLoad = async ($event: CustomEvent) => {
