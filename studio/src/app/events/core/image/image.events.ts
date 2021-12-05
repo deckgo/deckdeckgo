@@ -6,7 +6,7 @@ export class ImageEvents {
   init(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       if (document) {
-        document.addEventListener('customLoad', this.onCustomLoad, false);
+        document.addEventListener('customLoad', this.onCustomLoad);
       }
 
       resolve();
@@ -14,7 +14,7 @@ export class ImageEvents {
   }
 
   destroy() {
-    document.removeEventListener('customLoad', this.onCustomLoad, true);
+    document.removeEventListener('customLoad', this.onCustomLoad);
   }
 
   private onCustomLoad = async ($event: CustomEvent) => {

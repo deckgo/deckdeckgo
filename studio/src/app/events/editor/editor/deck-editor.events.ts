@@ -13,15 +13,15 @@ export class DeckEditorEvents {
       const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
       if (deck) {
-        deck.addEventListener('keyup', this.onKeyUp, false);
+        deck.addEventListener('keyup', this.onKeyUp);
       }
 
       attachPasteEvent();
 
-      document.addEventListener('blockSlide', this.onBlockSlide, false);
-      document.addEventListener('keydown', this.onKeyDown, false);
+      document.addEventListener('blockSlide', this.onBlockSlide);
+      document.addEventListener('keydown', this.onKeyDown);
 
-      document.addEventListener('drrSelect', this.onDraggableResizableSelect, false);
+      document.addEventListener('drrSelect', this.onDraggableResizableSelect);
 
       resolve();
     });
@@ -31,15 +31,15 @@ export class DeckEditorEvents {
     const deck: HTMLElement = this.mainRef.querySelector('deckgo-deck');
 
     if (deck) {
-      deck.removeEventListener('keyup', this.onKeyUp, true);
+      deck.removeEventListener('keyup', this.onKeyUp);
     }
 
     detachPasteEvent();
 
-    document.removeEventListener('blockSlide', this.onBlockSlide, true);
-    document.removeEventListener('keydown', this.onKeyDown, true);
+    document.removeEventListener('blockSlide', this.onBlockSlide);
+    document.removeEventListener('keydown', this.onKeyDown);
 
-    document.removeEventListener('drrSelect', this.onDraggableResizableSelect, true);
+    document.removeEventListener('drrSelect', this.onDraggableResizableSelect);
   }
 
   private onKeyUp = async ($event: KeyboardEvent) => {
