@@ -9,7 +9,7 @@ export class DocUndoRedoEvents {
 
   private undoValue: {mutation: MutationRecord; caretPosition: number} | undefined;
 
-  private readonly debounceUpdateInput: () => void = debounce(() => this.stackUndoInput(), 500);
+  private readonly debounceUpdateInput: () => void = debounce(() => this.stackUndoInput(), 300);
 
   init(containerRef: HTMLElement) {
     this.containerRef = containerRef;
