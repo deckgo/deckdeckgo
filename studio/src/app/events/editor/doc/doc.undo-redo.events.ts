@@ -98,6 +98,8 @@ export class DocUndoRedoEvents {
   }
 
   private onDataMutation = (mutations: MutationRecord[]) => {
+    // TODO: caret position in case of DELETE
+
     if (!this.undoValue) {
       this.undoValue = {
         mutation: mutations[0],
