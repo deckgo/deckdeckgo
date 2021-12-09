@@ -141,7 +141,7 @@ export class AppDocEditor implements ComponentInterface {
     const firefox: boolean = isFirefox();
 
     const Title = 'h1';
-    const title: JSX.IntrinsicElements = <Title key={uuid()}>{firefox ? '\u200B' : ''}</Title>;
+    const title: JSX.IntrinsicElements = <Title key={uuid()}>{firefox ? '\u200B' : undefined}</Title>;
 
     const Section = 'section';
     const section: JSX.IntrinsicElements = <Section key={uuid()}></Section>;
