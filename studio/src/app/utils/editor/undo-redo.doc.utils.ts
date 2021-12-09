@@ -1,4 +1,4 @@
-import {moveCursorToOffset} from '@deckdeckgo/utils';
+import {moveCursorToEnd, moveCursorToOffset} from '@deckdeckgo/utils';
 
 import undoRedoStore from '../../stores/undo-redo.store';
 
@@ -24,11 +24,13 @@ export const stackUndoInput = ({mutation, caretPosition}: {mutation: MutationRec
 export const stackUndoParagraph = ({
   paragraph,
   mutation,
-  container
+  container,
+  previousSibling
 }: {
   paragraph: HTMLElement;
   container: HTMLElement;
-  mutation: 'add' | 'delete';
+  mutation: 'add' | 'remove';
+  previousSibling: HTMLElement;
 }) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
@@ -37,7 +39,7 @@ export const stackUndoParagraph = ({
   undoRedoStore.state.undo.push({
     type: 'paragraph',
     target: paragraph,
-    data: {outerHTML: paragraph.outerHTML, index: nodeIndex(paragraph), mutation, container}
+    data: {outerHTML: paragraph.outerHTML, index: nodeIndex(previousSibling) + 1, mutation, container}
   });
 
   if (!undoRedoStore.state.redo) {
@@ -151,35 +153,51 @@ const undoRedoParagraph = ({
       return;
     }
 
-    element.parentElement.removeChild(element);
+    const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+      changeObserver.disconnect();
 
-    pushTo({
-      ...undoChange,
-      data: {
-        ...data,
-        index: index - 1,
-        mutation: 'delete'
-      }
+      moveCursorToEnd(mutations[0].previousSibling);
+
+      pushTo({
+        ...undoChange,
+        data: {
+          ...data,
+          index: index - 1,
+          mutation: 'remove'
+        }
+      });
+
+      popFrom();
     });
 
-    popFrom();
+    changeObserver.observe(container, {childList: true, subtree: true});
+
+    element.parentElement.removeChild(element);
 
     return;
   }
 
-  if (mutation === 'delete') {
-    // Paragraph are elements
-    container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
+  if (mutation === 'remove') {
+    const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+      changeObserver.disconnect();
 
-    pushTo({
-      ...undoChange,
-      data: {
-        ...data,
-        mutation: 'add',
-        index: index + 1
-      }
+      moveCursorToEnd(mutations[0].addedNodes[0]);
+
+      pushTo({
+        ...undoChange,
+        data: {
+          ...data,
+          mutation: 'add',
+          index: index + 1
+        }
+      });
+
+      popFrom();
     });
 
-    popFrom();
+    changeObserver.observe(container, {childList: true, subtree: true});
+
+    // Paragraph are elements
+    container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
   }
 };

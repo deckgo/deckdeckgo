@@ -15,7 +15,7 @@ import {
   deleteOfflineParagraph,
   updateOfflineParagraph
 } from '../../../providers/data/paragraph/paragraph.offline.provider';
-import {mapAddParagraphs} from '../../../utils/editor/paragraphs.utils';
+import {findAddedParagraphs} from '../../../utils/editor/paragraphs.utils';
 
 export class DocDataEvents {
   private containerRef: HTMLElement;
@@ -231,7 +231,7 @@ export class DocDataEvents {
         return;
       }
 
-      const addedParagraphs: HTMLElement[] = mapAddParagraphs({mutations, container: this.containerRef});
+      const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
 
       await this.createDoc();
 

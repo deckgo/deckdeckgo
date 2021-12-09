@@ -1,7 +1,7 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
 
 import {nextRedoChange, nextUndoChange, redo, stackUndoInput, stackUndoParagraph, undo} from '../../../utils/editor/undo-redo.doc.utils';
-import {mapAddParagraphs} from '../../../utils/editor/paragraphs.utils';
+import {findAddedParagraphs, RemovedParagraph, findRemovedParagraphs} from '../../../utils/editor/paragraphs.utils';
 
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
@@ -119,10 +119,19 @@ export class DocUndoRedoEvents {
   };
 
   private onTreeMutation = (mutations: MutationRecord[]) => {
-    const addedParagraphs: HTMLElement[] = mapAddParagraphs({mutations, container: this.containerRef});
+    const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
+    addedParagraphs.forEach((paragraph: HTMLElement) =>
+      stackUndoParagraph({
+        paragraph,
+        mutation: 'add',
+        container: this.containerRef,
+        previousSibling: paragraph.previousSibling as HTMLElement
+      })
+    );
 
-    for (const paragraph of addedParagraphs) {
-      stackUndoParagraph({paragraph, mutation: 'add', container: this.containerRef});
-    }
+    const removedParagraphs: RemovedParagraph[] = findRemovedParagraphs({mutations});
+    removedParagraphs.forEach(({paragraph, previousSibling}: RemovedParagraph) =>
+      stackUndoParagraph({paragraph, mutation: 'remove', container: this.containerRef, previousSibling: previousSibling as HTMLElement})
+    );
   };
 }

@@ -26,6 +26,6 @@ export const isElementNode = (element: Node | undefined): boolean => {
   return element?.nodeType === Node.ELEMENT_NODE;
 };
 
-export const nodeIndex = (element: HTMLElement): number => {
+export const elementIndex = (element: HTMLElement): number => {
   return Array.from(element.parentNode?.children || []).indexOf(element);
 };
