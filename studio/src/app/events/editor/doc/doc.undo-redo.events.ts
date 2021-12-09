@@ -9,7 +9,7 @@ export class DocUndoRedoEvents {
 
   private undoValue: {mutation: MutationRecord; caretPosition: number} | undefined;
 
-  private readonly debounceUpdateInput: () => void = debounce(() => this.stackUndoInput(), 300);
+  private readonly debounceUpdateInput: () => void = debounce(() => this.stackUndoInput(), 350);
 
   init(containerRef: HTMLElement) {
     this.containerRef = containerRef;
@@ -98,12 +98,14 @@ export class DocUndoRedoEvents {
   }
 
   private onDataMutation = (mutations: MutationRecord[]) => {
-    // TODO: caret position in case of DELETE
-
     if (!this.undoValue) {
+      const mutation: MutationRecord = mutations[0];
+
+      const newValue: string = mutation.target.nodeValue;
+
       this.undoValue = {
-        mutation: mutations[0],
-        caretPosition: caretPosition({target: mutations[0].target}) - 1
+        mutation,
+        caretPosition: caretPosition({target: mutation.target}) + (mutation.oldValue.length > newValue.length ? 1 : -1)
       };
     }
 
