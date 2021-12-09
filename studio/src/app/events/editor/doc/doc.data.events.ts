@@ -1,5 +1,7 @@
 import {Doc, DocData, now, Paragraph, ParagraphData, nodeIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
 
+import {debounce} from '@deckdeckgo/utils';
+
 import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
 import editorStore from '../../../stores/editor.store';
@@ -13,7 +15,7 @@ import {
   deleteOfflineParagraph,
   updateOfflineParagraph
 } from '../../../providers/data/paragraph/paragraph.offline.provider';
-import {debounce} from '@deckdeckgo/utils';
+import {mapAddParagraphs} from '../../../utils/editor/paragraphs.utils';
 
 export class DocDataEvents {
   private containerRef: HTMLElement;
@@ -229,13 +231,7 @@ export class DocDataEvents {
         return;
       }
 
-      if (!mutations || mutations.length <= 0) {
-        return;
-      }
-
-      const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
-
-      const addedParagraphs: HTMLElement[] = this.filterParagraphs(addedNodes);
+      const addedParagraphs: HTMLElement[] = mapAddParagraphs({mutations, container: this.containerRef});
 
       await this.createDoc();
 
@@ -291,14 +287,6 @@ export class DocDataEvents {
     } catch (err) {
       errorStore.state.error = err;
     }
-  }
-
-  private filterParagraphs(nodes: Node[]): HTMLElement[] {
-    return nodes
-      .filter((node: Node) => isParagraph({element: node, container: this.containerRef}))
-      .filter(
-        (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
-      ) as HTMLElement[];
   }
 
   private async updateData() {

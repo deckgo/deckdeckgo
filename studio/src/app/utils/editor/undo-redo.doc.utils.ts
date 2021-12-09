@@ -2,7 +2,8 @@ import {moveCursorToOffset} from '@deckdeckgo/utils';
 
 import undoRedoStore from '../../stores/undo-redo.store';
 
-import {UndoRedoChange, UndoRedoInputElement} from '../../types/editor/undo-redo';
+import {UndoRedoChange, UndoRedoDocParagraph, UndoRedoDocInput} from '../../types/editor/undo-redo';
+import {nodeIndex} from '@deckdeckgo/editor';
 
 export const stackUndoInput = ({mutation, caretPosition}: {mutation: MutationRecord; caretPosition: number}) => {
   if (!undoRedoStore.state.undo) {
@@ -13,11 +14,35 @@ export const stackUndoInput = ({mutation, caretPosition}: {mutation: MutationRec
 
   undoRedoStore.state.undo.push({
     type: 'input',
-    target: target,
+    target,
     data: {oldValue, offset: caretPosition}
   });
 
   undoRedoStore.state.redo = [];
+};
+
+export const stackUndoParagraph = ({
+  paragraph,
+  mutation,
+  container
+}: {
+  paragraph: HTMLElement;
+  container: HTMLElement;
+  mutation: 'add' | 'delete';
+}) => {
+  if (!undoRedoStore.state.undo) {
+    undoRedoStore.state.undo = [];
+  }
+
+  undoRedoStore.state.undo.push({
+    type: 'paragraph',
+    target: paragraph,
+    data: {outerHTML: paragraph.outerHTML, index: nodeIndex(paragraph), mutation, container}
+  });
+
+  if (!undoRedoStore.state.redo) {
+    undoRedoStore.state.redo = [];
+  }
 };
 
 export const nextUndoChange = (): UndoRedoChange | undefined => nextChange(undoRedoStore.state.undo);
@@ -59,29 +84,102 @@ const undoRedo = ({
     return;
   }
 
-  const {type, data, target} = undoChange;
+  const {type} = undoChange;
 
   if (type === 'input') {
-    const currentValue: string = target.nodeValue;
+    undoRedoInput({popFrom, pushTo, undoChange});
+  }
 
-    const {oldValue, offset: newCaretPosition} = data as UndoRedoInputElement;
+  if (type === 'paragraph') {
+    undoRedoParagraph({popFrom, pushTo, undoChange});
+  }
+};
 
-    const changeObserver: MutationObserver = new MutationObserver(() => {
-      changeObserver.disconnect();
+const undoRedoInput = ({
+  popFrom,
+  pushTo,
+  undoChange
+}: {
+  popFrom: () => void;
+  pushTo: (value: UndoRedoChange) => void;
+  undoChange: UndoRedoChange;
+}) => {
+  const {data, target} = undoChange;
 
-      moveCursorToOffset({element: target, offset: newCaretPosition});
+  const currentValue: string = target.nodeValue;
 
-      pushTo({
-        type: 'input',
-        target: target as HTMLElement,
-        data: {oldValue: currentValue, offset: newCaretPosition + (currentValue.length - oldValue.length)}
-      });
+  const {oldValue, offset: newCaretPosition} = data as UndoRedoDocInput;
 
-      popFrom();
+  const changeObserver: MutationObserver = new MutationObserver(() => {
+    changeObserver.disconnect();
+
+    moveCursorToOffset({element: target, offset: newCaretPosition});
+
+    pushTo({
+      type: 'input',
+      target: target as HTMLElement,
+      data: {oldValue: currentValue, offset: newCaretPosition + (currentValue.length - oldValue.length)}
     });
 
-    changeObserver.observe(target, {characterData: true, subtree: true});
+    popFrom();
+  });
 
-    target.nodeValue = oldValue;
+  changeObserver.observe(target, {characterData: true, subtree: true});
+
+  target.nodeValue = oldValue;
+};
+
+const undoRedoParagraph = ({
+  popFrom,
+  pushTo,
+  undoChange
+}: {
+  popFrom: () => void;
+  pushTo: (value: UndoRedoChange) => void;
+  undoChange: UndoRedoChange;
+}) => {
+  const {data} = undoChange;
+
+  const {index, outerHTML, mutation, container} = data as UndoRedoDocParagraph;
+
+  if (mutation === 'add') {
+    // Paragraph are elements
+
+    const element: Element | undefined = container.children[index];
+
+    if (!element) {
+      return;
+    }
+
+    element.parentElement.removeChild(element);
+
+    pushTo({
+      ...undoChange,
+      data: {
+        ...data,
+        index: index - 1,
+        mutation: 'delete'
+      }
+    });
+
+    popFrom();
+
+    return;
+  }
+
+  if (mutation === 'delete') {
+    // Paragraph are elements
+    container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
+
+    pushTo({
+      ...undoChange,
+      data: {
+        ...data,
+        mutation: 'add',
+        index: index + 1
+      }
+    });
+
+    popFrom();
   }
 };

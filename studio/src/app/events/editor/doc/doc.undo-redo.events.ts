@@ -1,11 +1,13 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
 
-import {nextRedoChange, nextUndoChange, redo, stackUndoInput, undo} from '../../../utils/editor/undo-redo.doc.utils';
+import {nextRedoChange, nextUndoChange, redo, stackUndoInput, stackUndoParagraph, undo} from '../../../utils/editor/undo-redo.doc.utils';
+import {mapAddParagraphs} from '../../../utils/editor/paragraphs.utils';
 
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
 
   private dataObserver: MutationObserver | undefined;
+  private treeObserver: MutationObserver | undefined;
 
   private undoValue: {mutation: MutationRecord; caretPosition: number} | undefined;
 
@@ -15,7 +17,9 @@ export class DocUndoRedoEvents {
     this.containerRef = containerRef;
 
     this.dataObserver = new MutationObserver(this.onDataMutation);
-    this.observeInput();
+    this.treeObserver = new MutationObserver(this.onTreeMutation);
+
+    this.observe();
 
     document.addEventListener('keydown', this.onKeydown);
   }
@@ -76,12 +80,12 @@ export class DocUndoRedoEvents {
 
     // Undo and redo the input will trigger the MutationObserver therefore we disable it and observe next change to add it again
     // In other words, we skip one mutation change event
-    this.disconnectInput();
+    this.disconnect();
 
     const changeObserver: MutationObserver = new MutationObserver(() => {
       changeObserver.disconnect();
 
-      this.observeInput();
+      this.observe();
     });
 
     changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
@@ -89,12 +93,14 @@ export class DocUndoRedoEvents {
     undoRedo();
   }
 
-  private observeInput() {
+  private observe() {
     this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
+    this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
   }
 
-  private disconnectInput() {
+  private disconnect() {
     this.dataObserver.disconnect();
+    this.treeObserver.disconnect();
   }
 
   private onDataMutation = (mutations: MutationRecord[]) => {
@@ -110,5 +116,13 @@ export class DocUndoRedoEvents {
     }
 
     this.debounceUpdateInput();
+  };
+
+  private onTreeMutation = (mutations: MutationRecord[]) => {
+    const addedParagraphs: HTMLElement[] = mapAddParagraphs({mutations, container: this.containerRef});
+
+    for (const paragraph of addedParagraphs) {
+      stackUndoParagraph({paragraph, mutation: 'add', container: this.containerRef});
+    }
   };
 }
