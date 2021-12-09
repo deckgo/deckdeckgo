@@ -1,6 +1,14 @@
+<a name="5.X.Y"></a>
+
+# [5.X.Y](https://github.com/deckgo/deckdeckgo/compare/v5.1.0...v5.X.Y) (2022-AA-BB)
+
+### Providers
+
+- ic: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+
 <a name="5.1.0"></a>
 
-# [5.1.0](https://github.com/deckgo/deckdeckgo/compare/v5.0.1...vX.Y.Z) (2021-12-03)
+# [5.1.0](https://github.com/deckgo/deckdeckgo/compare/v5.0.1...v5.1.0) (2021-12-03)
 
 ### Applications
 

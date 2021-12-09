@@ -100,8 +100,8 @@ export const getFiles: GetFiles = async ({
 export const deleteFile: DeleteFile = async ({downloadUrl, fullPath}: StorageFile): Promise<void> => {
   const {actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
-  const {pathname}: URL = new URL(downloadUrl);
-  const token: string = pathname.replace('?token=', '');
+  const {searchParams}: URL = new URL(downloadUrl);
+  const token: string | null = searchParams.get('token');
 
-  return actor.del({fullPath, token: toNullable<string>(token?.length > 0 ? token : undefined)});
+  return actor.del({fullPath, token: toNullable<string>(token ? token : undefined)});
 };
