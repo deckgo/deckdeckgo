@@ -1,7 +1,13 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
 
 import {nextRedoChange, nextUndoChange, redo, stackUndoInput, stackUndoParagraph, undo} from '../../../utils/editor/undo-redo.doc.utils';
-import {findAddedParagraphs, RemovedParagraph, findRemovedParagraphs} from '../../../utils/editor/paragraphs.utils';
+import {
+  findAddedParagraphs,
+  RemovedParagraph,
+  findRemovedParagraphs,
+  findAddedNodesParagraphs,
+  findUpdatedParagraphs
+} from '../../../utils/editor/paragraphs.utils';
 
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
@@ -119,6 +125,7 @@ export class DocUndoRedoEvents {
   };
 
   private onTreeMutation = (mutations: MutationRecord[]) => {
+    // New paragraph
     const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
     addedParagraphs.forEach((paragraph: HTMLElement) =>
       stackUndoParagraph({
@@ -129,9 +136,23 @@ export class DocUndoRedoEvents {
       })
     );
 
+    // Paragraphs removed
     const removedParagraphs: RemovedParagraph[] = findRemovedParagraphs({mutations});
     removedParagraphs.forEach(({paragraph, previousSibling}: RemovedParagraph) =>
       stackUndoParagraph({paragraph, mutation: 'remove', container: this.containerRef, previousSibling: previousSibling as HTMLElement})
+    );
+
+    // Added nodes within paragraphs
+    const addedNodesMutations: MutationRecord[] = findAddedNodesParagraphs({mutations, container: this.containerRef});
+    const updateParagraphs: HTMLElement[] = findUpdatedParagraphs({mutations: addedNodesMutations, container: this.containerRef});
+
+    updateParagraphs.forEach((paragraph: HTMLElement) =>
+      stackUndoParagraph({
+        paragraph,
+        mutation: 'update',
+        container: this.containerRef,
+        previousSibling: paragraph.previousSibling as HTMLElement
+      })
     );
   };
 }

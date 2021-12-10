@@ -29,7 +29,7 @@ export const stackUndoParagraph = ({
 }: {
   paragraph: HTMLElement;
   container: HTMLElement;
-  mutation: 'add' | 'remove';
+  mutation: 'add' | 'remove' | 'update';
   previousSibling?: HTMLElement;
 }) => {
   if (!undoRedoStore.state.undo) {
@@ -199,5 +199,31 @@ const undoRedoParagraph = ({
 
     // Paragraph are elements
     container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
+    return;
+  }
+
+  if (mutation === 'update') {
+    const target: Element = container.children[Math.min(index, container.children.length - 1)];
+
+    const currentOuterHTML: string = target.outerHTML;
+
+    const changeObserver: MutationObserver = new MutationObserver((_mutations: MutationRecord[]) => {
+      changeObserver.disconnect();
+
+      pushTo({
+        ...undoChange,
+        data: {
+          ...data,
+          outerHTML: currentOuterHTML
+        }
+      });
+
+      popFrom();
+    });
+
+    changeObserver.observe(container, {childList: true, subtree: true});
+
+    // Paragraph are elements
+    target.outerHTML = outerHTML;
   }
 };

@@ -1,4 +1,5 @@
-import {isParagraph} from './paragraph.utils';
+import {findParagraph, isParagraph} from './paragraph.utils';
+import {isTextNode} from '@deckdeckgo/editor';
 
 export interface RemovedParagraph {
   paragraph: HTMLElement;
@@ -23,6 +24,22 @@ export const findAddedParagraphs = ({
   return filterAddedParagraphs({nodes: addedNodes, container});
 };
 
+export const findAddedNodesParagraphs = ({
+  mutations,
+  container
+}: {
+  mutations: MutationRecord[] | undefined;
+  container: HTMLElement;
+}): MutationRecord[] => {
+  return mutations
+    .filter(({addedNodes}: MutationRecord) => addedNodes?.length > 0)
+    .filter(({addedNodes}: MutationRecord) => {
+      const node: Node = addedNodes[0];
+
+      return !isParagraph({element: node, container}) && !isTextNode(node) && node?.nodeName.toLowerCase() !== 'br';
+    });
+};
+
 export const findRemovedParagraphs = ({mutations}: {mutations: MutationRecord[] | undefined}): RemovedParagraph[] => {
   if (!mutations || mutations.length <= 0) {
     return [];
@@ -35,6 +52,30 @@ export const findRemovedParagraphs = ({mutations}: {mutations: MutationRecord[] 
 
       return [...acc, ...paragraphs.map((paragraph: HTMLElement) => ({paragraph, previousSibling}))];
     }, []);
+};
+
+export const findUpdatedParagraphs = ({
+  mutations,
+  container
+}: {
+  mutations: MutationRecord[] | undefined;
+  container: HTMLElement;
+}): HTMLElement[] => {
+  if (!mutations || mutations.length <= 0) {
+    return [];
+  }
+
+  const nodes: Node[] = mutations.reduce((acc: Node[], {target}: MutationRecord) => [...acc, target], []);
+
+  return [
+    ...new Set(
+      nodes
+        .map((node: Node) => findParagraph({element: node, container}))
+        .filter(
+          (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
+        ) as HTMLElement[]
+    )
+  ];
 };
 
 const filterAddedParagraphs = ({nodes, container}: {nodes: Node[]; container: HTMLElement}): HTMLElement[] => {

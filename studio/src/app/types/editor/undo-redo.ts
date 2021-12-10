@@ -22,7 +22,7 @@ export interface UndoRedoDocInput {
 export interface UndoRedoDocParagraph {
   container: HTMLElement;
   index: number;
-  mutation: 'add' | 'remove';
+  mutation: 'add' | 'remove' | 'update';
   outerHTML: string;
 }
 
