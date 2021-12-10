@@ -30,7 +30,7 @@ export const stackUndoParagraph = ({
   paragraph: HTMLElement;
   container: HTMLElement;
   mutation: 'add' | 'remove';
-  previousSibling: HTMLElement;
+  previousSibling?: HTMLElement;
 }) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
@@ -39,7 +39,7 @@ export const stackUndoParagraph = ({
   undoRedoStore.state.undo.push({
     type: 'paragraph',
     target: paragraph,
-    data: {outerHTML: paragraph.outerHTML, index: nodeIndex(previousSibling) + 1, mutation, container}
+    data: {outerHTML: paragraph.outerHTML, index: previousSibling ? nodeIndex(previousSibling) + 1 : 0, mutation, container}
   });
 
   if (!undoRedoStore.state.redo) {

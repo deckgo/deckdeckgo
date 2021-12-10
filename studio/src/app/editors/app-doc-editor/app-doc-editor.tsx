@@ -68,13 +68,13 @@ export class AppDocEditor implements ComponentInterface {
 
   /**
    * Destroy global state and listener.
-   * @private
    */
   private destroy() {
     this.docDataEvents.destroy();
     this.docUndoRedoEvents.destroy();
 
     editorStore.reset();
+    undoRedoStore.reset();
   }
 
   @Listen('keydown', {target: 'document'})
@@ -104,8 +104,6 @@ export class AppDocEditor implements ComponentInterface {
 
     this.reloadAfterRender = true;
     this.paragraphs = undefined;
-
-    undoRedoStore.reset();
   }
 
   async componentDidRender() {
@@ -177,6 +175,7 @@ export class AppDocEditor implements ComponentInterface {
 
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
+
       this.docDataEvents.init(this.containerRef);
       this.docUndoRedoEvents.init(this.containerRef);
     };

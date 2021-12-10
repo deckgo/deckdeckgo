@@ -25,7 +25,7 @@ export class DocUndoRedoEvents {
   }
 
   destroy() {
-    this.dataObserver?.disconnect();
+    this.disconnect();
 
     document.removeEventListener('keydown', this.onKeydown);
   }
