@@ -38,101 +38,87 @@ export class LinkActions {
     this.linkUrl = ($event.target as InputTargetEvent).value;
   }
 
-  private createLink(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!document) {
-        resolve();
-        return;
-      }
+  private createLink() {
+    if (!document) {
+      return;
+    }
 
-      if (!this.anchorLink) {
-        resolve();
-        return;
-      }
+    if (!this.anchorLink) {
+      return;
+    }
 
-      if (!this.linkUrl || this.linkUrl.length <= 0) {
-        resolve();
-        return;
-      }
+    if (!this.linkUrl || this.linkUrl.length <= 0) {
+      return;
+    }
 
-      const selection: Selection | null = getSelection();
-      let targetContainer: Node = this.anchorLink.range.commonAncestorContainer
-        ? this.anchorLink.range.commonAncestorContainer
-        : selection?.anchorNode;
+    const selection: Selection | null = getSelection();
+    let targetContainer: Node = this.anchorLink.range.commonAncestorContainer
+      ? this.anchorLink.range.commonAncestorContainer
+      : selection?.anchorNode;
 
-      if (!targetContainer) {
-        resolve();
-        return;
-      }
+    if (!targetContainer) {
+      return;
+    }
 
-      // If node text
-      if (targetContainer.nodeType === Node.TEXT_NODE || targetContainer.nodeType === Node.COMMENT_NODE) {
-        targetContainer = targetContainer.parentElement;
-      }
+    // If node text
+    if (targetContainer.nodeType === Node.TEXT_NODE || targetContainer.nodeType === Node.COMMENT_NODE) {
+      targetContainer = targetContainer.parentElement;
+    }
 
-      const target: Node = Array.from(targetContainer.childNodes).find((node: Node) => {
-        return node.textContent && node.textContent.trim().indexOf(this.anchorLink.text) > -1;
-      });
-
-      if (!target) {
-        resolve();
-        return;
-      }
-
-      if (target.nodeType === 3) {
-        const index: number = target.textContent.indexOf(this.anchorLink.text);
-
-        const textBefore: string = index > -1 ? target.textContent.substr(0, index) : null;
-        const textAfter: string =
-          index + this.anchorLink.text.length > -1 ? target.textContent.substr(index + this.anchorLink.text.length) : null;
-
-        if (textBefore) {
-          target.parentElement.insertBefore(document.createTextNode(textBefore), target);
-        }
-
-        const a: HTMLAnchorElement = await this.createLinkElement();
-        target.parentElement.insertBefore(a, target);
-
-        if (textAfter) {
-          target.parentElement.insertBefore(document.createTextNode(textAfter), target);
-        }
-
-        target.parentElement.removeChild(target);
-      } else {
-        const a: HTMLAnchorElement = await this.createLinkElement();
-
-        target.parentElement.replaceChild(a, target);
-      }
-
-      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(
-        this.containers,
-        targetContainer as HTMLElement
-      );
-
-      if (!container) {
-        resolve();
-        return;
-      }
-
-      this.linkCreated.emit(container);
-
-      resolve();
+    const target: Node = Array.from(targetContainer.childNodes).find((node: Node) => {
+      return node.textContent && node.textContent.trim().indexOf(this.anchorLink.text) > -1;
     });
+
+    if (!target) {
+      return;
+    }
+
+    if (target.nodeType === 3) {
+      const index: number = target.textContent.indexOf(this.anchorLink.text);
+
+      const textBefore: string = index > -1 ? target.textContent.substr(0, index) : null;
+      const textAfter: string =
+        index + this.anchorLink.text.length > -1 ? target.textContent.substr(index + this.anchorLink.text.length) : null;
+
+      if (textBefore) {
+        target.parentElement.insertBefore(document.createTextNode(textBefore), target);
+      }
+
+      const a: HTMLAnchorElement = this.createLinkElement();
+      target.parentElement.insertBefore(a, target);
+
+      if (textAfter) {
+        target.parentElement.insertBefore(document.createTextNode(textAfter), target);
+      }
+
+      target.parentElement.removeChild(target);
+    } else {
+      const a: HTMLAnchorElement = this.createLinkElement();
+
+      target.parentElement.replaceChild(a, target);
+    }
+
+    const container: HTMLElement | undefined = DeckdeckgoInlineEditorUtils.findContainer(this.containers, targetContainer as HTMLElement);
+
+    if (!container) {
+      return;
+    }
+
+    this.linkCreated.emit(container);
   }
 
-  private createLinkElement(): Promise<HTMLAnchorElement> {
-    return new Promise<HTMLAnchorElement>((resolve) => {
-      const a: HTMLAnchorElement = document.createElement('a');
-      const linkText: Text = document.createTextNode(this.anchorLink.text);
-      a.appendChild(linkText);
-      a.title = this.anchorLink.text;
-      a.href = this.linkUrl;
+  private createLinkElement(): HTMLAnchorElement {
+    const a: HTMLAnchorElement = document.createElement('a');
+    const linkText: Text = document.createTextNode(this.anchorLink.text);
 
-      resolve(a);
-    });
+    a.appendChild(linkText);
+    a.title = this.anchorLink.text;
+    a.href = this.linkUrl;
+
+    return a;
   }
 
-  private async handleLinkEnter($event: KeyboardEvent) {
+  private handleLinkEnter($event: KeyboardEvent) {
     if (!$event) {
       return;
     }
@@ -141,10 +127,10 @@ export class LinkActions {
       this.toolbarActions === ToolbarActions.SELECTION &&
       ($event.key.toLowerCase() === 'backspace' || $event.key.toLowerCase() === 'delete')
     ) {
-      await this.linkModified.emit(false);
+      this.linkModified.emit(false);
     } else if (this.toolbarActions === ToolbarActions.LINK && $event.key.toLowerCase() === 'enter') {
-      await this.createLink();
-      await this.linkModified.emit(true);
+      this.createLink();
+      this.linkModified.emit(true);
     }
   }
 

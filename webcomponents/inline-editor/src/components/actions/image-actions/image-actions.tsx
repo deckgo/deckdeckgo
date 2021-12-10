@@ -60,35 +60,29 @@ export class ImageActions {
     }
   }
 
-  private styleImage(e: UIEvent, applyFunction: Function, param: ImageSize | ImageAlign): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const isAnchorImg: boolean = await this.isAnchorImage();
-      if (!isAnchorImg) {
-        resolve();
-        return;
-      }
+  private styleImage(e: UIEvent, applyFunction: Function, param: ImageSize | ImageAlign) {
+    const isAnchorImg: boolean = this.isAnchorImage();
+    if (!isAnchorImg) {
+      return;
+    }
 
-      e.stopPropagation();
+    e.stopPropagation();
 
-      applyFunction(param);
+    applyFunction(param);
 
-      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
-      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
+    const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+    const container: HTMLElement | undefined = DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
 
-      if (!container) {
-        resolve();
-        return;
-      }
+    if (!container) {
+      return;
+    }
 
-      this.imgDidChange.emit(container);
+    this.imgDidChange.emit(container);
 
-      this.imgModified.emit();
-
-      resolve();
-    });
+    this.imgModified.emit();
   }
 
-  private setImageWith = async (size: ImageSize) => {
+  private setImageWith = (size: ImageSize) => {
     const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
     anchorImg.style.setProperty(this.imgPropertyWidth, size.toString());
   };
@@ -103,41 +97,34 @@ export class ImageActions {
     }
   };
 
-  private deleteImage($event: UIEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const isAnchorImg: boolean = await this.isAnchorImage();
-      if (!isAnchorImg) {
-        resolve();
-        return;
-      }
+  private deleteImage($event: UIEvent) {
+    const isAnchorImg: boolean = this.isAnchorImage();
+    if (!isAnchorImg) {
+      return;
+    }
 
-      $event.stopPropagation();
+    $event.stopPropagation();
 
-      const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
+    const anchorImg: HTMLImageElement = this.anchorEvent.target as HTMLImageElement;
 
-      if (!anchorImg || !anchorImg.parentElement) {
-        resolve();
-        return;
-      }
+    if (!anchorImg || !anchorImg.parentElement) {
+      return;
+    }
 
-      const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
+    const container: HTMLElement | undefined = DeckdeckgoInlineEditorUtils.findContainer(this.containers, anchorImg);
 
-      if (!container) {
-        resolve();
-        return;
-      }
+    if (!container) {
+      return;
+    }
 
-      anchorImg.parentElement.removeChild(anchorImg);
+    anchorImg.parentElement.removeChild(anchorImg);
 
-      this.imgDidChange.emit(container);
+    this.imgDidChange.emit(container);
 
-      this.imgModified.emit();
-
-      resolve();
-    });
+    this.imgModified.emit();
   }
 
-  private isAnchorImage(): Promise<boolean> {
+  private isAnchorImage(): boolean {
     return DeckdeckgoInlineEditorUtils.isAnchorImage(this.anchorEvent, this.imgAnchor);
   }
 

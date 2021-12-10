@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@deckdeckgo/color": "^4.1.0",
-    "@deckdeckgo/utils": "^2.2.0"
+    "@deckdeckgo/utils": "^3.0.0"
   },
   "repository": {
     "type": "git",

@@ -5,7 +5,7 @@ import {getAnchorElement} from '@deckdeckgo/utils';
 import {DeckdeckgoInlineEditorUtils} from './utils';
 import {findStyleNode} from './node.utils';
 
-export async function execCommandStyle(selection: Selection, action: ExecCommandStyle, containers: string) {
+export function execCommandStyle(selection: Selection, action: ExecCommandStyle, containers: string) {
   const container: HTMLElement | null = getAnchorElement(selection);
 
   if (!container) {
@@ -15,21 +15,21 @@ export async function execCommandStyle(selection: Selection, action: ExecCommand
   const sameSelection: boolean = container && container.innerText === selection.toString();
 
   if (sameSelection && !DeckdeckgoInlineEditorUtils.isContainer(containers, container) && container.style[action.style] !== undefined) {
-    await updateSelection(container, action, containers);
+    updateSelection(container, action, containers);
 
     return;
   }
 
-  await replaceSelection(container, action, selection, containers);
+  replaceSelection(container, action, selection, containers);
 }
 
-async function updateSelection(container: HTMLElement, action: ExecCommandStyle, containers: string) {
-  container.style[action.style] = await getStyleValue(container, action, containers);
+function updateSelection(container: HTMLElement, action: ExecCommandStyle, containers: string) {
+  container.style[action.style] = getStyleValue(container, action, containers);
 
-  await cleanChildren(action, container);
+  cleanChildren(action, container);
 }
 
-async function replaceSelection(container: HTMLElement, action: ExecCommandStyle, selection: Selection, containers: string) {
+function replaceSelection(container: HTMLElement, action: ExecCommandStyle, selection: Selection, containers: string) {
   const range: Range = selection.getRangeAt(0);
 
   // User selected a all list?
@@ -37,23 +37,23 @@ async function replaceSelection(container: HTMLElement, action: ExecCommandStyle
     range.commonAncestorContainer &&
     ['ol', 'ul', 'dl'].some((listType) => listType === range.commonAncestorContainer.nodeName.toLowerCase())
   ) {
-    await updateSelection(range.commonAncestorContainer as HTMLElement, action, containers);
+    updateSelection(range.commonAncestorContainer as HTMLElement, action, containers);
     return;
   }
 
   const fragment: DocumentFragment = range.extractContents();
 
-  const span: HTMLSpanElement = await createSpan(container, action, containers);
+  const span: HTMLSpanElement = createSpan(container, action, containers);
   span.appendChild(fragment);
 
-  await cleanChildren(action, span);
-  await flattenChildren(action, span);
+  cleanChildren(action, span);
+  flattenChildren(action, span);
 
   range.insertNode(span);
   selection.selectAllChildren(span);
 }
 
-async function cleanChildren(action: ExecCommandStyle, span: HTMLSpanElement) {
+function cleanChildren(action: ExecCommandStyle, span: HTMLSpanElement) {
   if (!span.hasChildNodes()) {
     return;
   }
@@ -74,38 +74,30 @@ async function cleanChildren(action: ExecCommandStyle, span: HTMLSpanElement) {
   }
 
   // Direct children (> *) may have children (*) which need to be cleaned too
-  const cleanChildrenChildren: Promise<void>[] = Array.from(span.children).map((element: HTMLElement) => {
-    return cleanChildren(action, element);
-  });
-
-  if (!cleanChildrenChildren || cleanChildrenChildren.length <= 0) {
-    return;
-  }
-
-  await Promise.all(cleanChildrenChildren);
+  Array.from(span.children).forEach((element: HTMLElement) => cleanChildren(action, element));
 }
 
-async function createSpan(container: HTMLElement, action: ExecCommandStyle, containers: string): Promise<HTMLSpanElement> {
+function createSpan(container: HTMLElement, action: ExecCommandStyle, containers: string): HTMLSpanElement {
   const span: HTMLSpanElement = document.createElement('span');
-  span.style[action.style] = await getStyleValue(container, action, containers);
+  span.style[action.style] = getStyleValue(container, action, containers);
 
   return span;
 }
 
 // We assume that if the same style is applied, user want actually to remove it (same behavior as in MS Word)
 // Note: initial may have no effect on the background-color
-async function getStyleValue(container: HTMLElement, action: ExecCommandStyle, containers: string): Promise<string> {
+function getStyleValue(container: HTMLElement, action: ExecCommandStyle, containers: string): string {
   if (!container) {
     return action.value;
   }
 
-  if (await action.initial(container)) {
+  if (action.initial(container)) {
     return 'initial';
   }
 
-  const style: Node | null = await findStyleNode(container, action.style, containers);
+  const style: Node | null = findStyleNode(container, action.style, containers);
 
-  if (await action.initial(style as HTMLElement)) {
+  if (action.initial(style as HTMLElement)) {
     return 'initial';
   }
 
@@ -113,7 +105,7 @@ async function getStyleValue(container: HTMLElement, action: ExecCommandStyle, c
 }
 
 // We try to not keep <span/> in the tree if we can use text
-async function flattenChildren(action: ExecCommandStyle, span: HTMLSpanElement) {
+function flattenChildren(action: ExecCommandStyle, span: HTMLSpanElement) {
   if (!span.hasChildNodes()) {
     return;
   }
@@ -138,13 +130,5 @@ async function flattenChildren(action: ExecCommandStyle, span: HTMLSpanElement) 
   }
 
   // Direct children (> *) may have children (*) which need to be flattened too
-  const flattenChildrenChildren: Promise<void>[] = Array.from(span.children).map((element: HTMLElement) => {
-    return flattenChildren(action, element);
-  });
-
-  if (!flattenChildrenChildren || flattenChildrenChildren.length <= 0) {
-    return;
-  }
-
-  await Promise.all(flattenChildrenChildren);
+  Array.from(span.children).forEach((element: HTMLElement) => flattenChildren(action, element));
 }

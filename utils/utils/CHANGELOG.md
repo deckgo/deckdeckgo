@@ -1,3 +1,9 @@
+# 3.0.0 (2021-12-10)
+
+### Breaking Changes
+
+- color utils synchronous (not async anymore)
+
 # 2.4.0 (2021-11-05)
 
 ### Features

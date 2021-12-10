@@ -35,11 +35,11 @@ export class ColorActions {
 
   private range: Range | undefined;
 
-  async componentWillLoad() {
-    await this.initColor();
+  componentWillLoad() {
+    this.initColor();
   }
 
-  private async initColor() {
+  private initColor() {
     const selection: Selection | null = getSelection();
 
     this.range = selection?.getRangeAt(0);
@@ -50,7 +50,7 @@ export class ColorActions {
       return;
     }
 
-    const style: Node | null = await findStyleNode(container, this.action === 'color' ? 'color' : 'background-color', this.containers);
+    const style: Node | null = findStyleNode(container, this.action === 'color' ? 'color' : 'background-color', this.containers);
 
     if (!style) {
       return;
@@ -61,8 +61,8 @@ export class ColorActions {
     this.colorRgb = (this.action === 'color' ? css.color : css.backgroundColor).replace('rgb(', '').replace(')', '');
   }
 
-  private async selectColor($event: CustomEvent) {
-    const selection: Selection | undefined = await getSelection();
+  private selectColor($event: CustomEvent) {
+    const selection: Selection | undefined = getSelection();
 
     if (!selection || !$event || !$event.detail) {
       return;
@@ -96,10 +96,8 @@ export class ColorActions {
         style: this.action,
         value: $event.detail.hex,
         initial: (element: HTMLElement | null) => {
-          return new Promise<boolean>(async (resolve) => {
-            const rgb: string = await hexToRgb($event.detail.hex);
-            resolve(element && (element.style[this.action] === $event.detail.hex || element.style[this.action] === `rgb(${rgb})`));
-          });
+          const rgb: string = hexToRgb($event.detail.hex);
+          return element && (element.style[this.action] === $event.detail.hex || element.style[this.action] === `rgb(${rgb})`);
         }
       }
     });

@@ -32,20 +32,16 @@ export class AlignActions {
   @Event()
   private alignModified: EventEmitter;
 
-  private justifyContent($event: UIEvent, align: ContentAlign): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      $event.stopPropagation();
+  private justifyContent($event: UIEvent, align: ContentAlign) {
+    $event.stopPropagation();
 
-      if (this.command === 'native') {
-        execCommandNativeAlign(align);
-      } else {
-        await execCommandAlign(this.anchorEvent, this.containers, align);
-      }
+    if (this.command === 'native') {
+      execCommandNativeAlign(align);
+    } else {
+      execCommandAlign(this.anchorEvent, this.containers, align);
+    }
 
-      await this.alignModified.emit();
-
-      resolve();
-    });
+    this.alignModified.emit();
   }
 
   render() {
