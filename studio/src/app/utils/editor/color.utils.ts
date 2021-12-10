@@ -59,7 +59,7 @@ export class ColorUtils {
     return colorOpacity === 0 ? 0 : colorOpacity / 100;
   }
 
-  static async updateColor(color: DeckdeckgoPaletteColor) {
+  static updateColor(color: DeckdeckgoPaletteColor) {
     const filteredHistory: DeckdeckgoPalette[] = colorStore.state.history.filter(
       (palette: DeckdeckgoPalette) => palette.color.hex?.toLowerCase() !== color.hex?.toLowerCase()
     );

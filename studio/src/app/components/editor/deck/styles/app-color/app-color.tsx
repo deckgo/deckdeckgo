@@ -46,16 +46,12 @@ export class AppColor {
   private destroyListener;
 
   private readonly debounceHandleHexInput: ($event: CustomEvent<KeyboardEvent>) => void = debounce(
-    async ($event: CustomEvent<KeyboardEvent>) => {
-      await this.handleHexInput($event);
-    },
+    ($event: CustomEvent<KeyboardEvent>) => this.handleHexInput($event),
     500
   );
 
   private readonly debounceHandleRgbInput: ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => void = debounce(
-    async ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => {
-      await this.handleRgbInput($event, colorType);
-    },
+    ($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') => this.handleRgbInput($event, colorType),
     500
   );
 
@@ -82,16 +78,16 @@ export class AppColor {
   async loadColor() {
     const {rgb, opacity} = await this.initColor();
 
-    await this.initColorStateRgb(rgb);
+    this.initColorStateRgb(rgb);
 
     this.opacity = opacity ? opacity : 100;
 
     this.skipNextColorCSSEmit = true;
 
-    await this.initColorCSS();
+    this.initColorCSS();
   }
 
-  private async initColorCSS() {
+  private initColorCSS() {
     if (!this.color.rgb?.value) {
       return;
     }
@@ -99,11 +95,11 @@ export class AppColor {
     this.colorCSS = `rgba(${this.color.rgb.value}, ${this.opacity / 100})`;
   }
 
-  private async initColorStateRgb(rgb: string | undefined) {
+  private initColorStateRgb(rgb: string | undefined) {
     const splitRgb: number[] | undefined = rgb ? extractRgb(rgb) : undefined;
 
     this.color = {
-      hex: await rgbToHex(rgb),
+      hex: rgbToHex(rgb),
       rgb: {
         value: rgb,
         r: splitRgb?.[0],
@@ -113,8 +109,8 @@ export class AppColor {
     };
   }
 
-  private async initColorStateHex(hex: string | undefined) {
-    const rgb: string | undefined = await hexToRgb(hex);
+  private initColorStateHex(hex: string | undefined) {
+    const rgb: string | undefined = hexToRgb(hex);
 
     const splitRgb: number[] | undefined = rgb ? extractRgb(rgb) : undefined;
 
@@ -138,8 +134,8 @@ export class AppColor {
 
     this.skipNextColorCSSEmit = true;
 
-    await this.initColorStateRgb(color.rgb);
-    await this.initColorCSS();
+    this.initColorStateRgb(color.rgb);
+    this.initColorCSS();
 
     await this.colorChange();
   }
@@ -158,10 +154,10 @@ export class AppColor {
     await this.colorChange();
   }
 
-  private async colorChange() {
+  private colorChange() {
     this.colorDidChange.emit(`rgba(${this.color.rgb.value},${ColorUtils.transformOpacity(this.opacity)})`);
 
-    await ColorUtils.updateColor({
+    ColorUtils.updateColor({
       hex: this.color.hex,
       rgb: this.color.rgb.value
     });
@@ -190,19 +186,19 @@ export class AppColor {
     colorStore.state.colorInput = switchColor;
   }
 
-  private async handleHexInput($event: CustomEvent<KeyboardEvent>) {
+  private handleHexInput($event: CustomEvent<KeyboardEvent>) {
     const input: string = ($event.target as InputTargetEvent).value;
 
     if (!/^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/.test(input)) {
       return;
     }
 
-    await this.initColorStateHex(input);
+    this.initColorStateHex(input);
 
-    await this.colorChange();
+    this.colorChange();
   }
 
-  private async handleRgbInput($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') {
+  private handleRgbInput($event: CustomEvent<KeyboardEvent>, colorType: 'r' | 'g' | 'b') {
     const input: number = parseInt(($event.target as InputTargetEvent).value);
 
     if (isNaN(input) || input < 0 || input > 255) {
@@ -212,16 +208,16 @@ export class AppColor {
     this.color.rgb[colorType] = input;
 
     if (this.color.rgb.r >= 0 && this.color.rgb.g >= 0 && this.color.rgb.b >= 0) {
-      await this.initColorStateRgb(`${this.color.rgb.r}, ${this.color.rgb.g}, ${this.color.rgb.b}`);
+      this.initColorStateRgb(`${this.color.rgb.r}, ${this.color.rgb.g}, ${this.color.rgb.b}`);
 
-      await this.colorChange();
+      this.colorChange();
     }
   }
 
-  private async onColorPickerChange($event) {
-    await this.initColorStateHex($event.target.value);
+  private onColorPickerChange($event) {
+    this.initColorStateHex($event.target.value);
 
-    await this.colorChange();
+    this.colorChange();
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
