@@ -7,6 +7,7 @@ import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
+import undoRedoStore from '../../stores/undo-redo.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -103,6 +104,8 @@ export class AppDocEditor implements ComponentInterface {
 
     this.reloadAfterRender = true;
     this.paragraphs = undefined;
+
+    undoRedoStore.reset();
   }
 
   async componentDidRender() {
