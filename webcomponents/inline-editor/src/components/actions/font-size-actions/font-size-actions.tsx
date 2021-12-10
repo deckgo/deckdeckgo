@@ -20,7 +20,7 @@ export class FontSizeActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
-  private async modifyFontSize($event: UIEvent, size: FontSize): Promise<void> {
+  private modifyFontSize($event: UIEvent, size: FontSize) {
     $event.stopPropagation();
 
     const value: string = Object.keys(FontSize).find((key) => FontSize[key] === size);
@@ -30,8 +30,7 @@ export class FontSizeActions {
       detail: {
         style: 'font-size',
         value: value.toLowerCase().replace('_', '-'),
-        initial: (element: HTMLElement | null) =>
-          Promise.resolve(element && element.style['font-size'] === value.toLowerCase().replace('_', '-'))
+        initial: (element: HTMLElement | null) => element && element.style['font-size'] === value.toLowerCase().replace('_', '-')
       }
     });
   }

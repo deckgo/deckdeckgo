@@ -29,7 +29,7 @@ export class StyleActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
-  private async styleBold($event: UIEvent): Promise<void> {
+  private styleBold($event: UIEvent) {
     $event.stopPropagation();
 
     this.execCommand.emit({
@@ -37,12 +37,12 @@ export class StyleActions {
       detail: {
         style: 'font-weight',
         value: 'bold',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-weight'] === 'bold')
+        initial: (element: HTMLElement | null) => element && element.style['font-weight'] === 'bold'
       }
     });
   }
 
-  private async styleItalic($event: UIEvent): Promise<void> {
+  private styleItalic($event: UIEvent) {
     $event.stopPropagation();
 
     this.execCommand.emit({
@@ -50,12 +50,12 @@ export class StyleActions {
       detail: {
         style: 'font-style',
         value: 'italic',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['font-style'] === 'italic')
+        initial: (element: HTMLElement | null) => element && element.style['font-style'] === 'italic'
       }
     });
   }
 
-  private async styleUnderline($event: UIEvent): Promise<void> {
+  private styleUnderline($event: UIEvent) {
     $event.stopPropagation();
 
     this.execCommand.emit({
@@ -63,12 +63,12 @@ export class StyleActions {
       detail: {
         style: 'text-decoration',
         value: 'underline',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'underline')
+        initial: (element: HTMLElement | null) => element && element.style['text-decoration'] === 'underline'
       }
     });
   }
 
-  private async styleStrikeThrough($event: UIEvent): Promise<void> {
+  private styleStrikeThrough($event: UIEvent) {
     $event.stopPropagation();
 
     this.execCommand.emit({
@@ -76,7 +76,7 @@ export class StyleActions {
       detail: {
         style: 'text-decoration',
         value: 'line-through',
-        initial: (element: HTMLElement | null) => Promise.resolve(element && element.style['text-decoration'] === 'line-through')
+        initial: (element: HTMLElement | null) => element && element.style['text-decoration'] === 'line-through'
       }
     });
   }

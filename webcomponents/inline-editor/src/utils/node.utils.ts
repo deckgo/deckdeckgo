@@ -1,6 +1,6 @@
 import {DeckdeckgoInlineEditorUtils} from './utils';
 
-export const findStyleNode = async (node: Node, style: string, containers: string): Promise<Node | null> => {
+export const findStyleNode = (node: Node, style: string, containers: string): Node | null => {
   // Just in case
   if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
     return null;
@@ -23,5 +23,5 @@ export const findStyleNode = async (node: Node, style: string, containers: strin
     return node;
   }
 
-  return await findStyleNode(node.parentNode, style, containers);
+  return findStyleNode(node.parentNode, style, containers);
 };

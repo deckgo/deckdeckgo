@@ -3,24 +3,24 @@ import {isRTL} from '@deckdeckgo/utils';
 import {ContentAlign, ContentList, FontSize} from '../types/enums';
 
 export class DeckdeckgoInlineEditorUtils {
-  static async getBold(element: HTMLElement): Promise<'bold' | 'initial' | undefined> {
-    if (await this.isTag(element, 'b')) {
+  static getBold(element: HTMLElement): 'bold' | 'initial' | undefined {
+    if (this.isTag(element, 'b')) {
       return 'bold';
     }
 
-    if (await this.isTag(element, 'strong')) {
+    if (this.isTag(element, 'strong')) {
       return 'bold';
     }
 
     return element.style.fontWeight === 'bold' ? 'bold' : element.style.fontWeight === 'initial' ? 'initial' : undefined;
   }
 
-  static async getItalic(element: HTMLElement): Promise<'italic' | 'initial' | undefined> {
-    if (await this.isTag(element, 'i')) {
+  static getItalic(element: HTMLElement): 'italic' | 'initial' | undefined {
+    if (this.isTag(element, 'i')) {
       return 'italic';
     }
 
-    if (await this.isTag(element, 'em')) {
+    if (this.isTag(element, 'em')) {
       return 'italic';
     }
 
@@ -50,8 +50,8 @@ export class DeckdeckgoInlineEditorUtils {
     return undefined;
   }
 
-  static async getUnderline(element: HTMLElement): Promise<'underline' | 'initial' | undefined> {
-    if (await this.isTag(element, 'u')) {
+  static getUnderline(element: HTMLElement): 'underline' | 'initial' | undefined {
+    if (this.isTag(element, 'u')) {
       return 'underline';
     }
 
@@ -85,8 +85,8 @@ export class DeckdeckgoInlineEditorUtils {
     return undefined;
   }
 
-  static async getStrikeThrough(element: HTMLElement): Promise<'strikethrough' | 'initial' | undefined> {
-    if (await this.isTag(element, 'strike')) {
+  static getStrikeThrough(element: HTMLElement): 'strikethrough' | 'initial' | undefined {
+    if (this.isTag(element, 'strike')) {
       return 'strikethrough';
     }
 
@@ -120,7 +120,7 @@ export class DeckdeckgoInlineEditorUtils {
     return undefined;
   }
 
-  static async getList(element: HTMLElement): Promise<ContentList | undefined> {
+  static getList(element: HTMLElement): ContentList | undefined {
     if (!element) {
       return undefined;
     }
@@ -136,7 +136,7 @@ export class DeckdeckgoInlineEditorUtils {
     return undefined;
   }
 
-  static async getContentAlignment(element: HTMLElement): Promise<ContentAlign> {
+  static getContentAlignment(element: HTMLElement): ContentAlign {
     const style: CSSStyleDeclaration = window.getComputedStyle(element);
 
     if (style.textAlign === 'center') {
@@ -150,7 +150,7 @@ export class DeckdeckgoInlineEditorUtils {
     return isRTL() ? ContentAlign.RIGHT : ContentAlign.LEFT;
   }
 
-  private static async isTag(element: HTMLElement, tagName: string): Promise<boolean> {
+  private static isTag(element: HTMLElement, tagName: string): boolean {
     if (!element) {
       return false;
     }
@@ -172,47 +172,37 @@ export class DeckdeckgoInlineEditorUtils {
     return element && element.nodeName && containerTypes.indexOf(element.nodeName.toLowerCase()) > -1;
   }
 
-  static isAnchorImage(anchorEvent: MouseEvent | TouchEvent, imgAnchor: string): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      if (!anchorEvent) {
-        resolve(false);
-        return;
-      }
+  static isAnchorImage(anchorEvent: MouseEvent | TouchEvent, imgAnchor: string): boolean {
+    if (!anchorEvent) {
+      return false;
+    }
 
-      if (!anchorEvent.target || !(anchorEvent.target instanceof HTMLElement)) {
-        resolve(false);
-        return;
-      }
+    if (!anchorEvent.target || !(anchorEvent.target instanceof HTMLElement)) {
+      return false;
+    }
 
-      const target: HTMLElement = anchorEvent.target;
+    const target: HTMLElement = anchorEvent.target;
 
-      resolve(target.nodeName && target.nodeName.toLowerCase() === imgAnchor);
-    });
+    return target.nodeName && target.nodeName.toLowerCase() === imgAnchor;
   }
 
-  static findContainer(containers: string, element: HTMLElement | Node): Promise<HTMLElement | undefined> {
-    return new Promise<HTMLElement>(async (resolve) => {
-      if (!element) {
-        resolve(undefined);
-        return;
-      }
+  static findContainer(containers: string, element: HTMLElement | Node): HTMLElement | undefined {
+    if (!element) {
+      return undefined;
+    }
 
-      if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
-        resolve(undefined);
-        return;
-      }
+    if (element.nodeName.toUpperCase() === 'HTML' || element.nodeName.toUpperCase() === 'BODY' || !element.parentElement) {
+      return undefined;
+    }
 
-      if (DeckdeckgoInlineEditorUtils.isContainer(containers, element)) {
-        resolve(element as HTMLElement);
-      } else {
-        const container: HTMLElement = await this.findContainer(containers, element.parentElement);
+    if (DeckdeckgoInlineEditorUtils.isContainer(containers, element)) {
+      return element as HTMLElement;
+    }
 
-        resolve(container);
-      }
-    });
+    return this.findContainer(containers, element.parentElement);
   }
 
-  static async getFontSize(element: HTMLElement): Promise<FontSize | undefined> {
+  static getFontSize(element: HTMLElement): FontSize | undefined {
     if (!element || !element.hasAttribute('size')) {
       return undefined;
     }

@@ -222,24 +222,24 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  async componentWillLoad() {
-    await this.initDefaultContentAlign();
+  componentWillLoad() {
+    this.initDefaultContentAlign();
   }
 
-  async connectedCallback() {
+  connectedCallback() {
     this.attachSelectionChangeHandler();
-    await this.attachListener();
+    this.attachListener();
   }
 
-  async componentDidLoad() {
+  componentDidLoad() {
     if (!this.mobile) {
       this.mobile = isMobile();
     }
   }
 
-  async disconnectedCallback() {
+  disconnectedCallback() {
     this.detachSelectionChangeHandler();
-    await this.detachListener(this.attachTo ? this.attachTo : document);
+    this.detachListener();
   }
 
   @Watch('handleGlobalEvents')
@@ -252,50 +252,47 @@ export class DeckdeckgoInlineEditor {
   }
 
   @Watch('attachTo')
-  async onAttachTo() {
+  onAttachTo() {
     if (!this.attachTo) {
       return;
     }
 
-    await this.detachListener(document);
-    await this.attachListener();
+    this.detachListener();
+    this.attachListener();
   }
 
   private attachSelectionChangeHandler() {
-    if (!this.handleGlobalEvents) return;
+    if (!this.handleGlobalEvents) {
+      return;
+    }
+
     document.addEventListener('selectionchange', this.handleSelectionChange, {
       passive: true
     });
   }
 
   private detachSelectionChangeHandler() {
-    if (this.handleGlobalEvents) return;
+    if (this.handleGlobalEvents) {
+      return;
+    }
+
     document.removeEventListener('selectionchange', this.handleSelectionChange);
   }
 
-  private attachListener(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const listenerElement: HTMLElement | Document = this.attachTo ? this.attachTo : document;
-      if (listenerElement) {
-        listenerElement.addEventListener('mousedown', this.startSelection, {passive: true});
-        listenerElement.addEventListener('touchstart', this.startSelection, {passive: true});
-      }
-      resolve();
-    });
+  private attachListener() {
+    const listenerElement: HTMLElement | Document = this.attachTo || document;
+    listenerElement?.addEventListener('mousedown', this.startSelection, {passive: true});
+    listenerElement?.addEventListener('touchstart', this.startSelection, {passive: true});
   }
 
-  private detachListener(listenerElement: HTMLElement | Document): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (listenerElement) {
-        listenerElement.removeEventListener('mousedown', this.startSelection);
-        listenerElement.removeEventListener('touchstart', this.startSelection);
-      }
+  private detachListener() {
+    const listenerElement: HTMLElement | Document = this.attachTo || document;
 
-      resolve();
-    });
+    listenerElement?.removeEventListener('mousedown', this.startSelection);
+    listenerElement?.removeEventListener('touchstart', this.startSelection);
   }
 
-  private startSelection = async ($event: MouseEvent | TouchEvent) => {
+  private startSelection = ($event: MouseEvent | TouchEvent) => {
     const action: boolean = $event.composedPath().includes(this.el);
 
     if (action) {
@@ -304,7 +301,7 @@ export class DeckdeckgoInlineEditor {
 
     if (this.displayToolsActivated && !action) {
       // If use in a shadowed attachTo context, onSelectionChange might not be triggered
-      await this.reset(true);
+      this.reset(true);
       return;
     }
 
@@ -313,7 +310,7 @@ export class DeckdeckgoInlineEditor {
     }
 
     if (this.toolsActivated) {
-      await this.resetImageToolbarActions($event);
+      this.resetImageToolbarActions($event);
 
       return;
     }
@@ -322,249 +319,202 @@ export class DeckdeckgoInlineEditor {
       this.anchorEvent = $event;
     }
 
-    await this.displayImageActions($event);
+    this.displayImageActions($event);
   };
 
-  private resetImageToolbarActions($event: MouseEvent | TouchEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.toolbarActions !== ToolbarActions.IMAGE) {
-        resolve();
-        return;
+  private resetImageToolbarActions($event: MouseEvent | TouchEvent) {
+    if (this.toolbarActions !== ToolbarActions.IMAGE) {
+      return;
+    }
+
+    if ($event && $event.target && $event.target instanceof HTMLElement) {
+      const target: HTMLElement = $event.target as HTMLElement;
+
+      if (target && target.nodeName && target.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
+        this.reset(false);
       }
-
-      if ($event && $event.target && $event.target instanceof HTMLElement) {
-        const target: HTMLElement = $event.target as HTMLElement;
-
-        if (target && target.nodeName && target.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
-          await this.reset(false);
-        }
-      }
-
-      resolve();
-    });
+    }
   }
 
-  private displayImageActions($event: MouseEvent | TouchEvent): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.imgEditable) {
-        resolve();
-        return;
-      }
+  private displayImageActions($event: MouseEvent | TouchEvent) {
+    if (!this.imgEditable) {
+      return;
+    }
 
-      const isAnchorImg: boolean = await this.isAnchorImage();
-      if (!isAnchorImg) {
-        resolve();
-        return;
-      }
+    const isAnchorImg: boolean = this.isAnchorImage();
+    if (!isAnchorImg) {
+      return;
+    }
 
-      $event.stopImmediatePropagation();
+    $event.stopImmediatePropagation();
 
-      await this.reset(true);
+    this.reset(true);
 
-      setTimeout(
-        async () => {
-          await this.activateToolbarImage();
-          await this.setToolbarAnchorPosition();
-        },
-        this.mobile ? 300 : 100
-      );
-
-      resolve();
-    });
+    setTimeout(
+      () => {
+        this.activateToolbarImage();
+        this.setToolbarAnchorPosition();
+      },
+      this.mobile ? 300 : 100
+    );
   }
 
-  private activateToolbarImage(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolbarActions = ToolbarActions.IMAGE;
+  private activateToolbarImage() {
+    this.toolbarActions = ToolbarActions.IMAGE;
 
-      await this.setToolsActivated(true);
-
-      resolve();
-    });
+    this.setToolsActivated(true);
   }
 
-  private isAnchorImage(): Promise<boolean> {
+  private isAnchorImage() {
     return DeckdeckgoInlineEditorUtils.isAnchorImage(this.anchorEvent, this.imgAnchor);
   }
 
-  private async handleSelectionChange(_$event: UIEvent) {
+  private handleSelectionChange(_$event: UIEvent) {
     if (this.toolbarActions === ToolbarActions.COLOR || this.toolbarActions === ToolbarActions.BACKGROUND_COLOR) {
       return;
     }
 
     if (document && document.activeElement && !this.isContainer(document.activeElement)) {
       if (document.activeElement.nodeName.toLowerCase() !== 'deckgo-inline-editor') {
-        await this.reset(false);
+        this.reset(false);
       }
 
       return;
     }
 
-    const anchorImage: boolean = await this.isAnchorImage();
+    const anchorImage: boolean = this.isAnchorImage();
     if (this.toolbarActions === ToolbarActions.IMAGE && anchorImage) {
+      this.reset(false);
+      return;
+    }
+
+    this.displayTools();
+  }
+
+  @Method()
+  async displayTools(selection?: Selection) {
+    if (!selection) {
+      selection = getSelection();
+    }
+
+    if (!this.anchorEvent) {
       await this.reset(false);
       return;
     }
 
-    await this.displayTools();
+    if (this.attachTo && !this.attachTo.contains(this.anchorEvent.target as Node)) {
+      this.reset(false);
+      return;
+    }
+
+    if (!selection || !selection.toString() || selection.toString().trim().length <= 0) {
+      this.reset(false);
+      return;
+    }
+
+    const activated: boolean = this.activateToolbar(selection);
+    this.setToolsActivated(activated);
+
+    if (this.toolsActivated) {
+      this.selection = selection;
+
+      if (selection.rangeCount > 0) {
+        const range: Range = selection.getRangeAt(0);
+        this.anchorLink = {
+          range: range,
+          text: selection.toString(),
+          element: document.activeElement
+        };
+
+        this.setToolbarAnchorPosition();
+      }
+    }
   }
 
-  @Method()
-  public displayTools(selection?: Selection): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!selection) {
-        selection = getSelection();
+  private setToolbarAnchorPosition() {
+    if (this.isSticky()) {
+      this.handlePositionIOS();
+
+      return;
+    }
+
+    if (this.tools) {
+      let top: number = unifyEvent(this.anchorEvent).clientY;
+      let left: number = unifyEvent(this.anchorEvent).clientX - 40;
+
+      if (this.mobile) {
+        top = top + 40;
+      } else {
+        top = top + 24;
       }
 
-      if (!this.anchorEvent) {
-        await this.reset(false);
-        resolve();
-        return;
+      const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
+
+      if (innerWidth > 0 && left > innerWidth - this.tools.offsetWidth) {
+        left = innerWidth - this.tools.offsetWidth;
       }
 
-      if (this.attachTo && !this.attachTo.contains(this.anchorEvent.target as Node)) {
-        await this.reset(false);
-        resolve();
-        return;
+      if (left < 0) {
+        left = 0;
       }
 
-      if (!selection || !selection.toString() || selection.toString().trim().length <= 0) {
-        await this.reset(false);
-        resolve();
-        return;
-      }
+      // To set the position of the tools
+      this.toolsTop = top;
+      this.toolsLeft = left;
 
-      const activated: boolean = await this.activateToolbar(selection);
-      await this.setToolsActivated(activated);
-
-      if (this.toolsActivated) {
-        this.selection = selection;
-
-        if (selection.rangeCount > 0) {
-          const range: Range = selection.getRangeAt(0);
-          this.anchorLink = {
-            range: range,
-            text: selection.toString(),
-            element: document.activeElement
-          };
-
-          await this.setToolbarAnchorPosition();
-        }
-      }
-
-      resolve();
-    });
+      // To set the position of the triangle
+      this.anchorEventLeft = left > 0 ? unifyEvent(this.anchorEvent).clientX - 20 - left : unifyEvent(this.anchorEvent).clientX;
+    }
   }
 
-  private setToolbarAnchorPosition(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.isSticky()) {
-        await this.handlePositionIOS();
+  private handlePositionIOS() {
+    if (!isIOS() || !this.anchorEvent) {
+      return;
+    }
 
-        resolve();
-        return;
-      }
-
-      if (this.tools) {
-        let top: number = unifyEvent(this.anchorEvent).clientY;
-        let left: number = unifyEvent(this.anchorEvent).clientX - 40;
-
-        if (this.mobile) {
-          top = top + 40;
-        } else {
-          top = top + 24;
-        }
-
-        const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
-
-        if (innerWidth > 0 && left > innerWidth - this.tools.offsetWidth) {
-          left = innerWidth - this.tools.offsetWidth;
-        }
-
-        if (left < 0) {
-          left = 0;
-        }
-
-        // To set the position of the tools
-        this.toolsTop = top;
-        this.toolsLeft = left;
-
-        // To set the position of the triangle
-        this.anchorEventLeft = left > 0 ? unifyEvent(this.anchorEvent).clientX - 20 - left : unifyEvent(this.anchorEvent).clientX;
-      }
-
-      resolve();
-    });
+    this.setStickyPositionIOS();
   }
 
-  private handlePositionIOS(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!isIOS() || !this.anchorEvent) {
-        resolve();
-        return;
-      }
+  private setStickyPositionIOS() {
+    if (!this.stickyMobile || !isIOS() || !window) {
+      return;
+    }
 
-      await this.setStickyPositionIOS();
-    });
+    if (this.iOSTimerScroll > 0) {
+      clearTimeout(this.iOSTimerScroll);
+    }
+
+    this.iOSTimerScroll = window.setTimeout(() => {
+      this.el.style.setProperty('--deckgo-inline-editor-sticky-scroll', `${window.scrollY}px`);
+    }, 50);
   }
 
-  private setStickyPositionIOS(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.stickyMobile || !isIOS() || !window) {
-        resolve();
-        return;
-      }
+  private activateToolbar(selection: Selection): boolean {
+    const tools: boolean = selection && selection.toString() && selection.toString().length > 0;
 
-      if (this.iOSTimerScroll > 0) {
-        clearTimeout(this.iOSTimerScroll);
-      }
+    if (tools) {
+      this.initStyle(selection);
+      this.initLink(selection);
+    }
 
-      this.iOSTimerScroll = window.setTimeout(() => {
-        this.el.style.setProperty('--deckgo-inline-editor-sticky-scroll', `${window.scrollY}px`);
-      }, 50);
-
-      resolve();
-    });
+    return tools;
   }
 
-  private activateToolbar(selection: Selection): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      const tools: boolean = selection && selection.toString() && selection.toString().length > 0;
+  private initStyle(selection: Selection) {
+    if (!selection || selection.rangeCount <= 0) {
+      return;
+    }
 
-      if (tools) {
-        const promises = [];
+    const content: HTMLElement | null = getAnchorElement(selection);
 
-        promises.push(this.initStyle(selection));
-        promises.push(this.initLink(selection));
+    if (!content) {
+      return;
+    }
 
-        await Promise.all(promises);
-      }
-
-      resolve(tools);
-    });
+    this.initStyleForNode(content);
   }
 
-  private initStyle(selection: Selection): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!selection || selection.rangeCount <= 0) {
-        resolve();
-        return;
-      }
-
-      const content: HTMLElement | null = getAnchorElement(selection);
-
-      if (!content) {
-        resolve();
-        return;
-      }
-
-      await this.initStyleForNode(content);
-
-      resolve();
-    });
-  }
-
-  private async initStyleForNode(node: Node) {
+  private initStyleForNode(node: Node) {
     this.bold = undefined;
     this.italic = undefined;
     this.underline = undefined;
@@ -572,12 +522,12 @@ export class DeckdeckgoInlineEditor {
     this.contentList = undefined;
     this.contentFontSize = undefined;
 
-    await this.initDefaultContentAlign();
+    this.initDefaultContentAlign();
 
-    await this.findStyle(node);
+    this.findStyle(node);
   }
 
-  private async initDefaultContentAlign() {
+  private initDefaultContentAlign() {
     this.contentAlign = this.rtl ? ContentAlign.RIGHT : ContentAlign.LEFT;
   }
 
@@ -587,82 +537,68 @@ export class DeckdeckgoInlineEditor {
 
   // TODO: Find a clever way to detect to root container
   // We iterate until we find the root container to detect if bold, underline or italic are active
-  private findStyle(node: Node): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!node) {
-        resolve();
-        return;
+  private findStyle(node: Node) {
+    if (!node) {
+      return;
+    }
+
+    // Just in case
+    if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
+      return;
+    }
+
+    if (this.isContainer(node)) {
+      const nodeName: string = node.nodeName.toUpperCase();
+
+      this.disabledTitle =
+        nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
+
+      this.contentAlign = DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
+    } else {
+      if (this.bold === undefined) {
+        this.bold = DeckdeckgoInlineEditorUtils.getBold(node as HTMLElement);
       }
 
-      // Just in case
-      if (node.nodeName.toUpperCase() === 'HTML' || node.nodeName.toUpperCase() === 'BODY') {
-        resolve();
-        return;
+      if (this.italic === undefined) {
+        this.italic = DeckdeckgoInlineEditorUtils.getItalic(node as HTMLElement);
       }
 
-      if (this.isContainer(node)) {
-        const nodeName: string = node.nodeName.toUpperCase();
-
-        this.disabledTitle =
-          nodeName === 'H1' || nodeName === 'H2' || nodeName === 'H3' || nodeName === 'H4' || nodeName === 'H5' || nodeName === 'H6';
-
-        this.contentAlign = await DeckdeckgoInlineEditorUtils.getContentAlignment(node as HTMLElement);
-
-        resolve();
-      } else {
-        if (this.bold === undefined) {
-          this.bold = await DeckdeckgoInlineEditorUtils.getBold(node as HTMLElement);
-        }
-
-        if (this.italic === undefined) {
-          this.italic = await DeckdeckgoInlineEditorUtils.getItalic(node as HTMLElement);
-        }
-
-        if (this.underline === undefined) {
-          this.underline = await DeckdeckgoInlineEditorUtils.getUnderline(node as HTMLElement);
-        }
-
-        if (this.strikethrough === undefined) {
-          this.strikethrough = await DeckdeckgoInlineEditorUtils.getStrikeThrough(node as HTMLElement);
-        }
-
-        if (this.contentList === undefined) {
-          this.contentList = await DeckdeckgoInlineEditorUtils.getList(node as HTMLElement);
-        }
-
-        await this.findStyle(node.parentNode);
-
-        if (this.contentFontSize === undefined) {
-          this.contentFontSize = await DeckdeckgoInlineEditorUtils.getFontSize(node as HTMLElement);
-        }
-
-        resolve();
+      if (this.underline === undefined) {
+        this.underline = DeckdeckgoInlineEditorUtils.getUnderline(node as HTMLElement);
       }
-    });
+
+      if (this.strikethrough === undefined) {
+        this.strikethrough = DeckdeckgoInlineEditorUtils.getStrikeThrough(node as HTMLElement);
+      }
+
+      if (this.contentList === undefined) {
+        this.contentList = DeckdeckgoInlineEditorUtils.getList(node as HTMLElement);
+      }
+
+      this.findStyle(node.parentNode);
+
+      if (this.contentFontSize === undefined) {
+        this.contentFontSize = DeckdeckgoInlineEditorUtils.getFontSize(node as HTMLElement);
+      }
+    }
   }
 
-  private initLink(selection: Selection): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!selection) {
-        resolve();
-        return;
-      }
+  private initLink(selection: Selection) {
+    if (!selection) {
+      return;
+    }
 
-      let content: Node = selection.anchorNode;
+    let content: Node = selection.anchorNode;
 
-      if (!content) {
-        resolve();
-        return;
-      }
+    if (!content) {
+      return;
+    }
 
-      if (content.nodeType === 3) {
-        content = content.parentElement;
-      }
+    if (content.nodeType === 3) {
+      content = content.parentElement;
+    }
 
-      this.link = content.nodeName && content.nodeName.toLowerCase() === 'a';
-
-      resolve();
-    });
+    this.link = content.nodeName && content.nodeName.toLowerCase() === 'a';
   }
 
   /**
@@ -671,88 +607,69 @@ export class DeckdeckgoInlineEditor {
    * @param blurActiveElement
    */
   @Method()
-  reset(clearSelection: boolean, blurActiveElement?: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (clearSelection) {
-        clearTheSelection();
-      }
+  async reset(clearSelection: boolean, blurActiveElement?: boolean) {
+    if (clearSelection) {
+      clearTheSelection();
+    }
 
-      await this.setToolsActivated(false);
+    this.setToolsActivated(false);
 
-      this.resetDisplayToolsActivated();
+    this.resetDisplayToolsActivated();
 
-      this.selection = null;
+    this.selection = null;
 
-      this.toolbarActions = ToolbarActions.SELECTION;
-      this.anchorLink = null;
-      this.link = false;
+    this.toolbarActions = ToolbarActions.SELECTION;
+    this.anchorLink = null;
+    this.link = false;
 
-      if (window) {
-        window.removeEventListener('scroll', async () => {
-          await this.setStickyPositionIOS();
-        });
-        window.removeEventListener('resize', async () => {
-          await this.reset(true, true);
-        });
-      }
+    if (window) {
+      window.removeEventListener('scroll', () => {
+        this.setStickyPositionIOS();
+      });
+      window.removeEventListener('resize', () => {
+        this.reset(true, true);
+      });
+    }
 
-      if (blurActiveElement && document && document.activeElement && document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-
-      resolve();
-    });
+    if (blurActiveElement && document && document.activeElement && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   }
 
-  private toggleLink(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (this.link) {
-        await this.removeLink();
-        await this.reset(true);
-      } else {
-        await this.openLink();
-      }
-
-      resolve();
-    });
+  private toggleLink() {
+    if (this.link) {
+      this.removeLink();
+      this.reset(true);
+    } else {
+      this.openLink();
+    }
   }
 
-  private removeLink(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.selection) {
-        resolve();
-        return;
-      }
+  private removeLink() {
+    if (!this.selection) {
+      return;
+    }
 
-      let content: Node = this.selection.anchorNode;
+    let content: Node = this.selection.anchorNode;
 
-      if (!content || !content.parentElement) {
-        resolve();
-        return;
-      }
+    if (!content || !content.parentElement) {
+      return;
+    }
 
-      if (content.nodeType === 3) {
-        content = content.parentElement;
-      }
+    if (content.nodeType === 3) {
+      content = content.parentElement;
+    }
 
-      if (!content.nodeName && content.nodeName.toLowerCase() !== 'a') {
-        resolve();
-        return;
-      }
+    if (!content.nodeName && content.nodeName.toLowerCase() !== 'a') {
+      return;
+    }
 
-      content.parentElement.insertBefore(document.createTextNode(content.textContent), content);
-      content.parentElement.removeChild(content);
-
-      resolve();
-    });
+    content.parentElement.insertBefore(document.createTextNode(content.textContent), content);
+    content.parentElement.removeChild(content);
   }
 
-  private openLink(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolbarActions = ToolbarActions.LINK;
-
-      resolve();
-    });
+  private openLink() {
+    this.toolbarActions = ToolbarActions.LINK;
   }
 
   private isSticky(): boolean {
@@ -761,41 +678,37 @@ export class DeckdeckgoInlineEditor {
     return (this.stickyDesktop && !mobile) || (this.stickyMobile && mobile);
   }
 
-  private setToolsActivated(activated: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      this.toolsActivated = activated;
+  private setToolsActivated(activated: boolean) {
+    this.toolsActivated = activated;
 
-      if (activated) {
-        this.debounceDisplayToolsActivated();
-      } else {
-        this.displayToolsActivated = false;
-      }
+    if (activated) {
+      this.debounceDisplayToolsActivated();
+    } else {
+      this.displayToolsActivated = false;
+    }
 
-      if (this.isSticky()) {
-        this.stickyToolbarActivated.emit(this.toolsActivated);
-      }
-
-      resolve();
-    });
+    if (this.isSticky()) {
+      this.stickyToolbarActivated.emit(this.toolsActivated);
+    }
   }
 
-  private async openColorPicker(action: ToolbarActions.COLOR | ToolbarActions.BACKGROUND_COLOR): Promise<void> {
+  private openColorPicker(action: ToolbarActions.COLOR | ToolbarActions.BACKGROUND_COLOR) {
     this.toolbarActions = action;
   }
 
-  private async openAlignmentActions(): Promise<void> {
+  private openAlignmentActions() {
     this.toolbarActions = ToolbarActions.ALIGNMENT;
   }
 
-  private async openFontSizeActions(): Promise<void> {
+  private openFontSizeActions() {
     this.toolbarActions = ToolbarActions.FONT_SIZE;
   }
 
-  private async openListActions(): Promise<void> {
+  private openListActions() {
     this.toolbarActions = ToolbarActions.LIST;
   }
 
-  private async onCustomAction($event: UIEvent, action: string): Promise<void> {
+  private onCustomAction($event: UIEvent, action: string) {
     $event.stopPropagation();
 
     this.customAction.emit({
@@ -805,7 +718,7 @@ export class DeckdeckgoInlineEditor {
     });
   }
 
-  private async onExecCommand($event: CustomEvent<ExecCommandAction>) {
+  private onExecCommand($event: CustomEvent<ExecCommandAction>) {
     if (!$event || !$event.detail) {
       return;
     }
@@ -816,14 +729,14 @@ export class DeckdeckgoInlineEditor {
     if (this.command === 'native') {
       execCommandNative($event.detail);
     } else {
-      await execCommand(this.selection, $event.detail, this.containers);
+      execCommand(this.selection, $event.detail, this.containers);
     }
 
     if ($event.detail.cmd === 'list' || isIOS()) {
-      await this.reset(true);
+      this.reset(true);
     }
 
-    const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(
+    const container: HTMLElement | undefined = DeckdeckgoInlineEditorUtils.findContainer(
       this.containers,
       !this.selection ? document.activeElement : this.selection.anchorNode
     );
@@ -838,10 +751,10 @@ export class DeckdeckgoInlineEditor {
   private onAttributesChangesInitStyle() {
     const anchorNode: HTMLElement | null = getAnchorElement(this.selection);
 
-    const observer: MutationObserver = new MutationObserver(async () => {
+    const observer: MutationObserver = new MutationObserver(() => {
       observer.disconnect();
 
-      await this.initStyleForNode(anchorNode);
+      this.initStyleForNode(anchorNode);
     });
 
     observer.observe(anchorNode, {attributes: true});
