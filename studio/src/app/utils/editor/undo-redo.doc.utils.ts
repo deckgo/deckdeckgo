@@ -3,20 +3,30 @@ import {moveCursorToEnd, moveCursorToOffset} from '@deckdeckgo/utils';
 import undoRedoStore from '../../stores/undo-redo.store';
 
 import {UndoRedoChange, UndoRedoDocParagraph, UndoRedoDocInput, UndoRedoDocUpdate} from '../../types/editor/undo-redo';
-import {nodeIndex} from '@deckdeckgo/editor';
+import {isTextNode, nodeIndex} from '@deckdeckgo/editor';
 import {NodeUtils} from './node.utils';
 
-export const stackUndoInput = ({mutation, caretPosition}: {mutation: MutationRecord; caretPosition: number}) => {
+export const stackUndoInput = ({
+  oldValue,
+  caretPosition,
+  container,
+  indexDepths,
+  index
+}: {
+  oldValue: string;
+  caretPosition: number;
+  container: HTMLElement;
+  indexDepths: number[];
+  index: number;
+}) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
   }
 
-  const {oldValue, target} = mutation;
-
   undoRedoStore.state.undo.push({
     type: 'input',
-    target,
-    data: {oldValue, offset: caretPosition}
+    target: container,
+    data: {oldValue, offset: caretPosition, indexDepths, index}
   });
 
   undoRedoStore.state.redo = [];
@@ -129,19 +139,48 @@ const undoRedoInput = ({
 }) => {
   const {data, target} = undoChange;
 
-  const currentValue: string = target.nodeValue;
+  const container: HTMLElement = NodeUtils.toHTMLElement(target);
 
-  const {oldValue, offset: newCaretPosition} = data as UndoRedoDocInput;
+  const {oldValue, offset: newCaretPosition, index, indexDepths} = data as UndoRedoDocInput;
+
+  const paragraph: Element | undefined = container.children[index];
+
+  // Example: document.querySelector('[paragraph_id="cf914fa8-ff4d-48e9-972d-ecf795af316c"]').querySelector('* > :nth-child(1) > :nth-child(1) > :nth-child(1)')
+  const parent: HTMLElement | undefined =
+    indexDepths.length <= 0
+      ? NodeUtils.toHTMLElement(paragraph)
+      : paragraph?.querySelector(`* ${indexDepths.map((depth: number) => `> :nth-child(${depth + 1})`).join(' ')}`);
+
+  if (!parent) {
+    return;
+  }
+
+  let text: Node | undefined = (parent?.childNodes !== undefined ? Array.from(parent.childNodes) : []).find((node: Node) =>
+    isTextNode(node)
+  );
+
+  // The text node to apply the input might not exist anymore
+  if (!text) {
+    text = document.createTextNode('');
+    parent.prepend(text);
+  }
+
+  const currentValue: string = text.nodeValue;
 
   const changeObserver: MutationObserver = new MutationObserver(() => {
     changeObserver.disconnect();
 
-    moveCursorToOffset({element: target, offset: newCaretPosition});
+    moveCursorToOffset({element: text, offset: newCaretPosition});
 
     pushTo({
       type: 'input',
-      target: target as HTMLElement,
-      data: {oldValue: currentValue, offset: newCaretPosition + (currentValue.length - oldValue.length)}
+      target: container,
+      data: {
+        index,
+        indexDepths,
+        oldValue: currentValue,
+        offset: newCaretPosition + (currentValue.length - oldValue.length)
+      }
     });
 
     popFrom();
@@ -149,7 +188,7 @@ const undoRedoInput = ({
 
   changeObserver.observe(target, {characterData: true, subtree: true});
 
-  target.nodeValue = oldValue;
+  text.nodeValue = oldValue;
 };
 
 const undoRedoParagraph = ({

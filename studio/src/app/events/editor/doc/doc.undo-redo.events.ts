@@ -16,6 +16,8 @@ import {
   findRemovedParagraphs,
   findSelectionParagraphs
 } from '../../../utils/editor/paragraphs.utils';
+import {findParagraph} from '../../../utils/editor/paragraph.utils';
+import {NodeUtils} from '../../../utils/editor/node.utils';
 
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
@@ -23,7 +25,7 @@ export class DocUndoRedoEvents {
   private dataObserver: MutationObserver | undefined;
   private treeObserver: MutationObserver | undefined;
 
-  private undoValue: {mutation: MutationRecord; caretPosition: number} | undefined;
+  private undoValue: {oldValue: string; caretPosition: number; index: number; indexDepths: number[]} | undefined;
   private undoElements: {outerHTML: string; index: number}[];
 
   private inlineEditorObserver: MutationObserver | undefined;
@@ -93,7 +95,10 @@ export class DocUndoRedoEvents {
       return;
     }
 
-    stackUndoInput(this.undoValue);
+    stackUndoInput({
+      ...this.undoValue,
+      container: this.containerRef
+    });
 
     this.undoValue = undefined;
   }
@@ -154,11 +159,30 @@ export class DocUndoRedoEvents {
     if (!this.undoValue) {
       const mutation: MutationRecord = mutations[0];
 
-      const newValue: string = mutation.target.nodeValue;
+      const target: Node = mutation.target;
+
+      const newValue: string = target.nodeValue;
+
+      const paragraph: HTMLElement | undefined = NodeUtils.toHTMLElement(findParagraph({element: target, container: this.containerRef}));
+
+      if (!paragraph || !target.parentNode) {
+        return;
+      }
+
+      // We find the list of node indexes of the parent of the modified text
+      const depths: number[] = [];
+
+      let parentElement: HTMLElement = target.parentElement;
+      while (!parentElement.isSameNode(paragraph)) {
+        depths.push(nodeIndex(parentElement));
+        parentElement = parentElement.parentElement;
+      }
 
       this.undoValue = {
-        mutation,
-        caretPosition: caretPosition({target: mutation.target}) + (mutation.oldValue.length > newValue.length ? 1 : -1)
+        oldValue: mutation.oldValue,
+        caretPosition: caretPosition({target}) + (mutation.oldValue.length > newValue.length ? 1 : -1),
+        index: nodeIndex(paragraph),
+        indexDepths: depths
       };
     }
 

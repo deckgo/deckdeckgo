@@ -17,6 +17,8 @@ export interface UndoRedoDeckInputElement {
 export interface UndoRedoDocInput {
   offset: number;
   oldValue: string;
+  index: number;
+  indexDepths: number[];
 }
 
 export interface UndoRedoDocParagraph {
