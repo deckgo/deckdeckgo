@@ -1,12 +1,12 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State} from '@stencil/core';
 
 import {SlideChartType} from '@deckdeckgo/editor';
+import {hexToRgb} from '@deckdeckgo/utils';
 
 import i18n from '../../../../../../stores/i18n.store';
 
 import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
 import {ChartUtils} from '../../../../../../utils/editor/chart.utils';
-import {hexToRgb} from '@deckdeckgo/utils';
 
 enum ApplyColorType {
   FILL,
@@ -54,12 +54,10 @@ export class AppColorDeckSlide {
 
     if (this.applyColorType === ApplyColorType.FILL) {
       return ColorUtils.splitColor(
-        await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`))
+        this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-fill-color-${this.colorIndex}`))
       );
     } else if (this.applyColorType === ApplyColorType.STROKE) {
-      return ColorUtils.splitColor(
-        await this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`))
-      );
+      return ColorUtils.splitColor(this.hexOrRgb(this.selectedElement.style.getPropertyValue(`--deckgo-chart-stroke-${this.colorIndex}`)));
     } else if (this.applyColorType === ApplyColorType.AXIS) {
       return ColorUtils.splitColor(this.selectedElement.style.getPropertyValue('--deckgo-chart-axis-color'));
     } else if (this.applyColorType === ApplyColorType.GRID) {
@@ -69,8 +67,8 @@ export class AppColorDeckSlide {
     }
   };
 
-  private async hexOrRgb(color: string) {
-    const hexColor: string | undefined = await hexToRgb(color);
+  private hexOrRgb(color: string) {
+    const hexColor: string | undefined = hexToRgb(color);
     return hexColor ? hexColor : color;
   }
 

@@ -1,14 +1,14 @@
 import {ExecCommandList} from '../interfaces/interfaces';
 import {DeckdeckgoInlineEditorUtils} from './utils';
 
-export async function execCommandList(selection: Selection, action: ExecCommandList, containers: string) {
+export function execCommandList(selection: Selection, action: ExecCommandList, containers: string) {
   const anchorNode: Node = selection.anchorNode;
 
   if (!anchorNode) {
     return;
   }
 
-  const container: HTMLElement | undefined = await DeckdeckgoInlineEditorUtils.findContainer(containers, anchorNode);
+  const container: HTMLElement | undefined = DeckdeckgoInlineEditorUtils.findContainer(containers, anchorNode);
 
   if (!container) {
     return;
@@ -16,21 +16,21 @@ export async function execCommandList(selection: Selection, action: ExecCommandL
 
   // Did the user select the all list
   if (container.nodeName.toLowerCase() === action.type) {
-    await removeList(container);
+    removeList(container);
     return;
   }
 
   if (!['ol', 'ul', 'dl'].includes(container.nodeName.toLowerCase())) {
-    await createList(container, selection, action.type);
+    createList(container, selection, action.type);
     return;
   }
 
   // Create a brand new list
-  await cloneList(container, selection, action.type);
-  await removeList(container, false);
+  cloneList(container, selection, action.type);
+  removeList(container, false);
 }
 
-async function createList(container: HTMLElement, selection: Selection, type: 'ol' | 'ul') {
+function createList(container: HTMLElement, selection: Selection, type: 'ol' | 'ul') {
   const range: Range = selection.getRangeAt(0);
 
   const fragment: DocumentFragment = range.extractContents();
@@ -47,7 +47,7 @@ async function createList(container: HTMLElement, selection: Selection, type: 'o
   selection.selectAllChildren(list);
 }
 
-async function cloneList(container: HTMLElement, selection: Selection, type: 'ol' | 'ul') {
+function cloneList(container: HTMLElement, selection: Selection, type: 'ol' | 'ul') {
   const list: HTMLOListElement | HTMLUListElement = document.createElement(type);
 
   list.append(...Array.from(container.childNodes));
@@ -59,7 +59,7 @@ async function cloneList(container: HTMLElement, selection: Selection, type: 'ol
   selection.selectAllChildren(list);
 }
 
-async function removeList(list: HTMLElement, preserveChildren: boolean = true) {
+function removeList(list: HTMLElement, preserveChildren: boolean = true) {
   if (list.hasChildNodes() && preserveChildren) {
     Array.from(list.childNodes).forEach((child: Node) => {
       if (

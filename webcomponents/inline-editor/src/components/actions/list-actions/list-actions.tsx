@@ -24,18 +24,14 @@ export class AlignActions {
   @Event()
   private execCommand: EventEmitter<ExecCommandAction>;
 
-  private toggleList(e: UIEvent, type: 'ol' | 'ul'): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      e.stopPropagation();
+  private toggleList(e: UIEvent, type: 'ol' | 'ul') {
+    e.stopPropagation();
 
-      this.execCommand.emit({
-        cmd: 'list',
-        detail: {
-          type
-        }
-      });
-
-      resolve();
+    this.execCommand.emit({
+      cmd: 'list',
+      detail: {
+        type
+      }
     });
   }
 

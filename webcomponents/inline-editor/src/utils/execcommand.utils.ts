@@ -3,14 +3,14 @@ import {ExecCommandAction, ExecCommandList, ExecCommandStyle} from '../interface
 import {execCommandList} from './execcommand-list.utils';
 import {execCommandStyle} from './execcommand-style.utils';
 
-export async function execCommand(selection: Selection, action: ExecCommandAction, containers: string) {
+export function execCommand(selection: Selection, action: ExecCommandAction, containers: string) {
   if (!document || !selection) {
     return;
   }
 
   if (action.cmd === 'style') {
-    await execCommandStyle(selection, action.detail as ExecCommandStyle, containers);
+    execCommandStyle(selection, action.detail as ExecCommandStyle, containers);
   } else if (action.cmd === 'list') {
-    await execCommandList(selection, action.detail as ExecCommandList, containers);
+    execCommandList(selection, action.detail as ExecCommandList, containers);
   }
 }
