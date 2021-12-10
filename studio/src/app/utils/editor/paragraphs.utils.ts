@@ -1,5 +1,8 @@
-import {findParagraph, isParagraph} from './paragraph.utils';
 import {isTextNode} from '@deckdeckgo/editor';
+import {getSelection} from '@deckdeckgo/utils';
+
+import {findParagraph, isParagraph} from './paragraph.utils';
+import {NodeUtils} from './node.utils';
 
 export interface RemovedParagraph {
   paragraph: HTMLElement;
@@ -90,4 +93,34 @@ const filterRemovedParagraphs = ({nodes}: {nodes: Node[]}): HTMLElement[] => {
   return nodes
     .filter((paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE)
     .filter((node: Node) => (node as HTMLElement).hasAttribute('paragraph_id')) as HTMLElement[];
+};
+
+export const findSelectionParagraphs = ({container}: {container: HTMLElement}): HTMLElement[] => {
+  const selection: Selection | null = getSelection();
+  const range: Range | undefined = selection?.getRangeAt(0);
+
+  if (!range) {
+    return [];
+  }
+
+  const start: HTMLElement | undefined = NodeUtils.toHTMLElement(findParagraph({element: range.startContainer, container}));
+  const end: HTMLElement | undefined = NodeUtils.toHTMLElement(findParagraph({element: range.endContainer, container}));
+
+  if (!end || start?.isSameNode(end)) {
+    return start ? [start] : [];
+  }
+
+  if (start.nextElementSibling.isSameNode(end)) {
+    return [start, end];
+  }
+
+  const nodes: HTMLElement[] = [];
+
+  let next: Element | null = start.nextElementSibling;
+  while (next !== null && !next.isSameNode(end)) {
+    nodes.push(NodeUtils.toHTMLElement(next));
+    next = next.nextElementSibling;
+  }
+
+  return [start, ...nodes, end];
 };

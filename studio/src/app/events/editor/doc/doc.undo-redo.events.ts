@@ -1,12 +1,20 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
+import {nodeIndex} from '@deckdeckgo/editor';
 
-import {nextRedoChange, nextUndoChange, redo, stackUndoInput, stackUndoParagraph, undo} from '../../../utils/editor/undo-redo.doc.utils';
+import {
+  nextRedoChange,
+  nextUndoChange,
+  redo,
+  stackUndoInput,
+  stackUndoParagraph,
+  stackUndoUpdate,
+  undo
+} from '../../../utils/editor/undo-redo.doc.utils';
 import {
   findAddedParagraphs,
   RemovedParagraph,
   findRemovedParagraphs,
-  findAddedNodesParagraphs,
-  findUpdatedParagraphs
+  findSelectionParagraphs
 } from '../../../utils/editor/paragraphs.utils';
 
 export class DocUndoRedoEvents {
@@ -16,6 +24,9 @@ export class DocUndoRedoEvents {
   private treeObserver: MutationObserver | undefined;
 
   private undoValue: {mutation: MutationRecord; caretPosition: number} | undefined;
+  private undoElements: {outerHTML: string; index: number}[];
+
+  private inlineEditorObserver: MutationObserver | undefined;
 
   private readonly debounceUpdateInput: () => void = debounce(() => this.stackUndoInput(), 350);
 
@@ -25,19 +36,21 @@ export class DocUndoRedoEvents {
     this.dataObserver = new MutationObserver(this.onDataMutation);
     this.treeObserver = new MutationObserver(this.onTreeMutation);
 
-    this.observeTree();
-    this.observeData();
+    this.inlineEditorObserver = new MutationObserver(this.onInlineEditorMutation);
+
+    this.observe();
 
     document.addEventListener('keydown', this.onKeydown);
-    document.addEventListener('toolbarActivated', this.toggleData);
+    document.addEventListener('toolbarActivated', this.onInlineEditor);
   }
 
   destroy() {
-    this.disconnectTree();
-    this.disconnectData();
+    this.disconnect();
+
+    this.disconnectInlineEditor();
 
     document.removeEventListener('keydown', this.onKeydown);
-    document.removeEventListener('toolbarActivated', this.toggleData);
+    document.removeEventListener('toolbarActivated', this.onInlineEditor);
   }
 
   private onKeydown = ($event: KeyboardEvent) => {
@@ -90,14 +103,12 @@ export class DocUndoRedoEvents {
 
     // Undo and redo the input will trigger the MutationObserver therefore we disable it and observe next change to add it again
     // In other words, we skip one mutation change event
-    this.disconnectData();
-    this.disconnectTree();
+    this.disconnect();
 
     const changeObserver: MutationObserver = new MutationObserver(() => {
       changeObserver.disconnect();
 
-      this.observeData();
-      this.observeTree();
+      this.observe();
     });
 
     changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
@@ -105,23 +116,39 @@ export class DocUndoRedoEvents {
     undoRedo();
   }
 
-  private observeTree() {
+  private observe() {
     this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
-  }
-
-  private observeData() {
     this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
   }
 
-  private disconnectTree() {
+  private disconnect() {
     this.treeObserver.disconnect();
-  }
-
-  private disconnectData() {
     this.dataObserver.disconnect();
   }
 
-  private toggleData = ({detail}: CustomEvent<boolean>) => (detail ? this.disconnectData() : this.observeData());
+  private observeInlineEditor() {
+    this.inlineEditorObserver.observe(this.containerRef, {childList: true, subtree: true, attributes: true});
+  }
+
+  private disconnectInlineEditor() {
+    this.inlineEditorObserver.disconnect();
+  }
+
+  private onInlineEditor = ({detail}: CustomEvent<boolean>) => {
+    if (!detail) {
+      this.disconnectInlineEditor();
+
+      this.observe();
+
+      return;
+    }
+
+    this.disconnect();
+
+    this.observeInlineEditor();
+
+    this.copySelectedParagraphs();
+  };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
     if (!this.undoValue) {
@@ -155,18 +182,23 @@ export class DocUndoRedoEvents {
     removedParagraphs.forEach(({paragraph, previousSibling}: RemovedParagraph) =>
       stackUndoParagraph({paragraph, mutation: 'remove', container: this.containerRef, previousSibling: previousSibling as HTMLElement})
     );
-
-    // Added nodes within paragraphs
-    const addedNodesMutations: MutationRecord[] = findAddedNodesParagraphs({mutations, container: this.containerRef});
-    const updateParagraphs: HTMLElement[] = findUpdatedParagraphs({mutations: addedNodesMutations, container: this.containerRef});
-
-    updateParagraphs.forEach((paragraph: HTMLElement) =>
-      stackUndoParagraph({
-        paragraph,
-        mutation: 'update',
-        container: this.containerRef,
-        previousSibling: paragraph.previousSibling as HTMLElement
-      })
-    );
   };
+
+  private onInlineEditorMutation = () => {
+    if (this.undoElements.length > 0) {
+      stackUndoUpdate({paragraphs: this.undoElements, container: this.containerRef});
+    }
+
+    this.copySelectedParagraphs();
+  };
+
+  // Copy current paragraphs value to a local state so we can add it to the undo redo global store in case of modifications
+  private copySelectedParagraphs() {
+    const paragraphs: HTMLElement[] = findSelectionParagraphs({container: this.containerRef});
+
+    this.undoElements = paragraphs.map((paragraph: HTMLElement) => ({
+      outerHTML: paragraph.outerHTML,
+      index: nodeIndex(paragraph)
+    }));
+  }
 }

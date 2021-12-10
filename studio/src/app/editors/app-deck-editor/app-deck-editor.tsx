@@ -663,8 +663,6 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private inlineEditorActivated($event: CustomEvent<boolean>) {
-    console.log('yo', $event.detail);
-
     this.hideActions = $event ? isMobile() && !isIOS() && $event.detail : false;
   }
 

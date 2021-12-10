@@ -20,14 +20,23 @@ export interface UndoRedoDocInput {
 }
 
 export interface UndoRedoDocParagraph {
-  container: HTMLElement;
   index: number;
-  mutation: 'add' | 'remove' | 'update';
+  mutation: 'add' | 'remove';
   outerHTML: string;
 }
 
+export interface UndoRedoDocUpdate {
+  paragraphs: {outerHTML: string; index: number}[];
+}
+
 export interface UndoRedoChange {
-  type: 'input' | 'attribute' | 'style' | 'paragraph';
+  type: 'input' | 'attribute' | 'style' | 'paragraph' | 'update';
   target: Node;
-  data: UndoRedoDeckChangeAttribute | UndoRedoDeckInputElement | UndoRedoDeckChangeStyle | UndoRedoDocInput | UndoRedoDocParagraph;
+  data:
+    | UndoRedoDeckChangeAttribute
+    | UndoRedoDeckInputElement
+    | UndoRedoDeckChangeStyle
+    | UndoRedoDocInput
+    | UndoRedoDocParagraph
+    | UndoRedoDocUpdate;
 }

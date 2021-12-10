@@ -2,8 +2,9 @@ import {moveCursorToEnd, moveCursorToOffset} from '@deckdeckgo/utils';
 
 import undoRedoStore from '../../stores/undo-redo.store';
 
-import {UndoRedoChange, UndoRedoDocParagraph, UndoRedoDocInput} from '../../types/editor/undo-redo';
+import {UndoRedoChange, UndoRedoDocParagraph, UndoRedoDocInput, UndoRedoDocUpdate} from '../../types/editor/undo-redo';
 import {nodeIndex} from '@deckdeckgo/editor';
+import {NodeUtils} from './node.utils';
 
 export const stackUndoInput = ({mutation, caretPosition}: {mutation: MutationRecord; caretPosition: number}) => {
   if (!undoRedoStore.state.undo) {
@@ -29,7 +30,7 @@ export const stackUndoParagraph = ({
 }: {
   paragraph: HTMLElement;
   container: HTMLElement;
-  mutation: 'add' | 'remove' | 'update';
+  mutation: 'add' | 'remove';
   previousSibling?: HTMLElement;
 }) => {
   if (!undoRedoStore.state.undo) {
@@ -38,8 +39,24 @@ export const stackUndoParagraph = ({
 
   undoRedoStore.state.undo.push({
     type: 'paragraph',
-    target: paragraph,
-    data: {outerHTML: paragraph.outerHTML, index: previousSibling ? nodeIndex(previousSibling) + 1 : 0, mutation, container}
+    target: container,
+    data: {outerHTML: paragraph.outerHTML, index: previousSibling ? nodeIndex(previousSibling) + 1 : 0, mutation}
+  });
+
+  if (!undoRedoStore.state.redo) {
+    undoRedoStore.state.redo = [];
+  }
+};
+
+export const stackUndoUpdate = ({paragraphs, container}: {paragraphs: {outerHTML: string; index: number}[]; container: HTMLElement}) => {
+  if (!undoRedoStore.state.undo) {
+    undoRedoStore.state.undo = [];
+  }
+
+  undoRedoStore.state.undo.push({
+    type: 'update',
+    target: container,
+    data: {paragraphs}
   });
 
   if (!undoRedoStore.state.redo) {
@@ -95,6 +112,10 @@ const undoRedo = ({
   if (type === 'paragraph') {
     undoRedoParagraph({popFrom, pushTo, undoChange});
   }
+
+  if (type === 'update') {
+    undoRedoUpdate({popFrom, pushTo, undoChange});
+  }
 };
 
 const undoRedoInput = ({
@@ -140,9 +161,11 @@ const undoRedoParagraph = ({
   pushTo: (value: UndoRedoChange) => void;
   undoChange: UndoRedoChange;
 }) => {
-  const {data} = undoChange;
+  const {data, target} = undoChange;
 
-  const {index, outerHTML, mutation, container} = data as UndoRedoDocParagraph;
+  const container: HTMLElement = NodeUtils.toHTMLElement(target);
+
+  const {index, outerHTML, mutation} = data as UndoRedoDocParagraph;
 
   if (mutation === 'add') {
     // Paragraph are elements
@@ -199,31 +222,40 @@ const undoRedoParagraph = ({
 
     // Paragraph are elements
     container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
-    return;
   }
+};
 
-  if (mutation === 'update') {
-    const target: Element = container.children[Math.min(index, container.children.length - 1)];
+const undoRedoUpdate = ({
+  popFrom,
+  pushTo,
+  undoChange
+}: {
+  popFrom: () => void;
+  pushTo: (value: UndoRedoChange) => void;
+  undoChange: UndoRedoChange;
+}) => {
+  const {data, target} = undoChange;
 
-    const currentOuterHTML: string = target.outerHTML;
+  const container: HTMLElement = NodeUtils.toHTMLElement(target);
 
-    const changeObserver: MutationObserver = new MutationObserver((_mutations: MutationRecord[]) => {
-      changeObserver.disconnect();
+  const {paragraphs} = data as UndoRedoDocUpdate;
 
-      pushTo({
-        ...undoChange,
-        data: {
-          ...data,
-          outerHTML: currentOuterHTML
-        }
-      });
+  const to: {index: number; outerHTML: string}[] = [];
 
-      popFrom();
-    });
+  paragraphs.forEach(({index, outerHTML}: {index: number; outerHTML: string}) => {
+    const paragraph: Element = container.children[Math.min(index, container.children.length - 1)];
 
-    changeObserver.observe(container, {childList: true, subtree: true});
+    to.push({index, outerHTML: paragraph.outerHTML});
 
-    // Paragraph are elements
-    target.outerHTML = outerHTML;
-  }
+    paragraph.outerHTML = outerHTML;
+  });
+
+  pushTo({
+    ...undoChange,
+    data: {
+      paragraphs: to
+    }
+  });
+
+  popFrom();
 };
