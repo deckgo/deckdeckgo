@@ -6,6 +6,10 @@
 
 - ic: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
+### Others
+
+- utils: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
+
 <a name="5.1.0"></a>
 
 # [5.1.0](https://github.com/deckgo/deckdeckgo/compare/v5.0.1...v5.1.0) (2021-12-03)

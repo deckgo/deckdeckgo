@@ -1,5 +1,5 @@
 // https://stackoverflow.com/a/5624139/5404186
-export async function hexToRgb(hex: string): Promise<string | undefined> {
+export function hexToRgb(hex: string | undefined): string | undefined {
   if (!hex || hex === undefined || hex === '') {
     return undefined;
   }
@@ -10,7 +10,7 @@ export async function hexToRgb(hex: string): Promise<string | undefined> {
 }
 
 // https://stackoverflow.com/a/42429333/5404186
-export async function rgbToHex(rgb: string | undefined): Promise<string | undefined> {
+export function rgbToHex(rgb: string | undefined): string | undefined {
   if (!rgb) {
     return undefined;
   }
