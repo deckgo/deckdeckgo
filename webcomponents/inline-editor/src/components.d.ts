@@ -381,11 +381,11 @@ declare namespace LocalJSX {
           * Triggered when a link is created by the user. The event detail is the container
          */
         "onLinkCreated"?: (event: CustomEvent<HTMLElement>) => void;
-        "onStickyToolbarActivated"?: (event: CustomEvent<boolean>) => void;
         /**
           * Triggered when the style is modified (bold, italic, color, alignment, etc.). The event detail is the container
          */
         "onStyleDidChange"?: (event: CustomEvent<HTMLElement>) => void;
+        "onToolbarActivated"?: (event: CustomEvent<boolean>) => void;
         /**
           * In case you would like to define a custom list of colors for the palette of colors. See @deckdeckgo/color for the default list of colors
          */

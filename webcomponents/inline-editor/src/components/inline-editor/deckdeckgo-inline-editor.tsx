@@ -79,7 +79,10 @@ export class DeckdeckgoInlineEditor {
   @State()
   private displayToolsActivated: boolean = false;
 
-  private debounceDisplayToolsActivated: Function;
+  private debounceDisplayToolsActivated: () => void = debounce(() => {
+    this.displayToolsActivated = true;
+    this.toolbarActivated.emit(true);
+  });
 
   private selection: Selection = null;
 
@@ -92,7 +95,7 @@ export class DeckdeckgoInlineEditor {
   @State()
   private toolbarActions: ToolbarActions = ToolbarActions.SELECTION;
 
-  @Event() stickyToolbarActivated: EventEmitter<boolean>;
+  @Event() toolbarActivated: EventEmitter<boolean>;
 
   /**
    * Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document
@@ -212,14 +215,7 @@ export class DeckdeckgoInlineEditor {
   private rtl: boolean = isRTL();
 
   constructor() {
-    this.resetDisplayToolsActivated();
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
-  }
-
-  private resetDisplayToolsActivated() {
-    this.debounceDisplayToolsActivated = debounce(() => {
-      this.displayToolsActivated = true;
-    });
   }
 
   componentWillLoad() {
@@ -614,7 +610,10 @@ export class DeckdeckgoInlineEditor {
 
     this.setToolsActivated(false);
 
-    this.resetDisplayToolsActivated();
+    if (clearSelection) {
+      // We don't want to emit that state a zillion time but only when needed
+      this.toolbarActivated.emit(false);
+    }
 
     this.selection = null;
 
@@ -685,10 +684,6 @@ export class DeckdeckgoInlineEditor {
       this.debounceDisplayToolsActivated();
     } else {
       this.displayToolsActivated = false;
-    }
-
-    if (this.isSticky()) {
-      this.stickyToolbarActivated.emit(this.toolsActivated);
     }
   }
 

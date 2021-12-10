@@ -111,13 +111,13 @@ Note that it currently do no support undo/redo.
 
 ## Events
 
-| Event                    | Description                                                                                                               | Type                        |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| `customAction`           | Triggered when a custom action is selected. Its detail provide an action name, the Selection and an anchorLink            | `CustomEvent<InlineAction>` |
-| `imgDidChange`           | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element | `CustomEvent<HTMLElement>`  |
-| `linkCreated`            | Triggered when a link is created by the user. The event detail is the container                                           | `CustomEvent<HTMLElement>`  |
-| `stickyToolbarActivated` |                                                                                                                           | `CustomEvent<boolean>`      |
-| `styleDidChange`         | Triggered when the style is modified (bold, italic, color, alignment, etc.). The event detail is the container            | `CustomEvent<HTMLElement>`  |
+| Event              | Description                                                                                                               | Type                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `customAction`     | Triggered when a custom action is selected. Its detail provide an action name, the Selection and an anchorLink            | `CustomEvent<InlineAction>` |
+| `imgDidChange`     | Triggered when an image is manipulated. Note: the event won't provide directly the image but rather its container element | `CustomEvent<HTMLElement>`  |
+| `linkCreated`      | Triggered when a link is created by the user. The event detail is the container                                           | `CustomEvent<HTMLElement>`  |
+| `styleDidChange`   | Triggered when the style is modified (bold, italic, color, alignment, etc.). The event detail is the container            | `CustomEvent<HTMLElement>`  |
+| `toolbarActivated` |                                                                                                                           | `CustomEvent<boolean>`      |
 
 
 ## Methods

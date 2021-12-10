@@ -25,15 +25,19 @@ export class DocUndoRedoEvents {
     this.dataObserver = new MutationObserver(this.onDataMutation);
     this.treeObserver = new MutationObserver(this.onTreeMutation);
 
-    this.observe();
+    this.observeTree();
+    this.observeData();
 
     document.addEventListener('keydown', this.onKeydown);
+    document.addEventListener('toolbarActivated', this.toggleData);
   }
 
   destroy() {
-    this.disconnect();
+    this.disconnectTree();
+    this.disconnectData();
 
     document.removeEventListener('keydown', this.onKeydown);
+    document.removeEventListener('toolbarActivated', this.toggleData);
   }
 
   private onKeydown = ($event: KeyboardEvent) => {
@@ -86,12 +90,14 @@ export class DocUndoRedoEvents {
 
     // Undo and redo the input will trigger the MutationObserver therefore we disable it and observe next change to add it again
     // In other words, we skip one mutation change event
-    this.disconnect();
+    this.disconnectData();
+    this.disconnectTree();
 
     const changeObserver: MutationObserver = new MutationObserver(() => {
       changeObserver.disconnect();
 
-      this.observe();
+      this.observeData();
+      this.observeTree();
     });
 
     changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
@@ -99,15 +105,23 @@ export class DocUndoRedoEvents {
     undoRedo();
   }
 
-  private observe() {
-    this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
+  private observeTree() {
     this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
   }
 
-  private disconnect() {
-    this.dataObserver.disconnect();
+  private observeData() {
+    this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
+  }
+
+  private disconnectTree() {
     this.treeObserver.disconnect();
   }
+
+  private disconnectData() {
+    this.dataObserver.disconnect();
+  }
+
+  private toggleData = ({detail}: CustomEvent<boolean>) => (detail ? this.disconnectData() : this.observeData());
 
   private onDataMutation = (mutations: MutationRecord[]) => {
     if (!this.undoValue) {

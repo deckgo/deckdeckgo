@@ -662,7 +662,9 @@ export class AppDeckEditor implements ComponentInterface {
     navigateSignIn();
   }
 
-  private stickyToolbarActivated($event: CustomEvent<boolean>) {
+  private inlineEditorActivated($event: CustomEvent<boolean>) {
+    console.log('yo', $event.detail);
+
     this.hideActions = $event ? isMobile() && !isIOS() && $event.detail : false;
   }
 
@@ -813,7 +815,7 @@ export class AppDeckEditor implements ComponentInterface {
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
         sticky-mobile="true"
-        onStickyToolbarActivated={($event: CustomEvent<boolean>) => this.stickyToolbarActivated($event)}
+        onToolbarActivated={($event: CustomEvent<boolean>) => this.inlineEditorActivated($event)}
         img-anchor="deckgo-lazy-img"
         list={false}
         palette={colorStore.state.history}
