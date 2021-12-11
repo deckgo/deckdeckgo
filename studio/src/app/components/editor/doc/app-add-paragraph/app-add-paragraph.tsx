@@ -6,6 +6,7 @@ import {findParagraph, focusParagraph} from '../../../../utils/editor/paragraph.
 import {NodeUtils} from '../../../../utils/editor/node.utils';
 
 import {AppIcon} from '../../../core/app-icon/app-icon';
+import {createEmptyElement} from '../../../../utils/editor/create-element.utils';
 
 @Component({
   tag: 'app-add-paragraph',
@@ -99,16 +100,16 @@ export class AppAddParagraph implements ComponentInterface {
       observer.disconnect();
 
       const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
-      const section: Node | undefined = addedNodes.find((node: Node) => node.nodeName.toLowerCase() === 'section');
+      const div: Node | undefined = addedNodes.find((node: Node) => node.nodeName.toLowerCase() === 'div');
 
-      this.selectParagraph.emit(section as HTMLElement | undefined);
+      this.selectParagraph.emit(div as HTMLElement | undefined);
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
     docObserver.observe(this.containerRef, {childList: true, subtree: true});
 
-    // \n is useful to create a new adjacent node and not a node within the current paragraph
-    document.execCommand('insertHTML', false, '\n<section>\n</section>');
+    const div: HTMLElement = createEmptyElement({nodeName: 'div'});
+    this.paragraph.after(div);
 
     this.hide();
   }
