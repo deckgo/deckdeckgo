@@ -254,8 +254,6 @@ export class DocUndoRedoEvents {
   };
 
   private onTreeMutation = (mutations: MutationRecord[]) => {
-    console.log(mutations);
-
     const changes: {paragraph: HTMLElement; previousSibling?: HTMLElement; mutation: 'remove' | 'add'}[] = [];
 
     // New paragraph
