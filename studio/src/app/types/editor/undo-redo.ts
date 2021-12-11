@@ -40,6 +40,6 @@ export interface UndoRedoChange {
     | UndoRedoDeckInputElement
     | UndoRedoDeckChangeStyle
     | UndoRedoDocInput
-    | UndoRedoDocAddRemoveParagraph
+    | UndoRedoDocAddRemoveParagraph[]
     | UndoRedoDocUpdateParagraph[];
 }

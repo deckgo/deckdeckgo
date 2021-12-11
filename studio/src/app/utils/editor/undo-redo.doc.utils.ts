@@ -21,15 +21,11 @@ export const stackUndoInput = ({container, data}: {container: HTMLElement; data:
 };
 
 export const stackUndoParagraph = ({
-  paragraph,
-  mutation,
   container,
-  previousSibling
+  changes
 }: {
-  paragraph: HTMLElement;
   container: HTMLElement;
-  mutation: 'add' | 'remove';
-  previousSibling?: HTMLElement;
+  changes: {paragraph: HTMLElement; previousSibling?: HTMLElement; mutation: 'remove' | 'add'}[];
 }) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
@@ -38,7 +34,13 @@ export const stackUndoParagraph = ({
   undoRedoStore.state.undo.push({
     type: 'paragraph',
     target: container,
-    data: {outerHTML: paragraph.outerHTML, index: previousSibling ? nodeIndex(previousSibling) + 1 : 0, mutation}
+    data: changes.map(
+      ({paragraph, previousSibling, mutation}: {paragraph: HTMLElement; previousSibling?: HTMLElement; mutation: 'remove' | 'add'}) => ({
+        outerHTML: paragraph.outerHTML,
+        mutation,
+        index: previousSibling ? nodeIndex(previousSibling) + 1 : 0
+      })
+    )
   });
 
   if (!undoRedoStore.state.redo) {
@@ -192,64 +194,60 @@ const undoRedoParagraph = ({
 
   const container: HTMLElement = NodeUtils.toHTMLElement(target);
 
-  const {index, outerHTML, mutation} = data as UndoRedoDocAddRemoveParagraph;
+  const paragraphs: UndoRedoDocAddRemoveParagraph[] = data as UndoRedoDocAddRemoveParagraph[];
 
-  if (mutation === 'add') {
-    // Paragraph are elements
+  onMutationMoveCursor({container, paragraphs});
 
-    const element: Element | undefined = container.children[index];
+  const to: UndoRedoDocAddRemoveParagraph[] = [];
 
-    if (!element) {
-      return;
+  paragraphs.forEach(({index, outerHTML, mutation}: UndoRedoDocAddRemoveParagraph) => {
+    if (mutation === 'add') {
+      const element: Element | undefined = container.children[index];
+
+      element?.parentElement.removeChild(element);
+
+      to.push({
+        outerHTML,
+        index: index - 1,
+        mutation: 'remove'
+      });
     }
 
-    const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
-      changeObserver.disconnect();
+    if (mutation === 'remove') {
+      // Paragraph are elements
+      container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
 
+      to.push({
+        outerHTML,
+        mutation: 'add',
+        index: index + 1
+      });
+    }
+  });
+
+  pushTo({
+    ...undoChange,
+    data: to
+  });
+
+  popFrom();
+};
+
+const onMutationMoveCursor = ({container, paragraphs}: {container: HTMLElement; paragraphs: UndoRedoDocAddRemoveParagraph[]}) => {
+  // We assume the first new paragraph is the one to focus
+  const mutation: 'add' | 'remove' = paragraphs[paragraphs.length - 1].mutation;
+
+  const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+    changeObserver.disconnect();
+
+    if (mutation === 'add') {
       moveCursorToEnd(mutations[0].previousSibling);
-
-      pushTo({
-        ...undoChange,
-        data: {
-          ...(data as UndoRedoDocAddRemoveParagraph),
-          index: index - 1,
-          mutation: 'remove'
-        }
-      });
-
-      popFrom();
-    });
-
-    changeObserver.observe(container, {childList: true, subtree: true});
-
-    element.parentElement.removeChild(element);
-
-    return;
-  }
-
-  if (mutation === 'remove') {
-    const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
-      changeObserver.disconnect();
-
+    } else if (mutation === 'remove') {
       moveCursorToEnd(mutations[0].addedNodes[0]);
+    }
+  });
 
-      pushTo({
-        ...undoChange,
-        data: {
-          ...(data as UndoRedoDocAddRemoveParagraph),
-          mutation: 'add',
-          index: index + 1
-        }
-      });
-
-      popFrom();
-    });
-
-    changeObserver.observe(container, {childList: true, subtree: true});
-
-    // Paragraph are elements
-    container.children[Math.min(index, container.children.length - 1)].insertAdjacentHTML('afterend', outerHTML);
-  }
+  changeObserver.observe(container, {childList: true, subtree: true});
 };
 
 const undoRedoUpdate = ({
@@ -267,9 +265,9 @@ const undoRedoUpdate = ({
 
   const container: HTMLElement = NodeUtils.toHTMLElement(target);
 
-  const to: {index: number; outerHTML: string}[] = [];
+  const to: UndoRedoDocUpdateParagraph[] = [];
 
-  paragraphs.forEach(({index, outerHTML}: {index: number; outerHTML: string}) => {
+  paragraphs.forEach(({index, outerHTML}: UndoRedoDocUpdateParagraph) => {
     const paragraph: Element = container.children[Math.min(index, container.children.length - 1)];
 
     to.push({index, outerHTML: paragraph.outerHTML});

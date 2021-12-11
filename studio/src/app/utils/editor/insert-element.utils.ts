@@ -4,21 +4,35 @@ import {SlotType} from '../../types/editor/slot-type';
 
 import {SlotUtils} from './slot.utils';
 import {focusParagraph} from './paragraph.utils';
-import {createHTMLElement} from './create-element.utils';
+import {createEmptyElement, createHTMLElement} from './create-element.utils';
 import {initDeckgoLazyImgAttributes} from './image.utils';
+import {NodeUtils} from './node.utils';
 
-export const formatBlock = (slotType: SlotType) => document.execCommand('formatBlock', false, slotType.toLowerCase());
-
-export const insertUnorderedList = () => document.execCommand('insertUnorderedList', false);
-
-export const insertHTML = (slotType: SlotType) => {
+export const transformParagraph = ({
+  slotType,
+  paragraph,
+  container
+}: {
+  slotType: SlotType;
+  container: HTMLElement;
+  paragraph: HTMLElement;
+}) => {
   const element: HTMLElement = createHTMLElement({slotType});
+
+  // We had a new section after the element otherwise user might be trapped in new paragraph without being able to continue to write.
+  // We also use DIV instead of SECTION because browsers seem to expect a DIV after a UL to be able to stop editing a list.
+  const emptyDiv: HTMLElement = createEmptyElement({nodeName: 'div'});
 
   if (SlotUtils.isNodeEditable(element)) {
     element.setAttribute('editable', 'true');
   }
 
-  document.execCommand('insertHTML', false, `${element.outerHTML}`);
+  const anchor: HTMLElement = NodeUtils.toHTMLElement(paragraph.previousSibling) || container;
+
+  // We delete present paragraph and add the new element and assumes the mutation observer will trigger both delete and add in a single mutation.
+  // Thanks to this, only one entry will be added in the undo-redo stack.
+  container.removeChild(paragraph);
+  anchor.after(element, emptyDiv);
 };
 
 export const insertImage = ({

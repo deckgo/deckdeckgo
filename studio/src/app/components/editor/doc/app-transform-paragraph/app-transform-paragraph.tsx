@@ -10,7 +10,8 @@ import {EditAction} from '../../../../types/editor/edit-action';
 import {focusParagraph} from '../../../../utils/editor/paragraph.utils';
 
 import {AppAssetChoice} from '../../common/app-asset-choice/app-asset-choice';
-import {insertUnorderedList, formatBlock, insertHTML, insertImage} from '../../../../utils/editor/insert-element.utils';
+import {insertImage, transformParagraph} from '../../../../utils/editor/insert-element.utils';
+import {NodeUtils} from '../../../../utils/editor/node.utils';
 
 @Component({
   tag: 'app-transform-paragraph',
@@ -85,19 +86,13 @@ export class AppTransformParagraph implements ComponentInterface {
       return;
     }
 
-    if (!this.containerRef) {
+    if (!this.containerRef || !this.paragraph) {
       return;
     }
 
     focusParagraph({paragraph: this.paragraph});
 
-    if ([SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)) {
-      formatBlock(slotType);
-    } else if ([SlotType.OL, SlotType.UL].includes(slotType)) {
-      insertUnorderedList();
-    } else {
-      insertHTML(slotType);
-    }
+    transformParagraph({slotType, paragraph: NodeUtils.toHTMLElement(this.paragraph), container: this.containerRef});
 
     this.hide();
   }

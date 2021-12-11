@@ -192,13 +192,14 @@ export class DocUndoRedoEvents {
   };
 
   private onTreeMutation = (mutations: MutationRecord[]) => {
+    const changes: {paragraph: HTMLElement; previousSibling?: HTMLElement; mutation: 'remove' | 'add'}[] = [];
+
     // New paragraph
     const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
     addedParagraphs.forEach((paragraph: HTMLElement) =>
-      stackUndoParagraph({
+      changes.push({
         paragraph,
         mutation: 'add',
-        container: this.containerRef,
         previousSibling: paragraph.previousSibling as HTMLElement
       })
     );
@@ -206,8 +207,17 @@ export class DocUndoRedoEvents {
     // Paragraphs removed
     const removedParagraphs: RemovedParagraph[] = findRemovedParagraphs({mutations});
     removedParagraphs.forEach(({paragraph, previousSibling}: RemovedParagraph) =>
-      stackUndoParagraph({paragraph, mutation: 'remove', container: this.containerRef, previousSibling: previousSibling as HTMLElement})
+      changes.push({paragraph, mutation: 'remove', previousSibling: previousSibling as HTMLElement})
     );
+
+    if (changes.length <= 0) {
+      return;
+    }
+
+    stackUndoParagraph({
+      container: this.containerRef,
+      changes
+    });
   };
 
   private onInlineEditorMutation = () => {
