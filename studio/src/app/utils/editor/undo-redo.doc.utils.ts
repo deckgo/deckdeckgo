@@ -136,13 +136,26 @@ const undoRedoInput = ({
   const paragraph: Element | undefined = container.children[index];
 
   // Example: document.querySelector('[paragraph_id="cf914fa8-ff4d-48e9-972d-ecf795af316c"]').querySelector('* > :nth-child(1) > :nth-child(1) > :nth-child(1)')
-  const parent: HTMLElement | undefined =
+  let parent: HTMLElement | undefined =
     indexDepths.length <= 0
       ? NodeUtils.toHTMLElement(paragraph)
       : paragraph?.querySelector(`* ${indexDepths.map((depth: number) => `> :nth-child(${depth + 1})`).join(' ')}`);
 
   if (!parent) {
-    return;
+    // We try to find sibling in case the parent does not yet exist. If we find it, we can replicate such parent for the new text.
+    // Useful notably when reverting lists and li.
+    const sibling: HTMLElement | undefined = paragraph?.querySelector(
+      `* ${indexDepths.map((depth: number) => `> :nth-child(${depth})`).join(' ')}`
+    );
+
+    const anchor: Element | undefined = sibling || paragraph.lastElementChild;
+
+    if (!anchor) {
+      return;
+    }
+
+    parent = anchor.cloneNode() as HTMLElement;
+    anchor.after(parent);
   }
 
   let text: Node | undefined = (parent?.childNodes !== undefined ? Array.from(parent.childNodes) : []).find((node: Node) =>
