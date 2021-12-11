@@ -7,11 +7,10 @@ import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
 import {SlotType} from '../../../../types/editor/slot-type';
 import {EditAction} from '../../../../types/editor/edit-action';
 
-import {focusParagraph} from '../../../../utils/editor/paragraph.utils';
+import {focusParagraph, insertImage, transformParagraph} from '../../../../utils/editor/paragraph.utils';
+import {NodeUtils} from '../../../../utils/editor/node.utils';
 
 import {AppAssetChoice} from '../../common/app-asset-choice/app-asset-choice';
-import {insertImage, transformParagraph} from '../../../../utils/editor/insert-element.utils';
-import {NodeUtils} from '../../../../utils/editor/node.utils';
 
 @Component({
   tag: 'app-transform-paragraph',
