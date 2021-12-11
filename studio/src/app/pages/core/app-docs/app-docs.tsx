@@ -52,9 +52,9 @@ export class AppDocs implements ComponentInterface {
 
   private destroyListener;
 
-  async componentWillLoad() {
-    await this.imageEvents.init();
-    await this.chartEvents.init();
+  componentWillLoad() {
+    this.imageEvents.init();
+    this.chartEvents.init();
   }
 
   async componentDidLoad() {

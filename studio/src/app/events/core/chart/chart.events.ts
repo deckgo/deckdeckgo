@@ -1,14 +1,8 @@
 import {get} from 'idb-keyval';
 
 export class ChartEvents {
-  init(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (document) {
-        document.addEventListener('chartCustomLoad', this.onCustomLoad);
-      }
-
-      resolve();
-    });
+  init() {
+    document.addEventListener('chartCustomLoad', this.onCustomLoad);
   }
 
   destroy() {

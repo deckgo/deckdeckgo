@@ -32,8 +32,8 @@ export class AppStorage implements ComponentInterface {
     this.debounceLoading = debounce(() => (this.loading = false), 750);
   }
 
-  async componentWillLoad() {
-    await this.imageEvents.init();
+  componentWillLoad() {
+    this.imageEvents.init();
 
     this.debounceLoading();
   }

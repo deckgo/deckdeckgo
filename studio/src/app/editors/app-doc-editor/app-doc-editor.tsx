@@ -51,8 +51,8 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    await this.imageEvents.init();
-    await this.chartEvents.init();
+    this.imageEvents.init();
+    this.chartEvents.init();
 
     await this.initOrFetch();
   }

@@ -117,9 +117,9 @@ export class AppDeckEditor implements ComponentInterface {
     this.fontsService = FontsService.getInstance();
   }
 
-  async componentWillLoad() {
-    await this.imageEvents.init();
-    await this.chartEvents.init();
+  componentWillLoad() {
+    this.imageEvents.init();
+    this.chartEvents.init();
   }
 
   async componentDidLoad() {
