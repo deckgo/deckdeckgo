@@ -72,6 +72,18 @@ export const transformParagraph = ({
 
   const anchor: HTMLElement = NodeUtils.toHTMLElement(paragraph.previousSibling) || container;
 
+  const addObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+    addObserver.disconnect();
+
+    const mutation: MutationRecord | undefined = mutations.find(
+      ({addedNodes}: MutationRecord) => addedNodes[0]?.nodeName.toLowerCase() === slotType
+    );
+
+    moveCursorToEnd(mutation.addedNodes[0]);
+  });
+
+  addObserver.observe(container, {childList: true, subtree: true});
+
   // We delete present paragraph and add the new element and assumes the mutation observer will trigger both delete and add in a single mutation.
   // Thanks to this, only one entry will be added in the undo-redo stack.
   container.removeChild(paragraph);
