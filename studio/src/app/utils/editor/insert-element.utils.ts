@@ -11,17 +11,15 @@ import {NodeUtils} from './node.utils';
 export const transformParagraph = ({
   slotType,
   paragraph,
-  container
+  container,
+  emptySibling
 }: {
   slotType: SlotType;
   container: HTMLElement;
   paragraph: HTMLElement;
+  emptySibling: boolean;
 }) => {
   const element: HTMLElement = createHTMLElement({slotType});
-
-  // We had a new section after the element otherwise user might be trapped in new paragraph without being able to continue to write.
-  // We also use DIV instead of SECTION because browsers seem to expect a DIV after a UL to be able to stop editing a list.
-  const emptyDiv: HTMLElement = createEmptyElement({nodeName: 'div'});
 
   if (SlotUtils.isNodeEditable(element)) {
     element.setAttribute('editable', 'true');
@@ -32,7 +30,16 @@ export const transformParagraph = ({
   // We delete present paragraph and add the new element and assumes the mutation observer will trigger both delete and add in a single mutation.
   // Thanks to this, only one entry will be added in the undo-redo stack.
   container.removeChild(paragraph);
-  anchor.after(element, emptyDiv);
+
+  if (emptySibling) {
+    // We had a new dev after the element otherwise user might be trapped in new paragraph without being able to continue to write.
+    // We also use DIV instead of SECTION because browsers seem to expect a DIV after a UL to be able to stop editing a list.
+    const emptyDiv: HTMLElement = createEmptyElement({nodeName: 'div'});
+    anchor.after(element, emptyDiv);
+    return;
+  }
+
+  anchor.after(element);
 };
 
 export const insertImage = ({

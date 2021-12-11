@@ -92,7 +92,12 @@ export class AppTransformParagraph implements ComponentInterface {
 
     focusParagraph({paragraph: this.paragraph});
 
-    transformParagraph({slotType, paragraph: NodeUtils.toHTMLElement(this.paragraph), container: this.containerRef});
+    transformParagraph({
+      slotType,
+      paragraph: NodeUtils.toHTMLElement(this.paragraph),
+      container: this.containerRef,
+      emptySibling: ![SlotType.H1, SlotType.H2, SlotType.H3].includes(slotType)
+    });
 
     this.hide();
   }
