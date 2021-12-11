@@ -1,6 +1,8 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
 import {nodeIndex} from '@deckdeckgo/editor';
 
+import {UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../../types/editor/undo-redo';
+
 import {
   nextRedoChange,
   nextUndoChange,
@@ -25,8 +27,8 @@ export class DocUndoRedoEvents {
   private dataObserver: MutationObserver | undefined;
   private treeObserver: MutationObserver | undefined;
 
-  private undoValue: {oldValue: string; caretPosition: number; index: number; indexDepths: number[]} | undefined;
-  private undoElements: {outerHTML: string; index: number}[];
+  private undoInput: UndoRedoDocInput | undefined;
+  private undoUpdateParagraphs: UndoRedoDocUpdateParagraph[];
 
   private inlineEditorObserver: MutationObserver | undefined;
 
@@ -91,16 +93,16 @@ export class DocUndoRedoEvents {
   }
 
   private stackUndoInput() {
-    if (!this.undoValue) {
+    if (!this.undoInput) {
       return;
     }
 
     stackUndoInput({
-      ...this.undoValue,
+      data: this.undoInput,
       container: this.containerRef
     });
 
-    this.undoValue = undefined;
+    this.undoInput = undefined;
   }
 
   private undoRedo({$event, undoRedo}: {$event: KeyboardEvent; undoRedo: () => void}) {
@@ -156,7 +158,7 @@ export class DocUndoRedoEvents {
   };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
-    if (!this.undoValue) {
+    if (!this.undoInput) {
       const mutation: MutationRecord = mutations[0];
 
       const target: Node = mutation.target;
@@ -178,9 +180,9 @@ export class DocUndoRedoEvents {
         parentElement = parentElement.parentElement;
       }
 
-      this.undoValue = {
+      this.undoInput = {
         oldValue: mutation.oldValue,
-        caretPosition: caretPosition({target}) + (mutation.oldValue.length > newValue.length ? 1 : -1),
+        offset: caretPosition({target}) + (mutation.oldValue.length > newValue.length ? 1 : -1),
         index: nodeIndex(paragraph),
         indexDepths: depths
       };
@@ -209,8 +211,8 @@ export class DocUndoRedoEvents {
   };
 
   private onInlineEditorMutation = () => {
-    if (this.undoElements.length > 0) {
-      stackUndoUpdate({paragraphs: this.undoElements, container: this.containerRef});
+    if (this.undoUpdateParagraphs.length > 0) {
+      stackUndoUpdate({paragraphs: this.undoUpdateParagraphs, container: this.containerRef});
     }
 
     this.copySelectedParagraphs();
@@ -220,7 +222,7 @@ export class DocUndoRedoEvents {
   private copySelectedParagraphs() {
     const paragraphs: HTMLElement[] = findSelectionParagraphs({container: this.containerRef});
 
-    this.undoElements = paragraphs.map((paragraph: HTMLElement) => ({
+    this.undoUpdateParagraphs = paragraphs.map((paragraph: HTMLElement) => ({
       outerHTML: paragraph.outerHTML,
       index: nodeIndex(paragraph)
     }));

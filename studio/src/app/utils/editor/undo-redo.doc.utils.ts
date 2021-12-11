@@ -2,23 +2,11 @@ import {moveCursorToEnd, moveCursorToOffset} from '@deckdeckgo/utils';
 
 import undoRedoStore from '../../stores/undo-redo.store';
 
-import {UndoRedoChange, UndoRedoDocParagraph, UndoRedoDocInput, UndoRedoDocUpdate} from '../../types/editor/undo-redo';
+import {UndoRedoChange, UndoRedoDocAddRemoveParagraph, UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../types/editor/undo-redo';
 import {isTextNode, nodeIndex} from '@deckdeckgo/editor';
 import {NodeUtils} from './node.utils';
 
-export const stackUndoInput = ({
-  oldValue,
-  caretPosition,
-  container,
-  indexDepths,
-  index
-}: {
-  oldValue: string;
-  caretPosition: number;
-  container: HTMLElement;
-  indexDepths: number[];
-  index: number;
-}) => {
+export const stackUndoInput = ({container, data}: {container: HTMLElement; data: UndoRedoDocInput}) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
   }
@@ -26,7 +14,7 @@ export const stackUndoInput = ({
   undoRedoStore.state.undo.push({
     type: 'input',
     target: container,
-    data: {oldValue, offset: caretPosition, indexDepths, index}
+    data
   });
 
   undoRedoStore.state.redo = [];
@@ -66,7 +54,7 @@ export const stackUndoUpdate = ({paragraphs, container}: {paragraphs: {outerHTML
   undoRedoStore.state.undo.push({
     type: 'update',
     target: container,
-    data: {paragraphs}
+    data: paragraphs
   });
 
   if (!undoRedoStore.state.redo) {
@@ -204,7 +192,7 @@ const undoRedoParagraph = ({
 
   const container: HTMLElement = NodeUtils.toHTMLElement(target);
 
-  const {index, outerHTML, mutation} = data as UndoRedoDocParagraph;
+  const {index, outerHTML, mutation} = data as UndoRedoDocAddRemoveParagraph;
 
   if (mutation === 'add') {
     // Paragraph are elements
@@ -223,7 +211,7 @@ const undoRedoParagraph = ({
       pushTo({
         ...undoChange,
         data: {
-          ...data as UndoRedoDocParagraph,
+          ...(data as UndoRedoDocAddRemoveParagraph),
           index: index - 1,
           mutation: 'remove'
         }
@@ -248,7 +236,7 @@ const undoRedoParagraph = ({
       pushTo({
         ...undoChange,
         data: {
-          ...data as UndoRedoDocParagraph,
+          ...(data as UndoRedoDocAddRemoveParagraph),
           mutation: 'add',
           index: index + 1
         }
@@ -275,9 +263,9 @@ const undoRedoUpdate = ({
 }) => {
   const {data, target} = undoChange;
 
-  const container: HTMLElement = NodeUtils.toHTMLElement(target);
+  const paragraphs: UndoRedoDocUpdateParagraph[] = data as UndoRedoDocUpdateParagraph[];
 
-  const {paragraphs} = data as UndoRedoDocUpdate;
+  const container: HTMLElement = NodeUtils.toHTMLElement(target);
 
   const to: {index: number; outerHTML: string}[] = [];
 
@@ -291,9 +279,7 @@ const undoRedoUpdate = ({
 
   pushTo({
     ...undoChange,
-    data: {
-      paragraphs: to
-    }
+    data: to
   });
 
   popFrom();

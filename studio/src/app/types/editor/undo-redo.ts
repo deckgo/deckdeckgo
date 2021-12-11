@@ -21,14 +21,15 @@ export interface UndoRedoDocInput {
   indexDepths: number[];
 }
 
-export interface UndoRedoDocParagraph {
+export interface UndoRedoDocAddRemoveParagraph {
   index: number;
   mutation: 'add' | 'remove';
   outerHTML: string;
 }
 
-export interface UndoRedoDocUpdate {
-  paragraphs: {outerHTML: string; index: number}[];
+export interface UndoRedoDocUpdateParagraph {
+  outerHTML: string;
+  index: number;
 }
 
 export interface UndoRedoChange {
@@ -39,6 +40,6 @@ export interface UndoRedoChange {
     | UndoRedoDeckInputElement
     | UndoRedoDeckChangeStyle
     | UndoRedoDocInput
-    | UndoRedoDocParagraph
-    | UndoRedoDocUpdate;
+    | UndoRedoDocAddRemoveParagraph
+    | UndoRedoDocUpdateParagraph[];
 }
