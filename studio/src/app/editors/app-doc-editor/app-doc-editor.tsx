@@ -165,11 +165,27 @@ export class AppDocEditor implements ComponentInterface {
     this.containerRef.innerHTML = '';
   }
 
-  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
   private initDocEvents(init: boolean) {
+    this.initDocDataEvents(init);
+    this.initDocUndoRedoEvents();
+  }
+
+  // We init the undo redo oberserver only once rendered as we do not want to add the default title and div to the stack
+  private initDocUndoRedoEvents() {
+    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      this.docUndoRedoEvents.init(this.containerRef);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+  }
+
+  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
+  private initDocDataEvents(init: boolean) {
     if (init) {
       this.docDataEvents.init(this.containerRef);
-      this.docUndoRedoEvents.init(this.containerRef);
       return;
     }
 
@@ -177,7 +193,6 @@ export class AppDocEditor implements ComponentInterface {
       observer.disconnect();
 
       this.docDataEvents.init(this.containerRef);
-      this.docUndoRedoEvents.init(this.containerRef);
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
