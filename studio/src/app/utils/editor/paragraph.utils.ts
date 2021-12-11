@@ -115,7 +115,7 @@ export const insertImage = ({
     image
   });
 
-  const br: HTMLBRElement = document.createElement('br');
+  const emptyDiv: HTMLElement = createEmptyElement({nodeName: 'div'});
 
   focusParagraph({paragraph});
 
@@ -138,5 +138,5 @@ export const insertImage = ({
   const docObserver: MutationObserver = new MutationObserver(onRender);
   docObserver.observe(container, {childList: true, subtree: true});
 
-  document.execCommand('insertHTML', false, `${img.outerHTML}${br.outerHTML}`);
+  paragraph.after(img, emptyDiv);
 };
