@@ -1,5 +1,7 @@
 import {Component, Listen, h, State, Host, Prop, ComponentInterface, EventEmitter, Event} from '@stencil/core';
 
+import {moveCursorToStart} from '@deckdeckgo/utils';
+
 import i18n from '../../../../stores/i18n.store';
 
 import {findParagraph, focusParagraph} from '../../../../utils/editor/paragraph.utils';
@@ -101,6 +103,8 @@ export class AppAddParagraph implements ComponentInterface {
 
       const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
       const div: Node | undefined = addedNodes.find((node: Node) => node.nodeName.toLowerCase() === 'div');
+
+      moveCursorToStart(div);
 
       this.selectParagraph.emit(div as HTMLElement | undefined);
     };
