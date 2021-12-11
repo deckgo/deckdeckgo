@@ -20,6 +20,7 @@ import {
 } from '../../../utils/editor/paragraphs.utils';
 import {findParagraph} from '../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
+import {SlotType} from '../../../types/editor/slot-type';
 
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
@@ -28,7 +29,7 @@ export class DocUndoRedoEvents {
   private treeObserver: MutationObserver | undefined;
 
   private undoInput: UndoRedoDocInput | undefined;
-  private undoUpdateParagraphs: UndoRedoDocUpdateParagraph[];
+  private undoUpdateParagraphs: UndoRedoDocUpdateParagraph[] = [];
 
   private inlineEditorObserver: MutationObserver | undefined;
 
@@ -46,6 +47,7 @@ export class DocUndoRedoEvents {
 
     document.addEventListener('keydown', this.onKeydown);
     document.addEventListener('toolbarActivated', this.onInlineEditor);
+    document.addEventListener('focusin', this.onFocusIn);
   }
 
   destroy() {
@@ -55,6 +57,16 @@ export class DocUndoRedoEvents {
 
     document.removeEventListener('keydown', this.onKeydown);
     document.removeEventListener('toolbarActivated', this.onInlineEditor);
+    document.removeEventListener('focusin', this.onFocusIn);
+    document.removeEventListener('focusout', this.onFocusOut);
+  }
+
+  private observeKeydown() {
+    document.addEventListener('keydown', this.onKeydown);
+  }
+
+  private disconnectKeydown() {
+    document.removeEventListener('keydown', this.onKeydown);
   }
 
   private onKeydown = ($event: KeyboardEvent) => {
@@ -91,6 +103,56 @@ export class DocUndoRedoEvents {
 
     this.undoRedo({$event, undoRedo: redo});
   }
+
+  private onFocusIn = ({target}: FocusEvent) => {
+    const focusedElement: HTMLElement | undefined | null = NodeUtils.toHTMLElement(target as Node);
+
+    if (!focusedElement || focusedElement.nodeName.toLowerCase() !== SlotType.CODE) {
+      return;
+    }
+
+    // We use the browser capability when editing a code block and once done, we stack in the custom undo-redo store the all modification
+    this.disconnectKeydown();
+    this.disconnect();
+
+    document.addEventListener('focusout', this.onFocusOut, {once: true});
+
+    this.undoUpdateParagraphs = [
+      {
+        outerHTML: focusedElement.outerHTML,
+        index: nodeIndex(focusedElement)
+      }
+    ];
+  };
+
+  private onFocusOut = ({target}: FocusEvent) => {
+    // Should not happen
+    if (this.undoUpdateParagraphs.length <= 0) {
+      this.observeKeydown();
+      this.observe();
+      return;
+    }
+
+    const focusedElement: HTMLElement | undefined | null = NodeUtils.toHTMLElement(target as Node);
+
+    // Should not happen neither
+    if (!focusedElement || focusedElement.nodeName.toLowerCase() !== SlotType.CODE) {
+      this.observeKeydown();
+      this.observe();
+      return;
+    }
+
+    if (focusedElement.outerHTML === this.undoUpdateParagraphs[0].outerHTML) {
+      this.observeKeydown();
+      this.observe();
+      return;
+    }
+
+    stackUndoUpdate({paragraphs: this.undoUpdateParagraphs, container: this.containerRef});
+
+    this.observeKeydown();
+    this.observe();
+  };
 
   private stackUndoInput() {
     if (!this.undoInput) {
@@ -158,6 +220,8 @@ export class DocUndoRedoEvents {
   };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
+    console.log(mutations);
+
     if (!this.undoInput) {
       const mutation: MutationRecord = mutations[0];
 
@@ -192,6 +256,8 @@ export class DocUndoRedoEvents {
   };
 
   private onTreeMutation = (mutations: MutationRecord[]) => {
+    console.log(mutations);
+
     const changes: {paragraph: HTMLElement; previousSibling?: HTMLElement; mutation: 'remove' | 'add'}[] = [];
 
     // New paragraph
