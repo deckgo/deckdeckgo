@@ -220,8 +220,6 @@ export class DocUndoRedoEvents {
   };
 
   private onDataMutation = (mutations: MutationRecord[]) => {
-    console.log(mutations);
-
     if (!this.undoInput) {
       const mutation: MutationRecord = mutations[0];
 
