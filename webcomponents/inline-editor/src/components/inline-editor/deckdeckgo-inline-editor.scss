@@ -12,6 +12,7 @@ div.deckgo-tools {
   opacity: 0;
 
   animation: 0s ease 0s 1 normal none running none;
+  transition: opacity 0.1s ease-out;
 
   pointer-events: none;
 
@@ -61,10 +62,11 @@ div.deckgo-tools {
    */
   width: var(--deckgo-inline-editor-width, inherit);
 
-  /**
-   * @prop --deckgo-inline-editor-transform: The transform property of the toolbar, useful for example if your viewport contains a split menu pane
-   */
-  transform: var(--deckgo-inline-editor-transform);
+  transform: translate(0, -100%);
+
+  &.deckgo-tools-under {
+    transform: unset;
+  }
 
   /**
    * @prop --deckgo-inline-editor-box-shadow: A box shadow for the toolbar
@@ -75,6 +77,8 @@ div.deckgo-tools {
   &.deckgo-tools-sticky,
   &.deckgo-tools-mobile.deckgo-tools-sticky {
     position: fixed;
+
+    transform: initial;
 
     /**
      * @prop --deckgo-inline-editor-sticky-bottom: The bottom attribute of the sticky toolbar

@@ -152,44 +152,43 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                                   | Description                                                                                           |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `--deckgo-ie-separator-mobile-background`              | The background of the separator on mobile @default #f4f5f8                                            |
-| `--deckgo-ie-triangle-start`                           | The left position of the triangle @default 8px                                                        |
-| `--deckgo-inline-editor-background-bottom`             | The bottom background of the toolbar (linear gradient) @default white                                 |
-| `--deckgo-inline-editor-background-top`                | The top background of the toolbar (linear gradient) @default white                                    |
-| `--deckgo-inline-editor-border`                        | The border radius of the toolbar                                                                      |
-| `--deckgo-inline-editor-border-radius`                 | The border radius of the toolbar @default 8px                                                         |
-| `--deckgo-inline-editor-box-shadow`                    | A box shadow for the toolbar @default 0 0 8px 4px rgba(0, 0, 0, 0.1)                                  |
-| `--deckgo-inline-editor-button-color`                  | The buttons color @default black                                                                      |
-| `--deckgo-inline-editor-button-color-active`           | The color of the buttons when active @default #3880ff                                                 |
-| `--deckgo-inline-editor-button-color-disabled`         | The color of the buttons when disabled @default #f4f5f8                                               |
-| `--deckgo-inline-editor-button-display-disabled`       | Per default the disable elements on title elements are not displayed @default none                    |
-| `--deckgo-inline-editor-button-font-family`            | The buttons font family @default inherit                                                              |
-| `--deckgo-inline-editor-button-font-size`              | The buttons font size @default 1.4rem                                                                 |
-| `--deckgo-inline-editor-button-mobile-color-active`    | The buttons color on mobile if active @default #3880ff                                                |
-| `--deckgo-inline-editor-button-mobile-color-disabled`  | The color of the buttons when disabled on mobile @default #f4f5f8                                     |
-| `--deckgo-inline-editor-button-zindex`                 | The z-index of the action buttons @default 2                                                          |
-| `--deckgo-inline-editor-link-color`                    | The color property of the link input @default black                                                   |
-| `--deckgo-inline-editor-link-mobile-color`             | The color property of the link input on mobile @default inherit                                       |
-| `--deckgo-inline-editor-link-mobile-placeholder-color` | : The color of the place holder of the link input on mobile @default inherit                          |
-| `--deckgo-inline-editor-link-placeholder-color`        | The color of the place holder of the link input @default black                                        |
-| `--deckgo-inline-editor-link-zindex`                   | The z-index property of the link input @default 2                                                     |
-| `--deckgo-inline-editor-mobile-background-bottom`      | A bottom background for the toolbar (linear gradient) @default #fff                                   |
-| `--deckgo-inline-editor-mobile-background-top`         | A top background for the toolbar (linear gradient) @default #fff                                      |
-| `--deckgo-inline-editor-mobile-border`                 | Border of the toolbar @default 0                                                                      |
-| `--deckgo-inline-editor-mobile-box-shadow`             | A box shadow for the toolbar @default 0 0 8px 4px rgba(0, 0, 0, 0.1)                                  |
-| `--deckgo-inline-editor-padding`                       | The padding of the toolbar @default 0 8px                                                             |
-| `--deckgo-inline-editor-position`                      | The position of the toolbar @default absolute                                                         |
-| `--deckgo-inline-editor-separator-background`          | The background of the separator @default #f4f5f8                                                      |
-| `--deckgo-inline-editor-sticky-bottom`                 | The bottom attribute of the sticky toolbar @default 0                                                 |
-| `--deckgo-inline-editor-sticky-height`                 | The height of the sticky toolbar @default 56px                                                        |
-| `--deckgo-inline-editor-sticky-scroll`                 | Top position if sticky @default 0                                                                     |
-| `--deckgo-inline-editor-sticky-zindex`                 | The z-Index of the sticky toolbar                                                                     |
-| `--deckgo-inline-editor-transform`                     | The transform property of the toolbar, useful for example if your viewport contains a split menu pane |
-| `--deckgo-inline-editor-triangle-box-shadow`           | The box-shadow of the triangle @default 0 0 8px 0 rgba(0, 0, 0, 0.1)                                  |
-| `--deckgo-inline-editor-width`                         | The width of the toolbar @default inherit                                                             |
-| `--deckgo-inline-editor-zindex`                        | The z-Index of the toolbar @default 1                                                                 |
+| Name                                                   | Description                                                                        |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `--deckgo-ie-separator-mobile-background`              | The background of the separator on mobile @default #f4f5f8                         |
+| `--deckgo-ie-triangle-start`                           | The left position of the triangle @default 8px                                     |
+| `--deckgo-inline-editor-background-bottom`             | The bottom background of the toolbar (linear gradient) @default white              |
+| `--deckgo-inline-editor-background-top`                | The top background of the toolbar (linear gradient) @default white                 |
+| `--deckgo-inline-editor-border`                        | The border radius of the toolbar                                                   |
+| `--deckgo-inline-editor-border-radius`                 | The border radius of the toolbar @default 8px                                      |
+| `--deckgo-inline-editor-box-shadow`                    | A box shadow for the toolbar @default 0 0 8px 4px rgba(0, 0, 0, 0.1)               |
+| `--deckgo-inline-editor-button-color`                  | The buttons color @default black                                                   |
+| `--deckgo-inline-editor-button-color-active`           | The color of the buttons when active @default #3880ff                              |
+| `--deckgo-inline-editor-button-color-disabled`         | The color of the buttons when disabled @default #f4f5f8                            |
+| `--deckgo-inline-editor-button-display-disabled`       | Per default the disable elements on title elements are not displayed @default none |
+| `--deckgo-inline-editor-button-font-family`            | The buttons font family @default inherit                                           |
+| `--deckgo-inline-editor-button-font-size`              | The buttons font size @default 1.4rem                                              |
+| `--deckgo-inline-editor-button-mobile-color-active`    | The buttons color on mobile if active @default #3880ff                             |
+| `--deckgo-inline-editor-button-mobile-color-disabled`  | The color of the buttons when disabled on mobile @default #f4f5f8                  |
+| `--deckgo-inline-editor-button-zindex`                 | The z-index of the action buttons @default 2                                       |
+| `--deckgo-inline-editor-link-color`                    | The color property of the link input @default black                                |
+| `--deckgo-inline-editor-link-mobile-color`             | The color property of the link input on mobile @default inherit                    |
+| `--deckgo-inline-editor-link-mobile-placeholder-color` | : The color of the place holder of the link input on mobile @default inherit       |
+| `--deckgo-inline-editor-link-placeholder-color`        | The color of the place holder of the link input @default black                     |
+| `--deckgo-inline-editor-link-zindex`                   | The z-index property of the link input @default 2                                  |
+| `--deckgo-inline-editor-mobile-background-bottom`      | A bottom background for the toolbar (linear gradient) @default #fff                |
+| `--deckgo-inline-editor-mobile-background-top`         | A top background for the toolbar (linear gradient) @default #fff                   |
+| `--deckgo-inline-editor-mobile-border`                 | Border of the toolbar @default 0                                                   |
+| `--deckgo-inline-editor-mobile-box-shadow`             | A box shadow for the toolbar @default 0 0 8px 4px rgba(0, 0, 0, 0.1)               |
+| `--deckgo-inline-editor-padding`                       | The padding of the toolbar @default 0 8px                                          |
+| `--deckgo-inline-editor-position`                      | The position of the toolbar @default absolute                                      |
+| `--deckgo-inline-editor-separator-background`          | The background of the separator @default #f4f5f8                                   |
+| `--deckgo-inline-editor-sticky-bottom`                 | The bottom attribute of the sticky toolbar @default 0                              |
+| `--deckgo-inline-editor-sticky-height`                 | The height of the sticky toolbar @default 56px                                     |
+| `--deckgo-inline-editor-sticky-scroll`                 | Top position if sticky @default 0                                                  |
+| `--deckgo-inline-editor-sticky-zindex`                 | The z-Index of the sticky toolbar                                                  |
+| `--deckgo-inline-editor-triangle-box-shadow`           | The box-shadow of the triangle @default 0 0 8px 0 rgba(0, 0, 0, 0.1)               |
+| `--deckgo-inline-editor-width`                         | The width of the toolbar @default inherit                                          |
+| `--deckgo-inline-editor-zindex`                        | The z-Index of the toolbar @default 1                                              |
 
 
 ## Dependencies
