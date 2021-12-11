@@ -223,7 +223,7 @@ const undoRedoParagraph = ({
       pushTo({
         ...undoChange,
         data: {
-          ...data,
+          ...data as UndoRedoDocParagraph,
           index: index - 1,
           mutation: 'remove'
         }
@@ -248,7 +248,7 @@ const undoRedoParagraph = ({
       pushTo({
         ...undoChange,
         data: {
-          ...data,
+          ...data as UndoRedoDocParagraph,
           mutation: 'add',
           index: index + 1
         }
