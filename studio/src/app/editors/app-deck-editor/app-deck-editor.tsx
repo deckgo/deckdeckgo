@@ -805,10 +805,6 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private renderInlineEditor() {
-    if (this.presenting) {
-      return undefined;
-    }
-
     return (
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"

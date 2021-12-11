@@ -67,8 +67,8 @@ export class AppDeckEditor implements ComponentInterface {
     this.type = undefined;
   }
 
-  @Listen('stickyToolbarActivated')
-  onStickyToolbarActivated($event: CustomEvent<boolean>) {
+  @Listen('toolbarActivated')
+  onToolbarActivated($event: CustomEvent<boolean>) {
     this.hideNavigation = $event ? isIOS() && $event.detail : false;
   }
 
