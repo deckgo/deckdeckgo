@@ -244,7 +244,7 @@ export class DocUndoRedoEvents {
 
       this.undoInput = {
         oldValue: mutation.oldValue,
-        offset: caretPosition({target}) + (mutation.oldValue.length > newValue.length ? 1 : -1),
+        offset: caretPosition({target}) + (mutation.oldValue.length - newValue.length),
         index: nodeIndex(paragraph),
         indexDepths: depths
       };
