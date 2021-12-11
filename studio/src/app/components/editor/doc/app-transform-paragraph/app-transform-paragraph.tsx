@@ -111,7 +111,7 @@ export class AppTransformParagraph implements ComponentInterface {
     });
 
     modal.onDidDismiss().then(async ({data}: OverlayEventDetail<UnsplashPhoto | TenorGif | StorageFile>) => {
-      insertImage({image: data, paragraph: this.paragraph, container: this.containerRef});
+      insertImage({image: data, paragraph: this.paragraph});
     });
 
     await modal.present();

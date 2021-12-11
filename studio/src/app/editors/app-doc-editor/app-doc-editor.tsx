@@ -17,6 +17,7 @@ import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocDataEvents} from '../../events/editor/doc/doc.data.events';
 import {DocEditorEvents} from '../../events/editor/editor/doc.editor.events';
 import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
+import {DocImageEvents} from '../../events/editor/doc/doc.image.events';
 
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
@@ -37,6 +38,7 @@ export class AppDocEditor implements ComponentInterface {
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly docDataEvents: DocDataEvents = new DocDataEvents();
   private readonly docUndoRedoEvents: DocUndoRedoEvents = new DocUndoRedoEvents();
+  private readonly docImageEvents: DocImageEvents = new DocImageEvents();
   private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
@@ -54,12 +56,16 @@ export class AppDocEditor implements ComponentInterface {
     this.imageEvents.init();
     this.chartEvents.init();
 
+    this.docImageEvents.init(this.containerRef);
+
     await this.initOrFetch();
   }
 
   async disconnectedCallback() {
     this.imageEvents.destroy();
     this.chartEvents.destroy();
+
+    this.docImageEvents.destroy();
 
     this.docEditorEvents.destroy();
 

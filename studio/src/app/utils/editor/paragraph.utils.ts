@@ -99,15 +99,7 @@ export const transformParagraph = ({
   anchor.after(element);
 };
 
-export const insertImage = ({
-  image,
-  paragraph,
-  container
-}: {
-  image: UnsplashPhoto | TenorGif | StorageFile;
-  paragraph: HTMLElement;
-  container: HTMLElement;
-}) => {
+export const insertImage = ({image, paragraph}: {image: UnsplashPhoto | TenorGif | StorageFile; paragraph: HTMLElement}) => {
   const deckgoImg: HTMLDeckgoLazyImgElement = document.createElement(SlotType.IMG);
 
   const img: HTMLDeckgoLazyImgElement = initDeckgoLazyImgAttributes({
@@ -118,25 +110,6 @@ export const insertImage = ({
   const emptyDiv: HTMLElement = createEmptyElement({nodeName: 'div'});
 
   focusParagraph({paragraph});
-
-  const onRender = async (mutations: MutationRecord[], observer: MutationObserver) => {
-    observer.disconnect();
-
-    const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
-
-    const imgNode: Node | undefined = addedNodes.find((node: Node) => node.nodeName?.toLowerCase() === SlotType.IMG);
-
-    if (!imgNode) {
-      return;
-    }
-
-    const element: HTMLDeckgoLazyImgElement = imgNode as HTMLDeckgoLazyImgElement;
-    element.customLoader = true;
-    await element.lazyLoad();
-  };
-
-  const docObserver: MutationObserver = new MutationObserver(onRender);
-  docObserver.observe(container, {childList: true, subtree: true});
 
   paragraph.after(img, emptyDiv);
 };
