@@ -15,7 +15,12 @@ import {
   deleteOfflineParagraph,
   updateOfflineParagraph
 } from '../../../providers/data/paragraph/paragraph.offline.provider';
-import {findAddedNodesParagraphs, findAddedParagraphs, findUpdatedParagraphs} from '../../../utils/editor/paragraphs.utils';
+import {
+  findAddedNodesParagraphs,
+  findAddedParagraphs,
+  findRemovedNodesParagraphs,
+  findUpdatedParagraphs
+} from '../../../utils/editor/paragraphs.utils';
 
 export class DocDataEvents {
   private containerRef: HTMLElement;
@@ -278,8 +283,9 @@ export class DocDataEvents {
       }
 
       const addedNodesMutations: MutationRecord[] = findAddedNodesParagraphs({mutations, container: this.containerRef});
+      const removedNodesMutations: MutationRecord[] = findRemovedNodesParagraphs({mutations, container: this.containerRef});
 
-      await this.updateParagraphs(addedNodesMutations);
+      await this.updateParagraphs([...addedNodesMutations, ...removedNodesMutations]);
     } catch (err) {
       errorStore.state.error = err;
     }

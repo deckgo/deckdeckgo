@@ -1,4 +1,3 @@
-import {isTextNode} from '@deckdeckgo/editor';
 import {getSelection} from '@deckdeckgo/utils';
 
 import {findParagraph, isParagraph} from './paragraph.utils';
@@ -39,7 +38,23 @@ export const findAddedNodesParagraphs = ({
     .filter(({addedNodes}: MutationRecord) => {
       const node: Node = addedNodes[0];
 
-      return !isParagraph({element: node, container}) && !isTextNode(node) && node?.nodeName.toLowerCase() !== 'br';
+      return !isParagraph({element: node, container}) && node?.nodeName.toLowerCase() !== 'br';
+    });
+};
+
+export const findRemovedNodesParagraphs = ({
+  mutations,
+  container
+}: {
+  mutations: MutationRecord[] | undefined;
+  container: HTMLElement;
+}): MutationRecord[] => {
+  return mutations
+    .filter(({removedNodes}: MutationRecord) => removedNodes?.length > 0)
+    .filter(({removedNodes}: MutationRecord) => {
+      const node: Node = removedNodes[0];
+
+      return !isParagraph({element: node, container}) && node?.nodeName.toLowerCase() !== 'br';
     });
 };
 
@@ -97,7 +112,7 @@ const filterRemovedParagraphs = ({nodes}: {nodes: Node[]}): HTMLElement[] => {
 
 export const findSelectionParagraphs = ({container}: {container: HTMLElement}): HTMLElement[] => {
   const selection: Selection | null = getSelection();
-  const range: Range | undefined = selection?.getRangeAt(0);
+  const range: Range | undefined = selection?.rangeCount > 0 ? selection?.getRangeAt(0) : undefined;
 
   if (!range) {
     return [];
