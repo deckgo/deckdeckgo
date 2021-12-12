@@ -156,11 +156,11 @@ const undoRedoInput = async ({
     const cloneIndexDepths: number[] = [...indexDepths];
     cloneIndexDepths.pop();
 
-    const parent: Node | undefined =
+    let parent: Node | undefined =
       cloneIndexDepths.length <= 0 ? text.parentNode : findInputNode({parent: paragraph, indexDepths: [...cloneIndexDepths]});
 
     if (!parent) {
-      return;
+      parent = await createLast({paragraph: (paragraph as HTMLElement) || container, container});
     }
 
     text = await prependText({parent: NodeUtils.toHTMLElement(parent), container});
@@ -378,4 +378,22 @@ const updateNodeValue = ({
     changeObserver.observe(container, {characterData: true, subtree: true});
 
     text.nodeValue = oldValue;
+  });
+
+const createLast = ({container, paragraph}: {container: HTMLElement; paragraph: HTMLElement}): Promise<HTMLElement> =>
+  new Promise<HTMLElement>((resolve) => {
+    const anchor: HTMLElement = (paragraph.lastElementChild as HTMLElement) || document.createElement('span');
+
+    const parent: HTMLElement = anchor.cloneNode() as HTMLElement;
+    parent.innerHTML = '';
+
+    const changeObserver: MutationObserver = new MutationObserver(() => {
+      changeObserver.disconnect();
+
+      resolve(parent);
+    });
+
+    changeObserver.observe(container, {childList: true, subtree: true});
+
+    anchor.after(parent);
   });
