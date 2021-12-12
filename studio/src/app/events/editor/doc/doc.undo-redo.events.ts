@@ -1,7 +1,7 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
 import {elementIndex, nodeIndex} from '@deckdeckgo/editor';
 
-import {UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../../types/editor/undo-redo';
+import {UndoRedoDocAddRemoveParagraph, UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../../types/editor/undo-redo';
 
 import {
   nextRedoChange,
@@ -255,17 +255,19 @@ export class DocUndoRedoEvents {
   };
 
   private onTreeMutation = (mutations: MutationRecord[]) => {
-    const changes: {paragraph: HTMLElement; index: number; mutation: 'remove' | 'add'}[] = [];
+    const changes: UndoRedoDocAddRemoveParagraph[] = [];
 
     // New paragraph
     const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
     addedParagraphs.forEach((paragraph: HTMLElement) =>
       changes.push({
-        paragraph,
+        outerHTML: paragraph.outerHTML,
         mutation: 'add',
         index: paragraph.previousSibling ? elementIndex(NodeUtils.toHTMLElement(paragraph.previousSibling)) + 1 : 0
       })
     );
+
+    const addedIndex: number[] = changes.map(({index}: UndoRedoDocAddRemoveParagraph) => index);
 
     // Paragraphs removed
     const removedParagraphs: RemovedParagraph[] = findRemovedParagraphs({mutations});
@@ -276,9 +278,11 @@ export class DocUndoRedoEvents {
       )
     );
 
-    removedParagraphs.forEach(({paragraph}: RemovedParagraph, index: number) =>
-      changes.push({paragraph, mutation: 'remove', index: index + lowerIndex})
-    );
+    removedParagraphs
+      .filter((_removedParagraph: RemovedParagraph, index: number) => !addedIndex.includes(index + lowerIndex))
+      .forEach(({paragraph}: RemovedParagraph, index: number) =>
+        changes.push({outerHTML: paragraph.outerHTML, mutation: 'remove', index: index + lowerIndex})
+      );
 
     if (changes.length <= 0) {
       return;

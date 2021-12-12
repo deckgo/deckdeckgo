@@ -21,13 +21,7 @@ export const stackUndoInput = ({container, data}: {container: HTMLElement; data:
   undoRedoStore.state.redo = [];
 };
 
-export const stackUndoParagraph = ({
-  container,
-  changes
-}: {
-  container: HTMLElement;
-  changes: {paragraph: HTMLElement; index: number; mutation: 'remove' | 'add'}[];
-}) => {
+export const stackUndoParagraph = ({container, changes}: {container: HTMLElement; changes: UndoRedoDocAddRemoveParagraph[]}) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
   }
@@ -35,8 +29,8 @@ export const stackUndoParagraph = ({
   undoRedoStore.state.undo.push({
     type: 'paragraph',
     target: container,
-    data: changes.map(({paragraph, index, mutation}: {paragraph: HTMLElement; index: number; mutation: 'remove' | 'add'}) => ({
-      outerHTML: paragraph.outerHTML,
+    data: changes.map(({outerHTML, index, mutation}: UndoRedoDocAddRemoveParagraph) => ({
+      outerHTML,
       mutation,
       index
     }))
