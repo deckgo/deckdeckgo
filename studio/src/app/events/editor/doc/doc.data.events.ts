@@ -1,4 +1,4 @@
-import {Doc, DocData, now, Paragraph, ParagraphData, nodeIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
+import {Doc, DocData, now, Paragraph, ParagraphData, elementIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
 
 import {debounce} from '@deckdeckgo/utils';
 
@@ -183,7 +183,7 @@ export class DocDataEvents {
           doc.data.paragraphs = [];
         }
 
-        const index: number = nodeIndex(paragraphElement);
+        const index: number = elementIndex(paragraphElement);
         doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);

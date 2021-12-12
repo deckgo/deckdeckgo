@@ -1,5 +1,5 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
-import {nodeIndex} from '@deckdeckgo/editor';
+import {elementIndex} from '@deckdeckgo/editor';
 
 import {UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../../types/editor/undo-redo';
 
@@ -129,7 +129,7 @@ export class DocUndoRedoEvents {
     this.undoUpdateParagraphs = [
       {
         outerHTML: focusedElement.outerHTML,
-        index: nodeIndex(focusedElement),
+        index: elementIndex(focusedElement),
         paragraph: focusedElement
       }
     ];
@@ -215,7 +215,7 @@ export class DocUndoRedoEvents {
 
     this.undoUpdateParagraphs = paragraphs.map((paragraph: HTMLElement) => ({
       outerHTML: paragraph.outerHTML,
-      index: nodeIndex(paragraph),
+      index: elementIndex(paragraph),
       paragraph
     }));
   }
@@ -239,14 +239,14 @@ export class DocUndoRedoEvents {
 
       let parentElement: HTMLElement = target.parentElement;
       while (!parentElement.isSameNode(paragraph)) {
-        depths.push(nodeIndex(parentElement));
+        depths.push(elementIndex(parentElement));
         parentElement = parentElement.parentElement;
       }
 
       this.undoInput = {
         oldValue: mutation.oldValue,
         offset: caretPosition({target}) + (mutation.oldValue.length - newValue.length),
-        index: nodeIndex(paragraph),
+        index: elementIndex(paragraph),
         indexDepths: depths
       };
     }
@@ -263,7 +263,7 @@ export class DocUndoRedoEvents {
       changes.push({
         paragraph,
         mutation: 'add',
-        index: paragraph.previousSibling ? nodeIndex(NodeUtils.toHTMLElement(paragraph.previousSibling)) + 1 : 0
+        index: paragraph.previousSibling ? elementIndex(NodeUtils.toHTMLElement(paragraph.previousSibling)) + 1 : 0
       })
     );
 
@@ -272,7 +272,7 @@ export class DocUndoRedoEvents {
 
     const lowerIndex: number = Math.min(
       ...removedParagraphs.map(({previousSibling}: RemovedParagraph) =>
-        previousSibling ? nodeIndex(NodeUtils.toHTMLElement(previousSibling)) + 1 : 0
+        previousSibling ? elementIndex(NodeUtils.toHTMLElement(previousSibling)) + 1 : 0
       )
     );
 

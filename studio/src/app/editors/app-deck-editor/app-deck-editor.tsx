@@ -14,7 +14,7 @@ import i18n from '../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
-import {SlideTemplate, nodeIndex} from '@deckdeckgo/editor';
+import {SlideTemplate, elementIndex} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
@@ -361,7 +361,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   @Listen('slideDelete', {target: 'document'})
   async deleteSlide({detail: deletedSlide}: CustomEvent<HTMLElement>) {
-    const slideIndex: number = nodeIndex(deletedSlide);
+    const slideIndex: number = elementIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: JSX.IntrinsicElements, index: number) => slideIndex !== index)];
 
