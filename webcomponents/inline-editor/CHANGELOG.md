@@ -1,3 +1,17 @@
+# 5.0.0
+
+### Breaking Changes
+
+- `stickyToolbarActivated` renamed in `toolbarActivated` and triggered even if not sticky
+
+### Features
+
+- component will now be display above text and not under anymore
+
+### Refactor
+
+- drop unnecessary async for a sync internal calls
+
 # 4.1.1
 
 ### Refactor

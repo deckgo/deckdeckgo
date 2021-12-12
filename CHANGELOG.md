@@ -6,6 +6,10 @@
 
 - ic: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
+### Web Components
+
+- inline-editor: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/CHANGELOG.md)
+
 ### Others
 
 - editor: v3.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
