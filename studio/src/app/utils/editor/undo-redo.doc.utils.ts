@@ -133,7 +133,7 @@ const undoRedoInput = async ({
   const paragraph: Element | undefined = container.children[index];
 
   const findInputNode = ({parent, indexDepths}: {parent: Node | undefined; indexDepths: number[]}): Node | undefined => {
-    const childNode: ChildNode | undefined = (Array.from(parent?.childNodes) || [])[indexDepths[0]];
+    const childNode: ChildNode | undefined = (parent?.childNodes ? Array.from(parent?.childNodes) : [])[indexDepths[0]];
 
     if (!childNode) {
       return undefined;
