@@ -120,8 +120,6 @@ const undoRedo = async ({
   if (type === 'update') {
     await undoRedoUpdate({popFrom, pushTo, undoChange});
   }
-
-  console.log(type, undoRedoStore.state.undo, undoRedoStore.state.redo);
 };
 
 const undoRedoInput = async ({
