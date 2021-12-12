@@ -7,14 +7,17 @@ import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
+import undoRedoStore from '../../stores/undo-redo.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
 
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
-import {DocEvents} from '../../events/editor/doc/doc.events';
-import {DocEditorEvents} from '../../events/editor/editor/doc-editor.events';
+import {DocDataEvents} from '../../events/editor/doc/doc.data.events';
+import {DocEditorEvents} from '../../events/editor/editor/doc.editor.events';
+import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
+import {DocImageEvents} from '../../events/editor/doc/doc.image.events';
 
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
@@ -33,7 +36,9 @@ export class AppDocEditor implements ComponentInterface {
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
-  private readonly docEvents: DocEvents = new DocEvents();
+  private readonly docDataEvents: DocDataEvents = new DocDataEvents();
+  private readonly docUndoRedoEvents: DocUndoRedoEvents = new DocUndoRedoEvents();
+  private readonly docImageEvents: DocImageEvents = new DocImageEvents();
   private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
@@ -48,8 +53,10 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   async componentDidLoad() {
-    await this.imageEvents.init();
-    await this.chartEvents.init();
+    this.imageEvents.init();
+    this.chartEvents.init();
+
+    this.docImageEvents.init(this.containerRef);
 
     await this.initOrFetch();
   }
@@ -58,6 +65,8 @@ export class AppDocEditor implements ComponentInterface {
     this.imageEvents.destroy();
     this.chartEvents.destroy();
 
+    this.docImageEvents.destroy();
+
     this.docEditorEvents.destroy();
 
     this.destroy();
@@ -65,11 +74,13 @@ export class AppDocEditor implements ComponentInterface {
 
   /**
    * Destroy global state and listener.
-   * @private
    */
   private destroy() {
-    this.docEvents.destroy();
+    this.docDataEvents.destroy();
+    this.docUndoRedoEvents.destroy();
+
     editorStore.reset();
+    undoRedoStore.reset();
   }
 
   @Listen('keydown', {target: 'document'})
@@ -137,12 +148,12 @@ export class AppDocEditor implements ComponentInterface {
     const firefox: boolean = isFirefox();
 
     const Title = 'h1';
-    const title: JSX.IntrinsicElements = <Title key={uuid()}>{firefox ? '\u200B' : ''}</Title>;
+    const title: JSX.IntrinsicElements = <Title key={uuid()}>{firefox ? '\u200B' : undefined}</Title>;
 
-    const Section = 'section';
-    const section: JSX.IntrinsicElements = <Section key={uuid()}></Section>;
+    const Div = 'div';
+    const div: JSX.IntrinsicElements = <Div key={uuid()}></Div>;
 
-    this.paragraphs = firefox ? [title] : [title, section];
+    this.paragraphs = firefox ? [title] : [title, div];
 
     busyStore.state.docReady = true;
   }
@@ -160,16 +171,34 @@ export class AppDocEditor implements ComponentInterface {
     this.containerRef.innerHTML = '';
   }
 
-  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
   private initDocEvents(init: boolean) {
+    this.initDocDataEvents(init);
+    this.initDocUndoRedoEvents();
+  }
+
+  // We init the undo redo oberserver only once rendered as we do not want to add the default title and div to the stack
+  private initDocUndoRedoEvents() {
+    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      this.docUndoRedoEvents.init(this.containerRef);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+  }
+
+  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
+  private initDocDataEvents(init: boolean) {
     if (init) {
-      this.docEvents.init(this.containerRef);
+      this.docDataEvents.init(this.containerRef);
       return;
     }
 
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
-      this.docEvents.init(this.containerRef);
+
+      this.docDataEvents.init(this.containerRef);
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);

@@ -1,8 +1,8 @@
 import undoRedoStore from '../../stores/undo-redo.store';
 
-import {UndoRedoChange, UndoRedoChangeAttribute, UndoRedoChangeElement, UndoRedoChangeStyle} from '../../types/editor/undo-redo';
+import {UndoRedoChange, UndoRedoDeckChangeAttribute, UndoRedoDeckInputElement, UndoRedoDeckChangeStyle} from '../../types/editor/undo-redo';
 
-export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoChangeAttribute) => {
+export const setAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoDeckChangeAttribute) => {
   if (!undoRedoStore.state.undo) {
     undoRedoStore.state.undo = [];
   }
@@ -121,10 +121,13 @@ export const undoRedo = async ({
 
   const {type, data, target} = undoChange;
 
-  if (type === 'input') {
-    to.push({type, target, data: {innerHTML: target.innerHTML}});
+  // In case of decks, we are using HTMLElement only
+  const element: HTMLElement = target as HTMLElement;
 
-    undoRedoElement(target, data as UndoRedoChangeElement);
+  if (type === 'input') {
+    to.push({type, target, data: {innerHTML: element.innerHTML}});
+
+    undoRedoElement(element, data as UndoRedoDeckInputElement);
   }
 
   if (type === 'style') {
@@ -133,26 +136,26 @@ export const undoRedo = async ({
       target,
       data: {
         ...data,
-        value: target.getAttribute('style')
+        value: element.getAttribute('style')
       }
     });
 
-    await undoRedoSetStyle(target, data as UndoRedoChangeStyle);
+    await undoRedoSetStyle(element, data as UndoRedoDeckChangeStyle);
   }
 
   if (type === 'attribute') {
-    const {attribute} = data as UndoRedoChangeAttribute;
+    const {attribute} = data as UndoRedoDeckChangeAttribute;
 
     to.push({
       type,
       target,
       data: {
         ...data,
-        value: target.getAttribute(attribute)
+        value: element.getAttribute(attribute)
       }
     });
 
-    undoRedoSetAttribute(target, data as UndoRedoChangeAttribute);
+    undoRedoSetAttribute(element, data as UndoRedoDeckChangeAttribute);
   }
 
   return {
@@ -160,13 +163,13 @@ export const undoRedo = async ({
   };
 };
 
-const undoRedoElement = (target: HTMLElement, {innerHTML}: UndoRedoChangeElement) => {
+const undoRedoElement = (target: HTMLElement, {innerHTML}: UndoRedoDeckInputElement) => {
   target.innerHTML = innerHTML;
 
   emitDidUpdate({target: target.parentElement, eventName: 'slideDidChange'});
 };
 
-const undoRedoSetStyle = async (target: HTMLElement, {value, type, updateUI}: UndoRedoChangeStyle) => {
+const undoRedoSetStyle = async (target: HTMLElement, {value, type, updateUI}: UndoRedoDeckChangeStyle) => {
   target.setAttribute('style', value);
 
   if (type === 'deck') {
@@ -180,7 +183,7 @@ const undoRedoSetStyle = async (target: HTMLElement, {value, type, updateUI}: Un
   await updateUI(value);
 };
 
-const undoRedoSetAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoChangeAttribute) => {
+const undoRedoSetAttribute = (target: HTMLElement, {attribute, value, updateUI}: UndoRedoDeckChangeAttribute) => {
   target.setAttribute(attribute, value);
 
   emitDidUpdate({target, eventName: 'deckDidChange'});

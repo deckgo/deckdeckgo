@@ -13,6 +13,7 @@ app-add-paragraph {
     @include button.action;
     @include button.icon;
 
-    padding: 3px;
+    width: 22px;
+    height: 22px;
   }
 }

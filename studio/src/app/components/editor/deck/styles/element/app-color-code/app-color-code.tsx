@@ -5,7 +5,7 @@ import i18n from '../../../../../../stores/i18n.store';
 import {DeckdeckgoHighlightCodeCarbonTheme, DeckdeckgoHighlightCodeTerminal} from '@deckdeckgo/highlight-code';
 
 import {ColorUtils, InitStyleColor} from '../../../../../../utils/editor/color.utils';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 enum CodeColorType {
   COMMENTS,

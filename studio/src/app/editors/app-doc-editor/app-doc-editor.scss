@@ -21,7 +21,7 @@ app-doc-editor {
         white-space: pre;
       }
 
-      section:nth-child(2):empty:not(:focus):after {
+      div:nth-child(2):empty:last-child:not(:focus):after {
         content: "Write your document...";
         color: rgba(var(--ion-color-medium-rgb), 0.6);
       }

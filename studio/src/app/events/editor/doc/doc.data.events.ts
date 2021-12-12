@@ -1,11 +1,13 @@
-import {Doc, DocData, now, Paragraph, ParagraphData, nodeIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
+import {Doc, DocData, now, Paragraph, ParagraphData, elementIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
+
+import {debounce} from '@deckdeckgo/utils';
 
 import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
 import editorStore from '../../../stores/editor.store';
 import authStore from '../../../stores/auth.store';
 
-import {findParagraph, isParagraph} from '../../../utils/editor/paragraph.utils';
+import {findParagraph} from '../../../utils/editor/paragraph.utils';
 
 import {createOfflineDoc, updateOfflineDoc} from '../../../providers/data/doc/doc.offline.provider';
 import {
@@ -13,9 +15,14 @@ import {
   deleteOfflineParagraph,
   updateOfflineParagraph
 } from '../../../providers/data/paragraph/paragraph.offline.provider';
-import {debounce} from '@deckdeckgo/utils';
+import {
+  findAddedNodesParagraphs,
+  findAddedParagraphs,
+  findRemovedNodesParagraphs,
+  findUpdatedParagraphs
+} from '../../../utils/editor/paragraphs.utils';
 
-export class DocEvents {
+export class DocDataEvents {
   private containerRef: HTMLElement;
 
   private treeObserver: MutationObserver | undefined;
@@ -176,7 +183,7 @@ export class DocEvents {
           doc.data.paragraphs = [];
         }
 
-        const index: number = nodeIndex(paragraphElement);
+        const index: number = elementIndex(paragraphElement);
         doc.data.paragraphs = [...doc.data.paragraphs.slice(0, index), paragraphId, ...doc.data.paragraphs.slice(index)];
 
         const updatedDoc: Doc = await updateOfflineDoc(doc);
@@ -229,13 +236,7 @@ export class DocEvents {
         return;
       }
 
-      if (!mutations || mutations.length <= 0) {
-        return;
-      }
-
-      const addedNodes: Node[] = mutations.reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
-
-      const addedParagraphs: HTMLElement[] = this.filterParagraphs(addedNodes);
+      const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
 
       await this.createDoc();
 
@@ -281,24 +282,13 @@ export class DocEvents {
         return;
       }
 
-      const addedNodesMutations: MutationRecord[] = mutations.filter(({addedNodes}: MutationRecord) => {
-        const node: Node = addedNodes[0];
+      const addedNodesMutations: MutationRecord[] = findAddedNodesParagraphs({mutations, container: this.containerRef});
+      const removedNodesMutations: MutationRecord[] = findRemovedNodesParagraphs({mutations, container: this.containerRef});
 
-        return !isParagraph({element: node, container: this.containerRef}) && !isTextNode(node) && node?.nodeName.toLowerCase() !== 'br';
-      });
-
-      await this.updateParagraphs(addedNodesMutations);
+      await this.updateParagraphs([...addedNodesMutations, ...removedNodesMutations]);
     } catch (err) {
       errorStore.state.error = err;
     }
-  }
-
-  private filterParagraphs(nodes: Node[]): HTMLElement[] {
-    return nodes
-      .filter((node: Node) => isParagraph({element: node, container: this.containerRef}))
-      .filter(
-        (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
-      ) as HTMLElement[];
   }
 
   private async updateData() {
@@ -322,21 +312,11 @@ export class DocEvents {
         return;
       }
 
-      if (!mutations || mutations.length <= 0) {
+      const updateParagraphs: HTMLElement[] = findUpdatedParagraphs({mutations, container: this.containerRef});
+
+      if (updateParagraphs.length <= 0) {
         return;
       }
-
-      const nodes: Node[] = mutations.reduce((acc: Node[], {target}: MutationRecord) => [...acc, target], []);
-
-      const updateParagraphs: HTMLElement[] = [
-        ...new Set(
-          nodes
-            .map((node: Node) => findParagraph({element: node, container: this.containerRef}))
-            .filter(
-              (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
-            ) as HTMLElement[]
-        )
-      ];
 
       const promises: Promise<void>[] = updateParagraphs.map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
       await Promise.all(promises);

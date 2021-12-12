@@ -11,7 +11,7 @@ import {SelectedElement} from '../../../../../../types/editor/selected-element';
 
 import {AlignUtils, TextAlign} from '../../../../../../utils/editor/align.utils';
 import {initFontSize, toggleFontSize} from '../../../../../../utils/editor/font-size.utils';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 enum LetterSpacing {
   TIGHTER,

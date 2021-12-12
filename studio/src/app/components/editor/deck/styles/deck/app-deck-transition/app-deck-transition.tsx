@@ -5,7 +5,7 @@ import i18n from '../../../../../../stores/i18n.store';
 
 import {DeckAction} from '../../../../../../types/editor/deck-action';
 
-import {setAttribute} from '../../../../../../utils/editor/undo-redo.utils';
+import {setAttribute} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-deck-transition',

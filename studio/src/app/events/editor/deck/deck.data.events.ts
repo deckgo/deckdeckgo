@@ -15,7 +15,7 @@ import {
   Deck,
   DeckAttributes,
   DeckData,
-  nodeIndex,
+  elementIndex,
   cleanNode,
   isElementNode
 } from '@deckdeckgo/editor';
@@ -40,7 +40,7 @@ import {publishUrl} from '../../../providers/publish/publish.provider';
 
 import {DeckAction} from '../../../types/editor/deck-action';
 
-export class DeckEvents {
+export class DeckDataEvents {
   private mainRef: HTMLElement;
 
   private readonly deckOfflineProvider: DeckOfflineProvider;
@@ -299,7 +299,7 @@ export class DeckEvents {
           deck.data.slides = [];
         }
 
-        const slideIndex: number = nodeIndex(slideElement);
+        const slideIndex: number = elementIndex(slideElement);
         deck.data.slides = [...deck.data.slides.slice(0, slideIndex), slide.id, ...deck.data.slides.slice(slideIndex)];
 
         const updatedDeck: Deck = await this.deckOfflineProvider.update(deck);

@@ -11,7 +11,7 @@ import {EditMode, Expanded} from '../../../../../../types/core/settings';
 import {ListUtils} from '../../../../../../utils/editor/list.utils';
 import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-list',

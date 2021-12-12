@@ -4,7 +4,7 @@ import i18n from '../../../../../../stores/i18n.store';
 
 import {FontsService} from '../../../../../../services/editor/fonts/fonts.service';
 
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-deck-fonts',

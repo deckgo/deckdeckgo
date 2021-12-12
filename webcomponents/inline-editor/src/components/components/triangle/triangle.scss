@@ -1,15 +1,23 @@
+:host(.top) {
+  div.triangle {
+    bottom: unset;
+    top: -34px;
+    transform: scale(0.7);
+  }
+}
+
 div.triangle {
   z-index: 1;
 
   position: absolute;
-  top: -34px;
+  bottom: -34px;
   left: var(--deckgo-ie-triangle-start, 8px);
 
   width: 40px;
   height: 40px;
   overflow: hidden;
 
-  transform: scale(0.7);
+  transform: scale(0.7) rotate(180deg);
 
   &:after {
     content: "";

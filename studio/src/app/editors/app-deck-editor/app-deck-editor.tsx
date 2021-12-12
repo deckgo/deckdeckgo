@@ -14,16 +14,16 @@ import i18n from '../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
-import {SlideTemplate, nodeIndex} from '@deckdeckgo/editor';
+import {SlideTemplate, elementIndex} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
 import {getEdit} from '../../utils/editor/editor.utils';
 import {signIn as navigateSignIn} from '../../utils/core/signin.utils';
 
-import {DeckEvents} from '../../events/editor/deck/deck.events';
+import {DeckDataEvents} from '../../events/editor/deck/deck.data.events';
 import {RemoteEvents} from '../../events/editor/remote/remote.events';
-import {DeckEditorEvents} from '../../events/editor/editor/deck-editor.events';
+import {DeckEditorEvents} from '../../events/editor/editor/deck.editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
@@ -75,7 +75,7 @@ export class AppDeckEditor implements ComponentInterface {
   @State()
   private activeIndex: number = 0;
 
-  private deckEvents: DeckEvents = new DeckEvents();
+  private deckDataEvents: DeckDataEvents = new DeckDataEvents();
   private deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
   private remoteEvents: RemoteEvents = new RemoteEvents();
   private pollEvents: PollEvents = new PollEvents();
@@ -117,9 +117,9 @@ export class AppDeckEditor implements ComponentInterface {
     this.fontsService = FontsService.getInstance();
   }
 
-  async componentWillLoad() {
-    await this.imageEvents.init();
-    await this.chartEvents.init();
+  componentWillLoad() {
+    this.imageEvents.init();
+    this.chartEvents.init();
   }
 
   async componentDidLoad() {
@@ -141,7 +141,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   async init() {
-    await this.deckEvents.init(this.mainRef);
+    await this.deckDataEvents.init(this.mainRef);
     await this.deckEditorEvents.init({mainRef: this.mainRef, actionsEditorRef: this.actionsEditorRef});
 
     await this.initOrFetch();
@@ -177,7 +177,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   async destroy() {
-    this.deckEvents.destroy();
+    this.deckDataEvents.destroy();
     this.deckEditorEvents.destroy();
     this.pollEvents.destroy();
     this.imageEvents.destroy();
@@ -361,7 +361,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   @Listen('slideDelete', {target: 'document'})
   async deleteSlide({detail: deletedSlide}: CustomEvent<HTMLElement>) {
-    const slideIndex: number = nodeIndex(deletedSlide);
+    const slideIndex: number = elementIndex(deletedSlide);
 
     this.slides = [...this.slides.filter((_slide: JSX.IntrinsicElements, index: number) => slideIndex !== index)];
 
@@ -654,7 +654,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async initSlideSize() {
-    await this.deckEvents.initSlideSize();
+    await this.deckDataEvents.initSlideSize();
   }
 
   @Listen('signIn', {target: 'document'})
@@ -662,7 +662,7 @@ export class AppDeckEditor implements ComponentInterface {
     navigateSignIn();
   }
 
-  private stickyToolbarActivated($event: CustomEvent<boolean>) {
+  private inlineEditorActivated($event: CustomEvent<boolean>) {
     this.hideActions = $event ? isMobile() && !isIOS() && $event.detail : false;
   }
 
@@ -685,7 +685,7 @@ export class AppDeckEditor implements ComponentInterface {
     }
 
     try {
-      await this.deckEvents.updateDeckSlidesOrder(detail);
+      await this.deckDataEvents.updateDeckSlidesOrder(detail);
 
       await this.remoteEvents.updateRemoteSlidesOnMutation();
 
@@ -704,7 +704,7 @@ export class AppDeckEditor implements ComponentInterface {
 
     await this.remoteEvents.updateRemoteReveal(this.fullscreen && this.presenting);
 
-    await this.deckEvents.toggleSlideEditable(!this.presenting);
+    await this.deckDataEvents.toggleSlideEditable(!this.presenting);
   }
 
   @Listen('remoteSlideDidChange', {target: 'document'})
@@ -713,7 +713,7 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private async onSlideChange() {
-    await this.deckEvents.toggleSlideEditable(!this.fullscreen || !this.presenting);
+    await this.deckDataEvents.toggleSlideEditable(!this.fullscreen || !this.presenting);
 
     const index: number = await this.deckRef?.getActiveIndex();
 
@@ -805,15 +805,11 @@ export class AppDeckEditor implements ComponentInterface {
   }
 
   private renderInlineEditor() {
-    if (this.presenting) {
-      return undefined;
-    }
-
     return (
       <deckgo-inline-editor
         containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
         sticky-mobile="true"
-        onStickyToolbarActivated={($event: CustomEvent<boolean>) => this.stickyToolbarActivated($event)}
+        onToolbarActivated={($event: CustomEvent<boolean>) => this.inlineEditorActivated($event)}
         img-anchor="deckgo-lazy-img"
         list={false}
         palette={colorStore.state.history}

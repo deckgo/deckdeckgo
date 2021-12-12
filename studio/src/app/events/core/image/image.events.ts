@@ -3,14 +3,8 @@ import type {DeckDeckGoCustomLoad} from '@deckdeckgo/lazy-img';
 import {get} from 'idb-keyval';
 
 export class ImageEvents {
-  init(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (document) {
-        document.addEventListener('customLoad', this.onCustomLoad);
-      }
-
-      resolve();
-    });
+  init() {
+    document.addEventListener('customLoad', this.onCustomLoad);
   }
 
   destroy() {

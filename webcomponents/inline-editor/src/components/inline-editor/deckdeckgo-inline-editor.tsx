@@ -79,7 +79,10 @@ export class DeckdeckgoInlineEditor {
   @State()
   private displayToolsActivated: boolean = false;
 
-  private debounceDisplayToolsActivated: Function;
+  private debounceDisplayToolsActivated: () => void = debounce(() => {
+    this.displayToolsActivated = true;
+    this.toolbarActivated.emit(true);
+  });
 
   private selection: Selection = null;
 
@@ -92,7 +95,7 @@ export class DeckdeckgoInlineEditor {
   @State()
   private toolbarActions: ToolbarActions = ToolbarActions.SELECTION;
 
-  @Event() stickyToolbarActivated: EventEmitter<boolean>;
+  @Event() toolbarActivated: EventEmitter<boolean>;
 
   /**
    * Could be use to attach the inline editor event listeners (mousedown, touchstart and keydown) to a specific element instead of the document
@@ -201,10 +204,13 @@ export class DeckdeckgoInlineEditor {
   tools!: HTMLDivElement;
 
   @State()
-  private toolsLeft: number;
-
-  @State()
-  private toolsTop: number;
+  private toolsPosition:
+    | {
+        left: number;
+        top: number;
+        position: 'above' | 'under';
+      }
+    | undefined;
 
   @State()
   private anchorEventLeft: number = 0;
@@ -212,14 +218,7 @@ export class DeckdeckgoInlineEditor {
   private rtl: boolean = isRTL();
 
   constructor() {
-    this.resetDisplayToolsActivated();
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
-  }
-
-  private resetDisplayToolsActivated() {
-    this.debounceDisplayToolsActivated = debounce(() => {
-      this.displayToolsActivated = true;
-    });
   }
 
   componentWillLoad() {
@@ -439,14 +438,15 @@ export class DeckdeckgoInlineEditor {
     }
 
     if (this.tools) {
-      let top: number = unifyEvent(this.anchorEvent).clientY;
-      let left: number = unifyEvent(this.anchorEvent).clientX - 40;
+      const selection: Selection | null = getSelection();
+      const range: Range | undefined = selection?.getRangeAt(0);
+      const rect: DOMRect | undefined = range?.getBoundingClientRect();
 
-      if (this.mobile) {
-        top = top + 40;
-      } else {
-        top = top + 24;
-      }
+      const y: number = rect?.top || unifyEvent(this.anchorEvent).clientY;
+      const position: 'above' | 'under' = y > 68 ? 'above' : 'under';
+
+      let top: number = position === 'above' ? y - 16 : y + (rect?.height || 16) + 16;
+      let left: number = (rect?.left || unifyEvent(this.anchorEvent).clientX) - 40;
 
       const innerWidth: number = isIOS() ? screen.width : window.innerWidth;
 
@@ -459,8 +459,7 @@ export class DeckdeckgoInlineEditor {
       }
 
       // To set the position of the tools
-      this.toolsTop = top;
-      this.toolsLeft = left;
+      this.toolsPosition = {top, left, position};
 
       // To set the position of the triangle
       this.anchorEventLeft = left > 0 ? unifyEvent(this.anchorEvent).clientX - 20 - left : unifyEvent(this.anchorEvent).clientX;
@@ -614,7 +613,10 @@ export class DeckdeckgoInlineEditor {
 
     this.setToolsActivated(false);
 
-    this.resetDisplayToolsActivated();
+    if (clearSelection) {
+      // We don't want to emit that state a zillion time but only when needed
+      this.toolbarActivated.emit(false);
+    }
 
     this.selection = null;
 
@@ -685,10 +687,6 @@ export class DeckdeckgoInlineEditor {
       this.debounceDisplayToolsActivated();
     } else {
       this.displayToolsActivated = false;
-    }
-
-    if (this.isSticky()) {
-      this.stickyToolbarActivated.emit(this.toolsActivated);
     }
   }
 
@@ -775,13 +773,22 @@ export class DeckdeckgoInlineEditor {
 
     const hostClass = isIOS() ? 'deckgo-tools-ios' : undefined;
 
+    const position: string = this.toolsPosition?.position || 'above';
+
+    const style: Record<string, string> | undefined = this.toolsPosition
+      ? {left: `${this.toolsPosition.left}px`, top: `${this.toolsPosition.top}px`}
+      : undefined;
+
+    if (position === 'under') {
+      classNames += ' deckgo-tools-under';
+    }
+
     return (
       <Host class={hostClass}>
-        <div
-          class={classNames}
-          ref={(el) => (this.tools = el as HTMLDivElement)}
-          style={{left: `${this.toolsLeft}px`, top: `${this.toolsTop}px`}}>
-          <deckgo-ie-triangle style={{'--deckgo-ie-triangle-start': `${this.anchorEventLeft}px`}}></deckgo-ie-triangle>
+        <div class={classNames} ref={(el) => (this.tools = el as HTMLDivElement)} style={style}>
+          <deckgo-ie-triangle
+            class={position === 'above' ? 'bottom' : 'top'}
+            style={{'--deckgo-ie-triangle-start': `${this.anchorEventLeft}px`}}></deckgo-ie-triangle>
           {this.renderActions()}
         </div>
       </Host>

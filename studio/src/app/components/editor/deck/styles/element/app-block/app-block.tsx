@@ -9,7 +9,7 @@ import {EditMode, Expanded} from '../../../../../../types/core/settings';
 import {SelectedElement} from '../../../../../../types/editor/selected-element';
 
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
-import {setStyle} from '../../../../../../utils/editor/undo-redo.utils';
+import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 
 @Component({
   tag: 'app-block'
