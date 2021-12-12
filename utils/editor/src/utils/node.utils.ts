@@ -29,3 +29,7 @@ export const isElementNode = (element: Node | undefined): boolean => {
 export const elementIndex = (element: HTMLElement): number => {
   return Array.from(element.parentNode?.children || []).indexOf(element);
 };
+
+export const nodeIndex = (node: Node): number => {
+  return Array.from(node.parentNode?.childNodes || []).indexOf(node as ChildNode);
+};

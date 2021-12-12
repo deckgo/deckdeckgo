@@ -1,3 +1,9 @@
+# 3.2.0 (2021-12-03)
+
+### Features
+
+- `nodexIndex` returns node index (including comments and texts) and `elementIndex` returns element index
+
 # 3.1.1 (2021-12-03)
 
 ### Features
