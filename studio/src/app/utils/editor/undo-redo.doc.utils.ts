@@ -1,5 +1,4 @@
 import {moveCursorToEnd, moveCursorToOffset} from '@deckdeckgo/utils';
-
 import {isTextNode} from '@deckdeckgo/editor';
 
 import undoRedoStore from '../../stores/undo-redo.store';
@@ -139,35 +138,38 @@ const undoRedoInput = async ({
 
   const paragraph: Element | undefined = container.children[index];
 
-  // Example: document.querySelector('[paragraph_id="cf914fa8-ff4d-48e9-972d-ecf795af316c"]').querySelector('* > :nth-child(1) > :nth-child(1) > :nth-child(1)')
-  let parent: HTMLElement | undefined =
-    indexDepths.length <= 0
-      ? NodeUtils.toHTMLElement(paragraph)
-      : paragraph?.querySelector(`* ${indexDepths.map((depth: number) => `> :nth-child(${depth + 1})`).join(' ')}`);
+  const findInputNode = ({parent, indexDepths}: {parent: Node | undefined; indexDepths: number[]}): Node | undefined => {
+    const childNode: ChildNode | undefined = (Array.from(parent?.childNodes) || [])[indexDepths[0]];
 
-  if (!parent) {
+    if (!childNode) {
+      return undefined;
+    }
+
+    const [, ...rest] = indexDepths;
+
+    if (rest?.length <= 0) {
+      return childNode;
+    }
+
+    return findInputNode({parent: childNode, indexDepths: rest});
+  };
+
+  let text: Node | undefined = findInputNode({parent: paragraph, indexDepths});
+
+  if (!text || !isTextNode(text)) {
     // We try to find sibling in case the parent does not yet exist. If we find it, we can replicate such parent for the new text.
     // Useful notably when reverting lists and li.
-    const sibling: HTMLElement | undefined = paragraph?.querySelector(
-      `* ${indexDepths.map((depth: number) => `> :nth-child(${depth})`).join(' ')}`
-    );
+    const cloneIndexDepths: number[] = [...indexDepths];
+    cloneIndexDepths.pop();
 
-    const anchor: Element | undefined = sibling || paragraph.lastElementChild;
+    const parent: Node | undefined =
+      cloneIndexDepths.length <= 0 ? text.parentNode : findInputNode({parent: paragraph, indexDepths: [...cloneIndexDepths]});
 
-    if (!anchor) {
+    if (!parent) {
       return;
     }
 
-    parent = await cloneAfter({anchor, container});
-  }
-
-  let text: Node | undefined = (parent?.childNodes !== undefined ? Array.from(parent.childNodes) : []).find((node: Node) =>
-    isTextNode(node)
-  );
-
-  // The text node to apply the input might not exist anymore
-  if (!text) {
-    text = await prependText({parent, container});
+    text = await prependText({parent: NodeUtils.toHTMLElement(parent), container});
   }
 
   const {previousValue} = await updateNodeValue({text, oldValue, container});
@@ -344,21 +346,6 @@ const updateNode = ({
     changeObserver.observe(container, {childList: true, subtree: true});
 
     paragraph.outerHTML = outerHTML;
-  });
-
-const cloneAfter = ({anchor, container}: {anchor: Element; container: HTMLElement}): Promise<HTMLElement> =>
-  new Promise<HTMLElement>((resolve) => {
-    const parent: HTMLElement = anchor.cloneNode() as HTMLElement;
-
-    const changeObserver: MutationObserver = new MutationObserver(() => {
-      changeObserver.disconnect();
-
-      resolve(parent);
-    });
-
-    changeObserver.observe(container, {childList: true, subtree: true});
-
-    anchor.after(parent);
   });
 
 const prependText = ({parent, container}: {parent: HTMLElement; container: HTMLElement}): Promise<Node> =>

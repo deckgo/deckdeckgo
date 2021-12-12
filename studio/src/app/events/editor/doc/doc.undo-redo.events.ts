@@ -1,5 +1,5 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
-import {elementIndex} from '@deckdeckgo/editor';
+import {elementIndex, nodeIndex} from '@deckdeckgo/editor';
 
 import {UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../../types/editor/undo-redo';
 
@@ -235,11 +235,11 @@ export class DocUndoRedoEvents {
       }
 
       // We find the list of node indexes of the parent of the modified text
-      const depths: number[] = [];
+      const depths: number[] = [nodeIndex(target)];
 
       let parentElement: HTMLElement = target.parentElement;
       while (!parentElement.isSameNode(paragraph)) {
-        depths.push(elementIndex(parentElement));
+        depths.push(nodeIndex(parentElement));
         parentElement = parentElement.parentElement;
       }
 
@@ -247,7 +247,7 @@ export class DocUndoRedoEvents {
         oldValue: mutation.oldValue,
         offset: caretPosition({target}) + (mutation.oldValue.length - newValue.length),
         index: elementIndex(paragraph),
-        indexDepths: depths
+        indexDepths: depths.reverse()
       };
     }
 
@@ -310,5 +310,6 @@ export class DocUndoRedoEvents {
     });
 
     this.undoUpdateParagraphs = [];
+    this.undoInput = undefined;
   };
 }
