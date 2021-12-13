@@ -29,7 +29,8 @@ export const createHTMLElement = ({slotType, slotName}: {slotType: SlotType; slo
     element.appendChild(createHTMLListItem());
   } else if ([SlotType.CODE, SlotType.MATH, SlotType.WORD_CLOUD, SlotType.MARKDOWN].includes(slotType)) {
     element.appendChild(createHTMLSlotCode(slotType));
-  } else {
+  } else if (SlotType.HR !== slotType) {
+    // HR are not editable
     element.innerHTML = '\u200B';
   }
 
