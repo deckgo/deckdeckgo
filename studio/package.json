@@ -25,7 +25,7 @@
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/core": "^9.0.0",
-    "@deckdeckgo/deck-utils": "^5.0.0",
+    "@deckdeckgo/deck-utils": "file:../utils/deck",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.1",
     "@deckdeckgo/editor": "^3.2.0",

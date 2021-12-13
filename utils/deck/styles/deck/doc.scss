@@ -1,0 +1,22 @@
+deckgo-doc article {
+  hr {
+    margin: 2em auto;
+    overflow: visible;
+    position: relative;
+    display: block;
+
+    &:before {
+      content: "...";
+      display: inline-block;
+      color: var(--ion-color-medium);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.6rem;
+      margin-top: -0.2rem;
+      margin-left: 0.6em;
+      letter-spacing: 0.6em;
+    }
+  }
+}
