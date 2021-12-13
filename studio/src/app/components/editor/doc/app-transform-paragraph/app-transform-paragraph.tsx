@@ -32,7 +32,7 @@ export class AppTransformParagraph implements ComponentInterface {
 
   private paragraph: HTMLElement | undefined | null;
 
-  private slotTypes: SlotType[] = [SlotType.H1, SlotType.H2, SlotType.H3, SlotType.CODE, SlotType.IMG, SlotType.UL];
+  private slotTypes: SlotType[] = [SlotType.H1, SlotType.H2, SlotType.H3, SlotType.CODE, SlotType.IMG, SlotType.UL, SlotType.HR];
 
   componentDidRender() {
     this.display = this.position !== undefined;
