@@ -24,9 +24,8 @@
   "dependencies": {
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/color": "^4.1.0",
-    "@deckdeckgo/components": "file:../webcomponents/elements",
     "@deckdeckgo/core": "^9.0.0",
-    "@deckdeckgo/deck-utils": "file:../utils/deck",
+    "@deckdeckgo/deck-utils": "^5.0.0",
     "@deckdeckgo/demo": "^2.1.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.1",
     "@deckdeckgo/editor": "^3.2.0",
