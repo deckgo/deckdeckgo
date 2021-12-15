@@ -251,8 +251,6 @@ export class DocUndoRedoEvents {
       };
     }
 
-    console.log(mutations, this.undoInput);
-
     this.debounceUpdateInput();
   };
 
