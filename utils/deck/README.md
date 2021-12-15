@@ -8,7 +8,7 @@
 
 # DeckDeckGo - Deck utils
 
-Utils and styles for the [DeckDeckGo] applications.
+Utils and styles for the [DeckDeckGo] presentations.
 
 ## License
 

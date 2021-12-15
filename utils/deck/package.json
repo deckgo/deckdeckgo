@@ -1,8 +1,8 @@
 {
   "name": "@deckdeckgo/deck-utils",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "author": "David Dal Busco",
-  "description": "Utils and styles for the DeckDeckGo applications",
+  "description": "Utils for the DeckDeckGo presentations",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -14,37 +14,25 @@
   },
   "homepage": "https://deckdeckgo.com",
   "devDependencies": {
-    "@deckdeckgo/types": "^2.0.1",
-    "clean-css-cli": "^5.3.3",
-    "node-sass": "^6.0.1",
-    "postcss": "^8.3.6",
-    "postcss-cli": "^8.3.1"
+    "@deckdeckgo/types": "^2.0.1"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
-    "build": "rimraf lib && rimraf css && node ./esbuild.js && npm run ts-declaration && npm run build-deck",
-    "build-deck": "npm run build-deck-sass && npm run build-deck-autoprefix && npm run build-deck-cleancss",
-    "build-deck-sass": "node-sass --output-style expanded styles/deck/index.scss ./css/deck.css",
-    "build-deck-autoprefix": "postcss --use autoprefixer --map false --output ./css/deck.css ./css/deck.css",
-    "build-deck-cleancss": "cleancss -o ./css/deck.min.css ./css/deck.css"
+    "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
   "files": [
     "lib",
-    "README.md",
-    "css"
+    "README.md"
   ],
   "keywords": [
-    "stencil",
-    "stenciljs",
-    "web components",
-    "pwa",
-    "progressive web app",
+    "document",
+    "blog",
     "presentation",
-    "slides",
-    "slideshow",
-    "talk"
+    "slide",
+    "talk",
+    "deck"
   ]
 }

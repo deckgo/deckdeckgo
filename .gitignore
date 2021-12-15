@@ -27,8 +27,8 @@ UserInterfaceState.xcuserstate
 .deckgo/
 
 lib/
-utils/deck/css/
 utils/kit/css/
+utils/styles/css/
 
 .firebase/
 .dfx

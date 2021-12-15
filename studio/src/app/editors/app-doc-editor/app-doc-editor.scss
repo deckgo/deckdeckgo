@@ -1,7 +1,7 @@
 app-doc-editor {
   height: 100%;
 
-  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+  @import "node_modules/@deckdeckgo/styles/css/doc";
 
   main {
     overflow: scroll;
