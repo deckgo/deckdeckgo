@@ -1,18 +1,15 @@
 import '@ionic/core';
 
 import '@deckdeckgo/core';
+
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/lazy-img';
-import '@deckdeckgo/qrcode';
 import '@deckdeckgo/charts';
-import '@deckdeckgo/social';
-import '@deckdeckgo/reveal';
-import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
-import '@deckdeckgo/demo';
 import '@deckdeckgo/math';
 import '@deckdeckgo/word-cloud';
 import '@deckdeckgo/markdown';
+import '@deckdeckgo/elements';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-author';
