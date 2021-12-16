@@ -251,7 +251,7 @@ export class AppDocEditor implements ComponentInterface {
           containers="article"
           sticky-mobile="true"
           img-anchor="deckgo-lazy-img"
-          list={true}
+          list={false}
           palette={colorStore.state.history}
           align={true}
           fontSize={true}></deckgo-inline-editor>
