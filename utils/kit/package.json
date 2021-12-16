@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/kit",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "author": "David Dal Busco",
   "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
   "license": "MIT",

@@ -29,6 +29,7 @@
 ### Others
 
 - deck-utils: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
+- kit: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/kit/CHANGELOG.md))
 - editor: v3.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - utils: v3.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
