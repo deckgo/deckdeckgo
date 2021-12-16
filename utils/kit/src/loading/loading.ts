@@ -9,11 +9,10 @@ export const postLoading = async () => {
   if (app) {
     app.classList.remove('loading');
   }
+};
 
-  await initSreenshot();
-  await initEmbedMode();
-  await initSize();
-  await initMouse();
+export const postLoadingDeck = async () => {
+  await Promise.all([initSreenshot(), initEmbedMode(), initSize(), initMouse()]);
 };
 
 async function initSreenshot() {
