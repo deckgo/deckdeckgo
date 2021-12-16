@@ -1,15 +1,13 @@
-import {Component, h, Prop, State, Element, Method, Watch} from '@stencil/core';
+import {Component, h, Prop, State, Element, Method, Watch, ComponentInterface} from '@stencil/core';
 
 import {debounce} from '@deckdeckgo/utils';
-
-import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
 
 @Component({
   tag: 'deckgo-demo',
   styleUrl: 'demo.scss',
   shadow: true
 })
-export class Demo implements DeckdeckgoComponent {
+export class Demo implements ComponentInterface {
   @Element() el: HTMLElement;
 
   /**
