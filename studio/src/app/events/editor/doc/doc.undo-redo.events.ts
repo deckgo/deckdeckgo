@@ -274,7 +274,7 @@ export class DocUndoRedoEvents {
     const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
     addedParagraphs.forEach((paragraph: HTMLElement) =>
       changes.push({
-        outerHTML: paragraph.outerHTML,
+        outerHTML: this.cleanOuterHTML(paragraph),
         mutation: 'add',
         index: paragraph.previousSibling ? elementIndex(NodeUtils.toHTMLElement(paragraph.previousSibling)) + 1 : 0
       })
@@ -294,7 +294,7 @@ export class DocUndoRedoEvents {
     removedParagraphs
       .filter((_removedParagraph: RemovedParagraph, index: number) => !addedIndex.includes(index + lowerIndex))
       .forEach(({paragraph}: RemovedParagraph, index: number) =>
-        changes.push({outerHTML: paragraph.outerHTML, mutation: 'remove', index: index + lowerIndex})
+        changes.push({outerHTML: this.cleanOuterHTML(paragraph), mutation: 'remove', index: index + lowerIndex})
       );
 
     if (changes.length <= 0) {
@@ -306,6 +306,13 @@ export class DocUndoRedoEvents {
       changes
     });
   };
+
+  // We do not want to overwrite the auto generated paragraph_id
+  private cleanOuterHTML(paragraph: HTMLElement): string {
+    const clone: HTMLElement = paragraph.cloneNode(true) as HTMLElement;
+    clone.removeAttribute('paragraph_id');
+    return clone.outerHTML;
+  }
 
   private onUpdateMutation = (mutations: MutationRecord[]) => {
     const addedNodesMutations: MutationRecord[] = findAddedNodesParagraphs({mutations, container: this.containerRef});
