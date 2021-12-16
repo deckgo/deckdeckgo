@@ -6,32 +6,339 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface DeckgoDemo {
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle": string;
+        /**
+          * In case you would like to load the frame as soon as the component is loaded
+         */
+        "instant": boolean;
+        /**
+          * Lazy load the iframe
+         */
+        "lazyLoadContent": () => Promise<void>;
+        /**
+          * The type of device frame. md for Android, ios for iPhone
+         */
+        "mode": string;
+        /**
+          * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+         */
+        "src": string;
+        /**
+          * Refresh iframe size and reload content
+         */
+        "updateIFrame": () => Promise<void>;
+    }
     interface DeckgoHr {
+    }
+    interface DeckgoQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
+        "content": string;
+        /**
+          * The <deckgo-qrcode/> component exposes the following method in case you would like to refresh your QR code, for example on resize of the window on in case you would set its content asynchronously.
+         */
+        "generate": () => Promise<void>;
+        /**
+          * An alternate text for the image of the QR code
+         */
+        "qrAlt": string;
+        /**
+          * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrBackgroundColor": string;
+        /**
+          * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+         */
+        "qrCellSize": number;
+        /**
+          * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrFillColor": string;
+        /**
+          * The size of the code margin, in case you would like more spacing
+         */
+        "qrMargin": number;
+        /**
+          * The type of QR code to generate, <svg/> or <img/>
+         */
+        "type": string;
+    }
+    interface DeckgoReveal {
+        "hide": () => Promise<void>;
+        "hideAll": () => Promise<void>;
+        "reveal": () => Promise<void>;
+        "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
+    }
+    interface DeckgoRevealList {
+        "hide": () => Promise<void>;
+        "hideAll": () => Promise<void>;
+        "listTag": string;
+        "reveal": () => Promise<void>;
+        "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
+    }
+    interface DeckgoSocial {
+        /**
+          * Your Dev username. It will be concatenated automatically with https://dev.to/
+         */
+        "dev": string;
+        /**
+          * In case you would like to provide the URI of your choice
+         */
+        "fullUrl": string;
+        /**
+          * Your Github username. It will be concatenated automatically with https://github.com/
+         */
+        "github": string;
+        "lazyLoadContent": () => Promise<void>;
+        /**
+          * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+         */
+        "linkedin": string;
+        /**
+          * Your Medium username. username will be replaced automatically from https://username.medium.com/
+         */
+        "medium": string;
+        /**
+          * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+         */
+        "twitter": string;
+    }
+    interface DeckgoYoutube {
+        /**
+          * Allow option to toggle video in full screen
+         */
+        "allowFullscreen": boolean;
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle": string;
+        /**
+          * The height of the video player
+         */
+        "height": number;
+        /**
+          * In case you would like to load the video as soon as the component is loaded
+         */
+        "instant": boolean;
+        /**
+          * Lazy load the video
+         */
+        "lazyLoadContent": () => Promise<void>;
+        /**
+          * Pause the video
+         */
+        "pause": () => Promise<void>;
+        /**
+          * Play the video
+         */
+        "play": () => Promise<void>;
+        /**
+          * The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube
+         */
+        "src": string;
+        /**
+          * Update the iFrame, the video, size
+          * @param width
+          * @param height
+         */
+        "updateIFrame": (width: number, height: number) => Promise<void>;
+        /**
+          * The width of the video player
+         */
+        "width": number;
     }
 }
 declare global {
+    interface HTMLDeckgoDemoElement extends Components.DeckgoDemo, HTMLStencilElement {
+    }
+    var HTMLDeckgoDemoElement: {
+        prototype: HTMLDeckgoDemoElement;
+        new (): HTMLDeckgoDemoElement;
+    };
     interface HTMLDeckgoHrElement extends Components.DeckgoHr, HTMLStencilElement {
     }
     var HTMLDeckgoHrElement: {
         prototype: HTMLDeckgoHrElement;
         new (): HTMLDeckgoHrElement;
     };
+    interface HTMLDeckgoQrcodeElement extends Components.DeckgoQrcode, HTMLStencilElement {
+    }
+    var HTMLDeckgoQrcodeElement: {
+        prototype: HTMLDeckgoQrcodeElement;
+        new (): HTMLDeckgoQrcodeElement;
+    };
+    interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {
+    }
+    var HTMLDeckgoRevealElement: {
+        prototype: HTMLDeckgoRevealElement;
+        new (): HTMLDeckgoRevealElement;
+    };
+    interface HTMLDeckgoRevealListElement extends Components.DeckgoRevealList, HTMLStencilElement {
+    }
+    var HTMLDeckgoRevealListElement: {
+        prototype: HTMLDeckgoRevealListElement;
+        new (): HTMLDeckgoRevealListElement;
+    };
+    interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {
+    }
+    var HTMLDeckgoSocialElement: {
+        prototype: HTMLDeckgoSocialElement;
+        new (): HTMLDeckgoSocialElement;
+    };
+    interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {
+    }
+    var HTMLDeckgoYoutubeElement: {
+        prototype: HTMLDeckgoYoutubeElement;
+        new (): HTMLDeckgoYoutubeElement;
+    };
     interface HTMLElementTagNameMap {
+        "deckgo-demo": HTMLDeckgoDemoElement;
         "deckgo-hr": HTMLDeckgoHrElement;
+        "deckgo-qrcode": HTMLDeckgoQrcodeElement;
+        "deckgo-reveal": HTMLDeckgoRevealElement;
+        "deckgo-reveal-list": HTMLDeckgoRevealListElement;
+        "deckgo-social": HTMLDeckgoSocialElement;
+        "deckgo-youtube": HTMLDeckgoYoutubeElement;
     }
 }
 declare namespace LocalJSX {
+    interface DeckgoDemo {
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle"?: string;
+        /**
+          * In case you would like to load the frame as soon as the component is loaded
+         */
+        "instant"?: boolean;
+        /**
+          * The type of device frame. md for Android, ios for iPhone
+         */
+        "mode"?: string;
+        /**
+          * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+         */
+        "src"?: string;
+    }
     interface DeckgoHr {
     }
+    interface DeckgoQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
+        "content"?: string;
+        /**
+          * An alternate text for the image of the QR code
+         */
+        "qrAlt"?: string;
+        /**
+          * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrBackgroundColor"?: string;
+        /**
+          * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+         */
+        "qrCellSize"?: number;
+        /**
+          * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrFillColor"?: string;
+        /**
+          * The size of the code margin, in case you would like more spacing
+         */
+        "qrMargin"?: number;
+        /**
+          * The type of QR code to generate, <svg/> or <img/>
+         */
+        "type"?: string;
+    }
+    interface DeckgoReveal {
+        "revealProgress"?: 'start' | 'partial' | 'end';
+    }
+    interface DeckgoRevealList {
+        "listTag"?: string;
+        "revealProgress"?: 'start' | 'partial' | 'end';
+    }
+    interface DeckgoSocial {
+        /**
+          * Your Dev username. It will be concatenated automatically with https://dev.to/
+         */
+        "dev"?: string;
+        /**
+          * In case you would like to provide the URI of your choice
+         */
+        "fullUrl"?: string;
+        /**
+          * Your Github username. It will be concatenated automatically with https://github.com/
+         */
+        "github"?: string;
+        /**
+          * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+         */
+        "linkedin"?: string;
+        /**
+          * Your Medium username. username will be replaced automatically from https://username.medium.com/
+         */
+        "medium"?: string;
+        /**
+          * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+         */
+        "twitter"?: string;
+    }
+    interface DeckgoYoutube {
+        /**
+          * Allow option to toggle video in full screen
+         */
+        "allowFullscreen"?: boolean;
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle"?: string;
+        /**
+          * The height of the video player
+         */
+        "height"?: number;
+        /**
+          * In case you would like to load the video as soon as the component is loaded
+         */
+        "instant"?: boolean;
+        /**
+          * The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube
+         */
+        "src"?: string;
+        /**
+          * The width of the video player
+         */
+        "width"?: number;
+    }
     interface IntrinsicElements {
+        "deckgo-demo": DeckgoDemo;
         "deckgo-hr": DeckgoHr;
+        "deckgo-qrcode": DeckgoQrcode;
+        "deckgo-reveal": DeckgoReveal;
+        "deckgo-reveal-list": DeckgoRevealList;
+        "deckgo-social": DeckgoSocial;
+        "deckgo-youtube": DeckgoYoutube;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "deckgo-demo": LocalJSX.DeckgoDemo & JSXBase.HTMLAttributes<HTMLDeckgoDemoElement>;
             "deckgo-hr": LocalJSX.DeckgoHr & JSXBase.HTMLAttributes<HTMLDeckgoHrElement>;
+            "deckgo-qrcode": LocalJSX.DeckgoQrcode & JSXBase.HTMLAttributes<HTMLDeckgoQrcodeElement>;
+            "deckgo-reveal": LocalJSX.DeckgoReveal & JSXBase.HTMLAttributes<HTMLDeckgoRevealElement>;
+            "deckgo-reveal-list": LocalJSX.DeckgoRevealList & JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement>;
+            "deckgo-social": LocalJSX.DeckgoSocial & JSXBase.HTMLAttributes<HTMLDeckgoSocialElement>;
+            "deckgo-youtube": LocalJSX.DeckgoYoutube & JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement>;
         }
     }
 }

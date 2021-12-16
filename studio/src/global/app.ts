@@ -9,17 +9,12 @@ import '@deckdeckgo/core';
 
 import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/remote';
-import '@deckdeckgo/qrcode';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/math';
 import '@deckdeckgo/lazy-img';
 import '@deckdeckgo/color';
 import '@deckdeckgo/charts';
-import '@deckdeckgo/social';
-import '@deckdeckgo/reveal';
-import '@deckdeckgo/youtube';
 import '@deckdeckgo/drag-resize-rotate';
-import '@deckdeckgo/demo';
 import '@deckdeckgo/word-cloud';
 import '@deckdeckgo/markdown';
 import '@deckdeckgo/laser-pointer';

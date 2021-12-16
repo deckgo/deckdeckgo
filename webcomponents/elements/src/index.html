@@ -7,8 +7,239 @@
 
     <script type="module" src="/build/elements.esm.js"></script>
     <script nomodule src="/build/elements.js"></script>
+
+    <script type="module" src="https://unpkg.com/@deckdeckgo/core@latest/dist/deckdeckgo/deckdeckgo.esm.js"></script>
+
+    <script
+      type="module"
+      src="https://unpkg.com/@deckdeckgo/slide-title@latest/dist/deckdeckgo-slide-title/deckdeckgo-slide-title.esm.js"
+    ></script>
+
+    <script
+      type="module"
+      src="https://unpkg.com/@deckdeckgo/slide-content@latest/dist/deckdeckgo-slide-content/deckdeckgo-slide-content.esm.js"
+    ></script>
   </head>
   <body>
+    <h1>HR</h1>
+
     <deckgo-hr></deckgo-hr>
+
+    <h1>YouTube</h1>
+
+    <p>Instant:</p>
+
+    <deckgo-youtube
+      width="300"
+      height="100"
+      instant="true"
+      src="https://www.youtube.com/embed/Y97mEj9ZYmE"
+      frameTitle="DeckDeckGo editor demo"
+    ></deckgo-youtube>
+
+    <p>Lazy:</p>
+
+    <div slot="actions">
+      <button onclick="loadYoutube()">Load video</button>
+      <button onclick="play()">Play</button>
+      <button onclick="pause()">Pause</button>
+    </div>
+
+    <deckgo-youtube
+      id="youtube"
+      width="300"
+      height="100"
+      src="https://www.youtube.com/embed/PnSNT5WpauE"
+      frameTitle="Interact with your presentation"
+    ></deckgo-youtube>
+
+    <script type="text/javascript">
+      async function loadYoutube() {
+        const elem = document.getElementById('youtube');
+        if (elem) {
+          await elem.lazyLoadContent();
+        }
+      }
+
+      async function play() {
+        const elem = document.getElementById('youtube');
+        if (elem) {
+          await elem.play();
+        }
+      }
+
+      async function pause() {
+        const elem = document.getElementById('youtube');
+        if (elem) {
+          await elem.pause();
+        }
+      }
+    </script>
+
+    <h1>Social</h1>
+
+    <div>
+      <deckgo-social twitter="daviddalbusco">
+        <img slot="icon" alt="DeckDeckGo" src="https://deckdeckgo.com/icons/icon-96x96.png" style="width: 20px; vertical-align: middle" />
+        twitter
+      </deckgo-social>
+    </div>
+    <div><deckgo-social linkedin="david-dal-busco/">linkedin/david-dal-busco</deckgo-social></div>
+    <div><deckgo-social medium="daviddalbusco"></deckgo-social></div>
+    <div><deckgo-social dev="daviddalbusco"></deckgo-social></div>
+    <div><deckgo-social github="peterpeterparker">+daviddalbusco</deckgo-social></div>
+    <div><deckgo-social full-url="https://daviddalbusco.com">https://daviddalbusco.com</deckgo-social></div>
+    <div><deckgo-social full-url="https://www.daviddalbusco.com"></deckgo-social></div>
+    <div style="width: 120px"><deckgo-social id="social-to-update" full-url="https://googlegooglegooglegoogle.com"></deckgo-social></div>
+
+    <div>
+      <button onclick="updateFull()" slot="actions">Update</button>
+    </div>
+
+    <script type="text/javascript">
+      function updateFull() {
+        const elem = document.querySelector('#social-to-update');
+
+        if (elem) {
+          elem.fullUrl = 'https://google.com';
+        }
+      }
+    </script>
+
+    <h1>Reveal</h1>
+
+    <div style="width: 300px; height: 200px; position: relative; display: block; border: 1px solid purple; margin: 32px">
+      <deckgo-deck embedded="true">
+        <deckgo-slide-title>
+          <h1 slot="title">Reveal as slot</h1>
+          <deckgo-reveal slot="content" style="background: red">
+            <p contenteditable="true">
+              Hello World EDITABLE EDITABLE HERE <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            </p>
+
+            <p>
+              Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            </p>
+
+            <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+          </deckgo-reveal>
+        </deckgo-slide-title>
+
+        <deckgo-slide-title>
+          <h1 slot="title">Reveal inside slot</h1>
+          <div slot="content">
+            <deckgo-reveal>
+              <p>
+                Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+                <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+              </p>
+            </deckgo-reveal>
+
+            <deckgo-reveal>
+              <p>
+                Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+                <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+              </p>
+            </deckgo-reveal>
+
+            <p>
+              Hello World <a href="https://ionicframework.com">Ionic</a> 🚀
+              <img data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+            </p>
+          </div>
+        </deckgo-slide-title>
+
+        <deckgo-slide-content>
+          <h1 slot="title">Reveal after element</h1>
+
+          <div slot="content">
+            <deckgo-reveal-list list-tag="ul" style="list-style-type: square; background: yellow" contenteditable="true">
+              <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+              <li><strong>Ionic</strong> components and icons to create your content</li>
+              <li><strong>Style</strong> your presentation quickly</li>
+              <li>Lightweight and <strong>lazy</strong> loaded images</li>
+              <li>Bundles the presentation with an <strong>offline</strong> support</li>
+            </deckgo-reveal-list>
+
+            <deckgo-reveal-list>
+              <li>Use HTML and CSS to create <strong>without effort</strong> your presentation</li>
+              <li><strong>Ionic</strong> components and icons to create your content</li>
+              <li><strong>Style</strong> your presentation quickly</li>
+              <li>Lightweight and <strong>lazy</strong> loaded images</li>
+              <li>Bundles the presentation with an <strong>offline</strong> support</li>
+            </deckgo-reveal-list>
+
+            <deckgo-reveal>
+              <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+
+              <p>
+                <img tag="DeckDeckGo" data-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" style="width: 50px" />
+              </p>
+            </deckgo-reveal>
+          </div>
+        </deckgo-slide-content>
+      </deckgo-deck>
+    </div>
+
+    <h1>Demo</h1>
+
+    <section style="display: flex">
+      <div style="width: 15vw; height: 20vh; overflow: hidden; margin: 16px">
+        <deckgo-demo src="https://deckdeckgo.app" instant="true"></deckgo-demo>
+      </div>
+
+      <div style="width: 15vw; height: 20vh; overflow: hidden; margin: 16px">
+        <deckgo-demo id="demo" src="https://tietracker.com" mode="ios"></deckgo-demo>
+      </div>
+    </section>
+
+    <button onclick="lazyLoad()">Lazy load</button>
+
+    <script type="text/javascript">
+      async function lazyLoad() {
+        const elem = document.getElementById('demo');
+
+        if (elem) {
+          await elem.lazyLoadContent();
+        }
+      }
+    </script>
+
+    <h1>QR Code</h1>
+
+    <deckgo-qrcode content="https://deckdeckgo.com" style="--deckgo-qrcode-size: 300px"></deckgo-qrcode>
+
+    <deckgo-qrcode
+      content="https://deckdeckgo.com"
+      cell-size="14"
+      style="--deckgo-qrcode-background-fill: white; --deckgo-qrcode-color-fill: #3880ff"
+    >
+      <img slot="logo" src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg" />
+    </deckgo-qrcode>
+
+    <deckgo-qrcode content="https://deckdeckgo.com" type="img" cell-size="10" style="--deckgo-qrcode-size: 300px"></deckgo-qrcode>
+
+    <deckgo-qrcode
+      content="https://deckdeckgo.com"
+      style="
+        --deckgo-qrcode-size: 200px;
+        --deckgo-qrcode-border-stroke: green;
+        --deckgo-qrcode-background-fill: yellow;
+        --deckgo-qrcode-color-fill: red;
+      "
+    ></deckgo-qrcode>
+
+    <deckgo-qrcode
+      content="https://deckdeckgo.com"
+      type="img"
+      cell-size="10"
+      img-alt="Hello super"
+      img-fill-color="ff00cc"
+      img-background-color="0055ee"
+      margin="80"
+      style="--deckgo-qrcode-size: 300px"
+    ></deckgo-qrcode>
   </body>
 </html>
