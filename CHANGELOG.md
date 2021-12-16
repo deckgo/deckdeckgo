@@ -10,6 +10,14 @@
 
 - inline-editor: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/inline-editor/CHANGELOG.md)
 
+### Web Components: New
+
+- elements: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md)
+
+### Web Components: Deprecated and moved to `elements`
+
+- youtube
+
 ### Others
 
 - editor: v3.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
