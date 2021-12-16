@@ -2,7 +2,7 @@ import {Component, h, Element, Prop, Method, State, Host, FunctionalComponent} f
 
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
-import {RevealUtils} from '../utils/reveal-utils';
+import {findRevealChildren} from '../utils/reveal-utils';
 
 const RevealNthChild: FunctionalComponent<{index: number}> = ({index}) => {
   if (index === 0) {
@@ -41,7 +41,7 @@ export class Reveal implements DeckDeckGoRevealComponent {
   async reveal() {
     this.visibleIndex++;
 
-    const elements: Node[] = await RevealUtils.findChildren(this.el);
+    const elements: Node[] = findRevealChildren(this.el);
 
     this.revealProgress = elements && elements.length <= this.visibleIndex ? 'end' : 'partial';
   }
@@ -55,7 +55,7 @@ export class Reveal implements DeckDeckGoRevealComponent {
 
   @Method()
   async revealAll() {
-    const elements: Node[] = await RevealUtils.findChildren(this.el);
+    const elements: Node[] = findRevealChildren(this.el);
 
     this.visibleIndex = elements ? elements.length : 0;
 
