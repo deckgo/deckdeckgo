@@ -18,7 +18,8 @@ import {
   findRemovedParagraphs,
   findSelectionParagraphs,
   findAddedNodesParagraphs,
-  findRemovedNodesParagraphs
+  findRemovedNodesParagraphs,
+  findUpdatedParagraphs
 } from '../../../utils/editor/paragraphs.utils';
 import {findParagraph} from '../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
@@ -34,6 +35,7 @@ export class DocUndoRedoEvents {
   private dataObserver: MutationObserver | undefined;
   private treeObserver: MutationObserver | undefined;
   private updateObserver: MutationObserver | undefined;
+  private attributesObserver: MutationObserver | undefined;
 
   private undoInput: UndoRedoDocInput | undefined = undefined;
   private undoUpdateParagraphs: UndoUpdateParagraphs[] = [];
@@ -49,6 +51,7 @@ export class DocUndoRedoEvents {
     this.dataObserver = new MutationObserver(this.onDataMutation);
     this.treeObserver = new MutationObserver(this.onTreeMutation);
     this.updateObserver = new MutationObserver(this.onUpdateMutation);
+    this.attributesObserver = new MutationObserver(this.onAttributesMutation);
 
     this.observe();
 
@@ -196,13 +199,15 @@ export class DocUndoRedoEvents {
   private observe() {
     this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
     this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
-    this.updateObserver.observe(this.containerRef, {childList: true, subtree: true, attributes: true});
+    this.updateObserver.observe(this.containerRef, {childList: true, subtree: true});
+    this.attributesObserver.observe(this.containerRef, {attributes: true, subtree: true});
   }
 
   private disconnect() {
     this.treeObserver.disconnect();
     this.dataObserver.disconnect();
     this.updateObserver.disconnect();
+    this.attributesObserver.disconnect();
   }
 
   private onSelectionChange = () => {
@@ -211,9 +216,18 @@ export class DocUndoRedoEvents {
 
   // Copy current paragraphs value to a local state so we can add it to the undo redo global store in case of modifications
   private copySelectedParagraphs() {
-    const paragraphs: HTMLElement[] = findSelectionParagraphs({container: this.containerRef});
+    const paragraphs: HTMLElement[] | undefined = findSelectionParagraphs({container: this.containerRef});
 
-    this.undoUpdateParagraphs = paragraphs.map((paragraph: HTMLElement) => ({
+    if (!paragraphs) {
+      return;
+    }
+
+    this.undoUpdateParagraphs = this.toUpdateParagraphs(paragraphs);
+    this.undoInput = undefined;
+  }
+
+  private toUpdateParagraphs(paragraphs: HTMLElement[]): UndoUpdateParagraphs[] {
+    return paragraphs.map((paragraph: HTMLElement) => ({
       outerHTML: paragraph.outerHTML,
       index: elementIndex(paragraph),
       paragraph
@@ -313,7 +327,24 @@ export class DocUndoRedoEvents {
       container: this.containerRef
     });
 
-    this.undoUpdateParagraphs = [];
-    this.undoInput = undefined;
+    this.copySelectedParagraphs();
+  };
+
+  private onAttributesMutation = async (mutations: MutationRecord[]) => {
+    const updateParagraphs: HTMLElement[] = findUpdatedParagraphs({
+      mutations: mutations.filter(({attributeName}: MutationRecord) => ['style'].includes(attributeName)),
+      container: this.containerRef
+    });
+
+    if (updateParagraphs.length <= 0) {
+      return;
+    }
+
+    stackUndoUpdate({
+      paragraphs: this.undoUpdateParagraphs,
+      container: this.containerRef
+    });
+
+    this.copySelectedParagraphs();
   };
 }

@@ -355,6 +355,8 @@ export class DocDataEvents {
 
     const content: string[] = this.toParagraphContent(paragraph);
 
+    // TODO: save attribute style
+
     if (content && content.length > 0) {
       paragraphUpdate.data.children = content;
     } else {
