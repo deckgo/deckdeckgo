@@ -223,7 +223,6 @@ export class DocUndoRedoEvents {
     }
 
     this.undoUpdateParagraphs = this.toUpdateParagraphs(paragraphs);
-    this.undoInput = undefined;
   }
 
   private toUpdateParagraphs(paragraphs: HTMLElement[]): UndoUpdateParagraphs[] {
