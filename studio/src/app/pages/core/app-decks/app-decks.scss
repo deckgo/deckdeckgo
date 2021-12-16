@@ -3,7 +3,7 @@
 @use "../../../../global/theme/mixins/page";
 
 app-decks {
-  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+  @import "node_modules/@deckdeckgo/styles/css/deck";
 
   main {
     @include page.input-colors;

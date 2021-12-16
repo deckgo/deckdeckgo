@@ -20,7 +20,7 @@ export class AppSlotType {
   skip: boolean = false;
 
   @Prop()
-  slotTypes: SlotType[] | undefined;
+  slotTypes: SlotType[] | undefined = Object.keys(SlotType).map((key: string) => SlotType[key]);
 
   @State()
   private currentType: SlotType;
@@ -114,14 +114,21 @@ export class AppSlotType {
 
         {this.renderComplexTypes()}
 
+        {this.renderSlot(
+          SlotType.HR,
+          <Fragment>
+            <AppIcon name="ellipsis-horizontal" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
+            <ion-label>{i18n.state.editor.separator}</ion-label>
+          </Fragment>
+        )}
+
         {this.renderSkip()}
       </ion-list>
     );
   }
 
   private renderSlot(slotType: SlotType, item: JSX.IntrinsicElements) {
-    // User or community slides might limits which slot types can be used in the slide
-    if (this.slotTypes !== undefined && this.slotTypes.find((type: SlotType) => slotType === type) === undefined) {
+    if (this.slotTypes.find((type: SlotType) => slotType === type) === undefined) {
       return undefined;
     }
 

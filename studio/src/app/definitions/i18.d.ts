@@ -181,6 +181,7 @@ interface I18nEditor {
   large_title: string;
   small_title: string;
   paragraph: string;
+  separator: string;
   skip: string;
   list: string;
   list_style: string;

@@ -5,6 +5,7 @@ export enum SlotType {
   H3 = 'h3',
   OL = 'ol',
   UL = 'ul',
+  HR = 'deckgo-hr',
   IMG = 'deckgo-lazy-img',
   CODE = 'deckgo-highlight-code',
   SOCIAL = 'deckgo-social',

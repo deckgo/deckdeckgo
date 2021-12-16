@@ -1,0 +1,165 @@
+// Font weight
+
+deckgo-doc h1,
+deckgo-doc h2,
+deckgo-doc h3 {
+  font-weight: 700;
+}
+
+deckgo-doc h4,
+deckgo-doc h5,
+deckgo-doc h6,
+deckgo-doc strong {
+  font-weight: 500;
+}
+
+deckgo-doc h1,
+deckgo-doc h2,
+deckgo-doc h3,
+deckgo-doc h4,
+deckgo-doc h5,
+deckgo-doc h6,
+deckgo-doc strong {
+  * {
+    font-weight: inherit;
+  }
+}
+
+deckgo-doc a {
+  font-weight: inherit;
+  font-size: inherit;
+  color: inherit;
+  text-decoration: underline;
+}
+
+// Font size
+
+deckgo-doc h1 {
+  font-size: 3em;
+}
+
+deckgo-doc h2 {
+  font-size: 2em;
+}
+
+deckgo-doc h3 {
+  font-size: 1.4em;
+}
+
+deckgo-doc * {
+  font-size: 1em;
+}
+
+deckgo-doc li {
+  font-size: inherit;
+}
+
+@media screen and (max-width: 768px) {
+  deckgo-doc div,
+  deckgo-doc section,
+  deckgo-doc ol,
+  deckgo-doc ul {
+    font-size: 1.4em;
+  }
+}
+
+// Code
+
+deckgo-doc deckgo-highlight-code {
+  --deckgo-highlight-code-font-family: Menlo, monospace;
+  --deckgo-highlight-code-scroll: auto;
+  --deckgo-highlight-code-font-size: 0.8em;
+}
+
+// Font size if user modify sizes inside elements
+
+deckgo-doc font {
+  display: inline-block;
+  max-width: 100%;
+
+  &[size="1"] {
+    font-size: 0.25em;
+  }
+
+  &[size="2"] {
+    font-size: 0.5em;
+  }
+
+  &[size="3"] {
+    font-size: 0.75em;
+  }
+
+  &[size="4"] {
+    font-size: 1em;
+  }
+
+  &[size="5"] {
+    font-size: 1.25em;
+  }
+
+  &[size="6"] {
+    font-size: 1.75em;
+  }
+
+  &[size="7"] {
+    font-size: 2em;
+  }
+
+  @media (max-width: 768px) {
+    &[size="5"] {
+      font-size: 1.1em;
+    }
+
+    &[size="6"] {
+      font-size: 1.25em;
+    }
+
+    &[size="7"] {
+      font-size: 1.5em;
+    }
+  }
+}
+
+deckgo-doc {
+  span[style*="font-size: x-small"] {
+    font-size: 0.25em !important;
+  }
+
+  span[style*="font-size: small"] {
+    font-size: 0.5em !important;
+  }
+
+  span[style*="font-size: medium"] {
+    font-size: 0.75em !important;
+  }
+
+  span[style*="font-size: large"] {
+    font-size: 1em !important;
+  }
+
+  span[style*="font-size: x-large"] {
+    font-size: 1.25em !important;
+  }
+
+  span[style*="font-size: xx-large"] {
+    font-size: 1.75em !important;
+  }
+
+  span[style*="font-size: xxx-large"] {
+    font-size: 2em !important;
+  }
+
+  @media (max-width: 768px) {
+    &[size="5"] {
+      font-size: 1.1em !important;
+    }
+
+    &[size="6"] {
+      font-size: 1.25em !important;
+    }
+
+    span[style*="font-size: xxx-large"] {
+      font-size: 1.5em !important;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+hr {
+  /**
+   * @prop --hr-height: height of the component
+   * @default 4em
+   */
+  height: var(--hr-height, 4em);
+  margin: 0 auto;
+  overflow: visible;
+  position: relative;
+  display: block;
+  border: none;
+  outline: none;
+
+  &:before {
+    content: "...";
+    display: inline-block;
+    /**
+     * @prop --hr-color: color
+     * @default #6e6d6f
+     */
+    color: var(--hr-color, #6e6d6f);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /**
+     * @prop --hr-font-size: font size of the hr :before content
+     * @default 1.6rem
+     */
+    font-size: var(--hr-font-size, 1.6rem);
+    /**
+     * @prop --hr-margin-top: margin-top of the hr :before
+     * @default -0.25em
+     */
+    margin-top: var(--hr-margin-top, -0.25em);
+    /**
+     * @prop --hr-margin-left: margin-left of the hr :before
+     * @default 0.6em
+     */
+    margin-left: var(--hr-margin-left, 0.6em);
+    /**
+     * @prop --hr-letter-spacing: letter spacing of the hr :before content
+     * @default 0.6em
+     */
+    letter-spacing: var(--hr-letter-spacing, 0.6em);
+  }
+}

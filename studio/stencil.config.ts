@@ -49,9 +49,7 @@ export const config: Config = {
       delimiters: ['<@', '@>'],
       values: configValues
     }),
-    sass({
-      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
-    }),
+    sass(),
     postcss({
       plugins: [autoprefixer()]
     })

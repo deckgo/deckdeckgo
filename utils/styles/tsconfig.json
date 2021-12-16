@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["../../node_modules/@types"],
+    "outDir": "lib"
+  },
+  "extends": "../tsconfig.json",
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

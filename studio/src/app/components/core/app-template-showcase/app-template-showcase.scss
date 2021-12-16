@@ -2,7 +2,7 @@
 @use "../../../../global/theme/mixins/dashboard";
 
 app-template-showcase {
-  @import "node_modules/@deckdeckgo/deck-utils/css/deck";
+  @import "node_modules/@deckdeckgo/styles/css/deck";
 
   article {
     position: relative;
