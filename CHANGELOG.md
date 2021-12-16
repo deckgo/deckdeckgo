@@ -22,9 +22,14 @@
 - demo
 - qrcode
 
+### Others: New
+
+- styles: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/styles/CHANGELOG.md))
+
 ### Others
 
-- editor: v3.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- deck-utils: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
+- editor: v3.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - utils: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.1.0"></a>

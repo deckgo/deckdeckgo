@@ -36,3 +36,4 @@ export * from './utils/node.utils';
 export * from './utils/publish.utils';
 export * from './utils/script.utils';
 export * from './utils/fonts.utils';
+export * from './utils/style.utils';

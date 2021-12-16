@@ -8,7 +8,7 @@
 
 # DeckDeckGo - Deck utils
 
-Styles for the [DeckDeckGo] documents.
+Styles for [DeckDeckGo] documents.
 
 ## License
 

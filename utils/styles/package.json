@@ -2,7 +2,7 @@
   "name": "@deckdeckgo/styles",
   "version": "1.0.0",
   "author": "David Dal Busco",
-  "description": "Styles for the DeckDeckGo documents",
+  "description": "Styles for DeckDeckGo documents",
   "license": "MIT",
   "repository": {
     "type": "git",
