@@ -19,6 +19,7 @@
 - youtube
 - social
 - reveal
+- demo
 
 ### Others
 
