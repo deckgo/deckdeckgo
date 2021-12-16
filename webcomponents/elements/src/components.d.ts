@@ -6,6 +6,32 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface DeckgoDemo {
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle": string;
+        /**
+          * In case you would like to load the frame as soon as the component is loaded
+         */
+        "instant": boolean;
+        /**
+          * Lazy load the iframe
+         */
+        "lazyLoadContent": () => Promise<void>;
+        /**
+          * The type of device frame. md for Android, ios for iPhone
+         */
+        "mode": string;
+        /**
+          * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+         */
+        "src": string;
+        /**
+          * Refresh iframe size and reload content
+         */
+        "updateIFrame": () => Promise<void>;
+    }
     interface DeckgoHr {
     }
     interface DeckgoReveal {
@@ -96,6 +122,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLDeckgoDemoElement extends Components.DeckgoDemo, HTMLStencilElement {
+    }
+    var HTMLDeckgoDemoElement: {
+        prototype: HTMLDeckgoDemoElement;
+        new (): HTMLDeckgoDemoElement;
+    };
     interface HTMLDeckgoHrElement extends Components.DeckgoHr, HTMLStencilElement {
     }
     var HTMLDeckgoHrElement: {
@@ -127,6 +159,7 @@ declare global {
         new (): HTMLDeckgoYoutubeElement;
     };
     interface HTMLElementTagNameMap {
+        "deckgo-demo": HTMLDeckgoDemoElement;
         "deckgo-hr": HTMLDeckgoHrElement;
         "deckgo-reveal": HTMLDeckgoRevealElement;
         "deckgo-reveal-list": HTMLDeckgoRevealListElement;
@@ -135,6 +168,24 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface DeckgoDemo {
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle"?: string;
+        /**
+          * In case you would like to load the frame as soon as the component is loaded
+         */
+        "instant"?: boolean;
+        /**
+          * The type of device frame. md for Android, ios for iPhone
+         */
+        "mode"?: string;
+        /**
+          * The source Url of your application or website. This will be used as src attribute of the encapsulated iframe
+         */
+        "src"?: string;
+    }
     interface DeckgoHr {
     }
     interface DeckgoReveal {
@@ -197,6 +248,7 @@ declare namespace LocalJSX {
         "width"?: number;
     }
     interface IntrinsicElements {
+        "deckgo-demo": DeckgoDemo;
         "deckgo-hr": DeckgoHr;
         "deckgo-reveal": DeckgoReveal;
         "deckgo-reveal-list": DeckgoRevealList;
@@ -208,6 +260,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "deckgo-demo": LocalJSX.DeckgoDemo & JSXBase.HTMLAttributes<HTMLDeckgoDemoElement>;
             "deckgo-hr": LocalJSX.DeckgoHr & JSXBase.HTMLAttributes<HTMLDeckgoHrElement>;
             "deckgo-reveal": LocalJSX.DeckgoReveal & JSXBase.HTMLAttributes<HTMLDeckgoRevealElement>;
             "deckgo-reveal-list": LocalJSX.DeckgoRevealList & JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement>;

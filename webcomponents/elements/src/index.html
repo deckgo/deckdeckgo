@@ -182,5 +182,29 @@
         </deckgo-slide-content>
       </deckgo-deck>
     </div>
+
+    <h1>Demo</h1>
+
+    <section style="display: flex">
+      <div style="width: 15vw; height: 20vh; overflow: hidden; margin: 16px">
+        <deckgo-demo src="https://deckdeckgo.app" instant="true"></deckgo-demo>
+      </div>
+
+      <div style="width: 15vw; height: 20vh; overflow: hidden; margin: 16px">
+        <deckgo-demo id="demo" src="https://tietracker.com" mode="ios"></deckgo-demo>
+      </div>
+    </section>
+
+    <button onclick="lazyLoad()">Lazy load</button>
+
+    <script type="text/javascript">
+      async function lazyLoad() {
+        const elem = document.getElementById('demo');
+
+        if (elem) {
+          await elem.lazyLoadContent();
+        }
+      }
+    </script>
   </body>
 </html>
