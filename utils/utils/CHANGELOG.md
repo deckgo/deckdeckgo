@@ -1,3 +1,9 @@
+# 3.1.0 (2021-12-16)
+
+### Features
+
+- new function `moveCursorToOffset`
+
 # 3.0.0 (2021-12-10)
 
 ### Breaking Changes
