@@ -19,13 +19,13 @@
   },
   "homepage": "https://docs.deckdeckgo.com",
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@storybook/addon-actions": "^6.3.8",
-    "@storybook/addon-docs": "^6.3.8",
-    "@storybook/addon-essentials": "^6.3.8",
-    "@storybook/addon-links": "^6.3.8",
-    "@storybook/html": "^6.3.8",
-    "@storybook/theming": "^6.3.8",
-    "babel-loader": "^8.2.2"
+    "@babel/core": "^7.16.5",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-docs": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/html": "^6.4.9",
+    "@storybook/theming": "^6.4.9",
+    "babel-loader": "^8.2.3"
   }
 }
