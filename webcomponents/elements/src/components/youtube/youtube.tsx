@@ -1,13 +1,11 @@
-import {Component, Element, Method, Host, Prop, h, Watch, State} from '@stencil/core';
-
-import type {DeckdeckgoComponent} from '@deckdeckgo/slide-utils';
+import {Component, Element, Method, Host, Prop, h, Watch, State, ComponentInterface} from '@stencil/core';
 
 @Component({
   tag: 'deckgo-youtube',
   styleUrl: 'youtube.scss',
   shadow: true
 })
-export class Youtube implements DeckdeckgoComponent {
+export class Youtube implements ComponentInterface {
   @Element() el: HTMLElement;
 
   /**
@@ -51,14 +49,16 @@ export class Youtube implements DeckdeckgoComponent {
   @State()
   private loaded: boolean = false;
 
-  async componentWillLoad() {
-    await this.addPreconnectLink();
+  componentWillLoad() {
+    this.addPreconnectLink();
   }
 
-  async componentDidLoad() {
-    if (this.instant) {
-      await this.lazyLoadContent();
+  componentDidLoad() {
+    if (!this.instant) {
+      return;
     }
+
+    this.lazyLoadContent().then(() => {});
   }
 
   /**
@@ -93,41 +93,35 @@ export class Youtube implements DeckdeckgoComponent {
    * Play the video
    */
   @Method()
-  play(): Promise<void> {
-    return this.playPauseVideo(true);
+  async play() {
+    this.playPauseVideo(true);
   }
 
   /**
    * Pause the video
    */
   @Method()
-  pause(): Promise<void> {
-    return this.playPauseVideo(false);
+  async pause() {
+    this.playPauseVideo(false);
   }
 
-  private addPreconnectLink(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!this.src || !document) {
-        resolve();
-        return;
-      }
+  private addPreconnectLink() {
+    if (!this.src || !document) {
+      return;
+    }
 
-      const links: NodeListOf<HTMLElement> = document.head.querySelectorAll("link[rel='preconnect'][youtube]");
+    const links: NodeListOf<HTMLElement> = document.head.querySelectorAll("link[rel='preconnect'][youtube]");
 
-      if (links && links.length > 0) {
-        resolve();
-        return;
-      }
+    if (links && links.length > 0) {
+      return;
+    }
 
-      const link: HTMLLinkElement = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = 'https://www.youtube.com';
-      link.setAttribute('youtube', '');
+    const link: HTMLLinkElement = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = 'https://www.youtube.com';
+    link.setAttribute('youtube', '');
 
-      document.head.appendChild(link);
-
-      resolve();
-    });
+    document.head.appendChild(link);
   }
 
   private createIFrame(): Promise<void> {
@@ -168,7 +162,7 @@ export class Youtube implements DeckdeckgoComponent {
         this.setAttributeNode(element, allowFullScreen);
       }
 
-      let src: string = await this.formatSrc();
+      let src: string = this.formatSrc();
 
       if (!this.allowFullscreen) {
         // Not auto fullscreen on iOS: https://developers.google.com/youtube/player_parameters
@@ -209,81 +203,66 @@ export class Youtube implements DeckdeckgoComponent {
     }
   }
 
-  private formatSrc(): Promise<string> {
-    return new Promise<string>(async (resolve) => {
-      // Direct URL can't be embedded, like https://www.youtube.com/watch?v=oUOjJIfPIjw or https://youtu.be/e63Cgln6Yag
-      const videoId: string = await this.findVideoId();
+  private formatSrc(): string {
+    // Direct URL can't be embedded, like https://www.youtube.com/watch?v=oUOjJIfPIjw or https://youtu.be/e63Cgln6Yag
+    const videoId: string = this.findVideoId();
 
-      if (videoId) {
-        // In such a case return a link which could be embedded
-        resolve('https://www.youtube.com/embed/' + videoId + '?enablejsapi=1');
-      } else {
-        // Otherwise we try the provided url
+    if (videoId) {
+      // In such a case return a link which could be embedded
+      return 'https://www.youtube.com/embed/' + videoId + '?enablejsapi=1';
+    } else {
+      // Otherwise we try the provided url
 
-        if (!this.src) {
-          resolve(this.src);
-          return;
-        }
-
-        // But first, if an embed link, like https://www.youtube.com/embed/PnSNT5WpauE, would be passed, a parameter to enable js should be added otherwise play and pause could not be triggered
-        // Therefore we add enablejsapi if needed in any case
-
-        const url: URL = new URL(this.src);
-
-        if (!url.searchParams.get('enablejsapi')) {
-          url.searchParams.append('enablejsapi', '1');
-        }
-
-        resolve(url.href);
+      if (!this.src) {
+        return this.src;
       }
-    });
+
+      // But first, if an embed link, like https://www.youtube.com/embed/PnSNT5WpauE, would be passed, a parameter to enable js should be added otherwise play and pause could not be triggered
+      // Therefore we add enablejsapi if needed in any case
+
+      const url: URL = new URL(this.src);
+
+      if (!url.searchParams.get('enablejsapi')) {
+        url.searchParams.append('enablejsapi', '1');
+      }
+
+      return url.href;
+    }
   }
 
-  private findVideoId(): Promise<string> {
-    return new Promise<string>((resolve) => {
-      const url: URL = new URL(this.src);
-      let videoId: string = url.searchParams.get('v');
+  private findVideoId(): string {
+    const url: URL = new URL(this.src);
+    let videoId: string = url.searchParams.get('v');
 
-      if (!videoId) {
-        const host: string = url.host;
-        if (host === 'youtu.be') {
-          // For shortened url
-          const pathname: string = url.pathname;
+    if (!videoId) {
+      const host: string = url.host;
+      if (host === 'youtu.be') {
+        // For shortened url
+        const pathname: string = url.pathname;
 
-          if (pathname) {
-            const split: string[] = url.pathname.split('/');
+        if (pathname) {
+          const split: string[] = url.pathname.split('/');
 
-            if (split && split.length >= 2) {
-              videoId = url.pathname.split('/')[1];
-            }
+          if (split && split.length >= 2) {
+            videoId = url.pathname.split('/')[1];
           }
         }
       }
+    }
 
-      resolve(videoId);
-    });
+    return videoId;
   }
 
-  private playPauseVideo(play: boolean): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      const iframe: HTMLIFrameElement = this.el.shadowRoot.querySelector('iframe');
-
-      if (!iframe) {
-        resolve();
-        return;
-      }
-
-      iframe.contentWindow.postMessage(
-        JSON.stringify({
-          event: 'command',
-          func: play ? 'playVideo' : 'pauseVideo',
-          args: ''
-        }),
-        '*'
-      );
-
-      resolve();
-    });
+  private playPauseVideo(play: boolean) {
+    const iframe: HTMLIFrameElement | null = this.el.shadowRoot.querySelector('iframe');
+    iframe?.contentWindow.postMessage(
+      JSON.stringify({
+        event: 'command',
+        func: play ? 'playVideo' : 'pauseVideo',
+        args: []
+      }),
+      '*'
+    );
   }
 
   render() {
