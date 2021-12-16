@@ -2,11 +2,11 @@ import firebase from 'firebase/app';
 import '@firebase/auth';
 import 'firebase/firestore';
 
-import {Deck, DeckMetaAuthor, Publish, UserSocial, PublishUrl} from '@deckdeckgo/editor';
+import {Deck, Author, DeckPublish, UserSocial, PublishUrl, DocPublish, Doc} from '@deckdeckgo/editor';
 
 import {updateDeck} from '../data/deck.firebase';
 
-export const publish: Publish = async ({deck: deckSource, config}: {deck: Deck; config: Record<string, string>}): Promise<Deck> => {
+export const deckPublish: DeckPublish = async ({deck: deckSource, config}: {deck: Deck; config: Record<string, string>}): Promise<Deck> => {
   // 1. Update deck meta information
   const deck: Deck = await updateDeckMeta(deckSource);
 
@@ -14,6 +14,10 @@ export const publish: Publish = async ({deck: deckSource, config}: {deck: Deck; 
   await publishDeck({deck, config});
 
   return deck;
+};
+
+export const docPublish: DocPublish = async (_params: {doc: Doc}): Promise<Doc> => {
+  throw new Error('Publish operation not supported.');
 };
 
 export const publishUrl: PublishUrl = async () => 'https://beta.deckdeckgo.io';
@@ -40,15 +44,15 @@ const cleanDeckMeta = (deckSource: Deck): Deck => {
   }
 
   if (deck.data.meta.author === null) {
-    deck.data.meta.author = firebase.firestore.FieldValue.delete() as unknown as DeckMetaAuthor;
+    deck.data.meta.author = firebase.firestore.FieldValue.delete() as unknown as Author;
   } else if (deck.data.meta.author.social === null) {
-    (deck.data.meta.author as DeckMetaAuthor).social = firebase.firestore.FieldValue.delete() as unknown as UserSocial;
+    (deck.data.meta.author as Author).social = firebase.firestore.FieldValue.delete() as unknown as UserSocial;
   } else {
-    (deck.data.meta.author as DeckMetaAuthor).social = Object.keys((deck.data.meta.author as DeckMetaAuthor).social).reduce(
+    (deck.data.meta.author as Author).social = Object.keys((deck.data.meta.author as Author).social).reduce(
       (acc: UserSocial, key: string) => {
         acc[key] =
-          (deck.data.meta.author as DeckMetaAuthor).social[key] !== null
-            ? (deck.data.meta.author as DeckMetaAuthor).social[key]
+          (deck.data.meta.author as Author).social[key] !== null
+            ? (deck.data.meta.author as Author).social[key]
             : firebase.firestore.FieldValue.delete();
         return acc;
       },
