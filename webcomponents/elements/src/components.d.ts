@@ -8,6 +8,50 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoHr {
     }
+    interface DeckgoYoutube {
+        /**
+          * Allow option to toggle video in full screen
+         */
+        "allowFullscreen": boolean;
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle": string;
+        /**
+          * The height of the video player
+         */
+        "height": number;
+        /**
+          * In case you would like to load the video as soon as the component is loaded
+         */
+        "instant": boolean;
+        /**
+          * Lazy load the video
+         */
+        "lazyLoadContent": () => Promise<void>;
+        /**
+          * Pause the video
+         */
+        "pause": () => Promise<void>;
+        /**
+          * Play the video
+         */
+        "play": () => Promise<void>;
+        /**
+          * The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube
+         */
+        "src": string;
+        /**
+          * Update the iFrame, the video, size
+          * @param width
+          * @param height
+         */
+        "updateIFrame": (width: number, height: number) => Promise<void>;
+        /**
+          * The width of the video player
+         */
+        "width": number;
+    }
 }
 declare global {
     interface HTMLDeckgoHrElement extends Components.DeckgoHr, HTMLStencilElement {
@@ -16,15 +60,49 @@ declare global {
         prototype: HTMLDeckgoHrElement;
         new (): HTMLDeckgoHrElement;
     };
+    interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {
+    }
+    var HTMLDeckgoYoutubeElement: {
+        prototype: HTMLDeckgoYoutubeElement;
+        new (): HTMLDeckgoYoutubeElement;
+    };
     interface HTMLElementTagNameMap {
         "deckgo-hr": HTMLDeckgoHrElement;
+        "deckgo-youtube": HTMLDeckgoYoutubeElement;
     }
 }
 declare namespace LocalJSX {
     interface DeckgoHr {
     }
+    interface DeckgoYoutube {
+        /**
+          * Allow option to toggle video in full screen
+         */
+        "allowFullscreen"?: boolean;
+        /**
+          * A title for the frame, could be use for accessibility reason
+         */
+        "frameTitle"?: string;
+        /**
+          * The height of the video player
+         */
+        "height"?: number;
+        /**
+          * In case you would like to load the video as soon as the component is loaded
+         */
+        "instant"?: boolean;
+        /**
+          * The source url, the YouTube url, of the video. Not embeddable url will be automatically converted to embeddable url supported by YouTube
+         */
+        "src"?: string;
+        /**
+          * The width of the video player
+         */
+        "width"?: number;
+    }
     interface IntrinsicElements {
         "deckgo-hr": DeckgoHr;
+        "deckgo-youtube": DeckgoYoutube;
     }
 }
 export { LocalJSX as JSX };
@@ -32,6 +110,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-hr": LocalJSX.DeckgoHr & JSXBase.HTMLAttributes<HTMLDeckgoHrElement>;
+            "deckgo-youtube": LocalJSX.DeckgoYoutube & JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement>;
         }
     }
 }

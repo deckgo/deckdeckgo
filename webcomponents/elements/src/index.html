@@ -9,6 +9,59 @@
     <script nomodule src="/build/elements.js"></script>
   </head>
   <body>
+    <h1>HR</h1>
+
     <deckgo-hr></deckgo-hr>
+
+    <h1>YouTube</h1>
+
+    <p>Instant:</p>
+
+    <deckgo-youtube
+      width="300"
+      height="100"
+      instant="true"
+      src="https://www.youtube.com/embed/Y97mEj9ZYmE"
+      frameTitle="DeckDeckGo editor demo"
+    ></deckgo-youtube>
+
+    <p>Lazy:</p>
+
+    <div slot="actions">
+      <button onclick="loadYoutube()">Load video</button>
+      <button onclick="play()">Play</button>
+      <button onclick="pause()">Pause</button>
+    </div>
+
+    <deckgo-youtube
+      id="youtube"
+      width="300"
+      height="100"
+      src="https://www.youtube.com/embed/PnSNT5WpauE"
+      frameTitle="Interact with your presentation"
+    ></deckgo-youtube>
+
+    <script type="text/javascript">
+      async function loadYoutube() {
+        const elem = document.getElementById('youtube');
+        if (elem) {
+          await elem.lazyLoadContent();
+        }
+      }
+
+      async function play() {
+        const elem = document.getElementById('youtube');
+        if (elem) {
+          await elem.play();
+        }
+      }
+
+      async function pause() {
+        const elem = document.getElementById('youtube');
+        if (elem) {
+          await elem.pause();
+        }
+      }
+    </script>
   </body>
 </html>
