@@ -8,6 +8,33 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoHr {
     }
+    interface DeckgoSocial {
+        /**
+          * Your Dev username. It will be concatenated automatically with https://dev.to/
+         */
+        "dev": string;
+        /**
+          * In case you would like to provide the URI of your choice
+         */
+        "fullUrl": string;
+        /**
+          * Your Github username. It will be concatenated automatically with https://github.com/
+         */
+        "github": string;
+        "lazyLoadContent": () => Promise<void>;
+        /**
+          * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+         */
+        "linkedin": string;
+        /**
+          * Your Medium username. username will be replaced automatically from https://username.medium.com/
+         */
+        "medium": string;
+        /**
+          * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+         */
+        "twitter": string;
+    }
     interface DeckgoYoutube {
         /**
           * Allow option to toggle video in full screen
@@ -60,6 +87,12 @@ declare global {
         prototype: HTMLDeckgoHrElement;
         new (): HTMLDeckgoHrElement;
     };
+    interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {
+    }
+    var HTMLDeckgoSocialElement: {
+        prototype: HTMLDeckgoSocialElement;
+        new (): HTMLDeckgoSocialElement;
+    };
     interface HTMLDeckgoYoutubeElement extends Components.DeckgoYoutube, HTMLStencilElement {
     }
     var HTMLDeckgoYoutubeElement: {
@@ -68,11 +101,38 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "deckgo-hr": HTMLDeckgoHrElement;
+        "deckgo-social": HTMLDeckgoSocialElement;
         "deckgo-youtube": HTMLDeckgoYoutubeElement;
     }
 }
 declare namespace LocalJSX {
     interface DeckgoHr {
+    }
+    interface DeckgoSocial {
+        /**
+          * Your Dev username. It will be concatenated automatically with https://dev.to/
+         */
+        "dev"?: string;
+        /**
+          * In case you would like to provide the URI of your choice
+         */
+        "fullUrl"?: string;
+        /**
+          * Your Github username. It will be concatenated automatically with https://github.com/
+         */
+        "github"?: string;
+        /**
+          * Your Linkedin username. It will be concatenated automatically with https://www.linkedin.com/in/
+         */
+        "linkedin"?: string;
+        /**
+          * Your Medium username. username will be replaced automatically from https://username.medium.com/
+         */
+        "medium"?: string;
+        /**
+          * Your Twitter username. It will be concatenated automatically with https://twitter.com/
+         */
+        "twitter"?: string;
     }
     interface DeckgoYoutube {
         /**
@@ -102,6 +162,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "deckgo-hr": DeckgoHr;
+        "deckgo-social": DeckgoSocial;
         "deckgo-youtube": DeckgoYoutube;
     }
 }
@@ -110,6 +171,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-hr": LocalJSX.DeckgoHr & JSXBase.HTMLAttributes<HTMLDeckgoHrElement>;
+            "deckgo-social": LocalJSX.DeckgoSocial & JSXBase.HTMLAttributes<HTMLDeckgoSocialElement>;
             "deckgo-youtube": LocalJSX.DeckgoYoutube & JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement>;
         }
     }
