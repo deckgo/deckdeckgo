@@ -32,7 +32,7 @@ interface UndoUpdateParagraphs extends UndoRedoDocUpdateParagraph {
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
 
-  private dataObserver: MutationObserver | undefined;
+  private inputObserver: MutationObserver | undefined;
   private treeObserver: MutationObserver | undefined;
   private updateObserver: MutationObserver | undefined;
   private attributesObserver: MutationObserver | undefined;
@@ -48,7 +48,7 @@ export class DocUndoRedoEvents {
     this.undoInput = undefined;
     this.undoUpdateParagraphs = [];
 
-    this.dataObserver = new MutationObserver(this.onDataMutation);
+    this.inputObserver = new MutationObserver(this.onCharacterDataMutation);
     this.treeObserver = new MutationObserver(this.onTreeMutation);
     this.updateObserver = new MutationObserver(this.onUpdateMutation);
     this.attributesObserver = new MutationObserver(this.onAttributesMutation);
@@ -198,14 +198,14 @@ export class DocUndoRedoEvents {
 
   private observe() {
     this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
-    this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
+    this.inputObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
     this.updateObserver.observe(this.containerRef, {childList: true, subtree: true});
     this.attributesObserver.observe(this.containerRef, {attributes: true, subtree: true});
   }
 
   private disconnect() {
     this.treeObserver.disconnect();
-    this.dataObserver.disconnect();
+    this.inputObserver.disconnect();
     this.updateObserver.disconnect();
     this.attributesObserver.disconnect();
   }
@@ -233,7 +233,7 @@ export class DocUndoRedoEvents {
     }));
   }
 
-  private onDataMutation = (mutations: MutationRecord[]) => {
+  private onCharacterDataMutation = (mutations: MutationRecord[]) => {
     if (!this.undoInput) {
       const mutation: MutationRecord = mutations[0];
 
