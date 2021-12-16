@@ -1,4 +1,4 @@
-import {Deck, DeckMetaAuthor, UserSocial, Publish, PublishUrl} from '@deckdeckgo/editor';
+import {Deck, Author, UserSocial, DeckPublish, PublishUrl} from '@deckdeckgo/editor';
 
 import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
@@ -59,11 +59,11 @@ export const publishUrl = async (deck: Deck | null): Promise<string> => {
 };
 
 const publishDeck = async (deck: Deck): Promise<Deck> => {
-  const {publish}: {publish: Publish} = await cloudProvider<{publish: Publish}>();
+  const {deckPublish}: {deckPublish: DeckPublish} = await cloudProvider<{deckPublish: DeckPublish}>();
 
   const firebaseConfig: Record<string, string> = EnvironmentConfigService.getInstance().get('firebase');
 
-  return publish({deck, config: firebaseConfig});
+  return deckPublish({deck, config: firebaseConfig});
 };
 
 const updateDeckMeta = ({name, description, tags, github}: {name: string; description: string; tags: string[]; github: boolean}): Deck => {
@@ -105,30 +105,27 @@ const updateDeckMeta = ({name, description, tags, github}: {name: string; descri
         name: userStore.state.user.data.name
       };
     } else {
-      (deck.data.meta.author as DeckMetaAuthor).name = userStore.state.user.data.name;
+      (deck.data.meta.author as Author).name = userStore.state.user.data.name;
     }
 
     if (userStore.state.user.data.bio) {
-      (deck.data.meta.author as DeckMetaAuthor).bio = userStore.state.user.data.bio;
+      (deck.data.meta.author as Author).bio = userStore.state.user.data.bio;
     }
 
     if (userStore.state.user.data.photo_url) {
-      (deck.data.meta.author as DeckMetaAuthor).photo_url = userStore.state.user.data.photo_url;
+      (deck.data.meta.author as Author).photo_url = userStore.state.user.data.photo_url;
     }
 
     if (userStore.state.user.data.social) {
-      (deck.data.meta.author as DeckMetaAuthor).social = Object.keys(userStore.state.user.data.social).reduce(
-        (acc: UserSocial, key: string) => {
-          acc[key] =
-            userStore.state.user.data.social[key] !== null && userStore.state.user.data.social[key] !== undefined
-              ? userStore.state.user.data.social[key]
-              : null;
-          return acc;
-        },
-        {} as UserSocial
-      );
+      (deck.data.meta.author as Author).social = Object.keys(userStore.state.user.data.social).reduce((acc: UserSocial, key: string) => {
+        acc[key] =
+          userStore.state.user.data.social[key] !== null && userStore.state.user.data.social[key] !== undefined
+            ? userStore.state.user.data.social[key]
+            : null;
+        return acc;
+      }, {} as UserSocial);
     } else {
-      (deck.data.meta.author as DeckMetaAuthor).social = null;
+      (deck.data.meta.author as Author).social = null;
     }
   } else if (deck.data.meta.author) {
     deck.data.meta.author = null;
