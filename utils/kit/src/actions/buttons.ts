@@ -13,7 +13,7 @@ export const initButtons = () => {
     attachClickListener('slidePicker', presentSlidePicker);
     attachClickListener('fullScreen', toggleFullScreen);
     attachClickListener('remote', openRemote);
-    attachClickListener('deckMenu', openMenu);
+    attachClickListener('menu', openMenu);
   });
 };
 

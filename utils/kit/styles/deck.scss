@@ -1,0 +1,17 @@
+div.ion-page ion-content > main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: var(--main-size-width, 100%);
+  height: var(--main-size-height, 100%);
+
+  max-width: inherit;
+
+  overflow: hidden;
+}
+
+div.ion-page:not(.papyrus) ion-content > main {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
+}
