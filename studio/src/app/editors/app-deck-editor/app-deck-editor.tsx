@@ -13,8 +13,8 @@ import authStore from '../../stores/auth.store';
 import i18n from '../../stores/i18n.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
-import {convertStyle, isSlide} from '@deckdeckgo/deck-utils';
-import {SlideTemplate, elementIndex} from '@deckdeckgo/editor';
+import {isSlide} from '@deckdeckgo/deck-utils';
+import {convertStyle, SlideTemplate, elementIndex} from '@deckdeckgo/editor';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
@@ -285,7 +285,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   private async initDeckStyle() {
     if (editorStore.state.deck?.data?.attributes?.style) {
-      this.style = await convertStyle(editorStore.state.deck.data.attributes.style);
+      this.style = convertStyle(editorStore.state.deck.data.attributes.style);
     } else {
       this.style = undefined;
     }

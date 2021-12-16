@@ -2,10 +2,9 @@ import {h, JSX} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
-import {Paragraph} from '@deckdeckgo/editor';
+import {Paragraph, convertStyle} from '@deckdeckgo/editor';
 
 import {ParseElementsUtils} from './parse-elements.utils';
-import {convertStyle} from '@deckdeckgo/deck-utils';
 
 export class ParseParagraphsUtils {
   static async parseParagraph({
@@ -30,7 +29,7 @@ export class ParseParagraphsUtils {
 
       const attributes: Record<string, string | number | boolean | undefined | Record<string, string>> = {
         ...(paragraph.data.attributes || {}),
-        ...(paragraph.data.attributes?.style && {style: await convertStyle(paragraph.data.attributes.style as string)})
+        ...(paragraph.data.attributes?.style && {style: convertStyle(paragraph.data.attributes.style as string)})
       };
 
       const result: JSX.IntrinsicElements = (

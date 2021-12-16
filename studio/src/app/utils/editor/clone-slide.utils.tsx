@@ -2,9 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
-import {convertStyle} from '@deckdeckgo/deck-utils';
-
-import {SlideTemplate} from '@deckdeckgo/editor';
+import {SlideTemplate, convertStyle} from '@deckdeckgo/editor';
 
 import {getAttributes} from './attributes.utils';
 import {InitTemplate} from './create-slides.utils';
@@ -21,7 +19,7 @@ export class CloneSlideUtils {
     delete attributes['class'];
 
     if (attributes.style) {
-      attributes.style = await convertStyle(attributes.style);
+      attributes.style = convertStyle(attributes.style);
     }
 
     if (initTemplate.style) {
