@@ -344,8 +344,6 @@ export class DocDataEvents {
       return;
     }
 
-    // TODO: we loose the created_at information here trade of not getting the paragraph from indexedDB for performance reason
-
     const paragraphUpdate: Paragraph = {
       id: paragraphId,
       data: {
@@ -353,9 +351,24 @@ export class DocDataEvents {
       }
     };
 
-    const content: string[] = this.toParagraphContent(paragraph);
+    // Attributes
+    const attrs: Attr[] = Array.from(paragraph.attributes).filter(
+      ({nodeName}: Attr) => !['id', 'hydrated', 'class', 'contenteditable', 'paragraph_id'].includes(nodeName)
+    );
 
-    // TODO: save attribute style
+    paragraphUpdate.data.attributes =
+      attrs.length > 0
+        ? attrs.reduce(
+            (acc: Record<string, string | number | boolean | undefined>, {nodeName, nodeValue}: Attr) => ({
+              ...acc,
+              ...{[nodeName]: nodeValue}
+            }),
+            {}
+          )
+        : null;
+
+    // Content
+    const content: string[] = this.toParagraphContent(paragraph);
 
     if (content && content.length > 0) {
       paragraphUpdate.data.children = content;
