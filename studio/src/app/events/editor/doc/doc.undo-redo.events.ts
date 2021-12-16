@@ -18,7 +18,8 @@ import {
   findRemovedParagraphs,
   findSelectionParagraphs,
   findAddedNodesParagraphs,
-  findRemovedNodesParagraphs
+  findRemovedNodesParagraphs,
+  findUpdatedParagraphs
 } from '../../../utils/editor/paragraphs.utils';
 import {findParagraph} from '../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
@@ -31,9 +32,10 @@ interface UndoUpdateParagraphs extends UndoRedoDocUpdateParagraph {
 export class DocUndoRedoEvents {
   private containerRef: HTMLElement;
 
-  private dataObserver: MutationObserver | undefined;
+  private inputObserver: MutationObserver | undefined;
   private treeObserver: MutationObserver | undefined;
   private updateObserver: MutationObserver | undefined;
+  private attributesObserver: MutationObserver | undefined;
 
   private undoInput: UndoRedoDocInput | undefined = undefined;
   private undoUpdateParagraphs: UndoUpdateParagraphs[] = [];
@@ -46,9 +48,10 @@ export class DocUndoRedoEvents {
     this.undoInput = undefined;
     this.undoUpdateParagraphs = [];
 
-    this.dataObserver = new MutationObserver(this.onDataMutation);
+    this.inputObserver = new MutationObserver(this.onCharacterDataMutation);
     this.treeObserver = new MutationObserver(this.onTreeMutation);
     this.updateObserver = new MutationObserver(this.onUpdateMutation);
+    this.attributesObserver = new MutationObserver(this.onAttributesMutation);
 
     this.observe();
 
@@ -195,14 +198,16 @@ export class DocUndoRedoEvents {
 
   private observe() {
     this.treeObserver.observe(this.containerRef, {childList: true, subtree: true});
-    this.dataObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
-    this.updateObserver.observe(this.containerRef, {childList: true, subtree: true, attributes: true});
+    this.inputObserver.observe(this.containerRef, {characterData: true, subtree: true, characterDataOldValue: true});
+    this.updateObserver.observe(this.containerRef, {childList: true, subtree: true});
+    this.attributesObserver.observe(this.containerRef, {attributes: true, subtree: true});
   }
 
   private disconnect() {
     this.treeObserver.disconnect();
-    this.dataObserver.disconnect();
+    this.inputObserver.disconnect();
     this.updateObserver.disconnect();
+    this.attributesObserver.disconnect();
   }
 
   private onSelectionChange = () => {
@@ -211,16 +216,24 @@ export class DocUndoRedoEvents {
 
   // Copy current paragraphs value to a local state so we can add it to the undo redo global store in case of modifications
   private copySelectedParagraphs() {
-    const paragraphs: HTMLElement[] = findSelectionParagraphs({container: this.containerRef});
+    const paragraphs: HTMLElement[] | undefined = findSelectionParagraphs({container: this.containerRef});
 
-    this.undoUpdateParagraphs = paragraphs.map((paragraph: HTMLElement) => ({
+    if (!paragraphs) {
+      return;
+    }
+
+    this.undoUpdateParagraphs = this.toUpdateParagraphs(paragraphs);
+  }
+
+  private toUpdateParagraphs(paragraphs: HTMLElement[]): UndoUpdateParagraphs[] {
+    return paragraphs.map((paragraph: HTMLElement) => ({
       outerHTML: paragraph.outerHTML,
       index: elementIndex(paragraph),
       paragraph
     }));
   }
 
-  private onDataMutation = (mutations: MutationRecord[]) => {
+  private onCharacterDataMutation = (mutations: MutationRecord[]) => {
     if (!this.undoInput) {
       const mutation: MutationRecord = mutations[0];
 
@@ -261,7 +274,7 @@ export class DocUndoRedoEvents {
     const addedParagraphs: HTMLElement[] = findAddedParagraphs({mutations, container: this.containerRef});
     addedParagraphs.forEach((paragraph: HTMLElement) =>
       changes.push({
-        outerHTML: paragraph.outerHTML,
+        outerHTML: this.cleanOuterHTML(paragraph),
         mutation: 'add',
         index: paragraph.previousSibling ? elementIndex(NodeUtils.toHTMLElement(paragraph.previousSibling)) + 1 : 0
       })
@@ -281,7 +294,7 @@ export class DocUndoRedoEvents {
     removedParagraphs
       .filter((_removedParagraph: RemovedParagraph, index: number) => !addedIndex.includes(index + lowerIndex))
       .forEach(({paragraph}: RemovedParagraph, index: number) =>
-        changes.push({outerHTML: paragraph.outerHTML, mutation: 'remove', index: index + lowerIndex})
+        changes.push({outerHTML: this.cleanOuterHTML(paragraph), mutation: 'remove', index: index + lowerIndex})
       );
 
     if (changes.length <= 0) {
@@ -293,6 +306,13 @@ export class DocUndoRedoEvents {
       changes
     });
   };
+
+  // We do not want to overwrite the auto generated paragraph_id
+  private cleanOuterHTML(paragraph: HTMLElement): string {
+    const clone: HTMLElement = paragraph.cloneNode(true) as HTMLElement;
+    clone.removeAttribute('paragraph_id');
+    return clone.outerHTML;
+  }
 
   private onUpdateMutation = (mutations: MutationRecord[]) => {
     const addedNodesMutations: MutationRecord[] = findAddedNodesParagraphs({mutations, container: this.containerRef});
@@ -313,7 +333,24 @@ export class DocUndoRedoEvents {
       container: this.containerRef
     });
 
-    this.undoUpdateParagraphs = [];
-    this.undoInput = undefined;
+    this.copySelectedParagraphs();
+  };
+
+  private onAttributesMutation = async (mutations: MutationRecord[]) => {
+    const updateParagraphs: HTMLElement[] = findUpdatedParagraphs({
+      mutations: mutations.filter(({attributeName}: MutationRecord) => ['style'].includes(attributeName)),
+      container: this.containerRef
+    });
+
+    if (updateParagraphs.length <= 0) {
+      return;
+    }
+
+    stackUndoUpdate({
+      paragraphs: this.undoUpdateParagraphs,
+      container: this.containerRef
+    });
+
+    this.copySelectedParagraphs();
   };
 }

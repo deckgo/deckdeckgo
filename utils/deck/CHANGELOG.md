@@ -1,3 +1,10 @@
+# 6.0.0 (2021-12-16)
+
+### Breaking Changes
+
+- function `convertStyle` moved to `editor` utils
+- styles moved to new utils `styles`
+
 # 5.0.0 (2021-11-27)
 
 ### Breaking Changes

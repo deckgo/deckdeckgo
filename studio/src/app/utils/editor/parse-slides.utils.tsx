@@ -2,9 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
-import {convertStyle} from '@deckdeckgo/deck-utils';
-
-import {Slide, SlideTemplate, SlideScope} from '@deckdeckgo/editor';
+import {Slide, SlideTemplate, SlideScope, convertStyle} from '@deckdeckgo/editor';
 
 import {ParseElementsUtils} from './parse-elements.utils';
 
@@ -69,7 +67,7 @@ export class ParseSlidesUtils {
 
   private static async parseDefaultAttributes(slide: Slide) {
     const defaultAttributes = {
-      style: slide.data.attributes ? await convertStyle(slide.data.attributes.style) : undefined,
+      style: slide.data.attributes ? convertStyle(slide.data.attributes.style) : undefined,
       src: slide.data.attributes && slide.data.attributes.src ? slide.data.attributes.src : undefined,
       'custom-background':
         slide.data.attributes && slide.data.attributes.customBackground ? slide.data.attributes.customBackground : undefined,

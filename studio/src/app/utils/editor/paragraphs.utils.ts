@@ -90,7 +90,8 @@ export const findUpdatedParagraphs = ({
       nodes
         .map((node: Node) => findParagraph({element: node, container}))
         .filter(
-          (paragraph: Node | undefined) => paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
+          (paragraph: Node | undefined) =>
+            paragraph !== undefined && paragraph?.nodeType !== Node.TEXT_NODE && paragraph?.nodeType !== Node.COMMENT_NODE
         ) as HTMLElement[]
     )
   ];
@@ -110,12 +111,12 @@ const filterRemovedParagraphs = ({nodes}: {nodes: Node[]}): HTMLElement[] => {
     .filter((node: Node) => (node as HTMLElement).hasAttribute('paragraph_id')) as HTMLElement[];
 };
 
-export const findSelectionParagraphs = ({container}: {container: HTMLElement}): HTMLElement[] => {
+export const findSelectionParagraphs = ({container}: {container: HTMLElement}): HTMLElement[] | undefined => {
   const selection: Selection | null = getSelection();
   const range: Range | undefined = selection?.rangeCount > 0 ? selection?.getRangeAt(0) : undefined;
 
-  if (!range) {
-    return [];
+  if (!range || selection?.toString().length === 0) {
+    return undefined;
   }
 
   const start: HTMLElement | undefined = NodeUtils.toHTMLElement(findParagraph({element: range.startContainer, container}));

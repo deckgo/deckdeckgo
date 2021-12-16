@@ -2,7 +2,7 @@ import {Component, ComponentInterface, Fragment, h, JSX, State} from '@stencil/c
 
 import {loadingController} from '@ionic/core';
 
-import {convertStyle} from '@deckdeckgo/deck-utils';
+import {convertStyle} from '@deckdeckgo/editor';
 import {debounce} from '@deckdeckgo/utils';
 
 import {Deck, Slide, AuthUser, formatDate} from '@deckdeckgo/editor';
@@ -127,7 +127,7 @@ export class AppDecks implements ComponentInterface {
 
       const element: JSX.IntrinsicElements = await ParseSlidesUtils.parseSlide(slide, false);
 
-      const style: Record<string, string> | undefined = await this.convertStyle(deck);
+      const style: Record<string, string | undefined> | undefined = this.convertStyle(deck);
 
       const background: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.background, 'background');
       const header: JSX.IntrinsicElements | undefined = await ParseDeckSlotsUtils.convert(deck.data.header, 'header');
@@ -148,10 +148,10 @@ export class AppDecks implements ComponentInterface {
     }
   }
 
-  private async convertStyle(deck: Deck): Promise<Record<string, string> | undefined> {
+  private convertStyle(deck: Deck): Record<string, string | undefined> | undefined {
     let style: Record<string, string> | undefined = undefined;
     if (deck.data?.attributes?.style) {
-      style = await convertStyle(deck.data.attributes.style);
+      style = convertStyle(deck.data.attributes.style);
     }
 
     return style;

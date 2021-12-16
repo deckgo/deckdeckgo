@@ -1,3 +1,9 @@
+# 3.3.0 (2021-12-16)
+
+### Features
+
+- `convertStyle` moved from `deck-utils`
+
 # 3.2.0 (2021-12-03)
 
 ### Features

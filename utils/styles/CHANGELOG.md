@@ -2,4 +2,4 @@
 
 ### Features
 
-- hello world 👋
+- Hello world 👋
