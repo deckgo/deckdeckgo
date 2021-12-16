@@ -17,6 +17,7 @@
 ### Web Components: Deprecated and moved to `elements`
 
 - youtube
+- social
 
 ### Others
 
