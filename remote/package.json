@@ -53,6 +53,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@deckdeckgo/styles": "^1.0.0",
     "@deckdeckgo/types": "^2.0.1",
     "@stencil/core": "^2.11.0",
     "@stencil/postcss": "^2.1.0",

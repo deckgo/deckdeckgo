@@ -48,7 +48,6 @@
     "@deckdeckgo/slide-title": "^2.4.0",
     "@deckdeckgo/slide-utils": "^4.0.3",
     "@deckdeckgo/slide-youtube": "^2.4.0",
-    "@deckdeckgo/styles": "file:../utils/styles",
     "@deckdeckgo/utils": "file:../utils/utils",
     "@deckdeckgo/word-cloud": "^1.2.0",
     "@ionic/core": "^5.9.1",
@@ -59,6 +58,7 @@
     "web-social-share": "^7.2.0"
   },
   "devDependencies": {
+    "@deckdeckgo/styles": "^1.0.0",
     "@deckdeckgo/types": "^2.0.1",
     "@rollup/plugin-replace": "^3.0.0",
     "@stencil/core": "^2.9.0",

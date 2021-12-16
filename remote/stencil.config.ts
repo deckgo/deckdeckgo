@@ -27,9 +27,7 @@ export const config: Config = {
   globalScript: globalScript,
   globalStyle: 'src/global/app.scss',
   plugins: [
-    sass({
-      includePaths: ['node_modules/@deckdeckgo/deck-utils/styles/']
-    }),
+    sass(),
     postcss({
       plugins: [autoprefixer()]
     }),
