@@ -93,6 +93,18 @@ Type: `Promise<void>`
 | `"logo"` | An optional logo or image to be displayed over the QR code |
 
 
+## CSS Custom Properties
+
+| Name                                | Description                                                                                                                                                      |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--deckgo-qrcode-background-fill`   | The QR code's background @default transparent                                                                                                                    |
+| `--deckgo-qrcode-border-stroke`     | The border color of the QR code                                                                                                                                  |
+| `--deckgo-qrcode-color-fill`        | The QR code's color (the color of the QR code's squares it contains)                                                                                             |
+| `--deckgo-qrcode-container-display` | The display property of the shadow host and the code container @default inline-block                                                                             |
+| `--deckgo-qrcode-logo-ratio-size`   | If you are injecting a logo, its size, width and height, will be calculated with --deckgo-qrcode-size (or 100% if not provided) divided by this value @default 3 |
+| `--deckgo-qrcode-size`              | The size, width and height, of the QR code                                                                                                                       |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

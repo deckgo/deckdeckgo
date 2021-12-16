@@ -110,6 +110,15 @@ Type: `Promise<void>`
 
 
 
+## CSS Custom Properties
+
+| Name                                  | Description                                                   |
+| ------------------------------------- | ------------------------------------------------------------- |
+| `--deckgo-youtube-opacity-loaded`     | The opacity of the video once loaded @default 1               |
+| `--deckgo-youtube-opacity-not-loaded` | The opacity of the video when not loaded @default 0           |
+| `--deckgo-youtube-transition`         | The transition of the container @default opacity 0.15s linear |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
