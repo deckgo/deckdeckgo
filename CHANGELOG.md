@@ -20,6 +20,7 @@
 - social
 - reveal
 - demo
+- qrcode
 
 ### Others
 
