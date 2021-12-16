@@ -8,6 +8,21 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoHr {
     }
+    interface DeckgoReveal {
+        "hide": () => Promise<void>;
+        "hideAll": () => Promise<void>;
+        "reveal": () => Promise<void>;
+        "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
+    }
+    interface DeckgoRevealList {
+        "hide": () => Promise<void>;
+        "hideAll": () => Promise<void>;
+        "listTag": string;
+        "reveal": () => Promise<void>;
+        "revealAll": () => Promise<void>;
+        "revealProgress": 'start' | 'partial' | 'end';
+    }
     interface DeckgoSocial {
         /**
           * Your Dev username. It will be concatenated automatically with https://dev.to/
@@ -87,6 +102,18 @@ declare global {
         prototype: HTMLDeckgoHrElement;
         new (): HTMLDeckgoHrElement;
     };
+    interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {
+    }
+    var HTMLDeckgoRevealElement: {
+        prototype: HTMLDeckgoRevealElement;
+        new (): HTMLDeckgoRevealElement;
+    };
+    interface HTMLDeckgoRevealListElement extends Components.DeckgoRevealList, HTMLStencilElement {
+    }
+    var HTMLDeckgoRevealListElement: {
+        prototype: HTMLDeckgoRevealListElement;
+        new (): HTMLDeckgoRevealListElement;
+    };
     interface HTMLDeckgoSocialElement extends Components.DeckgoSocial, HTMLStencilElement {
     }
     var HTMLDeckgoSocialElement: {
@@ -101,12 +128,21 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "deckgo-hr": HTMLDeckgoHrElement;
+        "deckgo-reveal": HTMLDeckgoRevealElement;
+        "deckgo-reveal-list": HTMLDeckgoRevealListElement;
         "deckgo-social": HTMLDeckgoSocialElement;
         "deckgo-youtube": HTMLDeckgoYoutubeElement;
     }
 }
 declare namespace LocalJSX {
     interface DeckgoHr {
+    }
+    interface DeckgoReveal {
+        "revealProgress"?: 'start' | 'partial' | 'end';
+    }
+    interface DeckgoRevealList {
+        "listTag"?: string;
+        "revealProgress"?: 'start' | 'partial' | 'end';
     }
     interface DeckgoSocial {
         /**
@@ -162,6 +198,8 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "deckgo-hr": DeckgoHr;
+        "deckgo-reveal": DeckgoReveal;
+        "deckgo-reveal-list": DeckgoRevealList;
         "deckgo-social": DeckgoSocial;
         "deckgo-youtube": DeckgoYoutube;
     }
@@ -171,6 +209,8 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-hr": LocalJSX.DeckgoHr & JSXBase.HTMLAttributes<HTMLDeckgoHrElement>;
+            "deckgo-reveal": LocalJSX.DeckgoReveal & JSXBase.HTMLAttributes<HTMLDeckgoRevealElement>;
+            "deckgo-reveal-list": LocalJSX.DeckgoRevealList & JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement>;
             "deckgo-social": LocalJSX.DeckgoSocial & JSXBase.HTMLAttributes<HTMLDeckgoSocialElement>;
             "deckgo-youtube": LocalJSX.DeckgoYoutube & JSXBase.HTMLAttributes<HTMLDeckgoYoutubeElement>;
         }
