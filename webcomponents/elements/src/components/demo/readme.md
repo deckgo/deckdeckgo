@@ -1,5 +1,57 @@
 # deckgo-demo
 
+Display your apps or websites inside an Android or iOS frame.
+
+It is inspired and based on the awesome [work](https://github.com/ionic-team/ionic-docs/tree/c5a624ac35d5285b871e7d8513d3849bdea63271/src/components/demo) of the [Ionic](https://ionicframework.com/) team.
+
+## Installation
+
+This component can be added to your web application with following methods.
+
+> If you are using our Starter Kit, no need to worry about this, this component is included, therefore you could skip the "Installation" chapter.
+
+### Using from a CDN
+
+It's recommended to use [unpkg](https://unpkg.com/) to use the [DeckDeckGo] lazy image component from a CDN. To do so, add the following include script in the main HTML file of your project:
+
+```
+<script type="module" src="https://unpkg.com/@deckdeckgo/elements@latest/dist/elements/elements.esm.js"></script>
+```
+
+### Install from NPM
+
+Install it in your project from [npm](https://www.npmjs.com/package/@deckdeckgo/elements) using the following command:
+
+```bash
+npm install @deckdeckgo/elements
+```
+
+### Framework integration
+
+The [Stencil documentation](https://stenciljs.com/docs/overview) provide examples of framework integration for [Angular](https://stenciljs.com/docs/angular), [React](https://stenciljs.com/docs/react), [Vue](https://stenciljs.com/docs/vue) and [Ember](https://stenciljs.com/docs/ember).
+
+That being said, commonly, you might either `import` or `load` it:
+
+#### Import
+
+```
+import '@deckdeckgo/elements';
+```
+
+#### Loader
+
+```
+import { defineCustomElements } from '@deckdeckgo/elements/dist/loader';
+defineCustomElements();
+```
+
+## Usage
+
+The "Demo" Web Component could be integrated using the tag `<deckgo-demo/>`.
+
+```
+<deckgo-demo src="https://deckdeckgo.app"></deckgo-demo>
+```
 
 
 <!-- Auto Generated Below -->
