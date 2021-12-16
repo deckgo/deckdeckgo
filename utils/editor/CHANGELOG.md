@@ -1,3 +1,13 @@
+# 4.0.0 (2021-12-16)
+
+### Breaking Changes
+
+- `publish` becomes `publishDeck` and `publishDoc`
+
+### Features
+
+- optional `meta` added to `doc`
+
 # 3.3.0 (2021-12-16)
 
 ### Features
