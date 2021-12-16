@@ -1,0 +1,54 @@
+:host {
+  position: relative;
+  /**
+   * @prop --deckgo-qrcode-container-display: The display property of the shadow host and the code container
+   * @default inline-block
+   */
+  display: var(--deckgo-qrcode-container-display, inline-block);
+}
+
+div.deckgo-qrcode-container {
+  display: var(--deckgo-qrcode-container-display, inline-block);
+
+  svg {
+    /**
+     * @prop --deckgo-qrcode-size: The size, width and height, of the QR code
+     */
+    width: var(--deckgo-qrcode-size);
+    height: var(--deckgo-qrcode-size);
+
+    /**
+     * @prop --deckgo-qrcode-border-stroke: The border color of the QR code
+     */
+    stroke: var(--deckgo-qrcode-border-stroke);
+
+    rect {
+      /**
+       * @prop --deckgo-qrcode-background-fill: The QR code's background
+       * @default transparent
+       */
+      fill: var(--deckgo-qrcode-background-fill, transparent);
+    }
+
+    path {
+      /**
+       * @prop --deckgo-qrcode-color-fill: The QR code's color (the color of the QR code's squares it contains)
+       */
+      fill: var(--deckgo-qrcode-color-fill);
+    }
+  }
+}
+
+::slotted([slot="logo"]) {
+  /**
+   * @prop --deckgo-qrcode-logo-ratio-size: If you are injecting a logo, its size, width and height, will be calculated with --deckgo-qrcode-size (or 100% if not provided) divided by this value
+   * @default 3
+   */
+  width: calc(var(--deckgo-qrcode-size, 100%) / var(--deckgo-qrcode-logo-ratio-size, 3));
+  height: calc(var(--deckgo-qrcode-size, 100%) / var(--deckgo-qrcode-logo-ratio-size, 3));
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

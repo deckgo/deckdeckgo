@@ -34,6 +34,40 @@ export namespace Components {
     }
     interface DeckgoHr {
     }
+    interface DeckgoQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
+        "content": string;
+        /**
+          * The <deckgo-qrcode/> component exposes the following method in case you would like to refresh your QR code, for example on resize of the window on in case you would set its content asynchronously.
+         */
+        "generate": () => Promise<void>;
+        /**
+          * An alternate text for the image of the QR code
+         */
+        "qrAlt": string;
+        /**
+          * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrBackgroundColor": string;
+        /**
+          * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+         */
+        "qrCellSize": number;
+        /**
+          * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrFillColor": string;
+        /**
+          * The size of the code margin, in case you would like more spacing
+         */
+        "qrMargin": number;
+        /**
+          * The type of QR code to generate, <svg/> or <img/>
+         */
+        "type": string;
+    }
     interface DeckgoReveal {
         "hide": () => Promise<void>;
         "hideAll": () => Promise<void>;
@@ -134,6 +168,12 @@ declare global {
         prototype: HTMLDeckgoHrElement;
         new (): HTMLDeckgoHrElement;
     };
+    interface HTMLDeckgoQrcodeElement extends Components.DeckgoQrcode, HTMLStencilElement {
+    }
+    var HTMLDeckgoQrcodeElement: {
+        prototype: HTMLDeckgoQrcodeElement;
+        new (): HTMLDeckgoQrcodeElement;
+    };
     interface HTMLDeckgoRevealElement extends Components.DeckgoReveal, HTMLStencilElement {
     }
     var HTMLDeckgoRevealElement: {
@@ -161,6 +201,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "deckgo-demo": HTMLDeckgoDemoElement;
         "deckgo-hr": HTMLDeckgoHrElement;
+        "deckgo-qrcode": HTMLDeckgoQrcodeElement;
         "deckgo-reveal": HTMLDeckgoRevealElement;
         "deckgo-reveal-list": HTMLDeckgoRevealListElement;
         "deckgo-social": HTMLDeckgoSocialElement;
@@ -187,6 +228,36 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface DeckgoHr {
+    }
+    interface DeckgoQrcode {
+        /**
+          * The content, a text or an url, of the QR code to generate
+         */
+        "content"?: string;
+        /**
+          * An alternate text for the image of the QR code
+         */
+        "qrAlt"?: string;
+        /**
+          * The background color of the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrBackgroundColor"?: string;
+        /**
+          * The size of the cell, useful to generate a bigger QR code, specially in case of <img/>. Use it wisely, I suggest a value between 0 and 20 for example
+         */
+        "qrCellSize"?: number;
+        /**
+          * The color use to fill the QR code. The value should be provided in a RGB-hex format. For example: FF0000
+         */
+        "qrFillColor"?: string;
+        /**
+          * The size of the code margin, in case you would like more spacing
+         */
+        "qrMargin"?: number;
+        /**
+          * The type of QR code to generate, <svg/> or <img/>
+         */
+        "type"?: string;
     }
     interface DeckgoReveal {
         "revealProgress"?: 'start' | 'partial' | 'end';
@@ -250,6 +321,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "deckgo-demo": DeckgoDemo;
         "deckgo-hr": DeckgoHr;
+        "deckgo-qrcode": DeckgoQrcode;
         "deckgo-reveal": DeckgoReveal;
         "deckgo-reveal-list": DeckgoRevealList;
         "deckgo-social": DeckgoSocial;
@@ -262,6 +334,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "deckgo-demo": LocalJSX.DeckgoDemo & JSXBase.HTMLAttributes<HTMLDeckgoDemoElement>;
             "deckgo-hr": LocalJSX.DeckgoHr & JSXBase.HTMLAttributes<HTMLDeckgoHrElement>;
+            "deckgo-qrcode": LocalJSX.DeckgoQrcode & JSXBase.HTMLAttributes<HTMLDeckgoQrcodeElement>;
             "deckgo-reveal": LocalJSX.DeckgoReveal & JSXBase.HTMLAttributes<HTMLDeckgoRevealElement>;
             "deckgo-reveal-list": LocalJSX.DeckgoRevealList & JSXBase.HTMLAttributes<HTMLDeckgoRevealListElement>;
             "deckgo-social": LocalJSX.DeckgoSocial & JSXBase.HTMLAttributes<HTMLDeckgoSocialElement>;
