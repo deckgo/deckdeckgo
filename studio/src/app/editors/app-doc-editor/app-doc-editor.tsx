@@ -54,14 +54,11 @@ export class AppDocEditor implements ComponentInterface {
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
 
-  componentWillLoad() {
-    this.docEditorEvents.init();
-  }
-
   async componentDidLoad() {
     this.imageEvents.init();
     this.chartEvents.init();
 
+    this.docEditorEvents.init(this.containerRef);
     this.docImageEvents.init(this.containerRef);
 
     await this.initOrFetch();
