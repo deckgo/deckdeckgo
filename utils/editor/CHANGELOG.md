@@ -1,8 +1,19 @@
+# 5.0.0 (2021-12-16)
+
+### Breaking Changes
+
+- `publishData` becomes `deckPublishData` and `docPublishData`
+
+### Features
+
+- add optional `canonical` url to `meta`
+- support for `canonical` in `publishData` function
+
 # 4.0.0 (2021-12-16)
 
 ### Breaking Changes
 
-- `publish` becomes `publishDeck` and `publishDoc`
+- `publish` becomes `deckPublish` and `docPublish`
 
 ### Features
 
