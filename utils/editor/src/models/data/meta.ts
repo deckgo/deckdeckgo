@@ -15,6 +15,8 @@ export interface Meta {
 
   pathname?: string;
 
+  canonical?: string;
+
   author?: Author;
 
   published?: boolean;
