@@ -1,40 +1,66 @@
 import {Deck} from '../models/data/deck';
+import {Doc} from '../models/data/doc';
+import {Meta} from '../models/data/meta';
 
 import {deckSelector} from './deck.utils';
+import {docSelector} from './doc.utils';
 import {getGoogleFontUrl, GoogleFont, googleFonts} from './fonts.utils';
 import {cleanNode, isElementNode} from './node.utils';
 
-export interface DeckPublishData {
+export interface PublishData {
   title: string;
   description: string;
   author: string;
   bio: string | undefined;
   photo_url: string | undefined;
-  slides: string[];
-  background: string | undefined;
-  header: string | undefined;
-  footer: string | undefined;
   head_extra: string | undefined;
   attributes: Record<string, string> | undefined;
 }
 
-export const publishData = ({deck}: {deck: Deck}): DeckPublishData => {
-  const googleFontScript: string | undefined = getGoogleFontScript();
-  const attributes: Record<string, string> | undefined = getAttributes();
+export interface DeckPublishData extends PublishData {
+  slides: string[];
+  background: string | undefined;
+  header: string | undefined;
+  footer: string | undefined;
+}
 
+export interface DocPublishData extends PublishData {
+  paragraphs: string[];
+}
+
+export const deckPublishData = ({deck}: {deck: Deck}): DeckPublishData => {
   const {data} = deck;
   const {meta, background, footer, header} = data;
 
   return {
-    title: (meta?.title || data.name)?.trim(),
-    description: (meta?.description || data.name)?.trim(),
-    author: meta?.author?.name || 'DeckDeckGo',
-    bio: meta?.author?.bio,
-    photo_url: meta?.author?.photo_url,
+    ...publishData({meta, selector: deckSelector, fallbackName: data.name}),
     slides: getSlides(),
     background: background ? `<div slot="background">${background}</div>` : undefined,
     header: background ? `<div slot="header">${header}</div>` : undefined,
-    footer: background ? `<div slot="footer">${footer}</div>` : undefined,
+    footer: background ? `<div slot="footer">${footer}</div>` : undefined
+  };
+};
+
+export const docPublishData = ({doc}: {doc: Doc}): DocPublishData => {
+  const {data} = doc;
+  const {meta} = data;
+
+  return {
+    ...publishData({meta, selector: docSelector, fallbackName: data.name}),
+    paragraphs: getParagraphs()
+  };
+};
+
+const publishData = ({meta, fallbackName, selector}: {meta: Meta | undefined; fallbackName: string; selector: string}): PublishData => {
+  const googleFontScript: string | undefined = getGoogleFontScript();
+  const attributes: Record<string, string> | undefined = getAttributes({selector});
+
+  return {
+    title: (meta?.title || fallbackName)?.trim(),
+    description: (meta?.description || fallbackName)?.trim(),
+    author: meta?.author?.name || 'DeckDeckGo',
+    bio: meta?.author?.bio,
+    photo_url: meta?.author?.photo_url,
     head_extra: googleFontScript,
     attributes
   };
@@ -61,9 +87,9 @@ const getGoogleFontScript = (): string | undefined => {
   return `<link rel="stylesheet" href="${url}">`;
 };
 
-const getAttributes = (): Record<string, string> | undefined => {
-  const deck: HTMLElement | null = document.querySelector(deckSelector);
-  const attr: NamedNodeMap | undefined = deck?.attributes;
+const getAttributes = ({selector}: {selector: string}): Record<string, string> | undefined => {
+  const element: HTMLElement | null = document.querySelector(selector);
+  const attr: NamedNodeMap | undefined = element?.attributes;
 
   if (!attr) {
     return undefined;
@@ -112,4 +138,14 @@ const getSlides = (): string[] => {
   });
 
   return cloneSlides.map((clone: HTMLElement) => clone.outerHTML);
+};
+
+const getParagraphs = (): string[] => {
+  const paragraphs: NodeListOf<HTMLElement> = document.querySelectorAll(`${docSelector} > article *[paragraph_id]`);
+
+  const cloneParagraphs: HTMLElement[] = Array.from(paragraphs).map(
+    (paragraph: HTMLElement) => cleanNode({node: paragraph, deep: false}) as HTMLElement
+  );
+
+  return cloneParagraphs.map((clone: HTMLElement) => clone.outerHTML);
 };
