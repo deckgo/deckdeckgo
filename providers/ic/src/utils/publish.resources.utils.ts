@@ -38,7 +38,7 @@ const kit: Kit[] = [
       content.replace('{{DECKDECKGO_AUTHOR}}', meta?.author?.name || 'DeckDeckGo')
   },
   {
-    src: `${kitPath}/build/index.css`,
+    src: `${kitPath}/build/index-M763JKRZ.css`,
     mimeType: 'text/css'
   },
   {
@@ -50,11 +50,11 @@ const kit: Kit[] = [
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}/build/deck/index.css`,
+    src: `${kitPath}/build/deck/index-HPLMJ2FO.css`,
     mimeType: 'text/css'
   },
   {
-    src: `${kitPath}/build/doc/index.css`,
+    src: `${kitPath}/build/doc/index-6WZFUT5N.css`,
     mimeType: 'text/css'
   }
 ].map((resource: {src: string; mimeType: KitMimeType}) => {
