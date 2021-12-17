@@ -26,12 +26,8 @@ export const publish = (inputs: PublishInputs): Promise<void> => {
       }
 
       if (
-        !editorStore.state.deck ||
-        !editorStore.state.deck.id ||
-        !editorStore.state.deck.data ||
-        !editorStore.state.doc ||
-        !editorStore.state.doc.id ||
-        !editorStore.state.doc.data
+        (!editorStore.state.deck || !editorStore.state.deck.id || !editorStore.state.deck.data) &&
+        (!editorStore.state.doc || !editorStore.state.doc.id || !editorStore.state.doc.data)
       ) {
         reject('No publish data provided.');
         return;
