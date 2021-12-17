@@ -4,7 +4,6 @@ import {toastController} from '@ionic/core';
 
 import errorStore from './stores/error.store';
 import navStore from './stores/nav.store';
-import shareStore, {ShareData} from './stores/share.store';
 import authStore from './stores/auth.store';
 
 import {initAuthProvider} from './providers/auth/auth.provider';
@@ -29,10 +28,7 @@ export class AppRoot {
 
   private destroyErrorListener;
   private destroyNavListener;
-  private destroyShareListener;
   private destroyAuthListener;
-
-  private shareRef!: HTMLAppShareDeckElement;
 
   constructor() {
     this.themeService = ThemeService.getInstance();
@@ -67,16 +63,11 @@ export class AppRoot {
     this.destroyNavListener = navStore.onChange('nav', async (params: NavParams | undefined) => {
       await this.navigate(params);
     });
-
-    this.destroyShareListener = shareStore.onChange('share', async (share: ShareData | null) => {
-      await this.openShare(share);
-    });
   }
 
   disconnectedCallback() {
     this.destroyErrorListener?.();
     this.destroyNavListener?.();
-    this.destroyShareListener?.();
     this.destroyAuthListener?.();
   }
 
@@ -152,18 +143,6 @@ export class AppRoot {
     navStore.reset();
   }
 
-  private async openShare(share: ShareData | null) {
-    if (!share) {
-      return;
-    }
-
-    if (!this.shareRef) {
-      return;
-    }
-
-    await this.shareRef.openShare();
-  }
-
   /**
    * Note: Routes need to be flat as we path the return and deckId (redirect) to the signin route. So no /settings/something but /something.
    */
@@ -202,7 +181,7 @@ export class AppRoot {
 
         <ion-nav id="menu-content" />
 
-        <app-share-deck ref={(el) => (this.shareRef = el as HTMLAppShareDeckElement)}></app-share-deck>
+        <app-share></app-share>
       </ion-app>
     ];
   }

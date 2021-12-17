@@ -1,4 +1,4 @@
-import {Doc, DocEntries, DeleteDoc} from '@deckdeckgo/editor';
+import {Doc, DocEntries, DeleteDoc, SnapshotDoc} from '@deckdeckgo/editor';
 
 import {cloud} from '../../../utils/core/environment.utils';
 import {cloudProvider} from '../../../utils/core/providers.utils';
@@ -21,4 +21,14 @@ export const deleteDoc = async (docId: string): Promise<void> => {
   }
 
   throw new Error('Not implemented');
+};
+
+export const snapshotDoc = async ({docId, onNext}: {docId: string; onNext: (snapshot: Doc) => void}): Promise<() => void | undefined> => {
+  if (cloud()) {
+    const {snapshotDoc: snapshotUserDoc}: {snapshotDoc: SnapshotDoc} = await cloudProvider<{snapshotDoc: SnapshotDoc}>();
+
+    return snapshotUserDoc({docId, onNext});
+  }
+
+  throw new Error('No publish offline');
 };

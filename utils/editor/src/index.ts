@@ -4,6 +4,7 @@ export * from './models/auth/auth.user';
 
 export * from './models/data/deck';
 export * from './models/data/doc';
+export * from './models/data/meta';
 export * from './models/data/paragraph';
 export * from './models/data/slide';
 export * from './models/data/template';

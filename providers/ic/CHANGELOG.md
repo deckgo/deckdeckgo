@@ -1,3 +1,16 @@
+# 4.0.0 (2021-12-17)
+
+### Breaking Changes
+
+- `publish` becomes `deckPublish` and `docPublish` (which is not supported by this provider)
+- `dist-custom-elements` replaces `dist-custom-elements-bundle` output target
+
+### Features
+
+- publish documents
+- upload assets of flat paragraphs (`deckgo-lazy-img` as paragraph themselves)
+- in case an asset "resource" is updated, update service worker too
+
 # 3.0.1 (2021-12-07)
 
 ### Fix

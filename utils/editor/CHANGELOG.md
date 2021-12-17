@@ -1,3 +1,36 @@
+# 5.1.1 (2021-12-17)
+
+### Fix
+
+- `docPublishData` empty paragraphs
+
+# 5.1.0 (2021-12-17)
+
+### Features
+
+- add `deploy` information to `doc`
+
+# 5.0.0 (2021-12-17)
+
+### Breaking Changes
+
+- `publishData` becomes `deckPublishData` and `docPublishData`
+
+### Features
+
+- add optional `canonical` url to `meta`
+- support for `canonical` in `publishData` function
+
+# 4.0.0 (2021-12-16)
+
+### Breaking Changes
+
+- `publish` becomes `deckPublish` and `docPublish`
+
+### Features
+
+- optional `meta` added to `doc`
+
 # 3.3.0 (2021-12-16)
 
 ### Features

@@ -250,7 +250,21 @@ export const uploadParagraphImages = async ({
   syncWindow: SyncWindow;
   storageBucket: BucketActor<StorageBucketActor>;
 }): Promise<SyncStorage[] | undefined> => {
-  const {children} = paragraph.data;
+  const {children, nodeName, attributes} = paragraph.data;
+
+  // The paragraph itself might be an image
+  if (nodeName === 'deckgo-lazy-img') {
+    const syncStorage: SyncStorage = await uploadParagraphImage({
+      imgSrc: attributes?.['img-src'] as string | undefined,
+      docId,
+      paragraphId: paragraph.id,
+      identity,
+      syncWindow,
+      storageBucket
+    });
+
+    return [syncStorage];
+  }
 
   if (!children || children.length <= 0) {
     return undefined;
@@ -263,17 +277,42 @@ export const uploadParagraphImages = async ({
   const promises: Promise<SyncStorage>[] | undefined = results?.map((result: string[]) => {
     const imgSrc: string = result[5];
 
-    return uploadData({
-      src: imgSrc,
-      key: `/docs/${docId}/paragraphs/${paragraph.id}`,
-      selector: `${docSelector} > article *[paragraph_id="${paragraph.id}"]`,
+    return uploadParagraphImage({
+      imgSrc: imgSrc,
+      docId,
+      paragraphId: paragraph.id,
       identity,
       syncWindow,
-      msg: 'deckdeckgo_sync_paragraph_image',
-      folder: 'images',
       storageBucket
     });
   });
 
   return Promise.all(promises);
+};
+
+const uploadParagraphImage = async ({
+  imgSrc,
+  docId,
+  paragraphId,
+  identity,
+  syncWindow,
+  storageBucket
+}: {
+  imgSrc: string;
+  docId: string;
+  paragraphId: string;
+  identity: Identity;
+  syncWindow: SyncWindow;
+  storageBucket: BucketActor<StorageBucketActor>;
+}): Promise<SyncStorage> => {
+  return uploadData({
+    src: imgSrc,
+    key: `/docs/${docId}/paragraphs/${paragraphId}`,
+    selector: `${docSelector} > article *[paragraph_id="${paragraphId}"]`,
+    identity,
+    syncWindow,
+    msg: 'deckdeckgo_sync_paragraph_image',
+    folder: 'images',
+    storageBucket
+  });
 };

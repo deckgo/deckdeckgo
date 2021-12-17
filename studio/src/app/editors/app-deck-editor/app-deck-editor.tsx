@@ -11,6 +11,7 @@ import colorStore from '../../stores/color.store';
 import undoRedoStore from '../../stores/undo-redo.store';
 import authStore from '../../stores/auth.store';
 import i18n from '../../stores/i18n.store';
+import errorStore from '../../stores/error.store';
 
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
@@ -37,6 +38,7 @@ import {EnvironmentConfigService} from '../../services/environment/environment-c
 import {FontsService} from '../../services/editor/fonts/fonts.service';
 
 import {EnvironmentGoogleConfig} from '../../types/core/environment-config';
+import {cloud} from '../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-deck-editor',
@@ -378,10 +380,24 @@ export class AppDeckEditor implements ComponentInterface {
     await this.concatSlide($event.detail);
   }
 
-  @Listen('actionPublish')
+  @Listen('openEmbed', {target: 'document'})
+  async openEmbed() {
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-embed'
+    });
+
+    await modal.present();
+  }
+
+  @Listen('actionPublish', {target: 'document'})
   async onActionPublish() {
     // No slides, no publish
     if (!this.slides || this.slides.length <= 0) {
+      return;
+    }
+
+    if (!cloud()) {
+      errorStore.state.error = 'No cloud provider to publish material.';
       return;
     }
 

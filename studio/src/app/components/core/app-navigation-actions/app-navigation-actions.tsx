@@ -30,7 +30,7 @@ export class AppNavigationActions {
 
   private loadInput!: HTMLInputElement;
 
-  private signIn: boolean = cloud();
+  private cloud: boolean = cloud();
 
   private async openMenu($event: UIEvent) {
     const popover: HTMLIonPopoverElement = await popoverController.create({
@@ -175,12 +175,14 @@ export class AppNavigationActions {
           <AppIcon name="download" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.editor.export}</ion-label>
         </button>
+
+        {this.renderShare()}
       </Fragment>
     );
   }
 
   private renderSignIn() {
-    if (authStore.state.authUser !== null || !this.signIn) {
+    if (authStore.state.authUser !== null || !this.cloud) {
       return undefined;
     }
 
@@ -191,6 +193,14 @@ export class AppNavigationActions {
         <ion-label>{i18n.state.nav.sign_in}</ion-label>
       </button>
     );
+  }
+
+  private renderShare() {
+    if (!this.cloud) {
+      return undefined;
+    }
+
+    return <app-action-share key="share-action"></app-action-share>;
   }
 
   private renderLoggedInActions() {

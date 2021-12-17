@@ -17,7 +17,7 @@ export class AppMoreShareOptions {
     return (
       <Host>
         {this.renderUpdate()}
-        {this.renderEmbed()}
+        {editorStore.state.deck !== null && this.renderEmbed()}
         {this.renderShareLink()}
       </Host>
     );

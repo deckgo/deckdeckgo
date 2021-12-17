@@ -114,7 +114,7 @@ export class AppEditSlideQRCode {
         return;
       }
 
-      const url: string = await publishUrl(editorStore.state.deck);
+      const url: string = await publishUrl(editorStore.state.deck.data.meta);
 
       this.selectedElement.setAttribute('content', url);
       this.selectedElement.removeAttribute('custom-qrcode');

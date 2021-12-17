@@ -1,4 +1,4 @@
-import {Deck} from '@deckdeckgo/editor';
+import {Meta} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor, AssetKey, HeaderField} from '../canisters/storage/storage.did';
 
@@ -13,7 +13,7 @@ interface Kit {
   filename: string;
   mimeType: KitMimeType;
   headers: HeaderField[];
-  updateContent?: ({content, deck}: {deck: Deck; content: string}) => string;
+  updateContent?: ({content, meta}: {meta: Meta | undefined; content: string}) => string;
 }
 
 const kitPath: string = 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist';
@@ -34,23 +34,27 @@ const kit: Kit[] = [
   {
     src: `${kitPath}/manifest.webmanifest`,
     mimeType: 'application/manifest+json',
-    updateContent: ({content, deck}: {deck: Deck; content: string}) =>
-      content.replace('{{DECKDECKGO_AUTHOR}}', deck.data.meta?.author?.name || 'DeckDeckGo')
+    updateContent: ({content, meta}: {meta: Meta | undefined; content: string}) =>
+      content.replace('{{DECKDECKGO_AUTHOR}}', meta?.author?.name || 'DeckDeckGo')
   },
   {
-    src: `${kitPath}/build/index.css`,
+    src: `${kitPath}/build/index-M763JKRZ.css`,
     mimeType: 'text/css'
   },
   {
-    src: `${kitPath}/build/index-KEIQ3UJL.js`,
+    src: `${kitPath}/build/index-55VE2P7H.js`,
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}/build/deck/index-Q2TQ3TUD.js`,
+    src: `${kitPath}/build/deck/index-ELSPH57U.js`,
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}/build/deck/index.css`,
+    src: `${kitPath}/build/deck/index-HPLMJ2FO.css`,
+    mimeType: 'text/css'
+  },
+  {
+    src: `${kitPath}/build/doc/index-6WZFUT5N.css`,
     mimeType: 'text/css'
   }
 ].map((resource: {src: string; mimeType: KitMimeType}) => {
@@ -62,7 +66,7 @@ const kit: Kit[] = [
   } as Kit;
 });
 
-export const uploadResources = async ({deck}: {deck: Deck}) => {
+export const uploadResources = async ({meta}: {meta: Meta | undefined}) => {
   // 1. Get actor
   const {actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
@@ -76,18 +80,37 @@ export const uploadResources = async ({deck}: {deck: Deck}) => {
     return;
   }
 
-  const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor, deck}));
+  const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor, meta}));
   await Promise.all(promises);
+
+  // If there was an update, we ensure we also update the sw list
+  await addSwKitIC({kitFiles, actor, meta});
 };
 
-const addKitIC = async ({kit, actor, deck}: {kit: Kit; actor: StorageBucketActor; deck: Deck}) => {
+const addKitIC = async ({kit, actor, meta}: {kit: Kit; actor: StorageBucketActor; meta: Meta | undefined}) => {
   const {src, filename, mimeType, updateContent, headers} = kit;
 
   const content: string = await downloadKit(src);
 
-  const updatedContent: string = updateContent ? updateContent({content, deck}) : content;
+  const updatedContent: string = updateContent ? updateContent({content, meta}) : content;
 
   await uploadKit({filename, content: updatedContent, actor, mimeType, headers, fullPath: src.replace(kitPath, '')});
+};
+
+const addSwKitIC = async ({kitFiles, actor, meta}: {kitFiles: Kit[]; actor: StorageBucketActor; meta: Meta | undefined}) => {
+  const sw: Kit | undefined = kitFiles.find(({filename}: Kit) => filename === 'service-worker.js');
+
+  if (sw !== undefined) {
+    return;
+  }
+
+  const swKit: Kit | undefined = kit.find(({filename}: Kit) => filename === 'service-worker.js');
+
+  if (!swKit !== undefined) {
+    return;
+  }
+
+  await addKitIC({kit: swKit, actor, meta});
 };
 
 const uploadKit = async ({
