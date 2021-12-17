@@ -40,6 +40,10 @@ app-navigation-actions {
       border-bottom-color: transparent;
     }
 
+    &[disabled] {
+      color: rgba(var(--ion-color-medium-rgb), 0.2);
+    }
+
     ion-label {
       font-size: var(--font-size-small);
       white-space: nowrap;
@@ -78,6 +82,10 @@ body.dark {
   app-navigation-actions {
     button {
       color: white;
+
+      &[disabled] {
+        color: rgba(var(--ion-color-medium-rgb), 0.2);
+      }
     }
   }
 }
