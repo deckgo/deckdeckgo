@@ -61,15 +61,16 @@
   },
   "share": {
     "a_presentation": "Eine Präsentation",
-    "a_presentation_by": "{0} von {1} erstellt mit {2}",
-    "a_presentation_no_author": "{0} erstellt mit {1}",
+    "a_document": "Ein Dokument",
+    "content_by": "{0} von {1} erstellt mit {2}",
+    "content_no_author": "{0} erstellt mit {1}",
     "update_share": "Publish to update share",
     "embed": "Einbetten",
     "link": "Teile den Link"
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Schön, dass du da bist.",
-    "why": "Melde dich an, um deine Präsentationen Online zu speichern und teilen.",
+    "why": "Melde dich an, um deinen Inhalt Online zu speichern und teilen.",
     "additionally": "Sichere zusätzlich den Quellcode deiner Folien auf einem GitHub {0} Repository.",
     "internet_identity": "Mit Internet-Identität anmelden",
     "why_internet_computer": "Melden Sie sich an, um Ihre Präsentationen online im Internet-Computer-Blockchain-Netzwerk zu speichern.",

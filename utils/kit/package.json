@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/kit",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "author": "David Dal Busco",
   "description": "Functions, utils and styles for the DeckDeckGo presentations created with the kits",
   "license": "MIT",
@@ -9,11 +9,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
-    "build": "rimraf lib && rimraf css && node ./esbuild.js && npm run ts-declaration && npm run build-kit",
-    "build-kit": "npm run build-kit-sass && npm run build-kit-autoprefix && npm run build-kit-cleancss",
-    "build-kit-sass": "node-sass --output-style expanded styles/index.scss ./css/kit.css",
-    "build-kit-autoprefix": "postcss --use autoprefixer --map false --output ./css/kit.css ./css/kit.css",
-    "build-kit-cleancss": "cleancss -o ./css/kit.min.css ./css/kit.css"
+    "build": "node ./esbuild.js && npm run ts-declaration && npm run build-css",
+    "build-css": "node ./buildCSS.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +22,8 @@
   },
   "homepage": "https://deckdeckgo.com",
   "dependencies": {
-    "@deckdeckgo/utils": "^2.0.1"
+    "@deckdeckgo/utils": "^2.0.1",
+    "clean-css": "^5.2.2"
   },
   "peerDependencies": {
     "@deckdeckgo/core": "^8.4.0",
@@ -39,7 +37,6 @@
     "@ionic/core": "^5.7.0",
     "@types/node": "^16.9.0",
     "@types/resize-observer-browser": "^0.1.6",
-    "clean-css-cli": "^5.3.3",
     "node-sass": "^6.0.1",
     "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1",

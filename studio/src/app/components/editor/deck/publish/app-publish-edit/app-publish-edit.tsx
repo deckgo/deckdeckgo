@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
-import {Deck} from '@deckdeckgo/editor';
+import {Deck, deckSelector, Doc, Meta} from '@deckdeckgo/editor';
 
 import editorStore from '../../../../../stores/editor.store';
 import errorStore from '../../../../../stores/error.store';
@@ -58,14 +58,17 @@ export class AppPublishEdit {
 
   private firebaseEnabled: boolean = firebase();
 
-  private destroyDeckListener;
+  private destroyListener;
 
-  async componentWillLoad() {
-    await this.init();
+  private mode: 'doc' | 'deck' = editorStore.state.doc !== null ? 'doc' : 'deck';
 
-    this.destroyDeckListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
+  componentWillLoad() {
+    this.init();
+
+    // Firebase only
+    this.destroyListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
-      this.publishing = this.publishing || deck.data.deploy?.api?.status === 'scheduled';
+      this.publishing = this.publishing || deck?.data.deploy?.api?.status === 'scheduled';
     });
   }
 
@@ -74,54 +77,57 @@ export class AppPublishEdit {
   }
 
   disconnectedCallback() {
-    if (this.destroyDeckListener) {
-      this.destroyDeckListener();
-    }
+    this.destroyListener?.();
   }
 
-  private async init() {
-    if (!editorStore.state.deck || !editorStore.state.deck.data) {
+  private init() {
+    if (this.mode === 'doc') {
+      const {data} = editorStore.state.doc;
+      const {meta} = data;
+
+      this.initInputs({name: meta?.title || data.name, description: meta?.description || '', tags: meta?.tags || []});
       return;
     }
 
-    this.caption = editorStore.state.deck.data.name;
-    this.description = editorStore.state.deck.data.meta?.description
-      ? (editorStore.state.deck.data.meta.description as string)
-      : await this.getFirstSlideContent();
-    this.tags = editorStore.state.deck.data.meta?.tags ? (editorStore.state.deck.data.meta.tags as string[]) : [];
+    const {data} = editorStore.state.deck;
+    const {meta} = data;
+
+    this.initInputs({
+      name: meta?.title || data.name,
+      description: meta?.description || this.getFirstSlideContent(),
+      tags: meta?.tags || []
+    });
+
     this.pushToGitHub = editorStore.state.deck.data.github ? editorStore.state.deck.data.github.publish : true;
   }
 
-  private getFirstSlideContent(): Promise<string> {
-    return new Promise<string>(async (resolve) => {
-      let content: string = '';
-
-      if (!document) {
-        resolve('');
-        return;
-      }
-
-      const slide: HTMLElement = document.querySelector('app-editor main deckgo-deck > *:first-child');
-
-      if (isSlide(slide)) {
-        const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
-
-        if (contentElement) {
-          content = contentElement.textContent;
-        }
-      }
-
-      resolve(content);
-    });
+  private initInputs({name, description, tags}: {name: string; description: string; tags: string[]}) {
+    this.caption = name;
+    this.description = description;
+    this.tags = tags;
   }
 
-  private async handleSubmit(e: Event) {
-    e.preventDefault();
+  private getFirstSlideContent(): string | '' {
+    const slide: HTMLElement = document.querySelector(`${deckSelector} > *:first-child`);
 
-    await this.publishDeck();
+    if (isSlide(slide)) {
+      const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
+
+      if (contentElement) {
+        return contentElement.textContent;
+      }
+    }
+
+    return '';
   }
 
-  private publishDeck(): Promise<void> {
+  private async handleSubmit($event: UIEvent) {
+    $event.preventDefault();
+
+    await this.publish();
+  }
+
+  private publish(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       try {
         this.publishing = true;
@@ -140,27 +146,42 @@ export class AppPublishEdit {
   }
 
   private onSuccessfulPublish() {
+    if (this.mode === 'doc') {
+      const destroyListener = editorStore.onChange('doc', async (doc: Doc | undefined) => {
+        if (doc?.data?.deploy?.api?.status === 'successful') {
+          destroyListener();
+
+          await this.navigate({meta: editorStore.state.doc.data.meta});
+        }
+      });
+
+      return;
+    }
+
     const currentDeck: Deck = {...editorStore.state.deck};
 
-    const destroyDeckDeployListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
+    const destroyListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       if (deck?.data?.deploy?.api?.status === 'successful') {
-        destroyDeckDeployListener();
+        destroyListener();
 
-        await this.delayNavigation(currentDeck.data.api_id !== editorStore.state.deck.data.api_id);
+        // Even if we fixed the delay to publish to Cloudflare CDN and Firebase / AWS deployment (#195), sometimes if too quick, the presentation will not be correctly published
+        // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
+        await this.navigate({
+          delay: currentDeck.data.api_id !== editorStore.state.deck.data.api_id,
+          meta: editorStore.state.deck.data.meta
+        });
       }
     });
   }
 
-  // Even if we fixed the delay to publish to Cloudflare CDN (#195), sometimes if too quick, the presentation will not be correctly published
-  // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private async delayNavigation(newApiId: boolean) {
+  private async navigate({delay = false, meta}: {delay?: boolean; meta: Meta}) {
     this.progress = 0;
 
     const interval = setInterval(
       () => {
         this.progress += 0.1;
       },
-      newApiId ? 7000 / 10 : 700 / 10
+      delay ? 7000 / 10 : 700 / 10
     );
 
     setTimeout(
@@ -173,11 +194,11 @@ export class AppPublishEdit {
 
         // Just for display so the progress bar reaches 100% for the eyes
         setTimeout(async () => {
-          const publishedUrl: string = await publishUrl(editorStore.state.deck);
+          const publishedUrl: string = await publishUrl(meta);
           this.published.emit(publishedUrl);
         }, 200);
       },
-      newApiId ? 7000 : 700
+      delay ? 7000 : 700
     );
   }
 
@@ -222,44 +243,33 @@ export class AppPublishEdit {
       this.description.length <= Constants.DECK.DESCRIPTION_MAX_LENGTH;
   }
 
-  private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private onTagInput($event: CustomEvent<KeyboardEvent>) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      if (($event.detail as CustomInputEvent).data === ' ' || ($event.detail as CustomInputEvent).data === ',') {
-        this.addTag();
-        resolve();
-        return;
-      }
+    if (($event.detail as CustomInputEvent).data === ' ' || ($event.detail as CustomInputEvent).data === ',') {
+      this.addTag();
+      return;
+    }
 
-      this.tag = ($event.target as InputTargetEvent).value;
-
-      resolve();
-    });
+    this.tag = ($event.target as InputTargetEvent).value;
   }
 
   private onTagInputKeyUp($event: KeyboardEvent): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event) {
-        resolve();
-        return;
-      }
+    if (!$event) {
+      return;
+    }
 
-      if ($event.code === 'Enter') {
-        this.addTag();
-      }
-
-      resolve();
-    });
+    if ($event.code === 'Enter') {
+      this.addTag();
+    }
   }
 
   private addTag() {
     if (this.tag && this.tag !== undefined && this.tag !== null && this.tag.length >= 3) {
       if (this.tag.charAt(0) === '#') {
-        this.tag = this.tag.substr(1);
+        this.tag = this.tag.slice(1);
       }
 
       this.tag = this.tag.replace(' ', '');
@@ -271,34 +281,28 @@ export class AppPublishEdit {
     }
   }
 
-  private removeTag($event: CustomEvent): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private removeTag($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      const tag: string = $event.detail;
+    const tag: string = $event.detail;
 
-      if (!this.tags) {
-        resolve();
-        return;
-      }
+    if (!this.tags) {
+      return;
+    }
 
-      const index: number = this.tags.findIndex((actualTag: string) => {
-        return tag === actualTag;
-      });
-
-      if (index >= 0) {
-        this.tags.splice(index, 1);
-        this.tags = [...this.tags];
-      }
-
-      resolve();
+    const index: number = this.tags.findIndex((actualTag: string) => {
+      return tag === actualTag;
     });
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+      this.tags = [...this.tags];
+    }
   }
 
-  private async onGitHubChange($event: CustomEvent) {
+  private onGitHubChange($event: CustomEvent) {
     this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
   }
 
@@ -318,9 +322,9 @@ export class AppPublishEdit {
         <p class="meta-text">{i18n.state.publish_edit.title_edit}</p>
 
         <form
-          onSubmit={(e: Event) => this.handleSubmit(e)}
-          onKeyPress={(e) => {
-            e.key === 'Enter' && e.preventDefault();
+          onSubmit={async ($event: UIEvent) => await this.handleSubmit($event)}
+          onKeyPress={($event: KeyboardEvent) => {
+            $event.key === 'Enter' && $event.preventDefault();
           }}>
           <ion-list class="inputs-list">
             {this.renderTitleLabel()}
@@ -367,7 +371,7 @@ export class AppPublishEdit {
                 placeholder="Add a tag..."
                 disabled={!this.tags || this.tags.length >= 5 || disable}
                 onKeyUp={($event: KeyboardEvent) => this.onTagInputKeyUp($event)}
-                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
+                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}></ion-input>
             </ion-item>
 
             <app-publish-tags

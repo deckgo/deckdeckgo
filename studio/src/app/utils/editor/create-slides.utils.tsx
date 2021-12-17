@@ -200,7 +200,7 @@ export class CreateSlidesUtils {
     return new Promise<JSX.IntrinsicElements>(async (resolve) => {
       const title = <h1 slot="title"></h1>;
 
-      const url: string = await publishUrl(deck);
+      const url: string = await publishUrl(deck.data.meta);
 
       const slide: JSX.IntrinsicElements = (
         <deckgo-slide-qrcode

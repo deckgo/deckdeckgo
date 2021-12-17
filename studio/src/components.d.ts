@@ -322,8 +322,7 @@ export namespace Components {
     interface AppShape {
         "selectedElement": HTMLElement;
     }
-    interface AppShareDeck {
-        "openShare": () => Promise<void>;
+    interface AppShare {
     }
     interface AppShareOptions {
     }
@@ -978,11 +977,11 @@ declare global {
         prototype: HTMLAppShapeElement;
         new (): HTMLAppShapeElement;
     };
-    interface HTMLAppShareDeckElement extends Components.AppShareDeck, HTMLStencilElement {
+    interface HTMLAppShareElement extends Components.AppShare, HTMLStencilElement {
     }
-    var HTMLAppShareDeckElement: {
-        prototype: HTMLAppShareDeckElement;
-        new (): HTMLAppShareDeckElement;
+    var HTMLAppShareElement: {
+        prototype: HTMLAppShareElement;
+        new (): HTMLAppShareElement;
     };
     interface HTMLAppShareOptionsElement extends Components.AppShareOptions, HTMLStencilElement {
     }
@@ -1303,7 +1302,7 @@ declare global {
         "app-root": HTMLAppRootElement;
         "app-select-target-element": HTMLAppSelectTargetElementElement;
         "app-shape": HTMLAppShapeElement;
-        "app-share-deck": HTMLAppShareDeckElement;
+        "app-share": HTMLAppShareElement;
         "app-share-options": HTMLAppShareOptionsElement;
         "app-signin": HTMLAppSigninElement;
         "app-signin-page": HTMLAppSigninPageElement;
@@ -1370,6 +1369,7 @@ declare namespace LocalJSX {
         "animatePrevNextSlide"?: EventEmitter;
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
+        "onOpenEmbed"?: (event: CustomEvent<void>) => void;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slides"?: JSX.IntrinsicElements[];
@@ -1700,7 +1700,7 @@ declare namespace LocalJSX {
     interface AppShape {
         "selectedElement"?: HTMLElement;
     }
-    interface AppShareDeck {
+    interface AppShare {
     }
     interface AppShareOptions {
         "onSelectedOption"?: (event: CustomEvent<MoreAction>) => void;
@@ -1922,7 +1922,7 @@ declare namespace LocalJSX {
         "app-root": AppRoot;
         "app-select-target-element": AppSelectTargetElement;
         "app-shape": AppShape;
-        "app-share-deck": AppShareDeck;
+        "app-share": AppShare;
         "app-share-options": AppShareOptions;
         "app-signin": AppSignin;
         "app-signin-page": AppSigninPage;
@@ -2057,7 +2057,7 @@ declare module "@stencil/core" {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "app-select-target-element": LocalJSX.AppSelectTargetElement & JSXBase.HTMLAttributes<HTMLAppSelectTargetElementElement>;
             "app-shape": LocalJSX.AppShape & JSXBase.HTMLAttributes<HTMLAppShapeElement>;
-            "app-share-deck": LocalJSX.AppShareDeck & JSXBase.HTMLAttributes<HTMLAppShareDeckElement>;
+            "app-share": LocalJSX.AppShare & JSXBase.HTMLAttributes<HTMLAppShareElement>;
             "app-share-options": LocalJSX.AppShareOptions & JSXBase.HTMLAttributes<HTMLAppShareOptionsElement>;
             "app-signin": LocalJSX.AppSignin & JSXBase.HTMLAttributes<HTMLAppSigninElement>;
             "app-signin-page": LocalJSX.AppSigninPage & JSXBase.HTMLAttributes<HTMLAppSigninPageElement>;

@@ -115,7 +115,7 @@ export class DeckDataEvents {
   };
 
   private onDeckDidLoad = async () => {
-    const url: string = await publishUrl(editorStore.state.deck);
+    const url: string = await publishUrl(editorStore.state.deck.data.meta);
     updateSlidesQRCode(url);
   };
 

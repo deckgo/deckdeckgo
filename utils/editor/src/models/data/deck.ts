@@ -1,14 +1,5 @@
-import {UserSocial} from './user';
-
-export interface DeckDeployData {
-  status: 'scheduled' | 'failure' | 'successful';
-  updated_at: Date | number | BigInt;
-}
-
-export interface DeckDeploy {
-  github?: DeckDeployData;
-  api?: DeckDeployData;
-}
+import {Meta} from './meta';
+import {Deploy} from './deploy';
 
 export interface DeckGitHubRepo {
   id: string;
@@ -20,31 +11,6 @@ export interface DeckGitHubRepo {
 export interface DeckGitHub {
   repo?: DeckGitHubRepo;
   publish: boolean;
-}
-
-export interface DeckMetaAuthor {
-  name: string;
-  bio?: string;
-  photo_url?: string;
-  social?: UserSocial;
-}
-
-export interface DeckMeta {
-  title: string;
-
-  description?: string;
-  tags?: string[];
-
-  pathname?: string;
-
-  author?: DeckMetaAuthor;
-
-  published?: boolean;
-  published_at?: Date | number | BigInt;
-
-  feed?: boolean;
-
-  updated_at: Date | number | BigInt;
 }
 
 export interface DeckAttributes {
@@ -69,9 +35,9 @@ export interface DeckData {
 
   api_id?: string;
 
-  meta?: DeckMeta;
+  meta?: Meta;
 
-  deploy?: DeckDeploy;
+  deploy?: Deploy;
 
   github?: DeckGitHub;
 

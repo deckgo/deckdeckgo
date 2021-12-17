@@ -1,8 +1,9 @@
-import {Component, Element, h, Method} from '@stencil/core';
+import {Component, h} from '@stencil/core';
 
 import 'web-social-share';
 
-import shareStore from '../../../stores/share.store';
+import shareStore, {ShareData} from '../../../stores/share.store';
+import editorStore from '../../../stores/editor.store';
 
 import {publishUrl} from '../../../providers/publish/publish.provider';
 
@@ -11,15 +12,28 @@ import {getShareText, getShareTwitterText} from '../../../utils/core/share.utils
 import {AppIcon} from '../app-icon/app-icon';
 
 @Component({
-  tag: 'app-share-deck',
-  styleUrl: 'app-share-deck.scss',
+  tag: 'app-share',
+  styleUrl: 'app-share.scss',
   shadow: true
 })
-export class AppShareDeck {
-  @Element() el: HTMLElement;
+export class AppShare {
+  private webSocialShareRef!: HTMLWebSocialShareElement;
 
-  @Method()
-  async openShare() {
+  private destroyListener;
+
+  componentWillLoad() {
+    this.destroyListener = shareStore.onChange('share', async (share: ShareData | null) => await this.openShare(share));
+  }
+
+  disconnectedCallback() {
+    this.destroyListener?.();
+  }
+
+  private async openShare(share: ShareData | null) {
+    if (!share) {
+      return;
+    }
+
     // @ts-ignore
     if (navigator && navigator.share) {
       await this.shareMobile();
@@ -29,8 +43,8 @@ export class AppShareDeck {
   }
 
   private async shareMobile() {
-    const text: string = getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
-    const publishedUrl: string = await publishUrl(shareStore.state.share.deck);
+    const text: string = getShareText();
+    const publishedUrl: string = await publishUrl(editorStore.state.doc?.data.meta || editorStore.state.deck?.data.meta);
 
     // @ts-ignore
     await navigator.share({
@@ -40,21 +54,15 @@ export class AppShareDeck {
   }
 
   private async shareDesktop() {
-    const webSocialShare: HTMLWebSocialShareElement = this.el.shadowRoot.querySelector('web-social-share');
-
-    if (!webSocialShare || !window) {
+    if (!this.webSocialShareRef) {
       return;
     }
 
-    const text: string = getShareText(shareStore.state.share.deck, shareStore.state.share.userName);
-    const twitterText: string = getShareTwitterText(
-      shareStore.state.share.deck,
-      shareStore.state.share.userName,
-      shareStore.state.share.userSocial
-    );
-    const publishedUrl: string = await publishUrl(shareStore.state.share.deck);
+    const text: string = getShareText();
+    const twitterText: string = getShareTwitterText();
+    const publishedUrl: string = await publishUrl(editorStore.state.doc?.data.meta || editorStore.state.deck?.data.meta);
 
-    const shareOptions = {
+    this.webSocialShareRef.share = {
       displayNames: true,
       config: [
         {
@@ -98,9 +106,7 @@ export class AppShareDeck {
       ]
     };
 
-    webSocialShare.share = shareOptions;
-
-    webSocialShare.show = true;
+    this.webSocialShareRef.show = true;
   }
 
   private resetShare() {
@@ -109,7 +115,10 @@ export class AppShareDeck {
 
   render() {
     return (
-      <web-social-share show={false} onClosed={() => this.resetShare()}>
+      <web-social-share
+        show={false}
+        onClosed={() => this.resetShare()}
+        ref={(el) => (this.webSocialShareRef = el as HTMLWebSocialShareElement)}>
         <AppIcon
           name="twitter"
           slot="twitter"

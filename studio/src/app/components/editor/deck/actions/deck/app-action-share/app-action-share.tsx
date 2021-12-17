@@ -4,14 +4,14 @@ import type {OverlayEventDetail} from '@ionic/core';
 import {popoverController} from '@ionic/core';
 
 import editorStore from '../../../../../../stores/editor.store';
-import userStore from '../../../../../../stores/user.store';
-import shareStore from '../../../../../../stores/share.store';
 import i18n from '../../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../../types/editor/more-action';
 
+import {cloud} from '../../../../../../utils/core/environment.utils';
+import {share} from '../../../../../../utils/core/share.utils';
+
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
-import {share} from '../../../../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-action-share'
@@ -23,14 +23,15 @@ export class AppActionShare {
 
   @Event() private openEmbed: EventEmitter<void>;
 
-  private shareEnabled: boolean = share();
+  private cloud: boolean = cloud();
 
   private async share($event: UIEvent) {
     if (editorStore.state.published) {
       await this.openShareOptions($event);
-    } else if (this.shareEnabled) {
-      this.actionPublish.emit();
+      return;
     }
+
+    this.actionPublish.emit();
   }
 
   async openShareOptions($event: UIEvent) {
@@ -47,11 +48,7 @@ export class AppActionShare {
     popover.onDidDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail && detail.data) {
         if (detail.data.action === MoreAction.SHARE) {
-          shareStore.state.share = {
-            deck: editorStore.state.deck,
-            userName: userStore.state.name,
-            userSocial: userStore.state.social
-          };
+          share();
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
@@ -64,7 +61,7 @@ export class AppActionShare {
   }
 
   render() {
-    if (!this.shareEnabled && !editorStore.state.published) {
+    if (!this.cloud && !editorStore.state.published) {
       return undefined;
     }
 

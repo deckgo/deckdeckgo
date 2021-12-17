@@ -1,12 +1,11 @@
 import {Component, Element, h, Prop, State} from '@stencil/core';
 
 import editorStore from '../../../../../stores/editor.store';
-import userStore from '../../../../../stores/user.store';
-import shareStore from '../../../../../stores/share.store';
 import authStore from '../../../../../stores/auth.store';
 import i18n from '../../../../../stores/i18n.store';
 
 import {renderI18n} from '../../../../../utils/core/i18n.utils';
+import {share} from '../../../../../utils/core/share.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 
@@ -30,14 +29,6 @@ export class AppPublishDone {
     i18n.state.publish_done.thumbs_up
   ];
 
-  private share() {
-    shareStore.state.share = {
-      deck: editorStore.state.deck,
-      userName: userStore.state.name,
-      userSocial: userStore.state.social
-    };
-  }
-
   render() {
     return (
       <article>
@@ -50,11 +41,11 @@ export class AppPublishDone {
         <p class="ion-text-center">
           {renderI18n(i18n.state.publish_done.share, {
             placeholder: '{0}',
-            value: <a onClick={() => this.share()}>{i18n.state.editor.share}</a>
+            value: <a onClick={() => share()}>{i18n.state.editor.share}</a>
           })}
         </p>
 
-        <ion-button color="tertiary" shape="round" onClick={() => this.share()} class="ion-margin">
+        <ion-button color="tertiary" shape="round" onClick={() => share()} class="ion-margin">
           <AppIcon name="share" ariaLabel="" ariaHidden={true} slot="start"></AppIcon>
           <ion-label>{i18n.state.editor.share}</ion-label>
         </ion-button>

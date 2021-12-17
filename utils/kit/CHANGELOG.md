@@ -1,3 +1,12 @@
+# 5.0.0 (2021-12-16)
+
+### Breaking Changes
+
+- `postLoading` without `async`
+- split CSS in multiple entries
+- extract CSS `content` to `deck`
+- rename `deckMenu` into `menu`
+
 # 4.0.2 (2021-11-28)
 
 ### Features

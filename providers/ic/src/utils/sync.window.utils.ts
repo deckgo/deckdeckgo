@@ -77,9 +77,15 @@ const updateDeckDOM = ({storageFile}: SyncWindowData) => {
 const updateElementImagesDOM = async ({selector, storageFile, src}: SyncWindowData) => {
   const element: HTMLElement | null = document.querySelector(selector);
 
+  // The paragraph might be an image itself
+  if (element?.nodeName.toLowerCase() === 'deckgo-lazy-img') {
+    await updateImagesDOM({images: [element as HTMLDeckgoLazyImgElement], storageFile, src});
+    return;
+  }
+
   const images: NodeListOf<HTMLDeckgoLazyImgElement> = element?.querySelectorAll('deckgo-lazy-img');
 
-  await updateImagesDOM({images, storageFile, src});
+  await updateImagesDOM({images: Array.from(images), storageFile, src});
 };
 
 const updateSlideChartDOM = ({selector, storageFile}: SyncWindowData) => {
@@ -99,23 +105,11 @@ const updateSlidesDOM = async ({storageFile, src}: SyncWindowData) => {
     `${deckSelector} .deckgo-slide-container:not([custom-background]) *[slot="background"] deckgo-lazy-img`
   );
 
-  await updateImagesDOM({images, storageFile, src});
+  await updateImagesDOM({images: Array.from(images), storageFile, src});
 };
 
-const updateImagesDOM = async ({
-  storageFile,
-  images,
-  src
-}: {
-  images: NodeListOf<HTMLDeckgoLazyImgElement>;
-  storageFile: StorageFile;
-  src: string;
-}) => {
-  if (!images || images.length <= 0) {
-    return;
-  }
-
-  const matchingImages: HTMLDeckgoLazyImgElement[] = Array.from(images).filter((img: HTMLDeckgoLazyImgElement) => img.imgSrc === src);
+const updateImagesDOM = async ({storageFile, images, src}: {images: HTMLDeckgoLazyImgElement[]; storageFile: StorageFile; src: string}) => {
+  const matchingImages: HTMLDeckgoLazyImgElement[] = images.filter((img: HTMLDeckgoLazyImgElement) => img.imgSrc === src);
 
   if (!matchingImages || matchingImages.length <= 0) {
     return;

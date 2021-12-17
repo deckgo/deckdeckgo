@@ -3,17 +3,13 @@ import {initSize} from '../size/size';
 import {isScreenshot} from '../utils/utils.deck';
 import {initMouse} from '../mouse/mouse';
 
-export const postLoading = async () => {
+export const postLoading = () => {
   const app = document.querySelector('ion-app');
+  app?.classList.remove('loading');
+};
 
-  if (app) {
-    app.classList.remove('loading');
-  }
-
-  await initSreenshot();
-  await initEmbedMode();
-  await initSize();
-  await initMouse();
+export const postLoadingDeck = async () => {
+  await Promise.all([initSreenshot(), initEmbedMode(), initSize(), initMouse()]);
 };
 
 async function initSreenshot() {

@@ -65,8 +65,9 @@ interface I18nLinks {
 
 interface I18nShare {
   a_presentation: string;
-  a_presentation_by: string;
-  a_presentation_no_author: string;
+  a_document: string;
+  content_by: string;
+  content_no_author: string;
   update_share: string;
   embed: string;
   link: string;
