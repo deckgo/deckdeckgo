@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
-import {Deck} from '@deckdeckgo/editor';
+import {Deck, deckSelector} from '@deckdeckgo/editor';
 
 import editorStore from '../../../../../stores/editor.store';
 import errorStore from '../../../../../stores/error.store';
@@ -60,8 +60,8 @@ export class AppPublishEdit {
 
   private destroyDeckListener;
 
-  async componentWillLoad() {
-    await this.init();
+  componentWillLoad() {
+    this.init();
 
     this.destroyDeckListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
@@ -79,44 +79,35 @@ export class AppPublishEdit {
     }
   }
 
-  private async init() {
+  private init() {
     if (!editorStore.state.deck || !editorStore.state.deck.data) {
       return;
     }
 
     this.caption = editorStore.state.deck.data.name;
     this.description = editorStore.state.deck.data.meta?.description
-      ? (editorStore.state.deck.data.meta.description as string)
-      : await this.getFirstSlideContent();
+      ? editorStore.state.deck.data.meta.description
+      : this.getFirstSlideContent();
     this.tags = editorStore.state.deck.data.meta?.tags ? (editorStore.state.deck.data.meta.tags as string[]) : [];
     this.pushToGitHub = editorStore.state.deck.data.github ? editorStore.state.deck.data.github.publish : true;
   }
 
-  private getFirstSlideContent(): Promise<string> {
-    return new Promise<string>(async (resolve) => {
-      let content: string = '';
+  private getFirstSlideContent(): string | undefined {
+    const slide: HTMLElement = document.querySelector(`${deckSelector} > *:first-child`);
 
-      if (!document) {
-        resolve('');
-        return;
+    if (isSlide(slide)) {
+      const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
+
+      if (contentElement) {
+        return contentElement.textContent;
       }
+    }
 
-      const slide: HTMLElement = document.querySelector('app-editor main deckgo-deck > *:first-child');
-
-      if (isSlide(slide)) {
-        const contentElement: HTMLElement = slide.querySelector('[slot="content"]');
-
-        if (contentElement) {
-          content = contentElement.textContent;
-        }
-      }
-
-      resolve(content);
-    });
+    return undefined;
   }
 
-  private async handleSubmit(e: Event) {
-    e.preventDefault();
+  private async handleSubmit($event: FormDataEvent) {
+    $event.preventDefault();
 
     await this.publishDeck();
   }
@@ -222,44 +213,33 @@ export class AppPublishEdit {
       this.description.length <= Constants.DECK.DESCRIPTION_MAX_LENGTH;
   }
 
-  private onTagInput($event: CustomEvent<KeyboardEvent>): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private onTagInput($event: CustomEvent<KeyboardEvent>) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      if (($event.detail as CustomInputEvent).data === ' ' || ($event.detail as CustomInputEvent).data === ',') {
-        this.addTag();
-        resolve();
-        return;
-      }
+    if (($event.detail as CustomInputEvent).data === ' ' || ($event.detail as CustomInputEvent).data === ',') {
+      this.addTag();
+      return;
+    }
 
-      this.tag = ($event.target as InputTargetEvent).value;
-
-      resolve();
-    });
+    this.tag = ($event.target as InputTargetEvent).value;
   }
 
   private onTagInputKeyUp($event: KeyboardEvent): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event) {
-        resolve();
-        return;
-      }
+    if (!$event) {
+      return;
+    }
 
-      if ($event.code === 'Enter') {
-        this.addTag();
-      }
-
-      resolve();
-    });
+    if ($event.code === 'Enter') {
+      this.addTag();
+    }
   }
 
   private addTag() {
     if (this.tag && this.tag !== undefined && this.tag !== null && this.tag.length >= 3) {
       if (this.tag.charAt(0) === '#') {
-        this.tag = this.tag.substr(1);
+        this.tag = this.tag.slice(1);
       }
 
       this.tag = this.tag.replace(' ', '');
@@ -271,34 +251,28 @@ export class AppPublishEdit {
     }
   }
 
-  private removeTag($event: CustomEvent): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (!$event || !$event.detail) {
-        resolve();
-        return;
-      }
+  private removeTag($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
+    }
 
-      const tag: string = $event.detail;
+    const tag: string = $event.detail;
 
-      if (!this.tags) {
-        resolve();
-        return;
-      }
+    if (!this.tags) {
+      return;
+    }
 
-      const index: number = this.tags.findIndex((actualTag: string) => {
-        return tag === actualTag;
-      });
-
-      if (index >= 0) {
-        this.tags.splice(index, 1);
-        this.tags = [...this.tags];
-      }
-
-      resolve();
+    const index: number = this.tags.findIndex((actualTag: string) => {
+      return tag === actualTag;
     });
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+      this.tags = [...this.tags];
+    }
   }
 
-  private async onGitHubChange($event: CustomEvent) {
+  private onGitHubChange($event: CustomEvent) {
     this.pushToGitHub = $event && $event.detail ? $event.detail.value : true;
   }
 
@@ -318,9 +292,9 @@ export class AppPublishEdit {
         <p class="meta-text">{i18n.state.publish_edit.title_edit}</p>
 
         <form
-          onSubmit={(e: Event) => this.handleSubmit(e)}
-          onKeyPress={(e) => {
-            e.key === 'Enter' && e.preventDefault();
+          onSubmit={async ($event: FormDataEvent) => await this.handleSubmit($event)}
+          onKeyPress={($event: KeyboardEvent) => {
+            $event.key === 'Enter' && $event.preventDefault();
           }}>
           <ion-list class="inputs-list">
             {this.renderTitleLabel()}
@@ -367,7 +341,7 @@ export class AppPublishEdit {
                 placeholder="Add a tag..."
                 disabled={!this.tags || this.tags.length >= 5 || disable}
                 onKeyUp={($event: KeyboardEvent) => this.onTagInputKeyUp($event)}
-                onIonInput={(e: CustomEvent<KeyboardEvent>) => this.onTagInput(e)}></ion-input>
+                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onTagInput($event)}></ion-input>
             </ion-item>
 
             <app-publish-tags
