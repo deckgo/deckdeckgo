@@ -1,6 +1,6 @@
 import {Component, Element, Listen, h, State} from '@stencil/core';
 
-import {Deck} from '@deckdeckgo/editor';
+import {Deck, Doc} from '@deckdeckgo/editor';
 
 import i18n from '../../../stores/i18n.store';
 import editorStore from '../../../stores/editor.store';
@@ -10,6 +10,7 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 import {snapshotDeck} from '../../../providers/data/deck/deck.provider';
 
 import {updateSlidesQRCode} from '../../../utils/editor/qrcode.utils';
+import {snapshotDoc} from '../../../providers/data/doc/doc.provider';
 
 @Component({
   tag: 'app-publish',
@@ -24,7 +25,18 @@ export class AppPublish {
   private unsubscribeSnapshot: () => void | undefined;
 
   async componentWillLoad() {
-    this.unsubscribeSnapshot = await snapshotDeck({
+    this.unsubscribeSnapshot = await this.initSnapshot();
+  }
+
+  private initSnapshot(): Promise<() => void | undefined> {
+    if (editorStore.state.doc !== null) {
+      return snapshotDoc({
+        docId: editorStore.state.doc.id,
+        onNext: (snapshot: Doc) => (editorStore.state.doc = {...snapshot})
+      });
+    }
+
+    return snapshotDeck({
       deckId: editorStore.state.deck.id,
       onNext: (snapshot: Deck) => (editorStore.state.deck = {...snapshot})
     });
