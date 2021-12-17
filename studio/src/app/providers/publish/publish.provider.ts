@@ -15,6 +15,7 @@ interface PublishInputs {
   description: string;
   tags: string[];
   github: boolean;
+  canonical: string | undefined;
 }
 
 export const publish = (inputs: PublishInputs): Promise<void> => {
@@ -118,7 +119,7 @@ const updateDocMeta = (inputs: PublishInputs): Doc => {
 };
 
 const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefined}): Meta => {
-  const {name, description, tags} = inputs;
+  const {name, description, tags, canonical} = inputs;
 
   if (!userStore.state.user || !userStore.state.user.data) {
     throw new Error('No user');
@@ -179,6 +180,12 @@ const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefin
     }
   } else if (updateMeta.author) {
     updateMeta.author = null;
+  }
+
+  if (canonical) {
+    updateMeta.canonical = canonical;
+  } else {
+    updateMeta.canonical = null;
   }
 
   return updateMeta;
