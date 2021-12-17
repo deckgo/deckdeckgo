@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, State} from '@stencil/core';
+import {Component, Event, EventEmitter, Fragment, h, State} from '@stencil/core';
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
@@ -38,6 +38,12 @@ export class AppPublishEdit {
 
   @State()
   private validDescription: boolean = true;
+
+  @State()
+  private canonical: string;
+
+  @State()
+  private validCanonical: boolean = true;
 
   @State()
   private publishing: boolean = false;
@@ -86,6 +92,9 @@ export class AppPublishEdit {
       const {meta} = data;
 
       this.initInputs({name: meta?.title || data.name, description: meta?.description || '', tags: meta?.tags || []});
+
+      this.canonical = meta?.canonical ?? '';
+
       return;
     }
 
@@ -235,12 +244,26 @@ export class AppPublishEdit {
     this.description = ($event.target as InputTargetEvent).value;
   }
 
+  private onCanonicalInput($event: CustomEvent<KeyboardEvent>) {
+    this.canonical = ($event.target as InputTargetEvent).value;
+  }
+
   private validateDescriptionInput() {
     this.validDescription =
       !this.description ||
       this.description === undefined ||
       this.description === '' ||
       this.description.length <= Constants.DECK.DESCRIPTION_MAX_LENGTH;
+  }
+
+  private validateCanonicalInput() {
+    try {
+      const url: URL = new URL(this.canonical);
+
+      this.validCanonical = url.protocol === 'https:';
+    } catch (err) {
+      this.validCanonical = false;
+    }
   }
 
   private onTagInput($event: CustomEvent<KeyboardEvent>) {
@@ -359,6 +382,8 @@ export class AppPublishEdit {
                 onIonChange={() => this.validateDescriptionInput()}></ion-textarea>
             </ion-item>
 
+            {this.renderCanonical(disable)}
+
             <ion-item class="item-title ion-margin-top">
               <ion-label>{i18n.state.publish_edit.tags}</ion-label>
             </ion-item>
@@ -423,10 +448,41 @@ export class AppPublishEdit {
     );
   }
 
+  private renderCanonical(disable: boolean) {
+    if (this.mode !== 'doc') {
+      return undefined;
+    }
+
+    return (
+      <Fragment>
+        <ion-item class={`item-title ${this.validCanonical ? undefined : 'error'}`}>
+          <ion-label>
+            Canonical URL {this.validCanonical ? undefined : <AppIcon name="warning" ariaLabel="Invalid canonical url"></AppIcon>}
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            value={this.canonical}
+            debounce={500}
+            disabled={disable}
+            required={false}
+            input-mode="text"
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCanonicalInput($event)}
+            onIonChange={() => this.validateCanonicalInput()}></ion-input>
+        </ion-item>
+      </Fragment>
+    );
+  }
+
   private renderPublish(disable: boolean) {
     if (!disable) {
       return (
-        <ion-button type="submit" disabled={!this.validTitle || !this.validDescription} color="tertiary" shape="round">
+        <ion-button
+          type="submit"
+          disabled={!this.validTitle || !this.validDescription || !this.validCanonical}
+          color="tertiary"
+          shape="round">
           <ion-label>{i18n.state.publish_edit.publish_now}</ion-label>
         </ion-button>
       );
