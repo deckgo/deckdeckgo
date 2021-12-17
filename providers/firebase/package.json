@@ -29,7 +29,7 @@
     "idb-keyval": "^6.0.1"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "^4.0.0",
+    "@deckdeckgo/editor": "^5.0.0",
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/slide-chart": "^2.5.0"
   },

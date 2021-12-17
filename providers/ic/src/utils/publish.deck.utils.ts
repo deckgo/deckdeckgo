@@ -1,4 +1,4 @@
-import {Deck, DeckData, DeckPublishData, publishData} from '@deckdeckgo/editor';
+import {Deck, DeckData, DeckPublishData, deckPublishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
@@ -66,13 +66,13 @@ const initUpload = async ({deck}: {deck: Deck}): Promise<{storageUpload: Storage
 };
 
 const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckPublishData: DeckPublishData}> => {
-  const deckPublishData: DeckPublishData = publishData({deck});
+  const publishData: DeckPublishData = deckPublishData({deck});
 
   const template: string = await htmlTemplate();
 
-  let updatedTemplate: string = updateTemplate({template, data: deckPublishData});
+  let updatedTemplate: string = updateTemplate({template, data: publishData});
 
-  const {attributes, slides} = deckPublishData;
+  const {attributes, slides} = publishData;
 
   const attr: string | undefined = attributes
     ? Object.entries(attributes)
@@ -87,7 +87,7 @@ const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckP
 
   return {
     html: updatedTemplate,
-    deckPublishData
+    deckPublishData: publishData
   };
 };
 
