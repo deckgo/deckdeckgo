@@ -42,15 +42,19 @@ const kit: Kit[] = [
     mimeType: 'text/css'
   },
   {
-    src: `${kitPath}/build/index-KEIQ3UJL.js`,
+    src: `${kitPath}/build/index-55VE2P7H.js`,
     mimeType: 'text/javascript'
   },
   {
-    src: `${kitPath}/build/deck/index-Q2TQ3TUD.js`,
+    src: `${kitPath}/build/deck/index-ELSPH57U.js`,
     mimeType: 'text/javascript'
   },
   {
     src: `${kitPath}/build/deck/index.css`,
+    mimeType: 'text/css'
+  },
+  {
+    src: `${kitPath}/build/doc/index.css`,
     mimeType: 'text/css'
   }
 ].map((resource: {src: string; mimeType: KitMimeType}) => {
