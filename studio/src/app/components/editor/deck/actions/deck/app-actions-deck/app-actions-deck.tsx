@@ -48,6 +48,9 @@ export class AppActionsDeck {
   @Event()
   private stepTo: EventEmitter<HTMLElement | undefined>;
 
+  @Event()
+  private openEmbed: EventEmitter<void>;
+
   private destroyListener;
 
   // Drag and drop is not supported on iOS and Firefox on Android
@@ -106,14 +109,6 @@ export class AppActionsDeck {
     await modal.present();
   }
 
-  private async openEmbed() {
-    const modal: HTMLIonModalElement = await modalController.create({
-      component: 'app-embed'
-    });
-
-    await modal.present();
-  }
-
   private async openMoreActions($event: UIEvent) {
     if (!$event) {
       return;
@@ -140,7 +135,7 @@ export class AppActionsDeck {
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
-          await this.openEmbed();
+          this.openEmbed.emit();
         }
       }
     });
@@ -273,7 +268,7 @@ export class AppActionsDeck {
             <ion-label aria-hidden="true">{i18n.state.editor.present}</ion-label>
           </button>
 
-          <app-action-share class="wider-devices" onOpenEmbed={() => this.openEmbed()}></app-action-share>
+          <app-action-share class="wider-devices"></app-action-share>
 
           <app-action-help class="wider-devices"></app-action-help>
 

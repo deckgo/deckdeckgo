@@ -69,7 +69,7 @@
   },
   "sign_in": {
     "hi": "Oh, hi 👋! Good to have you.",
-    "why": "Sign in to save and to share your presentation online.",
+    "why": "Sign in to save and to share your content online.",
     "additionally": "Additionally, push the source code of your slides to repos with the GitHub {0} logging.",
     "internet_identity": "Sign in with Internet Identity",
     "why_internet_computer": "Sign in to save your presentation online on the Internet Computer blockchain network.",

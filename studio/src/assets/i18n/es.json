@@ -69,7 +69,7 @@
   },
   "sign_in": {
     "hi": "¡Oh, hola 👋! Me alegro de tenerte.",
-    "why": "Inicie sesión para guardar y compartir su presentación en línea.",
+    "why": "Inicie sesión para guardar y compartir su contenido en línea.",
     "additionally": "Además, empuje el código fuente de sus diapositivas a los repos con el registro de GitHub {0}.",
     "internet_identity": "Iniciar sesión con Identidad de Internet",
     "why_internet_computer": "Inicie sesión para guardar su presentación en línea en la red blockchain de Internet Computer.",

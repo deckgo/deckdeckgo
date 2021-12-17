@@ -69,7 +69,7 @@
   },
   "sign_in": {
     "hi": "Oh, hallo 👋! Goed dat u er bent.",
-    "why": "Log in om op te slaan en uw presentatie online te delen.",
+    "why": "Log in om op te slaan en uw inhoud online te delen.",
     "additionally": "Aanvullend, push de broncode van uw slides naar repos met de GitHub {0} logging.",
     "internet_identity": "Log in met Internet Identity",
     "why_internet_computer": "Log in om uw presentatie online op te slaan op het Internet Computer blockchain netwerk.",

@@ -1370,6 +1370,7 @@ declare namespace LocalJSX {
         "animatePrevNextSlide"?: EventEmitter;
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
+        "onOpenEmbed"?: (event: CustomEvent<void>) => void;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slides"?: JSX.IntrinsicElements[];

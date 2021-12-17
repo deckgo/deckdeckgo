@@ -2,12 +2,16 @@ import {Component, ComponentInterface, Fragment, h, JSX, Listen, Method, State} 
 
 import {v4 as uuid} from 'uuid';
 
+import {modalController} from '@ionic/core';
+
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 
 import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
 import undoRedoStore from '../../stores/undo-redo.store';
+import errorStore from '../../stores/error.store';
+import authStore from '../../stores/auth.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -23,6 +27,8 @@ import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
 import {getEdit} from '../../utils/editor/editor.utils';
 import {printDoc} from '../../utils/editor/print.utils';
+import {cloud} from '../../utils/core/environment.utils';
+import {signIn} from '../../utils/core/signin.utils';
 
 import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
 
@@ -81,6 +87,26 @@ export class AppDocEditor implements ComponentInterface {
 
     editorStore.reset();
     undoRedoStore.reset();
+  }
+
+  @Listen('actionPublish', {target: 'document'})
+  async onActionPublish() {
+    if (!cloud()) {
+      errorStore.state.error = 'No cloud provider to publish material.';
+      return;
+    }
+
+    if (!authStore.state.authUser) {
+      signIn();
+      return;
+    }
+
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-publish',
+      cssClass: 'fullscreen'
+    });
+
+    await modal.present();
   }
 
   @Listen('keydown', {target: 'document'})

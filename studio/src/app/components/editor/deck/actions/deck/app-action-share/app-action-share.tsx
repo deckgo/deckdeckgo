@@ -10,8 +10,9 @@ import i18n from '../../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../../types/editor/more-action';
 
+import {cloud} from '../../../../../../utils/core/environment.utils';
+
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
-import {share} from '../../../../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-action-share'
@@ -23,14 +24,15 @@ export class AppActionShare {
 
   @Event() private openEmbed: EventEmitter<void>;
 
-  private shareEnabled: boolean = share();
+  private cloud: boolean = cloud();
 
   private async share($event: UIEvent) {
     if (editorStore.state.published) {
       await this.openShareOptions($event);
-    } else if (this.shareEnabled) {
-      this.actionPublish.emit();
+      return;
     }
+
+    this.actionPublish.emit();
   }
 
   async openShareOptions($event: UIEvent) {
@@ -64,7 +66,7 @@ export class AppActionShare {
   }
 
   render() {
-    if (!this.shareEnabled && !editorStore.state.published) {
+    if (!this.cloud && !editorStore.state.published) {
       return undefined;
     }
 

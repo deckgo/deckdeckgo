@@ -35,7 +35,7 @@ onChange('deck', (deck: Deck | null) => {
 
 onChange('doc', (doc: Doc | null) => {
   state.name = doc?.data?.name && doc?.data?.name !== '' ? doc.data.name : null;
-  state.published = false;
+  state.published = doc?.data?.meta?.published ?? false;
 
   if (!doc) {
     return;
