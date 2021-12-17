@@ -82,6 +82,9 @@ export const uploadResources = async ({meta}: {meta: Meta | undefined}) => {
 
   const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor, meta}));
   await Promise.all(promises);
+
+  // If there was an update, we ensure we also update the sw list
+  await addSwKitIC({kitFiles, actor, meta});
 };
 
 const addKitIC = async ({kit, actor, meta}: {kit: Kit; actor: StorageBucketActor; meta: Meta | undefined}) => {
@@ -92,6 +95,22 @@ const addKitIC = async ({kit, actor, meta}: {kit: Kit; actor: StorageBucketActor
   const updatedContent: string = updateContent ? updateContent({content, meta}) : content;
 
   await uploadKit({filename, content: updatedContent, actor, mimeType, headers, fullPath: src.replace(kitPath, '')});
+};
+
+const addSwKitIC = async ({kitFiles, actor, meta}: {kitFiles: Kit[]; actor: StorageBucketActor; meta: Meta | undefined}) => {
+  const sw: Kit | undefined = kitFiles.find(({filename}: Kit) => filename === 'service-worker.js');
+
+  if (sw !== undefined) {
+    return;
+  }
+
+  const swKit: Kit | undefined = kit.find(({filename}: Kit) => filename === 'service-worker.js');
+
+  if (!swKit !== undefined) {
+    return;
+  }
+
+  await addKitIC({kit: swKit, actor, meta});
 };
 
 const uploadKit = async ({
