@@ -41,7 +41,7 @@ const initDeckIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; p
   const updateTemplateContent = ({attr, template}: {attr: string | undefined; template: string}): string =>
     template.replace('<!-- DECKDECKGO_DECK -->', `<deckgo-deck id="slider" embedded="true" ${attr || ''}>${slides.join('')}</deckgo-deck>`);
 
-  const {html}: {html: string} = await initIndexHTML({publishData, updateTemplateContent});
+  const {html}: {html: string} = await initIndexHTML({publishData, updateTemplateContent, sourceFolder: 'p'});
 
   return {
     html,

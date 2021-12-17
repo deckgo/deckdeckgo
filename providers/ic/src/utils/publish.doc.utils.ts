@@ -41,7 +41,7 @@ const initDocIndexHTML = async ({doc}: {doc: Doc}): Promise<{html: string; publi
   const updateTemplateContent = ({attr, template}: {attr: string | undefined; template: string}): string =>
     template.replace('<!-- DECKDECKGO_DOC -->', `<deckgo-doc ${attr || ''}>${paragraphs.join('')}</deckgo-doc>`);
 
-  const {html}: {html: string} = await initIndexHTML({publishData, updateTemplateContent});
+  const {html}: {html: string} = await initIndexHTML({publishData, updateTemplateContent, sourceFolder: 'd'});
 
   return {
     html,

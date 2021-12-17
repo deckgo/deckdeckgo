@@ -61,12 +61,14 @@ export const initUpload = async ({
 
 export const initIndexHTML = async ({
   publishData,
-  updateTemplateContent
+  updateTemplateContent,
+  sourceFolder
 }: {
   publishData: PublishData;
   updateTemplateContent: ({attr, template}: {attr: string | undefined; template: string}) => string;
+  sourceFolder: 'p' | 'd';
 }): Promise<{html: string}> => {
-  const template: string = await htmlTemplate();
+  const template: string = await htmlTemplate(sourceFolder);
 
   let updatedTemplate: string = updateTemplate({template, data: publishData});
 
@@ -83,8 +85,8 @@ export const initIndexHTML = async ({
   };
 };
 
-const htmlTemplate = async (): Promise<string> => {
-  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/p/index.html');
+const htmlTemplate = async (sourceFolder: 'p' | 'd'): Promise<string> => {
+  const htmlTemplate: Response = await fetch(`https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/${sourceFolder}/index.html`);
   return htmlTemplate.text();
 };
 
