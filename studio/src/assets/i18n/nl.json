@@ -440,7 +440,7 @@
     "contact": "contact",
     "title": "Titel",
     "publish_now": "Publiceer nu",
-    "hang_on_publishing": "Wacht even, we publiceren uw presentatie",
+    "hang_on_publishing": "Wacht even, we publiceren uw inhoud",
     "source_push": "De broncode van de presentatie naar een nieuwe openbare repository van uw GitHub-account pushen?",
     "source_submit": "De broncode van de presentatie naar de GitHub-repository sturen?"
   },

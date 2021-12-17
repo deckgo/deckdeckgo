@@ -440,7 +440,7 @@
     "contact": "contact",
     "title": "Title",
     "publish_now": "Publish now",
-    "hang_on_publishing": "Hang on, we are publishing your presentation",
+    "hang_on_publishing": "Hang on, we are publishing your content",
     "source_push": "Push the source code of the presentation to a new public repository of your GitHub account?",
     "source_submit": "Submit the source code of the presentation to its GitHub repository?"
   },
