@@ -52,7 +52,11 @@ export const docPublishData = ({doc}: {doc: Doc}): DocPublishData => {
 };
 
 const publishData = ({meta, fallbackName, selector}: {meta: Meta | undefined; fallbackName: string; selector: string}): PublishData => {
-  const googleFontScript: string | undefined = getGoogleFontScript();
+  const googleFontLink: string | undefined = getGoogleFontLink();
+  const canonicalLink: string | undefined = getCanonicalLink({meta});
+
+  const head_extra: string[] = [googleFontLink, canonicalLink].filter((link: string | undefined) => link !== undefined) as string[];
+
   const attributes: Record<string, string> | undefined = getAttributes({selector});
 
   return {
@@ -61,12 +65,12 @@ const publishData = ({meta, fallbackName, selector}: {meta: Meta | undefined; fa
     author: meta?.author?.name || 'DeckDeckGo',
     bio: meta?.author?.bio,
     photo_url: meta?.author?.photo_url,
-    head_extra: googleFontScript,
+    head_extra: head_extra.length > 0 ? head_extra.join('') : undefined,
     attributes
   };
 };
 
-const getGoogleFontScript = (): string | undefined => {
+const getGoogleFontLink = (): string | undefined => {
   const deck: HTMLElement | null = document.querySelector(deckSelector);
   const fontFamily: string | undefined = deck?.style.fontFamily;
 
@@ -85,6 +89,14 @@ const getGoogleFontScript = (): string | undefined => {
   const url: string = getGoogleFontUrl({font});
 
   return `<link rel="stylesheet" href="${url}">`;
+};
+
+const getCanonicalLink = ({meta}: {meta: Meta | undefined}): string | undefined => {
+  if (!meta || !meta.canonical) {
+    return undefined;
+  }
+
+  return `<link rel="canonical" href="${meta.canonical}">`;
 };
 
 const getAttributes = ({selector}: {selector: string}): Record<string, string> | undefined => {
