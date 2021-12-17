@@ -46,11 +46,11 @@ export class AppRandomGif implements ComponentInterface {
   }
 
   private renderGif() {
-    if (this.gif?.media?.[0]?.nanogif?.url) {
+    if (this.gif?.media?.[0]?.tinygif?.url) {
       return (
         <deckgo-lazy-img
-          imgSrc={this.gif.media[0].nanogif.url}
-          imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].nanogif.url}></deckgo-lazy-img>
+          imgSrc={this.gif.media[0].tinygif.url}
+          imgAlt={this.gif.title ? this.gif.title : this.gif.media[0].tinygif.url}></deckgo-lazy-img>
       );
     }
 
