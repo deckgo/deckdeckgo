@@ -21,7 +21,7 @@ export class AppEmbed {
   private embedCodeElement!: HTMLIonTextareaElement;
 
   async componentWillLoad() {
-    const url: string = await publishUrl(editorStore.state.deck);
+    const url: string = await publishUrl(editorStore.state.deck.data.meta);
     this.embedCode = `<iframe src="${url}?embed" width="576" height="420" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 

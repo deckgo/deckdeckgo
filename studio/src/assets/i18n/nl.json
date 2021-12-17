@@ -61,8 +61,9 @@
   },
   "share": {
     "a_presentation": "Een presentatie",
-    "a_presentation_by": "{0} door {1} gecreëerd met {2}",
-    "a_presentation_no_author": "{0} gecreëerd met {1}",
+    "a_document": "Een document",
+    "content_by": "{0} door {1} gecreëerd met {2}",
+    "content_no_author": "{0} gecreëerd met {1}",
     "update_share": "Publiceer om update te delen",
     "embed": "Embedden",
     "link": "Deel link"

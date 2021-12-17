@@ -61,8 +61,9 @@
   },
   "share": {
     "a_presentation": "A presentation",
-    "a_presentation_by": "{0} by {1} created with {2}",
-    "a_presentation_no_author": "{0} created with {1}",
+    "a_document": "A document",
+    "content_by": "{0} by {1} created with {2}",
+    "content_no_author": "{0} created with {1}",
     "update_share": "Publish to update share",
     "embed": "Embed",
     "link": "Share link"

@@ -1,4 +1,4 @@
-import {Deck, Author, UserSocial, DeckPublish, PublishUrl} from '@deckdeckgo/editor';
+import {Deck, Author, UserSocial, DeckPublish, PublishUrl, Meta} from '@deckdeckgo/editor';
 
 import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
@@ -46,12 +46,14 @@ export const publish = ({
   });
 };
 
-export const publishUrl = async (deck: Deck | null): Promise<string> => {
-  if (cloud() && deck?.data?.meta?.published) {
+export const publishUrl = async (meta: Meta | undefined): Promise<string> => {
+  const {pathname, published} = meta || {};
+
+  if (cloud() && published) {
     const {publishUrl}: {publishUrl: PublishUrl} = await cloudProvider<{publishUrl: PublishUrl}>();
 
     const url: string = await publishUrl();
-    return `${url}${deck?.data?.meta?.pathname}`;
+    return `${url}${pathname}`;
   }
 
   const deckDeckGoConfig: EnvironmentDeckDeckGoConfig = EnvironmentConfigService.getInstance().get('deckdeckgo');

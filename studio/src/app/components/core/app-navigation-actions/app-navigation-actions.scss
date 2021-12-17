@@ -84,7 +84,7 @@ body.dark {
       color: white;
 
       &[disabled] {
-        color: rgba(var(--ion-color-medium-rgb), 0.2);
+        color: rgba(var(--ion-color-light-rgb), 0.2);
       }
     }
   }

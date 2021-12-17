@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, State} from '@stencil/core';
 
 import {isSlide} from '@deckdeckgo/deck-utils';
 
-import {Deck, deckSelector} from '@deckdeckgo/editor';
+import {Deck, deckSelector, Doc, Meta} from '@deckdeckgo/editor';
 
 import editorStore from '../../../../../stores/editor.store';
 import errorStore from '../../../../../stores/error.store';
@@ -58,14 +58,17 @@ export class AppPublishEdit {
 
   private firebaseEnabled: boolean = firebase();
 
-  private destroyDeckListener;
+  private destroyListener;
+
+  private mode: 'doc' | 'deck' = editorStore.state.doc !== null ? 'doc' : 'deck';
 
   componentWillLoad() {
     this.init();
 
-    this.destroyDeckListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
+    // Firebase only
+    this.destroyListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       // Deck is maybe updating while we have set it to true manually
-      this.publishing = this.publishing || deck.data.deploy?.api?.status === 'scheduled';
+      this.publishing = this.publishing || deck?.data.deploy?.api?.status === 'scheduled';
     });
   }
 
@@ -74,25 +77,37 @@ export class AppPublishEdit {
   }
 
   disconnectedCallback() {
-    if (this.destroyDeckListener) {
-      this.destroyDeckListener();
-    }
+    this.destroyListener?.();
   }
 
   private init() {
-    if (!editorStore.state.deck || !editorStore.state.deck.data) {
+    if (this.mode === 'doc') {
+      const {data} = editorStore.state.doc;
+      const {meta} = data;
+
+      this.initInputs({name: meta?.title || data.name, description: meta?.description || '', tags: meta?.tags || []});
       return;
     }
 
-    this.caption = editorStore.state.deck.data.name;
-    this.description = editorStore.state.deck.data.meta?.description
-      ? editorStore.state.deck.data.meta.description
-      : this.getFirstSlideContent();
-    this.tags = editorStore.state.deck.data.meta?.tags ? (editorStore.state.deck.data.meta.tags as string[]) : [];
+    const {data} = editorStore.state.deck;
+    const {meta} = data;
+
+    this.initInputs({
+      name: meta?.title || data.name,
+      description: meta?.description || this.getFirstSlideContent(),
+      tags: meta?.tags || []
+    });
+
     this.pushToGitHub = editorStore.state.deck.data.github ? editorStore.state.deck.data.github.publish : true;
   }
 
-  private getFirstSlideContent(): string | undefined {
+  private initInputs({name, description, tags}: {name: string; description: string; tags: string[]}) {
+    this.caption = name;
+    this.description = description;
+    this.tags = tags;
+  }
+
+  private getFirstSlideContent(): string | '' {
     const slide: HTMLElement = document.querySelector(`${deckSelector} > *:first-child`);
 
     if (isSlide(slide)) {
@@ -103,16 +118,16 @@ export class AppPublishEdit {
       }
     }
 
-    return undefined;
+    return '';
   }
 
-  private async handleSubmit($event: FormDataEvent) {
+  private async handleSubmit($event: UIEvent) {
     $event.preventDefault();
 
-    await this.publishDeck();
+    await this.publish();
   }
 
-  private publishDeck(): Promise<void> {
+  private publish(): Promise<void> {
     return new Promise<void>(async (resolve) => {
       try {
         this.publishing = true;
@@ -131,27 +146,42 @@ export class AppPublishEdit {
   }
 
   private onSuccessfulPublish() {
+    if (this.mode === 'doc') {
+      const destroyListener = editorStore.onChange('doc', async (doc: Doc | undefined) => {
+        if (doc?.data?.deploy?.api?.status === 'successful') {
+          destroyListener();
+
+          await this.navigate({meta: editorStore.state.doc.data.meta});
+        }
+      });
+
+      return;
+    }
+
     const currentDeck: Deck = {...editorStore.state.deck};
 
-    const destroyDeckDeployListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
+    const destroyListener = editorStore.onChange('deck', async (deck: Deck | undefined) => {
       if (deck?.data?.deploy?.api?.status === 'successful') {
-        destroyDeckDeployListener();
+        destroyListener();
 
-        await this.delayNavigation(currentDeck.data.api_id !== editorStore.state.deck.data.api_id);
+        // Even if we fixed the delay to publish to Cloudflare CDN and Firebase / AWS deployment (#195), sometimes if too quick, the presentation will not be correctly published
+        // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
+        await this.navigate({
+          delay: currentDeck.data.api_id !== editorStore.state.deck.data.api_id,
+          meta: editorStore.state.deck.data.meta
+        });
       }
     });
   }
 
-  // Even if we fixed the delay to publish to Cloudflare CDN (#195), sometimes if too quick, the presentation will not be correctly published
-  // Therefore, to avoid such problem, we add a bit of delay in the process but only for the first publish
-  private async delayNavigation(newApiId: boolean) {
+  private async navigate({delay = false, meta}: {delay?: boolean; meta: Meta}) {
     this.progress = 0;
 
     const interval = setInterval(
       () => {
         this.progress += 0.1;
       },
-      newApiId ? 7000 / 10 : 700 / 10
+      delay ? 7000 / 10 : 700 / 10
     );
 
     setTimeout(
@@ -164,11 +194,11 @@ export class AppPublishEdit {
 
         // Just for display so the progress bar reaches 100% for the eyes
         setTimeout(async () => {
-          const publishedUrl: string = await publishUrl(editorStore.state.deck);
+          const publishedUrl: string = await publishUrl(meta);
           this.published.emit(publishedUrl);
         }, 200);
       },
-      newApiId ? 7000 : 700
+      delay ? 7000 : 700
     );
   }
 
@@ -292,7 +322,7 @@ export class AppPublishEdit {
         <p class="meta-text">{i18n.state.publish_edit.title_edit}</p>
 
         <form
-          onSubmit={async ($event: FormDataEvent) => await this.handleSubmit($event)}
+          onSubmit={async ($event: UIEvent) => await this.handleSubmit($event)}
           onKeyPress={($event: KeyboardEvent) => {
             $event.key === 'Enter' && $event.preventDefault();
           }}>

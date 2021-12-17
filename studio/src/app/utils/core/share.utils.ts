@@ -1,51 +1,54 @@
-import {Deck, UserSocial} from '@deckdeckgo/editor';
-
 import i18n from '../../stores/i18n.store';
+import shareStore, {ShareData} from '../../stores/share.store';
+import editorStore from '../../stores/editor.store';
+import userStore from '../../stores/user.store';
 
 import {i18nFormat} from './i18n.utils';
 
-export const getShareText = (deck: Deck | null, userName: string | undefined): string => {
-  return getCommonShareText(deck, userName, 'DeckDeckGo');
+export const share = () => {
+  const title: string | undefined =
+    editorStore.state.doc !== null
+      ? editorStore.state.doc.data.meta?.title ?? i18n.state.share.a_document
+      : editorStore.state.deck.data.meta?.title ?? i18n.state.share.a_presentation;
+
+  shareStore.state.share = {
+    title,
+    userName: userStore.state.name,
+    userSocial: userStore.state.social
+  };
 };
 
-export const getShareTwitterText = (deck: Deck | null, userName: string | undefined, userSocial: UserSocial | undefined): string => {
+export const getShareText = (): string => getCommonShareText();
+
+export const getShareTwitterText = (): string => {
+  const {title, userSocial}: ShareData = shareStore.state.share;
+
   if (!userSocial || userSocial === undefined || !userSocial.twitter || userSocial.twitter === undefined || userSocial.twitter === '') {
-    return getCommonShareText(deck, userName, '@deckdeckgo');
+    return getCommonShareText();
   }
 
-  if (deck?.data?.name !== '') {
-    return i18nFormat(i18n.state.share.a_presentation_by, [
-      {placeholder: '{0}', value: `"${deck.data.name}"`},
-      {placeholder: '{1}', value: `@${userSocial.twitter}`},
-      {placeholder: '{2}', value: `@deckdeckgo`}
-    ]);
-  } else {
-    return i18nFormat(i18n.state.share.a_presentation_by, [
-      {placeholder: '{0}', value: i18n.state.share.a_presentation},
-      {placeholder: '{1}', value: `@${userSocial.twitter}`},
-      {placeholder: '{2}', value: `@deckdeckgo`}
-    ]);
-  }
+  return i18nFormat(i18n.state.share.content_by, [
+    {placeholder: '{0}', value: `${title}`},
+    {placeholder: '{1}', value: `@${userSocial.twitter}`},
+    {placeholder: '{2}', value: `@deckdeckgo`}
+  ]);
 };
 
-const getCommonShareText = (deck: Deck | null, userName: string | undefined, deckDeckGo: string): string => {
-  if (deck?.data?.name !== '') {
-    if (userName && userName !== undefined && userName !== '') {
-      return i18nFormat(i18n.state.share.a_presentation_by, [
-        {placeholder: '{0}', value: `"${deck.data.name}"`},
-        {placeholder: '{1}', value: `${userName}`},
-        {placeholder: '{2}', value: `${deckDeckGo}`}
-      ]);
-    } else {
-      return i18nFormat(i18n.state.share.a_presentation_no_author, [
-        {placeholder: '{0}', value: `"${deck.data.name}"`},
-        {placeholder: '{1}', value: `${deckDeckGo}`}
-      ]);
-    }
-  } else {
-    return i18nFormat(i18n.state.share.a_presentation_no_author, [
-      {placeholder: '{0}', value: i18n.state.share.a_presentation},
-      {placeholder: '{1}', value: `${deckDeckGo}`}
+// i18n.state.share.a_presentation
+const getCommonShareText = (): string => {
+  const {userName, title}: ShareData = shareStore.state.share;
+  const deckDeckGo: string = 'DeckDeckGo';
+
+  if (userName && userName !== undefined && userName !== '') {
+    return i18nFormat(i18n.state.share.content_by, [
+      {placeholder: '{0}', value: `${title}`},
+      {placeholder: '{1}', value: `${userName}`},
+      {placeholder: '{2}', value: `${deckDeckGo}`}
     ]);
   }
+
+  return i18nFormat(i18n.state.share.content_no_author, [
+    {placeholder: '{0}', value: `${title}`},
+    {placeholder: '{1}', value: `${deckDeckGo}`}
+  ]);
 };

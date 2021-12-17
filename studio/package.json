@@ -27,7 +27,7 @@
     "@deckdeckgo/core": "^9.0.0",
     "@deckdeckgo/deck-utils": "^6.0.0",
     "@deckdeckgo/drag-resize-rotate": "^2.2.1",
-    "@deckdeckgo/editor": "^4.0.0",
+    "@deckdeckgo/editor": "^5.1.0",
     "@deckdeckgo/elements": "^1.0.0",
     "@deckdeckgo/highlight-code": "^3.4.2",
     "@deckdeckgo/inline-editor": "^5.0.0",
@@ -55,7 +55,7 @@
     "jszip": "^3.7.1",
     "socket.io-client": "2.3.1",
     "uuid": "^8.3.2",
-    "web-social-share": "^7.2.0"
+    "web-social-share": "^8.0.0"
   },
   "devDependencies": {
     "@deckdeckgo/styles": "^1.1.0",

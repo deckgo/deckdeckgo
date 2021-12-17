@@ -8,12 +8,11 @@ import {ConnectionState, DeckdeckgoEventDeckRequest} from '@deckdeckgo/types';
 import {selectDeckSlide} from '@deckdeckgo/editor';
 
 import remoteStore from '../../../../../../stores/remote.store';
-import editorStore from '../../../../../../stores/editor.store';
-import userStore from '../../../../../../stores/user.store';
-import shareStore from '../../../../../../stores/share.store';
 import i18n from '../../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../../types/editor/more-action';
+
+import {share} from '../../../../../../utils/core/share.utils';
 
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
@@ -127,11 +126,7 @@ export class AppActionsDeck {
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
         } else if (detail.data.action === MoreAction.SHARE) {
-          shareStore.state.share = {
-            deck: editorStore.state.deck,
-            userName: userStore.state.name,
-            userSocial: userStore.state.social
-          };
+          share();
         } else if (detail.data.action === MoreAction.PUBLISH) {
           this.actionPublish.emit();
         } else if (detail.data.action === MoreAction.EMBED) {
