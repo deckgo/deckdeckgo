@@ -10,7 +10,7 @@ export interface StorageUpload {
   html: string;
   filename: string;
   pathname: string;
-  deckUrl: string;
+  fullUrl: string;
   bucketUrl: string;
   folder: 'p' | 'd';
 }
@@ -40,10 +40,10 @@ export const initUpload = async ({
   const filename: string = encodeFilename(publishData.title);
   const pathname: string = `/${folder}/${filename}`;
   const bucketUrl: string = `https://${bucketId.toText()}.raw.ic0.app`;
-  const deckUrl: string = `${bucketUrl}${pathname}`;
+  const fullUrl: string = `${bucketUrl}${pathname}`;
 
   // 3. Update URL
-  const updatedHTML: string = html.replace('{{DECKDECKGO_URL}}', deckUrl);
+  const updatedHTML: string = html.replace('{{DECKDECKGO_URL}}', fullUrl);
 
   return {
     storageUpload: {
@@ -51,7 +51,7 @@ export const initUpload = async ({
       actor,
       filename,
       pathname,
-      deckUrl,
+      fullUrl,
       bucketUrl,
       folder
     },

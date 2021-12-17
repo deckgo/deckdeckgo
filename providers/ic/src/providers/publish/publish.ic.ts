@@ -14,7 +14,7 @@ export const deckPublish: DeckPublish = async ({deck}: {deck: Deck; config: Reco
 
   const {storageUpload, publishData, deck: updatedDeck} = await publishDeck({deck});
 
-  await publishOverview({storageUpload, publishData, deckId: updatedDeck.id});
+  await publishOverview({storageUpload, publishData, dataId: updatedDeck.id});
 
   return updatedDeck;
 };
@@ -24,7 +24,7 @@ export const docPublish: DocPublish = async ({doc}: {doc: Doc}): Promise<Doc> =>
 
   const {storageUpload, publishData, doc: updatedDoc} = await publishDoc({doc});
 
-  // TODO: publishOverview
+  await publishOverview({storageUpload, publishData, dataId: updatedDoc.id});
 
   return updatedDoc;
 };

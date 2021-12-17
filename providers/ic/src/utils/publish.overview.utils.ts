@@ -1,4 +1,4 @@
-import {DeckPublishData} from '@deckdeckgo/editor';
+import {PublishData} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
@@ -6,22 +6,22 @@ import {StorageUpload, updateTemplate} from './publish.utils';
 import {upload} from './storage.utils';
 
 export const publishOverview = async ({
-  deckId,
+  dataId,
   storageUpload,
-  deckPublishData
+  publishData
 }: {
-  deckId: string;
+  dataId: string;
   storageUpload: StorageUpload;
-  deckPublishData: DeckPublishData;
+  publishData: PublishData;
 }): Promise<void> => {
   const template: string = await htmlTemplate();
 
-  const {photo_url, ...data} = deckPublishData;
+  const {photo_url, ...data} = publishData;
 
   let html: string = updateTemplate({template, data});
   html = updatePhotoUrl({html, photo_url});
 
-  html = await updateDeckList({deckId, template: html, deckPublishData, storageUpload});
+  html = await updateList({dataId, template: html, publishData, storageUpload});
 
   const {actor} = storageUpload;
 
@@ -41,21 +41,21 @@ const updatePhotoUrl = ({photo_url, html}: {photo_url: string | undefined; html:
   return html.replace('<!-- DECKDECKGO_PHOTO_URL -->', `<img role="presentation" alt="" loading="lazy" src="${photo_url}" />`);
 };
 
-const updateDeckList = async ({
-  deckId,
+const updateList = async ({
+  dataId,
   template,
   storageUpload,
-  deckPublishData
+  publishData
 }: {
-  deckId: string;
+  dataId: string;
   template: string;
   storageUpload: StorageUpload;
-  deckPublishData: DeckPublishData;
+  publishData: PublishData;
 }): Promise<string> => {
-  const {title} = deckPublishData;
-  const {deckUrl} = storageUpload;
+  const {title} = publishData;
+  const {fullUrl} = storageUpload;
 
-  const li: string = `<li deck-id="${deckId}"><a href="${deckUrl}">${title}</a></li>`;
+  const li: string = `<li data-id="${dataId}"><a href="${fullUrl}">${title}</a></li>`;
 
   const source: string | undefined = await htmlSource(storageUpload);
 
@@ -63,7 +63,7 @@ const updateDeckList = async ({
     return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}`);
   }
 
-  const matches: RegExpMatchArray[] = [...source.matchAll(/<li\x20.*?deck-id=".*?".*?li>/gm)];
+  const matches: RegExpMatchArray[] = [...source.matchAll(/<li\x20.*?data-id=".*?".*?li>/gm)];
 
   if (!matches || matches.length <= 0) {
     return template.replace(/<!-- DECKDECKGO_DATA -->/, `${li}`);
