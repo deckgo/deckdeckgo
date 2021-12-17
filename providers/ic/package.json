@@ -27,7 +27,6 @@
     "@ionic/core": "^5.7.0"
   },
   "devDependencies": {
-    "@deckdeckgo/editor": "^5.1.0",
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/slide-chart": "^2.5.0",
     "@rollup/plugin-replace": "^3.0.0",
@@ -59,6 +58,7 @@
     "canister"
   ],
   "dependencies": {
+    "@deckdeckgo/editor": "^5.1.0",
     "@dfinity/agent": "^0.10.0",
     "@dfinity/auth-client": "^0.10.0",
     "@dfinity/authentication": "^0.10.0",

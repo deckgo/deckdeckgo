@@ -24,7 +24,7 @@ export const publishDoc = async ({
   await uploadPublishFileIC(storageUpload);
 
   // 5. Tells the snapshot the process is over
-  // TODO: emit snapshot
+  emitDocPublished(doc);
 
   return {
     storageUpload,
@@ -47,4 +47,24 @@ const initDocIndexHTML = async ({doc}: {doc: Doc}): Promise<{html: string; publi
     html,
     publishData
   };
+};
+
+const emitDocPublished = (doc: Doc) => {
+  const {id, data} = doc;
+
+  const deployedDoc: Doc = {
+    id,
+    data: {
+      ...data,
+      deploy: {
+        api: {
+          status: 'successful',
+          updated_at: new Date()
+        }
+      }
+    }
+  };
+
+  const $event: CustomEvent<Doc> = new CustomEvent('docPublished', {detail: deployedDoc});
+  document.dispatchEvent($event);
 };
