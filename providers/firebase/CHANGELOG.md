@@ -1,3 +1,10 @@
+# 3.0.0 (2021-11-27)
+
+### Breaking Changes
+
+- `publish` becomes `deckPublish` and `docPublish` (which is not supported by this provider)
+- `dist-custom-elements` replaces `dist-custom-elements-bundle` output target
+
 # 2.0.0 (2021-11-27)
 
 ### Features
