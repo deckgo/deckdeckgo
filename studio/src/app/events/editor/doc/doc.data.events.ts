@@ -149,7 +149,12 @@ export class DocDataEvents {
         nodeName: element.nodeName.toLowerCase()
       };
 
-      const content: string[] = this.toParagraphContent(element);
+      const attributes: Record<string, string | number | boolean | undefined> | null = this.paragraphAttributes(element);
+      if (attributes) {
+        paragraphData.attributes = attributes;
+      }
+
+      const content: string[] = this.paragraphContent(element);
       if (content && content.length > 0) {
         paragraphData.children = content;
       }
@@ -352,23 +357,10 @@ export class DocDataEvents {
     };
 
     // Attributes
-    const attrs: Attr[] = Array.from(paragraph.attributes).filter(
-      ({nodeName}: Attr) => !['id', 'hydrated', 'class', 'contenteditable', 'paragraph_id'].includes(nodeName)
-    );
-
-    paragraphUpdate.data.attributes =
-      attrs.length > 0
-        ? attrs.reduce(
-            (acc: Record<string, string | number | boolean | undefined>, {nodeName, nodeValue}: Attr) => ({
-              ...acc,
-              ...{[nodeName]: nodeValue}
-            }),
-            {}
-          )
-        : null;
+    paragraphUpdate.data.attributes = this.paragraphAttributes(paragraph);
 
     // Content
-    const content: string[] = this.toParagraphContent(paragraph);
+    const content: string[] = this.paragraphContent(paragraph);
 
     if (content && content.length > 0) {
       paragraphUpdate.data.children = content;
@@ -379,7 +371,7 @@ export class DocDataEvents {
     await updateOfflineParagraph({docId, paragraph: paragraphUpdate});
   }
 
-  private toParagraphContent(paragraph: HTMLElement): string[] {
+  private paragraphContent(paragraph: HTMLElement): string[] {
     return Array.from(paragraph.childNodes).reduce((acc: string[], node: Node) => {
       if (isTextNode(node)) {
         acc.push(node.nodeValue);
@@ -395,5 +387,21 @@ export class DocDataEvents {
 
       return acc;
     }, []);
+  }
+
+  private paragraphAttributes(paragraph: HTMLElement): Record<string, string | number | boolean | undefined> | null {
+    const attrs: Attr[] = Array.from(paragraph.attributes).filter(
+      ({nodeName}: Attr) => !['id', 'hydrated', 'class', 'contenteditable', 'paragraph_id'].includes(nodeName)
+    );
+
+    return attrs.length > 0
+      ? attrs.reduce(
+          (acc: Record<string, string | number | boolean | undefined>, {nodeName, nodeValue}: Attr) => ({
+            ...acc,
+            ...{[nodeName]: nodeValue}
+          }),
+          {}
+        )
+      : null;
   }
 }
