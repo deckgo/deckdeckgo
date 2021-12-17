@@ -1,109 +1,52 @@
-import {Deck, DeckData, DeckPublishData, deckPublishData} from '@deckdeckgo/editor';
-
-import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
+import {Deck, DeckData, DeckPublishData, deckPublishData, PublishData} from '@deckdeckgo/editor';
 
 import {setData} from './data.utils';
-import {encodeFilename, getStorageActor, upload} from './storage.utils';
-import {StorageUpload, updateTemplate} from './publish.utils';
-import {BucketActor} from './manager.utils';
+import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
 
 export const publishDeck = async ({
   deck: deckSource
 }: {
   deck: Deck;
-}): Promise<{deck: Deck; storageUpload: StorageUpload; deckPublishData: DeckPublishData}> => {
+}): Promise<{deck: Deck; storageUpload: StorageUpload; publishData: PublishData}> => {
   const {id, data} = deckSource;
 
   // 1. Init and fill HTML
-  const {storageUpload, deckPublishData} = await initUpload({deck: deckSource});
+  const indexHTML: {html: string; publishData: DeckPublishData} = await initDeckIndexHTML({deck: deckSource});
+  const {storageUpload, publishData} = await initUpload({indexHTML, folder: 'p'});
 
   // 2. Update deck published meta
-  const publishData: DeckData = updateDeckMetaData({data, storageUpload});
+  const deckData: DeckData = updateMetaData<DeckData>({data, meta: data.meta, name: data.name, storageUpload});
 
   // 3. Update deck meta information
-  const deck: Deck = await setData<Deck, DeckData>({key: `/decks/${id}`, id, data: publishData});
+  const deck: Deck = await setData<Deck, DeckData>({key: `/decks/${id}`, id, data: deckData});
 
   // 4. Upload
-  await uploadFileIC(storageUpload);
+  await uploadPublishFileIC(storageUpload);
 
   // 5. Tells the snapshot the process is over
   emitDeckPublished(deck);
 
   return {
     storageUpload,
-    deckPublishData,
+    publishData,
     deck
   };
 };
 
-const initUpload = async ({deck}: {deck: Deck}): Promise<{storageUpload: StorageUpload; deckPublishData: DeckPublishData}> => {
-  const {html, deckPublishData}: {html: string; deckPublishData: DeckPublishData} = await initIndexHTML({deck});
-
-  // 1. Get actor
-  const {bucketId, actor}: BucketActor<StorageBucketActor> = await getStorageActor();
-
-  // 2. Folder and filename
-  const folder: string = 'p';
-  const filename: string = encodeFilename(deckPublishData.title);
-  const pathname: string = `/${folder}/${filename}`;
-  const bucketUrl: string = `https://${bucketId.toText()}.raw.ic0.app`;
-  const deckUrl: string = `${bucketUrl}${pathname}`;
-
-  // 3. Update URL
-  const indexHTML = html.replace('{{DECKDECKGO_URL}}', deckUrl);
-
-  return {
-    storageUpload: {
-      html: indexHTML,
-      actor,
-      filename,
-      pathname,
-      deckUrl,
-      bucketUrl
-    },
-    deckPublishData
-  };
-};
-
-const initIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; deckPublishData: DeckPublishData}> => {
+const initDeckIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; publishData: DeckPublishData}> => {
   const publishData: DeckPublishData = deckPublishData({deck});
 
-  const template: string = await htmlTemplate();
+  const {slides} = publishData;
 
-  let updatedTemplate: string = updateTemplate({template, data: publishData});
+  const updateTemplateContent = ({attr, template}: {attr: string | undefined; template: string}): string =>
+    template.replace('<!-- DECKDECKGO_DECK -->', `<deckgo-deck id="slider" embedded="true" ${attr || ''}>${slides.join('')}</deckgo-deck>`);
 
-  const {attributes, slides} = publishData;
-
-  const attr: string | undefined = attributes
-    ? Object.entries(attributes)
-        .reduce((acc: string, [key, value]: [string, string]) => `${key}="${value}"; ${acc}`, '')
-        .trim()
-    : undefined;
-
-  updatedTemplate = updatedTemplate.replace(
-    '<!-- DECKDECKGO_DECK -->',
-    `<deckgo-deck id="slider" embedded="true" ${attr || ''}>${slides.join('')}</deckgo-deck>`
-  );
+  const {html}: {html: string} = await initIndexHTML({publishData, updateTemplateContent});
 
   return {
-    html: updatedTemplate,
-    deckPublishData: publishData
+    html,
+    publishData
   };
-};
-
-const htmlTemplate = async (): Promise<string> => {
-  const htmlTemplate: Response = await fetch('https://raw.githubusercontent.com/deckgo/ic-kit/main/dist/p/index.html');
-  return htmlTemplate.text();
-};
-
-const uploadFileIC = async ({filename, html, actor}: {filename: string; html: string; actor: StorageBucketActor}): Promise<void> => {
-  await upload({
-    data: new Blob([html], {type: 'text/html'}),
-    filename,
-    folder: 'p',
-    storageActor: actor,
-    headers: [['Cache-Control', 'max-age=3600']]
-  });
 };
 
 const emitDeckPublished = (deck: Deck) => {
@@ -124,21 +67,4 @@ const emitDeckPublished = (deck: Deck) => {
 
   const $event: CustomEvent<Deck> = new CustomEvent('deckPublished', {detail: deployedDeck});
   document.dispatchEvent($event);
-};
-
-const updateDeckMetaData = ({data, storageUpload}: {data: DeckData; storageUpload: StorageUpload}): DeckData => {
-  const {pathname} = storageUpload;
-
-  const now: Date = new Date();
-
-  return {
-    ...data,
-    meta: {
-      ...(data.meta || {title: data.name}),
-      pathname,
-      published: true,
-      published_at: now,
-      updated_at: now
-    }
-  };
 };

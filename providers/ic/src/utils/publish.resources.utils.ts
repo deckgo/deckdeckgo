@@ -1,4 +1,4 @@
-import {Deck} from '@deckdeckgo/editor';
+import {Meta} from '@deckdeckgo/editor';
 
 import {_SERVICE as StorageBucketActor, AssetKey, HeaderField} from '../canisters/storage/storage.did';
 
@@ -13,7 +13,7 @@ interface Kit {
   filename: string;
   mimeType: KitMimeType;
   headers: HeaderField[];
-  updateContent?: ({content, deck}: {deck: Deck; content: string}) => string;
+  updateContent?: ({content, meta}: {meta: Meta | undefined; content: string}) => string;
 }
 
 const kitPath: string = 'https://raw.githubusercontent.com/deckgo/ic-kit/main/dist';
@@ -34,8 +34,8 @@ const kit: Kit[] = [
   {
     src: `${kitPath}/manifest.webmanifest`,
     mimeType: 'application/manifest+json',
-    updateContent: ({content, deck}: {deck: Deck; content: string}) =>
-      content.replace('{{DECKDECKGO_AUTHOR}}', deck.data.meta?.author?.name || 'DeckDeckGo')
+    updateContent: ({content, meta}: {meta: Meta | undefined; content: string}) =>
+      content.replace('{{DECKDECKGO_AUTHOR}}', meta?.author?.name || 'DeckDeckGo')
   },
   {
     src: `${kitPath}/build/index.css`,
@@ -66,7 +66,7 @@ const kit: Kit[] = [
   } as Kit;
 });
 
-export const uploadResources = async ({deck}: {deck: Deck}) => {
+export const uploadResources = async ({meta}: {meta: Meta | undefined}) => {
   // 1. Get actor
   const {actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
@@ -80,16 +80,16 @@ export const uploadResources = async ({deck}: {deck: Deck}) => {
     return;
   }
 
-  const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor, deck}));
+  const promises: Promise<void>[] = kitFiles.map((kit: Kit) => addKitIC({kit, actor, meta}));
   await Promise.all(promises);
 };
 
-const addKitIC = async ({kit, actor, deck}: {kit: Kit; actor: StorageBucketActor; deck: Deck}) => {
+const addKitIC = async ({kit, actor, meta}: {kit: Kit; actor: StorageBucketActor; meta: Meta | undefined}) => {
   const {src, filename, mimeType, updateContent, headers} = kit;
 
   const content: string = await downloadKit(src);
 
-  const updatedContent: string = updateContent ? updateContent({content, deck}) : content;
+  const updatedContent: string = updateContent ? updateContent({content, meta}) : content;
 
   await uploadKit({filename, content: updatedContent, actor, mimeType, headers, fullPath: src.replace(kitPath, '')});
 };
