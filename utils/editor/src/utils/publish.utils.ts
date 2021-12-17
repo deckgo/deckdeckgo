@@ -156,7 +156,7 @@ const getParagraphs = (): string[] => {
   const paragraphs: NodeListOf<HTMLElement> = document.querySelectorAll(`${docSelector} > article *[paragraph_id]`);
 
   const cloneParagraphs: HTMLElement[] = Array.from(paragraphs).map(
-    (paragraph: HTMLElement) => cleanNode({node: paragraph, deep: false}) as HTMLElement
+    (paragraph: HTMLElement) => cleanNode({node: paragraph, deep: true}) as HTMLElement
   );
 
   return cloneParagraphs.map((clone: HTMLElement) => clone.outerHTML);

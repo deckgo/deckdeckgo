@@ -1,3 +1,9 @@
+# 5.1.1 (2021-12-17)
+
+### Fix
+
+- `docPublishData` empty paragraphs
+
 # 5.1.0 (2021-12-17)
 
 ### Features
