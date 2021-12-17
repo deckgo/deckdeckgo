@@ -1,4 +1,5 @@
 import {Meta} from './meta';
+import {Deploy} from './deploy';
 
 export interface DocData {
   name: string;
@@ -8,6 +9,8 @@ export interface DocData {
   paragraphs?: string[];
 
   meta?: Meta;
+
+  deploy?: Deploy;
 
   created_at?: Date | number | BigInt;
   updated_at?: Date | number | BigInt;

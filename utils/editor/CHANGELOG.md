@@ -1,4 +1,10 @@
-# 5.0.0 (2021-12-16)
+# 5.1.0 (2021-12-17)
+
+### Features
+
+- add `deploy` information to `doc`
+
+# 5.0.0 (2021-12-17)
 
 ### Breaking Changes
 

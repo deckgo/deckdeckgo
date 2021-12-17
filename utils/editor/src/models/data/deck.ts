@@ -1,14 +1,5 @@
 import {Meta} from './meta';
-
-export interface DeckDeployData {
-  status: 'scheduled' | 'failure' | 'successful';
-  updated_at: Date | number | BigInt;
-}
-
-export interface DeckDeploy {
-  github?: DeckDeployData;
-  api?: DeckDeployData;
-}
+import {Deploy} from './deploy';
 
 export interface DeckGitHubRepo {
   id: string;
@@ -46,7 +37,7 @@ export interface DeckData {
 
   meta?: Meta;
 
-  deploy?: DeckDeploy;
+  deploy?: Deploy;
 
   github?: DeckGitHub;
 
