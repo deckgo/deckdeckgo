@@ -79,7 +79,7 @@ export const transformParagraph = ({
       ({addedNodes}: MutationRecord) => addedNodes[0]?.nodeName.toLowerCase() === slotType
     );
 
-    moveCursorToEnd(mutation.addedNodes[0]);
+    moveCursorToEnd(mutation?.addedNodes[0]);
   });
 
   addObserver.observe(container, {childList: true, subtree: true});

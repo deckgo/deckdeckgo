@@ -1,6 +1,8 @@
 import {caretPosition, debounce} from '@deckdeckgo/utils';
 import {elementIndex, nodeIndex} from '@deckdeckgo/editor';
 
+import undoRedoStore from '../../../stores/undo-redo.store';
+
 import {UndoRedoDocAddRemoveParagraph, UndoRedoDocInput, UndoRedoDocUpdateParagraph} from '../../../types/editor/undo-redo';
 
 import {
@@ -23,6 +25,7 @@ import {
 } from '../../../utils/editor/paragraphs.utils';
 import {findParagraph} from '../../../utils/editor/paragraph.utils';
 import {NodeUtils} from '../../../utils/editor/node.utils';
+
 import {SlotType} from '../../../types/editor/slot-type';
 
 interface UndoUpdateParagraphs extends UndoRedoDocUpdateParagraph {
@@ -42,6 +45,8 @@ export class DocUndoRedoEvents {
 
   private readonly debounceUpdateInput: () => void = debounce(() => this.stackUndoInput(), 350);
 
+  private unsubscribe;
+
   init(containerRef: HTMLElement) {
     this.containerRef = containerRef;
 
@@ -58,6 +63,15 @@ export class DocUndoRedoEvents {
     document.addEventListener('keydown', this.onKeydown);
     document.addEventListener('toolbarActivated', this.onSelectionChange);
     document.addEventListener('focusin', this.onFocusIn);
+
+    this.unsubscribe = undoRedoStore.onChange('observe', (observe: boolean) => {
+      if (observe) {
+        this.observe();
+        return;
+      }
+
+      this.disconnect();
+    });
   }
 
   destroy() {
@@ -67,6 +81,8 @@ export class DocUndoRedoEvents {
     document.removeEventListener('toolbarActivated', this.onSelectionChange);
     document.removeEventListener('focusin', this.onFocusIn);
     document.removeEventListener('focusout', this.onFocusOut);
+
+    this.unsubscribe?.();
   }
 
   private observeKeydown() {

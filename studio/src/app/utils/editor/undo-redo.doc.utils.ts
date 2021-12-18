@@ -168,7 +168,10 @@ const undoRedoInput = async ({
 
   const {previousValue} = await updateNodeValue({text, oldValue, container});
 
-  moveCursorToOffset({element: text, offset: oldValue.length > newCaretPosition ? newCaretPosition : oldValue.length});
+  moveCursorToOffset({
+    element: text,
+    offset: Math.min(oldValue.length > newCaretPosition ? newCaretPosition : oldValue.length, text.nodeValue.length)
+  });
 
   pushTo({
     type: 'input',
