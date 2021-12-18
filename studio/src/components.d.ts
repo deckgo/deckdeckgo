@@ -252,8 +252,10 @@ export namespace Components {
     interface AppNavigation {
         "actions": 'all' | 'none' | 'editor-less';
     }
-    interface AppNavigationActions {
+    interface AppNavigationEnd {
         "editorActions": boolean;
+    }
+    interface AppNavigationStart {
     }
     interface AppNew {
     }
@@ -842,11 +844,17 @@ declare global {
         prototype: HTMLAppNavigationElement;
         new (): HTMLAppNavigationElement;
     };
-    interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {
+    interface HTMLAppNavigationEndElement extends Components.AppNavigationEnd, HTMLStencilElement {
     }
-    var HTMLAppNavigationActionsElement: {
-        prototype: HTMLAppNavigationActionsElement;
-        new (): HTMLAppNavigationActionsElement;
+    var HTMLAppNavigationEndElement: {
+        prototype: HTMLAppNavigationEndElement;
+        new (): HTMLAppNavigationEndElement;
+    };
+    interface HTMLAppNavigationStartElement extends Components.AppNavigationStart, HTMLStencilElement {
+    }
+    var HTMLAppNavigationStartElement: {
+        prototype: HTMLAppNavigationStartElement;
+        new (): HTMLAppNavigationStartElement;
     };
     interface HTMLAppNewElement extends Components.AppNew, HTMLStencilElement {
     }
@@ -1277,7 +1285,8 @@ declare global {
         "app-more-element-actions": HTMLAppMoreElementActionsElement;
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
-        "app-navigation-actions": HTMLAppNavigationActionsElement;
+        "app-navigation-end": HTMLAppNavigationEndElement;
+        "app-navigation-start": HTMLAppNavigationStartElement;
         "app-new": HTMLAppNewElement;
         "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
@@ -1619,8 +1628,10 @@ declare namespace LocalJSX {
     interface AppNavigation {
         "actions"?: 'all' | 'none' | 'editor-less';
     }
-    interface AppNavigationActions {
+    interface AppNavigationEnd {
         "editorActions"?: boolean;
+    }
+    interface AppNavigationStart {
     }
     interface AppNew {
     }
@@ -1892,7 +1903,8 @@ declare namespace LocalJSX {
         "app-more-element-actions": AppMoreElementActions;
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
-        "app-navigation-actions": AppNavigationActions;
+        "app-navigation-end": AppNavigationEnd;
+        "app-navigation-start": AppNavigationStart;
         "app-new": AppNew;
         "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
@@ -2027,7 +2039,8 @@ declare module "@stencil/core" {
             "app-more-element-actions": LocalJSX.AppMoreElementActions & JSXBase.HTMLAttributes<HTMLAppMoreElementActionsElement>;
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
-            "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
+            "app-navigation-end": LocalJSX.AppNavigationEnd & JSXBase.HTMLAttributes<HTMLAppNavigationEndElement>;
+            "app-navigation-start": LocalJSX.AppNavigationStart & JSXBase.HTMLAttributes<HTMLAppNavigationStartElement>;
             "app-new": LocalJSX.AppNew & JSXBase.HTMLAttributes<HTMLAppNewElement>;
             "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;

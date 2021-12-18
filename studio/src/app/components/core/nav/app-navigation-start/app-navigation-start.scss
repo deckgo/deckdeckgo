@@ -1,0 +1,15 @@
+app-navigation-start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  input {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 1px;
+  }
+}

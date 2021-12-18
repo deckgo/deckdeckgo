@@ -1,0 +1,35 @@
+app-navigation-end {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  input {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  button.cloud {
+    &.error {
+      color: var(--ion-color-danger);
+    }
+
+    &.in_progress,
+    &.pending,
+    &.init {
+      ion-icon {
+        animation: rotate 4s linear infinite;
+      }
+    }
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}

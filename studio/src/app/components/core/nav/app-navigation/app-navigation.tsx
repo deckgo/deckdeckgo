@@ -23,18 +23,15 @@ export class AppNavigation {
         {this.renderICP()}
         <ion-header>
           <ion-toolbar>
-            {this.renderMenuToggle()}
-
-            {this.actions !== 'none' ? (
-              <app-navigation-actions editor-actions={this.actions === 'all'} slot="end"></app-navigation-actions>
-            ) : undefined}
+            {this.renderStart()}
+            {this.renderEnd()}
           </ion-toolbar>
         </ion-header>
       </Host>
     );
   }
 
-  private renderMenuToggle() {
+  private renderStart() {
     return (
       <ion-buttons slot="start">
         <ion-menu-toggle>
@@ -42,6 +39,20 @@ export class AppNavigation {
             <AppIcon name="menu" ariaHidden={true} ariaLabel="" slot="icon-only"></AppIcon>
           </ion-button>
         </ion-menu-toggle>
+
+        {this.actions === 'all' ? <app-navigation-start></app-navigation-start> : undefined}
+      </ion-buttons>
+    );
+  }
+
+  private renderEnd() {
+    if (this.actions === 'none') {
+      return undefined;
+    }
+
+    return (
+      <ion-buttons slot="end">
+        <app-navigation-end></app-navigation-end>
       </ion-buttons>
     );
   }

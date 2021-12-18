@@ -18,11 +18,11 @@ import {clearEdit} from '../../../../utils/editor/editor.utils';
 import {cloud} from '../../../../utils/core/environment.utils';
 
 @Component({
-  tag: 'app-navigation-actions',
-  styleUrl: 'app-navigation-actions.scss',
+  tag: 'app-navigation-end',
+  styleUrl: 'app-navigation-end.scss',
   shadow: false
 })
-export class AppNavigationActions {
+export class AppNavigationEnd {
   @Element() el: HTMLElement;
 
   @Prop()
