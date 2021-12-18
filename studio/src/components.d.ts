@@ -38,7 +38,6 @@ export namespace Components {
     interface AppActionShare {
     }
     interface AppActionsDeck {
-        "actionPublish": EventEmitter;
         "animatePrevNextSlide": EventEmitter;
         "deckDidChange": EventEmitter;
         "fullscreen": boolean;
@@ -1365,11 +1364,9 @@ declare namespace LocalJSX {
         "onOpenEmbed"?: (event: CustomEvent<void>) => void;
     }
     interface AppActionsDeck {
-        "actionPublish"?: EventEmitter;
         "animatePrevNextSlide"?: EventEmitter;
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
-        "onOpenEmbed"?: (event: CustomEvent<void>) => void;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slides"?: JSX.IntrinsicElements[];
@@ -1378,7 +1375,6 @@ declare namespace LocalJSX {
     interface AppActionsDeckEditor {
         "fullscreen"?: boolean;
         "hideActions"?: boolean;
-        "onActionPublish"?: (event: CustomEvent<void>) => void;
         "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;
