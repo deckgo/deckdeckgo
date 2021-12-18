@@ -251,8 +251,6 @@ export namespace Components {
     }
     interface AppNavigation {
         "actions": 'all' | 'none' | 'editor-less';
-        "menuToggle": boolean;
-        "user": boolean;
     }
     interface AppNavigationActions {
         "editorActions": boolean;
@@ -1620,8 +1618,6 @@ declare namespace LocalJSX {
     }
     interface AppNavigation {
         "actions"?: 'all' | 'none' | 'editor-less';
-        "menuToggle"?: boolean;
-        "user"?: boolean;
     }
     interface AppNavigationActions {
         "editorActions"?: boolean;

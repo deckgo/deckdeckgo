@@ -3,7 +3,6 @@ import {Component, Prop, h, Host, State} from '@stencil/core';
 import {isIOS} from '@deckdeckgo/utils';
 
 import i18n from '../../../../stores/i18n.store';
-import editorStore from '../../../../stores/editor.store';
 
 import {AppIcon} from '../../app-icon/app-icon';
 
@@ -13,19 +12,10 @@ import {AppIcon} from '../../app-icon/app-icon';
   shadow: false
 })
 export class AppNavigation {
-  @Prop() menuToggle: boolean = true;
-
-  @Prop() user: boolean = true;
-
   @Prop() actions: 'all' | 'none' | 'editor-less' = 'editor-less';
 
   @State()
   private hideIC: boolean = localStorage.getItem('deckgo-hide-announcement-ic') !== null;
-
-  private async closeMenu() {
-    const element: HTMLIonMenuElement | null = document.querySelector('ion-menu');
-    await element?.close();
-  }
 
   render() {
     return (
@@ -33,7 +23,6 @@ export class AppNavigation {
         {this.renderICP()}
         <ion-header>
           <ion-toolbar>
-            {this.renderTitle()}
             {this.renderMenuToggle()}
 
             {this.actions !== 'none' ? (
@@ -45,36 +34,7 @@ export class AppNavigation {
     );
   }
 
-  private renderTitle() {
-    const titleClass = editorStore.state.name && editorStore.state.name !== '' ? 'title deck-name-visible' : 'title';
-
-    console.log(editorStore.state.name, titleClass);
-
-    return (
-      <div class={titleClass}>
-        <ion-router-link onClick={() => this.closeMenu()} href="/" routerDirection="forward" class="nav">
-          {this.renderLogo()}
-        </ion-router-link>
-
-        <ion-label class="display-name">{editorStore.state.name}</ion-label>
-      </div>
-    );
-  }
-
-  private renderLogo() {
-    return (
-      <div class="logo">
-        <app-logo></app-logo>
-        <ion-label>DeckDeckGo</ion-label>
-      </div>
-    );
-  }
-
   private renderMenuToggle() {
-    if (!this.menuToggle) {
-      return undefined;
-    }
-
     return (
       <ion-buttons slot="start">
         <ion-menu-toggle>
