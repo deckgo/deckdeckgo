@@ -38,7 +38,6 @@ export namespace Components {
     interface AppActionShare {
     }
     interface AppActionsDeck {
-        "actionPublish": EventEmitter;
         "animatePrevNextSlide": EventEmitter;
         "deckDidChange": EventEmitter;
         "fullscreen": boolean;
@@ -91,6 +90,8 @@ export namespace Components {
         "slideNumber": number;
     }
     interface AppCloseMenu {
+    }
+    interface AppCloudWait {
     }
     interface AppCode {
         "codeDidChange": EventEmitter<HTMLElement>;
@@ -248,15 +249,17 @@ export namespace Components {
         "notes": boolean;
         "transform": boolean;
     }
+    interface AppMoreFileActions {
+    }
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
         "actions": 'all' | 'none' | 'editor-less';
-        "menuToggle": boolean;
-        "user": boolean;
     }
-    interface AppNavigationActions {
+    interface AppNavigationEnd {
         "editorActions": boolean;
+    }
+    interface AppNavigationStart {
     }
     interface AppNew {
     }
@@ -544,6 +547,12 @@ declare global {
     var HTMLAppCloseMenuElement: {
         prototype: HTMLAppCloseMenuElement;
         new (): HTMLAppCloseMenuElement;
+    };
+    interface HTMLAppCloudWaitElement extends Components.AppCloudWait, HTMLStencilElement {
+    }
+    var HTMLAppCloudWaitElement: {
+        prototype: HTMLAppCloudWaitElement;
+        new (): HTMLAppCloudWaitElement;
     };
     interface HTMLAppCodeElement extends Components.AppCode, HTMLStencilElement {
     }
@@ -833,6 +842,12 @@ declare global {
         prototype: HTMLAppMoreElementActionsElement;
         new (): HTMLAppMoreElementActionsElement;
     };
+    interface HTMLAppMoreFileActionsElement extends Components.AppMoreFileActions, HTMLStencilElement {
+    }
+    var HTMLAppMoreFileActionsElement: {
+        prototype: HTMLAppMoreFileActionsElement;
+        new (): HTMLAppMoreFileActionsElement;
+    };
     interface HTMLAppMoreShareOptionsElement extends Components.AppMoreShareOptions, HTMLStencilElement {
     }
     var HTMLAppMoreShareOptionsElement: {
@@ -845,11 +860,17 @@ declare global {
         prototype: HTMLAppNavigationElement;
         new (): HTMLAppNavigationElement;
     };
-    interface HTMLAppNavigationActionsElement extends Components.AppNavigationActions, HTMLStencilElement {
+    interface HTMLAppNavigationEndElement extends Components.AppNavigationEnd, HTMLStencilElement {
     }
-    var HTMLAppNavigationActionsElement: {
-        prototype: HTMLAppNavigationActionsElement;
-        new (): HTMLAppNavigationActionsElement;
+    var HTMLAppNavigationEndElement: {
+        prototype: HTMLAppNavigationEndElement;
+        new (): HTMLAppNavigationEndElement;
+    };
+    interface HTMLAppNavigationStartElement extends Components.AppNavigationStart, HTMLStencilElement {
+    }
+    var HTMLAppNavigationStartElement: {
+        prototype: HTMLAppNavigationStartElement;
+        new (): HTMLAppNavigationStartElement;
     };
     interface HTMLAppNewElement extends Components.AppNew, HTMLStencilElement {
     }
@@ -1230,6 +1251,7 @@ declare global {
         "app-box-shadow": HTMLAppBoxShadowElement;
         "app-breadcrumbs": HTMLAppBreadcrumbsElement;
         "app-close-menu": HTMLAppCloseMenuElement;
+        "app-cloud-wait": HTMLAppCloudWaitElement;
         "app-code": HTMLAppCodeElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
         "app-color": HTMLAppColorElement;
@@ -1278,9 +1300,11 @@ declare global {
         "app-menu": HTMLAppMenuElement;
         "app-more-deck-actions": HTMLAppMoreDeckActionsElement;
         "app-more-element-actions": HTMLAppMoreElementActionsElement;
+        "app-more-file-actions": HTMLAppMoreFileActionsElement;
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
-        "app-navigation-actions": HTMLAppNavigationActionsElement;
+        "app-navigation-end": HTMLAppNavigationEndElement;
+        "app-navigation-start": HTMLAppNavigationStartElement;
         "app-new": HTMLAppNewElement;
         "app-no-templates": HTMLAppNoTemplatesElement;
         "app-notes": HTMLAppNotesElement;
@@ -1365,11 +1389,9 @@ declare namespace LocalJSX {
         "onOpenEmbed"?: (event: CustomEvent<void>) => void;
     }
     interface AppActionsDeck {
-        "actionPublish"?: EventEmitter;
         "animatePrevNextSlide"?: EventEmitter;
         "deckDidChange"?: EventEmitter;
         "fullscreen"?: boolean;
-        "onOpenEmbed"?: (event: CustomEvent<void>) => void;
         "onSelectDeck"?: (event: CustomEvent<void>) => void;
         "onStepTo"?: (event: CustomEvent<HTMLElement | undefined>) => void;
         "slides"?: JSX.IntrinsicElements[];
@@ -1378,7 +1400,6 @@ declare namespace LocalJSX {
     interface AppActionsDeckEditor {
         "fullscreen"?: boolean;
         "hideActions"?: boolean;
-        "onActionPublish"?: (event: CustomEvent<void>) => void;
         "onAnimatePrevNextSlide"?: (event: CustomEvent<boolean>) => void;
         "onBlockSlide"?: (event: CustomEvent<boolean>) => void;
         "onDeckDidChange"?: (event: CustomEvent<HTMLElement>) => void;
@@ -1439,6 +1460,8 @@ declare namespace LocalJSX {
     }
     interface AppCloseMenu {
         "onClose"?: (event: CustomEvent<void>) => void;
+    }
+    interface AppCloudWait {
     }
     interface AppCode {
         "codeDidChange"?: EventEmitter<HTMLElement>;
@@ -1620,15 +1643,17 @@ declare namespace LocalJSX {
         "notes"?: boolean;
         "transform"?: boolean;
     }
+    interface AppMoreFileActions {
+    }
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
         "actions"?: 'all' | 'none' | 'editor-less';
-        "menuToggle"?: boolean;
-        "user"?: boolean;
     }
-    interface AppNavigationActions {
+    interface AppNavigationEnd {
         "editorActions"?: boolean;
+    }
+    interface AppNavigationStart {
     }
     interface AppNew {
     }
@@ -1850,6 +1875,7 @@ declare namespace LocalJSX {
         "app-box-shadow": AppBoxShadow;
         "app-breadcrumbs": AppBreadcrumbs;
         "app-close-menu": AppCloseMenu;
+        "app-cloud-wait": AppCloudWait;
         "app-code": AppCode;
         "app-code-languages": AppCodeLanguages;
         "app-color": AppColor;
@@ -1898,9 +1924,11 @@ declare namespace LocalJSX {
         "app-menu": AppMenu;
         "app-more-deck-actions": AppMoreDeckActions;
         "app-more-element-actions": AppMoreElementActions;
+        "app-more-file-actions": AppMoreFileActions;
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
-        "app-navigation-actions": AppNavigationActions;
+        "app-navigation-end": AppNavigationEnd;
+        "app-navigation-start": AppNavigationStart;
         "app-new": AppNew;
         "app-no-templates": AppNoTemplates;
         "app-notes": AppNotes;
@@ -1985,6 +2013,7 @@ declare module "@stencil/core" {
             "app-box-shadow": LocalJSX.AppBoxShadow & JSXBase.HTMLAttributes<HTMLAppBoxShadowElement>;
             "app-breadcrumbs": LocalJSX.AppBreadcrumbs & JSXBase.HTMLAttributes<HTMLAppBreadcrumbsElement>;
             "app-close-menu": LocalJSX.AppCloseMenu & JSXBase.HTMLAttributes<HTMLAppCloseMenuElement>;
+            "app-cloud-wait": LocalJSX.AppCloudWait & JSXBase.HTMLAttributes<HTMLAppCloudWaitElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
             "app-color": LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
@@ -2033,9 +2062,11 @@ declare module "@stencil/core" {
             "app-menu": LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
             "app-more-deck-actions": LocalJSX.AppMoreDeckActions & JSXBase.HTMLAttributes<HTMLAppMoreDeckActionsElement>;
             "app-more-element-actions": LocalJSX.AppMoreElementActions & JSXBase.HTMLAttributes<HTMLAppMoreElementActionsElement>;
+            "app-more-file-actions": LocalJSX.AppMoreFileActions & JSXBase.HTMLAttributes<HTMLAppMoreFileActionsElement>;
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
-            "app-navigation-actions": LocalJSX.AppNavigationActions & JSXBase.HTMLAttributes<HTMLAppNavigationActionsElement>;
+            "app-navigation-end": LocalJSX.AppNavigationEnd & JSXBase.HTMLAttributes<HTMLAppNavigationEndElement>;
+            "app-navigation-start": LocalJSX.AppNavigationStart & JSXBase.HTMLAttributes<HTMLAppNavigationStartElement>;
             "app-new": LocalJSX.AppNew & JSXBase.HTMLAttributes<HTMLAppNewElement>;
             "app-no-templates": LocalJSX.AppNoTemplates & JSXBase.HTMLAttributes<HTMLAppNoTemplatesElement>;
             "app-notes": LocalJSX.AppNotes & JSXBase.HTMLAttributes<HTMLAppNotesElement>;
