@@ -2,20 +2,20 @@ import {Component, h, Fragment, Element, Prop} from '@stencil/core';
 
 import {loadingController, OverlayEventDetail, popoverController} from '@ionic/core';
 
-import authStore from '../../../stores/auth.store';
-import userStore from '../../../stores/user.store';
-import i18n from '../../../stores/i18n.store';
-import errorStore from '../../../stores/error.store';
-import syncStore from '../../../stores/sync.store';
-import offlineStore from '../../../stores/offline.store';
+import authStore from '../../../../stores/auth.store';
+import userStore from '../../../../stores/user.store';
+import i18n from '../../../../stores/i18n.store';
+import errorStore from '../../../../stores/error.store';
+import syncStore from '../../../../stores/sync.store';
+import offlineStore from '../../../../stores/offline.store';
 
-import {signIn} from '../../../utils/core/signin.utils';
+import {signIn} from '../../../../utils/core/signin.utils';
 
-import {AppIcon} from '../app-icon/app-icon';
+import {AppIcon} from '../../app-icon/app-icon';
 
-import {FileSystemService} from '../../../services/editor/file-system/file-system.service';
-import {clearEdit} from '../../../utils/editor/editor.utils';
-import {cloud} from '../../../utils/core/environment.utils';
+import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
+import {clearEdit} from '../../../../utils/editor/editor.utils';
+import {cloud} from '../../../../utils/core/environment.utils';
 
 @Component({
   tag: 'app-navigation-actions',

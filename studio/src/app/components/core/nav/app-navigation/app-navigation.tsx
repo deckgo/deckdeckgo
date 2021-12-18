@@ -2,10 +2,10 @@ import {Component, Prop, h, Host, State} from '@stencil/core';
 
 import {isIOS} from '@deckdeckgo/utils';
 
-import i18n from '../../../stores/i18n.store';
-import editorStore from '../../../stores/editor.store';
+import i18n from '../../../../stores/i18n.store';
+import editorStore from '../../../../stores/editor.store';
 
-import {AppIcon} from '../app-icon/app-icon';
+import {AppIcon} from '../../app-icon/app-icon';
 
 @Component({
   tag: 'app-navigation',
@@ -47,6 +47,8 @@ export class AppNavigation {
 
   private renderTitle() {
     const titleClass = editorStore.state.name && editorStore.state.name !== '' ? 'title deck-name-visible' : 'title';
+
+    console.log(editorStore.state.name, titleClass);
 
     return (
       <div class={titleClass}>
