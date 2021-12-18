@@ -440,7 +440,7 @@
     "contact": "kontaktiere",
     "title": "Titel",
     "publish_now": "Jetzt veröffentlichen",
-    "hang_on_publishing": "Warte, deine Präsentation wird veröffentlicht",
+    "hang_on_publishing": "Warte, dein Inhalt wird veröffentlicht",
     "source_push": "Soll der Quellcode deiner Präsentation in einen neues, öffentliches Repository deines GitHub Accounts geschoben werden?",
     "source_submit": "Soll der Quellcode deiner Präsentation ans GitHub Repository übergeben werden?"
   },
