@@ -1,13 +1,13 @@
 import {Component, Element, Fragment, h} from '@stencil/core';
 
-import navStore, {NavDirection} from '../../../stores/nav.store';
-import i18n from '../../../stores/i18n.store';
-import userStore from '../../../stores/user.store';
-import authStore from '../../../stores/auth.store';
-import syncStore from '../../../stores/sync.store';
+import navStore, {NavDirection} from '../../../../stores/nav.store';
+import i18n from '../../../../stores/i18n.store';
+import userStore from '../../../../stores/user.store';
+import authStore from '../../../../stores/auth.store';
+import syncStore from '../../../../stores/sync.store';
 
-import {signOut} from '../../../providers/auth/auth.provider';
-import {clearEdit} from '../../../utils/editor/editor.utils';
+import {signOut} from '../../../../providers/auth/auth.provider';
+import {clearEdit} from '../../../../utils/editor/editor.utils';
 
 @Component({
   tag: 'app-user-menu',

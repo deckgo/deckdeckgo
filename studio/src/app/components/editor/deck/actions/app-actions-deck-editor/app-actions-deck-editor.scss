@@ -146,7 +146,6 @@ app-actions-deck-editor {
 
   @media screen and (max-width: 768px) {
     button,
-    app-action-share,
     app-action-busy,
     app-action-help {
       &.wider-devices {
@@ -157,7 +156,6 @@ app-actions-deck-editor {
 
   @media screen and (min-width: 768px) {
     button,
-    app-action-share,
     app-action-busy,
     app-action-help {
       &.small-devices {

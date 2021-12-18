@@ -549,6 +549,7 @@ interface I18nSync {
   cloud_init: string;
   info: string;
   status: string;
+  wait: string;
 }
 
 interface I18n {

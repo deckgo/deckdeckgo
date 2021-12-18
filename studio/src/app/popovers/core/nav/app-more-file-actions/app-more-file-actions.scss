@@ -1,0 +1,10 @@
+app-more-file-actions {
+  a {
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--ion-color-tertiary);
+    }
+  }
+}

@@ -530,6 +530,7 @@
     "cloud_pending": "Wird gespeichert...",
     "cloud_init": "Initialisierend...",
     "info": "Alle Änderungen werden automatisch in dem Cloud gespeichert.",
-    "status": "Status"
+    "status": "Status",
+    "wait": "Warte, bis die letzten Änderungen mit dem Cloud synchronisiert wurden."
   }
 }

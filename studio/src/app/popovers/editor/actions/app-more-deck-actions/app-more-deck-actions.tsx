@@ -17,13 +17,9 @@ export class AppMoreDeckActions {
     });
   }
 
-  private async closeSharePopover($event: CustomEvent<MoreAction>) {
-    await this.closePopover($event ? $event.detail : null);
-  }
-
   render() {
     return (
-      <div class="ion-padding">
+      <div class="ion-padding-start-ion-padding-end">
         <a onClick={() => this.closePopover(MoreAction.JUMP_TO)} aria-label={i18n.state.editor.slides}>
           <p>{i18n.state.editor.slides}</p>
         </a>
@@ -31,8 +27,6 @@ export class AppMoreDeckActions {
         <a onClick={() => this.closePopover(MoreAction.PRESENT)}>
           <p>{i18n.state.editor.present}</p>
         </a>
-
-        <app-share-options onSelectedOption={($event: CustomEvent<MoreAction>) => this.closeSharePopover($event)}></app-share-options>
 
         <app-action-help link={true} onHelpSelected={() => this.closePopover(MoreAction.HELP)}></app-action-help>
       </div>

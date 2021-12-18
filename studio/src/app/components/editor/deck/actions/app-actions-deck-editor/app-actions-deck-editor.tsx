@@ -34,8 +34,6 @@ export class AppActionsDeckEditor {
 
   @Event() private toggleFullScreen: EventEmitter<void>;
 
-  @Event() private actionPublish: EventEmitter<void>;
-
   @Event() private deckDidChange: EventEmitter<HTMLElement>;
 
   @Event() private slideCopy: EventEmitter<HTMLElement>;
@@ -209,7 +207,6 @@ export class AppActionsDeckEditor {
         slides={this.slides}
         animatePrevNextSlide={this.animatePrevNextSlide}
         toggleFullScreen={this.toggleFullScreen}
-        actionPublish={this.actionPublish}
         deckDidChange={this.deckDidChange}
         onSelectDeck={() => this.selectDeck()}
         onStepTo={($event: CustomEvent<HTMLElement>) => this.selectStep($event?.detail)}></app-actions-deck>

@@ -18,6 +18,10 @@ const {state, onChange, reset} = createStore<EditorStore>({
   published: false
 });
 
+onChange('name', (name: string | null) => {
+  document.title = name ?? 'DeckDeckGo';
+});
+
 onChange('deck', (deck: Deck | null) => {
   state.name = deck?.data?.name && deck?.data?.name !== '' ? deck.data.name : null;
   state.published = deck?.data?.meta?.published ?? false;

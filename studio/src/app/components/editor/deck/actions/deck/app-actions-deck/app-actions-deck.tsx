@@ -12,8 +12,6 @@ import i18n from '../../../../../../stores/i18n.store';
 
 import {MoreAction} from '../../../../../../types/editor/more-action';
 
-import {share} from '../../../../../../utils/core/share.utils';
-
 import {AppIcon} from '../../../../../core/app-icon/app-icon';
 
 @Component({
@@ -36,9 +34,6 @@ export class AppActionsDeck {
   toggleFullScreen: EventEmitter;
 
   @Prop()
-  actionPublish: EventEmitter;
-
-  @Prop()
   deckDidChange: EventEmitter;
 
   @Event()
@@ -46,9 +41,6 @@ export class AppActionsDeck {
 
   @Event()
   private stepTo: EventEmitter<HTMLElement | undefined>;
-
-  @Event()
-  private openEmbed: EventEmitter<void>;
 
   private destroyListener;
 
@@ -125,12 +117,6 @@ export class AppActionsDeck {
           await this.openPresent();
         } else if (detail.data.action === MoreAction.JUMP_TO) {
           await this.openSlideNavigate();
-        } else if (detail.data.action === MoreAction.SHARE) {
-          share();
-        } else if (detail.data.action === MoreAction.PUBLISH) {
-          this.actionPublish.emit();
-        } else if (detail.data.action === MoreAction.EMBED) {
-          this.openEmbed.emit();
         }
       }
     });
@@ -263,14 +249,12 @@ export class AppActionsDeck {
             <ion-label aria-hidden="true">{i18n.state.editor.present}</ion-label>
           </button>
 
-          <app-action-share class="wider-devices"></app-action-share>
-
           <app-action-help class="wider-devices"></app-action-help>
 
           <button
             onMouseDown={($event) => $event.stopPropagation()}
             onTouchStart={($event) => $event.stopPropagation()}
-            onClick={(e: UIEvent) => this.openMoreActions(e)}
+            onClick={async ($event: UIEvent) => await this.openMoreActions($event)}
             color="primary"
             class="small-devices ion-activatable">
             <ion-ripple-effect></ion-ripple-effect>

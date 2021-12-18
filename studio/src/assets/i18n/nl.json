@@ -530,6 +530,7 @@
     "cloud_pending": "Bezig met opslaan...",
     "cloud_init": "Initialiseren...",
     "info": "Elke wijziging die u aanbrengt, wordt automatisch opgeslagen in uw cloud.",
-    "status": "Status"
+    "status": "Status",
+    "wait": "Wacht tot de laatste wijzigingen zijn gesynchroniseerd met uw cloud. "
   }
 }
