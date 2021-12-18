@@ -12,4 +12,18 @@ app-navigation-start {
     width: 1px;
     height: 1px;
   }
+
+  button.small-devices {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    > button {
+      display: none;
+
+      &.small-devices {
+        display: flex;
+      }
+    }
+  }
 }

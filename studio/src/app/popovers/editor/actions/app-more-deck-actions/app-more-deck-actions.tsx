@@ -19,7 +19,7 @@ export class AppMoreDeckActions {
 
   render() {
     return (
-      <div class="ion-padding">
+      <div class="ion-padding-start-ion-padding-end">
         <a onClick={() => this.closePopover(MoreAction.JUMP_TO)} aria-label={i18n.state.editor.slides}>
           <p>{i18n.state.editor.slides}</p>
         </a>

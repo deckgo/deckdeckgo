@@ -247,6 +247,8 @@ export namespace Components {
         "notes": boolean;
         "transform": boolean;
     }
+    interface AppMoreFileActions {
+    }
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
@@ -832,6 +834,12 @@ declare global {
         prototype: HTMLAppMoreElementActionsElement;
         new (): HTMLAppMoreElementActionsElement;
     };
+    interface HTMLAppMoreFileActionsElement extends Components.AppMoreFileActions, HTMLStencilElement {
+    }
+    var HTMLAppMoreFileActionsElement: {
+        prototype: HTMLAppMoreFileActionsElement;
+        new (): HTMLAppMoreFileActionsElement;
+    };
     interface HTMLAppMoreShareOptionsElement extends Components.AppMoreShareOptions, HTMLStencilElement {
     }
     var HTMLAppMoreShareOptionsElement: {
@@ -1283,6 +1291,7 @@ declare global {
         "app-menu": HTMLAppMenuElement;
         "app-more-deck-actions": HTMLAppMoreDeckActionsElement;
         "app-more-element-actions": HTMLAppMoreElementActionsElement;
+        "app-more-file-actions": HTMLAppMoreFileActionsElement;
         "app-more-share-options": HTMLAppMoreShareOptionsElement;
         "app-navigation": HTMLAppNavigationElement;
         "app-navigation-end": HTMLAppNavigationEndElement;
@@ -1623,6 +1632,8 @@ declare namespace LocalJSX {
         "notes"?: boolean;
         "transform"?: boolean;
     }
+    interface AppMoreFileActions {
+    }
     interface AppMoreShareOptions {
     }
     interface AppNavigation {
@@ -1901,6 +1912,7 @@ declare namespace LocalJSX {
         "app-menu": AppMenu;
         "app-more-deck-actions": AppMoreDeckActions;
         "app-more-element-actions": AppMoreElementActions;
+        "app-more-file-actions": AppMoreFileActions;
         "app-more-share-options": AppMoreShareOptions;
         "app-navigation": AppNavigation;
         "app-navigation-end": AppNavigationEnd;
@@ -2037,6 +2049,7 @@ declare module "@stencil/core" {
             "app-menu": LocalJSX.AppMenu & JSXBase.HTMLAttributes<HTMLAppMenuElement>;
             "app-more-deck-actions": LocalJSX.AppMoreDeckActions & JSXBase.HTMLAttributes<HTMLAppMoreDeckActionsElement>;
             "app-more-element-actions": LocalJSX.AppMoreElementActions & JSXBase.HTMLAttributes<HTMLAppMoreElementActionsElement>;
+            "app-more-file-actions": LocalJSX.AppMoreFileActions & JSXBase.HTMLAttributes<HTMLAppMoreFileActionsElement>;
             "app-more-share-options": LocalJSX.AppMoreShareOptions & JSXBase.HTMLAttributes<HTMLAppMoreShareOptionsElement>;
             "app-navigation": LocalJSX.AppNavigation & JSXBase.HTMLAttributes<HTMLAppNavigationElement>;
             "app-navigation-end": LocalJSX.AppNavigationEnd & JSXBase.HTMLAttributes<HTMLAppNavigationEndElement>;

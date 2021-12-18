@@ -12,6 +12,7 @@ import {AppIcon} from '../../app-icon/app-icon';
 import {FileSystemService} from '../../../../services/editor/file-system/file-system.service';
 import {clearEdit} from '../../../../utils/editor/editor.utils';
 import {cloud} from '../../../../utils/core/environment.utils';
+import {MoreAction} from '../../../../types/editor/more-action';
 
 @Component({
   tag: 'app-navigation-start',
@@ -102,6 +103,36 @@ export class AppNavigationStart {
     this.el.dispatchEvent(initNewEditor);
   }
 
+  private async openMoreActions($event: UIEvent) {
+    if (!$event) {
+      return;
+    }
+
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-more-file-actions',
+      event: $event,
+      mode: 'ios'
+    });
+
+    popover.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
+      const {action} = data;
+
+      switch (action) {
+        case MoreAction.NEW:
+          await this.selectType($event);
+          break;
+        case MoreAction.OPEN:
+          this.openFilePicker();
+          break;
+        case MoreAction.EXPORT:
+          await this.exportData();
+          break;
+      }
+    });
+
+    await popover.present();
+  }
+
   render() {
     return <Fragment>{this.renderActions()}</Fragment>;
   }
@@ -136,10 +167,21 @@ export class AppNavigationStart {
           tabindex="-1"
         />
 
-        <button key="export-action" class="ion-activatable" onClick={() => this.exportData()}>
+        <button key="export-action" class="ion-activatable" onClick={async () => await this.exportData()}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="download" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.editor.export}</ion-label>
+        </button>
+
+        <button
+          onMouseDown={($event) => $event.stopPropagation()}
+          onTouchStart={($event) => $event.stopPropagation()}
+          onClick={async ($event: UIEvent) => await this.openMoreActions($event)}
+          color="primary"
+          class="small-devices ion-activatable">
+          <ion-ripple-effect></ion-ripple-effect>
+          <AppIcon name="document" ariaLabel="" ariaHidden={true}></AppIcon>
+          <ion-label aria-hidden="true">{i18n.state.editor.files}</ion-label>
         </button>
 
         {this.renderShare()}
