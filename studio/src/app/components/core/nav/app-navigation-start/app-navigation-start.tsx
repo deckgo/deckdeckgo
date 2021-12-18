@@ -34,7 +34,16 @@ export class AppNavigationStart {
     }
   }
 
-  private openFilePicker() {
+  private isSyncing(): boolean {
+    return ['in_progress', 'pending', 'init'].includes(syncStore.state.sync);
+  }
+
+  private async openFilePicker($event: UIEvent) {
+    if (this.isSyncing()) {
+      await this.wait($event);
+      return;
+    }
+
     this.loadInput?.click();
   }
 
@@ -60,7 +69,22 @@ export class AppNavigationStart {
     await loading.dismiss();
   }
 
+  private async wait($event: UIEvent) {
+    const popover: HTMLIonPopoverElement = await popoverController.create({
+      component: 'app-cloud-wait',
+      event: $event,
+      mode: 'ios'
+    });
+
+    await popover.present();
+  }
+
   private async selectType($event: UIEvent) {
+    if (this.isSyncing()) {
+      await this.wait($event);
+      return;
+    }
+
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-new',
       event: $event,
@@ -122,7 +146,7 @@ export class AppNavigationStart {
           await this.selectType($event);
           break;
         case MoreAction.OPEN:
-          this.openFilePicker();
+          await this.openFilePicker($event);
           break;
         case MoreAction.EXPORT:
           await this.exportData();
@@ -138,22 +162,19 @@ export class AppNavigationStart {
   }
 
   private renderActions() {
-    const disabled: boolean = ['in_progress', 'pending', 'init'].includes(syncStore.state.sync);
-
     return (
       <Fragment>
         <button
           key="new-select-action"
           class="ion-activatable"
-          onClick={($event: UIEvent) => this.selectType($event)}
-          disabled={disabled}
+          onClick={async ($event: UIEvent) => await this.selectType($event)}
           aria-label={i18n.state.tools.new_presentation}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="document" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.new}</ion-label>
         </button>
 
-        <button key="open-file-action" class="ion-activatable" onClick={() => this.openFilePicker()} disabled={disabled}>
+        <button key="open-file-action" class="ion-activatable" onClick={async ($event: UIEvent) => await this.openFilePicker($event)}>
           <ion-ripple-effect></ion-ripple-effect>
           <AppIcon name="folder-open" ariaHidden={true} ariaLabel=""></AppIcon>
           <ion-label>{i18n.state.tools.open}</ion-label>
