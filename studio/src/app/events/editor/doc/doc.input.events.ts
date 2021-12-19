@@ -34,7 +34,7 @@ export class DocInputEvents {
 
         return parseInt(fontWeight) > 400 || fontWeight === 'bold';
       },
-      trim: () => '**'.length
+      trim: (): number => '*'.length
     },
     {
       match: ({key}: {lastKey: Key | undefined; key: Key}) => key.key === '`' && key.code === 'Space',
@@ -42,7 +42,7 @@ export class DocInputEvents {
         return document.createElement('mark');
       },
       active: ({nodeName}: HTMLElement) => nodeName.toLowerCase() === 'mark',
-      trim: () => '``'.length
+      trim: (): number => '`'.length
     },
     {
       match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.code === 'Space' && key.key === '_',
@@ -56,7 +56,7 @@ export class DocInputEvents {
 
         return fontStyle === 'italic';
       },
-      trim: () => '_'.length
+      trim: (): number => ''.length
     }
   ];
 
@@ -100,8 +100,6 @@ export class DocInputEvents {
 
     // Disable undo-redo observer as we are about to play with the DOM
     undoRedoStore.state.observe = false;
-
-    await this.waitKeyDownRendered();
 
     const target: Node = selection.focusNode;
 
@@ -223,18 +221,6 @@ export class DocInputEvents {
       changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
 
       target.nodeValue = target.nodeValue.slice(index);
-    });
-  }
-
-  private waitKeyDownRendered(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const changeObserver: MutationObserver = new MutationObserver(() => {
-        changeObserver.disconnect();
-
-        resolve();
-      });
-
-      changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
     });
   }
 }
