@@ -25,7 +25,7 @@
 
 ### Others: New
 
-- styles: v1.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/styles/CHANGELOG.md))
+- styles: v1.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/styles/CHANGELOG.md))
 
 ### Others
 

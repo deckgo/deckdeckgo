@@ -58,7 +58,7 @@
     "web-social-share": "^8.0.0"
   },
   "devDependencies": {
-    "@deckdeckgo/styles": "^1.1.0",
+    "@deckdeckgo/styles": "^1.2.0",
     "@deckdeckgo/types": "^2.0.1",
     "@rollup/plugin-replace": "^3.0.0",
     "@stencil/core": "^2.9.0",
