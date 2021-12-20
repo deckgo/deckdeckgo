@@ -8,7 +8,7 @@
 
 # DeckDeckGo - social-img
 
-Transform text to a social image.
+Generate dynamically a social image with a text and an optional logo.
 
 ## License
 
