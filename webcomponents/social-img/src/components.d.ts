@@ -41,6 +41,12 @@ export namespace Components {
          */
         "text": string;
         /**
+          * Transform the rendered svg to an image
+          * @param type The type of output (default 'image/webp')
+          * @returns The image as blob
+         */
+        "toBlob": (type?: string) => Promise<Blob>;
+        /**
           * The social image width
           * @default 1200px
          */

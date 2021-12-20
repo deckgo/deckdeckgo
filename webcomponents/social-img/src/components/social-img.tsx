@@ -1,4 +1,5 @@
-import {Component, h, ComponentInterface, Prop, Watch} from '@stencil/core';
+import {Component, h, ComponentInterface, Prop, Watch, Method} from '@stencil/core';
+import {canvasToBlob, svgToCanvas} from '../utils/svg.utils';
 
 /**
  * @part text - The CSS pseudo-element to target the paragraph rendered as a child of the SVG foreign object
@@ -11,6 +12,7 @@ import {Component, h, ComponentInterface, Prop, Watch} from '@stencil/core';
 })
 export class SocialImg implements ComponentInterface {
   private foreignObjectRef!: SVGForeignObjectElement;
+  private svgRef!: SVGGraphicsElement;
 
   /**
    * The social image width
@@ -79,6 +81,17 @@ export class SocialImg implements ComponentInterface {
     this.setForeignObjectAttributes();
   }
 
+  /**
+   * Transform the rendered svg to an image
+   * @param type The type of output (default 'image/webp')
+   * @returns The image as blob
+   */
+  @Method()
+  async toBlob(type: string = 'image/webp'): Promise<Blob> {
+    const canvas: HTMLCanvasElement = await svgToCanvas({svg: this.svgRef});
+    return canvasToBlob({canvas, type});
+  }
+
   private setForeignObjectAttributes() {
     this.foreignObjectRef?.setAttribute('x', `${this.padding + this.innerPadding}`);
     this.foreignObjectRef?.setAttribute('y', `${this.padding + this.innerPadding}`);
@@ -95,7 +108,13 @@ export class SocialImg implements ComponentInterface {
     const imgSize: number = this.innerPadding * 2;
 
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" x="0" y="0" height={this.height} width={this.width}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        x="0"
+        y="0"
+        height={this.height}
+        width={this.width}
+        ref={(el) => (this.svgRef = el as SVGGraphicsElement)}>
         <rect
           x={this.padding + 16}
           y={this.padding + 16}

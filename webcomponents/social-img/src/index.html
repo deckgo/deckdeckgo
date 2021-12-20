@@ -16,5 +16,23 @@
       img-src="https://deckdeckgo.com/assets/img/deckdeckgo-logo.svg"
     >
     </deckgo-social-img>
+
+    <button>To image</button>
+
+    <script>
+      const toBlob = async () => {
+        const socialImg = document.querySelector('deckgo-social-img');
+        console.log(await socialImg?.toBlob());
+      };
+
+      document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+          const btn = document.querySelector('button');
+          btn?.addEventListener('click', toBlob);
+        },
+        {once: true}
+      );
+    </script>
   </body>
 </html>
