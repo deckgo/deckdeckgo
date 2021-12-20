@@ -24,6 +24,7 @@ describe('social-image', () => {
       <deckgo-social-img>
         <mock:shadow-root>
           <svg height="628px" width="1200px" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
+            <rect fill="#ffffff" height="628px" width="1200px" x="0" y="0"></rect>
             <rect fill="#3dc2ff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="80" y="80"></rect>
             <rect fill="#ffffff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="64" y="64"></rect>
           </svg>
@@ -42,9 +43,10 @@ describe('social-image', () => {
       <deckgo-social-img text="${text}">
         <mock:shadow-root>
           <svg height="628px" width="1200px" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
+            <rect fill="#ffffff" height="628px" width="1200px" x="0" y="0"></rect>
             <rect fill="#3dc2ff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="80" y="80"></rect>
             <rect fill="#ffffff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="64" y="64"></rect>
-            <foreignObject height="436" width="1008" x="96" xmlns="http://www.w3.org/1999/xhtml" y="96"><p part="text">${text}</p></foreignObject>
+            <foreignObject height="436" width="1008" x="96" y="96"><p part="text">${text}</p></foreignObject>
           </svg>
         </mock:shadow-root>
       </deckgo-social-img>
@@ -61,6 +63,7 @@ describe('social-image', () => {
       <deckgo-social-img img-src="${imgSrc}">
         <mock:shadow-root>
           <svg height="628px" width="1200px" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
+            <rect fill="#ffffff" height="628px" width="1200px" x="0" y="0"></rect>
             <rect fill="#3dc2ff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="80" y="80"></rect>
             <rect fill="#ffffff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="64" y="64"></rect>
             <image height="64" href="${imgParsed}" part="img" width="64" x="1040" y="468"></image>
@@ -80,6 +83,7 @@ describe('social-image', () => {
       <deckgo-social-img text="${text}" img-src="${imgSrc}">
         <mock:shadow-root>
           <svg height="628px" width="1200px" x="0" xmlns="http://www.w3.org/2000/svg" y="0">
+            <rect fill="#ffffff" height="628px" width="1200px" x="0" y="0"></rect>
             <rect fill="#3dc2ff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="80" y="80"></rect>
             <rect fill="#ffffff" height="500" rx="0" ry="0" stroke="#3dc2ff" stroke-width="5" width="1072" x="64" y="64"></rect>
             <foreignObject height="436" width="912" x="96" y="96"><p part="text">${text}</p></foreignObject>
