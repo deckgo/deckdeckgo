@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 128px;
+
+  /* Three dots if text longer than three lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  z-index: 1;
+}
