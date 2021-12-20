@@ -18,12 +18,24 @@ export namespace Components {
         "imgSrc": string;
         /**
           * A padding to create space around the text and the content
+          * @default 32
          */
         "innerPadding": number;
         /**
           * A padding to create space around the content
+          * @default 64
          */
         "padding": number;
+        /**
+          * The color for rectangles
+          * @default #3dc2ff
+         */
+        "rectColor": string;
+        /**
+          * The width of the stroke of the rectangles
+          * @default 4
+         */
+        "rectStrokeWidth": number;
         /**
           * The text to display (per default clamped with three dots "..." after some lines, see CSS)
          */
@@ -59,12 +71,24 @@ declare namespace LocalJSX {
         "imgSrc"?: string;
         /**
           * A padding to create space around the text and the content
+          * @default 32
          */
         "innerPadding"?: number;
         /**
           * A padding to create space around the content
+          * @default 64
          */
         "padding"?: number;
+        /**
+          * The color for rectangles
+          * @default #3dc2ff
+         */
+        "rectColor"?: string;
+        /**
+          * The width of the stroke of the rectangles
+          * @default 4
+         */
+        "rectStrokeWidth"?: number;
         /**
           * The text to display (per default clamped with three dots "..." after some lines, see CSS)
          */
