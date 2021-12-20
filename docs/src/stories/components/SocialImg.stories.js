@@ -39,7 +39,7 @@ export const SocialImage = ({
   rectBackground,
   background
 }) => {
-  return `<deckgo-social-img width="${width}" height="${height}" padding="${padding}"
+  return `<deckgo-social-img width="${width}" height="${height}" padding="${padding}" style="--text-font-size: 64px"
                          inner-padding="${innerPadding}" text="${text}" img-src="${imgSrc}" 
                          img-mime-type="${imgMimeType}" rect-stroke-width="${rectStrokeWidth}" rect-color="${rectColor}" 
                          rect-rx="${rectRx}" rect-ry="${rectRy}" rect-background="${rectBackground}" background="${background}"></deckgo-social-img>`;
