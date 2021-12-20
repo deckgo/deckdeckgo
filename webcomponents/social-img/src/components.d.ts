@@ -8,6 +8,11 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DeckgoSocialImg {
         /**
+          * A background color for the all social image, the all SVG
+          * @default #ffffff
+         */
+        "background": string;
+        /**
           * The social image width
           * @default 1200px
          */
@@ -31,12 +36,27 @@ export namespace Components {
          */
         "padding": number;
         /**
+          * The background color for the rectangle at the top
+          * @default #ffffff
+         */
+        "rectBackground": string;
+        /**
           * The color for rectangles
           * @default #3dc2ff
          */
         "rectColor": string;
         /**
-          * The width of the stroke of the rectangles
+          * A x-axis radius for rectangles
+          * @default 0
+         */
+        "rectRx": string;
+        /**
+          * A y-axis radius for rectangles
+          * @default 0
+         */
+        "rectRy": string;
+        /**
+          * The width of the stroke of the rectangles around the text
           * @default 4
          */
         "rectStrokeWidth": number;
@@ -71,6 +91,11 @@ declare global {
 declare namespace LocalJSX {
     interface DeckgoSocialImg {
         /**
+          * A background color for the all social image, the all SVG
+          * @default #ffffff
+         */
+        "background"?: string;
+        /**
           * The social image width
           * @default 1200px
          */
@@ -94,12 +119,27 @@ declare namespace LocalJSX {
          */
         "padding"?: number;
         /**
+          * The background color for the rectangle at the top
+          * @default #ffffff
+         */
+        "rectBackground"?: string;
+        /**
           * The color for rectangles
           * @default #3dc2ff
          */
         "rectColor"?: string;
         /**
-          * The width of the stroke of the rectangles
+          * A x-axis radius for rectangles
+          * @default 0
+         */
+        "rectRx"?: string;
+        /**
+          * A y-axis radius for rectangles
+          * @default 0
+         */
+        "rectRy"?: string;
+        /**
+          * The width of the stroke of the rectangles around the text
           * @default 4
          */
         "rectStrokeWidth"?: number;

@@ -64,7 +64,7 @@ export class SocialImg implements ComponentInterface {
   imgMimeType: string = 'image/svg+xml';
 
   /**
-   * The width of the stroke of the rectangles
+   * The width of the stroke of the rectangles around the text
    * @default 4
    */
   @Prop()
@@ -76,6 +76,34 @@ export class SocialImg implements ComponentInterface {
    */
   @Prop()
   rectColor: string = '#3dc2ff';
+
+  /**
+   * A x-axis radius for rectangles
+   * @default 0
+   */
+  @Prop()
+  rectRx: string = '0';
+
+  /**
+   * A y-axis radius for rectangles
+   * @default 0
+   */
+  @Prop()
+  rectRy: string = '0';
+
+  /**
+   * The background color for the rectangle at the top
+   * @default #ffffff
+   */
+  @Prop()
+  rectBackground: string = '#ffffff';
+
+  /**
+   * A background color for the all social image, the all SVG
+   * @default #ffffff
+   */
+  @Prop()
+  background: string = '#ffffff';
 
   @State()
   private imgBase64: {
@@ -167,14 +195,16 @@ export class SocialImg implements ComponentInterface {
         height={this.height}
         width={this.width}
         ref={(el) => (this.svgRef = el as SVGGraphicsElement)}>
+        <rect x="0" y="0" width={this.width} height={this.height} fill={this.background} />
+
         <rect
           x={this.padding + 16}
           y={this.padding + 16}
           width={rectWidth}
           height={rectHeight}
           fill={this.rectColor}
-          rx={0}
-          ry={0}
+          rx={this.rectRx}
+          ry={this.rectRy}
           stroke={this.rectColor}
           stroke-width={this.rectStrokeWidth}
         />
@@ -184,9 +214,9 @@ export class SocialImg implements ComponentInterface {
           y={this.padding}
           width={rectWidth}
           height={rectHeight}
-          fill="white"
-          rx={0}
-          ry={0}
+          fill={this.rectBackground}
+          rx={this.rectRx}
+          ry={this.rectRy}
           stroke={this.rectColor}
           stroke-width={this.rectStrokeWidth}
         />
