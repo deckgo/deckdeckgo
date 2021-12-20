@@ -26,6 +26,7 @@ export const parameters = {
           'Line Chart',
           'QR Code',
           'Social',
+          'Social Image',
           'Word Cloud',
           'Youtube'
         ],
