@@ -140,7 +140,7 @@ export class SocialImg implements ComponentInterface {
         />
 
         {this.text && (
-          <foreignObject ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
+          <foreignObject xmlns="http://www.w3.org/1999/xhtml" ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
             <p part="text">{this.text}</p>
           </foreignObject>
         )}
