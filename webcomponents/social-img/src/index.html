@@ -22,7 +22,20 @@
     <script>
       const toBlob = async () => {
         const socialImg = document.querySelector('deckgo-social-img');
-        console.log(await socialImg?.toBlob());
+        const blob = await socialImg?.toBlob();
+
+        download(blob);
+      };
+
+      const download = (blob) => {
+        const blobURL = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = `deckdeckgo.webp`;
+        link.click();
+
+        window.URL.revokeObjectURL(blobURL);
       };
 
       document.addEventListener(

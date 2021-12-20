@@ -2,8 +2,6 @@ export const svgToCanvas = ({svg}: {svg: SVGGraphicsElement}): Promise<HTMLCanva
   return new Promise<HTMLCanvasElement>((resolve) => {
     const {width, height} = svgSize(svg);
 
-    console.log(svg.outerHTML);
-
     const blob: Blob = new Blob([svg.outerHTML], {type: 'image/svg+xml;charset=utf-8'});
     const blobURL: string = URL.createObjectURL(blob);
 
