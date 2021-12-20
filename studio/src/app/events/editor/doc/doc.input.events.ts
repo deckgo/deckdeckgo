@@ -6,7 +6,7 @@ import {NodeUtils} from '../../../utils/editor/node.utils';
 
 interface Key {
   key: string;
-  code: string;
+  code?: string;
 }
 
 interface TransformInput {
@@ -19,9 +19,21 @@ interface TransformInput {
 export class DocInputEvents {
   private containerRef: HTMLElement;
 
-  private lastKey: Key | undefined = undefined;
+  private lastBeforeInput: Key | undefined = undefined;
+  private lastKeyDown: Key | undefined = undefined;
 
-  private transformer: TransformInput[] = [
+  private beforeInputTransformer: TransformInput[] = [
+    {
+      match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.key === '`' && key.key === '`',
+      transform: (): HTMLElement => {
+        return document.createElement('mark');
+      },
+      active: ({nodeName}: HTMLElement) => nodeName.toLowerCase() === 'mark',
+      trim: (): number => '`'.length
+    }
+  ];
+
+  private readonly keyDownTransformer: TransformInput[] = [
     {
       match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.key === '*' && key.key === '*',
       transform: (): HTMLElement => {
@@ -35,14 +47,6 @@ export class DocInputEvents {
         return parseInt(fontWeight) > 400 || fontWeight === 'bold';
       },
       trim: (): number => '*'.length
-    },
-    {
-      match: ({key}: {lastKey: Key | undefined; key: Key}) => key.key === '`' && key.code === 'Space',
-      transform: (): HTMLElement => {
-        return document.createElement('mark');
-      },
-      active: ({nodeName}: HTMLElement) => nodeName.toLowerCase() === 'mark',
-      trim: (): number => '`'.length
     },
     {
       match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.code === 'Space' && key.key === '_',
@@ -63,33 +67,71 @@ export class DocInputEvents {
   init(containerRef: HTMLElement) {
     this.containerRef = containerRef;
 
+    document.addEventListener('beforeinput', this.onBeforeInput);
     document.addEventListener('keydown', this.onKeyDown);
   }
 
   destroy() {
+    document.addEventListener('beforeinput', this.onBeforeInput);
     document.removeEventListener('keydown', this.onKeyDown);
   }
 
-  private onKeyDown = async ($event: KeyboardEvent) => {
-    const {key, code} = $event;
+  private onBeforeInput = async ($event: InputEvent) => {
+    const {data} = $event;
 
-    const transformInput: TransformInput | undefined = this.transformer.find(({match}: TransformInput) =>
-      match({key: {key, code}, lastKey: this.lastKey})
+    const transformInput: TransformInput | undefined = this.beforeInputTransformer.find(({match}: TransformInput) =>
+      match({key: {key: data}, lastKey: this.lastBeforeInput})
     );
 
     if (transformInput !== undefined) {
       await this.transform({$event, transformInput});
 
-      this.lastKey = undefined;
+      // TODO: undo redo not input type
+
+      // TODO: does not work yet
+      // const changeObserver: MutationObserver = new MutationObserver(async (mutation: MutationRecord[]) => {
+      //   changeObserver.disconnect();
+      //
+      //   const target: Node = mutation[0].target;
+      //
+      //   undoRedoStore.state.observe = false;
+      //
+      //   await this.replaceChar({target, searchValue: '`', replaceValue: ''});
+      //
+      //   undoRedoStore.state.observe = true;
+      //
+      //   moveCursorToEnd(target);
+      // });
+      //
+      // changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
+
+      this.lastBeforeInput = undefined;
+      return;
+    }
+
+    this.lastBeforeInput = {key: data};
+  };
+
+  private onKeyDown = async ($event: KeyboardEvent) => {
+    const {key, code} = $event;
+
+    const transformInput: TransformInput | undefined = this.keyDownTransformer.find(({match}: TransformInput) =>
+      match({key: {key, code}, lastKey: this.lastKeyDown})
+    );
+
+    if (transformInput !== undefined) {
+      await this.transform({$event, transformInput});
+
+      this.lastKeyDown = undefined;
       return;
     }
 
     if (!['Shift', 'Alt', 'Control'].includes(key)) {
-      this.lastKey = {key, code};
+      this.lastKeyDown = {key, code};
     }
   };
 
-  private async transform({$event, transformInput}: {$event: KeyboardEvent; transformInput: TransformInput}) {
+  private async transform({$event, transformInput}: {$event: KeyboardEvent | InputEvent; transformInput: TransformInput}) {
     const selection: Selection | null = getSelection();
 
     if (!selection) {
@@ -170,8 +212,16 @@ export class DocInputEvents {
 
       // Exact same length, so we remove the last characters
       if (target.nodeValue.length === index) {
+        const changeObserver: MutationObserver = new MutationObserver(() => {
+          changeObserver.disconnect();
+
+          resolve();
+        });
+
+        changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
+
         target.nodeValue = target.nodeValue.substring(0, target.nodeValue.length - transformInput.trim());
-        resolve();
+
         return;
       }
 
@@ -221,6 +271,20 @@ export class DocInputEvents {
       changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
 
       target.nodeValue = target.nodeValue.slice(index);
+    });
+  }
+
+  private replaceChar({target, searchValue, replaceValue}: {target: Node; searchValue: string; replaceValue: string}): Promise<Node> {
+    return new Promise<Node>((resolve) => {
+      const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+        changeObserver.disconnect();
+
+        resolve(mutations[0].target);
+      });
+
+      changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
+
+      target.nodeValue = target.nodeValue.replace(searchValue, replaceValue);
     });
   }
 }
