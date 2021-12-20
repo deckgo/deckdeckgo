@@ -49,12 +49,12 @@ export namespace Components {
           * A x-axis radius for rectangles
           * @default 0
          */
-        "rectRx": string;
+        "rectRx": number;
         /**
           * A y-axis radius for rectangles
           * @default 0
          */
-        "rectRy": string;
+        "rectRy": number;
         /**
           * The width of the stroke of the rectangles around the text
           * @default 4
@@ -132,12 +132,12 @@ declare namespace LocalJSX {
           * A x-axis radius for rectangles
           * @default 0
          */
-        "rectRx"?: string;
+        "rectRx"?: number;
         /**
           * A y-axis radius for rectangles
           * @default 0
          */
-        "rectRy"?: string;
+        "rectRy"?: number;
         /**
           * The width of the stroke of the rectangles around the text
           * @default 4

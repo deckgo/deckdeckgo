@@ -82,14 +82,14 @@ export class SocialImg implements ComponentInterface {
    * @default 0
    */
   @Prop()
-  rectRx: string = '0';
+  rectRx: number = 0;
 
   /**
    * A y-axis radius for rectangles
    * @default 0
    */
   @Prop()
-  rectRy: string = '0';
+  rectRy: number = 0;
 
   /**
    * The background color for the rectangle at the top
