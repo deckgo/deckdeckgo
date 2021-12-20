@@ -2,6 +2,7 @@ import {Component, h, ComponentInterface, Prop, Watch} from '@stencil/core';
 
 /**
  * @part text - The CSS pseudo-element to target the paragraph rendered as a child of the SVG foreign object
+ * @part image - The CSS pseudo-element to target the image displayed as a logo
  */
 @Component({
   tag: 'deckgo-social-img',
@@ -27,12 +28,14 @@ export class SocialImg implements ComponentInterface {
 
   /**
    * A padding to create space around the content
+   * @default 64
    */
   @Prop()
   padding: number = 64;
 
   /**
    * A padding to create space around the text and the content
+   * @default 32
    */
   @Prop()
   innerPadding: number = 32;
@@ -48,6 +51,20 @@ export class SocialImg implements ComponentInterface {
    */
   @Prop()
   imgSrc: string;
+
+  /**
+   * The width of the stroke of the rectangles
+   * @default 4
+   */
+  @Prop()
+  rectStrokeWidth: number = 5;
+
+  /**
+   * The color for rectangles
+   * @default #3dc2ff
+   */
+  @Prop()
+  rectColor: string = '#3dc2ff';
 
   componentDidLoad() {
     this.setForeignObjectAttributes();
@@ -84,11 +101,11 @@ export class SocialImg implements ComponentInterface {
           y={this.padding + 16}
           width={rectWidth}
           height={rectHeight}
-          fill="#3dc2ff"
+          fill={this.rectColor}
           rx={0}
           ry={0}
-          stroke="#3dc2ff"
-          stroke-width="5"
+          stroke={this.rectColor}
+          stroke-width={this.rectStrokeWidth}
         />
 
         <rect
@@ -99,15 +116,15 @@ export class SocialImg implements ComponentInterface {
           fill="white"
           rx={0}
           ry={0}
-          stroke="#3dc2ff"
-          stroke-width="5"
+          stroke={this.rectColor}
+          stroke-width={this.rectStrokeWidth}
         />
 
         <foreignObject ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
           {this.text && <p part="text">{this.text}</p>}
         </foreignObject>
 
-        {this.imgSrc && <image x={imgTop} y={imgLeft} width={imgSize} height={imgSize} href={this.imgSrc} />}
+        {this.imgSrc && <image x={imgTop} y={imgLeft} width={imgSize} height={imgSize} href={this.imgSrc} part="img" />}
       </svg>
     );
   }
