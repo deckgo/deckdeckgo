@@ -78,7 +78,7 @@ defineCustomElements();
 
 ### `toBlob(type?: string) => Promise<Blob>`
 
-Transform the rendered svg to an image
+Transform the rendered svg, the social image, to an image provided as blob (default 'image/webp')
 
 #### Returns
 
@@ -89,28 +89,10 @@ Type: `Promise<Blob>`
 
 ## Shadow Parts
 
-| Part      | Description                                                                                  |
-| --------- | -------------------------------------------------------------------------------------------- |
-| `"image"` | The CSS pseudo-element to target the image displayed as a logo                               |
-| `"img"`   |                                                                                              |
-| `"text"`  | The CSS pseudo-element to target the paragraph rendered as a child of the SVG foreign object |
-
-
-## CSS Custom Properties
-
-| Name                 | Description                               |
-| -------------------- | ----------------------------------------- |
-| `--text-box-orient`  | Text -webkit-box-orient @default vertical |
-| `--text-color`       | Text color                                |
-| `--text-display`     | Text display @default -webkit-box         |
-| `--text-font-family` | Text font-family @default inherit         |
-| `--text-font-size`   | Text font-size @default 128px             |
-| `--text-font-weight` | Text font-weight @default 700             |
-| `--text-line-clamp`  | Text -webkit-line-clamp @default 3        |
-| `--text-margin`      | Text margin @default 0                    |
-| `--text-overflow`    | Text overflow @default hidden             |
-| `--text-padding`     | Text padding @default 0                   |
-| `--text-zindex`      | Text z-index @default 1                   |
+| Part     | Description                                                                                  |
+| -------- | -------------------------------------------------------------------------------------------- |
+| `"img"`  | The CSS pseudo-element to target the image displayed as a logo                               |
+| `"text"` | The CSS pseudo-element to target the paragraph rendered as a child of the SVG foreign object |
 
 
 ----------------------------------------------

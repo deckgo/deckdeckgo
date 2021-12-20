@@ -65,8 +65,8 @@ export namespace Components {
          */
         "text": string;
         /**
-          * Transform the rendered svg to an image
-          * @param type The type of output (default 'image/webp')
+          * Transform the rendered svg, the social image, to an image provided as blob (default 'image/webp')
+          * @param type The mime type of output
           * @returns The image as blob
          */
         "toBlob": (type?: string) => Promise<Blob>;

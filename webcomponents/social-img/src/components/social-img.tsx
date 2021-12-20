@@ -4,7 +4,7 @@ import {fetchImage} from '../utils/image.utils';
 
 /**
  * @part text - The CSS pseudo-element to target the paragraph rendered as a child of the SVG foreign object
- * @part image - The CSS pseudo-element to target the image displayed as a logo
+ * @part img - The CSS pseudo-element to target the image displayed as a logo
  */
 @Component({
   tag: 'deckgo-social-img',
@@ -135,8 +135,8 @@ export class SocialImg implements ComponentInterface {
   }
 
   /**
-   * Transform the rendered svg to an image
-   * @param type The type of output (default 'image/webp')
+   * Transform the rendered svg, the social image, to an image provided as blob (default 'image/webp')
+   * @param type The mime type of output
    * @returns The image as blob
    */
   @Method()
