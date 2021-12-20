@@ -26,7 +26,7 @@ describe('social-img', () => {
     await page.setContent(`<deckgo-social-img text="${text}"></deckgo-social-img>`);
     const element = await page.find('deckgo-social-img >>> foreignObject');
     expect(element).not.toBeNull();
-    expect(parseInt(element.getAttribute('width'))).toEqual(1088);
+    expect(parseInt(element.getAttribute('width'))).toEqual(1008);
   });
 
   it('renders a foreign object width with paddings minus space for logo', async () => {
