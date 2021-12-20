@@ -120,9 +120,11 @@ export class SocialImg implements ComponentInterface {
           stroke-width={this.rectStrokeWidth}
         />
 
-        <foreignObject ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
-          {this.text && <p part="text">{this.text}</p>}
-        </foreignObject>
+        {this.text && (
+          <foreignObject ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
+            <p part="text">{this.text}</p>
+          </foreignObject>
+        )}
 
         {this.imgSrc && <image x={imgTop} y={imgLeft} width={imgSize} height={imgSize} href={this.imgSrc} part="img" />}
       </svg>
