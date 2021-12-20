@@ -14,7 +14,7 @@
 ### Web Components: New
 
 - elements: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md)
-- social-img: v1.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md)
+- social-img: v1.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md)
 
 ### Web Components: Deprecated and moved to `elements`
 
