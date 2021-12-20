@@ -1,9 +1,9 @@
 export const svgToCanvas = ({svg}: {svg: SVGGraphicsElement}): Promise<HTMLCanvasElement> => {
-  return new Promise<HTMLCanvasElement>((resolve) => {
+  return new Promise<HTMLCanvasElement>(async (resolve) => {
     const {width, height} = svgSize(svg);
 
-    const blob: Blob = new Blob([svg.outerHTML], {type: 'image/svg+xml;charset=utf-8'});
-    const blobURL: string = URL.createObjectURL(blob);
+    const base64SVG: string = window.btoa(new XMLSerializer().serializeToString(svg));
+    const imgSrc: string = `data:image/svg+xml;base64,${base64SVG}`;
 
     const image = new Image();
 
@@ -18,12 +18,10 @@ export const svgToCanvas = ({svg}: {svg: SVGGraphicsElement}): Promise<HTMLCanva
       const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
       context?.drawImage(image, 0, 0, width, height);
 
-      URL.revokeObjectURL(blobURL);
-
       resolve(canvas);
     };
 
-    image.src = blobURL;
+    image.src = imgSrc;
   });
 };
 
