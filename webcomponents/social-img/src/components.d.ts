@@ -13,7 +13,11 @@ export namespace Components {
          */
         "height": string;
         /**
-          * An optional image (https://....) that can for example be displayed as logo.
+          * The mime type of the image. Default 'image/svg+xml'
+         */
+        "imgMimeType": string;
+        /**
+          * An optional image (https://....) that can for example be displayed as logo. Note: it will be fetched and transformed to base64.
          */
         "imgSrc": string;
         /**
@@ -72,7 +76,11 @@ declare namespace LocalJSX {
          */
         "height"?: string;
         /**
-          * An optional image (https://....) that can for example be displayed as logo.
+          * The mime type of the image. Default 'image/svg+xml'
+         */
+        "imgMimeType"?: string;
+        /**
+          * An optional image (https://....) that can for example be displayed as logo. Note: it will be fetched and transformed to base64.
          */
         "imgSrc"?: string;
         /**

@@ -1,5 +1,6 @@
-import {Component, h, ComponentInterface, Prop, Watch, Method} from '@stencil/core';
+import {Component, h, ComponentInterface, Prop, Method, State, Host} from '@stencil/core';
 import {canvasToBlob, svgToCanvas} from '../utils/svg.utils';
+import {fetchImage} from '../utils/image.utils';
 
 /**
  * @part text - The CSS pseudo-element to target the paragraph rendered as a child of the SVG foreign object
@@ -50,9 +51,16 @@ export class SocialImg implements ComponentInterface {
 
   /**
    * An optional image (https://....) that can for example be displayed as logo.
+   * Note: it will be fetched and transformed to base64. The SVG won't be rendered until the logo is loaded.
    */
   @Prop()
   imgSrc: string;
+
+  /**
+   * The mime type of the image. Default 'image/svg+xml'
+   */
+  @Prop()
+  imgMimeType: string = 'image/svg+xml';
 
   /**
    * The width of the stroke of the rectangles
@@ -68,16 +76,32 @@ export class SocialImg implements ComponentInterface {
   @Prop()
   rectColor: string = '#3dc2ff';
 
+  @State()
+  private imgBase64: {
+    state: 'loading' | 'loaded';
+    value: string | undefined;
+  };
+
+  componentWillLoad() {
+    this.imgBase64 = {
+      state: this.imgSrc && this.imgMimeType ? 'loading' : 'loaded',
+      value: undefined
+    };
+
+    this.loadImage().then(
+      (value: string | undefined) =>
+        (this.imgBase64 = {
+          state: 'loaded',
+          value
+        })
+    );
+  }
+
   componentDidLoad() {
     this.setForeignObjectAttributes();
   }
 
-  @Watch('width')
-  @Watch('height')
-  @Watch('padding')
-  @Watch('innerPadding')
-  @Watch('imgSrc')
-  onPropChanges() {
+  componentDidUpdate() {
     this.setForeignObjectAttributes();
   }
 
@@ -99,13 +123,43 @@ export class SocialImg implements ComponentInterface {
     this.foreignObjectRef?.setAttribute('height', `${parseInt(this.height) - 2 * this.padding - 2 * this.innerPadding}`);
   }
 
+  private async loadImage(): Promise<string | undefined> {
+    if (!this.imgSrc || !this.imgMimeType) {
+      return undefined;
+    }
+
+    try {
+      this.imgBase64 = {
+        state: 'loading',
+        value: undefined
+      };
+
+      const base64: string | undefined = await fetchImage({imgSrc: this.imgSrc});
+      return base64;
+    } catch (err) {
+      console.log('Cannot fetch and transform image, ignored.');
+      console.error(err);
+      return undefined;
+    }
+  }
+
   render() {
+    return <Host>{this.renderSVG()}</Host>;
+  }
+
+  private renderSVG() {
     const rectWidth: number = parseInt(this.width) - 2 * this.padding;
     const rectHeight: number = parseInt(this.height) - 2 * this.padding;
 
     const imgTop: number = parseInt(this.width) - 2 * this.padding - this.innerPadding;
     const imgLeft: number = parseInt(this.height) - 2 * this.padding - this.innerPadding;
     const imgSize: number = this.innerPadding * 2;
+
+    // We use a custom state as we have to force a re-rendering of the svg when loaded and because we also want to display something if the svg cannot be loaded.
+    // Also because rendering an image tag within the svg asynchronously is ignored by the browser.
+    if (!this.imgBase64 || this.imgBase64.state === 'loading') {
+      return undefined;
+    }
 
     return (
       <svg
@@ -145,7 +199,16 @@ export class SocialImg implements ComponentInterface {
           </foreignObject>
         )}
 
-        {this.imgSrc && <image x={imgTop} y={imgLeft} width={imgSize} height={imgSize} href={this.imgSrc} part="img" />}
+        {this.imgBase64?.value && (
+          <image
+            x={imgTop}
+            y={imgLeft}
+            width={imgSize}
+            height={imgSize}
+            href={`data:${this.imgMimeType};base64,${this.imgBase64.value}`}
+            part="img"
+          />
+        )}
       </svg>
     );
   }
