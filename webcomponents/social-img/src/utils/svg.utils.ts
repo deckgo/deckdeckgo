@@ -1,8 +1,12 @@
-export const svgToCanvas = ({svg}: {svg: SVGGraphicsElement}): Promise<HTMLCanvasElement> => {
+export const svgToCanvas = ({svg, style}: {svg: SVGGraphicsElement; style: CSSStyleDeclaration}): Promise<HTMLCanvasElement> => {
   return new Promise<HTMLCanvasElement>(async (resolve) => {
     const {width, height} = svgSize(svg);
 
-    const base64SVG: string = window.btoa(new XMLSerializer().serializeToString(svg));
+    const clone: SVGGraphicsElement = svg.cloneNode(true) as SVGGraphicsElement;
+
+    inlineStyle({clone, style});
+
+    const base64SVG: string = window.btoa(new XMLSerializer().serializeToString(clone));
     const imgSrc: string = `data:image/svg+xml;base64,${base64SVG}`;
 
     const image = new Image();
@@ -38,4 +42,17 @@ const svgSize = (svg: SVGGraphicsElement): {width: number; height: number} => {
     width,
     height
   };
+};
+
+// To print out the foreignObject with style, we have to inline the CSS that has been set
+const inlineStyle = ({clone, style}: {clone: SVGGraphicsElement; style: CSSStyleDeclaration}) => {
+  const text: HTMLParagraphElement | null = clone.querySelector('foreignObject > p');
+
+  if (!text) {
+    return;
+  }
+
+  for (const key of Object.keys(style)) {
+    text.style.setProperty(key, style[key]);
+  }
 };

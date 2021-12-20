@@ -12,7 +12,8 @@ import {fetchImage} from '../utils/image.utils';
   shadow: true
 })
 export class SocialImg implements ComponentInterface {
-  private foreignObjectRef!: SVGForeignObjectElement;
+  private foreignObjectRef: SVGForeignObjectElement | undefined;
+  private textRef: HTMLParagraphElement | undefined;
   private svgRef!: SVGGraphicsElement;
 
   /**
@@ -112,7 +113,9 @@ export class SocialImg implements ComponentInterface {
    */
   @Method()
   async toBlob(type: string = 'image/webp'): Promise<Blob> {
-    const canvas: HTMLCanvasElement = await svgToCanvas({svg: this.svgRef});
+    const style: CSSStyleDeclaration | undefined = this.textRef ? getComputedStyle(this.textRef) : undefined;
+
+    const canvas: HTMLCanvasElement = await svgToCanvas({svg: this.svgRef, style});
     return canvasToBlob({canvas, type});
   }
 
@@ -189,8 +192,10 @@ export class SocialImg implements ComponentInterface {
         />
 
         {this.text && (
-          <foreignObject xmlns="http://www.w3.org/1999/xhtml" ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
-            <p part="text">{this.text}</p>
+          <foreignObject ref={(el) => (this.foreignObjectRef = el as SVGForeignObjectElement)}>
+            <p part="text" ref={(el) => (this.textRef = el as HTMLParagraphElement)}>
+              {this.text}
+            </p>
           </foreignObject>
         )}
 
