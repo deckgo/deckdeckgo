@@ -78,13 +78,13 @@ export class SocialImg implements ComponentInterface {
 
   @State()
   private imgBase64: {
-    state: 'loading' | 'loaded';
+    state: 'loading' | 'loaded' | 'none';
     value: string | undefined;
   };
 
   componentWillLoad() {
     this.imgBase64 = {
-      state: this.imgSrc && this.imgMimeType ? 'loading' : 'loaded',
+      state: this.imgSrc && this.imgMimeType ? 'loading' : 'none',
       value: undefined
     };
 
@@ -129,11 +129,6 @@ export class SocialImg implements ComponentInterface {
     }
 
     try {
-      this.imgBase64 = {
-        state: 'loading',
-        value: undefined
-      };
-
       const base64: string | undefined = await fetchImage({imgSrc: this.imgSrc});
       return base64;
     } catch (err) {

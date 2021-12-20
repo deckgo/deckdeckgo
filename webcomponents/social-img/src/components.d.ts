@@ -17,7 +17,7 @@ export namespace Components {
          */
         "imgMimeType": string;
         /**
-          * An optional image (https://....) that can for example be displayed as logo. Note: it will be fetched and transformed to base64.
+          * An optional image (https://....) that can for example be displayed as logo. Note: it will be fetched and transformed to base64. The SVG won't be rendered until the logo is loaded.
          */
         "imgSrc": string;
         /**
@@ -80,7 +80,7 @@ declare namespace LocalJSX {
          */
         "imgMimeType"?: string;
         /**
-          * An optional image (https://....) that can for example be displayed as logo. Note: it will be fetched and transformed to base64.
+          * An optional image (https://....) that can for example be displayed as logo. Note: it will be fetched and transformed to base64. The SVG won't be rendered until the logo is loaded.
          */
         "imgSrc"?: string;
         /**
