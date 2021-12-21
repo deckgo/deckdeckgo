@@ -19,6 +19,7 @@ import '@deckdeckgo/word-cloud';
 import '@deckdeckgo/markdown';
 import '@deckdeckgo/laser-pointer';
 import '@deckdeckgo/elements';
+import '@deckdeckgo/social-img';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';

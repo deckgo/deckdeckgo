@@ -1,0 +1,65 @@
+:host {
+  display: block;
+}
+
+p {
+  /**
+   * @prop --text-margin: Text margin
+   * @default 0
+   */
+  margin: var(--text-margin, 0);
+  /**
+   * @prop --text-padding: Text padding
+   * @default 0
+   */
+  padding: var(--text-padding, 0);
+
+  /**
+   * @prop --text-font-family: Text font-family
+   * @default inherit
+   */
+  font-family: var(--text-font-family, inherit);
+  /**
+   * @prop --text-font-weight: Text font-weight
+   * @default 700
+   */
+  font-weight: var(--text-font-weight, 700);
+  /**
+   * @prop --text-font-size: Text font-size
+   * @default 128px
+   */
+  font-size: var(--text-font-size, 128px);
+
+  /**
+   * @prop --text-color: Text color
+   */
+  color: var(--text-color);
+
+  /* Three dots if text longer than three lines */
+  /**
+   * @prop --text-display: Text display
+   * @default -webkit-box
+   */
+  display: -webkit-box;
+  /**
+   * @prop --text-line-clamp: Text -webkit-line-clamp
+   * @default 3
+   */
+  -webkit-line-clamp: var(--text-line-clamp, 3);
+  /**
+   * @prop --text-box-orient: Text -webkit-box-orient
+   * @default vertical
+   */
+  -webkit-box-orient: var(--text-box-orient, vertical);
+  /**
+   * @prop --text-overflow: Text overflow
+   * @default hidden
+   */
+  overflow: var(--text-overflow, hidden);
+
+  /**
+   * @prop --text-zindex: Text z-index
+   * @default 1
+   */
+  z-index: var(--text-zindex, 1);
+}

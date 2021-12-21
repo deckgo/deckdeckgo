@@ -5,7 +5,7 @@
 ### Providers
 
 - firebase: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
-- ic: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+- ic: v4.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
 ### Web Components
 
@@ -14,6 +14,7 @@
 ### Web Components: New
 
 - elements: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md)
+- social-img: v1.0.2 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/elements/CHANGELOG.md)
 
 ### Web Components: Deprecated and moved to `elements`
 
@@ -30,8 +31,9 @@
 ### Others
 
 - deck-utils: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/deck/CHANGELOG.md))
+- IC kit: v1.2.0 ([CHANGELOG](https://github.com/deckgo/ic-kit/blob/master/CHANGELOG.md))
 - kit: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/kit/CHANGELOG.md))
-- editor: v5.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
+- editor: v6.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/editor/CHANGELOG.md))
 - utils: v3.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.1.0"></a>
