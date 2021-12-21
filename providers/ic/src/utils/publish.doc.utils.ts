@@ -2,6 +2,7 @@ import {Doc, DocData, docPublishData, DocPublishData, PublishData} from '@deckde
 
 import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
 import {setData} from './data.utils';
+import {uploadSocialImage} from './publish.social.utils';
 
 export const publishDoc = async ({
   doc: docSource
@@ -23,7 +24,10 @@ export const publishDoc = async ({
   // 4. Upload
   await uploadPublishFileIC(storageUpload);
 
-  // 5. Tells the snapshot the process is over
+  // 5. Upload
+  await uploadSocialImage({storageUpload, publishData});
+
+  // 6. Tells the snapshot the process is over
   emitDocPublished(doc);
 
   return {
@@ -34,7 +38,7 @@ export const publishDoc = async ({
 };
 
 const initDocIndexHTML = async ({doc}: {doc: Doc}): Promise<{html: string; publishData: DocPublishData}> => {
-  const publishData: DocPublishData = docPublishData({doc});
+  const publishData: DocPublishData = await docPublishData({doc});
 
   const {paragraphs} = publishData;
 

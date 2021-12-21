@@ -17,6 +17,8 @@ import {renderI18n} from '../../../../../utils/core/i18n.utils';
 
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 import {firebase} from '../../../../../utils/core/environment.utils';
+import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
+import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;
@@ -419,6 +421,8 @@ export class AppPublishEdit {
         <p class="small">{this.firebaseEnabled && i18n.state.publish_edit.social_card}</p>
 
         {this.renderFailure()}
+
+        {this.renderSocialImage()}
       </article>
     );
   }
@@ -542,5 +546,15 @@ export class AppPublishEdit {
     }
 
     return <p class="meta-text">{i18n.state.publish_edit.source_submit}</p>;
+  }
+
+  private renderSocialImage() {
+    return (
+      <deckgo-social-img
+        text={this.caption}
+        imgSrc={`${
+          EnvironmentConfigService.getInstance().get<EnvironmentDeckDeckGoConfig>('deckdeckgo').globalAssetsUrl
+        }/img/deckdeckgo-logo.svg`}></deckgo-social-img>
+    );
   }
 }

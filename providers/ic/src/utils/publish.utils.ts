@@ -4,6 +4,7 @@ import {_SERVICE as StorageBucketActor} from '../canisters/storage/storage.did';
 
 import {BucketActor} from './manager.utils';
 import {encodeFilename, getStorageActor, upload} from './storage.utils';
+import {updateTemplateSocialImage} from './publish.social.utils';
 
 export interface StorageUpload {
   actor: StorageBucketActor;
@@ -43,7 +44,10 @@ export const initUpload = async ({
   const fullUrl: string = `${bucketUrl}${pathname}`;
 
   // 3. Update URL
-  const updatedHTML: string = html.replace('{{DECKDECKGO_URL}}', fullUrl);
+  let updatedHTML: string = html.replace('{{DECKDECKGO_URL}}', fullUrl);
+
+  // 4. Update the social image URL
+  updatedHTML = updateTemplateSocialImage({html: updatedHTML, data: publishData, bucketUrl});
 
   return {
     storageUpload: {
@@ -70,7 +74,7 @@ export const initIndexHTML = async ({
 }): Promise<{html: string}> => {
   const template: string = await htmlTemplate(sourceFolder);
 
-  let updatedTemplate: string = updateTemplate({template, data: publishData});
+  const updatedTemplate: string = updateTemplate({template, data: publishData});
 
   const {attributes} = publishData;
 

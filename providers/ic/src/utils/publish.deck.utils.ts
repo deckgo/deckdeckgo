@@ -2,6 +2,7 @@ import {Deck, DeckData, DeckPublishData, deckPublishData, PublishData} from '@de
 
 import {setData} from './data.utils';
 import {initIndexHTML, initUpload, StorageUpload, updateMetaData, uploadPublishFileIC} from './publish.utils';
+import {uploadSocialImage} from './publish.social.utils';
 
 export const publishDeck = async ({
   deck: deckSource
@@ -23,7 +24,10 @@ export const publishDeck = async ({
   // 4. Upload
   await uploadPublishFileIC(storageUpload);
 
-  // 5. Tells the snapshot the process is over
+  // 5. Upload
+  await uploadSocialImage({storageUpload, publishData});
+
+  // 6. Tells the snapshot the process is over
   emitDeckPublished(deck);
 
   return {
@@ -34,7 +38,7 @@ export const publishDeck = async ({
 };
 
 const initDeckIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; publishData: DeckPublishData}> => {
-  const publishData: DeckPublishData = deckPublishData({deck});
+  const publishData: DeckPublishData = await deckPublishData({deck});
 
   const {slides} = publishData;
 

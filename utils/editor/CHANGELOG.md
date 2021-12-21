@@ -1,3 +1,13 @@
+# 6.0.0 (2021-12-21)
+
+### Breaking Changes
+
+- `deckPublishData` and `docPublishData` become async
+
+### Features
+
+- generate social image for publish data
+
 # 5.1.1 (2021-12-17)
 
 ### Fix
