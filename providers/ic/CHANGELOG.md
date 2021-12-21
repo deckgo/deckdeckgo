@@ -1,3 +1,9 @@
+# 4.1.0 (2021-12-21)
+
+### Features
+
+- publish social images
+
 # 4.0.0 (2021-12-17)
 
 ### Breaking Changes
