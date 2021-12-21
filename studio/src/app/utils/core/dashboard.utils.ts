@@ -1,14 +1,18 @@
 import {v4 as uuid} from 'uuid';
 
-import {Deck, Slide, DeckData, Doc, Paragraph, DocData} from '@deckdeckgo/editor';
+import {Deck, Slide, DeckData, Doc, Paragraph, DocData, Meta} from '@deckdeckgo/editor';
 
 import navStore, {NavDirection} from '../../stores/nav.store';
 
 import {ImportData, importEditorData, importEditorSync} from '../editor/import.utils';
 
-import {getSlide} from '../../providers/data/slide/slide.provider';
 import {removeSyncBeforeUnload} from './before-unload.utils';
+
+import {getSlide} from '../../providers/data/slide/slide.provider';
 import {getParagraph} from '../../providers/data/paragraph/paragraph.provider';
+import {deleteDoc} from '../../providers/data/doc/doc.provider';
+import {deleteDeck} from '../../providers/data/deck/deck.provider';
+import {deleteFile} from '../../providers/storage/storage.provider';
 
 export type DeckOrDoc = {deck: Deck; doc?: never} | {doc: Doc; deck?: never};
 
@@ -161,4 +165,38 @@ export const navigateReloadEditor = () => {
     url: '/',
     direction: NavDirection.RELOAD
   };
+};
+
+export const deleteDeckOrDoc = async (data: DeckOrDoc) => {
+  if (data.doc) {
+    const {doc} = data;
+
+    await Promise.all([deleteStorageFile({meta: doc.data.meta, folder: 'd'}), deleteDoc(doc.id)]);
+    return;
+  }
+
+  const {deck} = data;
+
+  await Promise.all([deleteStorageFile({meta: deck.data.meta, folder: 'p'}), deleteDeck(deck.id)]);
+};
+
+const deleteStorageFile = async ({meta, folder}: {meta: Meta | undefined; folder: 'p' | 'd'}) => {
+  if (!meta) {
+    return;
+  }
+
+  const {pathname} = meta;
+
+  if (!pathname) {
+    return;
+  }
+
+  const filename: string = pathname.replace(`/${folder}/`, '');
+
+  // We do not have the downloadUrl here but, it does not matter much as it is only use to extract the token for secret file which, in this case, is not used because the data is public.
+  await deleteFile({
+    downloadUrl: undefined,
+    fullPath: meta.pathname,
+    name: filename
+  });
 };
