@@ -15,6 +15,8 @@ export interface PublishData {
   photo_url: string | undefined;
   head_extra: string | undefined;
   attributes: Record<string, string> | undefined;
+  social_image_name: string;
+  social_image_value: Blob | undefined;
 }
 
 export interface DeckPublishData extends PublishData {
@@ -28,12 +30,12 @@ export interface DocPublishData extends PublishData {
   paragraphs: string[];
 }
 
-export const deckPublishData = ({deck}: {deck: Deck}): DeckPublishData => {
+export const deckPublishData = async ({deck}: {deck: Deck}): Promise<DeckPublishData> => {
   const {data} = deck;
   const {meta, background, footer, header} = data;
 
   return {
-    ...publishData({meta, selector: deckSelector, fallbackName: data.name}),
+    ...(await publishData({meta, selector: deckSelector, fallbackName: data.name})),
     slides: getSlides(),
     background: background ? `<div slot="background">${background}</div>` : undefined,
     header: background ? `<div slot="header">${header}</div>` : undefined,
@@ -41,17 +43,25 @@ export const deckPublishData = ({deck}: {deck: Deck}): DeckPublishData => {
   };
 };
 
-export const docPublishData = ({doc}: {doc: Doc}): DocPublishData => {
+export const docPublishData = async ({doc}: {doc: Doc}): Promise<DocPublishData> => {
   const {data} = doc;
   const {meta} = data;
 
   return {
-    ...publishData({meta, selector: docSelector, fallbackName: data.name}),
+    ...(await publishData({meta, selector: docSelector, fallbackName: data.name})),
     paragraphs: getParagraphs()
   };
 };
 
-const publishData = ({meta, fallbackName, selector}: {meta: Meta | undefined; fallbackName: string; selector: string}): PublishData => {
+const publishData = async ({
+  meta,
+  fallbackName,
+  selector
+}: {
+  meta: Meta | undefined;
+  fallbackName: string;
+  selector: string;
+}): Promise<PublishData> => {
   const googleFontLink: string | undefined = getGoogleFontLink();
   const canonicalLink: string | undefined = getCanonicalLink({meta});
 
@@ -59,14 +69,20 @@ const publishData = ({meta, fallbackName, selector}: {meta: Meta | undefined; fa
 
   const attributes: Record<string, string> | undefined = getAttributes({selector});
 
+  const socialImage: Blob | undefined = await getSocialImage();
+
+  const title: string = (meta?.title || fallbackName)?.trim();
+
   return {
-    title: (meta?.title || fallbackName)?.trim(),
+    title,
     description: (meta?.description || fallbackName)?.trim(),
     author: meta?.author?.name || 'DeckDeckGo',
     bio: meta?.author?.bio,
     photo_url: meta?.author?.photo_url,
     head_extra: head_extra.length > 0 ? head_extra.join('') : undefined,
-    attributes
+    attributes,
+    social_image_name: encodeURI(title).toLowerCase(),
+    social_image_value: socialImage
   };
 };
 
@@ -160,4 +176,9 @@ const getParagraphs = (): string[] => {
   );
 
   return cloneParagraphs.map((clone: HTMLElement) => clone.outerHTML);
+};
+
+const getSocialImage = async (): Promise<Blob | undefined> => {
+  const deckGoSocialImg: HTMLDeckgoSocialImgElement | null = document.querySelector('deckgo-social-img');
+  return deckGoSocialImg?.toBlob('image/png');
 };

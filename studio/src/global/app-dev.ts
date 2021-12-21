@@ -19,6 +19,7 @@ import '@deckdeckgo/word-cloud';
 import '@deckdeckgo/markdown';
 import '@deckdeckgo/laser-pointer';
 import '@deckdeckgo/elements';
+import '@deckdeckgo/social-img';
 
 import '@deckdeckgo/slide-title';
 import '@deckdeckgo/slide-content';
@@ -36,15 +37,33 @@ import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-co
 
 setupDeckGoConfig({
   app: {
-    mock: true
+    mock: false
   },
   deckdeckgo: {
     website: 'https://deckdeckgo.com',
-    globalAssetsUrl: 'http://localhost:3333/assets',
-    pollUrl: 'http://localhost:3333/poll',
+    globalAssetsUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/assets',
+    pollUrl: 'https://iey7l-kaaaa-aaaah-qadoa-cai.raw.ic0.app/poll',
+    apiUrl: '<@API_URL@>',
     socketUrl: '<@SOCKET_URL@>'
+  },
+  tenor: {
+    url: 'https://api.tenor.com/v1/',
+    key: '<@TENOR_KEY@>'
+  },
+  unsplash: {
+    url: '<@UNSPLASH_URL@>',
+    cdn: 'https://unpkg.com/@deckdeckgo/api@latest/lib/index.js'
   },
   google: {
     fontsUrl: 'https://fonts.googleapis.com/css?display=swap&family='
+  },
+  cloud: {
+    api: {
+      cdn: 'http://localhost:3335/build/index.esm.js'
+    },
+    signIn: {
+      cdn: 'http://localhost:3335/build/deckdeckgo-ic.esm.js',
+      tag: 'deckgo-ic-signin'
+    }
   }
 });

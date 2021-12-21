@@ -70,7 +70,7 @@ export const initIndexHTML = async ({
 }): Promise<{html: string}> => {
   const template: string = await htmlTemplate(sourceFolder);
 
-  let updatedTemplate: string = updateTemplate({template, data: publishData});
+  const updatedTemplate: string = updateTemplate({template, data: publishData});
 
   const {attributes} = publishData;
 
