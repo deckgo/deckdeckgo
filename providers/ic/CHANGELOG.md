@@ -3,6 +3,8 @@
 ### Features
 
 - publish social images
+- meta pathname fixed once content published
+- handles delete storage without `downloadUrl`
 
 # 4.0.0 (2021-12-17)
 

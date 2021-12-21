@@ -5,7 +5,7 @@
 ### Providers
 
 - firebase: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
-- ic: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
+- ic: v4.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/ic/CHANGELOG.md))
 
 ### Web Components
 
