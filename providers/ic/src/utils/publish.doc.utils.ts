@@ -10,10 +10,11 @@ export const publishDoc = async ({
   doc: Doc;
 }): Promise<{doc: Doc; storageUpload: StorageUpload; publishData: PublishData}> => {
   const {id, data} = docSource;
+  const {meta} = data;
 
   // 1. Init and fill HTML
   const indexHTML: {html: string; publishData: DocPublishData} = await initDocIndexHTML({doc: docSource});
-  const {storageUpload, publishData} = await initUpload({indexHTML, folder: 'd'});
+  const {storageUpload, publishData} = await initUpload({indexHTML, folder: 'd', meta});
 
   // 2. Update doc published meta
   const docData: DocData = updateMetaData<DocData>({data, meta: data.meta, name: data.name, storageUpload});

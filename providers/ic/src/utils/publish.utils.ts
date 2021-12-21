@@ -27,10 +27,12 @@ export const updateTemplate = ({template, data}: {template: string; data: Partia
 
 export const initUpload = async ({
   indexHTML,
-  folder
+  folder,
+  meta
 }: {
   indexHTML: {html: string; publishData: PublishData};
   folder: 'p' | 'd';
+  meta: Meta | undefined;
 }): Promise<{storageUpload: StorageUpload; publishData: PublishData}> => {
   const {html, publishData} = indexHTML;
 
@@ -38,8 +40,8 @@ export const initUpload = async ({
   const {bucketId, actor}: BucketActor<StorageBucketActor> = await getStorageActor();
 
   // 2. Folder and filename
-  const filename: string = encodeFilename(publishData.title);
-  const pathname: string = `/${folder}/${filename}`;
+  const {filename, pathname} = uploadPaths({publishData, meta, folder});
+
   const bucketUrl: string = `https://${bucketId.toText()}.raw.ic0.app`;
   const fullUrl: string = `${bucketUrl}${pathname}`;
 
@@ -60,6 +62,36 @@ export const initUpload = async ({
       folder
     },
     publishData
+  };
+};
+
+/**
+ * !!IMPORTANT!!: The pathname never changes if it has been published once otherwise we cannot delete the content when a doc or deck is deleted
+ */
+const uploadPaths = ({
+  publishData,
+  meta,
+  folder
+}: {
+  publishData: PublishData;
+  folder: 'p' | 'd';
+  meta: Meta | undefined;
+}): {filename: string; pathname: string} => {
+  if (meta?.pathname) {
+    const {pathname} = meta;
+
+    return {
+      filename: pathname.replace(`/${folder}/`, ''),
+      pathname
+    };
+  }
+
+  const filename: string = encodeFilename(publishData.title);
+  const pathname: string = `/${folder}/${filename}`;
+
+  return {
+    filename,
+    pathname
   };
 };
 

@@ -10,10 +10,11 @@ export const publishDeck = async ({
   deck: Deck;
 }): Promise<{deck: Deck; storageUpload: StorageUpload; publishData: PublishData}> => {
   const {id, data} = deckSource;
+  const {meta} = data;
 
   // 1. Init and fill HTML
   const indexHTML: {html: string; publishData: DeckPublishData} = await initDeckIndexHTML({deck: deckSource});
-  const {storageUpload, publishData} = await initUpload({indexHTML, folder: 'p'});
+  const {storageUpload, publishData} = await initUpload({indexHTML, folder: 'p', meta});
 
   // 2. Update deck published meta
   const deckData: DeckData = updateMetaData<DeckData>({data, meta: data.meta, name: data.name, storageUpload});
