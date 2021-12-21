@@ -67,7 +67,7 @@ export const uploadFileIC = async ({
   });
 
   return {
-    downloadUrl: `https://${bucketId.toText()}.raw.ic0.app/${fullPath}?token=${token}`,
+    downloadUrl: `https://${bucketId.toText()}.raw.ic0.app${fullPath}?token=${token}`,
     fullPath,
     name: filename
   };
