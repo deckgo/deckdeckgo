@@ -6,7 +6,6 @@ import {NodeUtils} from '../../../utils/editor/node.utils';
 
 interface Key {
   key: string;
-  code?: string;
 }
 
 interface TransformInput {
@@ -20,7 +19,6 @@ export class DocInputEvents {
   private containerRef: HTMLElement;
 
   private lastBeforeInput: Key | undefined = undefined;
-  private lastKeyDown: Key | undefined = undefined;
 
   private beforeInputTransformer: TransformInput[] = [
     {
@@ -30,10 +28,7 @@ export class DocInputEvents {
       },
       active: ({nodeName}: HTMLElement) => nodeName.toLowerCase() === 'mark',
       trim: (): number => '`'.length
-    }
-  ];
-
-  private readonly keyDownTransformer: TransformInput[] = [
+    },
     {
       match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.key === '*' && key.key === '*',
       transform: (): HTMLElement => {
@@ -49,7 +44,7 @@ export class DocInputEvents {
       trim: (): number => '*'.length
     },
     {
-      match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.code === 'Space' && key.key === '_',
+      match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.key === ' ' && key.key === '_',
       transform: (): HTMLElement => {
         const span: HTMLSpanElement = document.createElement('span');
         span.style.fontStyle = 'italic';
@@ -68,12 +63,10 @@ export class DocInputEvents {
     this.containerRef = containerRef;
 
     document.addEventListener('beforeinput', this.onBeforeInput);
-    document.addEventListener('keydown', this.onKeyDown);
   }
 
   destroy() {
     document.addEventListener('beforeinput', this.onBeforeInput);
-    document.removeEventListener('keydown', this.onKeyDown);
   }
 
   private onBeforeInput = async ($event: InputEvent) => {
@@ -85,8 +78,6 @@ export class DocInputEvents {
 
     if (transformInput !== undefined) {
       await this.transform({$event, transformInput});
-
-      // TODO: undo redo not input type
 
       // TODO: does not work yet
       // const changeObserver: MutationObserver = new MutationObserver(async (mutation: MutationRecord[]) => {
@@ -110,25 +101,6 @@ export class DocInputEvents {
     }
 
     this.lastBeforeInput = {key: data};
-  };
-
-  private onKeyDown = async ($event: KeyboardEvent) => {
-    const {key, code} = $event;
-
-    const transformInput: TransformInput | undefined = this.keyDownTransformer.find(({match}: TransformInput) =>
-      match({key: {key, code}, lastKey: this.lastKeyDown})
-    );
-
-    if (transformInput !== undefined) {
-      await this.transform({$event, transformInput});
-
-      this.lastKeyDown = undefined;
-      return;
-    }
-
-    if (!['Shift', 'Alt', 'Control'].includes(key)) {
-      this.lastKeyDown = {key, code};
-    }
   };
 
   private async transform({$event, transformInput}: {$event: KeyboardEvent | InputEvent; transformInput: TransformInput}) {
@@ -195,6 +167,8 @@ export class DocInputEvents {
 
   private canTransform({target, parent, transformInput}: {target: Node; parent: HTMLElement; transformInput: TransformInput}): boolean {
     const index: number = caretPosition({target});
+
+    console.log(target, target?.nodeValue);
 
     // We are typing at the end of the node text, we can transform it
     if (target.nodeValue.length === index) {
