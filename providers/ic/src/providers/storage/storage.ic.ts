@@ -89,7 +89,7 @@ export const getFiles: GetFiles = async ({
 
   return {
     items: assets.map(({name, fullPath, token}: AssetKey) => ({
-      downloadUrl: `${host}/${fullPath}?token=${token}`,
+      downloadUrl: `${host}${fullPath}?token=${token}`,
       fullPath,
       name
     })),
