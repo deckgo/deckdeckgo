@@ -3,6 +3,17 @@ import {PublishData} from '@deckdeckgo/editor';
 import {StorageUpload} from './publish.utils';
 import {upload} from './storage.utils';
 
+const socialImageFolder: string = 'meta';
+const socialImageExtension: string = 'png';
+
+export const updateTemplateSocialImage = ({html, data, bucketUrl}: {html: string; data: PublishData; bucketUrl: string}): string => {
+  const {social_image_name} = data;
+
+  const pathname: string = `/${socialImageFolder}/${social_image_name}.${socialImageExtension}`;
+
+  return html.replace('{{DECKDECKGO_SOCIAL_IMAGE}}', `${bucketUrl}${pathname}`);
+};
+
 export const uploadSocialImage = async ({
   storageUpload,
   publishData
@@ -20,8 +31,8 @@ export const uploadSocialImage = async ({
 
   await upload({
     data: social_image_value,
-    filename: `${social_image_name}.png`,
-    folder: 'meta',
+    filename: `${social_image_name}.${socialImageExtension}`,
+    folder: socialImageFolder,
     storageActor: actor,
     headers: [['Cache-Control', 'max-age=3600']]
   });
