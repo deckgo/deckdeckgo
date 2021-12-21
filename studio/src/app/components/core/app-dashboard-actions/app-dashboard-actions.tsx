@@ -6,10 +6,7 @@ import {loadingController, popoverController} from '@ionic/core';
 import errorStore from '../../../stores/error.store';
 import i18n from '../../../stores/i18n.store';
 
-import {clone, DeckOrDoc} from '../../../utils/core/dashboard.utils';
-
-import {deleteDeck} from '../../../providers/data/deck/deck.provider';
-import {deleteDoc} from '../../../providers/data/doc/doc.provider';
+import {clone, DeckOrDoc, deleteDeckOrDoc} from '../../../utils/core/dashboard.utils';
 
 import {AppIcon} from '../../core/app-icon/app-icon';
 
@@ -70,11 +67,7 @@ export class AppDashboardActions {
       await loading.present();
 
       try {
-        if (this.data.doc) {
-          await deleteDoc(this.data.doc.id);
-        } else {
-          await deleteDeck(this.data.deck.id);
-        }
+        await deleteDeckOrDoc(this.data);
 
         this.deleted.emit(this.data.deck?.id || this.data.doc?.id);
       } catch (err) {
