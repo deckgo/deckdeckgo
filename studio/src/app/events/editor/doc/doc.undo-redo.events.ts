@@ -66,6 +66,10 @@ export class DocUndoRedoEvents {
 
     this.unsubscribe = undoRedoStore.onChange('observe', (observe: boolean) => {
       if (observe) {
+        // We re-active the selection as if we would have selected a paragraphs because we might need to record next update
+        this.copySelectedParagraphs({filterEmptySelection: false});
+        this.undoInput = undefined;
+
         this.observe();
         return;
       }
@@ -227,12 +231,12 @@ export class DocUndoRedoEvents {
   }
 
   private onSelectionChange = () => {
-    this.copySelectedParagraphs();
+    this.copySelectedParagraphs({filterEmptySelection: true});
   };
 
   // Copy current paragraphs value to a local state so we can add it to the undo redo global store in case of modifications
-  private copySelectedParagraphs() {
-    const paragraphs: HTMLElement[] | undefined = findSelectionParagraphs({container: this.containerRef});
+  private copySelectedParagraphs({filterEmptySelection}: {filterEmptySelection: boolean}) {
+    const paragraphs: HTMLElement[] | undefined = findSelectionParagraphs({container: this.containerRef, filterEmptySelection});
 
     if (!paragraphs) {
       return;
@@ -278,6 +282,8 @@ export class DocUndoRedoEvents {
         index: elementIndex(paragraph),
         indexDepths: depths.reverse()
       };
+
+      this.undoUpdateParagraphs = [];
     }
 
     this.debounceUpdateInput();
@@ -349,7 +355,7 @@ export class DocUndoRedoEvents {
       container: this.containerRef
     });
 
-    this.copySelectedParagraphs();
+    this.copySelectedParagraphs({filterEmptySelection: true});
   };
 
   private onAttributesMutation = async (mutations: MutationRecord[]) => {
@@ -367,6 +373,6 @@ export class DocUndoRedoEvents {
       container: this.containerRef
     });
 
-    this.copySelectedParagraphs();
+    this.copySelectedParagraphs({filterEmptySelection: false});
   };
 }

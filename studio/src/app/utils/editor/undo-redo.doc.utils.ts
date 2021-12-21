@@ -275,7 +275,7 @@ const undoRedoUpdate = async ({
   for (const paragraph of paragraphs) {
     const {index, outerHTML} = paragraph;
 
-    const {previousOuterHTML} = await updateNode({container, index, outerHTML});
+    const {previousOuterHTML} = await updateNode({container, index, outerHTML, moveCursor: paragraphs.length === 1});
     to.push({index, outerHTML: previousOuterHTML});
   }
 
@@ -323,19 +323,25 @@ const removeNode = ({container, index}: {index: number; container: HTMLElement})
 const updateNode = ({
   container,
   index,
-  outerHTML
+  outerHTML,
+  moveCursor
 }: {
   outerHTML: string;
   index: number;
   container: HTMLElement;
+  moveCursor: boolean;
 }): Promise<{previousOuterHTML: string}> =>
   new Promise<{previousOuterHTML: string}>((resolve) => {
     const paragraph: Element = container.children[Math.min(index, container.children.length - 1)];
 
     const previousOuterHTML: string = paragraph.outerHTML;
 
-    const changeObserver: MutationObserver = new MutationObserver(() => {
+    const changeObserver: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
       changeObserver.disconnect();
+
+      if (moveCursor) {
+        moveCursorToEnd(mutations[0].addedNodes[0]);
+      }
 
       resolve({previousOuterHTML});
     });
