@@ -1,3 +1,9 @@
+# 4.1.1 (2021-12-21)
+
+### Fix
+
+- storage `fullPath` contains begin slash (avoid path like "...ic0.app//images/...")
+
 # 4.1.0 (2021-12-21)
 
 ### Features

@@ -67,7 +67,7 @@ export const uploadFileIC = async ({
   });
 
   return {
-    downloadUrl: `https://${bucketId.toText()}.raw.ic0.app/${fullPath}?token=${token}`,
+    downloadUrl: `https://${bucketId.toText()}.raw.ic0.app${fullPath}?token=${token}`,
     fullPath,
     name: filename
   };
@@ -89,7 +89,7 @@ export const getFiles: GetFiles = async ({
 
   return {
     items: assets.map(({name, fullPath, token}: AssetKey) => ({
-      downloadUrl: `${host}/${fullPath}?token=${token}`,
+      downloadUrl: `${host}${fullPath}?token=${token}`,
       fullPath,
       name
     })),
