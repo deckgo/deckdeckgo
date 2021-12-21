@@ -11,7 +11,7 @@ export const updateTemplateSocialImage = ({html, data, bucketUrl}: {html: string
 
   const pathname: string = `/${socialImageFolder}/${social_image_name}.${socialImageExtension}`;
 
-  return html.replace('{{DECKDECKGO_SOCIAL_IMAGE}}', `${bucketUrl}${pathname}`);
+  return html.replaceAll('{{DECKDECKGO_SOCIAL_IMAGE}}', `${bucketUrl}${pathname}`);
 };
 
 export const uploadSocialImage = async ({
