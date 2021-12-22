@@ -29,7 +29,7 @@ export const svgToCanvas = ({svg, style}: {svg: SVGGraphicsElement; style: CSSSt
   });
 };
 
-export const canvasToBlob = async ({canvas, type}: {canvas: HTMLCanvasElement; type: string}): Promise<Blob> => {
+export const canvasToBlob = ({canvas, type}: {canvas: HTMLCanvasElement; type: string}): Promise<Blob> => {
   return new Promise<Blob>((resolve) => canvas.toBlob((blob: Blob) => resolve(blob), type));
 };
 
