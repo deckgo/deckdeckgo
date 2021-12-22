@@ -30,8 +30,7 @@ export const svgToCanvas = ({svg, style}: {svg: SVGGraphicsElement; style: CSSSt
 };
 
 export const canvasToBlob = async ({canvas, type}: {canvas: HTMLCanvasElement; type: string}): Promise<Blob> => {
-  const dataUrl: string = canvas.toDataURL(type);
-  return (await fetch(dataUrl)).blob();
+  return new Promise<Blob>((resolve) => canvas.toBlob((blob: Blob) => resolve(blob), type));
 };
 
 const svgSize = (svg: SVGGraphicsElement): {width: number; height: number} => {
