@@ -54,7 +54,7 @@ const kit: Kit[] = [
     mimeType: 'text/css'
   },
   {
-    src: `${kitPath}/build/doc/index-6WZFUT5N.css`,
+    src: `${kitPath}/build/doc/index-RZB27UR5.css`,
     mimeType: 'text/css'
   }
 ].map((resource: {src: string; mimeType: KitMimeType}) => {

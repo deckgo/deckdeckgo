@@ -1,3 +1,9 @@
+# 4.1.2 (2021-12-22)
+
+### Build
+
+- upgrade doc css resources
+
 # 4.1.1 (2021-12-21)
 
 ### Fix
