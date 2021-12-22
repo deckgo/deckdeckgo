@@ -11,6 +11,7 @@ interface Key {
 interface TransformInput {
   match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => boolean;
   transform: () => HTMLElement;
+  postTransform?: () => Promise<void>;
   active: (parent: HTMLElement) => boolean;
   trim: () => number;
 }
@@ -27,7 +28,8 @@ export class DocInputEvents {
         return document.createElement('mark');
       },
       active: ({nodeName}: HTMLElement) => nodeName.toLowerCase() === 'mark',
-      trim: (): number => '`'.length
+      trim: (): number => '`'.length,
+      postTransform: () => this.replaceBacktick()
     },
     {
       match: ({lastKey, key}: {lastKey: Key | undefined; key: Key}) => lastKey?.key === '*' && key.key === '*',
@@ -79,22 +81,7 @@ export class DocInputEvents {
     if (transformInput !== undefined) {
       await this.transform({$event, transformInput});
 
-      // TODO: does not work yet
-      // const changeObserver: MutationObserver = new MutationObserver(async (mutation: MutationRecord[]) => {
-      //   changeObserver.disconnect();
-      //
-      //   const target: Node = mutation[0].target;
-      //
-      //   undoRedoStore.state.observe = false;
-      //
-      //   await this.replaceChar({target, searchValue: '`', replaceValue: ''});
-      //
-      //   undoRedoStore.state.observe = true;
-      //
-      //   moveCursorToEnd(target);
-      // });
-      //
-      // changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
+      await transformInput.postTransform?.();
 
       this.lastBeforeInput = undefined;
       return;
@@ -247,6 +234,31 @@ export class DocInputEvents {
       changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
 
       target.nodeValue = target.nodeValue.slice(index);
+    });
+  }
+
+  /**
+   * Browser render the backtick afterwards therefore we have to delete it
+   */
+  private replaceBacktick(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const changeObserver: MutationObserver = new MutationObserver(async (mutation: MutationRecord[]) => {
+        changeObserver.disconnect();
+
+        const target: Node = mutation[0].target;
+
+        undoRedoStore.state.observe = false;
+
+        await this.replaceChar({target, searchValue: '`', replaceValue: ''});
+
+        undoRedoStore.state.observe = true;
+
+        moveCursorToEnd(target);
+
+        resolve();
+      });
+
+      changeObserver.observe(this.containerRef, {characterData: true, subtree: true});
     });
   }
 
