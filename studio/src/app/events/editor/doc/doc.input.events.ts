@@ -110,12 +110,16 @@ export class DocInputEvents {
       return;
     }
 
+    const {focusNode: target} = selection;
+
+    if (!target) {
+      return;
+    }
+
     $event.preventDefault();
 
     // Disable undo-redo observer as we are about to play with the DOM
     undoRedoStore.state.observe = false;
-
-    const target: Node = selection.focusNode;
 
     const parent: HTMLElement = NodeUtils.toHTMLElement(target);
 
@@ -167,8 +171,6 @@ export class DocInputEvents {
 
   private canTransform({target, parent, transformInput}: {target: Node; parent: HTMLElement; transformInput: TransformInput}): boolean {
     const index: number = caretPosition({target});
-
-    console.log(target, target?.nodeValue);
 
     // We are typing at the end of the node text, we can transform it
     if (target.nodeValue.length === index) {
