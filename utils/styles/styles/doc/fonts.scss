@@ -71,6 +71,14 @@ deckgo-doc deckgo-highlight-code {
   --deckgo-highlight-code-font-size: 0.8em;
 }
 
+// Mark
+
+deckgo-doc mark {
+  font-family: Menlo, monospace;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.5px 4px;
+}
+
 // Font size if user modify sizes inside elements
 
 deckgo-doc font {

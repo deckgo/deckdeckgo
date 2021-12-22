@@ -111,11 +111,17 @@ const filterRemovedParagraphs = ({nodes}: {nodes: Node[]}): HTMLElement[] => {
     .filter((node: Node) => (node as HTMLElement).hasAttribute('paragraph_id')) as HTMLElement[];
 };
 
-export const findSelectionParagraphs = ({container}: {container: HTMLElement}): HTMLElement[] | undefined => {
+export const findSelectionParagraphs = ({
+  container,
+  filterEmptySelection
+}: {
+  container: HTMLElement;
+  filterEmptySelection: boolean;
+}): HTMLElement[] | undefined => {
   const selection: Selection | null = getSelection();
   const range: Range | undefined = selection?.rangeCount > 0 ? selection?.getRangeAt(0) : undefined;
 
-  if (!range || selection?.toString().length === 0) {
+  if (!range || (filterEmptySelection && selection?.toString().length === 0)) {
     return undefined;
   }
 
