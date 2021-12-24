@@ -1,3 +1,10 @@
+# 4.1.3 (2021-12-24)
+
+### Feature
+
+- add an `<article/>` around the published doc content
+- emit doc and deck published once the overview has been updated too
+
 # 4.1.2 (2021-12-22)
 
 ### Build
