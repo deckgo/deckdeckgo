@@ -28,9 +28,6 @@ export const publishDoc = async ({
   // 5. Upload
   await uploadSocialImage({storageUpload, publishData});
 
-  // 6. Tells the snapshot the process is over
-  emitDocPublished(doc);
-
   return {
     storageUpload,
     publishData,
@@ -54,7 +51,7 @@ const initDocIndexHTML = async ({doc}: {doc: Doc}): Promise<{html: string; publi
   };
 };
 
-const emitDocPublished = (doc: Doc) => {
+export const emitDocPublished = (doc: Doc) => {
   const {id, data} = doc;
 
   const deployedDoc: Doc = {

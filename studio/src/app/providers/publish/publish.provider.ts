@@ -1,8 +1,11 @@
 import {Deck, Author, UserSocial, DeckPublish, PublishUrl, Meta, Doc, DocPublish} from '@deckdeckgo/editor';
 
+import {set} from 'idb-keyval';
+
 import editorStore from '../../stores/editor.store';
 import userStore from '../../stores/user.store';
 import authStore from '../../stores/auth.store';
+import errorStore from '../../stores/error.store';
 
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
@@ -67,9 +70,7 @@ const publishDoc = async (inputs: PublishInputs): Promise<void> => {
 
   const {docPublish}: {docPublish: DocPublish} = await cloudProvider<{docPublish: DocPublish}>();
 
-  const publishedDoc: Doc = await docPublish({doc});
-
-  editorStore.state.doc = {...publishedDoc};
+  await docPublish({doc});
 };
 
 const publishDeck = async (inputs: PublishInputs): Promise<void> => {
@@ -79,9 +80,7 @@ const publishDeck = async (inputs: PublishInputs): Promise<void> => {
 
   const firebaseConfig: Record<string, string> = EnvironmentConfigService.getInstance().get('firebase');
 
-  const publishedDeck: Deck = await deckPublish({deck, config: firebaseConfig});
-
-  editorStore.state.deck = {...publishedDeck};
+  await deckPublish({deck, config: firebaseConfig});
 };
 
 const updateDeckMeta = (inputs: PublishInputs): Deck => {
@@ -189,4 +188,28 @@ const updateMeta = ({inputs, meta}: {inputs: PublishInputs; meta: Meta | undefin
   }
 
   return updateMeta;
+};
+
+export const updatePublishedDocOffline = async (doc: Doc | undefined) => {
+  if (!doc) {
+    return;
+  }
+
+  try {
+    await set(`/docs/${doc.id}`, doc);
+  } catch (err) {
+    errorStore.state.error = err;
+  }
+};
+
+export const updatePublishedDeckOffline = async (deck: Deck | undefined) => {
+  if (!deck) {
+    return;
+  }
+
+  try {
+    await set(`/decks/${deck.id}`, deck);
+  } catch (err) {
+    errorStore.state.error = err;
+  }
 };

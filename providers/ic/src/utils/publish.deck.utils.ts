@@ -28,9 +28,6 @@ export const publishDeck = async ({
   // 5. Upload
   await uploadSocialImage({storageUpload, publishData});
 
-  // 6. Tells the snapshot the process is over
-  emitDeckPublished(deck);
-
   return {
     storageUpload,
     publishData,
@@ -54,7 +51,7 @@ const initDeckIndexHTML = async ({deck}: {deck: Deck}): Promise<{html: string; p
   };
 };
 
-const emitDeckPublished = (deck: Deck) => {
+export const emitDeckPublished = (deck: Deck) => {
   const {id, data} = deck;
 
   const deployedDeck: Deck = {
