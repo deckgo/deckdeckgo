@@ -35,6 +35,12 @@ app-docs {
       cursor: pointer;
 
       background: white;
+
+      deckgo-doc {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+      }
     }
   }
 }
