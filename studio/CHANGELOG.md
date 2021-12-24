@@ -1,8 +1,34 @@
+# 5.2.0 (2021-12-24)
+
+### Features - IC
+
+- publish docs / blog posts to PWA on the IC 🔥
+- delete published content upon delete deck or doc data too
+- canonical url option for published documents
+
+### Features
+
+- navigation actions (open, export, etc.) moved to start position
+- deck and doc title displayed in the browser tab (`document.title`)
+- `<hr/>` can be added to documents
+- custom undo-redo for documents (still in progress!)
+- inline editor display above (not under) selection
+
+### Fix
+
+- update `meta` information to offline data after publish
+- global deck state not initialized on did load
+- storage urls on the IC (no more `//`)
+- catch tab only in edited container
+- random (tenor) gif display
+- remove event listeners on navigation
+- backwards (before docs introduction) compatibility for sync job
+
 # 5.1.0 (2021-12-03)
 
 ### Features - IC
 
-- publish presentations to PWA including new overview pagee
+- publish presentations to PWA including new overview page
 - templates support
 - storage administration
 - delete users and canisters
