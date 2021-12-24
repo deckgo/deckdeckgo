@@ -432,7 +432,7 @@
     "modern_app": "DeckDeckGo lo distribuirá en línea como una aplicación moderna.",
     "meta": "Meta",
     "title_edit": "Edita o revisa el título de tu presentación, el resumen y añade o cambia las etiquetas (hasta 5) para que tu presentación sea más atractiva para los lectores.",
-    "title_max_chars": "El título debe estar provisto de caracteres latinos, números arábigos, espacios y guiones. No debe tener más de 45 caracteres.",
+    "title_max_chars": "El título debe estar provisto de caracteres latinos, números arábigos, espacios y guiones. No debe tener más de {0} caracteres.",
     "description": "Descripción",
     "tags": "Etiquetas",
     "social_card": "DeckDeckGo generará automáticamente la tarjeta social de tu presentación basándose en la primera diapositiva de tu paquete.",

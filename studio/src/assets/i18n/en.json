@@ -432,7 +432,7 @@
     "modern_app": "DeckDeckGo will distribute it online as a modern app.",
     "meta": "Meta",
     "title_edit": "Edit or review your presentation's title, summary and add or change tags (up to 5) to make your presentation more inviting to readers.",
-    "title_max_chars": "The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than 45 characters.",
+    "title_max_chars": "The title should be provided with latin characters, arabic numerals, spaces and dash. It must not be longer than {0} characters.",
     "description": "Description",
     "tags": "Tags",
     "social_card": "DeckDeckGo will automatically generate the social card for your presentation based on the first slide of your deck.",

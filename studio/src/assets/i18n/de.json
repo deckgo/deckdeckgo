@@ -432,7 +432,7 @@
     "modern_app": "DeckDeckGo wird sie online als moderene App zugänglich machen.",
     "meta": "Meta",
     "title_edit": "Erstelle einen Titel und eine Zusammenfassung deiner Präsentation und füge bis zu 5 Tags hinzu, um die Vorschau deiner Präsentation ansprechend zu gestalten.",
-    "title_max_chars": "Der Titel darf Buchstaben, Zahlen, Leerzeichen und Bindestriche beinhalten und darf nicht länger als 45 Zeichen sein.",
+    "title_max_chars": "Der Titel darf Buchstaben, Zahlen, Leerzeichen und Bindestriche beinhalten und darf nicht länger als {0} Zeichen sein.",
     "description": "Beschreibung",
     "tags": "Tags",
     "social_card": "DeckDeckGo generiert die Vorschau deiner Präsentation basierend auf deiner ersten Folie, wenn du sie in den sozialen Medien teilst.",

@@ -432,7 +432,7 @@
     "modern_app": "DeckDeckGo zal het online verspreiden als een moderne app.",
     "meta": "Meta",
     "title_edit": "Bewerk of bekijk de titel en samenvatting van uw presentatie en voeg tags toe of wijzig deze (maximaal 5) om uw presentatie aantrekkelijker te maken voor lezers.",
-    "title_max_chars": "De titel kan bestaan uit Latijnse karakters, Arabische cijfers, spaties en streepjes. Het mag niet langer zijn dan 45 tekens.",
+    "title_max_chars": "De titel kan bestaan uit Latijnse karakters, Arabische cijfers, spaties en streepjes. Het mag niet langer zijn dan {0} tekens.",
     "description": "Omschrijving",
     "tags": "Tags",
     "social_card": "DeckDeckGo genereert automatisch de sociale card voor uw presentatie op basis van de eerste slide van uw deck.",
