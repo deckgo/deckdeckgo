@@ -1,6 +1,12 @@
-<a name="5.X.Y"></a>
+<a name="5.2.0"></a>
 
-# [5.X.Y](https://github.com/deckgo/deckdeckgo/compare/v5.1.0...v5.X.Y) (2022-AA-BB)
+# [5.2.0](https://github.com/deckgo/deckdeckgo/compare/v5.1.0...v5.2.0) (2021-12-24)
+
+### Applications
+
+- studio: v5.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
+- remote: v1.15.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+- docs: v3.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/docs/CHANGELOG.md))
 
 ### Providers
 

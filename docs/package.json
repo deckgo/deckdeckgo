@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/docs",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The web open source editor for presentations ",
   "main": "index.js",
   "scripts": {

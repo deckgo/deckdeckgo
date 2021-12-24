@@ -1,3 +1,10 @@
+# 1.15.2 (2021-12-21)
+
+### Build
+
+- use `@deckdeckgo/elements`
+- bump and adapt code for other ddg utils improvements
+
 # 1.15.1 (2021-10-21)
 
 ### Build
