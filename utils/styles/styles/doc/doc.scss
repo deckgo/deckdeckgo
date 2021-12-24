@@ -13,6 +13,11 @@ deckgo-doc {
     width: calc(var(--doc-size) - 32px);
   }
 
+  @media screen and (max-width: 576px) {
+    /* In addition to width, we also increase the base font size on small devices */
+    --font-size: calc(var(--doc-size) / 32);
+  }
+
   article {
     background: white;
     white-space: pre-wrap;
