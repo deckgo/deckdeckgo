@@ -13,6 +13,7 @@ import {getParagraph} from '../../providers/data/paragraph/paragraph.provider';
 import {deleteDoc} from '../../providers/data/doc/doc.provider';
 import {deleteDeck} from '../../providers/data/deck/deck.provider';
 import {deleteFile} from '../../providers/storage/storage.provider';
+import {firebase} from './environment.utils';
 
 export type DeckOrDoc = {deck: Deck; doc?: never} | {doc: Doc; deck?: never};
 
@@ -181,6 +182,11 @@ export const deleteDeckOrDoc = async (data: DeckOrDoc) => {
 };
 
 const deleteStorageFile = async ({meta, folder}: {meta: Meta | undefined; folder: 'p' | 'd'}) => {
+  if (firebase()) {
+    // In such mode, published content is not deployed on Firebase
+    return;
+  }
+
   if (!meta) {
     return;
   }
