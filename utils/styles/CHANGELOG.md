@@ -1,3 +1,9 @@
+# 1.2.1 (2021-12-24)
+
+### Features
+
+- max width on mobile for docs
+
 # 1.2.0 (2021-12-19)
 
 ### Style
