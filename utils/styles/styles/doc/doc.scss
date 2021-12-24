@@ -4,6 +4,20 @@ deckgo-doc {
 
   margin: 32px auto;
 
+  @media screen and (max-width: 768px) {
+    margin: 16px auto;
+
+    --doc-padding: 20;
+
+    /* On mobile device display with max size and not A4 */
+    width: calc(var(--doc-size) - 32px);
+  }
+
+  @media screen and (max-width: 576px) {
+    /* In addition to width, we also increase the base font size on small devices */
+    --font-size: calc(var(--doc-size) / 32);
+  }
+
   article {
     background: white;
     white-space: pre-wrap;
