@@ -223,11 +223,15 @@ export class AppPublishEdit {
     let title: string = ($event.target as InputTargetEvent).value;
     if (title && title !== undefined && title !== '') {
       if (!this.validCaption(title)) {
-        title = title.substr(0, Constants.DECK.TITLE_MAX_LENGTH);
+        title = title.slice(0, this.titleMaxLength());
       }
     }
 
     this.caption = title;
+  }
+
+  private titleMaxLength(): number {
+    return this.mode === 'doc' ? Constants.DOC.TITLE_MAX_LENGTH : Constants.DECK.TITLE_MAX_LENGTH;
   }
 
   private validateCaptionInput() {
@@ -235,7 +239,7 @@ export class AppPublishEdit {
   }
 
   private validCaption(title: string): boolean {
-    if (!title || title === undefined || title == '' || title.length > Constants.DECK.TITLE_MAX_LENGTH) {
+    if (!title || title === undefined || title == '' || title.length > this.titleMaxLength()) {
       return false;
     }
 
@@ -366,14 +370,19 @@ export class AppPublishEdit {
                 debounce={500}
                 minlength={3}
                 disabled={disable}
-                maxlength={Constants.DECK.TITLE_MAX_LENGTH}
+                maxlength={this.titleMaxLength()}
                 required={true}
                 input-mode="text"
                 onIonInput={($event: CustomEvent<KeyboardEvent>) => this.onCaptionInput($event)}
                 onIonChange={() => this.validateCaptionInput()}></ion-input>
             </ion-item>
 
-            <p class={`small ${this.validTitle ? undefined : 'error'}`}>{i18n.state.publish_edit.title_max_chars}</p>
+            <p class={`small ${this.validTitle ? undefined : 'error'}`}>
+              {renderI18n(i18n.state.publish_edit.title_max_chars, {
+                placeholder: '{0}',
+                value: `${this.titleMaxLength()}`
+              })}
+            </p>
 
             <ion-item class="item-title">
               <ion-label>{i18n.state.publish_edit.description}</ion-label>
