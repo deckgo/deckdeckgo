@@ -1,3 +1,9 @@
+# 5.X.Y (2022-AA-BB)
+
+### Features
+
+- on import (open) of .ddg files, always generate new data (new ids for the decks, slides, docs and paragraphs)
+
 # 5.2.0 (2021-12-24)
 
 ### Features - IC
