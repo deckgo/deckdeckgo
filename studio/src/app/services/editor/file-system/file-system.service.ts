@@ -1,11 +1,12 @@
 import JSZip from 'jszip';
 
-import {validate as uuidValidate, v4 as uuid} from 'uuid';
+import {v4 as uuid} from 'uuid';
 
 import {get, getMany} from 'idb-keyval';
 
 import editorStore from '../../../stores/editor.store';
 import offlineStore from '../../../stores/offline.store';
+import authStore from '../../../stores/auth.store';
 
 import {Deck, Slide, FileImportData, UserAsset, Doc, Paragraph} from '@deckdeckgo/editor';
 
@@ -31,7 +32,7 @@ export class FileSystemService {
   }
 
   async importData(file: File): Promise<'doc' | 'deck'> {
-    const {data, assets, sync} = await this.unzip(file);
+    const {data, assets} = await this.unzip(file);
 
     await importEditorAssets(assets);
     await importEditorData(data);
@@ -39,10 +40,6 @@ export class FileSystemService {
     const {doc} = data;
 
     const result: 'doc' | 'deck' = doc !== undefined ? 'doc' : 'deck';
-
-    if (!sync) {
-      return result;
-    }
 
     await importEditorSync(data);
 
@@ -117,10 +114,7 @@ export class FileSystemService {
       throw new Error('No deck found in IDB');
     }
 
-    delete deck.data.deploy;
-    delete deck.data.github;
-
-    return deck;
+    return this.cleanDeck({deck, cleanMeta: false});
   }
 
   private async getSlides(): Promise<Slide[] | undefined> {
@@ -155,7 +149,7 @@ export class FileSystemService {
       throw new Error('No doc found in IDB');
     }
 
-    return doc;
+    return this.cleanDoc({doc, cleanMeta: false});
   }
 
   private async getParagraphs(): Promise<Paragraph[] | undefined> {
@@ -272,7 +266,6 @@ export class FileSystemService {
   private async unzip(file: File): Promise<{
     data: ImportData;
     assets: ImportAsset[];
-    sync: boolean;
   }> {
     const zip = new JSZip();
 
@@ -306,7 +299,7 @@ export class FileSystemService {
     const assets: ImportAsset[] = await Promise.all(promises);
 
     return {
-      ...this.syncImportData(data),
+      ...this.resetImportDataIds(data),
       assets
     };
   }
@@ -349,64 +342,99 @@ export class FileSystemService {
   }
 
   /**
-   * If data are exported from the editor, they contain ids, therefore imported without any further work.
+   * If data are exported from the editor, they contain ids.
    * In case they are imported from other source, such as Figma, these are new data.
-   * They need to be imported with new ids and need to be added to the list of data to sync.
-   * @param id
-   * @param deck
-   * @param slides
-   * @param doc
-   * @param paragraphs
-   * @private
+   *
+   * In any case, we do not want to overwrite existing data but, always create new data, mostly to avoid issue when cloud is used.
+   *
+   * - This is useful to avoid loosing newer data, assuming user has data sync with the cloud
+   * - If user send .ddg files to another user, then data such as "meta" (which we now also delete from the export) would be imported
+   * - In addition, with Firebase each deck needs another Id, that's why if a .ddg file is send and imported by another user, it would try to reuse same id which is not possible
+   *
+   * Finally, we want to reset the owner_id
    */
-  private syncImportData({id, deck, slides, doc, paragraphs}: FileImportData): {
-    data: ImportData;
-    sync: boolean;
-  } {
-    if (uuidValidate(id)) {
-      return {
-        data: {
-          id,
-          ...(deck && {deck: deck as Deck}),
-          ...(slides && {slides: slides as Slide[]}),
-          ...(doc && {doc: doc as Doc}),
-          ...(paragraphs && {paragraphs: paragraphs as Paragraph[]})
-        },
-        sync: false
-      };
-    }
-
-    // Generate ids for new deck and slides (Figma import)
-
-    const deckId: string = uuid();
+  private resetImportDataIds({deck, slides, doc, paragraphs}: FileImportData): {data: ImportData} {
+    const id: string = uuid();
     const now: Date = new Date();
 
-    const newSlides: Slide[] = slides.map((slide: Partial<Slide>) => ({
+    const newSlides: Slide[] | undefined = slides?.map((slide: Partial<Slide>) => ({
       data: {
         ...slide.data,
         updated_at: now,
         created_at: now
       },
       id: uuid()
-    })) as Slide[];
+    })) as Slide[] | undefined;
 
-    const newDeck: Deck = {
+    const newDeck: Deck | undefined = deck
+      ? ({
+          data: {
+            ...deck.data,
+            owner_id: authStore.state.authUser?.uid,
+            slides: newSlides?.map(({id}: Slide) => id),
+            updated_at: now,
+            created_at: now
+          },
+          id
+        } as Deck)
+      : undefined;
+
+    const newParagraphs: Paragraph[] | undefined = paragraphs?.map((paragraph: Partial<Paragraph>) => ({
       data: {
-        ...deck.data,
-        slides: newSlides.map(({id}: Slide) => id),
+        ...paragraph.data,
         updated_at: now,
         created_at: now
       },
-      id: deckId
-    } as Deck;
+      id: uuid()
+    })) as Paragraph[] | undefined;
+
+    const newDoc: Doc | undefined = doc
+      ? ({
+          data: {
+            ...doc.data,
+            owner_id: authStore.state.authUser?.uid,
+            paragraphs: newParagraphs?.map(({id}: Paragraph) => id),
+            updated_at: now,
+            created_at: now
+          },
+          id
+        } as Doc)
+      : undefined;
 
     return {
       data: {
-        id: deckId,
-        deck: newDeck,
-        slides: newSlides
-      },
-      sync: true
+        id,
+        ...(newDeck && {deck: this.cleanDeck({deck: newDeck, cleanMeta: true})}),
+        ...(newSlides && {slides: newSlides}),
+        ...(newDoc && {doc: this.cleanDoc({doc: newDoc, cleanMeta: true})}),
+        ...(newParagraphs && {paragraphs: newParagraphs})
+      }
     };
+  }
+
+  private cleanDeck({deck, cleanMeta}: {deck: Deck; cleanMeta: boolean}): Deck {
+    const clone: Deck = {...deck};
+
+    if (cleanMeta) {
+      delete clone.data.meta;
+    }
+
+    delete clone.data.api_id;
+    delete clone.data.deploy;
+    delete clone.data.github;
+
+    return clone;
+  }
+
+  private cleanDoc({doc, cleanMeta}: {doc: Doc; cleanMeta: boolean}): Doc {
+    const clone: Doc = {...doc};
+
+    if (cleanMeta) {
+      delete clone.data.meta;
+    }
+
+    delete clone.data.deploy;
+
+    return clone;
   }
 }
