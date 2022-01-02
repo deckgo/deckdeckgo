@@ -282,8 +282,6 @@ export class DocUndoRedoEvents {
         index: elementIndex(paragraph),
         indexDepths: depths.reverse()
       };
-
-      this.undoUpdateParagraphs = [];
     }
 
     this.debounceUpdateInput();
