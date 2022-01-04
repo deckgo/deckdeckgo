@@ -2,6 +2,8 @@ import firebase from 'firebase/app';
 import '@firebase/auth';
 import 'firebase/firestore';
 
+import {User as FirebaseUser} from '@firebase/auth-types';
+
 import {Deck, Author, DeckPublish, UserSocial, PublishUrl, DocPublish, Doc} from '@deckdeckgo/editor';
 
 import {updateDeck} from '../data/deck.firebase';
@@ -25,7 +27,25 @@ export const publishUrl: PublishUrl = async () => 'https://beta.deckdeckgo.io';
 const updateDeckMeta = async (deckSource: Deck): Promise<Deck> => {
   const deck: Deck = cleanDeckMeta(deckSource);
 
-  return updateDeck(deck);
+  const ownerDeck: Deck = updateOwner(deck);
+
+  return updateDeck(ownerDeck);
+};
+
+/**
+ * If deck was created before user was logged in, the owner_id might have not been set in the offline data
+ */
+const updateOwner = (deckSource: Deck): Deck => {
+  if (deckSource.data.owner_id !== undefined) {
+    return deckSource;
+  }
+
+  const deck: Deck = {...deckSource};
+
+  const firebaseUser: FirebaseUser = firebase.auth().currentUser;
+  deck.data.owner_id = firebaseUser?.uid;
+
+  return deck;
 };
 
 const cleanDeckMeta = (deckSource: Deck): Deck => {
@@ -66,7 +86,7 @@ const cleanDeckMeta = (deckSource: Deck): Deck => {
 const publishDeck = ({deck, config}: {deck: Deck; config: Record<string, string | boolean>}): Promise<void> => {
   return new Promise<void>(async (resolve, reject) => {
     try {
-      const token: string = await firebase.auth().currentUser.getIdToken();
+      const token: string | undefined = await firebase.auth().currentUser?.getIdToken();
 
       const rawResponse: Response = await fetch(`${config.functionsUrl}/publish`, {
         method: 'POST',
