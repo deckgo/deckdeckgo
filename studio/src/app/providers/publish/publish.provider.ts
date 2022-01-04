@@ -103,6 +103,11 @@ const updateDeckMeta = (inputs: PublishInputs): Deck => {
     }
   }
 
+  // TODO: FIXME
+  if (deck.data.owner_id === undefined && authStore.state.loggedIn) {
+    deck.data.owner_id = authStore.state.authUser?.uid;
+  }
+
   return deck;
 };
 
