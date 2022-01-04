@@ -1,3 +1,9 @@
+# 3.0.1 (2022-01-04)
+
+### Fix
+
+- `owner_id` might not been set in the provided data to publish
+
 # 3.0.0 (2021-11-27)
 
 ### Breaking Changes

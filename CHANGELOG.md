@@ -1,3 +1,11 @@
+<a name="5.x.0"></a>
+
+# [5.X.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v5.X.0) (2022-AA-BB)
+
+### Providers
+
+- firebase: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
+
 <a name="5.2.0"></a>
 
 # [5.2.0](https://github.com/deckgo/deckdeckgo/compare/v5.1.0...v5.2.0) (2021-12-24)
