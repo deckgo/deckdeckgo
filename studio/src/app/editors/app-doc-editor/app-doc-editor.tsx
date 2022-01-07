@@ -5,12 +5,14 @@ import {v4 as uuid} from 'uuid';
 import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
+import {DeckdeckgoPaletteColor} from '@deckdeckgo/color';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
 import undoRedoStore from '../../stores/undo-redo.store';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
+import colorStore from '../../stores/color.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -27,6 +29,8 @@ import {getEdit} from '../../utils/editor/editor.utils';
 import {printDoc} from '../../utils/editor/print.utils';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
+import {ColorUtils} from '../../utils/editor/color.utils';
+import {StyloConfig} from '../../../../../../stylo/dist/types';
 
 @Component({
   tag: 'app-doc-editor',
@@ -35,6 +39,9 @@ import {signIn} from '../../utils/core/signin.utils';
 export class AppDocEditor implements ComponentInterface {
   @State()
   private paragraphs: JSX.IntrinsicElements[] = [];
+
+  @State()
+  private editorConfig: Partial<StyloConfig> = {};
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
@@ -49,6 +56,10 @@ export class AppDocEditor implements ComponentInterface {
 
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
+
+  componentWillLoad() {
+    this.initEditorConfig();
+  }
 
   async componentDidLoad() {
     this.imageEvents.init();
@@ -110,6 +121,20 @@ export class AppDocEditor implements ComponentInterface {
     if (key === 'p' && (ctrlKey || metaKey)) {
       this.print($event);
     }
+  }
+
+  @Listen('colorChange', {target: 'document', passive: true})
+  onColorChange({detail}: CustomEvent<DeckdeckgoPaletteColor>) {
+    ColorUtils.updateColor(detail);
+
+    this.initEditorConfig();
+  }
+
+  private initEditorConfig() {
+    this.editorConfig = {
+      ...this.editorConfig,
+      toolbar: {palette: colorStore.state.history.slice(0, 11)}
+    };
   }
 
   private print($event: KeyboardEvent) {
@@ -249,7 +274,7 @@ export class AppDocEditor implements ComponentInterface {
             <app-doc-indicator></app-doc-indicator>
           </main>
 
-          <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)}></stylo-editor>
+          <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
         </ion-content>
       </Fragment>
     );

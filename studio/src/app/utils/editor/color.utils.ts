@@ -60,10 +60,18 @@ export class ColorUtils {
   }
 
   static updateColor(color: DeckdeckgoPaletteColor) {
-    const filteredHistory: DeckdeckgoPalette[] = colorStore.state.history.filter(
+    const exist: DeckdeckgoPalette | undefined = colorStore.state.history.find(
+      (palette: DeckdeckgoPalette) => palette.color.hex?.toLowerCase() === color.hex?.toLowerCase()
+    );
+
+    if (exist) {
+      return;
+    }
+
+    const updatedHistory: DeckdeckgoPalette[] = colorStore.state.history.filter(
       (palette: DeckdeckgoPalette) => palette.color.hex?.toLowerCase() !== color.hex?.toLowerCase()
     );
 
-    colorStore.state.history = [{color}, ...(filteredHistory.length < 22 ? filteredHistory : filteredHistory.slice(0, 21))];
+    colorStore.state.history = [{color}, ...(updatedHistory.length < 22 ? updatedHistory : updatedHistory.slice(0, 21))];
   }
 }
