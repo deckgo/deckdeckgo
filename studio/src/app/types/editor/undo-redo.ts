@@ -14,32 +14,8 @@ export interface UndoRedoDeckInputElement {
   innerHTML: string;
 }
 
-export interface UndoRedoDocInput {
-  offset: number;
-  oldValue: string;
-  index: number;
-  indexDepths: number[];
-}
-
-export interface UndoRedoDocAddRemoveParagraph {
-  index: number;
-  mutation: 'add' | 'remove';
-  outerHTML: string;
-}
-
-export interface UndoRedoDocUpdateParagraph {
-  outerHTML: string;
-  index: number;
-}
-
 export interface UndoRedoChange {
-  type: 'input' | 'attribute' | 'style' | 'paragraph' | 'update';
+  type: 'input' | 'attribute' | 'style';
   target: Node;
-  data:
-    | UndoRedoDeckChangeAttribute
-    | UndoRedoDeckInputElement
-    | UndoRedoDeckChangeStyle
-    | UndoRedoDocInput
-    | UndoRedoDocAddRemoveParagraph[]
-    | UndoRedoDocUpdateParagraph[];
+  data: UndoRedoDeckChangeAttribute | UndoRedoDeckInputElement | UndoRedoDeckChangeStyle;
 }

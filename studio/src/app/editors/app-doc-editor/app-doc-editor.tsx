@@ -6,7 +6,6 @@ import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 
-import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
 import undoRedoStore from '../../stores/undo-redo.store';
@@ -20,9 +19,7 @@ import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocDataEvents} from '../../events/editor/doc/doc.data.events';
 import {DocEditorEvents} from '../../events/editor/editor/doc.editor.events';
-import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
 import {DocImageEvents} from '../../events/editor/doc/doc.image.events';
-import {DocInputEvents} from '../../events/editor/doc/doc.input.events';
 
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
@@ -30,8 +27,6 @@ import {getEdit} from '../../utils/editor/editor.utils';
 import {printDoc} from '../../utils/editor/print.utils';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
-
-import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
 
 @Component({
   tag: 'app-doc-editor',
@@ -44,14 +39,13 @@ export class AppDocEditor implements ComponentInterface {
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly docDataEvents: DocDataEvents = new DocDataEvents();
-  private readonly docUndoRedoEvents: DocUndoRedoEvents = new DocUndoRedoEvents();
   private readonly docImageEvents: DocImageEvents = new DocImageEvents();
   private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
-  private readonly docInputEvents: DocInputEvents = new DocInputEvents();
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
   private containerRef!: HTMLElement;
+  private styleEditorRef!: HTMLStyloEditorElement;
 
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
@@ -62,6 +56,8 @@ export class AppDocEditor implements ComponentInterface {
 
     this.docEditorEvents.init(this.containerRef);
     this.docImageEvents.init(this.containerRef);
+
+    this.styleEditorRef.containerRef = this.containerRef;
 
     await this.initOrFetch();
   }
@@ -82,8 +78,6 @@ export class AppDocEditor implements ComponentInterface {
    */
   private destroy() {
     this.docDataEvents.destroy();
-    this.docUndoRedoEvents.destroy();
-    this.docInputEvents.destroy();
 
     editorStore.reset();
     undoRedoStore.reset();
@@ -156,7 +150,7 @@ export class AppDocEditor implements ComponentInterface {
     const editor: Editor | undefined = await getEdit();
     const docId: string | undefined = editor?.id;
 
-    this.initDocEvents(!docId);
+    this.initDocDataEvents(!docId);
     this.initEditable();
     this.initFocus();
 
@@ -197,35 +191,17 @@ export class AppDocEditor implements ComponentInterface {
     this.containerRef.innerHTML = '';
   }
 
-  private initDocEvents(init: boolean) {
-    this.initDocDataEvents(init);
-    this.initDocUndoRedoEvents();
-  }
-
-  // We init the undo redo oberserver only once rendered as we do not want to add the default title and div to the stack
-  private initDocUndoRedoEvents() {
-    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
-      observer.disconnect();
-
-      this.docUndoRedoEvents.init(this.containerRef);
-      this.docInputEvents.init(this.containerRef);
-    };
-
-    const docObserver: MutationObserver = new MutationObserver(onRender);
-    docObserver.observe(this.containerRef, {childList: true, subtree: true});
-  }
-
   // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
   private initDocDataEvents(init: boolean) {
     if (init) {
-      this.docDataEvents.init(this.containerRef);
+      this.docDataEvents.init();
       return;
     }
 
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
-      this.docDataEvents.init(this.containerRef);
+      this.docDataEvents.init();
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
@@ -270,18 +246,11 @@ export class AppDocEditor implements ComponentInterface {
               </article>
             </deckgo-doc>
 
-            <AppActionsDocEditor containerRef={this.containerRef}></AppActionsDocEditor>
+            <app-doc-indicator></app-doc-indicator>
           </main>
         </ion-content>
 
-        <deckgo-inline-editor
-          containers="article"
-          sticky-mobile="true"
-          img-anchor="deckgo-lazy-img"
-          list={false}
-          palette={colorStore.state.history}
-          align={true}
-          fontSize={true}></deckgo-inline-editor>
+        <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)}></stylo-editor>
       </Fragment>
     );
   }
