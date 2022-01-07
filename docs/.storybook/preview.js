@@ -17,7 +17,6 @@ export const parameters = {
           'Demo',
           'Drag Resize Rotate',
           'Highlight Code',
-          'Inline Editor',
           'Laser Pointer',
           'Lazy Image',
           'Math',
