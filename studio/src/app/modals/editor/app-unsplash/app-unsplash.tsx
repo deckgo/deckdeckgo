@@ -36,12 +36,16 @@ export class AppUnsplash {
   @State()
   private searching: boolean = false;
 
+  private input: HTMLIonSearchbarElement | undefined;
+
   constructor() {
     this.imageHistoryService = ImageHistoryService.getInstance();
   }
 
-  async componentDidLoad() {
+  componentDidLoad() {
     history.pushState({modal: true}, null);
+
+    setTimeout(async () => await this.input?.setFocus(), 500);
   }
 
   @Listen('popstate', {target: 'window'})
@@ -178,6 +182,7 @@ export class AppUnsplash {
               debounce={500}
               placeholder="Search"
               value={this.searchTerm}
+              ref={(el) => (this.input = el as HTMLIonSearchbarElement)}
               onIonClear={() => this.clear()}
               onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
               onIonChange={async () => {

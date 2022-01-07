@@ -33,6 +33,7 @@ import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
 
 import {imgStorage} from '../../plugins/img.storage.plugin';
+import {imgUnsplash} from '../../plugins/img.unsplash.plugin';
 
 @Component({
   tag: 'app-doc-editor',
@@ -44,7 +45,7 @@ export class AppDocEditor implements ComponentInterface {
 
   @State()
   private editorConfig: Partial<StyloConfig> = {
-    plugins: [h1, h2, h3, ul, imgStorage, code, hr]
+    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, code, hr]
   };
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
