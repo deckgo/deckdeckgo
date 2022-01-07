@@ -1,5 +1,8 @@
+import type {OverlayEventDetail} from '@ionic/core';
+import {modalController} from '@ionic/core';
+
 import {StorageFile, UnsplashPhoto} from '@deckdeckgo/editor';
-import {createEmptyElement, transformParagraph} from '@deckdeckgo/stylo';
+import {createEmptyElement, StyloPluginCreateParagraphsParams, transformParagraph} from '@deckdeckgo/stylo';
 
 import {SlotType} from '../../types/editor/slot-type';
 
@@ -29,4 +32,28 @@ export const createParagraphImage = ({
     container,
     focus: 'last'
   });
+};
+
+export const openPluginModal = async ({
+  pluginParams,
+  componentTag
+}: {
+  pluginParams: StyloPluginCreateParagraphsParams;
+  componentTag: 'app-gif' | 'app-unsplash';
+}) => {
+  const modal: HTMLIonModalElement = await modalController.create({
+    component: componentTag
+  });
+
+  modal.onDidDismiss().then(({data: unsplashImage}: OverlayEventDetail) => {
+    const {container, paragraph} = pluginParams;
+
+    createParagraphImage({
+      image: unsplashImage,
+      container,
+      paragraph
+    });
+  });
+
+  await modal.present();
 };
