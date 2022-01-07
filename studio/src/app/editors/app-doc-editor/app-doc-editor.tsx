@@ -6,6 +6,7 @@ import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import {DeckdeckgoPaletteColor} from '@deckdeckgo/color';
+import {StyloConfig, h1, h2, h3, ul, code, hr} from '@deckdeckgo/stylo';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
@@ -30,7 +31,8 @@ import {printDoc} from '../../utils/editor/print.utils';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
-import {StyloConfig} from '../../../../../../stylo/dist/types';
+
+import {imgStorage} from '../../plugins/img.storage.plugin';
 
 @Component({
   tag: 'app-doc-editor',
@@ -41,7 +43,9 @@ export class AppDocEditor implements ComponentInterface {
   private paragraphs: JSX.IntrinsicElements[] = [];
 
   @State()
-  private editorConfig: Partial<StyloConfig> = {};
+  private editorConfig: Partial<StyloConfig> = {
+    plugins: [h1, h2, h3, ul, imgStorage, code, hr]
+  };
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
@@ -58,7 +62,7 @@ export class AppDocEditor implements ComponentInterface {
   private reloadAfterRender: boolean = false;
 
   componentWillLoad() {
-    this.initEditorConfig();
+    this.updateEditorToolbarConfig();
   }
 
   async componentDidLoad() {
@@ -127,10 +131,10 @@ export class AppDocEditor implements ComponentInterface {
   onColorChange({detail}: CustomEvent<DeckdeckgoPaletteColor>) {
     ColorUtils.updateColor(detail);
 
-    this.initEditorConfig();
+    this.updateEditorToolbarConfig();
   }
 
-  private initEditorConfig() {
+  private updateEditorToolbarConfig() {
     this.editorConfig = {
       ...this.editorConfig,
       toolbar: {palette: colorStore.state.history.slice(0, 11)}

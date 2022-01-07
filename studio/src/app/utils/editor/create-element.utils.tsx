@@ -41,13 +41,6 @@ export const createHTMLElement = ({slotType, slotName}: {slotType: SlotType; slo
   return element;
 };
 
-export const createEmptyElement = ({nodeName}: {nodeName: string}): HTMLElement => {
-  const element: HTMLElement = document.createElement(nodeName);
-  element.innerHTML = '\u200B';
-
-  return element;
-};
-
 const createHTMLListItem = () => {
   const item: HTMLLIElement = document.createElement('li');
   item.innerHTML = '\u200B';
