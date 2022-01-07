@@ -3,6 +3,7 @@ import {keys, set} from 'idb-keyval';
 import {StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 
 import store from '../../stores/error.store';
+import {encodeFilename} from '../../utils/editor/image.utils';
 
 export class StorageOfflineProvider {
   private static instance: StorageOfflineProvider;
@@ -33,7 +34,7 @@ export class StorageOfflineProvider {
           return;
         }
 
-        const key: string = `/assets/local/${folder}/${data.name}`;
+        const key: string = `/assets/local/${folder}/${encodeFilename(data)}`;
 
         await set(key, data);
 
