@@ -248,9 +248,9 @@ export class AppDocEditor implements ComponentInterface {
 
             <app-doc-indicator></app-doc-indicator>
           </main>
-        </ion-content>
 
-        <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)}></stylo-editor>
+          <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)}></stylo-editor>
+        </ion-content>
       </Fragment>
     );
   }
