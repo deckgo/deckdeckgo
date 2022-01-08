@@ -5,8 +5,7 @@ import {v4 as uuid} from 'uuid';
 import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
-import {DeckdeckgoPaletteColor} from '@deckdeckgo/color';
-import {StyloConfig, h1, h2, h3, ul, code} from '@deckdeckgo/stylo';
+import {StyloConfig, h1, h2, h3, ul, code, StyloPaletteColor} from '@deckdeckgo/stylo';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
@@ -131,7 +130,7 @@ export class AppDocEditor implements ComponentInterface {
   }
 
   @Listen('colorChange', {target: 'document', passive: true})
-  onColorChange({detail}: CustomEvent<DeckdeckgoPaletteColor>) {
+  onColorChange({detail}: CustomEvent<StyloPaletteColor>) {
     ColorUtils.updateColor(detail);
 
     this.updateEditorToolbarConfig();

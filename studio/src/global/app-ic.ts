@@ -12,7 +12,6 @@ import '@deckdeckgo/remote';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/math';
 import '@deckdeckgo/lazy-img';
-import '@deckdeckgo/color';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/drag-resize-rotate';
 import '@deckdeckgo/word-cloud';

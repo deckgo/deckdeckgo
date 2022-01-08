@@ -2,7 +2,7 @@ import colorStore from '../../../stores/color.store';
 
 import {get} from 'idb-keyval';
 
-import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
+import {StyloPalette, DEFAULT_PALETTE} from '@deckdeckgo/stylo';
 
 export class ColorService {
   private static instance: ColorService;
@@ -20,7 +20,7 @@ export class ColorService {
 
   async init() {
     try {
-      const history = await get<DeckdeckgoPalette[]>('deckdeckgo_color_history');
+      const history = await get<StyloPalette[]>('deckdeckgo_color_history');
       colorStore.state.history = history ?? DEFAULT_PALETTE;
 
       const colorInput: 'hex' | 'rgb' = await get<'hex' | 'rgb'>('deckdeckgo_color_input');

@@ -2,10 +2,10 @@ import {createStore} from '@stencil/store';
 
 import {set} from 'idb-keyval';
 
-import {DeckdeckgoPalette} from '@deckdeckgo/color';
+import {StyloPalette} from '@deckdeckgo/stylo';
 
 interface ColorStore {
-  history: DeckdeckgoPalette[];
+  history: StyloPalette[];
   colorInput: 'hex' | 'rgb';
 }
 
@@ -14,7 +14,7 @@ const {state, onChange} = createStore<ColorStore>({
   colorInput: 'hex'
 });
 
-onChange('history', (history: DeckdeckgoPalette[]) => {
+onChange('history', (history: StyloPalette[]) => {
   set('deckdeckgo_color_history', history).catch((err) => {
     console.error('Failed to update IDB with new color history', err);
   });

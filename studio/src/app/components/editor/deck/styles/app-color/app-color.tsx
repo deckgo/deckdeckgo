@@ -3,7 +3,7 @@ import {Component, EventEmitter, Fragment, h, Prop, State, Event, Watch, Method}
 import type {RangeChangeEventDetail} from '@ionic/core';
 
 import {debounce, extractRgb, hexToRgb, rgbToHex} from '@deckdeckgo/utils';
-import {DeckdeckgoPaletteColor, DeckdeckgoPalette} from '@deckdeckgo/color';
+import {StyloPaletteColor, StyloPalette} from '@deckdeckgo/stylo';
 
 import colorStore from '../../../../../stores/color.store';
 import i18n from '../../../../../stores/i18n.store';
@@ -125,7 +125,7 @@ export class AppColor {
     };
   }
 
-  private async selectColor($event: UIEvent, color: DeckdeckgoPaletteColor) {
+  private async selectColor($event: UIEvent, color: StyloPaletteColor) {
     if (!$event || !color) {
       return;
     }
@@ -370,7 +370,7 @@ export class AppColor {
   }
 
   private renderPalette() {
-    return colorStore.state.history.map((palette: DeckdeckgoPalette) => {
+    return colorStore.state.history.map((palette: StyloPalette) => {
       return (
         <ion-fab-button
           size="small"
