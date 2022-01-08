@@ -8,6 +8,7 @@
 
 ### Web Components: Deprecated and integrated into `stylo`
 
+- color
 - inline-editor
 
 <a name="5.2.0"></a>
