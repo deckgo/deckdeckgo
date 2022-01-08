@@ -6,7 +6,7 @@ import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import {DeckdeckgoPaletteColor} from '@deckdeckgo/color';
-import {StyloConfig, h1, h2, h3, ul, code, hr} from '@deckdeckgo/stylo';
+import {StyloConfig, h1, h2, h3, ul, code} from '@deckdeckgo/stylo';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
@@ -35,6 +35,7 @@ import {ColorUtils} from '../../utils/editor/color.utils';
 import {imgStorage} from '../../plugins/img.storage.plugin';
 import {imgUnsplash} from '../../plugins/img.unsplash.plugin';
 import {imgGif} from '../../plugins/img.gif.plugin';
+import {hr} from '../../plugins/hr.plugin';
 
 @Component({
   tag: 'app-doc-editor',
