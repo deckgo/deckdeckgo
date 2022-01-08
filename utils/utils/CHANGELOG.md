@@ -1,3 +1,9 @@
+# 4.0.0 (2022-01-08)
+
+### Build
+
+- `main` output entry cjs
+
 # 3.1.0 (2021-12-16)
 
 ### Features
