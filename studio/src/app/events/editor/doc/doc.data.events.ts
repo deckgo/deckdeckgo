@@ -1,3 +1,5 @@
+import {v4 as uuid} from 'uuid';
+
 import {Doc, DocData, now, Paragraph, ParagraphData, elementIndex, isTextNode, cleanNode, isElementNode} from '@deckdeckgo/editor';
 
 import errorStore from '../../../stores/error.store';
@@ -126,10 +128,19 @@ export class DocDataEvents {
         paragraphData.children = content;
       }
 
-      const persistedParagraph: Paragraph = await createOfflineParagraph({docId: editorStore.state.doc.id, paragraphData: paragraphData});
+      const paragraphIdAttr: string | undefined = element.getAttribute('paragraph_id');
 
-      if (persistedParagraph && persistedParagraph.id) {
-        element.setAttribute('paragraph_id', persistedParagraph.id);
+      // Should not happen, stylo set paragraph_id but just in case
+      const paragraphId: string = paragraphIdAttr || uuid();
+
+      const persistedParagraph: Paragraph = await createOfflineParagraph({
+        docId: editorStore.state.doc.id,
+        paragraphData: paragraphData,
+        paragraphId
+      });
+
+      if (paragraphIdAttr === undefined) {
+        element.setAttribute('paragraph_id', paragraphId);
       }
 
       resolve(persistedParagraph);
