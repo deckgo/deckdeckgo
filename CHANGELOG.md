@@ -1,6 +1,6 @@
-<a name="5.x.0"></a>
+<a name="6.x.0"></a>
 
-# [5.X.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v5.X.0) (2022-AA-BB)
+# [6.X.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v5.X.0) (2022-AA-BB)
 
 ### Providers
 
@@ -10,6 +10,10 @@
 
 - color
 - inline-editor
+
+### Others
+
+- utils: v4.10.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.2.0"></a>
 
