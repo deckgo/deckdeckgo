@@ -13,6 +13,7 @@ import undoRedoStore from '../../stores/undo-redo.store';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
 import colorStore from '../../stores/color.store';
+import i18n from '../../stores/i18n.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -139,6 +140,7 @@ export class AppDocEditor implements ComponentInterface {
   private updateEditorToolbarConfig() {
     this.editorConfig = {
       ...this.editorConfig,
+      lang: i18n.state.lang,
       toolbar: {palette: colorStore.state.history.slice(0, 11)}
     };
   }
