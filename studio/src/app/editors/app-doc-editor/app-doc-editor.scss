@@ -13,11 +13,13 @@ app-doc-editor {
         content: "Title";
         color: rgba(var(--ion-color-medium-rgb), 0.6);
         white-space: pre;
+        position: relative;
       }
 
       div:nth-child(2):empty:last-child:not(:focus):after {
         content: "Write your document...";
         color: rgba(var(--ion-color-medium-rgb), 0.6);
+        position: relative;
       }
     }
   }
