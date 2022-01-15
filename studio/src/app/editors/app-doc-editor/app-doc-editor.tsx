@@ -142,7 +142,10 @@ export class AppDocEditor implements ComponentInterface {
     this.editorConfig = {
       ...this.editorConfig,
       lang: i18n.state.lang,
-      toolbar: {palette: colorStore.state.history.slice(0, 11)}
+      toolbar: {palette: colorStore.state.history.slice(0, 11)},
+      events: {
+        updateCustomEvents: ['markdownDidChange', 'wordCloudDidChange', 'codeDidChange', 'mathDidChange', 'imgDidChange']
+      }
     };
   }
 
