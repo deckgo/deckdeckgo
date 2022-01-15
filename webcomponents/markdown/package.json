@@ -27,7 +27,7 @@
     "@deckdeckgo/lazy-img": "^3.1.0"
   },
   "dependencies": {
-    "marked": "^3.0.2"
+    "marked": "^4.0.10"
   },
   "devDependencies": {
     "@types/marked": "^3.0.0"
