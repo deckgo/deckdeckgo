@@ -8,6 +8,8 @@ app-doc-editor {
   }
 
   deckgo-doc {
+    position: relative;
+
     article {
       h1:nth-child(1):empty:not(:focus):after {
         content: "Title";
@@ -21,6 +23,14 @@ app-doc-editor {
         color: rgba(var(--ion-color-medium-rgb), 0.6);
         position: relative;
       }
+    }
+  }
+
+  stylo-editor {
+    --stylo-add-left: 8px;
+
+    @media (min-width: 768px) {
+      --stylo-add-left: 32px;
     }
   }
 }

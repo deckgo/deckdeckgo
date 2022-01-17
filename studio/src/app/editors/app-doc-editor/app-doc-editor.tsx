@@ -276,12 +276,12 @@ export class AppDocEditor implements ComponentInterface {
               <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
                 {this.paragraphs}
               </article>
+
+              <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
             </deckgo-doc>
 
             <app-doc-indicator></app-doc-indicator>
           </main>
-
-          <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
         </ion-content>
       </Fragment>
     );
