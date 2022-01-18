@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
+import {Component, ComponentInterface, Element, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
@@ -42,6 +42,9 @@ import {code} from '../../plugins/code.plugin';
   styleUrl: 'app-doc-editor.scss'
 })
 export class AppDocEditor implements ComponentInterface {
+  @Element()
+  private el: HTMLElement;
+
   @State()
   private paragraphs: JSX.IntrinsicElements[] = [];
 
@@ -72,8 +75,6 @@ export class AppDocEditor implements ComponentInterface {
     this.chartEvents.init();
 
     this.docImageEvents.init(this.containerRef);
-
-    this.styleEditorRef.containerRef = this.containerRef;
 
     await this.initOrFetch();
   }
@@ -185,6 +186,7 @@ export class AppDocEditor implements ComponentInterface {
     this.initDocDataEvents(!docId);
     this.initEditable();
     this.initFocus();
+    this.initContainerRef();
 
     if (!docId) {
       await this.initDoc();
@@ -223,17 +225,36 @@ export class AppDocEditor implements ComponentInterface {
     this.containerRef.innerHTML = '';
   }
 
-  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
+  // If we init, we observe the default elements. When rendered, we simulate
   private initDocDataEvents(init: boolean) {
-    if (init) {
-      this.docDataEvents.init();
+    this.docDataEvents.init();
+
+    if (!init) {
       return;
     }
 
+    const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
+      observer.disconnect();
+
+      const addedParagraphs: Node[] = mutations
+        .filter(({addedNodes}: MutationRecord) => addedNodes?.length > 0)
+        .reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
+
+      // Same event as in stylo
+      const $event: CustomEvent<Node[]> = new CustomEvent<Node[]>('addParagraphs', {detail: addedParagraphs, bubbles: true});
+      this.el.dispatchEvent($event);
+    };
+
+    const docObserver: MutationObserver = new MutationObserver(onRender);
+    docObserver.observe(this.containerRef, {childList: true, subtree: true});
+  }
+
+  // Init only once the elements within the articles are rendered otherwise they will be added to the undo-redo stack
+  private initContainerRef() {
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
-      this.docDataEvents.init();
+      this.styleEditorRef.containerRef = this.containerRef;
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
