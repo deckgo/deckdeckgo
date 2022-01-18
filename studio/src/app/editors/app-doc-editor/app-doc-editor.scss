@@ -3,10 +3,6 @@ app-doc-editor {
 
   @import "node_modules/@deckdeckgo/styles/css/doc";
 
-  main {
-    overflow: scroll;
-  }
-
   deckgo-doc {
     position: relative;
 

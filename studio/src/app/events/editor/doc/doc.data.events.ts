@@ -62,7 +62,11 @@ export class DocDataEvents {
     try {
       busyStore.state.busy = true;
 
-      const promises: Promise<void>[] = updatedParagraphs.map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
+      // In case of copy-paste, the browser might proceed with a delete-update for which we do not get paragraph_id.
+      // It might copy a <p/> within a <div/> instead of creating a child of the container for the new <p/>
+      const promises: Promise<void>[] = updatedParagraphs
+        .filter((paragraph: HTMLElement) => paragraph.hasAttribute('paragraph_id'))
+        .map((paragraph: HTMLElement) => this.updateParagraph(paragraph));
       await Promise.all(promises);
     } catch (err) {
       errorStore.state.error = err;
@@ -128,10 +132,7 @@ export class DocDataEvents {
         paragraphData.children = content;
       }
 
-      const paragraphIdAttr: string | undefined = element.getAttribute('paragraph_id');
-
-      // Should not happen, stylo set paragraph_id but just in case
-      const paragraphId: string = paragraphIdAttr || uuid();
+      const paragraphId: string = uuid();
 
       const persistedParagraph: Paragraph = await createOfflineParagraph({
         docId: editorStore.state.doc.id,
@@ -139,9 +140,7 @@ export class DocDataEvents {
         paragraphId
       });
 
-      if (paragraphIdAttr === undefined) {
-        element.setAttribute('paragraph_id', paragraphId);
-      }
+      element.setAttribute('paragraph_id', paragraphId);
 
       resolve(persistedParagraph);
     });
@@ -225,7 +224,7 @@ export class DocDataEvents {
       return;
     }
 
-    const paragraphId: string = paragraph.getAttribute('paragraph_id');
+    const paragraphId: string | null = paragraph.getAttribute('paragraph_id');
 
     if (!paragraphId) {
       errorStore.state.error = 'Paragraph is not defined';
