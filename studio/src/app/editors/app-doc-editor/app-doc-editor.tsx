@@ -50,7 +50,10 @@ export class AppDocEditor implements ComponentInterface {
 
   @State()
   private editorConfig: Partial<StyloConfig> = {
-    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr]
+    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr],
+    events: {
+      updateCustomEvents: ['markdownDidChange', 'wordCloudDidChange', 'codeDidChange', 'mathDidChange', 'imgDidChange']
+    }
   };
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
