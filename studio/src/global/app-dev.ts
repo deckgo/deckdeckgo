@@ -7,7 +7,6 @@ setupConfig({
 
 import '@deckdeckgo/core';
 
-import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/remote';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/math';

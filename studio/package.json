@@ -29,7 +29,6 @@
     "@deckdeckgo/editor": "^5.1.1",
     "@deckdeckgo/elements": "^1.0.0",
     "@deckdeckgo/highlight-code": "^3.4.2",
-    "@deckdeckgo/inline-editor": "^5.0.0",
     "@deckdeckgo/laser-pointer": "^1.1.0",
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/markdown": "^2.1.0",
