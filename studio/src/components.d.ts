@@ -94,6 +94,8 @@ export namespace Components {
         "codeDidChange": EventEmitter<HTMLElement>;
         "selectedElement": HTMLElement;
     }
+    interface AppCodeEditor {
+    }
     interface AppCodeLanguages {
         "codeDidChange": EventEmitter<HTMLElement>;
         "currentLanguage": PrismLanguage | undefined;
@@ -547,6 +549,12 @@ declare global {
     var HTMLAppCodeElement: {
         prototype: HTMLAppCodeElement;
         new (): HTMLAppCodeElement;
+    };
+    interface HTMLAppCodeEditorElement extends Components.AppCodeEditor, HTMLStencilElement {
+    }
+    var HTMLAppCodeEditorElement: {
+        prototype: HTMLAppCodeEditorElement;
+        new (): HTMLAppCodeEditorElement;
     };
     interface HTMLAppCodeLanguagesElement extends Components.AppCodeLanguages, HTMLStencilElement {
     }
@@ -1234,6 +1242,7 @@ declare global {
         "app-close-menu": HTMLAppCloseMenuElement;
         "app-cloud-wait": HTMLAppCloudWaitElement;
         "app-code": HTMLAppCodeElement;
+        "app-code-editor": HTMLAppCodeEditorElement;
         "app-code-languages": HTMLAppCodeLanguagesElement;
         "app-color": HTMLAppColorElement;
         "app-color-chart": HTMLAppColorChartElement;
@@ -1442,6 +1451,8 @@ declare namespace LocalJSX {
     interface AppCode {
         "codeDidChange"?: EventEmitter<HTMLElement>;
         "selectedElement"?: HTMLElement;
+    }
+    interface AppCodeEditor {
     }
     interface AppCodeLanguages {
         "codeDidChange"?: EventEmitter<HTMLElement>;
@@ -1849,6 +1860,7 @@ declare namespace LocalJSX {
         "app-close-menu": AppCloseMenu;
         "app-cloud-wait": AppCloudWait;
         "app-code": AppCode;
+        "app-code-editor": AppCodeEditor;
         "app-code-languages": AppCodeLanguages;
         "app-color": AppColor;
         "app-color-chart": AppColorChart;
@@ -1985,6 +1997,7 @@ declare module "@stencil/core" {
             "app-close-menu": LocalJSX.AppCloseMenu & JSXBase.HTMLAttributes<HTMLAppCloseMenuElement>;
             "app-cloud-wait": LocalJSX.AppCloudWait & JSXBase.HTMLAttributes<HTMLAppCloudWaitElement>;
             "app-code": LocalJSX.AppCode & JSXBase.HTMLAttributes<HTMLAppCodeElement>;
+            "app-code-editor": LocalJSX.AppCodeEditor & JSXBase.HTMLAttributes<HTMLAppCodeEditorElement>;
             "app-code-languages": LocalJSX.AppCodeLanguages & JSXBase.HTMLAttributes<HTMLAppCodeLanguagesElement>;
             "app-color": LocalJSX.AppColor & JSXBase.HTMLAttributes<HTMLAppColorElement>;
             "app-color-chart": LocalJSX.AppColorChart & JSXBase.HTMLAttributes<HTMLAppColorChartElement>;

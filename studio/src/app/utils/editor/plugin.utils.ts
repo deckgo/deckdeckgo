@@ -57,3 +57,21 @@ export const openPluginModal = async ({
 
   await modal.present();
 };
+
+export const openCodeModal = async ({pluginParams}: {pluginParams: StyloPluginCreateParagraphsParams}) => {
+  const modal: HTMLIonModalElement = await modalController.create({
+    component: 'app-code-editor'
+  });
+
+  modal.onDidDismiss().then(({data: unsplashImage}: OverlayEventDetail) => {
+    const {container, paragraph} = pluginParams;
+
+    createParagraphImage({
+      image: unsplashImage,
+      container,
+      paragraph
+    });
+  });
+
+  await modal.present();
+};

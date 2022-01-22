@@ -1,0 +1,77 @@
+import {Component, ComponentInterface, Element, Fragment, h, Listen} from '@stencil/core';
+
+import i18n from '../../../stores/i18n.store';
+
+import {AppIcon} from '../../../components/core/app-icon/app-icon';
+
+import '@deckdeckgo/monaco-editor';
+
+// @ts-ignore
+self.MonacoEnvironment = {
+  getWorkerUrl: function (_moduleId, label) {
+    if (label === 'json') {
+      return './build/json.worker.js';
+    }
+    if (label === 'css' || label === 'scss' || label === 'less') {
+      return './build/css.worker.js';
+    }
+    if (label === 'html' || label === 'handlebars' || label === 'razor') {
+      return './build/html.worker.js';
+    }
+    if (label === 'typescript' || label === 'javascript') {
+      return './build/ts.worker.js';
+    }
+    return './build/editor.worker.js';
+  }
+};
+
+@Component({
+  tag: 'app-code-editor',
+  styleUrl: 'app-code-editor.scss'
+})
+export class AppCodeEditor implements ComponentInterface {
+  @Element() el: HTMLElement;
+
+  componentDidLoad() {
+    history.pushState({modal: true}, null);
+  }
+
+  @Listen('popstate', {target: 'window'})
+  async handleHardwareBackButton(_e: PopStateEvent) {
+    await this.closeModal();
+  }
+
+  private async closeModal() {
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <ion-header>
+          <ion-toolbar color="dark">
+            <ion-buttons slot="start">
+              <ion-button onClick={async () => await this.closeModal()} aria-label={i18n.state.core.close}>
+                <AppIcon name="close" ariaHidden={true} ariaLabel=""></AppIcon>
+              </ion-button>
+            </ion-buttons>
+            <ion-title class="ion-text-uppercase">{i18n.state.editor.code}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding">
+          <deckgo-monaco-editor></deckgo-monaco-editor>
+        </ion-content>
+        <ion-footer>
+          <ion-toolbar>
+            <div class="ion-padding-bottom">
+              <ion-button color="dark" shape="round">
+                <ion-label>{i18n.state.core.save}</ion-label>
+              </ion-button>
+            </div>
+          </ion-toolbar>
+        </ion-footer>
+      </Fragment>
+    );
+  }
+}

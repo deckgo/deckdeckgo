@@ -1,0 +1,11 @@
+@import "~monaco-editor/min/vs/editor/editor.main.css";
+
+:host {
+  --editor-width: 100%;
+  --editor-height: 100%;
+}
+
+main {
+  width: var(--editor-width);
+  height: var(--editor-height);
+}

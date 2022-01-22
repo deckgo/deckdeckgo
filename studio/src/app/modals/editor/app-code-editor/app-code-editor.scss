@@ -1,0 +1,9 @@
+app-code-editor {
+  @import "../../../../global/theme/editor/editor-modal";
+
+  deckgo-monaco-editor {
+    border: 1px solid #dedede;
+    display: block;
+    height: 100%;
+  }
+}

@@ -33,6 +33,7 @@
     "@deckdeckgo/lazy-img": "^3.2.0",
     "@deckdeckgo/markdown": "^2.1.0",
     "@deckdeckgo/math": "^2.1.0",
+    "@deckdeckgo/monaco-editor": "file:../webcomponents/monaco-editor",
     "@deckdeckgo/remote": "^2.2.0",
     "@deckdeckgo/slide-aspect-ratio": "^3.4.0",
     "@deckdeckgo/slide-author": "^2.4.0",
