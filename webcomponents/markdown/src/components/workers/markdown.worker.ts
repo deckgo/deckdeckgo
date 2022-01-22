@@ -13,7 +13,9 @@ export const parseMarkdown = async (options: ParseMarkdownOptions) => {
   changeCodeCreation(renderer, options.code);
   changeImgCreation(renderer);
 
-  return marked(options.mdText, {
+  marked.use({renderer});
+
+  return marked.parse(options.mdText, {
     renderer,
     xhtml: true
   });
