@@ -13,8 +13,8 @@ export const attachHighlightObserver = ({
 
   if (window && 'ResizeObserver' in window) {
     // @ts-ignore
-    const observer: ResizeObserver = new ResizeObserver(async (_entries) => {
-      await addHighlight({refCode, highlightLines});
+    const observer: ResizeObserver = new ResizeObserver((_entries) => {
+      addHighlight({refCode, highlightLines});
 
       observer.disconnect();
     });
@@ -22,18 +22,18 @@ export const attachHighlightObserver = ({
     observer.observe(refContainer);
   } else {
     // Back in my days...
-    setTimeout(async () => {
-      await addHighlight({refCode, highlightLines});
+    setTimeout(() => {
+      addHighlight({refCode, highlightLines});
     }, 100);
   }
 };
 
-const addHighlight = async ({highlightLines, refCode}: {highlightLines: string | undefined; refCode: HTMLElement}): Promise<void> => {
+const addHighlight = ({highlightLines, refCode}: {highlightLines: string | undefined; refCode: HTMLElement}) => {
   if (!refCode.hasChildNodes()) {
     return;
   }
 
-  const {rows, rowsGroup}: {rows: number[]; rowsGroup: Record<string, number>} = await findRowsToHighlight({highlightLines});
+  const {rows, rowsGroup}: {rows: number[]; rowsGroup: Record<string, number>} = findRowsToHighlight({highlightLines});
 
   if (rows.length <= 0) {
     return;
@@ -61,11 +61,11 @@ const addHighlight = async ({highlightLines, refCode}: {highlightLines: string |
   refCode.classList.add('animate');
 };
 
-const findRowsToHighlight = async ({
+const findRowsToHighlight = ({
   highlightLines
 }: {
   highlightLines: string | undefined;
-}): Promise<{rows: number[]; rowsGroup: Record<string, number>}> => {
+}): {rows: number[]; rowsGroup: Record<string, number>} => {
   const groups: string[] = highlightLines.split(' ');
 
   if (!groups || groups.length <= 0) {

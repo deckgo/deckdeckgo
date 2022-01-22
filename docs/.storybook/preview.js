@@ -13,11 +13,9 @@ export const parameters = {
         ['Templates', 'Title', 'Content', 'Split', 'Poll', 'Aspect Ratio', 'GIF', 'Chart', 'Youtube', 'Author', 'QR Code', 'Playground'],
         'Components',
         [
-          'Color',
           'Demo',
           'Drag Resize Rotate',
           'Highlight Code',
-          'Inline Editor',
           'Laser Pointer',
           'Lazy Image',
           'Math',

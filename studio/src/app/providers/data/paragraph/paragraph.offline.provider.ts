@@ -1,16 +1,20 @@
 import {set, get, del} from 'idb-keyval';
 
-import {v4 as uuid} from 'uuid';
-
 import {Paragraph, ParagraphData} from '@deckdeckgo/editor';
 
 import {syncDeleteParagraph, syncUpdateParagraph} from '../../../utils/editor/sync.utils';
 
-export const createOfflineParagraph = ({docId, paragraphData}: {docId: string; paragraphData: ParagraphData}): Promise<Paragraph> => {
+export const createOfflineParagraph = ({
+  docId,
+  paragraphData,
+  paragraphId
+}: {
+  docId: string;
+  paragraphData: ParagraphData;
+  paragraphId: string;
+}): Promise<Paragraph> => {
   return new Promise<Paragraph>(async (resolve, reject) => {
     try {
-      const paragraphId: string = uuid();
-
       const now: Date = new Date();
 
       const paragraph: Paragraph = {

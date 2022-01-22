@@ -7,12 +7,10 @@ setupConfig({
 
 import '@deckdeckgo/core';
 
-import '@deckdeckgo/inline-editor';
 import '@deckdeckgo/remote';
 import '@deckdeckgo/highlight-code';
 import '@deckdeckgo/math';
 import '@deckdeckgo/lazy-img';
-import '@deckdeckgo/color';
 import '@deckdeckgo/charts';
 import '@deckdeckgo/drag-resize-rotate';
 import '@deckdeckgo/word-cloud';
@@ -32,6 +30,8 @@ import '@deckdeckgo/slide-chart';
 import '@deckdeckgo/slide-poll';
 import '@deckdeckgo/slide-aspect-ratio';
 import '@deckdeckgo/slide-playground';
+
+import '@deckdeckgo/stylo';
 
 import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
 

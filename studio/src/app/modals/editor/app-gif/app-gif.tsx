@@ -38,6 +38,8 @@ export class AppGif {
   @State()
   private searching: boolean = false;
 
+  private input: HTMLIonSearchbarElement | undefined;
+
   constructor() {
     this.tenorProvider = TenorProvider.getInstance();
     this.imageHistoryService = ImageHistoryService.getInstance();
@@ -47,6 +49,8 @@ export class AppGif {
     history.pushState({modal: true}, null);
 
     await this.fetchCategories();
+
+    setTimeout(async () => await this.input?.setFocus(), 500);
   }
 
   @Listen('popstate', {target: 'window'})
@@ -193,6 +197,7 @@ export class AppGif {
             <ion-searchbar
               debounce={500}
               placeholder={i18n.state.editor.search_tenor}
+              ref={(el) => (this.input = el as HTMLIonSearchbarElement)}
               value={this.searchTerm}
               onIonClear={() => this.clear()}
               onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleInput($event)}

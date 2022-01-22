@@ -1,4 +1,4 @@
-import {DeckdeckgoPalette, DeckdeckgoPaletteColor} from '@deckdeckgo/color';
+import {StyloPalette, StyloPaletteColor} from '@deckdeckgo/stylo';
 
 import colorStore from '../../stores/color.store';
 
@@ -59,11 +59,19 @@ export class ColorUtils {
     return colorOpacity === 0 ? 0 : colorOpacity / 100;
   }
 
-  static updateColor(color: DeckdeckgoPaletteColor) {
-    const filteredHistory: DeckdeckgoPalette[] = colorStore.state.history.filter(
-      (palette: DeckdeckgoPalette) => palette.color.hex?.toLowerCase() !== color.hex?.toLowerCase()
+  static updateColor(color: StyloPaletteColor) {
+    const exist: StyloPalette | undefined = colorStore.state.history.find(
+      (palette: StyloPalette) => palette.color.hex?.toLowerCase() === color.hex?.toLowerCase()
     );
 
-    colorStore.state.history = [{color}, ...(filteredHistory.length < 22 ? filteredHistory : filteredHistory.slice(0, 21))];
+    if (exist) {
+      return;
+    }
+
+    const updatedHistory: StyloPalette[] = colorStore.state.history.filter(
+      (palette: StyloPalette) => palette.color.hex?.toLowerCase() !== color.hex?.toLowerCase()
+    );
+
+    colorStore.state.history = [{color}, ...(updatedHistory.length < 22 ? updatedHistory : updatedHistory.slice(0, 21))];
   }
 }

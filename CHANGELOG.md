@@ -6,6 +6,11 @@
 
 - firebase: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))
 
+### Web Components: Deprecated and integrated into `stylo`
+
+- color
+- inline-editor
+
 ### Others
 
 - utils: v4.10.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))

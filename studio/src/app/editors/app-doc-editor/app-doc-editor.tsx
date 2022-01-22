@@ -1,17 +1,19 @@
-import {Component, ComponentInterface, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
+import {Component, ComponentInterface, Element, Fragment, h, JSX, Listen, Method, State} from '@stencil/core';
 
 import {v4 as uuid} from 'uuid';
 
 import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
+import {StyloConfig, h1, h2, h3, ul, StyloPaletteColor} from '@deckdeckgo/stylo';
 
-import colorStore from '../../stores/color.store';
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
 import undoRedoStore from '../../stores/undo-redo.store';
 import errorStore from '../../stores/error.store';
 import authStore from '../../stores/auth.store';
+import colorStore from '../../stores/color.store';
+import i18n from '../../stores/i18n.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
@@ -19,10 +21,7 @@ import {SlotType} from '../../types/editor/slot-type';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
 import {DocDataEvents} from '../../events/editor/doc/doc.data.events';
-import {DocEditorEvents} from '../../events/editor/editor/doc.editor.events';
-import {DocUndoRedoEvents} from '../../events/editor/doc/doc.undo-redo.events';
 import {DocImageEvents} from '../../events/editor/doc/doc.image.events';
-import {DocInputEvents} from '../../events/editor/doc/doc.input.events';
 
 import {ParagraphHelper} from '../../helpers/editor/paragraphHelper';
 
@@ -30,37 +29,54 @@ import {getEdit} from '../../utils/editor/editor.utils';
 import {printDoc} from '../../utils/editor/print.utils';
 import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
+import {ColorUtils} from '../../utils/editor/color.utils';
 
-import {AppActionsDocEditor} from '../../components/editor/doc/app-actions-doc-editor/app-actions-doc-editor';
+import {imgStorage} from '../../plugins/img.storage.plugin';
+import {imgUnsplash} from '../../plugins/img.unsplash.plugin';
+import {imgGif} from '../../plugins/img.gif.plugin';
+import {hr} from '../../plugins/hr.plugin';
+import {code} from '../../plugins/code.plugin';
 
 @Component({
   tag: 'app-doc-editor',
   styleUrl: 'app-doc-editor.scss'
 })
 export class AppDocEditor implements ComponentInterface {
+  @Element()
+  private el: HTMLElement;
+
   @State()
   private paragraphs: JSX.IntrinsicElements[] = [];
+
+  @State()
+  private editorConfig: Partial<StyloConfig> = {
+    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr],
+    events: {
+      updateCustomEvents: ['markdownDidChange', 'wordCloudDidChange', 'codeDidChange', 'mathDidChange', 'imgDidChange']
+    }
+  };
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
   private readonly docDataEvents: DocDataEvents = new DocDataEvents();
-  private readonly docUndoRedoEvents: DocUndoRedoEvents = new DocUndoRedoEvents();
   private readonly docImageEvents: DocImageEvents = new DocImageEvents();
-  private readonly docEditorEvents: DocEditorEvents = new DocEditorEvents();
-  private readonly docInputEvents: DocInputEvents = new DocInputEvents();
 
   private readonly paragraphHelper: ParagraphHelper = new ParagraphHelper();
 
   private containerRef!: HTMLElement;
+  private styleEditorRef!: HTMLStyloEditorElement;
 
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
+
+  componentWillLoad() {
+    this.updateEditorToolbarConfig();
+  }
 
   async componentDidLoad() {
     this.imageEvents.init();
     this.chartEvents.init();
 
-    this.docEditorEvents.init(this.containerRef);
     this.docImageEvents.init(this.containerRef);
 
     await this.initOrFetch();
@@ -72,8 +88,6 @@ export class AppDocEditor implements ComponentInterface {
 
     this.docImageEvents.destroy();
 
-    this.docEditorEvents.destroy();
-
     this.destroy();
   }
 
@@ -82,8 +96,6 @@ export class AppDocEditor implements ComponentInterface {
    */
   private destroy() {
     this.docDataEvents.destroy();
-    this.docUndoRedoEvents.destroy();
-    this.docInputEvents.destroy();
 
     editorStore.reset();
     undoRedoStore.reset();
@@ -116,6 +128,24 @@ export class AppDocEditor implements ComponentInterface {
     if (key === 'p' && (ctrlKey || metaKey)) {
       this.print($event);
     }
+  }
+
+  @Listen('colorChange', {target: 'document', passive: true})
+  onColorChange({detail}: CustomEvent<StyloPaletteColor>) {
+    ColorUtils.updateColor(detail);
+
+    this.updateEditorToolbarConfig();
+  }
+
+  private updateEditorToolbarConfig() {
+    this.editorConfig = {
+      ...this.editorConfig,
+      lang: i18n.state.lang,
+      toolbar: {palette: colorStore.state.history.slice(0, 11)},
+      events: {
+        updateCustomEvents: ['markdownDidChange', 'wordCloudDidChange', 'codeDidChange', 'mathDidChange', 'imgDidChange']
+      }
+    };
   }
 
   private print($event: KeyboardEvent) {
@@ -156,9 +186,10 @@ export class AppDocEditor implements ComponentInterface {
     const editor: Editor | undefined = await getEdit();
     const docId: string | undefined = editor?.id;
 
-    this.initDocEvents(!docId);
+    this.initDocDataEvents(!docId);
     this.initEditable();
     this.initFocus();
+    this.initContainerRef();
 
     if (!docId) {
       await this.initDoc();
@@ -197,35 +228,36 @@ export class AppDocEditor implements ComponentInterface {
     this.containerRef.innerHTML = '';
   }
 
-  private initDocEvents(init: boolean) {
-    this.initDocDataEvents(init);
-    this.initDocUndoRedoEvents();
-  }
+  // If we init, we observe the default elements. When rendered, we simulate
+  private initDocDataEvents(init: boolean) {
+    this.docDataEvents.init();
 
-  // We init the undo redo oberserver only once rendered as we do not want to add the default title and div to the stack
-  private initDocUndoRedoEvents() {
-    const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
+    if (!init) {
+      return;
+    }
+
+    const onRender = (mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
-      this.docUndoRedoEvents.init(this.containerRef);
-      this.docInputEvents.init(this.containerRef);
+      const addedParagraphs: Node[] = mutations
+        .filter(({addedNodes}: MutationRecord) => addedNodes?.length > 0)
+        .reduce((acc: Node[], {addedNodes}: MutationRecord) => [...acc, ...Array.from(addedNodes)], []);
+
+      // Same event as in stylo
+      const $event: CustomEvent<Node[]> = new CustomEvent<Node[]>('addParagraphs', {detail: addedParagraphs, bubbles: true});
+      this.el.dispatchEvent($event);
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
     docObserver.observe(this.containerRef, {childList: true, subtree: true});
   }
 
-  // If we init, we observe before creating the default elements to persist these but, if we fetch, we observe for changes once everything is loaded
-  private initDocDataEvents(init: boolean) {
-    if (init) {
-      this.docDataEvents.init(this.containerRef);
-      return;
-    }
-
+  // Init only once the elements within the articles are rendered otherwise they will be added to the undo-redo stack
+  private initContainerRef() {
     const onRender = (_mutations: MutationRecord[], observer: MutationObserver) => {
       observer.disconnect();
 
-      this.docDataEvents.init(this.containerRef);
+      this.styleEditorRef.containerRef = this.containerRef;
     };
 
     const docObserver: MutationObserver = new MutationObserver(onRender);
@@ -268,20 +300,13 @@ export class AppDocEditor implements ComponentInterface {
               <article contentEditable={true} ref={(el) => (this.containerRef = el as HTMLElement)}>
                 {this.paragraphs}
               </article>
+
+              <stylo-editor ref={(el) => (this.styleEditorRef = el as HTMLStyloEditorElement)} config={this.editorConfig}></stylo-editor>
             </deckgo-doc>
 
-            <AppActionsDocEditor containerRef={this.containerRef}></AppActionsDocEditor>
+            <app-doc-indicator></app-doc-indicator>
           </main>
         </ion-content>
-
-        <deckgo-inline-editor
-          containers="article"
-          sticky-mobile="true"
-          img-anchor="deckgo-lazy-img"
-          list={false}
-          palette={colorStore.state.history}
-          align={true}
-          fontSize={true}></deckgo-inline-editor>
       </Fragment>
     );
   }

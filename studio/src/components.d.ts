@@ -62,9 +62,6 @@ export namespace Components {
         "touch": (element: HTMLElement | undefined, autoOpen?: boolean) => Promise<void>;
         "unSelect": () => Promise<void>;
     }
-    interface AppAddParagraph {
-        "containerRef": HTMLElement | undefined;
-    }
     interface AppAssetData {
         "data": StorageFile;
     }
@@ -415,9 +412,6 @@ export namespace Components {
     interface AppTransformElement {
         "selectedElement": HTMLElement;
     }
-    interface AppTransformParagraph {
-        "containerRef": HTMLElement | undefined;
-    }
     interface AppTransformSlide {
         "selectedElement": HTMLElement;
     }
@@ -487,12 +481,6 @@ declare global {
     var HTMLAppActionsElementElement: {
         prototype: HTMLAppActionsElementElement;
         new (): HTMLAppActionsElementElement;
-    };
-    interface HTMLAppAddParagraphElement extends Components.AppAddParagraph, HTMLStencilElement {
-    }
-    var HTMLAppAddParagraphElement: {
-        prototype: HTMLAppAddParagraphElement;
-        new (): HTMLAppAddParagraphElement;
     };
     interface HTMLAppAssetDataElement extends Components.AppAssetData, HTMLStencilElement {
     }
@@ -1178,12 +1166,6 @@ declare global {
         prototype: HTMLAppTransformElementElement;
         new (): HTMLAppTransformElementElement;
     };
-    interface HTMLAppTransformParagraphElement extends Components.AppTransformParagraph, HTMLStencilElement {
-    }
-    var HTMLAppTransformParagraphElement: {
-        prototype: HTMLAppTransformParagraphElement;
-        new (): HTMLAppTransformParagraphElement;
-    };
     interface HTMLAppTransformSlideElement extends Components.AppTransformSlide, HTMLStencilElement {
     }
     var HTMLAppTransformSlideElement: {
@@ -1241,7 +1223,6 @@ declare global {
         "app-actions-deck": HTMLAppActionsDeckElement;
         "app-actions-deck-editor": HTMLAppActionsDeckEditorElement;
         "app-actions-element": HTMLAppActionsElementElement;
-        "app-add-paragraph": HTMLAppAddParagraphElement;
         "app-asset-data": HTMLAppAssetDataElement;
         "app-asset-image": HTMLAppAssetImageElement;
         "app-avatar": HTMLAppAvatarElement;
@@ -1356,7 +1337,6 @@ declare global {
         "app-templates-user": HTMLAppTemplatesUserElement;
         "app-text": HTMLAppTextElement;
         "app-transform-element": HTMLAppTransformElementElement;
-        "app-transform-paragraph": HTMLAppTransformParagraphElement;
         "app-transform-slide": HTMLAppTransformSlideElement;
         "app-unpublish": HTMLAppUnpublishElement;
         "app-unsplash": HTMLAppUnsplashElement;
@@ -1424,10 +1404,6 @@ declare namespace LocalJSX {
         "onSlideDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         "slideCopy"?: EventEmitter;
         "slideTransform"?: EventEmitter;
-    }
-    interface AppAddParagraph {
-        "containerRef"?: HTMLElement | undefined;
-        "onSelectParagraph"?: (event: CustomEvent<HTMLElement | undefined>) => void;
     }
     interface AppAssetData {
         "data": StorageFile;
@@ -1833,9 +1809,6 @@ declare namespace LocalJSX {
     interface AppTransformElement {
         "selectedElement"?: HTMLElement;
     }
-    interface AppTransformParagraph {
-        "containerRef"?: HTMLElement | undefined;
-    }
     interface AppTransformSlide {
         "selectedElement"?: HTMLElement;
     }
@@ -1865,7 +1838,6 @@ declare namespace LocalJSX {
         "app-actions-deck": AppActionsDeck;
         "app-actions-deck-editor": AppActionsDeckEditor;
         "app-actions-element": AppActionsElement;
-        "app-add-paragraph": AppAddParagraph;
         "app-asset-data": AppAssetData;
         "app-asset-image": AppAssetImage;
         "app-avatar": AppAvatar;
@@ -1980,7 +1952,6 @@ declare namespace LocalJSX {
         "app-templates-user": AppTemplatesUser;
         "app-text": AppText;
         "app-transform-element": AppTransformElement;
-        "app-transform-paragraph": AppTransformParagraph;
         "app-transform-slide": AppTransformSlide;
         "app-unpublish": AppUnpublish;
         "app-unsplash": AppUnsplash;
@@ -2003,7 +1974,6 @@ declare module "@stencil/core" {
             "app-actions-deck": LocalJSX.AppActionsDeck & JSXBase.HTMLAttributes<HTMLAppActionsDeckElement>;
             "app-actions-deck-editor": LocalJSX.AppActionsDeckEditor & JSXBase.HTMLAttributes<HTMLAppActionsDeckEditorElement>;
             "app-actions-element": LocalJSX.AppActionsElement & JSXBase.HTMLAttributes<HTMLAppActionsElementElement>;
-            "app-add-paragraph": LocalJSX.AppAddParagraph & JSXBase.HTMLAttributes<HTMLAppAddParagraphElement>;
             "app-asset-data": LocalJSX.AppAssetData & JSXBase.HTMLAttributes<HTMLAppAssetDataElement>;
             "app-asset-image": LocalJSX.AppAssetImage & JSXBase.HTMLAttributes<HTMLAppAssetImageElement>;
             "app-avatar": LocalJSX.AppAvatar & JSXBase.HTMLAttributes<HTMLAppAvatarElement>;
@@ -2118,7 +2088,6 @@ declare module "@stencil/core" {
             "app-templates-user": LocalJSX.AppTemplatesUser & JSXBase.HTMLAttributes<HTMLAppTemplatesUserElement>;
             "app-text": LocalJSX.AppText & JSXBase.HTMLAttributes<HTMLAppTextElement>;
             "app-transform-element": LocalJSX.AppTransformElement & JSXBase.HTMLAttributes<HTMLAppTransformElementElement>;
-            "app-transform-paragraph": LocalJSX.AppTransformParagraph & JSXBase.HTMLAttributes<HTMLAppTransformParagraphElement>;
             "app-transform-slide": LocalJSX.AppTransformSlide & JSXBase.HTMLAttributes<HTMLAppTransformSlideElement>;
             "app-unpublish": LocalJSX.AppUnpublish & JSXBase.HTMLAttributes<HTMLAppUnpublishElement>;
             "app-unsplash": LocalJSX.AppUnsplash & JSXBase.HTMLAttributes<HTMLAppUnsplashElement>;

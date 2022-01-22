@@ -16,6 +16,7 @@ import errorStore from '../../stores/error.store';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, SlideTemplate, elementIndex} from '@deckdeckgo/editor';
+import {StyloPaletteColor, StyloToolbar} from '@deckdeckgo/stylo';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
@@ -39,6 +40,7 @@ import {FontsService} from '../../services/editor/fonts/fonts.service';
 
 import {EnvironmentGoogleConfig} from '../../types/core/environment-config';
 import {cloud} from '../../utils/core/environment.utils';
+import {ColorUtils} from '../../utils/editor/color.utils';
 
 @Component({
   tag: 'app-deck-editor',
@@ -115,6 +117,16 @@ export class AppDeckEditor implements ComponentInterface {
   private mainResizeObserver: ResizeObserver;
   private slideResizeObserver: ResizeObserver;
 
+  @State()
+  private editorConfig: Partial<StyloToolbar> = {
+    actions: {
+      list: false,
+      align: false,
+      fontSize: false,
+      backgroundColor: true
+    }
+  };
+
   constructor() {
     this.fontsService = FontsService.getInstance();
   }
@@ -122,6 +134,8 @@ export class AppDeckEditor implements ComponentInterface {
   componentWillLoad() {
     this.imageEvents.init();
     this.chartEvents.init();
+
+    this.updateEditorToolbarConfig();
   }
 
   async componentDidLoad() {
@@ -149,6 +163,20 @@ export class AppDeckEditor implements ComponentInterface {
     await this.initOrFetch();
 
     this.fullscreen = isFullscreen() && !isMobile();
+  }
+
+  @Listen('colorChange', {target: 'document', passive: true})
+  onColorChange({detail}: CustomEvent<StyloPaletteColor>) {
+    ColorUtils.updateColor(detail);
+
+    this.updateEditorToolbarConfig();
+  }
+
+  private updateEditorToolbarConfig() {
+    this.editorConfig = {
+      ...this.editorConfig,
+      palette: colorStore.state.history.slice(0, 11)
+    };
   }
 
   @Method()
@@ -257,13 +285,13 @@ export class AppDeckEditor implements ComponentInterface {
       return;
     }
 
-    const inlineEditor: HTMLDeckgoInlineEditorElement = this.el.querySelector('deckgo-inline-editor');
+    const inlineEditor: HTMLStyloToolbarElement = this.el.querySelector('stylo-toolbar');
 
     if (!inlineEditor) {
       return;
     }
 
-    inlineEditor.attachTo = this.deckRef;
+    inlineEditor.containerRef = this.deckRef;
   }
 
   private async initSlide() {
@@ -788,6 +816,7 @@ export class AppDeckEditor implements ComponentInterface {
                 </deckgo-deck>
                 <deckgo-remote autoConnect={false}></deckgo-remote>
                 <app-slide-warning></app-slide-warning>
+                {this.renderInlineEditor()}
               </main>
             </div>
 
@@ -811,8 +840,7 @@ export class AppDeckEditor implements ComponentInterface {
         </div>
         {this.renderSlidePreview()}
         {this.renderLaserPointer()}
-      </ion-content>,
-      this.renderInlineEditor()
+      </ion-content>
     ];
   }
 
@@ -822,15 +850,9 @@ export class AppDeckEditor implements ComponentInterface {
 
   private renderInlineEditor() {
     return (
-      <deckgo-inline-editor
-        containers="h1,h2,h3,section,deckgo-reveal,deckgo-reveal-list,ol,ul"
-        sticky-mobile="true"
+      <stylo-toolbar
         onToolbarActivated={($event: CustomEvent<boolean>) => this.inlineEditorActivated($event)}
-        img-anchor="deckgo-lazy-img"
-        list={false}
-        palette={colorStore.state.history}
-        align={false}
-        fontSize={false}></deckgo-inline-editor>
+        config={this.editorConfig}></stylo-toolbar>
     );
   }
 

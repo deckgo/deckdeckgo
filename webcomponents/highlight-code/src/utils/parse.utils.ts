@@ -2,7 +2,7 @@ import Prism from 'prismjs';
 
 import {attachHighlightObserver} from './highlight.utils';
 
-export const parseCode = async ({
+export const parseCode = ({
   refContainer,
   refCode,
   code,
@@ -16,7 +16,7 @@ export const parseCode = async ({
   refCode: HTMLElement;
   highlightLines: string | undefined;
   language: string;
-}): Promise<void> => {
+}) => {
   if (!code || code === undefined || code === '') {
     return;
   }
