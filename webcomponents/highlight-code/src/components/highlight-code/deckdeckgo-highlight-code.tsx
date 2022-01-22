@@ -120,13 +120,13 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     await this.loadLanguages();
 
     if (languageWasLoaded) {
-      await this.parse();
+      this.parse();
     }
   }
 
-  async componentDidUpdate() {
+  componentDidUpdate() {
     if (this.parseAfterUpdate) {
-      await this.parse();
+      this.parse();
       this.parseAfterUpdate = false;
     }
   }
@@ -143,12 +143,12 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   }
 
   @Listen('prismLanguageLoaded', {target: 'document', passive: true})
-  async onLanguageLoaded({detail}: CustomEvent<string>) {
+  onLanguageLoaded({detail}: CustomEvent<string>) {
     if (this.language !== detail || this.loaded) {
       return;
     }
 
-    await this.parse();
+    this.parse();
 
     this.loaded = true;
   }
@@ -163,12 +163,12 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     this.prismLanguageLoaded.emit(this.language);
   }
 
-  private async parse() {
+  private parse() {
     if (!this.language || !deckdeckgoHighlightCodeLanguages[this.language]) {
       return;
     }
 
-    await this.parseSlottedCode();
+    this.parseSlottedCode();
   }
 
   private languageDidLoad(): boolean {
@@ -249,8 +249,8 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   }
 
   @Watch('lineNumbers')
-  async onLineNumbersChange() {
-    await this.parse();
+  onLineNumbersChange() {
+    this.parse();
   }
 
   @Watch('terminal')
@@ -264,41 +264,33 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
    * Load or reload the component
    */
   @Method()
-  load(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!this.language || this.language === '') {
-        resolve();
-        return;
-      }
-
-      if (this.language === 'javascript') {
-        await this.parse();
-        resolve();
-        return;
-      }
-
-      if (document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']")) {
-        await this.parse();
-      } else {
-        await this.loadLanguages();
-      }
-
-      resolve();
-    });
-  }
-
-  private parseSlottedCode(): Promise<void> {
-    const code: HTMLElement = this.el.querySelector("[slot='code']");
-
-    if (code) {
-      return parseCode({
-        ...this.parseCodeOptions(),
-        code: code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-      });
+  async load() {
+    if (!this.language || this.language === '') {
+      return;
     }
 
-    return new Promise<void>((resolve) => {
-      resolve();
+    if (this.language === 'javascript') {
+      this.parse();
+      return;
+    }
+
+    if (document.querySelector("[deckdeckgo-prism-loaded='" + this.language + "']")) {
+      this.parse();
+    } else {
+      await this.loadLanguages();
+    }
+  }
+
+  private parseSlottedCode() {
+    const code: HTMLElement = this.el.querySelector("[slot='code']");
+
+    if (!code) {
+      return;
+    }
+
+    parseCode({
+      ...this.parseCodeOptions(),
+      code: code?.innerHTML?.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
     });
   }
 
@@ -321,7 +313,7 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
 
     await this.copyCodeToSlot();
 
-    await this.parseSlottedCode();
+    this.parseSlottedCode();
 
     this.codeDidChange.emit(this.el);
   }
