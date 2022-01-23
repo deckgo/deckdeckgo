@@ -15,9 +15,10 @@
 
 - monaco-editor: v1.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/monaco-editor/CHANGELOG.md))
 
-### Web Componnents
+### Web Components
 
 - highlight-code: v4.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/highlight-code/CHANGELOG.md))
+- markdown: v2.1.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/webcomponents/markdown/CHANGELOG.md))
 
 ### Others
 
