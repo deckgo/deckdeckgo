@@ -1,3 +1,3 @@
 import * as monaco from 'monaco-editor';
 
-export interface MonacoEditorOptions extends monaco.editor.IStandaloneEditorConstructionOptions {}
+export interface MonacoEditorOptions extends Partial<monaco.editor.IStandaloneEditorConstructionOptions> {}

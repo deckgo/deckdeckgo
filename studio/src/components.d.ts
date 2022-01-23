@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EventEmitter, JSX } from "@stencil/core";
 import { SlideAttributes, SlideTemplate, StorageFile, Template, UnsplashPhoto } from "@deckdeckgo/editor";
 import { SelectedElement } from "./app/types/editor/selected-element";
+import { MonacoEditorOptions } from "@deckdeckgo/monaco-editor";
 import { PrismLanguage } from "./app/types/editor/prism-language";
 import { InitStyleColor } from "./app/utils/editor/color.utils";
 import { DeckOrDoc } from "./app/utils/core/dashboard.utils";
@@ -96,6 +97,7 @@ export namespace Components {
     }
     interface AppCodeEditor {
         "code": string;
+        "options": MonacoEditorOptions;
     }
     interface AppCodeLanguages {
         "codeDidChange": EventEmitter<HTMLElement>;
@@ -1455,6 +1457,7 @@ declare namespace LocalJSX {
     }
     interface AppCodeEditor {
         "code"?: string;
+        "options"?: MonacoEditorOptions;
     }
     interface AppCodeLanguages {
         "codeDidChange"?: EventEmitter<HTMLElement>;

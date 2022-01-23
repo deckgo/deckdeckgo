@@ -6,6 +6,8 @@ import {AppIcon} from '../../../components/core/app-icon/app-icon';
 
 import '@deckdeckgo/monaco-editor';
 
+import type {MonacoEditorOptions} from '@deckdeckgo/monaco-editor';
+
 // @ts-ignore
 self.MonacoEnvironment = {
   getWorkerUrl: function (_moduleId, label) {
@@ -34,6 +36,9 @@ export class AppCodeEditor implements ComponentInterface {
 
   @Prop()
   code: string;
+
+  @Prop()
+  options: MonacoEditorOptions;
 
   private codeEditor: HTMLDeckgoMonacoEditorElement | null;
 
@@ -75,7 +80,7 @@ export class AppCodeEditor implements ComponentInterface {
         </ion-header>
 
         <ion-content class="ion-padding">
-          <deckgo-monaco-editor ref={(el: HTMLDeckgoMonacoEditorElement | null) => (this.codeEditor = el)}>
+          <deckgo-monaco-editor ref={(el: HTMLDeckgoMonacoEditorElement | null) => (this.codeEditor = el)} options={this.options}>
             <code innerHTML={this.code}></code>
           </deckgo-monaco-editor>
         </ion-content>

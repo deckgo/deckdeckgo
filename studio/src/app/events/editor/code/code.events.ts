@@ -1,5 +1,7 @@
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
+import type {MonacoEditorOptions} from '@deckdeckgo/monaco-editor';
+
 export class CodeEvents {
   init() {
     document.addEventListener('editCode', this.onEditCode);
@@ -10,14 +12,23 @@ export class CodeEvents {
   }
 
   private onEditCode = async ({target}: CustomEvent<void>) => {
-    this.emitSnapshotParagraph(target as HTMLElement);
+    const highlightCodeElement: HTMLDeckgoHighlightCodeElement = target as HTMLDeckgoHighlightCodeElement;
 
-    const code: HTMLElement | null = (target as HTMLElement).querySelector(':scope > code');
+    this.emitSnapshotParagraph(highlightCodeElement);
+
+    const code: HTMLElement | null = highlightCodeElement.querySelector(':scope > code');
+
+    const language: string | null = highlightCodeElement.getAttribute('language');
+
+    const options: MonacoEditorOptions = {
+      ...(language !== null && language !== '' && {language})
+    };
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-code-editor',
       componentProps: {
-        code: code?.innerHTML || ''
+        code: code?.innerHTML || '',
+        options
       }
     });
 
@@ -35,14 +46,14 @@ export class CodeEvents {
         slot.setAttribute('slot', 'code');
         slot.innerHTML = innerHTML;
 
-        (target as HTMLElement).append(slot);
+        highlightCodeElement.append(slot);
       } else {
         code.innerHTML = innerHTML;
       }
 
-      await (target as HTMLDeckgoHighlightCodeElement).load();
+      await highlightCodeElement.load();
 
-      this.emitCodeDidChange(target as HTMLElement);
+      this.emitCodeDidChange(highlightCodeElement);
     });
 
     await modal.present();
