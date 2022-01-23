@@ -10,9 +10,9 @@ import {injectRequiredJS, loadMainScript, StateRequiredJS} from '../../utils/inj
 import {CarbonThemeStyle} from '../styles/carbon-theme.style';
 import {HighlightStyle} from '../styles/highlight.style';
 
-import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
-import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
-import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/carbon-theme';
+import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/terminal';
+import {deckdeckgoHighlightCodeLanguages} from '../../declarations/languages';
 
 /**
  * @slot code - A `<code/>` element to highlight
@@ -20,10 +20,10 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
  */
 @Component({
   tag: 'deckgo-highlight-code',
-  styleUrl: 'deckdeckgo-highlight-code.scss',
+  styleUrl: 'highlight-code.scss',
   shadow: true
 })
-export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
+export class HighlightCode implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
 
   /**

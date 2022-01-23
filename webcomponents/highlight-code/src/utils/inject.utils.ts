@@ -1,6 +1,6 @@
 import {EventEmitter} from '@stencil/core';
 
-import {deckdeckgoHighlightCodeLanguages} from '../declarations/deckdeckgo-highlight-code-languages';
+import {deckdeckgoHighlightCodeLanguages} from '../declarations/languages';
 
 export type StateRequiredJS = 'loaded' | 'attached' | 'error' | 'abort';
 

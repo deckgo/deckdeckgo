@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoHighlightCodeTerminal } from "./declarations/deckdeckgo-highlight-code-terminal";
-import { DeckdeckgoHighlightCodeCarbonTheme } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
+import { DeckdeckgoHighlightCodeTerminal } from "./declarations/terminal";
+import { DeckdeckgoHighlightCodeCarbonTheme } from "./declarations/carbon-theme";
 export namespace Components {
     interface DeckgoHighlightCode {
         /**

@@ -1,6 +1,6 @@
 export * from './components';
 
-export * from './declarations/deckdeckgo-highlight-code-terminal';
-export * from './declarations/deckdeckgo-highlight-code-carbon-theme';
+export * from './declarations/terminal';
+export * from './declarations/carbon-theme';
 
-export * from './declarations/deckdeckgo-highlight-code-languages';
+export * from './declarations/languages';

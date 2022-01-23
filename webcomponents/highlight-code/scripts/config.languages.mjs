@@ -74,7 +74,7 @@ function getLanguageRequire(language) {
 
     export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages = ${JSON.stringify(filteredLanguages)}`;
 
-    writeFile(`./src/declarations/deckdeckgo-highlight-code-languages.tsx`, languagesEnum, 'utf8', (err) => {
+    writeFile(`./src/declarations/languages.ts`, languagesEnum, 'utf8', (err) => {
       if (err) return console.log(err);
     });
   } catch (e) {

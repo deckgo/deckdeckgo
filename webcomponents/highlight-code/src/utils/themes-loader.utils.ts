@@ -1,4 +1,4 @@
-import {DeckdeckgoHighlightCodeCarbonTheme} from '../declarations/deckdeckgo-highlight-code-carbon-theme';
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../declarations/carbon-theme';
 
 export function loadTheme(theme: DeckdeckgoHighlightCodeCarbonTheme | undefined): Promise<{theme} | undefined> {
   if (!theme || theme === undefined) {
