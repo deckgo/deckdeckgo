@@ -95,6 +95,7 @@ export namespace Components {
         "selectedElement": HTMLElement;
     }
     interface AppCodeEditor {
+        "code": string;
     }
     interface AppCodeLanguages {
         "codeDidChange": EventEmitter<HTMLElement>;
@@ -1453,6 +1454,7 @@ declare namespace LocalJSX {
         "selectedElement"?: HTMLElement;
     }
     interface AppCodeEditor {
+        "code"?: string;
     }
     interface AppCodeLanguages {
         "codeDidChange"?: EventEmitter<HTMLElement>;

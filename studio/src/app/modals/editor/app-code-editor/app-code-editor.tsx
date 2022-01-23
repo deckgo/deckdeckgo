@@ -1,4 +1,4 @@
-import {Component, ComponentInterface, Element, Fragment, h, Listen} from '@stencil/core';
+import {Component, ComponentInterface, Element, Fragment, h, Listen, Prop} from '@stencil/core';
 
 import i18n from '../../../stores/i18n.store';
 
@@ -31,6 +31,9 @@ self.MonacoEnvironment = {
 })
 export class AppCodeEditor implements ComponentInterface {
   @Element() el: HTMLElement;
+
+  @Prop()
+  code: string;
 
   private codeEditor: HTMLDeckgoMonacoEditorElement | null;
 
@@ -72,7 +75,9 @@ export class AppCodeEditor implements ComponentInterface {
         </ion-header>
 
         <ion-content class="ion-padding">
-          <deckgo-monaco-editor ref={(el: HTMLDeckgoMonacoEditorElement | null) => (this.codeEditor = el)}></deckgo-monaco-editor>
+          <deckgo-monaco-editor ref={(el: HTMLDeckgoMonacoEditorElement | null) => (this.codeEditor = el)}>
+            <code innerHTML={this.code}></code>
+          </deckgo-monaco-editor>
         </ion-content>
         <ion-footer>
           <ion-toolbar>

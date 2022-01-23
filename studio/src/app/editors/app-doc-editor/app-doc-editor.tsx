@@ -2,7 +2,7 @@ import {Component, ComponentInterface, Element, Fragment, h, JSX, Listen, Method
 
 import {v4 as uuid} from 'uuid';
 
-import {modalController} from '@ionic/core';
+import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
 import {StyloConfig, h1, h2, h3, ul, StyloPaletteColor} from '@deckdeckgo/stylo';
@@ -116,6 +116,42 @@ export class AppDocEditor implements ComponentInterface {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-publish',
       cssClass: 'fullscreen'
+    });
+
+    await modal.present();
+  }
+
+  @Listen('editCode', {target: 'document'})
+  async onEditCode({target}: CustomEvent<void>) {
+    const code: HTMLElement | null = (target as HTMLElement).querySelector(':scope > code');
+
+    const modal: HTMLIonModalElement = await modalController.create({
+      component: 'app-code-editor',
+      componentProps: {
+        code: code?.innerHTML || ''
+      }
+    });
+
+    modal.onDidDismiss().then(async ({data}: OverlayEventDetail) => {
+      if (!data) {
+        // User aborted edition
+        return;
+      }
+
+      const {code: innerHTML} = data || {code: '\u200B'};
+
+      if (!code) {
+        // Should not happen, decgo-highlight-code are always create with a predefined even empty code slot
+        const slot: HTMLElement = document.createElement('code');
+        slot.setAttribute('slot', 'code');
+        slot.innerHTML = innerHTML;
+
+        (target as HTMLElement).append(slot);
+      } else {
+        code.innerHTML = innerHTML;
+      }
+
+      await (target as HTMLDeckgoHighlightCodeElement).load();
     });
 
     await modal.present();
