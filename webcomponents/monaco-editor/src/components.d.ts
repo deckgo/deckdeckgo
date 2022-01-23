@@ -5,9 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { MonacoEditorOptions } from "./types/options";
 export namespace Components {
     interface DeckgoMonacoEditor {
-        "save": () => Promise<string>;
+        "options": MonacoEditorOptions;
+        "save": () => Promise<string | undefined>;
     }
 }
 declare global {
@@ -23,6 +25,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoMonacoEditor {
+        "options"?: MonacoEditorOptions;
     }
     interface IntrinsicElements {
         "deckgo-monaco-editor": DeckgoMonacoEditor;

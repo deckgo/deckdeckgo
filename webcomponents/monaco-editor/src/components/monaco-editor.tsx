@@ -1,6 +1,8 @@
-import {Component, Element, h, ComponentInterface, Host, Method} from '@stencil/core';
+import {Component, h, ComponentInterface, Host, Method, Prop, Element} from '@stencil/core';
 
 import * as monaco from 'monaco-editor';
+
+import {MonacoEditorOptions} from '../types/options';
 
 @Component({
   tag: 'deckgo-monaco-editor',
@@ -11,24 +13,34 @@ export class MonacoEditor implements ComponentInterface {
   @Element()
   private el: HTMLElement;
 
+  @Prop()
+  options: MonacoEditorOptions;
+
   private editor?: monaco.editor.IStandaloneCodeEditor;
 
+  private div!: HTMLDivElement;
+
+  private readonly defaultOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
+    language: 'javascript',
+
+    scrollBeyondLastLine: false,
+    readOnly: false,
+    theme: 'vs-light',
+
+    minimap: {
+      enabled: false
+    },
+
+    automaticLayout: true
+  };
+
   async componentDidLoad() {
-    const div = this.el.shadowRoot.querySelector('main');
+    const slottedCode: HTMLElement = this.el.querySelector(':scope > *:first-of-type');
 
-    this.editor = monaco.editor.create(div, {
-      value: "// First line\nfunction hello() {\n\talert('Hello world!');\n}\n// Last line",
-      language: 'javascript',
-
-      scrollBeyondLastLine: false,
-      readOnly: false,
-      theme: 'vs-light',
-
-      minimap: {
-        enabled: false
-      },
-
-      automaticLayout: true
+    this.editor = monaco.editor.create(this.div, {
+      value: slottedCode?.innerHTML.trim() || '',
+      ...this.defaultOptions,
+      ...(this.options || {})
     });
   }
 
@@ -37,14 +49,14 @@ export class MonacoEditor implements ComponentInterface {
   }
 
   @Method()
-  async save(): Promise<string> {
+  async save(): Promise<string | undefined> {
     return this.editor?.getValue();
   }
 
   render() {
     return (
       <Host>
-        <main></main>
+        <article ref={(el) => (this.div = el as HTMLDivElement)}></article>
       </Host>
     );
   }
