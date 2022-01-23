@@ -1,3 +1,13 @@
+# 4.0.0 (2022-01-23)
+
+### Breaking Changes
+
+- component does **not** support an `editable` mode anymore. Instead, if `editable` is set to `true`, it will only display an "edit" button above (bottom + right) the code. If the button is triggered, an event `editCode` will be emitted. Edition itself has to be implemented by the consumer.
+
+### Style
+
+- lighter `box-shadow` default for host
+
 # 3.6.0 (2021-12-01)
 
 ### Fix
