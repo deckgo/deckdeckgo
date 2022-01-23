@@ -2,7 +2,12 @@
 
 ### Breaking Changes
 
-- component does **not** support an `editable` mode anymore. Instead, if `editable` is set to `true`, it will only display an "edit" button above (bottom + right) the code. If the button is triggered, an event `editCode` will be emitted. Edition itself has to be implemented by the consumer.
+- component does **not** support an `editable` mode anymore
+
+i.e. setting the property `editable` to `true` won't turn the shadowed `code` as `contenteditable` anymore!
+
+Instead, if `editable` is set to `true`, it will only display an "edit" button above (bottom + right) the code.
+If the button is triggered, an event `editCode` will be emitted. Edition itself has to be implemented by the consumer.
 
 ### Style
 
