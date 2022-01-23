@@ -51,10 +51,7 @@ export class AppDocEditor implements ComponentInterface {
 
   @State()
   private editorConfig: Partial<StyloConfig> = {
-    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr],
-    events: {
-      updateCustomEvents: ['markdownDidChange', 'wordCloudDidChange', 'codeDidChange', 'mathDidChange', 'imgDidChange']
-    }
+    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr]
   };
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
@@ -145,10 +142,7 @@ export class AppDocEditor implements ComponentInterface {
     this.editorConfig = {
       ...this.editorConfig,
       lang: i18n.state.lang,
-      toolbar: {palette: colorStore.state.history.slice(0, 11)},
-      events: {
-        updateCustomEvents: ['markdownDidChange', 'wordCloudDidChange', 'codeDidChange', 'mathDidChange', 'imgDidChange']
-      }
+      toolbar: {palette: colorStore.state.history.slice(0, 11)}
     };
   }
 

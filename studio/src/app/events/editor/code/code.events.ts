@@ -10,6 +10,8 @@ export class CodeEvents {
   }
 
   private onEditCode = async ({target}: CustomEvent<void>) => {
+    this.emitSnapshotParagraph(target as HTMLElement);
+
     const code: HTMLElement | null = (target as HTMLElement).querySelector(':scope > code');
 
     const modal: HTMLIonModalElement = await modalController.create({
@@ -48,6 +50,16 @@ export class CodeEvents {
 
   private emitCodeDidChange(target: HTMLElement) {
     const didUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('codeDidChange', {
+      bubbles: true,
+      detail: target
+    });
+
+    target.dispatchEvent(didUpdate);
+  }
+
+  // Copy current paragraph for undo-redo "update" in case of changes
+  private emitSnapshotParagraph(target: HTMLElement) {
+    const didUpdate: CustomEvent<HTMLElement> = new CustomEvent<HTMLElement>('snapshotParagraph', {
       bubbles: true,
       detail: target
     });
