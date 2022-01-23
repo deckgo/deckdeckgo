@@ -43,6 +43,11 @@ export class AppCodeEditor implements ComponentInterface {
     await this.closeModal();
   }
 
+  @Listen('editorDidLoad')
+  onEditorDidLoad() {
+    setTimeout(async () => await this.codeEditor?.setFocus(), 500);
+  }
+
   private async closeModal(data?: {code: string}) {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(data);
   }

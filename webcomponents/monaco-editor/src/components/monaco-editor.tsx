@@ -1,4 +1,4 @@
-import {Component, h, ComponentInterface, Host, Method, Prop, Element} from '@stencil/core';
+import {Component, h, ComponentInterface, Host, Method, Prop, Element, EventEmitter, Event} from '@stencil/core';
 
 import * as monaco from 'monaco-editor';
 
@@ -15,6 +15,9 @@ export class MonacoEditor implements ComponentInterface {
 
   @Prop()
   options: MonacoEditorOptions;
+
+  @Event()
+  editorDidLoad: EventEmitter<void>;
 
   private editor?: monaco.editor.IStandaloneCodeEditor;
 
@@ -34,7 +37,7 @@ export class MonacoEditor implements ComponentInterface {
     automaticLayout: true
   };
 
-  async componentDidLoad() {
+  componentDidLoad() {
     const slottedCode: HTMLElement = this.el.querySelector(':scope > *:first-of-type');
 
     this.editor = monaco.editor.create(this.div, {
@@ -42,10 +45,17 @@ export class MonacoEditor implements ComponentInterface {
       ...this.defaultOptions,
       ...(this.options || {})
     });
+
+    this.editorDidLoad.emit();
   }
 
   disconnectedCallback() {
     this.editor?.dispose();
+  }
+
+  @Method()
+  async setFocus() {
+    this.editor?.focus();
   }
 
   @Method()

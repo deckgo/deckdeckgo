@@ -10,6 +10,7 @@ export namespace Components {
     interface DeckgoMonacoEditor {
         "options": MonacoEditorOptions;
         "save": () => Promise<string | undefined>;
+        "setFocus": () => Promise<void>;
     }
 }
 declare global {
@@ -25,6 +26,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DeckgoMonacoEditor {
+        "onEditorDidLoad"?: (event: CustomEvent<void>) => void;
         "options"?: MonacoEditorOptions;
     }
     interface IntrinsicElements {
