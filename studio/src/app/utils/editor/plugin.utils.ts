@@ -63,13 +63,25 @@ export const openCodeModal = async ({pluginParams}: {pluginParams: StyloPluginCr
     component: 'app-code-editor'
   });
 
-  modal.onDidDismiss().then(({data: unsplashImage}: OverlayEventDetail) => {
+  modal.onDidDismiss().then(({data}: OverlayEventDetail) => {
     const {container, paragraph} = pluginParams;
 
-    createParagraphImage({
-      image: unsplashImage,
+    const {code: innerHTML} = data || {code: '\u200B'};
+
+    const code: HTMLElement = document.createElement('deckgo-highlight-code');
+    code.setAttribute('editable', 'true');
+
+    const slot: HTMLElement = document.createElement('code');
+    slot.setAttribute('slot', 'code');
+    slot.innerHTML = innerHTML;
+
+    code.append(slot);
+
+    transformParagraph({
+      elements: [code, createEmptyElement({nodeName: 'div'})],
+      paragraph,
       container,
-      paragraph
+      focus: 'last'
     });
   });
 

@@ -32,6 +32,8 @@ self.MonacoEnvironment = {
 export class AppCodeEditor implements ComponentInterface {
   @Element() el: HTMLElement;
 
+  private codeEditor: HTMLDeckgoMonacoEditorElement | null;
+
   componentDidLoad() {
     history.pushState({modal: true}, null);
   }
@@ -41,8 +43,13 @@ export class AppCodeEditor implements ComponentInterface {
     await this.closeModal();
   }
 
-  private async closeModal() {
-    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss();
+  private async closeModal(data?: {code: string}) {
+    await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(data);
+  }
+
+  private async save() {
+    const code: string | undefined = await this.codeEditor?.save();
+    await this.closeModal({code});
   }
 
   render() {
@@ -60,12 +67,12 @@ export class AppCodeEditor implements ComponentInterface {
         </ion-header>
 
         <ion-content class="ion-padding">
-          <deckgo-monaco-editor></deckgo-monaco-editor>
+          <deckgo-monaco-editor ref={(el: HTMLDeckgoMonacoEditorElement | null) => (this.codeEditor = el)}></deckgo-monaco-editor>
         </ion-content>
         <ion-footer>
           <ion-toolbar>
             <div class="ion-padding-bottom">
-              <ion-button color="dark" shape="round">
+              <ion-button color="dark" shape="round" onClick={async () => await this.save()}>
                 <ion-label>{i18n.state.core.save}</ion-label>
               </ion-button>
             </div>
