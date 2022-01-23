@@ -67,7 +67,10 @@ export class AppSlidePreview {
     await this.stickyIOS(selectedElement);
 
     this.preview =
-      isSlide(selectedElement?.parentElement) && SlotUtils.isNodeEditable(selectedElement) && !SlotUtils.isNodeWordCloud(selectedElement);
+      isSlide(selectedElement?.parentElement) &&
+      SlotUtils.isNodeEditable(selectedElement) &&
+      !SlotUtils.isNodeCode(selectedElement) &&
+      !SlotUtils.isNodeWordCloud(selectedElement);
 
     if (this.preview) {
       this.el.addEventListener('previewAttached', async () => await this.updateSlide(selectedElement.parentElement), {once: true});
