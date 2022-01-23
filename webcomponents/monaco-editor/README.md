@@ -8,7 +8,7 @@
 
 # DeckDeckGo - Monaco Editor
 
-A web component to easily embed the [Monaco Editor](https://microsoft.github.io/monaco-editor/).
+A web component to easily embed the [Monaco Editor](https://microsoft.github.io/monaco-editor/) in your application.
 
 ## Installation
 
@@ -24,7 +24,7 @@ npm i @deckdeckgo/monaco-editor
 import @deckdeckgo/monaco-editor
 ```
 
-2. Copy the pre-compiled workers to your `public` folder or a sub-folder.
+2. Copy the pre-compiled workers to your output - e.g. www, public, dist - folder or sub-folder(s) - e.g. `www/build/workers`.
 
 ```
 copy: [
