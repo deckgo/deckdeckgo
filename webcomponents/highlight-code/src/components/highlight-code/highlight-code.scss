@@ -40,7 +40,7 @@
    * @prop --deckgo-highlight-code-carbon-box-shadow: The box-shadow property of the host container
    * @default rgba(0, 0, 0, 0.55) 0 8px 16px)
    */
-  box-shadow: var(--deckgo-highlight-code-carbon-box-shadow, rgba(0, 0, 0, 0.55) 0 8px 16px);
+  box-shadow: var(--deckgo-highlight-code-carbon-box-shadow, 0 4px 16px 0 rgba(0, 0, 0, 0.12));
   /**
    * @prop --deckgo-highlight-code-carbon-margin: The margin property of the host container
    * @default 16px 0
@@ -98,7 +98,7 @@
    * @prop --deckgo-highlight-code-ubuntu-box-shadow: The box-shadow property of the host container
    * @default 2px 4px 10px rgba(0, 0, 0, 0.5)
    */
-  box-shadow: var(--deckgo-highlight-code-ubuntu-box-shadow, 2px 4px 10px rgba(0, 0, 0, 0.5));
+  box-shadow: var(--deckgo-highlight-code-ubuntu-box-shadow, 0 4px 16px 0 rgba(0, 0, 0, 0.12));
   /**
    * @prop --deckgo-highlight-code-ubuntu-margin: The margin property of the host container
    * @default 16px 0
