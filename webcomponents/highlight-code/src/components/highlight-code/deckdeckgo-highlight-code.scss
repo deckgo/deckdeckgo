@@ -6,22 +6,6 @@
   }
 }
 
-:host([editable]) {
-  /**
-   * @prop --deckgo-editable-cursor: The mouse cursor displayed when hovering the editable element
-   * @default text
-   */
-  cursor: var(--deckgo-editable-cursor, text);
-
-  code:empty:not(:focus):after {
-    /**
-     * @prop --deckgo-highlight-code-empty-text: Place holder in case the editable is set to true
-     * @default Click to add your code
-     */
-    content: var(--deckgo-highlight-code-empty-text, "Click to add your code");
-  }
-}
-
 :host(.deckgo-highlight-code-carbon) {
   /**
    * @prop --deckgo-highlight-code-carbon-display: The display property of the host container
@@ -132,16 +116,16 @@
 
     code {
       /**
-       * @prop : Place holder in case the editable is set to true
-       * @default
+       * @prop --deckgo-highlight-code-font-family: Ubuntu font family
+       * @default Ubuntu mono
        */
       font-family: var(--deckgo-highlight-code-font-family, "Ubuntu mono");
 
       > div.line-number {
         &:before {
           /**
-           * @prop : Place holder in case the editable is set to true
-           * @default
+           * @prop --deckgo-highlight-code-ubuntu-background: Ubunut line number background
+           * @default #4c1e3d
            */
           background: var(--deckgo-highlight-code-ubuntu-background, #4c1e3d);
         }
@@ -152,21 +136,20 @@
 
 :host(.deckgo-highlight-code-ubuntu) ::slotted([slot="code"]) {
   /**
-   * @prop : Place holder in case the editable is set to true
-   * @default
+   * @prop --deckgo-highlight-code-ubuntu-color: Ubuntu color
+   * @default #ddd
    */
   color: var(--deckgo-highlight-code-ubuntu-color, #ddd);
 }
 
 div.container {
   /**
-   * @prop : Place holder in case the editable is set to true
-   * @default
+   * @prop --deckgo-highlight-code-color: Ubuntu container color
+   * @default inherit
    */
   color: var(--deckgo-highlight-code-color, inherit);
   /**
-   * @prop : Place holder in case the editable is set to true
-   * @default
+   * @prop --deckgo-highlight-code-background: Ubuntu code background
    */
   background: var(--deckgo-highlight-code-background);
   padding: var(--deckgo-highlight-code-padding, 0 16px);
@@ -515,11 +498,6 @@ div.carbon {
        * @default #ff5f56
        */
       background: var(--deckgo-highlight-code-carbon-header-button-red-background, #ff5f56);
-      /**
-       * @prop --deckgo-highlight-code-carbon-header-button-red-border: The border of the first button of the card header
-       * @default 0.5px solid #e0443e
-       */
-      border: var(--deckgo-highlight-code-carbon-header-button-red-border, 0.5px solid #e0443e);
     }
 
     &.yellow {
@@ -528,11 +506,6 @@ div.carbon {
        * @default #ffbd2e
        */
       background: var(--deckgo-highlight-code-carbon-header-button-yellow-background, #ffbd2e);
-      /**
-       * @prop --deckgo-highlight-code-carbon-header-button-yellow-border: The border of the second button of the card header
-       * @default 0.5px solid #dea123
-       */
-      border: var(--deckgo-highlight-code-carbon-header-button-yellow-border, 0.5px solid #dea123);
     }
 
     &.green {
@@ -541,11 +514,6 @@ div.carbon {
        * @default #27c93f
        */
       background: var(--deckgo-highlight-code-carbon-header-button-green-background, #27c93f);
-      /**
-       * @prop --deckgo-highlight-code-carbon-header-button-green-border: The color of the third button of the card header
-       * @default 0.5px solid #1aab29
-       */
-      border: var(--deckgo-highlight-code-carbon-header-button-green-border, 0.5px solid #1aab29);
     }
   }
 }

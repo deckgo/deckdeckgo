@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const fetch = require('node-fetch');
+import {writeFile} from 'fs';
+import fetch from 'node-fetch';
 
 const langInterfaces = `export interface DeckdeckgoHighlightCodeLanguageAlias {
   [index: string]: string;
@@ -74,7 +74,7 @@ function getLanguageRequire(language) {
 
     export const deckdeckgoHighlightCodeLanguages: DeckdeckgoHighlightCodeLanguages = ${JSON.stringify(filteredLanguages)}`;
 
-    fs.writeFile(`./src/declarations/deckdeckgo-highlight-code-languages.tsx`, languagesEnum, 'utf8', (err) => {
+    writeFile(`./src/declarations/deckdeckgo-highlight-code-languages.tsx`, languagesEnum, 'utf8', (err) => {
       if (err) return console.log(err);
     });
   } catch (e) {

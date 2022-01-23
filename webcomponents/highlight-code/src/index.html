@@ -31,6 +31,12 @@ public static void main(String args[]) {
 }</code>
 </deckgo-highlight-code>
 
+    <script>
+      document.addEventListener('DOMContentLoaded', () =>
+        document.querySelector('deckgo-highlight-code')?.addEventListener('editCode', ($event) => console.log($event.target))
+      );
+    </script>
+
     <select id="themeToggler" onchange="changeTheme()">
       <option value="3024-night">3024-night</option>
       <option value="a11y-dark">a11y-dark</option>
@@ -112,23 +118,11 @@ public static void main(String args[]) {
     <button onclick="prevHighlight()">Previous highlight</button>
     <button onclick="nextHighlight()">Next highlight</button>
 
-    <h1>Editable empty:</h1>
-
-    <deckgo-highlight-code editable="true" theme="carbon">
-      <code slot="code"></code>
-    </deckgo-highlight-code>
-
-    <h1>Editable HTML:</h1>
-
-    Copy paste for example: &lt;template&gt;hello&lt;/template&gt;
-
-    <deckgo-highlight-code editable="true" theme="carbon" language="html">
-      <code slot="code"></code>
-    </deckgo-highlight-code>
+    <h1>Ubuntu:</h1>
 
     <!-- prettier-ignore -->
     <deckgo-highlight-code language="java" editable="true" terminal="ubuntu" highlight-lines="1,1" line-numbers="true">
-  <code slot="code"></code>
+  <code slot="code">&lt;template&gt;hello&lt;/template&gt;</code>
   <span slot="user">cody@ubuntu:~</span>
 </deckgo-highlight-code>
 

@@ -17,7 +17,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "config": "node scripts/config.languages.js && prettier --write ./src/declarations/deckdeckgo-highlight-code-languages.tsx",
+    "config": "node scripts/config.languages.mjs && prettier --write ./src/declarations/deckdeckgo-highlight-code-languages.tsx",
     "build": "npm run config && stencil build --docs",
     "start": "npm run config && stencil build --dev --watch --serve",
     "test": "npm run config && stencil test --spec --e2e",
