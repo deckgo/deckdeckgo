@@ -5,14 +5,18 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DeckdeckgoHighlightCodeTerminal } from "./declarations/deckdeckgo-highlight-code-terminal";
-import { DeckdeckgoHighlightCodeCarbonTheme } from "./declarations/deckdeckgo-highlight-code-carbon-theme";
+import { DeckdeckgoHighlightCodeTerminal } from "./declarations/terminal";
+import { DeckdeckgoHighlightCodeCarbonTheme } from "./declarations/carbon-theme";
 export namespace Components {
     interface DeckgoHighlightCode {
         /**
-          * In case you would like to set the code component as being editable
+          * Display a button user can click to edit the code. Edition has to find place on the comsumer side, the button emits an event
          */
         "editable": boolean;
+        /**
+          * An optional label for the `aria-label` attribute of the editable button
+         */
+        "editableLabel": string;
         "hide": () => Promise<void>;
         "hideAll": () => Promise<void>;
         /**
@@ -51,6 +55,9 @@ export namespace Components {
          */
         "theme": DeckdeckgoHighlightCodeCarbonTheme;
     }
+    interface DeckgoHighlightCodeEdit {
+        "label": string;
+    }
 }
 declare global {
     interface HTMLDeckgoHighlightCodeElement extends Components.DeckgoHighlightCode, HTMLStencilElement {
@@ -59,16 +66,27 @@ declare global {
         prototype: HTMLDeckgoHighlightCodeElement;
         new (): HTMLDeckgoHighlightCodeElement;
     };
+    interface HTMLDeckgoHighlightCodeEditElement extends Components.DeckgoHighlightCodeEdit, HTMLStencilElement {
+    }
+    var HTMLDeckgoHighlightCodeEditElement: {
+        prototype: HTMLDeckgoHighlightCodeEditElement;
+        new (): HTMLDeckgoHighlightCodeEditElement;
+    };
     interface HTMLElementTagNameMap {
         "deckgo-highlight-code": HTMLDeckgoHighlightCodeElement;
+        "deckgo-highlight-code-edit": HTMLDeckgoHighlightCodeEditElement;
     }
 }
 declare namespace LocalJSX {
     interface DeckgoHighlightCode {
         /**
-          * In case you would like to set the code component as being editable
+          * Display a button user can click to edit the code. Edition has to find place on the comsumer side, the button emits an event
          */
         "editable"?: boolean;
+        /**
+          * An optional label for the `aria-label` attribute of the editable button
+         */
+        "editableLabel"?: string;
         /**
           * If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or numbers separated with coma or dash (many lines), group separated with space. For example: 1 3,5 8 14-17 which highlight lines  1, 3 to 5, 8 and 14 to 17
          */
@@ -81,10 +99,6 @@ declare namespace LocalJSX {
           * Display the number of the lines of code
          */
         "lineNumbers"?: boolean;
-        /**
-          * Emitted when the code was edited (see attribute editable). Propagate the root component itself
-         */
-        "onCodeDidChange"?: (event: CustomEvent<HTMLElement>) => void;
         /**
           * Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway.
          */
@@ -103,8 +117,13 @@ declare namespace LocalJSX {
          */
         "theme"?: DeckdeckgoHighlightCodeCarbonTheme;
     }
+    interface DeckgoHighlightCodeEdit {
+        "label"?: string;
+        "onEditCode"?: (event: CustomEvent<void>) => void;
+    }
     interface IntrinsicElements {
         "deckgo-highlight-code": DeckgoHighlightCode;
+        "deckgo-highlight-code-edit": DeckgoHighlightCodeEdit;
     }
 }
 export { LocalJSX as JSX };
@@ -112,6 +131,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "deckgo-highlight-code": LocalJSX.DeckgoHighlightCode & JSXBase.HTMLAttributes<HTMLDeckgoHighlightCodeElement>;
+            "deckgo-highlight-code-edit": LocalJSX.DeckgoHighlightCodeEdit & JSXBase.HTMLAttributes<HTMLDeckgoHighlightCodeEditElement>;
         }
     }
 }

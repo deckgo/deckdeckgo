@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" components="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>DeckDeckGo</title>
+
+    <script type="module" src="/build/monaco-editor.esm.js"></script>
+    <script nomodule src="/build/monaco-editor.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+
+    <script>
+      self.MonacoEnvironment = {
+        getWorkerUrl: function (_moduleId, label) {
+          if (label === 'json') {
+            return './build/json.worker.js';
+          }
+          if (label === 'css' || label === 'scss' || label === 'less') {
+            return './build/css.worker.js';
+          }
+          if (label === 'html' || label === 'handlebars' || label === 'razor') {
+            return './build/html.worker.js';
+          }
+          if (label === 'typescript' || label === 'javascript') {
+            return './build/ts.worker.js';
+          }
+          return './build/editor.worker.js';
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <deckgo-monaco-editor>
+      <code
+        >function toggleSrcLineNumbers() { const elem = document.getElementById('deckGoCode'); if (elem) { elem.lineNumbers =
+        !elem.lineNumbers; } }</code
+      >
+    </deckgo-monaco-editor>
+  </body>
+</html>

@@ -1,6 +1,5 @@
 import {Component, Prop, Watch, Element, Method, EventEmitter, Event, Listen, State, h, Host} from '@stencil/core';
 
-import {catchTab, debounce, getSelection, moveCursorToEnd} from '@deckdeckgo/utils';
 import {DeckDeckGoRevealComponent} from '@deckdeckgo/slide-utils';
 
 import {loadTheme} from '../../utils/themes-loader.utils';
@@ -11,9 +10,9 @@ import {injectRequiredJS, loadMainScript, StateRequiredJS} from '../../utils/inj
 import {CarbonThemeStyle} from '../styles/carbon-theme.style';
 import {HighlightStyle} from '../styles/highlight.style';
 
-import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/deckdeckgo-highlight-code-carbon-theme';
-import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/deckdeckgo-highlight-code-terminal';
-import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-highlight-code-languages';
+import {DeckdeckgoHighlightCodeCarbonTheme} from '../../declarations/carbon-theme';
+import {DeckdeckgoHighlightCodeTerminal} from '../../declarations/terminal';
+import {deckdeckgoHighlightCodeLanguages} from '../../declarations/languages';
 
 /**
  * @slot code - A `<code/>` element to highlight
@@ -21,10 +20,10 @@ import {deckdeckgoHighlightCodeLanguages} from '../../declarations/deckdeckgo-hi
  */
 @Component({
   tag: 'deckgo-highlight-code',
-  styleUrl: 'deckdeckgo-highlight-code.scss',
+  styleUrl: 'highlight-code.scss',
   shadow: true
 })
-export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
+export class HighlightCode implements DeckDeckGoRevealComponent {
   @Element() el: HTMLElement;
 
   /**
@@ -38,12 +37,6 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
    */
   @Event()
   prismLanguageError: EventEmitter<string>;
-
-  /**
-   * Emitted when the code was edited (see attribute editable). Propagate the root component itself
-   */
-  @Event()
-  codeDidChange: EventEmitter<HTMLElement>;
 
   /**
    * Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js
@@ -66,9 +59,14 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   @Prop({reflect: true}) terminal: DeckdeckgoHighlightCodeTerminal = DeckdeckgoHighlightCodeTerminal.CARBON;
 
   /**
-   * In case you would like to set the code component as being editable
+   * Display a button user can click to edit the code. Edition has to find place on the comsumer side, the button emits an event
    */
   @Prop() editable: boolean = false;
+
+  /**
+   * An optional label for the `aria-label` attribute of the editable button
+   */
+  @Prop() editableLabel: string;
 
   /**
    * The theme of the selected terminal (applied only in case of carbon)
@@ -87,8 +85,6 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
 
   private refContainer!: HTMLDivElement;
 
-  private readonly debounceUpdateSlot: () => void;
-
   private highlightGroup: number | undefined = undefined;
 
   /**
@@ -100,18 +96,8 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
   @State()
   private highlightRows: {start: number; end: number} | undefined = undefined;
 
-  private editFocused: boolean = false;
-
-  constructor() {
-    this.debounceUpdateSlot = debounce(async () => {
-      await this.copyCodeToSlot();
-    }, 500);
-  }
-
-  async componentWillLoad() {
-    await loadGoogleFonts(this.terminal);
-
-    await this.loadTheme();
+  componentWillLoad() {
+    Promise.all([loadGoogleFonts(this.terminal), this.loadTheme()]).then(() => {});
   }
 
   async componentDidLoad() {
@@ -304,62 +290,6 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     };
   }
 
-  private async applyCode() {
-    if (!this.editable) {
-      return;
-    }
-
-    this.editFocused = false;
-
-    await this.copyCodeToSlot();
-
-    this.parseSlottedCode();
-
-    this.codeDidChange.emit(this.el);
-  }
-
-  private inputCode() {
-    if (!this.editable) {
-      return;
-    }
-
-    this.debounceUpdateSlot();
-  }
-
-  private async copyCodeToSlot() {
-    const code: HTMLElement | null = this.el.querySelector(":scope > [slot='code']");
-
-    if (!code) {
-      return;
-    }
-
-    // Avoid duplicating new lines on new entries
-    this.refCode?.querySelectorAll('br')?.forEach((node: HTMLBRElement) => (node.outerHTML = '\u200B'));
-
-    code.innerHTML = this.refCode?.innerText
-      .replace(/\u200B/g, '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  private edit() {
-    if (!this.editable || this.editFocused) {
-      return;
-    }
-
-    if (!this.refCode) {
-      return;
-    }
-
-    this.editFocused = true;
-
-    this.refCode.focus();
-    moveCursorToEnd(this.refCode);
-  }
-
   /**
    * @internal Used when integrated in DeckDeckGo presentations. Call `nextHighlight()`.
    */
@@ -453,26 +383,6 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     };
   }
 
-  @Listen('copy', {target: 'window'})
-  onCopyCleanZeroWidthSpaces($event: ClipboardEvent) {
-    const {target, clipboardData} = $event;
-
-    if (!target || !clipboardData || !this.el.isEqualNode(target as Node)) {
-      return;
-    }
-
-    const selection: Selection | null = getSelection();
-
-    if (!selection) {
-      return;
-    }
-
-    $event.preventDefault();
-
-    const text: string = selection.toString().replace(/\u200B/g, '');
-    clipboardData.setData('text/plain', text);
-  }
-
   render() {
     const hostClass = {
       'deckgo-highlight-code-carbon': this.terminal === DeckdeckgoHighlightCodeTerminal.CARBON,
@@ -484,19 +394,16 @@ export class DeckdeckgoHighlightCode implements DeckDeckGoRevealComponent {
     }
 
     return (
-      <Host class={hostClass} onClick={() => this.edit()}>
+      <Host class={hostClass}>
         {this.renderCarbon()}
         {this.renderUbuntu()}
         {this.renderHighlightStyle()}
         <div class="container" ref={(el: HTMLDivElement | null) => (this.refContainer = el as HTMLDivElement)}>
           <code
             class={this.highlightLines?.length > 0 ? 'highlight' : undefined}
-            contentEditable={this.editable}
-            onBlur={async () => await this.applyCode()}
-            onInput={() => this.inputCode()}
-            onKeyDown={($event: KeyboardEvent) => catchTab($event)}
             ref={(el: HTMLElement | null) => (this.refCode = el as HTMLElement)}></code>
           <slot name="code"></slot>
+          {this.editable && <deckgo-highlight-code-edit label={this.editableLabel}></deckgo-highlight-code-edit>}
         </div>
       </Host>
     );

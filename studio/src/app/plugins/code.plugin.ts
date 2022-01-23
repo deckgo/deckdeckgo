@@ -1,24 +1,11 @@
-import {createEmptyElement, StyloPlugin, StyloPluginCreateParagraphsParams, transformParagraph} from '@deckdeckgo/stylo';
+import {StyloPlugin, StyloPluginCreateParagraphsParams} from '@deckdeckgo/stylo';
 
-const createSlottedCode = (): HTMLElement => {
-  const code: HTMLElement = document.createElement('code');
-  code.setAttribute('slot', 'code');
-  return code;
-};
+import i18n from '../stores/i18n.store';
+
+import {openCodeModal} from '../utils/editor/plugin.utils';
 
 export const code: StyloPlugin = {
-  text: 'code',
+  text: i18n.state.editor.code,
   icon: 'code',
-  createParagraphs: async ({container, paragraph}: StyloPluginCreateParagraphsParams) => {
-    const code: HTMLElement = document.createElement('deckgo-highlight-code');
-
-    code.setAttribute('editable', 'true');
-    code.append(createSlottedCode());
-
-    transformParagraph({
-      elements: [code, createEmptyElement({nodeName: 'div'})],
-      paragraph,
-      container
-    });
-  }
+  createParagraphs: (pluginParams: StyloPluginCreateParagraphsParams) => openCodeModal({pluginParams})
 };

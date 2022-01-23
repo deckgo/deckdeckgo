@@ -1,0 +1,46 @@
+{
+  "name": "@deckdeckgo/monaco-editor",
+  "version": "1.0.0",
+  "description": "A Monaco Editor web component",
+  "main": "dist/index.cjs.js",
+  "module": "dist/monado-editor/monado-editor.esm.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/interface.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/monado-editor/monado-editor.esm.js",
+  "files": [
+    "dist/",
+    "workers/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:workers": "node esbuild.js",
+    "build": "stencil build && npm run build:workers",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckgo/deckdeckgo.git",
+    "directory": "webcomponents/monaco-editor"
+  },
+  "author": "David Dal Busco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deckgo/deckdeckgo"
+  },
+  "homepage": "https://deckdeckgo.com",
+  "keywords": [
+    "editor",
+    "monaco-editor",
+    "vscode"
+  ],
+  "dependencies": {
+    "monaco-editor": "^0.31.1"
+  }
+}

@@ -62,7 +62,8 @@ If you are displaying your code in an Ubuntu terminal, you could also displays a
 
 | Property         | Attribute         | Description                                                                                                                                                                                                                                                               | Type                                                                                                                       | Default                                      |
 | ---------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `editable`       | `editable`        | In case you would like to set the code component as being editable                                                                                                                                                                                                        | `boolean`                                                                                                                  | `false`                                      |
+| `editable`       | `editable`        | Display a button user can click to edit the code. Edition has to find place on the comsumer side, the button emits an event                                                                                                                                               | `boolean`                                                                                                                  | `false`                                      |
+| `editableLabel`  | `editable-label`  | An optional label for the `aria-label` attribute of the editable button                                                                                                                                                                                                   | `string`                                                                                                                   | `undefined`                                  |
 | `highlightLines` | `highlight-lines` | If you wish to highlight some lines of your code. The lines number should be provided as a number (one line) or numbers separated with coma or dash (many lines), group separated with space. For example: 1 3,5 8 14-17 which highlight lines  1, 3 to 5, 8 and 14 to 17 | `string`                                                                                                                   | `undefined`                                  |
 | `language`       | `language`        | Define the language to be used for the syntax highlighting. The list of supported languages is defined by Prism.js                                                                                                                                                        | `string`                                                                                                                   | `'javascript'`                               |
 | `lineNumbers`    | `line-numbers`    | Display the number of the lines of code                                                                                                                                                                                                                                   | `boolean`                                                                                                                  | `false`                                      |
@@ -72,11 +73,10 @@ If you are displaying your code in an Ubuntu terminal, you could also displays a
 
 ## Events
 
-| Event                 | Description                                                                                                            | Type                       |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `codeDidChange`       | Emitted when the code was edited (see attribute editable). Propagate the root component itself                         | `CustomEvent<HTMLElement>` |
-| `prismLanguageError`  | Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway. | `CustomEvent<string>`      |
-| `prismLanguageLoaded` | Emitted when a language is fetched and loaded                                                                          | `CustomEvent<string>`      |
+| Event                 | Description                                                                                                            | Type                  |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| `prismLanguageError`  | Emitted when a language could not be loaded. The component fallback to javascript language to display the code anyway. | `CustomEvent<string>` |
+| `prismLanguageLoaded` | Emitted when a language is fetched and loaded                                                                          | `CustomEvent<string>` |
 
 
 ## Methods
@@ -124,7 +124,7 @@ Type: `Promise<void>`
 
 | Name                                                               | Description                                                                                                                                      |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--deckgo-editable-cursor`                                         | The mouse cursor displayed when hovering the editable element @default text                                                                      |
+| `--deckgo-highlight-code-background`                               | Ubuntu code background                                                                                                                           |
 | `--deckgo-highlight-code-border-radius`                            | The border radius of the displayed code                                                                                                          |
 | `--deckgo-highlight-code-carbon-background`                        | The background property of the host container @default #282a36                                                                                   |
 | `--deckgo-highlight-code-carbon-border`                            | The border property of the host container                                                                                                        |
@@ -134,19 +134,17 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-carbon-display`                           | The display property of the host container @default block                                                                                        |
 | `--deckgo-highlight-code-carbon-header-button-border-radius`       | The border-radius of a button of the card header @default 50%                                                                                    |
 | `--deckgo-highlight-code-carbon-header-button-green-background`    | The background of the third button of the card header @default #27c93f                                                                           |
-| `--deckgo-highlight-code-carbon-header-button-green-border`        | The color of the third button of the card header @default 0.5px solid #1aab29                                                                    |
 | `--deckgo-highlight-code-carbon-header-button-height`              | The height of a button of the card header @default 0.75em                                                                                        |
 | `--deckgo-highlight-code-carbon-header-button-margin`              | The margin of a button of the card header @default 0.5em 0.375em 0.5em 0                                                                         |
 | `--deckgo-highlight-code-carbon-header-button-red-background`      | The background of the first button of the card header @default #ff5f56                                                                           |
-| `--deckgo-highlight-code-carbon-header-button-red-border`          | The border of the first button of the card header @default 0.5px solid #e0443e                                                                   |
 | `--deckgo-highlight-code-carbon-header-button-width`               | The width of a button of the card header @default 0.75em                                                                                         |
 | `--deckgo-highlight-code-carbon-header-button-yellow-background`   | The background of the second button of the card header @default #ffbd2e                                                                          |
-| `--deckgo-highlight-code-carbon-header-button-yellow-border`       | The border of the second button of the card header @default 0.5px solid #dea123                                                                  |
 | `--deckgo-highlight-code-carbon-header-margin`                     | The margin property of the card header @default 0                                                                                                |
 | `--deckgo-highlight-code-carbon-header-padding`                    | The padding property of the card header. @default 8px 16px                                                                                       |
 | `--deckgo-highlight-code-carbon-margin`                            | The margin property of the host container @default 16px 0                                                                                        |
 | `--deckgo-highlight-code-carbon-overflow`                          | The overflow property of the host container. @default auto                                                                                       |
 | `--deckgo-highlight-code-carbon-toolbar-display`                   | The display property of the toolbar container @default bloack                                                                                    |
+| `--deckgo-highlight-code-color`                                    | Ubuntu container color @default inherit                                                                                                          |
 | `--deckgo-highlight-code-container-align-items`                    | The attribute align-items of the code's container                                                                                                |
 | `--deckgo-highlight-code-container-display`                        | The attribute display of the code's container @default bloack                                                                                    |
 | `--deckgo-highlight-code-container-flex-direction`                 | The attribute flex-direction of the code's container                                                                                             |
@@ -155,8 +153,7 @@ Type: `Promise<void>`
 | `--deckgo-highlight-code-container-width`                          | The attribute width of the code's container                                                                                                      |
 | `--deckgo-highlight-code-direction`                                | The direction of the displayed code @default ltr                                                                                                 |
 | `--deckgo-highlight-code-display`                                  | The display property of the code @default block                                                                                                  |
-| `--deckgo-highlight-code-empty-text`                               | Place holder in case the editable is set to true @default Click to add your code                                                                 |
-| `--deckgo-highlight-code-font-family`                              | The family of the font for the code @default monospace                                                                                           |
+| `--deckgo-highlight-code-font-family`                              | Ubuntu font family @default Ubuntu mono                                                                                                          |
 | `--deckgo-highlight-code-font-size`                                | The size of the font for the code                                                                                                                |
 | `--deckgo-highlight-code-height`                                   | Height property of the shadowed code block @default 100%                                                                                         |
 | `--deckgo-highlight-code-line-background`                          | The background of the lines you wish to highlight                                                                                                |
@@ -223,6 +220,19 @@ Type: `Promise<void>`
 | `--deckgo-lowlight-code-line-numbers-color`                        | The color property of the line numbers if not highlighted @default rgba(var(var(--deckgo-highlight-code-token-comment-rgb, 98, 114, 164), 0.32)) |
 | `--deckgo-lowlight-code-line-opacity`                              | The opacity of the lines you do not wish to highlight @default 0.32                                                                              |
 
+
+## Dependencies
+
+### Depends on
+
+- [deckgo-highlight-code-edit](../edit)
+
+### Graph
+```mermaid
+graph TD;
+  deckgo-highlight-code --> deckgo-highlight-code-edit
+  style deckgo-highlight-code fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

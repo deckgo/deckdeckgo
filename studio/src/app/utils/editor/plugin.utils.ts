@@ -57,3 +57,33 @@ export const openPluginModal = async ({
 
   await modal.present();
 };
+
+export const openCodeModal = async ({pluginParams}: {pluginParams: StyloPluginCreateParagraphsParams}) => {
+  const modal: HTMLIonModalElement = await modalController.create({
+    component: 'app-code-editor'
+  });
+
+  modal.onDidDismiss().then(({data}: OverlayEventDetail) => {
+    const {container, paragraph} = pluginParams;
+
+    const {code: innerHTML} = data || {code: '\u200B'};
+
+    const code: HTMLElement = document.createElement('deckgo-highlight-code');
+    code.setAttribute('editable', 'true');
+
+    const slot: HTMLElement = document.createElement('code');
+    slot.setAttribute('slot', 'code');
+    slot.innerHTML = innerHTML;
+
+    code.append(slot);
+
+    transformParagraph({
+      elements: [code, createEmptyElement({nodeName: 'div'})],
+      paragraph,
+      container,
+      focus: 'last'
+    });
+  });
+
+  await modal.present();
+};

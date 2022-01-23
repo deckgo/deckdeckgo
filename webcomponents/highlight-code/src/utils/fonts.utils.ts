@@ -1,6 +1,6 @@
 import {injectCSS} from '@deckdeckgo/utils';
 
-import {DeckdeckgoHighlightCodeTerminal} from '../declarations/deckdeckgo-highlight-code-terminal';
+import {DeckdeckgoHighlightCodeTerminal} from '../declarations/terminal';
 
 export const loadGoogleFonts = async (terminal: DeckdeckgoHighlightCodeTerminal) => {
   if (terminal === DeckdeckgoHighlightCodeTerminal.UBUNTU) {

@@ -38,7 +38,11 @@ export const config: Config = {
       serviceWorker: {
         swSrc: 'src/sw.js'
       },
-      copy: [{src: 'robots.txt'}, {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`}]
+      copy: [
+        {src: 'robots.txt'},
+        {src: `${assetLinks}`, dest: `.well-known/assetlinks.json`},
+        {src: `${__dirname}/node_modules/@deckdeckgo/monaco-editor/workers/`, dest: `${__dirname}/www/build`}
+      ]
     }
   ],
   globalScript: globalScript,

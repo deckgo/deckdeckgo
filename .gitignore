@@ -48,3 +48,5 @@ config.prod.json
 **/assetlinks.prod.json
 
 storybook-static/
+
+webcomponents/monaco-editor/workers

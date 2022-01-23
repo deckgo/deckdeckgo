@@ -29,6 +29,7 @@ import {DeckEditorEvents} from '../../events/editor/editor/deck.editor.events';
 import {PollEvents} from '../../events/editor/poll/poll.events';
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
+import {CodeEvents} from '../../events/editor/code/code.events';
 
 import {SlideHelper} from '../../helpers/editor/slide.helper';
 
@@ -79,12 +80,13 @@ export class AppDeckEditor implements ComponentInterface {
   @State()
   private activeIndex: number = 0;
 
-  private deckDataEvents: DeckDataEvents = new DeckDataEvents();
-  private deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
-  private remoteEvents: RemoteEvents = new RemoteEvents();
-  private pollEvents: PollEvents = new PollEvents();
-  private imageEvents: ImageEvents = new ImageEvents();
-  private chartEvents: ChartEvents = new ChartEvents();
+  private readonly deckDataEvents: DeckDataEvents = new DeckDataEvents();
+  private readonly deckEditorEvents: DeckEditorEvents = new DeckEditorEvents();
+  private readonly remoteEvents: RemoteEvents = new RemoteEvents();
+  private readonly pollEvents: PollEvents = new PollEvents();
+  private readonly imageEvents: ImageEvents = new ImageEvents();
+  private readonly chartEvents: ChartEvents = new ChartEvents();
+  private readonly codeEvents: CodeEvents = new CodeEvents();
 
   private editorHelper: SlideHelper = new SlideHelper();
 
@@ -134,6 +136,7 @@ export class AppDeckEditor implements ComponentInterface {
   componentWillLoad() {
     this.imageEvents.init();
     this.chartEvents.init();
+    this.codeEvents.init();
 
     this.updateEditorToolbarConfig();
   }
@@ -212,6 +215,7 @@ export class AppDeckEditor implements ComponentInterface {
     this.pollEvents.destroy();
     this.imageEvents.destroy();
     this.chartEvents.destroy();
+    this.codeEvents.destroy();
 
     await this.remoteEvents.destroy();
 

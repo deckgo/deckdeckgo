@@ -1,0 +1,13 @@
+@import "~monaco-editor/min/vs/editor/editor.main.css";
+
+:host {
+}
+
+article {
+  width: var(--monaco-editor-width, 100%);
+  height: var(--monaco-editor-height, 100%);
+}
+
+::slotted(*) {
+  display: none;
+}

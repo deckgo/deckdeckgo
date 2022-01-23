@@ -1,3 +1,10 @@
+# 2.1.1 (2022-01-23)
+
+### Build
+
+- bump `marked` v4
+- bump `highlight-code` v4 peer dependency
+
 # 2.1.0 (2021-05-29)
 
 ### Build
