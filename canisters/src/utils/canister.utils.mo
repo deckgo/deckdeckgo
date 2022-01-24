@@ -40,14 +40,9 @@ module {
             }}));
         };
 
-        // TODO: does not work out
-        // Arg [68, 73, 68, 76, 0, 0] ?
-        // https://forum.dfinity.org/t/install-code-actor-class-leads-to-error-empty-input-and-too-few-arguments/8984
-
-        // IDL error: missing magic bytes
-        // "...then the argument needs to be encoded in Candid..."
-        // https://forum.dfinity.org/t/calling-canisters-without-an-argument-requires-a-candid-bytes-with-no-values/8250/2?u=peterparker
-
+        /**
+         * owner: the owner as Principal encoded in Candid arguments. see actor Data and Storage, the Principal is the argument to create the canisters
+         */
         public func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
             await ic.install_code({
                 arg = owner;
