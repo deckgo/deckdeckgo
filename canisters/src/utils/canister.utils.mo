@@ -1,4 +1,5 @@
 import Principal "mo:base/Principal";
+import Blob "mo:base/Blob";
 
 import Types "../types/types";
 import IC "../types/ic.types";
@@ -42,9 +43,14 @@ module {
         // TODO: does not work out
         // Arg [68, 73, 68, 76, 0, 0] ?
         // https://forum.dfinity.org/t/install-code-actor-class-leads-to-error-empty-input-and-too-few-arguments/8984
+
+        // IDL error: missing magic bytes
+        // "...then the argument needs to be encoded in Candid..."
+        // https://forum.dfinity.org/t/calling-canisters-without-an-argument-requires-a-candid-bytes-with-no-values/8250/2?u=peterparker
+
         public func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
             await ic.install_code({
-                arg = Principal.toBlob(owner);
+                arg = Blob.toArray(Principal.toBlob(owner));
                 wasm_module = wasmModule;
                 mode = #upgrade;
                 canister_id = canisterId;
