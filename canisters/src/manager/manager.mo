@@ -175,7 +175,7 @@ actor Manager {
     };
 
     // TODO: protect caller = david
-    public shared({ caller }) func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
+    public shared({ caller }) func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
         await canisterUtils.installCode(canisterId, owner, wasmModule);
     };
 

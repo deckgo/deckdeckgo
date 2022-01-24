@@ -48,9 +48,9 @@ module {
         // "...then the argument needs to be encoded in Candid..."
         // https://forum.dfinity.org/t/calling-canisters-without-an-argument-requires-a-candid-bytes-with-no-values/8250/2?u=peterparker
 
-        public func installCode(canisterId: Principal, owner: UserId, wasmModule: Blob): async() {
+        public func installCode(canisterId: Principal, owner: Blob, wasmModule: Blob): async() {
             await ic.install_code({
-                arg = Blob.toArray(Principal.toBlob(owner));
+                arg = owner;
                 wasm_module = wasmModule;
                 mode = #upgrade;
                 canister_id = canisterId;

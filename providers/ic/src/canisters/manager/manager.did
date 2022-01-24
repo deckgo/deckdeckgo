@@ -1,4 +1,3 @@
-type UserId__1 = principal;
 type UserId = principal;
 type BucketId = principal;
 type Bucket = 
@@ -13,6 +12,6 @@ service : {
   getStorage: () -> (opt Bucket) query;
   initData: () -> (Bucket);
   initStorage: () -> (Bucket);
-  installCode: (principal, UserId__1, blob) -> ();
+  installCode: (principal, blob, blob) -> ();
   list: (text) -> (vec Bucket) query;
 }

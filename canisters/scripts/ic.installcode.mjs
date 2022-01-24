@@ -15,6 +15,8 @@ const {Secp256k1KeyIdentity} = pkgIdentity;
 import pkgAgent from '@dfinity/agent';
 const {HttpAgent, Actor} = pkgAgent;
 
+import {IDL} from '@dfinity/candid';
+
 import {idlFactory} from '../../.dfx/local/canisters/manager/manager.did.mjs';
 
 const managerPrincipal = () => {
@@ -57,9 +59,13 @@ const initIdentity = () => {
 
     const buffer = readFileSync(`${process.cwd()}/.dfx/local/canisters/data/data.wasm`);
 
+    const arg = IDL.encode([IDL.Principal], [owner]);
+
+    console.log(bucketId[0].toText());
+
     // TODO: bucketId[0] -> bucketId
 
-    await actor.installCode(bucketId[0], owner, [...new Uint8Array(buffer)]);
+    await actor.installCode(bucketId[0], [...arg], [...new Uint8Array(buffer)]);
   } catch (e) {
     console.error(e);
   }
