@@ -33,7 +33,7 @@ import '@deckdeckgo/slide-playground';
 
 import '@deckdeckgo/stylo';
 
-import {setupConfig as setupDeckGoConfig} from '../app/types/core/environment-config';
+import {setupConfig as setupDeckGoConfig} from '../app/config/environment-config';
 
 setupDeckGoConfig({
   app: {

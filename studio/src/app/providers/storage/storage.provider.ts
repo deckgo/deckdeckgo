@@ -8,7 +8,7 @@ import {StorageOfflineProvider} from './storage.offline.provider';
 import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 
-import {Constants} from '../../types/core/constants';
+import {Constants} from '../../config/constants';
 
 export const uploadOnlineFile = async (
   data: File,

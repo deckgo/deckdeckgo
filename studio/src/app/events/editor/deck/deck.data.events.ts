@@ -27,7 +27,7 @@ import errorStore from '../../../stores/error.store';
 import busyStore from '../../../stores/busy.store';
 import authStore from '../../../stores/auth.store';
 
-import {Constants} from '../../../types/core/constants';
+import {Constants} from '../../../config/constants';
 
 import {SlotUtils} from '../../../utils/editor/slot.utils';
 import {ParseElementsUtils} from '../../../utils/editor/parse-elements.utils';

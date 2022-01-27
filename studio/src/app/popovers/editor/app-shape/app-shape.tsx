@@ -3,7 +3,7 @@ import {Component, Element, h, Prop} from '@stencil/core';
 import assetsStore from '../../../stores/assets.store';
 import i18n from '../../../stores/i18n.store';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 @Component({

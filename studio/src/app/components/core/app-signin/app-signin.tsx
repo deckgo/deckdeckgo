@@ -10,7 +10,7 @@ import errorStore from '../../../stores/error.store';
 import {AppIcon} from '../app-icon/app-icon';
 
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
-import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentCloud, EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 
 import {renderI18n} from '../../../utils/core/i18n.utils';
 import {firebase, cloud} from '../../../utils/core/environment.utils';

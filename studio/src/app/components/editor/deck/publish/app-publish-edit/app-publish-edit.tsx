@@ -9,7 +9,7 @@ import errorStore from '../../../../../stores/error.store';
 import authStore from '../../../../../stores/auth.store';
 import i18n from '../../../../../stores/i18n.store';
 
-import {Constants} from '../../../../../types/core/constants';
+import {Constants} from '../../../../../config/constants';
 
 import {publish, publishUrl} from '../../../../../providers/publish/publish.provider';
 
@@ -18,7 +18,7 @@ import {renderI18n} from '../../../../../utils/core/i18n.utils';
 import {AppIcon} from '../../../../core/app-icon/app-icon';
 import {firebase} from '../../../../../utils/core/environment.utils';
 import {EnvironmentConfigService} from '../../../../../services/environment/environment-config.service';
-import {EnvironmentDeckDeckGoConfig} from '../../../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../../config/environment-config';
 
 interface CustomInputEvent extends KeyboardEvent {
   data: string | null;

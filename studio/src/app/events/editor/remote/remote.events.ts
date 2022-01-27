@@ -10,7 +10,7 @@ import {ConnectionState, DeckdeckgoDeckDefinition, DeckdeckgoEventDeckRequest, D
 
 import remoteStore from '../../../stores/remote.store';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
 
 import {RemoteService} from '../../../services/editor/remote/remote.service';

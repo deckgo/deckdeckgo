@@ -11,7 +11,7 @@ import {cloud} from '../../utils/core/environment.utils';
 import {cloudProvider} from '../../utils/core/providers.utils';
 
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
-import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 
 interface PublishInputs {
   name: string;

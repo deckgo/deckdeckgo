@@ -9,7 +9,7 @@ import userStore from '../../stores/user.store';
 
 import {publishUrl} from '../../providers/publish/publish.provider';
 
-import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {SlotType} from '../../types/editor/slot-type';

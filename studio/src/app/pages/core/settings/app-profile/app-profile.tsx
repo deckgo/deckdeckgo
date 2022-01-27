@@ -24,7 +24,7 @@ import {updateUser} from '../../../../providers/data/user/user.provider';
 import {uploadOnlineFile} from '../../../../providers/storage/storage.provider';
 import {deleteAuth} from '../../../../providers/auth/auth.provider';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../config/environment-config';
 import {EnvironmentConfigService} from '../../../../services/environment/environment-config.service';
 import {clearEdit} from '../../../../utils/editor/editor.utils';
 

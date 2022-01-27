@@ -2,7 +2,7 @@ import {h, JSX} from '@stencil/core';
 
 import {User, UserSocial} from '@deckdeckgo/editor';
 
-import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export class SocialUtils {

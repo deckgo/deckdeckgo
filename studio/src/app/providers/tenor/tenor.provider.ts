@@ -4,7 +4,7 @@ import {get, set} from 'idb-keyval';
 
 import store from '../../stores/error.store';
 
-import {EnvironmentTenorConfig} from '../../types/core/environment-config';
+import {EnvironmentTenorConfig} from '../../config/environment-config';
 
 export class TenorProvider {
   private static instance: TenorProvider;
