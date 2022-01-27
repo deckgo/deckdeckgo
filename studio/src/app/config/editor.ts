@@ -12,7 +12,7 @@ export const editorConfig: Partial<StyloConfig> = {
   plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr],
   menus: [
     {
-      nodeName: 'deckgo-highlight-code',
+      match: ({paragraph}: {paragraph: HTMLElement}) => paragraph?.nodeName.toLowerCase() === 'deckgo-highlight-code',
       actions: [
         {
           text: i18n.state.editor.edit_code,
@@ -20,7 +20,13 @@ export const editorConfig: Partial<StyloConfig> = {
             <polygon points='364.13 125.25 87 403 64 448 108.99 425 386.75 147.87 364.13 125.25' style='fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/>
             <path d='M420.69,68.69,398.07,91.31l22.62,22.63,22.62-22.63a16,16,0,0,0,0-22.62h0A16,16,0,0,0,420.69,68.69Z' style='fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/>
           </svg>`,
-          message: 'codeEdit'
+          action: async ({paragraph}: {paragraph: HTMLElement}) => {
+            const editCode: CustomEvent<void> = new CustomEvent<void>('editCode', {
+              bubbles: true
+            });
+
+            paragraph.dispatchEvent(editCode);
+          }
         }
       ]
     }
