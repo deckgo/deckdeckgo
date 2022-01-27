@@ -401,6 +401,7 @@ interface I18nEditor {
   transform_slide: string;
   add_element: string;
   saving: string;
+  edit_code: string;
 }
 
 interface I18nOffline {

@@ -392,7 +392,8 @@
     "transform_element": "Transform element",
     "transform_slide": "Transform slide",
     "add_element": "Add an image, code, or new part",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "edit_code": "Edit code"
   },
   "offline": {
     "editing": "You are editing offline.",

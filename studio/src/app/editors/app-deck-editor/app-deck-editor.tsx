@@ -121,7 +121,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   @State()
   private editorConfig: Partial<StyloToolbar> = {
-    actions: {
+    style: {
       list: false,
       align: false,
       fontSize: false,

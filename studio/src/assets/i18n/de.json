@@ -392,7 +392,8 @@
     "transform_element": "Ändere Element",
     "transform_slide": "Ändere Folie",
     "add_element": "Fügen Sie ein Bild, Code oder ein neues Element hinzu",
-    "saving": "Wird gespeichert..."
+    "saving": "Wird gespeichert...",
+    "edit_code": "Code bearbeiten"
   },
   "offline": {
     "editing": "Du bearbeitest gerade offline.",

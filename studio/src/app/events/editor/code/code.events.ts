@@ -1,19 +1,33 @@
 import {modalController, OverlayEventDetail} from '@ionic/core';
 
 import type {MonacoEditorOptions} from '@deckdeckgo/monaco-editor';
+import type {StyloMenuActionEvent} from '@deckdeckgo/stylo';
 
 export class CodeEvents {
   init() {
     document.addEventListener('editCode', this.onEditCode);
+    document.addEventListener('menuAction', this.onMenuAction);
   }
 
   destroy() {
     document.removeEventListener('editCode', this.onEditCode);
+    document.removeEventListener('menuAction', this.onMenuAction);
   }
 
-  private onEditCode = async ({target}: CustomEvent<void>) => {
-    const highlightCodeElement: HTMLDeckgoHighlightCodeElement = target as HTMLDeckgoHighlightCodeElement;
+  private onMenuAction = async ({detail}: CustomEvent<StyloMenuActionEvent>) => {
+    const {message, paragraph} = detail;
 
+    switch (message) {
+      case 'codeEdit':
+        await this.editCode(paragraph as HTMLDeckgoHighlightCodeElement);
+    }
+  };
+
+  private onEditCode = async ({target}: CustomEvent<void>) => {
+    await this.editCode(target as HTMLDeckgoHighlightCodeElement);
+  };
+
+  private editCode = async (highlightCodeElement: HTMLDeckgoHighlightCodeElement) => {
     this.emitSnapshotParagraph(highlightCodeElement);
 
     const code: HTMLElement | null = highlightCodeElement.querySelector(':scope > code');
