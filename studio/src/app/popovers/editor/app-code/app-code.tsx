@@ -22,7 +22,7 @@ export class AppCode {
   selectedElement: HTMLElement;
 
   @Prop()
-  codeDidChange: EventEmitter<HTMLElement>;
+  codeDidChange: EventEmitter<HTMLElement> | undefined;
 
   @State()
   private currentLanguage: PrismLanguage | undefined;
@@ -56,7 +56,7 @@ export class AppCode {
   }
 
   private emitCodeDidChange() {
-    this.codeDidChange.emit(this.selectedElement);
+    this.codeDidChange?.emit(this.selectedElement);
   }
 
   private toggleLineNumbers($event: CustomEvent): Promise<void> {

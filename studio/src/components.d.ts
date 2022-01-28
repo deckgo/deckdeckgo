@@ -92,7 +92,7 @@ export namespace Components {
     interface AppCloudWait {
     }
     interface AppCode {
-        "codeDidChange": EventEmitter<HTMLElement>;
+        "codeDidChange": EventEmitter<HTMLElement> | undefined;
         "selectedElement": HTMLElement;
     }
     interface AppCodeEditor {
@@ -100,7 +100,7 @@ export namespace Components {
         "options": MonacoEditorOptions;
     }
     interface AppCodeLanguages {
-        "codeDidChange": EventEmitter<HTMLElement>;
+        "codeDidChange": EventEmitter<HTMLElement> | undefined;
         "currentLanguage": PrismLanguage | undefined;
         "selectedElement": HTMLElement;
     }
@@ -1452,7 +1452,7 @@ declare namespace LocalJSX {
     interface AppCloudWait {
     }
     interface AppCode {
-        "codeDidChange"?: EventEmitter<HTMLElement>;
+        "codeDidChange"?: EventEmitter<HTMLElement> | undefined;
         "selectedElement"?: HTMLElement;
     }
     interface AppCodeEditor {
@@ -1460,7 +1460,7 @@ declare namespace LocalJSX {
         "options"?: MonacoEditorOptions;
     }
     interface AppCodeLanguages {
-        "codeDidChange"?: EventEmitter<HTMLElement>;
+        "codeDidChange"?: EventEmitter<HTMLElement> | undefined;
         "currentLanguage"?: PrismLanguage | undefined;
         "selectedElement"?: HTMLElement;
     }

@@ -2,7 +2,7 @@ import {DeckdeckgoHighlightCodeLanguage, deckdeckgoHighlightCodeLanguages} from 
 
 import {PrismLanguage} from '../../types/editor/prism-language';
 
-export const filterCodeLanguages = async (filter: string | undefined): Promise<PrismLanguage[]> => {
+export const filterCodeLanguages = (filter: string | undefined): PrismLanguage[] => {
   const languages: PrismLanguage[] = [];
 
   for (const key in deckdeckgoHighlightCodeLanguages) {
