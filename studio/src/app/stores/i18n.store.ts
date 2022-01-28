@@ -63,4 +63,4 @@ onChange('lang', (lang: Languages) => {
   });
 });
 
-export default {state};
+export default {state, onChange};

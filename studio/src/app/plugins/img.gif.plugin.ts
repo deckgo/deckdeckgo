@@ -1,11 +1,9 @@
 import {StyloPlugin, StyloPluginCreateParagraphsParams} from '@deckdeckgo/stylo';
 
-import i18n from '../stores/i18n.store';
-
 import {openPluginModal} from '../utils/editor/plugin.utils';
 
 export const imgGif: StyloPlugin = {
-  text: i18n.state.editor.gifs,
+  text: 'gifs',
   icon: `<svg width="32" height="32" viewBox="0 0 512 512" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;">
         <path d="M464,128C464,101.508 442.492,80 416,80L96,80C69.508,80 48,101.508 48,128L48,384C48,410.492 69.508,432 96,432L416,432C442.492,432 464,410.492 464,384L464,128Z" style="fill:none;stroke:currentColor;stroke-width:32px;"/>
         <g transform="matrix(1,0,0,0.843266,1.54944,39.8473)">
