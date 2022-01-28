@@ -39,7 +39,7 @@ import {Editor} from '../../types/editor/editor';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 import {FontsService} from '../../services/editor/fonts/fonts.service';
 
-import {EnvironmentGoogleConfig} from '../../types/core/environment-config';
+import {EnvironmentGoogleConfig} from '../../config/environment-config';
 import {cloud} from '../../utils/core/environment.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
 
@@ -121,7 +121,7 @@ export class AppDeckEditor implements ComponentInterface {
 
   @State()
   private editorConfig: Partial<StyloToolbar> = {
-    actions: {
+    style: {
       list: false,
       align: false,
       fontSize: false,

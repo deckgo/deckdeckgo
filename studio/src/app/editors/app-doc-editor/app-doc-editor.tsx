@@ -5,7 +5,7 @@ import {v4 as uuid} from 'uuid';
 import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
-import {StyloConfig, h1, h2, h3, ul, StyloPaletteColor} from '@deckdeckgo/stylo';
+import {StyloConfig, StyloPaletteColor} from '@deckdeckgo/stylo';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';
@@ -17,6 +17,8 @@ import i18n from '../../stores/i18n.store';
 
 import {Editor} from '../../types/editor/editor';
 import {SlotType} from '../../types/editor/slot-type';
+
+import {editorConfig} from '../../config/editor';
 
 import {ImageEvents} from '../../events/core/image/image.events';
 import {ChartEvents} from '../../events/core/chart/chart.events';
@@ -32,12 +34,6 @@ import {cloud} from '../../utils/core/environment.utils';
 import {signIn} from '../../utils/core/signin.utils';
 import {ColorUtils} from '../../utils/editor/color.utils';
 
-import {imgStorage} from '../../plugins/img.storage.plugin';
-import {imgUnsplash} from '../../plugins/img.unsplash.plugin';
-import {imgGif} from '../../plugins/img.gif.plugin';
-import {hr} from '../../plugins/hr.plugin';
-import {code} from '../../plugins/code.plugin';
-
 @Component({
   tag: 'app-doc-editor',
   styleUrl: 'app-doc-editor.scss'
@@ -50,9 +46,7 @@ export class AppDocEditor implements ComponentInterface {
   private paragraphs: JSX.IntrinsicElements[] = [];
 
   @State()
-  private editorConfig: Partial<StyloConfig> = {
-    plugins: [h1, h2, h3, ul, imgStorage, imgUnsplash, imgGif, code, hr]
-  };
+  private editorConfig: Partial<StyloConfig> = editorConfig;
 
   private readonly imageEvents: ImageEvents = new ImageEvents();
   private readonly chartEvents: ChartEvents = new ChartEvents();
@@ -267,7 +261,7 @@ export class AppDocEditor implements ComponentInterface {
       observer.disconnect();
 
       const elements: NodeListOf<HTMLElement> = this.containerRef.querySelectorAll<HTMLElement>(
-        `${SlotType.CODE}, ${SlotType.MATH}, ${SlotType.WORD_CLOUD}, ${SlotType.MARKDOWN}`
+        `${SlotType.MATH}, ${SlotType.WORD_CLOUD}, ${SlotType.MARKDOWN}`
       );
       Array.from(elements).forEach((element: HTMLElement) => element.setAttribute('editable', 'true'));
     };

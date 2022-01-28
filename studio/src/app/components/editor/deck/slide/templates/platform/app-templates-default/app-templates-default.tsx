@@ -12,7 +12,7 @@ import {tenor} from '../../../../../../../utils/core/environment.utils';
 
 import {EnvironmentConfigService} from '../../../../../../../services/environment/environment-config.service';
 
-import {EnvironmentDeckDeckGoConfig} from '../../../../../../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../../../../../../config/environment-config';
 
 import {AppTemplatesFixed} from '../app-templates-fixed/app-templates-fixed';
 import {AppIcon} from '../../../../../../core/app-icon/app-icon';

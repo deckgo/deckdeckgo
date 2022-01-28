@@ -12,8 +12,10 @@ export class CodeEvents {
   }
 
   private onEditCode = async ({target}: CustomEvent<void>) => {
-    const highlightCodeElement: HTMLDeckgoHighlightCodeElement = target as HTMLDeckgoHighlightCodeElement;
+    await this.editCode(target as HTMLDeckgoHighlightCodeElement);
+  };
 
+  private editCode = async (highlightCodeElement: HTMLDeckgoHighlightCodeElement) => {
     this.emitSnapshotParagraph(highlightCodeElement);
 
     const code: HTMLElement | null = highlightCodeElement.querySelector(':scope > code');

@@ -1,4 +1,4 @@
-import {EnvironmentConfig} from '../../types/core/environment-config';
+import {EnvironmentConfig} from '../../config/environment-config';
 
 export class EnvironmentConfigService {
   private static instance: EnvironmentConfigService;

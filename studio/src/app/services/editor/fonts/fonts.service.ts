@@ -2,7 +2,7 @@ import assetsStore from '../../../stores/assets.store';
 
 import {injectCSS} from '@deckdeckgo/editor';
 
-import {EnvironmentGoogleConfig} from '../../../types/core/environment-config';
+import {EnvironmentGoogleConfig} from '../../../config/environment-config';
 import {EnvironmentConfigService} from '../../environment/environment-config.service';
 
 export class FontsService {

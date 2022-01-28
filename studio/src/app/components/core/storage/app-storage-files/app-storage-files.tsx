@@ -5,7 +5,7 @@ import {AuthUser, StorageFile, StorageFilesList} from '@deckdeckgo/editor';
 import store from '../../../../stores/error.store';
 import i18n from '../../../../stores/i18n.store';
 
-import {Constants} from '../../../../types/core/constants';
+import {Constants} from '../../../../config/constants';
 
 import {getFiles} from '../../../../providers/storage/storage.provider';
 import authStore from '../../../../stores/auth.store';

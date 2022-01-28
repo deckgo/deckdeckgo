@@ -1,6 +1,6 @@
 import {UnsplashPhoto, RegisterUnsplashDownload, UnsplashSearchResponse, GetUnsplashPhotos} from '@deckdeckgo/editor';
 
-import {EnvironmentUnsplashConfig} from '../../types/core/environment-config';
+import {EnvironmentUnsplashConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {unsplashProvider} from '../../utils/core/providers.utils';

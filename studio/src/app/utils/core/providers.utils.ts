@@ -1,4 +1,4 @@
-import {EnvironmentCloud, EnvironmentUnsplashConfig} from '../../types/core/environment-config';
+import {EnvironmentCloud, EnvironmentUnsplashConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export const cloudProvider = <T>(): Promise<T> => {

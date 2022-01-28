@@ -3,7 +3,7 @@ import {AuthUser, InitAuth, User, SignOut, DeleteAuth} from '@deckdeckgo/editor'
 import authStore from '../../stores/auth.store';
 import userStore from '../../stores/user.store';
 
-import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
+import {EnvironmentAppConfig, EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 import {cloudProvider} from '../../utils/core/providers.utils';

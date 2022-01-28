@@ -6,7 +6,7 @@ import {Slide, SlideTemplate, SlideScope, convertStyle} from '@deckdeckgo/editor
 
 import {ParseElementsUtils} from './parse-elements.utils';
 
-import {EnvironmentDeckDeckGoConfig} from '../../types/core/environment-config';
+import {EnvironmentDeckDeckGoConfig} from '../../config/environment-config';
 import {EnvironmentConfigService} from '../../services/environment/environment-config.service';
 
 export class ParseSlidesUtils {

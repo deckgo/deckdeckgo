@@ -392,7 +392,8 @@
     "transform_element": "Elemento de transformación",
     "transform_slide": "Transformar diapositiva",
     "add_element": "Add an image, code, or new part",
-    "saving": "Guardando..."
+    "saving": "Guardando...",
+    "edit_code": "Editar código"
   },
   "offline": {
     "editing": "Estás editando sin conexión.",

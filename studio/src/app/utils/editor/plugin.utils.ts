@@ -69,7 +69,6 @@ export const openCodeModal = async ({pluginParams}: {pluginParams: StyloPluginCr
     const {code: innerHTML} = data || {code: '\u200B'};
 
     const code: HTMLElement = document.createElement('deckgo-highlight-code');
-    code.setAttribute('editable', 'true');
 
     const slot: HTMLElement = document.createElement('code');
     slot.setAttribute('slot', 'code');
