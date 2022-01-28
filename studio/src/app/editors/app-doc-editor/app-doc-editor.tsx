@@ -62,8 +62,12 @@ export class AppDocEditor implements ComponentInterface {
   // Hack: we need to clean DOM first on reload as we mix both intrinsect elements and dom elements (content editable)
   private reloadAfterRender: boolean = false;
 
+  private i18nListener: () => void | undefined;
+
   componentWillLoad() {
     this.updateEditorToolbarConfig();
+
+    this.i18nListener = i18n.onChange('lang', () => this.updateEditorToolbarConfig());
   }
 
   async componentDidLoad() {
@@ -84,6 +88,8 @@ export class AppDocEditor implements ComponentInterface {
     this.docImageEvents.destroy();
 
     this.destroy();
+
+    this.i18nListener?.();
   }
 
   /**
@@ -135,7 +141,10 @@ export class AppDocEditor implements ComponentInterface {
   private updateEditorToolbarConfig() {
     this.editorConfig = {
       ...this.editorConfig,
-      lang: i18n.state.lang,
+      i18n: {
+        lang: i18n.state.lang,
+        custom: {...i18n.state.editor}
+      },
       toolbar: {palette: colorStore.state.history.slice(0, 11)}
     };
   }
