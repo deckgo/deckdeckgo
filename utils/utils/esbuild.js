@@ -1,9 +1,19 @@
 const esbuild = require('esbuild');
+const {readdirSync, existsSync, mkdirSync, writeFileSync} = require('fs');
+const {join} = require('path');
+
+const lib = join(process.cwd(), 'lib');
+
+if (!existsSync(lib)) {
+  mkdirSync(lib);
+}
+
+const entryPoints = readdirSync(join(process.cwd(), 'src')).map((file) => `src/${file}`);
 
 esbuild
   .build({
-    entryPoints: ['src/index.ts'],
-    outdir: 'lib',
+    entryPoints,
+    outdir: 'lib/esm',
     bundle: true,
     sourcemap: true,
     minify: true,
@@ -16,7 +26,7 @@ esbuild
 esbuild
   .build({
     entryPoints: ['src/index.ts'],
-    outfile: 'lib/index.cjs.js',
+    outfile: 'lib/cjs/index.cjs.js',
     bundle: true,
     sourcemap: true,
     minify: true,
@@ -24,3 +34,7 @@ esbuild
     target: ['node16']
   })
   .catch(() => process.exit(1));
+
+writeFileSync(join(lib, 'index.js'), "export * from './esm/index.js';");
+
+writeFileSync(join(lib, 'index.cjs.js'), "module.exports = require('./cjs/index.cjs.js');");

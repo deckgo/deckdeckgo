@@ -1,3 +1,10 @@
+# 5.0.0 (2022-01-08)
+
+### Build
+
+- output esm chunks
+- re-organize bundle structure in separate folders
+
 # 4.0.0 (2022-01-08)
 
 ### Build

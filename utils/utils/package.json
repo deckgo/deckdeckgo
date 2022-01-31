@@ -1,6 +1,6 @@
 {
   "name": "@deckdeckgo/utils",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": "David Dal Busco",
   "description": "A collection of utils methods and functions developed for DeckDeckGo",
   "license": "MIT",
@@ -13,11 +13,11 @@
   "devDependencies": {
     "@types/node": "^16.9.0"
   },
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/cjs/index.cjs.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
   "scripts": {
-    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib",
+    "ts-declaration": " tsc --emitDeclarationOnly --outDir lib/types",
     "build": "rimraf lib && node ./esbuild.js && npm run ts-declaration"
   },
   "files": [
