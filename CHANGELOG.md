@@ -22,7 +22,7 @@
 
 ### Others
 
-- utils: v5.0.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
+- utils: v5.1.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/utils/utils/CHANGELOG.md))
 
 <a name="5.2.0"></a>
 

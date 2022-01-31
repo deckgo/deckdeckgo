@@ -71,6 +71,8 @@ export function isFirefox(): boolean {
   return /firefox/i.test(a);
 }
 
+export const isSafari = (): boolean => /apple/i.test(navigator.vendor);
+
 export function isRTL(): boolean {
   const htmlDir: string | null = document.documentElement.getAttribute('dir');
   return htmlDir !== null && htmlDir === 'rtl';

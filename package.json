@@ -41,5 +41,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "dependencies": {
+    "@deckdeckgo/utils": "file:utils/utils"
   }
 }
