@@ -16,7 +16,7 @@ import errorStore from '../../stores/error.store';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, SlideTemplate, elementIndex} from '@deckdeckgo/editor';
-import {StyloPaletteColor, StyloToolbar} from '@deckdeckgo/stylo';
+import {StyloPaletteColor, StyloToolbar} from '@papyrs/stylo';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';

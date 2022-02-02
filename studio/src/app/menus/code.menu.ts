@@ -1,4 +1,4 @@
-import {StyloMenu} from '../../../../../stylo';
+import {StyloMenu} from '@papyrs/stylo';
 import {popoverController} from '@ionic/core';
 
 export const codeMenu: StyloMenu = {

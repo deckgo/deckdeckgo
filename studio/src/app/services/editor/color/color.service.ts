@@ -2,7 +2,7 @@ import colorStore from '../../../stores/color.store';
 
 import {get} from 'idb-keyval';
 
-import {StyloPalette, DEFAULT_PALETTE} from '@deckdeckgo/stylo';
+import {StyloPalette, DEFAULT_PALETTE} from '@papyrs/stylo';
 
 export class ColorService {
   private static instance: ColorService;

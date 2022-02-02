@@ -5,7 +5,7 @@ import {v4 as uuid} from 'uuid';
 import {modalController} from '@ionic/core';
 
 import {isFirefox, moveCursorToStart} from '@deckdeckgo/utils';
-import {StyloConfig, StyloPaletteColor} from '@deckdeckgo/stylo';
+import {StyloConfig, StyloPaletteColor} from '@papyrs/stylo';
 
 import editorStore from '../../stores/editor.store';
 import busyStore from '../../stores/busy.store';

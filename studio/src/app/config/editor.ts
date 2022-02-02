@@ -1,4 +1,4 @@
-import {h1, h2, h3, StyloConfig, ul} from '@deckdeckgo/stylo';
+import {h1, h2, h3, StyloConfig, ul} from '@papyrs/stylo';
 
 import {imgStorage} from '../plugins/img.storage.plugin';
 import {imgUnsplash} from '../plugins/img.unsplash.plugin';

@@ -2,7 +2,7 @@ import {createStore} from '@stencil/store';
 
 import {set} from 'idb-keyval';
 
-import {StyloPalette} from '@deckdeckgo/stylo';
+import {StyloPalette} from '@papyrs/stylo';
 
 interface ColorStore {
   history: StyloPalette[];

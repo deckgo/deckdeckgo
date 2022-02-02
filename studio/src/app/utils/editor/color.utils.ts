@@ -1,4 +1,4 @@
-import {StyloPalette, StyloPaletteColor} from '@deckdeckgo/stylo';
+import {StyloPalette, StyloPaletteColor} from '@papyrs/stylo';
 
 import colorStore from '../../stores/color.store';
 
