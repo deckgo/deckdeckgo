@@ -541,6 +541,7 @@ export class AppActionsElement {
 
     await popover.present();
   }
+
   private async openMath() {
     if (!this.selectedElement?.slot?.math) {
       return;

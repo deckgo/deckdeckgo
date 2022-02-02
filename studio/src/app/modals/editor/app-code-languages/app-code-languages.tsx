@@ -19,7 +19,7 @@ export class AppCodeLanguages {
   selectedElement: HTMLElement;
 
   @Prop()
-  codeDidChange: EventEmitter<HTMLElement>;
+  codeDidChange: EventEmitter<HTMLElement> | undefined;
 
   @Prop()
   currentLanguage: PrismLanguage | undefined;
@@ -30,12 +30,16 @@ export class AppCodeLanguages {
   @State()
   private filter: string;
 
+  private input: HTMLIonSearchbarElement | undefined;
+
   async componentWillLoad() {
     await this.search();
   }
 
   componentDidLoad() {
     history.pushState({modal: true}, null);
+
+    setTimeout(async () => await this.input?.setFocus(), 500);
   }
 
   @Listen('popstate', {target: 'window'})
@@ -47,15 +51,15 @@ export class AppCodeLanguages {
     await (this.el.closest('ion-modal') as HTMLIonModalElement).dismiss(selectedLanguage);
   }
 
-  private async search() {
-    const filtered: PrismLanguage[] = await filterCodeLanguages(this.filter);
+  private search() {
+    const filtered: PrismLanguage[] = filterCodeLanguages(this.filter);
     this.filteredLanguages = [...filtered];
   }
 
-  private async clear() {
+  private clear() {
     this.filter = undefined;
 
-    await this.search();
+    this.search();
   }
 
   private handleInput($event: CustomEvent<KeyboardEvent>) {
@@ -88,7 +92,7 @@ export class AppCodeLanguages {
       // Reload component with new language
       await (this.selectedElement as any).load();
 
-      this.codeDidChange.emit(this.selectedElement);
+      this.codeDidChange?.emit(this.selectedElement);
 
       await this.closeModal(language);
 
@@ -120,6 +124,7 @@ export class AppCodeLanguages {
           <ion-searchbar
             debounce={500}
             placeholder={i18n.state.editor.filter_languages}
+            ref={(el) => (this.input = el as HTMLIonSearchbarElement)}
             value={this.filter}
             onIonClear={() => this.clear()}
             onIonInput={(e: CustomEvent<KeyboardEvent>) => this.handleInput(e)}
