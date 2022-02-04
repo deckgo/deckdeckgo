@@ -7,6 +7,9 @@ import {cloud} from '../../../utils/core/environment.utils';
 
 import {AppIcon} from '../app-icon/app-icon';
 
+import {EnvironmentAppConfig, EnvironmentAppConfigFeature} from '../../../config/environment-config';
+import {EnvironmentConfigService} from '../../../services/environment/environment-config.service';
+
 @Component({
   tag: 'app-menu',
   styleUrl: 'app-menu.scss',
@@ -14,6 +17,8 @@ import {AppIcon} from '../app-icon/app-icon';
 })
 export class AppMenu {
   @Element() el: HTMLElement;
+
+  private features: EnvironmentAppConfigFeature[] = EnvironmentConfigService.getInstance().get<EnvironmentAppConfig>('app').features;
 
   private signIn: boolean = cloud();
 
@@ -61,6 +66,10 @@ export class AppMenu {
       return undefined;
     }
 
+    if (!this.features.includes('deck')) {
+      return undefined;
+    }
+
     return (
       <ion-item button href="/decks" routerDirection="forward">
         <AppIcon name="deck" path="icons" ariaLabel="" ariaHidden={true} lazy={true} slot="start"></AppIcon>
@@ -71,6 +80,10 @@ export class AppMenu {
 
   private renderDocs() {
     if (!this.signIn) {
+      return undefined;
+    }
+
+    if (!this.features.includes('doc')) {
       return undefined;
     }
 
@@ -96,6 +109,10 @@ export class AppMenu {
   }
 
   private renderInteract() {
+    if (!this.features.includes('deck')) {
+      return undefined;
+    }
+
     return (
       <Fragment>
         <ion-item button href="/poll" routerDirection="forward">
