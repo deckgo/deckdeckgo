@@ -1,6 +1,11 @@
 app-code-editor {
   @import "../../../../global/theme/editor/editor-modal";
 
+  main {
+    height: 100%;
+    background: var(--ion-color-light);
+  }
+
   deckgo-monaco-editor {
     border: 1px solid #dedede;
     display: block;

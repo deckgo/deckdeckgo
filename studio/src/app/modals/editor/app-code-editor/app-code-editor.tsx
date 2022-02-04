@@ -79,11 +79,12 @@ export class AppCodeEditor implements ComponentInterface {
           </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding">
+        <main class="ion-padding">
           <deckgo-monaco-editor ref={(el: HTMLDeckgoMonacoEditorElement | null) => (this.codeEditor = el)} options={this.options}>
             <code innerHTML={this.code}></code>
           </deckgo-monaco-editor>
-        </ion-content>
+        </main>
+
         <ion-footer>
           <ion-toolbar>
             <div class="ion-padding-bottom">
