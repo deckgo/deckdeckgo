@@ -3,7 +3,7 @@ import {SlideSplitType} from '@deckdeckgo/editor';
 import {isSlide} from '@deckdeckgo/deck-utils';
 
 import {SlotType} from '../../types/editor/slot-type';
-import {SelectedElement} from '../../types/editor/selected-element';
+import {SelectedTarget} from '../../types/editor/selected-target';
 
 import {SlotUtils} from './slot.utils';
 import {ListUtils} from './list.utils';
@@ -46,13 +46,13 @@ export class SelectedElementUtils {
     return element?.nodeName?.toLowerCase() === SlotType.IMG;
   }
 
-  static initDescription(element: HTMLElement): Partial<SelectedElement> {
+  static initDescription(element: HTMLElement): Partial<SelectedTarget> {
     const type: 'element' | 'slide' = this.isElementSlide(element);
 
     if (type === 'element') {
       return {
         type,
-        slot: {
+        element: {
           math: this.isElementMath(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
           wordCloud: this.isElementWordCloud(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),
           markdown: this.isElementMarkdown(SlotUtils.isNodeReveal(element) ? (element.firstElementChild as HTMLElement) : element),

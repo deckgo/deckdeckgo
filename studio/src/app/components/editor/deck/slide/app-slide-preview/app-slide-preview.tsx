@@ -62,18 +62,18 @@ export class AppSlidePreview {
       return;
     }
 
-    const selectedElement: HTMLElement = $event.detail;
+    const selectedTarget: HTMLElement = $event.detail;
 
-    await this.stickyIOS(selectedElement);
+    await this.stickyIOS(selectedTarget);
 
     this.preview =
-      isSlide(selectedElement?.parentElement) &&
-      SlotUtils.isNodeEditable(selectedElement) &&
-      !SlotUtils.isNodeCode(selectedElement) &&
-      !SlotUtils.isNodeWordCloud(selectedElement);
+      isSlide(selectedTarget?.parentElement) &&
+      SlotUtils.isNodeEditable(selectedTarget) &&
+      !SlotUtils.isNodeCode(selectedTarget) &&
+      !SlotUtils.isNodeWordCloud(selectedTarget);
 
     if (this.preview) {
-      this.el.addEventListener('previewAttached', async () => await this.updateSlide(selectedElement.parentElement), {once: true});
+      this.el.addEventListener('previewAttached', async () => await this.updateSlide(selectedTarget.parentElement), {once: true});
 
       this.deckRef.addEventListener('keypress', () => this.debounceUpdatePreview(), {passive: true});
       this.deckRef.addEventListener('paste', () => this.debounceUpdatePreview(), {passive: true});
@@ -83,9 +83,9 @@ export class AppSlidePreview {
     }
   }
 
-  private async stickyIOS(selectedElement: HTMLElement) {
+  private async stickyIOS(selectedTarget: HTMLElement) {
     if (isIOS()) {
-      this.iosPositionTop = isLandscape() ? `calc(${selectedElement.offsetTop}px - (128px * 9 / 16) - 32px)` : undefined;
+      this.iosPositionTop = isLandscape() ? `calc(${selectedTarget.offsetTop}px - (128px * 9 / 16) - 32px)` : undefined;
     }
   }
 

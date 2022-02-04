@@ -4,7 +4,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {EditAction} from '../../../../types/editor/edit-action';
 
-import {SelectedElement} from '../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../types/editor/selected-target';
 
 @Component({
   tag: 'app-edit-slide',
@@ -14,7 +14,7 @@ export class AppEditSlide {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -46,11 +46,11 @@ export class AppEditSlide {
   }
 
   private renderTitle() {
-    if (this.selectedElement.slide?.qrCode) {
+    if (this.selectedTarget.slide?.qrCode) {
       return <h2>{i18n.state.editor.qr_code_options}</h2>;
-    } else if (this.selectedElement.slide?.chart) {
+    } else if (this.selectedTarget.slide?.chart) {
       return <h2>{i18n.state.editor.chart_options}</h2>;
-    } else if (this.selectedElement.slide?.author) {
+    } else if (this.selectedTarget.slide?.author) {
       return <h2>{i18n.state.editor.author_options}</h2>;
     } else {
       return <h2>{i18n.state.editor.slide_options}</h2>;
@@ -58,26 +58,26 @@ export class AppEditSlide {
   }
 
   private renderOptions() {
-    if (this.selectedElement.slide?.qrCode) {
+    if (this.selectedTarget.slide?.qrCode) {
       return (
         <app-edit-slide-qrcode
-          selectedElement={this.selectedElement.element}
+          selectedTarget={this.selectedTarget.target}
           slideDidChange={this.slideDidChange}
           onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-qrcode>
       );
-    } else if (this.selectedElement.slide?.chart) {
+    } else if (this.selectedTarget.slide?.chart) {
       return (
         <app-edit-slide-chart
-          selectedElement={this.selectedElement.element}
+          selectedTarget={this.selectedTarget.target}
           slideDidChange={this.slideDidChange}
           onAction={($event: CustomEvent<EditAction>) => this.closePopover($event)}></app-edit-slide-chart>
       );
-    } else if (this.selectedElement.slide?.author) {
+    } else if (this.selectedTarget.slide?.author) {
       return (
-        <app-edit-slide-author selectedElement={this.selectedElement.element} slideDidChange={this.slideDidChange}></app-edit-slide-author>
+        <app-edit-slide-author selectedTarget={this.selectedTarget.target} slideDidChange={this.slideDidChange}></app-edit-slide-author>
       );
     } else {
-      return <app-edit-slide-user selectedElement={this.selectedElement} slideDidChange={this.slideDidChange}></app-edit-slide-user>;
+      return <app-edit-slide-user selectedTarget={this.selectedTarget} slideDidChange={this.slideDidChange}></app-edit-slide-user>;
     }
   }
 }

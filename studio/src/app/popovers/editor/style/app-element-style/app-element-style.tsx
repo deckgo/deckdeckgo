@@ -5,7 +5,7 @@ import i18n from '../../../../stores/i18n.store';
 
 import {TargetElement} from '../../../../types/editor/target-element';
 import {ImageAction} from '../../../../types/editor/image-action';
-import {SelectedElement} from '../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../types/editor/selected-target';
 
 import {ImageHelper} from '../../../../helpers/editor/image.helper';
 
@@ -17,7 +17,7 @@ export class AppElementStyle {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   @Prop()
   imgDidChange: EventEmitter<HTMLElement>;
@@ -31,17 +31,17 @@ export class AppElementStyle {
   private applyToTargetElement: TargetElement = TargetElement.SLIDE;
 
   async componentWillLoad() {
-    this.applyToTargetElement = this.selectedElement.slot?.image
+    this.applyToTargetElement = this.selectedTarget.element?.image
       ? TargetElement.IMAGE
-      : this.selectedElement.slot?.code || this.selectedElement.slot?.markdown
+      : this.selectedTarget.element?.code || this.selectedTarget.element?.markdown
       ? TargetElement.CODE
-      : this.selectedElement.slot?.wordCloud
+      : this.selectedTarget.element?.wordCloud
       ? TargetElement.WORD_CLOUD
-      : this.selectedElement.slide?.qrCode || this.selectedElement.slide?.poll
+      : this.selectedTarget.slide?.qrCode || this.selectedTarget.slide?.poll
       ? TargetElement.QR_CODE
-      : this.selectedElement.slide?.chart
+      : this.selectedTarget.slide?.chart
       ? TargetElement.CHART
-      : this.selectedElement.slide?.author || this.selectedElement.slide?.split
+      : this.selectedTarget.slide?.author || this.selectedTarget.slide?.split
       ? TargetElement.SIDES
       : TargetElement.SLIDE;
   }
@@ -75,7 +75,7 @@ export class AppElementStyle {
   }
 
   private async onImageAction($event: CustomEvent<ImageAction>) {
-    if (this.selectedElement.type === 'element') {
+    if (this.selectedTarget.type === 'element') {
       return;
     }
 
@@ -83,7 +83,7 @@ export class AppElementStyle {
       const popover = this.el.closest('ion-popover') as HTMLIonPopoverElement;
 
       popover.onWillDismiss().then(async () => {
-        await this.imageHelper.imageAction(this.selectedElement.element, true, false, $event.detail);
+        await this.imageHelper.imageAction(this.selectedTarget.target, true, false, $event.detail);
       });
 
       await popover.dismiss();
@@ -100,7 +100,7 @@ export class AppElementStyle {
     return (
       <Host edit-mode={settingsStore.state.editMode}>
         <ion-toolbar>
-          <h2>{this.selectedElement.type === 'slide' ? i18n.state.editor.slide_style : i18n.state.editor.style}</h2>
+          <h2>{this.selectedTarget.type === 'slide' ? i18n.state.editor.slide_style : i18n.state.editor.style}</h2>
           <app-close-menu slot="end" onClose={() => this.closePopover()}></app-close-menu>
         </ion-toolbar>
 
@@ -122,31 +122,31 @@ export class AppElementStyle {
   }
 
   private renderSelectTarget() {
-    if (this.selectedElement.slot?.shape === 'shape') {
+    if (this.selectedTarget.element?.shape === 'shape') {
       return;
     }
 
     const elementTarget: boolean =
-      this.selectedElement.type === 'element' && !this.selectedElement.slot?.image && !this.selectedElement.slot?.wordCloud;
+      this.selectedTarget.type === 'element' && !this.selectedTarget.element?.image && !this.selectedTarget.element?.wordCloud;
     const transition: boolean =
-      this.selectedElement.type === 'element' &&
-      !this.selectedElement.slot?.code &&
-      !this.selectedElement.slot?.markdown &&
-      !this.selectedElement.slot?.math &&
-      !this.selectedElement.slot?.wordCloud &&
-      this.selectedElement.slot?.shape === undefined &&
-      !this.selectedElement.slot?.demo;
+      this.selectedTarget.type === 'element' &&
+      !this.selectedTarget.element?.code &&
+      !this.selectedTarget.element?.markdown &&
+      !this.selectedTarget.element?.math &&
+      !this.selectedTarget.element?.wordCloud &&
+      this.selectedTarget.element?.shape === undefined &&
+      !this.selectedTarget.element?.demo;
 
     return (
       <app-select-target-element
         textTarget={elementTarget}
-        slide={this.selectedElement.type === 'slide'}
-        qrCode={this.selectedElement.slide?.qrCode || this.selectedElement.slide?.poll}
-        chart={this.selectedElement.slide?.chart || this.selectedElement.slide?.poll}
-        code={this.selectedElement.slot?.code || this.selectedElement.slot?.markdown}
-        image={this.selectedElement.slot?.image}
-        sides={this.selectedElement.slide?.author || this.selectedElement.slide?.split}
-        wordCloud={this.selectedElement.slot?.wordCloud}
+        slide={this.selectedTarget.type === 'slide'}
+        qrCode={this.selectedTarget.slide?.qrCode || this.selectedTarget.slide?.poll}
+        chart={this.selectedTarget.slide?.chart || this.selectedTarget.slide?.poll}
+        code={this.selectedTarget.element?.code || this.selectedTarget.element?.markdown}
+        image={this.selectedTarget.element?.image}
+        sides={this.selectedTarget.slide?.author || this.selectedTarget.slide?.split}
+        wordCloud={this.selectedTarget.element?.wordCloud}
         transition={transition}
         onApplyTo={($event: CustomEvent<TargetElement>) => this.selectApplyToTargetElement($event)}></app-select-target-element>
     );
@@ -154,38 +154,32 @@ export class AppElementStyle {
 
   private renderStyleOptions() {
     if (this.applyToTargetElement === TargetElement.QR_CODE) {
-      return (
-        <app-color-qrcode selectedElement={this.selectedElement.element} onColorChange={() => this.emitStyleChange()}></app-color-qrcode>
-      );
+      return <app-color-qrcode selectedTarget={this.selectedTarget.target} onColorChange={() => this.emitStyleChange()}></app-color-qrcode>;
     } else if (this.applyToTargetElement === TargetElement.CHART) {
-      return (
-        <app-color-chart selectedElement={this.selectedElement.element} onColorChange={() => this.emitStyleChange()}></app-color-chart>
-      );
+      return <app-color-chart selectedTarget={this.selectedTarget.target} onColorChange={() => this.emitStyleChange()}></app-color-chart>;
     } else if (this.applyToTargetElement === TargetElement.CODE) {
-      return (
-        <app-color-code selectedElement={this.selectedElement.element} onCodeDidChange={() => this.emitStyleChange()}></app-color-code>
-      );
+      return <app-color-code selectedTarget={this.selectedTarget.target} onCodeDidChange={() => this.emitStyleChange()}></app-color-code>;
     } else if (this.applyToTargetElement === TargetElement.WORD_CLOUD) {
       return (
         <app-color-word-cloud
-          selectedElement={this.selectedElement.element}
+          selectedTarget={this.selectedTarget.target}
           onWordCloudDidChange={() => this.emitStyleChange()}></app-color-word-cloud>
       );
     } else if (this.applyToTargetElement === TargetElement.SIDES) {
       return (
         <app-color-sides
-          selectedElement={this.selectedElement.element}
-          template={this.selectedElement.slide?.author ? 'author' : 'split'}
+          selectedTarget={this.selectedTarget.target}
+          template={this.selectedTarget.slide?.author ? 'author' : 'split'}
           onColorChange={() => this.emitStyleChange()}></app-color-sides>
       );
     } else if (this.applyToTargetElement === TargetElement.BACKGROUND) {
       return this.renderBackground();
     } else if (this.applyToTargetElement === TargetElement.TRANSITION) {
-      return <app-reveal selectedElement={this.selectedElement.element} onToggleReveal={() => this.closePopover()}></app-reveal>;
+      return <app-reveal selectedTarget={this.selectedTarget.target} onToggleReveal={() => this.closePopover()}></app-reveal>;
     } else if (this.applyToTargetElement === TargetElement.IMAGE) {
       return [
         <app-image-style
-          selectedElement={this.selectedElement.element}
+          selectedTarget={this.selectedTarget.target}
           onImgDidChange={($event: CustomEvent<HTMLElement>) => this.onImgDidChange($event)}></app-image-style>,
         this.renderBlock()
       ];
@@ -196,23 +190,23 @@ export class AppElementStyle {
         this.renderList(),
         <app-color-text-background
           key={'text'}
-          selectedElement={this.selectedElement.element}
-          slide={this.selectedElement.type === 'slide'}
+          selectedTarget={this.selectedTarget.target}
+          slide={this.selectedTarget.type === 'slide'}
           onColorChange={() => this.emitStyleChange()}></app-color-text-background>
       ];
     }
   }
 
   private renderBlock() {
-    if (this.selectedElement.type === 'slide') {
+    if (this.selectedTarget.type === 'slide') {
       return undefined;
     }
 
-    return <app-block selectedElement={this.selectedElement} onBlockChange={() => this.emitStyleChange()}></app-block>;
+    return <app-block selectedTarget={this.selectedTarget} onBlockChange={() => this.emitStyleChange()}></app-block>;
   }
 
   private renderText() {
-    return <app-text selectedElement={this.selectedElement} onTextDidChange={() => this.emitStyleChange()}></app-text>;
+    return <app-text selectedTarget={this.selectedTarget} onTextDidChange={() => this.emitStyleChange()}></app-text>;
   }
 
   private renderBackground() {
@@ -220,20 +214,18 @@ export class AppElementStyle {
       <app-color-text-background
         key={'background'}
         colorType={'background'}
-        slide={this.selectedElement.type === 'slide'}
-        selectedElement={this.selectedElement.element}
+        slide={this.selectedTarget.type === 'slide'}
+        selectedTarget={this.selectedTarget.target}
         onColorChange={() => this.emitStyleChange()}></app-color-text-background>,
       this.renderImage()
     ];
 
-    if (this.selectedElement.type === 'element') {
+    if (this.selectedTarget.type === 'element') {
       background.push(
-        <app-border-radius
-          selectedElement={this.selectedElement}
-          onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
+        <app-border-radius selectedTarget={this.selectedTarget} onBorderRadiusDidChange={() => this.emitStyleChange()}></app-border-radius>
       );
       background.push(
-        <app-box-shadow selectedElement={this.selectedElement} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>
+        <app-box-shadow selectedTarget={this.selectedTarget} onBoxShadowDidChange={() => this.emitStyleChange()}></app-box-shadow>
       );
     }
 
@@ -241,26 +233,26 @@ export class AppElementStyle {
   }
 
   private renderImage() {
-    if (this.selectedElement.type === 'element') {
+    if (this.selectedTarget.type === 'element') {
       return undefined;
     }
 
     return (
       <app-image-choice
-        selectedElement={this.selectedElement.element}
+        selectedTarget={this.selectedTarget.target}
         deck={true}
         onAction={($event: CustomEvent<ImageAction>) => this.onImageAction($event)}></app-image-choice>
     );
   }
 
   private renderList() {
-    if (!this.selectedElement?.slot?.list) {
+    if (!this.selectedTarget?.element?.list) {
       return undefined;
     }
 
     return (
       <app-list
-        selectedElement={this.selectedElement.element}
+        selectedTarget={this.selectedTarget.target}
         onToggleList={() => this.closePopover()}
         onListStyleChanged={() => this.emitStyleChange()}></app-list>
     );

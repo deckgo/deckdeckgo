@@ -6,7 +6,7 @@ import settingsStore from '../../../../../../stores/settings.store';
 import i18n from '../../../../../../stores/i18n.store';
 
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-import {SelectedElement} from '../../../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../../../types/editor/selected-target';
 
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
@@ -16,7 +16,7 @@ import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 })
 export class AppBlock {
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   @State()
   private width: number = 100;
@@ -73,33 +73,33 @@ export class AppBlock {
   }
 
   private async initPadding() {
-    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement?.element);
+    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedTarget?.target);
     const padding: number = parseInt(css.paddingTop);
     this.padding = isNaN(padding) ? 0 : padding;
   }
 
   private async initPaddingCSS() {
-    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement?.element);
+    const css: CSSStyleDeclaration = window.getComputedStyle(this.selectedTarget?.target);
     this.paddingCSS = css.padding;
   }
 
   private async initWidth() {
-    const width: number = parseInt(this.selectedElement?.element?.style.width);
+    const width: number = parseInt(this.selectedTarget?.target?.style.width);
     this.width = isNaN(width) ? 100 : width;
   }
 
   private async initWidthCSS() {
-    this.widthCSS = this.selectedElement?.element?.style.width;
+    this.widthCSS = this.selectedTarget?.target?.style.width;
   }
 
   private async initRotate() {
-    const matches: RegExpMatchArray | null = this.selectedElement?.element?.style.transform.match(/(\d+)/);
+    const matches: RegExpMatchArray | null = this.selectedTarget?.target?.style.transform.match(/(\d+)/);
     const rotate: number = parseInt(matches?.[0]);
     this.rotate = isNaN(rotate) ? 0 : rotate;
   }
 
   private async initTransformCSS() {
-    this.transformCSS = this.selectedElement?.element?.style.transform;
+    this.transformCSS = this.selectedTarget?.target?.style.transform;
   }
 
   private async updateWidth($event: CustomEvent<RangeChangeEventDetail>) {
@@ -121,7 +121,7 @@ export class AppBlock {
   }
 
   private updateWidthCSS() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -149,7 +149,7 @@ export class AppBlock {
   }
 
   private updatePaddingCSS() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -177,7 +177,7 @@ export class AppBlock {
   }
 
   private updateTransformCSS() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -192,9 +192,9 @@ export class AppBlock {
       return;
     }
 
-    setStyle(this.selectedElement.element, {
+    setStyle(this.selectedTarget.target, {
       properties: [{property, value}],
-      type: this.selectedElement.type,
+      type: this.selectedTarget.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
         this.ignoreUpdateStyle = true;

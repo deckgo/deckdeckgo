@@ -11,14 +11,14 @@ export class AppCopyStyle {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   private async closePopover() {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss();
   }
 
   private async copyStyle() {
-    const style: string | null = this.selectedElement?.getAttribute('style');
+    const style: string | null = this.selectedTarget?.getAttribute('style');
     deckEditorStore.state.style = style && style !== '' ? style : null;
 
     await this.closePopover();
@@ -29,7 +29,7 @@ export class AppCopyStyle {
       return;
     }
 
-    this.selectedElement.setAttribute('style', deckEditorStore.state.style);
+    this.selectedTarget.setAttribute('style', deckEditorStore.state.style);
 
     await this.closePopover();
   }

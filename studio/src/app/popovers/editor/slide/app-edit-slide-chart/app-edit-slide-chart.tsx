@@ -14,7 +14,7 @@ export class AppEditSlideChart {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -50,23 +50,23 @@ export class AppEditSlideChart {
   private innerRadius: string;
 
   async componentWillLoad() {
-    this.chartType = await ChartUtils.initSlideChartType(this.selectedElement);
+    this.chartType = await ChartUtils.initSlideChartType(this.selectedTarget);
 
-    this.datePattern = this.selectedElement ? this.selectedElement.getAttribute('date-pattern') : undefined;
+    this.datePattern = this.selectedTarget ? this.selectedTarget.getAttribute('date-pattern') : undefined;
     this.yAxisDomain =
-      this.selectedElement && this.selectedElement.hasAttribute('y-axis-domain')
-        ? (this.selectedElement.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain)
+      this.selectedTarget && this.selectedTarget.hasAttribute('y-axis-domain')
+        ? (this.selectedTarget.getAttribute('y-axis-domain') as SlideAttributesYAxisDomain)
         : 'max';
 
-    this.smooth = this.selectedElement ? (this.selectedElement.getAttribute('smooth') === 'false' ? false : true) : true;
-    this.area = this.selectedElement ? (this.selectedElement.getAttribute('area') === 'false' ? false : true) : true;
-    this.grid = this.selectedElement ? (this.selectedElement.getAttribute('grid') === 'true' ? true : false) : false;
+    this.smooth = this.selectedTarget ? (this.selectedTarget.getAttribute('smooth') === 'false' ? false : true) : true;
+    this.area = this.selectedTarget ? (this.selectedTarget.getAttribute('area') === 'false' ? false : true) : true;
+    this.grid = this.selectedTarget ? (this.selectedTarget.getAttribute('grid') === 'true' ? true : false) : false;
 
-    this.ticks = this.selectedElement ? this.selectedElement.getAttribute('ticks') : undefined;
+    this.ticks = this.selectedTarget ? this.selectedTarget.getAttribute('ticks') : undefined;
 
-    this.separator = this.selectedElement ? this.selectedElement.getAttribute('separator') : undefined;
+    this.separator = this.selectedTarget ? this.selectedTarget.getAttribute('separator') : undefined;
 
-    this.innerRadius = this.selectedElement ? this.selectedElement.getAttribute('inner-radius') : undefined;
+    this.innerRadius = this.selectedTarget ? this.selectedTarget.getAttribute('inner-radius') : undefined;
   }
 
   private handleDatePatternInput($event: CustomEvent<KeyboardEvent>) {
@@ -87,47 +87,47 @@ export class AppEditSlideChart {
 
   private applyChartChanges(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
       if (this.datePattern && this.datePattern !== 'yyyy-MM-dd') {
-        this.selectedElement.setAttribute('date-pattern', this.datePattern);
+        this.selectedTarget.setAttribute('date-pattern', this.datePattern);
       } else {
-        this.selectedElement.removeAttribute('date-pattern');
+        this.selectedTarget.removeAttribute('date-pattern');
       }
 
       if (this.yAxisDomain && this.yAxisDomain !== 'max') {
-        this.selectedElement.setAttribute('y-axis-domain', this.yAxisDomain);
+        this.selectedTarget.setAttribute('y-axis-domain', this.yAxisDomain);
       } else {
-        this.selectedElement.removeAttribute('y-axis-domain');
+        this.selectedTarget.removeAttribute('y-axis-domain');
       }
 
-      this.selectedElement.setAttribute('smooth', `${this.smooth}`);
-      this.selectedElement.setAttribute('area', `${this.area}`);
+      this.selectedTarget.setAttribute('smooth', `${this.smooth}`);
+      this.selectedTarget.setAttribute('area', `${this.area}`);
 
-      this.selectedElement.setAttribute('grid', `${this.grid}`);
+      this.selectedTarget.setAttribute('grid', `${this.grid}`);
 
       if (this.ticks && !isNaN(this.ticks as any)) {
-        this.selectedElement.setAttribute('ticks', this.ticks);
+        this.selectedTarget.setAttribute('ticks', this.ticks);
       } else {
-        this.selectedElement.removeAttribute('ticks');
+        this.selectedTarget.removeAttribute('ticks');
       }
 
       if (this.separator && this.separator !== '' && this.separator !== ';') {
-        this.selectedElement.setAttribute('separator', this.separator);
+        this.selectedTarget.setAttribute('separator', this.separator);
       } else {
-        this.selectedElement.removeAttribute('separator');
+        this.selectedTarget.removeAttribute('separator');
       }
 
       if (this.innerRadius && !isNaN(this.innerRadius as any)) {
-        this.selectedElement.setAttribute('inner-radius', this.innerRadius);
+        this.selectedTarget.setAttribute('inner-radius', this.innerRadius);
       } else {
-        this.selectedElement.removeAttribute('inner-radius');
+        this.selectedTarget.removeAttribute('inner-radius');
       }
 
-      this.slideDidChange.emit(this.selectedElement);
+      this.slideDidChange.emit(this.selectedTarget);
 
       resolve();
     });

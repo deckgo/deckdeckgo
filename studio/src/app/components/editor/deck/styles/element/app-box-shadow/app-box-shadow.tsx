@@ -10,14 +10,14 @@ import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
-import {SelectedElement} from '../../../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../../../types/editor/selected-target';
 
 @Component({
   tag: 'app-box-shadow'
 })
 export class AppBoxShadow {
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   private readonly defaultBoxShadowProperties = new Map([
     ['hLength', 0],
@@ -71,15 +71,15 @@ export class AppBoxShadow {
   }
 
   private async initCSS() {
-    this.boxShadowCSS = this.selectedElement?.element?.style.boxShadow;
+    this.boxShadowCSS = this.selectedTarget?.target?.style.boxShadow;
   }
 
   private async init() {
-    if (!this.selectedElement || !this.selectedElement.element) {
+    if (!this.selectedTarget || !this.selectedTarget.target) {
       return;
     }
 
-    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement.element);
+    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedTarget.target);
 
     if (!style) {
       return;
@@ -116,14 +116,14 @@ export class AppBoxShadow {
   }
 
   private initColor = async (): Promise<InitStyleColor> => {
-    if (!this.selectedElement || !this.selectedElement.element) {
+    if (!this.selectedTarget || !this.selectedTarget.target) {
       return {
         rgb: null,
         opacity: null
       };
     }
 
-    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement.element);
+    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedTarget.target);
 
     if (!style) {
       return {
@@ -157,7 +157,7 @@ export class AppBoxShadow {
   };
 
   private async selectColor($event: CustomEvent<string>) {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -177,7 +177,7 @@ export class AppBoxShadow {
   }
 
   private async updateBoxShadowProperties($event: CustomEvent, property: string = '') {
-    if (!this.selectedElement || !$event || !$event.detail) {
+    if (!this.selectedTarget || !$event || !$event.detail) {
       return;
     }
 
@@ -203,9 +203,9 @@ export class AppBoxShadow {
       return;
     }
 
-    setStyle(this.selectedElement.element, {
+    setStyle(this.selectedTarget.target, {
       properties: [{property: 'box-shadow', value}],
-      type: this.selectedElement.type,
+      type: this.selectedTarget.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
         this.ignoreUpdateStyle = true;
@@ -224,7 +224,7 @@ export class AppBoxShadow {
   }
 
   private async resetBoxShadow() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 

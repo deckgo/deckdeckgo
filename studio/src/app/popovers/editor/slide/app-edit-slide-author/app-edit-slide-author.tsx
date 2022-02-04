@@ -15,7 +15,7 @@ export class AppEditSlideAuthor {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slideDidChange: EventEmitter<HTMLElement>;
@@ -29,14 +29,14 @@ export class AppEditSlideAuthor {
 
   private initImageMode(): Promise<ImageMode> {
     return new Promise<ImageMode>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve(null);
         return;
       }
 
-      if (this.selectedElement.getAttribute('img-mode') === 'none') {
+      if (this.selectedTarget.getAttribute('img-mode') === 'none') {
         resolve(ImageMode.NONE);
-      } else if (this.selectedElement.getAttribute('img-mode') === 'circle') {
+      } else if (this.selectedTarget.getAttribute('img-mode') === 'circle') {
         resolve(ImageMode.CIRCLE);
       } else {
         resolve(ImageMode.COVER);
@@ -53,14 +53,14 @@ export class AppEditSlideAuthor {
 
       this.currentImageMode = $event.detail.value;
 
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
-      this.selectedElement.setAttribute('img-mode', this.currentImageMode);
+      this.selectedTarget.setAttribute('img-mode', this.currentImageMode);
 
-      this.slideDidChange.emit(this.selectedElement);
+      this.slideDidChange.emit(this.selectedTarget);
 
       resolve();
     });

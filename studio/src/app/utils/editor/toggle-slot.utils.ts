@@ -3,9 +3,9 @@ import {SlotType} from '../../types/editor/slot-type';
 import {SlotUtils} from './slot.utils';
 
 export class ToggleSlotUtils {
-  static toggleSlotType(selectedElement: HTMLElement, type: SlotType): Promise<HTMLElement> {
+  static toggleSlotType(selectedTarget: HTMLElement, type: SlotType): Promise<HTMLElement> {
     return new Promise<HTMLElement>(async (resolve) => {
-      if (!selectedElement || !selectedElement.parentElement) {
+      if (!selectedTarget || !selectedTarget.parentElement) {
         resolve(null);
         return;
       }
@@ -17,14 +17,14 @@ export class ToggleSlotUtils {
 
       const element: HTMLElement = document.createElement(type.toString());
 
-      const reveal: boolean = SlotUtils.isNodeReveal(selectedElement);
+      const reveal: boolean = SlotUtils.isNodeReveal(selectedTarget);
 
-      await this.copyAttributes(selectedElement, element);
+      await this.copyAttributes(selectedTarget, element);
       await this.cleanAttributes(element, type);
       await this.updateContentEditable(element, type);
       await this.updateLazyImage(element, type);
 
-      await this.copyContent(selectedElement, element, type, reveal);
+      await this.copyContent(selectedTarget, element, type, reveal);
 
       if (reveal) {
         const revealElement: HTMLElement = await RevealSlotUtils.toggleReveal(element, true);
@@ -35,11 +35,11 @@ export class ToggleSlotUtils {
     });
   }
 
-  private static copyAttributes(selectedElement: HTMLElement, element: HTMLElement): Promise<void> {
+  private static copyAttributes(selectedTarget: HTMLElement, element: HTMLElement): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (selectedElement.attributes && selectedElement.attributes.length) {
-        for (let i: number = 0; i < selectedElement.attributes.length; i++) {
-          element.setAttribute(selectedElement.attributes[i].name, selectedElement.attributes[i].value);
+      if (selectedTarget.attributes && selectedTarget.attributes.length) {
+        for (let i: number = 0; i < selectedTarget.attributes.length; i++) {
+          element.setAttribute(selectedTarget.attributes[i].name, selectedTarget.attributes[i].value);
         }
       }
 
@@ -72,53 +72,53 @@ export class ToggleSlotUtils {
     return container;
   }
 
-  private static getSlotContainer(selectedElement: HTMLElement): HTMLElement {
+  private static getSlotContainer(selectedTarget: HTMLElement): HTMLElement {
     if (
-      selectedElement.firstChild &&
-      selectedElement.firstChild instanceof HTMLElement &&
-      selectedElement.firstChild.nodeName &&
-      (selectedElement.firstChild.nodeName.toLowerCase() === 'code' || selectedElement.firstChild.nodeName.toLowerCase() === 'div')
+      selectedTarget.firstChild &&
+      selectedTarget.firstChild instanceof HTMLElement &&
+      selectedTarget.firstChild.nodeName &&
+      (selectedTarget.firstChild.nodeName.toLowerCase() === 'code' || selectedTarget.firstChild.nodeName.toLowerCase() === 'div')
     ) {
-      return selectedElement.firstChild;
+      return selectedTarget.firstChild;
     } else {
-      return selectedElement;
+      return selectedTarget;
     }
   }
 
-  private static updateContentEditable(selectedElement: HTMLElement, type: SlotType): Promise<void> {
+  private static updateContentEditable(selectedTarget: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!SlotUtils.isSlotTypeEditable(type)) {
-        selectedElement.removeAttribute('editable');
-        selectedElement.removeAttribute('contenteditable');
+        selectedTarget.removeAttribute('editable');
+        selectedTarget.removeAttribute('contenteditable');
       } else if (type === SlotType.CODE || type == SlotType.MATH || type == SlotType.WORD_CLOUD || type === SlotType.MARKDOWN) {
-        selectedElement.setAttribute('editable', 'true');
-        selectedElement.removeAttribute('contenteditable');
+        selectedTarget.setAttribute('editable', 'true');
+        selectedTarget.removeAttribute('contenteditable');
       } else {
-        selectedElement.setAttribute('contenteditable', 'true');
-        selectedElement.removeAttribute('editable');
+        selectedTarget.setAttribute('contenteditable', 'true');
+        selectedTarget.removeAttribute('editable');
       }
 
       resolve();
     });
   }
 
-  private static cleanAttributes(selectedElement: HTMLElement, type: SlotType): Promise<void> {
+  private static cleanAttributes(selectedTarget: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
       if (SlotUtils.isSlotTypeEditable(type)) {
-        selectedElement.removeAttribute('img-src');
-        selectedElement.removeAttribute('img-alt');
-        selectedElement.style.removeProperty('justify-content');
-        selectedElement.style.removeProperty('--deckgo-lazy-img-width');
+        selectedTarget.removeAttribute('img-src');
+        selectedTarget.removeAttribute('img-alt');
+        selectedTarget.style.removeProperty('justify-content');
+        selectedTarget.style.removeProperty('--deckgo-lazy-img-width');
       }
 
       resolve();
     });
   }
 
-  private static copyContent(selectedElement: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
+  private static copyContent(selectedTarget: HTMLElement, element: HTMLElement, type: SlotType, reveal: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       const currentContainer: HTMLElement = this.getSlotContainer(
-        reveal && !SlotUtils.isNodeRevealList(selectedElement) ? (selectedElement.firstElementChild as HTMLElement) : selectedElement
+        reveal && !SlotUtils.isNodeRevealList(selectedTarget) ? (selectedTarget.firstElementChild as HTMLElement) : selectedTarget
       );
 
       const container: HTMLElement = await this.createSlotContainer(element, type);
@@ -194,10 +194,10 @@ export class ToggleSlotUtils {
     });
   }
 
-  private static updateLazyImage(selectedElement: HTMLElement, type: SlotType): Promise<void> {
+  private static updateLazyImage(selectedTarget: HTMLElement, type: SlotType): Promise<void> {
     return new Promise<void>((resolve) => {
       if (type === SlotType.IMG) {
-        (selectedElement as HTMLDeckgoLazyImgElement).customLoader = true;
+        (selectedTarget as HTMLDeckgoLazyImgElement).customLoader = true;
       }
 
       resolve();

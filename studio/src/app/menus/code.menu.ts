@@ -27,7 +27,7 @@ export const codeMenu: StyloMenu = {
         const popover: HTMLIonPopoverElement = await popoverController.create({
           component: 'app-code',
           componentProps: {
-            selectedElement: paragraph
+            selectedTarget: paragraph
           },
           mode: 'ios',
           showBackdrop: false,

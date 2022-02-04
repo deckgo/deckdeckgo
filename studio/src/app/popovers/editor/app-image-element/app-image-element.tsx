@@ -12,7 +12,7 @@ export class AppImageElement {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   slide: boolean = false;
@@ -34,7 +34,7 @@ export class AppImageElement {
         <app-close-menu slot="end" onClose={() => this.closePopoverWithoutResults()}></app-close-menu>
       </ion-toolbar>,
       <app-image-choice
-        selectedElement={this.selectedElement}
+        selectedTarget={this.selectedTarget}
         slide={this.slide}
         onAction={($event: CustomEvent<ImageAction>) => this.onAction($event)}></app-image-choice>
     ];

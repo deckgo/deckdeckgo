@@ -16,7 +16,7 @@ export class AppCodeLanguages {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   codeDidChange: EventEmitter<HTMLElement> | undefined;
@@ -68,7 +68,7 @@ export class AppCodeLanguages {
 
   private selectCodeLanguage(language: PrismLanguage): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
@@ -78,7 +78,7 @@ export class AppCodeLanguages {
         return;
       }
 
-      const currentLanguage: string = this.selectedElement.getAttribute('language');
+      const currentLanguage: string = this.selectedTarget.getAttribute('language');
 
       if (language.language === currentLanguage) {
         await this.closeModal(language);
@@ -87,12 +87,12 @@ export class AppCodeLanguages {
         return;
       }
 
-      this.selectedElement.setAttribute('language', language.language);
+      this.selectedTarget.setAttribute('language', language.language);
 
       // Reload component with new language
-      await (this.selectedElement as any).load();
+      await (this.selectedTarget as any).load();
 
-      this.codeDidChange?.emit(this.selectedElement);
+      this.codeDidChange?.emit(this.selectedTarget);
 
       await this.closeModal(language);
 

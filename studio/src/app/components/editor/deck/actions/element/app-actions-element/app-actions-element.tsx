@@ -25,7 +25,7 @@ import {EditAction} from '../../../../../../types/editor/edit-action';
 import {MoreAction} from '../../../../../../types/editor/more-action';
 import {DemoAction} from '../../../../../../types/editor/demo-action';
 import {PlaygroundAction} from '../../../../../../types/editor/playground-action';
-import {SelectedElement} from '../../../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../../../types/editor/selected-target';
 
 import {InitTemplate} from '../../../../../../utils/editor/create-slides.utils';
 import {CloneSlideUtils} from '../../../../../../utils/editor/clone-slide.utils';
@@ -49,7 +49,7 @@ export class AppActionsElement {
   elementFocus: EventEmitter;
 
   @State()
-  private selectedElement: SelectedElement | undefined;
+  private selectedTarget: SelectedTarget | undefined;
 
   @Event({bubbles: true})
   private blockSlide: EventEmitter<boolean>;
@@ -78,7 +78,7 @@ export class AppActionsElement {
       return;
     }
 
-    if (undoRedoStore.state.elementInnerHTML === this.selectedElement.element.innerHTML) {
+    if (undoRedoStore.state.elementInnerHTML === this.selectedTarget.target.innerHTML) {
       return;
     }
 
@@ -88,11 +88,11 @@ export class AppActionsElement {
 
     undoRedoStore.state.undo.push({
       type: 'input',
-      target: this.selectedElement.element,
+      target: this.selectedTarget.target,
       data: {innerHTML: undoRedoStore.state.elementInnerHTML}
     });
 
-    undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
+    undoRedoStore.state.elementInnerHTML = this.selectedTarget.target.innerHTML;
   };
 
   private observer: MutationObserver = new MutationObserver(this.observeElementMutations);
@@ -134,7 +134,7 @@ export class AppActionsElement {
       return;
     }
 
-    await this.blurSelectedElement();
+    await this.blurSelectedTarget();
   }
 
   @Listen('optionsDidChange', {target: 'document'})
@@ -144,11 +144,11 @@ export class AppActionsElement {
 
   @Listen('toggleReveal', {target: 'document'})
   async onToggleReveal($event: CustomEvent<boolean>) {
-    if (!this.selectedElement?.element?.parentElement || !$event) {
+    if (!this.selectedTarget?.target?.parentElement || !$event) {
       return;
     }
 
-    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedElement.element, $event.detail);
+    const element: HTMLElement = await RevealSlotUtils.toggleReveal(this.selectedTarget.target, $event.detail);
 
     await this.replaceSlot(element);
   }
@@ -173,11 +173,11 @@ export class AppActionsElement {
 
     element.focus();
 
-    if (this.selectedElement?.type === 'element') {
+    if (this.selectedTarget?.type === 'element') {
       this.observer.takeRecords();
-      this.observer.observe(this.selectedElement.element, {attributes: true, childList: true, subtree: true});
+      this.observer.observe(this.selectedTarget.target, {attributes: true, childList: true, subtree: true});
 
-      undoRedoStore.state.elementInnerHTML = this.selectedElement.element.innerHTML;
+      undoRedoStore.state.elementInnerHTML = this.selectedTarget.target.innerHTML;
       return;
     }
 
@@ -187,8 +187,8 @@ export class AppActionsElement {
   }
 
   @Method()
-  async blurSelectedElement() {
-    this.selectedElement?.element?.blur();
+  async blurSelectedTarget() {
+    this.selectedTarget?.target?.blur();
   }
 
   private select(element: HTMLElement, autoOpen: boolean): Promise<void> {
@@ -208,7 +208,7 @@ export class AppActionsElement {
         await this.openImage();
       }
 
-      this.blockSlide.emit(this.selectedElement?.type === 'element');
+      this.blockSlide.emit(this.selectedTarget?.type === 'element');
 
       resolve();
     });
@@ -220,7 +220,7 @@ export class AppActionsElement {
 
   @Method()
   async unSelect() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -283,23 +283,23 @@ export class AppActionsElement {
 
   private deleteElement(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
-      if (store.state.busy && this.selectedElement?.type === 'slide') {
+      if (store.state.busy && this.selectedTarget?.type === 'slide') {
         resolve();
         return;
       }
 
       store.state.busy = true;
 
-      if (this.selectedElement.type === 'slide') {
-        this.slideDelete.emit(this.selectedElement.element);
+      if (this.selectedTarget.type === 'slide') {
+        this.slideDelete.emit(this.selectedTarget.target);
       } else {
-        const parent: HTMLElement = this.selectedElement.element.parentElement;
-        this.selectedElement.element.parentElement.removeChild(this.selectedElement.element);
+        const parent: HTMLElement = this.selectedTarget.target.parentElement;
+        this.selectedTarget.target.parentElement.removeChild(this.selectedTarget.target);
         this.slideDidChange.emit(parent);
 
         await this.resizeSlideContent(parent);
@@ -315,7 +315,7 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-copy-style',
       componentProps: {
-        selectedElement: this.selectedElement.element
+        selectedTarget: this.selectedTarget.target
       },
       mode: 'ios',
       event: $event
@@ -325,7 +325,7 @@ export class AppActionsElement {
   }
 
   private async clone() {
-    if (this.selectedElement?.slot?.shape !== undefined) {
+    if (this.selectedTarget?.element?.shape !== undefined) {
       await this.cloneShape();
     } else {
       await this.cloneSlide();
@@ -334,17 +334,17 @@ export class AppActionsElement {
 
   private cloneShape(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
-      if (store.state.busy || this.selectedElement?.slot?.shape === undefined) {
+      if (store.state.busy || this.selectedTarget?.element?.shape === undefined) {
         resolve();
         return;
       }
 
-      await this.shapeHelper.cloneShape(this.selectedElement.element);
+      await this.shapeHelper.cloneShape(this.selectedTarget.target);
 
       resolve();
     });
@@ -352,19 +352,19 @@ export class AppActionsElement {
 
   private cloneSlide(): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
-      if (store.state.busy || this.selectedElement?.type === 'element') {
+      if (store.state.busy || this.selectedTarget?.type === 'element') {
         resolve();
         return;
       }
 
       store.state.busy = true;
 
-      this.slideCopy.emit(this.selectedElement.element);
+      this.slideCopy.emit(this.selectedTarget.target);
 
       await this.reset();
 
@@ -373,14 +373,14 @@ export class AppActionsElement {
   }
 
   private async openTransform() {
-    if (this.selectedElement?.type === 'slide' && !this.selectedElement?.slide?.fixed) {
+    if (this.selectedTarget?.type === 'slide' && !this.selectedTarget?.slide?.fixed) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
-      component: this.selectedElement?.type === 'slide' ? 'app-transform-slide' : 'app-transform-element',
+      component: this.selectedTarget?.type === 'slide' ? 'app-transform-slide' : 'app-transform-element',
       componentProps: {
-        selectedElement: this.selectedElement.element
+        selectedTarget: this.selectedTarget.target
       },
       mode: 'ios',
       showBackdrop: false,
@@ -400,11 +400,11 @@ export class AppActionsElement {
 
   private async openEditSlide() {
     if (
-      this.selectedElement?.type === 'element' ||
-      (!this.selectedElement?.slide?.qrCode &&
-        !this.selectedElement?.slide?.chart &&
-        !this.selectedElement?.slide?.author &&
-        this.selectedElement?.slide?.scope === SlideScope.DEFAULT)
+      this.selectedTarget?.type === 'element' ||
+      (!this.selectedTarget?.slide?.qrCode &&
+        !this.selectedTarget?.slide?.chart &&
+        !this.selectedTarget?.slide?.author &&
+        this.selectedTarget?.slide?.scope === SlideScope.DEFAULT)
     ) {
       return;
     }
@@ -412,7 +412,7 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-edit-slide',
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedTarget: this.selectedTarget,
         slideDidChange: this.slideDidChange
       },
       mode: 'ios',
@@ -426,16 +426,16 @@ export class AppActionsElement {
           await this.deleteLogo();
         } else if (detail.data.action === EditAction.OPEN_CUSTOM_LOGO) {
           await this.imageHelper.openCustomModalRestricted(
-            this.selectedElement.element,
-            this.selectedElement?.type === 'slide',
+            this.selectedTarget.target,
+            this.selectedTarget?.type === 'slide',
             false,
             'app-storage-images',
             detail.data.action
           );
         } else if (detail.data.action === EditAction.OPEN_DATA) {
           await this.imageHelper.openModal(
-            this.selectedElement.element,
-            this.selectedElement?.type === 'slide',
+            this.selectedTarget.target,
+            this.selectedTarget?.type === 'slide',
             false,
             'app-storage-data',
             detail.data.action
@@ -452,14 +452,14 @@ export class AppActionsElement {
   }
 
   private async openShape(component: 'app-shape' | 'app-image-element') {
-    if (this.selectedElement?.type === 'element' || !this.selectedElement?.slide?.aspectRatio) {
+    if (this.selectedTarget?.type === 'element' || !this.selectedTarget?.slide?.aspectRatio) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: component,
       componentProps: {
-        selectedElement: this.selectedElement.element
+        selectedTarget: this.selectedTarget.target
       },
       mode: 'ios',
       showBackdrop: false,
@@ -469,7 +469,7 @@ export class AppActionsElement {
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
         await this.shapeHelper.appendShape(
-          this.selectedElement.element,
+          this.selectedTarget.target,
           component === 'app-image-element'
             ? {
                 img: detail.data
@@ -483,15 +483,15 @@ export class AppActionsElement {
   }
 
   private async appendText() {
-    await this.shapeHelper.appendText(this.selectedElement.element);
+    await this.shapeHelper.appendText(this.selectedTarget.target);
   }
 
   private async getImagePopover(): Promise<HTMLIonPopoverElement> {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-image-element',
       componentProps: {
-        selectedElement: this.selectedElement.element,
-        slide: this.selectedElement?.type === 'slide'
+        selectedTarget: this.selectedTarget.target,
+        slide: this.selectedTarget?.type === 'slide'
       },
       mode: 'ios',
       showBackdrop: false,
@@ -502,14 +502,14 @@ export class AppActionsElement {
   }
 
   private async openEditPollSlide() {
-    if (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.poll) {
+    if (this.selectedTarget?.type === 'element' || this.selectedTarget?.slide?.poll) {
       return;
     }
 
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-poll-options',
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedTarget: this.selectedTarget,
         slideDidChange: this.slideDidChange
       }
     });
@@ -524,14 +524,14 @@ export class AppActionsElement {
   }
 
   private async openCode() {
-    if (!this.selectedElement?.slot?.code) {
+    if (!this.selectedTarget?.element?.code) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-code',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedTarget: this.selectedTarget.target,
         codeDidChange: this.codeDidChange
       },
       mode: 'ios',
@@ -543,14 +543,14 @@ export class AppActionsElement {
   }
 
   private async openMath() {
-    if (!this.selectedElement?.slot?.math) {
+    if (!this.selectedTarget?.element?.math) {
       return;
     }
 
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-math',
       componentProps: {
-        selectedElement: this.selectedElement.element,
+        selectedTarget: this.selectedTarget.target,
         mathDidChange: this.mathDidChange
       },
       mode: 'ios',
@@ -568,12 +568,12 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component,
       componentProps: {
-        selectedElement: this.selectedElement.element
+        selectedTarget: this.selectedTarget.target
       }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data && this.selectedElement) {
+      if (detail && detail.data && this.selectedTarget) {
         await onDismiss(detail.data);
       }
 
@@ -589,13 +589,13 @@ export class AppActionsElement {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-notes',
       componentProps: {
-        selectedElement: this.selectedElement.element
+        selectedTarget: this.selectedTarget.target
       }
     });
 
     modal.onDidDismiss().then(async (detail: OverlayEventDetail) => {
-      if (detail && detail.data && this.selectedElement) {
-        this.notesDidChange.emit(this.selectedElement.element);
+      if (detail && detail.data && this.selectedTarget) {
+        this.notesDidChange.emit(this.selectedTarget.target);
       }
 
       this.blockSlide.emit(false);
@@ -607,21 +607,21 @@ export class AppActionsElement {
   }
 
   private async transformSlotType(type: SlotType) {
-    if (!this.selectedElement || !this.selectedElement.element.parentElement) {
+    if (!this.selectedTarget || !this.selectedTarget.target.parentElement) {
       return;
     }
 
-    const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedElement.element, type);
+    const element: HTMLElement = await ToggleSlotUtils.toggleSlotType(this.selectedTarget.target, type);
 
     await this.replaceSlot(element);
   }
 
   private async transformTemplate(template: InitTemplate) {
-    if (!this.selectedElement || !this.selectedElement.slide?.fixed) {
+    if (!this.selectedTarget || !this.selectedTarget.slide?.fixed) {
       return;
     }
 
-    const slide: JSX.IntrinsicElements = await CloneSlideUtils.toggleTemplate(this.selectedElement.element, template);
+    const slide: JSX.IntrinsicElements = await CloneSlideUtils.toggleTemplate(this.selectedTarget.target, template);
 
     // Catch event when slide is parsed and then persist it to the database
     document.addEventListener(
@@ -640,11 +640,11 @@ export class AppActionsElement {
   }
 
   private async replaceSlot(element: HTMLElement) {
-    if (!this.selectedElement || !this.selectedElement.element.parentElement || !element) {
+    if (!this.selectedTarget || !this.selectedTarget.target.parentElement || !element) {
       return;
     }
 
-    this.selectedElement.element.parentElement.replaceChild(element, this.selectedElement.element);
+    this.selectedTarget.target.parentElement.replaceChild(element, this.selectedTarget.target);
 
     await this.initSelectedElement(element);
 
@@ -657,14 +657,14 @@ export class AppActionsElement {
 
   private emitChange(): Promise<void> {
     return new Promise<void>((resolve) => {
-      if (!this.selectedElement || !this.selectedElement.element.parentElement) {
+      if (!this.selectedTarget || !this.selectedTarget.target.parentElement) {
         resolve();
         return;
       }
 
       // If not slide, then parent is the container slide
       this.slideDidChange.emit(
-        this.selectedElement?.type === 'slide' ? this.selectedElement.element : this.selectedElement.element.parentElement
+        this.selectedTarget?.type === 'slide' ? this.selectedTarget.target : this.selectedTarget.target.parentElement
       );
 
       resolve();
@@ -673,14 +673,14 @@ export class AppActionsElement {
 
   private async initSelectedElement(element: HTMLElement | undefined) {
     // If needed, remove highlight on previous element
-    if (!element && this.selectedElement) {
+    if (!element && this.selectedTarget) {
       await this.highlightElement(false);
     }
 
-    this.selectedElement = element
+    this.selectedTarget = element
       ? {
-          element,
-          ...(SelectedElementUtils.initDescription(element) as SelectedElement)
+          target: element,
+          ...(SelectedElementUtils.initDescription(element) as SelectedTarget)
         }
       : undefined;
 
@@ -696,15 +696,15 @@ export class AppActionsElement {
   private highlightElement(highlight: boolean): Promise<void> {
     return new Promise<void>(async (resolve) => {
       // No highlight on deck
-      if (!this.selectedElement || this.selectedElement?.type === 'slide') {
+      if (!this.selectedTarget || this.selectedTarget?.type === 'slide') {
         resolve();
         return;
       }
 
       if (highlight) {
-        this.selectedElement.element.setAttribute('highlighted', '');
+        this.selectedTarget.target.setAttribute('highlighted', '');
       } else {
-        this.selectedElement.element.removeAttribute('highlighted');
+        this.selectedTarget.target.removeAttribute('highlighted');
       }
 
       resolve();
@@ -712,7 +712,7 @@ export class AppActionsElement {
   }
 
   private async attachResizeSlideContent() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
@@ -731,22 +731,22 @@ export class AppActionsElement {
         }
       });
 
-      this.elementResizeObserver.observe(this.selectedElement.element);
+      this.elementResizeObserver.observe(this.selectedTarget.target);
     } else {
       // Fallback, better  than nothing. It won't place the toolbar if the size on enter or delete  but at least if the content change like if list is toggled
-      this.selectedElement.element.addEventListener('focusout', () => this.debounceResizeSlideContent(), {passive: true});
+      this.selectedTarget.target.addEventListener('focusout', () => this.debounceResizeSlideContent(), {passive: true});
     }
   }
 
   private detachResizeSlideContent(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (window && 'ResizeObserver' in window) {
-        if (this.elementResizeObserver && this.selectedElement) {
-          this.elementResizeObserver.unobserve(this.selectedElement.element);
+        if (this.elementResizeObserver && this.selectedTarget) {
+          this.elementResizeObserver.unobserve(this.selectedTarget.target);
           this.elementResizeObserver.disconnect();
         }
       } else {
-        this.selectedElement.element.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);
+        this.selectedTarget.target.removeEventListener('focusout', () => this.debounceResizeSlideContent(), true);
       }
 
       resolve();
@@ -757,13 +757,13 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-element-style',
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedTarget: this.selectedTarget,
         imgDidChange: this.imgDidChange,
         imageHelper: this.imageHelper
       },
       mode: 'ios',
       showBackdrop: false,
-      cssClass: `popover-menu ${this.selectedElement?.slide?.poll ? 'popover-menu-wide' : ''}`
+      cssClass: `popover-menu ${this.selectedTarget?.slide?.poll ? 'popover-menu-wide' : ''}`
     });
 
     await popover.present();
@@ -774,7 +774,7 @@ export class AppActionsElement {
 
     popover.onWillDismiss().then(async (detail: OverlayEventDetail) => {
       if (detail.data) {
-        await this.imageHelper.imageAction(this.selectedElement.element, this.selectedElement?.type === 'slide', false, detail.data);
+        await this.imageHelper.imageAction(this.selectedTarget.target, this.selectedTarget?.type === 'slide', false, detail.data);
       }
     });
 
@@ -782,12 +782,12 @@ export class AppActionsElement {
   }
 
   private async deleteLogo() {
-    await this.imageHelper.deleteSlideAttributeImgSrc(this.selectedElement.element);
+    await this.imageHelper.deleteSlideAttributeImgSrc(this.selectedTarget.target);
   }
 
   private updateYoutube = (youtubeUrl: string): Promise<void> => {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement || !this.selectedElement?.slide?.youtube) {
+      if (!this.selectedTarget || !this.selectedTarget?.slide?.youtube) {
         resolve();
         return;
       }
@@ -797,15 +797,15 @@ export class AppActionsElement {
         return;
       }
 
-      this.selectedElement.element.setAttribute('src', youtubeUrl);
-      this.slideDidChange.emit(this.selectedElement.element);
+      this.selectedTarget.target.setAttribute('src', youtubeUrl);
+      this.slideDidChange.emit(this.selectedTarget.target);
 
       resolve();
     });
   };
 
   private updatePlayground = async (playground: PlaygroundAction) => {
-    if (!this.selectedElement || !this.selectedElement?.slide?.playground) {
+    if (!this.selectedTarget || !this.selectedTarget?.slide?.playground) {
       return;
     }
 
@@ -817,19 +817,19 @@ export class AppActionsElement {
       return;
     }
 
-    this.selectedElement.element.setAttribute('src', playground.src);
+    this.selectedTarget.target.setAttribute('src', playground.src);
 
     if (playground.theme) {
-      this.selectedElement.element.setAttribute('theme', playground.theme);
+      this.selectedTarget.target.setAttribute('theme', playground.theme);
     } else {
-      this.selectedElement.element.removeAttribute('theme');
+      this.selectedTarget.target.removeAttribute('theme');
     }
 
-    this.slideDidChange.emit(this.selectedElement.element);
+    this.slideDidChange.emit(this.selectedTarget.target);
   };
 
   private updateSlideDemo = async (demoAttr: DemoAction): Promise<void> => {
-    if (!this.selectedElement || !this.selectedElement?.slide?.demo) {
+    if (!this.selectedTarget || !this.selectedTarget?.slide?.demo) {
       return;
     }
 
@@ -837,7 +837,7 @@ export class AppActionsElement {
       return;
     }
 
-    const demo: HTMLElement = this.selectedElement.element.querySelector('deckgo-demo');
+    const demo: HTMLElement = this.selectedTarget.target.querySelector('deckgo-demo');
 
     if (!demo) {
       return;
@@ -846,17 +846,17 @@ export class AppActionsElement {
     demo.setAttribute('src', demoAttr.src);
     demo.setAttribute('mode', demoAttr.mode);
 
-    this.slideDidChange.emit(this.selectedElement.element);
+    this.slideDidChange.emit(this.selectedTarget.target);
   };
 
   private toggleList(destinationListType: SlotType.OL | SlotType.UL): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
-      if (SlotUtils.isNodeRevealList(this.selectedElement.element)) {
+      if (SlotUtils.isNodeRevealList(this.selectedTarget.target)) {
         await this.updateRevealListAttribute(destinationListType);
       } else {
         await this.transformSlotType(destinationListType);
@@ -868,12 +868,12 @@ export class AppActionsElement {
 
   private updateRevealListAttribute(type: SlotType): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
-      this.selectedElement.element.setAttribute('list-tag', type);
+      this.selectedTarget.target.setAttribute('list-tag', type);
 
       await this.emitChange();
 
@@ -885,16 +885,16 @@ export class AppActionsElement {
 
   private resizeSlideContent(slideElement?: HTMLElement): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
 
       const element: HTMLElement = slideElement
         ? slideElement
-        : this.selectedElement?.type === 'slide'
-        ? this.selectedElement.element
-        : this.selectedElement.element.parentElement;
+        : this.selectedTarget?.type === 'slide'
+        ? this.selectedTarget.target
+        : this.selectedTarget.target.parentElement;
 
       if (!element) {
         resolve();
@@ -911,14 +911,14 @@ export class AppActionsElement {
 
   private isSlideEditable() {
     return (
-      this.selectedElement?.slide?.qrCode ||
-      this.selectedElement?.slide?.chart ||
-      this.selectedElement?.slide?.poll ||
-      this.selectedElement?.slide?.youtube ||
-      this.selectedElement?.slide?.playground ||
-      this.selectedElement?.slide?.author ||
-      this.selectedElement?.slide?.demo ||
-      this.selectedElement?.slide?.scope !== SlideScope.DEFAULT
+      this.selectedTarget?.slide?.qrCode ||
+      this.selectedTarget?.slide?.chart ||
+      this.selectedTarget?.slide?.poll ||
+      this.selectedTarget?.slide?.youtube ||
+      this.selectedTarget?.slide?.playground ||
+      this.selectedTarget?.slide?.author ||
+      this.selectedTarget?.slide?.demo ||
+      this.selectedTarget?.slide?.scope !== SlideScope.DEFAULT
     );
   }
 
@@ -930,9 +930,9 @@ export class AppActionsElement {
     const popover: HTMLIonPopoverElement = await popoverController.create({
       component: 'app-more-element-actions',
       componentProps: {
-        notes: this.selectedElement?.type === 'slide',
-        clone: this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined,
-        images: this.selectedElement?.slide?.aspectRatio,
+        notes: this.selectedTarget?.type === 'slide',
+        clone: this.selectedTarget?.type === 'slide' || this.selectedTarget?.element?.shape !== undefined,
+        images: this.selectedTarget?.slide?.aspectRatio,
         transform: this.displayTransform()
       },
       event: $event,
@@ -960,7 +960,7 @@ export class AppActionsElement {
 
   private displayTransform() {
     return (
-      (this.selectedElement?.type === 'element' || this.selectedElement?.slide?.fixed) && this.selectedElement?.slot?.shape === undefined
+      (this.selectedTarget?.type === 'element' || this.selectedTarget?.slide?.fixed) && this.selectedTarget?.element?.shape === undefined
     );
   }
 
@@ -993,7 +993,7 @@ export class AppActionsElement {
       <button
         onClick={($event: UIEvent) => this.confirmDeleteElement($event)}
         aria-label={i18n.state.editor.delete}
-        disabled={store.state.busy && this.selectedElement?.type === 'slide'}
+        disabled={store.state.busy && this.selectedTarget?.type === 'slide'}
         class="wider-devices ion-activatable">
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="trash-bin" ariaLabel="" ariaHidden={true}></AppIcon>
@@ -1003,7 +1003,7 @@ export class AppActionsElement {
   }
 
   private renderNotes() {
-    const classElement: string | undefined = `wider-devices ion-activatable ${this.selectedElement?.type === 'slide' ? '' : 'hidden'}`;
+    const classElement: string | undefined = `wider-devices ion-activatable ${this.selectedTarget?.type === 'slide' ? '' : 'hidden'}`;
 
     return (
       <button
@@ -1011,7 +1011,7 @@ export class AppActionsElement {
         aria-label={i18n.state.editor.notes}
         disabled={store.state.busy}
         class={classElement}
-        tabindex={this.selectedElement?.type === 'slide' ? 0 : -1}>
+        tabindex={this.selectedTarget?.type === 'slide' ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="create" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.notes}</ion-label>
@@ -1020,7 +1020,7 @@ export class AppActionsElement {
   }
 
   private renderClone() {
-    const displayed: boolean = this.selectedElement?.type === 'slide' || this.selectedElement?.slot?.shape !== undefined;
+    const displayed: boolean = this.selectedTarget?.type === 'slide' || this.selectedTarget?.element?.shape !== undefined;
     const classSlide: string | undefined = `wider-devices ion-activatable ${displayed ? '' : 'hidden'}`;
 
     return (
@@ -1038,7 +1038,7 @@ export class AppActionsElement {
   }
 
   private renderCopyStyle() {
-    const displayed: boolean = this.selectedElement?.type === 'element' && this.selectedElement?.slot?.shape === undefined;
+    const displayed: boolean = this.selectedTarget?.type === 'element' && this.selectedTarget?.element?.shape === undefined;
     const classSlide: string | undefined = `ion-activatable ${displayed ? '' : 'hidden'}`;
 
     return (
@@ -1066,21 +1066,21 @@ export class AppActionsElement {
   }
 
   private renderEdit() {
-    const displayed: boolean = this.selectedElement?.type === 'slide' && this.isSlideEditable();
+    const displayed: boolean = this.selectedTarget?.type === 'slide' && this.isSlideEditable();
     const classSlide: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return (
       <button
         onClick={() =>
-          this.selectedElement?.slide?.poll
+          this.selectedTarget?.slide?.poll
             ? this.openEditPollSlide()
-            : this.selectedElement?.slide?.youtube
+            : this.selectedTarget?.slide?.youtube
             ? this.openEditModalSlide('app-youtube', this.updateYoutube)
-            : this.selectedElement?.slide?.playground
+            : this.selectedTarget?.slide?.playground
             ? this.openEditModalSlide('app-playground', this.updatePlayground)
-            : this.selectedElement?.slide?.demo
+            : this.selectedTarget?.slide?.demo
             ? this.openEditModalSlide('app-demo', this.updateSlideDemo)
-            : this.selectedElement?.slide?.scope !== SlideScope.DEFAULT
+            : this.selectedTarget?.slide?.scope !== SlideScope.DEFAULT
             ? this.openEditSlide()
             : this.openEditSlide()
         }
@@ -1112,7 +1112,7 @@ export class AppActionsElement {
   }
 
   private renderAspectRatio() {
-    const displayed: boolean = this.selectedElement?.slide?.aspectRatio;
+    const displayed: boolean = this.selectedTarget?.slide?.aspectRatio;
     const classSlide: string | undefined = `ion-activatable${displayed ? '' : ' hidden'}`;
 
     return [
@@ -1143,14 +1143,14 @@ export class AppActionsElement {
   }
 
   private renderCodeOptions() {
-    const classSlideCode: string | undefined = `ion-activatable${this.selectedElement?.slot?.code ? '' : ' hidden'}`;
+    const classSlideCode: string | undefined = `ion-activatable${this.selectedTarget?.element?.code ? '' : ' hidden'}`;
 
     return (
       <button
         onClick={() => this.openCode()}
         aria-label={i18n.state.editor.options}
         class={classSlideCode}
-        tabindex={this.selectedElement?.slot?.code ? 0 : -1}>
+        tabindex={this.selectedTarget?.element?.code ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.options}</ion-label>
@@ -1158,14 +1158,14 @@ export class AppActionsElement {
     );
   }
   private renderMathOptions() {
-    const classSlideMath: string | undefined = `ion-activatable${this.selectedElement?.slot?.math ? '' : ' hidden'}`;
+    const classSlideMath: string | undefined = `ion-activatable${this.selectedTarget?.element?.math ? '' : ' hidden'}`;
 
     return (
       <button
         onClick={() => this.openMath()}
         aria-label={i18n.state.editor.options}
         class={classSlideMath}
-        tabindex={this.selectedElement?.slot?.math ? 0 : -1}>
+        tabindex={this.selectedTarget?.element?.math ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="settings" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.options}</ion-label>
@@ -1174,14 +1174,14 @@ export class AppActionsElement {
   }
 
   private renderImages() {
-    const classImage: string | undefined = `ion-activatable${this.selectedElement?.slot?.image ? '' : ' hidden'}`;
+    const classImage: string | undefined = `ion-activatable${this.selectedTarget?.element?.image ? '' : ' hidden'}`;
 
     return (
       <button
         onClick={() => this.openImage()}
         aria-label={i18n.state.editor.image}
         class={classImage}
-        tabindex={this.selectedElement?.slot?.image ? 0 : -1}>
+        tabindex={this.selectedTarget?.element?.image ? 0 : -1}>
         <ion-ripple-effect></ion-ripple-effect>
         <AppIcon name="images" ariaLabel="" ariaHidden={true}></AppIcon>
         <ion-label aria-hidden="true">{i18n.state.editor.image}</ion-label>

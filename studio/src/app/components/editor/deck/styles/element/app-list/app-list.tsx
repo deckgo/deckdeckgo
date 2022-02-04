@@ -19,7 +19,7 @@ import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 })
 export class AppList {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private listType: SlotType.OL | SlotType.UL | undefined;
@@ -39,7 +39,7 @@ export class AppList {
   private ignoreUpdateStyle: boolean = false;
 
   async componentWillLoad() {
-    this.listType = ListUtils.isElementList(this.selectedElement);
+    this.listType = ListUtils.isElementList(this.selectedTarget);
 
     await this.initListStyle();
     await this.initListStyleCSS();
@@ -61,29 +61,29 @@ export class AppList {
   }
 
   private async initListStyle() {
-    this.selectedStyle = ListUtils.getListElementType(this.selectedElement);
+    this.selectedStyle = ListUtils.getListElementType(this.selectedTarget);
   }
 
   private async initListStyleCSS() {
-    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-      this.listStyleCSS = this.selectedElement.style['--reveal-list-style'];
+    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+      this.listStyleCSS = this.selectedTarget.style['--reveal-list-style'];
     } else {
-      this.listStyleCSS = this.selectedElement.style.listStyleType;
+      this.listStyleCSS = this.selectedTarget.style.listStyleType;
     }
   }
 
   private async setListType($event: CustomEvent) {
-    if (!this.selectedElement || !$event || !$event.detail) {
+    if (!this.selectedTarget || !$event || !$event.detail) {
       return;
     }
 
     this.listType = $event.detail.value;
 
     // Remove style with undo redo as we are going to replace the element in the dom
-    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-      this.selectedElement.style['--reveal-list-style'] = '';
+    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+      this.selectedTarget.style['--reveal-list-style'] = '';
     } else {
-      this.selectedElement.style.listStyleType = '';
+      this.selectedTarget.style.listStyleType = '';
     }
 
     // We have to clear the history undo redo too
@@ -93,7 +93,7 @@ export class AppList {
   }
 
   private async setListStyle($event: CustomEvent) {
-    if (!this.selectedElement || !$event || !$event.detail) {
+    if (!this.selectedTarget || !$event || !$event.detail) {
       return;
     }
 
@@ -104,7 +104,7 @@ export class AppList {
     this.selectedStyle = style;
 
     this.updateStyle({
-      property: SlotUtils.isNodeRevealList(this.selectedElement) ? '--reveal-list-style' : 'list-style-type',
+      property: SlotUtils.isNodeRevealList(this.selectedTarget) ? '--reveal-list-style' : 'list-style-type',
       value: this.selectedStyle
     });
 
@@ -116,16 +116,16 @@ export class AppList {
   }
 
   private async updateLetterSpacingCSS() {
-    if (SlotUtils.isNodeRevealList(this.selectedElement)) {
-      this.selectedElement.style['--reveal-list-style'] = this.listStyleCSS;
+    if (SlotUtils.isNodeRevealList(this.selectedTarget)) {
+      this.selectedTarget.style['--reveal-list-style'] = this.listStyleCSS;
     } else {
-      this.selectedElement.style.listStyleType = this.listStyleCSS;
+      this.selectedTarget.style.listStyleType = this.listStyleCSS;
     }
 
     this.listStyleChanged.emit();
 
     this.updateStyle({
-      property: SlotUtils.isNodeRevealList(this.selectedElement) ? '--reveal-list-style' : 'list-style-type',
+      property: SlotUtils.isNodeRevealList(this.selectedTarget) ? '--reveal-list-style' : 'list-style-type',
       value: this.listStyleCSS
     });
 
@@ -138,7 +138,7 @@ export class AppList {
       return;
     }
 
-    setStyle(this.selectedElement, {
+    setStyle(this.selectedTarget, {
       properties: [property],
       type: 'element',
       updateUI: async (_value: string) => {

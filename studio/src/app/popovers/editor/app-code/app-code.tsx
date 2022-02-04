@@ -19,7 +19,7 @@ export class AppCode {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @Prop()
   codeDidChange: EventEmitter<HTMLElement> | undefined;
@@ -44,24 +44,24 @@ export class AppCode {
   private async initCurrent() {
     await this.initCurrentLanguage();
 
-    this.lineNumbers = this.selectedElement && this.selectedElement.hasAttribute('line-numbers');
+    this.lineNumbers = this.selectedTarget && this.selectedTarget.hasAttribute('line-numbers');
 
-    this.highlightLines = this.selectedElement?.getAttribute('highlight-lines') ?? null;
+    this.highlightLines = this.selectedTarget?.getAttribute('highlight-lines') ?? null;
   }
 
   private async initCurrentLanguage() {
     const language: string =
-      this.selectedElement && this.selectedElement.getAttribute('language') ? this.selectedElement.getAttribute('language') : 'javascript';
+      this.selectedTarget && this.selectedTarget.getAttribute('language') ? this.selectedTarget.getAttribute('language') : 'javascript';
     this.currentLanguage = await getCodeLanguage(language);
   }
 
   private emitCodeDidChange() {
-    this.codeDidChange?.emit(this.selectedElement);
+    this.codeDidChange?.emit(this.selectedTarget);
   }
 
   private toggleLineNumbers($event: CustomEvent): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      if (!this.selectedElement) {
+      if (!this.selectedTarget) {
         resolve();
         return;
       }
@@ -71,7 +71,7 @@ export class AppCode {
         return;
       }
 
-      this.selectedElement.setAttribute('line-numbers', $event.detail.checked);
+      this.selectedTarget.setAttribute('line-numbers', $event.detail.checked);
 
       this.emitCodeDidChange();
 
@@ -83,7 +83,7 @@ export class AppCode {
     const modal: HTMLIonModalElement = await modalController.create({
       component: 'app-code-languages',
       componentProps: {
-        selectedElement: this.selectedElement,
+        selectedTarget: this.selectedTarget,
         codeDidChange: this.codeDidChange,
         currentLanguage: this.currentLanguage
       }
@@ -103,18 +103,18 @@ export class AppCode {
   }
 
   private async highlightSelectedLines() {
-    if (!this.selectedElement) {
+    if (!this.selectedTarget) {
       return;
     }
 
     if (this.highlightLines && this.highlightLines.length > 0) {
-      this.selectedElement.setAttribute('highlight-lines', this.highlightLines);
+      this.selectedTarget.setAttribute('highlight-lines', this.highlightLines);
     } else {
-      this.selectedElement.removeAttribute('highlight-lines');
+      this.selectedTarget.removeAttribute('highlight-lines');
     }
 
     // Reload component with new lines to highlight
-    await (this.selectedElement as HTMLDeckgoHighlightCodeElement).load();
+    await (this.selectedTarget as HTMLDeckgoHighlightCodeElement).load();
 
     this.emitCodeDidChange();
   }

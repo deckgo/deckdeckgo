@@ -6,7 +6,7 @@ import settingsStore from '../../../../../../stores/settings.store';
 import i18n from '../../../../../../stores/i18n.store';
 
 import {EditMode, Expanded} from '../../../../../../types/core/settings';
-import {SelectedElement} from '../../../../../../types/editor/selected-element';
+import {SelectedTarget} from '../../../../../../types/editor/selected-target';
 
 import {SettingsUtils} from '../../../../../../utils/core/settings.utils';
 import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
@@ -16,7 +16,7 @@ import {setStyle} from '../../../../../../utils/editor/undo-redo.deck.utils';
 })
 export class AppBorderRadius {
   @Prop()
-  selectedElement: SelectedElement;
+  selectedTarget: SelectedTarget;
 
   @State()
   private borderRadiuses: Map<string, number> = new Map([
@@ -65,15 +65,15 @@ export class AppBorderRadius {
   }
 
   private async initBorderRadiusCSS() {
-    this.borderRadiusCSS = this.selectedElement?.element?.style.borderRadius;
+    this.borderRadiusCSS = this.selectedTarget?.target?.style.borderRadius;
   }
 
   private async initBorderRadius() {
-    if (!this.selectedElement || !this.selectedElement.element || !window) {
+    if (!this.selectedTarget || !this.selectedTarget.target || !window) {
       return;
     }
 
-    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedElement.element);
+    const style: CSSStyleDeclaration = window.getComputedStyle(this.selectedTarget.target);
 
     if (!style) {
       return;
@@ -102,7 +102,7 @@ export class AppBorderRadius {
   }
 
   private async updateBorderRadius($event: CustomEvent, corner: string = ''): Promise<void> {
-    if (!this.selectedElement || !$event || !$event.detail) {
+    if (!this.selectedTarget || !$event || !$event.detail) {
       return;
     }
     if (corner === 'general') {
@@ -139,7 +139,7 @@ export class AppBorderRadius {
   }
 
   private async updateBorderRadiusCSS() {
-    this.selectedElement.element.style.borderRadius = this.borderRadiusCSS;
+    this.selectedTarget.target.style.borderRadius = this.borderRadiusCSS;
 
     this.emitBorderRadiusChange();
   }
@@ -150,9 +150,9 @@ export class AppBorderRadius {
       return;
     }
 
-    setStyle(this.selectedElement.element, {
+    setStyle(this.selectedTarget.target, {
       properties: [{property, value}],
-      type: this.selectedElement.type,
+      type: this.selectedTarget.type,
       updateUI: async () => {
         // ion-change triggers the event each time its value changes, because we re-render, it triggers it again
         this.ignoreUpdateStyle = true;

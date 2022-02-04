@@ -14,7 +14,7 @@ export class AppTransformSlide {
   @Element() el: HTMLElement;
 
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   private async closePopover(template?: InitTemplate) {
     await (this.el.closest('ion-popover') as HTMLIonPopoverElement).dismiss({
@@ -28,13 +28,13 @@ export class AppTransformSlide {
 
   render() {
     const tag: 'title' | 'content-default' | 'content-bottom' | 'split-horizontal' | 'split-vertical' =
-      this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-title'
+      this.selectedTarget.tagName.toLowerCase() === 'deckgo-slide-title'
         ? 'title'
-        : this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-content'
-        ? this.selectedElement.style?.getPropertyValue('--slide-content-justify-content') !== ''
+        : this.selectedTarget.tagName.toLowerCase() === 'deckgo-slide-content'
+        ? this.selectedTarget.style?.getPropertyValue('--slide-content-justify-content') !== ''
           ? 'content-bottom'
           : 'content-default'
-        : this.selectedElement.tagName.toLowerCase() === 'deckgo-slide-split' && this.selectedElement.hasAttribute('vertical')
+        : this.selectedTarget.tagName.toLowerCase() === 'deckgo-slide-split' && this.selectedTarget.hasAttribute('vertical')
         ? 'split-vertical'
         : 'split-horizontal';
 

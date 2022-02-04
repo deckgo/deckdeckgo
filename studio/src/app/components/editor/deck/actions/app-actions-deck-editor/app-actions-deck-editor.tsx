@@ -91,7 +91,7 @@ export class AppActionsDeckEditor {
   @Method()
   async selectDeck() {
     if (this.actionsElementRef) {
-      await this.actionsElementRef.blurSelectedElement();
+      await this.actionsElementRef.blurSelectedTarget();
       await this.actionsElementRef.unSelect();
     }
 

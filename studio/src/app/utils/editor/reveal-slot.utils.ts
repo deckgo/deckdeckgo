@@ -2,9 +2,9 @@ import {SlotUtils} from './slot.utils';
 import {SlotType} from '../../types/editor/slot-type';
 
 export class RevealSlotUtils {
-  static toggleReveal(selectedElement: HTMLElement, reveal: boolean): Promise<HTMLElement> {
+  static toggleReveal(selectedTarget: HTMLElement, reveal: boolean): Promise<HTMLElement> {
     return new Promise<HTMLElement>(async (resolve) => {
-      if (!selectedElement) {
+      if (!selectedTarget) {
         resolve(null);
         return;
       }
@@ -14,8 +14,8 @@ export class RevealSlotUtils {
         return;
       }
 
-      const sameReveal: boolean = SlotUtils.isNodeReveal(selectedElement) === reveal;
-      const sameRevealList: boolean = SlotUtils.isNodeRevealList(selectedElement) === reveal;
+      const sameReveal: boolean = SlotUtils.isNodeReveal(selectedTarget) === reveal;
+      const sameRevealList: boolean = SlotUtils.isNodeRevealList(selectedTarget) === reveal;
 
       if ((sameReveal && sameRevealList) || (sameReveal && sameRevealList)) {
         resolve(null);
@@ -24,10 +24,10 @@ export class RevealSlotUtils {
 
       let element: HTMLElement;
 
-      if (SlotUtils.isNodeList(selectedElement)) {
-        element = await this.toggleRevealList(reveal, selectedElement);
+      if (SlotUtils.isNodeList(selectedTarget)) {
+        element = await this.toggleRevealList(reveal, selectedTarget);
       } else {
-        element = await this.toggleRevealElement(reveal, selectedElement);
+        element = await this.toggleRevealElement(reveal, selectedTarget);
       }
 
       if (reveal) {
@@ -38,18 +38,18 @@ export class RevealSlotUtils {
     });
   }
 
-  private static toggleRevealElement(reveal: boolean, selectedElement: HTMLElement): Promise<HTMLElement> {
+  private static toggleRevealElement(reveal: boolean, selectedTarget: HTMLElement): Promise<HTMLElement> {
     return new Promise<HTMLElement>((resolve) => {
-      const element: HTMLElement = reveal ? document.createElement(SlotType.REVEAL) : (selectedElement.firstElementChild as HTMLElement);
+      const element: HTMLElement = reveal ? document.createElement(SlotType.REVEAL) : (selectedTarget.firstElementChild as HTMLElement);
 
-      this.moveSpecificAttributes(selectedElement, element);
+      this.moveSpecificAttributes(selectedTarget, element);
 
       if (reveal) {
-        element.appendChild(selectedElement.cloneNode(true));
+        element.appendChild(selectedTarget.cloneNode(true));
       }
 
       // For styling purpose, we need to identify reveal element with images
-      if (SlotUtils.isNodeImage(selectedElement)) {
+      if (SlotUtils.isNodeImage(selectedTarget)) {
         element.setAttribute('img', '');
       } else {
         element.removeAttribute('img');
@@ -59,19 +59,19 @@ export class RevealSlotUtils {
     });
   }
 
-  private static toggleRevealList(reveal: boolean, selectedElement: HTMLElement): Promise<HTMLElement> {
+  private static toggleRevealList(reveal: boolean, selectedTarget: HTMLElement): Promise<HTMLElement> {
     return new Promise<HTMLElement>((resolve) => {
       let element: HTMLElement;
 
       if (reveal) {
         element = document.createElement(SlotType.REVEAL_LIST);
 
-        if (selectedElement?.nodeName?.toLowerCase() === SlotType.UL) {
+        if (selectedTarget?.nodeName?.toLowerCase() === SlotType.UL) {
           element.setAttribute('list-tag', SlotType.UL);
         }
       } else {
         element =
-          selectedElement.getAttribute('list-tag') === SlotType.UL
+          selectedTarget.getAttribute('list-tag') === SlotType.UL
             ? document.createElement(SlotType.UL)
             : document.createElement(SlotType.OL);
       }
@@ -79,27 +79,27 @@ export class RevealSlotUtils {
       // In case of deckgo-reveal-list the contenteditable should be set on the host not the slot
       element.setAttribute('contenteditable', '');
 
-      this.moveSpecificAttributes(selectedElement, element);
+      this.moveSpecificAttributes(selectedTarget, element);
 
-      element.append(...Array.from(selectedElement.children));
+      element.append(...Array.from(selectedTarget.children));
 
       resolve(element);
     });
   }
 
-  private static moveSpecificAttributes(selectedElement: HTMLElement, element: HTMLElement) {
-    if (selectedElement.hasAttribute('slot')) {
-      element.setAttribute('slot', selectedElement.getAttribute('slot'));
-      selectedElement.removeAttribute('slot');
+  private static moveSpecificAttributes(selectedTarget: HTMLElement, element: HTMLElement) {
+    if (selectedTarget.hasAttribute('slot')) {
+      element.setAttribute('slot', selectedTarget.getAttribute('slot'));
+      selectedTarget.removeAttribute('slot');
     }
 
-    if (selectedElement.hasAttribute('style')) {
-      element.setAttribute('style', selectedElement.getAttribute('style'));
-      selectedElement.removeAttribute('style');
+    if (selectedTarget.hasAttribute('style')) {
+      element.setAttribute('style', selectedTarget.getAttribute('style'));
+      selectedTarget.removeAttribute('style');
     }
 
-    if (selectedElement.hasAttribute('highlighted')) {
-      selectedElement.removeAttribute('highlighted');
+    if (selectedTarget.hasAttribute('highlighted')) {
+      selectedTarget.removeAttribute('highlighted');
     }
   }
 }

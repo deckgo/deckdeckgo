@@ -10,7 +10,7 @@ import {SlotUtils} from '../../../../../../utils/editor/slot.utils';
 })
 export class AppReveal {
   @Prop()
-  selectedElement: HTMLElement;
+  selectedTarget: HTMLElement;
 
   @State()
   private reveal: boolean = false;
@@ -18,7 +18,7 @@ export class AppReveal {
   @Event() toggleReveal: EventEmitter<boolean>;
 
   componentWillLoad() {
-    this.reveal = SlotUtils.isNodeReveal(this.selectedElement) || SlotUtils.isNodeRevealList(this.selectedElement);
+    this.reveal = SlotUtils.isNodeReveal(this.selectedTarget) || SlotUtils.isNodeRevealList(this.selectedTarget);
   }
 
   private toggle() {
