@@ -2,6 +2,11 @@
 
 # [6.X.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v5.X.0) (2022-AA-BB)
 
+### Applications
+
+- studio: v5.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
+- remote: v1.15.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
+
 ### Providers
 
 - firebase: v3.0.1 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/providers/firebase/CHANGELOG.md))

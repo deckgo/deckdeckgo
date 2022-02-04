@@ -1,3 +1,9 @@
+# 1.15.3 (2022-02-04)
+
+### Build
+
+- bump markdown and highlight-code dependencies
+
 # 1.15.2 (2021-12-21)
 
 ### Build
