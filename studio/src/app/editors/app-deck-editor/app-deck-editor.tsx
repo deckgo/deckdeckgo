@@ -16,7 +16,7 @@ import errorStore from '../../stores/error.store';
 import {debounce, isAndroidTablet, isFullscreen, isIOS, isIPad, isMobile} from '@deckdeckgo/utils';
 import {isSlide} from '@deckdeckgo/deck-utils';
 import {convertStyle, SlideTemplate, elementIndex} from '@deckdeckgo/editor';
-import {StyloPaletteColor, StyloToolbar} from '@papyrs/stylo';
+import {StyloPaletteColor, StyloConfigToolbar} from '@papyrs/stylo';
 
 import {CreateSlidesUtils} from '../../utils/editor/create-slides.utils';
 import {ParseDeckSlotsUtils} from '../../utils/editor/parse-deck-slots.utils';
@@ -120,7 +120,7 @@ export class AppDeckEditor implements ComponentInterface {
   private slideResizeObserver: ResizeObserver;
 
   @State()
-  private editorConfig: Partial<StyloToolbar> = {
+  private editorConfig: Partial<StyloConfigToolbar> = {
     style: {
       list: false,
       align: false,
