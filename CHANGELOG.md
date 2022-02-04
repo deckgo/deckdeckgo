@@ -1,10 +1,12 @@
 <a name="6.x.0"></a>
 
-# [6.X.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v5.X.0) (2022-AA-BB)
+# [6.0.0](https://github.com/deckgo/deckdeckgo/compare/v5.2.0...v6.0.0) (2022-02-04)
+
+Breaking changes: [DeckDeckGo.com](https://deckdeckgo.com) experimental support for documents reverted
 
 ### Applications
 
-- studio: v5.2.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
+- studio: v5.3.0 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/studio/CHANGELOG.md))
 - remote: v1.15.3 ([CHANGELOG](https://github.com/deckgo/deckdeckgo/blob/main/remote/CHANGELOG.md))
 
 ### Providers

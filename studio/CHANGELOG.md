@@ -1,8 +1,11 @@
-# 5.X.Y (2022-AA-BB)
+# 5.3.0 (2022-02-04)
 
 ### Features
 
+- extract and improve the rich text editor for documents from the core to a new standalone library [Stylo](https://github.com/papyrs/stylo) 🔥
+- integrate the [monaco editor](https://microsoft.github.io/monaco-editor/) to edit blocks of code
 - on import (open) of .ddg files, always generate new data (new ids for the decks, slides, docs and paragraphs)
+- make the supported features (deck and/or doc) configurable (doesn't remove routes and features, only hide navigation)
 
 # 5.2.0 (2021-12-24)
 
