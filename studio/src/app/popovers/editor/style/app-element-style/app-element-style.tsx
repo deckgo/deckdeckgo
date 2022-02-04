@@ -20,10 +20,10 @@ export class AppElementStyle {
   selectedTarget: SelectedTarget;
 
   @Prop()
-  imgDidChange: EventEmitter<HTMLElement>;
+  imgDidChange?: EventEmitter<HTMLElement>;
 
   @Prop()
-  imageHelper: ImageHelper;
+  imageHelper?: ImageHelper;
 
   @Event() optionsDidChange: EventEmitter<void>;
 

@@ -1,21 +1,49 @@
-import {StyloMenu} from '@papyrs/stylo';
 import {popoverController} from '@ionic/core';
+
+import {StyloMenu} from '@papyrs/stylo';
+
+import {SelectedTarget} from '../types/editor/selected-target';
+
+import {SelectedElementUtils} from '../utils/editor/selected-element.utils';
 
 export const codeMenu: StyloMenu = {
   match: ({paragraph}: {paragraph: HTMLElement}) => paragraph?.nodeName.toLowerCase() === 'deckgo-highlight-code',
   actions: [
     {
       text: 'edit_code',
-      icon: `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 512 512'>
-            <polygon points='364.13 125.25 87 403 64 448 108.99 425 386.75 147.87 364.13 125.25' style='fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/>
-            <path d='M420.69,68.69,398.07,91.31l22.62,22.63,22.62-22.63a16,16,0,0,0,0-22.62h0A16,16,0,0,0,420.69,68.69Z' style='fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/>
-          </svg>`,
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width='20' height='20' viewBox="0 0 512 512">
+                <path d="M384 224v184a40 40 0 01-40 40H104a40 40 0 01-40-40V168a40 40 0 0140-40h167.48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+                <path d="M459.94 53.25a16.06 16.06 0 00-23.22-.56L424.35 65a8 8 0 000 11.31l11.34 11.32a8 8 0 0011.34 0l12.06-12c6.1-6.09 6.67-16.01.85-22.38zM399.34 90L218.82 270.2a9 9 0 00-2.31 3.93L208.16 299a3.91 3.91 0 004.86 4.86l24.85-8.35a9 9 0 003.93-2.31L422 112.66a9 9 0 000-12.66l-9.95-10a9 9 0 00-12.71 0z"/>
+             </svg>`,
       action: async ({paragraph}: {paragraph: HTMLElement}) => {
         const editCode: CustomEvent<void> = new CustomEvent<void>('editCode', {
           bubbles: true
         });
 
         paragraph.dispatchEvent(editCode);
+      }
+    },
+    {
+      text: 'style',
+      icon: `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 512 512'>
+              <path d='M452.37,59.63h0a40.49,40.49,0,0,0-57.26,0L184,294.74c23.08,4.7,46.12,27.29,49.26,49.26L452.37,116.89A40.49,40.49,0,0,0,452.37,59.63Z' style='fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/>
+              <path d='M138,336c-29.88,0-54,24.5-54,54.86,0,23.95-20.88,36.57-36,36.57C64.56,449.74,92.82,464,120,464c39.78,0,72-32.73,72-73.14C192,360.5,167.88,336,138,336Z' style='fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/>
+            </svg>`,
+      action: async ({paragraph}: {paragraph: HTMLElement}) => {
+        const popover: HTMLIonPopoverElement = await popoverController.create({
+          component: 'app-element-style',
+          componentProps: {
+            selectedTarget: {
+              target: paragraph,
+              ...(SelectedElementUtils.initDescription(paragraph) as SelectedTarget)
+            }
+          },
+          mode: 'ios',
+          showBackdrop: false,
+          cssClass: 'popover-menu'
+        });
+
+        await popover.present();
       }
     },
     {

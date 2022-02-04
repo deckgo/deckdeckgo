@@ -197,8 +197,8 @@ export namespace Components {
     interface AppEditor {
     }
     interface AppElementStyle {
-        "imageHelper": ImageHelper;
-        "imgDidChange": EventEmitter<HTMLElement>;
+        "imageHelper"?: ImageHelper;
+        "imgDidChange"?: EventEmitter<HTMLElement>;
         "selectedTarget": SelectedTarget;
     }
     interface AppEmbed {
